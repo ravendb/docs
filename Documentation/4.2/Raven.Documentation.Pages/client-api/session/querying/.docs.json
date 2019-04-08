@@ -1,140 +1,155 @@
 [
-    {
-        "Path": "/document-query",
-        "Name": "DocumentQuery",
-        "Mappings": []
-    },
-    {
-        "Path": "how-to-query.markdown",
-        "Name": "How to Query",
-        "Mappings": [
-            {
-                "Version": 1.0,
-                "Key": "client-api/querying/using-linq-to-query-ravendb"
-            }
-        ]
-    },
-    {
-        "Path": "how-to-stream-query-results.markdown",
-        "Name": "How to Stream Query Results",
-        "Mappings": [
-            {
-                "Version": 2.5,
-                "Key": "client-api/advanced/unbounded-results"
-            }
-        ]
-    },
-    {
-        "Path": "how-to-customize-query.markdown",
-        "Name": "How to Customize Query",
-        "Mappings": []
-    },
-    {
-        "Path": "how-to-project-query-results.markdown",
-        "Name": "How to Project Query Results",
-        "Mappings": [
-            {
-                "Version": 2.0,
-                "Key": "client-api/querying/results-transformation/transform-results"
-            },
-            {
-                "Version": 3.0,
-                "Key": "client-api/session/querying/how-to-perform-projection"
-            }
-        ]
-    },
-    {
-        "Path": "how-to-perform-group-by-query.markdown",
-        "Name": "How to Perform Group By Query",
-        "Mappings": []
-    },
-    {
-        "Path": "how-to-perform-a-faceted-search.markdown",
-        "Name": "How to Perform a Faceted Search",
-        "Mappings": [
-            {
-                "Version": 1.0,
-                "Key": "client-api/faceted-search"
-            }
-        ]
-    },
-    {
-        "Path": "how-to-query-a-spatial-index.markdown",
-        "Name": "How to Query a Spatial Index",
-        "Mappings": [
-            {
-                "Version": 2.0,
-                "Key": "client-api/querying/static-indexes/spatial-search"
-            }
-        ]
-    },
-    {
-        "Path": "how-to-get-query-statistics.markdown",
-        "Name": "How to Get Query Statistics",
-        "Mappings": []
-    },
-    {
-        "Path": "how-to-use-intersect.markdown",
-        "Name": "How to Use Intersect",
-        "Mappings": [
-            {
-                "Version": 2.0,
-                "Key": "client-api/querying/intersection"
-            }
-        ]
-    },
-    {
-        "Path": "how-to-perform-queries-lazily.markdown",
-        "Name": "How to Perform Queries Lazily",
-        "Mappings": [
-            {
-                "Version": 2.0,
-                "Key": "client-api/querying/lazy-operations"
-            }
-        ]
-    },
-    {
-        "Path": "how-to-work-with-suggestions.markdown",
-        "Name": "How to Work With Suggestions",
-        "Mappings": [
-            {
-                "Version": 2.0,
-                "Key": "client-api/querying/static-indexes/suggestions"
-            }
-        ]
-    },
-    {
-        "Path": "how-to-use-morelikethis.markdown",
-        "Name": "How to Use MoreLikeThis",
-        "Mappings": []
-    },
-    {
-        "Path": "how-to-use-search.markdown",
-        "Name": "How to Use Search",
-        "Mappings": []
-    },
-    {
-        "Path": "how-to-use-highlighting.markdown",
-        "Name": "How to Use Highlighting",
-        "Mappings": [
-            {
-                "Version": 3.0,
-                "Key": "client-api/session/querying/how-to-use-highlighting"
-            },
-            {
-                "Version": 4.0,
-                "Key": null
-            }
-        ]
-    },
-    {
-        "Path": "how-to-use-regex.markdown",
-        "Name": "How to Use Regex",
-        "Mappings": []
-    },
-    {
-        "Path": "how-to-query-with-exact-match.markdown",
-        "Name": "How to Query With Exact Match",
-        "Mappings": []
-    }
+  {
+    "Path": "/document-query",
+    "Name": "DocumentQuery",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-query.markdown",
+    "Name": "How to Query",
+    "DiscussionId": "e88cd882-bd8c-41a4-9bf0-44e5314edd33",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/querying/using-linq-to-query-ravendb"
+      }
+    ]
+  },
+  {
+    "Path": "how-to-stream-query-results.markdown",
+    "Name": "How to Stream Query Results",
+    "DiscussionId": "c96a370e-8d0d-4e8f-93b3-03a8105e8b0e",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/advanced/unbounded-results"
+      }
+    ]
+  },
+  {
+    "Path": "how-to-customize-query.markdown",
+    "Name": "How to Customize Query",
+    "DiscussionId": "73dfb483-1fca-4fca-a1a4-15c7366b4775",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-project-query-results.markdown",
+    "Name": "How to Project Query Results",
+    "DiscussionId": "7608822d-893e-4f9e-9011-9ec146af73db",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/results-transformation/transform-results"
+      },
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-perform-projection"
+      }
+    ]
+  },
+  {
+    "Path": "how-to-perform-group-by-query.markdown",
+    "Name": "How to Perform Group By Query",
+    "DiscussionId": "9d8bb754-54d4-47dc-bb5d-b101561fc861",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-perform-a-faceted-search.markdown",
+    "Name": "How to Perform a Faceted Search",
+    "DiscussionId": "73756544-0c4f-4d32-a074-d9292cbe4bdb",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/faceted-search"
+      }
+    ]
+  },
+  {
+    "Path": "how-to-query-a-spatial-index.markdown",
+    "Name": "How to Query a Spatial Index",
+    "DiscussionId": "b62de172-77e9-4241-a525-9ba6cc027860",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/static-indexes/spatial-search"
+      }
+    ]
+  },
+  {
+    "Path": "how-to-get-query-statistics.markdown",
+    "Name": "How to Get Query Statistics",
+    "DiscussionId": "6c7d2633-e0ec-4b8f-8ddd-43470f24aa29",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-use-intersect.markdown",
+    "Name": "How to Use Intersect",
+    "DiscussionId": "3f14b363-a022-4bca-91ec-eb1b1b2ed230",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/intersection"
+      }
+    ]
+  },
+  {
+    "Path": "how-to-perform-queries-lazily.markdown",
+    "Name": "How to Perform Queries Lazily",
+    "DiscussionId": "a359f844-7193-4228-98e0-81a07e561a8b",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/lazy-operations"
+      }
+    ]
+  },
+  {
+    "Path": "how-to-work-with-suggestions.markdown",
+    "Name": "How to Work With Suggestions",
+    "DiscussionId": "a4f62c57-a06a-440c-b1a3-4cbaa9a4f0d0",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/static-indexes/suggestions"
+      }
+    ]
+  },
+  {
+    "Path": "how-to-use-morelikethis.markdown",
+    "Name": "How to Use MoreLikeThis",
+    "DiscussionId": "977915e5-9b87-43b0-9c31-14c980ee9d36",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-use-search.markdown",
+    "Name": "How to Use Search",
+    "DiscussionId": "133fe009-7704-42a4-9647-5ee2df188c31",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-use-highlighting.markdown",
+    "Name": "How to Use Highlighting",
+    "DiscussionId": "4c262003-44c5-46ff-84fc-7988405f4628",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-use-highlighting"
+      },
+      {
+        "Version": 4.0
+      }
+    ]
+  },
+  {
+    "Path": "how-to-use-regex.markdown",
+    "Name": "How to Use Regex",
+    "DiscussionId": "48bc68f2-db18-4b4e-8cc4-4d29877ae9c0",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-query-with-exact-match.markdown",
+    "Name": "How to Query With Exact Match",
+    "DiscussionId": "b1c0918f-5fc3-4991-809d-c9014da73caf",
+    "Mappings": []
+  }
 ]

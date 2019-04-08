@@ -1,22 +1,24 @@
-﻿[
-	{
-		"Path": "handling-conflicts.markdown",
-		"Name": "Dealing with Replication Conflicts",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/scaling-out/replication/replication-conflicts"
-			}
-		]
-	},
-	{
-		"Path": "from-embedded-server.markdown",
-		"Name": "Replicating from an Embedded instance",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/scaling-out/replication/replication-and-embedded-instance"
-			}
-		]
-	}
+[
+  {
+    "Path": "handling-conflicts.markdown",
+    "Name": "Dealing with Replication Conflicts",
+    "DiscussionId": "1542ee25-2e50-44ba-87fa-9f029c16f887",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/scaling-out/replication/replication-conflicts"
+      }
+    ]
+  },
+  {
+    "Path": "from-embedded-server.markdown",
+    "Name": "Replicating from an Embedded instance",
+    "DiscussionId": "a350e491-23d6-459d-8655-c0f11dd83218",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/scaling-out/replication/replication-and-embedded-instance"
+      }
+    ]
+  }
 ]

@@ -1,62 +1,68 @@
-﻿[
-	{
-		"Path": "understanding-session-object.markdown",
-		"Name": "Understanding the Session object",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/what-is-a-session-and-how-does-it-work"
-			}
-		]
-	},
-	{
-		"Path": "opening-a-session.markdown",
-		"Name": "Opening a session",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/opening-a-session"
-			}
-		]
-	},
-	{
-		"Path": "saving-new-document.markdown",
-		"Name": "Saving a new document",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/storing-entities"
-			}
-		]
-	},
-	{
-		"Path": "loading-editing-existing-document.markdown",
-		"Name": "Loading & Editing an existing document",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/loading-entities"
-			}
-		]
-	},
-	{
-		"Path": "deleting-documents.markdown",
-		"Name": "Deleting documents",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/deleting-entities"
-			}
-		]
-	},
-	{
-		"Path": "basic-querying.markdown",
-		"Name": "Basic query support",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/querying/how-to-query"
-			}
-		]
-	}
+[
+  {
+    "Path": "understanding-session-object.markdown",
+    "Name": "Understanding the Session object",
+    "DiscussionId": "ddebcc56-e921-48e3-85a1-4e2cd66828d6",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/what-is-a-session-and-how-does-it-work"
+      }
+    ]
+  },
+  {
+    "Path": "opening-a-session.markdown",
+    "Name": "Opening a session",
+    "DiscussionId": "e13f3439-89b9-4dd4-809e-dd373012c65e",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/opening-a-session"
+      }
+    ]
+  },
+  {
+    "Path": "saving-new-document.markdown",
+    "Name": "Saving a new document",
+    "DiscussionId": "b806c254-a0bc-48ac-84c8-614e1e62da7c",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/storing-entities"
+      }
+    ]
+  },
+  {
+    "Path": "loading-editing-existing-document.markdown",
+    "Name": "Loading & Editing an existing document",
+    "DiscussionId": "2688cc23-024a-4e86-ada3-a187656e6ee1",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/loading-entities"
+      }
+    ]
+  },
+  {
+    "Path": "deleting-documents.markdown",
+    "Name": "Deleting documents",
+    "DiscussionId": "e3ed897a-3e80-47da-ab92-6d41e4436d21",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/deleting-entities"
+      }
+    ]
+  },
+  {
+    "Path": "basic-querying.markdown",
+    "Name": "Basic query support",
+    "DiscussionId": "b51832ac-c48c-44b5-aa4f-97de7b733c2e",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-query"
+      }
+    ]
+  }
 ]

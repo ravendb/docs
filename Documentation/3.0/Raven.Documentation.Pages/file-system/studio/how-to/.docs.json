@@ -1,12 +1,14 @@
-﻿[
-	{
-		"Path": "how-to-setup-encryption.markdown",
-		"Name": "How to setup encryption?",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "how-to-setup-versioning.markdown",
-		"Name": "How to setup versioning?",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "how-to-setup-encryption.markdown",
+    "Name": "How to setup encryption?",
+    "DiscussionId": "ee67e6cc-811e-4590-bfde-b14de301f751",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-setup-versioning.markdown",
+    "Name": "How to setup versioning?",
+    "DiscussionId": "5b1e61cd-1bae-4dcf-b7b4-38206b7f8115",
+    "Mappings": []
+  }
 ]

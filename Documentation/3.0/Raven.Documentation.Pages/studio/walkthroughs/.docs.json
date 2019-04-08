@@ -1,32 +1,35 @@
-﻿[
-	{
-		"Path": "how-to-setup-replication.markdown",
-		"Name": "How to setup replication?",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "studio/bundles/replication-walkthrough"
-			}
-		]
-	},
-	{
-		"Path": "how-to-setup-encryption.markdown",
-		"Name": "How to setup encryption?",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "studio/bundles/encryption"
-			}
-		]
-	},
-	{
-		"Path": "how-to-setup-compression.markdown",
-		"Name": "How to setup compression?",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "studio/bundles/compression"
-			}
-		]
-	}
+[
+  {
+    "Path": "how-to-setup-replication.markdown",
+    "Name": "How to setup replication?",
+    "DiscussionId": "307285f1-0ab4-4ec2-950e-f70a9b757ac8",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "studio/bundles/replication-walkthrough"
+      }
+    ]
+  },
+  {
+    "Path": "how-to-setup-encryption.markdown",
+    "Name": "How to setup encryption?",
+    "DiscussionId": "1013971a-aed1-4582-a021-9bdb46a931c0",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "studio/bundles/encryption"
+      }
+    ]
+  },
+  {
+    "Path": "how-to-setup-compression.markdown",
+    "Name": "How to setup compression?",
+    "DiscussionId": "acba9c38-5210-40a4-a907-fd267375b364",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "studio/bundles/compression"
+      }
+    ]
+  }
 ]

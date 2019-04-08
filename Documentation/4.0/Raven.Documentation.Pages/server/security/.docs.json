@@ -2,6 +2,7 @@
   {
     "Path": "overview.markdown",
     "Name": "Overview",
+    "DiscussionId": "9d871c78-bc38-416b-b1c2-522dc3d28515",
     "Mappings": []
   },
   {
@@ -27,6 +28,7 @@
   {
     "Path": "common-errors-and-faq.markdown",
     "Name": "Common Errors & FAQ",
+    "DiscussionId": "726e1071-1bf4-41ec-a5d7-ea7f4db9f233",
     "Mappings": []
   }
 ]

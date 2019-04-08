@@ -1,27 +1,32 @@
-﻿[
-	{
-		"Path": "manage-filesystems.markdown",
-		"Name": "Manage file systems",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "backup-restore.markdown",
-		"Name": "Backup and restore",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "compaction.markdown",
-		"Name": "Compaction",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "reset-indexes.markdown",
-		"Name": "Index reset",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "stats.markdown",
-		"Name": "Statistics",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "manage-filesystems.markdown",
+    "Name": "Manage file systems",
+    "DiscussionId": "4799b5e1-4f1b-48a5-9e4a-32fc140b8417",
+    "Mappings": []
+  },
+  {
+    "Path": "backup-restore.markdown",
+    "Name": "Backup and restore",
+    "DiscussionId": "2f783062-4767-4e65-9e81-a9bddd43b9d8",
+    "Mappings": []
+  },
+  {
+    "Path": "compaction.markdown",
+    "Name": "Compaction",
+    "DiscussionId": "a398057f-09ae-4058-aba7-ee4bc82ca2a9",
+    "Mappings": []
+  },
+  {
+    "Path": "reset-indexes.markdown",
+    "Name": "Index reset",
+    "DiscussionId": "ffea7409-5c98-48dd-a0d7-7fc6e5dfba83",
+    "Mappings": []
+  },
+  {
+    "Path": "stats.markdown",
+    "Name": "Statistics",
+    "DiscussionId": "5e49f194-03e7-49b6-bb89-0175e8d6b5e2",
+    "Mappings": []
+  }
 ]

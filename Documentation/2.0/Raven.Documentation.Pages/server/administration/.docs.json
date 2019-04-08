@@ -1,76 +1,84 @@
-﻿[
-	{
-		"Path": "configuration.markdown",
-		"Name": "Configuration options",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/configuration/configuration-options"
-			}
-		]
-	},
-	{
-		"Path": "backup-restore.markdown",
-		"Name": "Backup & Restore",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/administration/backup-and-restore"
-			}
-		]
-	},
-	{
-		"Path": "export-import.markdown",
-		"Name": "Exporting and Importing data",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/administration/exporting-and-importing-data"
-			}
-		]
-	},
-	{
-		"Path": "upgrade.markdown",
-		"Name": "Doing upgrade",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/upgrading-to-new-version"
-			}
-		]
-	},
-	{
-		"Path": "fmc_configuration.markdown",
-		"Name": "Windows Clustering",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "server/administration/windows-clustering/fcm_configuration_2012"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/configuration/windows-clustering/windows-server-2012"
-			}
-		]
-	},
-	{
-		"Path": "statistics.markdown",
-		"Name": "Statistics",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "perf-counters.markdown",
-		"Name": "Performance Counters",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "long-shutdown-times.markdown",
-		"Name": "Long shutdown times",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/kb/long-shutdown-times"
-			}
-		]
-	}
+[
+  {
+    "Path": "configuration.markdown",
+    "Name": "Configuration options",
+    "DiscussionId": "9ce9d8e0-8948-40d6-b9e6-a9d86b59a19a",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/configuration/configuration-options"
+      }
+    ]
+  },
+  {
+    "Path": "backup-restore.markdown",
+    "Name": "Backup & Restore",
+    "DiscussionId": "2b3bfdeb-c631-448b-bcb1-bc3356d6c8b9",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/administration/backup-and-restore"
+      }
+    ]
+  },
+  {
+    "Path": "export-import.markdown",
+    "Name": "Exporting and Importing data",
+    "DiscussionId": "8e0a9dc8-152e-4791-9fd6-1532832e19d5",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/administration/exporting-and-importing-data"
+      }
+    ]
+  },
+  {
+    "Path": "upgrade.markdown",
+    "Name": "Doing upgrade",
+    "DiscussionId": "9c08aeba-491b-4fa6-8de6-83650f0928f2",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/upgrading-to-new-version"
+      }
+    ]
+  },
+  {
+    "Path": "fmc_configuration.markdown",
+    "Name": "Windows Clustering",
+    "DiscussionId": "c652cc5e-b1fc-40cd-a972-6ce20ffce7bf",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "server/administration/windows-clustering/fcm_configuration_2012"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/configuration/windows-clustering/windows-server-2012"
+      }
+    ]
+  },
+  {
+    "Path": "statistics.markdown",
+    "Name": "Statistics",
+    "DiscussionId": "430398e2-8090-49cc-99a9-253d44476aa7",
+    "Mappings": []
+  },
+  {
+    "Path": "perf-counters.markdown",
+    "Name": "Performance Counters",
+    "DiscussionId": "8b319929-5537-4a95-a28b-e91d4d1fe6a8",
+    "Mappings": []
+  },
+  {
+    "Path": "long-shutdown-times.markdown",
+    "Name": "Long shutdown times",
+    "DiscussionId": "635ffdc8-fcaf-4852-80b0-73d91151f091",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/kb/long-shutdown-times"
+      }
+    ]
+  }
 ]

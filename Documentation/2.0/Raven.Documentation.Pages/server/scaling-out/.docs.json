@@ -1,32 +1,33 @@
-﻿[
-	{
-		"Path": "/replication",
-		"Name": "Replication",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/scaling-out/replication/how-replication-works"
-			}
-		]
-	},
-	{
-		"Path": "/sharding",
-		"Name": "Sharding",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/scaling-out/sharding/how-to-setup-sharding"
-			}
-		]
-	},
-	{
-		"Path": "replication-and-sharding.markdown",
-		"Name": "Replication & Sharding",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/scaling-out/replication-with-sharding"
-			}
-		]
-	}
+[
+  {
+    "Path": "/replication",
+    "Name": "Replication",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/scaling-out/replication/how-replication-works"
+      }
+    ]
+  },
+  {
+    "Path": "/sharding",
+    "Name": "Sharding",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/scaling-out/sharding/how-to-setup-sharding"
+      }
+    ]
+  },
+  {
+    "Path": "replication-and-sharding.markdown",
+    "Name": "Replication & Sharding",
+    "DiscussionId": "5c50ff28-5149-4dbd-beb2-7f61e331e08e",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/scaling-out/replication-with-sharding"
+      }
+    ]
+  }
 ]

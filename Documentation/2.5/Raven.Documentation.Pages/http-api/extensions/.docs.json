@@ -1,13 +1,13 @@
-﻿[
-	{
-		"Path": "metadata-only.markdown",
-		"Name": "Metadata only",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	}
+[
+  {
+    "Path": "metadata-only.markdown",
+    "Name": "Metadata only",
+    "DiscussionId": "61e3bb0b-aca5-4cb9-be00-76f6fd9918c4",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  }
 ]

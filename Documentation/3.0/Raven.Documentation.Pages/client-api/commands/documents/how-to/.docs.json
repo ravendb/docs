@@ -2,11 +2,13 @@
   {
     "Path": "get-document-metadata-only.markdown",
     "Name": "...get document metadata only",
+    "DiscussionId": "c8aa95eb-cb3c-4cec-9ca3-f3edca1a8318",
     "Mappings": []
   },
   {
     "Path": "delete-or-update-documents-using-index.markdown",
     "Name": "...delete/update documents using index",
+    "DiscussionId": "fee6e2e0-b54a-474a-8724-b9452b24d6d1",
     "Mappings": []
   }
 ]

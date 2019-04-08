@@ -1,116 +1,127 @@
-﻿[
-	{
-		"Path": "defining-static-index.markdown",
-		"Name": "Defining a static index",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/creating-and-deploying"
-			}
-		]
-	},
-	{
-		"Path": "customizing-results-order.markdown",
-		"Name": "Customizing results order using SortOptions",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/customizing-results-order"
-			}
-		]
-	},
-	{
-		"Path": "configuring-index-options.markdown",
-		"Name": "Configuring index options",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/using-analyzers"
-			}
-		]
-	},
-	{
-		"Path": "indexing-hierarchies.markdown",
-		"Name": "Indexing Hierarchical Data",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/indexing-hierarchical-data"
-			}
-		]
-	},
-	{
-		"Path": "indexing-related-documents.markdown",
-		"Name": "Indexing Related Documents",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/indexing-related-documents"
-			}
-		]
-	},
-	{
-		"Path": "live-projections.markdown",
-		"Name": "Live Projections",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "transformers/what-are-transformers"
-			}
-		]
-	},
-	{
-		"Path": "indexes-error-handling.markdown",
-		"Name": "Error handling in Indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/troubleshooting/debugging-index-errors"
-			}
-		]
-	},
-	{
-		"Path": "searching.markdown",
-		"Name": "Searching",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/searching"
-			}
-		]
-	},
-	{
-		"Path": "spatial-search.markdown",
-		"Name": "Spatial search",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/advanced/spatial-search"
-			},
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/spatial"
-			}
-		]
-	},
-	{
-		"Path": "boosting.markdown",
-		"Name": "Boosting",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/boosting"
-			}
-		]
-	},
-	{
-		"Path": "suggestions.markdown",
-		"Name": "Suggestions",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/suggestions"
-			}
-		]
-	}
+[
+  {
+    "Path": "defining-static-index.markdown",
+    "Name": "Defining a static index",
+    "DiscussionId": "5d5cc32a-c009-4bd3-aaac-a6171f3b8b1f",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/creating-and-deploying"
+      }
+    ]
+  },
+  {
+    "Path": "customizing-results-order.markdown",
+    "Name": "Customizing results order using SortOptions",
+    "DiscussionId": "05a8d39a-b9aa-49b2-9a75-8e9f17eecb38",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/customizing-results-order"
+      }
+    ]
+  },
+  {
+    "Path": "configuring-index-options.markdown",
+    "Name": "Configuring index options",
+    "DiscussionId": "7d686fa6-b671-4c49-9806-fb8dc8babf58",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/using-analyzers"
+      }
+    ]
+  },
+  {
+    "Path": "indexing-hierarchies.markdown",
+    "Name": "Indexing Hierarchical Data",
+    "DiscussionId": "d1f8a6e5-bea4-4e93-9a19-0f56b91711b4",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/indexing-hierarchical-data"
+      }
+    ]
+  },
+  {
+    "Path": "indexing-related-documents.markdown",
+    "Name": "Indexing Related Documents",
+    "DiscussionId": "284e7634-7758-4691-9e6e-85e225d1e259",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/indexing-related-documents"
+      }
+    ]
+  },
+  {
+    "Path": "live-projections.markdown",
+    "Name": "Live Projections",
+    "DiscussionId": "74c3e3cf-7758-4c50-82be-253c2e20a028",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "transformers/what-are-transformers"
+      }
+    ]
+  },
+  {
+    "Path": "indexes-error-handling.markdown",
+    "Name": "Error handling in Indexes",
+    "DiscussionId": "21efa0de-3308-4c75-b62b-6256671a4b35",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/troubleshooting/debugging-index-errors"
+      }
+    ]
+  },
+  {
+    "Path": "searching.markdown",
+    "Name": "Searching",
+    "DiscussionId": "06a2afa6-11bd-41b1-bd40-dc38fe7bfa4e",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/searching"
+      }
+    ]
+  },
+  {
+    "Path": "spatial-search.markdown",
+    "Name": "Spatial search",
+    "DiscussionId": "8093278b-3d51-4f9b-93ad-5cc96e0589d2",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/advanced/spatial-search"
+      },
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/spatial"
+      }
+    ]
+  },
+  {
+    "Path": "boosting.markdown",
+    "Name": "Boosting",
+    "DiscussionId": "05c7e17d-727f-4354-a2c3-9d756605ab3d",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/boosting"
+      }
+    ]
+  },
+  {
+    "Path": "suggestions.markdown",
+    "Name": "Suggestions",
+    "DiscussionId": "628e40f7-7251-4eb5-b24b-bcceb2dec5c2",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/suggestions"
+      }
+    ]
+  }
 ]

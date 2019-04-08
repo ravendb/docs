@@ -2,31 +2,37 @@
   {
     "Path": "reset-index.markdown",
     "Name": "...reset index",
+    "DiscussionId": "dbb23a3e-c3e5-4497-832b-5bb1163254f2",
     "Mappings": []
   },
   {
     "Path": "get-index-terms.markdown",
     "Name": "...get index terms",
+    "DiscussionId": "e51cf2de-616f-4cf3-9d34-c00fe66fd749",
     "Mappings": []
   },
   {
     "Path": "get-index-merge-suggestions.markdown",
     "Name": "...get index merge suggestions",
+    "DiscussionId": "0d1479b0-d267-4d92-b43c-fec2dfd8358a",
     "Mappings": []
   },
   {
     "Path": "check-if-index-has-changed.markdown",
     "Name": "...check if index has changed",
+    "DiscussionId": "c0871766-62c8-494b-9744-3cbf12122c36",
     "Mappings": []
   },
   {
     "Path": "change-index-lock-mode.markdown",
     "Name": "...change index lock mode",
+    "DiscussionId": "3b1e76c4-d811-45d5-9f5e-46ff29b92d6d",
     "Mappings": []
   },
   {
     "Path": "change-index-priority.markdown",
     "Name": "...change index priority",
+    "DiscussionId": "43b15382-30ae-4a30-8bf5-2cf69e287ac6",
     "Mappings": []
   }
 ]

@@ -1,7 +1,8 @@
-﻿[
+[
   {
     "Path": "database-settings.markdown",
     "Name": "Database Settings",
+    "DiscussionId": "9305cf7e-5245-497b-b3b7-286721c55365",
     "Mappings": [
       {
         "Version": 1.0,
@@ -12,6 +13,7 @@
   {
     "Path": "quotas.markdown",
     "Name": "Quotas",
+    "DiscussionId": "e998e2c7-4a00-4e99-be2f-bf4d143ee2c4",
     "Mappings": [
       {
         "Version": 2.0,
@@ -22,6 +24,7 @@
   {
     "Path": "replication.markdown",
     "Name": "Replication",
+    "DiscussionId": "391a1428-f006-436b-b2ea-44983e98c5b1",
     "Mappings": [
       {
         "Version": 2.0,
@@ -32,11 +35,13 @@
   {
     "Path": "etl.markdown",
     "Name": "ETL",
+    "DiscussionId": "e117c9ac-d2c7-4fe1-a3cb-6d36fb0c2b1c",
     "Mappings": []
   },
   {
     "Path": "sql-replication.markdown",
     "Name": "SQL Replication",
+    "DiscussionId": "10c1cbdc-f939-41b2-8a61-547676ea0e0c",
     "Mappings": [
       {
         "Version": 2.5,
@@ -47,6 +52,7 @@
   {
     "Path": "versioning.markdown",
     "Name": "Versioning",
+    "DiscussionId": "c89621f4-8eb2-4bfe-bd1b-4c409999c061",
     "Mappings": [
       {
         "Version": 2.0,
@@ -57,6 +63,7 @@
   {
     "Path": "periodic-export.markdown",
     "Name": "Periodic Export",
+    "DiscussionId": "1d844c30-4e9d-41d3-86dd-eb46ade4bdea",
     "Mappings": [
       {
         "Version": 2.0,
@@ -67,6 +74,7 @@
   {
     "Path": "custom-functions.markdown",
     "Name": "Custom Functions",
+    "DiscussionId": "7a0a8fac-1aaa-4c47-a6cf-a8733399d2ee",
     "Mappings": []
   }
 ]

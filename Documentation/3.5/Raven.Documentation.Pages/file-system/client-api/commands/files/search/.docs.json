@@ -2,16 +2,19 @@
   {
     "Path": "search.markdown",
     "Name": "Search",
+    "DiscussionId": "432026eb-4bdf-4d3d-b469-7adcdc33a7f1",
     "Mappings": []
   },
   {
     "Path": "search-on-directory.markdown",
     "Name": "SearchOnDirectory",
+    "DiscussionId": "2a2a1cdd-db2b-4b03-be2a-8e9c12009267",
     "Mappings": []
   },
   {
     "Path": "get-search-fields.markdown",
     "Name": "GetSearchFields",
+    "DiscussionId": "8cde3e68-a7ab-4dca-af3d-18988ce8f369",
     "Mappings": []
   }
 ]

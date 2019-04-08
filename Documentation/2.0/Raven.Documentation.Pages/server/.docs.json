@@ -1,50 +1,52 @@
-﻿[
-	{
-		"Path": "/deployment",
-		"Name": "Deployment Strategies",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/administration",
-		"Name": "Server Administration",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/scaling-out",
-		"Name": "Scaling Out",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "multiple-databases.markdown",
-		"Name": "Multiple Databases",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/administration/multiple-databases"
-			}
-		]
-	},
-	{
-		"Path": "/extending",
-		"Name": "Extending RavenDB",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "authentication.markdown",
-		"Name": "Authentication & Authorization",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/bundles/authentication"
-			},
-			{
-				"Version": 2.5,
-				"Key": "server/authentication"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/configuration/authentication-and-authorization"
-			}
-		]
-	}
+[
+  {
+    "Path": "/deployment",
+    "Name": "Deployment Strategies",
+    "Mappings": []
+  },
+  {
+    "Path": "/administration",
+    "Name": "Server Administration",
+    "Mappings": []
+  },
+  {
+    "Path": "/scaling-out",
+    "Name": "Scaling Out",
+    "Mappings": []
+  },
+  {
+    "Path": "multiple-databases.markdown",
+    "Name": "Multiple Databases",
+    "DiscussionId": "56d8dc49-7681-4b9c-94e7-7a9822ca5ad4",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/administration/multiple-databases"
+      }
+    ]
+  },
+  {
+    "Path": "/extending",
+    "Name": "Extending RavenDB",
+    "Mappings": []
+  },
+  {
+    "Path": "authentication.markdown",
+    "Name": "Authentication & Authorization",
+    "DiscussionId": "93a61ef6-2b57-4ce7-97f7-cf670a56dfdd",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/bundles/authentication"
+      },
+      {
+        "Version": 2.5,
+        "Key": "server/authentication"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/configuration/authentication-and-authorization"
+      }
+    ]
+  }
 ]

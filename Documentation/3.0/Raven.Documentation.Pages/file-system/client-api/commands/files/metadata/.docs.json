@@ -2,11 +2,13 @@
   {
     "Path": "get-metadata-for.markdown",
     "Name": "GetMetadata",
+    "DiscussionId": "375d4b61-a781-4f73-9e72-02d8d54c8214",
     "Mappings": []
   },
   {
     "Path": "update-metadata.markdown",
     "Name": "UpdateMetadata",
+    "DiscussionId": "c410bb7c-109e-4348-a794-32cff6147d92",
     "Mappings": []
   }
 ]

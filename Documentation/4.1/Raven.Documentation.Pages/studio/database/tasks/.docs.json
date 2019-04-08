@@ -1,17 +1,18 @@
 [
-    {
-        "Path": "/ongoing-tasks",
-        "Name": "Ongoing Tasks",
-        "Mappings": []
-    },
-    {
-        "Path": "create-sample-data.markdown",
-        "Name": "Create Sample Data",
-        "Mappings": [
-            {
-                "Version": 1.0,
-                "Key": "studio/tasks"
-            }
-        ]
-    }
+  {
+    "Path": "/ongoing-tasks",
+    "Name": "Ongoing Tasks",
+    "Mappings": []
+  },
+  {
+    "Path": "create-sample-data.markdown",
+    "Name": "Create Sample Data",
+    "DiscussionId": "19aa1428-00b1-4d50-97c8-895ee2dd1723",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/tasks"
+      }
+    ]
+  }
 ]

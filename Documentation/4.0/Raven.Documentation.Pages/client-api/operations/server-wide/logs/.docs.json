@@ -1,12 +1,14 @@
-﻿[
-    {
-        "Path": "get-logs-configuration.markdown",
-        "Name": "Get Logs Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "set-logs-configuration.markdown",
-        "Name": "Set Logs Configuration",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "get-logs-configuration.markdown",
+    "Name": "Get Logs Configuration",
+    "DiscussionId": "d4aa7bb4-fe8f-4be6-96b6-c5c57a27347e",
+    "Mappings": []
+  },
+  {
+    "Path": "set-logs-configuration.markdown",
+    "Name": "Set Logs Configuration",
+    "DiscussionId": "463f1b30-fb13-403e-80f7-10c2463670da",
+    "Mappings": []
+  }
 ]

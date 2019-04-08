@@ -1,32 +1,36 @@
-﻿[
-	{
-		"Path": "what-is-raven.markdown",
-		"Name": "What is Raven",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "document-key-generation.markdown",
-		"Name": "Document Key Generation Options",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/document-identifiers/working-with-document-ids"
-			}
-		]
-	},
-	{
-		"Path": "document-structure-design.markdown",
-		"Name": "Document Structure Design Considerations",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "ravendb-collections.markdown",
-		"Name": "Collections",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/faq/what-is-a-collection"
-			}
-		]
-	}
+[
+  {
+    "Path": "what-is-raven.markdown",
+    "Name": "What is Raven",
+    "DiscussionId": "6b2c0178-8fa8-4a3b-b4db-97a3258efccf",
+    "Mappings": []
+  },
+  {
+    "Path": "document-key-generation.markdown",
+    "Name": "Document Key Generation Options",
+    "DiscussionId": "69aefeaa-14d8-4edc-8120-1e75f4464c72",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/document-identifiers/working-with-document-ids"
+      }
+    ]
+  },
+  {
+    "Path": "document-structure-design.markdown",
+    "Name": "Document Structure Design Considerations",
+    "DiscussionId": "52ff99bf-4266-4029-aef9-c0649d41acec",
+    "Mappings": []
+  },
+  {
+    "Path": "ravendb-collections.markdown",
+    "Name": "Collections",
+    "DiscussionId": "e758a33f-b2b3-45e6-b084-97994af56e14",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/faq/what-is-a-collection"
+      }
+    ]
+  }
 ]

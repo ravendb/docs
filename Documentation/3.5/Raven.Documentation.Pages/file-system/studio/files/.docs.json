@@ -1,12 +1,14 @@
-﻿[
-	{
-		"Path": "files-view.markdown",
-		"Name": "Files view",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "file-edit-view.markdown",
-		"Name": "File edit view",
-		"Mappings": [ ]
-	},
+[
+  {
+    "Path": "files-view.markdown",
+    "Name": "Files view",
+    "DiscussionId": "f5984a36-a495-40b3-907c-c097dcfd74d9",
+    "Mappings": []
+  },
+  {
+    "Path": "file-edit-view.markdown",
+    "Name": "File edit view",
+    "DiscussionId": "7b2210d2-6b0c-4dde-97c1-345dcaf93fb8",
+    "Mappings": []
+  }
 ]

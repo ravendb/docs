@@ -1,72 +1,73 @@
-﻿[
-	{
-		"Path": "http-api-single.markdown",
-		"Name": "Single Document Operations",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "http-api-multi.markdown",
-		"Name": "Multi Documents Operations",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "http-api-attachments.markdown",
-		"Name": "Attachments Operations",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "/indexes",
-		"Name": "Indexes",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "http-api-indexes-querying.markdown",
-		"Name": "Querying indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "http-api-concurrency.markdown",
-		"Name": "Revisions and Concurrency with E-Tags",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "http-api-security.markdown",
-		"Name": "Security for Anonymous Access",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/extensions",
-		"Name": "Extensions",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "http-api-single.markdown",
+    "Name": "Single Document Operations",
+    "DiscussionId": "744ae031-5784-47df-826b-8326a6f426da",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "http-api-multi.markdown",
+    "Name": "Multi Documents Operations",
+    "DiscussionId": "7bb4c002-7f9c-4fa5-9ff9-acc7ef25655b",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "http-api-attachments.markdown",
+    "Name": "Attachments Operations",
+    "DiscussionId": "728ee1aa-6f67-4aa8-8efd-7471aef4ed61",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "/indexes",
+    "Name": "Indexes",
+    "Mappings": []
+  },
+  {
+    "Path": "http-api-indexes-querying.markdown",
+    "Name": "Querying indexes",
+    "DiscussionId": "0a254a7e-ac78-4366-b18e-56b5eeec5818",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "http-api-concurrency.markdown",
+    "Name": "Revisions and Concurrency with E-Tags",
+    "DiscussionId": "5cab9f40-c58f-4a5b-b978-3a7d64ad14b5",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "http-api-security.markdown",
+    "Name": "Security for Anonymous Access",
+    "DiscussionId": "130dfed2-7064-459e-a119-c118724c277f",
+    "Mappings": []
+  },
+  {
+    "Path": "/extensions",
+    "Name": "Extensions",
+    "Mappings": []
+  }
 ]

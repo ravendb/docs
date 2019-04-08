@@ -1,76 +1,83 @@
-﻿[
-	{
-		"Path": "transaction-support.markdown",
-		"Name": "Transaction support in RavenDB",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/transaction-support/dtc-transactions"
-			}
-		]
-	},
-	{
-		"Path": "document-metadata.markdown",
-		"Name": "Working with document metadata",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "querying-for-terms.markdown",
-		"Name": "Querying for terms",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/indexes/how-to/get-index-terms"
-			}
-		]
-	},
-	{
-		"Path": "spatial-search.markdown",
-		"Name": "Spatial search",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/querying/static-indexes/spatial-search"
-			},
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/querying/how-to-query-a-spatial-index"
-			}
-		]
-	},
-	{
-		"Path": "dynamic-fields.markdown",
-		"Name": "Dynamic fields",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/using-dynamic-fields"
-			}
-		]
-	},
-	{
-		"Path": "/databasecommands",
-		"Name": "DatabaseCommands",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands"
-			}
-		]
-	},
-	{
-		"Path": "index-administration.markdown",
-		"Name": "Index Administration",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "server/administration/index-administration"
-			}
-		]
-	},
-	{
-		"Path": "custom-serialization.markdown",
-		"Name": "Custom serialization / deserialization",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "transaction-support.markdown",
+    "Name": "Transaction support in RavenDB",
+    "DiscussionId": "fda06ee8-d492-41fa-9ff8-7d5e9f7d66cd",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/transaction-support/dtc-transactions"
+      }
+    ]
+  },
+  {
+    "Path": "document-metadata.markdown",
+    "Name": "Working with document metadata",
+    "DiscussionId": "8a3fab8c-af62-462a-93e1-763ab035cca1",
+    "Mappings": []
+  },
+  {
+    "Path": "querying-for-terms.markdown",
+    "Name": "Querying for terms",
+    "DiscussionId": "0f22c916-db78-4b03-bac6-dec92d86bf1d",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/indexes/how-to/get-index-terms"
+      }
+    ]
+  },
+  {
+    "Path": "spatial-search.markdown",
+    "Name": "Spatial search",
+    "DiscussionId": "50fa3973-e993-4f8f-ad71-d545d444b6e8",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/static-indexes/spatial-search"
+      },
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-query-a-spatial-index"
+      }
+    ]
+  },
+  {
+    "Path": "dynamic-fields.markdown",
+    "Name": "Dynamic fields",
+    "DiscussionId": "bc7f0a07-da5e-4168-8a9b-33d312bbd99d",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/using-dynamic-fields"
+      }
+    ]
+  },
+  {
+    "Path": "/databasecommands",
+    "Name": "DatabaseCommands",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "index-administration.markdown",
+    "Name": "Index Administration",
+    "DiscussionId": "eadb34ec-b455-46e5-8ee2-add561417212",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "server/administration/index-administration"
+      }
+    ]
+  },
+  {
+    "Path": "custom-serialization.markdown",
+    "Name": "Custom serialization / deserialization",
+    "DiscussionId": "c2b5d297-7116-4d55-86e1-518462939729",
+    "Mappings": []
+  }
 ]

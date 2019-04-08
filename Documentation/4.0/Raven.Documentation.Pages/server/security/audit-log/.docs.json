@@ -1,7 +1,8 @@
 [
-    {
-        "Path": "audit-log.markdown",
-        "Name": "Audit Log",
-        "Mappings": []
-    }
+  {
+    "Path": "audit-log.markdown",
+    "Name": "Audit Log",
+    "DiscussionId": "b98fdc12-d219-48b9-b0cb-fc86fad2e191",
+    "Mappings": []
+  }
 ]

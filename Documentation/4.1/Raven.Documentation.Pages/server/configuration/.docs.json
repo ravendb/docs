@@ -1,132 +1,157 @@
 [
-    {
-        "Path": "configuration-options.markdown",
-        "Name": "Configuration Options",
-        "Mappings": []
-    },
-    {
-        "Path": "command-line-arguments.markdown",
-        "Name": "Command Line Arguments",
-        "Mappings": []
-    },
-    {
-        "Path": "backup-configuration.markdown",
-        "Name": "Backup Options",
-        "Mappings": []
-    },
-    {
-        "Path": "cluster-configuration.markdown",
-        "Name": "Cluster Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "core-configuration.markdown",
-        "Name": "Core Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "database-configuration.markdown",
-        "Name": "Database Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "etl-configuration.markdown",
-        "Name": "ETL Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "embedded-configuration.markdown",
-        "Name": "Embedded Configuration",
-        "Mappings": [
-            {
-                "Version": 4.0,
-                "Key": "server/configuration/testing-configuration"
-            }
-        ]
-    },
-    {
-        "Path": "http-configuration.markdown",
-        "Name": "HTTP Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "indexing-configuration.markdown",
-        "Name": "Indexing Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "license-configuration.markdown",
-        "Name": "License Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "logs-configuration.markdown",
-        "Name": "Logs Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "memory-configuration.markdown",
-        "Name": "Memory Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "monitoring-configuration.markdown",
-        "Name": "Monitoring Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "patching-configuration.markdown",
-        "Name": "Patching Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "performance-hints-configuration.markdown",
-        "Name": "Performance Hints Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "query-configuration.markdown",
-        "Name": "Query Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "replication-configuration.markdown",
-        "Name": "Replication Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "security-configuration.markdown",
-        "Name": "Security Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "server-configuration.markdown",
-        "Name": "Server Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "storage-configuration.markdown",
-        "Name": "Storage Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "studio-configuration.markdown",
-        "Name": "Studio Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "subscription-configuration.markdown",
-        "Name": "Subscription Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "tombstone-configuration.markdown",
-        "Name": "Tombstone Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "transaction-merger-configuration.markdown",
-        "Name": "Transaction Merger Configuration",
-        "Mappings": []
-    }
+  {
+    "Path": "configuration-options.markdown",
+    "Name": "Configuration Options",
+    "DiscussionId": "5b02dc18-9f71-44c2-91e1-db773e67ee62",
+    "Mappings": []
+  },
+  {
+    "Path": "command-line-arguments.markdown",
+    "Name": "Command Line Arguments",
+    "DiscussionId": "9814a466-00e6-4457-b9c5-6688c65766a5",
+    "Mappings": []
+  },
+  {
+    "Path": "backup-configuration.markdown",
+    "Name": "Backup Options",
+    "DiscussionId": "dbee505a-ac58-4e24-9993-c4e822a47916",
+    "Mappings": []
+  },
+  {
+    "Path": "cluster-configuration.markdown",
+    "Name": "Cluster Configuration",
+    "DiscussionId": "35d5b815-0e93-4986-b5eb-05ba66ba154c",
+    "Mappings": []
+  },
+  {
+    "Path": "core-configuration.markdown",
+    "Name": "Core Configuration",
+    "DiscussionId": "64bf1f6e-6646-449b-b4ca-3df90c568ae4",
+    "Mappings": []
+  },
+  {
+    "Path": "database-configuration.markdown",
+    "Name": "Database Configuration",
+    "DiscussionId": "21bc3dc1-eb28-4806-99e4-ee3f8a8d2f60",
+    "Mappings": []
+  },
+  {
+    "Path": "etl-configuration.markdown",
+    "Name": "ETL Configuration",
+    "DiscussionId": "c98467b2-7072-4ca0-ac72-b775dc8ac67f",
+    "Mappings": []
+  },
+  {
+    "Path": "embedded-configuration.markdown",
+    "Name": "Embedded Configuration",
+    "DiscussionId": "a6a148d2-c4fa-47c6-aa1c-3fad81e64000",
+    "Mappings": [
+      {
+        "Version": 4.0,
+        "Key": "server/configuration/testing-configuration"
+      }
+    ]
+  },
+  {
+    "Path": "http-configuration.markdown",
+    "Name": "HTTP Configuration",
+    "DiscussionId": "21f4f4d1-cb21-40f0-9c65-af4cfb761cb9",
+    "Mappings": []
+  },
+  {
+    "Path": "indexing-configuration.markdown",
+    "Name": "Indexing Configuration",
+    "DiscussionId": "b9ad2718-7129-4ccb-a867-b279170fb11b",
+    "Mappings": []
+  },
+  {
+    "Path": "license-configuration.markdown",
+    "Name": "License Configuration",
+    "DiscussionId": "f96e07fc-5344-4ba6-ab5c-d4263ee8be6b",
+    "Mappings": []
+  },
+  {
+    "Path": "logs-configuration.markdown",
+    "Name": "Logs Configuration",
+    "DiscussionId": "1356d499-d0c5-44ca-9914-2318bbe80216",
+    "Mappings": []
+  },
+  {
+    "Path": "memory-configuration.markdown",
+    "Name": "Memory Configuration",
+    "DiscussionId": "d01a45fe-4356-4fc3-998c-718c62fe89b7",
+    "Mappings": []
+  },
+  {
+    "Path": "monitoring-configuration.markdown",
+    "Name": "Monitoring Configuration",
+    "DiscussionId": "c7ac2756-7486-4c98-bf3d-dedeed45784e",
+    "Mappings": []
+  },
+  {
+    "Path": "patching-configuration.markdown",
+    "Name": "Patching Configuration",
+    "DiscussionId": "a01a7b0e-399b-41a4-8fd0-91e37b86f790",
+    "Mappings": []
+  },
+  {
+    "Path": "performance-hints-configuration.markdown",
+    "Name": "Performance Hints Configuration",
+    "DiscussionId": "8b22654a-e212-4601-ba8a-d5ababe2f730",
+    "Mappings": []
+  },
+  {
+    "Path": "query-configuration.markdown",
+    "Name": "Query Configuration",
+    "DiscussionId": "a70af9a0-53cd-4d98-9cff-a592d0ceca86",
+    "Mappings": []
+  },
+  {
+    "Path": "replication-configuration.markdown",
+    "Name": "Replication Configuration",
+    "DiscussionId": "b47bdf7d-69f2-4bc9-aad5-879311007d33",
+    "Mappings": []
+  },
+  {
+    "Path": "security-configuration.markdown",
+    "Name": "Security Configuration",
+    "DiscussionId": "8fc26a55-b05e-4e19-8795-dea24d503db6",
+    "Mappings": []
+  },
+  {
+    "Path": "server-configuration.markdown",
+    "Name": "Server Configuration",
+    "DiscussionId": "79df0789-13d6-43c1-ae47-563550cc291c",
+    "Mappings": []
+  },
+  {
+    "Path": "storage-configuration.markdown",
+    "Name": "Storage Configuration",
+    "DiscussionId": "40d31b05-625d-419b-a757-07825f508f78",
+    "Mappings": []
+  },
+  {
+    "Path": "studio-configuration.markdown",
+    "Name": "Studio Configuration",
+    "DiscussionId": "d13bd568-a7df-477e-9708-588307fba47a",
+    "Mappings": []
+  },
+  {
+    "Path": "subscription-configuration.markdown",
+    "Name": "Subscription Configuration",
+    "DiscussionId": "04e3284b-d599-4479-b75a-ae7d6920cd6e",
+    "Mappings": []
+  },
+  {
+    "Path": "tombstone-configuration.markdown",
+    "Name": "Tombstone Configuration",
+    "DiscussionId": "65ca6661-dd2f-4833-8978-c642828aa25a",
+    "Mappings": []
+  },
+  {
+    "Path": "transaction-merger-configuration.markdown",
+    "Name": "Transaction Merger Configuration",
+    "DiscussionId": "7b64f734-8147-4e84-815a-3c1aabfc7e68",
+    "Mappings": []
+  }
 ]

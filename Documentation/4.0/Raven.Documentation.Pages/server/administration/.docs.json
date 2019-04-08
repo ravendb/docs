@@ -7,16 +7,19 @@
   {
     "Path": "cli.markdown",
     "Name": "CLI (Command Line Interface)",
+    "DiscussionId": "9a757074-8bee-4e4c-bab9-ec7217e881f3",
     "Mappings": []
   },
   {
     "Path": "statistics.markdown",
     "Name": "Statistics",
+    "DiscussionId": "3677c851-1da8-45d3-a83f-8f577211c0b4",
     "Mappings": []
   },
   {
     "Path": "index-administration.markdown",
     "Name": "Index Administration",
+    "DiscussionId": "f59449f5-7a21-4210-8a45-0ca90870cc53",
     "Mappings": []
   }
 ]

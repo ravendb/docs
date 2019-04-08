@@ -1,7 +1,8 @@
-﻿[
+[
   {
     "Path": "how-replication-works.markdown",
     "Name": "How replication works?",
+    "DiscussionId": "9cb11c98-3c8f-46e6-a749-c149d3e1789e",
     "Mappings": [
       {
         "Version": 1.0,
@@ -12,6 +13,7 @@
   {
     "Path": "replication-conflicts.markdown",
     "Name": "Replication conflicts",
+    "DiscussionId": "6af5bd83-b758-4fa3-a2b4-f11c0dcb9659",
     "Mappings": [
       {
         "Version": 1.0,
@@ -22,6 +24,7 @@
   {
     "Path": "replication-and-embedded-instance.markdown",
     "Name": "Replication and Embedded instance",
+    "DiscussionId": "cc89d9e9-1749-469f-aaf8-0cd3a52457e9",
     "Mappings": [
       {
         "Version": 1.0,
@@ -32,6 +35,7 @@
   {
     "Path": "write-assurance.markdown",
     "Name": "Write assurance",
+    "DiscussionId": "1f5c09da-69ea-42ea-b8e2-a6d79f23599e",
     "Mappings": []
   }
 ]

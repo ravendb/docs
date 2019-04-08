@@ -22,11 +22,13 @@ namespace Raven.Documentation.Cli.Tasks
             if (options == null)
                 options = new Options();
 
-            Validate(options);
+            var parserOptions = GetParserOptions(options);
+
+            Validate(options, parserOptions);
 
             Logger.LogInformation("Started parsing documentation pages.");
 
-            var allPages = GetParsedPages(options);
+            var allPages = GetParsedPages(parserOptions);
 
             if (allPages.Count == 0)
                 throw new InvalidOperationException("No documentation pages were parsed.");
@@ -34,25 +36,34 @@ namespace Raven.Documentation.Cli.Tasks
             Logger.LogInformation($"Successfully parsed {allPages.Count} documentation pages.");
         }
 
-        private static void Validate(Options options)
+        private ParserOptions GetParserOptions(Options options)
         {
+            return new ParserOptions
+            {
+                PathToDocumentationDirectory = options.DocumentationDirectory,
+                VersionsToParse = options.SpecificVersionsToParse,
+                RootUrl = DummyRootUrl,
+                ImageUrlGenerator = ImageUrlGenerator
+            };
+        }
+
+        private void Validate(Options options, ParserOptions parserOptions)
+        {
+            Logger.LogInformation("Starting validation.");
+
             if (Directory.Exists(options.DocumentationDirectory) == false)
                 throw new InvalidOperationException(
                     $"The provided article directory does not exist: {options.DocumentationDirectory}");
+
+            var discussionIdValidator = new DiscussionIdValidator(parserOptions);
+            discussionIdValidator.Run();
+
+            Logger.LogInformation("Validation successful.");
         }
 
-        private List<DocumentationPage> GetParsedPages(Options options)
+        private List<DocumentationPage> GetParsedPages(ParserOptions parserOptions)
         {
-            var parser =
-                new DocumentationParser(
-                    new ParserOptions
-                    {
-                        PathToDocumentationDirectory = options.DocumentationDirectory,
-                        VersionsToParse = options.SpecificVersionsToParse,
-                        RootUrl = DummyRootUrl,
-                        ImageUrlGenerator = ImageUrlGenerator
-                    }, new NoOpGitFileInformationProvider());
-
+            var parser = new DocumentationParser(parserOptions, new NoOpGitFileInformationProvider());
             var parserOutput = parser.Parse();
             return parserOutput.Pages.ToList();
         }

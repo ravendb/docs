@@ -1,22 +1,26 @@
-﻿[
-	{
-		"Path": "how-it-works.markdown",
-		"Name": "How synchronization works?",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "synchronization-types.markdown",
-		"Name": "Synchronization types",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "conflicts.markdown",
-		"Name": "Conflicts",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "configurations.markdown",
-		"Name": "Configurations",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "how-it-works.markdown",
+    "Name": "How synchronization works?",
+    "DiscussionId": "3dc5bf8f-bdb4-4d82-80f2-4a79fb5e9528",
+    "Mappings": []
+  },
+  {
+    "Path": "synchronization-types.markdown",
+    "Name": "Synchronization types",
+    "DiscussionId": "be89d245-7fff-4026-af82-cea20918c3af",
+    "Mappings": []
+  },
+  {
+    "Path": "conflicts.markdown",
+    "Name": "Conflicts",
+    "DiscussionId": "30790141-dcbe-459e-8f2e-ba318989b6e4",
+    "Mappings": []
+  },
+  {
+    "Path": "configurations.markdown",
+    "Name": "Configurations",
+    "DiscussionId": "d25d4f13-4e15-4269-b438-9d5cd9c89dcc",
+    "Mappings": []
+  }
 ]

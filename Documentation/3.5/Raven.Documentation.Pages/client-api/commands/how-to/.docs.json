@@ -2,81 +2,97 @@
   {
     "Path": "switch-commands-to-a-different-database.markdown",
     "Name": "...switch commands to a different database",
+    "DiscussionId": "ddd44cda-b052-4c0f-ac36-34ee66a10c09",
     "Mappings": []
   },
   {
     "Path": "switch-commands-credentials.markdown",
     "Name": "...switch commands credentials",
+    "DiscussionId": "09b0ebb6-48aa-4fa7-a235-cd48f589b5f3",
     "Mappings": []
   },
   {
     "Path": "disable-caching.markdown",
     "Name": "...disable caching",
+    "DiscussionId": "ee2c0a7f-250d-422b-8112-26824842d63e",
     "Mappings": []
   },
   {
     "Path": "start-stop-indexing-and-get-indexing-status.markdown",
     "Name": "...start or stop indexing and get indexing status",
+    "DiscussionId": "e00e6d97-3feb-4867-8af8-e7ddea4dcf8b",
     "Mappings": []
   },
   {
     "Path": "start-stop-reducing.markdown",
     "Name": "...start or stop reducing",
+    "DiscussionId": "def5b962-cc33-4afa-8ef8-7a7698c48d31",
     "Mappings": []
   },
   {
     "Path": "create-delete-database.markdown",
     "Name": "...create or delete database",
+    "DiscussionId": "faa042c2-0d9f-4933-a6de-62abd7e13525",
     "Mappings": []
   },
   {
     "Path": "compact-database.markdown",
     "Name": "...compact database",
+    "DiscussionId": "a4f7c25b-3c8d-4e1a-a5e9-d9180aa8489d",
     "Mappings": []
   },
   {
     "Path": "get-database-and-server-statistics.markdown",
     "Name": "...get database and server statistics",
+    "DiscussionId": "0cee059a-7ce2-4e24-b87a-7023e211463a",
     "Mappings": []
   },
   {
     "Path": "get-database-configuration.markdown",
     "Name": "...get database configuration",
+    "DiscussionId": "0c1c2dd6-b4ee-48ee-a57c-959ad7784395",
     "Mappings": []
   },
   {
     "Path": "start-backup-restore-operations.markdown",
     "Name": "...start backup or restore operations",
+    "DiscussionId": "d5e36484-6fbf-484f-b53e-aedf41407576",
     "Mappings": []
   },
   {
     "Path": "get-full-url-for-a-document.markdown",
     "Name": "...get full url for a document",
+    "DiscussionId": "682194dd-e7bf-4a30-b661-1dae75ef2c58",
     "Mappings": []
   },
   {
     "Path": "get-server-build-number.markdown",
     "Name": "...get server build number",
+    "DiscussionId": "6839088f-e032-43e9-8bcc-5d2db3cd19cd",
     "Mappings": []
   },
   {
     "Path": "get-names-of-all-databases-on-a-server.markdown",
     "Name": "...get names of all databases on a server",
+    "DiscussionId": "65b2be5d-ba76-4bc2-b5fa-4bcc4f410725",
     "Mappings": []
   },
   {
     "Path": "get-the-primary-database-url.markdown",
     "Name": "...get the primary database Url",
+    "DiscussionId": "79e4b905-4bf4-45a3-9b2e-dfa1521db399",
     "Mappings": []
   },
   {
     "Path": "retrieve-user-info.markdown",
     "Name": "...How to retrieve user info",
+    "DiscussionId": "644234d5-21d2-40cc-a6c7-cffcc72c6b83",
     "Mappings": []
   },
   {
     "Path": "retrieve-user-permission.markdown",
     "Name": "...How to retrieve user permission for a specified database",
+    "DiscussionId": "8a1a132a-f36b-45ca-9b0a-f4912c8418b9",
     "Mappings": []
   }
 ]

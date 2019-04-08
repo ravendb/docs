@@ -2,16 +2,18 @@
   {
     "Path": "revisions-and-concurrency-with-etags.markdown",
     "Name": "Revisions and concurrency with ETags",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "http-api/http-api-concurrency"
-			}
-		]
+    "DiscussionId": "4e020b3f-a9b4-47c5-8c57-dad81846a0bc",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "http-api/http-api-concurrency"
+      }
+    ]
   },
   {
     "Path": "using-optimistic-concurrency-in-real-world-scenarios.markdown",
     "Name": "Using optimistic concurrency in real world scenarios",
+    "DiscussionId": "76c387c6-1af1-4702-96a2-935b74652468",
     "Mappings": []
   }
 ]

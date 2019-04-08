@@ -1,7 +1,8 @@
-﻿[
+[
   {
     "Path": "document-key-generation.markdown",
     "Name": "Document key generation",
+    "DiscussionId": "d62a17d3-434f-4082-a18a-f3404760e7d0",
     "Mappings": [
       {
         "Version": 1.0,
@@ -12,6 +13,7 @@
   {
     "Path": "authorization-bundle-design.markdown",
     "Name": "Bundles : Authorization bundle design notes",
+    "DiscussionId": "9b5e24ac-288f-434d-acec-f184e5bb93ee",
     "Mappings": [
       {
         "Version": 1.0,
@@ -26,6 +28,7 @@
   {
     "Path": "advanced-replication-details.markdown",
     "Name": "Replication : Advanced replication details",
+    "DiscussionId": "0edce05b-2421-4760-98c9-a6e9407e85ce",
     "Mappings": [
       {
         "Version": 2.0,
@@ -36,6 +39,7 @@
   {
     "Path": "long-shutdown-times.markdown",
     "Name": "Server : Long shutdown times",
+    "DiscussionId": "0516a8c3-bfaa-4394-ba9a-607294b9e8bd",
     "Mappings": [
       {
         "Version": 2.0,
@@ -46,6 +50,7 @@
   {
     "Path": "raven-thread-pool.markdown",
     "Name": "Raven Thread Pool (RTP)",
-    "Mappings": [ ]
+    "DiscussionId": "c7c542d3-21d7-4a78-8c74-ef6d2eb132e4",
+    "Mappings": []
   }
 ]

@@ -1,112 +1,122 @@
-﻿[
-	{
-		"Path": "transaction-support.markdown",
-		"Name": "Transaction support in RavenDB",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/transaction-support/dtc-transactions"
-			}
-		]
-	},
-	{
-		"Path": "document-metadata.markdown",
-		"Name": "Working with document metadata",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "querying-for-terms.markdown",
-		"Name": "Querying for terms",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/indexes/how-to/get-index-terms"
-			}
-		]
-	},
-	{
-		"Path": "dynamic-fields.markdown",
-		"Name": "Dynamic fields",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/using-dynamic-fields"
-			}
-		]
-	},
-	{
-		"Path": "/databasecommands",
-		"Name": "DatabaseCommands",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands"
-			}
-		]
-	},
-	{
-		"Path": "/asyncdatabasecommands",
-		"Name": "AsyncDatabaseCommands",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands"
-			}
-		]
-	},
-	{
-		"Path": "custom-serialization.markdown",
-		"Name": "Custom serialization / deserialization",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "aggressive-caching.markdown",
-		"Name": "Aggressive Caching",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/how-to/setup-aggressive-caching"
-			}
-		]
-	},
-	{
-		"Path": "client-side-listeners.markdown",
-		"Name": "Client-side Listeners",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/listeners/what-are-listeners"
-			}
-		]
-	},
-	{
-		"Path": "bulk-inserts.markdown",
-		"Name": "Bulk inserts",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/bulk-insert/how-to-work-with-bulk-insert-operation"
-			}
-		]
-	},
-	{
-		"Path": "full-query-syntax.markdown",
-		"Name": "Full query syntax",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/full-query-syntax"
-			}
-		]
-	},
-	{
-		"Path": "unbounded-results.markdown",
-		"Name": "Unbounded results",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/querying/how-to-stream-query-results"
-			}
-		]
-	}
+[
+  {
+    "Path": "transaction-support.markdown",
+    "Name": "Transaction support in RavenDB",
+    "DiscussionId": "a95cefaa-3b96-4780-9a69-5b2abc9be1b9",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/transaction-support/dtc-transactions"
+      }
+    ]
+  },
+  {
+    "Path": "document-metadata.markdown",
+    "Name": "Working with document metadata",
+    "DiscussionId": "1b5fa546-4556-480a-b00e-e7d6bd4b6808",
+    "Mappings": []
+  },
+  {
+    "Path": "querying-for-terms.markdown",
+    "Name": "Querying for terms",
+    "DiscussionId": "4d561433-5fcf-4534-a155-2b107cd42ada",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/indexes/how-to/get-index-terms"
+      }
+    ]
+  },
+  {
+    "Path": "dynamic-fields.markdown",
+    "Name": "Dynamic fields",
+    "DiscussionId": "2c1fb4cd-a6ce-4fa5-b190-9e21467e6289",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/using-dynamic-fields"
+      }
+    ]
+  },
+  {
+    "Path": "/databasecommands",
+    "Name": "DatabaseCommands",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "/asyncdatabasecommands",
+    "Name": "AsyncDatabaseCommands",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "custom-serialization.markdown",
+    "Name": "Custom serialization / deserialization",
+    "DiscussionId": "6378c861-0ca8-45eb-a4f1-eea931acab3e",
+    "Mappings": []
+  },
+  {
+    "Path": "aggressive-caching.markdown",
+    "Name": "Aggressive Caching",
+    "DiscussionId": "717812ed-40b7-4d21-b69c-a0998ed9e58b",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/how-to/setup-aggressive-caching"
+      }
+    ]
+  },
+  {
+    "Path": "client-side-listeners.markdown",
+    "Name": "Client-side Listeners",
+    "DiscussionId": "8f844f1b-1812-47c2-b03f-918688a5f181",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/listeners/what-are-listeners"
+      }
+    ]
+  },
+  {
+    "Path": "bulk-inserts.markdown",
+    "Name": "Bulk inserts",
+    "DiscussionId": "645d51a4-00ab-416f-9bf9-c21bdf086ee0",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/bulk-insert/how-to-work-with-bulk-insert-operation"
+      }
+    ]
+  },
+  {
+    "Path": "full-query-syntax.markdown",
+    "Name": "Full query syntax",
+    "DiscussionId": "70e45ab5-73e2-49fa-8fc6-21d41f03eb66",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/full-query-syntax"
+      }
+    ]
+  },
+  {
+    "Path": "unbounded-results.markdown",
+    "Name": "Unbounded results",
+    "DiscussionId": "42f4d42c-931e-4350-9d28-c331038ccd9e",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-stream-query-results"
+      }
+    ]
+  }
 ]

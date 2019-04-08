@@ -2,11 +2,13 @@
   {
     "Path": "transform-query-results.markdown",
     "Name": "...transform query results",
+    "DiscussionId": "98be7009-d38e-4e6c-a2de-c2df9bd2b114",
     "Mappings": []
   },
   {
     "Path": "change-transformer-lock-mode.markdown",
     "Name": "...change transformer lock mode",
+    "DiscussionId": "021652b4-c1cf-4530-a8c8-5e5d00babd2a",
     "Mappings": []
   }
 ]

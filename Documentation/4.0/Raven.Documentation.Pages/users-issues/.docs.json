@@ -2,21 +2,25 @@
   {
     "Path": "azure-router-timeout.markdown",
     "Name": "Azure Router Timeout",
+    "DiscussionId": "f6a81d86-5f33-4cb1-b733-0d19f12d0915",
     "Mappings": []
   },
   {
     "Path": "tcp-offloading.markdown",
     "Name": "TCP Offloading",
+    "DiscussionId": "1db620e3-b081-4571-84e2-9cffdb351382",
     "Mappings": []
   },
   {
     "Path": "recovering-from-voron-errors.markdown",
     "Name": "Recovering from Voron errors",
+    "DiscussionId": "5f9c33ee-87ef-4a6e-aa0e-847be982e4c8",
     "Mappings": []
   },
   {
     "Path": "understanding-eventual-consistency.markdown",
     "Name": "Understanding eventual consistency",
+    "DiscussionId": "76c2cac8-f8cc-4480-9a11-cd21518f2268",
     "Mappings": []
   }
 ]

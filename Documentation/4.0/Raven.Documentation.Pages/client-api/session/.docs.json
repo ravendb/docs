@@ -2,6 +2,7 @@
   {
     "Path": "what-is-a-session-and-how-does-it-work.markdown",
     "Name": "What is a Session and How Does it Work",
+    "DiscussionId": "599c08d4-8a5c-42a2-8a1b-3fea3cf99acb",
     "Mappings": [
       {
         "Version": 1.0,
@@ -12,6 +13,7 @@
   {
     "Path": "opening-a-session.markdown",
     "Name": "Opening a Session",
+    "DiscussionId": "ca153d86-22b3-4a36-ae69-7115e4c77810",
     "Mappings": [
       {
         "Version": 1.0,
@@ -22,6 +24,7 @@
   {
     "Path": "storing-entities.markdown",
     "Name": "Storing Entities",
+    "DiscussionId": "9818f5a2-4cad-4a36-9b7a-8714ca4d31b0",
     "Mappings": [
       {
         "Version": 1.0,
@@ -32,6 +35,7 @@
   {
     "Path": "deleting-entities.markdown",
     "Name": "Deleting Entities",
+    "DiscussionId": "80565382-4e3f-40da-8854-e4150f4b41be",
     "Mappings": [
       {
         "Version": 1.0,
@@ -42,6 +46,7 @@
   {
     "Path": "loading-entities.markdown",
     "Name": "Loading Entities",
+    "DiscussionId": "54f2ae49-5328-4ddd-8767-8284d9b8227c",
     "Mappings": [
       {
         "Version": 1.0,
@@ -52,6 +57,7 @@
   {
     "Path": "saving-changes.markdown",
     "Name": "Saving changes",
+    "DiscussionId": "5842cdd5-169a-474d-aa33-68408d314331",
     "Mappings": [
       {
         "Version": 1.0,

@@ -1,32 +1,36 @@
-﻿[
-	{
-		"Path": "debug-endpoints.markdown",
-		"Name": "Debug endpoints",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "enabling-logging.markdown",
-		"Name": "Enabling logging",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/deployment/docs-debug-logging"
-			}
-		]
-	},
-	{
-		"Path": "running-in-debug-mode.markdown",
-		"Name": "Running in debug mode",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/deployment/docs-deploy-debug"
-			}
-		]
-	},
-	{
-		"Path": "sending-support-ticket.markdown",
-		"Name": "Sending support ticket",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "debug-endpoints.markdown",
+    "Name": "Debug endpoints",
+    "DiscussionId": "53b4277a-8d47-43b2-b98f-8c82866521c5",
+    "Mappings": []
+  },
+  {
+    "Path": "enabling-logging.markdown",
+    "Name": "Enabling logging",
+    "DiscussionId": "c5a67ea4-4d97-4b3e-96d7-bfdee37432cc",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/deployment/docs-debug-logging"
+      }
+    ]
+  },
+  {
+    "Path": "running-in-debug-mode.markdown",
+    "Name": "Running in debug mode",
+    "DiscussionId": "cfe9c4b0-918b-430f-a025-ccaa33012ade",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/deployment/docs-deploy-debug"
+      }
+    ]
+  },
+  {
+    "Path": "sending-support-ticket.markdown",
+    "Name": "Sending support ticket",
+    "DiscussionId": "5fe8e303-d3b3-498a-8b27-75d665c58bd9",
+    "Mappings": []
+  }
 ]

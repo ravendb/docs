@@ -2,11 +2,13 @@
   {
     "Path": "get.markdown",
     "Name": "GetConflicts",
+    "DiscussionId": "aa54b6b7-dfca-40e9-957b-162046759683",
     "Mappings": []
   },
   {
     "Path": "resolve.markdown",
     "Name": "ResolveConflict",
+    "DiscussionId": "f24988a1-c088-4a1a-864c-ef1bcfeaa810",
     "Mappings": []
   }
 ]

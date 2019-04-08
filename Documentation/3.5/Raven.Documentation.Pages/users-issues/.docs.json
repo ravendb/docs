@@ -1,22 +1,26 @@
-﻿[
-	{
-		"Path": "azure-router-timeout.markdown",
-		"Name": "Azure Router Timeout",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "tcp-offloading.markdown",
-		"Name": "TCP Offloading",
-		"Mappings": [ ]
-	},
+[
   {
-    "Path": "recovering-from-esent-errors.markdown",
-    "Name": "Recovering from Esent errors",
+    "Path": "azure-router-timeout.markdown",
+    "Name": "Azure Router Timeout",
+    "DiscussionId": "074ea3b6-f82a-4950-b11d-e0fe5fc922ed",
     "Mappings": []
   },
   {
-		"Path": "understanding-eventual-consistency.markdown",
-		"Name": "Understanding eventual consistency",
-		"Mappings": [ ]
-	}
+    "Path": "tcp-offloading.markdown",
+    "Name": "TCP Offloading",
+    "DiscussionId": "766a0b81-a37d-4c06-bfc8-1a7de99079c2",
+    "Mappings": []
+  },
+  {
+    "Path": "recovering-from-esent-errors.markdown",
+    "Name": "Recovering from Esent errors",
+    "DiscussionId": "8519d558-e837-4abf-8e5c-f98873e8b58c",
+    "Mappings": []
+  },
+  {
+    "Path": "understanding-eventual-consistency.markdown",
+    "Name": "Understanding eventual consistency",
+    "DiscussionId": "af753124-8945-4da2-90a3-7fcc695ff0ff",
+    "Mappings": []
+  }
 ]

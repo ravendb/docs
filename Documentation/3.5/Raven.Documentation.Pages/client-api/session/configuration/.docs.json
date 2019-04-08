@@ -2,26 +2,31 @@
   {
     "Path": "how-to-change-maximum-number-of-requests-per-session.markdown",
     "Name": "How to change maximum number of requests per session?",
+    "DiscussionId": "1dac5241-426e-4b58-aac3-f59723b3d5f7",
     "Mappings": []
   },
   {
     "Path": "how-to-customize-key-generation-for-entities.markdown",
     "Name": "How to customize key generation for entities?",
+    "DiscussionId": "264ab603-8d6e-4bd4-b6e7-d18dfc9ca7ae",
     "Mappings": []
   },
   {
     "Path": "how-to-customize-collection-assignment-for-entities.markdown",
     "Name": "How to customize collection assignment for entities?",
+    "DiscussionId": "cc78c09a-8efc-4468-83fd-01a9725402bd",
     "Mappings": []
   },
   {
     "Path": "how-to-customize-identity-property-lookup-for-entities.markdown",
     "Name": "How to customize identity property lookup for entities?",
+    "DiscussionId": "5f8e1841-e4b5-4b8c-9911-c2af617509c8",
     "Mappings": []
   },
   {
     "Path": "how-to-enable-optimistic-concurrency.markdown",
     "Name": "How to enable optimistic concurrency?",
+    "DiscussionId": "1ca2addc-c8a2-4c36-bc2f-d197fb2d9b27",
     "Mappings": []
   }
 ]

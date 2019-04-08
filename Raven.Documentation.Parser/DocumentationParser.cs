@@ -23,8 +23,6 @@ namespace Raven.Documentation.Parser
             _indexPagesCompiler = new IndexPagesCompiler(documentCompiler, Options);
         }
 
-        private bool CompileAllVersions => Options.VersionsToParse.Count == 0;
-
         public override ParserOutput Parse()
         {
             var tableOfContents = GenerateTableOfContents().ToList();
@@ -67,14 +65,14 @@ namespace Raven.Documentation.Parser
 
             return documentationDirectories
                 .Select(documentationDirectory => new DirectoryInfo(documentationDirectory))
-                .Where(documentationDirectory => CompileAllVersions || Options.VersionsToParse.Contains(documentationDirectory.Name))
+                .Where(documentationDirectory => Options.CanCompileVersion(documentationDirectory.Name))
                 .SelectMany(_indexPagesCompiler.Compile);
         }
 
         private IEnumerable<DocumentationPage> GenerateDocumentationPagesFromToc(IEnumerable<TableOfContents> tocs)
         {
             return tocs
-                .Where(toc => CompileAllVersions || Options.VersionsToParse.Contains(toc.Version))
+                .Where(toc => Options.CanCompileVersion(toc.Version))
                 .SelectMany(_tocBasedPagesCompiler.Compile);
         }
     }

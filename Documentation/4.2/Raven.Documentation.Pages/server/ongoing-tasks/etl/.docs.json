@@ -1,17 +1,20 @@
 [
-    {
-        "Path": "basics.markdown",
-        "Name": "ETL Basics",
-        "Mappings": []
-    },
-    {
-        "Path": "raven.markdown",
-        "Name": "RavenDB ETL",
-        "Mappings": []
-    },
-    {
-        "Path": "sql.markdown",
-        "Name": "SQL ETL",
-        "Mappings": []
-    }
+  {
+    "Path": "basics.markdown",
+    "Name": "ETL Basics",
+    "DiscussionId": "7b5ea438-499b-4877-bb90-580b57277d36",
+    "Mappings": []
+  },
+  {
+    "Path": "raven.markdown",
+    "Name": "RavenDB ETL",
+    "DiscussionId": "e9b385e9-1ef8-4a33-9e5c-1fea767b827d",
+    "Mappings": []
+  },
+  {
+    "Path": "sql.markdown",
+    "Name": "SQL ETL",
+    "DiscussionId": "7b98f435-e20d-4d1b-bad7-1c777f196179",
+    "Mappings": []
+  }
 ]

@@ -1,27 +1,32 @@
-﻿[
-	{
-		"Path": "set-key.markdown",
-		"Name": "SetKey",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "get-key.markdown",
-		"Name": "GetKey",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "delete-key.markdown",
-		"Name": "DeleteKey",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "get-key-names.markdown",
-		"Name": "GetKeyNames",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "search.markdown",
-		"Name": "Search",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "set-key.markdown",
+    "Name": "SetKey",
+    "DiscussionId": "127ddddb-9484-4e6b-8685-f00f3eaf2aca",
+    "Mappings": []
+  },
+  {
+    "Path": "get-key.markdown",
+    "Name": "GetKey",
+    "DiscussionId": "ff603c79-44b2-45fb-8614-1a546e7feec7",
+    "Mappings": []
+  },
+  {
+    "Path": "delete-key.markdown",
+    "Name": "DeleteKey",
+    "DiscussionId": "3784f896-839c-4baf-b37e-afe33a9a1388",
+    "Mappings": []
+  },
+  {
+    "Path": "get-key-names.markdown",
+    "Name": "GetKeyNames",
+    "DiscussionId": "eb8b37cf-3494-42ba-8730-f34652eacb9c",
+    "Mappings": []
+  },
+  {
+    "Path": "search.markdown",
+    "Name": "Search",
+    "DiscussionId": "f6faec11-9b52-4174-936f-785ef92a1c2d",
+    "Mappings": []
+  }
 ]

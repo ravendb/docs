@@ -2,16 +2,19 @@
   {
     "Path": "sending-support-ticket.markdown",
     "Name": "Sending Support Ticket",
+    "DiscussionId": "c63a999c-d459-49e5-aaf7-8941b660c4dd",
     "Mappings": []
   },
   {
     "Path": "logging.markdown",
     "Name": "Logging",
+    "DiscussionId": "9f099a2d-1393-4a76-ad66-640903507751",
     "Mappings": []
   },
   {
     "Path": "voron-recovery-tool.markdown",
     "Name": "Voron Recovery Tool",
+    "DiscussionId": "2b0f5f63-b991-4e5f-8ce8-36a72481d3b4",
     "Mappings": []
   }
 ]

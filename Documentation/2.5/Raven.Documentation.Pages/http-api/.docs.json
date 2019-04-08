@@ -1,82 +1,84 @@
-﻿[
-	{
-		"Path": "http-api-single.markdown",
-		"Name": "Single Document Operations",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "http-api-multi.markdown",
-		"Name": "Multi Documents Operations",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "http-api-attachments.markdown",
-		"Name": "Attachments Operations",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "/indexes",
-		"Name": "Indexes",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "http-api-indexes-querying.markdown",
-		"Name": "Querying indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "http-api-concurrency.markdown",
-		"Name": "Revisions and Concurrency with E-Tags",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "http-api-security.markdown",
-		"Name": "Security for Anonymous Access",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/extensions",
-		"Name": "Extensions",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "excel-integration.markdown",
-		"Name": "Excel integration",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/how-to/integrate-with-excel"
-			}
-		]
-	}
+[
+  {
+    "Path": "http-api-single.markdown",
+    "Name": "Single Document Operations",
+    "DiscussionId": "a42d1f53-e282-478d-87ef-4d2d65b48b3a",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "http-api-multi.markdown",
+    "Name": "Multi Documents Operations",
+    "DiscussionId": "ee9a6970-00a1-4f3b-b8df-cc84c7e4a97e",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "http-api-attachments.markdown",
+    "Name": "Attachments Operations",
+    "DiscussionId": "46512067-a29d-407d-9b84-c8e8b961f6e4",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "/indexes",
+    "Name": "Indexes",
+    "Mappings": []
+  },
+  {
+    "Path": "http-api-indexes-querying.markdown",
+    "Name": "Querying indexes",
+    "DiscussionId": "8758ec25-1ecf-4174-b281-eb18c504664b",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "http-api-concurrency.markdown",
+    "Name": "Revisions and Concurrency with E-Tags",
+    "DiscussionId": "983fc20a-499c-4f84-bc4b-935619f695c6",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "http-api-security.markdown",
+    "Name": "Security for Anonymous Access",
+    "DiscussionId": "f9e669c0-970b-4c50-8f55-17fbc4c2fa92",
+    "Mappings": []
+  },
+  {
+    "Path": "/extensions",
+    "Name": "Extensions",
+    "Mappings": []
+  },
+  {
+    "Path": "excel-integration.markdown",
+    "Name": "Excel integration",
+    "DiscussionId": "97bda829-9c2d-452e-91b6-141c1064f131",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/how-to/integrate-with-excel"
+      }
+    ]
+  }
 ]

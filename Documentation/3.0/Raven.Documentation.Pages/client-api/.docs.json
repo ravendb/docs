@@ -2,21 +2,25 @@
   {
     "Path": "what-is-a-document-store.markdown",
     "Name": "What is a document store?",
+    "DiscussionId": "fd454ba4-62b7-4eb2-a171-9e91bf0bffe0",
     "Mappings": []
   },
   {
     "Path": "creating-document-store.markdown",
     "Name": "Creating document store",
+    "DiscussionId": "9839518d-358a-4c57-871a-ad3186906c4b",
     "Mappings": []
   },
   {
     "Path": "setting-up-default-database.markdown",
     "Name": "Setting up default database",
+    "DiscussionId": "6d4acb02-1d01-4eb9-9920-cf84efc4c4cb",
     "Mappings": []
   },
   {
     "Path": "setting-up-connection-string.markdown",
     "Name": "Setting up connection string",
+    "DiscussionId": "ee4d8296-f0ab-41ea-bb6b-71850f2f9a7e",
     "Mappings": [
       {
         "Version": 1.0,
@@ -27,6 +31,7 @@
   {
     "Path": "what-is-a-public-api.markdown",
     "Name": "What is a public API?",
+    "DiscussionId": "9ac075a4-f7e6-4d21-84b5-857e761e84c5",
     "Mappings": []
   },
   {

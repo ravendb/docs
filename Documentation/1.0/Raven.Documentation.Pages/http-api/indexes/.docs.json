@@ -1,46 +1,46 @@
-﻿[
-	{
-		"Path": "simple-indexes.markdown",
-		"Name": "Simple Indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "dynamic-indexes.markdown",
-		"Name": "Dynamic Indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "map-reduce-indexes.markdown",
-		"Name": "Map Reduce Indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "stale-indexes.markdown",
-		"Name": "Handling stale indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	}
+[
+  {
+    "Path": "simple-indexes.markdown",
+    "Name": "Simple Indexes",
+    "DiscussionId": "35e1e38b-a872-4b02-b6ef-9c5e1f26d827",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "dynamic-indexes.markdown",
+    "Name": "Dynamic Indexes",
+    "DiscussionId": "1320c308-7bf1-4941-bcff-9b0b7dcf3911",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "map-reduce-indexes.markdown",
+    "Name": "Map Reduce Indexes",
+    "DiscussionId": "4c800def-9078-49bd-b9d3-59f7c3fe2218",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "stale-indexes.markdown",
+    "Name": "Handling stale indexes",
+    "DiscussionId": "9a84c75e-f1f8-483c-b579-0a4d2ec167f9",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  }
 ]

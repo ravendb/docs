@@ -1,20 +1,25 @@
 [
-    {
-        "Path": "document-identifier-generation.markdown",
-        "Name": "Document Identifier Generation",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "server/kb/document-key-generation"
-            }
-        ]
-    },
-    {
-        "Path": "javascript-engine.markdown",
-        "Name": "JavaScript Engine"
-    },
-    {
-        "Path": "numbers-in-ravendb.markdown",
-        "Name": "Numbers in RavenDB"
-    }
+  {
+    "Path": "document-identifier-generation.markdown",
+    "Name": "Document Identifier Generation",
+    "DiscussionId": "a20a4aea-63fe-4abd-8899-86b04f1eeef2",
+    "Mappings": [
+      {
+        "Version": 3.5,
+        "Key": "server/kb/document-key-generation"
+      }
+    ]
+  },
+  {
+    "Path": "javascript-engine.markdown",
+    "Name": "JavaScript Engine",
+    "DiscussionId": "e01bff5a-7c2b-4a2b-93fe-5551b2c2ff6e",
+    "Mappings": []
+  },
+  {
+    "Path": "numbers-in-ravendb.markdown",
+    "Name": "Numbers in RavenDB",
+    "DiscussionId": "f2f990d6-4106-4070-8fa4-d139ae329a17",
+    "Mappings": []
+  }
 ]

@@ -18,6 +18,7 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Queries;
 using Raven.Client.Documents.Session;
+using Raven.Documentation.Parser.Compilation;
 using Raven.Documentation.Web.Models;
 
 namespace Raven.Documentation.Web.Controllers
@@ -475,19 +476,9 @@ namespace Raven.Documentation.Web.Controllers
             if (DebugHelper.IsDebug() == false)
                 return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
 
-            var versionsToParse = new List<string>();
-            if (all == false)
-                versionsToParse.Add(CurrentVersion);
+            var parserOptions = GetParserOptions(all);
 
-            var parser =
-                new DocumentationParser(
-                    new ParserOptions
-                    {
-                        PathToDocumentationDirectory = GetDocumentationDirectory(),
-                        VersionsToParse = versionsToParse,
-                        RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")),
-                        ImageUrlGenerator = GetImageUrlGenerator(HttpContext, DocumentStore)
-                    }, new NoOpGitFileInformationProvider());
+            var parser = new DocumentationParser(parserOptions, new NoOpGitFileInformationProvider());
 
             var indexQuery = DocumentSession
                 .Advanced
@@ -553,22 +544,25 @@ namespace Raven.Documentation.Web.Controllers
                     disposable?.Dispose();
             }
 
-            if (string.IsNullOrEmpty(key))
-                return RedirectToAction(MVC.Docs.ActionNames.ArticlePage, MVC.Docs.Name, new { language = language, version = version });
+            return RedirectToDocPage(language, version, key);
+        }
 
-            while (true)
+        private ParserOptions GetParserOptions(bool parseAllVersions)
+        {
+            var versionsToParse = new List<string>();
+
+            if (parseAllVersions == false)
+                versionsToParse.Add(CurrentVersion);
+
+            var parserOptions = new ParserOptions
             {
-                var stats = DocumentStore.Maintenance.Send(new GetStatisticsOperation());
-                if (stats.StaleIndexes.Any() == false)
-                    break;
+                PathToDocumentationDirectory = GetDocumentationDirectory(),
+                VersionsToParse = versionsToParse,
+                RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")),
+                ImageUrlGenerator = GetImageUrlGenerator(HttpContext, DocumentStore)
+            };
 
-                Thread.Sleep(500);
-            }
-
-            return RedirectToAction(
-                MVC.Docs.ActionNames.ArticlePage,
-                MVC.Docs.Name,
-                new { language = CurrentLanguage, version = CurrentVersion, key = key });
+            return parserOptions;
         }
 
         public static ParserOptions.GenerateImageUrl GetImageUrlGenerator(HttpContextBase httpContext,
@@ -590,6 +584,26 @@ namespace Raven.Documentation.Web.Controllers
                 return directory;
 
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\Documentation\\");
+        }
+
+        private ActionResult RedirectToDocPage(string language, string version, string key)
+        {
+            if (string.IsNullOrEmpty(key))
+                return RedirectToAction(MVC.Docs.ActionNames.ArticlePage, MVC.Docs.Name, new { language = language, version = version });
+
+            while (true)
+            {
+                var stats = DocumentStore.Maintenance.Send(new GetStatisticsOperation());
+                if (stats.StaleIndexes.Any() == false)
+                    break;
+
+                Thread.Sleep(500);
+            }
+
+            return RedirectToAction(
+                MVC.Docs.ActionNames.ArticlePage,
+                MVC.Docs.Name,
+                new { language = CurrentLanguage, version = CurrentVersion, key = key });
         }
     }
 

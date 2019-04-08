@@ -1,22 +1,25 @@
 [
-    {
-        "Path": "/document-view",
-        "Name": "Document View",
-        "Mappings": []
-    },
-    {
-        "Path": "documents-and-collections.markdown",
-        "Name": "Documents and Collections",
-        "Mappings": []
-    },
-    {
-        "Path": "create-new-document.markdown",
-        "Name": "Create New Document",
-        "Mappings": []
-    },
-    {
-        "Path": "conflicts-view.markdown",
-        "Name": "Conflicts View",
-        "Mappings": []
-    }
+  {
+    "Path": "/document-view",
+    "Name": "Document View",
+    "Mappings": []
+  },
+  {
+    "Path": "documents-and-collections.markdown",
+    "Name": "Documents and Collections",
+    "DiscussionId": "a0393edb-501a-4679-bd4d-6991ec12e189",
+    "Mappings": []
+  },
+  {
+    "Path": "create-new-document.markdown",
+    "Name": "Create New Document",
+    "DiscussionId": "8c281a87-5b83-464d-b710-0d4bb41a5f9c",
+    "Mappings": []
+  },
+  {
+    "Path": "conflicts-view.markdown",
+    "Name": "Conflicts View",
+    "DiscussionId": "ed8d7cb0-288d-4967-92f6-d3e1bab4d95c",
+    "Mappings": []
+  }
 ]

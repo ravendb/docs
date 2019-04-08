@@ -1,72 +1,79 @@
-﻿[
-	{
-		"Path": "understanding-session-object.markdown",
-		"Name": "Understanding the Session object",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/what-is-a-session-and-how-does-it-work"
-			}
-		]
-	},
-	{
-		"Path": "opening-a-session.markdown",
-		"Name": "Opening a session",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/opening-a-session"
-			}
-		]
-	},
-	{
-		"Path": "saving-new-document.markdown",
-		"Name": "Saving a new document",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/storing-entities"
-			}
-		]
-	},
-	{
-		"Path": "loading-editing-existing-document.markdown",
-		"Name": "Loading & Editing an existing document",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/loading-entities"
-			}
-		]
-	},
-	{
-		"Path": "deleting-documents.markdown",
-		"Name": "Deleting documents",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/deleting-entities"
-			}
-		]
-	},
-	{
-		"Path": "basic-querying.markdown",
-		"Name": "Basic query support",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/querying/how-to-query"
-			}
-		]
-	},
-	{
-		"Path": "customizing-behavior.markdown",
-		"Name": "Customizing the Behavior of the Client API",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/configuration/conventions/what-are-conventions"
-			}
-		]
-	}
+[
+  {
+    "Path": "understanding-session-object.markdown",
+    "Name": "Understanding the Session object",
+    "DiscussionId": "b57bd64f-7fc0-4e1a-807e-be4e697093ad",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/what-is-a-session-and-how-does-it-work"
+      }
+    ]
+  },
+  {
+    "Path": "opening-a-session.markdown",
+    "Name": "Opening a session",
+    "DiscussionId": "3388457d-b546-4ef2-ace1-e6f7639b90c0",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/opening-a-session"
+      }
+    ]
+  },
+  {
+    "Path": "saving-new-document.markdown",
+    "Name": "Saving a new document",
+    "DiscussionId": "48d01a68-c0cd-4b19-b423-e357072b629a",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/storing-entities"
+      }
+    ]
+  },
+  {
+    "Path": "loading-editing-existing-document.markdown",
+    "Name": "Loading & Editing an existing document",
+    "DiscussionId": "2d78cbd8-a4b0-40be-a108-e987fe0c63d6",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/loading-entities"
+      }
+    ]
+  },
+  {
+    "Path": "deleting-documents.markdown",
+    "Name": "Deleting documents",
+    "DiscussionId": "8d6c5c6b-ef05-476e-8c09-453bc9c62daf",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/deleting-entities"
+      }
+    ]
+  },
+  {
+    "Path": "basic-querying.markdown",
+    "Name": "Basic query support",
+    "DiscussionId": "d84195f7-8c9b-4193-a821-5d92d14d730f",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-query"
+      }
+    ]
+  },
+  {
+    "Path": "customizing-behavior.markdown",
+    "Name": "Customizing the Behavior of the Client API",
+    "DiscussionId": "a576ba03-7798-47ff-86ed-da1c3e44031e",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/configuration/conventions/what-are-conventions"
+      }
+    ]
+  }
 ]

@@ -2,26 +2,31 @@
   {
     "Path": "how-to-query-a-database.markdown",
     "Name": "How to query a database?",
+    "DiscussionId": "a92066aa-be74-403e-b17b-34c6444a75a3",
     "Mappings": []
   },
   {
     "Path": "how-to-stream-query-results.markdown",
     "Name": "How to stream query results?",
+    "DiscussionId": "a2914e9b-e6b1-4e35-ac6d-e42fa1f748b1",
     "Mappings": []
   },
   {
     "Path": "how-to-work-with-facet-query.markdown",
     "Name": "How to work with Facet query?",
+    "DiscussionId": "6af8fb73-0346-48e4-bae8-f5ab0b6c0ded",
     "Mappings": []
   },
   {
     "Path": "how-to-work-with-suggestion-query.markdown",
     "Name": "How to work with Suggestion query?",
+    "DiscussionId": "290f1545-c76a-4dd6-b38a-2ea46220e326",
     "Mappings": []
   },
   {
     "Path": "how-to-work-with-morelikethis-query.markdown",
     "Name": "How to work with MoreLikeThis query?",
+    "DiscussionId": "31b1aad7-b0bf-4d5a-be0e-f2b61a190949",
     "Mappings": []
   }
 ]

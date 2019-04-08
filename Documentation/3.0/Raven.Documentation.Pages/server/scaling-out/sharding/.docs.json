@@ -1,17 +1,19 @@
-﻿[
-	{
-		"Path": "how-to-setup-sharding.markdown",
-		"Name": "How to setup sharding?",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/scaling-out/sharding"
-			}
-		]
-	},
-	{
-		"Path": "sharding-ops.markdown",
-		"Name": "Sharding Ops",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "how-to-setup-sharding.markdown",
+    "Name": "How to setup sharding?",
+    "DiscussionId": "5d4bc895-f70c-45b2-a36b-189b75df0e01",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/scaling-out/sharding"
+      }
+    ]
+  },
+  {
+    "Path": "sharding-ops.markdown",
+    "Name": "Sharding Ops",
+    "DiscussionId": "2ad3d648-f334-40df-bc8c-6a8f1aca8ceb",
+    "Mappings": []
+  }
 ]

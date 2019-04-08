@@ -1,62 +1,68 @@
-﻿[
-	{
-		"Path": "defining-static-index.markdown",
-		"Name": "Defining a static index",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/creating-and-deploying"
-			}
-		]
-	},
-	{
-		"Path": "customizing-results-order.markdown",
-		"Name": "Customizing results order using SortOptions",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/customizing-results-order"
-			}
-		]
-	},
-	{
-		"Path": "configuring-index-options.markdown",
-		"Name": "Configuring index options",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/using-analyzers"
-			}
-		]
-	},
-	{
-		"Path": "indexing-hierarchies.markdown",
-		"Name": "Indexing Hierarchical Data",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/indexing-hierarchical-data"
-			}
-		]
-	},
-	{
-		"Path": "live-projections.markdown",
-		"Name": "Live Projections",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "transformers/what-are-transformers"
-			}
-		]
-	},
-	{
-		"Path": "indexes-error-handling.markdown",
-		"Name": "Error handling in Indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/troubleshooting/debugging-index-errors"
-			}
-		]
-	}
+[
+  {
+    "Path": "defining-static-index.markdown",
+    "Name": "Defining a static index",
+    "DiscussionId": "9c034698-1e79-4b33-91e8-c9fc4090f699",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/creating-and-deploying"
+      }
+    ]
+  },
+  {
+    "Path": "customizing-results-order.markdown",
+    "Name": "Customizing results order using SortOptions",
+    "DiscussionId": "7adb9301-4895-47a0-ac0b-4042d8c859a3",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/customizing-results-order"
+      }
+    ]
+  },
+  {
+    "Path": "configuring-index-options.markdown",
+    "Name": "Configuring index options",
+    "DiscussionId": "b69eef59-cd9e-4bc1-ac9e-1fe53208d5ee",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/using-analyzers"
+      }
+    ]
+  },
+  {
+    "Path": "indexing-hierarchies.markdown",
+    "Name": "Indexing Hierarchical Data",
+    "DiscussionId": "d72a5a12-c36b-48a3-b599-280d8e8308ff",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/indexing-hierarchical-data"
+      }
+    ]
+  },
+  {
+    "Path": "live-projections.markdown",
+    "Name": "Live Projections",
+    "DiscussionId": "fd73191d-1082-4778-a61e-4cf145db8d99",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "transformers/what-are-transformers"
+      }
+    ]
+  },
+  {
+    "Path": "indexes-error-handling.markdown",
+    "Name": "Error handling in Indexes",
+    "DiscussionId": "750dde04-94cd-40de-8591-9549a02a6cf4",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/troubleshooting/debugging-index-errors"
+      }
+    ]
+  }
 ]

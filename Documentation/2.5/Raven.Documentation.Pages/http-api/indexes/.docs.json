@@ -1,56 +1,57 @@
-﻿[
-	{
-		"Path": "simple-indexes.markdown",
-		"Name": "Simple Indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "dynamic-indexes.markdown",
-		"Name": "Dynamic Indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "map-reduce-indexes.markdown",
-		"Name": "Map Reduce Indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "stale-indexes.markdown",
-		"Name": "Handling stale indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
-			}
-		]
-	},
-	{
-		"Path": "debugging.markdown",
-		"Name": "Debugging",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/troubleshooting/debugging-index-errors"
-			}
-		]
-	}
+[
+  {
+    "Path": "simple-indexes.markdown",
+    "Name": "Simple Indexes",
+    "DiscussionId": "ef8b3ab6-81cf-4ecc-9ef6-e0bcd127ee65",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "dynamic-indexes.markdown",
+    "Name": "Dynamic Indexes",
+    "DiscussionId": "7dbb23e9-0b72-425f-a50a-c37b15e2ba9d",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "map-reduce-indexes.markdown",
+    "Name": "Map Reduce Indexes",
+    "DiscussionId": "0112e3b3-f6e8-4f2a-ae59-5b37849bad1c",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "stale-indexes.markdown",
+    "Name": "Handling stale indexes",
+    "DiscussionId": "492f310a-c5d4-48a0-b396-4d1c5efc4bfb",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "debugging.markdown",
+    "Name": "Debugging",
+    "DiscussionId": "6973b9a8-5a96-49b8-9f3b-979e184e952d",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/troubleshooting/debugging-index-errors"
+      }
+    ]
+  }
 ]

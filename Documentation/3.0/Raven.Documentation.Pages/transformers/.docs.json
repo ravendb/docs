@@ -1,102 +1,112 @@
-﻿[
-	{
-		"Path": "what-are-transformers.markdown",
-		"Name": "What are transformers?",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/querying/results-transformation/result-transformers"
-			}
-		]
-	},
-	{
-		"Path": "creating-and-deploying.markdown",
-		"Name": "Creating and deploying transformers",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/querying/results-transformation/result-transformers"
-			}
-		]
-	},
-	{
-		"Path": "basic-transformations.markdown",
-		"Name": "Basic transformations",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/querying/results-transformation/result-transformers"
-			}
-		]
-	},
-	{
-		"Path": "loading-documents.markdown",
-		"Name": "Loading documents",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/querying/results-transformation/result-transformers"
-			}
-		]
-	},
-	{
-		"Path": "including-documents.markdown",
-		"Name": "Including documents",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/querying/results-transformation/result-transformers"
-			}
-		]
-	},
-	{
-		"Path": "passing-parameters.markdown",
-		"Name": "Passing parameters",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/querying/results-transformation/result-transformers"
-			}
-		]
-	},
-	{
-		"Path": "nesting-transformers.markdown",
-		"Name": "Nesting transformers",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/querying/results-transformation/result-transformers"
-			}
-		]
-	},
-	{
-		"Path": "transforming-hierarchical-data.markdown",
-		"Name": "Transforming hierarchical data",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/querying/results-transformation/result-transformers"
-			}
-		]
-	},
-	{
-		"Path": "converting-to-json-and-accessing-metadata.markdown",
-		"Name": "Converting to JSON and accessing Metadata",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/querying/results-transformation/result-transformers"
-			}
-		]
-	},
-	{
-		"Path": "dealing-with-subcollections.markdown",
-		"Name": "Dealing with subcollections",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/querying/results-transformation/result-transformers"
-			}
-		]
-	}
+[
+  {
+    "Path": "what-are-transformers.markdown",
+    "Name": "What are transformers?",
+    "DiscussionId": "499e2e26-cca9-443e-8913-ab049ad3dcc8",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/querying/results-transformation/result-transformers"
+      }
+    ]
+  },
+  {
+    "Path": "creating-and-deploying.markdown",
+    "Name": "Creating and deploying transformers",
+    "DiscussionId": "b0f4d60b-d80f-4dbf-b811-a38363078245",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/querying/results-transformation/result-transformers"
+      }
+    ]
+  },
+  {
+    "Path": "basic-transformations.markdown",
+    "Name": "Basic transformations",
+    "DiscussionId": "8b6d917f-18a4-4317-9c0c-bbdd2b7ed549",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/querying/results-transformation/result-transformers"
+      }
+    ]
+  },
+  {
+    "Path": "loading-documents.markdown",
+    "Name": "Loading documents",
+    "DiscussionId": "8398c94e-5459-4518-b955-89e3c151974c",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/querying/results-transformation/result-transformers"
+      }
+    ]
+  },
+  {
+    "Path": "including-documents.markdown",
+    "Name": "Including documents",
+    "DiscussionId": "6a95e50f-c677-441b-8b0d-90ff263651c8",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/querying/results-transformation/result-transformers"
+      }
+    ]
+  },
+  {
+    "Path": "passing-parameters.markdown",
+    "Name": "Passing parameters",
+    "DiscussionId": "5bbd517a-0675-4191-ae8c-ba636d8ccfe9",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/querying/results-transformation/result-transformers"
+      }
+    ]
+  },
+  {
+    "Path": "nesting-transformers.markdown",
+    "Name": "Nesting transformers",
+    "DiscussionId": "d7cb1cf5-d759-49c3-beeb-fd3e0ea6d4aa",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/querying/results-transformation/result-transformers"
+      }
+    ]
+  },
+  {
+    "Path": "transforming-hierarchical-data.markdown",
+    "Name": "Transforming hierarchical data",
+    "DiscussionId": "3879d0d9-8ae4-414c-a8f0-3903969d938c",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/querying/results-transformation/result-transformers"
+      }
+    ]
+  },
+  {
+    "Path": "converting-to-json-and-accessing-metadata.markdown",
+    "Name": "Converting to JSON and accessing Metadata",
+    "DiscussionId": "d04d6b17-ba51-4dc2-a121-b0f7fc59a61c",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/querying/results-transformation/result-transformers"
+      }
+    ]
+  },
+  {
+    "Path": "dealing-with-subcollections.markdown",
+    "Name": "Dealing with subcollections",
+    "DiscussionId": "852837b3-eddb-47c9-abce-2db4a49833a3",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/querying/results-transformation/result-transformers"
+      }
+    ]
+  }
 ]

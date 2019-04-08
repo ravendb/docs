@@ -1,322 +1,386 @@
-﻿[
+[
   {
     "Path": "admin-statistics.markdown",
     "Name": "AdminStatistics",
+    "DiscussionId": "77199a5b-bba1-44b4-81db-571d415a0053",
     "Mappings": []
   },
   {
     "Path": "attachment-information.markdown",
     "Name": "AttachmentInformation",
+    "DiscussionId": "7b193971-61a6-4f9d-bbe1-9709306dce6e",
     "Mappings": []
   },
   {
     "Path": "attachment.markdown",
     "Name": "Attachment",
+    "DiscussionId": "e318a2b7-0e42-4321-b807-dd1eb281bfb8",
     "Mappings": []
   },
   {
     "Path": "batch-result.markdown",
     "Name": "BatchResult",
+    "DiscussionId": "110f0ec4-0267-4a13-ad14-21bb42d01aee",
     "Mappings": []
   },
   {
     "Path": "bulk-operation-options.markdown",
     "Name": "BulkOperationOptions",
+    "DiscussionId": "8c832072-1400-4a5e-addd-afe85c0ffa7b",
     "Mappings": []
   },
   {
     "Path": "bulk-insert-change-notification.markdown",
     "Name": "BulkInsertChangeNotification",
+    "DiscussionId": "f425835b-9f15-4fa5-8bc2-430b3bd1ea31",
     "Mappings": []
   },
   {
     "Path": "bulk-insert-operation.markdown",
     "Name": "BulkInsertOperation",
+    "DiscussionId": "6e6fbe13-b274-4970-9a65-ea9cab955e36",
     "Mappings": []
   },
   {
     "Path": "bulk-insert-options.markdown",
     "Name": "BulkInsertOptions",
+    "DiscussionId": "2aa5c56a-09c4-49cb-a5a0-dbe1613933d4",
     "Mappings": []
   },
   {
-		"Path": "chunked-bulk-insert-options.markdown",
-		"Name": "ChunkedBulkOperationOptions",
-		"Mappings": [ ]
+    "Path": "chunked-bulk-insert-options.markdown",
+    "Name": "ChunkedBulkOperationOptions",
+    "DiscussionId": "755a7a0b-fc8e-4900-bbd1-da3e74bc5d1e",
+    "Mappings": []
   },
   {
     "Path": "configuration-change-notification.markdown",
     "Name": "ConfigurationChangeNotification",
+    "DiscussionId": "f73dd1b7-b33f-418e-8c50-debf8ce22b9a",
     "Mappings": []
   },
   {
     "Path": "configuration-search-results.markdown",
     "Name": "ConfigurationSearchResults",
+    "DiscussionId": "e5007967-b630-47a6-8d82-d7419f648379",
     "Mappings": []
   },
   {
     "Path": "conflict-item.markdown",
     "Name": "ConflictItem",
+    "DiscussionId": "bc770db6-89a8-4c73-8aab-e1a3d56433da",
     "Mappings": []
   },
   {
     "Path": "conflict-notification.markdown",
     "Name": "ConflictNotification",
+    "DiscussionId": "22fdab08-2b1e-43a7-ab5f-0aa45905e86a",
     "Mappings": []
   },
   {
     "Path": "data-subscription-change-notification.markdown",
     "Name": "DataSubscriptionChangeNotification",
+    "DiscussionId": "01dd4818-d53a-4c68-bc0e-bada54ffa51f",
     "Mappings": []
   },
   {
     "Path": "database-document.markdown",
     "Name": "DatabaseDocument",
+    "DiscussionId": "f4d4d33a-462a-49e3-a403-91ee44da52a8",
     "Mappings": []
   },
   {
     "Path": "database-restore-request.markdown",
     "Name": "DatabaseRestoreRequest",
+    "DiscussionId": "47233f95-d0d2-45b4-ae05-5dde6d409a55",
     "Mappings": []
   },
   {
     "Path": "database-statistics.markdown",
     "Name": "DatabaseStatistics",
+    "DiscussionId": "484f209f-fa60-4583-9f02-98860fd92134",
     "Mappings": []
   },
   {
     "Path": "delete-command-data.markdown",
     "Name": "DeleteCommandData",
+    "DiscussionId": "53d31a50-3ca0-4c6c-88f4-d6366f53fa94",
     "Mappings": []
   },
   {
     "Path": "document-change-notification.markdown",
     "Name": "DocumentChangeNotification",
+    "DiscussionId": "c027ea22-24c8-4de7-b301-1e5f70cb6f14",
     "Mappings": []
   },
   {
     "Path": "dynamic-aggregation-query.markdown",
     "Name": "DynamicAggregationQuery",
+    "DiscussionId": "32fb6deb-21d2-4b99-8bae-69217cd16537",
     "Mappings": []
   },
   {
     "Path": "facet.markdown",
     "Name": "Facet",
+    "DiscussionId": "75969f96-925b-424f-ba3d-b9a04276081d",
     "Mappings": []
   },
   {
     "Path": "facet-query.markdown",
     "Name": "FacetQuery",
+    "DiscussionId": "3dbbd604-33ef-4455-abc0-d6451fb96303",
     "Mappings": []
   },
   {
     "Path": "facet-results.markdown",
     "Name": "FacetResults",
+    "DiscussionId": "406acd58-951d-4538-a237-10458469280a",
     "Mappings": []
   },
   {
     "Path": "facet-setup.markdown",
     "Name": "FacetSetup",
+    "DiscussionId": "a0603893-bbd9-46e6-b8e2-7ccba476f655",
     "Mappings": []
   },
   {
     "Path": "field-highlightings.markdown",
     "Name": "FieldHighlightings",
+    "DiscussionId": "7300ebb6-1dd5-43c0-bdb7-47419d643dab",
     "Mappings": []
   },
   {
     "Path": "file-change-notification.markdown",
     "Name": "FileChangeNotification",
+    "DiscussionId": "853ab9cf-d90f-440d-8736-3da1c4503dce",
     "Mappings": []
   },
   {
     "Path": "file-header.markdown",
     "Name": "FileHeader",
+    "DiscussionId": "ab4f529d-6df0-4d07-803b-1bed528cc510",
     "Mappings": []
   },
   {
     "Path": "file-system-backup-request.markdown",
     "Name": "FileSystemBackupRequest",
+    "DiscussionId": "70928f1d-4270-451b-ac18-af311ebf5412",
     "Mappings": []
   },
   {
     "Path": "file-system-document.markdown",
     "Name": "FileSystemDocument",
+    "DiscussionId": "32028b55-7855-44ae-a538-bcb2d532607d",
     "Mappings": []
   },
   {
     "Path": "file-system-restore-request.markdown",
     "Name": "FileSystemRestoreRequest",
+    "DiscussionId": "3967d0fa-932b-4001-963e-51b3ffa43978",
     "Mappings": []
   },
   {
     "Path": "files-query-statistics.markdown",
     "Name": "FilesQueryStatistics",
+    "DiscussionId": "3c0882d1-cf28-44aa-a8c8-27b3a7420d33",
     "Mappings": []
   },
   {
     "Path": "index-change-notification.markdown",
     "Name": "IndexChangeNotification",
+    "DiscussionId": "3c3bdcb7-1db9-455f-bcb4-09f12fb067c7",
     "Mappings": []
   },
   {
     "Path": "index-definition.markdown",
     "Name": "IndexDefinition",
+    "DiscussionId": "8f43930a-343a-459e-b570-f7c01c5cd439",
     "Mappings": []
   },
   {
     "Path": "index-merge-results.markdown",
     "Name": "IndexMergeResults",
+    "DiscussionId": "f127c0c2-5010-4c07-98a5-81b83d9040db",
     "Mappings": []
   },
   {
     "Path": "index-query.markdown",
     "Name": "IndexQuery",
+    "DiscussionId": "59d17a2d-c9e3-494b-9615-07067547e931",
     "Mappings": []
   },
   {
     "Path": "index-to-add.markdown",
     "Name": "IndexToAdd",
+    "DiscussionId": "584e1700-e659-4a08-90e9-3dc227dcf930",
     "Mappings": []
   },
   {
     "Path": "json-document-metadata.markdown",
     "Name": "JsonDocumentMetadata",
+    "DiscussionId": "b841683b-0db7-4565-81a2-24bf3f16e9ac",
     "Mappings": []
   },
   {
     "Path": "json-document.markdown",
     "Name": "JsonDocument",
+    "DiscussionId": "4ec63277-ae39-4d2e-a2b5-ce490b7c6a7b",
     "Mappings": []
   },
   {
     "Path": "more-like-this-query.markdown",
     "Name": "MoreLikeThisQuery",
+    "DiscussionId": "4cd92273-6a45-490b-b0ac-92a7aac8e4b8",
     "Mappings": []
   },
   {
     "Path": "multi-load-result.markdown",
     "Name": "MultiLoadResult",
+    "DiscussionId": "90ab34f7-f420-4800-93a1-b9f2281bbf1b",
     "Mappings": []
   },
   {
     "Path": "open-session-options.markdown",
     "Name": "OpenSessionOptions",
+    "DiscussionId": "09f9e626-afa3-41a8-a3be-fdd876075aae",
     "Mappings": []
   },
   {
     "Path": "operation.markdown",
     "Name": "Operation",
+    "DiscussionId": "d356d347-35d9-4a13-a44a-0fe5a74d3409",
     "Mappings": []
   },
   {
     "Path": "patch-command-data.markdown",
     "Name": "PatchCommandData",
+    "DiscussionId": "44da79f0-9bb3-499d-a113-9133b3d06002",
     "Mappings": []
   },
   {
     "Path": "put-command-data.markdown",
     "Name": "PutCommandData",
+    "DiscussionId": "4b3b56e3-7004-4c77-8163-05ffa5398666",
     "Mappings": []
   },
   {
     "Path": "query-header-information.markdown",
     "Name": "QueryHeaderInformation",
+    "DiscussionId": "78111887-af70-456c-a812-033083b089ef",
     "Mappings": []
   },
   {
     "Path": "query-result.markdown",
     "Name": "QueryResult",
+    "DiscussionId": "0950195f-046f-4732-9380-3cf6fe448de5",
     "Mappings": []
   },
   {
     "Path": "raven-query-statistics.markdown",
     "Name": "RavenQueryStatistics",
+    "DiscussionId": "7754ebbc-e272-4d86-af19-168372c972eb",
     "Mappings": []
   },
   {
     "Path": "replication-conflict-notification.markdown",
     "Name": "ReplicationConflictNotification",
+    "DiscussionId": "e80cafa2-763b-40b0-92cc-5f61a00b6c06",
     "Mappings": []
   },
   {
     "Path": "replication-destination.markdown",
     "Name": "ReplicationDestination",
+    "DiscussionId": "54cd61a0-7183-437e-b597-5f14e331d5ff",
     "Mappings": []
   },
   {
     "Path": "scripted-patch-command-data.markdown",
     "Name": "ScriptedPatchCommandData",
+    "DiscussionId": "86b29994-e422-46e1-8357-9f7cf66496a9",
     "Mappings": []
   },
   {
     "Path": "search-results.markdown",
     "Name": "SearchResults",
+    "DiscussionId": "a33bb9ba-e5fe-4bf1-a1a9-2fa7aaf118b4",
     "Mappings": []
   },
   {
     "Path": "spatial-criteria-factory.markdown",
     "Name": "SpatialCriteriaFactory",
+    "DiscussionId": "fed91b97-db04-4ce4-9e9a-ccf328dde802",
     "Mappings": []
   },
   {
     "Path": "spatial-relation.markdown",
     "Name": "SpatialRelation",
+    "DiscussionId": "26651442-f899-4cdc-b3af-335390c76a23",
     "Mappings": []
   },
   {
     "Path": "stream-result.markdown",
     "Name": "StreamResult",
+    "DiscussionId": "5eac62a2-a307-45da-81a4-f5feb96daf25",
     "Mappings": []
   },
   {
     "Path": "suggestion-query.markdown",
     "Name": "SuggestionQuery",
+    "DiscussionId": "f9bf628c-f6e0-42ea-8527-72b6ae05a2b9",
     "Mappings": []
   },
   {
     "Path": "suggestion-query-result.markdown",
     "Name": "SuggestionQueryResult",
+    "DiscussionId": "6d30d5db-9268-47fb-a713-2e61eed87f00",
     "Mappings": []
   },
   {
     "Path": "synchronization-destination.markdown",
     "Name": "SynchronizationDestination",
+    "DiscussionId": "cba13b0e-9fae-4183-b780-80d6920d0383",
     "Mappings": []
   },
   {
     "Path": "synchronization-details.markdown",
     "Name": "SynchronizationDetails",
+    "DiscussionId": "e4cb2e33-cd09-4b3c-a7f5-424996d88752",
     "Mappings": []
   },
   {
     "Path": "synchronization-report.markdown",
     "Name": "SynchronizationReport",
+    "DiscussionId": "eaaaea89-d28a-4e2d-b7e8-908b423367b5",
     "Mappings": []
   },
   {
     "Path": "synchronization-update-notification.markdown",
     "Name": "SynchronizationUpdateNotification",
+    "DiscussionId": "ec8e1f19-faea-4d00-b24c-64c5f77e71d0",
     "Mappings": []
   },
   {
     "Path": "transformer-change-notification.markdown",
     "Name": "TransformerChangeNotification",
+    "DiscussionId": "d27d1daa-7914-4d59-806d-cdfd6bd86f72",
     "Mappings": []
   },
   {
     "Path": "transformer-definition.markdown",
     "Name": "TransformerDefinition",
+    "DiscussionId": "997cd044-effc-4034-a89f-9a7b90cbf4cc",
     "Mappings": []
   },
   {
     "Path": "user-info.markdown",
     "Name": "UserInfo",
+    "DiscussionId": "0c40e485-de8f-4b2c-b70b-c248d1a69631",
     "Mappings": []
   },
   {
     "Path": "user-permission.markdown",
     "Name": "UserInfo",
+    "DiscussionId": "d65f2095-344a-4541-a227-cce7055be576",
     "Mappings": []
   }
 ]

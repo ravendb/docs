@@ -1,22 +1,24 @@
-﻿[
-	{
-		"Path": "adding-ravendb-to-your-application.markdown",
-		"Name": "Adding RavenDB to your application",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "start/getting-started"
-			}
-		]
-	},
-	{
-		"Path": "adding-ravendb-through-nuget.markdown",
-		"Name": "Adding RavenDB through NuGet",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "start/getting-started"
-			}
-		]
-	}
+[
+  {
+    "Path": "adding-ravendb-to-your-application.markdown",
+    "Name": "Adding RavenDB to your application",
+    "DiscussionId": "5a94dd22-50d9-4c4f-af1d-ba3f7bca98f9",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "start/getting-started"
+      }
+    ]
+  },
+  {
+    "Path": "adding-ravendb-through-nuget.markdown",
+    "Name": "Adding RavenDB through NuGet",
+    "DiscussionId": "d33746c7-28c9-48f5-8474-28ba2edb46e2",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "start/getting-started"
+      }
+    ]
+  }
 ]

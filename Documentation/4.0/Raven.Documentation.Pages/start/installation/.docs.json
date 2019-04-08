@@ -2,6 +2,7 @@
   {
     "Path": "setup-wizard.markdown",
     "Name": "Setup Wizard",
+    "DiscussionId": "df3d46a4-98f0-4dcc-80a1-64f9d18c0393",
     "Mappings": []
   },
   {
@@ -12,11 +13,13 @@
   {
     "Path": "manual.markdown",
     "Name": "Manual Setup",
+    "DiscussionId": "ef5aab05-1dca-4ff3-9b84-6e431a11d18d",
     "Mappings": []
   },
   {
     "Path": "deployment-considerations.markdown",
     "Name": "Deployment Considerations",
+    "DiscussionId": "1addca60-13a6-43a9-a235-6a69d34aca0d",
     "Mappings": [
       {
         "Version": 3.0,
@@ -27,16 +30,19 @@
   {
     "Path": "running-as-service.markdown",
     "Name": "Running as a Service",
+    "DiscussionId": "40649e02-f474-4c8a-9f87-9c3df90b83db",
     "Mappings": []
   },
   {
     "Path": "running-in-docker-container.markdown",
     "Name": "Running in a Docker Container",
+    "DiscussionId": "ccf3a2ce-d124-4951-902c-2b9c63bb9f3f",
     "Mappings": []
   },
   {
     "Path": "upgrading-to-new-version.markdown",
     "Name": "Upgrading to a New Version",
+    "DiscussionId": "57129334-7cc2-41b8-b0d3-3bcce5cdca3f",
     "Mappings": [
       {
         "Version": 1.0,
@@ -51,11 +57,13 @@
   {
     "Path": "system-requirements.markdown",
     "Name": "System Requirements",
+    "DiscussionId": "169ece6b-79c8-4e69-81ec-a25bb90840be",
     "Mappings": []
   },
   {
     "Path": "system-configuration-recommendations.markdown",
     "Name": "System Configuration Recommendations",
+    "DiscussionId": "05780903-e868-4ff3-84f6-044bf20b6103",
     "Mappings": []
   }
 ]

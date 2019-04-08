@@ -2,21 +2,25 @@
   {
     "Path": "status.markdown",
     "Name": "GetSynchronizationStatusFor",
+    "DiscussionId": "16e2a9c5-c8e9-47c9-9db7-42e9b61a3878",
     "Mappings": []
   },
   {
     "Path": "finished.markdown",
     "Name": "GetFinished",
+    "DiscussionId": "1a9809eb-2362-49cd-9a57-871fe1a39ec0",
     "Mappings": []
   },
   {
     "Path": "active.markdown",
     "Name": "GetActive",
+    "DiscussionId": "df02fe71-ad5c-48d9-9c51-3e856a902bf1",
     "Mappings": []
   },
   {
     "Path": "pending.markdown",
     "Name": "GetPending",
+    "DiscussionId": "6bdc617d-565e-444a-ab1a-1894107b2a53",
     "Mappings": []
   }
 ]

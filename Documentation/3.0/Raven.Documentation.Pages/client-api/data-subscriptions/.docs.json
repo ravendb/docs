@@ -2,36 +2,43 @@
   {
     "Path": "what-are-data-subscriptions.markdown",
     "Name": "What are data subscriptions?",
+    "DiscussionId": "b785c5be-ce31-4bb0-bed7-ecb63c7bc967",
     "Mappings": []
   },
   {
     "Path": "how-to-create-data-subscription.markdown",
     "Name": "How to create a data subscription?",
+    "DiscussionId": "72a7b4f7-40e2-4e6a-8583-8235b197518d",
     "Mappings": []
   },
   {
     "Path": "how-to-open-data-subscription.markdown",
     "Name": "How to open a data subscription?",
+    "DiscussionId": "3056c525-7cfe-4461-b752-1d67ca74dc54",
     "Mappings": []
   },
   {
     "Path": "how-to-delete-data-subscription.markdown",
     "Name": "How to delete a data subscription?",
+    "DiscussionId": "c7c6effe-a67b-43f6-a4fa-9791982b5bdc",
     "Mappings": []
   },
   {
     "Path": "how-to-release-data-subscription.markdown",
     "Name": "How to release a data subscription?",
+    "DiscussionId": "ecaa5ed1-1ba6-4f8c-be6b-da0d055e4f8e",
     "Mappings": []
   },
   {
     "Path": "how-to-get-subscriptions.markdown",
     "Name": "How to get all subscriptions?",
+    "DiscussionId": "a8461504-aa86-4453-aa53-b0ae91861d74",
     "Mappings": []
   },
   {
     "Path": "events.markdown",
     "Name": "Events",
+    "DiscussionId": "27a120d9-2144-4c6d-960d-730c689ef428",
     "Mappings": []
   }
 ]

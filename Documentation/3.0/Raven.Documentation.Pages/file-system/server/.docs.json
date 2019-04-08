@@ -1,22 +1,25 @@
-﻿[
-	{
-		"Path": "enabling-rdc.markdown",
-		"Name": "Enabling Remote Differential Compression",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "background-tasks.markdown",
-		"Name": "Background tasks",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "exporting-and-importing-data.markdown",
-		"Name": "Exporting and importing files",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/bundles",
-		"Name": "Bundles",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "enabling-rdc.markdown",
+    "Name": "Enabling Remote Differential Compression",
+    "DiscussionId": "e4095afe-a3b0-4f9a-8bf8-a20183b47a99",
+    "Mappings": []
+  },
+  {
+    "Path": "background-tasks.markdown",
+    "Name": "Background tasks",
+    "DiscussionId": "001f3261-41af-4b97-a820-b15a225df033",
+    "Mappings": []
+  },
+  {
+    "Path": "exporting-and-importing-data.markdown",
+    "Name": "Exporting and importing files",
+    "DiscussionId": "fa605d37-edeb-4468-937a-cc36e026cade",
+    "Mappings": []
+  },
+  {
+    "Path": "/bundles",
+    "Name": "Bundles",
+    "Mappings": []
+  }
 ]

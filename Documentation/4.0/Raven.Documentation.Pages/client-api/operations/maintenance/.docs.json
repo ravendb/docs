@@ -1,42 +1,44 @@
 [
-    {
-        "Path": "get-collection-statistics.markdown",
-        "Name": "Get Collection Statistics",
-        "Mappings": []
-    },
-    {
-        "Path": "get-statistics.markdown",
-        "Name": "Get Statistics",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "client-api/commands/how-to/get-database-and-server-statistics"
-            }
-        ]
-    },
-    {
-        "Path": "/configuration",
-        "Name": "Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "/identities",
-        "Name": "Identities",
-        "Mappings": []
-    },
-    {
-        "Path": "/indexes",
-        "Name": "Indexes",
-        "Mappings": []
-    },
-    {
-        "Path": "/etl",
-        "Name": "ETL",
-        "Mappings": []
-    },
-    {
-        "Path": "/backup",
-        "Name": "Backup",
-        "Mappings": []
-    }
+  {
+    "Path": "get-collection-statistics.markdown",
+    "Name": "Get Collection Statistics",
+    "DiscussionId": "43588db5-317b-4d2c-afb6-5db073dca55c",
+    "Mappings": []
+  },
+  {
+    "Path": "get-statistics.markdown",
+    "Name": "Get Statistics",
+    "DiscussionId": "eca4335e-f435-4687-91db-43a41ea08aab",
+    "Mappings": [
+      {
+        "Version": 3.5,
+        "Key": "client-api/commands/how-to/get-database-and-server-statistics"
+      }
+    ]
+  },
+  {
+    "Path": "/configuration",
+    "Name": "Configuration",
+    "Mappings": []
+  },
+  {
+    "Path": "/identities",
+    "Name": "Identities",
+    "Mappings": []
+  },
+  {
+    "Path": "/indexes",
+    "Name": "Indexes",
+    "Mappings": []
+  },
+  {
+    "Path": "/etl",
+    "Name": "ETL",
+    "Mappings": []
+  },
+  {
+    "Path": "/backup",
+    "Name": "Backup",
+    "Mappings": []
+  }
 ]

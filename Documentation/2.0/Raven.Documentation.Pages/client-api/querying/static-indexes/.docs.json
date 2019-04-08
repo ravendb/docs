@@ -1,120 +1,131 @@
-﻿[
-	{
-		"Path": "defining-static-index.markdown",
-		"Name": "Defining a static index",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/creating-and-deploying"
-			}
-		]
-	},
-	{
-		"Path": "customizing-results-order.markdown",
-		"Name": "Customizing results order using SortOptions",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/customizing-results-order"
-			}
-		]
-	},
-	{
-		"Path": "configuring-index-options.markdown",
-		"Name": "Configuring index options",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/using-analyzers"
-			}
-		]
-	},
-	{
-		"Path": "indexing-hierarchies.markdown",
-		"Name": "Indexing Hierarchical Data",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/indexing-hierarchical-data"
-			}
-		]
-	},
-	{
-		"Path": "indexing-related-documents.markdown",
-		"Name": "Indexing Related Documents",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/indexing-related-documents"
-			}
-		]
-	},
-	{
-		"Path": "live-projections.markdown",
-		"Name": "Live Projections",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "transformers/what-are-transformers"
-			}
-		]
-	},
-	{
-		"Path": "indexes-error-handling.markdown",
-		"Name": "Error handling in Indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/troubleshooting/debugging-index-errors"
-			}
-		]
-	},
-	{
-		"Path": "searching.markdown",
-		"Name": "Searching",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/searching"
-			}
-		]
-	},
-	{
-		"Path": "spatial-search.markdown",
-		"Name": "Spatial search",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/advanced/spatial-search"
-			},
-			{
-				"Version": 2.5,
-				"Key": "client-api/querying/static-indexes/spatial-search"
-			},
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/spatial"
-			}
-		]
-	},
-	{
-		"Path": "boosting.markdown",
-		"Name": "Boosting",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/boosting"
-			}
-		]
-	},
-	{
-		"Path": "suggestions.markdown",
-		"Name": "Suggestions",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/suggestions"
-			}
-		]
-	}
+[
+  {
+    "Path": "defining-static-index.markdown",
+    "Name": "Defining a static index",
+    "DiscussionId": "f56b393d-9757-4590-a187-bd6ece8fbfa3",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/creating-and-deploying"
+      }
+    ]
+  },
+  {
+    "Path": "customizing-results-order.markdown",
+    "Name": "Customizing results order using SortOptions",
+    "DiscussionId": "2153b1c1-2787-4f85-9853-6a69acf1fa55",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/customizing-results-order"
+      }
+    ]
+  },
+  {
+    "Path": "configuring-index-options.markdown",
+    "Name": "Configuring index options",
+    "DiscussionId": "b11a3f19-5b60-43dd-8d60-3663f3410bbc",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/using-analyzers"
+      }
+    ]
+  },
+  {
+    "Path": "indexing-hierarchies.markdown",
+    "Name": "Indexing Hierarchical Data",
+    "DiscussionId": "26f2258b-2e3d-4c1b-972d-4efda6ff203c",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/indexing-hierarchical-data"
+      }
+    ]
+  },
+  {
+    "Path": "indexing-related-documents.markdown",
+    "Name": "Indexing Related Documents",
+    "DiscussionId": "df21fbf9-4e41-4d3c-8f24-05bf41a8f99d",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/indexing-related-documents"
+      }
+    ]
+  },
+  {
+    "Path": "live-projections.markdown",
+    "Name": "Live Projections",
+    "DiscussionId": "224dda81-2a02-4408-912b-82000ade4cb7",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "transformers/what-are-transformers"
+      }
+    ]
+  },
+  {
+    "Path": "indexes-error-handling.markdown",
+    "Name": "Error handling in Indexes",
+    "DiscussionId": "e643169b-645c-472f-ae60-c170d7ece6a1",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/troubleshooting/debugging-index-errors"
+      }
+    ]
+  },
+  {
+    "Path": "searching.markdown",
+    "Name": "Searching",
+    "DiscussionId": "a83c0ca1-066c-4f53-b706-fd7d2b95ac81",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/searching"
+      }
+    ]
+  },
+  {
+    "Path": "spatial-search.markdown",
+    "Name": "Spatial search",
+    "DiscussionId": "623a7524-29e0-43b3-8c17-fa368d515558",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/advanced/spatial-search"
+      },
+      {
+        "Version": 2.5,
+        "Key": "client-api/querying/static-indexes/spatial-search"
+      },
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/spatial"
+      }
+    ]
+  },
+  {
+    "Path": "boosting.markdown",
+    "Name": "Boosting",
+    "DiscussionId": "46640cfd-99fc-4329-ae4b-f02f235cdc67",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/boosting"
+      }
+    ]
+  },
+  {
+    "Path": "suggestions.markdown",
+    "Name": "Suggestions",
+    "DiscussionId": "fbed3728-154c-40ab-be14-a7ea9470a911",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/suggestions"
+      }
+    ]
+  }
 ]

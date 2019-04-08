@@ -2,21 +2,23 @@
   {
     "Path": "standard-transactions.markdown",
     "Name": "Standard transactions",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/advanced/transaction-support"			
-			}
-		]
+    "DiscussionId": "d70eb69f-9ade-4844-985b-3feaa9804ba6",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/advanced/transaction-support"
+      }
+    ]
   },
   {
     "Path": "dtc-transactions.markdown",
     "Name": "DTC transactions",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/advanced/transaction-support#dtc-transactions"			
-			}
-		]
+    "DiscussionId": "3164ffd3-e0b9-465e-b0b8-9f9d6114d869",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/advanced/transaction-support#dtc-transactions"
+      }
+    ]
   }
 ]

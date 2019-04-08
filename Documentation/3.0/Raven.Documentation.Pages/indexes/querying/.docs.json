@@ -1,136 +1,151 @@
-﻿[
-	{
-		"Path": "basics.markdown",
-		"Name": "Basics",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/querying/using-linq-to-query-ravendb"
-			}
-		]
-	},
-	{
-		"Path": "filtering.markdown",
-		"Name": "Filtering",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "paging.markdown",
-		"Name": "Paging",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/querying/paging"
-			}
-		]
-	},
-	{
-		"Path": "sorting.markdown",
-		"Name": "Sorting",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "handling-document-relationships.markdown",
-		"Name": "Handling document relationships",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/querying/handling-document-relationships"
-			}
-		]
-	},
-	{
-		"Path": "projections.markdown",
-		"Name": "Projections",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "searching.markdown",
-		"Name": "Searching",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/querying/static-indexes/searching"
-			}
-		]
-	},
-	{
-		"Path": "intersection.markdown",
-		"Name": "Intersection",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/querying/intersection"
-			}
-		]
-	},
-	{
-		"Path": "suggestions.markdown",
-		"Name": "Suggestions",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/querying/static-indexes/suggestions"
-			}
-		]
-	},
-	{
-		"Path": "highlights.markdown",
-		"Name": "Highlights",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "spatial.markdown",
-		"Name": "Spatial",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/querying/static-indexes/spatial-search"
-			}
-		]
-	},
-	{
-		"Path": "faceted-search.markdown",
-		"Name": "Faceted search",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/faceted-search"
-			}
-		]
-	},
-	{
-		"Path": "dynamic-aggregation.markdown",
-		"Name": "Dynamic aggregation",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/querying/dynamic-aggregation"
-			}
-		]
-	},
-	{
-		"Path": "query-vs-document-query.markdown",
-		"Name": "Query vs DocumentQuery",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/querying/query-and-lucene-query"
-			}
-		]
-	},
-	{
-		"Path": "full-query-syntax.markdown",
-		"Name": "Full query syntax",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "faq/lucene-queries-examples"
-			},
-			{
-				"Version": 2.0,
-				"Key": "client-api/advanced/full-query-syntax"
-			}
-		]
-	}
+[
+  {
+    "Path": "basics.markdown",
+    "Name": "Basics",
+    "DiscussionId": "c5022bcf-c3bf-47ae-977d-027acf10c31e",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/querying/using-linq-to-query-ravendb"
+      }
+    ]
+  },
+  {
+    "Path": "filtering.markdown",
+    "Name": "Filtering",
+    "DiscussionId": "1a79bf78-9226-4272-acd5-91287cc85b63",
+    "Mappings": []
+  },
+  {
+    "Path": "paging.markdown",
+    "Name": "Paging",
+    "DiscussionId": "1a772b2c-ff26-4997-88e2-4a33d397bc23",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/querying/paging"
+      }
+    ]
+  },
+  {
+    "Path": "sorting.markdown",
+    "Name": "Sorting",
+    "DiscussionId": "a3e467a5-c7b1-4bdd-8291-69f86b84d5be",
+    "Mappings": []
+  },
+  {
+    "Path": "handling-document-relationships.markdown",
+    "Name": "Handling document relationships",
+    "DiscussionId": "b803e4e4-0c56-4666-9378-61b496dcab36",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/querying/handling-document-relationships"
+      }
+    ]
+  },
+  {
+    "Path": "projections.markdown",
+    "Name": "Projections",
+    "DiscussionId": "7e625ef8-d0be-4261-8d43-2447cd1cdf12",
+    "Mappings": []
+  },
+  {
+    "Path": "searching.markdown",
+    "Name": "Searching",
+    "DiscussionId": "08a01513-c406-4795-95b6-32471defb438",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/static-indexes/searching"
+      }
+    ]
+  },
+  {
+    "Path": "intersection.markdown",
+    "Name": "Intersection",
+    "DiscussionId": "bde2dc6c-1986-44c1-9b37-e0f0baa1e339",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/intersection"
+      }
+    ]
+  },
+  {
+    "Path": "suggestions.markdown",
+    "Name": "Suggestions",
+    "DiscussionId": "d82bbe20-9cf6-403f-ac2c-a14b0927379c",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/static-indexes/suggestions"
+      }
+    ]
+  },
+  {
+    "Path": "highlights.markdown",
+    "Name": "Highlights",
+    "DiscussionId": "6aedae41-7996-4756-af2a-c91c7f33dc45",
+    "Mappings": []
+  },
+  {
+    "Path": "spatial.markdown",
+    "Name": "Spatial",
+    "DiscussionId": "fd0c9f69-5079-4a0c-b23f-101f83fb7161",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/static-indexes/spatial-search"
+      }
+    ]
+  },
+  {
+    "Path": "faceted-search.markdown",
+    "Name": "Faceted search",
+    "DiscussionId": "315fbb8a-4e56-4a9e-a726-265b1dda7b7f",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/faceted-search"
+      }
+    ]
+  },
+  {
+    "Path": "dynamic-aggregation.markdown",
+    "Name": "Dynamic aggregation",
+    "DiscussionId": "034d8117-8085-4947-90db-cb1ff51d7d7a",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/querying/dynamic-aggregation"
+      }
+    ]
+  },
+  {
+    "Path": "query-vs-document-query.markdown",
+    "Name": "Query vs DocumentQuery",
+    "DiscussionId": "eccb6d03-cf7a-49cc-beed-594c3d25a9be",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/querying/query-and-lucene-query"
+      }
+    ]
+  },
+  {
+    "Path": "full-query-syntax.markdown",
+    "Name": "Full query syntax",
+    "DiscussionId": "8ee14b06-201f-48ad-9031-511c009485d5",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "faq/lucene-queries-examples"
+      },
+      {
+        "Version": 2.0,
+        "Key": "client-api/advanced/full-query-syntax"
+      }
+    ]
+  }
 ]

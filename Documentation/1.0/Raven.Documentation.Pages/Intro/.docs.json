@@ -1,57 +1,63 @@
-﻿[
-	{
-		"Path": "what-is-nosql.markdown",
-		"Name": "What is NoSQL",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "ravendb-in-a-nutshell.markdown",
-		"Name": "RavenDB in a nutshell",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "start/getting-started"
-			}
-		]
-	},
-	{
-		"Path": "basic-concepts.markdown",
-		"Name": "Basic concepts",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "start/getting-started"
-			}
-		]
-	},
-	{
-		"Path": "safe-by-default.markdown",
-		"Name": "Safe by default",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/quickstart",
-		"Name": "Quickstart tutorials",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "start/getting-started"
-			}
-		]
-	},
-	{
-		"Path": "system-requirements.markdown",
-		"Name": "System requirements",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/system-requirements"
-			}
-		]
-	},
-	{
-		"Path": "building-from-source.markdown",
-		"Name": "Building from source",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "what-is-nosql.markdown",
+    "Name": "What is NoSQL",
+    "DiscussionId": "32ec684e-1ecc-4edc-847e-3b906081af77",
+    "Mappings": []
+  },
+  {
+    "Path": "ravendb-in-a-nutshell.markdown",
+    "Name": "RavenDB in a nutshell",
+    "DiscussionId": "73960717-287d-41ef-8f8b-5bc77caaf4a1",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "start/getting-started"
+      }
+    ]
+  },
+  {
+    "Path": "basic-concepts.markdown",
+    "Name": "Basic concepts",
+    "DiscussionId": "8862ce2a-ebb0-4bea-bd7a-4490fc6dbc57",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "start/getting-started"
+      }
+    ]
+  },
+  {
+    "Path": "safe-by-default.markdown",
+    "Name": "Safe by default",
+    "DiscussionId": "5c8121b0-a41c-4c41-8c67-3479403a5c9e",
+    "Mappings": []
+  },
+  {
+    "Path": "/quickstart",
+    "Name": "Quickstart tutorials",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "start/getting-started"
+      }
+    ]
+  },
+  {
+    "Path": "system-requirements.markdown",
+    "Name": "System requirements",
+    "DiscussionId": "7275235a-adbc-466f-81ec-f67b918dcc84",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/system-requirements"
+      }
+    ]
+  },
+  {
+    "Path": "building-from-source.markdown",
+    "Name": "Building from source",
+    "DiscussionId": "68bd7989-a0b3-45d3-9e7f-30b26401c320",
+    "Mappings": []
+  }
 ]

@@ -2,21 +2,25 @@
   {
     "Path": "upload.markdown",
     "Name": "Upload",
+    "DiscussionId": "bda5cc32-4b12-47a0-8b45-740f9661df07",
     "Mappings": []
   },
   {
     "Path": "download.markdown",
     "Name": "Download",
+    "DiscussionId": "cbe7e631-b059-4c4f-92b9-ce044ac657f6",
     "Mappings": []
   },
   {
     "Path": "rename.markdown",
     "Name": "Rename",
+    "DiscussionId": "d920ee9d-ebdb-4d7f-a7c2-f1f8c7e5e948",
     "Mappings": []
   },
   {
     "Path": "delete.markdown",
     "Name": "Delete",
+    "DiscussionId": "bbcd9a29-e5f2-4391-a2c4-6ccdbabd0602",
     "Mappings": []
   },
   {
@@ -37,6 +41,7 @@
   {
     "Path": "copy.markdown",
     "Name": "Copy",
+    "DiscussionId": "d503b6b0-b1dc-4d28-863c-ff37812bf513",
     "Mappings": []
   }
 ]

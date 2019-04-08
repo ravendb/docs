@@ -1,46 +1,50 @@
-﻿[
-	{
-		"Path": "document-key-generation.markdown",
-		"Name": "Document key generation",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "theory/document-key-generation"
-			}
-		]
-	},
-	{
-		"Path": "authorization-bundle-design.markdown",
-		"Name": "Bundles : Authorization bundle design notes",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/bundles/authorization-bundle-design"
-			},
-			{
-				"Version": 2.0,
-				"Key": "server/extending/bundles/authorization-bundle-design"
-			}
-		]
-	},
-	{
-		"Path": "advanced-replication-details.markdown",
-		"Name": "Replication : Advanced replication details",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/scaling-out/replication/advanced-replication-details"
-			}
-		]
-	},
-	{
-		"Path": "long-shutdown-times.markdown",
-		"Name": "Server : Long shutdown times",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/administration/long-shutdown-times"
-			}
-		]
-	}
+[
+  {
+    "Path": "document-key-generation.markdown",
+    "Name": "Document key generation",
+    "DiscussionId": "a2c24c6d-fe7f-498d-9d58-47ed99d0315c",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "theory/document-key-generation"
+      }
+    ]
+  },
+  {
+    "Path": "authorization-bundle-design.markdown",
+    "Name": "Bundles : Authorization bundle design notes",
+    "DiscussionId": "b5858250-c71c-4426-b01d-48f331614d99",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/bundles/authorization-bundle-design"
+      },
+      {
+        "Version": 2.0,
+        "Key": "server/extending/bundles/authorization-bundle-design"
+      }
+    ]
+  },
+  {
+    "Path": "advanced-replication-details.markdown",
+    "Name": "Replication : Advanced replication details",
+    "DiscussionId": "aa6e9b4e-3759-4c6f-8b56-b4eef356f8fc",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/scaling-out/replication/advanced-replication-details"
+      }
+    ]
+  },
+  {
+    "Path": "long-shutdown-times.markdown",
+    "Name": "Server : Long shutdown times",
+    "DiscussionId": "0305131e-fd68-44ec-9038-3cb979e7d6ae",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/administration/long-shutdown-times"
+      }
+    ]
+  }
 ]

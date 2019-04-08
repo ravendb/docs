@@ -1,32 +1,36 @@
-﻿[
-	{
-		"Path": "indexes-view.markdown",
-		"Name": "Indexes View",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/indexes"
-			}
-		]
-	},
-	{
-		"Path": "index-edit-view.markdown",
-		"Name": "Index Edit View",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/indexes"
-			}
-		]
-	},
-	{
-		"Path": "transformers-view.markdown",
-		"Name": "Transformers View",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "transformer-edit-view.markdown",
-		"Name": "Transformer Edit View",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "indexes-view.markdown",
+    "Name": "Indexes View",
+    "DiscussionId": "0552c05f-33e9-4c5e-b286-e729cf724a51",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/indexes"
+      }
+    ]
+  },
+  {
+    "Path": "index-edit-view.markdown",
+    "Name": "Index Edit View",
+    "DiscussionId": "a1fabb8d-f19d-46c8-b417-b065a6db5f1c",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/indexes"
+      }
+    ]
+  },
+  {
+    "Path": "transformers-view.markdown",
+    "Name": "Transformers View",
+    "DiscussionId": "c7a2bf8b-54c0-4156-940e-d583dc55e1cc",
+    "Mappings": []
+  },
+  {
+    "Path": "transformer-edit-view.markdown",
+    "Name": "Transformer Edit View",
+    "DiscussionId": "0170553f-5ec9-4e4a-8708-b5410a189714",
+    "Mappings": []
+  }
 ]

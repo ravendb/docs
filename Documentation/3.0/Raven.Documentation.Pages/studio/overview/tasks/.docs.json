@@ -1,42 +1,46 @@
-﻿[
-	{
-		"Path": "import-export-database.markdown",
-		"Name": "Import & Export Database",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/tasks"
-			}
-		]
-	},
-	{
-		"Path": "toggle-indexing.markdown",
-		"Name": "Toggle Indexing",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/tasks"
-			}
-		]
-	},
-	{
-		"Path": "create-sample-data.markdown",
-		"Name": "Create Sample Data",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/tasks"
-			}
-		]
-	},
-	{
-		"Path": "csv-import.markdown",
-		"Name": "CSV Import",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/tasks"
-			}
-		]
-	}
+[
+  {
+    "Path": "import-export-database.markdown",
+    "Name": "Import & Export Database",
+    "DiscussionId": "48630b3c-a206-4832-bec5-412be216bb63",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/tasks"
+      }
+    ]
+  },
+  {
+    "Path": "toggle-indexing.markdown",
+    "Name": "Toggle Indexing",
+    "DiscussionId": "439e33b3-c777-4bd1-910b-a1400dca79a8",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/tasks"
+      }
+    ]
+  },
+  {
+    "Path": "create-sample-data.markdown",
+    "Name": "Create Sample Data",
+    "DiscussionId": "37213977-9c0a-4248-8c76-9db42b65605a",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/tasks"
+      }
+    ]
+  },
+  {
+    "Path": "csv-import.markdown",
+    "Name": "CSV Import",
+    "DiscussionId": "ef4acc90-1dba-4c36-a9a1-3825fe9098ed",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/tasks"
+      }
+    ]
+  }
 ]

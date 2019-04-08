@@ -1,12 +1,13 @@
-﻿[
-	{
-		"Path": "mvc-starter-kit.markdown",
-		"Name": "MVC Starter Kit",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "samples/mvc/createAspNetMVC4Project"
-			}
-		]
-	}
+[
+  {
+    "Path": "mvc-starter-kit.markdown",
+    "Name": "MVC Starter Kit",
+    "DiscussionId": "47e0f4a8-fdc6-4866-a572-ca03c43f4844",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "samples/mvc/createAspNetMVC4Project"
+      }
+    ]
+  }
 ]

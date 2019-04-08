@@ -41,6 +41,16 @@
 
         public string RelatedArticlesContent { get; set; }
 
+        public string DiscussionId { get; set; }
+
+        public string GetDiscussionKey()
+        {
+            if (string.IsNullOrEmpty(DiscussionId))
+                return null;
+
+            return $"{Version}/{Language.ToString().ToLowerInvariant()}/{DiscussionId}";
+        }
+
 		public string GetUniqueKey()
 		{
 			var str = string.Concat(this.Version, this.Language.ToString().ToLowerInvariant(), this.Key);

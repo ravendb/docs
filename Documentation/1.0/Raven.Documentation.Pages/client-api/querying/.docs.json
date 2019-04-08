@@ -1,62 +1,67 @@
-﻿[
-	{
-		"Path": "using-linq-to-query-ravendb.markdown",
-		"Name": "Using Linq to query RavenDB indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/basics"
-			}
-		]
-	},
-	{
-		"Path": "paging.markdown",
-		"Name": "Paging",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/paging"
-			}
-		]
-	},
-	{
-		"Path": "stale-indexes.markdown",
-		"Name": "Stale indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/stale-indexes"
-			}
-		]
-	},
-	{
-		"Path": "/static-indexes",
-		"Name": "Static indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/creating-and-deploying"
-			}
-		]
-	},
-	{
-		"Path": "handling-document-relationships.markdown",
-		"Name": "Handling document relationships",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/handling-document-relationships"
-			}
-		]
-	},
-	{
-		"Path": "polymorphism.markdown",
-		"Name": "Polymorphism",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/indexing-polymorphic-data"
-			}
-		]
-	}
+[
+  {
+    "Path": "using-linq-to-query-ravendb.markdown",
+    "Name": "Using Linq to query RavenDB indexes",
+    "DiscussionId": "8b209130-cf55-45d3-8296-a71c0276644a",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/basics"
+      }
+    ]
+  },
+  {
+    "Path": "paging.markdown",
+    "Name": "Paging",
+    "DiscussionId": "403cbb85-f54d-41a0-973a-57507dd8c520",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/paging"
+      }
+    ]
+  },
+  {
+    "Path": "stale-indexes.markdown",
+    "Name": "Stale indexes",
+    "DiscussionId": "2cf8bed2-d1aa-486a-b483-345189ffed52",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/stale-indexes"
+      }
+    ]
+  },
+  {
+    "Path": "/static-indexes",
+    "Name": "Static indexes",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/creating-and-deploying"
+      }
+    ]
+  },
+  {
+    "Path": "handling-document-relationships.markdown",
+    "Name": "Handling document relationships",
+    "DiscussionId": "724da4a4-f6e2-4244-a2ea-3f46c8e3e745",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/handling-document-relationships"
+      }
+    ]
+  },
+  {
+    "Path": "polymorphism.markdown",
+    "Name": "Polymorphism",
+    "DiscussionId": "ff007f54-5a82-4771-b0b0-44c479e8c0ef",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/indexing-polymorphic-data"
+      }
+    ]
+  }
 ]

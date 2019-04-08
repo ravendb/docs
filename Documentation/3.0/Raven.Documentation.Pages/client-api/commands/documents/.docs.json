@@ -2,21 +2,25 @@
   {
     "Path": "put.markdown",
     "Name": "Put",
+    "DiscussionId": "aaa3701f-8ec8-4efc-a595-6cec814f3ae2",
     "Mappings": []
   },
   {
     "Path": "get.markdown",
     "Name": "Get",
+    "DiscussionId": "8dd8d8af-7b5a-43e8-937e-dbb11ce66408",
     "Mappings": []
   },
   {
     "Path": "delete.markdown",
     "Name": "Delete",
+    "DiscussionId": "f28ae9b1-37ac-42b5-ac84-482947947b88",
     "Mappings": []
   },
   {
     "Path": "stream.markdown",
     "Name": "Stream",
+    "DiscussionId": "0b9e84ff-8e35-4174-b61e-c714acec8fad",
     "Mappings": []
   },
   {

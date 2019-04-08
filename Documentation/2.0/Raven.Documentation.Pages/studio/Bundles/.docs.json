@@ -1,72 +1,79 @@
-﻿[
-	{
-		"Path": "encryption.markdown",
-		"Name": "Bundle: Encryption - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/walkthroughs/how-to-setup-encryption"
-			}
-		]
-	},
-	{
-		"Path": "quotas.markdown",
-		"Name": "Bundle: Quotas - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/settings/quotas"
-			}
-		]
-	},
-	{
-		"Path": "replication.markdown",
-		"Name": "Bundle: Replication - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/settings/replication"
-			}
-		]
-	},
-	{
-		"Path": "replication-walkthrough.markdown",
-		"Name": "Bundle: Replication Walkthrough - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/walkthroughs/how-to-setup-replication"
-			}
-		]
-	},
-	{
-		"Path": "versioning.markdown",
-		"Name": "Bundle: Versioning - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/settings/versioning"
-			}
-		]
-	},
-	{
-		"Path": "authorization.markdown",
-		"Name": "Bundle: Authorization - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/management/api-keys"
-			}
-		]
-	},
-	{
-		"Path": "periodicbackup.markdown",
-		"Name": "Bundle: Periodic Backup - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/settings/periodic-export"
-			}
-		]
-	}
+[
+  {
+    "Path": "encryption.markdown",
+    "Name": "Bundle: Encryption - Studio",
+    "DiscussionId": "3ea9234b-9fdf-4ebc-bf2a-7a6cee01e5a8",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/walkthroughs/how-to-setup-encryption"
+      }
+    ]
+  },
+  {
+    "Path": "quotas.markdown",
+    "Name": "Bundle: Quotas - Studio",
+    "DiscussionId": "713417e4-41e2-4deb-9f69-a0521d69e08f",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/settings/quotas"
+      }
+    ]
+  },
+  {
+    "Path": "replication.markdown",
+    "Name": "Bundle: Replication - Studio",
+    "DiscussionId": "fbc83f92-fb68-4e95-8a6e-9badae44a8e0",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/settings/replication"
+      }
+    ]
+  },
+  {
+    "Path": "replication-walkthrough.markdown",
+    "Name": "Bundle: Replication Walkthrough - Studio",
+    "DiscussionId": "fe7a8ee5-bab3-4773-8934-b98fcb0114f6",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/walkthroughs/how-to-setup-replication"
+      }
+    ]
+  },
+  {
+    "Path": "versioning.markdown",
+    "Name": "Bundle: Versioning - Studio",
+    "DiscussionId": "bc46204c-afa7-429b-bdcf-75a51df9dcf5",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/settings/versioning"
+      }
+    ]
+  },
+  {
+    "Path": "authorization.markdown",
+    "Name": "Bundle: Authorization - Studio",
+    "DiscussionId": "3888f308-92b6-4e2d-bb51-07891cae22fc",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/management/api-keys"
+      }
+    ]
+  },
+  {
+    "Path": "periodicbackup.markdown",
+    "Name": "Bundle: Periodic Backup - Studio",
+    "DiscussionId": "cea78b17-e32c-45d4-affe-abaacf13b194",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/settings/periodic-export"
+      }
+    ]
+  }
 ]

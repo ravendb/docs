@@ -1,218 +1,232 @@
-﻿[
-	{
-		"Path": "quotas.markdown",
-		"Name": "Bundle: Quotas",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/bundles/quotas"
-			},
-			{
-				"Version": 2.5,
-				"Key": "server/extending/bundles/quotas"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/quotas"
-			}
-		]
-	},
-	{
-		"Path": "versioning.markdown",
-		"Name": "Bundle: Versioning",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/bundles/versioning"
-			},
-			{
-				"Version": 2.5,
-				"Key": "server/extending/bundles/versioning"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/versioning"
-			}
-		]
-	},
-	{
-		"Path": "morelikethis.markdown",
-		"Name": "Bundle: More Like This",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/bundles/morelikethis"
-			},
-			{
-				"Version": 2.5,
-				"Key": "server/extending/bundles/morelikethis"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/more-like-this"
-			}
-		]
-	},
-	{
-		"Path": "unique-constraints.markdown",
-		"Name": "Bundle: Unique Constraints",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/bundles/unique-constraints"
-			},
-			{
-				"Version": 2.5,
-				"Key": "server/extending/bundles/unique-constraints"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/unique-constraints"
-			}
-		]
-	},
-	{
-		"Path": "authorization.markdown",
-		"Name": "Bundle: Authorization",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/bundles/authorization"
-			},
-			{
-				"Version": 2.5,
-				"Key": "server/extending/bundles/authorization"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/authorization"
-			}
-		]
-	},
-	{
-		"Path": "authorization-bundle-design.markdown",
-		"Name": "Bundle: Authorization Bundle Design",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/bundles/authorization-bundle-design"
-			},
-			{
-				"Version": 2.5,
-				"Key": "server/extending/bundles/authorization-bundle-design"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/kb/authorization-bundle-design"
-			}
-		]
-	},
-	{
-		"Path": "cascade-delete.markdown",
-		"Name": "Bundle: Cascade Delete",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/bundles/cascade-delete"
-			},
-			{
-				"Version": 2.5,
-				"Key": "server/extending/bundles/cascade-delete"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/cascade-delete"
-			}
-		]
-	},
-	{
-		"Path": "expiration.markdown",
-		"Name": "Bundle: Expiration",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/bundles/expiration"
-			},
-			{
-				"Version": 2.5,
-				"Key": "server/extending/bundles/expiration"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/expiration"
-			}
-		]
-	},
-	{
-		"Path": "encryption.markdown",
-		"Name": "Bundle: Encryption",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/encryption"
-			}
-		]
-	},
-	{
-		"Path": "compression.markdown",
-		"Name": "Bundle: Compression",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/compression"
-			}
-		]
-	},
-	{
-		"Path": "periodic-backup.markdown",
-		"Name": "Bundle: Periodic Backup",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/periodic-export"
-			}
-		]
-	},
-	{
-		"Path": "indexed-properties.markdown",
-		"Name": "Bundle: Indexed Properties",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "server/extending/bundles/scripted-index-results"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/scripted-index-results"
-			}
-		]
-	},
-	{
-		"Path": "sql-replication.markdown",
-		"Name": "Bundle: SQL Replication",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/sql-replication/basics"
-			}
-		]
-	},
-	{
-		"Path": "index-replication.markdown",
-		"Name": "Index Replication Bundle",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/bundles/index-replication"
-			},
-			{
-				"Version": 2.5,
-				"Key": "server/extending/bundles/index-replication"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/replication"
-			}
-		]
-	}
+[
+  {
+    "Path": "quotas.markdown",
+    "Name": "Bundle: Quotas",
+    "DiscussionId": "9a02b715-32cc-407f-918d-cf4e06e8228c",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/bundles/quotas"
+      },
+      {
+        "Version": 2.5,
+        "Key": "server/extending/bundles/quotas"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/quotas"
+      }
+    ]
+  },
+  {
+    "Path": "versioning.markdown",
+    "Name": "Bundle: Versioning",
+    "DiscussionId": "dbd9721f-769d-40ff-8166-28a77a286af0",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/bundles/versioning"
+      },
+      {
+        "Version": 2.5,
+        "Key": "server/extending/bundles/versioning"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/versioning"
+      }
+    ]
+  },
+  {
+    "Path": "morelikethis.markdown",
+    "Name": "Bundle: More Like This",
+    "DiscussionId": "cbbf93ad-03e8-4a69-9778-b453f86acef0",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/bundles/morelikethis"
+      },
+      {
+        "Version": 2.5,
+        "Key": "server/extending/bundles/morelikethis"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/more-like-this"
+      }
+    ]
+  },
+  {
+    "Path": "unique-constraints.markdown",
+    "Name": "Bundle: Unique Constraints",
+    "DiscussionId": "3c3f8829-572e-4225-91c2-59dac635b535",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/bundles/unique-constraints"
+      },
+      {
+        "Version": 2.5,
+        "Key": "server/extending/bundles/unique-constraints"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/unique-constraints"
+      }
+    ]
+  },
+  {
+    "Path": "authorization.markdown",
+    "Name": "Bundle: Authorization",
+    "DiscussionId": "d8fd5cc8-33c4-4b72-a362-37de9baffb5a",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/bundles/authorization"
+      },
+      {
+        "Version": 2.5,
+        "Key": "server/extending/bundles/authorization"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/authorization"
+      }
+    ]
+  },
+  {
+    "Path": "authorization-bundle-design.markdown",
+    "Name": "Bundle: Authorization Bundle Design",
+    "DiscussionId": "96bed0b8-010c-4ed3-a73a-68c68c9334b1",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/bundles/authorization-bundle-design"
+      },
+      {
+        "Version": 2.5,
+        "Key": "server/extending/bundles/authorization-bundle-design"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/kb/authorization-bundle-design"
+      }
+    ]
+  },
+  {
+    "Path": "cascade-delete.markdown",
+    "Name": "Bundle: Cascade Delete",
+    "DiscussionId": "5cb3fe75-3ae3-4aef-8fb0-b6505ec19cb4",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/bundles/cascade-delete"
+      },
+      {
+        "Version": 2.5,
+        "Key": "server/extending/bundles/cascade-delete"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/cascade-delete"
+      }
+    ]
+  },
+  {
+    "Path": "expiration.markdown",
+    "Name": "Bundle: Expiration",
+    "DiscussionId": "b0a0a601-a3ab-4682-8b10-aff8c7c252ae",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/bundles/expiration"
+      },
+      {
+        "Version": 2.5,
+        "Key": "server/extending/bundles/expiration"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/expiration"
+      }
+    ]
+  },
+  {
+    "Path": "encryption.markdown",
+    "Name": "Bundle: Encryption",
+    "DiscussionId": "8a33ee12-1126-445a-a588-e2875645b784",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/encryption"
+      }
+    ]
+  },
+  {
+    "Path": "compression.markdown",
+    "Name": "Bundle: Compression",
+    "DiscussionId": "df1238bf-d5dd-4eea-a90e-fb44f568d389",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/compression"
+      }
+    ]
+  },
+  {
+    "Path": "periodic-backup.markdown",
+    "Name": "Bundle: Periodic Backup",
+    "DiscussionId": "bb6b3c33-ac1e-43b4-92bd-5a2278db0204",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/periodic-export"
+      }
+    ]
+  },
+  {
+    "Path": "indexed-properties.markdown",
+    "Name": "Bundle: Indexed Properties",
+    "DiscussionId": "da06494d-d05c-47a2-b214-bc7f10c6a6e3",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "server/extending/bundles/scripted-index-results"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/scripted-index-results"
+      }
+    ]
+  },
+  {
+    "Path": "sql-replication.markdown",
+    "Name": "Bundle: SQL Replication",
+    "DiscussionId": "c9a4bd46-8004-480b-8fd6-3d13cc284d03",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/sql-replication/basics"
+      }
+    ]
+  },
+  {
+    "Path": "index-replication.markdown",
+    "Name": "Index Replication Bundle",
+    "DiscussionId": "97a6bceb-4c42-486c-9919-47f7027cab5e",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/bundles/index-replication"
+      },
+      {
+        "Version": 2.5,
+        "Key": "server/extending/bundles/index-replication"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/replication"
+      }
+    ]
+  }
 ]

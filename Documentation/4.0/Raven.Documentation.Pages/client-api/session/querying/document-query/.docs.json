@@ -2,6 +2,7 @@
   {
     "Path": "what-is-document-query.markdown",
     "Name": "What is a Document Query",
+    "DiscussionId": "3189ffa9-ee18-4972-87f7-b0678e8218cd",
     "Mappings": [
       {
         "Version": 3.0,
@@ -12,6 +13,7 @@
   {
     "Path": "how-to-use-not-operator.markdown",
     "Name": "How to Use NOT Operator",
+    "DiscussionId": "5673dffd-2469-4198-b514-87c6ac28660a",
     "Mappings": [
       {
         "Version": 3.0,
@@ -22,6 +24,7 @@
   {
     "Path": "how-to-use-lucene.markdown",
     "Name": "How to Use Lucene",
+    "DiscussionId": "34565381-79bf-4589-888d-3a6409f79261",
     "Mappings": []
   }
 ]

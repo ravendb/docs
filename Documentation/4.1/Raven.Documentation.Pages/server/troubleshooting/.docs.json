@@ -1,12 +1,13 @@
 [
-    {
-        "Path": "debug-routes.markdown",
-        "Name": "Debug Endpoints",
-        "Mappings": [
-            {
-                "Version": 4.1,
-                "Key": "server/troubleshooting/debug-routes"
-            }
-        ]
-    }
+  {
+    "Path": "debug-routes.markdown",
+    "Name": "Debug Endpoints",
+    "DiscussionId": "916372ea-9b0a-4f9c-aff8-87dd1ca9a16d",
+    "Mappings": [
+      {
+        "Version": 4.1,
+        "Key": "server/troubleshooting/debug-routes"
+      }
+    ]
+  }
 ]

@@ -2,11 +2,13 @@
   {
     "Path": "get-serverwide-client-configuration.markdown",
     "Name": "Get Server Wide Client Configuration",
+    "DiscussionId": "be467950-61d3-4b40-b097-c42a967bd42d",
     "Mappings": []
   },
   {
     "Path": "put-serverwide-client-configuration.markdown",
     "Name": "Put Server Wide Client Configuration",
+    "DiscussionId": "5fff7b46-1ad7-4e81-9136-b99bc9ea7302",
     "Mappings": []
   }
 ]

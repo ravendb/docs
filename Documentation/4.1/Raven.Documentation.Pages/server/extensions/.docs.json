@@ -2,6 +2,7 @@
   {
     "Path": "expiration.markdown",
     "Name": "Expiration",
+    "DiscussionId": "27a7c957-d31a-4098-8c61-57b7b53f3b13",
     "Mappings": [
       {
         "Version": 3.5,
@@ -12,6 +13,7 @@
   {
     "Path": "revisions.markdown",
     "Name": "Revisions",
+    "DiscussionId": "3d192550-88e6-41c3-b069-e505e4fa1645",
     "Mappings": [
       {
         "Version": 3.5,

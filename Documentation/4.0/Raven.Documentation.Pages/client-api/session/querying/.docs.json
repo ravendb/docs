@@ -7,6 +7,7 @@
   {
     "Path": "how-to-query.markdown",
     "Name": "How to Query",
+    "DiscussionId": "5e1a2715-901c-463c-b49f-52509266af02",
     "Mappings": [
       {
         "Version": 1.0,
@@ -17,6 +18,7 @@
   {
     "Path": "how-to-stream-query-results.markdown",
     "Name": "How to Stream Query Results",
+    "DiscussionId": "c96a370e-8d0d-4e8f-93b3-03a8105e8b0e",
     "Mappings": [
       {
         "Version": 2.5,
@@ -27,11 +29,13 @@
   {
     "Path": "how-to-customize-query.markdown",
     "Name": "How to Customize Query",
+    "DiscussionId": "73dfb483-1fca-4fca-a1a4-15c7366b4775",
     "Mappings": []
   },
   {
     "Path": "how-to-project-query-results.markdown",
     "Name": "How to Project Query Results",
+    "DiscussionId": "7608822d-893e-4f9e-9011-9ec146af73db",
     "Mappings": [
       {
         "Version": 2.0,
@@ -46,11 +50,13 @@
   {
     "Path": "how-to-perform-group-by-query.markdown",
     "Name": "How to Perform Group By Query",
+    "DiscussionId": "9d8bb754-54d4-47dc-bb5d-b101561fc861",
     "Mappings": []
   },
   {
     "Path": "how-to-perform-a-faceted-search.markdown",
     "Name": "How to Perform a Faceted Search",
+    "DiscussionId": "73756544-0c4f-4d32-a074-d9292cbe4bdb",
     "Mappings": [
       {
         "Version": 1.0,
@@ -61,6 +67,7 @@
   {
     "Path": "how-to-query-a-spatial-index.markdown",
     "Name": "How to Query a Spatial Index",
+    "DiscussionId": "1837a6f4-9e57-4ce5-9336-bbf61661a1e8",
     "Mappings": [
       {
         "Version": 2.0,
@@ -71,11 +78,13 @@
   {
     "Path": "how-to-get-query-statistics.markdown",
     "Name": "How to Get Query Statistics",
+    "DiscussionId": "6c7d2633-e0ec-4b8f-8ddd-43470f24aa29",
     "Mappings": []
   },
   {
     "Path": "how-to-use-intersect.markdown",
     "Name": "How to Use Intersect",
+    "DiscussionId": "3f14b363-a022-4bca-91ec-eb1b1b2ed230",
     "Mappings": [
       {
         "Version": 2.0,
@@ -86,6 +95,7 @@
   {
     "Path": "how-to-perform-queries-lazily.markdown",
     "Name": "How to Perform Queries Lazily",
+    "DiscussionId": "91dc202b-593a-4bcc-bc6e-c95084e0583e",
     "Mappings": [
       {
         "Version": 2.0,
@@ -96,6 +106,7 @@
   {
     "Path": "how-to-work-with-suggestions.markdown",
     "Name": "How to Work With Suggestions",
+    "DiscussionId": "059ce390-dbea-44fe-ae7a-86f371298f41",
     "Mappings": [
       {
         "Version": 2.0,
@@ -106,21 +117,25 @@
   {
     "Path": "how-to-use-morelikethis.markdown",
     "Name": "How to Use MoreLikeThis",
+    "DiscussionId": "977915e5-9b87-43b0-9c31-14c980ee9d36",
     "Mappings": []
   },
   {
     "Path": "how-to-use-search.markdown",
     "Name": "How to Use Search",
+    "DiscussionId": "133fe009-7704-42a4-9647-5ee2df188c31",
     "Mappings": []
   },
   {
     "Path": "how-to-use-regex.markdown",
     "Name": "How to Use Regex",
+    "DiscussionId": "48bc68f2-db18-4b4e-8cc4-4d29877ae9c0",
     "Mappings": []
   },
   {
     "Path": "how-to-query-with-exact-match.markdown",
     "Name": "How to Query With Exact Match",
+    "DiscussionId": "b1c0918f-5fc3-4991-809d-c9014da73caf",
     "Mappings": []
   }
 ]

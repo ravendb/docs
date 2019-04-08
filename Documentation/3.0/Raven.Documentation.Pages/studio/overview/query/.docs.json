@@ -1,17 +1,19 @@
-﻿[
-	{
-		"Path": "query-view.markdown",
-		"Name": "Query View",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "reporting-view.markdown",
-		"Name": "Reporting View",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "studio/dynamic-reporting"
-			}
-		]
-	}
+[
+  {
+    "Path": "query-view.markdown",
+    "Name": "Query View",
+    "DiscussionId": "fdba593e-896b-42c5-bf5c-4fe9053aea5b",
+    "Mappings": []
+  },
+  {
+    "Path": "reporting-view.markdown",
+    "Name": "Reporting View",
+    "DiscussionId": "574f20bb-20be-4c9c-ab48-0cefe9628a08",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "studio/dynamic-reporting"
+      }
+    ]
+  }
 ]

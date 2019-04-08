@@ -2,6 +2,7 @@
   {
     "Path": "what-are-conventions.markdown",
     "Name": "What are conventions?",
+    "DiscussionId": "ed99c297-a13f-4571-bc01-8044fc6fb0fd",
     "Mappings": []
   },
   {
@@ -12,26 +13,31 @@
   {
     "Path": "querying.markdown",
     "Name": "Querying",
+    "DiscussionId": "edb3b8d0-fd0e-4cb9-8853-7357fc69e5c9",
     "Mappings": []
   },
   {
     "Path": "caching.markdown",
     "Name": "Caching",
+    "DiscussionId": "de284f38-38aa-46e7-babc-59443224fbdf",
     "Mappings": []
   },
   {
     "Path": "replication.markdown",
     "Name": "Replication",
+    "DiscussionId": "506788d8-3e0e-4fde-b6a7-1951ad065c8e",
     "Mappings": []
   },
   {
     "Path": "request-handling.markdown",
     "Name": "Request handling",
+    "DiscussionId": "d7120cf3-8d61-4121-a79f-f8500ee016aa",
     "Mappings": []
   },
   {
     "Path": "misc.markdown",
     "Name": "Misc",
+    "DiscussionId": "0fb9ed66-b1aa-4801-a6ec-6880f60694af",
     "Mappings": []
   }
 ]

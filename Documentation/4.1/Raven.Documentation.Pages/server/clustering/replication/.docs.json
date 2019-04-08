@@ -2,45 +2,40 @@
   {
     "Path": "replication.markdown",
     "Name": "How Replication Works",
-    "Mappings": [],
-    "IsPlaceholder": "true"
+    "DiscussionId": "30aa8f72-b9d9-4fac-81e7-b22d3f49f852",
+    "Mappings": []
   },
   {
     "Path": "replication-conflicts.markdown",
     "Name": "Replication Conflicts",
-    "Mappings": [],
-    "IsPlaceholder": "true"
+    "DiscussionId": "0c7e91aa-2c95-4f0e-9b1b-d6010bd58e50",
+    "Mappings": []
   },
   {
     "Path": "change-vector.markdown",
     "Name": "Change Vector",
-    "Mappings": [],
-    "IsPlaceholder": "true"
+    "DiscussionId": "d0cee9be-80bc-44ca-824f-c2fad458f421",
+    "Mappings": []
   },
   {
     "Path": "advanced-replication.markdown",
     "Name": "Advanced Replication",
-    "Mappings": [],
-    "IsPlaceholder": "true"
+    "DiscussionId": "0eeb219d-d93a-4eb6-8044-c12b7de8d97d",
+    "Mappings": []
   },
-    
-    {
-        "Path": "replication-and-embedded-instance.markdown",
-        "Name": "Replication And Embedded Instances",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "server/scaling-out/replication/replication-and-embedded-instance"
-            },
-            {
-                "Version": 1.0,
-                "Key": "server/scaling-out/replication/from-embedded-server"
-            }
-        ],
-        "SupportedVersions": 
-        [
-            "4.1",
-            "4.2"
-        ]  
-    }   
+  {
+    "Path": "replication-and-embedded-instance.markdown",
+    "Name": "Replication And Embedded Instances",
+    "DiscussionId": "82fa14e3-c45b-432d-a1e6-d0ccd466e88b",
+    "Mappings": [
+      {
+        "Version": 3.5,
+        "Key": "server/scaling-out/replication/replication-and-embedded-instance"
+      },
+      {
+        "Version": 1.0,
+        "Key": "server/scaling-out/replication/from-embedded-server"
+      }
+    ]
+  }
 ]

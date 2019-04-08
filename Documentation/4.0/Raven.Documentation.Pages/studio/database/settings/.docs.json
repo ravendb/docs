@@ -2,26 +2,31 @@
   {
     "Path": "database-record.markdown",
     "Name": "Database Record",
+    "DiscussionId": "7906806a-aee1-4e85-9ef5-08f8fa08e0d5",
     "Mappings": []
   },
   {
     "Path": "conflict-resolution.markdown",
     "Name": "Conflict Resolution",
+    "DiscussionId": "7b0e2650-d3da-4256-803c-39c6f6d4076e",
     "Mappings": []
   },
   {
     "Path": "client-configuration-per-database.markdown",
     "Name": "Client Configuration",
+    "DiscussionId": "f6a41924-4b98-4ca1-b94d-73cf477a1008",
     "Mappings": []
   },
   {
     "Path": "document-expiration.markdown",
     "Name": "Document Expiraton",
+    "DiscussionId": "c5633531-4b5d-4816-97d4-82d351f3f6a2",
     "Mappings": []
   },
   {
     "Path": "manage-database-group.markdown",
     "Name": "Manage Database Group",
+    "DiscussionId": "2b0b0669-1254-4bd2-8936-029b2099e261",
     "Mappings": []
   }
 ]

@@ -1,102 +1,113 @@
-﻿[
-	{
-		"Path": "encryption.markdown",
-		"Name": "Bundle: Encryption - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/walkthroughs/how-to-setup-encryption"
-			}
-		]
-	},
-	{
-		"Path": "quotas.markdown",
-		"Name": "Bundle: Quotas - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/settings/quotas"
-			}
-		]
-	},
-	{
-		"Path": "replication.markdown",
-		"Name": "Bundle: Replication - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/settings/replication"
-			}
-		]
-	},
-	{
-		"Path": "replication-walkthrough.markdown",
-		"Name": "Bundle: Replication Walkthrough - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/walkthroughs/how-to-setup-replication"
-			}
-		]
-	},
-	{
-		"Path": "versioning.markdown",
-		"Name": "Bundle: Versioning - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/settings/versioning"
-			}
-		]
-	},
-	{
-		"Path": "authorization.markdown",
-		"Name": "Bundle: Authorization - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/management/api-keys"
-			}
-		]
-	},
-	{
-		"Path": "periodicbackup.markdown",
-		"Name": "Bundle: Periodic Backup - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/settings/periodic-export"
-			}
-		]
-	},
-	{
-		"Path": "compression.markdown",
-		"Name": "Bundle: Compression - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/walkthroughs/how-to-setup-compression"
-			}
-		]
-	},
-	{
-		"Path": "expiration.markdown",
-		"Name": "Bundle: Expiration - Studio",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "sql-replication.markdown",
-		"Name": "Bundle: SQL Replication - Studio",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/sql-replication/basics"
-			}
-		]
-	},
-	{
-		"Path": "scripted-index-results.markdown",
-		"Name": "Bundle: Scripted Index Results - Studio",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "encryption.markdown",
+    "Name": "Bundle: Encryption - Studio",
+    "DiscussionId": "25cf91df-1221-4d9a-8076-d4b9d5f198cb",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/walkthroughs/how-to-setup-encryption"
+      }
+    ]
+  },
+  {
+    "Path": "quotas.markdown",
+    "Name": "Bundle: Quotas - Studio",
+    "DiscussionId": "5a96a71f-cd0f-4b02-aaee-29a7abdf0851",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/settings/quotas"
+      }
+    ]
+  },
+  {
+    "Path": "replication.markdown",
+    "Name": "Bundle: Replication - Studio",
+    "DiscussionId": "762f53ba-578e-43d0-89b5-eaa7660ced5f",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/settings/replication"
+      }
+    ]
+  },
+  {
+    "Path": "replication-walkthrough.markdown",
+    "Name": "Bundle: Replication Walkthrough - Studio",
+    "DiscussionId": "91c9870e-4674-42a5-95df-424ccfd8cd7e",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/walkthroughs/how-to-setup-replication"
+      }
+    ]
+  },
+  {
+    "Path": "versioning.markdown",
+    "Name": "Bundle: Versioning - Studio",
+    "DiscussionId": "8f2b164a-a8df-47a1-b6e3-dc1a9cd40b76",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/settings/versioning"
+      }
+    ]
+  },
+  {
+    "Path": "authorization.markdown",
+    "Name": "Bundle: Authorization - Studio",
+    "DiscussionId": "0ecbb081-4888-41db-a077-7d1f8143076f",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/management/api-keys"
+      }
+    ]
+  },
+  {
+    "Path": "periodicbackup.markdown",
+    "Name": "Bundle: Periodic Backup - Studio",
+    "DiscussionId": "27f9ff2f-8d7e-4aeb-8bd8-a0dc2e772c7d",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/settings/periodic-export"
+      }
+    ]
+  },
+  {
+    "Path": "compression.markdown",
+    "Name": "Bundle: Compression - Studio",
+    "DiscussionId": "40d7533b-e331-4fc5-9c6a-55d0134772d6",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/walkthroughs/how-to-setup-compression"
+      }
+    ]
+  },
+  {
+    "Path": "expiration.markdown",
+    "Name": "Bundle: Expiration - Studio",
+    "DiscussionId": "e438ca52-4568-4d70-bd26-9497dc2744de",
+    "Mappings": []
+  },
+  {
+    "Path": "sql-replication.markdown",
+    "Name": "Bundle: SQL Replication - Studio",
+    "DiscussionId": "d0ac5497-e078-40ba-91b5-5f0a42250c23",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/sql-replication/basics"
+      }
+    ]
+  },
+  {
+    "Path": "scripted-index-results.markdown",
+    "Name": "Bundle: Scripted Index Results - Studio",
+    "DiscussionId": "7e47a114-73cf-4040-9b90-6ff681cf1633",
+    "Mappings": []
+  }
 ]

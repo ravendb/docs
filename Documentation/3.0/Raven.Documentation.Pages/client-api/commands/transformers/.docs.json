@@ -2,16 +2,19 @@
   {
     "Path": "put.markdown",
     "Name": "Put",
+    "DiscussionId": "0b2488f5-c0c6-4a19-92b1-ef0cf7f4b24c",
     "Mappings": []
   },
   {
     "Path": "get.markdown",
     "Name": "Get",
+    "DiscussionId": "04e1ccfc-9097-4fe6-b750-854983a5b211",
     "Mappings": []
   },
   {
     "Path": "delete.markdown",
     "Name": "Delete",
+    "DiscussionId": "5dbb809a-810d-423b-b801-a290cd912c83",
     "Mappings": []
   },
   {

@@ -1,12 +1,14 @@
-﻿[
+[
   {
     "Path": "query-view.markdown",
     "Name": "Query View",
+    "DiscussionId": "e62c987e-06a2-4b6f-8239-32e867dc0c24",
     "Mappings": []
   },
   {
     "Path": "reporting-view.markdown",
     "Name": "Reporting View",
+    "DiscussionId": "31828c85-b839-49ad-bcaa-4be3b1fbe2f6",
     "Mappings": [
       {
         "Version": 2.5,
@@ -17,6 +19,7 @@
   {
     "Path": "data-exploration-view.markdown",
     "Name": "Data Exploration View",
+    "DiscussionId": "303433cf-b050-4298-a6a8-ee92a077379c",
     "Mappings": []
   }
 ]

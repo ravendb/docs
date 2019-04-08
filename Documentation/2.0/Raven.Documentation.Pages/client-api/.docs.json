@@ -1,97 +1,105 @@
-﻿[
-	{
-		"Path": "connecting-to-a-ravendb-datastore.markdown",
-		"Name": "Connecting to a RavenDB datastore",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/creating-document-store"
-			}
-		]
-	},
-	{
-		"Path": "/basic-operations",
-		"Name": "Basic operations",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/querying",
-		"Name": "Querying",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/what-are-indexes"
-			}
-		]
-	},
-	{
-		"Path": "working-asynchronously.markdown",
-		"Name": "Working Asynchronously",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "partial-document-updates.markdown",
-		"Name": "Partial document updates using the Patching API",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/patches/how-to-work-with-patch-requests"
-			}
-		]
-	},
-	{
-		"Path": "set-based-operations.markdown",
-		"Name": "Set based operations",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/documents/how-to/delete-or-update-documents-using-index"
-			}
-		]
-	},
-	{
-		"Path": "attachments.markdown",
-		"Name": "Attachments",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands#attachment-commands"
-			}
-		]
-	},
-	{
-		"Path": "faceted-search.markdown",
-		"Name": "Faceted search",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/faceted-search"
-			}
-		]
-	},
-	{
-		"Path": "changes-api.markdown",
-		"Name": "Changes API",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/changes/what-is-changes-api"
-			}
-		]
-	},
-	{
-		"Path": "/advanced",
-		"Name": "Advanced topics",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "backward-compatibility.markdown",
-		"Name": "Backward Compatibility",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/faq/backward-compatibility"
-			}
-		]
-	}
+[
+  {
+    "Path": "connecting-to-a-ravendb-datastore.markdown",
+    "Name": "Connecting to a RavenDB datastore",
+    "DiscussionId": "b75fb213-10d8-4e27-b0a9-22e22b910472",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/creating-document-store"
+      }
+    ]
+  },
+  {
+    "Path": "/basic-operations",
+    "Name": "Basic operations",
+    "Mappings": []
+  },
+  {
+    "Path": "/querying",
+    "Name": "Querying",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/what-are-indexes"
+      }
+    ]
+  },
+  {
+    "Path": "working-asynchronously.markdown",
+    "Name": "Working Asynchronously",
+    "DiscussionId": "69b38b42-0e6f-4aa0-9e55-7d3202d217e8",
+    "Mappings": []
+  },
+  {
+    "Path": "partial-document-updates.markdown",
+    "Name": "Partial document updates using the Patching API",
+    "DiscussionId": "5587cbdb-29cc-49d3-94e6-82e18bf7c02f",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/patches/how-to-work-with-patch-requests"
+      }
+    ]
+  },
+  {
+    "Path": "set-based-operations.markdown",
+    "Name": "Set based operations",
+    "DiscussionId": "3b36fd46-2de0-4021-ab62-e67a7dd995ca",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/documents/how-to/delete-or-update-documents-using-index"
+      }
+    ]
+  },
+  {
+    "Path": "attachments.markdown",
+    "Name": "Attachments",
+    "DiscussionId": "fa5da38b-f64f-4725-86ba-a4c1fb2a9c64",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands#attachment-commands"
+      }
+    ]
+  },
+  {
+    "Path": "faceted-search.markdown",
+    "Name": "Faceted search",
+    "DiscussionId": "fcef7afe-a11e-4738-a84b-c353fe6aa679",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/faceted-search"
+      }
+    ]
+  },
+  {
+    "Path": "changes-api.markdown",
+    "Name": "Changes API",
+    "DiscussionId": "2af9e3cc-9cce-4546-a542-4f840f2dba25",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/changes/what-is-changes-api"
+      }
+    ]
+  },
+  {
+    "Path": "/advanced",
+    "Name": "Advanced topics",
+    "Mappings": []
+  },
+  {
+    "Path": "backward-compatibility.markdown",
+    "Name": "Backward Compatibility",
+    "DiscussionId": "7f7a5473-4781-42cd-afec-96a98937933e",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/faq/backward-compatibility"
+      }
+    ]
+  }
 ]

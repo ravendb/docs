@@ -1,17 +1,20 @@
 [
-    {
-        "Path": "add-etl.markdown",
-        "Name": "Add ETL",
-        "Mappings": []
-    },
-    {
-        "Path": "update-etl.markdown",
-        "Name": "Update ETL",
-        "Mappings": []
-    },
-    {
-        "Path": "reset-etl.markdown",
-        "Name": "Reset ETL",
-        "Mappings": []
-    }
+  {
+    "Path": "add-etl.markdown",
+    "Name": "Add ETL",
+    "DiscussionId": "cb6bd4fb-1928-45c7-8dcf-662fd842846b",
+    "Mappings": []
+  },
+  {
+    "Path": "update-etl.markdown",
+    "Name": "Update ETL",
+    "DiscussionId": "f251166b-b8ad-45be-af4c-127c1e7c7417",
+    "Mappings": []
+  },
+  {
+    "Path": "reset-etl.markdown",
+    "Name": "Reset ETL",
+    "DiscussionId": "cd94cb31-4c2b-47df-811c-2201b98ac252",
+    "Mappings": []
+  }
 ]

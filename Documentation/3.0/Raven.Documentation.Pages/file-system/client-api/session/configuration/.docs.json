@@ -1,12 +1,14 @@
-﻿[
-	{
-		"Path": "how-to-change-maximum-number-of-requests-per-session.markdown",
-		"Name": "How to change maximum number of requests per session?",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "how-to-enable-optimistic-concurrency.markdown",
-		"Name": "How to enable optimistic concurrency?",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "how-to-change-maximum-number-of-requests-per-session.markdown",
+    "Name": "How to change maximum number of requests per session?",
+    "DiscussionId": "ba50b52f-2250-4b6a-9129-f96518e8da52",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-enable-optimistic-concurrency.markdown",
+    "Name": "How to enable optimistic concurrency?",
+    "DiscussionId": "7c9dcd64-d6c9-4233-af93-6a99674ffa56",
+    "Mappings": []
+  }
 ]

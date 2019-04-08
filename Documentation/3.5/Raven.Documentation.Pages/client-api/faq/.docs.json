@@ -2,31 +2,34 @@
   {
     "Path": "what-is-a-collection.markdown",
     "Name": "What is a collection?",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "theory/ravendb-collections"
-			}
-		]
+    "DiscussionId": "c27167b0-fdde-4363-9d14-5016575676d7",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "theory/ravendb-collections"
+      }
+    ]
   },
   {
     "Path": "transaction-support.markdown",
     "Name": "Transaction support",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/advanced/transaction-support"
-			}
-		]
+    "DiscussionId": "597ed43d-c1af-40d2-8d13-6fe7a25381f3",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/advanced/transaction-support"
+      }
+    ]
   },
   {
     "Path": "backward-compatibility.markdown",
     "Name": "Backward compatibility",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/backward-compatibility"
-			}
-		]
+    "DiscussionId": "e53b6eda-4031-41cf-88c6-c9f12300d54e",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/backward-compatibility"
+      }
+    ]
   }
 ]

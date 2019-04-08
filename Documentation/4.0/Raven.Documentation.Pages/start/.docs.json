@@ -2,6 +2,7 @@
   {
     "Path": "getting-started.markdown",
     "Name": "Getting Started",
+    "DiscussionId": "67684adb-5656-4f01-b194-9c77783bb1b4",
     "Mappings": [
       {
         "Version": 1.0,
@@ -12,6 +13,7 @@
   {
     "Path": "whats-new.markdown",
     "Name": "What's New",
+    "DiscussionId": "8024efde-88ad-4734-b796-951f35bf65ce",
     "Mappings": [
       {
         "Version": 2.5,
@@ -22,16 +24,19 @@
   {
     "Path": "playground-server.markdown",
     "Name": "Playground Server",
+    "DiscussionId": "7374e4fe-24a7-4e6c-82f2-18360b4ea29d",
     "Mappings": []
   },
   {
     "Path": "about-examples.markdown",
     "Name": "About Examples",
+    "DiscussionId": "b8653fd3-687b-40ed-bf9f-12d5beee5647",
     "Mappings": []
   },
   {
     "Path": "test-driver.markdown",
     "Name": "Unit Tests",
+    "DiscussionId": "fdec8c7c-5c05-4c8d-ba86-d4cabcd4e9fa",
     "Mappings": [
       {
         "Version": 3.0,

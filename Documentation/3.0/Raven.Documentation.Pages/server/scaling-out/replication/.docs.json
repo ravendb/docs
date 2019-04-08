@@ -1,37 +1,41 @@
-﻿[
-	{
-		"Path": "how-replication-works.markdown",
-		"Name": "How replication works?",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/scaling-out/replication"
-			}
-		]
-	},
-	{
-		"Path": "replication-conflicts.markdown",
-		"Name": "Replication conflicts",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/scaling-out/replication/handling-conflicts"
-			}
-		]
-	},
-	{
-		"Path": "replication-and-embedded-instance.markdown",
-		"Name": "Replication and Embedded instance",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/scaling-out/replication/from-embedded-server"
-			}
-		]
-	},
-	{
-		"Path": "write-assurance.markdown",
-		"Name": "Write assurance",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "how-replication-works.markdown",
+    "Name": "How replication works?",
+    "DiscussionId": "525ddf62-eb29-4b8a-b30f-145a53f08fa9",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/scaling-out/replication"
+      }
+    ]
+  },
+  {
+    "Path": "replication-conflicts.markdown",
+    "Name": "Replication conflicts",
+    "DiscussionId": "f5685efc-ef6a-4319-af1d-09f396d60ead",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/scaling-out/replication/handling-conflicts"
+      }
+    ]
+  },
+  {
+    "Path": "replication-and-embedded-instance.markdown",
+    "Name": "Replication and Embedded instance",
+    "DiscussionId": "c4d7ed12-71e1-4ed0-b442-8131858b080c",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/scaling-out/replication/from-embedded-server"
+      }
+    ]
+  },
+  {
+    "Path": "write-assurance.markdown",
+    "Name": "Write assurance",
+    "DiscussionId": "269509ee-630c-4635-9892-7805bf487fc8",
+    "Mappings": []
+  }
 ]

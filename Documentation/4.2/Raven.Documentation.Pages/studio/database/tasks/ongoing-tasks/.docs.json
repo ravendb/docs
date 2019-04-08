@@ -1,8 +1,8 @@
 [
-
-    {
-        "Path": "pull-replication.markdown",
-        "Name": "Pull Replication",
-        "Mappings": []
-    }
+  {
+    "Path": "pull-replication.markdown",
+    "Name": "Pull Replication",
+    "DiscussionId": "3ebce840-1ea8-4f9e-ae50-0275661a3c1d",
+    "Mappings": []
+  }
 ]

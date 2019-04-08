@@ -1,27 +1,32 @@
 [
-    {
-        "Path": "certificate-configuration.markdown",
-        "Name": "Manual Certificate Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "certificate-management.markdown",
-        "Name": "Certificate Management",
-        "Mappings": []
-    },
-    {
-        "Path": "client-certificate-usage.markdown",
-        "Name": "Client Certificate Usage",
-        "Mappings": []
-    },
-    {
-        "Path": "certificate-renewal-and-rotation.markdown",
-        "Name": "Certificate Renewal & Rotation",
-        "Mappings": []
-    },
-    {
-        "Path": "lets-encrypt-certificates.markdown",
-        "Name": "Let's Encrypt Certificates",
-        "Mappings": []
-    }
+  {
+    "Path": "certificate-configuration.markdown",
+    "Name": "Manual Certificate Configuration",
+    "DiscussionId": "f19ce57d-0944-474c-a1c2-02292e0c9620",
+    "Mappings": []
+  },
+  {
+    "Path": "certificate-management.markdown",
+    "Name": "Certificate Management",
+    "DiscussionId": "4e9550d9-8b03-47da-a63a-c7cfe1f29134",
+    "Mappings": []
+  },
+  {
+    "Path": "client-certificate-usage.markdown",
+    "Name": "Client Certificate Usage",
+    "DiscussionId": "504e1640-9daf-4071-90bf-25de273bbd22",
+    "Mappings": []
+  },
+  {
+    "Path": "certificate-renewal-and-rotation.markdown",
+    "Name": "Certificate Renewal & Rotation",
+    "DiscussionId": "d69c86d6-e66e-48d9-8b84-563ab9ba2527",
+    "Mappings": []
+  },
+  {
+    "Path": "lets-encrypt-certificates.markdown",
+    "Name": "Let's Encrypt Certificates",
+    "DiscussionId": "8829b15a-fb5e-4de5-a863-b1293ba16ced",
+    "Mappings": []
+  }
 ]
