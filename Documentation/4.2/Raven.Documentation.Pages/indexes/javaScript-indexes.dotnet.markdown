@@ -4,19 +4,6 @@ This feature was created for users who want to create an index and prefer JavaSc
 JavaScript indexes can be defined by a user with lower permissions than the C# indexes (admin not required).   
 All other capabilities and features are the same as C# indexes.   
 
-{INFO:Information}
-This is an experimental feature.
-You need to enable the featured by adding the following key to your [settings.json](../server/configuration/configuration-options#json) file:
-
-{CODE-BLOCK:json}
-{
-    ...
-    "Features.Availability": "Experimental"
-    ...
-}
-{CODE-BLOCK/}
-{INFO/}
-
 ## Creating  JavaScript index
 
 If we want to create JavaScript index we need to create an instance of our class that inherits 
