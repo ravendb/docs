@@ -744,5 +744,34 @@
             "twitter:description": "A Yellow Pages Company is the ideal NoSQL Document Database Example of how to double performance, triple the data you present to users while using less servers.",
             "twitter:url": "https://ravendb.net/articles/performance-on-less-resources-nosql-document-database-example"
         }
+    },
+    {
+        "Path": "cost-cutting-on-the-cloud-with-a-nosql-document-database.markdown",
+        "Name": "Cost Cutting on the Cloud with a NoSQL Document Database",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Cost Cutting on the Cloud with a NoSQL Document Database | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/cost-cutting-on-the-cloud-with-a-nosql-document-database",
+            "publishedAt": "2019-04-17",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "Cloud Platforms like AWS and Azure charge by server requests. The right NoSQL Document Database can reduce calls to the server and save you money on the cloud.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Cost Cutting on the Cloud with a NoSQL Document Database | RavenDB",
+            "og:description": "Cloud Platforms like AWS and Azure charge by server requests. The right NoSQL Document Database can reduce calls to the server and save you money on the cloud.",
+            "og:url": "https://ravendb.net/articles/cost-cutting-on-the-cloud-with-a-nosql-document-database",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/cost-cutting-on-the-cloud-with-a-nosql-document-database&fileName=cost-cutting-on-the-cloud-with-a-nosql-document-database.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Cost Cutting on the Cloud with a NoSQL Document Database | RavenDB",
+            "twitter:description": "Cloud Platforms like AWS and Azure charge by server requests. The right NoSQL Document Database can reduce calls to the server and save you money on the cloud.",
+            "twitter:url": "https://ravendb.net/articles/cost-cutting-on-the-cloud-with-a-nosql-document-database"
+        }
     }
 ]
