@@ -49,6 +49,8 @@ and any configurations & customizations that you may have applied.
 
 * Only a single instance of the Document Store should be created per lifetime of your application ([Singleton Pattern](https://csharpindepth.com/articles/Singleton)).  
 
+* The Docment Store is thread safe - implemented in a thread safe manner.  
+
 * The Document Store exposes methods to perform operations such as:  
   * [Session](../client-api/session/what-is-a-session-and-how-does-it-work) - Use the Session object to perform operations on a specific database  
   * [Operations](../client-api/operations/what-are-operations) - Manage the server with a set of low level operation commands  
