@@ -39,30 +39,26 @@ The document store ensures access to the following client API features:
 ---
 {NOTE: }
 
-* The **Document Store** is the main entry point for the Client API.  
+* The **Document Store** is the main Client API object which establishes and manages the communication between your client application and a [RavenDB cluster](../server/clustering/overview). 
+Communicates with the server(s) via HTTP requests.
 
-* Establishes and manages the connection between a client application and a RavenDB server or cluster of servers.   
-  * Has a list of URL addresses that point to its associated server(s)  
-  * Accesses the server via HTTP requests  
+* The Document Store holds the [Cluster Topology](../server/clustering/rachis/cluster-topology), the [Authentication Certificate](../client-api/setting-up-authentication-and-authorization), 
+and any configurations & customizations that you may have applied.
 
-* Exposes the methods for performing all operations that can be run against the associated server(s).  
-  * Use the document store to create [Session](../client-api/session/what-is-a-session-and-how-does-it-work) objects  
+* Caching is built in. The Document Store caches all requests to the server(s) and their responses.
 
-* Holds the [Authentication Certificate](../client-api/setting-up-authentication-and-authorization), the 
-[Cluster Topology](../server/clustering/rachis/cluster-topology), the configurations, the cache, and any customizations that you may have applied.  
+* Only a single instance of the Document Store should be created per lifetime of your application (implementing [Singleton Pattern](https://csharpindepth.com/articles/Singleton)).  
 
-* It is recommended that your document store instance implement the [Singleton Pattern](https://csharpindepth.com/articles/Singleton).  
+* The Document Store exposes methods to perform operations such as:  
+  * [Session](../client-api/session/what-is-a-session-and-how-does-it-work) - Use the Session object to perform operations on a specific database  
+  * [Operations](../client-api/operations/what-are-operations) - Manage the server with a set of low level operation commands  
+  * [Bulk insert](../client-api/bulk-insert/how-to-work-with-bulk-insert-operation) - Useful when inserting a large amount of data  
+  * [Conventions](../client-api/configuration/conventions) - Customize the Client API behavior  
+  * [Changes API](../client-api/changes/what-is-changes-api) - Receive messages from the server  
+  * [Aggressive caching](../client-api/how-to/setup-aggressive-caching) - Configure caching behavior  
+  * [Events](../client-api/session/how-to/subscribe-to-events) - Perform custom actions in response to Session's operations  
+  * [Data Sucscriptions](../client-api/data-subscriptions/what-are-data-subscriptions) - Define & manage data processing on the client side
 
-* [How to create a document store](../client-api/creating-document-store)
-
-* The document store exposes the following Client API features:  
-  * [Session](../client-api/session/what-is-a-session-and-how-does-it-work)  
-  * [Operations](../client-api/operations/what-are-operations)  
-  * [Bulk insert](../client-api/bulk-insert/how-to-work-with-bulk-insert-operation)  
-  * [Changes API](../client-api/changes/what-is-changes-api)  
-  * [Conventions](../client-api/configuration/conventions)  
-  * [Events](../client-api/session/how-to/subscribe-to-events)  
-  * [Aggressive cache](../client-api/how-to/setup-aggressive-caching)  
 {NOTE/}
 
 ## Related Articles
