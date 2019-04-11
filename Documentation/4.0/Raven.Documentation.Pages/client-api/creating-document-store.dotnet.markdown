@@ -37,8 +37,8 @@ This example demonstrates the implementation of a singleton document store, as w
 
 ### Client API
 
-- [What is a Session and How Does it Work](../client-api/session/what-is-a-session-and-how-does-it-work)
 - [What is a Document Store](../client-api/what-is-a-document-store)
 - [Setting up Default Database](../client-api/setting-up-default-database)
 - [Setting up Authentication and Authorization](../client-api/setting-up-authentication-and-authorization)
 - [Conventions Overview](../client-api/configuration/conventions)
+- [What is a Session and How Does it Work](../client-api/session/what-is-a-session-and-how-does-it-work)
