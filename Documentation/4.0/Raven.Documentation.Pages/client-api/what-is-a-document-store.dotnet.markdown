@@ -40,12 +40,12 @@ The document store ensures access to the following client API features:
 {NOTE: }
 
 * The **Document Store** is the main Client API object which establishes and manages the communication between your client application and a [RavenDB cluster](../server/clustering/overview). 
-Communicates with the server(s) via HTTP requests.
+Communicates with the server(s) via HTTP requests.  
 
 * The Document Store holds the [Cluster Topology](../server/clustering/rachis/cluster-topology), the [Authentication Certificate](../client-api/setting-up-authentication-and-authorization), 
-and any configurations & customizations that you may have applied.
+and any configurations & customizations that you may have applied.  
 
-* Caching is built in. The Document Store caches all requests to the server(s) and their responses.
+* Caching is built in. The Document Store caches all requests to the server(s) and their responses.  
 
 * Only a single instance of the Document Store should be created per lifetime of your application (implementing [Singleton Pattern](https://csharpindepth.com/articles/Singleton)).  
 
@@ -57,7 +57,7 @@ and any configurations & customizations that you may have applied.
   * [Changes API](../client-api/changes/what-is-changes-api) - Receive messages from the server  
   * [Aggressive caching](../client-api/how-to/setup-aggressive-caching) - Configure caching behavior  
   * [Events](../client-api/session/how-to/subscribe-to-events) - Perform custom actions in response to Session's operations  
-  * [Data Sucscriptions](../client-api/data-subscriptions/what-are-data-subscriptions) - Define & manage data processing on the client side
+  * [Data Sucscriptions](../client-api/data-subscriptions/what-are-data-subscriptions) - Define & manage data processing on the client side  
 
 {NOTE/}
 
