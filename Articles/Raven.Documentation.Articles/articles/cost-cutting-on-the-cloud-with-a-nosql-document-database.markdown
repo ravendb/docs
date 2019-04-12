@@ -14,7 +14,7 @@ Cloud providers maintain that cloud computing offers cost reductions. A company 
 
 ![The right NoSQL Document Database can unify multiple server requests, lowering your own cloud expenditures.](images/chart.jpg)
 
-<p style="text-align: center"><em>Source: <a href="https://www.statista.com/statistics/545977/worldwide-cloud-computing-spending">www.statista.com</a></em></p>
+<p style="text-align: center"><em>Source: <a href="https://www.statista.com/statistics/545977/worldwide-cloud-computing-spending/">www.statista.com</a></em></p>
 
 In spite of the advantages cloud-service providers offer businesses, organizations (especially startups) need to be aware of potential cost drawbacks when choosing to adopt cloud platforms.
 
@@ -95,9 +95,9 @@ Mentioned in both Gartner and Forrester research, RavenDB is a pioneer in NoSQL 
     <strong><a href="https://ravendb.net/downloads#server/dev">Grab RavenDB for free</a></strong> and get:
 <ul>
 <li>3 cores</li>
-<li>Our state-of-the-art GUI Interface</li>
+<li>our state of the art GUI interface</li>
 <li>Connectivity secured with TLS 1.2 and X.509 certificates</li>
-<li>6 gigabyte RAM database with up to a 3 nodes cluster</li>
+<li>6 gigabyte RAM database with up to 3 nodes cluster</li>
 <li>Easy compatibility with cloud solutions like AWS, Azure, and more</li>
 </ul>
 </div>
