@@ -14,11 +14,13 @@ namespace Raven.Documentation.Samples.ClientApi
             using (IDocumentStore store = new DocumentStore
             {
                 Urls = new[] { "http://your_RavenDB_server_URL" }
+                // Default database is not set
             }.Initialize())
             {
+                // Northwind database is explicitly specified as a parameter
                 using (IDocumentSession session = store.OpenSession(database: "NorthWind"))
                 {
-                    //Do your work here
+                    // Do your work here
                 }
                 store.Maintenance.Server.Send(new CompactDatabaseOperation(new CompactSettings
                                                                                         { DatabaseName = "NorthWind" }));
@@ -29,19 +31,21 @@ namespace Raven.Documentation.Samples.ClientApi
             using (IDocumentStore store = new DocumentStore
             {
                 Urls = new[] { "http://your_RavenDB_server_URL" },
+                // Default database is set to 'Northwind'
                 Database = "Northwind"
             }.Initialize())
             {
-                using (IDocumentSession northwindSession = store.OpenSession()) //Default database
+                // Using default database
+                using (IDocumentSession northwindSession = store.OpenSession())
                 {
-                    //Do your work here
+                    //Session will operate on the default 'Northwind' database
                 }
                 store.Maintenance.Send(new DeleteIndexOperation("NorthWindIndex"));
 
-
-                using (IDocumentSession adventureWorksSession = store.OpenSession("AdventureWorks")) //Specified database
+                // Using specified database
+                using (IDocumentSession adventureWorksSession = store.OpenSession("AdventureWorks"))
                 {
-                    //Do your work here
+                    // Session will operate on the specifed 'AdventureWorks' database
                 }
                 store.Maintenance.ForDatabase("AdventureWorks").Send(new DeleteIndexOperation("AdventureWorksIndex"));
             }
