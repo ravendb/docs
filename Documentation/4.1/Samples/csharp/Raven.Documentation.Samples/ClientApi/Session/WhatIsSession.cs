@@ -14,37 +14,37 @@ namespace Raven.Documentation.Samples.ClientApi.Session
         {
             using (var store = new DocumentStore())
             {
-                //A client-side copy of the document Id.
+                // A client-side copy of the document Id
                 string companyId = null;
 
                 #region session_usage_1
-                //Store new document.
+                // Store new document
                 using (IDocumentSession session = store.OpenSession())
                 {
                     Company entity = new Company { Name = "Company" };
                     session.Store(entity);
-                    //The entity is now marked for storage.
-                    //Changes made to it will be tracked by default.
-                    //However it is not actually sent to the server 
-                    //until `SaveChanges()` is called.
+                    // The entity is now marked for storage.
+                    // Changes made to it will be tracked by default.
+                    // However it is not actually sent to the server 
+                    // until `SaveChanges()` is called.
                     session.SaveChanges();
                 }
                 #endregion
 
                 #region session_usage_2
-                //Load document from database, edit it, and save it.
+                // Load document from database, edit it, and save it
                 using (IDocumentSession session = store.OpenSession())
                 {
-                    //Load using known Id
+                    // Load using known Id
                     Company entity = session.Load<Company>(companyId);
-                    //Edit a property
+                    // Edit a property
                     entity.Name = "Another Company";
 
-                    //When a document is loaded, the session tracks 
-                    //all changes made to it by default.
-                    //A call to `SaveChanges()` sends all accumulated changes to the server.
+                    // When a document is loaded, the session tracks 
+                    // all changes made to it by default.
+                    // A call to `SaveChanges()` sends all accumulated changes to the server.
                     session.SaveChanges(); 
-                    //Note that no call to `Store()` is required for a loaded document.
+                    // Note that no call to `Store()` is required for a loaded document.
                 }
                 #endregion
 

@@ -11,7 +11,7 @@ The **Session** is:
 * Used to perform any database operation you might want. The basic CRUD operations are performed through `session`, more **advanced operations** are available through `session.advanced`.
 
 * Obtained from the `DocumentStore`.  
-  * Read more about [The Document Store](../../client-api/what-is-a-document-store) and [How To Create One](../../client-api/creating-document-store).  
+  * Read more about [The Document Store](../../client-api/what-is-a-document-store) and [How to Create One](../../client-api/creating-document-store).  
 
 * Disposable. (Implements [IDisposable](https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.7.2))  
   * Open every session in a `using` statement to ensure proper disposal.  
@@ -36,7 +36,7 @@ The Client API, and the session in particular, is designed to be as straightforw
 {CODE session_usage_1@ClientApi\Session\WhatIsSession.cs /}
 
 Calling `SaveChanges()` sends the entity to the RavenDB server where it is stored as a new document in the database. (Since no other database was specified, 
-this will be the [default database](http://localhost:54391/docs/article-page/4.1/csharp/client-api/setting-up-default-database)).  
+this will be the [Default Database](http://localhost:54391/docs/article-page/4.1/csharp/client-api/setting-up-default-database)).  
 
 {PANEL/}
 
@@ -49,7 +49,7 @@ that it has either loaded or stored.
 
 ###Batching
 Remote calls to a server are among the most expensive operations your application can make. The session optimizes this by batching all write operations it has tracked 
-into a single call to the server, sent when `SaveChanges()` is called. This is the default behavior of the session; it doesn't have to be enabled. This also ensures that all 
+into a single call to the server, sent when `SaveChanges()` is called. This is the default behavior of the session; it doesn't need to be enabled. This also ensures that all 
 writes made to the database in a single session are executed as a single atomic transaction, no matter how many operations you are actually executing.  
 
 {INFO:How to Disable Entity Tracking}
@@ -61,9 +61,9 @@ opened. [Read more](../../client-api/session/opening-a-session#example-ii---disa
 
 {PANEL:Identity Map Pattern}
 
-The session implements the [Identity Map Pattern](https://martinfowler.com/eaaCatalog/identityMap.html). If we load the same document twice in the same session, it won't be saved as 
-two different objects. The first call to `Load()` will retrieve an entity from the database and save it in the identity map. The second call to `Load()` will simply retrieve the same entity 
-from the identity map and will not make a call to the server. In the context of a single session, the same document loaded twice always resolves to the same entity instance.  
+The session implements the [Identity Map Pattern](https://martinfowler.com/eaaCatalog/identityMap.html). This means that in the context of a single session, the same document loaded twice 
+always resolves to the same entity instance. The first call to `Load()` will retrieve a document from the database and save it in the identity map. The second call to `Load()` 
+will simply retrieve the same document from the identity map and will not make an additional call to the server. 
 {CODE session_usage_3@ClientApi\Session\WhatIsSession.cs /}
 
 The above command will not throw an exception.
@@ -74,7 +74,7 @@ The above command will not throw an exception.
 
 The [Select N+1 problem](http://blogs.microsoft.co.il/gilf/2010/08/18/select-n1-problem-how-to-decrease-your-orm-performance/) is very common with all ORMs and ORM-like APIs, including the RavenDB Client API. It results in an excessive number of remote calls to the server, which makes a query very expensive.
 
-The select n+1 problem should never arise if RavenDB is being utilized correctly. The number of remote calls per session should be as close to 1 as possible. If the maximum requests limit is reached, it is a sure sign of either select n+1 or some other misuse of the session.
+The select n+1 problem should never arise if RavenDB is being used correctly. The number of remote calls per session should be as close to 1 as possible. If the maximum requests limit is reached, it is a sure sign of either select n+1 or some other misuse of the session.
 
 Should it arise, RavenDB offers a number of ways to mitigate this problem:  
 
@@ -82,7 +82,7 @@ Should it arise, RavenDB offers a number of ways to mitigate this problem:
 * [Stream Query Results](https://ravendb.net/docs/article-page/4.1/csharp/client-api/session/querying/how-to-stream-query-results)  
 
 {INFO: Configuring Maximum Requests per Session} 
-By default the maximum number of requests allowed per session is 30. Exceeding this limit causes an exception to be thrown.
+By default, the maximum number of requests allowed per session is 30. Exceeding this limit causes an exception to be thrown.
 This limit can be changed at the `DocumentConventions::MaxNumberOfRequestsPerSession` property.
 {INFO/}
 {PANEL/}
