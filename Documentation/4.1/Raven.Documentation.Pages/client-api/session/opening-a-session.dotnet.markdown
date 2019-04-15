@@ -4,9 +4,10 @@
 
 {NOTE: }
 
-* Always open a new session object in a `using` statement so that the resources allocated to it can be released after you're done with it. Alternatively, call `.Dispose()` on it. (The session implements [IDisposable](https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.7.2))  
+* Always open a new session object in a `using` statement so that the resources allocated to it can be released after you're done with it. Alternatively, you can call `.Dispose()` on it. 
+(The session implements [IDisposable](https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.7.2))  
 
-* There are two kinds of session: **sync** and **async**. Both can be opened from the `DocumentStore`, with `.OpenSession()` and `.OpenAsyncSession()` respectively.  
+* There are two kinds of session: **sync** and **async**. Both can be opened from the Document Store, with `.OpenSession()` and `.OpenAsyncSession()` respectively.  
 
 * `OpenSession` and `OpenAsyncSession` each have three overloads that create sessions with different **session options**.
 
@@ -19,7 +20,7 @@
 
 {PANEL:Syntax}
 
-There are three overloads each of `OpenSession() / OpenAsyncSession()`:
+There are three overloads each of `OpenSession()`/`OpenAsyncSession()`:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync open_session_1@ClientApi\Session\OpeningSession.cs /}
@@ -27,7 +28,7 @@ There are three overloads each of `OpenSession() / OpenAsyncSession()`:
 {CODE-TABS/}
 <br/>
 
-All the first two overloads do is wrap the third overload and pass it a new `SessionOptions` object.
+The first two overloads simply call the third overload and pass it a new `SessionOptions` object.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync open_session_2@ClientApi\Session\OpeningSession.cs /}
@@ -44,7 +45,7 @@ The `SessionOptions` object is a property of `session` which contains various op
 | **Database** | string | The name of the database the session should operate on | `null` - the session operates on the [default database](../../client-api/setting-up-default-database) |
 | **NoTracking** | bool | Whether the session should keep track of changes to `stored` or `loaded` entities. [How to Disable Tracking](../../client-api/session/configuration/how-to-disable-tracking) | `false` |
 | **NoCaching** | bool | Whether the session should cache responses. [How to Disable Caching](../../client-api/session/configuration/how-to-disable-caching) | `false` |
-| **RequestExecutor** | `RequestExecutor` | _(Advanced)_ Which request executor the session should use | `null` - the default request executor is used |
+| **RequestExecutor** | `RequestExecutor` | _(Advanced)_ The request executor the session should use | `null` - the default request executor is used |
 | **TransactionMode** | `TransactionMode` | The two transaction modes are `SingleNode` and `ClusterWide`. Learn more about [Cluster-Wide Transactions](../../server/clustering/cluster-transactions) | `SingleNode` |
 
 {PANEL/}

@@ -60,14 +60,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session
             #region open_session_2
             using (var store = new DocumentStore())
             {
-                //The first overload -
+                // The first overload -
                 store.OpenSession();
-                //- is equivalent to:
+                // - is equivalent to:
                 store.OpenSession(new SessionOptions());
 
-                //The second overload -
+                // The second overload -
                 store.OpenSession("your_database_name");
-                //- is equivalent to:
+                // - is equivalent to:
                 store.OpenSession(new SessionOptions
                 {
                     Database = "your_database_name"
@@ -78,14 +78,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session
             #region open_session_2_1
             using (var store = new DocumentStore())
             {
-                //The first overload -
+                // The first overload -
                 store.OpenAsyncSession();
-                //- is equivalent to:
+                // - is equivalent to:
                 store.OpenAsyncSession(new SessionOptions());
 
-                //The second overload -
+                // The second overload -
                 store.OpenAsyncSession("your_database_name");
-                //- is equivalent to:
+                // - is equivalent to:
                 store.OpenAsyncSession(new SessionOptions
                 {
                     Database = "your_database_name"
