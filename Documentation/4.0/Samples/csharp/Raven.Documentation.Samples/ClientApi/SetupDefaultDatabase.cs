@@ -17,13 +17,14 @@ namespace Raven.Documentation.Samples.ClientApi
                 // Default database is not set
             }.Initialize())
             {
-                // Northwind database is explicitly specified as a parameter
+                // Northwind database explicitly specified as a parameter
                 using (IDocumentSession session = store.OpenSession(database: "NorthWind"))
                 {
                     // Do your work here
                 }
-                store.Maintenance.Server.Send(new CompactDatabaseOperation(new CompactSettings
-                                                                                        { DatabaseName = "NorthWind" }));
+
+                // Operation for specified database
+                store.Maintenance.ForDatabase("Northwind").Send(new DeleteIndexOperation("NorthWindIndex"));
             }
             #endregion
 
@@ -35,18 +36,22 @@ namespace Raven.Documentation.Samples.ClientApi
                 Database = "Northwind"
             }.Initialize())
             {
-                // Using default database
+                // Session for default database
                 using (IDocumentSession northwindSession = store.OpenSession())
                 {
-                    //Session will operate on the default 'Northwind' database
+                    // Do your work here
                 }
+
+                // Operation for default database
                 store.Maintenance.Send(new DeleteIndexOperation("NorthWindIndex"));
 
-                // Using specified database
-                using (IDocumentSession adventureWorksSession = store.OpenSession("AdventureWorks"))
+                // Session for specified database
+                using (IDocumentSession adventureWorksSession = store.OpenSession(database: "AdventureWorks"))
                 {
-                    // Session will operate on the specifed 'AdventureWorks' database
+                    // Do your work here
                 }
+
+                // Operation for specified database
                 store.Maintenance.ForDatabase("AdventureWorks").Send(new DeleteIndexOperation("AdventureWorksIndex"));
             }
             #endregion

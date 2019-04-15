@@ -1,18 +1,8 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-# Client API: How to Setup a Default Database
-=======
-# Client API : How to Setup a Default Database
-=======
-# Client API: How to Setup a Default Database
->>>>>>> RDoc-1529-setting-up-default-database
-=======
-# Client API: Setting a Default Database
->>>>>>> RDoc-1529-setting-up-default-database
+# Client API: Setting Up a Default Database
+
 ---
 {NOTE: }
->>>>>>> RDoc-1529-setting-up-default-database
+
 
 * When a default database is set in the Document Store:  
   * A Session or Operation will operate on that database by default  
@@ -36,6 +26,7 @@
 
 {PANEL:Example - With a Default Database}
 
+The default database is defined in the Document Store's `Database` property.
 {CODE default_database_2@ClientApi\SetupDefaultDatabase.cs /}
 
 {PANEL/}
