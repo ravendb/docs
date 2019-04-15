@@ -47,7 +47,7 @@ and any configurations & customizations that you may have applied.
 
 * Caching is built in. All requests to the server(s) and their responses are cached within the Document Store.  
 
-* Only a single instance of the Document Store should be created per lifetime of your application ([Singleton Pattern](https://csharpindepth.com/articles/Singleton)).  
+* A single instance of the Document Store ([Singleton Pattern](https://csharpindepth.com/articles/Singleton)) should be created per cluster per the lifetime of your application.  
 
 * The Docment Store is thread safe - implemented in a thread safe manner.  
 
