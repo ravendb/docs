@@ -8,7 +8,7 @@
 {SOCIAL-MEDIA-LIKE/}
 
 <p class="text-center">
-<button class="play-button" style=""><i class="fa fa-play" style="margin-right:20px"></i>Play Podcast</button>
+<button id="podcast-play-button" class="play-button" style=""><i class="fa fa-play" style="margin-right:20px"></i>Play Podcast</button>
 </p>
 
 
@@ -37,15 +37,37 @@
 {RAW}
 <script>
 
-document.querySelector(".play-button").addEventListener("click", function(){
-    var audio = document.getElementById('podcast-audio');
-  if(this.className == 'is-playing'){
-    this.className = "";
-    this.innerHTML = "<i class=\"fa fa-play\" style=\"margin-right:20px\"></i> Play Podcast"
+function changeButtonToPlay(button) {
+  button.className = "play-button";
+  button.innerHTML = "<i class=\"fa fa-play\" style=\"margin-right:20px\"></i> Play Podcast"
+}
+
+function changeButtonToPause(button) {
+  button.className = "play-button is-playing";
+  button.innerHTML = "<i class=\"fa fa-pause\" style=\"margin-right:20px\"></i> Pause";
+}
+
+var audioElement = document.getElementById('podcast-audio');
+
+audioElement.addEventListener("play", function() {
+  var button = document.querySelector("#podcast-play-button");
+  changeButtonToPause(button);
+});
+
+audioElement.addEventListener("pause", function() {
+  var button = document.querySelector("#podcast-play-button");
+  changeButtonToPlay(button);
+});
+
+
+document.querySelector("#podcast-play-button").addEventListener("click", function(){
+  var audio = document.getElementById('podcast-audio');
+
+  if(this.className === "play-button is-playing"){
+    changeButtonToPlay(this);
     audio.pause();
   } else{
-    this.className = "is-playing";
-    this.innerHTML = "<i class=\"fa fa-pause\" style=\"margin-right:20px\"></i> Pause";
+    changeButtonToPause(this);
     audio.play();
   }
 
