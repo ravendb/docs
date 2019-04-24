@@ -110,7 +110,7 @@ this.Freight = 15.3;
 [Operations: How to Restore a Database from Backup](../../client-api/operations/server-wide/restore-backup)    
 [Backup](../../client-api/operations/maintenance/backup/backup)
 
-**Serevr Articles**:  
+**Server Articles**:  
 [Backup Overview](../../server/ongoing-tasks/backup-overview)
 
 **Migration Articles**:  

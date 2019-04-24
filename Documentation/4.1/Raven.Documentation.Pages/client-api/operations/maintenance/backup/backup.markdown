@@ -210,7 +210,7 @@ The Backup task [runs continuously](../../../../server/ongoing-tasks/backup-over
 [What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)  
 [Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)   
 
-**Serevr Articles**:  
+**Server Articles**:  
 [Backup Overview](../../../../server/ongoing-tasks/backup-overview)
 
 **Migration Articles**:  

@@ -92,5 +92,5 @@ The export file (`.ravendump`) from a 3.x  database can be imported to 4.0 using
 [What Is Smuggler](../../client-api/smuggler/what-is-smuggler)   
 [Backup](../../client-api/operations/maintenance/backup/backup)
 
-**Serevr Articles**:  
+**Server Articles**:  
 [Backup Overview](../../server/ongoing-tasks/backup-overview)

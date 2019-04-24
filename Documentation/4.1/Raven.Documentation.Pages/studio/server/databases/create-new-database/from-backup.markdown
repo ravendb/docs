@@ -53,7 +53,7 @@ Open the down arrow and click `New database from backup`.
 [What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)   
 [Backup](../../../../client-api/operations/maintenance/backup/backup)
 
-**Serevr Articles**:  
+**Server Articles**:  
 [Backup Overview](../../../../server/ongoing-tasks/backup-overview)
 
 **Migration Articles**:  

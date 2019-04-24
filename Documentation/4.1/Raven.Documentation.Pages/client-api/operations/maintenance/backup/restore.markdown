@@ -153,7 +153,7 @@ In such cases, **disable** ongoing tasks using the [DisableOngoingTasks](../../.
 [What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)   
 [Backup](../../../../client-api/operations/maintenance/backup/backup)   
 [Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)   
-**Serevr Articles**:  
+**Server Articles**:  
 [Backup Overview](../../../../server/ongoing-tasks/backup-overview)
 
 **Migration Articles**:  
