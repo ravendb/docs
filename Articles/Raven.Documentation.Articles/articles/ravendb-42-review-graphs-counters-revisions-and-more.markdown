@@ -30,7 +30,8 @@
     </ul>
 <br>
 <audio id="podcast-audio" controls="" style="width: 100%">
-  <source src="https://s3-us-west-2.amazonaws.com/static.ravendb.net/2019-04-15-podcast-ravendb-42.m4a" type="audio/x-m4a">
+  <source src="https://s3-us-west-2.amazonaws.com/static.ravendb.net/2019-04-29-podcast-ravendb-42.ogg" type="audio/ogg">
+  <source src="https://s3-us-west-2.amazonaws.com/static.ravendb.net/2019-04-29-podcast-ravendb-42.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 
