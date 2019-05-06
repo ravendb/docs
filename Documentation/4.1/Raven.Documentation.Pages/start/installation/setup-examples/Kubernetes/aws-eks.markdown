@@ -1,4 +1,4 @@
-# Installation: Kubernetes : AWS EKS
+# Installation: Kubernetes: AWS EKS
 
 In this walkthrough, we will set up a Kubernetes RavenDB cluster in EKS. The guide assumes prior knowledge of basic Kubernetes concepts. For more information please refer to the Kubernetes [official documentation](https://kubernetes.io/docs/home/).
 
