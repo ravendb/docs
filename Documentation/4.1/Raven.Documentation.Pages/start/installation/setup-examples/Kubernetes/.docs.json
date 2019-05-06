@@ -1,0 +1,17 @@
+[
+    {
+        "Path": "aws-eks.markdown",
+        "Name": "AWS EKS",
+        "Mappings": []
+    },
+    {
+        "Path": "azure-aks.markdown",
+        "Name": "Azure AKS",
+        "Mappings": []
+    },
+    {
+        "Path": "google-gke.markdown",
+        "Name": "Google GKE",
+        "Mappings": []
+    }
+]
