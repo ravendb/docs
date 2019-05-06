@@ -52,7 +52,7 @@ Or in powershell:
 [Convert]::ToBase64String([IO.File]::ReadAllBytes("example.ravendb.cloud.pfx"))
 {CODE-BLOCK/}
 
-Download [secrets.yaml](yamls/secrets.yaml) and edit it with the base64 values of the license and certificate. Then deploy it to the cluster.
+Download [secrets.yaml](https://raw.githubusercontent.com/ravendb/docs/master/Documentation/4.1/Raven.Documentation.Pages/start/installation/setup-examples/Kubernetes/yamls/secrets.yaml) and edit it with the base64 values of the license and certificate. Then deploy it to the cluster.
 
 {CODE-BLOCK:bash}
 kubectl create -f .\secrets.yaml
@@ -72,7 +72,7 @@ kubectl label node role=ingress-controller --all
 
 Then we deploy the ingress controller with all of the necessary [RBAC (Role Based Access Control)](https://github.com/jcmoraisjr/haproxy-ingress/tree/master/examples/rbac) rules.
 
-Download [haproxy.yaml](yamls/haproxy.yaml) and deploy it to the cluster:
+Download [haproxy.yaml](https://raw.githubusercontent.com/ravendb/docs/master/Documentation/4.1/Raven.Documentation.Pages/start/installation/setup-examples/Kubernetes/yamls/haproxy.yaml) and deploy it to the cluster:
 
 {CODE-BLOCK:bash}
 kubectl create -f .\haproxy.yaml
@@ -90,7 +90,7 @@ kubectl get pod
 
 ## Deploying the RavenDB StatefulSet
 
-Download [ravendb.yaml](yamls/aks/ravendb.yaml), edit the ConfigMap and Ingress objects with your personal domain information, and deploy it to the cluster:
+Download [ravendb.yaml](https://raw.githubusercontent.com/ravendb/docs/master/Documentation/4.1/Raven.Documentation.Pages/start/installation/setup-examples/Kubernetes/yamls/aks/ravendb.yaml), edit the ConfigMap and Ingress objects with your personal domain information, and deploy it to the cluster:
 
 {CODE-BLOCK:bash}
 kubectl create -f .\ravendb.yaml
