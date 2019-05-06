@@ -26,11 +26,13 @@ The following properties can be configured when creating a new Document Store:
 
      * An initial list of URLs to your RavenDB cluster nodes that is used _only_ when accessing a given database for the first time  
 
-     * The Document Store will fetch the [Database Group Topology](../studio/database/settings/manage-database-group) from the first server on the list that it successfully connects with. The URLs contained in the database group topology will supersede the initial URL list for all future calls to that database. An exception is thrown if the Document Store tries and fails to make contact with every server on the initial list.  
+     * The Document Store will fetch the [Database Group Topology](../studio/database/settings/manage-database-group) from the first server on the list that it successfully connects with. 
+     The URLs contained in the database group topology will supersede the initial URL list for all future calls to that database. An exception is thrown if the Document Store tries and fails 
+     to make contact with each server on the initial list.  
 
      * **Note**: do not open a Document Store with URLs that point outside your cluster, only to nodes of the same cluster  
 
-     * **Note**: this list is not binding, you can always [Add Nodes to Your Cluster](../studio/server/cluster/add-node-to-cluster))   
+     * **Note**: this list is not binding, you can always [Add Nodes to Your Cluster](../studio/server/cluster/add-node-to-cluster)) later  
 
  * **[Default Database](../client-api/setting-up-default-database)** - the database that sessions and operations will operate on unless otherwise specified (optional parameter)  
 
