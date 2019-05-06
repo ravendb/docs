@@ -1,0 +1,20 @@
+[
+  {
+    "Path": "aws-eks.markdown",
+    "Name": "AWS EKS",
+    "DiscussionId": "8e805fd7-1da3-4859-a3ac-8f62b0e4511a",
+    "Mappings": []
+  },
+  {
+    "Path": "azure-aks.markdown",
+    "Name": "Azure AKS",
+    "DiscussionId": "53b6bbc4-2156-4126-8c89-e450da767596",
+    "Mappings": []
+  },
+  {
+    "Path": "google-gke.markdown",
+    "Name": "Google GKE",
+    "DiscussionId": "c05aa0e2-b246-4974-837b-19ebb35d114d",
+    "Mappings": []
+  }
+]
