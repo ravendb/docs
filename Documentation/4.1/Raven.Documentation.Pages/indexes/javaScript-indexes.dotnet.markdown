@@ -1,23 +1,18 @@
 # Indexes: JavaScript Indexes
 
-This feature was created for users who want to create an index and prefer JavaScript over C#.   
-JavaScript indexes can be defined by a user with lower permissions than the C# indexes (admin not required).   
-All other capabilities and features are the same as C# indexes.   
+This feature was created for users who want to create an index and prefer JavaScript over C#. 
+JavaScript indexes can be defined by a user with lower permissions than the C# indexes (admin not required). 
+All other capabilities and features are the same as C# indexes.  
 
-{INFO:Information}
-This is an experimental feature.
-You need to enable the featured by adding the following key to your [settings.json](../server/configuration/configuration-options#json) file:
-
+{SAFE:Experimental}
+This is an experimental feature. 
+To enable it, add the following to your [`settings.json` file](../server/configuration/configuration-options#json):
 {CODE-BLOCK:json}
-{
-    ...
-    "Features.Availability": "Experimental"
-    ...
-}
+"Features.Availability": "Experimental"
 {CODE-BLOCK/}
-{INFO/}
+{SAFE/}
 
-## Creating  JavaScript index
+## Creating  JavaScript Index
 
 If we want to create JavaScript index we need to create an instance of our class that inherits 
 from AbstractJavaScriptIndexCreationTask.   
@@ -26,7 +21,7 @@ AbstractJavaScriptIndexCreationTask inherits from AbstractIndexCreationTask
 
 {CODE javaScriptindexes_1@Indexes\JavaScript.cs /}
 
-## Map index
+## Map Index
 
 `Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. 
 They indicate which documents can be searched by which fields.
@@ -40,17 +35,17 @@ They indicate which documents can be searched by which fields.
     })
 {CODE-BLOCK/}
 
-### Example I - Simple map index
+### Example I - Simple Map Index
 
 {CODE javaScriptindexes_6@Indexes\JavaScript.cs /}
 
-### Example II - Map index with additional sources
+### Example II - Map Index With Additional Sources
 
 {CODE indexes_2@Indexes\JavaScript.cs /}
 
 Read more about map indexes [here](../indexes/map-indexes).
 
-## Multi map index
+## Multi Map Index
 
 Multi-Map indexes allow you to index data from multiple collections
 
@@ -60,7 +55,7 @@ Multi-Map indexes allow you to index data from multiple collections
 
 Read more about multi map indexes [here](../indexes/map-reduce-indexes).
 
-## Map-Reduce index
+## Map-Reduce Index
 Map-Reduce indexes allow you to perform complex aggregations of data.
 The first stage, called the map, runs over documents and extracts portions of data according to the defined mapping function(s).
 Upon completion of the first phase, reduction is applied to the map results and the final outcome is produced.
@@ -74,6 +69,10 @@ Upon completion of the first phase, reduction is applied to the map results and 
             };
         })
 {CODE-BLOCK/}
+
+{WARNING: `this` Keyword}
+`this` is bound to the state of our JavaScript interpreter, which has no relevance to creating indexes. Using `this` in your index may cause it to break. 
+{WARNING/}
 
 ### Example I
 
