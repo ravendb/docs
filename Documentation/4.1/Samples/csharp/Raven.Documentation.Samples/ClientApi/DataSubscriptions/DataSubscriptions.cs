@@ -175,7 +175,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                             }
 
                             declare function projectOrder(doc){
-                                var employee = LoadDocument(doc.Employee);
+                                var employee = load(doc.Employee);
                                 return {
                                     Id: order.Id,
                                     Total: getOrderLinesSum(order),
