@@ -87,7 +87,7 @@ SecurityClearance: `Operator`
 ### Example
 
 {CODE-BLOCK:plain}
-curl -X POST http://<server-url>/admin/cluster/demote?nodeTag=<node-tag>
+curl -X POST http://<server-url>/admin/cluster/promote?nodeTag=<node-tag>
 {CODE-BLOCK/}
 
 {PANEL/}
