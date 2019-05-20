@@ -1,4 +1,4 @@
-# Querying: Graph Queries
+﻿# Querying: Graph Queries
 
 Graph queries are a new type of queries that allows you to query your documents as if they were a graph.  
 The nodes which we query are your regular documents and the edges are just any string property that holds the id of another document.  
@@ -11,7 +11,7 @@ Lets start with the simplest of queries match an order:
 match (Orders as o)
 {CODE-BLOCK/}  
 
-![Figure 1. Simple graph query result](images/simple_graph_query.JPG "Simple graph query result")
+![Figure 1. Simple graph query result](images/temporary/graph-queries/simple_graph_query.JPG "Simple graph query result")
 
 As we can see the results are simmilar to the following `RQL` query
 
@@ -25,7 +25,7 @@ Lets add an edge to the query
 match (Orders as o)-[Employee as edge]->(Employees as e)
 {CODE-BLOCK/}  
 
-![Figure 2. Simple pattern query result](images/basic_pattern_query.JPG "Simple pattern query result")
+![Figure 2. Simple pattern query result](images/temporary/graph-queries/basic_pattern_query.JPG "Simple pattern query result")
 
 As we can see the result of the above query is a tuple of an order as `o`, employee as `e` and the employee id as `edge`.  
 
@@ -46,7 +46,7 @@ Lets query the employee:
 match (Orders as o)-[Employee as edge]->(Employees as e where HiredAt.Year = 1993)
 {CODE-BLOCK/} 
 
-![Figure 3. Filter destination pattern query result](images/filtering_destination_pattern.JPG "Filter destination pattern query result")
+![Figure 3. Filter destination pattern query result](images/temporary/graph-queries/filtering_destination_pattern.JPG "Filter destination pattern query result")
 
 As you can see there are now `265` result rather than `830` as before since we filtered all tuples where their employee didn't match the query.  
 
@@ -56,7 +56,7 @@ We can concatenate more edges to the query, lets fetch the employee boss too:
 match (Orders as o)-[Employee as _ ]->(Employees as e where HiredAt.Year = 1993)-[ReportsTo as __ ]->(Employees as boss)
 {CODE-BLOCK/} 
 
-![Figure 4. Concatenate pattern query result](images/concatenate_pattern_query.JPG "Concatenate pattern query result")
+![Figure 4. Concatenate pattern query result](images/temporary/graph-queries/concatenate_pattern_query.JPG "Concatenate pattern query result")
 
 As you can see the query yields the order as `o` the employee as `e` and the employee boss as `boss`.  
 You can also notice that the edge disappeared that is because we used the `as _` and `as __` aliases which means don't fetch.   
@@ -72,7 +72,7 @@ select
 }
 {CODE-BLOCK/} 
 
-![Figure 5. Projecting graph query results](images/projecting_graph_query.JPG "Projecting graph query results")
+![Figure 5. Projecting graph query results](images/temporary/graph-queries/projecting_graph_query.JPG "Projecting graph query results")
 
 As you can see we can mix regular `RQL` clauses with the graph query to get complex queries answered.
 

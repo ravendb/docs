@@ -1,16 +1,20 @@
-#Graph API: Recursive Queries
+﻿#Graph API: Recursive Queries
 
 ### What are Recursive Queries and why would we want to use them?
-We have seen in [this](#) article how we can execute graph queries to find matching sub-graph patterns. This is useful when we are looking for specific patterns in a graph.
-But what if we don't know the exact pattern that we look for?
+We have seen in [this](#) article how we can execute graph queries to 
+find matching sub-graph patterns. This is useful when we are looking 
+for specific patterns in a graph. But what if we don't know the exact 
+pattern that we look for?
 
-Consider the following graph that models employees, their managers and reporting hierarchy:
-![Chain of management graph](images/ChainOfManagementGraph.png)
+Consider the following graph that models employees, their managers and reporting 
+hierarchy:
+![Chain of management graph](images/temporary/recursive_queries/ChainOfManagementGraph.png)
 
-
-If we want to know which is the direct manager of each employee, we would simply issue a regular pattern match query. 
-Now, if we would like to fetch all managers ranking above a certain employee (managers of managers and so on), 
-we would use a ```recursive``` query, and such 'chain' of vertices that point to each other we would call a _**path**_.
+If we want to know which is the direct manager of each employee, we would simply 
+issue a regular pattern match query. 
+Now, if we would like to fetch all managers ranking above a certain employee 
+(managers of managers and so on), we would use a ```recursive``` query, and such 
+'chain' of vertices that point to each other we would call a _**path**_.
 
 #### Simple example
 The following query would fetch all manager IDs ranking above of ```"employee/6"```:
@@ -24,7 +28,7 @@ select { managerIdsAsPath : chainOfManagers.map(x => x.reportsTo) }
 
 We call such array that is gathered while the recursive query traverses the graph as **path**, the same path we defined above. 
 For the example data seen above in the chart, such query would traverse the following part of the graph:
-![Chain of management graph - recursive traversal](images/ChainOfManagementGraph_recursive_traversal.png)
+![Chain of management graph - recursive traversal](images/temporary/recursive_queries/ChainOfManagementGraph_recursive_traversal.png)
 
 ### Syntax of a 'recursive' clause
 
@@ -79,7 +83,7 @@ select
 }
 {CODE-BLOCK/}
 This query would yield the following results.  Note how ```chainOfManagers``` yields array of IDs traversed as part of recursive query.
-![Example I query results.](images/recursive_query_results_1.png)
+![Example I query results.](images/temporary/recursive_queries/recursive_query_results_1.png)
 {PANEL/}
 
 {PANEL: Example II - Traversal limits}
@@ -95,7 +99,7 @@ select
 }
 {CODE-BLOCK/}
 This query would yield the following results.  Notice how the addition of ```(2,3)``` to the ```recursive``` definition in the query limits the results to only those that have between two and three hops in the path.
-![Example II query results.](images/recursive_query_results_2.png)
+![Example II query results.](images/temporary/recursive_queries/recursive_query_results_2.png)
 {PANEL/}
 
 
@@ -112,7 +116,7 @@ select
 }
 {CODE-BLOCK/}
 This query would yield the following results. The amount of results is the same as in _Example I_, but since we specified ```longest``` in ```recursive``` definition, when there is a longer path available, the query chooses the longest path available.
-![Example III query results.](images/recursive_query_results_3.png)
+![Example III query results.](images/temporary/recursive_queries/recursive_query_results_3.png)
 
 {PANEL/}
 
@@ -133,14 +137,14 @@ select
 }
 {CODE-BLOCK/}
 As we can see, expanding the ```recursive``` scope to a ```manager``` node allows them to be included in retrieved path. In those results we retrieved names of managers in a chain of management without doing any additional 'load document' operations.
-![Example IV query results.](images/recursive_query_results_4.png)
+![Example IV query results.](images/temporary/recursive_queries/recursive_query_results_4.png)
 {PANEL/}
 
 {PANEL: Example V - 'all' as a special recursive match strategy}
 For many use-cases it is enough to determine whether a path exists or not, or to fetch one valid path. But what if we want to fetch all possible paths between two nodes?
 For such use-cases, we would use ```all``` matching strategy.
 Consider the following graph data:
-![Example V - graph with multiple path.](images/MultiplePossibleTraversalPaths.png)
+![Example V - graph with multiple path.](images/temporary/recursive_queries/MultiplePossibleTraversalPaths.png)
 
 The query itself:
 {CODE-BLOCK:sql}
@@ -156,7 +160,7 @@ select
 }
 {CODE-BLOCK/}
 When executed, the following results would be displayed:
-![Example V query results.](images/recursive_query_results_5.png)
+![Example V query results.](images/temporary/recursive_queries/recursive_query_results_5.png)
 
 We are seeing two different paths, since there are two paths possible for ```"dogs/1"``` node.
 
