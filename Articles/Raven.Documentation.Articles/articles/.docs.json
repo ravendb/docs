@@ -773,5 +773,34 @@
             "twitter:description": "Cloud Platforms like AWS and Azure charge by server requests. The right NoSQL Document Database can reduce calls to the server and save you money on the cloud.",
             "twitter:url": "https://ravendb.net/articles/cost-cutting-on-the-cloud-with-a-nosql-document-database"
         }
+    },
+    {
+        "Path": "ravendb-42-review-graphs-counters-revisions-and-more.markdown",
+        "Name": "Graphs, Counters, Revisions and More: A RavenDB 4.2 Review",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Graphs, Counters, Revisions and More: A RavenDB 4.2 Review | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/ravendb-42-review-graphs-counters-revisions-and-more",
+            "publishedAt": "2019-04-16",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "Graph Queries, Pull Replication, Revert Revisions, are all new features in RavenDB 4.2. RavenDB 4.2 also gives stable release to Clusterwide Transactions, JavaScript Indexes, and Distributed Counters.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Graphs, Counters, Revisions and More: A RavenDB 4.2 Review | RavenDB",
+            "og:description": "Graph Queries, Pull Replication, Revert Revisions, are all new features in RavenDB 4.2. RavenDB 4.2 also gives stable release to Clusterwide Transactions, JavaScript Indexes, and Distributed Counters.",
+            "og:url": "https://ravendb.net/articles/ravendb-42-review-graphs-counters-revisions-and-more",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-42-review-graphs-counters-revisions-and-more&fileName=ravendb-42-review-graphs-counters-revisions-and-more.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Graphs, Counters, Revisions and More: A RavenDB 4.2 Review | RavenDB",
+            "twitter:description": "Graph Queries, Pull Replication, Revert Revisions, are all new features in RavenDB 4.2. RavenDB 4.2 also gives stable release to Clusterwide Transactions, JavaScript Indexes, and Distributed Counters.",
+            "twitter:url": "https://ravendb.net/articles/ravendb-42-review-graphs-counters-revisions-and-more"
+        }
     }
 ]
