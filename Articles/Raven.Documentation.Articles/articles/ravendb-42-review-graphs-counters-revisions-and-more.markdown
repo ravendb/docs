@@ -1,6 +1,3 @@
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-
-
 # Graphs, Counters, Revisions and More: A RavenDB 4.2 Review<br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![Graphs, Counters, Revisions and More: A RavenDB 4.2 Review](images/ravendb-42-review-graphs-counters-revisions-and-more.jpg)
@@ -8,7 +5,7 @@
 {SOCIAL-MEDIA-LIKE/}
 
 <p class="text-center">
-<button id="podcast-play-button" class="play-button" style=""><i class="fa fa-play" style="margin-right:20px"></i>Play Podcast</button>
+<button id="podcast-play-button" class="play-button" style=""><i class="icon-play" style="margin-right:20px"></i>Play Podcast</button>
 </p>
 
 
@@ -40,12 +37,12 @@
 
 function changeButtonToPlay(button) {
   button.className = "play-button";
-  button.innerHTML = "<i class=\"fa fa-play\" style=\"margin-right:20px\"></i> Play Podcast"
+  button.innerHTML = "<i class=\"icon-play\" style=\"margin-right:20px\"></i> Play Podcast"
 }
 
 function changeButtonToPause(button) {
   button.className = "play-button is-playing";
-  button.innerHTML = "<i class=\"fa fa-pause\" style=\"margin-right:20px\"></i> Pause";
+  button.innerHTML = "<i class=\"icon-pause\" style=\"margin-right:20px\"></i> Pause";
 }
 
 var audioElement = document.getElementById('podcast-audio');
