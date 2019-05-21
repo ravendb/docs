@@ -75,4 +75,4 @@ document.querySelector("#podcast-play-button").addEventListener("click", functio
 {RAW/}
 
 <br>
-[![Try out RavenDB 4.2 for Free](images/try-out-rdb42.png)](https://ravendb.net/downloads#server/dev)
+[![Try out RavenDB 4.2 for Free](images/try-out-rdb42.png)](https://ravendb.net/downloads)
