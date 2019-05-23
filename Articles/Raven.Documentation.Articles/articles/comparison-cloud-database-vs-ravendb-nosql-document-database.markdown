@@ -68,7 +68,7 @@ These resources are always available for you and are free of charge.
 
 ### *Issue #6: Paging is so hard! You can’t just open the third page of your results, you have to actually go through the first two pages to get there.*
 
-Where the cloud database uses a continuation-token and forces you to meticulously go through all result pages up to the one you’re actually interested in, RavenDB simply lets you get there. 
+Where the cloud database uses a <em>continuation-token</em> and forces you to meticulously go through all result pages up to the one you’re actually interested in, RavenDB simply lets you get there. 
 You can paginate query results (or not) as you wish, leaf and skip through them, and effortlessly get where you want.<br/>
 
 This is not a secluded incident, but yet another reflection of a basic difference in approaches. RavenDB is developed by people who need working features, and honestly produce them for themselves and others. We strive and succeed to include easily applicable features that evidently suit most applications, so you don’t have to struggle for them. 
@@ -79,7 +79,7 @@ Most large companies, especially ones whose company stock is traded on public ma
 
 We on the other hand view support the way you do, as a cost incurred by us. We are a company founded by developers, run by developers and guided by developers, whose mission is to create a product every developer would love to use. RavenDb strives to minimize your need to stop what you are doing, make a call, and wait until someone with a heartbeat picks up the phone. <br/>
 
-We created a low overhead database, so your DBA wouldn’t have to play the role of babysitter. 
+We created a <em>low overhead</em> database, so your DBA wouldn’t have to play the role of babysitter. 
 One of our clients has used our database for 6 years straight without having to touch it. 
 We have provided RavenDB with self-optimization features to warn you of any potential issues and keep technical debt low, and put other fail-safe measures in motion to resolve many issues without wasting your time. <br/>
 
