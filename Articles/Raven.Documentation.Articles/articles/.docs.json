@@ -802,5 +802,34 @@
             "twitter:description": "Graph Queries, Pull Replication, Revert Revisions, are all new features in RavenDB 4.2. RavenDB 4.2 also gives stable release to Clusterwide Transactions, JavaScript Indexes, and Distributed Counters.",
             "twitter:url": "https://ravendb.net/articles/ravendb-42-review-graphs-counters-revisions-and-more"
         }
+    },
+    {
+        "Path": "comparison-cloud-database-vs-ravendb-nosql-document-database.markdown",
+        "Name": "Comparison: Cloud Database vs RavenDB NoSQL Document Database",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Comparison: Cloud Database vs RavenDB NoSQL Document Database",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/comparison-cloud-database-vs-ravendb-nosql-document-database",
+            "publishedAt": "2019-05-23",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "RavenDB, the industry’s best NoSQL Document Database, shines in a comparison with a cloud database. We offer better Replication, Performance, and portability.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Comparison: Cloud Database vs RavenDB NoSQL Document Database",
+            "og:description": "RavenDB, the industry’s best NoSQL Document Database, shines in a comparison with a cloud database. We offer better Replication, Performance, and portability.",
+            "og:url": "https://ravendb.net/articles/comparison-cloud-database-vs-ravendb-nosql-document-database",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/comparison-cloud-database-vs-ravendb-nosql-document-database&fileName=comparison-cloud-database-vs-ravendb-nosql-document-database.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Comparison: Cloud Database vs RavenDB NoSQL Document Database",
+            "twitter:description": "RavenDB, the industry’s best NoSQL Document Database, shines in a comparison with a cloud database. We offer better Replication, Performance, and portability.",
+            "twitter:url": "https://ravendb.net/articles/comparison-cloud-database-vs-ravendb-nosql-document-database"
+        }
     }
 ]
