@@ -1,18 +1,54 @@
 ﻿# Import data from existing RavenDB server
 
-Importing from a live URL is another option to import your data from other server, and it is backward compatible between RavenDB versions.  
-In order to import a database from existing RavenDB server, we need an existing database on live server.
+Importing from a live URL is another option to import your data from other server, and it is backward compatible between RavenDB versions. In order to import a database
+from existing RavenDB server, we need an existing database on live server. The process is straightforward and it consists of a few steps:
 
-Select a `database` that you want to import you data into.
-![Figure 1. Databases List](images/import-from-ravendb-db-list.png "Databases List")
+1. Setting up a certificates (only when importing from secured 4.x server).
+2. Providing server address and credentials.
+3. Customizing import options.
 
-Select `Setting` and select `Import Data` under `Tasks` submenu.
-![Figure 2. Import Data](images/import-from-ravendb-import-data.png "Import Data")
+{PANEL: Step #1: Preparing secured 4.x servers to import process (optional)}
 
-Select `From RavenDB`.
-![Figure 3. From RavenD](images/import-from-ravendb-from-ravendb.png "From RavenDB")
+If your Raven 4.x is exposed over HTTPS then in order to be able to import data from it you need to register a certificate of a new destination server (also running on HTTPS) as a client certificate.
+This way your new RavenDB instance will be able access existing database and fetch data from it.
 
-## Import configuration
+In order to accomplish it please go to the RavenDB Studio where you want to import data and perform the following actions:
+
+1. Go to [Certificate Management](../../../../server/security/authentication/certificate-management) view (`Server Management -> Certificates`)   
+2. Choose `Export cluster certificates` option from `Cluster certificate` dropdown:
+
+![Figure 1. Export server certificate](images/import-from-raven-export-server-certificate.png "Export server certificate")
+
+Then on a source RavenDB server you need to register that certificate:
+
+1. Go to [Certificate Management](../../../../server/security/authentication/certificate-management) view (`Server Management -> Certificates`)
+2. Upload the exported certificate as the client certificate by choosing `Upload client certificate`:
+
+    ![Figure 2. Import exported certificate as client certificate](images/import-from-raven-upload-server-cert-as-client-cert.png "Import exported certificate as client certificate")
+
+3. Provide a meaningful name for that certificate. Security clearance `User` will provide necessary access for migration purposes. Please remember to add `Read/Write` permission to 
+a database you want to import:
+
+    ![Figure 3. Import certificate details](images/import-from-raven-upload-server-cert-as-client-cert-details.png "Import certificate details")
+
+4. Upload it.
+
+{PANEL/}
+
+{PANEL: Step #2: Accessing Import From RavenDB view}
+
+1. Select a `database` that you want to import you data into.
+    ![Figure 1. Databases List](images/import-from-ravendb-db-list.png "Databases List")
+
+2. Select `Setting` and select `Import Data` under `Tasks` submenu.
+    ![Figure 2. Import Data](images/import-from-ravendb-import-data.png "Import Data")
+
+3. Select `From RavenDB`.
+    ![Figure 3. From RavenD](images/import-from-ravendb-from-ravendb.png "From RavenDB")
+
+{PANEL/}
+
+{PANEL: Step #3: Import configuration}
 
 We need to specify the URL and select the database we want to import the data from.
 
@@ -22,7 +58,9 @@ We need to specify the URL and select the database we want to import the data fr
 2. **Server Version** - Version of server that you want to import from.
 3. **Database Name** - The name of the Database that you want to migrate your data from.
 
-## Import options 
+{PANEL/}
+
+{PANEL: Import options}
 
 Here we can filter the data we want to import, select configuration and apply a transform script on your documents.
 
@@ -42,9 +80,9 @@ Here we can filter the data we want to import, select configuration and apply a 
 If any of the options is set but the other database doesn't contain any items of that type, the type will be skipped.
 {NOTE/}
 
-## Advanced import options
+### Advanced import options
 
-### Transform Script
+#### Transform Script
 
 ![Figure 6. Advanced Import Options - Transform Script](images/import-from-ravendb-advanced-transform-script.png "Advanced Import Options - Transform Script")
 
@@ -58,7 +96,9 @@ delete this['@metadata']['@change-vector']
 // and you want to avoid adding old change vector entries to a new environment. 
 {CODE-BLOCK/}
 
-### Customize Configuration and Ongoing Tasks
+{PANEL/}
+
+### Customize Configuration and Ongoing Tasks}
 
 ![Figure 6. Advanced Import Options - Customize Configuration and Ongoing Tasks](images/import-from-ravendb-advanced-configuration-ongoing-tasks.png "Advanced Import Options - Customize Configuration and Ongoing Tasks")
 
