@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* In addition to importing data from a [.ravendbdump](../../../todo) file,  
+* In addition to importing data from a [.ravendbdump](../../../../studio/database/tasks/import-data/import-data-file) file,  
   data can also be imported directly from an existing database on a **live RavenDB server**.  
 
 * Backward compatibility is supported.  
@@ -22,7 +22,7 @@
 {PANEL: Step #1: Prepare Servers for the Import Process (Secure 4.x Servers Only)}
 
 * Data from a _secure 4.x RavenDB server_ (running on HTTPS) can only be imported to a destination server that is also _secure_.  
-  Skip this step and continue to [Step 2](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#2:-access-the-import-view) if your source RavenDB server is Not running on HTTPS.  
+  Skip this step and continue to [Step 2](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#2:-access-the-import-view) if your source RavenDB server is Not 4.x version and running on HTTPS.  
 
 * For the import to take place, the destination server needs to access the existing source database and fetch data from it.  
   To grant such access, you must first register the destination server certificate as a client certificate on your source server.  
@@ -124,7 +124,7 @@ delete this['@metadata']['@change-vector']
 // This is very helpful if the data is imported from a different database-group
 // and you want to avoid adding old change-vector entries to a new environment.
 
-// Exmaple 2
+// Example 2
 this.collection = this['@metadata']['@collection'];
 // This script will create a new 'collection' property in each imported document.
 {CODE-BLOCK/}
