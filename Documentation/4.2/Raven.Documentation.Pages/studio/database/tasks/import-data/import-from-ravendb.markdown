@@ -21,8 +21,9 @@
 
 {PANEL: Step #1: Prepare Servers for the Import Process (Secure 4.x Servers Only)}
 
-* Data from a _secure 4.x RavenDB server_ (running on HTTPS) can only be imported to a destination server that is also _secure_.  
-  Skip this step and continue to [Step 2](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#2:-access-the-import-view) if your source RavenDB server is Not 4.x version and running on HTTPS.  
+* Perform this step only if your source RavenDB server is a secure 4.x server that is running on HTTPS.  For other servers, skip this step and continue to [Step 2](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#2:-access-the-import-view).
+
+* Data from a secure 4.x RavenDB server (running on HTTPS) can only be imported to a destination server that is also secure.
 
 * For the import to take place, the destination server needs to access the existing source database and fetch data from it.  
   To grant such access, you must first register the destination server certificate as a client certificate on your source server.  
