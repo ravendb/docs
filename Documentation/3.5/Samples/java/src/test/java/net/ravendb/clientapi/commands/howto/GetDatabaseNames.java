@@ -20,7 +20,7 @@ public class GetDatabaseNames {
     try (IDocumentStore store = new DocumentStore()) {
       //region get_database_names_2
       String[] databaseNames =
-        store.getDatabaseCommands().getGlobalAdmin().getDatabaseNames(0, 10);
+        store.getDatabaseCommands().getGlobalAdmin().getDatabaseNames(10);
       //endregion
     }
   }
