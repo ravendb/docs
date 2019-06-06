@@ -1,32 +1,20 @@
 [
-    {
-        "Path": "graph-queries-overview.markdown",
-        "Name": "Overview",
-        "Mappings": []
-    },
-    {
-        "Path": "graph-queries-basic.markdown",
-        "Name": "Basic Graph Queries",
-        "Mappings": []
-    },
-    {
-        "Path": "graph-queries-advanced.markdown",
-        "Name": "Advanced Graph Queries",
-        "Mappings": []
-    },
-    {
-        "Path": "graph-queries-vs-other-queries.markdown",
-        "Name": "Comparison with other Graph Queries",
-        "Mappings": []
-    },
-    {
-        "Path": "graph-queries-tbr.markdown",
-        "Name": "Initial Text - To Be Removed",
-        "Mappings": []
-    },
-    {
-        "Path": "graph-recursive-tbr.markdown",
-        "Name": "Recursive - To Be Removed",
-        "Mappings": []
-    }
+  {
+    "Path": "graph-queries-overview.markdown",
+    "Name": "Overview",
+    "DiscussionId": "cd8db8e6-3496-4afe-98ce-c08d361e5a37",
+    "Mappings": []
+  },
+  {
+    "Path": "graph-queries-basic.markdown",
+    "Name": "Basic Graph Queries",
+    "DiscussionId": "de9ab054-c5c4-4fca-a283-55ce675b1fb7",
+    "Mappings": []
+  },
+  {
+    "Path": "graph-queries-recursive.markdown",
+    "Name": "Recursive Graph Queries",
+    "DiscussionId": "5e0eb2b4-fae0-4dad-b645-a5f881e2854b",
+    "Mappings": []
+  }
 ]

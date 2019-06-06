@@ -17,8 +17,9 @@ a relational databases useless, become the asset they are meant to be.
   We've integrated graph support into [RQL](), to make its learning and usage accessible and intuitive for any user, 
   especially those already familiar with our query language.  
 
-* **Wide system support**  
-  Build and run graph queries using API methods or the Studio. Use the Studio to view query results graphically.  
+* **Comprehensive support**  
+  Queries can be constructed by either clients using API methods or manually using the Studio, and executed 
+  by your distributed server. Results can be used by your clients, or shown textually and graphically by the Studio.  
 
 * In this page:  
    * [Introduction to graph modelling](../../../indexes/querying/graph/graph-queries-overview#introduction-to-graph-modelling)  
@@ -35,25 +36,27 @@ a relational databases useless, become the asset they are meant to be.
 
 {PANEL: Introduction to graph modelling}  
 
-One of the best known founding moments of graph theory is [Leonhard Euler](https://en.wikipedia.org/wiki/Leonhard_Euler)'s 
-attempt at solving the [Königsberg Bridges](https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg) riddle, 
-eventually tackling the problem by representing the scenery and its elements in a graph.  
-Euler's search for an optimal path is a great referal point to the practicality of graph theory, leading all the way to its 
-immense present-days effectiveness in managing huge, complex data volumes.  
-
-[Huge, complex data volumes](https://www.datamation.com/big-data/big-data-companies.html) represent 
-an important step in the evolution of data management, and are evidently here to stay and develop.  
-As relational databases and the data model they enable are inefficient in (and often incapable of) 
-searching and managing big-data volumes with intricate relations, various implementations take part 
-in complementing or replacing them.  
-Graph databases are a major contribution in this regard. They are not limited to big-data volumes though, 
-and are often as comfortable and efficient in the management of smaller ones.  
-
-Graph querying is often provided not by itself but as one of the features of a multi-model database, 
-and is based upon or cooperating with other database features.  
-RavenDB's graph capabilities are founded upon a capable document store, and data already deposited in 
-the store can participate graph querying with no preceding arrangements, easing user administration and 
-improving internal logic and data management.  
+* **In The Beginning..**  
+  One of the best known founding moments of graph theory is [Leonhard Euler](https://en.wikipedia.org/wiki/Leonhard_Euler)'s 
+  attempt at solving the [Königsberg Bridges](https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg) riddle, 
+  eventually tackling the problem by representing the scenery and its elements in a graph.  
+  Euler's search for an optimal path is a great referal to the practicality of graph theory, leading all the way to its 
+  immense present-day effectiveness in managing large and complex data volumes.  
+* **..and large data volumes**   
+  [Large, complex data volumes](https://www.datamation.com/big-data/big-data-companies.html) represent 
+  an important step in the evolution of data management, and are evidently here to stay and develop.  
+  As relational databases and the data model they enable are inefficient in (and often incapable of) 
+  searching and managing big-data volumes with intricate relations, various applications take part 
+  in complementing or replacing them.  
+  Databases capable of running graph queries are a major contribution in this regard, though 
+  not limited to the  management of large data volumes and often as comfortable and efficient 
+  in handling smaller ones.  
+* **..and Multi Model**  
+  It is common to find graph querying as one of the features of a multi-model database, based upon 
+  or cooperating with other database features.  
+  RavenDB's graph capabilities are founded upon a capable document store, and data already deposited in 
+  the store can participate graph querying with no preceding arrangements, easing user administration and 
+  improving internal logic and data management.  
 
 {NOTE: }
 
@@ -79,18 +82,17 @@ As other experimental fatures, it is disabled by default. You can enable it foll
 ####Graph representations
 
 Graph querying enhances RQL with simple vocabulary and syntax that allow you to approach your existing data 
-as if it had been designed graphically. Here's a sample that shows its basic structure.  
+as if it had been designed graphically. Here's a basic query that shows relations between employees, using documents 
+taken from the Northwind database RavenDB lets you install as sample data.  
 
 * Graph query:  
 {CODE-BLOCK:JSON}
-match  
-(Creatures as eater)-[Hunts as hunts]->(Creatures as food)  
-or (eater)-[Eats as eats]->(food)  
+match(employees as employee)-[ReportsTo as reportsTo]->(employees as incharge)  
 {CODE-BLOCK/}
 * Query results are provided by the Studio both graphically and textually.  
 
- ![Illustrative graph reqults](images/Overview_GraphicalView.png)  
- ![Textual graph results](images/Overview_TextualView.png)  
+ ![Illustrative graph reqults](images/Overview_GraphicalView_1.png)  
+ ![Textual graph results](images/Overview_TextualView_1.png)  
 
 ---
 
@@ -99,9 +101,9 @@ or (eater)-[Eats as eats]->(food)
 * **Graph Elements**  
   Data elements ("Nodes") and their relations ("Edges") are represented in a graph as equally important.  
   * **Data Nodes\***  
-    A data node can be a documents collection, or a subset of selected documents.  
-    \* The term "data nodes" is used here to distinguish the data elements we talk about from servers of a cluster, 
-        also called "nodes".  
+    A "data node" can be a documents collection, or a subset of selected documents.  
+    **\*** _We use the term "data nodes" to make it easier for you to distinguish between the data elements 
+    we talk about here, and servers of a cluster (that are also called "nodes")._  
   * **Edges**  
     An "edge" is a link between nodes, that joins them in a relation of some sort.  
     A RavenDB edge is simply a string-field within a document, that refers to the unique identifier of a document.  
@@ -140,7 +142,7 @@ or (eater)-[Eats as eats]->(food)
     {CODE-BLOCK/}
 
 * **Graph query**  
-  Here is an example for a query that could have produced the results shown above:  
+  Here's a query that could have produced the results shown above:  
   `match(Dogs)-[Owner as ownedBy]->(Owners)`  
   Let's go through its parts and syntax.  
    * The `match` keyword instructs the retrieval of documents that match specified conditions.  
@@ -164,10 +166,17 @@ or (eater)-[Eats as eats]->(food)
       * To eliminate an entity from the results, use a sequence of `_` symbols as an alias (i.e. `_`, `__`, `___`..)  
       * Each alias needs to be unique.  
         Note that this is true for `_` aliases as well: use each `_` sequence (`_`, `__`, `___`..) only once.  
+* **Graph Queries Flow**
+   * Lucene indexing  
+     When a graph query is executed, the first thing RavenDB does is index each node clause using Lucene.  
+     The result is a group of indexed tables that the graph engine can easily play with.  
+   * Handling relations  
+     If the query comprises edges, the graph engine uses them now while going through the table prepared during the first phase 
+     and fathoming the relations between table elements.  
+     [Be aware](../../../indexes/querying/graph/graph-queries-basic#graph-queries-and-indexes) that this part of a query is performed in memory and is not indexed, so reruns actually mean 
+     re-running it.  
 
 {PANEL/}
-
----
 
 {PANEL: FAQ}
 
