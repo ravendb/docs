@@ -528,7 +528,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 var operation = store
                     .Operations
                     .Send(new PatchByQueryOperation(@"from Orders as o
-                                                      where o.Employee = args.EmployeeToUpdate
+                                                      where o.Employee = 'employees/4-A'
                                                       update
                                                       {
                                                           o.Lines.forEach(line=> line.Discount = 0.3);
