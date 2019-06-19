@@ -831,5 +831,34 @@
             "twitter:description": "RavenDB, the industry’s best NoSQL Document Database, shines in a comparison with a cloud database. We offer better Replication, Performance, and portability.",
             "twitter:url": "https://ravendb.net/articles/comparison-cloud-database-vs-ravendb-nosql-document-database"
         }
+    },
+    {
+        "Path": "ravendb-elasticsearch-best-open-source-nosql-database.markdown",
+        "Name": "RavenDB vs Elasticsearch: The Best Open Source NoSQL Database",
+        "Mappings": [],
+        "Metadata": {
+            "title": "RavenDB vs Elasticsearch: The Best Open Source NoSQL Database",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/ravendb-elasticsearch-best-open-source-nosql-database",
+            "publishedAt": "2019-05-23",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "RavenDB and Elasticsearch go head to head to determine which is the best open source NoSQL Database that you should download for your next project.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "RavenDB vs Elasticsearch: The Best Open Source NoSQL Database",
+            "og:description": "RavenDB and Elasticsearch go head to head to determine which is the best open source NoSQL Database that you should download for your next project.",
+            "og:url": "https://ravendb.net/articles/ravendb-elasticsearch-best-open-source-nosql-database",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-elasticsearch-best-open-source-nosql-database&fileName=ravendb-elasticsearch-best-open-source-nosql-database.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "RavenDB vs Elasticsearch: The Best Open Source NoSQL Database",
+            "twitter:description": "RavenDB and Elasticsearch go head to head to determine which is the best open source NoSQL Database that you should download for your next project.",
+            "twitter:url": "https://ravendb.net/articles/ravendb-elasticsearch-best-open-source-nosql-database"
+        }
     }
 ]
