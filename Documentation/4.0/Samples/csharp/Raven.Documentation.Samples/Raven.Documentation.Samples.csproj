@@ -10,21 +10,11 @@
     <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="ClientApi\Commands\Documents\Delete.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="ClientApi\Commands\Documents\Put.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="ClientApi\Operations\Indexes\DisableIndex.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="ClientApi\Operations\Indexes\Get.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="ClientApi\Operations\Server\GetDatabaseNames.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Update="ClientApi\Commands\Documents\Delete.cs" />
+    <Compile Update="ClientApi\Commands\Documents\Put.cs" />
+    <Compile Update="ClientApi\Operations\Indexes\DisableIndex.cs" />
+    <Compile Update="ClientApi\Operations\Indexes\Get.cs" />
+    <Compile Update="ClientApi\Operations\Server\GetDatabaseNames.cs" />
   </ItemGroup>
 
 </Project>
