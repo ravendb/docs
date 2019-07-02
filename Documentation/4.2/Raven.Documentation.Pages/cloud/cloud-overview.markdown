@@ -67,8 +67,8 @@ view your billing info, and contact Support.
      
 
   {NOTE: }
-   This link is temporary and will expire shortly.  
-   We use expirable links to make sure each visit is logged and to keep your activity trackable and more secure.  
+   The link is temporary, we use expirable links to make sure each visit is logged and to keep your activity 
+   trackable and more secure.  
   {NOTE/}
   
   {NOTE: }
@@ -82,9 +82,9 @@ view your billing info, and contact Support.
 
 ####Reserved Clusters
 
-Reserved clusters are production clusters of grade *Standard* or *Performance*.  
-Their resources are pre-allocated and can be used only by them, and they make full use of their underlying cloud resources.  
-Designed to run production systems with demanding workloads, these are the workhorses of the RavenDB Cloud.
+Reserved clusters are production clusters of grade *Standard* or *Performance*. Their resources are 
+pre-allocated, and can be used only by them. Designed to run production systems with demanding workloads, 
+these are the workhorses of the RavenDB Cloud.
 
 ---
 
