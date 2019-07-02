@@ -44,7 +44,7 @@ Spatial indexes can be queried using the `Spatial` method which contains a full 
 {CODE-TAB:csharp:Async spatial_4_1@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Houses
-where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(10, 32.1234. 23.4321))
+where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(10, 32.1234, 23.4321))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -82,7 +82,7 @@ To sort by distance from given point use the `OrderByDistance` method. The close
 {CODE-TAB:csharp:Async spatial_7_1@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Houses
-where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(10, 32.1234. 23.4321))
+where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(10, 32.1234, 23.4321))
 order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1234, 23.4321))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -110,7 +110,7 @@ To sort by distance from given point use the `OrderByDistanceDescending` method.
 {CODE-TAB:csharp:Async spatial_9_1@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Houses
-where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(10, 32.1234. 23.4321))
+where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(10, 32.1234, 23.4321))
 order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1234, 23.4321)) desc
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
