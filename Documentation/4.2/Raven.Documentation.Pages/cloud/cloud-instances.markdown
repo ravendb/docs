@@ -1,79 +1,108 @@
-# RavenDB on the Cloud: Cloud Instances
----
+## RavenDB on the Cloud: Tiers and Instances
 
 {NOTE: }
 
-* You can raise a cloud instance while creating your account, and create or modify an instance 
-  through your Control Panel's Products tab.  
-* There are three instance types: Free, Development, and Production.  
+Use your Control Panel's [Products tab](../cloud/cloud-control-panel#the-products-tab) to raise or modify 
+a free node, a development node, or a production cluster.  
+Free and Development nodes, as well as Production "basic" grade clusters, are operated by 
+[burstable instances](../cloud/cloud-overview#burstable-instances).  
+The higher production cluster grades Standard and Performance are 
+[Reserved clusters](../cloud/cloud-overview#reserved-clusters).  
 
 * In this page:  
-    * [A Free Instance](../cloud/cloud-instances#a-free-instance)  
-    * [A Development Instance](../cloud/cloud-instances#a-development-instance)  
-    * [A Production Instance](../cloud/cloud-instances#a-production-instance)  
+    * [Cloud Free Instance](../cloud/cloud-instances#cloud-free-node)  
+    * [Cloud Development Node](../cloud/cloud-instances#cloud-development-node)  
+    * [Cloud Production Cluster](../cloud/cloud-instances#cloud-production-cluster)  
     * [Summary](../cloud/cloud-instances#summary)  
     * [Migration](../cloud/cloud-instances#migration)  
 {NOTE/}
 
 ---
 
-{PANEL: The Three Tiers}
+{PANEL: }
 
-### A Free Instance  
+### Cloud Free Node  
 
-Free instances are great for experiments and evaluation. They are equipped with 
+Free RavenDB cloud nodes are great for experiments and evaluation. They are equipped with 
 the most basic configuration and capabilities, and have a single node and no SLA.  
-If you don't use a free instance for over 14 days, it will be deleted.  
+You can have only one free node per [account](../cloud/cloud-overview#your-account).  
 
-A free instance always runs on a burstable CPU. It is given a 9$-worth monthly 
-credit when you start it, for the instance itself and for incidentals like backup 
-storage and traffic.  
+To raise a free cloud node, choose the **free** tier when you create your product using the 
+[Products tab](../cloud/cloud-control-panel#provisioning-a-new-product).  
+!["Tiers and Instances: Free"](images\tiers-and-instances-001-free.png "Tiers and Instances: Free")  
 
----
+{NOTE: }
+If your free instance is using more resources than the provided credit, you'll need
+to pay for these resources or stop your instance. 
+{NOTE/}
 
-### A Development Instance  
-
-A development instance is equipped with all RavenDB options (e.g. Pull Replication), 
-and you can choose its equipment level out of 7 increasingly-stronger configurations, 
-Dev0 to Dev7.  
-
-It is perfect for development, though not for production because of its single-node 
-configuration, burstable CPU usage and no SLA.  
-
-[a table with dev0 to dev7 capabilities)]
+* A free instance is identical to a development [Dev10](../cloud/cloud-instances#cloud-development-node) instance. It comes with a monthly credit of 9$, 
+  used to cover the cost of the instance and of incidentals like backup storage and traffic.  
+* The free instance is limited to the [community license](https://ravendb.net/buy) set of features. 
+* If you don't use a free instance for over 14 days, it will be deleted.  
 
 ---
 
-### A Production Instance  
+### Cloud Development Node  
 
-The default configuration for a production instance is a three-node cluster.  
+A development node is equipped with all RavenDB's features, like Pull Replication and Encrypted Databases.  
+You can choose its equipment out of 7 increasingly-powerful configurations, Dev10 to Dev70.  
 
-* The production tier includes three instance levels.
-   - Basic  
-     Basic production instances are burstable.  
-     Calculate your needs carefully, and make sure you notice it when your needs 
-     overgrow the credits system and require dedicated machines.  
-   - Standard  
-     Standard production instances are dedicated. They can use 100% of their CPU's 
-     time and power, need no credits and are threatened by no throttling.  
+It is perfect for development, though not for production because of its single-node configuration, burstable 
+CPU usage and no SLA.  
+
+To raise a cloud Development node, choose the **development** tier when you create your product using the 
+[Products tab](../cloud/cloud-control-panel#provisioning-a-new-product).  
+!["Tiers and Instances: Development"](images\tiers-and-instances-002-development.png "Tiers and Instances: Development")  
+
+* Use the configuration slide bar to choose your development node's configuration.  
+  !["Development Tier DEV10"](images\tiers-and-instances-0021-development-dev10.png "Development Tier DEV10")  
+  !["Development Tier DEV70"](images\tiers-and-instances-0022-development-dev70.png "Development Tier DEV70")  
+
+* Use the storage slide bar to choose your storage size.  
+  !["Development Tier: Storage"](images\tiers-and-instances-0023-development-storage.png "Development Tier: Storage")  
+
+---
+
+### Cloud Production Cluster  
+
+The default production configuration is a three-node cluster, provisioned in separate 
+availability zones for maximum durability.  
+
+!["Production Tier"](images\tiers-and-instances-003-production.png "Production Tier")  
+
+
+{NOTE: }
+RavenDB Cloud also offers multi-region clusters and clusters with a higher number of nodes.  
+Contact Support for guidance regarding provisioning such clusters.
+{NOTE/}
+
+* The production tier offers three instance levels.
+   - **Basic**  
+     Basic production clusters are burstable. While suitable for low to medium workloads, 
+     they trade-off peak efficency for lower costs.  
+     !["Production: Basic"](images\tiers-and-instances-0031-production-basic.png "Production: Basic")  
+
+   - **Standard** production clusters have reserved resources they can utilize at all time, and are 
+     equipped to handle constant production load.  
+     !["Production: Standard P10"](images\tiers-and-instances-0032-production-standard-P10.png "Production: Standard P10")  
+     !["Production: Standard P50"](images\tiers-and-instances-0033-production-standard-P50.png "Production: Standard P50")  
+
+     * Use the slide bar to choose your Standard Production cluster's storage size.  
+     !["Standard Storage"](images\tiers-and-instances-0034-production-standard-storage.png "Standard Storage")  
+
    - Performance  
-     Performance instances are dedicated, and we can **custom-tailor** them for your production 
-     so they include High memory, Dedicated IO with NVMe drives, High compute, and up to 2 terabytes 
-     of storage space.  
+     Performance instances are reserved, and we can **custom-tailor** them for your production environment 
+     so they include High memory, reserved IO with NVMe drives, High compute, and up to 2 terabytes of storage space.  
+     !["Production: Performance"](images\tiers-and-instances-0034-production-performance.png "Production: Performance")  
 
-* Deployment  
-  Our default configuration is a three-node cluster, located in different availability zones of 
-  the same region. E.g. the whole cluster is in a data center in central London, with each node in 
-  a different building.  
-
-  {NOTE: }
-  The production tier is **highly customizable**. You can approach our support to modify 
-  your server configuration, the number of nodes in your cluster, and their deployment.  
-  If you're interested in a high global availability for example, a multi-region deployment 
-  would probably suit you better.  
-  Contact our support to custom-tailor your configuration and consult you with whatever you need 
-  (e.g. help you locate an appropriate router and set your infrastructure environment variables).  
-  {NOTE/}
+{NOTE: }
+The production tier is **highly customizable**.  
+Contact Support to modify your server configuration, the number of nodes in your cluster, 
+and various parameters of their deployment.  
+If you're interested in a high global availability for example, a multi-region deployment 
+would probably suit you better than the default.  
+{NOTE/}
 
   ---
 
@@ -90,8 +119,8 @@ The three instance types differ from each other in purpose, capabilities and cos
 | **Tier** | **Sub-tiers** | **CPU** | **Options** | **SLA** |
 | -- | -- | -- | -- | -- |
 | Free | - | Very low | None | No |
-| Development | Dev0-Dev6 | Very low - High | All | [Yes](../cloud/cloud-control-panel#support-tab) |
-| Production | **By CPU Priority** (Basic/Standard/Performance) <br> **By Cluster Size**| Up to extra performance, high network and dedicated NVMe | All | [Yes](../cloud/cloud-control-panel#support-tab) |
+| Development | Dev0-Dev6 | Very low - High | All | [Yes](../cloud/cloud-control-panel#the-support-tab) |
+| Production | **By CPU Priority** (Basic/Standard/Performance) <br> **By Cluster Size**| Up to extra performance, high network and reserved NVMe | All | [Yes](../cloud/cloud-control-panel#the-support-tab) |
 
 
 {PANEL/}
@@ -105,9 +134,9 @@ Instances can be upgraded or downgraded, **within each tier**.
 A Dev2 instance for example, can be upgraded to Dev5 because both are Development Instances. 
 It cannot be upgraded to a Production instance though, nor downgraded to a Free instance.
 
-Migrate one instance into another from within the instances.  
-* Run both instances (the one you want to migrate from and the one you want to migrate to).
-* From your new instance, use the "import from RavenDB instances" option.
+* Migrate one instance into another from within the instances.  
+   * Run both instances (the one you want to migrate from and the one you want to migrate to).
+   * From your new instance, use the "import from RavenDB instances" option.
 
 {NOTE: }
 You also need to export the old instance's certificate so the new instance would recognize it and be able to retrieve its data.
@@ -115,11 +144,3 @@ You also need to export the old instance's certificate so the new instance would
 {NOTE/}
 
 {PANEL/}
-
-
-## Related articles
-**Studio Articles**:  
-[xxx](../../../xxx)  
-
-**Client-API Articles**:  
-[xxx](../../../xxx)  
