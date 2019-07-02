@@ -1,10 +1,10 @@
-## RavenDB on the Cloud: Backup
+# RavenDB on the Cloud: Backup
+---
 
 {NOTE: }
 
 * Your cloud nodes, clusters and data are regularly and automatically backed up.  
 * You can run your own ongoing backup tasks, as you would off-cloud.  
-
 * In this page:  
   * [Automatic Backup](../cloud/cloud-backup#automatic-backup)  
   * [Charging For Your Backup storage](../cloud/cloud-backup#charging-for-your-backup-storage)  
@@ -30,7 +30,8 @@ be reduced to less than 14 days.**
 
 ### Charging For Your Backup storage  
 
-Backup storage up to 1 GB is free. Your monthly average usage will be measured, and you'll be charged accordingly.  
+Backup storage up to 1 GB is free. Your backup storage usage will be measured once a day. Each month you will be charged 
+based on the *average* amount by which you exceed the 1 GB limit.
 
 {NOTE: } 
 Backup files are compressed.  
@@ -49,9 +50,10 @@ Backup files are always encrypted.
 * If the database being backed up is NOT encrypted:  
   We will encrypt it using an encryption key that **we** manage, unique to your account.  
 * If your database IS encrypted:  
-  **Your database encryption key** will be used to encrypt the backup as well.  
+  **Your own database encryption key** will be used to encrypt the backup as well.  
+  
   {WARNING: }
-  **Be aware** that RavenDB does NOT keep or manage your database encryption keys.  
+  **Be aware** that RavenDB does NOT keep or manage your own database encryption keys.  
   If you lose them we will NOT be able to help you decrypt your backup files or database.  
   Keep your encryption keys safe!  
   {WARNING/}

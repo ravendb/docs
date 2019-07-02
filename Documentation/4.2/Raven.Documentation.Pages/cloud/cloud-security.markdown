@@ -1,5 +1,4 @@
-## RavenDB on the Cloud: Security
-
+# RavenDB on the Cloud: Security
 ---
 
 {NOTE: }
@@ -8,6 +7,8 @@
 * Your RavenDB server and client identify each other using [X.509](https://docs.microsoft.com/en-us/windows/desktop/seccertenroll/about-x-509-public-key-certificates) 
 certificates.  
 {NOTE/}
+
+---
 
 {PANEL: }
 
@@ -42,8 +43,8 @@ And then on `generate client certificate`:
 
 {INFO: }
 If your instance runs on a [burstable CPU](../cloud/cloud-overview#burstable-instances), 
-especially if it is a low-end one, generating a certificate may take RavenDB a few minutes, 
-spending a lot of your CPU credits. We therefore recommend that you create your certificate 
+especially if it is a low-end one, RavenDB may take a while to generate a certificate, 
+spending a lot of your CPU credits in the process. We therefore recommend that you create your certificate 
 locally and import it to your instance rather than let RavenDB generate it for you.  
 {INFO/}
 
