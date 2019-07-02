@@ -68,7 +68,10 @@ namespace Raven.Documentation.Parser.Data
         [Prefix("articles")]
         Articles,
 
-	    [Prefix("migration")]
-	    Migration,
+        [Prefix("migration")]
+        Migration,
+
+        [Prefix("cloud")]
+        Cloud
     }
 }
