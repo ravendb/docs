@@ -1,4 +1,4 @@
-##RavenDB on the Cloud: Scaling Instances
+#RavenDB on the Cloud: Scaling Instances
 
 ---
 
