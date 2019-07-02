@@ -14,7 +14,6 @@ The higher production cluster grades Standard and Performance are
     * [Cloud Development Node](../cloud/cloud-instances#cloud-development-node)  
     * [Cloud Production Cluster](../cloud/cloud-instances#cloud-production-cluster)  
     * [Summary](../cloud/cloud-instances#summary)  
-    * [Migration](../cloud/cloud-instances#migration)  
 {NOTE/}
 
 ---
@@ -36,9 +35,10 @@ If your free instance is using more resources than the provided credit, you'll n
 to pay for these resources or stop your instance. 
 {NOTE/}
 
-* A free instance is identical to a development [Dev10](../cloud/cloud-instances#cloud-development-node) instance. It comes with a monthly credit of 9$, 
-  used to cover the cost of the instance and of incidentals like backup storage and traffic.  
-* The free instance is limited to the [community license](https://ravendb.net/buy) set of features. 
+* A free instance is identical to a development [Dev10](../cloud/cloud-instances#cloud-development-node) instance.  
+  It comes with a monthly credit of 10$, used to cover the cost of the instance and of incidentals like backup storage 
+  and traffic.  
+* The free instance is limited to the [community](https://ravendb.net/buy) subset of features. 
 * If you don't use a free instance for over 14 days, it will be deleted.  
 
 ---
@@ -122,25 +122,5 @@ The three instance types differ from each other in purpose, capabilities and cos
 | Development | Dev0-Dev6 | Very low - High | All | [Yes](../cloud/cloud-control-panel#the-support-tab) |
 | Production | **By CPU Priority** (Basic/Standard/Performance) <br> **By Cluster Size**| Up to extra performance, high network and reserved NVMe | All | [Yes](../cloud/cloud-control-panel#the-support-tab) |
 
-
-{PANEL/}
-
-
-{PANEL: Migration}
-
-(preliminary)
-
-Instances can be upgraded or downgraded, **within each tier**.
-A Dev2 instance for example, can be upgraded to Dev5 because both are Development Instances. 
-It cannot be upgraded to a Production instance though, nor downgraded to a Free instance.
-
-* Migrate one instance into another from within the instances.  
-   * Run both instances (the one you want to migrate from and the one you want to migrate to).
-   * From your new instance, use the "import from RavenDB instances" option.
-
-{NOTE: }
-You also need to export the old instance's certificate so the new instance would recognize it and be able to retrieve its data.
-[elaborate & explain how]
-{NOTE/}
 
 {PANEL/}
