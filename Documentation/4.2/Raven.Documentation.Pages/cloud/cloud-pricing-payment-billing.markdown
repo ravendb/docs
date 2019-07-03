@@ -1,4 +1,5 @@
-## RavenDB on the Cloud: Pricing, Payment and Billing
+#Cloud: Pricing, Payment and Billing
+---
 
 {NOTE: }
 * In this page:  

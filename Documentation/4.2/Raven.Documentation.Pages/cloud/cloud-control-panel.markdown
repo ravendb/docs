@@ -1,4 +1,5 @@
-## RavenDB on the Cloud: Control Panel
+#Cloud: Control Panel
+---
 
 {NOTE: }
 

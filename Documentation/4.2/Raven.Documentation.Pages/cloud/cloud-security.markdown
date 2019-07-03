@@ -1,4 +1,4 @@
-# RavenDB on the Cloud: Security
+#Cloud: Security
 ---
 
 {NOTE: }
