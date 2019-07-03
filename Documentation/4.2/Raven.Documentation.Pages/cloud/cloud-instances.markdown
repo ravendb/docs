@@ -1,4 +1,5 @@
-## RavenDB on the Cloud: Tiers and Instances
+#RavenDB on the Cloud: Tiers and Instances
+---
 
 {NOTE: }
 
