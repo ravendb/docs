@@ -38,5 +38,10 @@
         "Path": "/users-issues",
         "Name": "Users Issues",
         "Mappings": []
+    },
+    {
+        "Path": "/cloud",
+        "Name": "Cloud",
+        "Mappings": []
     }
 ]
