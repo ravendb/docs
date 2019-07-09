@@ -20,7 +20,6 @@ The following operations are allowed **only** for `Cluster Admin` certificates:
 - Manage `Cluster Admin` certificates
 - Replace and renew server certificates
 - Use the Admin JS Console
-- Migrate databases
 - Activate or update the license
 - Get SNMP used OIDs
 
@@ -28,7 +27,7 @@ The following operations are allowed **only** for `Cluster Admin` certificates:
 
 {PANEL:Operator}
 
-A client certificate with an `Operator` security clearance has admin access to all databases, but is unable to modify the cluster. It cannot perform operations such as add/remove/promote/demote nodes from the cluster. This is useful in a hosted solution. If you are running on your own machines, you'll typically ignore that level in favor of `Cluster Admin` or `User`.
+A client certificate with an `Operator` security clearance has admin access to all databases, but is unable to modify the cluster. It cannot perform operations such as add/remove/promote/demote nodes from the cluster. This is useful in a hosted solution (such as [RavenDB Cloud](../../../cloud/cloud-overview)). If you are running on your own machines, you'll typically ignore that level in favor of `Cluster Admin` or `User`.
 
 The following operations are allowed for **both** `Operator` and `Cluster Admin` certificates and are not allowed for `User` certificates:
 
@@ -37,6 +36,7 @@ The following operations are allowed for **both** `Operator` and `Cluster Admin`
 - Enable and disable an ongoing task
 - Define External Replication
 - Create and delete RavenDB ETL and SQL ETL
+- Migrate databases
 - View cluster observer logs
 - View admin logs
 - Gather local and cluster debug info (process, memory, cpu, threads) 
