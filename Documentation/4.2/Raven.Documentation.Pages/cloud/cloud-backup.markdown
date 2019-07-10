@@ -3,9 +3,10 @@
 
 {NOTE: }
 
-* RavenDB cloud instances of the [free](cloud-instances#cloud-free-node) and [production](cloud-instances#cloud-production-cluster) tiers 
-are regularly and automatically backed up.  
+* RavenDB cloud instances of the [Free](../cloud/cloud-instances#a-free-cloud-node) and 
+  [Production](../cloud/cloud-instances#a-production-cloud-cluster) tiers are regularly and automatically backed up.  
 * You can also define your own backup tasks as you would off cloud.  
+
 * In this page:  
   * [Automatic Backup](../cloud/cloud-backup#automatic-backup)  
   * [Charging For Your Backup storage](../cloud/cloud-backup#charging-for-your-backup-storage)  
@@ -22,7 +23,7 @@ Your cloud instance automatically backs up your data to ensure it is safe. This 
 * A [full](../server/ongoing-tasks/backup-overview#backup-scope-full-or-incremental) backup is created every 24 hours.  
 * An [incremental](../server/ongoing-tasks/backup-overview#backup-scope-full-or-incremental) backup is created every 15 minutes.  
 * Backup files are saved for a minimum of 14 days, as per our retention policy.  
-  You can [contact support](../cloud/cloud-portal/cloud-portal#the-support-tab) to extend this retention period, but it **cannot 
+  You can [contact support](../cloud/portal/cloud-portal-support-tab) to extend this retention period, but it **cannot 
 be reduced to less than 14 days.**  
 
 {PANEL/}
@@ -62,9 +63,10 @@ You can create your own [ongoing backup tasks](https://ravendb.net/docs/article-
 on your RavenDB cloud instance as you would off-cloud.  
 
 However, unlike an on-premises instance of RavenDB, backup files **cannot be saved locally** due to storage limitations. Cloud 
-providers charge for sending data out of the cloud, therfore saving backup files externally is limited to the [development](cloud-instances#cloud-development-node) 
-and [production](cloud-instances#cloud-production-cluster) tiers. If you have access to another service by the same cloud provider
-(such as an S3 Bucket if your cloud provider is AWS), you can save your backup files there free of charge.  
+providers charge for sending data out of the cloud, therefore saving backup files externally is limited to the 
+[development](../cloud/cloud-instances#a-development-cloud-server) and [production](../cloud/cloud-instances#a-production-cloud-cluster) tiers.  
+If you have access to another service by the same cloud provider (such as an S3 Bucket if your cloud provider is AWS), you can save your backup 
+files there free of charge.  
 
 {PANEL/}
 

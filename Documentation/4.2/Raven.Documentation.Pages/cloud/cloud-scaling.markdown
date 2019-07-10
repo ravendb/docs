@@ -16,7 +16,7 @@ two RavenDB instances.
 
 {PANEL: }
 
-To scale a RavenDB cloud instance, go to the [products tab](../cloud/cloud-portal/cloud-portal#the-products-tab) 
+To scale a RavenDB cloud instance, go to the [products tab](../cloud/portal/cloud-portal-products-tab) 
 in the cloud portal and click on the `Manage` button for the product you want to scale:  
 
 !["Manage Product"](images/scaling-001-manage.png "Manage Product")  
