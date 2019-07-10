@@ -18,7 +18,7 @@ Use your portal's Account tab to control the details we'll include in your invoi
    **A**. The **Account** tab lets you view and edit your **Invoice** and **Payment** information.  
    **B**. Information you add/edit here appears on the payment invoices we provide you, normally at the end of the month.  
    **C**. Add/Edit payment methods here. The first we try to charge is always the one you choose as 
-      [Active](../cloud/cloud-pricing-payment-billing#credit-card).  
+      [Active](../../cloud/cloud-pricing-payment-billing#credit-card).  
    **D**. Should charging the active payment method fail, we'll continue trying through your list.  
 
 {PANEL/}
