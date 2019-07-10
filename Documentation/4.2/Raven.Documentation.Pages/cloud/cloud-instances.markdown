@@ -2,11 +2,12 @@
 
 {NOTE: }
 
-Use your portal's [Products tab](../cloud/cloud-portal#the-products-tab) to raise or modify 
+Use your portal's [Products tab](../cloud/portal/cloud-portal-products-tab) to raise or modify 
 a Free node, a Development node, or a Production cluster.  
 Free and Development nodes, as well as Production "basic" grade clusters, are operated by 
 [burstable instances](../cloud/cloud-overview#burstable-vs.-reserved-clusters).  
-The higher production-cluster grades **Standard** and **Performance** are 
+The higher production-cluster grades [Standard](../cloud/cloud-instances#standard-grade-production-cluster) 
+and [Performance](../cloud/cloud-instances#performance-grade-production-cluster) are 
 [Reserved clusters](../cloud/cloud-overview#burstable-vs.-reserved-clusters).  
 
 * In this page:  
@@ -29,7 +30,7 @@ Free RavenDB cloud nodes are great for experiments and evaluation. They are equi
 most basic configuration and capabilities and have a single node and no Service-level agreement (SLA).  
 You can run only one free node per [account](../cloud/cloud-overview#your-account).  
 
-To raise a free cloud node, use the [Products tab](../cloud/cloud-portal#the-products-tab) 
+To raise a free cloud node, use the [Products tab](../cloud/portal/cloud-portal-products-tab) 
 to create a **free**-tier instance.  
 !["Tiers and Instances: Free"](images\tiers-and-instances-001-free.png "Tiers and Instances: Free")  
 
@@ -53,11 +54,9 @@ A development server is equipped with all RavenDB's features, like Pull Replicat
 
 Such cloud servers are perfect for development, though not for production because of their single-node configuration, 
 [burstable](../cloud/cloud-overview#burstable-vs.-reserved-clusters) CPU usage and lack of 
-[SLA](../cloud/cloud-portal#support-entitlement).  
+[SLA](../cloud/portal/cloud-portal-support-tab#support-entitlement).  
 
-To raise a cloud Development server, create a product using the 
-[Products tab](../cloud/cloud-portal#provisioning-a-new-product) 
-and choose the **development** tier.  
+To raise a cloud Development server, create a product using the Products tab and choose the **development** tier.  
 !["Tiers and Instances: Development"](images\tiers-and-instances-002-development.png "Tiers and Instances: Development")  
   
 ---
@@ -141,24 +140,20 @@ The three instance types differ from each other in purpose, capabilities and cos
 | **Tier** | **Sub-tiers** | **CPU** | **Options** | **SLA** |
 | -- | -- | -- | -- | -- |
 | Free | - | Very low | None | No |
-| Development | Dev0-Dev6 | Very low - High | All | [Yes](../cloud/cloud-portal#the-support-tab) |
-| Production | **By CPU Priority** (Basic/Standard/Performance) <br> **By Cluster Size**| Up to extra performance, high network and reserved NVMe | All | [Yes](../cloud/cloud-portal#the-support-tab) |
+| Development | Dev0-Dev6 | Very low - High | All | [Yes](../cloud/portal/cloud-portal-support-tab#support-entitlement) |
+| Production | **By CPU Priority** (Basic/Standard/Performance) <br> **By Cluster Size**| Up to extra performance, high network and reserved NVMe | All | [Yes](../cloud/portal/cloud-portal-support-tab#support-entitlement) |
 
 
 {PANEL/}
 
 
 ##Related Articles
-
-**General**  
+  
+[Portal](../cloud/portal/cloud-portal)  
+  
 [RavenDB on Burstable Instances](https://ayende.com/blog/187681-B/running-ravendb-on-burstable-cloud-instances)  
 [AWS CPU Credits](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html)  
-  
-**Cloud**  
-[Overview](../cloud/cloud-overview)  
-[Portal](../cloud/cloud-portal)  
-[Pricing, Payment and Billing](../cloud/cloud-pricing-payment-billing)  
-[Backup](../cloud/cloud-backup)  
-[Migration](../cloud/cloud-migration)  
-[Scaling](../cloud/cloud-scaling)  
-[Security](../cloud/cloud-security)  
+
+**Links**  
+[Register]( https://cloud.ravendb.net/user/register)  
+[Login]( https://cloud.ravendb.net/user/login)  

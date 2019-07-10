@@ -8,7 +8,7 @@ like adding or removing nodes, and run recurring tasks like backing up your data
 
 * **Our and your administration**  
   Ridding you of administrative chores that don't require your attention is complemented by providing you with 
-  comfortable control over your data and database management via your account's [Portal](../cloud/cloud-portal) 
+  comfortable control over your data and database management via your account's [Portal](../cloud/portal/cloud-portal) 
   and the cloud version of our [Studio](../studio/overview) management GUI.  
 
 * **Resources**  
@@ -39,16 +39,16 @@ Some of the key reasons for running RavenDB on the cloud are -
 * Your insulation from the cloud infrastructure's administration as we handle and continuously optimize it.  
 * The high [security](../cloud/cloud-security) level.  
 * Regular [backups](../cloud/cloud-backup) to your database and settings.  
-* Our [support](../cloud/cloud-portal#the-support-tab).  
+* Our [support](../cloud/portal/cloud-portal-support-tab).  
 
 {PANEL/}
 
 {PANEL: Your Account}
 
 Your cloud-RavenDB account gathers your products' information, your own details, and your contracts and 
-billing data. We create your account and send you a link to its [Portal](../cloud/cloud-portal) 
+billing data. We create your account and send you a link to its [Portal](../cloud/portal/cloud-portal) 
 as soon as you finish registering, so you can immediately start creating and handling your 
-[cloud products](../cloud/cloud-portal#the-products-tab).  
+[cloud products](../cloud/portal/cloud-portal-products-tab).  
 
 {PANEL/}
 
@@ -249,16 +249,10 @@ For example, **Indexing may be delayed** and **Requests may be denied**.
 {PANEL/}
 
 ##Related Articles
-
-**General**  
-[RavenDB on Burstable Instances](https://ayende.com/blog/187681-B/running-ravendb-on-burstable-cloud-instances)  
-[AWS CPU Credits](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html)  
   
-**Cloud**  
-[Portal](../cloud/cloud-portal)  
-[Tiers and Instances](../cloud/cloud-instances)  
-[Pricing, Payment and Billing](../cloud/cloud-pricing-payment-billing)  
-[Backup](../cloud/cloud-backup)  
-[Migration](../cloud/cloud-migration)  
-[Scaling](../cloud/cloud-scaling)  
-[Security](../cloud/cloud-security)  
+[Portal](../cloud/portal/cloud-portal)  
+  
+**Links**  
+[Register]( https://cloud.ravendb.net/user/register)  
+[Login]( https://cloud.ravendb.net/user/login)  
+  

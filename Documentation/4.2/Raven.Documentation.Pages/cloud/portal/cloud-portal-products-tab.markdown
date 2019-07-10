@@ -1,38 +1,20 @@
-# RavenDB on the Cloud: Portal
+# Cloud Account Portal: Products
 
 {NOTE: }
 
-* Your Portal gives you access to different aspects of your RavenDB Cloud account.  
-   * Use the **Products** tab to provision a new product or manage an existing one.  
-     A "product" is a RavenDB cloud node or cluster.  
-   * Use the **Billing** tab to view your billing history and expected payments.  
-   * Use the **Support** tab to contact Support regarding a general issue or a specific question or request.  
-   * Use the **Account** tab to view and edit your invoices and credit card details.  
-
-* In this page:  
-  * [The Products Tab](../cloud/cloud-portal#the-products-tab)  
-     - [Provisioning a New Product](../cloud/cloud-portal#provisioning-a-new-product)  
-     - [Managing an Existing Product](../cloud/cloud-portal#managing-an-existing-product)  
-  * [The Billing Tab](../cloud/cloud-portal#the-billing-tab)  
-  * [The Support Tab](../cloud/cloud-portal#the-support-tab)  
-  * [The Account Tab](../cloud/cloud-portal#the-account-tab)  
-{NOTE/}
-
----
-
-{PANEL: The Products Tab }
-
-The Products tab lets you provision a new cloud product, or manage an existing one.  
-We use the term "provision" to indicate that cloud resources are allocated for your 
-new node or cluster.  
+The Products tab lets you [provision](../cloud/cloud-overview#provisioning) a new cloud product, or manage an existing one.  
 
 You can provision products of three types:  [Free](../cloud/cloud-overview#the-free-tier), 
 [Development](../cloud/cloud-overview#the-development-tier) 
 and [Production](../cloud/cloud-overview#the-production-tier).  
 
-{PANEL/}
-
----
+* In this page:  
+  * [Provisioning a New Product](../../cloud/portal/cloud-portal-products-tab#provisioning-a-new-product)  
+  * [Managing an Existing Product](../../cloud/portal/cloud-portal-products-tab#managing-an-existing-product)  
+     - [The General tab: Change Instance Type and Storage](../../cloud/portal/cloud-portal-products-tab#manage-product-the-general-tab)  
+     - [The Security tab: Your Certificate and Allowed IPs](../../cloud/portal/cloud-portal-products-tab#manage-product-the-security-tab)  
+     - [The Danger Zone tab: Terminate your Instance](../../cloud/portal/cloud-portal-products-tab#manage-product--the-danger-zone-tab)  
+{NOTE/}
 
 {PANEL: Provisioning a New Product}
 
@@ -49,7 +31,7 @@ The New Product wizard will open, and walk you through four simple stages:
 
 ####1. New Product: Plan
 Use the Plan page to choose your product's **cloud provider**, **region** and **tier**.  
-!["Products Tab Plan"](images\products-tab-plan-001.png "Products Tab Plan")  
+!["Products Tab Plan"](images\portal-products-tab-plan-001.png "Products Tab Plan")  
   
 
   - **Cloud Provider**  
@@ -89,6 +71,13 @@ Choose your product's display name and allowed IP addresses.
 ####4. New Product: Summary  
 The Summary stage shows you your choices and lets you edit them if you wish.  
 !["New Product: Summary"](images\portal-products-003-summary.png "New Product: Summary")  
+
+---
+
+When you finish defining your product, the cloud provisioning routine will show you 
+your new product's status until it's ready to go.  
+!["New Product: Provisioning"](images\portal-products-provisioning-001-setting.png "New Product: Provisioning")  
+!["New Product: Active"](images\portal-products-provisioning-002-active.png "New Product: Active")  
 
 {PANEL/}
 
@@ -156,111 +145,13 @@ allowed to connect your database instance.
 
 {PANEL/}
 
-
-{PANEL: The Billing Tab}
-
-!["Billing Tab"](images\billing-tab.png "Billing Tab")  
-Use your account's Billing tab to view your present costs, past invoices and remaining credit.  
-
-* **Costs**  
-  Sums up your current expenses over your products.  
-* **Past Invoices**  
-  Collects your invoices up to date.  
-* **Contracts**  
-  Shows what remains of services you pre-paid for, e.g. the 10 months left of a yearly contract you've started two months ago.  
-
-{PANEL/}
-
-
-{PANEL: The Support Tab}
-
-!["Support Tab"](images\support-001-selection.png "Support Tab")  
-Use this tab to contact RavenDB's support personnel.  
-Support can help you assemble a production cluster that's correct for your needs, 
-solve technical issues, or understand more about product-specific and general issues.  
-You can also use the support tab to write us your feedback and suggestions.  
-
-The root selection is between a general topic you want to consult about, and an issue you have 
-with one of your products.  
-
-1. **General Support Call**  
-2. **Product-Specific Support Call**  
-
----
-
-#### 1. Submit a General Support Call  
-
-!["Support General Message"](images\support-002-general.png "Support General Message")  
-
-A. Choose to raise a general question  
-B. Choose the issue's severity: Minor, Normal, or Critical.  
-C. Write your question in your own words  
-D. Send us your support call
-
-
-{NOTE: }
-An explanation regarding each severity level (minor, normal or critical) appears as you select the level.  
-Be sure you understand what each of the three stands for, so your call would be properly prioritized.  
-{NOTE/}
-
----
-
-#### 2. Submit a Product-Specific Support Call  
-
-!["Support Product-Specific Message"](images\support-003-product-specific.png "Support Product-Specific Message")  
-
-A. Choose to raise a Product-specific question  
-B. Choose the product you relate to  
-C. Choose the issue's severity: Minor, Normal, or Critical.  
-D. Write your question in your own words  
-E. Send us your support call
-
----
-
-####Support Entitlement  
-
-Your support requests will be prioritized by their severity and your product plan.  
-
-* Support for **Free** users  
-  Our Free support includes full availability of your free cloud instance services, 
-  response to any connectivity issues, and your participation in mailing lists and forums.  
-* **Professional**  
-  We also support bug fixes, email and phone support, and access to RavenDB's core developers.  
-* **Production**  
-  Support is also 24/7 available for you.  
-
-| **Tier** | **SLA** |
-| -- | -- |
-| Free | No |
-| Professional | Sun-Thu, 8:00-18:00 (GMT+2), Reply within a day |
-| Production | Reply within 2 hours |
-
-{PANEL/}
-
-{PANEL: The Account Tab}
-
-!["Account Tab"](images\account-tab.png "Account Tab")  
-
-A. The **Account** tab lets you view and edit your **Invoice** and **Payment** information.  
-B. Information you add/edit here appears on the payment invoices we provide you, normally at the end of the month.  
-C. Add/Edit payment methods here. The first we try to charge is always the one you choose as 
-   [Active](../cloud/cloud-pricing-payment-billing#credit-card).  
-D. Should charging the active payment method fail, we'll continue trying through your list.  
-
-{PANEL/}
-
-
 ##Related Articles
-
-**General**  
-[RavenDB on Burstable Instances](https://ayende.com/blog/187681-B/running-ravendb-on-burstable-cloud-instances)  
-[AWS CPU Credits](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html)  
   
-**Cloud**  
-[Overview](../cloud/cloud-overview)  
-[Tiers and Instances](../cloud/cloud-instances)  
-[Pricing, Payment and Billing](../cloud/cloud-pricing-payment-billing)  
-[Backup](../cloud/cloud-backup)  
-[Migration](../cloud/cloud-migration)  
-[Scaling](../cloud/cloud-scaling)  
-[Security](../cloud/cloud-security)  
+[The Backups Tab](../../cloud/portal/cloud-portal-backups-tab)  
+[The Billing Tab](../../cloud/portal/cloud-portal-billing-tab)  
+[The Support Tab](../../cloud/portal/cloud-portal-support-tab)  
+[The Account Tab](../../cloud/portal/cloud-portal-account-tab)  
+  
+**Links**  
+[Register]( https://cloud.ravendb.net/user/register)  
+[Login]( https://cloud.ravendb.net/user/login)  
