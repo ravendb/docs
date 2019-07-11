@@ -4,12 +4,15 @@
 {NOTE: }
 
 * Ongoing tasks are ***work tasks*** defined for the database.  
-* Once defined, these tasks are ***ongoing*** , meaning that they will do the defined work for any data change in the database.  
+* Once defined, these tasks are ***ongoing***, meaning that they will do the defined work for any data change in the database.  
 * Each task has a responsible node from the Database Group nodes, this node will actually perform the defined task work.  
 * The available ongoing tasks are:  
   * [External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task)  
-      * Replicate the database documents to another RavenDB database that is not on this Database Group  
-      * A live copy of the data, on the local cluster or another cluster  
+      * Create a live copy of one database in another RavenDB database
+      * This replication is initiated by a node in the *source* database group
+  * [Pull Replication](../../../../studio/database/tasks/ongoing-tasks/pull-replication)
+      * Create a live copy of one database in another RavenDB database
+      * This replication is initiated by a node in the *destination* database group
   * [RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)  
       * Write all database documents, or just part of it, to another RavenDB database  
       * Data can be filtered and modified with transformation scripts  
@@ -32,7 +35,7 @@
 
 {PANEL: Ongoing Tasks - View}
 
-![Figure 1. Ongoing Tasks View](images/ongoing-tasks-general-1.png "Ongoing Tasks List for databases DB1")
+![Figure 1. Ongoing Tasks View](images/general-info-001.png "Ongoing Tasks List for databases DB1")
 
 1. The list of the current tasks on the database  
 
@@ -52,7 +55,7 @@
 
 {PANEL: Ongoing Tasks - Actions}
 
-![Figure 2. Ongoing Tasks Actions](images/ongoing-tasks-general-2.png "Ongoing Tasks - Actions")
+![Figure 2. Ongoing Tasks Actions](images/general-info-002.png "Ongoing Tasks - Actions")
 
 1. **Add Task** - Create a new task for the database - see below  
 2. **Details** - Click for a short task details summary in this view  
@@ -65,14 +68,15 @@
 
 {PANEL: Ongoing Tasks - Add New Task}
 
-![Figure 3. Ongoing Tasks New Task](images/ongoing-tasks-general-3.png "Add Ongoing Task")
+![Figure 3. Ongoing Tasks New Task](images/general-info-003.png "Add Ongoing Task")
 
 * Select the preferred task to add  
   1. See [adding Extrenal Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) task  
-  2. See [adding RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) task  
-  3. See [adding SQL ETL](../../../todo-update-me-later) task  
-  4. See [adding Backup](../../../../studio/database/tasks/ongoing-tasks/backup-task) task  
-  5. See [adding Subscription](../../../todo-update-me-later) task  
+  2. See [adding Pull Replication](../../../../studio/database/tasks/ongoing-tasks/pull-replication) task
+  3. See [adding RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) task  
+  4. See [adding SQL ETL](../../../todo-update-me-later) task  
+  5. See [adding Backup](../../../../studio/database/tasks/ongoing-tasks/backup-task) task  
+  6. See [adding Subscription](../../../todo-update-me-later) task  
 
 * Once the task is defined and saved, it will be written to the [Database Record](../../../../studio/database/settings/database-record)  
 
