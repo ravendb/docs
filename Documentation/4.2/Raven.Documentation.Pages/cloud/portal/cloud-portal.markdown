@@ -9,21 +9,21 @@ takes you to your account's Portal, which gives you access to all the different 
 
 
 * **Products**  
-  Use the [products tab](../cloud/portal/cloud-portal-products-tab) to provision a new product or manage an existing one.  
+  Use the [products tab](../../cloud/portal/cloud-portal-products-tab) to provision a new product or manage an existing one.  
   A **product** is a RavenDB server or cluster.  
 
 * **Backup tab**  
-  Use the [backup tab](../cloud/portal/cloud-portal-backup-tab) to create custom-backups of your databases.  
-  Remember that your cloud instances already [back your databases up regularly](../cloud/cloud-backup).  
+  Use the [backup tab](../../cloud/cloud-backup) to create custom-backups of your databases.  
+  Remember that your cloud instances already [back your databases up regularly](../../cloud/cloud-backup).  
 
 * **Billing tab**  
-  Use the [billing tab](../cloud/portal/cloud-portal-billing-tab) to view your billing history and expected payments.  
+  Use the [billing tab](../../cloud/portal/cloud-portal-billing-tab) to view your billing history and expected payments.  
 
 * **Support tab**  
-  Use the [support tab](../cloud/portal/cloud-portal-support-tab) to contact Support regarding a general issue or a specific question or request.  
+  Use the [support tab](../../cloud/portal/cloud-portal-support-tab) to contact Support regarding a general issue or a specific question or request.  
 
 * **Account tab**  
-  Use the [account tab](../cloud/portal/cloud-portal-account-tab) to view and edit your invoices and credit card information.  
+  Use the [account tab](../../cloud/portal/cloud-portal-account-tab) to view and edit your invoices and credit card information.  
 
 {NOTE/}
 
