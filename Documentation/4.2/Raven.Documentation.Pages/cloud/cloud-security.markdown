@@ -3,59 +3,84 @@
 
 {NOTE: }
 
-* All RavenDB cloud instances run securely on HTTPS.  
-* RavenDB servers and client applications authenticate each other using X.509 certificates.  
-* A RavenDB cloud instance comes with an initial client certificate that you will need in order to access it.  
+RavenDB cloud products use several layers of security.  
+
+* All instances run over HTTPS.  
+
+* Servers and client applications authenticate each other using X.509 certificates.  
+  {INFO: }
+  Note that a RavenDB cloud product **comes with an initial client certificate**.  
+  You need this certificate in order to access the product.  
+  {INFO/}
+
+* You can choose [which IP addresses](../cloud/portal/cloud-portal-products-tab#manage-product-the-security-tab) your server can be contacted by.  
+
+* Your [automated backup](../cloud/cloud-backup) routines produce encrypted backup files.  
+
 * In this page:  
-    * [Initial Client Certificate](cloud-security#initial-client-certificate)  
-    * [Additional Certificates](cloud-security#additional-certificates)  
+    * [Using The Initial Client Certificate](cloud-security#using-the-initial-client-certificate)  
+    * [Using Additional Certificates](cloud-security#using-additional-certificates)  
 
 {NOTE/}
 
 ---
 
-{PANEL: Initial Client Certificate}
+{PANEL: Using The Initial Client Certificate}
 
-A client certificate is automatically generated during the creation of your RavenDB cloud product. You will need to import 
-this certificate to your browser to access your cloud instances.  
+A client certificate is automatically generated during the creation of your RavenDB cloud product.  
+You will need to import this certificate to your browser in order to access your cloud instances.  
 
-**1.** Go to the [Products tab](../cloud/portal/cloud-portal-products-tab) in the cloud portal and click on the `Download 
-Certificate` button.  
+---
+
+####Download Certificate  
+
+Go to the [Products tab](../cloud/portal/cloud-portal-products-tab) in the cloud [portal](../cloud/portal/cloud-portal) 
+and click the **Download Certificate** button.  
 
 !["Download Certificate"](images\security-001-download-certificate.png "Download Certificate")  
-  
-**2.** Extract the certificate package and open it. Double-click the `.pfx` file and the certificate import wizard will launch: 
+
+---
+
+####Install the certificate  
+
+Extract the certificate package, open it and double-click the **.pfx** file to launch the certificate import wizard. 
+Simply confirm all the stages using the **Next** button until the wizard completes.  
 
 !["Certificate Import Wizard"](images\security-002-wizard.png "Certificate Import Wizard")  
-  
-**3.** Click `Next` repeatedly until the wizard completes.  
 
-**4.** If you're using Chrome on Windows, you will now be able to access your RavenDB cloud instance. 
-In other cases (e.g. if you use Firefox or run Linux) you will have to import the certificate to your browser manually.  
+---
 
-**5.** Once the certificate is imported, go to your cloud instance's URL: 
+####Access your product  
+
+If you're using Chrome on Windows, you will now be able to access your RavenDB cloud instance. You may need to restart your browser.  
+In other cases (e.g. if you're using Firefox or run Linux) you will have to import the certificate to your browser manually.  
 
 !["Server URLs"](images\migration-001-urls.png "Server URLs")  
   
+Once the certificate is imported, click your cloud instance's URL.  
 Your browser will prompt you to select a certificate. When you select the client certificate, the RavenDB [management studio]() will launch.  
+
 {PANEL/}
 
-{PANEL: Additional Certificates}
+{PANEL: Using Additional Certificates}
 
 The initial client certificate grants you [operator](../server/security/authorization/security-clearance-and-permissions#operator) 
-clearance to the server. In RavenDB cloud, unlike in an on-premises instance of RavenDB, you don't have access to the highest clearance level: 
-[Cluster Admin](../server/security/authorization/security-clearance-and-permissions#cluster-admin). Operator clearance is very similar to 
-the Cluster Admin, except for operations related to the [cluster](../server/clustering/overview), which we manage for you as 
-part of the service we provide.  
+clearance to the server.  
+RavenDB cloud products do not give you the highest clearance level, 
+[Cluster Admin](../server/security/authorization/security-clearance-and-permissions#cluster-admin). Operator clearance is very
+similar to it, except for operations related to the [cluster](../server/clustering/overview) which we 
+[administer for you](../cloud/cloud-overview#ravendb-on-the-cloud-overview).  
 
-To generate additional operator or [user](../server/security/authorization/security-clearance-and-permissions#user) clearance certificates:  
+---
 
-**1.** go to the server management studio, click on `Manage Certificates`:  
+Generate additional operator or [user](../server/security/authorization/security-clearance-and-permissions#user)-clearance certificates  
 
+**Manage Certificates**  
+Go to the server management studio, and click The `Manage Certificates` button.  
 !["Manage Certificates"](images\migration-002-manage-certificates.png "Manage Certificates")  
-  
-**2.** And then on `generate client certificate`:  
-  
+
+**Generate the certificate**  
+Click **Generate client certificate**  
 !["Generate Client Certificate"](images\security-003-generate-client-certificate.png "Generate Client Certificate")  
 
 {INFO: }

@@ -5,11 +5,12 @@
 
 * RavenDB cloud instances of the [Free](../cloud/cloud-instances#a-free-cloud-node) and 
   [Production](../cloud/cloud-instances#a-production-cloud-cluster) tiers are regularly and automatically backed up.  
-* You can also define your own backup tasks as you would off cloud.  
+* You can also define your own backup tasks as you would on-premises.  
 
 * In this page:  
   * [Automatic Backup](../cloud/cloud-backup#automatic-backup)  
-  * [Charging For Your Backup storage](../cloud/cloud-backup#charging-for-your-backup-storage)  
+  * [Backup storage](../cloud/cloud-backup#backup-storage)  
+  * [Charging For Backup storage](../cloud/cloud-backup#charging-for-backup-storage)  
   * [Backup Encryption](../cloud/cloud-backup#backup-encryption)  
   * [Custom Backup](../cloud/cloud-backup#custom-backup)  
 {NOTE/}
@@ -28,21 +29,24 @@ be reduced to less than 14 days.**
 
 {PANEL/}
 
-{PANEL: Charging For Your Backup storage}
+{PANEL: Backup storage}
 
-Backup storage up to 1 GB is free. Your backup storage usage will be measured once a day. Each month you will be charged 
-based on the *average* amount of storage you used per day.
-
-{NOTE: } 
-Backup files are compressed.  
+Backup files are compressed, to minimize storage usage.  
 To ensure that your data is safe and can always be restored if necessary, **we do not delete backup files before 14 days have passed.**
-{NOTE/}
+
+{PANEL/}
+
+{PANEL: Charging For Backup storage}
+
+Backup storage up to 1 GB is **free**.  
+Your backup storage usage is measured once a day.  
+You are charged each month based on the *average* amount of storage you used per day.
 
 {PANEL/}
 
 {PANEL: Backup Encryption}
 
-Backup files are always encrypted.
+The automated regular backup files are always encrypted.
 
 * If your database is NOT encrypted:  
   We will encrypt its backup files using an encryption key that **we** manage and which is unique to your account.  
@@ -51,7 +55,7 @@ Backup files are always encrypted.
   
   {WARNING: }
   Be aware that RavenDB does NOT keep or manage *your own* database encryption keys.  
-  If you lose them we will NOT be able to help you decrypt your encrypted database or their backup files.  
+  If you lose a database's encryption key we will NOT be able to help you decrypt the database itself nor its backup files.  
   Keep your encryption keys safe!  
   {WARNING/}
 
@@ -60,13 +64,15 @@ Backup files are always encrypted.
 {PANEL: Custom Backup}
 
 You can create your own [ongoing backup tasks](https://ravendb.net/docs/article-page/4.2/Csharp/studio/database/tasks/ongoing-tasks/backup-task) 
-on your RavenDB cloud instance as you would off-cloud.  
+on your RavenDB cloud instance, as you would off-cloud.  
 
-However, unlike an on-premises instance of RavenDB, backup files **cannot be saved locally** due to storage limitations. Cloud 
-providers charge for sending data out of the cloud, therefore saving backup files externally is limited to the 
-[development](../cloud/cloud-instances#a-development-cloud-server) and [production](../cloud/cloud-instances#a-production-cloud-cluster) tiers.  
+However, unlike an on-premises instance of RavenDB, backup files **cannot be saved on your instance's cloud host**, due to storage limitations. 
+Cloud providers therefore send your backup files out of the cloud, and charge you for it.  
+
 If you have access to another service by the same cloud provider (such as an S3 Bucket if your cloud provider is AWS), you can save your backup 
 files there free of charge.  
+
+Free-product users should be aware that backup files' transfer is charged for and may drain their budget.  
 
 {PANEL/}
 
