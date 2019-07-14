@@ -38,6 +38,7 @@ From the databases list view, click the **'New database'** button.
 * A database name can be any sequence of **letters**, **digits**, and characters that match the **regex**: **[ _ \ - \ . ]+**  
 * A name cannot exceed 128 characters  
 * Spaces are not allowed  
+* If the name contains `.`, there must be some other character on both sides.  
 * For example:  
   * car_orders_2018  
   * users.payments-2019  
