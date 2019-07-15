@@ -67,7 +67,8 @@ RavenDB itself handle issues such as high availability, load balancing and secur
 ## Running RavenDB
 
 On Windows, RavenDB is usually run as a service. Make sure that the user running the RavenDB service has permissions to the RavenDB directory
-and the specified data directory. You can setup RavenDB as a service using the `setup-as-service.ps1` script. 
+and the specified data directory. You can setup RavenDB as a service using the `setup-as-service.ps1` script. You can uninstall it with the 
+script `uninstall-service.ps1`.
 
 On Linux, you'll typically run RavenDB as a daemon. The `install-daemon.sh` can handle the daemon registration for you (Ubuntu only).
 

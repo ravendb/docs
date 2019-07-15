@@ -12,7 +12,14 @@ After completing the Server configuration process either via the [Setup Wizard](
 
 ### Registering
 
-To register as a Service on the Windows operating system you need to execute the following command:
+To register RavenDB as a Service on Windows OS, run powershell with administrator privileges. 
+Navigate to the RavenDB package root and execute:  
+
+{CODE-BLOCK:powershell}
+.\setup-as-service.ps1
+{CODE-BLOCK/}
+
+Alternatively, navigate to the `Server` folder and execute the following command:  
 
 {CODE-BLOCK:powershell}
 .\rvn.exe windows-service register --service-name RavenDB
@@ -26,7 +33,13 @@ If you want to run the service under a non-default user (`Local Service` is defa
 
 ### Unregistering
 
-To remove the Service, use the 'unregister' command as follows:
+You can end the service using:
+
+{CODE-BLOCK:powershell}
+.\uninstall-service.ps1
+{CODE-BLOCK/}
+
+Alternatively, use the 'unregister' command as follows:
 
 {CODE-BLOCK:powershell}
 .\rvn.exe windows-service unregister --service-name RavenDB
@@ -45,7 +58,9 @@ Service can be also controlled using the `start` and `stop` commands:
 
 {PANEL:Linux - Ubuntu 16.04}
 
-Open a bash terminal, and create the following file `/etc/systemd/system/ravendb.service`, using super user permissions:
+You can run RavenDB as a daemon by running the script `install-daemon.sh` from the package root.
+
+Alternatively, open a bash terminal, and create the following file `/etc/systemd/system/ravendb.service`, using super user permissions:
 
 {CODE-BLOCK:bash}
 [Unit]
