@@ -19,7 +19,6 @@
   {
     "Path": "deployment-considerations.markdown",
     "Name": "Deployment Considerations",
-    "DiscussionId": "1addca60-13a6-43a9-a235-6a69d34aca0d",
     "Mappings": [
       {
         "Version": 3.0,
@@ -30,7 +29,6 @@
   {
     "Path": "running-as-service.markdown",
     "Name": "Running as a Service",
-    "DiscussionId": "40649e02-f474-4c8a-9f87-9c3df90b83db",
     "Mappings": []
   },
   {
