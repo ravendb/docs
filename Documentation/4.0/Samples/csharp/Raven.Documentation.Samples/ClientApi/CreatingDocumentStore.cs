@@ -6,33 +6,6 @@
 
     public class CreatingDocumentStore
     {
-        public CreatingDocumentStore()
-        {
-            #region document_store_creation
-
-            using (IDocumentStore store = new DocumentStore()
-            {
-                // Required: define the server node URLs
-                Urls = new[] { "http://your_RavenDB_cluster_node_A", /*some additional nodes of this cluster*/ },
-
-                // Change some of the conventions
-                Conventions =
-                {
-                    MaxNumberOfRequestsPerSession = 10,
-                    UseOptimisticConcurrency = true
-                },
-
-                // Define a default database
-                Database = "your_database_name",
-
-                // Define a client certificate
-                Certificate = new X509Certificate2("C:\\path_to_your_pfx_file\\cert.pfx"),
-            }.Initialize())
-            {
-                // Do your work here
-            }
-            #endregion
-        }
 
         #region document_store_holder
         // The `DocumentStoreHolder` class holds a single Document Store instance.
@@ -48,8 +21,9 @@
             {
                 IDocumentStore store = new DocumentStore()
                 {
-                    // Required: define the cluster node URLs
-                    Urls = new[] { "http://your_RavenDB_cluster_node", /*some additional nodes of this cluster*/ },
+                    // Define the cluster node URLs (required)
+                    Urls = new[] { "http://your_RavenDB_cluster_node", 
+                                   /*some additional nodes of this cluster*/ },
 
                     // Set conventions as necessary (optional)
                     Conventions =

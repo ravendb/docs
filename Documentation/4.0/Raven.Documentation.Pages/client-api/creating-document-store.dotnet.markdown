@@ -2,51 +2,60 @@
 ---
 {NOTE: }  
 
-* **Creating a Document Store** is the first step that a RavenDB client application needs to make when working with RavenDB.
+* **Creating a Document Store** is the _first step_ that a RavenDB client application needs to make when working with RavenDB.
 
-* We recommend that your Document Store implement the [Singleton Pattern](https://csharpindepth.com/articles/Singleton) as demonstrated in the example code 
-[below](../client-api/creating-document-store#creating-a-document-store---example).  
+* We recommend that your Document Store implement the [Singleton Pattern](https://csharpindepth.com/articles/Singleton) as demonstrated in 
+the example code [below](../client-api/creating-document-store#creating-a-document-store---example).  
 Creating more than one Document Store may be resource intensive, and one instance is sufficient for most use cases.  
 
 * In this page:  
-  * [Creating a Document Store - Configuration Options](../client-api/creating-document-store#creating-a-document-store---configuration-options)  
+  * [Creating a Document Store - Configuration](../client-api/creating-document-store#creating-a-document-store---configuration)  
   * [Creating a Document Store - Example](../client-api/creating-document-store#creating-a-document-store---example)  
 {NOTE/}
 
 ---
-{PANEL: Creating a Document Store - Configuration Options}
-
-{WARNING: }
-All configurations are frozen upon calling `.Initialize()`. You can create a new document store if you need to change the configurations.  
-{WARNING/}
+{PANEL: Creating a Document Store - Configuration}
 
 The following properties can be configured when creating a new Document Store:  
  
- * **URL List** - (the only required parameter)  
+* **Urls** (required)  
 
-     * An initial list of URLs to your RavenDB cluster nodes that is used _only_ when accessing a given database for the first time  
+    * An initial URLs list of your RavenDB cluster nodes that is used when the client accesses the database for the _first_ time.  
 
-     * The Document Store will fetch the [Database Group Topology](../studio/database/settings/manage-database-group) from the first server on the list that it successfully connects with. 
-     The URLs contained in the database group topology will supersede the initial URL list for all future calls to that database. An exception is thrown if the Document Store tries and fails 
-     to make contact with each server on the initial list.  
+    * Upon the first database access, the client will fetch the [Database Group Topology](../studio/database/settings/manage-database-group) 
+    from the first server on this list that it successfully connected to. An exception is thrown if the client fails to connect with neither 
+    of the servers specified on this list. The URLs from the Database Group Topology will supersede this initial URLs list for any future 
+    access to that database.  
 
-     * **Note**: do not open a Document Store with URLs that point outside your cluster, only to nodes of the same cluster  
+    * **Note**: Do not create a Document Store with URLs that point to servers outside of your cluster.  
 
-     * **Note**: this list is not binding, you can always [Add Nodes to Your Cluster](../studio/server/cluster/add-node-to-cluster)) later  
+    * **Note**: This list is not binding. You can always modify your cluster later dynamically, add new nodes or remove existing ones as 
+    necessary. Learn more in [Cluster View Operations](../server/cluster/cluster-view#cluster-view-operations).  
 
- * **[Default Database](../client-api/setting-up-default-database)** - the database that sessions and operations will operate on unless otherwise specified (optional parameter)  
+* **[Database](../client-api/setting-up-default-database)** (optional)  
+  The default database which the Client will work against.  
+  A different database can be specified when creating a [Session](../client-api/session/opening-a-session) if needed.  
 
- * **[Conventions](../client-api/configuration/conventions)** - a variety of options to customize the Client API behavior, overriding the default conventions (optional parameter)  
+* **[Conventions](../client-api/configuration/conventions)** (optional)  
+  Customize the Client behavior with a variety of options, overriding the default settings.  
 
- * **[Client Certificate](../client-api/setting-up-authentication-and-authorization)** - X.509 certificate for authentication and authorization (optional parameter)  
+* **[Certificate](../client-api/setting-up-authentication-and-authorization)** (optional)  
+  X.509 certificate used to authenticate the client to the RavenDB server  
 
-After setting the above configurations as necessary, call `.Initialize()` to begin using the document store.  
+After setting the above configurations as necessary, call `.Initialize()` to begin using the Document Store.  
+
+{WARNING: }
+The Document Store is immutable - all above configuration are frozen upon calling .Initialize().  
+Create a new document store object if you need different default configuration values.  
+{WARNING/}
 
 {PANEL/}
 
 {PANEL: Creating a Document Store - Example}
 
-This example demonstrates how to implement the singleton pattern in the initialization of a Document store, as well as how to edit the configurations.
+This example demonstrates how to implement the singleton pattern in the initialization of a Document Store, as well as how to set initial 
+default configurations.
+
 {CODE document_store_holder@ClientApi\CreatingDocumentStore.cs /}  
 
 {PANEL/}
