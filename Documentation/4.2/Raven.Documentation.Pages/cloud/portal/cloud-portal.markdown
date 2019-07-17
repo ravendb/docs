@@ -13,8 +13,8 @@ takes you to your account's Portal, which gives you access to all the different 
   A **product** is a RavenDB server or cluster.  
 
 * **Backup tab**  
-  Use the [backup tab](../../cloud/cloud-backup) to create custom-backups of your databases.  
-  Remember that your cloud instances already [back your databases up regularly](../../cloud/cloud-backup).  
+  Use the [backup tab](../../cloud/portal/cloud-portal-backups-tab) to restore 
+  [database mandatory-backup](../../cloud/cloud-backup-and-restore#the-mandatory-backup-routine) that your instances have created for you.  
 
 * **Billing tab**  
   Use the [billing tab](../../cloud/portal/cloud-portal-billing-tab) to view your billing history and expected payments.  

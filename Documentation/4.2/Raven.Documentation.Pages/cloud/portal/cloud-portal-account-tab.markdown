@@ -1,4 +1,4 @@
-# Cloud Account Portal: The "Account" Tab
+# You Cloud Portal: The Account Tab
 
 {NOTE: }
 
@@ -25,6 +25,8 @@ Use your portal's Account tab to control the details we'll include in your invoi
 
 ##Related Articles
   
+[Overview](../../cloud/cloud-overview)  
+
 [The Products tab](../../cloud/portal/cloud-portal-products-tab)  
 [The Backups Tab](../../cloud/portal/cloud-portal-backups-tab)  
 [The Billing Tab](../../cloud/portal/cloud-portal-billing-tab)  

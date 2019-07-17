@@ -1,40 +1,36 @@
-# Cloud Account Portal: Backup
+# You Cloud Portal: The Backups Tab
 
 {NOTE: }
 
-The Backups tab lists backup files your cloud products have created, and lets you restore them.  
+Your RavenDB cloud products run [a mandatory backup routine](../../cloud/cloud-backup-and-restore#the-mandatory-backup-routine). 
+Backup files created by this routine are stored in a RavenDB cloud you have no direct access to, but you can see their list 
+from the portal's Backups tab and [restore them](../../cloud/cloud-backup-and-restore#restore-mandatory-backup-files) using your 
+management Studio.  
 
 * In this page:  
-   * [Backup Tasks](../../cloud/portal/cloud-portal-backups-tab#backup-tasks)  
-   * [Backup Files](../../cloud/portal/cloud-portal-backups-tab#backup-files)  
+   * [Backups List](../../cloud/portal/cloud-portal-backups-tab#backup-files)  
 {NOTE/}
 
 ---
 
-{PANEL: Backup Tasks }
-
-You can use your management studio to add full and incremental backup tasks, as you would do with a local database.  
-!["Backup Tab"](images\portal-backups-tab-001-backup-tasks.png "Backup Tab")  
-
-* Consider the amount of cloud storage you have left when planning your backup policy.  
-
-{PANEL/}
-
-{PANEL: Backup Files }
+{PANEL: Backup List }
 
 The Backups tab lists your products, their databases and their backup files.  
 !["Backup Files"](images\portal-backups-tab-002-backup-files.png "Backup Files")  
 
-You can approach each backup file and restore it.
-
 {PANEL/}
 
 ##Related Articles
+
+[Overview](../../cloud/cloud-overview)  
   
 [The Products tab](../../cloud/portal/cloud-portal-products-tab)  
 [The Billing Tab](../../cloud/portal/cloud-portal-billing-tab)  
 [The Support Tab](../../cloud/portal/cloud-portal-support-tab)  
 [The Account Tab](../../cloud/portal/cloud-portal-account-tab)  
+
+**Cloud**  
+[Cloud Backup And Restore](../../cloud/cloud-backup-and-restore)  
   
 **Links**  
 [Register]( https://cloud.ravendb.net/user/register)  

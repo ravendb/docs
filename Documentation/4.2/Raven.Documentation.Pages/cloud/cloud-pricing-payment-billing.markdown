@@ -19,7 +19,7 @@ or with a yearly agreement, gaining a substantial discount.
 {NOTE/}
 
 {WARNING: }
-Prices and fees in screenshots that appear in this documentation are for illustration only.  
+Prices and fees in screenshots that appear in this documentation are **for illustration only**.  
 {WARNING/}
 
 ---
@@ -52,7 +52,7 @@ If you run it for less than an hour, say 42 minutes, you will still be charged f
 
 ####Yearly Payment  
 
-We support two models of yearly payments: **Yearly with no upfront payment**, and **Yearly with an upfront payment**.  
+We offer two models of yearly payments: **Yearly with no upfront payment**, and **Yearly with an upfront payment**.  
 Both grant you discounts in relation to the on-demand model.  
 
 **Be aware** however that once a yearly contract has been activated, it is charged fully to the end of the year 
@@ -93,15 +93,14 @@ Yearly contracts are relevant only for [production instances](../cloud/cloud-ins
 While [provisioning or editing](../cloud/portal/cloud-portal-products-tab) your product, 
 costs are shown in the **Your Order** slot.  
 
-The overall price is an outcome of the hardware components you chose and your pricing model, 
+The overall price is an outcome of your hardware configuration and pricing model, 
 with possible [additional expenses](../cloud/cloud-pricing-payment-billing#additional-expenses).  
 
-See for example the differences in price between the production configurations PB0 and PB1:  
-![PB0](images/pricing_001_PB0.png "PB0")
-![PB1](images/pricing_002_PB1.png "PB1")
+See for example the price differences between the production basic-grade configurations PB10 and PB20:  
+![PB10](images/pricing-001-PB10.png "PB10")
+![PB30](images/pricing-001-PB30.png "PB30")
   
-You can also find the cost in the [summary page] before actually running the instance, and always see it in your 
-[Billing tab](../cloud/portal/cloud-portal-billing-tab).  
+You will also be able to find your products' costs in the [billing tab](../cloud/portal/cloud-portal-billing-tab).  
 
 ---
 
@@ -109,14 +108,14 @@ You can also find the cost in the [summary page] before actually running the ins
 
 Your pricing model does **not** cover incidental expenses over -  
 
-* **Traffic Usage**  
-  Charges for traffic to and from your instance will be added to your basic pricing plan.  
+* **Data Transfer**  
+  Charges over traffic to and from your instances will be added to your basic pricing plan.  
 
 * **Expanding your Disk Storage**  
-  We will automatically expand the amount of disk space allocated for your product when its usage reaches 90%, 
-  to prevent any chance of data loss. The new disk size will remain, and your payment plan will be updated accordingly.  
+  When the disk space allocated for your product is 90% full, we will expand it to avoid running out of storage.  
+  Your payment plan will be updated to reflect the new storage size.  
     {NOTE: }
-     Deleting files to reduce storage usage after the storage has been expanded does **not** revoke the expansion.  
+     Deleting files to reduce storage usage after the storage has been expanded will **not** revoke the expansion.  
     {NOTE/}
 
 * **Backup Storage**  

@@ -1,4 +1,4 @@
-# Cloud Account Portal: Billing
+# You Cloud Portal: The Billing Tab
 
 {NOTE: }
 
@@ -24,6 +24,8 @@ Use your account's Billing tab to view your present costs, past invoices and rem
 {PANEL/}
 
 ##Related Articles
+
+[Overview](../../cloud/cloud-overview)  
   
 [The Products tab](../../cloud/portal/cloud-portal-products-tab)  
 [The Backups Tab](../../cloud/portal/cloud-portal-backups-tab)  

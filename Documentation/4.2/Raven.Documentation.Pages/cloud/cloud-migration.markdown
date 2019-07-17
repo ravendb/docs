@@ -1,4 +1,4 @@
-#Cloud: Migration
+# RavenDB on the Cloud: Migration
 ---
 
 {NOTE: }
@@ -80,9 +80,15 @@ Select the file and click **Import Database**.
 ##Related Articles
 
 **Cloud**  
-[Overview](cloud-overview)  
-[Backup](cloud-backup)  
-[Security](cloud-security)  
+[Overview](../cloud/cloud-overview)  
+[Backup And Restore](../cloud/cloud-backup-and-restore)  
+[Security](../cloud/cloud-security)  
+  
+[Portal](../cloud/portal/cloud-portal)  
+[Tiers and Instances](../cloud/cloud-instances)  
+  
+[RavenDB on Burstable Instances](https://ayende.com/blog/187681-B/running-ravendb-on-burstable-cloud-instances)  
+[AWS CPU Credits](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html)  
 
 **Studio**  
 [Studio Overview](../studio/overview)  
