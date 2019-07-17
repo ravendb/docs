@@ -1,20 +1,22 @@
-# Client API: Setting Up a Default Database
+# Client API: Setting up a Default Database
 
 ---
 {NOTE: }
 
 
-* When a default database is set in the Document Store:  
-  * A Session or Operation will operate on that database by default  
-  * A Session or Operation can override the default database by explicitly specifying a different database to work on  
+* A **default database** can be set in the Document Store.  
+The default database is used when accessing the Document Store methods without explicitly specifying a database.  
 
-* When a default database is Not set in the Document Store:  
-  * The Session/Operation need to explicitly specify the database to operate on  
-  * If no database is specified, an exception is thrown  
+* You can pass a different database when accessing the Document Store methods.  
+This database will override the default database for that method action only.  
+The default database value itself will Not change.  
+
+* When accessing the Document Store methods, an exception will be thrown if a default database is Not set and if No other database was 
+explicitly passed.  
 
 * In this page:  
-  * [Example Without a Default Database](../client-api/setting-up-default-database#example---without-a-default-database)  
-  * [Example With a Default Database](../client-api/setting-up-default-database#example---with-a-default-database)  
+  * [Example - Without a Default Database](../client-api/setting-up-default-database#example---without-a-default-database)  
+  * [Example - With a Default Database](../client-api/setting-up-default-database#example---with-a-default-database)  
 {NOTE/}
 
 ---
