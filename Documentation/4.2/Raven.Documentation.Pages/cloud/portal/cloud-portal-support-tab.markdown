@@ -59,7 +59,7 @@ Be sure you understand what each of the three stands for, so your call would be 
 Your support requests will be prioritized by their severity and your product plan.  
 
 * Support for **Free** users  
-  Our Free support includes the availability of your free cloud instance services, 
+  Our Free support includes the availability of your cloud instance services, 
   response to any connectivity issues, and your participation in mailing lists and forums.  
 * **Professional**  
   Paid products get all the support they need to get their instances up and running.  

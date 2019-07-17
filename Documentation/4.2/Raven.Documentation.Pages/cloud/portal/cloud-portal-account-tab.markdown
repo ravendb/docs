@@ -5,7 +5,7 @@
 Use your portal's Account tab to control the details we'll include in your invoices, and your payment methods.  
 
 * In this page:  
-   * [The Account Tab](../cloud/cloud-portal/cloud-portal#the-account-tab)  
+   * [The Account Tab](../../cloud/portal/cloud-portal-account-tab#the-account-tab)  
 {NOTE/}
 
 ---

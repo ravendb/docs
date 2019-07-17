@@ -2,7 +2,7 @@
 
 {NOTE: }
 
-Your RavenDB cloud products run [a mandatory backup routine](../../cloud/cloud-backup-and-restore#the-mandatory-backup-routine). 
+Your RavenDB cloud products run [a mandatory backup routine](../../cloud/cloud-backup-and-restore#the-mandatory-backup-routine).  
 Backup files created by this routine are stored in a RavenDB cloud you have no direct access to, but you can see their list 
 from the portal's Backups tab and [restore them](../../cloud/cloud-backup-and-restore#restore-mandatory-backup-files) using your 
 management Studio.  
@@ -16,7 +16,7 @@ management Studio.
 {PANEL: Backup List }
 
 The Backups tab lists your products, their databases and their backup files.  
-!["Backup Files"](images\portal-backups-tab-002-backup-files.png "Backup Files")  
+!["Backup Files"](images\portal-backups-tab-001-backup-files.png "Backup Files")  
 
 {PANEL/}
 

@@ -8,8 +8,8 @@ or with a yearly agreement, gaining a substantial discount.
 * In this page:  
   * [Pricing](../cloud/cloud-pricing-payment-billing#pricing)  
      - [On-Demand Payment](../cloud/cloud-pricing-payment-billing#on-demand-payment)  
-     - [Yearly with No Upfront payment](../cloud/cloud-pricing-payment-billing#yearly-with-no-upfront-payment)  
-     - [Yearly with an Upfront payment](../cloud/cloud-pricing-payment-billing#yearly-with-an-upfront-payment)  
+     - [Yearly with NO Upfront payment](../cloud/cloud-pricing-payment-billing#yearly-with-no-upfront-payment)  
+     - [Yearly WITH an Upfront payment](../cloud/cloud-pricing-payment-billing#yearly-with-an-upfront-payment)  
      - [Viewing your current configuration price](../cloud/cloud-pricing-payment-billing#viewing-current-configuration-price)  
      - [Additional Expenses](../cloud/cloud-pricing-payment-billing#additional-expenses)  
   * [Payment](../cloud/cloud-pricing-payment-billing#payment)  
@@ -20,6 +20,7 @@ or with a yearly agreement, gaining a substantial discount.
 
 {WARNING: }
 Prices and fees in screenshots that appear in this documentation are **for illustration only**.  
+Your actual pricing is determined by the cloud provider, selected region, and the contract that your account is using.  
 {WARNING/}
 
 ---
@@ -55,7 +56,7 @@ If you run it for less than an hour, say 42 minutes, you will still be charged f
 We offer two models of yearly payments: **Yearly with no upfront payment**, and **Yearly with an upfront payment**.  
 Both grant you discounts in relation to the on-demand model.  
 
-**Be aware** however that once a yearly contract has been activated, it is charged fully to the end of the year 
+**Be aware** however that once a yearly contract has been activated, it is charged fully to the end of the contract 
 and cannot be revoked, halted or changed.  
 
 {NOTE: }
@@ -63,7 +64,7 @@ and cannot be revoked, halted or changed.
 * Terminating a product you've been paying for yearly, will **not** stop your monthly payments.  
   
 * Upscaling or downscaling a product you're paying for yearly, will **not** revoke the yearly agreement.  
-  Expenses over the new product will be calculated according to its on-demand fee and charged for separately.  
+  Expenses for the new product will be calculated according to its on-demand fee and charged-for separately.  
 
 * **Adding nodes to an existing cluster** with a yearly contract, however, does **not** incur additional expenses 
   beyond the cost of running the new nodes.  
@@ -83,8 +84,8 @@ Committing for a year and **paying for it all in advance**, grants you a **10% d
 ![Yearly Upfront](images/pricing-004-payment-models-yearly-upfront.png "Yearly Upfront")
 
 {NOTE: }
-Yearly contracts are relevant only for [production instances](../cloud/cloud-instances#a-production-instance).  
-[Development instances](../cloud/cloud-instances#a-development-instance) can only use the on-demand model.  
+Yearly contracts are relevant only for [production products](../cloud/cloud-instances#a-production-cloud-cluster).  
+[Development products](../cloud/cloud-instances#a-development-cloud-server) can only use the on-demand model.  
 {NOTE/}
 
 ---
@@ -97,8 +98,12 @@ The overall price is an outcome of your hardware configuration and pricing model
 with possible [additional expenses](../cloud/cloud-pricing-payment-billing#additional-expenses).  
 
 See for example the price differences between the production basic-grade configurations PB10 and PB20:  
-![PB10](images/pricing-001-PB10.png "PB10")
-![PB30](images/pricing-001-PB30.png "PB30")
+
+* Production Basic 10:  
+  ![PB10](images/pricing-001-PB10.png "PB10")  
+
+* Production Basic 20:  
+  ![PB30](images/pricing-001-PB30.png "PB30")  
   
 You will also be able to find your products' costs in the [billing tab](../cloud/portal/cloud-portal-billing-tab).  
 
@@ -137,7 +142,7 @@ You can currently pay by credit card or wire transfer.
 You can provide your credit card details while creating your account, or skip this stage and return to it later.  
 To provide your credit card details at any time, enter your [Account tab](../cloud/portal/cloud-portal-account-tab) 
 and click the Add Credit Card button.  
-Select your main credit card using the Active button, so we know which card to try first.  
+Select your main credit card using the **Active** button, so we know which card to try first.  
 If charging your active card fails, we'll try to charge other cards you may have provided.  
 ![Payment](images/payment.png "Payment")
 
