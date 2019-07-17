@@ -17,7 +17,6 @@ and [Performance](../cloud/cloud-instances#performance-grade-production-cluster)
        - [Basic-grade Production Cluster](../cloud/cloud-instances#basic-grade-production-cluster)  
        - [Standard-grade Production Cluster](../cloud/cloud-instances#standard-grade-production-cluster)  
        - [Performance-grade Production Cluster](../cloud/cloud-instances#performance-grade-production-cluster)  
-    * [The three tiers: a light summary](../cloud/cloud-instances#the-three-tiers-a-light-summary)  
 {NOTE/}
 
 ---
@@ -35,7 +34,7 @@ to create a **free**-tier instance.
 !["Tiers and Instances: Free"](images\tiers-and-instances-001-free.png "Tiers and Instances: Free")  
 
 * A free instance is identical to a development [Dev10](../cloud/cloud-instances#a-development-cloud-server) instance.  
-  It comes with a monthly credit of **10$**, used to cover the cost of the instance and of incidentals like backup storage 
+  It comes with a monthly credit of **10$**, used to cover the cost of the instance and incidentals like backup storage 
   and traffic.  
   {NOTE: }
   If your free instance is using more resources than the provided credit, you'll need to pay for these resources or stop your instance. 
@@ -52,7 +51,7 @@ to create a **free**-tier instance.
 A development server is equipped with all RavenDB's features, like Pull Replication and Encrypted Databases.  
 
 Such cloud servers are perfect for development, though not for production because of their single-node configuration, 
-[burstable](../cloud/cloud-overview#burstable-vs.-reserved-clusters) CPU usage and lack of 
+[burstable](../cloud/cloud-overview#burstable-instances) CPU usage and lack of 
 [backup](../cloud/cloud-backup-and-restore#cloud-backup) procedure and [SLA](../cloud/portal/cloud-portal-support-tab#support-entitlement).  
 
 To raise a cloud Development server, create a product using the Products tab and choose the **development** tier.  
@@ -72,6 +71,16 @@ Choose from the increasingly powerful configurations Dev10 to Dev70
 
 Choose your storage type and size  
 !["Development Tier: Storage"](images\tiers-and-instances-0023-development-storage.png "Development Tier: Storage")  
+
+{INFO: }
+In addition to the CPU / memory resources allocated to your instances, you can select the type of storage that will 
+be assigned to your RavenDB instances. It is fairly obvious why the size of the storage matters, but it is important 
+to also understand the impact of the storage type and allocated IOPS on the overall performance.  
+
+RavenDB, as a database, is sensitive to I/O latencies resulting from slow storage. If your instances are running into 
+high I/O latencies, RavenDB will alert you to the issue so you can upgrade the type of storage you are using and the 
+number of IOPS reserved for your instances.  
+{INFO/}
 
 ---
 
@@ -93,14 +102,14 @@ The production tier offers three instance levels:
 ---
   
 ####1. Basic-grade Production Cluster
-Basic production clusters are [burstable](../cloud/cloud-overview#burstable-vs.-reserved-clusters).  
+Basic production clusters are [burstable](../cloud/cloud-overview#burstable-instances).  
 While suitable for low to medium workloads, they trade-off peak efficiency for lower costs.  
 !["Production: Basic"](images\tiers-and-instances-0031-production-basic.png "Production: Basic")  
 
 ---
 
 ####2. Standard-grade Production Cluster
-The resources of standard production clusters are [reserved](../cloud/cloud-overview#burstable-vs.-reserved-clusters).  
+The resources of standard production clusters are [reserved](../cloud/cloud-overview#reserved-clusters).  
 The cluster can utilize them at all times, and is equipped to handle constant production load.  
 
 Use the slide bars to choose your Standard Production cluster's configuration and storage.  
@@ -108,40 +117,31 @@ Use the slide bars to choose your Standard Production cluster's configuration an
 !["Production: Standard P50"](images\tiers-and-instances-0033-production-standard-P50.png "Production: Standard P50")  
 !["Standard Storage"](images\tiers-and-instances-0034-production-standard-storage.png "Standard Storage")  
 
+{INFO: }
+In addition to the CPU / memory resources allocated to your instances, you can select the type of storage that will 
+be assigned to your RavenDB instances. It is fairly obvious why the size of the storage matters, but it is important 
+to also understand the impact of the storage type and allocated IOPS on the overall performance.  
+
+RavenDB, as a database, is sensitive to I/O latencies resulting from slow storage. If your instances are running into 
+high I/O latencies, RavenDB will alert you to the issue so you can upgrade the type of storage you are using and the 
+number of IOPS reserved for your instances.  
+{INFO/}
+
 ---
 
 ####3. Performance-grade Production Cluster
-Performance cloud clusters are [reserved](../cloud/cloud-overview#burstable-vs.-reserved-clusters), and we can 
-**custom-tailor** them for your production environment needs so they include High memory, reserved 
-IO with NVMe drives, High compute, and up to 2 terabytes of storage space.  
+Performance cloud clusters are [reserved](../cloud/cloud-overview#reserved-clusters), and we can 
+**custom-tailor** them for your production environment needs so they include High memory, reserved IO with NVMe drives, 
+High compute, and terabytes of storage space.  
 !["Production: Performance"](images\tiers-and-instances-0034-production-performance.png "Production: Performance")  
 
 {NOTE: }
 The production tier is **highly customizable**.  
 Contact Support to modify your server configuration, the number of nodes in your cluster, 
 and various parameters of their deployment.  
-If you're interested in high global availability for example, a multi-region deployment 
+If you're interested in high global availability, for example, a multi-region deployment 
 can be easily set and would probably suit you better than the default arrangement.  
 {NOTE/}
-
-  ---
-
-### The three tiers: a light summary  
-
-The three instance types differ from each other in purpose, capabilities and cost.  
-
-| **Tier** | **Cores** | **Nodes** | **RAM** | **Storage** |
-| -- | -- | -- | -- | -- |
-| Free | 2 | 1 | 0.5 GB | 10 GB |
-| Development | 2-8 | 1 | 0.5 - 32 GB | Up to 1 TB |
-| Production | Up to 48 | 3 (default) | Up to 192 GB | Up to 2 TB |
-
-| **Tier** | **Sub-tiers** | **CPU** | **Options** | **SLA** |
-| -- | -- | -- | -- | -- |
-| Free | - | Very low | None | No |
-| Development | Dev0-Dev6 | Very low - High | All | [Yes](../cloud/portal/cloud-portal-support-tab#support-entitlement) |
-| Production | **By CPU Priority** (Basic/Standard/Performance) <br> **By Cluster Size**| Up to extra performance, high network and reserved NVMe | All | [Yes](../cloud/portal/cloud-portal-support-tab#support-entitlement) |
-
 
 {PANEL/}
 

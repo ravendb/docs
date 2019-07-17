@@ -13,8 +13,8 @@ like adding or removing nodes, and run recurring tasks like backing up your data
 
 * **Resources**  
   Some of your products may share their resources with other applications and users, while other products may occupy machines 
-  reserved for their usage only. Read about [reserved clusters](../cloud/cloud-overview#burstable-vs.-reserved-clusters), 
-  [burstable instances](../cloud/cloud-overview#burstable-vs.-reserved-clusters), and [credits](../cloud/cloud-overview#budget-credits-and-throttling) 
+  reserved for their usage only. Read about [reserved clusters](../cloud/cloud-overview#reserved-clusters), 
+  [burstable instances](../cloud/cloud-overview#burstable-instances), and [credits](../cloud/cloud-overview#budget-credits-and-throttling) 
   to understand more about your choices.  
 
 * In this page:  
@@ -77,6 +77,7 @@ and allow the wizard to walk you through the 4 simple stages of the registration
   !["Registration: Domain Name"](images\registration-002-domain.png "Registration: Domain Name")  
 
    - Enter an unoccupied domain name of your choice, that would be used for your cloud products.  
+     The domain name is typically your organization or project name and will be used in all your products' URLs.
      The procedure will check this name's availability, and if it's free - let you continue using the **Next** button.  
     -or-  
      If you prefer **not** to currently provide a domain name, use the **Later** button.  
@@ -101,8 +102,9 @@ and allow the wizard to walk you through the 4 simple stages of the registration
 
 ---
 
-#### Signing up will send you a message with a link.  
+#### Signing up will send you a message with a link to your email.  
 
+  - The sign-up process will send a registration link to your email.
   - Click the link to enter your account. No password required.  
   - The link will expire after a while, use the [login page](../cloud/cloud-overview#login-to-your-account) to re-visit your account.  
 
@@ -142,17 +144,16 @@ To access your account, click [https://cloud.ravendb.net/user/login](https://clo
 
 #### Cloud Instances  
 
-A cloud instance is a virtual machine, allocated for us by a cloud provider like AWS or Azure.  
-It is the role of your RavenDB Cloud provisioning procedure to approach the cloud provider you select, 
-provision your instances according to your requirements, and install your RavenDB products on them.  
+A cloud instance is a RavenDB server, allocated for you on a cloud provider like AWS or Azure.  
+Your cloud instances are fully managed by RavenDB Cloud, including security, monitoring, backups and patches.  
+You get operator-level access to your RavenDB instances, and can perform most admin operations on your own.  
 
 ---
 
 ####Provisioning  
 
-Each RavenDB product is provisioned as many instances as it requires. A production cluster, for 
-example, is allocated three instances at least - one per cluster-node, while a development server's 
-single node is allocated a single instance.  
+Each RavenDB product is provisioned as many instances as it requires. A production cluster for example is 
+allocated three instances at a minimum, while a development server's single node is allocated a single instance.  
 
 ---
 
@@ -161,10 +162,10 @@ single node is allocated a single instance.
 Your RavenDB **product** can be a single server or a multi-node cluster.  
 Each server or cluster-node occupies a single cloud instance.  
 
-Different instances are equipped by your specifications to accommodate your different products and 
+Different instances are equipped to your specifications to accommodate your different products and 
 may be considerably different from each other in features, capabilities, and cost. The instances of 
-a basic production cluster for example are [burstable](../cloud/cloud-overview#burstable-vs.-reserved-clusters), 
-while those of a higher-grade production cluster are [reserved](../cloud/cloud-overview#burstable-vs.-reserved-clusters).  
+a basic production cluster, for example, are [burstable](../cloud/cloud-overview#burstable-instances), 
+while those of a higher-grade production cluster are [reserved](../cloud/cloud-overview#reserved-clusters).  
 
 ##RavenDB Tiers  
 
@@ -176,7 +177,7 @@ a few words about each.
 
 ####The Free Tier  
 This tier offers a single product: a single-node RavenDB cloud server designated for experiments and evaluation.  
-It is operated by a low-end instance that is shared with other users and is equipped with a subset of RavenDB features.  
+It is operated by a low-end instance that is shared with other users and is equipped with the community subset of RavenDB features.  
 You can have only one free instance in your account.  
 
 ---
@@ -192,18 +193,28 @@ hardware and is designated for development, not production.
 
 ####The Production Tier
 A production configuration is a full RavenDB cluster of at least three nodes. You can choose its 
-components using the Portal up to 2 TB of disk space, 192 GB of RAM and 48 cores, or contact 
+components using the Portal from a set of pre-selected templates, or contact 
 us and we'll custom-tailor your product for your specific production requirements, i.e. with a specific 
 HW selection or a multi-region cluster.  
 
+---
+
+| **Tier** | **Sub-tiers** | **CPU** | **Options** | **SLA** |
+| -- | -- | -- | -- | -- |
+| Free | - | Very low | None | No |
+| Development | Dev10-Dev70 | Very low - High | All | [Yes](../cloud/portal/cloud-portal-support-tab#support-entitlement) |
+| Production | **By CPU Priority** (Basic/Standard/Performance) <br> **By Cluster Size**| Up to extra performance, high network and reserved NVMe | All | [Yes](../cloud/portal/cloud-portal-support-tab#support-entitlement) |
+
 ##Burstable vs. Reserved clusters
 
-**Reserved Clusters**  
+####Reserved Clusters  
 Reserved clusters are production clusters of grade *Standard* or *Performance*. Their resources are 
 pre-allocated and can be used only by them. Designed to run production systems with demanding workloads, 
 these are the workhorses of the RavenDB Cloud.
 
-**Burstable Instances**  
+---
+
+####Burstable Instances  
 Free instances, Development instances and low-end ("basic") Production clusters are operated by 
 "burstable" CPUs. Such clusters are suitable for small to medium production loads but are limited 
 in the total amount of resources that they can consume.  
@@ -228,7 +239,8 @@ Credits are **consumed** when the instance uses computing and I/O resources, and
   For example, **Indexing may be delayed** and **Requests may be denied**.  
   
     {INFO: }
-    We throttle by denying resources, not by charging your credit.  
+    We throttle by denying resources, instead of charging you more.  
+    RavenDB Cloud automatically attempts to balance the load between your cluster nodes.  
     {INFO/}
 
 * **Burstable CLUSTERS and throttling**  
@@ -240,7 +252,7 @@ Credits are **consumed** when the instance uses computing and I/O resources, and
 
 {NOTE: }
 **Use a suitable configuration**.  
-The stronger your instances are, the less susceptible they are to budget drainage and throttling.  
+The stronger your burstable instances are, the less susceptible they are to budget drainage and throttling.  
 If you are regularly warned or your product is actually throttled, consider [upscaling](../cloud/cloud-scaling) its configuration.  
 {NOTE/}
 
@@ -255,16 +267,12 @@ They will also perform preemptive actions to lower resources usage.
 ---
 
 ####How much is a CPU credit, and what's in my budget?  
-A single credit is the equivalent of using a 100% of the CPU for a full minute out of an hour.  
-
-{INFO: }
-[Free instances](../cloud/cloud-instances#a-free-cloud-node) are given a monthly budget of 10$ in CPU credits.  
-{INFO/}
+A single credit represents using 100% of the CPU for a full minute out of an hour.  
 
 You can view what's currently in your instance's budget, by adding `/debug/cpu-credits` to its URL.  
 ![Current Budget](images/throttling-003-remaining-credits.png "Current Budget")  
 Note that the figures relate to CPU seconds; for CPU minutes, divide them by 60.  
-E.g., `"MaxCredits": 8640.0` means your instance can accumulate up to 144 minutes of full CPU usage.  
+E.g., `"MaxCredits": 8640.0` means your instance can accumulate an entitlement for up to 144 minutes of full CPU usage.  
 
 {PANEL/}
 

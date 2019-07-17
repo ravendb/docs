@@ -2,11 +2,11 @@
 
 {NOTE: }
 
-The Products tab lets you [provision](../cloud/cloud-overview#provisioning) a new cloud product, or manage an existing one.  
+The Products tab lets you [provision](../../cloud/cloud-overview#provisioning) a new cloud product, or manage an existing one.  
 
-You can provision products of three types:  [Free](../cloud/cloud-overview#the-free-tier), 
-[Development](../cloud/cloud-overview#the-development-tier) 
-and [Production](../cloud/cloud-overview#the-production-tier).  
+You can provision products of three types:  [Free](../../cloud/cloud-overview#the-free-tier), 
+[Development](../../cloud/cloud-overview#the-development-tier) 
+and [Production](../../cloud/cloud-overview#the-production-tier).  
 
 * In this page:  
   * [Provisioning a New Product](../../cloud/portal/cloud-portal-products-tab#provisioning-a-new-product)  
@@ -44,10 +44,10 @@ Use the Plan page to choose your product's **cloud provider**, **region** and **
   {NOTE/}
   
 - **Tier**  
-  You can raise a [Free node](../cloud/cloud-instances#a-free-cloud-node), 
-  a [Development node](../cloud/cloud-instances#a-development-cloud-server) or a 
-  [Production cluster](../cloud/cloud-instances#a-production-cloud-cluster).  
-  Learn more about them in the [Tiers and Instances](../cloud/cloud-instances) page.  
+  You can raise a [Free node](../../cloud/cloud-instances#a-free-cloud-node), 
+  a [Development node](../../cloud/cloud-instances#a-development-cloud-server) or a 
+  [Production cluster](../../cloud/cloud-instances#a-production-cloud-cluster).  
+  Learn more about them in the [Tiers and Instances](../../cloud/cloud-instances) page.  
 
 ---
 
@@ -65,6 +65,11 @@ Choose your product's display name and allowed IP addresses.
 - The display name is simply the name by which this product would appear in your Products tab.  
 - The Allowed IPs selection is important.  
   It determines which addresses would be allowed to manage your database, adding an important layer to your database security.  
+  You can set it to `0.0.0.0/0`, which would allow access from any location, or you can specify certain IPs or IP ranges.  
+  Be aware that you will not be able to access your instance from locations that are not specified in the allowed IPs list.  
+  You can edit the list at any time through the Portal.  
+  Regardless of the allowed IPs setting, your RavenDB Cloud instances will **always require** authentication using X509 
+  certificates for access. The allowed IPs list limits service as an additional layer of security, but isn't the only one.  
 
   ---
 
@@ -109,11 +114,14 @@ You can view your configuration and change your product's instance type and stor
 * **Change Storage**  
   Click this button to modify your product's storage.  
   !["Manage Product: Storage"](images\portal-products-0052-manage-general-storage.png "Manage Product: Storage")  
+  
+  You can allocate more disk space to your cluster (but not reduce it), and you can select Premium disks and the 
+  amount of IOPS reserved for them.  
 
 ---
 
 #### 2. Manage Product: The Security tab  
-Use the security tab to download your [certificate](../cloud/cloud-security) or determine which addresses are 
+Use the security tab to download your [certificate](../../cloud/cloud-security) or determine which addresses are 
 allowed to connect your database instance.  
 !["Manage Product: Security"](images\portal-products-006-manage-security.png "Manage Product: Security")  
 

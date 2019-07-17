@@ -6,9 +6,10 @@
 * RavenDB cloud instances of the [Free](../cloud/cloud-instances#a-free-cloud-node) and 
   [Production](../cloud/cloud-instances#a-production-cloud-cluster) tiers are regularly and automatically backed up.  
 
-* You can also define your own backup tasks, as you would with an on-premises RavenDB server.  
+* You can also define custom backup tasks, as you would with an on-premises RavenDB server.  
 
-* [Development](../cloud/cloud-instances#a-development-cloud-server) products do **not** offer backup (neither automatic nor custom).  
+* [Development](../cloud/cloud-instances#a-development-cloud-server) products do **not** offer mandatory backup by RavenDB Cloud.  
+  You **can** define custom backup tasks for them.  
 
 * In this page:  
   * [The Mandatory-Backup Routine](../cloud/cloud-backup-and-restore#the-mandatory-backup-routine)  
@@ -16,9 +17,7 @@
   * [Charging For Backup storage](../cloud/cloud-backup-and-restore#charging-for-backup-storage)  
   * [Backup Encryption](../cloud/cloud-backup-and-restore#backup-encryption)  
   * [Creating a Custom Backup](../cloud/cloud-backup-and-restore#creating-a-custom-backup)  
-  * [Restore Backup Files](../cloud/cloud-backup-and-restore#restore-backup-files)  
-      - [Restore Mandatory-Backup Files](../cloud/cloud-backup-and-restore#restore-mandatory-backup-files)  
-      - [Restore Custom-Backup Files](../cloud/cloud-backup-and-restore#restore-custom-backup-files)  
+  * [Restore Mandatory-Backup Files](../cloud/cloud-backup-and-restore#restore-mandatory-backup-files)  
 {NOTE/}
 
 ---
@@ -72,7 +71,11 @@ you can store your backup files on an Amazon S3 bucket.
 ---
 
 {INFO: }
-All Backup files, mandatory and custom, are **compressed** and **encrypted**.  
+All mandatory-backup files are **compressed** and **encrypted**. This is the case whether the backed-up database is encrypted or not.  
+
+If you define custom-backup tasks, you are responsible for their security. RavenDB offers backup encryption for custom backup as well, 
+and we recommend that you use this option.  
+
 {INFO/}
 
 {PANEL/}
@@ -82,7 +85,7 @@ All Backup files, mandatory and custom, are **compressed** and **encrypted**.
 ####Mandatory-Backup charge
 Mandatory-backup files are kept in RavenDB's own cloud.  
 
-We give backup storage of up to 1 GB per product **for free**. 
+We give backup storage of up to 1 GB per product per month **for free**. 
 
 Your backup storage usage is measured once a day, and you'll be charged each month based on your average daily usage.  
 
@@ -92,25 +95,25 @@ or stop the product.
 ---
 
 ####Custom-Backup charge
-Your custom backups are kept in a storage location of your choosing, and charges for it are unrelated to us.  
+Your custom backups are kept in a storage location of your choosing, and charges for it are unrelated to RavenDB Cloud.  
 
-**Make sure**, however, that you're aware of **all possible expanses** related to your backups, including -  
+**Make sure**, however, that you're aware of **all possible expenses** related to your backups, including -  
 
 * Any external storage service you may be charged for (e.g. an S3 bucket)  
-* File transfer costs you may be charged for (e.g. passing files over FTP)  
+* File transfer costs you may be charged for (especially if you are backing up outside the region / cloud you are using).  
 
 
 {PANEL/}
 
 {PANEL: Backup Encryption}
 
-Your backup files are encrypted.
+Your mandatory backup files are encrypted.
 
 * If your database **is encrypted**:  
   **Your own database encryption key** will be used to encrypt the backup as well.  
   
     {WARNING: }
-    Be aware that RavenDB does NOT keep or manage *your own* database encryption keys.  
+    Be aware that RavenDB Cloud does NOT keep or manage *your own* database encryption keys.  
     If you lose a database encryption key we will NOT be able to help you decrypt the database itself nor its backup files.  
     **KEEP YOUR ENCRYPTION KEYS SAFE!**  
     {WARNING/}
@@ -144,9 +147,7 @@ Activate and configure your unrelated cloud storage service, e.g. the bucket in 
 
 {PANEL/}
 
-{PANEL: Restore Backup Files}
-
-##Restore Mandatory-Backup Files
+{PANEL: Restore Mandatory-Backup Files}
 
 ####View The mandatory Backups List  
 Backup files that have already been created, are listed in the backups tab.  
@@ -160,7 +161,7 @@ Backup files that have already been created, are listed in the backups tab.
 
 ---
 
-####Restore The Database  
+####Restore the Database  
 Clicking the **Generate Backup Link** button will show you a simple procedure. Follow it to restore your database.  
 
 !["Backup Link"](images\backup-and-restore-003-backup-link-window.png "Backup Link")  
@@ -169,7 +170,7 @@ Clicking the **Generate Backup Link** button will show you a simple procedure. F
   !["New DB From Backup"](images\backup-and-restore-004-new-database-from-backup.png "New DB From Backup")  
 * **B.** Choose **Cloud** as your Source  
   !["Source Is Cloud"](images\backup-and-restore-005-source-is-cloud.png "Source Is Cloud")  
-* **C.** Copy the link you've been given in the Backups Tab, to the **Backup Link** box here.  
+* **C.** Copy the Backup Link you've been given in the Backups Tab, to the **Backup Link** box here.  
   !["Paste Backup Link Here"](images\backup-and-restore-006-paste-backup-link.png "Paste Backup Link Here")  
 * **D.** Choose a **Restore Point**  
   !["Choose Restore Point"](images\backup-and-restore-007-restore-point.png "Choose Restore Point")  
@@ -177,17 +178,9 @@ Clicking the **Generate Backup Link** button will show you a simple procedure. F
   If your original database **is** encrypted, its backup has been encrypted with the same key. Find it and paste it here.  
   !["Encryption Key: Encrypted Database"](images\backup-and-restore-008-encryption-key-1.png "Encryption Key: Encrypted Database")  
 * **F.**  Encryption Key for an **Unencrypted** Database  
-  If your original database is **not** encrypted, we used our own key to encrypt your backup file.  
+  If your original database is **not** encrypted, we used your account-wide encryption key to encrypt your backup file.  
   Copy it from the right Backups Tab box.  
   !["Encryption Key: Unencrypted Database"](images\backup-and-restore-009-encryption-key-2.png "Encryption Key: Unencrypted Database")  
-
-##Restore Custom-Backup Files
-
-To restore a custom-backup file:  
-
-* Load your backup file from your custom location (e.g. an S3 bucket) to your local disk.  
-* Restore it from this location.  
-  !["Restore from Local Location"](images\backup-and-restore-010-restore-from-local-location.png "Restore from Local Location")  
 
 {PANEL/}
 

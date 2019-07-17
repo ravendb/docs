@@ -45,7 +45,7 @@ The [Free](../cloud/cloud-instances#a-free-cloud-node) product doesn't show them
 
 ####1. Change Instance Type  
 
-Use the **CPU Priotity** and **Cluster Size** slide bars to compose a configuration 
+Use the **CPU Priority** and **Cluster Size** slide bars to compose a configuration 
 that would allow your product to properly handle its expected workload.  
 
 !["Scaling Instance Type"](images/scaling-003-instance.png "Scaling Instance Type")  
@@ -60,6 +60,16 @@ There are two types of storage: Standard and Premium. Pick either to change your
 The **Premium** storage type also lets you choose the number of IOPS (Input/Output Operations Per Second) that the instance can handle.  
 
 !["Premium IOPS"](images/scaling-005-premium.png "Premium IOPS")  
+
+{INFO: }
+It is fairly obvious why the size of the storage matters, but it is important to also understand the impact 
+of the storage type and allocated IOPS on the overall performance.  
+
+RavenDB, as a database, is sensitive to I/O latencies resulting from slow storage. If your instances are running into 
+high I/O latencies, RavenDB will alert you to the issue so you can upgrade the type of storage you are using and the 
+number of IOPS reserved for your instances.  
+{INFO/}
+
 
 {NOTE: }
 Scaling a [Development](../cloud/cloud-instances#a-development-cloud-server) product **brings it down** 

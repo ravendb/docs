@@ -8,22 +8,24 @@ takes you to your account's Portal, which gives you access to all the different 
 !["Account Portal"](images\portal-000.png "Account Portal")  
 
 
-* **Products**  
-  Use the [products tab](../../cloud/portal/cloud-portal-products-tab) to provision a new product or manage an existing one.  
+* **[The Products tab](../../cloud/portal/cloud-portal-products-tab)**  
+  Use this tab to [provision new products](../../cloud/portal/cloud-portal-products-tab#provisioning-a-new-product) and 
+  [manage existing ones](../../cloud/portal/cloud-portal-products-tab#managing-an-existing-product).  
   A **product** is a RavenDB server or cluster.  
 
-* **Backup tab**  
-  Use the [backup tab](../../cloud/portal/cloud-portal-backups-tab) to restore 
-  [database mandatory-backup](../../cloud/cloud-backup-and-restore#the-mandatory-backup-routine) that your instances have created for you.  
+* **[The Backups Tab](../../cloud/portal/cloud-portal-backups-tab)**  
+  Use this tab to view and restore [mandatory database backups](../../cloud/cloud-backup-and-restore#the-mandatory-backup-routine) 
+  that your instances have created for you.  
 
-* **Billing tab**  
-  Use the [billing tab](../../cloud/portal/cloud-portal-billing-tab) to view your billing history and expected payments.  
+* **[The Billing Tab](../../cloud/portal/cloud-portal-billing-tab)**  
+  Use the billing tab to view your billing history and expected payments.  
 
-* **Support tab**  
-  Use the [support tab](../../cloud/portal/cloud-portal-support-tab) to contact Support regarding a general issue or a specific question or request.  
+* **[The Support Tab](../../cloud/portal/cloud-portal-support-tab)**  
+  Use this tab to contact Support regarding [general issues](../../cloud/portal/cloud-portal-support-tab#submit-a-general-support-call), 
+  [product-specific issues](../../cloud/portal/cloud-portal-support-tab#submit-a-product-specific-support-call) and special requests.  
 
-* **Account tab**  
-  Use the [account tab](../../cloud/portal/cloud-portal-account-tab) to view and edit your invoices and credit card information.  
+* **[The Account Tab](../../cloud/portal/cloud-portal-account-tab)**  
+  Use the account tab to view and edit your invoices and credit card information.  
 
 {NOTE/}
 

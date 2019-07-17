@@ -5,7 +5,7 @@
 Use your account's Billing tab to view your present costs, past invoices and remaining credit.  
 
 * In this page:  
-  * [The Billing Tab](../cloud/cloud-portal/cloud-portal#the-billing-tab)  
+  * [The Billing Tab](../../cloud/portal/cloud-portal-billing-tab#the-billing-tab)  
 {NOTE/}
 
 ---
@@ -13,6 +13,8 @@ Use your account's Billing tab to view your present costs, past invoices and rem
 {PANEL: The Billing Tab}
 
 !["Billing Tab"](images\portal-billing-tab.png "Billing Tab")  
+
+The billing tab will show your existing resources and their costs as well as past billing events.
 
 * **Costs**  
   Sums up your current expenses over your products.  

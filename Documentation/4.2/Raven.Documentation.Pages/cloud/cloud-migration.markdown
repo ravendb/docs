@@ -4,7 +4,7 @@
 {NOTE: }
 
 Databases can be migrated between any two instances of RavenDB, including migration between on-premises and 
-cloud servers, and between [different RavenDB versions](../migration/client-api/introduction).  
+cloud servers and between [different RavenDB versions](../migration/client-api/introduction).  
 
 * In this page  
   * [Import From Live RavenDB instance](cloud-migration#import-from-live-ravendb-instance)  
@@ -60,7 +60,7 @@ Choose which data to migrate, and click **Migrate Database**.
 {PANEL: Import From File}
   
 Another option is to [export a database](../studio/database/tasks/export-database) from the source server in the 
-form of a **.ravenDBDump** file, and upload it to another database with the 
+**.ravenDBDump** format, and upload it to another database with the 
 [import data from file](../studio/database/tasks/import-data/import-data-file) operation.  
 This option doesn't require passing certificates:  
 

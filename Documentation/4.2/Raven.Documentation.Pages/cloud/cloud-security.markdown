@@ -5,17 +5,17 @@
 
 RavenDB cloud products use several layers of security.  
 
-* All instances run over HTTPS.  
+* All instances are encrypted using HTTPS / TLS 1.2.  
 
 * Servers and client applications authenticate each other using X.509 certificates.  
   {INFO: }
   Note that a RavenDB cloud product **comes with an initial client certificate**.  
-  You need this certificate in order to access the product.  
+  You need this certificate in order to access your RavenDB instances.  
   {INFO/}
 
 * You can choose [which IP addresses](../cloud/portal/cloud-portal-products-tab#manage-product-the-security-tab) your server can be contacted by.  
 
-* Your [automated backup](../cloud/cloud-backup-and-restore) routines produce encrypted backup files.  
+* Your [mandatory backup](../cloud/cloud-backup-and-restore#the-mandatory-backup-routine) routines produce encrypted backup files.  
 
 * In this page:  
     * [Using The Initial Client Certificate](cloud-security#using-the-initial-client-certificate)  
@@ -58,7 +58,8 @@ In other cases (e.g. if you're using Firefox or run Linux) you will have to impo
 !["Server URLs"](images\migration-001-urls.png "Server URLs")  
   
 Once the certificate is imported, click your cloud instance's URL.  
-Your browser will prompt you to select a certificate. When you select the client certificate, RavenDB's [management studio]() will launch.  
+Your browser will prompt you to select a certificate. When you select the client certificate, your product's 
+[management studio](../studio/overview) will launch.  
 
 {PANEL/}
 
