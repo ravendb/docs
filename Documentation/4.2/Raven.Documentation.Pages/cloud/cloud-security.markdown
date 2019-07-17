@@ -1,4 +1,4 @@
-#Cloud: Security
+# RavenDB on the Cloud: Security
 ---
 
 {NOTE: }
@@ -15,7 +15,7 @@ RavenDB cloud products use several layers of security.
 
 * You can choose [which IP addresses](../cloud/portal/cloud-portal-products-tab#manage-product-the-security-tab) your server can be contacted by.  
 
-* Your [automated backup](../cloud/cloud-backup) routines produce encrypted backup files.  
+* Your [automated backup](../cloud/cloud-backup-and-restore) routines produce encrypted backup files.  
 
 * In this page:  
     * [Using The Initial Client Certificate](cloud-security#using-the-initial-client-certificate)  
@@ -58,30 +58,15 @@ In other cases (e.g. if you're using Firefox or run Linux) you will have to impo
 !["Server URLs"](images\migration-001-urls.png "Server URLs")  
   
 Once the certificate is imported, click your cloud instance's URL.  
-Your browser will prompt you to select a certificate. When you select the client certificate, the RavenDB [management studio]() will launch.  
+Your browser will prompt you to select a certificate. When you select the client certificate, RavenDB's [management studio]() will launch.  
 
 {PANEL/}
 
 {PANEL: Using Additional Certificates}
 
-The initial client certificate grants you [operator](../server/security/authorization/security-clearance-and-permissions#operator) 
-clearance to the server.  
-RavenDB cloud products do not give you the highest clearance level, 
-[Cluster Admin](../server/security/authorization/security-clearance-and-permissions#cluster-admin). Operator clearance is very
-similar to it, except for operations related to the [cluster](../server/clustering/overview) which we 
-[administer for you](../cloud/cloud-overview#ravendb-on-the-cloud-overview).  
-
----
-
-Generate additional operator or [user](../server/security/authorization/security-clearance-and-permissions#user)-clearance certificates  
-
-**Manage Certificates**  
-Go to the server management studio, and click The `Manage Certificates` button.  
-!["Manage Certificates"](images\migration-002-manage-certificates.png "Manage Certificates")  
-
-**Generate the certificate**  
-Click **Generate client certificate**  
-!["Generate Client Certificate"](images\security-003-generate-client-certificate.png "Generate Client Certificate")  
+Your initial [operator-level](../server/security/authorization/security-clearance-and-permissions#operator) 
+certificate allows you to perform operations like creating and deleting databases, managing access to the cluster, and inspecting the cluster's state.  
+Operations like adding and removing cluster nodes are left for your [products administrators](../cloud/cloud-overview#ravendb-on-the-cloud-overview).  
 
 {INFO: }
 We recommend that you generate and use **different certificates** for your client applications, for maximum security.  
@@ -89,20 +74,34 @@ We recommend that you generate and use **different certificates** for your clien
 
 {INFO: }
 If your instance runs on a [burstable CPU](../cloud/cloud-overview#burstable-vs.-reserved-clusters), especially if it is a low-end one, 
-RavenDB may take a while to generate certificates - spending a lot of your [CPU credits](cloud-overview#credits) in the 
-process. We therefore recommend that you generate your certificates off-cloud and import them to your cloud instance instead 
-of using your cloud instance generate them. We generate the initial client certificate off-cloud for the same reason.  
+RavenDB may take a while to generate certificates and spend a lot of your [CPU credits](../cloud/cloud-overview#budget-credits-and-throttling) in the 
+process.  
+We therefore recommend that you generate your certificates off-cloud and import them to your cloud instance.  
 {INFO/}
+
+**To generate additional [operator](../server/security/authorization/security-clearance-and-permissions#operator) 
+  or [user](../server/security/authorization/security-clearance-and-permissions#user) certificates**:  
+ 
+* Go to the server management studio, and click The `Manage Certificates` button.  
+  !["Manage Certificates"](images\migration-002-manage-certificates.png "Manage Certificates")  
+* Click **Generate client certificate**  
+  !["Generate Client Certificate"](images\security-003-generate-client-certificate.png "Generate Client Certificate")  
 
 {PANEL/}
 
 ##Related Articles
 
 **Cloud**  
-[Overview](cloud-overview)  
-[Pricing, Payment and Billing](cloud-pricing-payment-billing)  
-[Backup](cloud-backup)  
-[Migration](cloud-migration)  
+[Overview](../cloud/cloud-overview)  
+[Pricing, Payment and Billing](../cloud/cloud-pricing-payment-billing)  
+[Backup And Restore](../cloud/cloud-backup-and-restore)  
+[Migration](../cloud/cloud-migration)  
+
+  
+[Portal](../cloud/portal/cloud-portal)  
+  
+[RavenDB on Burstable Instances](https://ayende.com/blog/187681-B/running-ravendb-on-burstable-cloud-instances)  
+[AWS CPU Credits](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html)  
 
 **Server**  
 [Security Overview](../server/security/overview)  

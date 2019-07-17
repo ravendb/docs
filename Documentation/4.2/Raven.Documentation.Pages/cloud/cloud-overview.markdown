@@ -2,8 +2,8 @@
 
 {NOTE: }
 
-Running RavenDB as a cloud service takes much of its administration from your hands and passes it to those of 
-RavenDB's developers, allowing them to maintain and optimize your instances for you, take care of cluster operations 
+Running RavenDB as a cloud service frees you from operational overhead by passing much of the administration to the hands 
+of RavenDB's developers and allowing them to maintain and optimize your instances for you, take care of cluster operations 
 like adding or removing nodes, and run recurring tasks like backing up your data.  
 
 * **Our and your administration**  
@@ -14,7 +14,7 @@ like adding or removing nodes, and run recurring tasks like backing up your data
 * **Resources**  
   Some of your products may share their resources with other applications and users, while other products may occupy machines 
   reserved for their usage only. Read about [reserved clusters](../cloud/cloud-overview#burstable-vs.-reserved-clusters), 
-  [burstable instances](../cloud/cloud-overview#burstable-vs.-reserved-clusters), and [credits](../cloud/cloud-overview#credits) 
+  [burstable instances](../cloud/cloud-overview#burstable-vs.-reserved-clusters), and [credits](../cloud/cloud-overview#budget-credits-and-throttling) 
   to understand more about your choices.  
 
 * In this page:  
@@ -25,7 +25,7 @@ like adding or removing nodes, and run recurring tasks like backing up your data
       * [Instances, Provisioning and RavenDB Products](../cloud/cloud-overview#instances-provisioning-and-ravendb-products)  
       * [RavenDB Tiers: Free, Development and Production](../cloud/cloud-overview#ravendb-tiers)  
       * [Burstable vs. Reserved clusters](../cloud/cloud-overview#burstable-vs.-reserved-clusters)  
-      * [Credits](../cloud/cloud-overview#credits)  
+      * [Budget, Credits and Throttling](../cloud/cloud-overview#budget-credits-and-throttling)  
 {NOTE/}
 
 ---
@@ -38,7 +38,7 @@ Some of the key reasons for running RavenDB on the cloud are -
 * The constant monitoring and healthcare of your products and their accommodating equipment.  
 * Your insulation from the cloud infrastructure's administration as we handle and continuously optimize it.  
 * The high [security](../cloud/cloud-security) level.  
-* Regular [backups](../cloud/cloud-backup) to your database and settings.  
+* Regular [backups](../cloud/cloud-backup-and-restore) to your database and settings.  
 * Our [support](../cloud/portal/cloud-portal-support-tab).  
 
 {PANEL/}
@@ -219,33 +219,53 @@ The RavenDB Cloud allows you to upgrade from a **Basic** production instance to 
 **Performance** cluster at will, with no impact on your system availability. 
 {NOTE/}
 
-##Credits
-Burstable instances are given **credits**, that are consumed when the instance consumes its computing and I/O resources.  
-In periods of low resource usage on the other hand, credits are accumulated - up to a certain limit.  
+##Budget, Credits and Throttling
+Burstable instances are given a **budget** of CPU credits.  
+Credits are **consumed** when the instance uses computing and I/O resources, and are **accumulated**, up to a certain limit, when resources usage is low.  
+
+* **Burstable INSTANCES and throttling**  
+  When an instance's budget is consumed, its services are throttled.  
+  For example, **Indexing may be delayed** and **Requests may be denied**.  
+  
+    {INFO: }
+    We throttle by denying resources, not by charging your credit.  
+    {INFO/}
+
+* **Burstable CLUSTERS and throttling**  
+  [Basic-grade production clusters](../cloud/cloud-instances#basic-grade-production-cluster) are burstable: each node of such a cluster 
+  is accommodated by a burstable instance.  
+  When the budget of a burstable cluster is drained or nearly so, the cluster automatically shifts the workload to cluster nodes that still have 
+  credits to work with.  
+  If the amount of work you're performing is large enough to drain the entire cluster's budget, it may still be throttled.  
 
 {NOTE: }
-
-When all credits of an instance are consumed, its services are throttled.  
-For example, **Indexing may be delayed** and **Requests may be denied**.  
-
-* One credit is the equivalent of a single minute per hour of 100% CPU-power.  
-* We provide burstable instances with a 10$-worth monthly credit as a starter.  
-* We do not charge you with money when your credits are consumed.  
-
+**Use a suitable configuration**.  
+The stronger your instances are, the less susceptible they are to budget drainage and throttling.  
+If you are regularly warned or your product is actually throttled, consider [upscaling](../cloud/cloud-scaling) its configuration.  
 {NOTE/}
 
-* **Check your Studio warnings**  
-  Do not turn your management studio's warnings off, and do check them regularly.  
-  Your instances will warn you when their credits are about to drain up. They will also perform preemptive actions 
-  to lower resources usage.  
-* The stronger an instance is, the less prone it is to credits drainage and throttling.  
-  If your instances are repeatedly throttled, consider [upscaling](../cloud/cloud-scaling).  
-* **Cluster Credits**  
-  Basic-grade production clusters are burstable, i.e. each of their nodes is accommodated by a burstable instance.  
-  When the credits of a burstable cluster are consumed, the cluster automatically shifts the workload to nodes 
-  that still have credits to work with.  
-  If the amount of work you're performing is large enough to drain the entire cluster's budget, you may still be throttled.  
-  
+---
+
+####Throttling Warnings  
+Your instances will warn you when their credits are about to drain up, and inform you when throttling is performed.  
+They will also perform preemptive actions to lower resources usage.  
+![Throttling Is Coming](images/throttling-001-nearly-exhausted-messages.png "Throttling Is Coming")  
+![Throttling Is Here](images/throttling-002-indexing-paused.png "Throttling Is Here")  
+
+---
+
+####How much is a CPU credit, and what's in my budget?  
+A single credit is the equivalent of using a 100% of the CPU for a full minute out of an hour.  
+
+{INFO: }
+[Free instances](../cloud/cloud-instances#a-free-cloud-node) are given a monthly budget of 10$ in CPU credits.  
+{INFO/}
+
+You can view what's currently in your instance's budget, by adding `/debug/cpu-credits` to its URL.  
+![Current Budget](images/throttling-003-remaining-credits.png "Current Budget")  
+Note that the figures relate to CPU seconds; for CPU minutes, divide them by 60.  
+E.g., `"MaxCredits": 8640.0` means your instance can accumulate up to 144 minutes of full CPU usage.  
+
 {PANEL/}
 
 ##Related Articles

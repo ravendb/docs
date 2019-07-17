@@ -38,8 +38,7 @@ to create a **free**-tier instance.
   It comes with a monthly credit of **10$**, used to cover the cost of the instance and of incidentals like backup storage 
   and traffic.  
   {NOTE: }
-  If your free instance is using more resources than the provided credit, you'll need
-  to pay for these resources or stop your instance. 
+  If your free instance is using more resources than the provided credit, you'll need to pay for these resources or stop your instance. 
   {NOTE/}
 
 * The free instance is limited to the [community](https://ravendb.net/buy) subset of features.  
@@ -54,7 +53,7 @@ A development server is equipped with all RavenDB's features, like Pull Replicat
 
 Such cloud servers are perfect for development, though not for production because of their single-node configuration, 
 [burstable](../cloud/cloud-overview#burstable-vs.-reserved-clusters) CPU usage and lack of 
-[SLA](../cloud/portal/cloud-portal-support-tab#support-entitlement).  
+[backup](../cloud/cloud-backup-and-restore#cloud-backup) procedure and [SLA](../cloud/portal/cloud-portal-support-tab#support-entitlement).  
 
 To raise a cloud Development server, create a product using the Products tab and choose the **development** tier.  
 !["Tiers and Instances: Development"](images\tiers-and-instances-002-development.png "Tiers and Instances: Development")  

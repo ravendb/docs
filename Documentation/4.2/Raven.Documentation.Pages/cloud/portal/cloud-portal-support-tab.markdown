@@ -1,4 +1,4 @@
-# Cloud Account Portal: Support
+# You Cloud Portal: The Support Tab
 
 {NOTE: }
 
@@ -59,12 +59,14 @@ Be sure you understand what each of the three stands for, so your call would be 
 Your support requests will be prioritized by their severity and your product plan.  
 
 * Support for **Free** users  
-  Our Free support includes full availability of your free cloud instance services, 
+  Our Free support includes the availability of your free cloud instance services, 
   response to any connectivity issues, and your participation in mailing lists and forums.  
 * **Professional**  
-  We also support bug fixes, email and phone support, and access to RavenDB's core developers.  
+  Paid products get all the support they need to get their instances up and running.  
+  Additional monitoring of your system, focus on building better RavenDB applications, and architectural guidance.  
+  We also provide bug fixes, email and phone support, and access to RavenDB's core developers.  
 * **Production**  
-  Support is also 24/7 available for you.  
+  24/7 Support.  
 
 | **Tier** | **SLA** |
 | -- | -- |
@@ -75,6 +77,8 @@ Your support requests will be prioritized by their severity and your product pla
 {PANEL/}
 
 ##Related Articles
+
+[Overview](../../cloud/cloud-overview)  
   
 [The Products tab](../../cloud/portal/cloud-portal-products-tab)  
 [The Backups Tab](../../cloud/portal/cloud-portal-backups-tab)  

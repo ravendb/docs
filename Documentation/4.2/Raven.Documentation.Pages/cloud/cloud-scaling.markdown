@@ -1,4 +1,4 @@
-#Cloud: Scaling
+# RavenDB on the Cloud: Scaling
 ---
 
 {NOTE: }
@@ -77,3 +77,9 @@ because it is a multi-node cluster and the nodes are scaled in a **rolling updat
 [Tiers and Instances](cloud-instances)  
 [Pricing, Payment and Billing](cloud-pricing-payment-billing)  
 [Migration](cloud-migration)
+
+  
+[Portal](../cloud/portal/cloud-portal)  
+  
+[RavenDB on Burstable Instances](https://ayende.com/blog/187681-B/running-ravendb-on-burstable-cloud-instances)  
+[AWS CPU Credits](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html)  
