@@ -41,6 +41,8 @@ Note: where `/database/*/` prefix exists, replace `*` with database name
 
 # Production
 
+|Endpoint 	|Method 	|Parameters 	|Description 	|Remarks	|*|
+|-|-|-|-|-|-|
 |/	|GET	|	|	|	||
 |/admin/certificates	|POST, PUT, DELETE, GET	|	|	|	||
 |/admin/certificates/cluster-domains	|GET	|	|	|	||
