@@ -64,6 +64,14 @@ Since RavenDB 4.0, **all** index updates are side-by-side by default. The new in
 
 {INFO/}
 
+### Index Naming Constraints  
+
+* An index name can be composed of letters, digits, `.`, `/`, `-`, and `_`. The name must be unique in the scope of the database.  
+* Uniqueness is evaluated in a _case-insensitive_ way - you can't create indexes named both `usersbyname` and `UsersByName`.  
+* The characters `_` and `/` are treated as equivalent - you can't create indexes named both `users/byname` and `users_byname`.  
+* If the index name contains the character `.`, it must have some other character on _both sides_ to be valid. `/./` is a valid index name, but 
+  `./`, `/.`, and `/../` are all invalid.  
+
 {PANEL/}
 
 {PANEL:**Auto indexes**}

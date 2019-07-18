@@ -51,7 +51,7 @@ You can store, delete and edit document and the session will track them as usual
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **key** | string | The key to save with the associate value |
+| **key** | string | The key to save with the associate value. This string can be up to 512 bytes. |
 | **value** | `T` | The value to store |
 
 If the value is already exists `SaveChanges()` will throw a `ConcurrencyException`.
@@ -95,6 +95,6 @@ If the value was changed by someone else the `SaveChanges()` will throw a `Concu
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **key** | string | Key of the item to store |
+| **key** | string | Key of the item to store. This string can be up to 512 bytes. |
 | **index** | long | Index for concurrency control |
 | **value** | `T` | The actual value to keep |

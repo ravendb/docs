@@ -6,6 +6,11 @@
         "IsPlaceholder": "true"
     },
     {
+        "Path": "/indexes",
+        "Name": "Indexes",
+        "Mappings": []
+    },
+    {
         "Path": "/settings",
         "Name": "Settings",
         "Mappings": [],
