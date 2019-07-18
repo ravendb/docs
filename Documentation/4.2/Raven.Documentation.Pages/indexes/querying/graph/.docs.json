@@ -1,8 +1,20 @@
 [
   {
-    "Path": "graph-queries.markdown",
-    "Name": "Graph Queries",
-    "DiscussionId": "c7299bc7-69aa-4be5-9ccd-4d634f2f7648",
+    "Path": "graph-queries-overview.markdown",
+    "Name": "Overview",
+    "DiscussionId": "cd8db8e6-3496-4afe-98ce-c08d361e5a37",
+    "Mappings": []
+  },
+  {
+    "Path": "graph-queries-basic.markdown",
+    "Name": "Basic Graph Queries",
+    "DiscussionId": "de9ab054-c5c4-4fca-a283-55ce675b1fb7",
+    "Mappings": []
+  },
+  {
+    "Path": "graph-queries-recursive.markdown",
+    "Name": "Recursive Graph Queries",
+    "DiscussionId": "5e0eb2b4-fae0-4dad-b645-a5f881e2854b",
     "Mappings": []
   }
 ]

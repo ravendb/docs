@@ -5,7 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="indexes\querying\graph\graph-queries-TBR.markdown" />
+    <None Remove="indexes\querying\graph\graph-queries-vs-other-queries-TBD.markdown" />
+    <None Remove="indexes\querying\graph\graph-recursive-TBR.markdown" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="studio\database\tasks\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RavenDB.Client" Version="4.2.0-nightly-20190513-0501" />
   </ItemGroup>
 
 </Project>
