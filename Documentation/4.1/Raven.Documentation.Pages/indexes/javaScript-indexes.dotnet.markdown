@@ -71,7 +71,7 @@ Upon completion of the first phase, reduction is applied to the map results and 
 {CODE-BLOCK/}
 
 {WARNING: `this` Keyword}
-`this` is bound to the state of our JavaScript interpreter, which has no relevance to creating indexes. Using `this` in your index may cause it to break. 
+`this` is bound to the state of our JavaScript interpreter, which has no relevance to creating indexes. Using `this` is unsupported and may cause undefined behavior. 
 {WARNING/}
 
 ### Example I
