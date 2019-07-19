@@ -1,42 +1,95 @@
-#Cloud: Scaling Instances
+# RavenDB on the Cloud: Scaling
 ---
 
 {NOTE: }
 
-* RavenDB instances in the **development** and **production** tiers can be **upscaled** or **downscaled** into an 
-instance of the *same tier.*  
-* An instance can't be converted to a different tier, but databases can be [migrated](cloud-migration) between any 
-two RavenDB instances.  
+After a RavenDB [cloud instance](../cloud/cloud-instances) has been set up, you can **scale it** up and down to modify the 
+workload it can handle.  
+
+* Instances of the [development](../cloud/cloud-instances#a-development-cloud-server) and 
+  [production](../cloud/cloud-instances#a-production-cloud-cluster) tiers can be upscaled 
+  or downscaled **within their own tier**.  
+* An instance can't be converted to a different tier, but data can be [migrated](cloud-migration) between any 
+  two RavenDB instances.  
+
+* In this page:  
+  * [Scaling](../cloud/cloud-scaling#scaling)  
+     - [Change Instance Type](../cloud/cloud-scaling#change-instance-type)  
+     - [Change Storage](../cloud/cloud-scaling#change-storage)  
+
 {NOTE/}
 
 ---
 
-{PANEL: }
+{PANEL: Scaling}
 
-To scale a RavenDB cloud instance, go to the [Products tab](../cloud/cloud-control-panel#the-products-tab) 
-in the cloud Control Panel. Click on the `Manage` button for the product you want to scale. In the `General` 
-tab you will see buttons to `change instance type` and `change storage`:
+To scale a RavenDB cloud instance, open your [portal](../cloud/portal/cloud-portal)'s [products tab](../cloud/portal/cloud-portal-products-tab) 
+and click the **Manage** button for the product you want to scale.  
 
-![Figure 1: Scaling Buttons](images/CloudScaling_1.png)  
+!["Manage Product"](images/scaling-001-manage.png "Manage Product")  
   
-Clicking on the `change instance type` button will open a menu with options for `CPU Priority` and `Cluster Size`:  
-
-![](images/CloudScaling_instance.png)  
-  
-Clicking on the `change storage` button will open a menu with options for the instance's storage capacity:  
-
-![](images/CloudScaling_storage.png)  
-  
-There are two types of storage: standard and premium. Selecting premium storage gives you the additional option 
-of selecting the amount of IOPS (in/out operations per second) that the instance can handle.  
+In the **General** tab, you will see buttons to **Change Instance Type** and **Change Storage**.  
 
 {NOTE: }
+The scaling buttons are presented only for [Development](../cloud/cloud-instances#a-development-cloud-server) and 
+[Production](../cloud/cloud-instances#a-production-cloud-cluster) products.  
+The [Free](../cloud/cloud-instances#a-free-cloud-node) product doesn't show them because its tier includes only one configuration.  
+{NOTE/}
 
-When you scale a development tier instance, it will go down temporarily while the configuration is updated. 
-Production tier instances are scaled in a **rolling update**, one cluster node at a time, so your cluster will 
-not experience any downtime.  
+!["Scaling Buttons"](images/scaling-002-buttons.png "Scaling Buttons")  
 
+**1.** Click **Change Instance Type** to reconfigure your product.  
+**2.** Click **Change Storage** to modify your product's storage capacity.  
+
+---
+
+####1. Change Instance Type  
+
+Use the **CPU Priority** and **Cluster Size** slide bars to compose a configuration 
+that would allow your product to properly handle its expected workload.  
+
+!["Scaling Instance Type"](images/scaling-003-instance.png "Scaling Instance Type")  
+
+  ---
+
+####2. Change Storage  
+
+!["Scaling Storage"](images/scaling-004-storage.png "Scaling Storage")  
+  
+There are two types of storage: Standard and Premium. Pick either to change your current storage capacity.  
+The **Premium** storage type also lets you choose the number of IOPS (Input/Output Operations Per Second) that the instance can handle.  
+
+!["Premium IOPS"](images/scaling-005-premium.png "Premium IOPS")  
+
+{INFO: }
+It is fairly obvious why the size of the storage matters, but it is important to also understand the impact 
+of the storage type and allocated IOPS on the overall performance.  
+
+RavenDB, as a database, is sensitive to I/O latencies resulting from slow storage. If your instances are running into 
+high I/O latencies, RavenDB will alert you to the issue so you can upgrade the type of storage you are using and the 
+number of IOPS reserved for your instances.  
+{INFO/}
+
+
+{NOTE: }
+Scaling a [Development](../cloud/cloud-instances#a-development-cloud-server) product **brings it down** 
+temporarily, while its single-node's instance is being reconfigured.  
+Scaling a [Production](../cloud/cloud-instances#a-production-cloud-cluster) product does **not** bring it down, 
+because it is a multi-node cluster and the nodes are scaled in a **rolling update**, one instance at a time.  
 {NOTE/}
 
 {PANEL/}
 
+##Related Articles
+
+**Cloud**  
+[Overview](cloud-overview)  
+[Tiers and Instances](cloud-instances)  
+[Pricing, Payment and Billing](cloud-pricing-payment-billing)  
+[Migration](cloud-migration)
+
+  
+[Portal](../cloud/portal/cloud-portal)  
+  
+[RavenDB on Burstable Instances](https://ayende.com/blog/187681-B/running-ravendb-on-burstable-cloud-instances)  
+[AWS CPU Credits](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html)  

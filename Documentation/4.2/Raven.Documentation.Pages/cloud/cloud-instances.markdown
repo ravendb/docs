@@ -1,127 +1,158 @@
-#Cloud: Tiers and Instances
----
+# RavenDB on the Cloud: Tiers and Instances
 
 {NOTE: }
 
-Use your Control Panel's [Products tab](../cloud/cloud-control-panel#the-products-tab) to raise or modify 
-a free node, a development node, or a production cluster.  
+Use your portal's [Products tab](../cloud/portal/cloud-portal-products-tab) to raise or modify 
+a Free node, a Development node, or a Production cluster.  
 Free and Development nodes, as well as Production "basic" grade clusters, are operated by 
-[burstable instances](../cloud/cloud-overview#burstable-instances).  
-The higher production cluster grades Standard and Performance are 
-[Reserved clusters](../cloud/cloud-overview#reserved-clusters).  
+[burstable instances](../cloud/cloud-overview#burstable-vs.-reserved-clusters).  
+The higher production-cluster grades [Standard](../cloud/cloud-instances#standard-grade-production-cluster) 
+and [Performance](../cloud/cloud-instances#performance-grade-production-cluster) are 
+[Reserved clusters](../cloud/cloud-overview#burstable-vs.-reserved-clusters).  
 
 * In this page:  
-    * [Cloud Free Instance](../cloud/cloud-instances#cloud-free-node)  
-    * [Cloud Development Node](../cloud/cloud-instances#cloud-development-node)  
-    * [Cloud Production Cluster](../cloud/cloud-instances#cloud-production-cluster)  
-    * [Summary](../cloud/cloud-instances#summary)  
+    * [A Free Cloud Node](../cloud/cloud-instances#a-free-cloud-node)  
+    * [A Development Cloud Server](../cloud/cloud-instances#a-development-cloud-server)  
+    * [A Production Cloud Cluster](../cloud/cloud-instances#a-production-cloud-cluster)  
+       - [Basic-grade Production Cluster](../cloud/cloud-instances#basic-grade-production-cluster)  
+       - [Standard-grade Production Cluster](../cloud/cloud-instances#standard-grade-production-cluster)  
+       - [Performance-grade Production Cluster](../cloud/cloud-instances#performance-grade-production-cluster)  
 {NOTE/}
 
 ---
 
 {PANEL: }
 
-### Cloud Free Node  
+### A Free Cloud Node  
 
-Free RavenDB cloud nodes are great for experiments and evaluation. They are equipped with 
-the most basic configuration and capabilities, and have a single node and no SLA.  
-You can have only one free node per [account](../cloud/cloud-overview#your-account).  
+Free RavenDB cloud nodes are great for experiments and evaluation. They are equipped with the 
+most basic configuration and capabilities and have a single node and no Service-level agreement (SLA).  
+You can run only one free node per [account](../cloud/cloud-overview#your-account).  
 
-To raise a free cloud node, choose the **free** tier when you create your product using the 
-[Products tab](../cloud/cloud-control-panel#provisioning-a-new-product).  
+To raise a free cloud node, use the [Products tab](../cloud/portal/cloud-portal-products-tab) 
+to create a **free**-tier instance.  
 !["Tiers and Instances: Free"](images\tiers-and-instances-001-free.png "Tiers and Instances: Free")  
 
-{NOTE: }
-If your free instance is using more resources than the provided credit, you'll need
-to pay for these resources or stop your instance. 
-{NOTE/}
-
-* A free instance is identical to a development [Dev10](../cloud/cloud-instances#cloud-development-node) instance.  
-  It comes with a monthly credit of 10$, used to cover the cost of the instance and of incidentals like backup storage 
+* A free instance is identical to a development [Dev10](../cloud/cloud-instances#a-development-cloud-server) instance.  
+  It comes with a monthly credit of **10$**, used to cover the cost of the instance and incidentals like backup storage 
   and traffic.  
-* The free instance is limited to the [community](https://ravendb.net/buy) subset of features. 
+  {NOTE: }
+  If your free instance is using more resources than the provided credit, you'll need to pay for these resources or stop your instance. 
+  {NOTE/}
+
+* The free instance is limited to the [community](https://ravendb.net/buy) subset of features.  
+
 * If you don't use a free instance for over 14 days, it will be deleted.  
 
 ---
 
-### Cloud Development Node  
+### A Development Cloud Server  
 
-A development node is equipped with all RavenDB's features, like Pull Replication and Encrypted Databases.  
-You can choose its equipment out of 7 increasingly-powerful configurations, Dev10 to Dev70.  
+A development server is equipped with all RavenDB's features, like Pull Replication and Encrypted Databases.  
 
-It is perfect for development, though not for production because of its single-node configuration, burstable 
-CPU usage and no SLA.  
+Such cloud servers are perfect for development, though not for production because of their single-node configuration, 
+[burstable](../cloud/cloud-overview#burstable-instances) CPU usage and lack of 
+[backup](../cloud/cloud-backup-and-restore#cloud-backup) procedure and [SLA](../cloud/portal/cloud-portal-support-tab#support-entitlement).  
 
-To raise a cloud Development node, choose the **development** tier when you create your product using the 
-[Products tab](../cloud/cloud-control-panel#provisioning-a-new-product).  
+To raise a cloud Development server, create a product using the Products tab and choose the **development** tier.  
 !["Tiers and Instances: Development"](images\tiers-and-instances-002-development.png "Tiers and Instances: Development")  
-
-* Use the configuration slide bar to choose your development node's configuration.  
-  !["Development Tier DEV10"](images\tiers-and-instances-0021-development-dev10.png "Development Tier DEV10")  
-  !["Development Tier DEV70"](images\tiers-and-instances-0022-development-dev70.png "Development Tier DEV70")  
-
-* Use the storage slide bar to choose your storage size.  
-  !["Development Tier: Storage"](images\tiers-and-instances-0023-development-storage.png "Development Tier: Storage")  
+  
+---
+  
+####Select your server's configuration  
+  
+Choose from the increasingly powerful configurations Dev10 to Dev70  
+!["Development Tier DEV10"](images\tiers-and-instances-0021-development-dev10.png "Development Tier DEV10")  
+!["Development Tier DEV70"](images\tiers-and-instances-0022-development-dev70.png "Development Tier DEV70")  
 
 ---
 
-### Cloud Production Cluster  
+####Select your storage  
+
+Choose your storage type and size  
+!["Development Tier: Storage"](images\tiers-and-instances-0023-development-storage.png "Development Tier: Storage")  
+
+{INFO: }
+In addition to the CPU / memory resources allocated to your instances, you can select the type of storage that will 
+be assigned to your RavenDB instances. It is fairly obvious why the size of the storage matters, but it is important 
+to also understand the impact of the storage type and allocated IOPS on the overall performance.  
+
+RavenDB, as a database, is sensitive to I/O latencies resulting from slow storage. If your instances are running into 
+high I/O latencies, RavenDB will alert you to the issue so you can upgrade the type of storage you are using and the 
+number of IOPS reserved for your instances.  
+{INFO/}
+
+---
+
+### A Production Cloud Cluster  
 
 The default production configuration is a three-node cluster, provisioned in separate 
 availability zones for maximum durability.  
-
+{NOTE: }
+RavenDB Cloud also offers **multi-region clusters** and clusters with a **higher number of nodes**.  
+Contact Support to provision clusters with configurations that suit your needs.
+{NOTE/}
 !["Production Tier"](images\tiers-and-instances-003-production.png "Production Tier")  
 
+The production tier offers three instance levels:  
+1. **Basic**  
+2. **Standard**  
+3. **Performance**  
+  
+---
+  
+####1. Basic-grade Production Cluster
+Basic production clusters are [burstable](../cloud/cloud-overview#burstable-instances).  
+While suitable for low to medium workloads, they trade-off peak efficiency for lower costs.  
+!["Production: Basic"](images\tiers-and-instances-0031-production-basic.png "Production: Basic")  
 
-{NOTE: }
-RavenDB Cloud also offers multi-region clusters and clusters with a higher number of nodes.  
-Contact Support for guidance regarding provisioning such clusters.
-{NOTE/}
+---
 
-* The production tier offers three instance levels.
-   - **Basic**  
-     Basic production clusters are burstable. While suitable for low to medium workloads, 
-     they trade-off peak efficency for lower costs.  
-     !["Production: Basic"](images\tiers-and-instances-0031-production-basic.png "Production: Basic")  
+####2. Standard-grade Production Cluster
+The resources of standard production clusters are [reserved](../cloud/cloud-overview#reserved-clusters).  
+The cluster can utilize them at all times, and is equipped to handle constant production load.  
 
-   - **Standard** production clusters have reserved resources they can utilize at all time, and are 
-     equipped to handle constant production load.  
-     !["Production: Standard P10"](images\tiers-and-instances-0032-production-standard-P10.png "Production: Standard P10")  
-     !["Production: Standard P50"](images\tiers-and-instances-0033-production-standard-P50.png "Production: Standard P50")  
+Use the slide bars to choose your Standard Production cluster's configuration and storage.  
+!["Production: Standard P10"](images\tiers-and-instances-0032-production-standard-P10.png "Production: Standard P10")  
+!["Production: Standard P50"](images\tiers-and-instances-0033-production-standard-P50.png "Production: Standard P50")  
+!["Standard Storage"](images\tiers-and-instances-0034-production-standard-storage.png "Standard Storage")  
 
-     * Use the slide bar to choose your Standard Production cluster's storage size.  
-     !["Standard Storage"](images\tiers-and-instances-0034-production-standard-storage.png "Standard Storage")  
+{INFO: }
+In addition to the CPU / memory resources allocated to your instances, you can select the type of storage that will 
+be assigned to your RavenDB instances. It is fairly obvious why the size of the storage matters, but it is important 
+to also understand the impact of the storage type and allocated IOPS on the overall performance.  
 
-   - Performance  
-     Performance instances are reserved, and we can **custom-tailor** them for your production environment 
-     so they include High memory, reserved IO with NVMe drives, High compute, and up to 2 terabytes of storage space.  
-     !["Production: Performance"](images\tiers-and-instances-0034-production-performance.png "Production: Performance")  
+RavenDB, as a database, is sensitive to I/O latencies resulting from slow storage. If your instances are running into 
+high I/O latencies, RavenDB will alert you to the issue so you can upgrade the type of storage you are using and the 
+number of IOPS reserved for your instances.  
+{INFO/}
+
+---
+
+####3. Performance-grade Production Cluster
+Performance cloud clusters are [reserved](../cloud/cloud-overview#reserved-clusters), and we can 
+**custom-tailor** them for your production environment needs so they include High memory, reserved IO with NVMe drives, 
+High compute, and terabytes of storage space.  
+!["Production: Performance"](images\tiers-and-instances-0034-production-performance.png "Production: Performance")  
 
 {NOTE: }
 The production tier is **highly customizable**.  
 Contact Support to modify your server configuration, the number of nodes in your cluster, 
 and various parameters of their deployment.  
-If you're interested in a high global availability for example, a multi-region deployment 
-would probably suit you better than the default.  
+If you're interested in high global availability, for example, a multi-region deployment 
+can be easily set and would probably suit you better than the default arrangement.  
 {NOTE/}
 
-  ---
-
-### Summary  
-
-The three instance types differ from each other in purpose, capabilities and cost.  
-
-| **Tier** | **Cores** | **Nodes** | **RAM** | **Storage** |
-| -- | -- | -- | -- | -- |
-| Free | 2 | 1 | 0.5 GB | 10 GB |
-| Development | 2-8 | 1 | 0.5 - 32 GB | Up to 1 TB |
-| Production | Up to 48 | 3 (default) | Up to 192 GB | Up to 2 TB |
-
-| **Tier** | **Sub-tiers** | **CPU** | **Options** | **SLA** |
-| -- | -- | -- | -- | -- |
-| Free | - | Very low | None | No |
-| Development | Dev0-Dev6 | Very low - High | All | [Yes](../cloud/cloud-control-panel#the-support-tab) |
-| Production | **By CPU Priority** (Basic/Standard/Performance) <br> **By Cluster Size**| Up to extra performance, high network and reserved NVMe | All | [Yes](../cloud/cloud-control-panel#the-support-tab) |
-
-
 {PANEL/}
+
+
+##Related Articles
+  
+[Portal](../cloud/portal/cloud-portal)  
+  
+[RavenDB on Burstable Instances](https://ayende.com/blog/187681-B/running-ravendb-on-burstable-cloud-instances)  
+[AWS CPU Credits](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html)  
+
+**Links**  
+[Register]( https://cloud.ravendb.net/user/register)  
+[Login]( https://cloud.ravendb.net/user/login)  

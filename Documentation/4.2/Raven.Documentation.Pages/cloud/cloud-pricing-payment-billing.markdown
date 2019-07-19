@@ -1,89 +1,134 @@
-#Cloud: Pricing, Payment and Billing
----
+# RavenDB on the Cloud: Pricing, Payment and Billing
 
 {NOTE: }
+
+You can run a product and pay for it using a credit card or a wire transfer, per-minute without committing to anything 
+or with a yearly agreement, gaining a substantial discount.  
+
 * In this page:  
   * [Pricing](../cloud/cloud-pricing-payment-billing#pricing)  
-     - [Additional Expanses](../cloud/cloud-pricing-payment-billing#additional-expanses)  
+     - [On-Demand Payment](../cloud/cloud-pricing-payment-billing#on-demand-payment)  
+     - [Yearly with NO Upfront payment](../cloud/cloud-pricing-payment-billing#yearly-with-no-upfront-payment)  
+     - [Yearly WITH an Upfront payment](../cloud/cloud-pricing-payment-billing#yearly-with-an-upfront-payment)  
+     - [Viewing your current configuration price](../cloud/cloud-pricing-payment-billing#viewing-current-configuration-price)  
+     - [Additional Expenses](../cloud/cloud-pricing-payment-billing#additional-expenses)  
   * [Payment](../cloud/cloud-pricing-payment-billing#payment)  
   * [Billing](../cloud/cloud-pricing-payment-billing#billing)  
     - [Charging Failures](../cloud/cloud-pricing-payment-billing#charging-failures)  
+
 {NOTE/}
 
 {WARNING: }
-Prices and fees in screenshots that appear in this documentation are for illustration only.  
+Prices and fees in screenshots that appear in this documentation are **for illustration only**.  
+Your actual pricing is determined by the cloud provider, selected region, and the contract that your account is using.  
 {WARNING/}
 
 ---
 
 {PANEL: Pricing}
 
-You can pay for your instances by one of three payment models: On-Demand, Yearly with _no_ Upfront payment, 
-or Yearly _with_ an Upfront payment.  
+You can pay for your instances by one of three models:  
 
 * **On-Demand Payment**  
-  The on-demand model lets you pay for your instance by the minute, and come and go as you please.  
-  We will measure your instance run-time from rise to termination, and charge you with minute granularity.  
-  You may find this model useful because it is the most flexible one. You aren't tied to a particular configuration
-  and can shift between them at will. 
+* **Yearly with _no_ Upfront payment**  
+* **Yearly _with_ an Upfront payment**  
 
-   - Charge is **by the minute**, with a **minimum-limit of one hour**.  
-     If you run an instance for 93 minutes for example, you will pay for exactly 93 minutes.  
-     If you run it for less than an hour, say 42 minutes, you'll still be charged for a full hour worth to match the minimum limit.  
-   - What then is the actual price per minute?  
-     While you [provision or edit](../cloud/cloud-control-panel#the-products-tab) your product, 
-     costs are shown in the **Your Order** slot.  
-     The price is an outcome of your HW and pricing model. 
-     a 2-Cores/0.5GB-RAM instance would naturally cost less than an 8-Cores/32GB-RAM instance.  
-      - A basic Production configuration:  
-        ![PB0](images/pricing_001_PB0.png "PB0")
-      - A little more advanced Production configuration:  
-        ![PB1](images/pricing_002_PB1.png "PB1")
-     You can also find the cost in the [summary page] before running the instance, and in your Billing tab.  
+---
 
-* **Yearly Contract**  
-  You can choose one of two yearly-payment models. Both provide you with a discount in relation to the on-demand model.
-  However, once a yearly contract is active, it is charged fully to the end of the year. You cannot change a yearly 
-  contract. 
+####On-Demand Payment  
 
-   * **Yearly with no upfront payment**  
-     You can commit for a year and **pay monthly**, and get a **5% discount**.  
-     ![Yearly No Upfront](images/pricing-003-payment-models-yearly-no-upfront.png "Yearly No Upfront")
+The on-demand model lets you pay for your instance **by the minute**, and come and go as you please.  
+We will measure your instance run-time **from rising to termination**, and charge you with **minute granularity**.  
 
-   * **Yearly with an upfront payment**  
-     You can commit for a year and **pay for it all in advance**, and get a **10% discount**.  
-     ![Yearly Upfront](images/pricing-004-payment-models-yearly-upfront.png "Yearly Upfront")
+You may find this model useful if you look for flexibility.  You are not tied to a particular configuration 
+and are free to shift between configurations at will. 
 
-  {NOTE: }
-   Yearly contracts are relevant only for [production instances](../cloud/cloud-instances#a-production-instance).  
-   [Development instances](../cloud/cloud-instances#a-development-instance) can only use the on-demand model.  
-  {NOTE/}
+{NOTE: }
+We charge on-demand **by the minute**, with a **minimum limit of one hour**.  
+If you run an instance for 93 minutes, you will pay for exactly 93 minutes.  
+If you run it for less than an hour, say 42 minutes, you will still be charged for a full hour worth to match the minimum limit.  
+{NOTE/}
+
+---
+
+####Yearly Payment  
+
+We offer two models of yearly payments: **Yearly with no upfront payment**, and **Yearly with an upfront payment**.  
+Both grant you discounts in relation to the on-demand model.  
+
+**Be aware** however that once a yearly contract has been activated, it is charged fully to the end of the contract 
+and cannot be revoked, halted or changed.  
+
+{NOTE: }
+
+* Terminating a product you've been paying for yearly, will **not** stop your monthly payments.  
   
+* Upscaling or downscaling a product you're paying for yearly, will **not** revoke the yearly agreement.  
+  Expenses for the new product will be calculated according to its on-demand fee and charged-for separately.  
 
-  {NOTE: }
-   You **cannot** cancel a yearly plan. Terminating your product will **not** stop your monthly payments.  
-   Upscaling or downscaling a product will keep your old product and add the new one to your account.  
-   
-   Adding nodes to an existing cluster with a yearly contract, however, does not incur additional expenses 
-   beyond the cost of running the new nodes.  
-  {NOTE/}
+* **Adding nodes to an existing cluster** with a yearly contract, however, does **not** incur additional expenses 
+  beyond the cost of running the new nodes.  
 
-  ---
+{NOTE/}
 
-####Additional Expanses
+---
 
-Your pricing model does **not** cover incidental expanses over -  
+####Yearly with NO upfront payment  
+Committing for a year and **paying monthly**, grants you a **5% discount**.  
+![Yearly No Upfront](images/pricing-003-payment-models-yearly-no-upfront.png "Yearly No Upfront")
 
-* **Traffic Usage**  
-  Your charges for traffic to and from your instance will be added to your basic pricing plan.  
+---
+
+####Yearly WITH an upfront payment  
+Committing for a year and **paying for it all in advance**, grants you a **10% discount**.  
+![Yearly Upfront](images/pricing-004-payment-models-yearly-upfront.png "Yearly Upfront")
+
+{NOTE: }
+Yearly contracts are relevant only for [production products](../cloud/cloud-instances#a-production-cloud-cluster).  
+[Development products](../cloud/cloud-instances#a-development-cloud-server) can only use the on-demand model.  
+{NOTE/}
+
+---
+
+####Viewing current configuration price  
+While [provisioning or editing](../cloud/portal/cloud-portal-products-tab) your product, 
+costs are shown in the **Your Order** slot.  
+
+The overall price is an outcome of your hardware configuration and pricing model, 
+with possible [additional expenses](../cloud/cloud-pricing-payment-billing#additional-expenses).  
+
+See for example the price differences between the production basic-grade configurations PB10 and PB20:  
+
+* Production Basic 10:  
+  ![PB10](images/pricing-001-PB10.png "PB10")  
+
+* Production Basic 20:  
+  ![PB30](images/pricing-001-PB30.png "PB30")  
+  
+You will also be able to find your products' costs in the [billing tab](../cloud/portal/cloud-portal-billing-tab).  
+
+---
+
+####Additional Expenses
+
+Your pricing model does **not** cover incidental expenses over -  
+
+* **Data Transfer**  
+  Charges over traffic to and from your instances will be added to your basic pricing plan.  
+
 * **Expanding your Disk Storage**  
-  We will automatically expand the amount of disk space allocated for your product when its usage reaches 90%, 
-  to prevent any chance of data loss. The new disk size will remain (it won't shrink back to its initial size if 
-  you delete your data), and your payment plan will be updated accordingly.  
+  When the disk space allocated for your product is 90% full, we will expand it to avoid running out of storage.  
+  Your payment plan will be updated to reflect the new storage size.  
+    {NOTE: }
+     Deleting files to reduce storage usage after the storage has been expanded will **not** revoke the expansion.  
+    {NOTE/}
+
 * **Backup Storage**  
   Your RavenDB Cloud runs automatic backups on a regular schedule.  
   Depending on your retention settings, you may be charged for highly available storage of your backups.  
-   - Your plan includes a 1GB / month backup storage. 
+    {NOTE: }
+     Your plan includes a 1GB / month backup storage. 
+    {NOTE/}
 
 {PANEL/}
 
@@ -91,30 +136,45 @@ Your pricing model does **not** cover incidental expanses over -
 
 You can currently pay by credit card or wire transfer.  
 
-* Credit Card  
-  You can provide your credit card details while creating your account, or skip this stage and return to it later.  
-  To provide your credit card details at any time, enter your Account tab and click the Add Credit Card button.  
-  Select your main credit card using the Active button, so we knoe which card to try first.  
-  If charging your active card fails, we'll try to charge your other cards.  
+---
 
-  ![Payment](images/payment.png "Payment")
+####Credit Card  
+You can provide your credit card details while creating your account, or skip this stage and return to it later.  
+To provide your credit card details at any time, enter your [Account tab](../cloud/portal/cloud-portal-account-tab) 
+and click the Add Credit Card button.  
+Select your main credit card using the **Active** button, so we know which card to try first.  
+If charging your active card fails, we'll try to charge other cards you may have provided.  
+![Payment](images/payment.png "Payment")
 
-* Wire Transfer / Purchase Order
-  Aproach our Support personnel to use wire transfer or purchase order.
+---
+
+####Wire Transfer / Purchase Order
+Approach our Support personnel to use wire transfer or purchase order.
 
 {PANEL/}
 
 {PANEL: Billing}
 
-Your Control Panel's [Billing tab](../cloud/cloud-control-panel#the-billing-tab) summarizes your 
-outstanding charges and past invoices.
+Your Portal's [Billing tab](../cloud/portal/cloud-portal-billing-tab) summarizes your 
+outstanding charges and past invoices. Additional data you can see there includes Daily cost, Total 
+cost, and the expected charge at the end of this month.  
 
-Additional data that you can see in the billing tab includes Daily cost, Total cost, and the expected 
-charge in the end of this month.  
+---
 
 ####Charging failures  
-
 If we fail to charge your account using the payment method you provided, we'll notify 
 you and retry for 7 days. Failure to pay after that period may result in account closure. 
 
 {PANEL/}
+
+
+##Related Articles
+  
+[Portal](../cloud/portal/cloud-portal)  
+  
+[RavenDB on Burstable Instances](https://ayende.com/blog/187681-B/running-ravendb-on-burstable-cloud-instances)  
+[AWS CPU Credits](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html)  
+
+**Links**  
+[Register]( https://cloud.ravendb.net/user/register)  
+[Login]( https://cloud.ravendb.net/user/login)  
