@@ -1,4 +1,4 @@
-# You Cloud Portal: The Account Tab
+# Cloud Portal: The Account Tab
 
 {NOTE: }
 

@@ -1,4 +1,4 @@
-# You Cloud Portal: The Backups Tab
+# Cloud Portal: The Backups Tab
 
 {NOTE: }
 

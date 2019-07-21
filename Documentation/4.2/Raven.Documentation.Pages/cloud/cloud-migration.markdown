@@ -20,7 +20,7 @@ You can easily migrate your database using the [import data from RavenDB](../stu
 In order to do so, the **source server** needs to have the **destination server's cluster certificate**.  
 
 Open the [Management Studio](../studio/overview) of each server.  
-Each server's Studio is available at it [Portal](../cloud/portal/cloud-portal#your-cloud-portal)'s 
+Each server's Studio is available at it [Portal](../cloud/portal/cloud-portal#cloud-portal)'s 
 [Product tab](../cloud/portal/cloud-portal-products-tab#cloud-account-portal-products).  
 !["Server URLs"](images\migration-001-urls.png "Server URLs")  
 
@@ -60,7 +60,7 @@ Choose which data to migrate, and click **Migrate Database**.
 {PANEL: Import From File}
   
 Another option is to [export a database](../studio/database/tasks/export-database) from the source server in the 
-**.ravenDBDump** format, and upload it to another database with the 
+**.ravenDBDump** format, and upload it to another database using the 
 [import data from file](../studio/database/tasks/import-data/import-data-file) operation.  
 This option doesn't require passing certificates:  
 

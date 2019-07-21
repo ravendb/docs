@@ -1,4 +1,4 @@
-# You Cloud Portal: The Support Tab
+# Cloud Portal: The Support Tab
 
 {NOTE: }
 

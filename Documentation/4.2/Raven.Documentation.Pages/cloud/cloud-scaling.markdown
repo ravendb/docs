@@ -73,7 +73,7 @@ number of IOPS reserved for your instances.
 
 {NOTE: }
 Scaling a [Development](../cloud/cloud-instances#a-development-cloud-server) product **brings it down** 
-temporarily, while its single-node's instance is being reconfigured.  
+temporarily, while its single-node instance is being reconfigured.  
 Scaling a [Production](../cloud/cloud-instances#a-production-cloud-cluster) product does **not** bring it down, 
 because it is a multi-node cluster and the nodes are scaled in a **rolling update**, one instance at a time.  
 {NOTE/}

@@ -1,4 +1,4 @@
-# You Cloud Portal: The Products Tab
+# Cloud Portal: The Products Tab
 
 {NOTE: }
 
@@ -71,6 +71,15 @@ Choose your product's display name and allowed IP addresses.
   Regardless of the allowed IPs setting, your RavenDB Cloud instances will **always require** authentication using X509 
   certificates for access. The allowed IPs list limits service as an additional layer of security, but isn't the only one.  
 
+    {WARNING: }
+    Azure products **do not permit** overlapping of addresses in the Allowed IPs list.  
+    If addresses in your list overlap, your product will not be created. E.g. -  
+  
+     - Listing both 13.64.151.161/32 and 13.74.249.156/32 is **not permitted**.  
+     - Listing 0.0.0.0/0 and any other address is **not permitted**.  
+     - Listing both 51.140.148.192/27 and 13.74.249.156/32 **is permitted**.  
+    {WARNING/}
+
   ---
 
 ####4. New Product: Summary  
@@ -116,7 +125,7 @@ You can view your configuration and change your product's instance type and stor
   !["Manage Product: Storage"](images\portal-products-0052-manage-general-storage.png "Manage Product: Storage")  
   
   You can allocate more disk space to your cluster (but not reduce it), and you can select Premium disks and the 
-  amount of IOPS reserved for them.  
+  number of IOPS reserved for them.  
 
 ---
 
@@ -140,6 +149,14 @@ allowed to connect your database instance.
     {NOTE: }
     Cross-instance communication **inside the cluster** is **not** subject to these restrictions.
     {NOTE/}
+
+    {WARNING: }
+    Azure products **do not permit** overlapping of addresses in the Allowed IPs list. E.g. -  
+  
+   - Listing both 13.64.151.161/32 and 13.74.249.156/32 is **not permitted**.  
+   - Listing 0.0.0.0/0 and any other address is **not permitted**.  
+   - Listing both 51.140.148.192/27 and 13.74.249.156/32 **is permitted**.  
+  {WARNING/}
 
 ---
 

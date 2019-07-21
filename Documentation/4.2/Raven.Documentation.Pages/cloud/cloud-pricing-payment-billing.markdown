@@ -2,8 +2,8 @@
 
 {NOTE: }
 
-You can run a product and pay for it using a credit card or a wire transfer, per-minute without committing to anything 
-or with a yearly agreement, gaining a substantial discount.  
+You can run a product and pay for it using a credit card or a wire transfer (we require that you provide valid credit card 
+details in any case). You can pay per minute without any commitment, or use one of the yearly-payment models for a substantial discount.  
 
 * In this page:  
   * [Pricing](../cloud/cloud-pricing-payment-billing#pricing)  
@@ -74,13 +74,13 @@ and cannot be revoked, halted or changed.
 ---
 
 ####Yearly with NO upfront payment  
-Committing for a year and **paying monthly**, grants you a **5% discount**.  
+Committing for a year and **paying monthly**, grants you a **5% discount** off the running cost.  
 ![Yearly No Upfront](images/pricing-003-payment-models-yearly-no-upfront.png "Yearly No Upfront")
 
 ---
 
 ####Yearly WITH an upfront payment  
-Committing for a year and **paying for it all in advance**, grants you a **10% discount**.  
+Committing for a year and **paying for it all in advance**, grants you a **10% discount** off the running cost.  
 ![Yearly Upfront](images/pricing-004-payment-models-yearly-upfront.png "Yearly Upfront")
 
 {NOTE: }

@@ -26,7 +26,7 @@
 
 Each database you create using a RavenDB cloud product, is assigned a mandatory-backup task that 
 stores a [full backup](../server/ongoing-tasks/backup-overview#backup-scope-full-or-incremental) 
-**every 24 hours** and an **incremental backup every 15 minutes** with all the changes that took 
+**every 24 hours** and an **incremental backup every 30 minutes** with all the changes that took 
 place since the last backup.  
 
 {INFO: }
@@ -64,7 +64,8 @@ management Studio.
 ---
 
 ####Custom-Backup Storage
-[Custom-backup](../cloud/cloud-backup-and-restore#creating-a-custom-backup) files can be kept where you choose to keep them.  
+[Custom-backup](../cloud/cloud-backup-and-restore#creating-a-custom-backup) files can be kept using an Amazon service 
+(S3 or S3 Glacier) or a Microsoft service (Azure).  
 We recommend that you use a backup method **local to your host cloud**. If your product is hosted by Amazon AWS for example, 
 you can store your backup files on an Amazon S3 bucket.  
 

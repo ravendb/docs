@@ -1,4 +1,4 @@
-# You Cloud Portal: The Billing Tab
+# Cloud Portal: The Billing Tab
 
 {NOTE: }
 
