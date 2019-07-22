@@ -57,6 +57,11 @@ Such cloud servers are perfect for development, though not for production becaus
 To raise a cloud Development server, create a product using the Products tab and choose the **development** tier.  
 !["Tiers and Instances: Development"](images\tiers-and-instances-002-development.png "Tiers and Instances: Development")  
   
+
+{INFO: }
+A development server's license restricts it from being used in production.  
+{INFO/}
+
 ---
   
 ####Select your server's configuration  
@@ -112,7 +117,7 @@ While suitable for low to medium workloads, they trade-off peak efficiency for l
 The resources of standard production clusters are [reserved](../cloud/cloud-overview#reserved-clusters).  
 The cluster can utilize them at all times, and is equipped to handle constant production load.  
 
-Use the slide bars to choose your Standard Production cluster's configuration and storage.  
+Use the slide-bars to choose your Standard Production cluster's configuration and storage.  
 !["Production: Standard P10"](images\tiers-and-instances-0032-production-standard-P10.png "Production: Standard P10")  
 !["Production: Standard P50"](images\tiers-and-instances-0033-production-standard-P50.png "Production: Standard P50")  
 !["Standard Storage"](images\tiers-and-instances-0034-production-standard-storage.png "Standard Storage")  

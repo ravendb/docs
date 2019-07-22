@@ -43,8 +43,8 @@ and click the **Download Certificate** button.
 
 ####Install the certificate  
 
-Extract the certificate package, open it and double-click the **.pfx** file to launch the certificate import wizard. 
-Simply confirm all the stages using the **Next** button until the wizard completes.  
+Extract the certificate package, open the extracted files' folder, and double-click the **.pfx** file that requires no password.  
+When the certificate import wizard is launched, click "Next" all the way through the wizard.  
 
 !["Certificate Import Wizard"](images\security-002-wizard.png "Certificate Import Wizard")  
 
@@ -53,7 +53,7 @@ Simply confirm all the stages using the **Next** button until the wizard complet
 ####Access your product  
 
 If you're using Chrome on Windows, you will now be able to access your RavenDB cloud instance. You may need to restart your browser.  
-In other cases (e.g. if you're using Firefox or run Linux) you will have to import the certificate to your browser manually.  
+In other cases (e.g. if you're using Firefox) you will have to import the certificate to your browser manually.  
 
 !["Server URLs"](images\migration-001-urls.png "Server URLs")  
   
@@ -83,7 +83,7 @@ We therefore recommend that you generate your certificates off-cloud and import 
 **To generate additional [operator](../server/security/authorization/security-clearance-and-permissions#operator) 
   or [user](../server/security/authorization/security-clearance-and-permissions#user) certificates**:  
  
-* Go to the server management studio, and click The `Manage Certificates` button.  
+* Go to the server management studio, and click the `Manage Certificates` button.  
   !["Manage Certificates"](images\migration-002-manage-certificates.png "Manage Certificates")  
 * Click **Generate client certificate**  
   !["Generate Client Certificate"](images\security-003-generate-client-certificate.png "Generate Client Certificate")  
