@@ -23,7 +23,9 @@
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/choosing-the-best-nosql-database",
             "publishedAt": "2017-09-01",
-            "subcategories": "nosql-database,data-security"
+            "subcategories": "nosql-database,data-security",
+            "canonicalLink": "href=\"https://ravendb.net/articles/ravendb-elasticsearch-best-open-source-nosql-database \""
+
         },
         "SeoMetaProperties": {
             "description": "Let's compare RavenDB and Elastic to see who is ACID, scalable, high availability, and has superior performance. Which is the best NoSQL Document Database?",
