@@ -19,6 +19,11 @@
     {
         <meta name="description" content="@metadata["metaDescription"]" />
     }
+    
+    @if (metadata != null && metadata.ContainsKey("canonicalLink"))
+    {
+        <link rel="canonical" @Html.Raw(metadata["canonicalLink"])/>
+    }
 
     @if (seoMetadata != null)
     {
