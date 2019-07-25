@@ -11,44 +11,47 @@ namespace Raven.Documentation.Samples.ClientApi
         public SetupDefaultDatabase()
         {
             #region default_database_1
-            // without specifying `Database`
-            // we will need to specify the database in each action
-            // if no database is passed explicitly we will get an exception
             using (IDocumentStore store = new DocumentStore
             {
-                Urls = new[] { "http://localhost:8080/" }
+                Urls = new[] { "http://your_RavenDB_server_URL" }
+                // Default database is not set
             }.Initialize())
             {
+                // Specify the 'Northwind' database when opening a Session
                 using (IDocumentSession session = store.OpenSession(database: "NorthWind"))
                 {
-                    // ...
+                    // Session will operate on the default 'Northwind' database
                 }
-                store.Maintenance.Server.Send(new CompactDatabaseOperation(new CompactSettings { DatabaseName = "NorthWind" }));
+
+                // Specify the 'Northwind' database when sending an Operation
+                store.Maintenance.ForDatabase("Northwind").Send(new DeleteIndexOperation("NorthWindIndex"));
             }
             #endregion
 
             #region default_database_2
-            // when `Database` is set to `Northwind`
-            // created `Operations` or opened `Sessions`
-            // will work on `Northwind` database by default
-            // if no database is passed explicitly
             using (IDocumentStore store = new DocumentStore
             {
-                Urls = new[] { "http://localhost:8080/" },
+                Urls = new[] { "http://your_RavenDB_server_URL" },
+                // Default database is set to 'Northwind'
                 Database = "Northwind"
             }.Initialize())
             {
+                // Using the default database
                 using (IDocumentSession northwindSession = store.OpenSession())
                 {
-                    // ...
+                    // Session will operate on the default 'Northwind' database
                 }
+
+                // Operation for default database
                 store.Maintenance.Send(new DeleteIndexOperation("NorthWindIndex"));
 
-
-                using (IDocumentSession adventureWorksSession = store.OpenSession("AdventureWorks"))
+                // Specify the 'AdventureWorks' database when opening a Session
+                using (IDocumentSession adventureWorksSession = store.OpenSession(database: "AdventureWorks"))
                 {
-                    // ...
+                    // Session will operate on the specifed 'AdventureWorks' database
                 }
+
+                // Specify the 'AdventureWorks' database when sending an Operation
                 store.Maintenance.ForDatabase("AdventureWorks").Send(new DeleteIndexOperation("AdventureWorksIndex"));
             }
             #endregion
