@@ -11,7 +11,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
     {
         private interface IFoo2
         {
-            #region session_options
+            #region Session_options
             string Database { get; set; }
 
             bool NoTracking { get; set; }
@@ -26,77 +26,145 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 
         private interface IFoo
         {
-            #region open_session_1
-            // Open session for a 'default' database configured in 'DocumentStore'
+            #region open_Session_1
+            // Open a Session for the default database configured in `DocumentStore.Database`
             IDocumentSession OpenSession();
 
-            // Open session for a specified database
+            // Open a Session for a specified database
             IDocumentSession OpenSession(string database);
-
+            
+            // Open a Session and pass it a preconfigured SessionOptions object
             IDocumentSession OpenSession(SessionOptions options);
             #endregion
 
-            #region open_session_1_1
-            // Open session for a 'default' database configured in 'DocumentStore'
+            #region open_Session_1_1
+            // Open a Session for the default database configured in `DocumentStore.Database`
             IAsyncDocumentSession OpenAsyncSession();
 
-            // Open session for a specified database
+            // Open a Session for a specified database
             IAsyncDocumentSession OpenAsyncSession(string database);
 
+            // Open a Session and pass it a preconfigured SessionOptions object
             IAsyncDocumentSession OpenAsyncSession(SessionOptions options);
             #endregion
         }
 
         public async Task Sample()
         {
-            string databaseName = "DB1";
+            #region open_Session_2
+            using (var store = new DocumentStore())
+            {
+                // The first overload -
+                store.OpenSession();
+                // - is equivalent to:
+                store.OpenSession(new SessionOptions());
+
+                // The second overload -
+                store.OpenSession("your_database_name");
+                // - is equivalent to:
+                store.OpenSession(new SessionOptions
+                {
+                    Database = "your_database_name"
+                });
+            }
+            #endregion
+
+            #region open_Session_2_1
+            using (var store = new DocumentStore())
+            {
+                // The first overload -
+                store.OpenAsyncSession();
+                // - is equivalent to:
+                store.OpenAsyncSession(new SessionOptions());
+
+                // The second overload -
+                store.OpenAsyncSession("your_database_name");
+                // - is equivalent to:
+                store.OpenAsyncSession(new SessionOptions
+                {
+                    Database = "your_database_name"
+                });
+            }
+            #endregion
+
+            #region open_Session_3
+            using (var store = new DocumentStore())
+            {
+                // Open a Session in synchronous operation mode for cluster-wide transactions
+
+                SessionOptions options = new SessionOptions
+                {
+                    Database = "your_database_name",
+                    TransactionMode = TransactionMode.ClusterWide
+                };
+
+                using (IDocumentSession Session = store.OpenSession(options))
+                {
+                    //   Run your business logic:
+                    //   
+                    //   Store documents
+                    //   Load and Modify documents
+                    //   Query indexes & collections 
+                    //   Delete documents
+                    //   ... etc.
+
+                    Session.SaveChanges();
+                }
+            }
+            #endregion
+
+            #region open_Session_3_1
+            using (var store = new DocumentStore())
+            {
+                // Open a Session in asynchronous operation mode for cluster-wide transactions
+
+                SessionOptions options = new SessionOptions
+                {
+                    Database = "your_database_name",
+                    TransactionMode = TransactionMode.ClusterWide
+                };
+
+                using (IAsyncDocumentSession Session = store.OpenAsyncSession(options))
+                {
+                    //   Run your business logic:
+                    //   
+                    //   Store documents
+                    //   Load and Modify documents
+                    //   Query indexes & collections 
+                    //   Delete documents
+                    //   ... etc.
+
+                    await Session.SaveChangesAsync();
+                }
+            }
+            #endregion
 
             using (var store = new DocumentStore())
             {
-                #region open_session_2
-                store.OpenSession(new SessionOptions());
-                #endregion
-
-                #region open_session_2_1
-                store.OpenAsyncSession(new SessionOptions());
-                #endregion
-
-                #region open_session_3
-                store.OpenSession(new SessionOptions
-                {
-                    Database = databaseName
-                });
-                #endregion
-
-                #region open_session_3_1
-                store.OpenAsyncSession(new SessionOptions
-                {
-                    Database = databaseName
-                });
-                #endregion
-
-                #region open_session_4
-                using (IDocumentSession session = store.OpenSession())
+                #region open_Session_4
+                using (IDocumentSession Session = store.OpenSession())
                 {
                     // code here
                 }
                 #endregion
 
-                #region open_session_5
-                using (IAsyncDocumentSession session = store.OpenAsyncSession())
+                #region open_Session_5
+                using (IAsyncDocumentSession Session = store.OpenAsyncSession())
                 {
                     // async code here
                 }
                 #endregion
 
-                #region open_session_tracking_1
-                using (IDocumentSession session = store.OpenSession(new SessionOptions
+                
+
+                #region open_Session_tracking_1
+                using (IDocumentSession Session = store.OpenSession(new SessionOptions
                 {
                     NoTracking = true
                 }))
                 {
-                    Employee employee1 = session.Load<Employee>("employees/1-A");
-                    Employee employee2 = session.Load<Employee>("employees/1-A");
+                    Employee employee1 = Session.Load<Employee>("employees/1-A");
+                    Employee employee2 = Session.Load<Employee>("employees/1-A");
 
                     // because NoTracking is set to 'true'
                     // each load will create a new Employee instance
@@ -104,14 +172,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                 }
                 #endregion
 
-                #region open_session_tracking_2
-                using (IAsyncDocumentSession session = store.OpenAsyncSession(new SessionOptions
+                #region open_Session_tracking_2
+                using (IAsyncDocumentSession Session = store.OpenAsyncSession(new SessionOptions
                 {
                     NoTracking = true
                 }))
                 {
-                    Employee employee1 = await session.LoadAsync<Employee>("employees/1-A");
-                    Employee employee2 = await session.LoadAsync<Employee>("employees/1-A");
+                    Employee employee1 = await Session.LoadAsync<Employee>("employees/1-A");
+                    Employee employee2 = await Session.LoadAsync<Employee>("employees/1-A");
 
                     // because NoTracking is set to 'true'
                     // each load will create a new Employee instance
@@ -119,8 +187,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                 }
                 #endregion
 
-                #region open_session_caching_1
-                using (IDocumentSession session = store.OpenSession(new SessionOptions
+                #region open_Session_caching_1
+                using (IDocumentSession Session = store.OpenSession(new SessionOptions
                 {
                     NoCaching = true
                 }))
@@ -129,8 +197,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                 }
                 #endregion
 
-                #region open_session_caching_2
-                using (IAsyncDocumentSession session = store.OpenAsyncSession(new SessionOptions
+                #region open_Session_caching_2
+                using (IAsyncDocumentSession Session = store.OpenAsyncSession(new SessionOptions
                 {
                     NoCaching = true
                 }))

@@ -1,83 +1,86 @@
 # Session: Opening a Session
 
-To open a synchronous session, use the `OpenSession` method from `DocumentStore`. If you prefer working in an asynchronous manner, use `OpenAsyncSession`.
+---
 
-## Syntax
+{NOTE: }
 
-There are three overloads of `OpenSession / OpenAsyncSession` methods
+* A Session object is obtained from the [Document Store](../../client-api/what-is-a-document-store).  
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync open_session_1@ClientApi\Session\OpeningSession.cs /}
-{CODE-TAB:csharp:Async open_session_1_1@ClientApi\Session\OpeningSession.cs /}
-{CODE-TABS/}
+* A Session can operate Synchronously or Asynchronously.  
+  * `OpenSession()` - Open a Session for a **Synchrounous** mode of operation.  
+  * `OpenAsyncSession()` - Open a Session for **Asychrounous** mode of operation.  
 
-The first method is an equivalent of doing
+* Various Session options can be configured using the `SessionOptions` object.  
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync open_session_2@ClientApi\Session\OpeningSession.cs /}
-{CODE-TAB:csharp:Async open_session_2_1@ClientApi\Session\OpeningSession.cs /}
-{CODE-TABS/}
+* Be sure to wrap the Session variable with a 'using' statement to ensure proper disposal.  
 
-The second method is an equivalent of doing
+* If no database is specified then the Default Database (stored in the Document Store) is assumed.  
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync open_session_3@ClientApi\Session\OpeningSession.cs /}
-{CODE-TAB:csharp:Async open_session_3_1@ClientApi\Session\OpeningSession.cs /}
-{CODE-TABS/}
+* In this page:  
+  * [Syntax](../../client-api/session/opening-a-session#syntax)  
+  * [Session Options](../../client-api/session/opening-a-session#session-options)  
+  * [Example](../../client-api/session/opening-a-session#example)
+{NOTE/}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **options** | `OpenSessionOptions` | Options **containing** information such as **name of database** and **RequestExecutor**. |
+---
 
-| Return Value | |
-| ------------- | ----- |
-| IDocumentSession / IAsyncDocumentSession | Instance of a session object. |
+{PANEL:Syntax}
 
-## Options
-
-{CODE session_options@ClientApi\Session\OpeningSession.cs /}
-
-| Options | | |
-| ------------- | ------------- | ----- |
-| **Database** | string | Name of database that session should operate on. If `null` then [default database set in DocumentStore](../../client-api/setting-up-default-database) is used. |
-| **NoTracking** | bool | Indicates if session should **not** keep track of the changes. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-tracking). |
-| **NoCaching** | bool | Indicates if session should **not** cache responses. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-caching). |
-| **RequestExecutor** | `RequestExecutor` | _(Advanced)_ Request executor to use. If `null` default one will be used. |
-| **TransactionMode** | `TransactionMode` | Sets the mode for the session. By default it is set to `SingleNode`, but session can also operate 'ClusterWide'. You can read more about Cluster-Wide Transactions [here](../../server/clustering/cluster-transactions). |
-
-## Example I
+`OpenSession()` / `OpenAsyncSession()` have three overloads:  
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync open_session_4@ClientApi\Session\OpeningSession.cs /}
-{CODE-TAB:csharp:Async open_session_5@ClientApi\Session\OpeningSession.cs /}
+{CODE-TAB:csharp:Sync open_session_1@ClientApi\session\OpeningSession.cs /}
+{CODE-TAB:csharp:Async open_session_1_1@ClientApi\session\OpeningSession.cs /}
 {CODE-TABS/}
 
-## Example II - Disabling Entities Tracking
+| Parameter | Type | Description |
+|-|-|-|
+| **database** | `string` | The Session will operate on this database, overriding the default database set in the document store |
+| **options** | `SessionOptions` | An object with Session configuration options. See details [below]() |
+
+| Return Value | Description |
+|-|-|
+| `IDocumentSession` / `IAsyncDocumentSession` | Instance of a Session object |
+
+{PANEL/}
+
+{PANEL:Session Options}
+
+The `SessionOptions` object contains various options to configure the Session's behavior.
+
+| Option | Type | Description | Default Value |
+| --- | --- | --- | --- |
+| **Database** | string | The Session will operate on this database, overriding the Default Database. | `null` - the Session operates on the [Default Database](../../client-api/setting-up-default-database) |
+| **NoTracking** | boolean | Whether the Session should track changes made to all entities that it has either loaded, stored, or queried on. <br>See [Disable Tracking Example](../../client-api/session/configuration/how-to-disable-tracking) | `false` |
+| **NoCaching** | boolean | Whether the Session should cache the server responses. <br>See [Disable Caching Example](../../client-api/session/configuration/how-to-disable-caching) | `false` |
+| **RequestExecutor** | `RequestExecutor` | _(Advanced)_ The request executor the Session should use | `null` - the default request executor is used |
+| **TransactionMode** | `TransactionMode` | Specify the Session's transaction mode (`SingleNode` / `ClusterWide`). <br>See [Cluster-Wide Transactions](../../server/clustering/cluster-transactions) | `SingleNode` |
+
+{PANEL/}
+
+{PANEL:Example}
+
+Here is an example of opening a Session using a `SessionOptions` object:  
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync open_session_tracking_1@ClientApi\Session\OpeningSession.cs /}
-{CODE-TAB:csharp:Async open_session_tracking_2@ClientApi\Session\OpeningSession.cs /}
+{CODE-TAB:csharp:Sync open_session_3@ClientApi\session\OpeningSession.cs /}
+{CODE-TAB:csharp:Async open_session_3_1@ClientApi\session\OpeningSession.cs /}
 {CODE-TABS/}
 
-## Remarks
-
-{DANGER:Important}
-**Always remember to release session allocated resources after usage by invoking the `Dispose` method or wrapping the session object in the `using` statement.**
-{DANGER/}
+{PANEL/}
 
 ## Related Articles
 
-### Session
+### Client API
 
 - [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work) 
 - [Storing Entities](../../client-api/session/storing-entities)
 - [Loading Entities](../../client-api/session/loading-entities)
 - [Saving Changes](../../client-api/session/saving-changes)
-
-### Querying
-
-- [Basics](../../indexes/querying/basics)
-
-### Document Store
-
 - [What is a Document Store](../../client-api/what-is-a-document-store)
+
+### Indexes
+
+- [Querying Basics](../../indexes/querying/basics)
+
+
