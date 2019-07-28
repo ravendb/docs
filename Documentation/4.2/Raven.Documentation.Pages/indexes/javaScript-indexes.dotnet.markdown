@@ -1,4 +1,4 @@
-# Indexes : JavaScript Indexes
+# Indexes: JavaScript Indexes
 
 This feature was created for users who want to create an index and prefer JavaScript over C#.   
 JavaScript indexes can be defined by a user with lower permissions than the C# indexes (admin not required).   
