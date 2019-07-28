@@ -1,0 +1,32 @@
+[
+  {
+    "Path": "conventions.markdown",
+    "Name": "Conventions",
+    "Mappings": []
+  },
+  {
+    "Path": "querying.markdown",
+    "Name": "Querying",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/configuration/conventions/querying"
+      }
+    ]
+  },
+  {
+    "Path": "serialization.markdown",
+    "Name": "Serialization",
+    "Mappings": []
+  },
+  {
+    "Path": "load-balance-and-failover.markdown",
+    "Name": "Load Balance & Failover",
+    "Mappings": []
+  },
+  {
+    "Path": "/identifier-generation",
+    "Name": "Identifier generation",
+    "Mappings": []
+  }
+]
