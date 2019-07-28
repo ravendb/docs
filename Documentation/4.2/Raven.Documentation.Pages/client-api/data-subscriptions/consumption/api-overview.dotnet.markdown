@@ -43,9 +43,11 @@ Subscription worker generation is accessible through the `DocumentStore`'s `Subs
 | **SubscriptionName** | `string` | Returns the subscription name passed to the constructor. This name will be used by the server side to identify the subscription in question. |
 | **TimeToWaitBeforeConnectionRetry** | `TimeSpan` | Time to wait before reconnecting, in the case of non-aborting failure during the subscription processing. Default: 5 seconds. |
 | **IgnoreSubscriberErrors** | `bool` | If true, will not abort subscription processing if client code, passed to the `Run` function, throws an unhandled exception. Default: false. |
-| **Strategy** | `SubscriptionOpeningStrategy`(enum) | Sets the way the server will treat current and/or other clients when they will try to connect. See [Workers interplay](how-to-consume-data-subscription#workers-interplay). Default: `OpenIfFree`. |
+| **Strategy** | `SubscriptionOpeningStrategy`<br>(enum) | Sets the way the server will treat current and/or other clients when they will try to connect. See [Workers interplay](how-to-consume-data-subscription#workers-interplay). Default: `OpenIfFree`. |
 | **MaxDocsPerBatch** | `int` | Maximum amount of documents that the server will try sending in a batch. If the server will not find "enough" documents, it won't wait and send the amount it found. Default: 4096. |
 | **CloseWhenNoDocsLeft** | `bool` | If true, it performs an "ad-hoc" operation that processes all possible documents, until the server can't find any new documents to send. At that moment, the task returned by the `Run` function will fail and throw a `SubscriptionClosedException` exception. Default: false. |
+| **SendBufferSizeInBytes** | `int` | The send buffer size of the TCP socket in bytes. <br>Default: 32,768 (~33 kB) |
+| **ReceiveBufferSizeInBytes** | `int` | The receive buffer size of the TCP socket in bytes. <br>Default: 32,768 (~33 kB) |
 
 {PANEL/}
 
