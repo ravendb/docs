@@ -75,7 +75,7 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     PropertyNameConverter = mi => FirstCharToLower(mi.Name)
                     #endregion
                     ,
-                    #region TopologyCacheLocation
+                    #region AddIdFieldToDynamicObjects
                     AddIdFieldToDynamicObjects = false
                     #endregion
                 }

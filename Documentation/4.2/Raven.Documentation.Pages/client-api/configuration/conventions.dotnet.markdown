@@ -109,7 +109,11 @@ Changes the location of topology cache files. Setting this value will check dire
 
 {CODE TopologyCacheLocation@ClientApi\Configuration\Conventions.cs /}
 
+## AddIdFieldToDynamicObjects
 
+Determines whether an Id field is automatically added to dynamic objects. Default: `true`.
+
+{CODE AddIdFieldToDynamicObjects@ClientApi\Configuration\Conventions.cs /}
 
 ## Related Articles
 
