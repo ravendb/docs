@@ -1,0 +1,25 @@
+[
+  {
+    "Path": "get.markdown",
+    "Name": "Get",
+    "DiscussionId": "4eb21938-0518-4889-b3d0-960bf8a1cc8f",
+    "Mappings": []
+  },
+  {
+    "Path": "put.markdown",
+    "Name": "Put",
+    "DiscussionId": "4b9fa195-cafa-4bc4-82cf-e3e03b71c855",
+    "Mappings": []
+  },
+  {
+    "Path": "delete.markdown",
+    "Name": "Delete",
+    "DiscussionId": "de9fc116-5bc3-4793-a9ba-54a54e05591b",
+    "Mappings": []
+  },
+  {
+    "Path": "/how-to",
+    "Name": "How to...",
+    "Mappings": []
+  }
+]
