@@ -293,6 +293,23 @@ Use either the [generateClientCert](../../server/administration/cli#generateclie
 Another way to gain access for an existing certificate is to add the [Security.WellKnownCertificates.Admin](../../server/configuration/security-configuration#security.wellknowncertificates.admin) configuration to `settings.json` with your existing certificate's thumbprint.
 In this case, a server restart is required.
 
+### Certificate is not recognized when setting up on Azure App Services
+
+You may have gotten an error message like:
+
+```
+The credentials supplied to the package were not recognized (The SSL connection could not be established, see inner exception.)
+```
+
+1) In the app settings of your Azure App Services application, add the `WEBSITE_LOAD_USER_PROFILE = 1` option.  
+
+2) Another solution is to use the `MachineKeySet` flag during certificate creation:  
+
+{CODE-BLOCK:csharp}
+[DocumentStore].Certificate = new X509Certificate("[path to your pfx file]", 
+                                                  (string)null, X509KeyStorageFlags.MachineKeySet);  
+{CODE-BLOCK/}
+
 ## Authorization Issues  
 
 Under construction
