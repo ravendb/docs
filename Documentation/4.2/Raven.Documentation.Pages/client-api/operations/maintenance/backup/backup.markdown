@@ -114,6 +114,7 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
    * Amazon S3 
    * Azure Storage 
    * Amazon Glacier 
+   * Google Cloud
 
 * RavenDB will store data in a local folder first, and transfer it to the remote destination from the local one.  
 

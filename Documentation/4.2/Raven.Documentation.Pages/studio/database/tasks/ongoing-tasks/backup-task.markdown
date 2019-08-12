@@ -90,6 +90,7 @@
   * Local - Set a folder of your choice (any directory that can be accessed from your machine)  
   * [Amazon S3](https://aws.amazon.com/s3/)  
   * [Microsoft Azure](https://azure.microsoft.com/en-us/services/storage/)  
+  * [Google Cloud](https://cloud.google.com/)  
   * [Amazon Glacier](https://aws.amazon.com/glacier/)  
   * FTP - Set your FTP protocol & server address  
 {PANEL/}
