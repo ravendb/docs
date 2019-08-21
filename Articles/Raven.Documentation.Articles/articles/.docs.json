@@ -891,5 +891,34 @@
             "twitter:description": "Fintech developer TSWG uses RavenDB NoSQL Database to offer their digital banking application customers more services with better database performance.",
             "twitter:url": "https://ravendb.net/articles/nosql-database-for-digital-banking-applications"
         }
+    },
+    {
+        "Path": "21-improvements-to-our-nosql-document-database.markdown",
+        "Name": "21 Improvements to Our NoSQL Document Database",
+        "Mappings": [],
+        "Metadata": {
+            "title": "21 Improvements to Our NoSQL Document Database",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/21-improvements-to-our-nosql-document-database",
+            "publishedAt": "2019-08-21",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "RavenDB has made 21 Improvements to its Document Database: A setup wizard, a database-as-a-service option, 10x faster performance, clusterwide ACID, and more.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "21 Improvements to Our NoSQL Document Database | RavenDB",
+            "og:description": "RavenDB has made 21 Improvements to its Document Database: A setup wizard, a database-as-a-service option, 10x faster performance, clusterwide ACID, and more.",
+            "og:url": "https://ravendb.net/articles/21-improvements-to-our-nosql-document-database",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/21-improvements-to-our-nosql-document-database&fileName=21-improvements-to-our-nosql-document-database.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "21 Improvements to Our NoSQL Document Database | RavenDB",
+            "twitter:description": "RavenDB has made 21 Improvements to its Document Database: A setup wizard, a database-as-a-service option, 10x faster performance, clusterwide ACID, and more.",
+            "twitter:url": "https://ravendb.net/articles/21-improvements-to-our-nosql-document-database"
+        }
     }
 ]
