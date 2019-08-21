@@ -16,6 +16,7 @@
       * [Full Backup](../../../../client-api/operations/maintenance/backup/backup#full-backup)  
       * [Incremental Backup](../../../../client-api/operations/maintenance/backup/backup#incremental-backup)  
   * [Backup to Remote Destinations](../../../../client-api/operations/maintenance/backup/backup#backup-to-remote-destinations)  
+  * [Server-Wide Backup](../../../../client-api/operations/maintenance/backup/backup#server-wide-backup)  
   * [Initiate Immediate Backup Execution](../../../../client-api/operations/maintenance/backup/backup#initiate-immediate-backup-execution)  
   * [Recommended Precautions](../../../../client-api/operations/maintenance/backup/backup#recommended-precautions)  
 
@@ -122,7 +123,7 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
   {CODE backup_remote_destinations@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
  
  {INFO: Tip}
-    You can change youer Access Management in Amazon S3 so the user doing backup don't have full access, 
+    You can change your Access Management in Amazon S3 so the user doing backup don't have full access, 
     read more [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_access-management.html).   
     for example:
     {CODE-BLOCK:json}
@@ -151,6 +152,23 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
  {INFO/}
 {PANEL/}
 
+{PANEL: Server-Wide Backup}
+
+You can create a task that backs up all your databases at once.  
+
+* Backups can be made locally, as well as to a set of remote locations including -  
+   * Amazon S3 
+   * Azure Storage 
+   * Google Cloud 
+   * Azure Glacier 
+   * An FTP/SFTP target
+
+* RavenDB will store data in a local folder first, and transfer it to the remote destination from the local one.  
+
+* Server-wide Backup Code Sample:
+  {CODE server_wide_backup_configuration@ClientApi\Operations\Maintenance\Backup\ServerWideBackup.cs /}
+ 
+{PANEL/}
 
 {PANEL: Initiate Immediate Backup Execution}
 
