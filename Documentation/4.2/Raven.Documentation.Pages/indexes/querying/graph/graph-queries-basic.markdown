@@ -16,6 +16,8 @@
    * [Graph queries and Indexes](../../../indexes/querying/graph/graph-queries-basic#graph-queries-and-indexes)  
    * [Graph Queries Flow](../../../indexes/querying/graph/graph-queries-basic#graph-queries-flow)  
    * [Narrowing Down Results](../../../indexes/querying/graph/graph-queries-basic#narrowing-down-results)  
+      * [Filtering results in an edge clause](../../../indexes/querying/graph/graph-queries-basic#filtering-results-in-an-edge-clause)  
+      * [Filtering results in data-node clauses](../../../indexes/querying/graph/graph-queries-basic#filtering-results-in-data-node-clauses)  
 
 {NOTE/}
 
@@ -23,16 +25,16 @@
 
 {PANEL: Explicit and Implicit queries}  
 
-Every data node and edge that is to participate a query, is chosen using a 'with' clause.  
-After choosing all data elements this way, a 'match' statement uses them to define the search pattern.  
+Every data node or edge that is to participate in a query is chosen using a `with` clause.  
+After choosing all data elements this way, a `match` statement uses them to define the search pattern.  
 Only data that matches this pattern is retrieved.  
 
-It is perfectly fine to omit 'with' clauses from your code. RavenDB will notice unchosen data 
-elements in your 'match' pattern and choose them for you with nearly no performance toll.  
+It is allowed to omit the `with` clauses from your code. RavenDB will notice unchosen data 
+elements in your `match` pattern and choose them for you with nearly no performance toll.  
 
-* **Not including 'with' clauses** in your queries can improve your code's conciseness 
-  and automates a task that doesn't need your attention.  
-* **Defining 'with' clauses yourself** may help you create a more readable code.  
+* **Not including `with` clauses** in your queries improves code conciseness 
+  and automates a procedure that doesn't need your attention.  
+* **Defining `with` clauses yourself** may create more readable code.  
 
 ---
 
@@ -40,16 +42,16 @@ elements in your 'match' pattern and choose them for you with nearly no performa
 
 To use an implicit query:  
 
-* Use a 'match' clause to define and run a search pattern.  
+* Use a `match` clause to define and run a search pattern.  
 
-Here are two simple examples for implicit queries that search a tiny three-documents collection.  
+Here are two simple examples of implicit queries that search a tiny three-documents collection.  
 
 * `match (Houses as houses)`  
   Use this search pattern to retrieve all documents of the "Houses" collection.  
    * Graphical results view  
-     ![](images/BasicQuery_GraphicalView1.png)  
+     ![Retrieve All - Graphical view](images/BasicQuery_GraphicalView1.png)  
    * Textual results view  
-     ![](images/BasicQuery_TextualView1.png)  
+     ![Retrieve All - Textual view](images/BasicQuery_TextualView1.png)  
 
 * `match (Houses as forSale where Status = "ForSale")`  
   Retrieve from the Houses collection only documents whose "Status" field contains "ForSale".  
@@ -67,93 +69,77 @@ Here are two simple examples for implicit queries that search a tiny three-docum
   {CODE-BLOCK/}
   So results would be:  
    * Graphical results view  
-     ![Graphical View](images/BasicQuery_GraphicalView2.png)  
+     ![Retrieve Selected Documents - Graphical view](images/BasicQuery_GraphicalView2.png)  
    * Textual results view  
-     ![Textual View](images/BasicQuery_TextualView2.png)  
+     ![Retrieve Selected Documents - Textual view](images/BasicQuery_TextualView2.png)  
 
 ---
 
 ####Explicitly defining data elements  
 
 * To define an explicit query:  
-   * Choose data elements that wold participate your query.
-      * Choose each Data Node for your query using 'from' within a 'with' clause.  
+   * Choose data elements that would participate your query.
+      * Choose each Data Node for your query using `from` within a `with` clause.  
         E.g. `with {from Houses} as houses`  
-        'Houses' is a collection chosen to function as a data node.  
-        'as houses' is an alias for the data node. Define it outside the 'with' clause.  
-      * Choose each Edge using a 'with edges' clause.  
+        **Houses** is a collection chosen to function as a data node.  
+        `as houses` is an alias for the data node. Define it outside the `with` clause.  
+      * Choose each Edge using a `with edges` clause.  
         `with edges (Owner) as ownedBy`  
-        'Owner' is the edge. It is the name of a text field that contains a reference to a document.  
-   * {NOTE: Providing your data elements with aliases is **mandatory** in explicit queries. /NOTE}  
+        **Owner** is the edge. It is the name of a text field that contains a reference to a document.  
+   * Providing your data elements with aliases is **mandatory** in explicit queries.  
    * Use your aliases in a `match` statement to define and run the search pattern.  
 
-* Here are samples for explicit queries and their implicit equivalents.  
+* Here are samples for explicit queries and their implicit equivalents -  
 
     |Explicit|Implicit|
     |---------------|---------------|
     |{CODE-BLOCK:JSON}
-    with {from Houses} as houses
-    match (houses)
+with {from Houses} as houses  
+match (houses)
     {CODE-BLOCK/}|{CODE-BLOCK:JSON} match (Houses as houses) {CODE-BLOCK/}|
     |{CODE-BLOCK:JSON}
-    with {from Houses where Status = "ForSale"} as forSale
-    match (forSale)
+//Use WHERE  
+with {from Houses where Status = "ForSale"} as forSale  
+match (forSale)
     {CODE-BLOCK/}|{CODE-BLOCK:JSON} match (Houses as forSale where Status = "ForSale") {CODE-BLOCK/}|
     |{CODE-BLOCK:JSON}
-    with {from Houses} as houses
-    with edges (Owner) as ownedBy
-    with {from Owners} as owner
-    match(houses)-[ownedBy]->(owner)
-    {CODE-BLOCK/}|{CODE-BLOCK:JSON}
-    match ((Houses as houses)-[Owner as ownedBy]->(Owners as owners))
-    {CODE-BLOCK/}|
-
-* And an additional sample, this time for a query that includes edges.  
-
-    |Explicit|Implicit|
-    |---------------|---------------|
-    |{CODE-BLOCK:JSON}
-    with {from Houses} as houses
-    with edges (Owner) as ownedBy
-    with {from Owners} as owner
-    match(houses)-[ownedBy]->(owner)
+with {from Houses} as houses
+//Set an Edge
+with edges (Owner) as ownedBy
+with {from Owners} as owner
+match(houses)-[ownedBy]->(owner)
     {CODE-BLOCK/}|{CODE-BLOCK:JSON}
     match ((Houses as houses)-[Owner as ownedBy]->(Owners as owners))
     {CODE-BLOCK/}|
     
-    Both produce the same results of course:  
-     * Graphical results view  
-       ![Graphical View](images/BasicQuery_GraphicalView3.png)  
-     * Textual results view  
-       ![Textual View](images/BasicQuery_TextualView3.png)  
-
 {PANEL/}
 
 ---
 
 {PANEL: Projection}
 
-As with non-graph queries, you can use the `select` keyword to project a subset 
-of graph query results, putting results in order and minimizing server data transfers.  
+As with non-graph queries, you can [project](../../../indexes/querying/projections#what-are-projections-and-when-to-use-them) 
+a subset of graph query results using the `select` keyword to put results in order and minimize server data transfers.  
 
-* For example 
-   * {This projection
-     CODE-BLOCK:JSON}
-     with {from Houses} as houses
-     match(houses)
-     select houses.Owner
-     {CODE-BLOCK/}
-   * With these results
-     Producing these results:  
-     ![Textual View](images/BasicQuery_ProjectionResults.png)  
+* This projection for example - 
+  {CODE-BLOCK:JSON}
+  with {from Houses} as houses
+match(houses)
+select houses.Owner
+  {CODE-BLOCK/}
+* With these results -  
+  ![Textual View](images/BasicQuery_ProjectionResults.png)  
 
-* You can project from within an edge clause, but not from a node clause.  
-   * You can do this  
-     `match (Orders as orders)-[Lines as cheap where Discount >= 0.25 select Product]->(Products as products)`  
-   * And this 
-     `match (Orders as orders where Freight > 5)`  
-   * But not this 
-     `match (Orders as orders where Freight > 5 select Order)`  
+{NOTE: }
+You can use `select` in an edge clause, but not in a data-node clause.  
+
+* You can do this -  
+  `match (Orders as orders)-[Lines as cheap where Discount >= 0.25 select Product]->(Products as products)`  
+  And this -  
+  `match (Orders as orders where Freight > 5)`  
+  But not this -  
+  `match (Orders as orders where Freight > 5 select Order)`  
+{NOTE/}
 
 {PANEL/}
 
@@ -162,31 +148,53 @@ of graph query results, putting results in order and minimizing server data tran
 {PANEL: Operators: OR and AND}  
 
 You can use the `or` and `and` operators to condition your graph queries, as you would in a regular RQL expression.  
-Here's a sample query that uses 'or' to retrieve the profiles of owned houses as well as of ones that are up for sale.  
 
-* Here's a query showing the usage of 'or':  
+* **Example 1**: Use `and` and `or` in a query.  
+You can create this query on your own to examine it if you like, its data is included in RavenDB's [sample data](../../../studio/database/tasks/create-sample-data).  
+
+    {CODE-TABS}
+    {CODE-TAB-BLOCK:sql:Implicit} 
+    match
+(Orders as highFreightOrders where Freight > 700)-[Company as company]->(Companies as companies)
+or
+(Orders as pricyOrders where (Lines[].PricePerUnit > 250) and (Lines[].Quantity > 60))-[Employee as employee]->(Employees as employees)
+    {CODE-TAB-BLOCK/}
+    {CODE-TAB-BLOCK:sql:Explicit}
+    with {from Orders where (Lines[].PricePerUnit > 250) and (Lines[].Quantity > 60)} as pricyOrders
+with edges (Employee) as employee
+with {from Employees} as employees
+
+with {from Orders where Freight > 700} as highFreightOrders
+with edges (Company) as company
+with {from Companies} as companies
+
+match
+(highFreightOrders)-[company]->(companies)
+or
+(pricyOrders)-[employee]->(employees)
+    {CODE-TAB-BLOCK/}
+    {CODE-TABS/}
+
+* **Example 2**: Use `or` to retrieve the profiles of occupied houses **or** of ones up for sale.  
   {CODE-BLOCK:JSON}
   match 
-  (Houses as forSale where Status = "ForSale")
-  or
-  ((Houses as houses)-[Owner as ownedBy]->(Owners as owners))
+(Houses as forSale where Status = "ForSale")
+or
+((Houses as houses)-[Owner as ownedBy]->(Owners as owners))
   {CODE-BLOCK/}
-  Producing these results:  
-   * Graphical results view  
+   * Graphical results view:  
      ![Graphical View](images/BasicQuery_UsingOr_1_GraphicalView.png)  
-   * Textual results view  
+   * Textual results view:  
      ![Textual View](images/BasicQuery_UsingOr_1_TextualView.png)  
-* And another example, showing the usage of 'or' in a way that reveals more relations between nodes:  
+
+* **Example 3**: Use `or` to reveal more relations between nodes:  
   {CODE-BLOCK:JSON}
-  match  
-  (Creatures as eater)-[Hunts as hunts]->(Creatures as food)  
-  or (eater)-[Eats as eats]->(food)  
+match  
+(Organisms as eater)-[Hunts as hunts]->(Organisms as food)  
+or (eater)-[Eats as eats]->(food)
   {CODE-BLOCK/}
-   * Query results:  
    * Graphical results view  
      ![Graphical View](images/BasicQuery_UsingOr_2_GraphicalView.png)  
-   * Textual results view  
-     ![Textual View](images/BasicQuery_UsingOr_2_TextualView.png)  
 
 ---
 
@@ -197,11 +205,11 @@ Here's a sample query that uses 'or' to retrieve the profiles of owned houses as
 {PANEL: Path graph query}  
 
 A `path` is a document object in which a chain of sub-elements is embedded.  
-You can include a path as an edge in your query, and RavenDB will regard it a multi-edge, forming a relation between 
-your node and each path sub-element.  
+You can include a path as an edge in your query, and RavenDB will regard it 
+a multi-edge, forming a relation between your node and each path sub-element.  
 
 * Take the document `orders/830-A` for example.  
-   * The order includes a path named `Lines`. Each line in the path, includes specifications regarding a product that's been included in the order.  
+   * The order includes a path named `Lines`. Each line in the path includes specifications regarding a product that's been included in the order.  
       {CODE-BLOCK:JSON}
       "Lines": [
         {
@@ -229,96 +237,114 @@ your node and each path sub-element.
     {CODE-BLOCK/}
    * You can form a simple query that uses each line in the path as an edge, linking the order to a product.  
      Use this syntax:  
-     `match (Orders as orders)-[Lines.Product as lines]->(Products as products)`
+     `match (Orders as orders)-[Lines[].Product as lines]->(Products as products)`
       * With these results:  
-        ![Textual View](images/PathQuery_TextualView.png)  
-   * **note: a bug prevents graphic view of one-to-many relations, a path drawing can't be shown here. add when fixed.**  
+        ![Textual View](images/PathQuery_GraphicalView_1.png)  
+        ![Textual View](images/PathQuery_GraphicalView_2.png)  
 {PANEL/}
 
 ---
 
 {PANEL: Graph queries and Indexes}
+
+####How Can Indexes Be Queried
+
+You can graph-query an index as you would using a non-graph query.  
+Querying indexes is currently supported with [explicit](../../../indexes/querying/graph/graph-queries-basic#explicitly-defining-data-elements) 
+queries only.  
+
+{CODE-BLOCK:JSON}
+with {from index 'Orders/ByCompany'} as byCompany
+match(byCompany)-[Company as company]->(Companies as companies)
+{CODE-BLOCK/}
+
+---
+
+####How Are Graph Queries Indexed
+
 Any non-trivial graph query actually creates several types of queries, each with its own measure of indexing and resources.  
 
 * `match (Houses as houses)`  
   An expression like this creates **no index**, since no searching is required in order to simply retrieve all documents of a collection.  
 * `match (Houses as forSale where Status = "ForSale")`  
-  A node clause like the one shown here triggers RavenDB to create a simple document (Lucene) index for queried houses, 
-  as it would with non-graph queries.  
+  The node clause shown here will trigger RavenDB to create an auto index for queried houses, as it would with non-graph queries.  
 * `match ((Houses as houses)-[Owner as ownedBy]->(Owners as owners))`  
-  A query with edges like this one is handled by the graph queries engine, to fathom the relations between data nodes 
-  and hand them to clients.  
-   > **Graph Queries and Map Reduce**  
-   > To minimize the amount of data the graph engine processes in memory and maximize its usage of 
-   > indexed data, it is recommended to create a static [Map Reduce](../../../studio/database/indexes/create-map-reduce-index) 
-   > definition for every datasets you plan to include in an edge clause.  
+  Queries with edges are handled by the graph queries engine, to fathom the relations between data nodes and hand them to clients.  
+     > **Graph Queries and Map Reduce**  
+     > To minimize the amount of data the graph engine processes in memory and maximize its usage of 
+     > indexed data, it is recommended to create a static [Map Reduce](../../../studio/database/indexes/create-map-reduce-index) 
+     > definition for every datasets you plan to include in an edge clause.  
 
 * More complex queries can be combinations of the methods described above, like in the following examples.  
-   * {CODE-BLOCK:JSON}
-match
-(Houses as wanted where Status = "ForSale")
-and 
-(Houses as wanted where Address = "Virginia")  
-     {CODE-BLOCK/}  
-     Here, RavenDB would first execute a _document query_ to create a dataset for each node.  
-     Then it would apply the query's `and` condition to create the results set, fetching only 
-     the houses it finds in both datasets.  
-     
-   * {CODE-BLOCK:JSON}
-match
-(Houses as wanted where Status = "ForSale" and Address = "Virginia")
-or
-((Houses as houses)-[Owner as ownedBy]->(Owners as owners))
-     {CODE-BLOCK/}  
-     Since this query has an edge, the graph engine has a bigger role in running it.  
-     Comparing the indexed tables and concluding the relations between them require memory, 
-     and do not speed up each time the query is executed.  
+  {CODE-BLOCK:JSON}
+  match
+  (Houses as forSale where Status = "ForSale")
+  and 
+  (Houses as wanted where Address = "Virginia")  
+  {CODE-BLOCK/}
+  Here, RavenDB would first execute a _document query_ to create a dataset for each node.  
+  Then it would apply the query's `and` condition to create the results set, fetching only 
+  the houses it finds in both datasets.  
+  {CODE-BLOCK:JSON}
+  match
+  (Houses as wanted where Status = "ForSale" and Address = "Virginia")
+  or
+  ((Houses as houses)-[Owner as ownedBy]->(Owners as owners))
+  {CODE-BLOCK/}
+  The edge in this query is sent for further processing by the graph engine.  
 
 {PANEL/}
 
 {PANEL: Narrowing Down Results}
 
-As we've already seen in earlier examples, e.g. `match (Houses as forSale where Status = "ForSale")`, 
-you can use `where` to filter query results.  
-The query in the following example remains unchanged, except for an increasing number of 'where' 
-filters that trim the number of mathces to retrieve only those results that actually match the user's needs.  
+As we've seen in [various earlier examples](../../../indexes/querying/graph/graph-queries-basic#explicitly-defining-data-elements), 
+you can filter query results using `where`.  
+`where` can be used both in data-node and edge clauses.  
 
-     | Query    | Results Graph |
-     |:-------------:|:-------------:|
-     | {CODE-BLOCK:plain}  
-       match(  
-       (Products as products) -  
-       [Supplier as supplier] ->  
-       (Suppliers as suppliers) -  
-       [ServedBefore as servedbefore] ->  
-       (Customers as customers)  
-       )
-       {CODE-BLOCK/} | ![Narrowing down results 1](images/BasicQuery_NarrowingResults1.png "Narrowing down results 1") |
-     | {CODE-BLOCK:plain}  
-       match(  
-       (Products as products where Price < 50) -   
-       [Supplier as supplier] ->  
-       (Suppliers as suppliers where Proximity = "Near") -  
-       [ServedBefore as servedbefore] ->  
-       (Customers as customers)  
-       ) {CODE-BLOCK/} | ![Narrowing down results 2](images/BasicQuery_NarrowingResults2.png "Narrowing down results 2") |
-     | {CODE-BLOCK:plain}  
-       match(  
-       (Products as products where Price < 50) -   
-       [Supplier as supplier] ->  
-       (Suppliers as suppliers where Proximity = "Near") -  
-       [ServedBefore as servedbefore] ->  
-       (Customers as customers where ProximityPreference = "Near")  
-       ) {CODE-BLOCK/} | ![Narrowing down results 3](images/BasicQuery_NarrowingResults3.png "Narrowing down results 3") |
+---
+
+####Filtering results in an edge clause  
+
+{CODE-BLOCK:plain}  
+match(Orders as orders) -  
+[Lines as crabMeat  
+where ProductName = "Boston Crab Meat"  
+select Product] ->  
+(Products as products)  
+{CODE-BLOCK/}
+![Filtering edges](images/BasicQuery_NarrowingResults4.png "Filtering edges") |
+
+---
+
+####Filtering results in data-node clauses  
+
+Here, we limit the results to products sent to Brazil:  
+{CODE-BLOCK:plain}  
+match(Orders as orders where (ShipTo.Country = "Brazil")) -
+[Lines as lines select Product] ->  
+(Products as products)
+{CODE-BLOCK/}
+![Filtering nodes 1](images/BasicQuery_NarrowingResults1.png "Filtering nodeos 1") |
+
+And here we filter these results further, to products sent to Brazil from France:  
+{CODE-BLOCK:plain}  
+match(Orders as orders where (ShipTo.Country = "Brazil")) -
+[Lines as lines select Product] ->  
+(Products as products) -
+[Supplier as supplier] -> 
+(Suppliers as suppliers where Address.Country = "France")
+{CODE-BLOCK/}
+![Filtering nodes 2](images/BasicQuery_NarrowingResults2.png "Filtering nodeos 2") |
 
 {PANEL/}
 
 ## Related Articles
-**Client Articles**:  
-[Query](../../../../server/ongoing-tasks/backup-overview)  
-[Graph Query](../../../../client-api/operations/maintenance/backup/backup)  
-[Recursion](../../../../client-api/operations/maintenance/backup/restore)  
 
-**Studio Articles**:  
-[Creating a query](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
-[Seeing query results](../../../../studio/server/databases/create-new-database/from-backup)  
+**Querying**:  
+[RQL](../../../indexes/querying/what-is-rql#querying-rql---raven-query-language)  
+[Indexes](../../../indexes/what-are-indexes#what-indexes-are)  
+
+##Graph Querying**
+[Overview](../../../indexes/querying/graph/graph-queries-overview#graph-querying-overview)  
+[Basic Graph Queries](../../../indexes/querying/graph/graph-queries-basic#basic-graph-queries)  
+[Recursive Graph Queries](../../../indexes/querying/graph/graph-queries-recursive#recursive-graph-queries)  

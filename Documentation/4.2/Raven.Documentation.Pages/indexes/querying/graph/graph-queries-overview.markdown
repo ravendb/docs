@@ -4,54 +4,52 @@
 
 {NOTE: }
 
-RavenDB's [experimental](../../../indexes/querying/graph/graph-queries-overview#enabling-graph-querying) **graph** support 
+RavenDB's [experimental](../../../indexes/querying/graph/graph-queries-overview#enabling-graph-querying) graph support 
 allows you to query your database as if it had a graphical structure, gaining extreme efficiency and speed in recognizing 
-relations between data elements and organizing them into searchable patterns. Intricate relationships that would render 
-a relational databases useless, become the asset they are meant to be.  
+relations between data elements and organizing them into searchable patterns. Intricate relationships that would render a 
+relational database useless become the asset they are meant to be.  
 
 * **No need for preliminary preparations**  
   You do not need to alter your database's structure or contents in order to start using graph queries. 
   Your existing collections and documents are used as graph elements, and their relations are inferred from documents' contents.  
 
 * **Simple and effective syntax**  
-  We've integrated graph support into [RQL](), to make its learning and usage accessible and intuitive for any user, 
-  especially those already familiar with our query language.  
+  We've integrated graph support into [RQL](../../../indexes/querying/what-is-rql), to make its learning 
+  and usage accessible and intuitive for any user, especially those already familiar with our query language.  
 
 * **Comprehensive support**  
-  Queries can be constructed by either clients using API methods or manually using the Studio, and executed 
-  by your distributed server. Results can be used by your clients, or shown textually and graphically by the Studio.  
+  Queries can be constructed either by clients using API methods or manually using the Studio, and executed 
+  by your distributed database. Results can be used by your clients or shown textually and graphically by the Studio.  
 
 * In this page:  
-   * [Introduction to graph modelling](../../../indexes/querying/graph/graph-queries-overview#introduction-to-graph-modelling)  
+   * [Introduction to graph modeling](../../../indexes/querying/graph/graph-queries-overview#introduction-to-graph-modeling)  
      * [Enabling Graph Querying](../../../indexes/querying/graph/graph-queries-overview#enabling-graph-querying)  
    * [Designing Graph Queries](../../../indexes/querying/graph/graph-queries-overview#designing-graph-queries)  
      * [Graph Representations](../../../indexes/querying/graph/graph-queries-overview#graph-representations)  
      * [Basic Terms, Syntax and Vocabulary](../../../indexes/querying/graph/graph-queries-overview#basic-terms-syntax-and-vocabulary)  
    * [FAQ](../../../indexes/querying/graph/graph-queries-overview#faq)  
-     * [When should or shouldn't I use graph queries?](../../../indexes/querying/graph/graph-queries-overview#q-when-should-or-shouldnt-i-use-graph-queries)  
    
 {NOTE/}
 
 ---
 
-{PANEL: Introduction to graph modelling}  
+{PANEL: Introduction to graph modeling}  
 
 * **In The Beginning..**  
   One of the best known founding moments of graph theory is [Leonhard Euler](https://en.wikipedia.org/wiki/Leonhard_Euler)'s 
   attempt at solving the [Königsberg Bridges](https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg) riddle, 
   eventually tackling the problem by representing the scenery and its elements in a graph.  
-  Euler's search for an optimal path is a great referal to the practicality of graph theory, leading all the way to its 
-  immense present-day effectiveness in managing large and complex data volumes.  
-* **..and large data volumes**   
+  Euler's search for an optimal path is a great referral to the practicality of graph theory, 
+  leading all the way to its present-day effectiveness in managing large and complex data volumes.  
+* **Graph modeling and large data volumes**   
   [Large, complex data volumes](https://www.datamation.com/big-data/big-data-companies.html) represent 
-  an important step in the evolution of data management, and are evidently here to stay and develop.  
+  an important step in the evolution of data management and are evidently here to stay and develop.  
   As relational databases and the data model they enable are inefficient in (and often incapable of) 
   searching and managing big-data volumes with intricate relations, various applications take part 
   in complementing or replacing them.  
-  Databases capable of running graph queries are a major contribution in this regard, though 
-  not limited to the  management of large data volumes and often as comfortable and efficient 
-  in handling smaller ones.  
-* **..and Multi Model**  
+  Databases capable of running graph queries are a major contribution in this regard, though not limited 
+  to the management of large data volumes and often as comfortable and efficient in handling smaller ones.  
+* **Graph modeling in a multi-model database**  
   It is common to find graph querying as one of the features of a multi-model database, based upon 
   or cooperating with other database features.  
   RavenDB's graph capabilities are founded upon a capable document store, and data already deposited in 
@@ -62,16 +60,9 @@ a relational databases useless, become the asset they are meant to be.
 
 ###Enabling Graph Querying
 
-Graph Querying is an **Experimental feature**, still under development. We are happy to provide it, and would be grateful 
-to hear from you regarding your experiences with it.  
-As other experimental fatures, it is disabled by default. You can enable it following theis simple procedure:  
-
-* Open the RavenDB server folder, e.g. C:\Users\Dave\Downloads\RavenDB-4.1.1-windows-x64\Server  
-* Open settings.json for editing  
-* Enable the Experimental Features.  
-   * Verify that the json file contains the following line:  
-     "Features.Availability": "Experimental"  
-   * Save settings.json and restart RavenDB Server.  
+Graph Querying is an experimental feature, and is disabled by default.  
+To enable it you need to edit RavenDB's [configuration](../../../server/configuration/configuration-options#json) 
+and enable [experimental features](../../../server/configuration/core-configuration#features.availability).  
 
 {NOTE/}
 
@@ -79,100 +70,109 @@ As other experimental fatures, it is disabled by default. You can enable it foll
 
 {PANEL: Designing Graph Queries}  
 
-####Graph representations
+Graph queries enhance RavenDB's [RQL](../../../indexes/querying/what-is-rql), and you can 
+use the Studio to build and test them as you would with non-graph RQL.  
+The Studio will identify your queries as graph queries by their syntax, and automatically 
+represent their results both graphically and textually.
 
-Graph querying enhances RQL with simple vocabulary and syntax that allow you to approach your existing data 
-as if it had been designed graphically. Here's a basic query that shows relations between employees, using documents 
-taken from the Northwind database RavenDB lets you install as sample data.  
-
-* Graph query:  
-{CODE-BLOCK:JSON}
-match(employees as employee)-[ReportsTo as reportsTo]->(employees as incharge)  
-{CODE-BLOCK/}
-* Query results are provided by the Studio both graphically and textually.  
-
- ![Illustrative graph reqults](images/Overview_GraphicalView_1.png)  
- ![Textual graph results](images/Overview_TextualView_1.png)  
+![Graph Queries - Graphical View](images/Overview_GraphicalView.png)  
 
 ---
 
-####Basic Terms, Syntax and Vocabulary
+![Graph Queries - Textual View](images/Overview_TextualView.png)  
 
-* **Graph Elements**  
-  Data elements ("Nodes") and their relations ("Edges") are represented in a graph as equally important.  
-  * **Data Nodes\***  
-    A "data node" can be a documents collection, or a subset of selected documents.  
-    **\*** _We use the term "data nodes" to make it easier for you to distinguish between the data elements 
-    we talk about here, and servers of a cluster (that are also called "nodes")._  
-  * **Edges**  
-    An "edge" is a link between nodes, that joins them in a relation of some sort.  
-    A RavenDB edge is simply a string-field within a document, that refers to the unique identifier of a document.  
-    RavenDB's edges are always **directional**, pointing from one data node to another.  
-     
-* **Graph results**  
-  Here are the results of a very simple query.  
-  ![Figure 1. Simple Relation](images/Overview_Elements.png)  
+##Graph representations
 
-  1. The first data node is **Dogs/Ruffus**, a document named **Ruffus** in the **Dogs** collection.  
-    This is how the document may look like:
-    {CODE-BLOCK:JSON}
-    Document: Dogs/Ruffus
-    {
-       "Owner": "Owners/John",
-       "Name": "...",
-       "@metadata": {
-       "@collection": "Dogs",
-       "@id": "Dogs/Ruffus"}
-    }
-    {CODE-BLOCK/}
-
-  2. The arrow titled **ownedBy** is the edge, indicating that Ruffus belongs to John.  
-     You can find its definition in the **Ruffus** document as the "Owner" field containing John's ID.  
-
-  3. The second data node is **Owners/John**, a document named **John** in the **Owners** collection.
-    {CODE-BLOCK:JSON}
-    Document: Owners/John
-    {
-       "Name": "...",
-       "@metadata": {
-       "@collection": "Owners",
-       "@id": "Owners/John"
-       }
-    }
-    {CODE-BLOCK/}
+Graph querying enhances RQL with simple vocabulary and syntax that allow you to approach your existing data 
+as if it had been designed graphically.  
 
 * **Graph query**  
-  Here's a query that could have produced the results shown above:  
-  `match(Dogs)-[Owner as ownedBy]->(Owners)`  
-  Let's go through its parts and syntax.  
-   * The `match` keyword instructs the retrieval of documents that match specified conditions.  
-     In this case, the conditions specify document of one collection, connected by ownership to documents of another collection.  
-   * The **data nodes** are indicated by surrounding parantheses: `(Dogs)` and `(Owners)`.  
-     In this example, they are the **Dogs** and **Owners** document collections.  
-   * The **edge** is placed within brackets: `[Owner as ownedBy]`.  
-     It has a specific **direction**, pointing from Ruffus to John.  
-     A hyphen connects it to the node it emerges from: `-`  
-     An "arrow" combined of a hyphen and a bigger-than symbol connects it to the node it points at: `->`  
-   * You can tag graph elements (nodes and edges) with whatever **alias** you choose.  
-     Use the `as` keyword to do so, like in -  
-     `match(Dogs as dogs)-[Owner as ownedBy]->(Owners as owner)`  
-     Giving elements aliases isn't obligatory when they are defined [implicitly](../../../indexes/querying/graph/graph-queries-basic#implicitly-defining-nodes-and-edges), and **is** required when defining them [explicitly](../../../indexes/querying/graph/graph-queries-basic#explicitly-defining-data-elements).  
-     It is, however, often recommended and sometimes essential.  
-      * In our sample query, the Owner relation between a dog and its owner is given the alias "ownedBy", 
-        because we wanted to emphasize this aspect of the relations. Another query may emphasize a different 
-        aspect by using the alias "occupant", "patient" or something else.  
+  This basic query shows relations between employees.  
+  It uses documents taken from the Northwind database that RavenDB lets you install as sample data.  
+  ![Graph query](images/Overview_GraphQuery.png)  
+* **Results**  
+  Results are provided by the Studio both graphically and textually.  
+  ![Graph reqults: Illustration](images/Overview_GraphicalView_1.png)  
+  ![Graph results: Textual](images/Overview_TextualView_1.png)  
+
+##Basic Terms, Syntax and Vocabulary
+
+* **match**  
+  A graph query is defined using the `match` keyword, with a search pattern of at least one data node and possibly 
+  edges leading to additional nodes.  
+  The graph query **match(orders)** for example returns the whole **orders** collection, 
+  like the non-graph query "[from orders](../../../indexes/querying/what-is-rql#from)".  
+* **Graph Elements**  
+  Documents ("Nodes") and their relations ("Edges") are represented in a graph as equally important. 
+  * **Data Nodes\***  
+    "Data nodes" can be a [documents collection](../../../indexes/querying/graph/graph-queries-basic#explicit-and-implicit-queries), 
+    [index query](../../../indexes/querying/graph/graph-queries-basic#how-can-indexes-be-queried) results, 
+    or a [selected subset](../../../indexes/querying/graph/graph-queries-basic#projection) of either.  
+      {INFO: }
+      A data node is defined within a clause surrounded by parentheses.  
+      E.g. `(orders)`  
+      {INFO/}
+    You can narrow the results down using RQL, within data nodes' clauses. E.g. `match(orders where id() = 'Orders/1-A')`.  
+    **\*** _We use the term "data nodes" to distinguish them from cluster servers ("cluster nodes")._  
+
+  * **Edges**  
+    "Edges" are links between nodes, that indicate nodes' relations with each other (e.g. "sold by", "in charge of", etc).  
+      {INFO: }
+      An edge is defined within a clause surrounded by square brackets.  
+      E.g. `[Product]`  
+      {INFO/}
+    RavenDB edges are fields within documents. They are always **directional**, pointing from one data node to another.  
+      * Use a hyphen to connect an edge clause to the node the edge points **from**.  
+        E.g. `match(orders)-[Product]`  
+        In this example the edge indicates the name of a field, `Product`, within the data node (a document of the `orders` collection).  
+      * Use an arrow (`<-` or `->`) to connect an edge clause to the data node it points **at**.  
+        E.g. `[Product]->(Products)`  
+        In this example, the value of the `Product` field is the name of a document in the `Products` collection.  
+      * An edge can be a simple string field, that contains a document's ID.  
+        e.g. a document named 45-A in the orders collection, may include this field: **"Product": "products/20-A"**.  
+        The **Product** field points orders/45-A to the document 20-A of the **products** collection.  
+        
+            | Document | query: **match(orders)-[Product]->(Products)** |
+            |:-------------:|:-------------:|
+            | ![Figure 1. Simple Relation](images/Overview_001_Field.png) | ![Figure 1. Simple Relation](images/Overview_001_Elements.png) |  
+            **1** - The first data node is **orders/45-A**, a document named **45-A** in the **orders** collection.  
+            **2** - The edge is **"Product": "products/20-A"**, a string field in the first node.  
+            **1** - The second data node is **products/20-A**, a document named **20-A** in the **products** collection.  
+
+      * An edge can also be a [nested JSON structure](../../../indexes/querying/graph/graph-queries-basic#path-graph-query) 
+        with multiple string fields that point at multiple documents.  
+        
+            | Document | query: **match(orders)-[Lines.Product]->(Products)** |
+            |:-------------:|:-------------:|
+            | ![Figure 2. multiple Relations](images/Overview_002_Field.png) | ![Figure 2. multiple Relations](images/Overview_002_Elements.png) |
+
+  * **Aliases**  
+    Graph elements are given **aliases** to make them more coherent both for human readers and for RavenDB's interpreter.  
+    Using aliases is mandatory for [explicit](../../../indexes/querying/graph/graph-queries-basic#explicitly-defining-data-elements) 
+    queries, and is recommended and sometimes required with 
+    [implicit](../../../indexes/querying/graph/graph-queries-basic#implicitly-defining-nodes-and-edges) queries.  
+      {INFO: }
+      Use `as` to tag an element with an alias.  
+      E.g. `match(orders as myOrders)`  
+      {INFO/}
+    
+        | Document | query: **match(orders)-[Product as product]->(Products)** |
+        |:-------------:|:-------------:|
+        | ![Figure 3. Aliases](images/Overview_001_Field.png) | ![Figure 3. Aliases](images/Overview_003_Elements.png) |  
+    
       * The same node or edge may appear multiple times in a query, sometimes in very different roles.  
         Using different aliases may be technically needed in such cases.  
-      * To eliminate an entity from the results, use a sequence of `_` symbols as an alias (i.e. `_`, `__`, `___`..)  
+      * To eliminate an entity from the results, use a sequence of `_` symbols as its alias (i.e. `_`, `__`, `___`..)  
       * Each alias needs to be unique.  
         Note that this is true for `_` aliases as well: use each `_` sequence (`_`, `__`, `___`..) only once.  
+      
 * **Graph Queries Flow**
-   * Lucene indexing  
-     When a graph query is executed, the first thing RavenDB does is index each node clause using Lucene.  
-     The result is a group of indexed tables that the graph engine can easily play with.  
+   * Indexing  
+     When a graph query is executed, RavenDB first queries data nodes.  
+     Resulting Lucene and Collection queries are indexed, and the indexes are grouped in tables the graph engine may use.  
    * Handling relations  
-     If the query comprises edges, the graph engine uses them now while going through the table prepared during the first phase 
-     and fathoming the relations between table elements.  
+     If the query comprises edges, the graph engine uses them now while going through the table prepared during the first 
+     phase and fathoming the relations between table elements.  
      [Be aware](../../../indexes/querying/graph/graph-queries-basic#graph-queries-and-indexes) that this part of a query is performed in memory and is not indexed, so reruns actually mean 
      re-running it.  
 
@@ -180,20 +180,22 @@ match(employees as employee)-[ReportsTo as reportsTo]->(employees as incharge)
 
 {PANEL: FAQ}
 
-####Q: When should or shouldn't I use graph queries?  
+####Q: When should I use graph queries?  
 
-A: There are configurations and situations for which graph querying is an optimal solution, and other 
-circumstances that require different approaches. You may find this list helpful in determining whether
-to give it a go.  
+A: There are configurations and situations for which graph querying is an optimal solution, and circumstances 
+that invite different approaches.  
 
 * **Use graph querying when -**  
-   * **Relations between data elements are a concern**.  
-     If your data continuously grows in quantity and intricity, queries become increasingly complicated and results 
-     arrive after longer and longer periods of time, graph queries are likely to be the solution you're craving for.  
+   * **Relations between your data entities can reveal valuable information.**.  
+     Intricate, layered data is often mismanaged so not only most of its potential is never revealed 
+     but it also becomes a huge nuisance.  
+     For graph querying, webs of relations are not a wasteland but a natural habitat. Give it a try 
+     if it seems likely that your gathering data has much more to offer than can currently be seen.  
    * **You look for optimized paths**.  
-     As their [history](../../../indexes/querying/graph/graph-queries-overview#introduction-to-graph-modelling) suggestss, 
-     graph queries are awesom in finding **optimal paths** between related nodes. Graph-using applications may find the fastest 
-     way to a suitable host, the quickest publicity route to a destination audience, or the cheapest way to get a specified product.  
+     As their [history](../../../indexes/querying/graph/graph-queries-overview#introduction-to-graph-modeling) suggestss, 
+     graph queries are awesome in finding **optimal paths** between related nodes. Graph-using applications may find the 
+     fastest way to a suitable host, the quickest publicity route to a destination audience, or the cheapest way to get 
+     a specified product.  
    * **You want to collect data from a web of relations**.  
      You can dynamically build user profiles, product pages, vendor data sheets and so on, 
      using graph queries that collect data related to them in the first degree, second degree, third degree and so on.  
@@ -203,19 +205,18 @@ to give it a go.
    * Your data is pre-arranged and pre-indexed, requiring no ongoing relation queries to refurnish its contents.  
    * A different model has a clear advantage, e.g. key/value store for key/value customer lists, relational database 
      for fixed tables, etc.   
-   * Your queries starts with a broad search.  
+   * Your query starts with a broad search.  
      Graph queries work best when the search starts with a definite starting point and lays out a path from there on.  
 
 {PANEL/}
 
 ## Related Articles
-**Client Articles**:  
-[Query](../../../../server/ongoing-tasks/backup-overview)  
-[Graph Query](../../../../client-api/operations/maintenance/backup/backup)  
-[Recursion](../../../../client-api/operations/maintenance/backup/restore)  
 
-**Studio Articles**:  
-[Creating a query](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
-[Seeing query results](../../../../studio/server/databases/create-new-database/from-backup)  
+**Querying**:  
+[RQL](../../../indexes/querying/what-is-rql#querying-rql---raven-query-language)  
+[Indexes](../../../indexes/what-are-indexes#what-indexes-are)  
 
-
+##Graph Querying**
+[Overview](../../../indexes/querying/graph/graph-queries-overview#graph-querying-overview)  
+[Basic Graph Queries](../../../indexes/querying/graph/graph-queries-basic#basic-graph-queries)  
+[Recursive Graph Queries](../../../indexes/querying/graph/graph-queries-recursive#recursive-graph-queries)  
