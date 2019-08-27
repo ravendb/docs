@@ -12,7 +12,7 @@ and any configurations & customizations that you may have applied.
 
 * A single instance of the Document Store ([Singleton Pattern](https://csharpindepth.com/articles/Singleton)) should be created per cluster per the lifetime of your application.  
 
-* The Docment Store is thread safe - implemented in a thread safe manner.  
+* The Document Store is thread safe - implemented in a thread safe manner.  
 
 * The Document Store exposes methods to perform operations such as:  
   * [Session](../client-api/session/what-is-a-session-and-how-does-it-work) - Use the Session object to perform operations on a specific database  

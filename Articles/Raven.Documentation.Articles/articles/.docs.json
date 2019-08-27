@@ -862,5 +862,63 @@
             "twitter:description": "RavenDB and Elasticsearch go head to head to determine which is the best open source NoSQL Database that you should download for your next project.",
             "twitter:url": "https://ravendb.net/articles/ravendb-elasticsearch-best-open-source-nosql-database"
         }
+    },
+    {
+        "Path": "nosql-database-for-digital-banking-applications.markdown",
+        "Name": "NoSQL Database for Digital Banking Applications",
+        "Mappings": [],
+        "Metadata": {
+            "title": "NoSQL Database for Digital Banking Applications | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/nosql-database-for-digital-banking-applications",
+            "publishedAt": "2019-08-20",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "Fintech developer TSWG uses RavenDB NoSQL Database to offer their digital banking application customers more services with better database performance.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "NoSQL Database for Digital Banking Applications | RavenDB",
+            "og:description": "Fintech developer TSWG uses RavenDB NoSQL Database to offer their digital banking application customers more services with better database performance.",
+            "og:url": "https://ravendb.net/articles/nosql-database-for-digital-banking-applications",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-database-for-digital-banking-applications&fileName=nosql-database-for-digital-banking-applications.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "NoSQL Database for Digital Banking Applications | RavenDB",
+            "twitter:description": "Fintech developer TSWG uses RavenDB NoSQL Database to offer their digital banking application customers more services with better database performance.",
+            "twitter:url": "https://ravendb.net/articles/nosql-database-for-digital-banking-applications"
+        }
+    },
+    {
+        "Path": "21-improvements-to-our-nosql-document-database.markdown",
+        "Name": "21 Improvements to Our NoSQL Document Database",
+        "Mappings": [],
+        "Metadata": {
+            "title": "21 Improvements to Our NoSQL Document Database",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/21-improvements-to-our-nosql-document-database",
+            "publishedAt": "2019-08-21",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "RavenDB has made 21 Improvements to its Document Database: A setup wizard, a database-as-a-service option, 10x faster performance, clusterwide ACID, and more.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "21 Improvements to Our NoSQL Document Database | RavenDB",
+            "og:description": "RavenDB has made 21 Improvements to its Document Database: A setup wizard, a database-as-a-service option, 10x faster performance, clusterwide ACID, and more.",
+            "og:url": "https://ravendb.net/articles/21-improvements-to-our-nosql-document-database",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/21-improvements-to-our-nosql-document-database&fileName=21-improvements-to-our-nosql-document-database.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "21 Improvements to Our NoSQL Document Database | RavenDB",
+            "twitter:description": "RavenDB has made 21 Improvements to its Document Database: A setup wizard, a database-as-a-service option, 10x faster performance, clusterwide ACID, and more.",
+            "twitter:url": "https://ravendb.net/articles/21-improvements-to-our-nosql-document-database"
+        }
     }
 ]
