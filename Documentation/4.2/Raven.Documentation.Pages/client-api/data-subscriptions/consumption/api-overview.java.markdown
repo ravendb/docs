@@ -46,8 +46,8 @@ Subscription worker generation is accessible through the `DocumentStore`'s `subs
 | **strategy** | `SubscriptionOpeningStrategy`<br>(enum) | Sets the way the server will treat current and/or other clients when they will try to connect. See [Workers interplay](how-to-consume-data-subscription#workers-interplay). Default: `OPEN_IF_FREE`. |
 | **maxDocsPerBatch** | `int` | Maximum amount of documents that the server will try sending in a batch. If the server will not find "enough" documents, it won't wait and send the amount it found. Default: 4096. |
 | **closeWhenNoDocsLeft** | `boolean` | If true, it performs an "ad-hoc" operation that processes all possible documents, until the server can't find any new documents to send. At that moment, the task returned by the `Run` function will fail and throw a `SubscriptionClosedException` exception. Default: false. |
-| **sendBufferSizeInBytes** | `int` | The send buffer size of the TCP socket in bytes. <br>Default: 32,768 (~33 kB) |
-| **receiveBufferSizeInBytes** | `int` | The receive buffer size of the TCP socket in bytes. <br>Default: 32,768 (~33 kB) |
+| **sendBufferSizeInBytes** | `int` | The size in bytes of the TCP socket buffer used for _sending_ data. <br>Default: 32,768 (32 KiB) |
+| **receiveBufferSizeInBytes** | `int` | The size in bytes of the TCP socket buffer used for _receiving_ data. <br>Default: 32,768 (32 KiB) |
 
 {PANEL/}
 
