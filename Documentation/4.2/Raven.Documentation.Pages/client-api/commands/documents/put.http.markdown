@@ -4,13 +4,13 @@
 {NOTE: }  
 
 * Use this endpoint with the `PUT` method to upload documents to the database:  
-`http://[server URL]/databases/[database name]/docs`
+`http://[server URL]/databases/[database name]/docs`  
 
-* In this page:    
-  * [Request and Response Formats](../../../client-api/commands/documents/put#request-and-response-formats)
-      * [Request](../../../client-api/commands/documents/put#request)
-      * [Response](../../../client-api/commands/documents/put#response)
-      * [Examples](../../../client-api/commands/documents/put#examples)
+* In this page:  
+  * [Request and Response Formats](../../../client-api/commands/documents/put#request-and-response-formats)  
+      * [Request](../../../client-api/commands/documents/put#request)  
+      * [Response](../../../client-api/commands/documents/put#response)  
+      * [Examples](../../../client-api/commands/documents/put#examples)  
 
 {NOTE/}  
 
@@ -21,9 +21,8 @@
 ### Request
 
 {CODE-BLOCK: bash}
-curl \
+curl -X PUT \
     'http://[server URL]/databases/[database name]/docs?id=[document ID]' \
-    -X PUT \
     --header 'If-Match: [expected change vector]' \
     -d [JSON document]
 {CODE-BLOCK/}
@@ -38,19 +37,27 @@ curl \
 
 ### Response
 
-| Status Code | Description |
+| Header | Description |
 | - | - |
-| 201 ("Created") | The document was successfully stored / the *existing* document was successfully updated |
-| 409 ("Conflict") | The change vector submitted did not match the server side change vector. A concurrency exception was thrown. |
+| **status** | Http status code |
+| **Server** | Web server |
+| **Date** | Date and time of response (UTC) |
+| **Content-Type** | MIME media type and character encoding |
+| **Raven-Server-Version** | Version or RavenDB the responding server is running |
+
+| HTTP Status Code | Description |
+| - | - |
+| `201` | The document was successfully stored / the *existing* document was successfully updated |
+| `409` | The change vector submitted did not match the server-side change vector. A concurrency exception was thrown. |
 
 ### Examples
 
-Store new document "person/1-A" in the collection "People":
+Example requests sent to the RavenDB playground server:  
+1) Store new document "person/1-A" in the collection "People".  
 
 {CODE-BLOCK: bash}
-curl \
+curl -X PUT \
     'http://live-test.ravendb.net/databases/Demo/docs?id=person/1-A' \
-    -X PUT \
     -d '{ 
     "FirstName":"Jane", 
     "LastName":"Doe",
@@ -61,9 +68,9 @@ curl \
 }'
 {CODE-BLOCK/}
 
-Response:
+Response:  
 
-{CODE-BLOCK: JSON}
+{CODE-BLOCK: Http}
 HTTP/1.1 201
 status: 201
 Server: nginx
@@ -81,7 +88,7 @@ Raven-Server-Version: 4.2.3.42
 }
 {CODE-BLOCK/}
 
-Update that same document:
+2) Update that same document.  
 
 {CODE-BLOCK: bash}
 curl \
@@ -95,9 +102,9 @@ curl \
 }'
 {CODE-BLOCK/}
 
-Response is identical except for the updated change vector:
+Response is identical except for the updated change vector:  
 
-{CODE-BLOCK: JSON}
+{CODE-BLOCK: Http}
 HTTP/1.1 201
 status: 201
 Server: nginx

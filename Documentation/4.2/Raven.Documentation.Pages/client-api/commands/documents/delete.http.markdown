@@ -3,7 +3,7 @@
 ---
 {NOTE: }  
 
-* Use this endpoint with the `PUT` method to upload documents to the database:  
+* Use this endpoint with the `DELETE` method to delete one document from the database:  
 `http://[server URL]/databases/[database name]/docs`
 
 * In this page:    
@@ -29,7 +29,7 @@ curl \
 
 | Query Parameters | Description | Required |
 | - | - | - |
-| **id** | ID of the document to be deleted. | Required |
+| **id** | ID of a document to be deleted. Only one document can be deleted per request. | Required |
 
 | Headers | Description | Required |
 | - | - | - |
@@ -37,14 +37,40 @@ curl \
 
 ### Response
 
-| Status Code | Description |
+| Header | Description |
 | - | - |
-| 204 ("No Content") | The document was successfully deleted |
-| 409 ("Conflict") | The change vector submitted did not match the server side change vector. A concurrency exception was thrown. |
+| **status** | Http status code |
+| **Server** | Web server |
+| **Date** | Date and time of response (UTC) |
+| **Content-Type** | MIME media type and character encoding |
+| **Raven-Server-Version** | Version or RavenDB the responding server is running |
+
+| HTTP Status Code | Description |
+| - | - |
+| `204` | The document was successfully deleted |
+| `409` | The change vector submitted did not match the server-side change vector. A concurrency exception was thrown. |
 
 ### Example
 
-{CODE delete_sample@ClientApi\Commands\Documents\Delete.cs /}
+An example request sent to the RavenDB playground server:
+
+{CODE-BLOCK: bash}
+curl -X DELETE \
+  'http://live-test.ravendb.net/databases/Demo/docs?id=employees/1-A' \
+{CODE-BLOCK/}
+
+Response:
+
+{CODE-BLOCK: Http}
+HTTP/1.1 204
+status: 204
+Server: nginx
+Date: Tue, 27 Aug 2019 11:40:12 GMT
+Connection: keep-alive
+Raven-Server-Version: 4.2.3.42
+{CODE-BLOCK/}
+
+{PANEL/}
 
 ## Related Articles
 

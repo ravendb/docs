@@ -4,63 +4,203 @@
 {NOTE: }  
 
 * Use this endpoint with the `GET` method to retrieve documents from the database:  
-`http://[server URL]/databases/[database name]/docs`
-* There are two kinds of query strings that determine which documents will be retrieved:
-  * A list of specific document IDs.
-  * A prefix shared by a set of document IDs.
+`http://[server URL]/databases/[database name]/docs`  
+* A request to this endpoint with no query string retrieves all documents in the database.  
+* There are two kinds of query strings that determine which documents will be retrieved:  
+  * One based on a list of specific document IDs.  
+  * Another based on a prefix shared by a set of document IDs.  
 
-* In this page:    
-  * [Get Documents by ID](../../commands/documents/get#get-documents-by-id)
-      * [Request Format](../../commands/documents/get#request-format)
-      * [Response Format](../../commands/documents/get#response-format)
-      * [Example](../../commands/documents/get#example)
-  * [Get Documents by startsWith](../../commands/documents/get#get-documents-by-startswith)
-      * [Request Format](../../commands/documents/get#request-format-1)
-      * [Response Format](../../commands/documents/get#response-format-1)
-      * [Example](../../commands/documents/get#example-1)
+* In this page:  
+  * [Get All Documents from the Database](../../../client-api/commands/documents/get#get-all-documents-from-the-database)  
+      * [Request Format](../../../client-api/commands/documents/get#request-format)  
+      * [Response Format](../../../client-api/commands/documents/get#response-format)  
+      * [Example](../../../client-api/commands/documents/get#example)  
+  * [Get Documents by ID](../../../client-api/commands/documents/get#get-documents-by-id)  
+      * [Request Format](../../../client-api/commands/documents/get#request-format-1)  
+      * [Response Format](../../../client-api/commands/documents/get#response-format-1)  
+      * [Example](../../../client-api/commands/documents/get#example-1)  
+  * [Get Documents by startsWith](../../../client-api/commands/documents/get#get-documents-by-startswith)  
+      * [Request Format](../../../client-api/commands/documents/get#request-format-2)  
+      * [Response Format](../../../client-api/commands/documents/get#response-format-2)  
+      * [Example](../../../client-api/commands/documents/get#example-2)  
 {NOTE/}  
 
 ---
 
-{PANEL: Get Documents by ID}
-
-This query string specifies document IDs, counters, and related documents.
+{PANEL: Get All Documents from the Database}
 
 ###Request Format
 
+This endpoint retrieves all documents from the database in descending order of their change vectors. Query parameters can be used to page through the results.  
+
+####cURL Request:
+
 {CODE-BLOCK: bash}
-curl \
+curl -X GET \
+    'http://[server URL]/databases/[database name]/docs?
+                                                        &start=[integer]
+                                                        &pageSize=[integer]
+                                                        &metadata=[boolean]' \
+    --header 'If-None-Match: [hash]'
+{CODE-BLOCK/}
+
+####Query String Parameters
+
+| Parameter | Description | Required |
+| - | - | - |
+| **start** | Number of results to skip | Optional |
+| **pageSize** | Number of results to retrieve | Optional |
+| **metadataOnly** | Set this parameter to `true` to retrieve only document metadata (_related_ documents are always retrieved with their complete contents). | Optional |
+
+####Request Headers
+
+| Header | Description | Required |
+| - | - | - |
+| **If-None-Match** | This header takes a hash representing the previous results of an identical request. The hash is found in the response header "ETag". If the results were not modified since the previous request, the server responds with http status code `304` and the requested documents are not retrieved. | Optional |
+
+###Response Format
+
+####Response Headers
+
+| Header | Description |
+| - | - |
+| **status** | Http status code |
+| **Server** | Web server |
+| **Date** | Date and time of response (UTC) |
+| **Content-Type** | MIME media type and character encoding |
+| **ETag** | Hash representing the state of these results. This can be sent to the server in the **If-None-Match** header to check whether the retrieved documents have been modified since the last response. |
+| **Raven-Server-Version** | Version or RavenDB the responding server is running |
+
+####Http Status Codes
+
+| Code | Description |
+| - | - |
+| `200` | Results were successfully retrieved |
+| `304` | No documents were retrieved |
+| `404` | No documents with the specified IDs were found |
+
+####Response Body
+
+JSON format of the response body:  
+
+{CODE-BLOCK: JSON}
+{
+    "Results": [ 
+        { 
+            "[field]":"[value]",
+            ...
+            "@metadata":{
+                ...
+            }
+        },
+        { ... },
+        ...
+    ]
+}
+{CODE-BLOCK/}
+
+###Example
+
+An example request sent to the RavenDB playground server:  
+
+{CODE-BLOCK: bash}
+curl -X GET \
+    'http://live-test.ravendb.net/databases/Demo/docs?
+                                                        &start=100
+                                                        &pageSize=1
+                                                        &metadata=true' \
+{CODE-BLOCK/}
+
+The response:  
+
+{CODE-BLOCK: Http}
+HTTP/1.1 200
+status: 200
+Server: nginx
+Date: Tue, 27 Aug 2019 10:00:02 GMT
+Content-Type: application/json; charset=utf-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Content-Encoding: gzip
+ETag: "Hash-pTi+pLiV7/DeFimBXomeIghe0WBdY6fvBwLAby6GQ4s="
+Vary: Accept-Encoding
+Raven-Server-Version: 4.2.3.42
+
+{
+    "Results": [
+        {
+            "@metadata": {
+                "@collection": "Orders",
+                "@change-vector": "A:1921-7pP/RxYrFEWb+RGV730VaA",
+                "@flags": "HasRevisions",
+                "@id": "orders/753-A",
+                "@last-modified": "2018-07-27T12:11:53.1812678Z"
+            }
+        }
+    ]
+}
+{CODE-BLOCK/}
+
+{PANEL/}
+
+{PANEL: Get Documents by ID}
+
+###Request Format
+
+This query string specifies document IDs, counters, and related documents.  
+
+####cURL Request:
+{CODE-BLOCK: bash}
+curl -X GET \
     'http://[server URL]/databases/[database name]/docs?
                                                         id=[document ID]&id=[document ID]
                                                         &include=[field name]
                                                         &counter=[counter name]
                                                         &metadata=[boolean]' \
-    -X GET \
-    --header 'If-None-Match: [expected change vector]''
+    --header 'If-None-Match: [hash]'
 {CODE-BLOCK/}
 
-| Query Parameters | Description | Required |
+####Query String Parameters
+
+| Parameter | Description | Required |
 | - | - | - |
 | **id** | ID of a document to retrieve.<br/>If no IDs are specified, all the documents in the database are retrieved in descending order of their [change vectors](../../../server/clustering/replication/change-vector). | Required |
 | **include** | A field in the retrieved document(s) which contains the ID of another, 'related' document.<br/>These related documents are also retrieved. [See: How to Handle Document Relationships](../../../client-api/how-to/handle-document-relationships#includes). | Optional |
 | **counter** | Name of a [counter](../../../client-api/session/counters/overview) to retrieve. Set this parameter to "@all_counters" to retrieve all counters (counters of _related_ documents are not retrieved). | Optional |
-| **metadataOnly** | Set this parameter to "true" to retrieve only document metadata (_related_ documents are always retrieved with their complete contents). | Optional |
+| **metadataOnly** | Set this parameter to `true` to retrieve only document metadata (_related_ documents are always retrieved with their complete contents). | Optional |
+
+####Request Headers
 
 | Header | Description | Required |
 | - | - | - |
-| **If-None-Match** | The documents' expected [change vector](../../../server/clustering/replication/change-vector). If these change vectors do not match the server-side change vectors, a concurrency exception is thrown. | Optional |
+| **If-None-Match** | This header takes a hash representing the previous results of an identical request. The hash is found in the response header "ETag". If the results were not modified since the previous request, the server responds with http status code `304` and the requested documents are not retrieved. | Optional |
 
 ###Response Format
 
-| HTTP Status Code | Description |
-| ----------- | - |
+####Response Headers
+
+| Header | Description |
+| - | - |
+| **status** | Http status code |
+| **Server** | Web server |
+| **Date** | Date and time of response (UTC) |
+| **Content-Type** | MIME media type and character encoding |
+| **ETag** | Hash representing the state of these results. This can be sent to the server in the **If-None-Match** header to check whether the retrieved documents have been modified since the last response. |
+| **Raven-Server-Version** | Version or RavenDB the responding server is running |
+
+####Http Status Codes
+
+| Code | Description |
+| - | - |
 | `200` | Results were successfully retrieved |
-| `304` | All requested document(s) are already cached locally, and the expected change vector matches the server side change vector. No documents were retrieved. |
+| `304` | No documents were retrieved |
 | `404` | No documents with the specified IDs were found |
 
-The response body in JSON format:
+####Response Body
 
-{CODE-BLOCK: JavaScript}
+JSON format of the response body:  
+
+{CODE-BLOCK: JSON}
 {
     "Results": [ 
         { 
@@ -99,22 +239,21 @@ The response body in JSON format:
 
 ###Example
 
-An example request sent to the RavenDB playground server:
+An example request sent to the RavenDB playground server:  
 
 {CODE-BLOCK: bash}
-curl \
+curl -X GET \
     'http://live-test.ravendb.net/databases/Demo/docs?
                                                         id=orders/1-A
                                                         &id=orders/2-A
                                                         &include=Company
                                                         &counter=@all_counters
                                                         &metadata=true' \
-    -X GET \
 {CODE-BLOCK/}
 
-The response:
+The response:  
 
-{CODE-BLOCK: JSON}
+{CODE-BLOCK: Http}
 HTTP/1.1 200
 status: 200
 Server: nginx
@@ -203,12 +342,14 @@ Raven-Server-Version: 4.2.3.42
 
 {PANEL: Get Documents by startsWith}
 
-This query string identifies document IDs based on substrings.
-
 ###Request Format
 
+This query string identifies document IDs based on substrings.  
+
+####cURL Request:
+
 {CODE-BLOCK: bash}
-curl \
+curl -X GET \
     'http://[server URL]/databases/[database name]/docs?
                                                         startsWith=[prefix]
                                                         &matches=[suffix]|[suffix]
@@ -217,35 +358,53 @@ curl \
                                                         &start=[integer]
                                                         &pageSize=[integer]
                                                         &metadata=[boolean]' \
-    -X GET \
-    --header 'If-None-Match: [expected change vector]'
+    --header 'If-None-Match: [hash]'
 {CODE-BLOCK/}
 
-| Query Parameters | Description | Required |
+####Query String Parameters
+
+| Parameter | Description | Required |
 | - | - | - |
-| **startsWith** | Retrieve all documents whose IDs begin with this prefix | Required |
+| **startsWith** | Retrieve all documents whose IDs begin with this prefix, sorted in ascending alphabetical order. | Required |
 | **matches** | Retrieve documents whose ID exactly matches `startsWith` + `matches`. Accepts multiple values separated by a pipe ('\|'). Use `?` to represent any single character, and `*` to represent any substring | Optional |
 | **exclude** | _Exclude_ documents whose ID exactly matches `startsWith` + `exclude`. Accepts multiple values separated by a pipe: ('\|'). Use `?` to represent any single character, and `*` to represent any substring | Optional |
 | **startAfter** | With results sorted in alphabetical order, retrieve only the results following the document ID that begins with this prefix | Optional |
-| **start** | Number of results to skip, with results sorted in alphabetical order | Optional |
-| **pageSize** | Total number of results to retrieve | Optional |
-| **metadataOnly** | Set this parameter to "true" to retrieve only document metadata (_related_ documents are always retrieved with their complete contents). | Optional |
+| **start** | Number of results to skip | Optional |
+| **pageSize** | Number of results to retrieve | Optional |
+| **metadataOnly** | Set this parameter to `true` to retrieve only document metadata (_related_ documents are always retrieved with their complete contents). | Optional |
+
+####Request Headers
 
 | Header | Description | Required |
 | - | - | - |
-| **If-None-Match** | The documents' expected [change vectors](../../../server/clustering/replication/change-vector). If these change vectors do not match the server-side change vectors, a concurrency exception is thrown. | Optional |
+| **If-None-Match** | This header takes a hash representing the previous results of an identical request. The hash is found in the response header "ETag". If the results were not modified since the previous request, the server responds with http status code `304` and the requested documents are not retrieved. | Optional |
 
 ###Response Format
 
-| HTTP Status Code | Description |
+####Response Headers
+
+| Header | Description |
+| - | - |
+| **status** | Http status code |
+| **Server** | Web server |
+| **Date** | Date and time of response (UTC) |
+| **Content-Type** | MIME media type and character encoding |
+| **ETag** | Hash representing the state of these results. This can be sent to the server in the **If-None-Match** header to check whether the retrieved documents have been modified since the last response. |
+| **Raven-Server-Version** | Version or RavenDB the responding server is running |
+
+####Http Status Codes
+
+| Code | Description |
 | ----------- | - |
 | `200` | Results were successfully retrieved |
-| `304` | All requested document(s) are already cached locally, and the expected change vector matches the server side change vector. No documents were retrieved. |
+| `304` | No documents were retrieved |
 | `404` | No documents with the specified IDs were found |
 
-The response body in JSON format:
+####Response Body
 
-{CODE-BLOCK: JavaScript}
+JSON format of the response body:  
+
+{CODE-BLOCK: JSON}
 {
     "Results": [ 
         { 
@@ -263,10 +422,10 @@ The response body in JSON format:
 
 ###Example
 
-An example request sent to the RavenDB playground server:
+An example request sent to the RavenDB playground server:  
 
 {CODE-BLOCK: bash}
-curl \
+curl -X GET \
     'http://live-test.ravendb.net/databases/Demo/docs?
                                                         startsWith=employe
                                                         &matches=es/1-A|es/2-A|es/3-A|es/4-A|es/5-A|es/6-A|es/7-A|es/8-A|
@@ -275,12 +434,11 @@ curl \
                                                         &start=1
                                                         &pageSize=3
                                                         &metadata=true' \
-    -X GET \
 {CODE-BLOCK/}
 
-The response:
+The response:  
 
-{CODE-BLOCK: JSON}
+{CODE-BLOCK: Http}
 HTTP/1.1 200
 status: 200
 Server: nginx
