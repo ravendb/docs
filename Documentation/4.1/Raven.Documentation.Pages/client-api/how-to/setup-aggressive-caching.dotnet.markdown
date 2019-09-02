@@ -20,6 +20,10 @@ The client knows when it can serve the response from the cache, and when it has 
 Despite the fact that the aggressive cache uses the notifications to invalidate the cache, it is still possible to get stale data because of the time needed to receive the notification from the server.
 {WARNING/}
 
+Options for aggressive caching can be set in the document store conventions:
+
+{CODE aggressive_cache_conventions@ClientApi\HowTo\SetupAggressiveCaching.cs /}
+
 We can activate this mode globally from the store or per session.
 
 To activate this mode globally from the store we just need to add one of the following lines:
@@ -41,6 +45,16 @@ The usage of the notification system means that you can set an aggressive cache 
 which is equivalent to:
 
 {CODE aggressive_cache_for_one_day_2@ClientApi\HowTo\SetupAggressiveCaching.cs /}
+
+###Disable Change Tracking
+
+You can choose not to update the cache in response to notifications from the server by changing the `AggressiveCacheMode`.
+
+The modes are:  
+* `TrackChanges` - the default value, which allows the cache to update in response to change notifications from the server.  
+* `DoNotTrackChanges` - do not update the cache for duration of aggressive caching.  
+
+{CODE disable_change_tracking@ClientApi\HowTo\SetupAggressiveCaching.cs /}
 
 ###Disable Aggressive Mode
 

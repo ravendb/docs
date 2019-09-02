@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Raven.Client.Documents;
+using Raven.Client.Http;
 using Raven.Documentation.Samples.Orders;
 using Sparrow;
 
@@ -12,11 +13,24 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
     {
         public SetupAggressiveCaching()
         {
-            using (var documentStore = new DocumentStore
+            
+            using (
+            #region aggressive_cache_conventions
+            var documentStore = new DocumentStore
             {
                 Urls = new[] { "http://localhost:8080" },
-                Database = "NorthWind"
-            })
+                Database = "NorthWind",
+                Conventions =
+                {
+                    AggressiveCache =
+                    {
+                        Duration = TimeSpan.FromMinutes(5),
+                        Mode = AggressiveCacheMode.TrackChanges
+                    }
+                }
+            }
+            #endregion
+            )
             {
                 documentStore.Initialize();
                 #region aggressive_cache_global
@@ -54,6 +68,15 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
                     {
                         List<Order> users = session.Query<Order>().ToList();
                     }
+                    #endregion
+
+                    #region disable_change_tracking
+                    documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5), AggressiveCacheMode.DoNotTrackChanges);
+
+                    //Disable change tracking for just one session:
+                    using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5), 
+                                                                               AggressiveCacheMode.DoNotTrackChanges))
+                    { }
                     #endregion
 
                     #region aggressive_cache_for_one_day_1
