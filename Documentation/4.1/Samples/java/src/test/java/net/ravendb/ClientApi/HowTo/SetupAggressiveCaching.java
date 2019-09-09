@@ -3,6 +3,7 @@ package net.ravendb.ClientApi.HowTo;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
 import net.ravendb.client.documents.session.IDocumentSession;
+import net.ravendb.client.documents.conventions.DocumentConventions;
 import net.ravendb.client.primitives.CleanCloseable;
 
 import java.time.Duration;
@@ -10,7 +11,16 @@ import java.util.List;
 
 public class SetupAggressiveCaching {
     public SetupAggressiveCaching() {
+        //region aggressive_cache_conventions
         try (IDocumentStore documentStore = new DocumentStore()) {
+            DocumentConventions conventions = documentStore.getConventions();
+
+            conventions.aggressiveCache().setDuration(Duration.ofMinutes(5));
+            conventions.aggressiveCache().setMode(AggressiveCacheMode.TRACK_CHANGES);
+            // Do your work here
+        }
+            //endregion
+            
             //region aggressive_cache_global
             documentStore.aggressivelyCacheFor(Duration.ofMinutes(5));
 
@@ -39,6 +49,15 @@ public class SetupAggressiveCaching {
                         .aggressivelyCacheFor(Duration.ofMinutes(5))) {
                     List<Order> orders = session.query(Order.class)
                         .toList();
+                }
+                //endregion
+                
+                //region disable_change_tracking
+                documentStore.aggressivelyCacheFor(Duration.ofMinutes(5), AggressiveCacheMode.DO_NOT_TRACK_CHANGES);
+
+                // Disable change tracking for just one session:
+                try (session.advanced().getDocumentStore().aggressivelyCacheFor(Duration.ofMinutes(5),
+                    AggressiveCacheMode.DO_NOT_TRACK_CHANGES)) {
                 }
                 //endregion
 

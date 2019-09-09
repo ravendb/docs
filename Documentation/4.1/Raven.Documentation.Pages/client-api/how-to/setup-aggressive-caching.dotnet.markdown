@@ -13,14 +13,14 @@ The client utilizes the notion of the `304 Not Modified` server's response and w
 The aggressive caching feature goes even further. Enabling it means that the client doesn't need to ask the server. It will simply return the response directly from a local cache without any usage of `304 Not Modified` status. 
 Results will be returned very fast. 
 
-Here's how it works: The client subscribes to [server notifications](../changes/what-is-changes-api). By taking advantage of them, he is able to invalidate cached documents when they are changed.
+Here's how it works: The client subscribes to server notifications using the [Changes API](../changes/what-is-changes-api). By taking advantage of them, he is able to invalidate cached documents when they are changed.
 The client knows when it can serve the response from the cache, and when it has to send the request to get the up-to-date result. 
 
 {WARNING:Important}
 Despite the fact that the aggressive cache uses the notifications to invalidate the cache, it is still possible to get stale data because of the time needed to receive the notification from the server.
 {WARNING/}
 
-Options for aggressive caching can be set in the document store conventions:
+Options for aggressive caching can be set in the Document Store conventions:
 
 {CODE aggressive_cache_conventions@ClientApi\HowTo\SetupAggressiveCaching.cs /}
 
@@ -48,17 +48,20 @@ which is equivalent to:
 
 ###Disable Change Tracking
 
-You can choose not to update the cache in response to notifications from the server by changing the `AggressiveCacheMode`.
+The client subscribes to change notifications from the server using the [Changes API](../changes/what-is-changes-api). You can choose to ignore 
+these notifications from the server by changing the `AggressiveCacheMode` in the Document Store conventions.  
 
 The modes are:  
-* `TrackChanges` - the default value, which allows the cache to update in response to change notifications from the server.  
-* `DoNotTrackChanges` - do not update the cache for duration of aggressive caching.  
+* `AggressiveCacheMode.TrackChanges` - The default value. When the server sends a notification that some items (documents or indexes) have changed, 
+those items are invalidated from the cache. The next time these items are loaded they will be retrieved from the server.  
+* `AggressiveCacheMode.DoNotTrackChanges` - Notifications from the server will be ignored. For the aggressive cache `Duration`, results will be 
+retrieved from the cache and may therefore be stale.  
 
 {CODE disable_change_tracking@ClientApi\HowTo\SetupAggressiveCaching.cs /}
 
 ###Disable Aggressive Mode
 
-We can disable the aggressive mode by simply using `documentStore.DisableAggressiveCaching()`. In that way we will disable the aggressive caching 
+We can disable the aggressive mode by simply using `documentStore.DisableAggressiveCaching();`. In that way we will disable the aggressive caching 
 globally in the store. But what if we need to disable the aggressive caching only for a specific call, or to manually update the cache, just like before we can use `DisableAggressiveCaching()`
 per session?
 
