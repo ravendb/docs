@@ -32,9 +32,9 @@ Maximum concurrent flushes.
 
 {PANEL/}
 
-{PANEL:Storage.TimeToSyncAfterFlashInSec}
+{PANEL:Storage.TimeToSyncAfterFlushInSec}
 
-Time to sync after flash in seconds
+Time to sync after flush in seconds
 
 - **Type**: `int`
 - **Default**: `30`
