@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="NodaTime" Version="2.4.4" />
+    <PackageReference Include="RavenDB.Client" Version="4.2.4-nightly-20190912-1306" />
     <PackageReference Include="RavenDB.Embedded" Version="4.2.0" />
     <PackageReference Include="RavenDB.TestDriver" Version="4.2.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
