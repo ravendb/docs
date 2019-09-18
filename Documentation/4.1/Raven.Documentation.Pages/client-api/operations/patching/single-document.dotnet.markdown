@@ -199,8 +199,8 @@ Loading documents supported only by non-typed APIs
 
 Removing property supported only by the non-typed APIs
 {CODE-TABS}
-{CODE-TAB:csharp:Session-syntax-untyped rename_property_age_non_generic_session@ClientApi\Operations\Patches\PatchRequests.cs /}
-{CODE-TAB:csharp:Operations-syntax rename_property_age_store@ClientApi\Operations\Patches\PatchRequests.cs /}
+{CODE-TAB:csharp:Session-syntax-untyped remove_property_age_non_generic_session@ClientApi\Operations\Patches\PatchRequests.cs /}
+{CODE-TAB:csharp:Operations-syntax remove_property_age_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
 ###Rename Property
