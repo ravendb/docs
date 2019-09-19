@@ -920,5 +920,34 @@
             "twitter:description": "RavenDB has made 21 Improvements to its Document Database: A setup wizard, a database-as-a-service option, 10x faster performance, clusterwide ACID, and more.",
             "twitter:url": "https://ravendb.net/articles/21-improvements-to-our-nosql-document-database"
         }
+    },
+    {
+        "Path": "is-sql-faster-than-nosql-document-database.markdown",
+        "Name": "Is SQL Really Faster than a NoSQL Document Database?",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Is SQL Really Faster than a NoSQL Document Database?",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/is-sql-faster-than-nosql-document-database",
+            "publishedAt": "2019-09-17",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "Is a NoSQL Document Database faster than SQL, Oracle, or a similar Relational data solution?",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Is SQL Really Faster than a NoSQL Document Database?",
+            "og:description": "Is a NoSQL Document Database faster than SQL, Oracle, or a similar Relational data solution, or not? Read about taking the Document Advantage to the Next Level.",
+            "og:url": "https://ravendb.net/articles/is-sql-faster-than-nosql-document-database",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/is-sql-faster-than-nosql-document-database&fileName=is-sql-faster-than-nosql-document-database.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Is SQL Really Faster than a NoSQL Document Database?",
+            "twitter:description": "Is a NoSQL Document Database faster than SQL, Oracle, or a similar Relational data solution, or not?",
+            "twitter:url": "https://ravendb.net/articles/is-sql-faster-than-nosql-document-database"
+        }
     }
 ]
