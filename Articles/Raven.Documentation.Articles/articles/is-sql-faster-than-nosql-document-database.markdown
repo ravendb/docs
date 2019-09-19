@@ -46,4 +46,4 @@ The complexity of tables, joins, and piecing together bits and pieces of data fr
 
 This is why document databases are best for distributed networks: There are no tables and no joins. For each node all the data you need to fetch is right there. This makes the document database the best candidate for the most common form of distributed network: The Cloud.
 
-Using [a document database on any cloud platform](https://cloud.ravendb.net/) can significantly reduce latency, cost, overhead, complexity and headache while increasing the performance of your application.
+Using <a href="https://cloud.ravendb.net/" target="_blank">a document database on any cloud platform</a> can significantly reduce latency, cost, overhead, complexity and headache while increasing the performance of your application.
