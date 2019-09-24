@@ -18,7 +18,7 @@
 <br>
 #### RavenDB 4.2 Features include:
 <ul>
-    <li>Graph API</li>
+    <li>Graph API<i class="icon-experimental text-experimental" data-toggle="tooltip" data-placement="top" title="Experimental" data-original-title="Experimental"></i></li>
     <li>Revert Revisions</li>
     <li>Pull Replication</li>
     <li>Clusterwide Transactions</li>

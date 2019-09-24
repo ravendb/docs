@@ -32,10 +32,14 @@
     <script>
         var root = '/';
     </script>
-    <script>
+    <script type="text/javascript">
         if (!window.Promise) {
             window.Promise = window.ES6Promise;
         }
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
     </script>
 </body>
 </html>

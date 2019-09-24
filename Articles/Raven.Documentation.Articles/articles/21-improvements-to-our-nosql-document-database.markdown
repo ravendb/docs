@@ -98,7 +98,7 @@ When it comes to daily tasks for your database, RavenDB 4 will automatically dis
 Pull replication in RavenDB allows you to deploy a new edge node without having any impact on your central database. You can deploy a new location without having to update the central server. Simply define the pull replication definition and that is it. Each edge node will connect to the central location and start pulling all the data from that database. The edge initiates the connection to the central node, not the central to the edge. This is ideal for edge processing, along with replicating data to and from a hybrid on-prem and cloud architecture. 
 
 <br/>
-#### Seventeen: A New Graph API Data Model
+<h4>Seventeen: A New Graph API Data Model <i class="icon-experimental text-experimental" data-toggle="tooltip" data-placement="top" title="Experimental" data-original-title="Experimental"></i></h4>
 In RavenDB 4 you can use the Graph API to organize large volumes of data into meaningful patterns to leverage your data to look into the future. RavenDB can track the relationships all your data points have with one another to process, aggregate, and index this new data set in *real time*. The Graph API has been used effectively for trading algorithms in hedge funds, health care applications, fraud detection, and more. 
 
 <br/>
