@@ -50,7 +50,7 @@ Enable (or disable) online log printing to the console.
 log <on|off|http-on|http-off|none|operations|information>
 {CODE-BLOCK/}
 
-| Parameters | |
+| Parameters | Description |
 | ------------- | ------------- |
 | `on` or `off` | enables or disables log printing |
 | `http-on` or `http-off` | enables or disables HTTP request log information |
@@ -92,6 +92,10 @@ Are you sure you want to reset the server ? [y/N] : y
 Starting shut down...
 Shutdown completed
 {CODE-BLOCK/}
+
+| Parameters | Description |
+| ------------- | ------------- |
+| `no-confirmation` | Skips the confirmation question and shuts down immediately. |
 
 {PANEL/}
 
