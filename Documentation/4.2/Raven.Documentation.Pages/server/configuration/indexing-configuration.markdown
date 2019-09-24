@@ -174,6 +174,16 @@ Transaction size limit in megabytes after which an index will stop and complete 
 
 {PANEL/}
 
+{PANEL:Indexing.Encrypted.TransactionSizeLimitInMb}
+
+Transaction size limit in megabytes for _encrypted_ databases, after which an index will stop and complete the current batch.
+
+- **Type**: `int`
+- **Default**: `64`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
 {PANEL:Indexing.ScratchSpaceLimitInMb}
 
 Amount of scratch space in megabytes that we allow to use for the index storage. After exceeding this limit the current indexing batch will complete and the index will force flush and sync storage environment.
@@ -183,7 +193,6 @@ Amount of scratch space in megabytes that we allow to use for the index storage.
 - **Scope**: Server-wide only or per database
 
 {PANEL/}
-
 
 {PANEL:Indexing.GlobalScratchSpaceLimitInMb}
 
@@ -195,7 +204,6 @@ Maximum amount of scratch space in megabytes that we allow to use for all index 
 
 {PANEL/}
 
-
 {PANEL:Indexing.MaxTimeToWaitAfterFlushAndSyncWhenExceedingScratchSpaceLimit}
 
 Max time to wait in seconds when forcing the storage environment flush and sync after exceeding the scratch space limit.
@@ -205,7 +213,6 @@ Max time to wait in seconds when forcing the storage environment flush and sync 
 - **Scope**: Server-wide only
 
 {PANEL/}
-
 
 {PANEL:Indexing.MapBatchSize}
 
@@ -218,7 +225,6 @@ Maximum number of documents to be processed by the index per indexing batch.
 
 {PANEL/}
 
-
 {PANEL:Indexing.MaxGram}
 
 Largest n-gram to generate when NGram analyzer is used.
@@ -228,10 +234,6 @@ Largest n-gram to generate when NGram analyzer is used.
 - **Scope**: Server-wide or per database
 
 {PANEL/}
-
-
-{PANEL/}
-
 
 {PANEL:Indexing.MinGram}
 
