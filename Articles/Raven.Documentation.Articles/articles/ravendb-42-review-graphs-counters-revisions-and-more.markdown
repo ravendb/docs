@@ -4,14 +4,6 @@
 
 {SOCIAL-MEDIA-LIKE/}
 
-<head>
-  <script type="text/javascript">
-      $(function () {
-          $('[data-toggle="tooltip"]').tooltip();
-      });
-  </script>
-</head>
-
 <p class="text-center">
 <button id="podcast-play-button" class="play-button" style=""><i class="icon-play" style="margin-right:20px"></i>Play Podcast</button>
 </p>
