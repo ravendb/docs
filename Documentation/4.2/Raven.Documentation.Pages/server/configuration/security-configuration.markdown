@@ -27,31 +27,88 @@ The (optional) password of the .pfx certificate file.
 
 {PANEL:Security.Certificate.Exec}
 
-A command or executable providing a .pfx certificate file. If specified, RavenDB will use HTTPS/SSL for all network activities. The certificate path setting takes precedence over executable configuration option.
-
-- **Type**: `string`
-- **Default**: `null`
-- **Scope**: Server-wide only
+Deprecated in 4.2 and replaced with [Security.Certificate.Load.Exec](../../server/configuration/security-configuration#security.certificate.load.exec), see below.
 
 {PANEL/}
 
 {PANEL:Security.Certificate.Exec.Arguments}
 
-The command line arguments for the 'Security.Certificate.Exec' command or executable.
+Deprecated in 4.2 and replaced with [Security.Certificate.Load.Exec.Arguments](../../server/configuration/security-configuration#security.certificate.load.exec.arguments), see below.
 
-- **Type**: `string`
-- **Default**: `null`
-- **Scope**: Server-wide only
+{PANEL/}
+
+{PANEL:Security.Certificate.Load.Exec}
+
+A command or executable that returns a .pfx cluster certificate when invoked by RavenDB. If specified, RavenDB will use HTTPS/SSL for all network activities. 
+The `Security.Certificate.Path` setting takes precedence over this executable.  
+
+- **Type**: `string`  
+- **Default**: `null`  
+- **Scope**: Server-wide only  
+
+{PANEL/}
+
+{PANEL:Security.Certificate.Renew.Exec}
+
+A command or executable that handles automatic cluster certificate renewals, returning the renewed .pfx certificate. The 
+[leader node](../../server/clustering/rachis/cluster-topology#leader) will invoke the executable once every hour and if a new certificate is received, it 
+will be sent to the other nodes. The executable specified in `Security.Certificate.Change.Exec` will then be used to persist the certificate across the cluster.  
+
+- **Type**: `string`  
+- **Default**: `null`  
+- **Scope**: Server-wide only  
+
+{PANEL/}
+
+{PANEL:Security.Certificate.Change.Exec}
+
+A command or executable that replaces the old cluster certificate with the renewed cluster certificate. When invoked, the cluster leader node will send the 
+renewed cluster certificate to this executable, allowing the follower nodes to persist the certificate.  
+
+- **Type**: `string`  
+- **Default**: `null`  
+- **Scope**: Server-wide only  
+
+{PANEL/}
+
+{PANEL:Security.Certificate.Load.Exec.Arguments}
+
+The command line arguments for the 'Security.Certificate.Load.Exec' command or executable.  
+
+- **Type**: `string`  
+- **Default**: `null`  
+- **Scope**: Server-wide only  
+
+{PANEL/}
+
+{PANEL:Security.Certificate.Renew.Exec.Arguments}
+
+The command line arguments for the 'Security.Certificate.Renew.Exec' command or executable.  
+
+- **Type**: `string`  
+- **Default**: `null`  
+- **Scope**: Server-wide only  
+
+{PANEL/}
+
+{PANEL:Security.Certificate.Change.Exec.Arguments}
+
+The command line arguments for the 'Security.Certificate.Change.Exec' command or executable.  
+
+- **Type**: `string`  
+- **Default**: `null`  
+- **Scope**: Server-wide only  
 
 {PANEL/}
 
 {PANEL:Security.Certificate.Exec.TimeoutInSec}
 
-The number of seconds to wait for the certificate executable to exit.
+The number of seconds to wait for the certificate executables to exit.  
+Applies to: `Security.Certificate.Load.Exec`, `Security.Certificate.Renew.Exec`, and `Security.Certificate.Change.Exec`.  
 
-- **Type**: `int`
-- **Default**: `30`
-- **Scope**: Server-wide only
+- **Type**: `int`  
+- **Default**: `30`  
+- **Scope**: Server-wide only  
 
 {PANEL/}
 

@@ -46,7 +46,7 @@ Set the credentials for your DNS service. In Route53 it's done by creating a use
 
 Now that certbot is ready, you can create an executable script that will run the certbot command whenever RavenDB asks it, this way the certificate will keep renewing itself. 
 
-When using the `Security.Certificate.Exec` option, RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
+When using the `Security.Certificate.Load.Exec` option, RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
 
 Here's a little script, `certificate.sh`, that demonstrates this feature. It renews the certificate or creates it in the first run, uses `openssl` to convert the received file to .PFX and writes it to the standard output for RavenDB to consume. 
 {CODE-BLOCK:bash}
@@ -62,8 +62,8 @@ Use unbuffered I/O (the -u flag) when writing the certificate to the standard ou
 To enable the script, add the following to settings.json:
 
 {CODE-BLOCK:json}
-"Security.Certificate.Exec": "/bin/bash",
-"Security.Certificate.Exec.Arguments": "certificate.sh"
+"Security.Certificate.Load.Exec": "/bin/bash",
+"Security.Certificate.Load.Exec.Arguments": "certificate.sh"
 {CODE-BLOCK/}
 
 Certbot is not available in Windows, but you can use a c# client called [Certes](https://github.com/fszlin/certes/), or [other similar projects](https://letsencrypt.org/docs/client-options/) that automate the certificate process. [See this example](../../../server/security/authentication/certificate-configuration) of how to write a file to standard output in Powershell.

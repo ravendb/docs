@@ -4,7 +4,7 @@ In RavenDB, configuration values can be set using environment variables, command
 
 {NOTE This section explains how to setup authentication **manually**. Please also take a look at the automated [Setup Wizard](../../../start/installation/setup-wizard) which lets you setup authentication in a much easier and faster way. /}
 
-To enable authentication, either `Security.Certificate.Path` or `Security.Certificate.Exec` must be set in [settings.json](../../configuration/configuration-options#json).
+To enable authentication, either `Security.Certificate.Path` or `Security.Certificate.Load.Exec` must be set in [settings.json](../../configuration/configuration-options#json).
 
 RavenDB will accept PFX server certificates which contain the private key, are not expired and have the following fields:
 
@@ -29,7 +29,7 @@ For example, this is a typical [settings.json](../../configuration/configuration
 } 
 {CODE-BLOCK/}
 
-The second way to enable authentication is to set `Security.Certificate.Exec`. 
+The second way to enable authentication is to set `Security.Certificate.Load.Exec`. 
 
 This option is useful when you want to protect your certificate (private key) with other solutions such as "Azure Key Vault", "HashiCorp Vault" or even Hardware-Based Protection. RavenDB will invoke a process you specify, so you can write your own scripts / mini programs and apply whatever logic you need. It creates a clean separation between RavenDB and the secret store in use.
 
@@ -60,8 +60,8 @@ And [settings.json](../../configuration/configuration-options#json) will look so
     "ServerUrl": "https://rvn-srv-1:8080",
     "Setup.Mode": "None",
     "DataDir": "RavenData",
-    "Security.Certificate.Exec": "powershell",
-    "Security.Certificate.Exec.Arguments": "C:\\secrets\\give_me_cert.ps1 90F4BC16CA5E5CB535A6CD8DD78CBD3E88FC6FEA"
+    "Security.Certificate.Load.Exec": "powershell",
+    "Security.Certificate.Load.Exec.Arguments": "C:\\secrets\\give_me_cert.ps1 90F4BC16CA5E5CB535A6CD8DD78CBD3E88FC6FEA"
 }
 {CODE-BLOCK/}
 
