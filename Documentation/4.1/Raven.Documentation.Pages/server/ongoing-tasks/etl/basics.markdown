@@ -110,13 +110,13 @@ Specific ETL functions:
 Documents are extracted and transformed by the ETL process in a batch manner.  
 The number of documents processed depends on the following configuration limits:  
 
-* [`ETL.ExtractAndTransformTimeoutInSec`](../../../server/configuration/etl-configuration#etl.extractandtransformtimeoutinsec) (default: 60 sec)  
+* [`ETL.ExtractAndTransformTimeoutInSec`](../../../server/configuration/etl-configuration#etl.extractandtransformtimeoutinsec) (default: 30 sec)  
   Time-frame for the extraction and transformation stages (in seconds), after which the loading stage will start.  
 
-* [`ETL.MaxNumberOfExtractedDocuments`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteddocuments) (default: null)  
+* [`ETL.MaxNumberOfExtractedDocuments`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteddocuments) (default: 8192)  
   Maximum number of extracted documents in an ETL batch.  
 
-* [`ETL.MaxNumberOfExtractedItems`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteddocuments) (default: null)  
+* [`ETL.MaxNumberOfExtractedItems`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteddocuments) (default: 8192)  
   Maximum number of extracted items (documents, counters) in an ETL batch.
 
 {INFO/}
