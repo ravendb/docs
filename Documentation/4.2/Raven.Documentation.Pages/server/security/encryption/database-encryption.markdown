@@ -78,6 +78,13 @@ Finally, create the encrypted database using the Client API:
 
 Database encryption must be enabled when creating the database. If you wish to use encryption in an existing database, it must be exported and then imported back into a new encrypted database.
 
+{DANGER: Indexing transaction size}
+Indexing is most efficient when it is performed in the largest transactions possible. However, using encryption is very memory intensive, and if memory 
+runs out before the transaction completes, the entire transaction will fail. To avoid this, you can limit the size of indexing batches in encrypted 
+databases using [Indexing.Encrypted.TransactionSizeLimitInMb](../server/configuration/indexing-configuration#Indexing.Encrypted.TransactionSizeLimitInMb).  
+{DANGER/}
+
+
 ## Related Articles
 
 ### Encryption

@@ -25,6 +25,12 @@ Once a request is made, RavenDB will start a transaction (either read or write) 
 4. Loading documents from the database (using the Studio, the Client API, REST API) means that they will be decrypted to plain text on the server and then sent to the client (securely) by HTTPS. Once the data is received on the client side it is no longer encrypted. RavenDB does not provide encryption on the client side.
 {DANGER/}
 
+{DANGER: Indexing transaction size}
+Indexing is most efficient when it is performed in the largest transactions possible. However, using encryption is very memory intensive, and if memory 
+runs out before the transaction completes, the entire transaction will fail. To avoid this, you can limit the size of indexing batches in encrypted 
+databases using [Indexing.Encrypted.TransactionSizeLimitInMb](../server/configuration/indexing-configuration#Indexing.Encrypted.TransactionSizeLimitInMb).  
+{DANGER/}
+
 {NOTE Due to the overhead of the encryption algorithm, performance can be slightly decreased. However, it doesn't affect the ACID properties of RavenDB which remains both transactional and secure./}
 
 ## Locking Memory
