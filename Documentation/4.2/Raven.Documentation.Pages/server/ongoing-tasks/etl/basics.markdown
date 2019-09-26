@@ -116,8 +116,11 @@ The number of documents processed depends on the following configuration limits:
 * [`ETL.MaxNumberOfExtractedDocuments`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteddocuments) (default: 8192)  
   Maximum number of extracted documents in an ETL batch.  
 
-* [`ETL.MaxNumberOfExtractedItems`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteddocuments) (default: 8192)  
+* [`ETL.MaxNumberOfExtractedItems`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteditems) (default: 8192)  
   Maximum number of extracted items (documents, counters) in an ETL batch.
+
+* [`ETL.MaxBatchSizeInMb`](../../../server/configuration/etl-configuration#etl.maxbatchsizeinmb) (default: 64 MB)  
+  Maximum size of an ETL batch in MB.
 
 {INFO/}
 

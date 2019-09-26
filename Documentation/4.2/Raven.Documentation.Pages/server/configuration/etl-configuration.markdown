@@ -44,6 +44,19 @@ If value is not set, or set to null, the number of extracted items isn't limited
 
 {PANEL/}
 
+{PANEL:ETL.MaxBatchSizeInMb}
+
+Maximum size in megabytes of a batch of data (documents and attachments) that will be sent to the destination as a single batch after transformation.  
+
+- **Type**: `Size`
+- **Size Unit**: `Megabytes`
+- **Default**: `64`
+- **Scope**: Server-wide or per database
+
+If value is not set, or set to null, the size of the batch isn't limited in the processed ETL batch.
+
+{PANEL/}
+
 {PANEL:ETL.MaxFallbackTimeInSec}
 
 Maximum number of seconds the ETL process will be in a fallback mode after a load connection failure to a destination. The fallback mode means suspending the process.
