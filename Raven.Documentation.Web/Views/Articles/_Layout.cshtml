@@ -40,6 +40,50 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
+
+        function changeButtonToPlay(button) {
+            button.className = "play-button";
+            button.innerHTML = "<i class=\"icon-play\" style=\"margin-right:20px\"></i> Play Podcast"
+        }
+
+        function changeButtonToPause(button) {
+            button.className = "play-button is-playing";
+            button.innerHTML = "<i class=\"icon-pause\" style=\"margin-right:20px\"></i> Pause";
+        }
+
+        $(window).on('load',
+            function () {
+                var audioElement = document.getElementById('podcast-audio');
+
+                if (audioElement) {
+                    audioElement.addEventListener("play", function() {
+                        var button = document.querySelector("#podcast-play-button");
+                        changeButtonToPause(button);
+                    });
+
+                    audioElement.addEventListener("pause", function() {
+                        var button = document.querySelector("#podcast-play-button");
+                        changeButtonToPlay(button);
+                    });
+                }
+
+                var playButton = document.querySelector("#podcast-play-button");
+
+                if (playButton) {
+                    document.querySelector("#podcast-play-button").addEventListener("click", function(){
+                        var audio = document.getElementById('podcast-audio');
+
+                        if(this.className === "play-button is-playing"){
+                            changeButtonToPlay(this);
+                            audio.pause();
+                        } else{
+                            changeButtonToPause(this);
+                            audio.play();
+                        }
+                    });
+                }
+
+            });
     </script>
 </body>
 </html>

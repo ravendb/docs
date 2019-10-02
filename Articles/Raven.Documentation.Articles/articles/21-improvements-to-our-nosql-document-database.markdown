@@ -6,6 +6,7 @@
 
 <p class="text-center">
 <button id="podcast-play-button" class="play-button" style=""><i class="icon-play" style="margin-right:20px"></i>Play Podcast</button>
+<a href="https://s3-us-west-2.amazonaws.com/static.ravendb.net/20190820--21-improvements-from-RavenDB-3.5-to-RavenDB+4.2.mp3" download><button id="download-podcast-button" class="download-podcast-button"><i class="icon-download" style="margin-right:20px"></i>Download .mp3</button></a>
 </p>
 
 <audio id="podcast-audio" controls="" style="width: 100%">
@@ -126,48 +127,6 @@ In RavenDB 4 we developed inhouse debugging tools to work alongside the Windows 
 **You also have the capacity to reach out to the RavenDB dev team right where you encounter a bug.** If you encounter something that doesn’t look right, you can report it immediately using the RavenDB Management studio and your database will provide all the information the development team at RavenDB needs to investigate. If you get an error message, you can put it on the bug tracker and the development team will personally explain what’s going on and how to fix it.
 
 You can download a free database cluster at ravendb.net or try out a free instance of RavenDB Cloud at [https://cloud.ravendb.net/](https://cloud.ravendb.net/).
-
-{RAW}
-<script>
-
-function changeButtonToPlay(button) {
-  button.className = "play-button";
-  button.innerHTML = "<i class=\"icon-play\" style=\"margin-right:20px\"></i> Play Podcast"
-}
-
-function changeButtonToPause(button) {
-  button.className = "play-button is-playing";
-  button.innerHTML = "<i class=\"icon-pause\" style=\"margin-right:20px\"></i> Pause";
-}
-
-var audioElement = document.getElementById('podcast-audio');
-
-audioElement.addEventListener("play", function() {
-  var button = document.querySelector("#podcast-play-button");
-  changeButtonToPause(button);
-});
-
-audioElement.addEventListener("pause", function() {
-  var button = document.querySelector("#podcast-play-button");
-  changeButtonToPlay(button);
-});
-
-
-document.querySelector("#podcast-play-button").addEventListener("click", function(){
-  var audio = document.getElementById('podcast-audio');
-
-  if(this.className === "play-button is-playing"){
-    changeButtonToPlay(this);
-    audio.pause();
-  } else{
-    changeButtonToPause(this);
-    audio.play();
-  }
-
-});
-
-</script>
-{RAW/}
 
 <br>
 [![Try out RavenDB 4.2 for Free](images/try-out-rdb42.png)](https://ravendb.net/downloads)
