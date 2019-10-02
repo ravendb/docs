@@ -33,47 +33,5 @@
   Your browser does not support the audio element.
 </audio>
 
-{RAW}
-<script>
-
-function changeButtonToPlay(button) {
-  button.className = "play-button";
-  button.innerHTML = "<i class=\"icon-play\" style=\"margin-right:20px\"></i> Play Podcast"
-}
-
-function changeButtonToPause(button) {
-  button.className = "play-button is-playing";
-  button.innerHTML = "<i class=\"icon-pause\" style=\"margin-right:20px\"></i> Pause";
-}
-
-var audioElement = document.getElementById('podcast-audio');
-
-audioElement.addEventListener("play", function() {
-  var button = document.querySelector("#podcast-play-button");
-  changeButtonToPause(button);
-});
-
-audioElement.addEventListener("pause", function() {
-  var button = document.querySelector("#podcast-play-button");
-  changeButtonToPlay(button);
-});
-
-
-document.querySelector("#podcast-play-button").addEventListener("click", function(){
-  var audio = document.getElementById('podcast-audio');
-
-  if(this.className === "play-button is-playing"){
-    changeButtonToPlay(this);
-    audio.pause();
-  } else{
-    changeButtonToPause(this);
-    audio.play();
-  }
-
-});
-
-</script>
-{RAW/}
-
 <br>
 [![Try out RavenDB 4.2 for Free](images/try-out-rdb42.png)](https://ravendb.net/downloads)
