@@ -1,6 +1,7 @@
 # Encryption: Encryption At Rest
 
-Encryption at rest is implemented at the storage layer, using Daniel J. Bernstein's `XChaCha20-Poly1305` authenticated encryption algorithm.
+Encryption at rest is implemented at the storage layer, using Daniel J. Bernstein's [`XChaCha20-Poly1305`](https://libsodium.gitbook.io/doc/secret-key_cryptography/aead/chacha20-poly1305/xchacha20-poly1305_construction) 
+authenticated encryption algorithm.  
 
 ## What Does it Mean?
 
@@ -16,19 +17,22 @@ In RavenDB, encryption is done at the lowest possible layer, the storage engine.
 
 As long as the database is idle and there are no requests to serve, everything is kept encrypted in the data files.
 
-Once a request is made, RavenDB will start a transaction (either read or write) and decrypt just the necessary data into memory. Then it will serve the request, and when the transaction is finished, modified pages are encrypted and written back to the datafile.
+Once a request is made, RavenDB will start a transaction (either read or write) and decrypt just the necessary data into memory. Then it will serve the 
+request, and when the transaction is finished, modified pages are encrypted and written back to the datafile. The data is 
+[locked](../../../server/security/encryption/encryption-at-rest#locking-memory) during the transaction by default, and it is zeroed when the transaction completes.  
 
 {DANGER: Important things to be aware of:}
 1. RavenDB makes sure that **no data is written to disk as plain text**. It will always be encrypted.  
-2. Indexed fields (the actual data) will reside in memory as plain text.  
+2. Indexed fields (the actual terms and values being indexed) will reside in memory as plain text.  
 3. Data of the current transaction will reside in memory as plain text and only for the duration of the transaction. When the transaction ends, the used memory is safely zeroed.  
 4. Loading documents from the database (using the Studio, the Client API, REST API) means that they will be decrypted to plain text on the server and then sent to the client (securely) by HTTPS. Once the data is received on the client side it is no longer encrypted. RavenDB does not provide encryption on the client side.
 {DANGER/}
 
 {DANGER: Indexing transaction size}
-Indexing is most efficient when it is performed in the largest transactions possible. However, using encryption is very memory intensive, and if memory 
+Indexing is most efficient when it is performed in the largest transactions possible. However, using encryption can be very memory intensive, and if memory 
 runs out before the transaction completes, the entire transaction will fail. To avoid this, you can limit the size of indexing batches in encrypted 
-databases using [Indexing.Encrypted.TransactionSizeLimitInMb](../server/configuration/indexing-configuration#Indexing.Encrypted.TransactionSizeLimitInMb).  
+databases using [Indexing.Encrypted.TransactionSizeLimitInMb](../server/configuration/indexing-configuration#Indexing.Encrypted.TransactionSizeLimitInMb). 
+The default limit is 64 MB.  
 {DANGER/}
 
 {NOTE Due to the overhead of the encryption algorithm, performance can be slightly decreased. However, it doesn't affect the ACID properties of RavenDB which remains both transactional and secure./}
@@ -46,7 +50,9 @@ We lock the memory regions used by these buffers in order to avoid leaking secre
 The downside to this approach is that if we run out of physical RAM RavenDB won't be able to lock memory and will abort the current operation.
 You can change this behavior but it's not recommended and should be done only after a proper security analysis is performed, see the [Security Configuration Section](../../../server/configuration/security-configuration#security.donotconsidermemorylockfailureascatastrophicerror).
 
-If such a catastrophic error occurs in **Windows**, RavenDB will try to recover automatically by increasing the size of the minimum working set and retrying the operation.   
+If such a catastrophic error occurs in **Windows**, RavenDB will try to recover automatically by increasing the size of the minimum working set and retrying 
+the operation. RavenDB's ability to do this may be limited by the ['increase a process working set' policy setting](https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/increase-a-process-working-set), 
+so an admin may need to modify it.  
 In **Linux**, it is the admin's responsibility to configure higher limits manually using:
 {CODE-BLOCK:plain}
 sudo prlimit --pid [process-id] --memlock=[new-limit-in-bytes]

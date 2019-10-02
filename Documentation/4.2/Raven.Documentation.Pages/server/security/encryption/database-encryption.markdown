@@ -4,7 +4,8 @@ In RavenDB you can create encrypted databases. Each encrypted database will have
 
 ## Creating An Encrypted Database Using The Studio
 
-When creating an encrypted database [using the Studio](../../../studio/server/databases/create-new-database/encrypted), you will receive a secret key which will allow you to recover the encrypted data in case of a disaster. During normal operations there is no need to supply the secret key to RavenDB.  
+When creating an encrypted database [using the Studio](../../../studio/server/databases/create-new-database/encrypted), you will receive a secret key which will 
+allow you to recover the encrypted data in case of a disaster, and when restoring from backup. During normal operations there is no need to supply the secret key to RavenDB.  
 See [Secret Key Management](../../../server/security/encryption/secret-key-management) for more information.  
 
 ![Figure 1. Secret Key](images/1.png)
@@ -16,7 +17,8 @@ Download, print, or copy and save the secret key in a safe place. It will NOT be
 ## Creating An Encrypted Database Using The REST API And The Client API
 
 Before creating the database, a secret key must be generated. Generating and storing secret keys is restricted to `Operator` or `ClusterAdmin` Security Clearances.
-RavenDB uses a [cryptographically secure pseudo-random number generator](https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator) and it is recommended that you use it. If you must use your own secret key, please make sure it is 256 bits long and cryptographically secure.
+RavenDB uses a [cryptographically secure pseudo-random number generator](https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator) and 
+it is recommended that you use it. If you must use your own secret key, please make sure it is 256 bits long and cryptographically secure.  
 
 You must use a client certificate to make the request because the server is using authentication.
 
