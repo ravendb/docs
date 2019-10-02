@@ -6,6 +6,7 @@
 
 <p class="text-center">
 <button id="podcast-play-button" class="play-button" style=""><i class="icon-play" style="margin-right:20px"></i>Play Podcast</button>
+<a href="https://s3-us-west-2.amazonaws.com/static.ravendb.net/20190820--21-improvements-from-RavenDB-3.5-to-RavenDB+4.2.mp3" download><button id="download-podcast-button" class="download-podcast-button"><i class="icon-download" style="margin-right:20px"></i>Download .mp3</button></a>
 </p>
 
 <audio id="podcast-audio" controls="" style="width: 100%">
