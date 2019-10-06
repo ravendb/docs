@@ -12,7 +12,7 @@ Threshold under which an incoming replication connection is considered active. I
 
 {PANEL:Replication.ReplicationMinimalHeartbeatInSec}
 
-Minimal time in milliseconds before sending another heartbeat. Value is in seconds.
+Minimal time in seconds before sending another heartbeat.
 
 - **Type**: `int`
 - **Default**: `15`
