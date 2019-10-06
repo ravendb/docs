@@ -1,11 +1,11 @@
-﻿# Commands: Documents: Delete
+﻿# Delete Documents
 
 ---
 
 {NOTE: }  
 
 * Use this endpoint with the `**DELETE**` method to delete one document from the database:  
-`http://<server URL>/databases/<database name>/docs`
+`<server URL>/databases/<database name>/docs`
 
 * In this page:    
       * [Example](../../../client-api/commands/documents/delete#example)
@@ -41,17 +41,17 @@ Raven-Server-Version: 4.2.3.42
 ### Request
 
 {CODE-BLOCK: bash}
-curl -X DELETE http://<server URL>/databases/<database name>/docs?id=<document ID> \
+curl -X DELETE <server URL>/databases/<database name>/docs?id=<document ID> \
 --header 'If-Match: <expected change vector>'
 {CODE-BLOCK/}
 
 | Query Parameters | Description | Required |
 | - | - | - |
-| **id** | ID of a document to be deleted. | Required |
+| **id** | ID of a document to be deleted. | Yes |
 
 | Headers | Description | Required |
 | - | - | - |
-| **If-Match** | Expected [change vector](../../../server/clustering/replication/change-vector). If it matches the server-side change vector the document is deleted, if they don't match a concurrency exception is thrown. | Optional |
+| **If-Match** | Expected [change vector](../../../server/clustering/replication/change-vector). If it matches the server-side change vector the document is deleted, if they don't match a concurrency exception is thrown. | No |
 
 ### Response
 
@@ -67,15 +67,16 @@ curl -X DELETE http://<server URL>/databases/<database name>/docs?id=<document I
 
 {PANEL/}
 
-## Related Articles
+## Related Articles  
 
-### Commands 
+### Client API  
 
+- [Get All Documents](../../../client-api/rest-api/document-commands/get-all-documents)  
 - [Get Documents by ID](../../../client-api/rest-api/document-commands/get-documents-by-id)  
 - [Get Documents by Prefix](../../../client-api/rest-api/document-commands/get-documents-by-prefix)  
 - [Put Documents](../../../client-api/rest-api/document-commands/put-documents)  
-- [Batch Commands](../../../client-api/rest-api/document-commands/batch-commands)
+- [Batch Commands](../../../client-api/rest-api/document-commands/batch-commands)  
 
-### Server
+### Server  
 
-- [Change Vector](../../../server/clustering/replication/change-vector)
+- [Change Vector](../../../server/clustering/replication/change-vector)  

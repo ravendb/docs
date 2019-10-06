@@ -1,11 +1,11 @@
-﻿# Commands: Documents: Put
+﻿# Put Documents
 
 ---
 
 {NOTE: }  
 
 * Use this endpoint with the **`PUT`** method to upload a new document to the database, or update an existing one:  
-`http://<server URL>/databases/<database name>/docs`  
+`<server URL>/databases/<database name>/docs`  
 
 * In this page:  
   * [Examples](../../../client-api/rest-api/document-commands/put-documents#examples)  
@@ -58,7 +58,7 @@ Raven-Server-Version: 4.2.3.42
 
 {CODE-BLOCK: bash}
 curl -X PUT http://live-test.ravendb.net/databases/Example/docs?id=person/1-A \
---header If-Match: A:1 \
+--header If-Match: A:1-L8hp6eYcA02dkVIEifGfKg \
 -d { 
     "FirstName":"John", 
     "LastName":"Smith",
@@ -97,18 +97,18 @@ Raven-Server-Version: 4.2.3.42
 This is the general form of a cURL request:  
 
 {CODE-BLOCK: batch}
-curl -X PUT http://<server URL>/databases/<database name>/docs?id=<document ID> \
+curl -X PUT <server URL>/databases/<database name>/docs?id=<document ID> \
 --header If-Match: <expected change vector> \
 -d <JSON document>
 {CODE-BLOCK/}
 
 | Query Parameter | Description | Required |
 | - | - | - |
-| **id** | Unique ID under which the new document will be stored, or the ID of an existing document to be updated. | Required |
+| **id** | Unique ID under which the new document will be stored, or the ID of an existing document to be updated. | Yes |
 
 | Headers | Description | Required |
 | - | - | - |
-| **If-Match** | When updating an existing document, this header passes the document's expected [change vector](../../../server/clustering/replication/change-vector). If this change vector doesn't match the document's server-side change vector, a concurrency exception is thrown. | Optional |
+| **If-Match** | When updating an existing document, this header passes the document's expected [change vector](../../../server/clustering/replication/change-vector). If this change vector doesn't match the document's server-side change vector, a concurrency exception is thrown. | No |
 
 #### Request body
 
@@ -153,16 +153,17 @@ The response body is JSON and contains the document ID and current change vector
 
 {PANEL/}
 
-## Related Articles
+## Related Articles  
 
-### Client API
+### Client API  
 
+- [Get All Documents](../../../client-api/rest-api/document-commands/get-all-documents)  
 - [Get Documents by ID](../../../client-api/rest-api/document-commands/get-documents-by-id)  
 - [Get Documents by Prefix](../../../client-api/rest-api/document-commands/get-documents-by-prefix)  
 - [Delete Document](../../../client-api/rest-api/document-commands/delete-document)  
 - [Batch Commands](../../../client-api/rest-api/document-commands/batch-commands)  
 - [What is a Collection](../../../client-api/faq/what-is-a-collection)  
 
-### Server
+### Server  
 
-- [Change Vector](../../../server/clustering/replication/change-vector)
+- [Change Vector](../../../server/clustering/replication/change-vector)  

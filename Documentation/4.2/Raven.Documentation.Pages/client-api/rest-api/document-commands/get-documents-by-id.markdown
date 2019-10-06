@@ -4,10 +4,8 @@
 
 {NOTE: }  
 
-* Use this endpoint with the **`GET`** method to retrieve documents from the database:  
-`http://<server URL>/databases/<database name>/docs?id=<document ID>`  
-
-* A request with no query string retrieves all documents from the database.  
+* Use this endpoint with the **`GET`** method to retrieve documents from the database by their document IDs:  
+`<server URL>/databases/<database name>/docs?id=<document ID>`  
 
 * There are query parameters for including [related documents](../../../client-api/how-to/handle-document-relationships#includes) and 
 [counters](../../../client-api/session/counters/overview).  
@@ -79,7 +77,7 @@ Raven-Server-Version: 4.2.4.42
 This is the general form of a cURL request that uses all parameters:  
 
 {CODE-BLOCK: batch}
-curl -X GET http://<server URL>/databases/<database name>/docs? \
+curl -X GET <server URL>/databases/<database name>/docs? \
             id=<document ID> \
             &include=<path> \
             &counter=<counter name> \
@@ -91,16 +89,16 @@ curl -X GET http://<server URL>/databases/<database name>/docs? \
 
 | Parameter | Description | Required / # |
 | - | - | - |
-| **id** | ID of a document to retrieve.<br/>If no IDs are specified, all the documents in the database are retrieved in descending order of their [change vectors](../../../server/clustering/replication/change-vector). | Required;<br/>Can be used more than once |
-| **include** | Path to a field containing the ID of another, 'related' document. [See: How to Handle Document Relationships](../../../client-api/how-to/handle-document-relationships#includes). | Optional;<br/>Can be used more than once |
-| **counter** | Name of a [counter](../../../client-api/session/counters/overview) to retrieve. Set this parameter to `@all_counters` to retrieve all counters of the specified documents. Counters of _included_ documents, however, will not be retrieved. | Optional;<br/>Can be used more than once |
-| **metadataOnly** | Set this parameter to `true` to retrieve only the metadata of each document. This does not apply to included documents which are retrieved with their complete contents. | Optional;<br/>Used once |
+| **id** | ID of a document to retrieve.<br/>If no IDs are specified, all the documents in the database are retrieved in descending order of their [change vectors](../../../server/clustering/replication/change-vector). | Yes;<br/>Can be used more than once |
+| **include** | Path to a field containing the ID of another, 'related' document. [See: How to Handle Document Relationships](../../../client-api/how-to/handle-document-relationships#includes). | No;<br/>Can be used more than once |
+| **counter** | Name of a [counter](../../../client-api/session/counters/overview) to retrieve. Set this parameter to `@all_counters` to retrieve all counters of the specified documents. Counters of _included_ documents, however, will not be retrieved. | No;<br/>Can be used more than once |
+| **metadataOnly** | Set this parameter to `true` to retrieve only the metadata of each document. This does not apply to included documents which are retrieved with their complete contents. | No;<br/>Used once |
 
 ####Headers
 
 | Header | Description | Required |
 | - | - | - |
-| **If-None-Match** | This header takes a hash representing the previous results of an **identical** request. The hash is found in the response header `ETag`. If the results were not modified since the previous request, the server responds with http status code `304` and the requested documents are retrieved from a local hash rather than over the network. | Optional |
+| **If-None-Match** | This header takes a hash representing the previous results of an **identical** request. The hash is found in the response header `ETag`. If the results were not modified since the previous request, the server responds with http status code `304` and the requested documents are retrieved from a local hash rather than over the network. | No |
 
 {PANEL/}
 
@@ -175,7 +173,7 @@ In this section:
 
 ---
 
-####Get Multiple Documents
+### Get Multiple Documents
 
 Example cURL request:  
 
@@ -225,7 +223,9 @@ Raven-Server-Version: 4.2.4.42
 }
 {CODE-BLOCK/}
 
-####Get Related Documents
+---
+
+### Get Related Documents
 
 Example cURL request:  
 
@@ -234,7 +234,6 @@ curl -X GET http://live-test.ravendb.net/databases/Demo/docs? \
             id=products/48-A \
             &include=Supplier&include=Category
 {CODE-BLOCK/}
-
 Linebreaks are added for clarity.  
 
 Response:  
@@ -320,7 +319,9 @@ Raven-Server-Version: 4.2.4.42
 }
 {CODE-BLOCK/}
 
-####Get Document Metadata Only
+---
+
+### Get Document Metadata Only
 
 Example cURL request:
 
@@ -329,7 +330,6 @@ curl -X GET http://live-test.ravendb.net/databases/Example/docs? \
             id=orders/19-A \
             &metadataOnly=true
 {CODE-BLOCK/}
-
 Linebreaks are added for clarity.  
 
 Response:
@@ -362,7 +362,9 @@ Raven-Server-Version: 4.2.4.42
 }
 {CODE-BLOCK/}
 
-####Get Document Counters
+---
+
+### Get Document Counters
 
 Example cURL request:
 
@@ -371,7 +373,6 @@ curl -X GET http://live-test.ravendb.net/databases/Example/docs? \
             id=products/48-A \
             &counter=MoLtUaE
 {CODE-BLOCK/}
-
 Linebreaks are added for clarity.  
 
 Response:
@@ -431,22 +432,22 @@ when it is [generated in the studio](../../../studio/database/documents/document
 
 {PANEL/}
 
+## Related Articles  
 
-## Related Articles
+### Getting Started  
 
-### Getting Started
+- [About Examples](../../../getting-started/about-examples)  
 
-- [About Examples](../../../getting-started/about-examples)
+### Client API  
 
-### Client API 
-
+- [Get All Documents](../../../client-api/rest-api/document-commands/get-all-documents)  
 - [Get Documents by Prefix](../../../client-api/rest-api/document-commands/get-documents-by-prefix)  
 - [Put Documents](../../../client-api/rest-api/document-commands/put-documents)  
-- [Delete Document](../../../client-api/rest-api/document-commands/delete-document)
-- [Batch Commands](../../../client-api/rest-api/document-commands/batch-commands)
-- [Counters: Overview](../../../client-api/session/counters/overview)
-- [How to Handle Document Relationships](../../../client-api/how-to/handle-document-relationships#includes)
+- [Delete Document](../../../client-api/rest-api/document-commands/delete-document)  
+- [Batch Commands](../../../client-api/rest-api/document-commands/batch-commands)  
+- [Counters: Overview](../../../client-api/session/counters/overview)  
+- [How to Handle Document Relationships](../../../client-api/how-to/handle-document-relationships#includes)  
 
-### Server
+### Server  
 
-- [Change Vector](../../../server/clustering/replication/change-vector)
+- [Change Vector](../../../server/clustering/replication/change-vector)  

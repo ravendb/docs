@@ -4,12 +4,10 @@
 
 {NOTE: }  
 
-* Use this endpoint with the **`GET`** method to retrieve documents from the database:  
-`http://<server URL>/databases/<database name>/docs?startsWith=<document ID prefix>`  
+* Use this endpoint with the **`GET`** method to retrieve documents from the database by a common prefix in their document IDs:  
+`<server URL>/databases/<database name>/docs?startsWith=<document ID prefix>`  
 
-* A request with no query string retrieves all documents from the database.  
-
-* There are various query parameters for further filtering the results.  
+* There are various query parameters for filtering and paging the results.  
 
 * In this page:  
   * [Basic Example](../../../client-api/rest-api/document-commands/get-documents-by-prefix#basic-example)  
@@ -80,7 +78,7 @@ Raven-Server-Version: 4.2.4.42
                 "@last-modified": "2018-07-27T12:11:53.0317858Z"
             }
         }
-    >
+    ]
 }
 {CODE-BLOCK/}
 
@@ -91,7 +89,7 @@ Raven-Server-Version: 4.2.4.42
 This is the general form of a cURL request that uses all parameters:  
 
 {CODE-BLOCK: batch}
-curl -X GET http://<server URL>/databases/<database name>/docs? \
+curl -X GET <server URL>/databases/<database name>/docs? \
             startsWith=<prefix> \
             &matches=<suffix>|<suffix>|... \
             &exclude=<suffix>|<suffix>|... \
@@ -101,27 +99,25 @@ curl -X GET http://<server URL>/databases/<database name>/docs? \
             &metadata=<boolean> \
 --header If-None-Match: <hash>
 {CODE-BLOCK/}
+Linebreaks are added for clarity.  
 
 ####Query String Parameters
 
-A request with no query string retrieves all documents from the database.  
-Results are sorted in ascending [lexical order](https://en.wikipedia.org/wiki/Lexicographical_order).
-
 | Parameter | Description | Required  |
 | - | - | - |
-| **startsWith** | Retrieve all documents whose IDs begin with this string. | Required |
-| **matches** | Retrieve documents whose IDs are exactly `[startsWith]`+`[matches]`. Accepts multiple values separated by a pipe character: ' \| ' . Use `?` to represent any single character, and `*` to represent any string. | Optional |
-| **exclude** | _Exclude_ documents whose IDs are exactly `[startsWith]`+`[exclude]`. Accepts multiple values separated by a pipe character: ' \| ' . Use `?` to represent any single character, and `*` to represent any string. | Optional |
-| **startAfter** | Retrieve only the results after the first document ID that begins with this string. | Optional |
-| **start** | Number of results to skip. | Optional |
-| **pageSize** | Maximum number of results to retrieve. | Optional |
-| **metadataOnly** | Set this parameter to `true` to retrieve only the document metadata for each result. | Optional |
+| **startsWith** | Retrieve all documents whose IDs begin with this string. If the value of this parameter is left empty, all documents in the database are retrieved. | Yes |
+| **matches** | Retrieve documents whose IDs are exactly `[startsWith]`+`[matches]`. Accepts multiple values separated by a pipe character: ' \| ' . Use `?` to represent any single character, and `*` to represent any string. | No |
+| **exclude** | _Exclude_ documents whose IDs are exactly `[startsWith]`+`[exclude]`. Accepts multiple values separated by a pipe character: ' \| ' . Use `?` to represent any single character, and `*` to represent any string. | No |
+| **startAfter** | Retrieve only the results after the first document ID that begins with this string. | No |
+| **start** | Number of results to skip. | No |
+| **pageSize** | Maximum number of results to retrieve. | No |
+| **metadataOnly** | Set this parameter to `true` to retrieve only the document metadata for each result. | No |
 
 ####Headers
 
 | Header | Description | Required |
 | - | - | - |
-| **If-None-Match** | This header takes a hash representing the previous results of an **identical** request. The hash is found in the response header `ETag`. If the results were not modified since the previous request, the server responds with http status code `304` and the requested documents are retrieved from a local hash rather than over the network. | Optional |
+| **If-None-Match** | This header takes a hash representing the previous results of an **identical** request. The hash is found in the response header `ETag`. If the results were not modified since the previous request, the server responds with http status code `304` and the requested documents are retrieved from a local hash rather than over the network. | No |
 
 {PANEL/}
 
@@ -132,7 +128,7 @@ Results are sorted in ascending [lexical order](https://en.wikipedia.org/wiki/Le
 | Code | Description |
 | ----------- | - |
 | `200` | Results were successfully retrieved |
-| `304` | No documents were retrieved |
+| `304` | None of the requested documents were modified since they were last loaded, so they were not retrieved from the server. |
 
 #### Headers
 
@@ -144,7 +140,8 @@ Results are sorted in ascending [lexical order](https://en.wikipedia.org/wiki/Le
 
 #### Body
 
-A retrieved document is identical in contents and format to the document stored in the server (unless the `metadataOnly` parameter is set to `true`).  
+Retrieved documents are sorted in ascending [lexical order](https://en.wikipedia.org/wiki/Lexicographical_order) of their document IDs. A retrieved document is identical in 
+contents and format to the document stored in the server - unless the `metadataOnly` parameter is set to `true`.  
 
 This is the general JSON format of the response body:  
 
@@ -158,7 +155,7 @@ This is the general JSON format of the response body:
                 ...
             }
         },
-        { ... },
+        { <document contents> },
         ...
     ]
 }
@@ -180,15 +177,16 @@ In this section:
 
 ---
 
-####Get Using&nbsp;`matches`
+### Get Using&nbsp;`matches`
 
-Example cURL request:  
+cURL request:  
 
 {CODE-BLOCK: bash}
 curl -X GET http://live-test.ravendb.net/databases/Example/docs? \
             startsWith=shipp \
             &matches=ers/3-A|ers/1-A
 {CODE-BLOCK/}
+Linebreaks are added for clarity.  
 
 Response:  
 
@@ -230,9 +228,11 @@ Raven-Server-Version: 4.2.4.42
 }
 {CODE-BLOCK/}
 
-####Get Using&nbsp;`matches`&nbsp;and&nbsp;`exclude`
+---
 
-Example cURL request:  
+### Get Using&nbsp;`matches`&nbsp;and&nbsp;`exclude`
+
+cURL request:  
 
 {CODE-BLOCK: bash}
 curl -X GET http://live-test.ravendb.net/databases/Example/docs? \
@@ -240,6 +240,7 @@ curl -X GET http://live-test.ravendb.net/databases/Example/docs? \
             &matches=ers/3-A|ers/1-A \
             &exclude=ers/3-A
 {CODE-BLOCK/}
+Linebreaks are added for clarity.  
 
 Response:  
 
@@ -271,15 +272,18 @@ Raven-Server-Version: 4.2.4.42
 }
 {CODE-BLOCK/}
 
-####Get Using&nbsp;`startAfter`
+---
 
-Example cURL request:  
+### Get Using&nbsp;`startAfter`
+
+cURL request:  
 
 {CODE-BLOCK: bash}
 curl -X GET http://live-test.ravendb.net/databases/Example/docs? \
             startsWith=shipp \
             startAfter=shippers/1-A
 {CODE-BLOCK/}
+Linebreaks are added for clarity.  
 
 Response:  
 
@@ -321,9 +325,11 @@ Raven-Server-Version: 4.2.4.42
 }
 {CODE-BLOCK/}
 
-####Page Results
+---
 
-Example cURL request:  
+### Page Results
+
+cURL request:  
 
 {CODE-BLOCK: bash}
 curl -X GET http://live-test.ravendb.net/databases/Example/docs? \
@@ -331,6 +337,7 @@ curl -X GET http://live-test.ravendb.net/databases/Example/docs? \
             &start=50 \
             &pageSize=2
 {CODE-BLOCK/}
+Linebreaks are added for clarity.  
 
 Response:  
 
@@ -386,17 +393,20 @@ Raven-Server-Version: 4.2.4.42
 }
 {CODE-BLOCK/}
 
-Note that the document ID numbers are 55 and 56 rather than the expected 51 and 52 because results are sorted lexically.
+Note that the document ID numbers are 55 and 56 rather than the expected 51 and 52 because results are sorted in lexical order.
 
-####Get Document Metadata Only
+---
 
-Example cURL request:  
+### Get Document Metadata Only
+
+cURL request:  
 
 {CODE-BLOCK: bash}
 curl -X GET http://live-test.ravendb.net/databases/Example/docs? \
             startsWith=regio \
             &metadataOnly=true
 {CODE-BLOCK/}
+Linebreaks are added for clarity.  
 
 Response:  
 
@@ -452,15 +462,16 @@ Raven-Server-Version: 4.2.4.42
 
 {PANEL/}
 
-## Related Articles
+## Related Articles  
 
-### Getting Started
+### Getting Started  
 
-- [About Examples](../../../getting-started/about-examples)
+- [About Examples](../../../getting-started/about-examples)  
 
-### Client API 
+### Client API  
 
+- [Get All Documents](../../../client-api/rest-api/document-commands/get-all-documents)  
 - [Get Documents by ID](../../../client-api/rest-api/document-commands/get-documents-by-id)  
 - [Put Documents](../../../client-api/rest-api/document-commands/put-documents)  
-- [Delete Document](../../../client-api/rest-api/document-commands/delete-document)
-- [Batch Commands](../../../client-api/rest-api/document-commands/batch-commands)
+- [Delete Document](../../../client-api/rest-api/document-commands/delete-document)  
+- [Batch Commands](../../../client-api/rest-api/document-commands/batch-commands)  

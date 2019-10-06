@@ -1,5 +1,11 @@
 [
   {
+    "Path": "get-all-documents.markdown",
+    "Name": "Get All Documents",
+    "DiscussionId": "eba120d6-a59d-4def-b032-1a9539f11987",
+    "Mappings": []
+  },
+  {
     "Path": "get-documents-by-id.markdown",
     "Name": "Get Documents by ID",
     "DiscussionId": "9cbdcec9-2158-4143-b1e0-fdaf7f8da993",
