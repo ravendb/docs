@@ -4,6 +4,11 @@
 
 {SOCIAL-MEDIA-LIKE/}
 
+<p class="text-center">
+<button id="podcast-play-button" class="play-button" style=""><i class="icon-play" style="margin-right:20px"></i>Play Podcast</button>
+<a href="https://s3-us-west-2.amazonaws.com/static.ravendb.net/dotnetrocks_1541_ravendb4.mp3" download><button id="download-podcast-button" class="download-podcast-button"><i class="icon-download" style="margin-right:20px"></i>Download .mp3</button></a>
+</p>
+
 <br/>
 
 <p>
@@ -14,7 +19,7 @@
 
 <h2 class="text-center" style="font-size: 18px">.NET Rocks with Kamran Ayub Talking about RavenDB V4</h2>
 
-<audio controls style="width: 100%">
+<audio id="podcast-audio" controls="" style="width: 100%">
   <source src="https://s3-us-west-2.amazonaws.com/static.ravendb.net/dotnetrocks_1541_ravendb4.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>

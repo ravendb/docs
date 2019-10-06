@@ -6,6 +6,7 @@
 
 <p class="text-center">
 <button id="podcast-play-button" class="play-button" style=""><i class="icon-play" style="margin-right:20px"></i>Play Podcast</button>
+<a href="https://s3-us-west-2.amazonaws.com/static.ravendb.net/2019-04-29-podcast-ravendb-42.mp3" download><button id="download-podcast-button" class="download-podcast-button"><i class="icon-download" style="margin-right:20px"></i>Download .mp3</button></a>
 </p>
 
 
@@ -31,48 +32,6 @@
   <source src="https://s3-us-west-2.amazonaws.com/static.ravendb.net/2019-04-29-podcast-ravendb-42.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
-
-{RAW}
-<script>
-
-function changeButtonToPlay(button) {
-  button.className = "play-button";
-  button.innerHTML = "<i class=\"icon-play\" style=\"margin-right:20px\"></i> Play Podcast"
-}
-
-function changeButtonToPause(button) {
-  button.className = "play-button is-playing";
-  button.innerHTML = "<i class=\"icon-pause\" style=\"margin-right:20px\"></i> Pause";
-}
-
-var audioElement = document.getElementById('podcast-audio');
-
-audioElement.addEventListener("play", function() {
-  var button = document.querySelector("#podcast-play-button");
-  changeButtonToPause(button);
-});
-
-audioElement.addEventListener("pause", function() {
-  var button = document.querySelector("#podcast-play-button");
-  changeButtonToPlay(button);
-});
-
-
-document.querySelector("#podcast-play-button").addEventListener("click", function(){
-  var audio = document.getElementById('podcast-audio');
-
-  if(this.className === "play-button is-playing"){
-    changeButtonToPlay(this);
-    audio.pause();
-  } else{
-    changeButtonToPause(this);
-    audio.play();
-  }
-
-});
-
-</script>
-{RAW/}
 
 <br>
 [![Try out RavenDB 4.2 for Free](images/try-out-rdb42.png)](https://ravendb.net/downloads)
