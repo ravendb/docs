@@ -39,7 +39,7 @@ Deprecated in 4.2 and replaced with [Security.Certificate.Load.Exec.Arguments](.
 
 {PANEL:Security.Certificate.Load.Exec}
 
-A command or executable that returns a .pfx cluster certificate when invoked by RavenDB. If specified, RavenDB will use HTTPS/SSL for all network activities. 
+A command or executable that provides the .pfx cluster certificate when invoked by RavenDB. If specified, RavenDB will use HTTPS/SSL for all network activities. 
 The `Security.Certificate.Path` setting takes precedence over this executable.  
 
 - **Type**: `string`  
@@ -50,8 +50,8 @@ The `Security.Certificate.Path` setting takes precedence over this executable.
 
 {PANEL:Security.Certificate.Renew.Exec}
 
-A command or executable that handles automatic cluster certificate renewals, returning the renewed .pfx certificate. The 
-[leader node](../../server/clustering/rachis/cluster-topology#leader) will invoke the executable once every hour and if a new certificate is received, it 
+A command or executable that handles automatic cluster certificate renewals and passes the renewed .pfx certificate to the rest of the cluster. The 
+[leader node](../../server/clustering/rachis/cluster-topology#leader) will invoke this executable once every hour and if a new certificate is received, it 
 will be sent to the other nodes. The executable specified in `Security.Certificate.Change.Exec` will then be used to persist the certificate across the cluster.  
 
 - **Type**: `string`  
@@ -62,8 +62,8 @@ will be sent to the other nodes. The executable specified in `Security.Certifica
 
 {PANEL:Security.Certificate.Change.Exec}
 
-A command or executable that replaces the old cluster certificate with the renewed cluster certificate. When invoked, the cluster leader node will send the 
-renewed cluster certificate to this executable, allowing the follower nodes to persist the certificate.  
+A command or executable that replaces the old cluster certificate with the renewed cluster certificate. After `Security.Certificate.Change.Exec` distibutes the 
+new certificate, this executable persists it locally at each follower node.
 
 - **Type**: `string`  
 - **Default**: `null`  

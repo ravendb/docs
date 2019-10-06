@@ -4,7 +4,8 @@ In RavenDB, configuration values can be set using environment variables, command
 
 {NOTE This section explains how to setup authentication **manually**. Please also take a look at the automated [Setup Wizard](../../../start/installation/setup-wizard) which lets you setup authentication in a much easier and faster way. /}
 
-To enable authentication, either `Security.Certificate.Path` or `Security.Certificate.Load.Exec` must be set in [settings.json](../../configuration/configuration-options#json).
+To enable authentication, either `Security.Certificate.Path` or `Security.Certificate.Load.Exec` must be set in [settings.json](../../configuration/configuration-options#json). Note that 
+`Security.Certificate.Load.Exec` has replaced the old `Security.Certificate.Exec` as of 4.2, [see FAQ](../../../server/security/common-errors-and-faq#automatic-cluster-certificate-renewal-following-migration-to-4.2).
 
 RavenDB will accept PFX server certificates which contain the private key, are not expired and have the following fields:
 
