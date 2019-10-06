@@ -5,7 +5,7 @@
 {NOTE: }
 
 * In [dynamic database distribution](../../../server/clustering/distribution/distributed-database#dynamic-database-distribution) mode, 
-if a databse node is down, another cluster node is added to the database group to compensate.  
+if a database node is down, another cluster node is added to the database group to compensate.  
 
 * Use this operation to toggle dynamic distribution for a particular database group.  
 
