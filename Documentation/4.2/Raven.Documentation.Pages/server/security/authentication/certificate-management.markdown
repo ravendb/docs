@@ -10,9 +10,15 @@ Click [here](client-certificate-usage) for detailed client examples.
 Client certificates are managed by RavenDB directly and not through any PKI infrastructure. If you want to remove
 or reduce the permissions on a certificate handed to a client, you can edit the permissions or remove them entirely from this screen.
 
-It's important to note that RavenDB does __not__ keep track of the certificate's private key. Whether you generate a client certificate
+It's important to note that RavenDB does _not_ keep track of the certificate's private key. Whether you generate a client certificate
 via RavenDB or upload an existing client certificate, the private key is not retained. If a certificate was lost, you'll
 need to recreate a new certificate, assign the same permissions, and distribute the certificate again.
+
+{INFO: Implicit Trust}
+If two different RavenDB clusters are communicating securely, and the source cluster has its certificate renewed, the destination cluster could 
+still trust this new certificate - provided that the new certificate is signed with the same private key as the original, and was issued by the 
+same certificate authority. This is accomplished using a [public key pinning hash](../../../server/security/authentication/certificate-renewal-and-rotation#implicit-trust-by-public-key-pinning-hash).  
+{INFO/}
 
 {PANEL:The RavenDB Security Approach}
 

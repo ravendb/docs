@@ -1,13 +1,15 @@
 # Authentication: Manual Certificate Configuration
 
-In RavenDB, configuration values can be set using environment variables, command line arguments or using the [settings.json](../../configuration/configuration-options#json) file. For more details, please read the [Configuration Section.](../../configuration/configuration-options)  
+{NOTE: } This section explains how to set up authentication **manually**. Please also take a look at the automated 
+[Setup Wizard](../../../start/installation/setup-wizard) which lets you set up authentication in a much easier and faster way. {NOTE/}
 
-{NOTE This section explains how to setup authentication **manually**. Please also take a look at the automated [Setup Wizard](../../../start/installation/setup-wizard) which lets you setup authentication in a much easier and faster way. /}
+In RavenDB, configuration values can be set using environment variables, command line arguments or using the [settings.json](../../configuration/configuration-options#json) 
+file. For more details, please read the [Configuration Section.](../../configuration/configuration-options)  
 
-To enable authentication, either `Security.Certificate.Path` or `Security.Certificate.Load.Exec` must be set in [settings.json](../../configuration/configuration-options#json). Note that 
-`Security.Certificate.Load.Exec` has replaced the old `Security.Certificate.Exec` as of 4.2, [see FAQ](../../../server/security/common-errors-and-faq#automatic-cluster-certificate-renewal-following-migration-to-4.2).
+To enable authentication, either `Security.Certificate.Path` or `Security.Certificate.Load.Exec` must be set in [settings.json](../../configuration/configuration-options#json). 
+Please note that `Security.Certificate.Load.Exec` has replaced the old `Security.Certificate.Exec` as of 4.2 - [see FAQ](../../../server/security/common-errors-and-faq#automatic-cluster-certificate-renewal-following-migration-to-4.2).
 
-RavenDB will accept PFX server certificates which contain the private key, are not expired and have the following fields:
+RavenDB will accept `.pfx` server certificates which contain the private key, are not expired and have the following fields:
 
 - KeyUsage: DigitalSignature, KeyEncipherment
 - ExtendedKeyUsage: Client Authentication, Server Authentication
