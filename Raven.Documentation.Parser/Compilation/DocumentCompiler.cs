@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using HtmlAgilityPack;
 using MarkdownDeep;
 using Raven.Documentation.Parser.Data;
@@ -275,7 +276,7 @@ namespace Raven.Documentation.Parser.Compilation
             if (node == null)
                 return "No title";
 
-            return node.InnerText;
+            return WebUtility.HtmlDecode(node.InnerText);
         }
 
         private void ValidateTitle(string title)
