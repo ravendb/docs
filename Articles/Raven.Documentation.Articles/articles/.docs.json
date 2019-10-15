@@ -949,5 +949,34 @@
             "twitter:description": "Is a NoSQL Document Database faster than SQL, Oracle, or a similar Relational data solution, or not?",
             "twitter:url": "https://ravendb.net/articles/is-sql-faster-than-nosql-document-database"
         }
+    },
+    {
+        "Path": "what-to-consider-when-building-a-database-for-todays-data.markdown",
+        "Name": "What to Consider when Building a Database for Today’s Data",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Building a Database for Today’s Data | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/what-to-consider-when-building-a-database-for-todays-data",
+            "publishedAt": "2019-10-15",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "Performance? Edge Processing? Data Integrity? What to consider in a database that will process modern data for minimal time, money, and developer resources.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "What to Consider when Building a Database for Today’s Data",
+            "og:description": "Performance, Edge Processing, Data Integrity are what to consider in a database that will process modern data for minimal time, money, and developer resources.",
+            "og:url": "https://ravendb.net/articles/what-to-consider-when-building-a-database-for-todays-data",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/what-to-consider-when-building-a-database-for-todays-data&fileName=what-to-consider-when-building-a-database-for-todays-data.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "What to Consider when Building a Database for Today’s Data",
+            "twitter:description": "Performance, Edge Processing, Data Integrity are what to consider in a database that will process modern data for minimal time, money, and developer resources.",
+            "twitter:url": "https://ravendb.net/articles/what-to-consider-when-building-a-database-for-todays-data"
+        }
     }
 ]
