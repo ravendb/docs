@@ -1,5 +1,9 @@
 # Monitoring: SNMP Support
 
+{NOTE: }
+SNMP support is available for enterprise licenses only.
+{NOTE/}
+
 Simple Network Management Protocol (SNMP) is an Internet-standard protocol for collecting and organizing information 
 about managed devices on IP networks. It is used primarily for monitoring network services. SNMP exposes management 
 data in the form of variables (metrics) which describe the system status and configuration. These metrics can then be 
@@ -11,11 +15,7 @@ server total requests, the loaded databases, and also database specific metrics 
 second, document writes per second, storage space each database takes, and so on. 
 
 You can still monitor what is going on with RavenDB directly from the Studio, or by using one of our monitoring tools. However, using SNMP might be easier in some cases. 
-As users start running large numbers of RavenDB instances, it becomes unpractical to deal with each of them individually and using a monitoring system that can watch many servers is advisable.
-
-{NOTE:Note}
-SNMP support is available for enterprise licenses only.
-{NOTE/}
+As users start running large numbers of RavenDB instances, it becomes impractical to deal with each of them individually, and using a monitoring system that can watch many servers becomes advisable.
 
 ### Enabling SNMP in RavenDB
 
@@ -42,7 +42,7 @@ You can change those with the following configuration keys:
 }
 {CODE-BLOCK/}
 
-The community string is used like a password. It is sent with each SNMP Get request and allows or denies access to the monitored device.
+The community string is used like a password. It is sent with each SNMP `GET` request and allows or denies access to the monitored device.
 
 ### The Metrics
 
@@ -65,11 +65,11 @@ Where **ravendb** is the community string (configured via `Monitoring.Snmp.Commu
 For your convenience we've also added the list of metrics and their associated OIDs here:   
 
 {NOTE:Accessing a list of all available OIDs}
-You can list all OIDs along with its description using `{serverUrl}/monitoring/snmp/oids` endpoint.
+You can list all OIDs along with its description using the `<serverUrl>/monitoring/snmp/oids` endpoint.
 {NOTE/}
 
 {NOTE:Accessing OID value via HTTP}
-For convenience, single OID value can be retrieved via HTTP GET endpoint `{serverUrl}/monitoring/snmp?oid=<oid>`.
+For convenience, single OID values can be retrieved via HTTP `GET` endpoint `<serverUrl>/monitoring/snmp?oid=<oid>`.
 
 Example:
 {CODE-BLOCK:bash}
