@@ -117,11 +117,12 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
    * Amazon Glacier 
    * Google Cloud
 
-* When a remote destination is selected, RavenDB stores data in an intermediate local storage first. 
-  Then, it transfers the data from the local storage to the remote destination.  
-   * If you've explicitly chosen a local folder, it would also serve as RavenDB's intermediate local storage.  
-   * If you haven't chosen a local folder, RavenDB will store the data in a temporary local folder and remove 
-     it when the transfer is complete.  
+* When setting remote destination/s, RavenDB will store the data locally first and then transfer the data 
+  to the remote destination/s from that local storage.  
+   * If a local folder is not included in your destinations list, RavenDB would store the data in a temporary local 
+     folder and remove it when the transfer is complete.  
+   * If a local folder **is** defined in your destinations list, it would also serve as RavenDB's intermediate local storage 
+     and the data will not be removed when the transfer is complete.  
 
 * Remote Backup Destinations Code Sample:
   {CODE backup_remote_destinations@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
