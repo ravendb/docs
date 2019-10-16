@@ -117,7 +117,11 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
    * Amazon Glacier 
    * Google Cloud
 
-* RavenDB will store data in a local folder first, and transfer it to the remote destination from the local one.  
+* When a remote destination is selected, RavenDB stores data in an intermediate local storage first. 
+  Then, it transfers the data from the local storage to the remote destination.  
+   * If you've explicitly chosen a local folder, it would also serve as RavenDB's intermediate local storage.  
+   * If you haven't chosen a local folder, RavenDB will store the data in a temporary local folder and remove 
+     it when the transfer is complete.  
 
 * Remote Backup Destinations Code Sample:
   {CODE backup_remote_destinations@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
@@ -154,16 +158,9 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
 
 {PANEL: Server-Wide Backup}
 
-You can create a task that backs up all your databases at once.  
+You can create a Server-Wide Backup task to back-up all the databases in your cluster at a scheduled time.
 
-* Backups can be made locally, as well as to a set of remote locations including -  
-   * Amazon S3 
-   * Azure Storage 
-   * Google Cloud 
-   * Azure Glacier 
-   * An FTP/SFTP target
-
-* RavenDB will store data in a local folder first, and transfer it to the remote destination from the local one.  
+* Backups can be made locally, as well as to a [set of remote locations](../../../../client-api/operations/maintenance/backup/backup#backup-to-remote-destinations).  
 
 * Server-wide Backup Code Sample:
   {CODE server_wide_backup_configuration@ClientApi\Operations\Maintenance\Backup\ServerWideBackup.cs /}

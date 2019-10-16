@@ -42,14 +42,14 @@ namespace SlowTests.Server.Documents.PeriodicBackup
                     //Backups are stored in this folder first, and sent from it to remote destinations (if defined).
                     LocalSettings = new LocalSettings
                     {
-                        FolderPath = "test/folder"
+                        FolderPath = "localFolderPath"
                     },
 
                     //Microsoft Azure settings.
                     AzureSettings = new AzureSettings
                     {
-                        AccountKey = "Test",
-                        AccountName = "Test",
+                        AccountKey = "Azure Account Key",
+                        AccountName = "Azure Account Name",
                         RemoteFolderName = "john/backups"
                     },
 
@@ -62,7 +62,7 @@ namespace SlowTests.Server.Documents.PeriodicBackup
                     //Google Cloud Backup settings
                     GoogleCloudSettings = new GoogleCloudSettings
                     {
-                        BucketName = "RavenBucket",
+                        BucketName = "Google Cloud Bucket",
                         RemoteFolderName = "BackupFolder",
                         GoogleCredentialsJson = "GoogleCredentialsJson"
                     },
@@ -70,9 +70,9 @@ namespace SlowTests.Server.Documents.PeriodicBackup
                     //Amazon S3 bucket settings.
                     S3Settings = new S3Settings
                     {
-                        AwsAccessKey = "your access key here",
-                        AwsSecretKey = "your secret key here",
-                        AwsRegionName = "OPTIONAL",
+                        AwsAccessKey = "Amazon S3 Access Key",
+                        AwsSecretKey = "Amazon S3 Secret Key",
+                        AwsRegionName = "Amazon S3 Region Name",
                         BucketName = "john-bucket",
                         RemoteFolderName = "john/backups"
                     },
@@ -80,10 +80,11 @@ namespace SlowTests.Server.Documents.PeriodicBackup
                     //Amazon Glacier settings.
                     GlacierSettings = new GlacierSettings
                     {
-                        AwsAccessKey = "your access key here",
-                        AwsSecretKey = "your secret key here",
-                        AwsRegionName = "OPTIONAL",
+                        AwsAccessKey = "Amazon Glacier Access Key",
+                        AwsSecretKey = "Amazon Glacier Secret Key",
+                        AwsRegionName = "Amazon Glacier Region Name",
                         VaultName = "john-glacier",
+                        RemoteFolderName = "john/backups"
                     },
                 };
 
