@@ -95,6 +95,13 @@ RavenDB's **root OID** is: **1.3.6.1.4.1.45751.1.1.**
 | 1.4 | Server process ID |
 | 1.5.1 | Process CPU usage in % |
 | 1.5.2 | Machine CPU usage in % |
+| 1.5.3.1 | CPU Credits Base |
+| 1.5.3.2 | CPU Credits Max |
+| 1.5.3.3 | CPU Credits Remaining |
+| 1.5.3.4 | CPU Credits Gained Per Second |
+| 1.5.3.5 | CPU Credits Background Tasks Alert Raised |
+| 1.5.3.6 | CPU Credits Failover Alert Raised |
+| 1.5.3.7 | CPU Credits Any Alert Raised |
 | 1.6.1 | Server allocated memory in MB |
 | 1.7.1 | Number of concurrent requests |
 | 1.7.2 | Total number of requests since server startup |
