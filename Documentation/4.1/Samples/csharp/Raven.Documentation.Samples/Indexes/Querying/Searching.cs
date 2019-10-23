@@ -2,6 +2,7 @@
 using System.Linq;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
+using Raven.Client.Documents.Queries;
 
 namespace Raven.Documentation.Samples.Indexes.Querying
 {
@@ -71,7 +72,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     #region search_3_0
                     IList<User> users = session
                         .Query<User>()
-                        .Search(x => x.Name, "John Adam")
+                        .Search(x => x.Name, "John Steve")
                         .ToList();
                     #endregion
                 }
@@ -82,7 +83,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     IList<User> users = session
                         .Advanced
                         .DocumentQuery<User>()
-                        .Search(x => x.Name, "John Adam")
+                        .Search(x => x.Name, "John Steve")
                         .ToList();
                     #endregion
                 }
@@ -119,7 +120,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     #region search_5_0
                     List<User> users = session
                         .Query<User>()
-                        .Search(x => x.Name, "Adam")
+                        .Search(x => x.Name, "Steve")
                         .Search(x => x.Hobbies, "sport")
                         .ToList();
                     #endregion
@@ -131,7 +132,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     List<User> users = session
                         .Advanced
                         .DocumentQuery<User>()
-                        .Search(x => x.Name, "Adam")
+                        .Search(x => x.Name, "Steve")
                         .Search(x => x.Hobbies, "sport")
                         .ToList();
                     #endregion
@@ -201,7 +202,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     #region search_8_0
                     IList<User> users = session
                         .Query<User>()
-                        .Search(x => x.Name, "Adam")
+                        .Search(x => x.Name, "Steve")
                         .Search(x => x.Hobbies, "sport", options: SearchOptions.And)
                         .ToList();
                     #endregion
@@ -213,7 +214,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     IList<User> users = session
                         .Advanced
                         .DocumentQuery<User>()
-                        .Search(x => x.Name, "Adam")
+                        .Search(x => x.Name, "Steve")
                         .AndAlso()
                         .Search(x => x.Hobbies, "sport")
                         .ToList();
@@ -253,7 +254,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     #region search_10_0
                     IList<User> users = session
                         .Query<User>()
-                        .Search(x => x.Name, "Adam")
+                        .Search(x => x.Name, "Steve")
                         .Search(x => x.Hobbies, "sport", options: SearchOptions.Not | SearchOptions.And)
                         .ToList();
                     #endregion
@@ -265,7 +266,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     IList<User> users = session
                         .Advanced
                         .DocumentQuery<User>()
-                        .Search(x => x.Name, "Adam")
+                        .Search(x => x.Name, "Steve")
                         .AndAlso()
                         .Not
                         .Search(x => x.Hobbies, "sport")
@@ -366,6 +367,52 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .Advanced
                         .DocumentQuery<User, Users_Search>()
                         .Search("Query", "John")
+                        .ToList();
+                    #endregion
+                }
+            }
+
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region search_22_0
+                    IList<User> users = session
+                        .Query<User>()
+                        .Search(x => x.Name, "John Steve", @operator: SearchOperator.Or)
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region search_22_1
+                    IList<User> users = session
+                        .Advanced
+                        .DocumentQuery<User>()
+                        .Search("Name", "John Steve", @operator: SearchOperator.Or)
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region search_22_2
+                    IList<User> users = session
+                        .Query<User>()
+                        .Search(x => x.Name, "John Steve", @operator: SearchOperator.And)
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region search_22_3
+                    IList<User> users = session
+                        .Advanced
+                        .DocumentQuery<User>()
+                        .Search("Name", "John Steve", @operator: SearchOperator.And)
+
                         .ToList();
                     #endregion
                 }

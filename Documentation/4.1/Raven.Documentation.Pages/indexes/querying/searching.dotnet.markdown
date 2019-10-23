@@ -1,14 +1,14 @@
 # Querying: Searching
 
 When you need to do a more complex text searching, use the `Search` extension method (in `Raven.Client.Documents` namespace). This method allows you to pass a few search terms that will be used in the searching process for a particular field. Here is a sample code
-that uses the `Search` extension to get users with the name *John* or *Adam*:
+that uses the `Search` extension to get users with the name *John* or *Steve*:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query search_3_0@Indexes\Querying\Searching.cs /}
 {CODE-TAB:csharp:DocumentQuery search_3_1@Indexes\Querying\Searching.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Users
-where search(Name, 'John Adam')
+where search(Name, 'John Steve')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -36,7 +36,7 @@ By using the `Search` extension, you are also able to look for multiple indexed 
 {CODE-TAB:csharp:DocumentQuery search_5_1@Indexes\Querying\Searching.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Users
-where search(Name, 'Adam') or search(Hobbies, 'sport')
+where search(Name, 'Steve') or search(Hobbies, 'sport')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -61,12 +61,12 @@ This search will promote users who do sports before book readers and they will b
 
 ## Search Options
 
-In order to specify the logic of a search expression, specify the options argument of the `Search` method. It is a `SearchOptions` enum with the following values:
+In order to specify the logic of a search expression, specify the `options` argument of the `Search` method. It is a `SearchOptions` enum with the following values:
 
-* Or,
-* And,
-* Not,
-* Guess (default).
+* `Or`
+* `And`
+* `Not`
+* `Guess` (default)
 
 By default, RavenDB attempts to guess and match up the semantics between terms. If there are consecutive searches, they will be OR together, otherwise the AND semantic will be used.
 
@@ -95,7 +95,7 @@ will result in the following RQL query:
 
 {CODE-BLOCK:csharp}
 from Users
-where search(Name, 'Adam') and search(Hobbies, 'sport')
+where search(Name, 'Steve') and search(Hobbies, 'sport')
 {CODE-BLOCK/}
 
 If you want to negate the term use `SearchOptions.Not`:
@@ -109,7 +109,7 @@ According to RQL syntax it will be transformed into the query:
 
 {CODE-BLOCK:csharp}
 from Users
-where exists(Name) and not search(James, 'Adam')
+where exists(Name) and not search(Name, 'Steve')
 {CODE-BLOCK/}
 
 You can treat `SearchOptions` values as bit flags and create any combination of the defined enum values,
@@ -123,8 +123,37 @@ It will produce the following RQL query:
 
 {CODE-BLOCK:csharp}
 from Users
-where search(Name, 'Adam') and (exists(Hobbies) and not search(Hobbies, 'sport'))
+where search(Name, 'Steve') and (exists(Hobbies) and not search(Hobbies, 'sport'))
 {CODE-BLOCK/}
+
+## Search Operator
+
+The argument `@operator` determines the operator between different terms of the same search, and can be set to:
+
+* `SearchOperator.Or` (the default value)
+* `SearchOperator.And`
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query search_22_0@Indexes\Querying\Searching.cs /}
+{CODE-TAB:csharp:DocumentQuery search_22_1@Indexes\Querying\Searching.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from Users
+where search(Name, 'John Steve', or)
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+This query retrieves documents with a field `Name` that contains 'John' _or_ 'Steve' - or both.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query search_22_2@Indexes\Querying\Searching.cs /}
+{CODE-TAB:csharp:DocumentQuery search_22_3@Indexes\Querying\Searching.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from Users
+where search(Name, 'John Steve', and)
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+This query only retrieves documents with a field `Name` that contains both 'John' _and_ 'Steve'.
 
 ## Using Wildcards
 

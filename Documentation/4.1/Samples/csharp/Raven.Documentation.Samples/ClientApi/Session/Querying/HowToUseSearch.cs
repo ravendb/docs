@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Linq;
+using Raven.Client.Documents.Queries;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
@@ -18,7 +19,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     Expression<Func<T, object>> fieldSelector,
                     string searchTerms,
                     decimal boost = 1,
-                    SearchOptions options = SearchOptions.Guess)
+                    SearchOptions options = SearchOptions.Guess,
+                    SearchOperator @operator = SearchOperator.Or)
             #endregion
                 ;
         }
@@ -63,7 +65,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     #region search_2
                     List<User> users = session
                         .Query<User, Users_ByNameAndHobbies>()
-                        .Search(x => x.Name, "Adam")
+                        .Search(x => x.Name, "Steve")
                         .Search(x => x.Hobbies, "sport")
                         .ToList();
                     #endregion
@@ -74,7 +76,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     #region search_2_async
                     List<User> users = await asyncSession
                         .Query<User, Users_ByNameAndHobbies>()
-                        .Search(x => x.Name, "Adam")
+                        .Search(x => x.Name, "Steve")
                         .Search(x => x.Hobbies, "sport")
                         .ToListAsync();
                     #endregion

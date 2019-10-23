@@ -6,12 +6,13 @@ More complex text searching can be achieved by using the `Search` extension meth
 
 {CODE search_1@ClientApi\Session\Querying\HowToUseSearch.cs /}
 
-| Parameters | | |
+| Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **fieldSelector** | Expression<Func&lt;TResult&gt;> | Points index field that should be used for querying. |
-| **searchTerms** | string | Space separated terms e.g. 'John Adam' means that we will look in selected field for 'John' or 'Adam'. Wildcards can be specified. |
+| **searchTerms** | string | Space separated terms e.g. 'John Steve' means that we will look in selected field for 'John' or 'Steve'. Wildcards can be specified: `?` for a single character, `*` for a substring. |
 | **boost** | decimal | Boost value. Default: `1`. |
-| **options** | SearchOptions | Explicitly set relation between each Search function. One of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
+| **options** | [SearchOptions](../../../indexes/querying/searching#search-options) | Explicitly set relation between each Search function. Can be set to one of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
+| **@operator** | [SearchOperator](../../../indexes/querying/searching#search-operator) | The operator between the individual terms. Can be set to `Or` or `And`. Default: `SearchOperation.Or`. |
 
 ## Example I - Dynamic Query
 
@@ -31,7 +32,7 @@ where search(Name, 'a*')
 {CODE-TAB:csharp:Async search_2_async@ClientApi\Session\Querying\HowToUseSearch.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Users/ByNameAndHobbies' 
-where search(Name, 'Adam') or search(Hobbies, 'sport')
+where search(Name, 'Steve') or search(Hobbies, 'sport')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
