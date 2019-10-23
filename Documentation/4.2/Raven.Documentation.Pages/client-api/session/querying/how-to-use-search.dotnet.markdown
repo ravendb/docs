@@ -9,7 +9,7 @@ More complex text searching can be achieved by using the `Search` extension meth
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **fieldSelector** | Expression<Func&lt;TResult&gt;> | Points index field that should be used for querying. |
-| **searchTerms** | string | Space separated terms e.g. 'John Steve' means that we will look in selected field for 'John' or 'Steve'. Wildcards can be specified: `?` for a single character, `*` for a substring. |
+| **searchTerms** | string <br/>(or `IEnumerable<string>`) | Space separated terms e.g. 'John Steve' means that we will look in selected field for 'John' or 'Steve'. <br/>Different [analyzers](../../../indexes/using-analyzers) separate the search value into terms differently. Alternatively, you can pass an array (or other `IEnumerable`) of search terms. <br/>Wildcards can be specified: `?` for a single character, `*` for a substring. |
 | **boost** | decimal | Boost value. Default: `1`. |
 | **options** | [SearchOptions](../../../indexes/querying/searching#search-options) | Explicitly set relation between each Search function. Can be set to one of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
 | **@operator** | [SearchOperator](../../../indexes/querying/searching#search-operator) | The operator between the individual terms. Can be set to `Or` or `And`. Default: `SearchOperation.Or`. |

@@ -12,7 +12,7 @@ where search(Name, 'John Steve')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-Each of the search terms (separated by space character) will be checked independently. The result documents must match exactly one of the passed terms.
+Each of the search terms (separated by space character) will be checked independently. The result documents must match one or more of the passed terms.
 
 In the same way, you can also look for users that have some hobby:
 
@@ -26,6 +26,15 @@ where search(Name, 'looking for someone who likes sport books computers')
 {CODE-TABS/}
 
 The results will return users that are interested in *sport*, *books* or *computers*.
+
+Different [analyzers](../../../indexes/using-analyzers) can separate the search value into terms differently. You can also pass the desired terms as an array or other IEnumerable:
+
+{CODE-BLOCK:csharp}
+IList<User> users = session
+    .Query<User>()
+    .Search(x => x.Name, new[] { "John", "Steve" })
+    .ToList();
+{CODE-BLOCK/}
 
 ## Multiple Fields
 

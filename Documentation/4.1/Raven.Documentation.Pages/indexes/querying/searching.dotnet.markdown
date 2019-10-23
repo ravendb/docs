@@ -12,7 +12,7 @@ where search(Name, 'John Steve')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-Each of the search terms (separated by space character) will be checked independently. The result documents must match exactly one of the passed terms.
+Each of the search terms (separated by space character) will be checked independently. The result documents must match one or more of the passed terms.
 
 In the same way, you can also look for users that have some hobby:
 

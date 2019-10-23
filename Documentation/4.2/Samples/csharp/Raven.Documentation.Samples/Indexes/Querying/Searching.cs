@@ -65,6 +65,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
         public Searching()
         {
+
             using (var store = new DocumentStore())
             {
                 using (var session = store.OpenSession())
