@@ -34,13 +34,21 @@ Switching to RavenDB has eliminated all above technical complexities. ZAP was ab
 
 **Replication:** After trying replication using MSSQL and finding it difficult and expensive, Zap easily managed the same task with RavenDB, using just a few lines of code. Scaling-up was easy – a server can be added with just a few clicks to a data-cluster that is self-managed. Nodes failover, documents conflict resolution, load-balancing, are all self-handled by RavenDB’s distributed system. The data itself is highly-available as RavenDB’s multi-master replication enables users to read and write on any node in the data cluster.
 
-<div class="pull-left margin-right quote-textbox-left" style="text-align: left">All ZAP's sites are using RavenDB's search capabilities now.</div>
+<div class="pull-left margin-right">
+    <div class="quote-textbox-left">
+        All ZAP's sites are using RavenDB's search capabilities now.
+    </div>
+</div>
 
 **Performance:** ZAP’s business model is based on fast data reads. A website speed, which is at the top of SEO considerations, directly impacts sales, especially for online businesses. Amazon found out that for every additional 100ms of latency their users suffer, revenue drops 1%. By using RavenDB, their average page load-time has dropped dramatically. Added to that, the amount of data provided per page has increased, thus providing a better service and user experience. This translated to better site engagement, higher ROI, and more money for the company. 
 
 **Less Resources:** As performance has more than doubled, ZAP was able to reduce the number of deployed servers. Only 2 RavenDB servers were needed to support all their websites.
 
-<div class="pull-right margin-left quote-textbox-right">RavenDB is easy and fast to develop on.</div>
+<div class="pull-right margin-left">
+    <div class="quote-textbox-right">
+        RavenDB is easy and fast to develop on.
+    </div>
+</div>
 
 <p style="text-align: justify;"><strong>Reduced TCO:</strong> Everything they needed was already an integral part of RavenDB, making it easy to set up and use, saving them time and developers’ resources - as well as freeing up the DBA to put out other fires. This dramatically reduced TCO, compounding annual OPEX savings.</p>
 

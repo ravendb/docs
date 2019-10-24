@@ -39,7 +39,7 @@ One of the big topics we are all talking about is the worrying trend in complexi
 We have gotten to the point where the level of complexity in today's application is explosive and untenable.
 <br/>
 <br/>
-<div class="text-center"><iframe width="560" height="315" src="https://www.youtube.com/embed/17PkUsTVa7g?start=185&end=406;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<div class="text-center"><iframe style="display: block; max-width: 100%; margin: auto;" width="560" height="315" src="https://www.youtube.com/embed/17PkUsTVa7g?start=185&end=406;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 <br/>
 ## We Need To Reduce Complexity
 
@@ -57,7 +57,6 @@ We are a part of today's latest trend in technology: Less is More.
 
 <br/>
 <div class="text-center">
-    <a href="https://ravendb.net/whitepapers/mongodb-ravendb-best-nosql-open-source-document-database"><img src="images/ravendb-vs-mongodb.png" alt="RavenDB vs MongoDB Whitepaper"/></a>
-
+    <a href="https://ravendb.net/whitepapers/mongodb-ravendb-best-nosql-open-source-document-database"><img src="images/ravendb-vs-mongodb.png" class="img-responsive" style="margin: auto;" alt="RavenDB vs MongoDB Whitepaper"/></a>
 </div>
 <br/>
