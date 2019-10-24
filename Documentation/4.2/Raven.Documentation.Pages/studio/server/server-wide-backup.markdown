@@ -61,12 +61,22 @@ The settings are similar to those of a [regular backup task](../../studio/databa
    Define the minimum amount of time to keep Backups (and Snapshots) in the system.  
   
 5. **Encryption**  
-   Choose whether to [encrypt your backup files](../../client-api/operations/maintenance/backup/encrypted-backup#backup-encryption).  
-  
+   ![Figure 4. Encryption](images/server-wide-backup_04-encryption.png)  
+   * [Logical backups](../../client-api/operations/maintenance/backup/backup#logical-backup) 
+     of unencrypted databases, will be encrypted using the key you provide here.  
+     You can use either the key suggested by RavenDB, or a valid key from any other source.  
+     **Be sure not to lose your encryption key. We do not keep a copy of it, losing it means losing access to your backups' contents.**  
+   * Logical backups of [encrypted databases](../../studio/server/databases/create-new-database/encrypted#create-a-database-encrypted), 
+     will use the database's encryption key even if you provide a different key here.  
+   * Backup files (both logical backups and [snapshot images](../../client-api/operations/maintenance/backup/backup#snapshot)) 
+     of encrypted databases will always be encrypted, regardless of the settings here, using the database encryption key.  
+   * Snapshot images of unencrypted databases will always be unencrypted, regardless of the settings here, 
+     since a snapshot is a faithful bitmap copy of the database.  
+
 6. **Destination**  
    Backup files can be stored locally and/or remotely.  
    Backup files are created in a separate child folder per database, under a common root folder.  
-   ![Figure 4. Destination](images/server-wide-backup_04-destination-local.png)  
+   ![Figure 5. Destination](images/server-wide-backup_05-destination-local.png)  
 {PANEL/}
 
 {PANEL: Restoring a Database From a Server-Wide Backup}
