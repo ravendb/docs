@@ -3,94 +3,143 @@
 
 {NOTE: }
 
-* RavenDB regards backup not a one-time operation but an ongoing requirement, and lets you 
-  fulfill it almost effortlessly by scheduling ongoing backup tasks that run in the background. 
-  For instance, you can invest a few minutes in scheduling a daily full backup task and an hourly 
-  incremental backup task, that will from then on require none of your attention.  
+* RavenDB lets you define a [single-database backup task](../../studio/database/tasks/ongoing-tasks/backup-task) 
+  **or** a server-wide backup task.  
+
+* The server-wide backup task backs up all the databases in your cluster.  
+  When scheduling a server-wide backup task, RavenDB actually creates a regular ongoing backup task 
+  for each database in the cluster, and a backup will be created for each database at the specified scheduled time.  
+  The prefix 'Server Wide' is added to the name of the created ongoing backup tasks.  
   
-* You can create [per-database](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task) 
-  backup tasks, or minimize your efforts even further and schedule **server-wide** tasks that backup 
-  all your databases at once.  
-  
-* Server-wide backups are similar to their [per-database equivalents](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task): 
-  You can create [full](../../client-api/operations/maintenance/backup/backup#full-backup) 
-  and [incremental](../../client-api/operations/maintenance/backup/backup#incremental-backup) backup tasks 
-  in [logical backup ](../../client-api/operations/maintenance/backup/backup#logical-backup) or 
+* Server-wide backups are similar to their per-database equivalents.  
+  You can create [Full](../../client-api/operations/maintenance/backup/backup#full-backup) 
+  and [Incremental](../../client-api/operations/maintenance/backup/backup#incremental-backup) backup tasks 
+  in [Logical Backup ](../../client-api/operations/maintenance/backup/backup#logical-backup) or 
   [Snapshot](../../client-api/operations/maintenance/backup/backup#snapshot) format, and store your 
   files locally or in a variety of remote locations.  
 
 * In this page:  
-  * [Scheduling a server-wide backup task](../../studio/server/server-wide-backup#scheduling-a-server-wide-backup-task)  
-  * [Restoring a server-wide backup](../../studio/server/server-wide-backup#restoring-a-server-wide-backup)  
+  * [Scheduling a Server-Wide Backup Task](../../studio/server/server-wide-backup#scheduling-a-server-wide-backup-task)  
+  * [Restoring a Database From a Server-Wide Backup](../../studio/server/server-wide-backup#restoring-a-database-from-a-server-wide-backup)  
+  * [The Responsible Node](../../studio/server/server-wide-backup#the-responsible-node)  
+  * [Server-Wide Backup tasks in the *Manage Ongoing Tasks* view](../../studio/server/server-wide-backup#server-wide-backup-tasks-in-the-manage-ongoing-tasks-view)  
 
 {NOTE/}
 
 ---
 
-{PANEL: Scheduling a server-wide backup task}
+{PANEL: Scheduling a Server-Wide Backup Task}
 
-**To schedule a server-wide backup task:**  
-  
-Open the menu option **Manage Server**.  
+Open the **Manage Server** option from the main menu.  
 ![Figure 1. Server-Wide Backup](images/server-wide-backup_01-manage-server.png)  
 
 ---
 
-**Add a task**.  
+**The Server-Wide Backup View**  
 ![Figure 2. Add Task](images/server-wide-backup_02-new-task.png)  
 
-*  
-  **A.** Click the **Server-Wide Backup** button  
-  **B.** Click the **Add Server-Wide Backup Task** button to add a new task  
+1. Click the **Server-Wide Backup** button  
+2. Click the **Add Server-Wide Backup Task** button to add a new task  
 
 ---
 
 **Configure the new backup task**.  
 ![Figure 3. Task Configuration](images/server-wide-backup_03-task-configuration.png)  
+The settings are similar to those of a [regular backup task](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task).  
 
-* **A.** **Task Name**: this task's name in the server-wide tasks list.  
-   ![Figure 4. Task Name](images/server-wide-backup_04-task-name.png)  
+1. **Task Name**  
+   Enter the server-wide backup task name.  
   
-* **B.** **Backup type**: either "backup" for a [logical backup](../../client-api/operations/maintenance/backup/backup#logical-backup) 
-  or "snapshot" for a [snapshot image](../../client-api/operations/maintenance/backup/backup#snapshot).  
-  ![Figure 5. Schedule a backup](images/server-wide-backup_05-backup-type.png)  
+2. **Backup type**  
+   Select 'Backup' for a [logical backup](../../client-api/operations/maintenance/backup/backup#logical-backup) 
+   or 'Snapshot' for a [snapshot image](../../client-api/operations/maintenance/backup/backup#snapshot).  
   
-* **C.** **Schedule**: when and how often would full and/or incremental backups be executed.  
-  Be aware that scheduling only an incremental backup would still create one full backup, 
-  that the incremental backups would then keep updating.  
-  ![Figure 6. Schedule a backup](images/server-wide-backup_06-schedule.png)  
+3. **Schedule**  
+   Define task contents (Full and/or Incremental) and schedule execution time.  
  
-* **D.** **Retention Policy**: whether and by what age should backup files be deleted.  
-  ![Figure 7. Retention Policy](images/server-wide-backup_07-retention-policy.png)  
+4. **Retention Policy**  
+   Define the minimum amount of time to keep Backups (and Snapshots) in the system.  
   
-* **E.** **Encryption**: choose whether to [encrypt your backup files](../../client-api/operations/maintenance/backup/encrypted-backup#backup-encryption).  
-  If your [database is encrypted](../../studio/server/databases/create-new-database/encrypted#create-a-database-encrypted), you backup will be encrypted using the same key.  
-  If your database is **not encrypted**, you can encrypt your backup using the key provided here or a valid key you got from another source.  
-  {NOTE: }
-  Please be very careful not to lose your encryption key.  
-  We do **not** keep copies of it, and losing it means you will no longer have access to your backups' contents.  
-  {NOTE/}
-  ![Figure 8. Encryption](images/server-wide-backup_08-encryption.png)  
+5. **Encryption**  
+   Choose whether to [encrypt your backup files](../../client-api/operations/maintenance/backup/encrypted-backup#backup-encryption).  
   
-* **F.** **Destination**: you can store your backups locally and/or remotely.  
-  Both local and remote (e.g. S3 bucket) backups keep your databases in separate child folders under a common root folder.  
-  ![Figure 9. Destination](images/server-wide-backup_09-destination-local.png)  
-  ![Figure 10. Destination](images/server-wide-backup_10-destination-folders.png)  
+6. **Destination**  
+   Backup files can be stored locally and/or remotely.  
+   Backup files are created in a separate child folder per database, under a common root folder.  
+   ![Figure 4. Destination](images/server-wide-backup_04-destination-local.png)  
 {PANEL/}
 
-{PANEL: Restoring a server-wide backup}
+{PANEL: Restoring a Database From a Server-Wide Backup}
 
-There is no difference between restoring databases backed up using the [server-wide procedure](../../studio/server/server-wide-backup#scheduling-a-server-wide-backup-task) 
-and ones [backed up separately](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task).  
-In either case, you can restore them by [Creating a New Database from Backup](../../studio/server/databases/create-new-database/from-backup#create-a-database-from-backup).  
+There is no difference between restoring a database from a backup file created by the 
+[server-wide procedure](../../studio/server/server-wide-backup#scheduling-a-server-wide-backup-task) 
+and a [separately created backup](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task).  
+In both cases, you can restore the database by 
+[Creating a New Database from Backup](../../studio/server/databases/create-new-database/from-backup#create-a-database-from-backup).  
 
-* There is no way to restore several databases at once.  
-* Backups created by the server-wide procedure are kept in separate child folders under a common root folder.  
-  When you provide the backup file link, provide that of the specific database you want to restore.  
-
+* While the server-wide backup task creates backups for all your databases at once, 
+  the restore procedure can only restore a single database at a time.  
+* When restoring a database from a backup file created by the server-wide procedure, make sure you provide the 
+  link to the specific database backup file and not the common root folder that was created by the server-wide task.
 
 {PANEL/}
-## Related articles
-[Per-Database Backup Ongoing Task](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task)  
-[Backup Encryption](../../client-api/operations/maintenance/backup/encrypted-backup#backup-encryption)  
+
+---
+
+{PANEL: The Responsible Node}
+
+* When defining a server-wide backup, the user is not given the option to select a 
+  [responsible node](../../studio/server/server-wide-backup#the-responsible-node) manually, 
+  since the responsible node can differ per database depending on the nodes the database resides on 
+  (the [database-group](../../studio/database/settings/manage-database-group#database-group)).  
+  For each database, the responsible node for the task is set by the cluster to one of the database group nodes.
+
+* Since defining a server-wide backup actually creates regular backup tasks, 
+  the behavior of a server-wide task when the cluster or responsible-node is down is identical to that of a regular backup task.  
+  See [Backup Task - When Cluster or Node are Down](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---when-cluster-or-node-are-down).  
+
+{PANEL/}
+
+---
+
+{PANEL: Server-Wide Backup tasks in the Manage-Ongoing-Tasks view}
+
+Use a database's **Manage Ongoing Tasks** page to list all the tasks related to this database, 
+both those created [specifically for this database](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task) 
+and those created for all databases using the 
+[server-wide backup page](../../studio/server/server-wide-backup#scheduling-a-server-wide-backup-task).  
+
+* Choose the database you're interested in.  
+  ![Figure 11. Choose Database](images/ongoing-tasks-view_00-choose-database.png)  
+
+* Open the Manage Ongoing Tasks page to visit this database's tasks.  
+  ![Figure 12. Manage-Ongoing-Tasks View](images/ongoing-tasks-view_01.png)  
+
+   1. Clicking this option will open the **Manage Ongoing Tasks** page.  
+   2. This is a **regular backup task**, with its detailed-view toggled off.
+   3. Click this button to **toggle the detailed-view** on or off.  
+   4. This is a **server-wide backup task**, with its detailed-view toggled on.  
+      Though it is a server-wide task, clicking *Backup Now* would back up only the currently-chosen database.  
+   5. Clicking this button will **open the server-wide tasks page**.  
+      Changes you make to the task would apply to all databases.  
+   6. This is another **server-wide backup task**, with its detailed-view toggled off.  
+   7. Clicking this button will **open the server-wide tasks page**.  
+
+* A graphical view of the selected-database [group](../../studio/database/settings/manage-database-group#database-group) 
+  shows which node is responsible for which task.  
+  ![Figure 13. Topology View](images/ongoing-tasks-view_02-topology-view.png)  
+
+{PANEL/}
+
+##Related articles  
+
+**Server**  
+[Backup Overview](../../server/ongoing-tasks/backup-overview)  
+
+**Studio**  
+[Ongoing Backup Tasks](../../studio/database/tasks/ongoing-tasks/backup-task)  
+[Restore: Create a Database From Backup](../../studio/server/databases/create-new-database/from-backup#create-a-database-from-backup)  
 [Database Encryption](../../studio/server/databases/create-new-database/encrypted#create-a-database-encrypted)  
+
+**Client API**  
+[Backup Encryption](../../client-api/operations/maintenance/backup/encrypted-backup#backup-encryption)  
