@@ -5,23 +5,21 @@
 {NOTE: }  
 
 * Use this endpoint with the `**DELETE**` method to delete one document from the database:  
-`<server URL>/databases/<database name>/docs`
+`<server URL>/databases/<database name>/docs?id=<document ID>`  
 
 * In this page:    
-      * [Example](../../../client-api/commands/documents/delete#example)
-      * [Request Format](../../../client-api/commands/documents/delete#request-format)
-      * [Response Format](../../../client-api/commands/documents/delete#response-format)
-
+    * [Basic Example](../../../client-api/rest-api/document-commands/delete-document#basic-example)  
+    * [Request Format](../../../client-api/rest-api/document-commands/delete-document#request-format)  
+    * [Response Format](../../../client-api/rest-api/document-commands/delete-document#response-format)  
 
 {NOTE/}  
 
 ---
 
-{PANEL: }
+{PANEL: Basic Example}
 
-### Example
-
-An example request sent to the RavenDB playground server:
+An example cURL request to a database named "Example" on our [playground server](http://live-test.ravendb.net) to delete the document 
+"employees/1-A":  
 
 {CODE-BLOCK: bash}
 curl -X DELETE http://live-test.ravendb.net/databases/Example/docs?id=employees/1-A
@@ -38,7 +36,9 @@ Connection: keep-alive
 Raven-Server-Version: 4.2.3.42
 {CODE-BLOCK/}
 
-### Request
+{PANEL/}
+
+{PANEL: Request Format}
 
 {CODE-BLOCK: bash}
 curl -X DELETE <server URL>/databases/<database name>/docs?id=<document ID> \
@@ -53,7 +53,9 @@ curl -X DELETE <server URL>/databases/<database name>/docs?id=<document ID> \
 | - | - | - |
 | **If-Match** | Expected [change vector](../../../server/clustering/replication/change-vector). If it matches the server-side change vector the document is deleted, if they don't match a concurrency exception is thrown. | No |
 
-### Response
+{PANEL/}
+
+{PANEL: Response Format}
 
 | Header | Description |
 | - | - |

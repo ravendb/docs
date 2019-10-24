@@ -16,6 +16,7 @@
 * In this page:  
   * [Basic Example](../../../client-api/rest-api/document-commands/batch-commands#basic-example)  
   * [Request Format](../../../client-api/rest-api/document-commands/batch-commands#request-format)  
+      * [Commands](../../../client-api/rest-api/document-commands/batch-commands#commands)  
   * [Response Format](../../../client-api/rest-api/document-commands/batch-commands#response-format)  
   * [More Examples](../../../client-api/rest-api/document-commands/batch-commands#more-examples)  
 {NOTE/}
@@ -95,7 +96,7 @@ Raven-Server-Version: 4.2.4.42
 
 {PANEL: Request Format}
 
-This is the general form of a cURL request for a batch that does _not_ include a put attachment command (see the Put Attachment Command format 
+This is the general form of a cURL request for any batch of commands that does _not_ include a put attachment command (see the Put Attachment Command format 
 [below](../../../client-api/rest-api/document-commands/batch-commands#put-attachment-command)):  
 
 {CODE-BLOCK: bash}
@@ -103,7 +104,7 @@ curl -X POST <server URL>/databases/<database name>/bulk_docs?<batch options> \
 -H 'Content-Type: application/json' \
 -d '{
     "Commands": [
-        { },
+        { <command> },
         ...
     ]
 }'
@@ -121,7 +122,7 @@ The header `Content-Type` is required and takes one of two values:
 
 * `application/json` - if the batch _does not_ include a Put Attachment Command.  
 * `multipart/mixed; boundary=<separator>` - if the batch [_does_](../../../client-api/rest-api/document-commands/batch-commands#put-attachment-command) include a put attachment command. 
-The `separator` is used to demarcate the attachment streams.  
+The "separator" is used to demarcate the attachment streams.  
 <br/>
 #### Body
 
@@ -141,33 +142,35 @@ The following commands can be sent using the batch command:
 These options, configured in the query string, make the server wait until indexing or replication have completed before responding. If these have not 
 completed before a specified amount of time has passed, the server can either respond as normal or throw an exception.  
 
-{CODE-BLOCK: bash}
-curl -X POST <server URL>/databases/<database name>/bulk_docs? \
-    <option>=<value>& \
-    <option>=<value>& \
-    ... \
+This is the general form of a cURL request that includes batch options in the query string:
+
+{CODE-BLOCK: html}
+curl -X POST <server_URL>/databases/<database_name>/bulk_docs?<batch option>=<value>& \
+             <batch option>=<value>& \
+             <batch option>=<value>& \
+             ... \
 -H Content-Type \
 -d '{ }'
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
-
-#### Index Options
+<br/>
+#### Indexing Options
 
 | Query Parameter | Type | Description |
 | - | - | - |
 | **waitForIndexesTimeout** | `TimeSpan` | The amount of time to wait for indexing to complete. [Format of `TimeSpan`](https://docs.microsoft.com/en-us/dotnet/api/system.timespan). |
 | **waitForIndexThrow** | `boolean` | Set to `true` to throw an exception if the indexing doesn't complete before `waitForIndexesTimeout`.<br/>Set to `false` to recieve the normal response body. |
-| **waitForSpecificIndex** | `string[]` | If this parameter is used, wait only for the listed indexes to finish updating, rather than all indexes. |
+| **waitForSpecificIndex** | `string[]` | Wait only for the listed indexes to finish updating, rather than all indexes. |
 
 #### Replication Options
 
 | Query Parameter | Type | Description |
 | - | - | - |
 | **waitForReplicasTimeout** | `TimeSpan` | The amount of time to wait for replication to complete. [Format of `TimeSpan`](https://docs.microsoft.com/en-us/dotnet/api/system.timespan). |
-| **throwOnTimeoutInWaitForReplicas** | `boolean` | Set this parameter to `true` to throw an exception if the the replication doesn't complete before `waitForReplicasTimeout`.<br/>Set to `false` to recieve the normal response body. |
+| **throwOnTimeoutInWaitForReplicas** | `boolean` | Set to `true` to throw an exception if the replication doesn't complete before `waitForReplicasTimeout`.<br/>Set to `false` to recieve the normal response body. |
 | **numberOfReplicasToWaitFor** | `int`/`string` | The number of replicas that should be made before `waitForReplicasTimeout`. Set this parameter to `majority` to wait until the data has been replicated to a majority of the nodes in the database group. Default = `1`. |
 
----
+## Commands
 
 ### Put Document Command
 
@@ -190,10 +193,10 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 | Parameter | Description | Required |
 | - | - | - |
 | **Id** | ID of document to create or update | Yes |
-| **ChangeVector** | When updating an existing document - that document's expected change vector. If it does not match the server-side change vector a concurrency exception is thrown. An exception is thrown if the document does not exist. | No |
-| **Document** | JSON Document to create, or to replace the existing document | Yes |
+| **ChangeVector** | When updating an existing document, this parameter that document's expected [change vector](../../../server/clustering/replication/change-vector). If it does not match the server-side change vector a concurrency exception is thrown. <br/>An exception is also thrown if the document does not exist. | No |
+| **Document** | JSON document to create, or to replace the existing document | Yes |
 | **Type** | Set to `PUT` | Yes |
-| **ForceRevisionCreationStrategy** | When updating an existing document - set to `Before` to make a [revision](../../../server/extensions/revisions) of the document before it is updated. | No |
+| **ForceRevisionCreationStrategy** | When updating an existing document, set to `Before` to make a [revision](../../../server/extensions/revisions) of the document before it is updated. | No |
 
 ---
 
@@ -228,7 +231,7 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 | Parameter | Description | Required |
 | - | - | - |
 | **Id** | ID of document on which to execute the patch | Yes |
-| **ChangeVector** | The document's expected change vector. If it does not match the server-side change vector a concurrency exception is thrown. | No |
+| **ChangeVector** | The document's expected [change vector](../../../server/clustering/replication/change-vector). If it does not match the server-side change vector a concurrency exception is thrown. | No |
 | **Patch** | Contains a script that modifies the specified document. [Details below](../../../client-api/rest-api/document-commands/batch-commands#patch-request). | Yes |
 | **PatchIfMissing** | Contains an alternative script to be executed if no document with the given ID is found. This will create a new document with the given ID. [Details below](../../../client-api/rest-api/document-commands/batch-commands#patch-request). | No |
 | **Type** | Set to `PATCH` | Yes |
@@ -261,7 +264,7 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 | Parameter | Description | Required |
 | - | - | - |
 | **Id** | ID of document to delete (only one can be deleted per command) | Yes |
-| **ChangeVector** | The document's expected change vector. If it does not match the server-side change vector a concurrency exception is thrown. | No |
+| **ChangeVector** | The document's expected [change vector](../../../server/clustering/replication/change-vector). If it does not match the server-side change vector a concurrency exception is thrown. | No |
 | **Type** | Set to `DELETE` | Yes |
 
 ---
@@ -331,7 +334,7 @@ Command-Type: AttachmentStream
 | **Id** | Document ID | Yes |
 | **Name** | Name of attachment to create or update | Yes |
 | **ContentType** | Mime type of the attachment | No |
-| **ChangeVector** | The document's expected change vector. If it does not match the server-side change vector a concurrency exception is thrown. | No |
+| **ChangeVector** | The document's expected [change vector](../../../server/clustering/replication/change-vector). If it does not match the server-side change vector a concurrency exception is thrown. | No |
 | **Type** | Set to `AttachmentPUT` | Yes |
 
 ---
@@ -355,7 +358,7 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 | - | - | - |
 | **Id** | ID of document for which to delete the attachment | Yes |
 | Name | Name of the attachment to delete | Yes |
-| **ChangeVector** | The document's expected change vector. If it does not match the server-side change vector a concurrency exception is thrown. | No |
+| **ChangeVector** | The document's expected [change vector](../../../server/clustering/replication/change-vector). If it does not match the server-side change vector a concurrency exception is thrown. | No |
 | **Type** | Set to `AttachmentDELETE` | Yes |
 
 {PANEL/}
@@ -861,5 +864,5 @@ Raven-Server-Version:"4.2.4.42"
 - [What are Attachments](../../../client-api/session/attachments/what-are-attachments)  
 
 ### Server
-
+- [Change Vector](../../../server/clustering/replication/change-vector)
 - [Revisions](../../../server/extensions/revisions)

@@ -18,7 +18,7 @@
 
 {PANEL: Examples}
 
-These are cURL request to a database named "Example" on our [playground server](http://live-test.ravendb.net):  
+These are cURL requests to a database named "Example" on our [playground server](http://live-test.ravendb.net):  
 
 #### 1) Store new document "person/1-A" in the collection "People".  
 
@@ -54,7 +54,7 @@ Raven-Server-Version: 4.2.3.42
 }
 {CODE-BLOCK/}
 
-#### 2) Update that same document.  
+#### 2) Update the document `person/1-A`.  
 
 {CODE-BLOCK: bash}
 curl -X PUT http://live-test.ravendb.net/databases/Example/docs?id=person/1-A \
@@ -112,9 +112,8 @@ curl -X PUT <server URL>/databases/<database name>/docs?id=<document ID> \
 
 #### Request body
 
-The body contains a document to be stored under the given ID, or which will replace the contents of an existing document. 
-When updating an existing document, you'll need to include its [collection](../../../client-api/faq/what-is-a-collection) name in the metadata or an exception 
-will be thrown. The exceptions to this rule are documents that are in _no_ collection, a.k.a. the collection `@empty`. A document's collection cannot be modified.  
+The body contains a JSON document. This will replace the existing document with the specified ID if one exists, otherwise it 
+will become a new document with the specified ID.  
 
 {CODE-BLOCK: javascript}
 {
@@ -127,11 +126,15 @@ will be thrown. The exceptions to this rule are documents that are in _no_ colle
 }
 {CODE-BLOCK/}
 
+When updating an existing document, you'll need to include its [collection](../../../client-api/faq/what-is-a-collection) 
+name in the metadata or an exception will be thrown. Exceptions to this rule are documents in the collection `@empty` - 
+i.e. not in any collection. A document's collection cannot be modified.  
+
 {PANEL/}
 
 {PANEL: Response Format}
 
-The response body is JSON and contains the document ID and current change vector:
+The response body is JSON and contains the document ID and current [change vector](../../../server/clustering/replication/change-vector):
 
 {CODE-BLOCK: javascript}
 {
@@ -147,9 +150,9 @@ The response body is JSON and contains the document ID and current change vector
 
 | HTTP Status Code | Description |
 | - | - |
-| `201` | The document was successfully stored / the *existing* document was successfully updated |
+| `201` | The document was successfully stored / updated |
 | `409` | The change vector submitted did not match the server-side change vector. A concurrency exception is thrown. |
-| `500` | Server error. For example, when the updated document's collection tag does not match the existing document's collection tag. |
+| `500` | Server error. For example: when the submitted document's collection tag does not match the specified document's collection tag. |
 
 {PANEL/}
 

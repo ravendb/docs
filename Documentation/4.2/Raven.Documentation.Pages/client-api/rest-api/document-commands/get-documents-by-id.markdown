@@ -4,10 +4,10 @@
 
 {NOTE: }  
 
-* Use this endpoint with the **`GET`** method to retrieve documents from the database by their document IDs:  
+* Use this endpoint with the **`GET`** method to retrieve documents from the database according to their document IDs:  
 `<server URL>/databases/<database name>/docs?id=<document ID>`  
 
-* There are query parameters for including [related documents](../../../client-api/how-to/handle-document-relationships#includes) and 
+* Query parameters can be used to include [related documents](../../../client-api/how-to/handle-document-relationships#includes) and 
 [counters](../../../client-api/session/counters/overview).  
 
 * In this page:  
@@ -84,7 +84,8 @@ curl -X GET <server URL>/databases/<database name>/docs? \
             &metadataOnly=<boolean> \
 --header If-None-Match:<hash>
 {CODE-BLOCK/}
-
+Linebreaks are added for clarity.  
+<br/>
 ####Query String Parameters
 
 | Parameter | Description | Required / # |
@@ -98,7 +99,7 @@ curl -X GET <server URL>/databases/<database name>/docs? \
 
 | Header | Description | Required |
 | - | - | - |
-| **If-None-Match** | This header takes a hash representing the previous results of an **identical** request. The hash is found in the response header `ETag`. If the results were not modified since the previous request, the server responds with http status code `304` and the requested documents are retrieved from a local hash rather than over the network. | No |
+| **If-None-Match** | This header takes a hash representing the previous results of an **identical** request. The hash is found in the response header `ETag`. If the results were not modified since the previous request, the server responds with http status code `304` and the requested documents are retrieved from a local cache rather than over the network. | No |
 
 {PANEL/}
 
@@ -108,9 +109,9 @@ curl -X GET <server URL>/databases/<database name>/docs? \
 
 | Code | Description |
 | - | - |
-| `200` | Results are successfully retrieved. If a requested document could not be found, the result is `null`. |
-| `304` | None of the requested documents were modified since they were last loaded, so they were not retrieved from the server. |
-| `404` | No document with the specified ID was found. This code is only sent when _one_ document was requested, otherwise, see status code `200`. |
+| `200` | Results are successfully retrieved. If a requested document could not be found, the result returned is `null`. |
+| `304` | In response to an `If-None-Match` check: none of the requested documents were modified since they were last loaded, so they were not retrieved from the server. |
+| `404` | No document with the specified ID was found. This code is only sent when _one_ document was requested. Otherwise, see status code `200`. |
 
 ####Headers
 

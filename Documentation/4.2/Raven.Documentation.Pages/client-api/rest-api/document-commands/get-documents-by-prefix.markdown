@@ -7,7 +7,7 @@
 * Use this endpoint with the **`GET`** method to retrieve documents from the database by a common prefix in their document IDs:  
 `<server URL>/databases/<database name>/docs?startsWith=<document ID prefix>`  
 
-* There are various query parameters for filtering and paging the results.  
+* Query parameters can be used to filter and page the results.  
 
 * In this page:  
   * [Basic Example](../../../client-api/rest-api/document-commands/get-documents-by-prefix#basic-example)  
@@ -100,15 +100,15 @@ curl -X GET <server URL>/databases/<database name>/docs? \
 --header If-None-Match: <hash>
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
-
+<br/>
 ####Query String Parameters
 
 | Parameter | Description | Required  |
 | - | - | - |
 | **startsWith** | Retrieve all documents whose IDs begin with this string. If the value of this parameter is left empty, all documents in the database are retrieved. | Yes |
-| **matches** | Retrieve documents whose IDs are exactly `[startsWith]`+`[matches]`. Accepts multiple values separated by a pipe character: ' \| ' . Use `?` to represent any single character, and `*` to represent any string. | No |
-| **exclude** | _Exclude_ documents whose IDs are exactly `[startsWith]`+`[exclude]`. Accepts multiple values separated by a pipe character: ' \| ' . Use `?` to represent any single character, and `*` to represent any string. | No |
-| **startAfter** | Retrieve only the results after the first document ID that begins with this string. | No |
+| **matches** | Retrieve documents whose IDs are exactly `<startsWith>`+`<matches>`. Accepts multiple values separated by a pipe character: ' \| ' . Use `?` to represent any single character, and `*` to represent any string. | No |
+| **exclude** | _Exclude_ documents whose IDs are exactly `<startsWith>`+`<exclude>`. Accepts multiple values separated by a pipe character: ' \| ' . Use `?` to represent any single character, and `*` to represent any string. | No |
+| **startAfter** | Retrieve only the results after the first document ID that begins with this prefix. | No |
 | **start** | Number of results to skip. | No |
 | **pageSize** | Maximum number of results to retrieve. | No |
 | **metadataOnly** | Set this parameter to `true` to retrieve only the document metadata for each result. | No |
@@ -117,7 +117,7 @@ Linebreaks are added for clarity.
 
 | Header | Description | Required |
 | - | - | - |
-| **If-None-Match** | This header takes a hash representing the previous results of an **identical** request. The hash is found in the response header `ETag`. If the results were not modified since the previous request, the server responds with http status code `304` and the requested documents are retrieved from a local hash rather than over the network. | No |
+| **If-None-Match** | This header takes a hash representing the previous results of an **identical** request. The hash is found in the response header `ETag`. If the results were not modified since the previous request, the server responds with http status code `304` and the requested documents are retrieved from a local cache rather than over the network. | No |
 
 {PANEL/}
 
@@ -128,7 +128,7 @@ Linebreaks are added for clarity.
 | Code | Description |
 | ----------- | - |
 | `200` | Results were successfully retrieved |
-| `304` | None of the requested documents were modified since they were last loaded, so they were not retrieved from the server. |
+| `304` | In response to an `If-None-Match` check: none of the requested documents were modified since they were last loaded, so they were not retrieved from the server. |
 
 #### Headers
 

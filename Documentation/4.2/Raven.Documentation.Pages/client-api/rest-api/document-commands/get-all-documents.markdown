@@ -7,7 +7,7 @@
 * Use this endpoint with the **`GET`** method to retrieve all documents from the database:  
 `<server URL>/databases/<database name>/docs`  
 
-* There are various query parameters for filtering and paging the results.  
+* Query parameters can be used to page the results.  
 
 * In this page:  
   * [Basic Example](../../../client-api/rest-api/document-commands/get-all-documents#basic-example)  
@@ -23,14 +23,14 @@
 
 {PANEL:Basic Example}
 
-This is a cURL request to retrieve all documents from a database named "Example" on our [playground server](http://live-test.ravendb.net). 
-It then pages the results by skipping the first 9, and retrieving the next 3.  
+This is a cURL request to a database named "Example" on our [playground server](http://live-test.ravendb.net). Paging 
+through all of the documents in the database, the request skips the first 9 documents and retrieves only the next 3.  
 
 {CODE-BLOCK: bash}
 curl -X GET http://live-test.ravendb.net/databases/Example/docs?start=9&pageSize=3
 {CODE-BLOCK/}
 
-Response:  
+Actual response:  
 
 {CODE-BLOCK: http}
 Server:"nginx"
@@ -110,7 +110,7 @@ Raven-Server-Version:"4.2.4.42"
 
 {PANEL: Request Format}
 
-This is the general form of a cURL request that uses all parameters:  
+This is the general form of a cURL request that uses all query string parameters:  
 
 {CODE-BLOCK: batch}
 curl -X GET <server URL>/databases/<database name>/docs? \
@@ -120,7 +120,7 @@ curl -X GET <server URL>/databases/<database name>/docs? \
 --header If-None-Match: <hash>
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
-
+<br/>
 ####Query String Parameters
 
 | Parameter | Description | Required  |
@@ -133,7 +133,7 @@ Linebreaks are added for clarity.
 
 | Header | Description | Required |
 | - | - | - |
-| **If-None-Match** | This header takes a hash representing the previous results of an **identical** request. The hash is found in the response header `ETag`. If the results were not modified since the previous request, the server responds with http status code `304` and the requested documents are retrieved from a local cache rather than over the network. | No |
+| **If-None-Match** | This header takes a hash representing the previous results of an **identical** request. The hash is found in the response header `ETag`. If the results were not modified since the previous request, the server responds with http status code `304`, and the requested documents are retrieved from a local cache rather than over the network. | No |
 
 {PANEL/}
 
@@ -144,7 +144,7 @@ Linebreaks are added for clarity.
 | Code | Description |
 | ----------- | - |
 | `200` | Results were successfully retrieved |
-| `304` | None of the requested documents were modified since they were last loaded, so they were not retrieved from the server. |
+| `304` | In response to an `If-None-Match` check: none of the requested documents were modified since they were last loaded, so they were not retrieved from the server. |
 
 #### Headers
 
@@ -159,7 +159,7 @@ Linebreaks are added for clarity.
 Retrieved documents are sorted in descending order of their change vectors. A retrieved document is identical in 
 contents and format to the document stored in the server - unless the `metadataOnly` parameter is set to `true`.  
 
-This is the general JSON format of the response body:  
+This is the general format of the JSON response body:  
 
 {CODE-BLOCK: javascript}
 {
@@ -193,7 +193,7 @@ In this section:
 
 ### start
 
-Skip first 1,057 documents, sorted by descending change vector order (our version of Northwind contains 1,059 documents).
+Skip first 1,057 documents, and retrieve the rest (our version of Northwind contains 1,059 documents).  
 cURL request:  
 
 {CODE-BLOCK: bash}
@@ -261,6 +261,7 @@ Raven-Server-Version: 4.2.4.42
 
 ### pageSize
 
+Retrieve the first document.  
 cURL request:  
 
 {CODE-BLOCK: bash}
@@ -337,6 +338,7 @@ Raven-Server-Version: 4.2.4.42
 
 ### metadataOnly
 
+Skip 123, take the next five, and retrieve only the metadata of each document.  
 cURL request:  
 
 {CODE-BLOCK: bash}
