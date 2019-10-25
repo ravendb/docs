@@ -20,7 +20,11 @@ In spite of the advantages cloud-service providers offer businesses, organizatio
 
 ## Steering Clear of Unnecessary Overheads
 
-<div class="pull-left margin-right quote-textbox-left">"By 2023, 3 out of every 4 databases will be on a cloud platform.” </div>
+<div class="pull-left margin-right">
+    <div class="quote-textbox-left">
+		By 2023, 3 out of every 4 databases will be on a cloud platform.
+    </div>
+</div>
 <p style="text-align:justify">According to Gartner, “more than 70% of new application deployments will leverage the cloud for at least one-use case. By 2023, 3 out of every 4 databases will be on a cloud platform.” This evident shift emphasizes the need to avoid unnecessary overheads or costs incurred via poor application-design strategy or by wrong resources selected for the job.</p>
 
 It is imperative for businesses and development teams that design cloud-served applications, to use design and deployment models that guarantee availability, optimize performance, and in due course reduce costs.
@@ -40,7 +44,11 @@ As you refactor your applications to provide new services, improve performance a
 
 Here is a simple illustration: Let’s assume we have a simple application that uses a database, with a modest 200-page views per second. Each page-view for a particular page sends the database 20 queries, bringing us to 4,000 requests per second.<br/>
 Going by current pricing models where cloud instances charge by client requests, a conservative cost estimation would be $250 per month for a single page. 
-<div class="pull-right margin-left quote-textbox-right">By using a database suitable for the job, you can significantly lower the number of requests.</div>
+<div class="pull-right margin-left">
+    <div class="quote-textbox-right">
+		By using a database suitable for the job, you can significantly lower the number of requests.
+    </div>
+</div>
 <p style="text-align: justify">When such a page sends 100 queries per page-view, it may drive the costs up to about $1,100 or more.<br/>
 By using a database suitable for the job, you can significantly lower the number of requests. Assuming the queries drop from 100 to 10 with each page view, you can save about 90% of your cloud costs. Certain databases, such as RavenDB, are designed for such circumstances and can reduce the number of remote calls per page even further.</p>
 
@@ -52,7 +60,11 @@ Advanced features like <strong>lazy queries</strong> help you reduce overhead, d
 
 ## More Ways to Cut Cloud Costs with Your Database
 
-<div class="pull-left margin-right quote-textbox-left">RavenDB optimizes database requests by utilizing <span class="nobr">‘lazy requests’</span> and ‘includes’.</div>
+<div class="pull-left margin-right">
+    <div class="quote-textbox-left">
+    	RavenDB optimizes database requests by utilizing <span class="nobr">‘lazy requests’</span> and ‘includes’.
+    </div>
+</div>
 <p style="text-align: justify">An application may lower traffic costs by minimizing the number of times it communicates with its database server.
 RavenDB optimizes database requests by utilizing ‘lazy requests’ and ‘includes’.</p>
 

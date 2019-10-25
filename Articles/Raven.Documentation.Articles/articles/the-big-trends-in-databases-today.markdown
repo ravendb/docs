@@ -27,7 +27,7 @@ The complexity, size and scale of data that we are managing today is growing at 
 
 Take something simple like a standard invoice. On it appears the customer name, address, product, price, shipping instructions. Then you need more sophisticated data like the tax rate, payment method, discounts, special offers like awarding points to a card for such a purchase.
 
-Over the last 20 years, over 1 billion people throughout the world have gone [from poverty to middle class consumers](https://www.thetimes.co.uk/article/half-the-world-now-middle-class-as-living-standards-rise-in-east-v38l3m20s). Every item for sale now has a huge audience, requiring lots of digital paperwork which needs a fast database to process it all and report the information to the right departments.
+Over the last 20 years, over 1 billion people throughout the world have gone <a href="https://www.thetimes.co.uk/article/half-the-world-now-middle-class-as-living-standards-rise-in-east-v38l3m20s" target="_blank">from poverty to middle class consumers</a>. Every item for sale now has a huge audience, requiring lots of digital paperwork which needs a fast database to process it all and report the information to the right departments.
 
 Simply the cost of storing and fetching all the data can take a significant amount of time and effort from the development team. Today's database needs to be fast, and simple - minimizing the developer's work as much as possible.
 
