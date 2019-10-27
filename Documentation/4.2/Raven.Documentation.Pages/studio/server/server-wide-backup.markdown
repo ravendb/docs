@@ -62,16 +62,27 @@ The settings are similar to those of a [regular backup task](../../studio/databa
   
 5. **Encryption**  
    ![Figure 4. Encryption](images/server-wide-backup_04-encryption.png)  
-   * [Logical backups](../../client-api/operations/maintenance/backup/backup#logical-backup) 
-     of unencrypted databases, will be encrypted using the key you provide here.  
+   * Backup files (both [logical backups](../../client-api/operations/maintenance/backup/backup#logical-backup) 
+     and [snapshot images](../../client-api/operations/maintenance/backup/backup#snapshot)) 
+     of **encrypted** databases will always be **encrypted**,  
+     regardless of the settings here, using the database encryption key.  
+   * Logical backups of **unencrypted** databases, will be **encrypted** using the key provided here.  
      You can use either the key suggested by RavenDB, or a valid key from any other source.  
-     **Be sure not to lose your encryption key. We do not keep a copy of it, losing it means losing access to your backups' contents.**  
-   * Logical backups of [encrypted databases](../../studio/server/databases/create-new-database/encrypted#create-a-database-encrypted), 
-     will use the database's encryption key even if you provide a different key here.  
-   * Backup files (both logical backups and [snapshot images](../../client-api/operations/maintenance/backup/backup#snapshot)) 
-     of encrypted databases will always be encrypted, regardless of the settings here, using the database encryption key.  
-   * Snapshot images of unencrypted databases will always be unencrypted, regardless of the settings here, 
+   * Logical backups of **encrypted** databases will use the database's encryption key,  
+     even if you provide a different key here.  
+   * Snapshot images of **unencrypted** databases will always be **unencrypted**, regardless of the settings here,  
      since a snapshot is a faithful bitmap copy of the database.  
+
+     {INFO: }
+      **Encryption Summary**:  
+      
+      Database Encryption | Backup Type |  Backup Encryption and Key Used  
+      ---- | ---- | ----
+      Encrypted | Logical Backup | Backup is encrypted using the database key <br> **even if you provide a different key**  
+      Encrypted | Snapshot Image | Backup is encrypted using the database key  
+      Not Encrypted | Logical Backup | Backup is encrypted using the key you provide  
+      Not Encrypted | Snapshot Image | Backup is not encrypted <br> **even if encryption is enabled**  
+      {INFO/}
 
 6. **Destination**  
    Backup files can be stored locally and/or remotely.  
