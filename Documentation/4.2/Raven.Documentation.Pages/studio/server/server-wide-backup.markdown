@@ -3,11 +3,12 @@
 
 {NOTE: }
 
-* RavenDB lets you define a [single-database backup task](../../studio/database/tasks/ongoing-tasks/backup-task) 
-  **or** a server-wide backup task.  
+* RavenDB lets you define a backup task per-database  
+_-or-_  
+  a **server-wide backup task** that backs up **all** the databases in your cluster.
 
-* The server-wide backup task backs up all the databases in your cluster.  
-  When scheduling a server-wide backup task, RavenDB actually creates a regular ongoing backup task 
+* When scheduling a **server-wide** backup task, RavenDB actually creates a 
+  [regular ongoing backup task](../../studio/database/tasks/ongoing-tasks/backup-task) 
   for each database in the cluster, and a backup will be created for each database at the specified scheduled time.  
   The prefix 'Server Wide' is added to the name of the created ongoing backup tasks.  
   
@@ -21,8 +22,8 @@
 * In this page:  
   * [Scheduling a Server-Wide Backup Task](../../studio/server/server-wide-backup#scheduling-a-server-wide-backup-task)  
   * [Restoring a Database From a Server-Wide Backup](../../studio/server/server-wide-backup#restoring-a-database-from-a-server-wide-backup)  
+  * [Server-Wide Backup tasks in the Database Tasks View](../../studio/server/server-wide-backup#server-wide-backup-tasks-in-the-database-tasks-view)  
   * [The Responsible Node](../../studio/server/server-wide-backup#the-responsible-node)  
-  * [Server-Wide Backup tasks in the *Manage Ongoing Tasks* view](../../studio/server/server-wide-backup#server-wide-backup-tasks-in-the-manage-ongoing-tasks-view)  
 
 {NOTE/}
 
@@ -30,21 +31,25 @@
 
 {PANEL: Scheduling a Server-Wide Backup Task}
 
-Open the **Manage Server** option from the main menu.  
-![Figure 1. Server-Wide Backup](images/server-wide-backup_01-manage-server.png)  
+Click the **Manage Server** main-menu item.  
+
+![Figure 1. Manage-Server Menu Item](images/server-wide-backup_01-manage-server.png "Figure 1. Manage-Server Menu Item")
 
 ---
 
 **The Server-Wide Backup View**  
-![Figure 2. Add Task](images/server-wide-backup_02-new-task.png)  
 
-1. Click the **Server-Wide Backup** button  
+![Figure 2. Add Server-Wide Backup Task](images/server-wide-backup_02-new-task.png "Figure 2. Add Server-Wide Backup Task")
+
+1. Click the **Server-Wide Backup** menu item  
 2. Click the **Add Server-Wide Backup Task** button to add a new task  
 
 ---
 
 **Configure the new backup task**.  
-![Figure 3. Task Configuration](images/server-wide-backup_03-task-configuration.png)  
+
+![Figure 3. Task Configuration](images/server-wide-backup_03-task-configuration.png "Figure 3. Task Configuration")
+
 The settings are similar to those of a [regular backup task](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task).  
 
 1. **Task Name**  
@@ -61,7 +66,9 @@ The settings are similar to those of a [regular backup task](../../studio/databa
    Define the minimum amount of time to keep Backups (and Snapshots) in the system.  
   
 5. **Encryption**  
-   ![Figure 4. Encryption](images/server-wide-backup_04-encryption.png)  
+
+   ![Figure 4. Backup Encryption](images/server-wide-backup_04-encryption.png "Figure 4. Backup Encryption")
+
    * Backup files (both [logical backups](../../client-api/operations/maintenance/backup/backup#logical-backup) 
      and [snapshot images](../../client-api/operations/maintenance/backup/backup#snapshot)) 
      of **encrypted** databases will always be **encrypted**,  
@@ -78,16 +85,18 @@ The settings are similar to those of a [regular backup task](../../studio/databa
       
       Database Encryption | Backup Type |  Backup Encryption and Key Used  
       ---- | ---- | ----
-      Encrypted | Logical Backup | Backup is encrypted using the database key <br> **even if you provide a different key**  
+      Encrypted | Logical Backup | Backup is encrypted using the database key, <br> **even if you provide a different key**  
       Encrypted | Snapshot Image | Backup is encrypted using the database key  
       Not Encrypted | Logical Backup | Backup is encrypted using the key you provide  
-      Not Encrypted | Snapshot Image | Backup is not encrypted <br> **even if encryption is enabled**  
+      Not Encrypted | Snapshot Image | Backup is not encrypted, <br> **even if encryption is enabled**  
       {INFO/}
 
 6. **Destination**  
    Backup files can be stored locally and/or remotely.  
    Backup files are created in a separate child folder per database, under a common root folder.  
-   ![Figure 5. Destination](images/server-wide-backup_05-destination-local.png)  
+
+   ![Figure 5. Backup Destination Folder](images/server-wide-backup_05-destination-local.png "Figure 5. Backup Destination Folder")
+
 {PANEL/}
 
 {PANEL: Restoring a Database From a Server-Wide Backup}
@@ -107,6 +116,32 @@ In both cases, you can restore the database by
 
 ---
 
+{PANEL: Server-Wide Backup tasks in the Database Tasks View}
+
+The server-wide backup tasks created for each database, can be viewed in the database's Ongoing-Tasks view.  
+You can use this view to see a task's details, or to trigger an immediate backup.  
+In order to edit or modify a server-wide task, navigate back to the [server-wide backup view](#scheduling-a-server-wide-backup-task).  
+
+* Choose the database you're interested in.  
+
+  ![Figure 6. Choose Database](images/ongoing-tasks-view_00-choose-database.png "Figure 6. Choose Database")
+
+* Open the 'Manage Ongoing Tasks' View.  
+
+  ![Figure 7. Manage-Ongoing-Tasks View](images/ongoing-tasks-view_01.png "Figure 7. Manage-Ongoing-Tasks View")
+
+   1. Click to open the **Manage Ongoing Tasks** view for the selected database.  
+   2. Use this shortcut to navigate directly to the server-wide backup view.  
+   3. This is a **regular backup task**, defined only on this database.  
+   4. This is a **server-wide backup task**, with its detailed-view toggled on.  
+      Though it is a server-wide task, clicking its *Backup Now* button would back up only the currently-chosen database.  
+   5. Click this button to **toggle this task's detailed-view** on or off.  
+   6. This is another **server-wide backup task**, with its detailed-view toggled off.  
+
+{PANEL/}
+
+---
+
 {PANEL: The Responsible Node}
 
 * When defining a server-wide backup, the user is not given the option to select a 
@@ -119,36 +154,9 @@ In both cases, you can restore the database by
   the behavior of a server-wide task when the cluster or responsible-node is down is identical to that of a regular backup task.  
   See [Backup Task - When Cluster or Node are Down](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---when-cluster-or-node-are-down).  
 
-{PANEL/}
-
----
-
-{PANEL: Server-Wide Backup tasks in the Manage-Ongoing-Tasks view}
-
-Use a database's **Manage Ongoing Tasks** page to list all the tasks related to this database, 
-both those created [specifically for this database](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task) 
-and those created for all databases using the 
-[server-wide backup page](../../studio/server/server-wide-backup#scheduling-a-server-wide-backup-task).  
-
-* Choose the database you're interested in.  
-  ![Figure 11. Choose Database](images/ongoing-tasks-view_00-choose-database.png)  
-
-* Open the Manage Ongoing Tasks page to visit this database's tasks.  
-  ![Figure 12. Manage-Ongoing-Tasks View](images/ongoing-tasks-view_01.png)  
-
-   1. Clicking this option will open the **Manage Ongoing Tasks** page.  
-   2. This is a **regular backup task**, with its detailed-view toggled off.
-   3. Click this button to **toggle the detailed-view** on or off.  
-   4. This is a **server-wide backup task**, with its detailed-view toggled on.  
-      Though it is a server-wide task, clicking *Backup Now* would back up only the currently-chosen database.  
-   5. Clicking this button will **open the server-wide tasks page**.  
-      Changes you make to the task would apply to all databases.  
-   6. This is another **server-wide backup task**, with its detailed-view toggled off.  
-   7. Clicking this button will **open the server-wide tasks page**.  
-
-* A graphical view of the selected-database [group](../../studio/database/settings/manage-database-group#database-group) 
-  shows which node is responsible for which task.  
-  ![Figure 13. Topology View](images/ongoing-tasks-view_02-topology-view.png)  
+* A graphical view of the database group shows which node is responsible for which task.  
+  
+  ![Figure 8. Topology View](images/ongoing-tasks-view_02-topology-view.png "Figure 8. Topology View")
 
 {PANEL/}
 
