@@ -22,7 +22,7 @@ and any configurations & customizations that you may have applied.
   * [Changes API](../client-api/changes/what-is-changes-api) - Receive messages from the server  
   * [Aggressive caching](../client-api/how-to/setup-aggressive-caching) - Configure caching behavior  
   * [Events](../client-api/session/how-to/subscribe-to-events) - Perform custom actions in response to the Session's operations  
-  * [Data Sucscriptions](../client-api/data-subscriptions/what-are-data-subscriptions) - Define & manage data processing on the client side
+  * [Data Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions) - Define & manage data processing on the client side
 
 {NOTE/}
 
