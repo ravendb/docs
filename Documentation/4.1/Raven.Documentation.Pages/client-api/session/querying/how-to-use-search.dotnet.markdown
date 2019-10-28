@@ -1,6 +1,10 @@
 # Session: Querying: How to Use Search
 
-More complex text searching can be achieved by using the `Search` extension method. This method allows you to pass one or more search terms that will be used in the searching process for a particular field (or fields).
+Use the `Search()` extension method to perform a full-text search on a particular field. `Search()` accepts a string containing the 
+desired search terms separated by spaces. These search terms are matched with the terms in the index being queried.  
+
+An index's terms are derived from the values of the documents' textual fields. These values were converted into one or more terms 
+depending on which [Lucene analyzer](../../../indexes/using-analyzers) the index used.  
 
 ## Syntax
 
@@ -9,9 +13,9 @@ More complex text searching can be achieved by using the `Search` extension meth
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **fieldSelector** | Expression<Func&lt;TResult&gt;> | Points index field that should be used for querying. |
-| **searchTerms** | string | Space separated terms e.g. 'John Steve' means that we will look in selected field for 'John' or 'Steve'. Wildcards can be specified: `?` for a single character, `*` for a substring. |
+| **searchTerms** | string | A string of the desired search terms separated by spaces (i.e. to search for "john" or "jack", pass the string "john&nbsp;jack"). <br/>Wildcards can be used: `?` for any single character, `*` for any substring. |
 | **boost** | decimal | Boost value. Default: `1`. |
-| **options** | [SearchOptions](../../../indexes/querying/searching#search-options) | Explicitly set relation between each Search function. Can be set to one of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
+| **options** | [SearchOptions](../../../indexes/querying/searching#search-options) | Set the operator between this `Search` method and the preceding extension method in the query. Can be set to one of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
 | **@operator** | [SearchOperator](../../../indexes/querying/searching#search-operator) | The operator between the individual terms. Can be set to `Or` or `And`. Default: `SearchOperation.Or`. |
 
 ## Example I - Dynamic Query
@@ -57,6 +61,7 @@ where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but a
 - [How to Use Regex](../../../client-api/session/querying/how-to-use-regex)
 - [How to Query With Exact Match](../../../client-api/session/querying/how-to-query-with-exact-match)
 
-### Querying
+### Indexes
 
-- [Searching](../../../indexes/querying/searching)
+- [Analyzers](../../../indexes/using-analyzers)
+- [Querying: Searching](../../../indexes/querying/searching)

@@ -1,7 +1,12 @@
 # Querying: Searching
 
-When you need to do a more complex text searching, use the `Search` extension method (in `Raven.Client.Documents` namespace). This method allows you to pass a few search terms that will be used in the searching process for a particular field. Here is a sample code
-that uses the `Search` extension to get users with the name *John* or *Steve*:
+Use the `Search()` extension method to perform a full-text search on a particular field. `Search()` accepts a string containing the 
+desired search terms separated by spaces. These search terms are matched with the terms in the index being queried.  
+
+An index's terms are derived from the values of the documents' textual fields. These values were converted into one or more terms 
+depending on which [Lucene analyzer](../../../indexes/using-analyzers) the index used.  
+
+Here is a code sample that uses the `Search` extension to get users with the name *John* or *Steve*:  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query search_3_0@Indexes\Querying\Searching.cs /}
@@ -25,7 +30,7 @@ where search(Name, 'looking for someone who likes sport books computers')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-The results will return users that are interested in *sport*, *books* or *computers*.
+The results will include users that are interested in *sport*, *books* or *computers*.
 
 ## Multiple Fields
 
@@ -222,6 +227,7 @@ where search(Query, 'John')
 
 ### Indexes
 
+- [Analyzers](../../../indexes/using-analyzers)
 - [Boosting](../../indexes/boosting)
 
 ### Querying
