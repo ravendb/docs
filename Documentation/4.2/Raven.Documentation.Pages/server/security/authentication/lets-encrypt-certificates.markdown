@@ -39,6 +39,8 @@ During the process you will receive alerts in the studio and in the logs indicat
 When you set up RavenDB with your own Let's Encrypt certificate, the renewal mechanism will not work because RavenDB doesn't control your domain and cannot pass the Let's Encrypt challenge that proves ownership of a domain.
 However, you can (quite easily) enable automatic renewals for your Let's Encrypt certificate via [Certbot](https://certbot.eff.org/).
 
+Certbot is not available in Windows, but you can use a c# client called [Certes](https://github.com/fszlin/certes/), or [other similar projects](https://letsencrypt.org/docs/client-options/) that automate the certificate process.  
+
 First, install and configure certbot on your machine. Here's a [nice tutorial](https://medium.com/prog-code/lets-encrypt-wildcard-certificate-configuration-with-aws-route-53-9c15adb936a7) to get you started.
 You should also download the apropriate DNS plugin for certbot. This example uses [Amazon's Route53](https://certbot-dns-route53.readthedocs.io/en/stable/), but [many other services](https://certbot.eff.org/docs/using.html#dns-plugins) are supported.
 
@@ -46,7 +48,9 @@ Set the credentials for your DNS service. In Route53 it's done by creating a use
 
 Now that certbot is ready, you can create an executable script that will run the certbot command whenever RavenDB asks it, this way the certificate will keep renewing itself. 
 
-When using the `Security.Certificate.Exec` option, RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
+When using the `Security.Certificate.Load.Exec` option, RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through 
+the standard output. [See this example](../../../server/security/authentication/certificate-configuration) of how to write a file to standard output in 
+Powershell.  
 
 Here's a little script, `certificate.sh`, that demonstrates this feature. It renews the certificate or creates it in the first run, uses `openssl` to convert the received file to .PFX and writes it to the standard output for RavenDB to consume. 
 {CODE-BLOCK:bash}
@@ -56,23 +60,29 @@ cat -u ~/.certbot/config/live/test.ravendb.cloud/cert.pfx
 {CODE-BLOCK/}
 
 {WARNING:Important}
-Use unbuffered I/O (the -u flag) when writing the certificate to the standard output, otherwise RavenDB might get a partial file and fail loading the certificate.
+Use unbuffered I/O (the -u flag) when writing the certificate to the standard output, otherwise RavenDB might get a partial file and fail to load the certificate.
 {WARNING/}
 
 To enable the script, add the following to settings.json:
 
 {CODE-BLOCK:json}
-"Security.Certificate.Exec": "/bin/bash",
-"Security.Certificate.Exec.Arguments": "certificate.sh"
+"Security.Certificate.Load.Exec": "/bin/bash",
+"Security.Certificate.Load.Exec.Arguments": "certificate.sh"
 {CODE-BLOCK/}
 
-Certbot is not available in Windows, but you can use a c# client called [Certes](https://github.com/fszlin/certes/), or [other similar projects](https://letsencrypt.org/docs/client-options/) that automate the certificate process. [See this example](../../../server/security/authentication/certificate-configuration) of how to write a file to standard output in Powershell.
+{INFO: Implicit Trust}
+If two different RavenDB clusters are communicating securely, and the source cluster has its certificate renewed, the destination cluster could 
+still trust this new certificate - provided that the new certificate is signed with the same private key as the original, and was issued by the 
+same certificate authority. This is accomplished using a [public key pinning hash](../../../server/security/authentication/certificate-renewal-and-rotation#implicit-trust-by-public-key-pinning-hash).  
+{INFO/}
 
 ## Manual Renewal
 
-You may initiate the renewal process manually by going to the certificate view in the studio and clicking `Renew` on the server certificate. It will trigger the same certificate replacement process which was described in [Automatic Renewal](../../../server/security/authentication/lets-encrypt-certificates#automatic-renewal).
+When using RavenDB's Let's Encrypt support, you can initiate the renewal process manually by going to the certificate view in the studio and clicking 
+`Renew` on the server certificate. This will trigger the same certificate replacement process which was described [above](../../../server/security/authentication/lets-encrypt-certificates##automatic-renewal-for-lets-encrypt-certificates-obtained-via-ravendb).
 
-If a node is down and you click `Renew`, the cluster will complete the operation without the node that is down. **When bringing that node up, the certificate must be replaced manually.**
+If a node is down and you click `Renew`, the cluster will complete the operation without the node that is down. **When bringing that node up, the 
+certificate must be replaced manually.**
 
 
 ## Updating DNS records

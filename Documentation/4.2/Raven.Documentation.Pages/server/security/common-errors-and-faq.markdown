@@ -310,6 +310,14 @@ The credentials supplied to the package were not recognized (The SSL connection 
                                                   (string)null, X509KeyStorageFlags.MachineKeySet);  
 {CODE-BLOCK/}
 
+### Automatic cluster certificate renewal following migration to 4.2
+
+`Security.Certificate.Exec` was deprecated in 4.2 and replaced by `Security.Certificate.Load.Exec`. You can use your old `Security.Certificate.Exec` 
+executable by simply moving it to this new path. The settings `Security.Certificate.Renew.Exec` and `Security.Certificate.Change.Exec` have been added 
+for automatically persisting the certificate to the whole cluster. If you have your own mechanism for doing this, or are using a single node cluster, 
+you still need to place empty scripts in the `Security.Certificate.Renew.Exec` and `Security.Certificate.Change.Exec` paths or an exception will be 
+thrown.  
+
 ## Authorization Issues  
 
 Under construction
