@@ -5,14 +5,14 @@
 
 * RavenDB lets you define a backup task per-database  
 _-or-_  
-  a **server-wide backup task** that backs up **all** the databases in your cluster.
+  a **Server-Wide Backup Task** that backs up **all** the databases in your cluster.
 
-* When scheduling a **server-wide** backup task, RavenDB actually creates a 
+* When scheduling a **Server-Wide Backup Task**, RavenDB actually creates a 
   [regular ongoing backup task](../../studio/database/tasks/ongoing-tasks/backup-task) 
   for each database in the cluster, and a backup will be created for each database at the specified scheduled time.  
-  The prefix 'Server Wide' is added to the name of the created ongoing backup tasks.  
+  The prefix '**Server Wide Backup**' is added to the name of the created ongoing backup tasks.  
   
-* Server-wide backups are similar to their per-database equivalents.  
+* Server-Wide backups are similar to their per-database equivalents.  
   You can create [Full](../../client-api/operations/maintenance/backup/backup#full-backup) 
   and [Incremental](../../client-api/operations/maintenance/backup/backup#incremental-backup) backup tasks 
   in [Logical Backup ](../../client-api/operations/maintenance/backup/backup#logical-backup) or 
@@ -22,7 +22,7 @@ _-or-_
 * In this page:  
   * [Scheduling a Server-Wide Backup Task](../../studio/server/server-wide-backup#scheduling-a-server-wide-backup-task)  
   * [Restoring a Database From a Server-Wide Backup](../../studio/server/server-wide-backup#restoring-a-database-from-a-server-wide-backup)  
-  * [Server-Wide Backup tasks in the Database Tasks View](../../studio/server/server-wide-backup#server-wide-backup-tasks-in-the-database-tasks-view)  
+  * [Server-Wide Backup Tasks in the Database Tasks View](../../studio/server/server-wide-backup#server-wide-backup-tasks-in-the-database-tasks-view)  
   * [The Responsible Node](../../studio/server/server-wide-backup#the-responsible-node)  
 
 {NOTE/}
@@ -46,14 +46,14 @@ Click the **Manage Server** main-menu item.
 
 ---
 
-**Configure the new backup task**.  
+**Configure the new Backup Task**.  
 
 ![Figure 3. Task Configuration](images/server-wide-backup_03-task-configuration.png "Figure 3. Task Configuration")
 
 The settings are similar to those of a [regular backup task](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task).  
 
 1. **Task Name**  
-   Enter the server-wide backup task name.  
+   Enter the Server-Wide Backup Task name.  
   
 2. **Backup type**  
    Select 'Backup' for a [logical backup](../../client-api/operations/maintenance/backup/backup#logical-backup) 
@@ -102,25 +102,25 @@ The settings are similar to those of a [regular backup task](../../studio/databa
 {PANEL: Restoring a Database From a Server-Wide Backup}
 
 There is no difference between restoring a database from a backup file created by the 
-[server-wide procedure](../../studio/server/server-wide-backup#scheduling-a-server-wide-backup-task) 
+[Server-Wide procedure](../../studio/server/server-wide-backup#scheduling-a-server-wide-backup-task) 
 and a [separately created backup](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task).  
 In both cases, you can restore the database by 
 [Creating a New Database from Backup](../../studio/server/databases/create-new-database/from-backup#create-a-database-from-backup).  
 
-* While the server-wide backup task creates backups for all your databases at once, 
+* While the Server-Wide Backup Task creates backups for all your databases at once, 
   the restore procedure can only restore a single database at a time.  
-* When restoring a database from a backup file created by the server-wide procedure, make sure you provide the 
-  link to the specific database backup file and not the common root folder that was created by the server-wide task.
+* When restoring a database from a backup file created by the Server-Wide procedure, make sure you provide the 
+  link to the specific database backup file and not the common root folder that was created by the Server-Wide task.
 
 {PANEL/}
 
 ---
 
-{PANEL: Server-Wide Backup tasks in the Database Tasks View}
+{PANEL: Server-Wide Backup Tasks in the Database Tasks View}
 
-The server-wide backup tasks created for each database, can be viewed in the database's Ongoing-Tasks view.  
+The Server-Wide Backup Tasks created for each database, can be viewed in the database's Ongoing-Tasks view.  
 You can use this view to see a task's details, or to trigger an immediate backup.  
-In order to edit or modify a server-wide task, navigate back to the [server-wide backup view](#scheduling-a-server-wide-backup-task).  
+To edit or modify a Server-Wide task, navigate back to the [Server-Wide Backup view](#scheduling-a-server-wide-backup-task).  
 
 * Choose the database you're interested in.  
 
@@ -131,12 +131,12 @@ In order to edit or modify a server-wide task, navigate back to the [server-wide
   ![Figure 7. Manage-Ongoing-Tasks View](images/ongoing-tasks-view_01.png "Figure 7. Manage-Ongoing-Tasks View")
 
    1. Click to open the **Manage Ongoing Tasks** view for the selected database.  
-   2. Use this shortcut to navigate directly to the server-wide backup view.  
+   2. Use this shortcut to navigate directly to the Server-Wide Backup view.  
    3. This is a **regular backup task**, defined only on this database.  
-   4. This is a **server-wide backup task**, with its detailed-view toggled on.  
-      Though it is a server-wide task, clicking its *Backup Now* button would back up only the currently-chosen database.  
+   4. This is a **Server-Wide Backup Task**, with its detailed-view toggled on.  
+      Though it is a Server-Wide task, clicking its *Backup Now* button would back up only the currently-chosen database.  
    5. Click this button to **toggle this task's detailed-view** on or off.  
-   6. This is another **server-wide backup task**, with its detailed-view toggled off.  
+   6. This is another **Server-Wide Backup Task**, with its detailed-view toggled off.  
 
 {PANEL/}
 
@@ -144,14 +144,14 @@ In order to edit or modify a server-wide task, navigate back to the [server-wide
 
 {PANEL: The Responsible Node}
 
-* When defining a server-wide backup, the user is not given the option to select a 
+* When defining a Server-Wide backup, the user is not given the option to select a 
   [responsible node](../../studio/server/server-wide-backup#the-responsible-node) manually, 
   since the responsible node can differ per database depending on the nodes the database resides on 
-  (the [database-group](../../studio/database/settings/manage-database-group#database-group)).  
+  (the [Database Group](../../studio/database/settings/manage-database-group#database-group)).  
   For each database, the responsible node for the task is set by the cluster to one of the database group nodes.
 
-* Since defining a server-wide backup actually creates regular backup tasks, 
-  the behavior of a server-wide task when the cluster or responsible-node is down is identical to that of a regular backup task.  
+* Since defining a Server-Wide backup actually creates regular backup tasks, 
+  the behavior of a Server-Wide Backup Task when the cluster or responsible-node is down is identical to that of a regular backup task.  
   See [Backup Task - When Cluster or Node are Down](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---when-cluster-or-node-are-down).  
 
 * A graphical view of the database group shows which node is responsible for which task.  
