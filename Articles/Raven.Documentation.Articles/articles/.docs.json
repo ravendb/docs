@@ -1036,5 +1036,34 @@
             "twitter:description": "The Internet of Things and Mobile revolution have enabled billions of devices to pick up new forms of Big Data. As trends evolve, so must today’s database.",
             "twitter:url": "https://ravendb.net/articles/the-big-trends-in-databases-today"
         }
+    },
+    {
+        "Path": "trapped-in-the-60s-how-our-view-on-data-is-holding-us-back.markdown",
+        "Name": "How our 1960s View of Data is Holding us Back",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Transforming Database Modeling Standards | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/trapped-in-the-60s-how-our-view-on-data-is-holding-us-back",
+            "publishedAt": "2019-10-29",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "Why should a database be built by the data modeling standards of the Kennedy Administration? If we can ditch Bell Bottoms, we can transform how we model data.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "How our 1960s View of Data is Holding us Back | RavenDB",
+            "og:description": "Why should a database be built by the data modeling standards of the Kennedy Administration? If we can ditch Bell Bottoms, we can transform how we model data.",
+            "og:url": "trapped-in-the-60s-how-our-view-on-data-is-holding-us-back",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/trapped-in-the-60s-how-our-view-on-data-is-holding-us-back&fileName=trapped-in-the-60s-how-our-view-on-data-is-holding-us-back.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "How our 1960s View of Data is Holding us Back | RavenDB",
+            "twitter:description": "Why should a database be built by the data modeling standards of the Kennedy Administration? If we can ditch Bell Bottoms, we can transform how we model data.",
+            "twitter:url": "https://ravendb.net/articles/trapped-in-the-60s-how-our-view-on-data-is-holding-us-back"
+        }
     }
 ]
