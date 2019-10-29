@@ -5,7 +5,7 @@ the desired search terms separated by spaces. These search terms are matched wit
 
 As of v4.2 you can also pass an array of the search terms.  
 
-An index's terms are derived from the values of the documents' textual fields. These values were converted into one or more terms 
+An index's terms are derived from the values of the documents' fields. These values were each converted into one or more terms 
 depending on which [Lucene analyzer](../../../indexes/using-analyzers) the index used.  
 
 ## Syntax
