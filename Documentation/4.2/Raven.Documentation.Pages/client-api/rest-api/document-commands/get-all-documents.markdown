@@ -16,7 +16,7 @@
   * [Query Parameter Examples](../../../client-api/rest-api/document-commands/get-all-documents#query-parameter-examples)  
       * [start](../../../client-api/rest-api/document-commands/get-all-documents#start)  
       * [pageSize](../../../client-api/rest-api/document-commands/get-all-documents#pagesize)
-      * [metadataOnly](../../../client-api/rest-api/document-commands/get-all-documents#metadataonly)
+      * [metadataOnly](../../../client-api/rest-api/document-commands/get-all-documents#metadataonly)  
 {NOTE/}  
 
 ---
@@ -27,10 +27,10 @@ This is a cURL request to a database named "Example" on our [playground server](
 through all of the documents in the database, the request skips the first 9 documents and retrieves only the next 3.  
 
 {CODE-BLOCK: bash}
-curl -X GET http://live-test.ravendb.net/databases/Example/docs?start=9&pageSize=3
+curl -X GET "http://live-test.ravendb.net/databases/Example/docs?start=9&pageSize=3"
 {CODE-BLOCK/}
 
-Actual response:  
+Response:  
 
 {CODE-BLOCK: http}
 Server:"nginx"
@@ -113,10 +113,10 @@ Raven-Server-Version:"4.2.4.42"
 This is the general form of a cURL request that uses all query string parameters:  
 
 {CODE-BLOCK: batch}
-curl -X GET <server URL>/databases/<database name>/docs? \
-            &start=<integer> \
-            &pageSize=<integer> \
-            &metadata=<boolean> \
+curl -X GET "<server URL>/databases/<database name>/docs?
+            &start=<integer>
+            &pageSize=<integer>
+            &metadata=<boolean>"
 --header If-None-Match: <hash>
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
@@ -163,8 +163,8 @@ This is the general format of the JSON response body:
 
 {CODE-BLOCK: javascript}
 {
-    "Results": [ 
-        { 
+    "Results": [
+        {
             "<field>":"<value>",
             ...
             "@metadata":{
@@ -176,6 +176,7 @@ This is the general format of the JSON response body:
     ]
 }
 {CODE-BLOCK/}
+Linebreaks are added for clarity.  
 
 {PANEL/}
 
@@ -197,7 +198,7 @@ Skip first 1,057 documents, and retrieve the rest (our version of Northwind cont
 cURL request:  
 
 {CODE-BLOCK: bash}
-curl -X GET http://live-test.ravendb.net/databases/Example/docs?start=1056
+curl -X GET "http://live-test.ravendb.net/databases/Example/docs?start=1056"
 {CODE-BLOCK/}
 
 Response:  
@@ -265,7 +266,7 @@ Retrieve the first document.
 cURL request:  
 
 {CODE-BLOCK: bash}
-curl -X GET http://live-test.ravendb.net/databases/Example/docs?pageSize=1
+curl -X GET "http://live-test.ravendb.net/databases/Example/docs?pageSize=1"
 {CODE-BLOCK/}
 
 Response:  
@@ -342,10 +343,10 @@ Skip 123, take the next five, and retrieve only the metadata of each document.
 cURL request:  
 
 {CODE-BLOCK: bash}
-curl -X GET http://live-test.ravendb.net/databases/Example/docs? \
-                start=123 \
-                &pageSize=5 \
-                &metadataOnly=true
+curl -X GET "http://live-test.ravendb.net/databases/Example/docs?
+                start=123
+                &pageSize=5
+                &metadataOnly=true"
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
 

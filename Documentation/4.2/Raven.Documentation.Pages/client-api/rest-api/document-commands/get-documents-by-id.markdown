@@ -29,7 +29,7 @@ This is a cURL request to a database named "Example" on our [playground server](
 document named "products/48-A":  
 
 {CODE-BLOCK: bash}
-curl -X GET http://live-test.ravendb.net/databases/Example/docs?id=products/48-A
+curl -X GET "http://live-test.ravendb.net/databases/Example/docs?id=products/48-A"
 {CODE-BLOCK/}
 
 Response:  
@@ -77,11 +77,11 @@ Raven-Server-Version: 4.2.4.42
 This is the general form of a cURL request that uses all parameters:  
 
 {CODE-BLOCK: batch}
-curl -X GET <server URL>/databases/<database name>/docs? \
-            id=<document ID> \
-            &include=<path> \
-            &counter=<counter name> \
-            &metadataOnly=<boolean> \
+curl -X GET "<server URL>/databases/<database name>/docs?
+            id=<document ID>
+            &include=<path>
+            &counter=<counter name>
+            &metadataOnly=<boolean>"
 --header If-None-Match:<hash>
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
@@ -158,6 +158,7 @@ This is the general JSON format of the response body:
     }
 }
 {CODE-BLOCK/}
+Linebreaks are added for clarity.  
 
 {PANEL/}
 
@@ -179,9 +180,11 @@ In this section:
 Example cURL request:  
 
 {CODE-BLOCK: bash}
-curl -X GET http://live-test.ravendb.net/databases/Example/docs? \
-            id=shippers/1-A&id=shippers/2-A
+curl -X GET "http://live-test.ravendb.net/databases/Example/docs?
+            id=shippers/1-A
+            &id=shippers/2-A"
 {CODE-BLOCK/}
+Linebreaks are added for clarity.  
 
 Response:  
 
@@ -231,9 +234,10 @@ Raven-Server-Version: 4.2.4.42
 Example cURL request:  
 
 {CODE-BLOCK: bash}
-curl -X GET http://live-test.ravendb.net/databases/Demo/docs? \
-            id=products/48-A \
-            &include=Supplier&include=Category
+curl -X GET "http://live-test.ravendb.net/databases/Demo/docs?
+            id=products/48-A
+            &include=Supplier
+            &include=Category"
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
 
@@ -327,9 +331,9 @@ Raven-Server-Version: 4.2.4.42
 Example cURL request:
 
 {CODE-BLOCK: bash}
-curl -X GET http://live-test.ravendb.net/databases/Example/docs? \
-            id=orders/19-A \
-            &metadataOnly=true
+curl -X GET "http://live-test.ravendb.net/databases/Example/docs?
+            id=orders/19-A
+            &metadataOnly=true"
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
 
@@ -370,9 +374,9 @@ Raven-Server-Version: 4.2.4.42
 Example cURL request:
 
 {CODE-BLOCK: bash}
-curl -X GET http://live-test.ravendb.net/databases/Example/docs? \
-            id=products/48-A \
-            &counter=MoLtUaE
+curl -X GET "http://live-test.ravendb.net/databases/Example/docs?
+            id=products/48-A
+            &counter=MoLtUaE"
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
 

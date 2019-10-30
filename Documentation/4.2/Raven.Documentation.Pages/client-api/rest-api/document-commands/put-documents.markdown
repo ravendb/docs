@@ -23,16 +23,17 @@ These are cURL requests to a database named "Example" on our [playground server]
 #### 1) Store new document "person/1-A" in the collection "People".  
 
 {CODE-BLOCK: bash}
-curl -X PUT http://live-test.ravendb.net/databases/Example/docs?id=person/1-A \
--d { 
-    "FirstName":"Jane", 
-    "LastName":"Doe",
-    "Age":42,
-    "@metadata":{
-        "@collection": "People"
+curl -X PUT http://live-test.ravendb.net/databases/Example/docs?id=person/1-A
+-d "{ 
+    \"FirstName\":\"Jane\", 
+    \"LastName\":\"Doe\",
+    \"Age\":42,
+    \"@metadata\":{
+        \"@collection\":\"People\"
     }
-}
+}"
 {CODE-BLOCK/}
+Linebreaks are added for clarity.
 
 Response:  
 
@@ -57,19 +58,19 @@ Raven-Server-Version: 4.2.3.42
 #### 2) Update the document `person/1-A`.  
 
 {CODE-BLOCK: bash}
-curl -X PUT http://live-test.ravendb.net/databases/Example/docs?id=person/1-A \
---header If-Match: A:1-L8hp6eYcA02dkVIEifGfKg \
--d { 
-    "FirstName":"John", 
-    "LastName":"Smith",
-    "Age":24,
-    "@metadata":{
-        "@collection": "People"
+curl -X PUT http://live-test.ravendb.net/databases/Example/docs?id=person/1-A
+--header If-Match: A:1-L8hp6eYcA02dkVIEifGfKg
+-d "{ 
+    \"FirstName\":\"John\", 
+    \"LastName\":\"Smith\",
+    \"Age\":24,
+    \"@metadata\":{
+        \"@collection\": \"People\"
     }
-}
+}"
 {CODE-BLOCK/}
 
-Response is identical to the previous response except for the updated change vector:  
+Response is the same as the previous response except for the updated change vector:  
 
 {CODE-BLOCK: Http}
 HTTP/1.1 201
@@ -97,9 +98,9 @@ Raven-Server-Version: 4.2.3.42
 This is the general form of a cURL request:  
 
 {CODE-BLOCK: batch}
-curl -X PUT <server URL>/databases/<database name>/docs?id=<document ID> \
---header If-Match: <expected change vector> \
--d <JSON document>
+curl -X PUT <server URL>/databases/<database name>/docs?id=<document ID>
+--header If-Match: <expected change vector>
+-d "<JSON document>"
 {CODE-BLOCK/}
 
 | Query Parameter | Description | Required |
@@ -117,10 +118,10 @@ will become a new document with the specified ID.
 
 {CODE-BLOCK: javascript}
 {
-    "<field>": "<value>",
+    \"<field>\": \"<value>\",
     ...
-    "@metadata": {
-        "@collection": "<collection name>",
+    \"@metadata\": {
+        \"@collection\": \"<collection name>\",
         ...
     }
 }
@@ -129,6 +130,15 @@ will become a new document with the specified ID.
 When updating an existing document, you'll need to include its [collection](../../../client-api/faq/what-is-a-collection) 
 name in the metadata or an exception will be thrown. Exceptions to this rule are documents in the collection `@empty` - 
 i.e. not in any collection. A document's collection cannot be modified.  
+
+cURL syntax requires that all double quotes `"` within the request body be escaped: `\"`.Alternatively, you can save the 
+document as a file and pass the path to that file as the request body:  
+
+{CODE-BLOCK: batch}
+curl -X PUT <server URL>/databases/<database name>/docs?id=<document ID>
+-d <@path/yourDocument.txt>
+{CODE-BLOCK/}
+
 
 {PANEL/}
 
