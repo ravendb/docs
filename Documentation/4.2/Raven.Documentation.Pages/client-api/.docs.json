@@ -94,5 +94,10 @@
     "Path": "/faq",
     "Name": "FAQ",
     "Mappings": []
+  },
+  {
+    "Path": "/rest-api",
+    "Name": "Rest API",
+    "Mappings": []
   }
 ]
