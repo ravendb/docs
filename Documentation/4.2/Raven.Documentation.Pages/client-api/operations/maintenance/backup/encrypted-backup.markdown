@@ -49,7 +49,7 @@ of server-client communication.
 * **Authenticate with the server**.  
   Be aware that enabling secure communication will require clients to **certify themselves** in order to access RavenDB.  
   Client authentication code sample:
-  {CODE encrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+  {CODE encrypted_database@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}  
 
 ---
 
@@ -84,7 +84,7 @@ Use the same [Backup](../../../../client-api/operations/maintenance/backup/backu
 Pass them a **BackupEncryptionSettings** structure to determine whether encryption is used, and if so - with which [encryption key](../../../../client-api/operations/maintenance/backup/encrypted-backup#the-encryption-key).  
 
 * `BackupEncryptionSettings` definition:  
-  {CODE BackupEncryptionSettings_definition@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+  {CODE BackupEncryptionSettings_definition@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}  
     BackupEncryptionSettings parameters:  
 
     | Parameter | Type | Functionality |
@@ -92,7 +92,7 @@ Pass them a **BackupEncryptionSettings** structure to determine whether encrypti
     | **EncryptionMode** | enum | Set the encryption mode. <br> `none` - Use **no encryption** (this is the default mode). <br> `UseProvidedKey` - Provide **your own encryption key**. <br> `UseDatabaseKey` - Use **the same key the DB is encrypted with**. |
     | **Key** | string | Pass your own encryption key using this parameter |
     `EncryptionMode` definition:  
-    {CODE EncryptionMode_definition@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+    {CODE EncryptionMode_definition@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}  
 
 ---
 
@@ -102,14 +102,14 @@ To encrypt your backup, either **use the database's encryption key** or **choose
 
 * **Using the database's Key**  
   If your database is encrypted, you can utilize its existing encryption key for your backup as well.  
-     {CODE use_database_encryption_key@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+     {CODE use_database_encryption_key@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}  
    
     {NOTE: Both logical-backups and snapshots can use the same key as the database.}
     {NOTE/}
 
 * **Using a key of your choice**  
   You can choose a key other than the database's to encrypt your logical-backup with.  
-     {CODE use_provided_encryption_key@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+     {CODE use_provided_encryption_key@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}  
 
     {NOTE: Only a logical-backup can use an encryption-key different than the database's.}
     {NOTE/}
@@ -132,19 +132,19 @@ Creating an encrypted logical-backup is nearly similar to [creating a non-encryp
    * Provide an [encryption key](../../../../client-api/operations/maintenance/backup/encrypted-backup#the-encryption-key) if needed.  
 
 * Code sample: encrypting a backup **using the database encryption key**.  
-  {CODE use_database_encryption_key_full_sample@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+  {CODE use_database_encryption_key_full_sample@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}  
 
 * Code sample: encrypting a backup **with an encryption key of your choice** -  
- {CODE use_provided_encryption_key_full_sample@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+ {CODE use_provided_encryption_key_full_sample@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}  
 
 * To create an **unencrypted** backup:  
    * Either let the default setting (`EncryptionMode = EncryptionMode.None`) do the work for you, or -
    * Explicitly choose `EncryptionMode.None`.
-     {CODE explicitly_choose_no_encryption@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+     {CODE explicitly_choose_no_encryption@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}  
 
 {NOTE: You CAN encrypt the backup of an unencrypted database.}
 Pass the encryption key using `EncryptionMode.UseProvidedKey`.  
-{CODE use_provided_encryption_key@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+{CODE use_provided_encryption_key@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}
 {NOTE/}
 
 {NOTE: Default encryption-key}
@@ -178,7 +178,7 @@ The snapshot of an unencrypted database is not encrypted.
 
 To restore your encrypted backup, pass [RestoreBackupOperation](../../../../client-api/operations/maintenance/backup/restore#configuration-and-execution) the **key** used to encrypt it.  
 Pass the key using `restoreConfiguration.BackupEncryptionSettings`.  
-{CODE restore_encrypted_backup@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+{CODE restore_encrypted_backup@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}
 
 ---
 
@@ -190,13 +190,13 @@ If you want to encrypt the restored database, you have to address it explicitly.
 
 * **To encrypt the restored database**:  
   Pass `RestoreBackupOperation` an encryption key using `restoreConfiguration.EncryptionKey`.  
-  {CODE restore_encrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+  {CODE restore_encrypted_database@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}  
 
 To restore an **unencrypted** logical-backup -
 
 * Either provide **no encryption key** to activate the default value (`EncryptionMode.None`), or -
 * Choose `EncryptionMode.None` Explicitly.  
-  {CODE restore_unencrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+  {CODE restore_unencrypted_database@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}  
 
 ---
 

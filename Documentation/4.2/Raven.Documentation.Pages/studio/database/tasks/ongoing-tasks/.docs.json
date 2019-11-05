@@ -4,5 +4,11 @@
     "Name": "Pull Replication",
     "DiscussionId": "3ebce840-1ea8-4f9e-ae50-0275661a3c1d",
     "Mappings": []
+  },
+  {
+      "Path": "backup-task.markdown",
+      "Name": "Backup Task",
+      "DiscussionId": "546cb25b-d674-4653-9dd8-eb20f5672dda",
+      "Mappings": []
   }
 ]
