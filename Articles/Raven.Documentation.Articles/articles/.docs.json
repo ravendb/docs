@@ -1065,5 +1065,34 @@
             "twitter:description": "Why should a database be built by the data modeling standards of the Kennedy Administration? If we can ditch Bell Bottoms, we can transform how we model data.",
             "twitter:url": "https://ravendb.net/articles/trapped-in-the-60s-how-our-view-on-data-is-holding-us-back"
         }
-    }
+    },
+    {
+        "Path": "ravendb-vs-mongodb-performance-cost-and-complexity.markdown",
+        "Name": "RavenDB vs MongoDB: Database Performance, Cost, and Complexity",
+        "Mappings": [],
+        "Metadata": {
+            "title": "RavenDB vs MongoDB: Database Performance, Cost, and Complexity",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/ravendb-vs-mongodb-performance-cost-and-complexity",
+            "publishedAt": "2019-11-05",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "RavenDB vs MongoDB: Performance, Cost, and Complexity",
+            "og:description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
+            "og:url": "ravendb-vs-mongodb-performance-cost-and-complexity",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-vs-mongodb-performance-cost-and-complexity&fileName=ravendb-vs-mongodb-performance-cost-and-complexity.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "RavenDB vs MongoDB: Performance, Cost, and Complexity",
+            "twitter:description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
+            "twitter:url": "https://ravendb.net/articles/ravendb-vs-mongodb-performance-cost-and-complexity"
+        }
+    },
 ]
