@@ -1066,33 +1066,62 @@
             "twitter:url": "https://ravendb.net/articles/trapped-in-the-60s-how-our-view-on-data-is-holding-us-back"
         }
     },
-    {
-        "Path": "ravendb-vs-mongodb-performance-cost-and-complexity.markdown",
-        "Name": "RavenDB vs MongoDB: Database Performance, Cost, and Complexity",
-        "Mappings": [],
-        "Metadata": {
-            "title": "RavenDB vs MongoDB: Database Performance, Cost, and Complexity",
-            "likeSection": "yes",
-            "url": "https://ravendb.net/articles/ravendb-vs-mongodb-performance-cost-and-complexity",
-            "publishedAt": "2019-11-05",
-            "subcategories": "nosql-database"
-        },
-        "SeoMetaProperties": {
-            "description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
-            "og:site_name": "RavenDB",
-            "og:type": "website",
-            "og:title": "RavenDB vs MongoDB: Performance, Cost, and Complexity",
-            "og:description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
-            "og:url": "ravendb-vs-mongodb-performance-cost-and-complexity",
-            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-vs-mongodb-performance-cost-and-complexity&fileName=ravendb-vs-mongodb-performance-cost-and-complexity.jpg",
-            "og:image:width": "280",
-            "og:image:height": "280",
-            "twitter:card": "summary_large_image",
-            "twitter:creator": "@RavenDB",
-            "twitter:site": "@RavenDB",
-            "twitter:title": "RavenDB vs MongoDB: Performance, Cost, and Complexity",
-            "twitter:description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
-            "twitter:url": "https://ravendb.net/articles/ravendb-vs-mongodb-performance-cost-and-complexity"
-        }
-    },
+	{
+			"Path": "ravendb-vs-mongodb-performance-cost-and-complexity.markdown",
+			"Name": "RavenDB vs MongoDB: Database Performance, Cost, and Complexity",
+			"Mappings": [],
+			"Metadata": {
+				"title": "RavenDB vs MongoDB: Database Performance, Cost, and Complexity",
+				"likeSection": "yes",
+				"url": "https://ravendb.net/articles/ravendb-vs-mongodb-performance-cost-and-complexity",
+				"publishedAt": "2019-11-05",
+				"subcategories": "nosql-database"
+			},
+			"SeoMetaProperties": {
+				"description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
+				"og:site_name": "RavenDB",
+				"og:type": "website",
+				"og:title": "RavenDB vs MongoDB: Performance, Cost, and Complexity",
+				"og:description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
+				"og:url": "ravendb-vs-mongodb-performance-cost-and-complexity",
+				"og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-vs-mongodb-performance-cost-and-complexity&fileName=ravendb-vs-mongodb-performance-cost-and-complexity.jpg",
+				"og:image:width": "280",
+				"og:image:height": "280",
+				"twitter:card": "summary_large_image",
+				"twitter:creator": "@RavenDB",
+				"twitter:site": "@RavenDB",
+				"twitter:title": "RavenDB vs MongoDB: Performance, Cost, and Complexity",
+				"twitter:description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
+				"twitter:url": "https://ravendb.net/articles/ravendb-vs-mongodb-performance-cost-and-complexity"
+			}
+	},
+	{
+			"Path": "how-ravendb-cloud-dbaas-bolsters-your-price-predictability.markdown",
+			"Name": "DbaaS Price and Cloud Database Costs",
+			"Mappings": [],
+			"Metadata": {
+				"title": "DbaaS Price and Cloud Database Costs",
+				"likeSection": "yes",
+				"url": "https://ravendb.net/articles/how-ravendb-cloud-dbaas-bolsters-your-price-predictability",
+				"publishedAt": "2019-11-04",
+				"subcategories": "nosql-database"
+			},
+			"SeoMetaProperties": {
+				"description": "The primary goal in using any DBaaS or SaaS tool is to cut costs. The challenge is to anticipate your next database cloud bill. RavenDB Cloud helps you accomplish both.",
+				"og:site_name": "RavenDB",
+				"og:type": "website",
+				"og:title": "How RavenDB Cloud DBaaS Bolsters Your Price Predictability",
+				"og:description": "The primary goal in using any DBaaS or SaaS tool is to cut costs. The challenge is to anticipate your next cloud bill. RavenDB Cloud helps you accomplish both.",
+				"og:url": "how-ravendb-cloud-dbaas-bolsters-your-price-predictability",
+				"og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/how-ravendb-cloud-dbaas-bolsters-your-price-predictability&fileName=how-ravendb-cloud-dbaas-bolsters-your-price-predictability.jpg",
+				"og:image:width": "280",
+				"og:image:height": "280",
+				"twitter:card": "summary_large_image",
+				"twitter:creator": "@RavenDB",
+				"twitter:site": "@RavenDB",
+				"twitter:title": "How RavenDB Cloud DBaaS Bolsters Your Price Predictability",
+				"twitter:description": "The primary goal in using any DBaaS or SaaS tool is to cut costs. The challenge is to anticipate your next cloud bill. RavenDB Cloud helps you accomplish both.",
+				"twitter:url": "https://ravendb.net/articles/how-ravendb-cloud-dbaas-bolsters-your-price-predictability"
+			}
+	}
 ]
