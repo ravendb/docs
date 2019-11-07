@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="client-api\operations\maintenance\images\" />
     <Folder Include="studio\database\tasks\images\" />
   </ItemGroup>
 
