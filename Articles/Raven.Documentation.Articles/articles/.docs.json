@@ -1152,5 +1152,34 @@
             "twitter:description": "Every system in our microservices architecture uses RavenDB to process its data. We will never ask you to trust RavenDB for anything she isn’t doing for us.",
             "twitter:url": "https://ravendb.net/articles/ravendb-uses-its-own-database-in-a-microservices-architecture"
         }
-}
+	},
+    {
+        "Path": "new-ravendb-cloud-features-that-make-your-saas-easier.markdown",
+        "Name": "New Cloud Database Features",
+        "Mappings": [],
+        "Metadata": {
+            "title": "New Cloud Database Features | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/new-ravendb-cloud-features-that-make-your-saas-easier",
+            "publishedAt": "2019-11-13",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "Read about the new features that ravenDB offers: quick setup and security, universal Accessibilty, 2 factor authentication, Encrypted Backups and more.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "New RavenDB Cloud Features that Make your SaaS Easier",
+            "og:description": "My cloud platform told me that it's easy as pie. I am thinking apple, pecan, pumpkin. They were thinking, the ratio of a circle's circumference to its diameter.",
+            "og:url": "new-ravendb-cloud-features-that-make-your-saas-easier",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/new-ravendb-cloud-features-that-make-your-saas-easier&fileName=new-ravendb-cloud-features-that-make-your-saas-easier.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "New RavenDB Cloud Features that Make your SaaS Easier",
+            "twitter:description": "My cloud platform told me that it's easy as pie. I am thinking apple, pecan, pumpkin. They were thinking, the ratio of a circle's circumference to its diameter.",
+            "twitter:url": "https://ravendb.net/articles/new-ravendb-cloud-features-that-make-your-saas-easier"
+        }
+	}
 ]
