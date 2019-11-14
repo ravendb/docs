@@ -1181,5 +1181,5 @@
             "twitter:description": "Every system in our microservices architecture uses RavenDB to process its data. We will never ask you to trust RavenDB for anything she isn’t doing for us.",
             "twitter:url": "https://ravendb.net/articles/ravendb-uses-its-own-database-in-a-microservices-architecture"
 		}
-	}
+  }
 ]
