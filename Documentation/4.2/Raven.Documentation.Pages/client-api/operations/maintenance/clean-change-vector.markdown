@@ -5,8 +5,8 @@
 {NOTE: }
 
 * A database's [change vector](../../../server/clustering/replication/change-vector) contains entries from each instance of the database 
-in the database group. However, even when an instance goes down its entry will remain in the database change vector. These entries can 
-build up over time, leading to larger change vectors that take up unnecessary space.  
+in the database group. However, even when an instance no longer exists (because it was removed or replaced) its entry will remain in the 
+database change vector. These entries can build up over time, leading to longer change vectors that take up unnecessary space.  
 
 * **`UpdateUnusedDatabasesOperation`** lets you specify the IDs of database instances that no longer exist so that their entries can be 
 removed from the database change vector.  
@@ -54,7 +54,7 @@ Next time a document is modified, you will see that the database change vector h
 
 {PANEL/}
 
-## Related Articles:  
+## Related Articles
 
 ### Getting Started
 - [About Examples](../../../start/about-examples)
