@@ -1,4 +1,4 @@
-# Configuration: Updates Options
+# Configuration: Update Options
 
 {PANEL:Updates.Channel}
 
@@ -13,5 +13,15 @@ Possible values:
 - `Stable`
 - `Patch`
 - `Dev`
+
+{PANEL/}
+
+{PANEL: Updates.BackgroundChecks.Disable}
+
+Disable background latest version checks.
+
+- **Type**: `boolean`
+- **Default**: `false`
+- **Scope**: Server-wide only
 
 {PANEL/}
