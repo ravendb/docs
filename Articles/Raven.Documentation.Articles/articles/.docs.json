@@ -1162,7 +1162,7 @@
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/ravendb-uses-its-own-database-in-a-microservices-architecture",
             "publishedAt": "2019-11-14",
-            "subcategories": "nosql-database"
+            "subcategories": "microservice-architecture"
         },
         "SeoMetaProperties": {
             "description": "Every system in our microservices architecture uses RavenDB database to process its data. We trust RavenDB.",
@@ -1180,6 +1180,35 @@
             "twitter:title": "RavenDB uses its own database in a Microservices Architecture",
             "twitter:description": "Every system in our microservices architecture uses RavenDB to process its data. We will never ask you to trust RavenDB for anything she isn’t doing for us.",
             "twitter:url": "https://ravendb.net/articles/ravendb-uses-its-own-database-in-a-microservices-architecture"
+        }
+	},
+	{
+        "Path": "the-first-microservices-architecture.markdown",
+        "Name": "Database Used in a Microservices Architecture",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Microservices Architecture – A Little History | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/the-first-microservices-architecture",
+            "publishedAt": "2019-11-20",
+            "subcategories": "microservice-architecture"
+        },
+        "SeoMetaProperties": {
+            "description": "About the history of microservices architecture - the first microservices architecture in modern history didn’t come from a server, a virtual machine, or in the cloud.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "The First Microservices Architecture | RavenDB",
+            "og:description": "The first microservices architecture in modern history didn’t come from a server, a virtual machine, or in the cloud. It didn't even take place on a computer.",
+            "og:url": "the-first-microservices-architecture",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/the-first-microservices-architecture&fileName=the-first-microservices-architecture.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "The First Microservices Architecture | RavenDB",
+            "twitter:description": "The first microservices architecture in modern history didn’t come from a server, a virtual machine, or in the cloud. It didn't even take place on a computer.",
+            "twitter:url": "https://ravendb.net/articles/the-first-microservices-architecture"
         }
 	}
 ]
