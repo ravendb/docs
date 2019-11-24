@@ -9,9 +9,11 @@
 
 * The commands are sent as a JSON array in the [request body](../../../client-api/rest-api/document-commands/batch-commands#body).  
 
-* All the commands in the batch will either succeed or fail as a **single transaction**. Changes will not be visible until the entire batch completes.  
+* All the commands in the batch will either succeed or fail as a **single transaction**. Changes will not be visible until 
+the entire batch completes.  
 
-* [Options](../../../client-api/rest-api/document-commands/batch-commands#batch-options) can be set to make the server wait for indexing and replication to complete before returning.  
+* [Options](../../../client-api/rest-api/document-commands/batch-commands#batch-options) can be set to make the server wait 
+for indexing and replication to complete before returning.  
 
 * In this page:  
   * [Basic Example](../../../client-api/rest-api/document-commands/batch-commands#basic-example)  
@@ -25,39 +27,39 @@
 
 {PANEL: Basic Example}
 
-This is a cURL request to our [playground server](http://live-test.ravendb.net) to a database named "Example".  
+This is a cURL request to a database named "Example" on our [playground server](http://live-test.ravendb.net).  
 It batches two commands:  
 
 1. Upload a new document called "person/1".  
 2. Execute a [patch](../../../client-api/operations/patching/single-document) on that same document.  
 
 {CODE-BLOCK: bash}
-curl -X POST http://live-test.ravendb.net/databases/Example/bulk_docs \
--H 'Content-Type: application/json' \
--d '{
-    "Commands": [
+curl -X POST "http://live-test.ravendb.net/databases/Example/bulk_docs"
+-H "Content-Type: application/json"
+-d "{
+    \"Commands\": [
         {
-            "Id": "person/1",
-            "ChangeVector": null,
-            "Document": {
-                "Name": "John Smith"
+            \"Id\": \"person/1\",
+            \"ChangeVector\": null,
+            \"Document\": {
+                \"Name\": \"John Smith\"
             },
-            "Type": "PUT"
+            \"Type\": \"PUT\"
         },
         {
-            "Id": "person/1",
-            "ChangeVector": null,
-            "Patch": {
-                "Script": "this.Name = 'Jane Doe';",
-                "Values": {}
+            \"Id\": \"person/1\",
+            \"ChangeVector\": null,
+            \"Patch\": {
+                \"Script\": \"this.Name = 'Jane Doe';\",
+                \"Values\": {}
             },
-            "Type": "PATCH"
+            \"Type\": \"PATCH\"
         }
     ]
-}'
+}"
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
-
+<br/>
 ####Response:  
 
 {CODE-BLOCK: http}
@@ -96,35 +98,54 @@ Raven-Server-Version: 4.2.4.42
 
 {PANEL: Request Format}
 
-This is the general form of a cURL request for any batch of commands that does _not_ include a put attachment command (see the Put Attachment Command format 
-[below](../../../client-api/rest-api/document-commands/batch-commands#put-attachment-command)):  
+This is the general format of a cURL request with a batch of commands that _does not_ include a Put Attachment Command 
+(see the format for batching a Put Attachment Command [below](../../../client-api/rest-api/document-commands/batch-commands#put-attachment-command)):  
 
 {CODE-BLOCK: bash}
-curl -X POST <server URL>/databases/<database name>/bulk_docs?<batch options> \
--H 'Content-Type: application/json' \
--d '{
-    "Commands": [
+curl -X POST "<server URL>/databases/<database name>/bulk_docs?<batch options>"
+-H "Content-Type: application/json"
+-d "{
+    \"Commands\": [
         { <command> },
         ...
     ]
-}'
+}"
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
 <br/>
 #### Query String
 
-The query string takes [batch options](../../../client-api/rest-api/document-commands/batch-commands#batch-options), which can make the server wait for 
-indexing and replication to finish before responding.  
+The query string takes [batch options](../../../client-api/rest-api/document-commands/batch-commands#batch-options), which 
+can make the server wait for indexing and replication to finish before responding.  
 <br/>
 #### Header
 
 The header `Content-Type` is required and takes one of two values:  
 
 * `application/json` - if the batch _does not_ include a Put Attachment Command.  
-* `multipart/mixed; boundary=<separator>` - if the batch [_does_](../../../client-api/rest-api/document-commands/batch-commands#put-attachment-command) include a put attachment command. 
-The "separator" is used to demarcate the attachment streams.  
+* `multipart/mixed; boundary=<separator>` - if the batch [_does_](../../../client-api/rest-api/document-commands/batch-commands#put-attachment-command) 
+include a Put Attachment Command. The "separator" is an arbitrary string used to demarcate the attachment streams and 
+commands array.  
 <br/>
 #### Body
+
+The body contains a JSON array of commands.  
+
+{CODE-BLOCK: powershell}
+-d "{
+    \"Commands\": [
+        { 
+            \"Id\": \"<document ID>\",
+            ...
+            \"Type\": \"<command type>\"
+        },
+        { <command> },
+        ...
+    ]
+}"
+{CODE-BLOCK/}
+Depending on the shell you're using to run cURL, you will probably need to escape all double quotes within the request body 
+using a backslash: `"` -> `\"`.  
 
 The following commands can be sent using the batch command:  
 
@@ -142,15 +163,15 @@ The following commands can be sent using the batch command:
 These options, configured in the query string, make the server wait until indexing or replication have completed before responding. If these have not 
 completed before a specified amount of time has passed, the server can either respond as normal or throw an exception.  
 
-This is the general form of a cURL request that includes batch options in the query string:
+This is the general format of a cURL request that includes batch options in the query string:
 
 {CODE-BLOCK: html}
-curl -X POST <server_URL>/databases/<database_name>/bulk_docs?<batch option>=<value>& \
-             <batch option>=<value>& \
-             <batch option>=<value>& \
-             ... \
--H Content-Type \
--d '{ }'
+curl -X POST "<server_URL>/databases/<database_name>/bulk_docs?<batch option>=<value>
+             &<batch option>=<value>
+             &<batch option>=<value>
+             ..."
+-H "Content-Type: <content_type>"
+-d "{ }"
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
 <br/>
@@ -178,21 +199,21 @@ Upload a new document or update an existing document.
 
 Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands#request-format):  
 
-{CODE-BLOCK: JavaScript}
+{CODE-BLOCK: powershell}
 {
-    "Id": "<document ID>",
-    "ChangeVector": "<expected change vector>",
-    "Document": {
+    \"Id\": \"<document ID>\",
+    \"ChangeVector\": \"<expected change vector>\",
+    \"Document\": {
         <document content>
     },
-    "Type": "PUT",
-    "ForceRevisionCreationStrategy": "Before"
+    \"Type\": \"PUT\",
+    \"ForceRevisionCreationStrategy\": \"Before\"
 }
 {CODE-BLOCK/}
 
 | Parameter | Description | Required |
 | - | - | - |
-| **Id** | ID of document to create or update | Yes |
+| **Id** | ID of document to create or update | Yes to update, [no to create](../../../client-api/document-identifiers/working-with-document-identifiers#autogenerated-ids) |
 | **ChangeVector** | When updating an existing document, this parameter that document's expected [change vector](../../../server/clustering/replication/change-vector). If it does not match the server-side change vector a concurrency exception is thrown. <br/>An exception is also thrown if the document does not exist. | No |
 | **Document** | JSON document to create, or to replace the existing document | Yes |
 | **Type** | Set to `PUT` | Yes |
@@ -202,47 +223,48 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 
 ### Patch Document Command
 
-Update a document. A [patch](../../../client-api/operations/patching/single-document) is executed on the server side and does not involve loading the 
-document, thus avoiding the cost of sending the entire document in a round trip over the network.  
+Update a document. A [patch](../../../client-api/operations/patching/single-document) is executed on the server side and 
+does not involve loading the document, avoiding the cost of sending the entire document in a round trip over the network.  
 
 Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands#request-format):  
 
-{CODE-BLOCK: JavaScript}
+{CODE-BLOCK: powershell}
 {
-    "Id": "<document ID>",
-    "ChangeVector": "<expected change vector>",
-    "Patch": {
-        "Script": "<javascript code using $<argument name> >",
-        "Values": {
-            "<argument name>": "<value>",
+    \"Id\": \"<document ID>\",
+    \"ChangeVector\": \"<expected change vector>\",
+    \"Patch\": {
+        \"Script\": \"<javascript code using $<argument name> >\",
+        \"Values\": {
+            \"<argument name>\": \"<value>\",
             ...
         }
     },
-    "PatchIfMissing": {
-        "Script": "<javascript code>",
-        "Values": {
+    \"PatchIfMissing\": {
+        \"Script\": \"<javascript code>\",
+        \"Values\": {
             <arguments>
         }
     },
-    "Type": "PATCH"
+    \"Type\": \"PATCH\"
 }
 {CODE-BLOCK/}
 
 | Parameter | Description | Required |
 | - | - | - |
-| **Id** | ID of document on which to execute the patch | Yes |
+| **Id** | ID of a document to execute the patch on | Yes |
 | **ChangeVector** | The document's expected [change vector](../../../server/clustering/replication/change-vector). If it does not match the server-side change vector a concurrency exception is thrown. | No |
-| **Patch** | Contains a script that modifies the specified document. [Details below](../../../client-api/rest-api/document-commands/batch-commands#patch-request). | Yes |
-| **PatchIfMissing** | Contains an alternative script to be executed if no document with the given ID is found. This will create a new document with the given ID. [Details below](../../../client-api/rest-api/document-commands/batch-commands#patch-request). | No |
+| **Patch** | A script that modifies the specified document. [Details below](../../../client-api/rest-api/document-commands/batch-commands#patch-request). | Yes |
+| **PatchIfMissing** | An alternative script to be executed if no document with the given ID is found. This will create a new document with the given ID. [Details below](../../../client-api/rest-api/document-commands/batch-commands#patch-request). | No |
 | **Type** | Set to `PATCH` | Yes |
 
 #### Patch Request
 
-Using scripts with arguments allows RavenDB to cache scripts and boost performance.
+Using scripts with arguments allows RavenDB to cache scripts and boost performance. For cURL, use single quotes `'` to 
+wrap strings.  
 
 | Sub-Parameter | Description | Required |
 | - | - | - |
-| **Script** | Commands in javascript to perform on the document. Use arguments from `Values` with a `$` prefix, i.e. `$<argument name>`. | Yes |
+| **Script** | Javascript commands to perform on the document. Use arguments from `Values` with a `$` prefix, i.e. `$<argument name>`. | Yes |
 | **Values** | Arguments that can be used in the script. | No |
 
 ---
@@ -253,11 +275,11 @@ Delete a document by its ID.
 
 Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands#request-format):  
 
-{CODE-BLOCK: JavaScript}
+{CODE-BLOCK: powershell}
 {
-    "Id": "<document ID>",
-    "ChangeVector": "<expected change vector>",
-    "Type": "DELETE"
+    \"Id\": \"<document ID>\",
+    \"ChangeVector\": \"<expected change vector>\",
+    \"Type\": \"DELETE\"
 }
 {CODE-BLOCK/}
 
@@ -275,18 +297,18 @@ Delete all documents whose IDs begin with a certain prefix.
 
 Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands#request-format):  
 
-{CODE-BLOCK: JavaScript}
+{CODE-BLOCK: powershell}
 {
-    "Id": "<document ID prefix>",
-    "IdPrefixed": true,
-    "Type": "DELETE"
+    \"Id\": \"<document ID prefix>\",
+    \"IdPrefixed\": true,
+    \"Type\": \"DELETE\"
 }
 {CODE-BLOCK/}
 
 | Parameter | Description | Required |
 | - | - | - |
-| **Id** | A prefix of some document IDs. Documents whose IDs begin with this prefix will be deleted | Yes |
-| **IdPrefixed** | Set to `true`. Distinguishes this as a delete by prefix command rather than the [delete by document ID command](../../../client-api/rest-api/document-commands/batch-commands#delete-command). | Yes |
+| **Id** | All documents whose IDs begin with this string will be deleted | Yes |
+| **IdPrefixed** | Set to `true` (distinguishes this as a Delete by Prefix Command rather than the Delete Document Command described above) | Yes |
 | **Type** | Set to `DELETE` | Yes |
 
 ---
@@ -302,19 +324,19 @@ same order as their respective Put Attachment Commands within the `Commands` arr
 
 The general form of a cURL request:  
 
-{CODE-BLOCK: bash}
-curl -X POST <server URL>/databases/<database name>/bulk_docs \
--H Content-Type: multipart/mixed; boundary="<separator>" \
--d
+{CODE-BLOCK: powershell}
+curl -X POST "<server URL>/databases/<database name>/bulk_docs"
+-H "Content-Type: multipart/mixed; boundary=<separator>"
+-d "
 --<separator>
 {
-    "Commands":[ 
+    \"Commands\":[ 
         {
-            "Id": "<document ID>",
-            "Name": "<attachment name>",
-            "ContentType": "<attachment MIME type>"
-            "ChangeVector": "<expected change vector>",
-            "Type": "AttachmentPUT"
+            \"Id\": \"<document ID>\",
+            \"Name\": \"<attachment name>\",
+            \"ContentType\": \"<attachment MIME type>\"
+            \"ChangeVector\": \"<expected change vector>\",
+            \"Type\": \"AttachmentPUT\"
         },
         ...
     ]
@@ -325,12 +347,12 @@ Command-Type: AttachmentStream
 <binary stream>
 --<separator>
 ...
---<separator>--
+--<separator>--"
 {CODE-BLOCK/}
 
 | Parameter | Description | Required |
 | - | - | - |
-| **boundary** | A `separator`, a string that does not appear within the contents of the body | Yes |
+| **boundary** | The "separator" - an arbitrary string that demarcates the attachment streams.<br/>The attachment streams come in the same order as their respective Put Attachment Commands in the commands array.<br/>The string used as a separator must not appear elsewhere in the request body - i.e. "ChangeVector" or "[{" are not valid separators. | Yes |
 | **Id** | Document ID | Yes |
 | **Name** | Name of attachment to create or update | Yes |
 | **ContentType** | Mime type of the attachment | No |
@@ -345,12 +367,12 @@ Delete an attachment in a certain document.
 
 Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands#request-format):  
 
-{CODE-BLOCK: JavaScript}
+{CODE-BLOCK: powershell}
 {
-    "Id": "<document ID>",
-    "Name": "<attachment name>",
-    "ChangeVector": "<expected change vector>",
-    "Type": "AttachmentDELETE"
+    \"Id\": \"<document ID>\",
+    \"Name\": \"<attachment name>\",
+    \"ChangeVector\": \"<expected change vector>\",
+    \"Type\": \"AttachmentDELETE\"
 }
 {CODE-BLOCK/}
 
@@ -370,8 +392,8 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 | Code | Description |
 | - | - |
 | `201` | The transaction was successfully completed. |
-| `408` | The time specified by the options `waitForIndexThrow` or `waitForReplicasTimeout` passed before indexing or replication completed respectively, and an exception was thrown. This only happens if `throwOnTimeoutInWaitForReplicas` or `waitForIndexThrow` are set to `true`. |
-| `409` | The specified change vector did not match the server-side change vector, or a change vector was specified for a document that does not exist. A concurrency exception is thrown. |
+| `408` | The time specified by the options `waitForIndexThrow` or `waitForReplicasTimeout` passed before indexing or replication completed respectively, and an exception is thrown. This only happens if `throwOnTimeoutInWaitForReplicas` or `waitForIndexThrow` are set to `true`. |
+| `409` | A specified change vector did not match the server-side change vector, or a change vector was specified for a document that does not exist. A concurrency exception is thrown. |
 | `500` | Invalid request, such as a put attachment command for a document that does not exist. |
 
 ### Response Body
@@ -540,6 +562,8 @@ Results appear in the same order as the commands in the request body.
 
 {PANEL: More Examples}
 
+[About Northwind](../../../start/about-examples), the database used in our examples.
+
 * In this section:  
   * [Put Document Command](../../../client-api/rest-api/document-commands/batch-commands#put-document-command-2)  
   * [Patch Document Command](../../../client-api/rest-api/document-commands/batch-commands#patch-document-command-2)  
@@ -555,20 +579,20 @@ Results appear in the same order as the commands in the request body.
 Request:
 
 {CODE-BLOCK: bash}
-curl -X POST http://live-test.ravendb.net/databases/Example/bulk_docs \
--H Content-Type: application/json \
--d '{
-    "Commands": [
+curl -X POST "http://live-test.ravendb.net/databases/Example/bulk_docs"
+-H "Content-Type: application/json"
+-d "{
+    \"Commands\": [
         {
-            "Id": "person/1",
-            "ChangeVector": null,
-            "Document": {
-                "Name": "John Smith"
+            \"Id\": \"person/1\",
+            \"ChangeVector\": null,
+            \"Document\": {
+                \"Name\": \"John Smith\"
             },
-            "Type": "PUT"
+            \"Type\": \"PUT\"
         }
     ]
-}'
+}"
 {CODE-BLOCK/}
 
 Response:
@@ -604,21 +628,21 @@ Raven-Server-Version:"4.2.4.42"
 Request:
 
 {CODE-BLOCK: bash}
-curl -X POST http://live-test.ravendb.net/databases/Example/bulk_docs \
--H Content-Type: application/json \
--d '{
-    "Commands": [
+curl -X POST "http://live-test.ravendb.net/databases/Example/bulk_docs"
+-H "Content-Type: application/json"
+-d "{
+    \"Commands\": [
         {
-            "Id": "person/1",
-            "ChangeVector": null,
-            "Patch": {
-                "Script": "this.Name = 'Jane Doe';",
-                "Values": {}
+            \"Id\": \"person/1\",
+            \"ChangeVector\": null,
+            \"Patch\": {
+                \"Script\": \"this.Name = 'Jane Doe';\",
+                \"Values\": {}
             },
-            "Type": "PATCH"
+            \"Type\": \"PATCH\"
         }
     ]
-}'
+}"
 {CODE-BLOCK/}
 
 Response:
@@ -655,17 +679,17 @@ Raven-Server-Version:"4.2.4.42"
 Request:
 
 {CODE-BLOCK: bash}
-curl -X POST http://live-test.ravendb.net/databases/Example/bulk_docs \
--H Content-Type: application/json \
--d '{
-    "Commands": [
+curl -X POST "http://live-test.ravendb.net/databases/Example/bulk_docs"
+-H "Content-Type: application/json"
+-d "{
+    \"Commands\": [
         {
-            "Id": "employees/1-A",
-            "ChangeVector": null,
-            "Type": "DELETE"
+            \"Id\": \"employees/1-A\",
+            \"ChangeVector\": null,
+            \"Type\": \"DELETE\"
         }
 	]
-}'
+}"
 {CODE-BLOCK/}
 
 Response:
@@ -700,18 +724,18 @@ Raven-Server-Version:"4.2.4.42"
 Request:
 
 {CODE-BLOCK: bash}
-curl -X POST http://live-test.ravendb.net/databases/Example/bulk_docs \
--H Content-Type: application/json \
--d '{
-    "Commands": [
+curl -X POST "http://live-test.ravendb.net/databases/Example/bulk_docs"
+-H "Content-Type: application/json"
+-d "{
+    \"Commands\": [
         {
-            "Id": "employ",
-            "ChangeVector": null,
-            "IdPrefixed": true,
-            "Type": "DELETE"
+            \"Id\": \"employ\",
+            \"ChangeVector\": null,
+            \"IdPrefixed\": true,
+            \"Type\": \"DELETE\"
         }
 	]
-}'
+}"
 
 {CODE-BLOCK/}
 
@@ -746,29 +770,25 @@ Raven-Server-Version:"4.2.4.42"
 Request:
 
 {CODE-BLOCK: bash}
-curl -X POST http://live-test.ravendb.net/databases/Example/bulk_docs \
--H Content-Type: multipart/mixed; boundary="some_boundary" \
--d '
+curl -X POST "http://live-test.ravendb.net/databases/Example/bulk_docs"
+-H "Content-Type: multipart/mixed; boundary=some_boundary"
+-d "
 --some_boundary
-
 {
-	"Commands": [
+	\"Commands\": [
 		{
-			"Id":"shippers/1-A",
-			"Name":"some_file",
-			"ContentType":"text"
-			"Type":"AttachmentPUT",
+			\"Id\":\"shippers/1-A\",
+			\"Name\":\"some_file\",
+			\"ContentType\":\"text\"
+			\"Type\":\"AttachmentPUT\",
 		}
 	]
 }
-
 --some_boundary
 Command-Type: AttachmentStream
 
 12345
---some_boundary--
-'
-
+--some_boundary--"
 {CODE-BLOCK/}
 
 Response:
@@ -807,20 +827,18 @@ Raven-Server-Version:"4.2.4.42"
 Request:
 
 {CODE-BLOCK: bash}
-curl -X POST http://live-test.ravendb.net/databases/Example/bulk_docs \
--H 'Content-Type: application/json' \
--d '{
-    "Commands": [
+curl -X POST "http://live-test.ravendb.net/databases/Example/bulk_docs"
+-H "Content-Type: application/json"
+-d "{
+    \"Commands\": [
         {
-            "Id": "categories/2-A",
-            "Name": "image.jpg",
-            "ChangeVector": null,
-            "Type": "AttachmentDELETE"
+            \"Id\": \"categories/2-A\",
+            \"Name\": \"image.jpg\",
+            \"ChangeVector\": null,
+            \"Type\": \"AttachmentDELETE\"
         }
 	]
-}
-'
-
+}"
 {CODE-BLOCK/}
 
 Response:
@@ -854,15 +872,21 @@ Raven-Server-Version:"4.2.4.42"
 
 ### Client API  
 
+##### Commands
+
+- [Batch Commands](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
+
+##### Rest API
+
 - [Get All Documents](../../../client-api/rest-api/document-commands/get-all-documents)  
 - [Get Documents by ID](../../../client-api/rest-api/document-commands/get-documents-by-id)  
 - [Get Documents by Prefix](../../../client-api/rest-api/document-commands/get-documents-by-prefix)  
-- [Put Documents](../../../client-api/rest-api/document-commands/put-documents)  
-- [Delete Document](../../../client-api/rest-api/document-commands/delete-document)  
+- [Put a Document](../../../client-api/rest-api/document-commands/put-documents)  
+- [Delete a Document](../../../client-api/rest-api/document-commands/delete-document)  
 - [How to Perform Single Document Patch Operations](../../../client-api/operations/patching/single-document)  
 - [What is a Collection](../../../client-api/faq/what-is-a-collection)  
 - [What are Attachments](../../../client-api/session/attachments/what-are-attachments)  
-
+<br/>
 ### Server
 - [Change Vector](../../../server/clustering/replication/change-vector)
 - [Revisions](../../../server/extensions/revisions)

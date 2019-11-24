@@ -1,4 +1,4 @@
-﻿# Put Documents
+﻿# Put a Document
 
 ---
 
@@ -10,6 +10,7 @@
 * In this page:  
   * [Examples](../../../client-api/rest-api/document-commands/put-documents#examples)  
   * [Request Format](../../../client-api/rest-api/document-commands/put-documents#request-format)  
+      * [Request Body](../../../client-api/rest-api/document-commands/put-documents#request-body)  
   * [Response Format](../../../client-api/rest-api/document-commands/put-documents#response-format)  
 
 {NOTE/}  
@@ -18,12 +19,13 @@
 
 {PANEL: Examples}
 
-These are cURL requests to a database named "Example" on our [playground server](http://live-test.ravendb.net):  
+These are cURL requests to a database named "Example" on our [playground server](http://live-test.ravendb.net) to store and 
+then modify a document.  
 
-#### 1) Store new document "person/1-A" in the collection "People".  
+#### 1) Store a new document "person/1-A" in the collection "People"  
 
 {CODE-BLOCK: bash}
-curl -X PUT http://live-test.ravendb.net/databases/Example/docs?id=person/1-A
+curl -X PUT "http://live-test.ravendb.net/databases/Example/docs?id=person/1-A"
 -d "{ 
     \"FirstName\":\"Jane\", 
     \"LastName\":\"Doe\",
@@ -33,7 +35,7 @@ curl -X PUT http://live-test.ravendb.net/databases/Example/docs?id=person/1-A
     }
 }"
 {CODE-BLOCK/}
-Linebreaks are added for clarity.
+Linebreaks are added for clarity.  
 
 Response:  
 
@@ -55,11 +57,11 @@ Raven-Server-Version: 4.2.3.42
 }
 {CODE-BLOCK/}
 
-#### 2) Update the document `person/1-A`.  
+#### 2) Update that same document  
 
 {CODE-BLOCK: bash}
-curl -X PUT http://live-test.ravendb.net/databases/Example/docs?id=person/1-A
---header If-Match: A:1-L8hp6eYcA02dkVIEifGfKg
+curl -X PUT "http://live-test.ravendb.net/databases/Example/docs?id=person/1-A"
+--header "If-Match: A:1-L8hp6eYcA02dkVIEifGfKg"
 -d "{ 
     \"FirstName\":\"John\", 
     \"LastName\":\"Smith\",
@@ -70,7 +72,7 @@ curl -X PUT http://live-test.ravendb.net/databases/Example/docs?id=person/1-A
 }"
 {CODE-BLOCK/}
 
-Response is the same as the previous response except for the updated change vector:  
+The response is the same as the previous response except for the updated change vector:  
 
 {CODE-BLOCK: Http}
 HTTP/1.1 201
@@ -95,28 +97,32 @@ Raven-Server-Version: 4.2.3.42
 
 {PANEL: Request Format}
 
-This is the general form of a cURL request:  
+This is the general format of the cURL request:  
 
-{CODE-BLOCK: batch}
-curl -X PUT <server URL>/databases/<database name>/docs?id=<document ID>
---header If-Match: <expected change vector>
+{CODE-BLOCK: bash}
+curl -X PUT "<server URL>/databases/<database name>/docs?id=<document ID>"
+--header "If-Match: <expected change vector>"
 -d "<JSON document>"
 {CODE-BLOCK/}
 
-| Query Parameter | Description | Required |
-| - | - | - |
-| **id** | Unique ID under which the new document will be stored, or the ID of an existing document to be updated. | Yes |
+#### Query String Parameters
 
-| Headers | Description | Required |
+| Parameter | Description | Required |
+| - | - | - |
+| **id** | Unique ID under which the new document will be stored, or the ID of an existing document to be updated | Yes |
+
+#### Headers
+
+| Header | Description | Required |
 | - | - | - |
 | **If-Match** | When updating an existing document, this header passes the document's expected [change vector](../../../server/clustering/replication/change-vector). If this change vector doesn't match the document's server-side change vector, a concurrency exception is thrown. | No |
 
-#### Request body
+#### Request Body
 
-The body contains a JSON document. This will replace the existing document with the specified ID if one exists, otherwise it 
-will become a new document with the specified ID.  
+The body contains a JSON document. This will replace the existing document with the specified ID if one exists. Otherwise, 
+it will become a new document with the specified ID.  
 
-{CODE-BLOCK: javascript}
+{CODE-BLOCK: powershell}
 {
     \"<field>\": \"<value>\",
     ...
@@ -126,19 +132,20 @@ will become a new document with the specified ID.
     }
 }
 {CODE-BLOCK/}
+Depending on the shell you're using to run cURL, you will probably need to escape all double quotes within the request body 
+using a backslash: `"` -> `\"`.  
 
 When updating an existing document, you'll need to include its [collection](../../../client-api/faq/what-is-a-collection) 
 name in the metadata or an exception will be thrown. Exceptions to this rule are documents in the collection `@empty` - 
 i.e. not in any collection. A document's collection cannot be modified.  
 
-cURL syntax requires that all double quotes `"` within the request body be escaped: `\"`.Alternatively, you can save the 
-document as a file and pass the path to that file as the request body:  
+Another way to make this request is to save your document as a file (such as a `.txt`), and pass the path to that file in 
+the request body:  
 
 {CODE-BLOCK: batch}
-curl -X PUT <server URL>/databases/<database name>/docs?id=<document ID>
--d <@path/yourDocument.txt>
+curl -X PUT "<server URL>/databases/<database name>/docs?id=<document ID>"
+-d "<@path/to/yourDocument.txt>"
 {CODE-BLOCK/}
-
 
 {PANEL/}
 
@@ -162,7 +169,7 @@ The response body is JSON and contains the document ID and current [change vecto
 | - | - |
 | `201` | The document was successfully stored / updated |
 | `409` | The change vector submitted did not match the server-side change vector. A concurrency exception is thrown. |
-| `500` | Server error. For example: when the submitted document's collection tag does not match the specified document's collection tag. |
+| `500` | Server error, e.g. when the submitted document's collection tag did not match the specified document's collection tag. |
 
 {PANEL/}
 
@@ -170,13 +177,19 @@ The response body is JSON and contains the document ID and current [change vecto
 
 ### Client API  
 
+##### Commands
+
+- [Documents: Put](../../../client-api/commands/documents/put)
+
+##### Rest API
+
 - [Get All Documents](../../../client-api/rest-api/document-commands/get-all-documents)  
 - [Get Documents by ID](../../../client-api/rest-api/document-commands/get-documents-by-id)  
 - [Get Documents by Prefix](../../../client-api/rest-api/document-commands/get-documents-by-prefix)  
-- [Delete Document](../../../client-api/rest-api/document-commands/delete-document)  
+- [Delete a Document](../../../client-api/rest-api/document-commands/delete-document)  
 - [Batch Commands](../../../client-api/rest-api/document-commands/batch-commands)  
 - [What is a Collection](../../../client-api/faq/what-is-a-collection)  
-
+<br/>
 ### Server  
 
 - [Change Vector](../../../server/clustering/replication/change-vector)  

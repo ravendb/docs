@@ -1,7 +1,12 @@
 [
-    {
-        "Path": "/document-commands",
-        "Name": "Document Commands",
-        "Mappings": []
-    }
+  {
+    "Path": "/document-commands",
+    "Name": "Document Commands",
+    "Mappings": []
+  },
+  {
+    "Path": "/queries",
+    "Name": "Queries",
+    "Mappings": []
+  }
 ]

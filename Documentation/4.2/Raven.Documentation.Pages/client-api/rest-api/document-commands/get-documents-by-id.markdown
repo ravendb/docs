@@ -25,8 +25,8 @@
 
 {PANEL: Basic Example}
 
-This is a cURL request to a database named "Example" on our [playground server](http://live-test.ravendb.net), to retrieve one 
-document named "products/48-A":  
+This is a cURL request to retrieve one document named "products/48-A" from a database named "Example" on our 
+[playground server](http://live-test.ravendb.net):  
 
 {CODE-BLOCK: bash}
 curl -X GET "http://live-test.ravendb.net/databases/Example/docs?id=products/48-A"
@@ -74,7 +74,7 @@ Raven-Server-Version: 4.2.4.42
 
 {PANEL: Request Format}
 
-This is the general form of a cURL request that uses all parameters:  
+This is the general format of a cURL request that uses all parameters:  
 
 {CODE-BLOCK: batch}
 curl -X GET "<server URL>/databases/<database name>/docs?
@@ -82,7 +82,7 @@ curl -X GET "<server URL>/databases/<database name>/docs?
             &include=<path>
             &counter=<counter name>
             &metadataOnly=<boolean>"
---header If-None-Match:<hash>
+--header "If-None-Match:<hash>"
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
 <br/>
@@ -123,7 +123,8 @@ Linebreaks are added for clarity.
 
 ####Body
 
-A retrieved document is identical in contents and format to the document stored on the server (unless the `metadataOnly` parameter is set to `true`).
+A retrieved document is identical in contents and format to the document stored on the server (unless the `metadataOnly` 
+parameter is set to `true`).  
 
 This is the general JSON format of the response body:  
 
@@ -164,7 +165,7 @@ Linebreaks are added for clarity.
 
 {PANEL: More Examples}
 
-[About Northwind](../../../getting-started/about-examples), the database used in our examples.
+[About Northwind](../../../start/about-examples), the database used in our examples.
 
 In this section:  
 
@@ -432,7 +433,7 @@ Raven-Server-Version: 4.2.4.42
 }
 {CODE-BLOCK/}
 
-(Note that the standard [Northwind data](../../../getting-started/about-examples) does not contain any [counters](../../../client-api/session/counters/overview) 
+(Note that the standard [Northwind data](../../../start/about-examples) does not contain any [counters](../../../client-api/session/counters/overview) 
 when it is [generated in the studio](../../../studio/database/documents/document-view/additional-features/counters) - counters were added to "products/48-A" for this example)  
 
 {PANEL/}
@@ -441,18 +442,24 @@ when it is [generated in the studio](../../../studio/database/documents/document
 
 ### Getting Started  
 
-- [About Examples](../../../getting-started/about-examples)  
-
+- [About Examples](../../../start/about-examples)  
+<br/>
 ### Client API  
+
+##### Commands
+
+- [Documents: Get](../../../client-api/commands/documents/get)
+
+##### Rest API
 
 - [Get All Documents](../../../client-api/rest-api/document-commands/get-all-documents)  
 - [Get Documents by Prefix](../../../client-api/rest-api/document-commands/get-documents-by-prefix)  
-- [Put Documents](../../../client-api/rest-api/document-commands/put-documents)  
-- [Delete Document](../../../client-api/rest-api/document-commands/delete-document)  
+- [Put a Document](../../../client-api/rest-api/document-commands/put-documents)  
+- [Delete a Document](../../../client-api/rest-api/document-commands/delete-document)  
 - [Batch Commands](../../../client-api/rest-api/document-commands/batch-commands)  
 - [Counters: Overview](../../../client-api/session/counters/overview)  
 - [How to Handle Document Relationships](../../../client-api/how-to/handle-document-relationships#includes)  
-
+<br/>
 ### Server  
 
 - [Change Vector](../../../server/clustering/replication/change-vector)  
