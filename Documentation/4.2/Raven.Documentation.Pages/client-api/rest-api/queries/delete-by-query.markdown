@@ -123,7 +123,7 @@ double quotes within the request body using a backslash: `"` -> `\"`.
 
 - [Delete by Query](../../../client-api/operations/delete-by-query)  
 
-##### Rest API  
+##### REST API  
 
 - [Query the Database](../../../client-api/rest-api/queries/query-the-database)  
 - [Patch by Query](../../../client-api/rest-api/queries/patch-by-query)  

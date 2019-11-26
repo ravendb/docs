@@ -79,7 +79,7 @@ curl -X DELETE "<server URL>/databases/<database name>/docs?id=<document ID>"
 
 - [Documents: Delete](../../../client-api/commands/documents/delete)
 
-##### Rest API
+##### REST API
 
 - [Get All Documents](../../../client-api/rest-api/document-commands/get-all-documents)  
 - [Get Documents by ID](../../../client-api/rest-api/document-commands/get-documents-by-id)  

@@ -98,7 +98,7 @@ Content-Length: 1103
 This is the general format of a cURL request that uses all query string parameters:
 
 {CODE-BLOCK: batch}
-curl -X POST "<server URL>/databases/<database name>/docs?
+curl -X POST "<server URL>/databases/<database name>/queries?
             metadata=<boolean>
             &includeServerSideQuery=<boolean>
             &debug=<debug>"
@@ -113,21 +113,24 @@ Linebreaks are added for clarity.
 | - | - | - |
 | **metadataOnly** | Set this parameter to `true` to retrieve only the document metadata from each result | No |
 | **includeServerSideQuery** | Adds the RQL query that is run on the server side, which may look slightly different than the query sent | No |
-| **debug** | Takes various values, listed in the table below, that modify the results or add information | No |
+| **debug** | Takes one of several values - listed in the table below - that modify the results or add information | No |
 
-| `debug` Values | Description |
+#### Values of `debug` parameter
+
+| Value | Description |
 | - | - |
 | **entries** | Returns the index entries instead of the complete documents, meaning only those fields that are indexed by the queried index |
-| **explain** | Used for queries on [dynamic indexes](../../../indexes/creating-and-deploying#auto-indexes).<br/>Returns _only_ the name of an existing index that can be used to satisfy this query. If no appropriate index could be found, returns the next best index with an explanation of why it is not appropriate for this query - e.g. it does not index the necessary fields.<br/>If no index was found, this query will _not_ trigger the creation of an auto index as it normally would. |
-| **serverSideQuery** | Returns _only_ the RQL query that is run on the server side, which may look slightly different than the query sent |
-| **graph** | Returns analyzed Graph Query results |
-| **detailedGraphResult** | Returns Graph Query results arranged by their corresponding parts of the query |
+| **explain** | Used for queries on [Auto Indexes](../../../indexes/creating-and-deploying#auto-indexes).<br/>Returns _just_ the name of an existing index that can be used to satisfy this query. If no appropriate index could be found, returns the next best index with an explanation of why it is not appropriate for this query - e.g. it does not index the necessary fields.<br/>If no index was found, this query will _not_ trigger the creation of an auto index as it normally would. |
+| **serverSideQuery** | Returns _just_ the RQL query that is run on the server side, which may look slightly different than the query sent |
+| **graph** | Returns [Graph Query](../../../indexes/querying/graph/graph-queries-overview) results analyzed as nodes and edges |
+| **detailedGraphResult** | Returns [Graph Query](../../../indexes/querying/graph/graph-queries-overview) results arranged by their corresponding parts of the query |
 <br/>
 #### Headers
 
-| Header | Description |Required|
-| - | - | - |
-| **If-None-Match** | This header takes a `long` representing the previous results of an **identical** request. The value is found in the response header `ETag`.<br/>If the results were not modified since the previous request, the server responds with http status code `304`, and the requested documents are retrieved from a local cache rather than over the network. | No |
+| Header | Description |
+| - | - |
+| **If-None-Match** | This optional header tells the server to check whether the requested data has been changed since the last request.<br/>To use it, insert the value of the header `ResponseEtag` from the response to your previous query. This value is a hash of type `long` that represents the state of the index or collection that satisfied the query. If that index or collection has not been updated, the server will respond with http status code `304` and no results will be retrieved.
+<br/>Note that this is regardless of the content of the query itself. |
 <br/>
 #### Body
 
@@ -202,7 +205,7 @@ double quotes within the request body using a backslash: `"` -> `\"`.
 | Field | Description |
 | - | - |
 | **TotalResults** | The total number of results of the query |
-| **CappedMaxResults** | The page size, if paging was used. If not, this field does not appear. |
+| **CappedMaxResults** | The number of results retrieved after the [maximum page size](../../../csharp/indexes/querying/paging) is applied. If paging was not used, this field does not appear. |
 | **SkippedResults** | The number of results that were skipped, e.g. because there were [duplicates](../../../indexes/querying/distinct) |
 | **DurationInMs** | Number of milliseconds it took to satisfy the query on the server side |
 | **IncludedPaths** | Array of the paths within the queried documents to the [related document](../../../client-api/how-to/handle-document-relationships#includes) IDs. Default: `null` |
@@ -210,20 +213,24 @@ double quotes within the request body using a backslash: `"` -> `\"`.
 | **Results** | List of documents returned by the query, sorted in ascending order of their [change vectors](../../../server/clustering/replication/change-vector) |
 | **Includes** | List of included documents returned by the query, sorted in ascending alphabetical order |
 | **IndexTimestamp** | The last time the index was updated. [DateTime format](https://docs.microsoft.com/en-us/dotnet/api/system.datetime) |
-| **LastQueryTime** | The last time the index was queried |
+| **LastQueryTime** | The last time the index was queried. This includes the case where the most recent query occurred after this query. |
 | **IsStale** | Whether the results are [stale](../../../indexes/stale-indexes) |
-| **ResultEtag** | A hash representing the results. Can be sent in a subsequent request in the `If-None-Match` header to check whether the results were modified since the last request. If not, the results will be retrieved from the local cache instead of from the server. |
+| **ResultEtag** | A hash of type `long` representing the results. When making another request identical to this one, this value can be sent in the `If-None-Match` header to check whether the results have been modified since this response. If not, the results will be retrieved from a local cache instead of from the server. |
 | **NodeTag** | The tag of the Cluster Node that responded to the query. Values are `A` to `Z`. See [Cluster Topology](../../../server/clustering/rachis/cluster-topology).  |
-| **Timings** | If [requested](../../../client-api/session/querying/debugging/query-timings), the amount of time the query operation took to complete on the server side, and a breakdown of the duration of each stage of the operation. See the structure of the `Timings` object below. |
+| **Timings** | If [requested](../../../client-api/session/querying/debugging/query-timings), the duration of the query operation and each of its sub-stages. See the structure of the [`Timings` object](../../../client-api/rest-api/queries/query-the-database#the--object) and the [timings example](../../../client-api/rest-api/queries/query-the-database#get-timing-details) below. |
 
-#### The `Timings` object
+#### The `Timings` Object
 
-`Timings` has a hierarchical structure representing the different stages and sub-stages of the query operation, and the amount of 
-time each of them took to complete. Examples of these stages might be the query itself, or the amount of time the server waited for 
-an index not to be stale. Stages are listed in alphabetical order. Each stage contains a `DurationInMs` field with the total 
-number of milliseconds the stage took, and _another_ `Timings` field containing a list of sub-stages. If a stage has no sub-stages, 
-the value of its `Timings` field is `null`. The duration values are rounded to the nearest whole number, and the durations of 
-sub-stages roughly add up to the duration of the parent stage.  
+`Timings` tells you the duration of the whole query operation, including a breakdown of the different stages and sub-stages of the 
+operation. Examples of these stages might be the query itself or the amount of time the server waited for an index not to be stale. 
+These are the durations on the server side, not including the transfer over the network.  
+
+The `Timings` object itself has a hierarchical structure, with each stage containing a list of sub-stages, which contain their 
+own lists, and so on. Each stage contains a `DurationInMs` field with the total number of milliseconds the stage took, and a field 
+called `Timings` which contains the list of sub-stages. If a stage has no sub-stages, the value of its `Timings` field is `null`.  
+
+At every level of this structure, stages are listed in _alphabetical order_ of the stage's names. The durations of sub-stages only 
+roughly add up to the duration of the parent stage because `DurationInMs` values are rounded to the nearest whole number.  
 
 {CODE-BLOCK: javascript}
 "Timings": {
@@ -232,7 +239,11 @@ sub-stages roughly add up to the duration of the parent stage.
         "<stage name>": {
             "DurationInMs": <int>,
             "Timings": {
-                "<sub-stage name>": { },
+                "<sub-stage name>": { 
+                    "DurationInMs": <int>,
+                    "Timings": {
+                        "<sub-sub-stage name>": { 
+                },
                 ...
             },
         "<stage name>": { },
@@ -257,7 +268,12 @@ In this section:
 
 ### Include Related Documents
 
-Request:
+This query tells the server to include a [related document](../../../client-api/how-to/handle-document-relationships#includes).  
+
+Paths within documents can be passed as a `string` (`'Address.City'`), or directly (`Address.City`) as in this query. When writing 
+paths as a `string` keep in mind [these conventions](../../../client-api/how-to/handle-document-relationships#path-conventions).  
+
+Request:  
 
 {CODE-BLOCK: bash}
 curl -X POST "http://live-test.ravendb.net/databases/Example/queries"
@@ -565,7 +581,7 @@ than a millisecond. From now on, similar queries on this index will also take th
 - [How to Request Query Timings](../../../client-api/session/querying/debugging/query-timings)  
 - [How to Handle Related Documents](../../../client-api/how-to/handle-document-relationships#includes)  
 
-##### Rest API  
+##### REST API  
 
 - [Patch by Query](../../../client-api/rest-api/queries/patch-by-query)  
 - [Delete by Query](../../../client-api/rest-api/queries/delete-by-query)  

@@ -181,7 +181,7 @@ The response body is JSON and contains the document ID and current [change vecto
 
 - [Documents: Put](../../../client-api/commands/documents/put)
 
-##### Rest API
+##### REST API
 
 - [Get All Documents](../../../client-api/rest-api/document-commands/get-all-documents)  
 - [Get Documents by ID](../../../client-api/rest-api/document-commands/get-documents-by-id)  

@@ -97,7 +97,7 @@
   },
   {
     "Path": "/rest-api",
-    "Name": "Rest API",
+    "Name": "REST API",
     "Mappings": []
   }
 ]

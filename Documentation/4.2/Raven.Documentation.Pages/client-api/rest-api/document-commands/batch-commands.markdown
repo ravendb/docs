@@ -876,7 +876,7 @@ Raven-Server-Version:"4.2.4.42"
 
 - [Batch Commands](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
 
-##### Rest API
+##### REST API
 
 - [Get All Documents](../../../client-api/rest-api/document-commands/get-all-documents)  
 - [Get Documents by ID](../../../client-api/rest-api/document-commands/get-documents-by-id)  

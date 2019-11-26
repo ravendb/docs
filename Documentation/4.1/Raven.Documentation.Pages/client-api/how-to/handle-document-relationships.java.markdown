@@ -132,7 +132,8 @@ when you want to load multiple documents.
 
 The `[]` within the `include` tells RavenDB which field of secondary level objects to use as a reference.
 
-{WARNING:Conventions}
+{WARNING: }
+### `String`&nbsp;Path Conventions
 
 When using string-based includes like:
 

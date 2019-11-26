@@ -450,7 +450,7 @@ when it is [generated in the studio](../../../studio/database/documents/document
 
 - [Documents: Get](../../../client-api/commands/documents/get)
 
-##### Rest API
+##### REST API
 
 - [Get All Documents](../../../client-api/rest-api/document-commands/get-all-documents)  
 - [Get Documents by Prefix](../../../client-api/rest-api/document-commands/get-documents-by-prefix)  

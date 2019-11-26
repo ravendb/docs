@@ -411,7 +411,7 @@ Content-Length: 918
 
 - [Documents: Get](../../../client-api/commands/documents/get)
 
-##### Rest API
+##### REST API
 
 - [Get Documents by ID](../../../client-api/rest-api/document-commands/get-documents-by-id)  
 - [Get Documents by Prefix](../../../client-api/rest-api/document-commands/get-documents-by-prefix)  
