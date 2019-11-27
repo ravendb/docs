@@ -36,9 +36,15 @@
     "Name": "ETL",
     "Mappings": []
   },
-  {
-    "Path": "/backup",
-    "Name": "Backup",
+    {
+        "Path": "/backup",
+        "Name": "Backup",
+        "Mappings": []
+    },
+      {
+    "Path": "clean-change-vector.markdown",
+    "Name": "Clean Change Vector",
+    "DiscussionId": "43588db5-317b-4d2c-afb6-5db073dca55c",
     "Mappings": []
-  }
+  },
 ]
