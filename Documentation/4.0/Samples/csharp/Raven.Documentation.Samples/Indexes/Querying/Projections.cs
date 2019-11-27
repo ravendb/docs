@@ -5,6 +5,7 @@ using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Queries;
 using Raven.Documentation.Samples.Orders;
 using Raven.Client.Documents.Linq;
+using System.Collections.Generic;
 
 namespace Raven.Documentation.Samples.Indexes.Querying
 {
@@ -80,6 +81,21 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                                 ShippedAt = order.ShippedAt,
                                 Company = order.Company
                             };
+        }
+    }
+    #endregion
+
+    #region indexes_5
+    public class Employees_ByFirstNameAndLatitude : AbstractIndexCreationTask<Employee>
+    {
+        public Employees_ByFirstNameAndLatitude()
+        {
+            Map = employees => from employee in employees
+                               select new
+                               {
+                                   FirstName = employee.FirstName,
+                                   Latitude = employee.Address.Location.Latitude
+                               };
         }
     }
     #endregion
@@ -220,7 +236,32 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .ToList();
                     #endregion
                 }
+
+                using (var session = store.OpenSession())
+                {
+                    #region projections_10
+                    var fields = new string[]{
+                        "FirstName",
+                        "Address.Location.Latitude"
+                    };
+                    
+                    List<NameAndLatitude> results = session
+                        .Advanced
+                        .DocumentQuery<Employee, Employees_ByFirstNameAndLatitude>()
+                        .SelectFields<NameAndLatitude>(fields)
+                        .ToList();
+                    #endregion
+                }
             }
         }
     }
 }
+
+#region selectFields_Class
+public class NameAndLatitude
+{
+    public string Name { get; set; }
+
+    public string Phone { get; set; }
+}
+#endregion

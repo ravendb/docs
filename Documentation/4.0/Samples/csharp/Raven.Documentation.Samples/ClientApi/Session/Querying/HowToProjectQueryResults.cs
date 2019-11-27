@@ -313,6 +313,38 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                                          }).ToListAsync();
                     #endregion
                 }
+
+                using (var session = store.OpenSession())
+                {
+                    #region selectFields
+                    var fields = new string[]{
+                        "FirstName",
+                        "Address.Location.Latitude"
+                    };
+
+                    var results = session
+                        .Advanced
+                        .DocumentQuery<Employee, Employees_ByFirstNameAndLatitude>()
+                        .SelectFields<NameAndLatitude>(fields)
+                        .ToList();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region selectFields_async
+                    var fields = new string[]{
+                        "FirstName",
+                        "Address.Location.Latitude"
+                    };
+
+                    var results = await asyncSession
+                        .Advanced
+                        .AsyncDocumentQuery<Employee, Employees_ByFirstNameAndLatitude>()
+                        .SelectFields<NameAndLatitude>(fields)
+                        .ToListAsync();
+                    #endregion
+                }
             }
         }
 
@@ -361,6 +393,30 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                             Name = supplier.Name
                         };
             }
+        }
+        #endregion
+
+        #region selectFields_index
+        public class Employees_ByFirstNameAndLatitude : AbstractIndexCreationTask<Employee>
+        {
+            public Employees_ByFirstNameAndLatitude()
+            {
+                Map = employees => from employee in employees
+                                   select new
+                                   {
+                                       FirstName = employee.FirstName,
+                                       Latitude = employee.Address.Location.Latitude
+                                   };
+            }
+        }
+        #endregion
+
+        #region selectFields_class
+        public class NameAndLatitude
+        {
+            public string Name { get; set; }
+
+            public string Phone { get; set; }
         }
         #endregion
     }

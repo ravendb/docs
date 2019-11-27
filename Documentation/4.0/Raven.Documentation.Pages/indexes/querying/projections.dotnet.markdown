@@ -3,6 +3,7 @@
 There are couple of ways to perform projections in RavenDB:
 
 - projections using [Select](../../indexes/querying/projections#select)
+- using [SelectFields](../../indexes/querying/projections#selectfields)
 - using [ProjectInto](../../indexes/querying/projections#projectinto)
 - using [OfType (As)](../../indexes/querying/projections#oftype-(as))
 
@@ -192,6 +193,24 @@ select {
      Name : e.FirstName, 
      Metadata : getMetadata(e)
 }
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL:SelectFields}
+
+The `SelectFields` method can only be used with the [Document Query](../../../client-api/session/querying/document-query/what-is-document-query).  
+The fields of the projection are specified as a `string` array of field names or paths. It takes the type of the projection as 
+a generic parameter.  
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query projections_10@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index indexes_5@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Class selectFields_Class@Indexes\Querying\Projections.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Employees/ByFirstNameAndLatitude'
+select FirstName, Address.Location.Latitude
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
