@@ -100,8 +100,14 @@
   },
   {
     "Path": "check-if-document-exists.markdown",
-    "Name": "...check if document exists",
+    "Name": "...check if a document exists",
     "DiscussionId": "c0dcf9d1-56d4-43e3-885b-74af3fcfd54c",
+    "Mappings": []
+  },
+  {
+    "Path": "check-if-attachment-exists.markdown",
+    "Name": "...check if an attachment exists",
+    "DiscussionId": "1cbb54f8-55d1-4955-9c03-48a31a796414",
     "Mappings": []
   },
   {

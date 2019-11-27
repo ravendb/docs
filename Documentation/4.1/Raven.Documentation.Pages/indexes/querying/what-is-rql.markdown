@@ -39,7 +39,7 @@ The following keywords and methods are available in RQL:
   - startsWith()
   - endsWith()
   - [lucene()](../../client-api/session/querying/document-query/how-to-use-lucene)
-  - exists()
+  - [exists()](../../client-api/session/querying/how-to-filter-by-field)
   - exact()
   - [intersect()](../../indexes/querying/intersection)
   - [spatial.within()](../../indexes/querying/spatial)
