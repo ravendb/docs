@@ -1,5 +1,6 @@
 ﻿using Raven.Client.Documents;
 using Raven.Client.Documents.Commands;
+using Raven.Client.Documents.Operations.Identities;
 using Raven.Documentation.Samples.Orders;
 using Sparrow.Json.Parsing;
 
@@ -138,11 +139,24 @@ namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
 
             #endregion
 
+            #region operation_identity_generate
+
+            store.Maintenance.Send(new NextIdentityForOperation("products"));
+
+            #endregion
+
             #region commands_identity_set
 
             var seedIdentityCommand = new SeedIdentityForCommand("products", 1994);
 
             #endregion
+
+            #region operation_identity_set
+
+            var seedIdentityOperation = store.Maintenance.Send(new SeedIdentityForOperation("products", 1994));
+
+            #endregion
+
         }
     }
 }
