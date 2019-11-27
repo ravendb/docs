@@ -109,7 +109,7 @@ Available custom methods and extensions:
 - WhereBetween
 - WhereEndsWith
 - WhereEquals
-- WhereExists
+- [WhereExists](../../../../client-api/session/querying/how-to-filter-by-field)
 - WhereGreaterThan
 - WhereGreaterThanOrEqual
 - WhereIn
