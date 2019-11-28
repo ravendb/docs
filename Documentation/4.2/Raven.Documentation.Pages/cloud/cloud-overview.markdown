@@ -178,7 +178,7 @@ a few words about each.
 ####The Free Tier  
 This tier offers a single product: a single-node RavenDB cloud server designated for experiments and evaluation.  
 It is operated by a low-end instance that is shared with other users and is equipped with the community subset of RavenDB features.  
-You can have only one free instance in your account.  
+You can have only one free instance in your account. If you don't use your free instance for 30 days, it will be terminated.  
 
 ---
 
