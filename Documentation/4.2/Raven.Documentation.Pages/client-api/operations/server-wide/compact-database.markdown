@@ -24,9 +24,23 @@ To compact database, please use **CompactDatabaseOperation**. You can choose wha
 {CODE compact_4@ClientApi\Operations\Server\Compact.cs /}
 
 
+## Example III
+
+* CompactDatabaseOperation automatically runs **on the store's database**.  
+  If we try to compact **a different database**, the process will succeed only if the database 
+  resides **on the cluster's first online node**.  
+  Trying to compact a non-default database on a different node will fail with an error such as -  
+  **_"500 Internal Server Error : 
+  System.InvalidOperationException , 
+  Cannot compact database 'name' on node A, because it doesn't reside on this node."_**  
+  
+* To solve this, we can explicitly identify the database we want to compact by 
+  providing its name to a private CompactDatabaseOperation method.  
+  {CODE compact_5@ClientApi\Operations\Server\Compact.cs /}
+
 ## Remarks
 
-The compacting operation is executed **asynchronously** and during this operation the **database** will be **offline**.
+* The compacting operation is executed **asynchronously**, and during this operation **the database will be offline**.
 
 ## Related Articles
 

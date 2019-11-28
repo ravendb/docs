@@ -68,5 +68,63 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                 #endregion
             }
         }
+
+        // CompactDatabaseOperation automatically runs on the store's database.  
+        // If we try to compact a different database that doesn't reside on the 
+        // first online node, CompactDatabaseOperation won't find it and fail.  
+        private static void WillNotWork()
+        {
+            using (var store = new DocumentStore
+            {
+                Urls = new[] { "http://localhost:8080" },
+                Database = "Northwind"
+            }.Initialize())
+            {
+                var compactOperation = new CompactDatabaseOperation(new Raven.Client.ServerWide.CompactSettings
+                {
+                    DatabaseName = "NonDefaultDB",
+                    Documents = true
+                });
+
+                var reqEx = store.GetRequestExecutor();
+
+                store.Maintenance.Server.Send(compactOperation);
+            }
+        }
+
+        // To compact a database other than the store's database, we need to explicitly provide 
+        // its name to the store's Request Executor.  
+        private static void locateDB()
+        {
+            #region compact_5
+            using (var store = new DocumentStore
+            {
+                Urls = new[] { "http://localhost:8080" },
+                Database = "sampleDB" // the store's database
+            }.Initialize())
+            {
+                store.GetRequestExecutor().GetPreferredNode().Wait();
+
+                const string DBToCompact = "NonDefaultDB"; // the database we want to compact
+                string[] indexNames = store.Maintenance.Send(new GetIndexNamesOperation(0, int.MaxValue));
+
+                var compactOperation = new CompactDatabaseOperation(new Raven.Client.ServerWide.CompactSettings
+                {
+                    DatabaseName = DBToCompact,
+                    Documents = true,
+                    Indexes = indexNames
+                });
+
+                // Get request executor for our DB
+                var reqEx = store.GetRequestExecutor(DBToCompact);
+
+                using (reqEx.ContextPool.AllocateOperationContext(out var context))
+                {
+                    var compactCommand = compactOperation.GetCommand(store.Conventions, context);
+                    reqEx.Execute(compactCommand, context);
+                }
+            }
+            #endregion
+        }
     }
 }
