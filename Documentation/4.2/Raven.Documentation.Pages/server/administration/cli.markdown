@@ -99,9 +99,28 @@ Shutdown completed
 
 {PANEL/}
 
-{PANEL:resetServer}
+{PANEL:restartServer, resetServer}
 
-Gracefully shuts down and restarts the Server.
+Gracefully shut down and restart the Server.
+
+{CODE-BLOCK:plain}
+ravendb> restartServer
+
+Are you sure you want to reset the server ? [y/N] : y
+Starting shut down...
+Shutdown completed
+
+Restarting Server...
+Using GC in server concurrent mode retaining memory from the OS.
+Node A in cluster eabe7a24-054a-48ef-9391-7f7b7707969d
+Server available on: http://rave-pc:8080
+Tcp listening on 0.0.0.0:32797
+Server started, listening to requests...
+TIP: type 'help' to list the available commands.
+ravendb> 
+{CODE-BLOCK/}
+
+The two commands are equivalent.  
 
 {CODE-BLOCK:plain}
 ravendb> resetServer
@@ -120,6 +139,7 @@ TIP: type 'help' to list the available commands.
 ravendb> 
 {CODE-BLOCK/}
 
+  
 {PANEL/}
 
 {PANEL:script}
