@@ -42,7 +42,7 @@ to create a **free**-tier instance.
 
 * The free instance is limited to the [community](https://ravendb.net/buy) subset of features.  
 
-* If you don't use a free instance for over 14 days, it will be deleted.  
+* If you don't use your free instance for over 30 days, it will be terminated.  
 
 ---
 
