@@ -318,14 +318,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region selectFields
                     var fields = new string[]{
-                        "FirstName",
-                        "Address.Location.Latitude"
+                        "Name",
+                        "Phone"
                     };
 
                     var results = session
                         .Advanced
-                        .DocumentQuery<Employee, Employees_ByFirstNameAndLatitude>()
-                        .SelectFields<NameAndLatitude>(fields)
+                        .DocumentQuery<Company, Companies_ByContact>()
+                        .SelectFields<ContactDetails>(fields)
                         .ToList();
                     #endregion
                 }
@@ -334,14 +334,36 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region selectFields_async
                     var fields = new string[]{
-                        "FirstName",
-                        "Address.Location.Latitude"
+                        "Name",
+                        "Phone"
                     };
 
                     var results = await asyncSession
                         .Advanced
-                        .AsyncDocumentQuery<Employee, Employees_ByFirstNameAndLatitude>()
-                        .SelectFields<NameAndLatitude>(fields)
+                        .AsyncDocumentQuery<Company, Companies_ByContact>()
+                        .SelectFields<ContactDetails>(fields)
+                        .ToListAsync();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region selectFields_2
+                    var results = session
+                        .Advanced
+                        .DocumentQuery<Company, Companies_ByContact>()
+                        .SelectFields<ContactDetails>()
+                        .ToList();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region selectFields_2_async
+                    var results = await asyncSession
+                        .Advanced
+                        .AsyncDocumentQuery<Company, Companies_ByContact>()
+                        .SelectFields<ContactDetails>()
                         .ToListAsync();
                     #endregion
                 }
@@ -396,28 +418,5 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
         }
         #endregion
 
-        #region selectFields_index
-        public class Employees_ByFirstNameAndLatitude : AbstractIndexCreationTask<Employee>
-        {
-            public Employees_ByFirstNameAndLatitude()
-            {
-                Map = employees => from employee in employees
-                                   select new
-                                   {
-                                       FirstName = employee.FirstName,
-                                       Latitude = employee.Address.Location.Latitude
-                                   };
-            }
-        }
-        #endregion
-
-        #region selectFields_class
-        public class NameAndLatitude
-        {
-            public string Name { get; set; }
-
-            public string Phone { get; set; }
-        }
-        #endregion
     }
 }

@@ -200,17 +200,38 @@ select {
 
 {PANEL:SelectFields}
 
-The `SelectFields` method can only be used with the [Document Query](../../../client-api/session/querying/document-query/what-is-document-query).  
-The fields of the projection are specified as a `string` array of field names or paths. It takes the type of the projection as 
+The `SelectFields` method can only be used with the [Document Query](../../../client-api/session/querying/document-query/what-is-document-query). 
+It has two overloads:
+
+{CODE-BLOCK: csharp}
+// 1) By array of fields
+IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
+// 2) By projection type
+IDocumentQuery<TProjection> SelectFields<TProjection>();
+{CODE-BLOCK/}
+
+1) The fields of the projection are specified as a `string` array of field names. It also takes the type of the projection as 
 a generic parameter.  
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_10@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_5@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Class selectFields_Class@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query selectFields_1@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_10@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Class projections_10_class@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstNameAndLatitude'
-select FirstName, Address.Location.Latitude
+from index 'Companies/ByContact'
+select Name, Phone
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+2) The projection is defined by simply passing the projection type as the generic parameter.  
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query selectFields_2@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_10@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Class projections_10_class@Indexes\Querying\Projections.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Companies/ByContact'
+select Name, Phone
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -225,13 +246,13 @@ You can use this method instead of using `Select` together with all fields of th
 ### Example
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_8@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query projections_10@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Companies/ByContact' 
 select Name, Phone
 {CODE-TAB-BLOCK/}
-{CODE-TAB:csharp:Index projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Class projections_9_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Index index_10@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Class projections_10_class@Indexes\Querying\Projections.cs /}
 
 {CODE-TABS/}
 

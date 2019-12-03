@@ -85,21 +85,6 @@ namespace Raven.Documentation.Samples.Indexes.Querying
     }
     #endregion
 
-    #region indexes_5
-    public class Employees_ByFirstNameAndLatitude : AbstractIndexCreationTask<Employee>
-    {
-        public Employees_ByFirstNameAndLatitude()
-        {
-            Map = employees => from employee in employees
-                               select new
-                               {
-                                   FirstName = employee.FirstName,
-                                   Latitude = employee.Address.Location.Latitude
-                               };
-        }
-    }
-    #endregion
-
     public class Projections
     {
         public void Sample()
@@ -239,29 +224,67 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
                 using (var session = store.OpenSession())
                 {
-                    #region projections_10
+                    #region selectfields_1
                     var fields = new string[]{
-                        "FirstName",
-                        "Address.Location.Latitude"
+                        "Name",
+                        "Phone"
                     };
-                    
-                    List<NameAndLatitude> results = session
+
+                    var results = session
                         .Advanced
-                        .DocumentQuery<Employee, Employees_ByFirstNameAndLatitude>()
-                        .SelectFields<NameAndLatitude>(fields)
+                        .DocumentQuery<Company, Companies_ByContact>()
+                        .SelectFields<ContactDetails>(fields)
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region selectfields_2
+                        var results = session
+                        .Advanced
+                        .DocumentQuery<Company, Companies_ByContact>()
+                        .SelectFields<ContactDetails>()
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region projections_10
+                    var results = session.Query<Company, Companies_ByContact>()
+                        .ProjectInto<ContactDetails>()
                         .ToList();
                     #endregion
                 }
             }
         }
     }
+
+    #region index_10
+    public class Companies_ByContact : AbstractIndexCreationTask<Company>
+    {
+        public Companies_ByContact()
+        {
+            Map = companies => companies
+                .Select(x => new
+                {
+                    Name = x.Contact.Name,
+                    x.Phone
+                });
+
+            StoreAllFields(FieldStorage.Yes); // Name and Phone fields can be retrieved directly from index
+        }
+    }
+    #endregion
+
+    #region projections_10_class
+    public class ContactDetails
+    {
+        public string Name { get; set; }
+
+        public string Phone { get; set; }
+    }
+    #endregion
 }
 
-#region selectFields_Class
-public class NameAndLatitude
-{
-    public string Name { get; set; }
-
-    public string Phone { get; set; }
-}
-#endregion
