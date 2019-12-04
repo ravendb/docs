@@ -1210,5 +1210,34 @@
             "twitter:description": "The first microservices architecture in modern history didn’t come from a server, a virtual machine, or in the cloud. It didn't even take place on a computer.",
             "twitter:url": "https://ravendb.net/articles/the-first-microservices-architecture"
         }
+    },
+	{
+        "Path": "ravendb-helps-configit-give-greater-depth-to-configurations.markdown",
+        "Name": "NoSQL Database for Greater Insight",
+        "Mappings": [],
+        "Metadata": {
+            "title": "NoSQL Database for Greater Insight | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/ravendb-helps-configit-give-greater-depth-to-configurations",
+            "publishedAt": "2019-12-02",
+            "subcategories": "microservice-architecture"
+        },
+        "SeoMetaProperties": {
+            "description": "A NoSQL Database enables Configit to model their data dynamically, avoid excessive overhead with too many JOINS, and keep performance levels high.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "RavenDB Helps Configit Give Greater Depth to Configurations",
+            "og:description": "A NoSQL Document Database enables Configit to model their data dynamically, avoid excessive overhead with too many JOINS, and keep performance levels high.",
+            "og:url": "ravendb-helps-configit-give-greater-depth-to-configurations",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-helps-configit-give-greater-depth-to-configurations&fileName=ravendb-helps-configit-give-greater-depth-to-configurations.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "RavenDB Helps Configit Give Greater Depth to Configurations",
+            "twitter:description": "A NoSQL Document Database enables Configit to model their data dynamically, avoid excessive overhead with too many JOINS, and keep performance levels high.",
+            "twitter:url": "https://ravendb.net/articles/ravendb-helps-configit-give-greater-depth-to-configurations"
+        }
 	}
 ]
