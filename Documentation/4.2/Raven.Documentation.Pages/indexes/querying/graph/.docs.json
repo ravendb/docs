@@ -6,14 +6,50 @@
         "Mappings": []
     },
     {
-        "Path": "graph-queries-basic.markdown",
-        "Name": "Basic Graph Queries",
+        "Path": "graph-queries-the-search-pattern.markdown",
+        "Name": "The Search Pattern",
+        "DiscussionId": "aac8716f-27d0-4e47-bcb3-aea03205ebd1",
+        "Mappings": []
+    },
+    {
+        "Path": "graph-queries-expanded-search-patterns.markdown",
+        "Name": "Expanded Search Patterns",
+        "DiscussionId": "c00dc582-f26f-4d69-b26e-7b1ae85df73f",
+        "Mappings": []
+    },
+    {
+        "Path": "graph-queries-explicit-and-implicit.markdown",
+        "Name": "Explicit and Implicit Syntax",
+        "DiscussionId": "de9ab054-c5c4-4fca-a283-55ce675b1fb7",
+        "Mappings": []
+    },
+    {
+        "Path": "graph-queries-and-indexes.markdown",
+        "Name": "Graph Queries and Indexes",
+        "DiscussionId": "de9ab054-c5c4-4fca-a283-55ce675b1fb7",
+        "Mappings": []
+    },
+    {
+        "Path": "graph-queries-filtering.markdown",
+        "Name": "Filtering",
+        "DiscussionId": "de9ab054-c5c4-4fca-a283-55ce675b1fb7",
+        "Mappings": []
+    },
+    {
+        "Path": "graph-queries-multi-section.markdown",
+        "Name": "Multi-Section Search Patterns",
         "DiscussionId": "de9ab054-c5c4-4fca-a283-55ce675b1fb7",
         "Mappings": []
     },
     {
         "Path": "graph-queries-recursive.markdown",
         "Name": "Recursive Graph Queries",
+        "DiscussionId": "5e0eb2b4-fae0-4dad-b645-a5f881e2854b",
+        "Mappings": []
+    },
+    {
+        "Path": "graph-queries-FAQ.markdown",
+        "Name": "FAQ",
         "DiscussionId": "5e0eb2b4-fae0-4dad-b645-a5f881e2854b",
         "Mappings": []
     }

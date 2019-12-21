@@ -5,14 +5,17 @@
   a system's smallest component, map a path through a structure, or for many other uses.
 
 * Where a basic graph query would yield a wide dataset, a recursion may provide you with more accurate results.  
-  Finding the shortest path from a structure's front door to its exit for example may be easier 
-  using recursion, while mapping the entire structure is a natural non-recursive graph-query task.  
+  Querying the _chain of command_ in a specific department of a large organization for example may be easier 
+  using recursion, while mapping the entire organizational structure is a natural non-recursive graph-query task. 
+  Find an example here: [Selective Querying](../../../indexes/querying/graph/graph-queries-recursive#selective-querying)  
 
-* You can include a recursion block in a multi-part graph query.
+* You can include recursive blocks in 
+  [expanded search patterns](../../../indexes/querying/graph/graph-queries-recursive#recursion-block-in-an-expanded-search-pattern).  
 
 {INFO: }
-The data used for all sample queries included here can be found in the 
-[Northwind database](../../../studio/database/tasks/create-sample-data#creating-sample-data).  
+Sample queries included in this article use only data that is available in the 
+[Northwind sample database](../../../studio/database/tasks/create-sample-data#creating-sample-data), 
+so you may easily try them out.  
 {INFO/}
 
 ---
@@ -26,9 +29,9 @@ The data used for all sample queries included here can be found in the
    * [Recursive Queries](../../../indexes/querying/graph/graph-queries-recursive#recursive-queries)  
        * [Selective Querying](../../../indexes/querying/graph/graph-queries-recursive#selective-querying)  
        * [Paths](../../../indexes/querying/graph/graph-queries-recursive#paths)  
-       * [Recursion Block In a Multi-Part Query](../../../indexes/querying/graph/graph-queries-recursive#recursion-block-in-a-multi-part-query)  
-        
-   
+   * [Recursion Block In an Expanded Search Pattern](../../../indexes/querying/graph/graph-queries-recursive#recursion-block-in-an-expanded-search-pattern)  
+       * [Narrow Down The Results and Recurse on What's Left](../../../indexes/querying/graph/graph-queries-recursive#narrowing-down-the-results-and-recurse-on-whats-left)  
+       * [Query Recursion Results](../../../indexes/querying/graph/graph-queries-recursive#query-recursion-results)  
 
 {NOTE/}
 
@@ -175,7 +178,12 @@ match
         [ReportsTo as reportsto]->
         (Employees as employs)
     }
-    select employed.LastName, employed.FirstName, employed.Title, employed.ReportsTo
+
+select 
+    employed.LastName, 
+    employed.FirstName, 
+    employed.Title, 
+    employed.ReportsTo
 {CODE-BLOCK/}
 ![Chosen Segment](images/RecursiveQuery_Example2_ChosenSegment_GraphicalView.png "Chosen Segment")  
 ![Chosen Segment](images/RecursiveQuery_Example2_ChosenSegment_TextualView.png "Chosen Segment")  
@@ -183,16 +191,13 @@ match
 ##Paths  
 
 Depending on your [settings](../../../indexes/querying/graph/graph-queries-recursive#parameters), your 
-recursion may stop after locating a single [path](../../../indexes/querying/graph/graph-queries-overview#basic-terms-syntax-and-vocabulary) 
+recursion may stop after locating a single [path](../../../indexes/querying/graph/graph-queries-FAQ#q-what-are-hops-and-paths), 
 or run continuously and locate all available paths.  
 
 * **lazy**: Retrieving the first matching path  
 
     `lazy` is the default path setting.  
-  `-recursive recursionAlias`  
-  and  
-  `recursive recursionAlias(lazy)`  
-  are the same.
+    `-recursive recursionAlias` for example is the same as `recursive recursionAlias(lazy)`.  
   
     Retrieving employee profiles by who they report to for example, would yield a 1-hop path to the employee's direct manager.  
     {CODE-BLOCK:JSON}
@@ -203,24 +208,27 @@ match
         [ReportsTo as reportsto]->
         (Employees as employs)
     }
-    select 
-    {
-        LastName : employed.LastName, 
-        FirstName : employed.FirstName, 
-        Title : employed.Title, 
-        Reports : employed.ReportsTo
-    }
-  {CODE-BLOCK/}
-  ![Lazy Path](images/RecursiveQuery_Example3_Lazy_GraphicalView.png "Lazy Path")  
-  ![Lazy Path](images/RecursiveQuery_Example3_Lazy_TextualView.png "Lazy Path")  
+
+select 
+{
+    LastName : employed.LastName, 
+    FirstName : employed.FirstName, 
+    Title : employed.Title, 
+    Reports : employed.ReportsTo
+}
+{CODE-BLOCK/}
+
+    ![Lazy Path](images/RecursiveQuery_Example3_Lazy_GraphicalView.png "Lazy Path")
+
+    ![Lazy Path](images/RecursiveQuery_Example3_Lazy_TextualView.png "Lazy Path")
 
 * **shortest**: Retrieving a path with the smallest number of hops  
   
-    Though the results of this query and the previous (`lazy`) one look the same, please note an 
-  important difference between the two.  
-  While the recursion using the `lazy` setting stopped after acquiring the first matching path, 
-  the current recursion continues running after finding the first path, in order to eventually 
-  conclude which path is the shortest and provide you with it.  
+    Though results of the current and previous (`lazy`) queries look identical, 
+  please note an important difference between the two:  
+  While the recursion using the `lazy` setting **stopped after acquiring the first 
+  matching path**, the current recursion **continues running and finding paths** in 
+  order to be able to conclude which of them is the shortest.  
 
     |    |    |
     |----|----|
@@ -241,58 +249,71 @@ match
 * **all**: Retrieving all matching paths  
   
     In the graphical view, multiple paths are represented as multiple arrows between nodes.  
-  In our case we see two: a 1-hop path from 9-A to 5-A, and a 2-hops path from 9-A to 2-A.  
+  In our case, we see two: a 1-hop path from 9-A to 5-A, and a 2-hops path from 9-A to 2-A.  
 {CODE-BLOCK:JSON}
     recursive as chainOfCommand(all)
 {CODE-BLOCK/}
-![All Paths](images/RecursiveQuery_Example5_AllPaths_GraphicalView.png "All Paths")  
-![All Paths](images/RecursiveQuery_Example5_AllPaths_TextualView.png "All Paths")  
 
-    {NOTE: Increase your queries' usability by properly organizing the data they project.}
-For example, the exact same query may prove much more useful by listing the full paths.  
+    ![All Paths](images/RecursiveQuery_Example5_AllPaths_GraphicalView.png "All Paths")
+
+    ![All Paths](images/RecursiveQuery_Example5_AllPaths_TextualView.png "All Paths")
+
+    {NOTE: You can use projection to organize the paths your recursion retrieves.}  
+See for example how the following query presents retrieved paths.  
     {CODE-BLOCK:JSON}
-    match
-        (Employees as employed where LastName= "Dodsworth")-
-        recursive as chainOfCommand(all)
-        {
-            [ReportsTo as reportsto]->
-            (Employees as employs)
-        }
-        select 
-        {
-            PathStartID : id(employed),
-            LastName : employed.LastName, 
-            IDsFullPath : chainOfCommand.map(x => x.reportsto).join(' >> '),
-            NamesFullPath : chainOfCommand.map(x => x.employs.LastName).join(' >> ')
-        }
+match
+    (Employees as employed where LastName= "Dodsworth")-
+    recursive as chainOfCommand(all)
+    {
+        [ReportsTo as reportsto]->
+        (Employees as employs)
+    }
+
+select 
+{
+    PathStartID : id(employed),
+    LastName : employed.LastName, 
+    IDsFullPath : chainOfCommand.map(x => x.reportsto).join(' >> '),
+    NamesFullPath : chainOfCommand.map(x => x.employs.LastName).join(' >> ')
+}
     {CODE-BLOCK/}
-    ![All Paths Map](images/RecursiveQuery_Example6_AllPathsMap_TextualView.png "All Paths Map")  
+
+    ![Friendly Path View](images/RecursiveQuery_Example6_AllPathsMap_TextualView.png "Friendly Path View")
+
 {NOTE/}
 
-##Recursion Block In a Multi-Part Query  
+##Recursion Block In an Expanded Search Pattern  
 
-As much as RavenDB is concerned, adding a recursion block to a graph query is similar to adding 
-it a [non-recursive part](../../../indexes/querying/graph/graph-queries-overview#multi-part-queries).  
+You can recurse through the nodes found by a simple `match` statement, as well as through those found 
+by a more complex search pattern.  
 
-Here, the recursion block relates to the data-node clause that initiates the query  
-![Orders Handled By Employees](images/RecursiveQuery_Example7_startingElement1.png "Orders Handled By Employees")  
+Here, the recursive block relates to the data-node clause that initiates the query, 
+looking who each employee reports to.  
 
-While here the data nodes that the recursion relates to are produced by the third query clause.  
-![Orders Handled By Employees](images/RecursiveQuery_Example8_startingElement2.png "Orders Handled By Employees")  
+![Who Reports To Whom](images/RecursiveQuery_Example7_startingElement1.png "Who Reports To Whom")
 
-There can be many good uses to such queries. Take the following one for example.  
-Its first part is not recursive: It retrieves employee profiles from the Employees collection 
-and shows which orders have been handled by each.  
+While here, the data nodes that the recursion relates to are produced by the third clause, 
+so in the beginning this query finds orders and the employees that handle them,  
+and only then it finds who these employees reports to.  
+
+![Find Employees And Their Chain Of Command](images/RecursiveQuery_Example8_startingElement2.png "Find Employees And Their Chain Of Command")
+
+There can be many good uses to expanded queries with recursive blocks.  
+In the following query for example, the first part is **not** recursive.  
+It retrieves employee profiles from the Employees collection, 
+and shows which orders have been handled by each employee.  
 {CODE-BLOCK:JSON}
 match
     (Orders as orders)-
     [Employee as employee]->
     (Employees as employees)
 {CODE-BLOCK/}
-![Orders Handled By Employees](images/RecursiveQuery_Example9_recursionRoot_GraphicalView.png "Orders Handled By Employees")  
 
-Then it is enhanced by a recursion that shows who each employee reports to, letting 
-you detect in a single glance whose responsibility each order is throughout the ranks.  
+![Orders Handled By Employees](images/RecursiveQuery_Example9_recursionRoot_GraphicalView.png "Orders Handled By Employees")
+
+Only then, the query is **expanded by a recursive block** that shows who each employee 
+reports to, letting you detect in a single glance whose responsibility each order is 
+throughout the ranks.  
 {CODE-BLOCK:JSON}
 match
     (Orders as orders)-
@@ -304,10 +325,18 @@ match
         (Employees as managers)
     }
 {CODE-BLOCK/}
-![Orders Handling Through The Ranks](images/RecursiveQuery_Example10_throughTheRanks_GraphicalView.png "Orders Handling Through The Ranks")  
 
-You can narrow down your initial query, and run your recursion on the remaining nodes.  
-E.g. query orders handled by Seatle sales representatives and see who they all report to.  
+![Orders Handling Through The Ranks](images/RecursiveQuery_Example10_throughTheRanks_GraphicalView.png "Orders Handling Through The Ranks")
+
+---
+
+#### Narrowing Down The Results and Recurse on What's Left
+
+Here is another example for narrowing down the results before executing a recursion 
+on the remaining data.  
+First we locate orders handled by Seatle sales representatives, and then we see who 
+they all report to.  
+
 {CODE-BLOCK:JSON}
 match
     (Orders as orders)-
@@ -319,9 +348,46 @@ match
         (Employees as managers)
     }
 {CODE-BLOCK/}
-![Narrowed Down](images/RecursiveQuery_Example11_narrowedDown_GraphicalView.png "Narrowed Down")  
 
-{PANEL/}
+![Narrowed Down](images/RecursiveQuery_Example12_narrowedDown_GraphicalView.png "Narrowed Down")
+
+---
+
+####Query Recursion Results
+
+Examples we've used so far have all placed the recursive block last in the query.  
+But a recursive block is a query section like others, and can be followed by edge 
+and node clauses.  
+
+* In the following query, the employees located by the recursive block are handled 
+  by an additional section that follows it, finding who is top management for each 
+  employee.  
+  {CODE-BLOCK:JSON}
+match
+    (Orders as orders)-
+    [Employee as handledBy]->
+    (Employees as employees)-
+    recursive as chainOfCommand (lazy)
+    {
+        [ReportsTo as reportsto]->
+        (Employees as managers)
+    }-
+    [ReportsTo as reportsToTop]-> 
+    (Employees as top)
+
+select 
+    employees.FirstName as EmployeeFirstName, 
+    employees.LastName as EmployeeLastName, 
+    reportsToTop as TopManagerID,
+    top.FirstName as TopManagerFirstName,
+    top.LastName as TopManagerLastName
+  {CODE-BLOCK/}
+
+* With these results:  
+
+    ![Recursion Block Continued](images/RecursiveQuery_Example11_RecursionBlockContinued.png "Recursion Block Continued")
+
+{PANEL/}  
 
 ## Related Articles
 
@@ -330,6 +396,9 @@ match
 [Indexes](../../../indexes/what-are-indexes#what-indexes-are)  
 
 **Graph Querying**  
-[Overview](../../../indexes/querying/graph/graph-queries-overview#graph-querying-overview)  
-[Basic Graph Queries](../../../indexes/querying/graph/graph-queries-basic#basic-graph-queries)  
-[Recursive Graph Queries](../../../indexes/querying/graph/graph-queries-recursive#recursive-graph-queries)  
+[Expanded Search Patterns](../../../indexes/querying/graph/graph-queries-expanded-search-patterns#graph-queries-expanded-search-patterns)  
+[Explicit and Implicit Syntax](../../../indexes/querying/graph/graph-queries-explicit-and-implicit#explicit-and-implicit-syntax)  
+[Graph Queries and Indexes](../../../indexes/querying/graph/graph-queries-and-indexes#graph-queries-and-indexes)  
+[Filtering](../../../indexes/querying/graph/graph-queries-filtering#graph-queries-filtering)  
+[Multi-Section Search Patterns](../../../indexes/querying/graph/graph-queries-multi-section#graph-queries-multi-section-search-patterns)  
+[The Search Pattern](../../../indexes/querying/graph/graph-queries-the-search-pattern#the-search-pattern)  
