@@ -154,66 +154,51 @@ and
 
 #### Using Multiple Destination Clauses
 
-Previous examples have shown us how to direct **different sections** to the **same destination**, 
-by declaring a single destination node with a single alias, and approaching it from the different 
-sections.  
-
-It may also be useful to give **each section its own destination**, i.e. to make it 
-possible for us to compare the routes and destinations discovered by the different sections.  
-
+Previous examples have shown us how to approach the same destination from different sections.  
+It is sometimes useful, however, to create a query that approaches **multiple destinations**.  
+To accomplish this, we need to give each destination a unique alias.  
 {CODE-BLOCK:plain}  
-//alias 1
+//Destination 1
 with 
-   {from Products 
-      where Supplier ='suppliers/15-A'} as prod1
+   {from Orders 
+      where ShipTo.City = 'London' } as LondonOrders
 
-//alias 2
+//Destination 2
 with 
-   {from Products 
-      where Supplier ='suppliers/15-A'} as prod2
+   {from Orders 
+      where ShipTo.City = 'Paris' } as ParisOrders
 {CODE-BLOCK/} 
 
-In the following example, we declare the same destination twice, giving it **two unique aliases**.  
-We then use each alias as the destination of one of the sections.  
+Here is a query that uses multiple destinations, to find products that ship to London **and** Paris for **different prices**.  
 
 {CODE-BLOCK:plain}  
 with 
-   {from Products 
-      where Supplier ='suppliers/15-A'} as prod1
+   {from Orders 
+      where ShipTo.City = 'London' } as LondonOrders
 
 with 
-   {from Products 
-      where Supplier ='suppliers/15-A'} as prod2
+   {from Orders 
+      where ShipTo.City = 'Paris' } as ParisOrders
 
-//search pattern
 match 
-   //first section
-   (Orders as LondonOrders 
-      where ShipTo.City = 'London') -
-   [Lines[].Product] ->
-   (prod1)
-or   
-   //second section
-   (Orders as ParisOrders 
-      where ShipTo.City = 'Paris') -
-   [Lines[].Product] ->
-   (prod2)
+   (LondonOrders) -
+   [Lines as LondonLine select Product] ->
+   (Products as p)
+   <- [Lines as ParisLine select Product]
+   - (ParisOrders)
 
+//Compare prices to the different destinations
 where 
-   prod1.PricePerUnit < prod2.PricePerUnit
+   LondonLine.PricePerUnit != ParisLine.PricePerUnit
    
 select
-   id(prod1) as LondonProdID,
-   prod1.Name as LondonProductName,
-   prod1.QuantityPerUnit as LondonQuantity,
-   prod1.PricePerUnit as priceToLondon,
-   id(prod2) as ParisProd2ID,
-   prod2.Name as ParisProductName,
-   prod2.QuantityPerUnit as ParisQuantity,
-   prod2.PricePerUnit as priceToParis
+   id(p) as ProductID,
+   LondonLine.PricePerUnit as LondonPricePerUnit,
+   LondonLine.ProductName as LondonProductName,
+   ParisLine.PricePerUnit as ParisPricePerUnit,
+   ParisLine.ProductName as ParisProductName
+  
 {CODE-BLOCK/} 
-
-The two sections produce two different datasets, that we can then compare to get our final results.  
 
 ![Same Destination, Multiple Aliases](images/MultiSection04_MultiAlias.png "Same Destination, Multiple Aliases")
 

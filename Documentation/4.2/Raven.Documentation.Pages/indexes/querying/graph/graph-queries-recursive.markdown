@@ -92,7 +92,14 @@ E.g. `- recursive(param)` or `- recursive as RecursionAlias(param)`
     | **lazy** | string | Query for the first matching path. <br> **`lazy` is the default value.** | `- recursive as chainOfManagers(lazy)` |
 
   {INFO: Combining parameters}
-  You can adjust a recursive query using multiple parameters.  
+  You can adjust a recursive query using multiple parameters.
+  {CODE-BLOCK:plain}
+recursive (int min)
+recursive (int min, int max)
+recursive (string pattern)
+recursive (min, max, pattern)
+  {CODE-BLOCK/}
+   
   E.g. `- recursive as chainOfManagers(2, 4, all)`  
   
   * **Min = 2** - Retrieve only paths at least 2-hops long  

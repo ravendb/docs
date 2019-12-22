@@ -76,8 +76,7 @@ A RavenDB edge is a simple string field (aka "edge specifier") that holds a docu
 In your search pattern, an edge clause is surrounded by square brackets:  
 `[ShipVia]`  
 
-In the following query, we find **who very heavy orders are shipped by**.  
-
+The following query locates heavy orders by their freight, and uses an edge to find who ships them:  
 {CODE-BLOCK:JSON}
 match 
    (Orders where Freight > 800) -  
@@ -155,9 +154,9 @@ A complex edge is a **nested JSON structure** whose properties include **edge sp
 A query can use a node's complex edge, to connect it to multiple other nodes.  
 
 * To address a complex edge in a query, use this syntax:  
-  `Lines[].Product`  
-   * The nested JSON structure, `Lines` in this case, is identified using square brackets.  
-   * The edge specifier, `Product` here, follows the dot delimiter.  
+  `[Lines as line select Product]`  
+   * `Lines` is a nested JSON structure.  
+   * `Product` is the actual edge specifier within the complex edge.  
 
 * Here is an implementation of a complex edge in a document:  
 
@@ -168,13 +167,22 @@ A query can use a node's complex edge, to connect it to multiple other nodes.
     {CODE-BLOCK:JSON}
 match 
     (Orders as orders)- 
-    [Lines[].Product as line]-> 
+    [Lines as line select Product]-> 
     (Products as products)
 {CODE-BLOCK/}  
 
     With these results:  
         
      ![Retrieved Using Complex Edges](images/SearchPattern_006_Lines.png "Retrieved Using Complex Edges")
+
+* **Direct Approach to an Edge Specifier**  
+  You can directly approach an edge specifier within a complex edge, using this syntax:  
+  {CODE-BLOCK:JSON}
+match 
+    (Orders as orders)- 
+    [Lines[].Product] -> 
+    (Products as products)
+{CODE-BLOCK/}  
 
 ## Aliases
 
@@ -190,7 +198,9 @@ match
 {CODE-BLOCK/} | ![Aliases](images/SearchPattern_007_Alias.png "Aliases") |  
 
 * **Use unique aliases.**  
-  Each alias has to be unique.  
+  Aliases are labels that [data elements](../../../indexes/querying/graph/graph-queries-explicit-and-implicit#explicitly-declaring-data-elements) 
+  can be referred by when filtered, projected and compared.  
+  An alias must therefore be declared only once, and bare a unique name.  
 
 * **Use `_` to exclude an element from the textual results.**  
   If you want to prevent RavenDB from including an element in the textual graph results, 
