@@ -142,12 +142,30 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                         RemoteFolderName = "remoteFolder",
                         AccountName = "JohnAccount",
                         AccountKey = "key"
+                    },
+                    
+                    //Amazon S3 bucket settings.
+                    S3Settings = new S3Settings
+                    {
+                        AwsAccessKey = "your access key here",
+                        AwsSecretKey = "your secret key here",
+                        AwsRegionName = "OPTIONAL",
+                        BucketName = "john-bucket",
+                    },
+
+                    //Amazon Glacier settings.
+                    GlacierSettings = new GlacierSettings
+                    {
+                        AwsAccessKey = "your access key here",
+                        AwsSecretKey = "your secret key here",
+                        AwsRegionName = "OPTIONAL",
+                        VaultName = "john-glacier",
                     }
+
                 };
                 var operation = new UpdatePeriodicBackupOperation(config);
                 var result = await docStore.Maintenance.SendAsync(operation);
                 #endregion
-            }
 
             using (var docStore = new DocumentStore
             {

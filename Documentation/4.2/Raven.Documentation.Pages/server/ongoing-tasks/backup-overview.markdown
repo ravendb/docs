@@ -11,152 +11,160 @@
    * **Freezing data in chosen points-in-time** to retain access to it in [various stages](../../client-api/operations/maintenance/backup/backup#point-in-time-backup) of its existence/development.  
 
 * RavenDB's Backup is an **Ongoing task**.  
-   * RavenDB considers **Routine backup** a fundamental aspect of your database maintenance.  
-     Backup is therefore provided not as a one-time operation, but as an [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info).  
-     It is configured and executed once, and then continuously produces updated backups.  
-   * The Backup task runs **in the background**.  
-     Like other ongoing tasks, Backup is an asynchronous task that runs in the background.  
+   * Routinely backing up your data is a fundamental aspect of your database maintenance.  
+     Backup is therefore provided not as a one-time operation, but as an [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) that runs in the background.  
+     It is configured once and then executed periodically according to the defined schedule.  
 
 * In this page:  
-  * [Backing Up and Restoring a Database](../../server/ongoing-tasks/backup-overview#backing-up-and-restoring-a-database)  
-     * [Backup Scope: Full or Incremental](../../server/ongoing-tasks/backup-overview#backup-scope-full-or-incremental)  
-     * [A Typical Backup Folder](../../server/ongoing-tasks/backup-overview#a-typical-backup-folder)  
-     * [Restoration Procedure](../../server/ongoing-tasks/backup-overview#restoration-procedure)  
-  * [Overview](../../server/ongoing-tasks/backup-overview#overview)  
-      * [Backup Type: Logical-Backup and Snapshot](../../server/ongoing-tasks/backup-overview#backup-type-logical-backup-or-snapshot)  
-      * [Encryption](../../server/ongoing-tasks/backup-overview#encryption)  
-      * [Compression](../../server/ongoing-tasks/backup-overview#compression)  
-      * [Backup Name](../../server/ongoing-tasks/backup-overview#backup-name)  
-      * [Backup Contents](../../server/ongoing-tasks/backup-overview#backup-contents)  
+  * [Backup Type](../../server/ongoing-tasks/backup-overview#backup-type)  
+  * [Backup Contents](../../server/ongoing-tasks/backup-overview#backup-contents)  
+  * [Backup Scope: Full or Incremental](../../server/ongoing-tasks/backup-overview#backup-scope:-full-or-incremental)  
+  * [Backup Name and Folder Structure](../../server/ongoing-tasks/backup-overview#backup-name-and-folder-structure)  
+  * [Encryption](../../server/ongoing-tasks/backup-overview#encryption)  
+  * [Compression](../../server/ongoing-tasks/backup-overview#compression)  
+  * [Restoration Procedure](../../server/ongoing-tasks/backup-overview#restoration-procedure)  
 {NOTE/}
 
 ---
 
-{PANEL: Backing-Up and Restoring a Database}
+{PANEL: Backup Type}
 
-####Backup Scope: Full or Incremental
+There are two backup types: [Logical-backup](../../client-api/operations/maintenance/backup/backup#logical-backup) (or simply "Backup") and [Snapshot](../../client-api/operations/maintenance/backup/backup#snapshot).  
 
-* You can set the Backup task to create either **full** or **incremental** backups during its periodical executions.  
-   * A **full-backup file** contains **all** current database contents and configuration.  
-      * Creating a full-backup file normally takes longer and requires more storage space than creating an incremental-backup file.  
-   * An **incremental-backup file** contains only **the difference** between present data and data already backed up.  
-      * An incremental-backup file is normally faster to create and smaller to keep than a full-backup file.  
-      * An incremental-backup file always **updates** a previous backup-file.  
-        If you set the Backup task to create incremental backups but a previous backup file doesn't exist -  
-        Backup will create a **full backup** first.  
-        Subsequent backups will be incremental.  
-
-* A **typical configuration** would be quick incremental-backup runs that "fill the gaps" between full backups.  
-  For example -  
-   * A **full-backup** task set to run **every 12 hours**,  
-   * and an **incremental-backup** task that runs **every 30 minutes**.  
-
----
-
-####A Typical Backup Folder
-
-A typical backup folder holds a single full-backup file, and a list of incremental-backup files.  
-
-* Each incremental backup updates its predecessors, and the whole structure illustrates the backup's chronology.  
-* Folder contents sample:  
-   * 2018-12-26-09-00.ravendb-full-backup
-   * 2018-12-26-12-00.ravendb-incremental-backup
-   * 2018-12-26-15-00.ravendb-incremental-backup
-   * 2018-12-26-18-00.ravendb-incremental-backup
-
----
-
-####Restoration Procedure
-
-In order to restore a database, RavenDB -  
-
-* Browses the backup folder.  
-  On your part, you need only to provide the backup-folder's path.  
-* Restores the **full backup** it finds in this folder.  
-  A backup folder typically contains a single full backup, and the incremental backups that supplement it.  
-* Restores **incremental backups** one by one.  
-  By default, RavenDB will restore all incremental backup files to the last.  
-  You can also use `LastFileNameToRestore` to [stop restoration](../../client-api/operations/maintenance/backup/restore#optional-settings) when a certain file is reached.  
+* **Logical Backup**  
+  A logical backup is a compressed JSON dump of database contents, including documents and additional data.  
+* **SnapShot**  
+  A snapshot is a binary image of the [database and journals](../../server/storage/directory-structure#storage--directory-structure) at a given point-in-time.  
+  {NOTE: }
+  Snapshots are only available for _Enterprise subscribers_.  
+  {NOTE/}
 
 {PANEL/}
 
-{PANEL: Overview}
+{PANEL: Backup Contents}
 
-####Backup Type: Logical-Backup or Snapshot  
+Backed-up data includes both database-level and cluster-level contents, as detailed below.  
 
-There are two backup types: [Logical-backup](../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup) (or simply "Backup") and [Snapshot](../../client-api/operations/maintenance/backup/backup#snapshot).  
+| Database-level data |
+| ----|
+| Documents |
+| Attachments |
+| Revisions |
+| Counters |
+| Tombstones |
+| Conflicts |
+| Subscriptions |
 
-* A logical-backup is a compressed JSON dump of database contents, including documents and other data.  
-* A SnapShot is a binary image of the [database and journals](../../server/storage/directory-structure#storage--directory-structure) at a given point-in-time.  
-   * Using Snapshots is available only for _Enterprise subscribers_.  
+| Cluster-level data|
+|---- |
+| Database Record |
+| Compare-exchange values |
+| Identities |
+| Indexes (Logical-Backups: Index definitions only) |
+| Ongoing Tasks configuration (4.0 Snapshots only, 4.2 Logical-backups & Snapshots) |
+
+{PANEL/}
+
+{PANEL: Backup Scope: Full or Incremental}
+
+You can set the Backup task to create either **full** or **incremental** backups during its periodical executions.  
+
+* **Full Backup**  
+  A full backup contains **all** current database contents and configuration.  
+  * The creation of a full-backup file normally **takes longer** and **requires more storage space** than the creation of an incremental-backup file.  
+
+* **Incremental Backup**  
+  An incremental backup contains only **the difference** between the current database data and the last backed-up data.  
+  * An incremental-backup file is normally **faster to create** and **smaller** than a full-backup file.  
+  * When an incremental-backup task is executed, it checks for the existence of a previous backup file.  
+    If such a file doesn't exist, the first backup created will be a full backup.  
+    Subsequent backups will be incremental.  
+
+* **A Typical Configuration**  
+  A typical configuration would include quick incremental-backup runs that "fill the gaps" between full backups.  
+  * For example -  
+    A **full-backup** task set to run **every 12 hours**,  
+    and an **incremental-backup** task that runs **every 30 minutes**.  
+
+{PANEL/}
+
+{PANEL: Backup Name and Folder Structure}
+
+####Naming
+
+Backup folders and files are **named automatically**.  
+
+* Their names are constructed of:  
+  Current Date and Time  
+  Backed-up Database Name  
+  Owner-Node Tag  
+  Backup Type ("backup" or "snapshot")  
+  Backup Scope ("full-backup" or "incremental-backup")  
+
+* For example:  
+  * `2018-12-26-16-17.ravendb-Products-A-backup` is the name automatically given to a backup _folder_.  
+     * "**2018-12-26-16-17**" - Backup Date and time  
+     * "**Products**" - Backed-up Database name  
+     * "**A**" - Executing node's tag  
+     * "**backup**" - Backup type (backup/snapshot)  
+ * `2018-12-26-16-17.ravendb-full-backup` is the name automatically given to the backup _file_ inside this folder.  
+     * "**full-backup**" - For a full backup; an incremental backup's name will state "incremental-backup".  
 
 ---
 
-####Encryption
+####Folder Structure
 
-Stored data can be [Encrypted](../../client-api/operations/maintenance/backup/encrypted-backup) or Unencrypted.  
+A typical backup folder holds a single full-backup file and a list of incremental-backup files that supplement it.  
+Each incremental backup file contains only the delta from its predecessor backup file.
 
----
+* For example -  
+  2018-12-26-09-00.ravendb-full-backup  
+  2018-12-26-12-00.ravendb-incremental-backup  
+  2018-12-26-15-00.ravendb-incremental-backup  
+  2018-12-26-18-00.ravendb-incremental-backup  
 
-####Compression
+{PANEL/}
+
+{PANEL: Encryption}
+
+Stored backup data can be [Encrypted](../../client-api/operations/maintenance/backup/encrypted-backup) or Unencrypted.  
+
+{PANEL/}
+
+{PANEL: Compression}
 
 * A backup always consists of a single compressed file.  
-  It is so for all backup formats: full "logical" backup dumps, snapshot images, and the incremental backups that supplement both.  
+  It is so for all backup formats: Full "logical" backup dumps, Snapshot images, and the Incremental backups that supplement both.  
 * Data is compressed using [gzip](https://www.gzip.org/).  
 
----
+{PANEL/}
 
-####Backup Name
+{PANEL: Restoration Procedure}
 
-Backup folders and files are named automatically. Their names are constructed of:  
+In order to restore a database - 
 
-* Current Date and Time  
-* Backed-up Database Name  
-* Owner-Node Tag  
-* Backup Type ("backup" or "snapshot")  
-* Backup Scope ("full-backup" or "incremental-backup")  
+* [Provide RavenDB](../../client-api/operations/maintenance/backup/restore#restoring-a-database:-configuration-and-execution) 
+  with the backup folder's path.
+* RavenDB will browse this folder and restore the full-backup found in it.  
+* RavenDB will then restore the incremental-backups one by one, up to and including the last one.
+  You can set `LastFileNameToRestore` to 
+  [stop restoration](../../client-api/operations/maintenance/backup/restore#optional-settings) 
+  at a specific backup-file.
 
-For example:  
 
-* `2018-12-26-16-17.ravendb-Products-A-backup` is the name automatically given to a backup _folder_.  
-    * "**2018-12-26-16-17**" - Backup Date and time  
-    * "**Products**" - Backed-up Database name  
-    * "**A**" - Executing node's tag
-    * "**backup**" - Backup type (backup/snapshot)  
-* `2018-12-26-16-17.ravendb-full-backup` is the name automatically given to the backup file inside this folder.  
-    * "**full-backup**" - For a full backup; an incremental backup's name will state "incremental-backup".  
-
----
-
-####Backup Contents
-
-Backed-up data includes database-level and cluster-level contents.  
-
-* Database-level contents is data contained in the database and related to its state, and additional data types and entities.  
-* Cluster-level data includes additional data, related to the behavior of the cluster.  
-
-  | Database-level data | Cluster-level data|
-  | ----|---- |
-  | Documents | Database Record (Configuration and Ongoing tasks) |
-  | Attachments | Compare-exchange values |
-  | Revisions | Identities |
-  | Counters | Indexes <BR> (Logical-Backups: Only Index definitions) |
-  | Tombstones | Tasks state (Snapshot only) |
-  | Conflicts |
-  | Subscriptions |
 {PANEL/}
 
 ## Related Articles  
-**Client Articles**:  
-[Backup](../../client-api/operations/maintenance/backup/backup)  
-[Restore](../../client-api/operations/maintenance/backup/restore)  
-[Encrypted-Backup backup & restore](../../client-api/operations/maintenance/backup/encrypted-backup)  
+###Client API  
+- [Backup](../../client-api/operations/maintenance/backup/backup)  
+- [Restore](../../client-api/operations/maintenance/backup/restore)  
+- [Encrypted-Backup backup & restore](../../client-api/operations/maintenance/backup/encrypted-backup)  
 
-**Studio Articles**:  
-[The Backup Task](../../studio/database/tasks/ongoing-tasks/backup-task)  
-[Create Database from Backup](../../studio/server/databases/create-new-database/from-backup)  
+###Studio  
+- [The Backup Task](../../studio/database/tasks/ongoing-tasks/backup-task)  
+- [Create Database from Backup](../../studio/server/databases/create-new-database/from-backup)  
 
-**Security**:  
-[Database Encryption](../../server/security/encryption/database-encryption)  
-[Security Overview](../../server/security/overview)  
-[Authentication and Certification](../../server/security/authentication/certificate-configuration)  
+###Security  
+- [Database Encryption](../../server/security/encryption/database-encryption)  
+- [Security Overview](../../server/security/overview)  
+- [Authentication and Certification](../../server/security/authentication/certificate-configuration)  

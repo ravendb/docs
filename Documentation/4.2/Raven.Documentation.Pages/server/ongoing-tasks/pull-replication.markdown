@@ -57,8 +57,8 @@ If the failure occurred on the Sink node, the Sink cluster will select a differe
 
 ## Related Articles
 
-[External Replication](../../server/ongoing-tasks/extrnal-replication)
+- [External Replication](../../server/ongoing-tasks/extrnal-replication)
 
-Relevant blog posts @ ayende.com  
-[Pull replication & edge processing](https://ayende.com/blog/185153-C/ravendb-4-2-features-pull-replication-edge-processing)  
-[Pull replication has landed](https://ayende.com/blog/186177-A/ravendb-4-2-features-pull-replication-has-landed)
+###Relevant blog posts @ ayende.com  
+- [Pull replication & edge processing](https://ayende.com/blog/185153-C/ravendb-4-2-features-pull-replication-edge-processing)  
+- [Pull replication has landed](https://ayende.com/blog/186177-A/ravendb-4-2-features-pull-replication-has-landed)
