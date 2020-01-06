@@ -26,7 +26,7 @@ from the server, and it does not cause the session to track the document.
 
 | Parameter | Type | Description |
 | - | - | - |
-| **documentId** | `string` | The ID of the document you want to check whether it has the attachment |
+| **documentId** | `string` | The ID of the document you want to check for the attachment |
 | **name** | `string` | The name of the attachment you want to check the document for |
 
 | Return Value | Description |

@@ -1,4 +1,4 @@
-﻿# Session: Querying: How to Filter by Existing Fields  
+﻿# Session: Querying: How to Filter by Field Presence  
 
 ---
 
