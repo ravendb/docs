@@ -118,7 +118,7 @@ You can create the cluster in advance, and restore the database to multiple node
 
 {NOTE: This procedure is advisable only when restoring a Snapshot.}
 
-* When a [logical-backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup) 
+* When a [logical-backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup) 
   is restored, each document receives a new change-vector according to the node it resides on.  
   When the database instances synchronize, this change-vector will be updated and be composed of all database nodes tags.  
 
@@ -156,22 +156,26 @@ In such cases, **disable** ongoing tasks using the [DisableOngoingTasks](../../.
 {WARNING/}
 {PANEL/}
 
-## Related Articles
-
-###Studio   
-- [Create a Database : From Backup](../../../../studio/server/databases/create-new-database/from-backup)   
-- [Create a Database : General Flow](../../../../studio/server/databases/create-new-database/general-flow)        
-- [Create a Database : Encrypted](../../../../studio/server/databases/create-new-database/encrypted)      
-- [The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)    
-
-###Client API  
-- [Operations: How to Restore a Database from Backup](../../../../client-api/operations/server-wide/restore-backup)    
-- [What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)   
-- [Backup](../../../../client-api/operations/maintenance/backup/backup)   
-- [Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)   
-
-###Server Articles  
+## Related Articles  
+###Server  
 - [Backup Overview](../../../../server/ongoing-tasks/backup-overview)
 
+###Client API  
+- [Backup](../../../../client-api/operations/maintenance/backup/backup)  
+- [Encrypted-Backup : Create & Restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)  
+- [Backup FAQ](../../../../client-api/operations/maintenance/backup/faq)  
+- [What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)  
+
+###Studio  
+- [The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
+- [Create Database: from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
+- [Create a Database: General Flow](../../../../studio/server/databases/create-new-database/general-flow)  
+- [Create a Database: Encrypted](../../../../studio/server/databases/create-new-database/encrypted)  
+
+###Security  
+- [Database Encryption](../../../../server/security/encryption/database-encryption)  
+- [Security Overview](../../../../server/security/overview)  
+- [Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  
+
 ###Migration  
-- [Migration](../../../../migration/server/data-migration) 
+- [Migration](../../../../migration/server/data-migration)   

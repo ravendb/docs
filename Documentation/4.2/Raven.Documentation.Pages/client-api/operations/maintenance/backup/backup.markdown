@@ -12,7 +12,7 @@
 
 * In this page:  
   * [Backup Types](../../../../client-api/operations/maintenance/backup/backup#backup-types)  
-      * [Logical-Backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup)  
+      * [Logical-Backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup)  
       * [Snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot)  
   * [Backup Scope](../../../../client-api/operations/maintenance/backup/backup#backup-scope)  
       * [Full-Backup](../../../../client-api/operations/maintenance/backup/backup#full-backup)  
@@ -31,11 +31,11 @@
 
 * Data is backed-up in [compressed](../../../../server/ongoing-tasks/backup-overview#compression) JSON files.  
 
-* During restoration, RavenDB -  
+* During the restoration, RavenDB -  
    * Re-inserts all data into the database.  
    * Re-indexes the data.  
 
-* Restoration Time is therefore **slower** than that required when restoring a Snapshot.  
+* Restoration Time is, therefore, **slower** than that required when restoring a Snapshot.  
 
 * Backup file size is **significantly smaller** than that of a Snapshot.
 
@@ -95,7 +95,7 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
   backup, or a **compressed binary file** if it is a snapshot.  
 
 * **Task Ownership**  
-  There are no preliminary conditions to creating a full-backup. 
+  There are no preliminary conditions for creating a full-backup. 
   Any node can perform this task.  
 
 * **To run a full-backup**  
@@ -133,7 +133,7 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
 * RavenDB will store data in a local folder first, and transfer it to the remote 
   destination from the local one.  
    * If a local folder hasn't been specified, RavenDB will use the system's **temp** 
-     folder as a temporary storage and delete the local files when the transfer ends.  
+     folder as temporary storage and delete the local files when the transfer ends.  
    * If a local folder **has** been specified, RavenDB will use it both for the transfer 
      and as its permanent local backup location.  
 
@@ -173,7 +173,7 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
 
 {PANEL: Initiate Immediate Backup Execution}
 
-The Backup task [executes periodically](../../../../server/ongoing-tasks/backup-overview#backup--restore-overview) on its predefined schedule.  
+The Backup task is [executed periodically](../../../../server/ongoing-tasks/backup-overview#backup--restore-overview) on its predefined schedule.  
 If needed, it can also be executed immediately.  
 
 * To execute an existing backup task immediately, use the `StartBackupOperation` method.  
@@ -208,7 +208,7 @@ If needed, it can also be executed immediately.
 * **Remove old backup files regularly**.  
   RavenDB does **not** remove old backup files automatically. 
   As these files continue to aggregate, it is important that you take care of their regular removal.  
-  You can use services like crontab (a linux scheduling procedure) to create an old-backups-removal routine.  
+  You can use services like crontab (a Linux scheduling procedure) to create an old-backups-removal routine.  
 
 * **Store backup files in a location other than your database's**.  
   Note that backup files are always stored in a local folder first (even when the final backup destination is remote).  
@@ -217,24 +217,26 @@ If needed, it can also be executed immediately.
 {WARNING/}
 {PANEL/}
 
- 
-## Related Articles
-
-###Studio   
-- [Create a Database : From Backup](../../../../studio/server/databases/create-new-database/from-backup)   
-- [Create a Database : General Flow](../../../../studio/server/databases/create-new-database/general-flow)        
-- [Create a Database : Encrypted](../../../../studio/server/databases/create-new-database/encrypted)      
-- [The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)    
-
-###Client API  
-- [Restore](../../../../client-api/operations/maintenance/backup/restore)   
-- [Operations: How to Restore a Database from Backup](../../../../client-api/operations/server-wide/restore-backup)    
-- [What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)  
-- [Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)   
-
+## Related Articles  
 ###Server  
 - [Backup Overview](../../../../server/ongoing-tasks/backup-overview)
 
+###Client API  
+- [Restore](../../../../client-api/operations/maintenance/backup/restore)  
+- [Encrypted-Backup : Create & Restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)  
+- [Backup FAQ](../../../../client-api/operations/maintenance/backup/faq)  
+- [What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)  
+
+###Studio  
+- [The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
+- [Create Database: from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
+- [Create a Database: General Flow](../../../../studio/server/databases/create-new-database/general-flow)  
+- [Create a Database: Encrypted](../../../../studio/server/databases/create-new-database/encrypted)  
+
+###Security  
+- [Database Encryption](../../../../server/security/encryption/database-encryption)  
+- [Security Overview](../../../../server/security/overview)  
+- [Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  
+
 ###Migration  
 - [Migration](../../../../migration/server/data-migration)   
-

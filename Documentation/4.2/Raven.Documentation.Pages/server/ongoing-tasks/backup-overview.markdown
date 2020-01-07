@@ -6,9 +6,9 @@
 * Maintaining a proper backup routine ensures that you'd be able to restore your data to its state in chosen points of time.  
   Use this overview as an introduction to backing up and restoring your databases.  
 
-* The two principle reasons for backing up your database are -  
+* The two principal reasons for backing up your database are -  
    * **Securing data** in case catastrophe strikes.  
-   * **Freezing data in chosen points-in-time** to retain access to it in [various stages](../../client-api/operations/maintenance/backup/backup#point-in-time-backup) of its existence/development.  
+   * **Freezing data in chosen points-in-time** to retain access to it in various stages of its existence/development.  
 
 * RavenDB's Backup is an **Ongoing task**.  
    * Routinely backing up your data is a fundamental aspect of your database maintenance.  
@@ -158,13 +158,20 @@ In order to restore a database -
 ###Client API  
 - [Backup](../../client-api/operations/maintenance/backup/backup)  
 - [Restore](../../client-api/operations/maintenance/backup/restore)  
-- [Encrypted-Backup backup & restore](../../client-api/operations/maintenance/backup/encrypted-backup)  
+- [Encrypted-Backup : Create & Restore](../../client-api/operations/maintenance/backup/encrypted-backup)  
+- [Backup FAQ](../../client-api/operations/maintenance/backup/faq)  
+- [What Is Smuggler](../../client-api/smuggler/what-is-smuggler)  
 
 ###Studio  
 - [The Backup Task](../../studio/database/tasks/ongoing-tasks/backup-task)  
-- [Create Database from Backup](../../studio/server/databases/create-new-database/from-backup)  
+- [Create Database: From Backup](../../studio/server/databases/create-new-database/from-backup)  
+- [Create a Database: General Flow](../../studio/server/databases/create-new-database/general-flow)  
+- [Create a Database: Encrypted](../../studio/server/databases/create-new-database/encrypted)  
 
 ###Security  
 - [Database Encryption](../../server/security/encryption/database-encryption)  
 - [Security Overview](../../server/security/overview)  
 - [Authentication and Certification](../../server/security/authentication/certificate-configuration)  
+
+###Migration  
+- [Migration](../../migration/server/data-migration)   

@@ -254,7 +254,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
 
                 #region restore_disable_ongoing_tasks_true
                 //Do or do not run ongoing tasks after restoration.
-                //Default setting is FALSE, to allow tasks' execution when backup is restored.
+                //Default setting is FALSE, to allow tasks' execution when the backup is restored.
                 restoreConfiguration.DisableOngoingTasks = true;
                 #endregion
             }

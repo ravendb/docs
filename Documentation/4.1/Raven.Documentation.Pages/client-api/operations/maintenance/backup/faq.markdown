@@ -1,11 +1,11 @@
-﻿# Backup & Restore: Frequently Asked Questions  
+﻿# Backup & Restore: <br> Frequently Asked Questions  
 
 ---
 
 {PANEL: FAQ}
 
 * Q: **Is there a one-time backup?**
-* A: No. Backup is an on-going task, and is meant to back your data up continuously.  
+* A: No. Backup is an on-going task and is meant to back your data up continuously.  
       * If you wish, you can trigger it for immediate execution and then disable or delete the task.  
       * You can also use [Smuggler](../../../../client-api/smuggler/what-is-smuggler#what-is-smuggler) as an equivalent of a full backup for a single [export](../../../../client-api/smuggler/what-is-smuggler#export) operation.  
 
@@ -41,7 +41,7 @@
 
 * Q: **Does RavenDB automatically delete old backups?**  
 * A: No, RavenDB does not automatically remove backup files, you need to take care of it yourself.  
-     You can use services like crontab (a linux scheduling procedure) to create an old-backup-files-removal routine.  
+     You can use services like crontab (a Linux scheduling procedure) to create an old-backup-files-removal routine.  
 
 ---
 
@@ -64,18 +64,26 @@
 
 {PANEL/}
 
-## Related Articles
+## Related Articles  
+###Server  
+- [Backup Overview](../../../../server/ongoing-tasks/backup-overview)
+
 ###Client API  
-- [Backup Overview](../../../../server/ongoing-tasks/backup-overview)  
 - [Backup](../../../../client-api/operations/maintenance/backup/backup)  
 - [Restore](../../../../client-api/operations/maintenance/backup/restore)  
-- [Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)  
+- [Encrypted-Backup : Create & Restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)  
+- [What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)  
 
 ###Studio  
 - [The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
-- [Create Database from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
+- [Create Database: from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
+- [Create a Database: General Flow](../../../../studio/server/databases/create-new-database/general-flow)  
+- [Create a Database: Encrypted](../../../../studio/server/databases/create-new-database/encrypted)  
 
 ###Security  
 - [Database Encryption](../../../../server/security/encryption/database-encryption)  
 - [Security Overview](../../../../server/security/overview)  
 - [Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  
+
+###Migration  
+- [Migration](../../../../migration/server/data-migration)   

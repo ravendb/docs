@@ -24,13 +24,12 @@
   * [Backup-Encryption Overview](../../../../client-api/operations/maintenance/backup/encrypted-backup#backup-encryption-overview)  
      * [Prerequisites to Encrypting Backups](../../../../client-api/operations/maintenance/backup/encrypted-backup#prerequisites-to-encrypting-backups)  
      * [Choosing Encryption Mode & Key](../../../../client-api/operations/maintenance/backup/encrypted-backup#choosing-encryption-mode--key)  
-     * [The Encryption Key](../../../../client-api/operations/maintenance/backup/encrypted-backup#the-encryption-key)  
   * [Creating an Encrypted Logical-Backup](../../../../client-api/operations/maintenance/backup/encrypted-backup#creating-an-encrypted-logical-backup)  
      * [For a Non-Encrypted Database](../../../../client-api/operations/maintenance/backup/encrypted-backup#for-a-non-encrypted-database)  
      * [For an Encrypted Database](../../../../client-api/operations/maintenance/backup/encrypted-backup#for-an-encrypted-database)  
   * [Creating an Encrypted Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup#creating-an-encrypted-snapshot)  
   * [Restoring an Encrypted Backup](../../../../client-api/operations/maintenance/backup/encrypted-backup#restoring-an-encrypted-backup)  
-     * [Restoring a Logical-Backup](../../../../client-api/operations/maintenance/backup/encrypted-backup#restoring-a-logical-backup)  
+     * [Restoring an encrypted Logical-Backup](../../../../client-api/operations/maintenance/backup/encrypted-backup#restoring-an-encrypted-logical-backup)  
      * [Restoring a Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup#restoring-a-snapshot)  
 {NOTE/}
 
@@ -97,9 +96,9 @@ Secure the data stored on the server by
 ####Choosing Encryption Mode & Key
 
 Use the same [Backup](../../../../client-api/operations/maintenance/backup/backup#backup) and [Restore](../../../../client-api/operations/maintenance/backup/restore) methods that are used to create and restore **un**-encrypted backups.  
-Specify whether encryption is used, and with which 
-[encryption key](../../../../client-api/operations/maintenance/backup/encrypted-backup#the-encryption-key), 
-in the **BackupEncryptionSettings** structure defined within the **PeriodicBackupConfiguration** object.  
+Specify whether encryption is used, and with which encryption key, 
+in the **BackupEncryptionSettings** structure defined within the 
+[PeriodicBackupConfiguration](../../../../client-api/operations/maintenance/backup/backup#backup-to-local-and-remote-destinations) object.  
 
 * `BackupEncryptionSettings` definition:  
   {CODE BackupEncryptionSettings_definition@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}  
@@ -158,25 +157,16 @@ An encrypted logical-backup can be created for both **encrypted** and **non-encr
 
 An encrypted Snapshot can only be created for an encrypted database.  
 
----
+* To create a **Non-Encrypted Snapshot** (for a non-encrypted database) -  
+  **Set** `EncryptionMode = EncryptionMode.None`  
+  Or  
+  **Don't set** EncryptionMode & Key at all - Default value is: `EncryptionMode.None`  
 
-####For a Non-Encrypted Database
-
-To create a **non-encrypted Snapshot** -  
-**Set** `EncryptionMode = EncryptionMode.None`  
-Or  
-**Don't set** EncryptionMode & Key at all - Default value is: `EncryptionMode.None`  
-
----
-
-####For an Encrypted Database
-
-To create an **encrypted Snapshot**:  
-Set `EncryptionMode = EncryptionMode.UseDatabaseKey`  
-Or  
-**Don't set** EncryptionMode & Key at all - Default value is: `EncryptionMode.UseDatabaseKey`  
-
-{CODE encrypted_snapshot@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}  
+* To create an **Encrypted Snapshot** (For an encrypted database) -  
+  **Set** `EncryptionMode = EncryptionMode.UseDatabaseKey`  
+  Or  
+  **Don't set** EncryptionMode & Key at all - Default value is: `EncryptionMode.UseDatabaseKey`  
+  {CODE encrypted_snapshot@ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs /}  
 
 {PANEL/}
 
@@ -217,17 +207,26 @@ Restore a snapshot as specified in [Restoring an Encrypted Database](../../../..
 
 {PANEL/}
 
-## Related Articles
+## Related Articles  
+###Server  
+- [Backup Overview](../../../../server/ongoing-tasks/backup-overview)
+
 ###Client API  
-- [Backup Overview](../../../../server/ongoing-tasks/backup-overview)  
 - [Backup](../../../../client-api/operations/maintenance/backup/backup)  
 - [Restore](../../../../client-api/operations/maintenance/backup/restore)  
+- [Backup FAQ](../../../../client-api/operations/maintenance/backup/faq)  
+- [What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)  
 
 ###Studio  
 - [The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
-- [Create Database from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
+- [Create Database: from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
+- [Create a Database: General Flow](../../../../studio/server/databases/create-new-database/general-flow)  
+- [Create a Database: Encrypted](../../../../studio/server/databases/create-new-database/encrypted)  
 
 ###Security  
 - [Database Encryption](../../../../server/security/encryption/database-encryption)  
 - [Security Overview](../../../../server/security/overview)  
 - [Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  
+
+###Migration  
+- [Migration](../../../../migration/server/data-migration)   
