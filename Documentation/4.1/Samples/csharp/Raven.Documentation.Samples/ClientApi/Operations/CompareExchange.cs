@@ -11,6 +11,7 @@ using Raven.Client.Documents.Operations.Configuration;
 using Raven.Client.Documents.Queries;
 using Raven.Client.Http;
 using Raven.Client.ServerWide;
+using Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup;
 using Raven.Documentation.Samples.Indexes.Querying;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations
@@ -106,7 +107,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     CompareExchangeResult<string> compareExchangeResult
                         = store.Operations.Send(
                             new PutCompareExchangeValueOperation<string>("Emails/foo@example.org", "users/123", 0));
-                    
+
                     bool successful = compareExchangeResult.Successful;
                     // If successfull is true: then Key 'foo@example.org' now has the value of "users/123"
                     #endregion
@@ -122,7 +123,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     readResult.Value.Age++;
 
                     // Update value
-                    CompareExchangeResult<User> saveResult 
+                    CompareExchangeResult<User> saveResult
                         = store.Operations.Send(
                             new PutCompareExchangeValueOperation<User>("AdminUser", readResult.Value, readResult.Index));
 
@@ -148,6 +149,11 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     #endregion
                 }
             }
+        }
+
+        private class User
+        {
+            public int Age { get; set; }
         }
     }
 }

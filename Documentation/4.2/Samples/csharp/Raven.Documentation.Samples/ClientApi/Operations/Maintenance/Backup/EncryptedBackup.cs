@@ -6,13 +6,13 @@ using Raven.Client.ServerWide.Operations;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
 {
-    public class User
+    public class EncryptedBackups
     {
-        public string Name { get; set; }
-    }
+        public class User
+        {
+            public string Name { get; set; }
+        }
 
-    class Program
-    {
         static void Main(string[] args)
         {
             var a = MainInternal();
@@ -23,7 +23,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
         {
 
             #region encrypted_database
-            
+
             // path to the certificate you received during the server setup
             var cert = new X509Certificate2(@"C:\Users\RavenDB\authentication_key\admin.client.certificate.RavenDBdom.pfx");
 
