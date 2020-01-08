@@ -34,8 +34,8 @@ To compact database, please use **CompactDatabaseOperation**. You can choose wha
   System.InvalidOperationException , 
   Cannot compact database 'name' on node A, because it doesn't reside on this node."_**  
   
-* To solve this, we can explicitly identify the database we want to compact by 
-  providing its name to a private CompactDatabaseOperation method.  
+* To solve this, we can explicitly identify the database we want to compact by providing 
+  its name to CompactDatabaseOperation as in the following example.  
   {CODE compact_5@ClientApi\Operations\Server\Compact.cs /}
 
 ## Remarks
