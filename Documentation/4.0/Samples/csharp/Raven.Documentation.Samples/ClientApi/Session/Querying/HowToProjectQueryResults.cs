@@ -313,6 +313,60 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                                          }).ToListAsync();
                     #endregion
                 }
+
+                using (var session = store.OpenSession())
+                {
+                    #region selectFields
+                    var fields = new string[]{
+                        "Name",
+                        "Phone"
+                    };
+
+                    var results = session
+                        .Advanced
+                        .DocumentQuery<Company, Companies_ByContact>()
+                        .SelectFields<ContactDetails>(fields)
+                        .ToList();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region selectFields_async
+                    var fields = new string[]{
+                        "Name",
+                        "Phone"
+                    };
+
+                    var results = await asyncSession
+                        .Advanced
+                        .AsyncDocumentQuery<Company, Companies_ByContact>()
+                        .SelectFields<ContactDetails>(fields)
+                        .ToListAsync();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region selectFields_2
+                    var results = session
+                        .Advanced
+                        .DocumentQuery<Company, Companies_ByContact>()
+                        .SelectFields<ContactDetails>()
+                        .ToList();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region selectFields_2_async
+                    var results = await asyncSession
+                        .Advanced
+                        .AsyncDocumentQuery<Company, Companies_ByContact>()
+                        .SelectFields<ContactDetails>()
+                        .ToListAsync();
+                    #endregion
+                }
             }
         }
 
@@ -363,5 +417,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             }
         }
         #endregion
+
     }
 }
