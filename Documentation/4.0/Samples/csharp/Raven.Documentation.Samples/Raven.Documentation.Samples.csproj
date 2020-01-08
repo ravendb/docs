@@ -3,10 +3,10 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NodaTime" Version="2.4.2" />
-	<PackageReference Include="RavenDB.Client" Version="4.0.9-patch-40054" />
-    <PackageReference Include="RavenDB.TestDriver" Version="4.0.9-patch-40054" />
-    <PackageReference Include="System.Reactive.Core" Version="4.1.2" />
+    <PackageReference Include="NodaTime" Version="2.4.7" />
+	<PackageReference Include="RavenDB.Client" Version="4.0.11" />
+    <PackageReference Include="RavenDB.TestDriver" Version="4.0.11" />
+    <PackageReference Include="System.Reactive.Core" Version="4.3.2" />
     <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
   <ItemGroup>
