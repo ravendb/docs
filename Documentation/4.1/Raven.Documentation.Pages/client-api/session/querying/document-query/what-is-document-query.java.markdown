@@ -94,7 +94,7 @@ Available methods:
 - whereBetween
 - whereEndsWith
 - whereEquals
-- whereExists
+- [whereExists](../../../../client-api/session/querying/how-to-filter-by-field)
 - whereGreaterThan
 - whereGreaterThanOrEqual
 - whereIn
