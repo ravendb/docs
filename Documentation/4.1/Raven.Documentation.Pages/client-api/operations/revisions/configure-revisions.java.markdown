@@ -52,25 +52,25 @@ public class RevisionsCollectionConfiguration
 
 | Configuration Option | Description | Default |
 | - | - | - |
-| **minimumRevisionsToKeep** | The minimum number of revisions to keep per document | `null` |
-| **minimumRevisionAgeToKeep** | The minimum amount of time to keep each revision. [Format of `Duration`](https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html). | `null` |
+| **minimumRevisionsToKeep** | The minimum number of revisions to keep per document | `null` - unlimited |
+| **minimumRevisionAgeToKeep** | The minimum amount of time to keep each revision. [Format of `Duration`](https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html). | `null` - unlimited |
 | **disabled** | Indicates whether to completely disable revisions for documents in this collection | `false` |
 | **purgeOnDelete** | When a document is deleted, this indicates whether all of its revisions should be deleted as well | `false` |
 
 A revision is only deleted if both the `minimumRevisionsToKeep` for that document is exceeded, **and** the revision is 
 older than the `minimumRevisionAgeToKeep` limit. The oldest revisions are deleted first.  
 
-* By default both these options are set to `null` which has the same effect as setting them both to `0`: no revisions will 
-be stored for this collection.  
+* By default both these options are set to `null`, meaning that an unlimited number of revisions will be saved 
+indefinitely.  
 
-* If `minimumRevisionsToKeep` is null, revisions will be deleted only when they are older than `minimumRevisionAgeToKeep`.  
+* If only `minimumRevisionsToKeep` is null, revisions will be deleted only when they are older than 
+`minimumRevisionAgeToKeep`.  
 
-* If `minimumRevisionAgeToKeep` is null, revisions will be deleted each time there are more revisions than 
+* If only `minimumRevisionAgeToKeep` is null, revisions will be deleted each time there are more revisions than 
 `minimumRevisionsToKeep`.  
 
-These deletions will only take place _when a new revision is added_ to a document. Until a new revisions is added, that 
-document's revisions 
-can exceed these limits.  
+These deletions will only take place _when a new revision is added_ to a document. Until a new revision is added, that 
+document's revisions can exceed these limits.  
 
 ---
 
@@ -92,15 +92,18 @@ public class RevisionsConfiguration
 | **collections** | A map in which the keys are collection names, and the values are the corresponding configurations | `null` |
 | **defaultConfig** | An optional default configuration that applies to any collection not listed in `collections` | `null` |
 
-If a collection is not listed in `collections`, and `defaultConfig` has not been set, the default values listed in the table 
-[above](../../../client-api/operations/revisions/configure-revisions#revisionscollectionconfiguration) apply.  
+Note that when this object is sent to the server, it overrides the configurations for **all** collections, including all existing 
+configurations currently on the server. If a collection is not listed in `collections` and `defaultConfig` has not been set, the 
+default values listed in the table [above](../../../client-api/operations/revisions/configure-revisions#revisionscollectionconfiguration) 
+are applied.  
 
 ---
 
 ### ConfigureRevisionsOperation
 
-Lastly, the operation itself sends the `RevisionsConfiguration` to the server. You'll want to store this configuration on the client side 
-so it doesn't have to be created from scratch each time you want to modify it.  
+Lastly, the operation itself sends the `RevisionsConfiguration` to the server, overriding **all** existing collection configurations. 
+You'll want to store these configurations on the client side so they don't have to be created from scratch each time you want to 
+modify them.  
 
 {CODE-BLOCK: java}
 public ConfigureRevisionsOperation(RevisionsConfiguration configuration);

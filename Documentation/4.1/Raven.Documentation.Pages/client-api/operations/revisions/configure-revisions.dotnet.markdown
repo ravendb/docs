@@ -52,23 +52,24 @@ public class RevisionsCollectionConfiguration
 
 | Configuration Option | Description | Default |
 | - | - | - |
-| **MinimumRevisionsToKeep** | The minimum number of revisions to keep per document | `null` |
-| **MinimumRevisionAgeToKeep** | The minimum amount of time to keep each revision. [Format of `TimeSpan`](https://docs.microsoft.com/en-us/dotnet/api/system.timespan). | `null` |
+| **MinimumRevisionsToKeep** | The minimum number of revisions to keep per document | `null` - unlimited |
+| **MinimumRevisionAgeToKeep** | The minimum amount of time to keep each revision. [Format of `TimeSpan`](https://docs.microsoft.com/en-us/dotnet/api/system.timespan). | `null` - unlimited |
 | **Disabled** | Indicates whether to completely disable revisions for documents in this collection | `false` |
 | **PurgeOnDelete** | When a document is deleted, this indicates whether all of its revisions should be deleted as well | `false` |
 
 A revision is only deleted if both the `MinimumRevisionsToKeep` for that document is exceeded, **and** the revision is older 
 than the `MinimumRevisionAgeToKeep` limit. The oldest revisions are deleted first.  
 
-* By default both these options are set to `null` which has the same effect as setting them both to `0`: no revisions will 
-be stored for this collection.  
+* By default both these options are set to `null`, meaning that an unlimited number of revisions will be saved 
+indefinitely.  
 
-* If `MinimumRevisionsToKeep` is null, revisions will be deleted only when they are older than `MinimumRevisionAgeToKeep`.  
+* If only `MinimumRevisionsToKeep` is null, revisions will be deleted only when they are older than 
+`MinimumRevisionAgeToKeep`.  
 
-* If `MinimumRevisionAgeToKeep` is null, revisions will be deleted each time there are more revisions than 
+* If only `MinimumRevisionAgeToKeep` is null, revisions will be deleted each time there are more revisions than 
 `MinimumRevisionsToKeep`.  
 
-These deletions will only take place _when a new revision is added_ to a document. Until a new revisions is added, that 
+These deletions will only take place _when a new revision is added_ to a document. Until a new revision is added, that 
 document's revisions can exceed these limits.  
 
 ---
@@ -91,15 +92,18 @@ public class RevisionsConfiguration
 | **Collections** | A dictionary in which the keys are collection names, and the values are the corresponding configurations | `null` |
 | **Default** | An optional default configuration that applies to any collection not listed in `Collections` | `null` |
 
-If a collection is not listed in `Collections`, and `Default` has not been set, the default values listed in the table 
-[above](../../../client-api/operations/revisions/configure-revisions#revisionscollectionconfiguration) apply.  
+Note that when this object is sent to the server, it overrides the configurations for **all** collections, including all existing 
+configurations currently on the server. If a collection is not listed in `Collections` and `Default` has not been set, the 
+default values listed in the table [above](../../../client-api/operations/revisions/configure-revisions#revisionscollectionconfiguration) 
+are applied.  
 
 ---
 
 ### ConfigureRevisionsOperation
 
-Lastly, the operation itself sends the `RevisionsConfiguration` to the server. You'll want to store this configuration on the client side 
-so it doesn't have to be created from scratch each time you want to modify it.  
+Lastly, the operation itself sends the `RevisionsConfiguration` to the server, overriding **all** existing collection configurations. 
+You'll want to store these configurations on the client side so they don't have to be created from scratch each time you want to 
+modify them.  
 
 {CODE-BLOCK: csharp}
 public ConfigureRevisionsOperation(RevisionsConfiguration configuration);
