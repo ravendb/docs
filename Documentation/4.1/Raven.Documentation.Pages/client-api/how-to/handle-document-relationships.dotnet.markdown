@@ -141,7 +141,8 @@ when you want to load multiple documents.
 
 The `Select()` within the Include tells RavenDB which property of secondary level objects to use as a reference.
 
-{WARNING:Conventions}
+{WARNING: }
+### `string`&nbsp;Path Conventions
 
 When using string-based includes like:
 
