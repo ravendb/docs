@@ -51,7 +51,7 @@ The other parameters of the HTTP request are specified using 'options'. These ar
 This request uploads a document to a database on the playground server from a local file:  
 
 {CODE-BLOCK: bash}
-curl -X PUT http://live-test.ravendb.net/databases/example/docs?id=example -T <path to file>document.txt
+curl -X PUT http://live-test.ravendb.net/databases/demo/docs?id=example -T <path to file>document.txt
 {CODE-BLOCK/}
 [More about how to upload documents](../../client-api/rest-api/document-commands/put-documents)
 
