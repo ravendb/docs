@@ -2,7 +2,7 @@
 
 There are couple of ways to perform projections in RavenDB:
 
-- projections using [SelectFields](../../indexes/querying/projections#selectFields)
+- projections using [SelectFields](../../indexes/querying/projections#selectfields)
 - using [OfType](../../indexes/querying/projections#oftype)
 
 ## What are Projections and When to Use Them

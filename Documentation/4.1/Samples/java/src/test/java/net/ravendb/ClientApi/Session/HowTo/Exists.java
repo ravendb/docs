@@ -8,9 +8,8 @@ public class Exists {
 
     private interface IExists {
         //region exists_1
-        boolean exists(String id)
+        boolean exists(String id);
         //endregion
-        ;
     }
 
     public Exists() {
@@ -18,8 +17,9 @@ public class Exists {
             try (IDocumentSession session = store.openSession()) {
                 //region exists_2
                 boolean exists = session.advanced().exists("employees/1-A");
+
                 if (exists) {
-                    // do something ...
+                    // do something
                 }
                 //endregion
             }

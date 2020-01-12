@@ -1,5 +1,12 @@
 # Configuration: Core
 
+[settings.json](../../server/configuration/configuration-options#json) variables change your server's behavior in various ways.  
+
+{NOTE: }
+RavenDB reads `settings.json` only during startup.  
+When you edit the file, restart the server to apply changes.  
+{NOTE/}
+
 {PANEL:ServerUrl}
 
 The URLs which the server should listen to.
@@ -159,11 +166,11 @@ Determines what kind of security was chosen during setup, or not to use setup on
 
 Possible values:
 
-- `None` : No setup process on RavenDB server startup
-- `Initial` : Start the wizard process to setup RavenDB on the first server startup
-- `LetsEncrypt` : Let RavenDB know that it needs to take care of refreshing certificates on the fly via LE
-- `Secured` : This value will be set internally by RavenDB
-- `Unsecured` : Run the server in unsecured mode
+- `None`: No setup process on RavenDB server startup
+- `Initial`: Start the wizard process to setup RavenDB on the first server startup
+- `LetsEncrypt`: Let RavenDB know that it needs to take care of refreshing certificates on the fly via LE
+- `Secured`: This value will be set internally by RavenDB
+- `Unsecured`: Run the server in unsecured mode
 
 {PANEL/}
 
@@ -189,7 +196,10 @@ The URLs which the server should contact when requesting certificates from using
 
 {PANEL:Features.Availability}
 
- Indicates what set of features should be available.
+This [settings.json](../../server/configuration/configuration-options#json) variable determines whether to run RavenDB with its standard 
+features set, orr add to a set of experimental features.  
+Some features, like ones recently released, are considered **experimental**. They are disabled by default, you can enable 
+them by setting `Features.Availability` to `Experimental`.  
 
 - **Type**: `enum`
 - **Default**: `Stable`
@@ -197,7 +207,11 @@ The URLs which the server should contact when requesting certificates from using
 
 Possible values:
 
-- `Stable` : Standard set of features
-- `Experimental` : Enables experimental features
+- `Stable`: Standard set of features  
+- `Experimental`: Enables experimental features  
+
+{NOTE: }
+We'd be grateful for any feedback you send us regarding experimental features.  
+{NOTE/}
 
 {PANEL/}

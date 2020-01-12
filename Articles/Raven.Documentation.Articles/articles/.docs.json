@@ -1210,7 +1210,7 @@
             "twitter:description": "The first microservices architecture in modern history didn’t come from a server, a virtual machine, or in the cloud. It didn't even take place on a computer.",
             "twitter:url": "https://ravendb.net/articles/the-first-microservices-architecture"
         }
-    },
+	},
 	{
         "Path": "ravendb-helps-configit-give-greater-depth-to-configurations.markdown",
         "Name": "NoSQL Database for Greater Insight",
@@ -1238,6 +1238,64 @@
             "twitter:title": "RavenDB Helps Configit Give Greater Depth to Configurations",
             "twitter:description": "A NoSQL Document Database enables Configit to model their data dynamically, avoid excessive overhead with too many JOINS, and keep performance levels high.",
             "twitter:url": "https://ravendb.net/articles/ravendb-helps-configit-give-greater-depth-to-configurations"
+        }
+	},
+    {
+        "Path": "ravendb-wants-to-be-the-most-boring-database-ever.markdown",
+        "Name": "The Best Database - The Most Boring Ever | RavenDB",
+        "Mappings": [],
+        "Metadata": {
+            "title": "The Best Database - The Most Boring Ever | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/ravendb-wants-to-be-the-most-boring-database-ever",
+            "publishedAt": "2020-01-07",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "Why should your database keep you busy? RavenDB will make life so simple for you, we're gonna transform the Roaring 20's into the Boring 20's.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "The Best Database - The Most Boring Ever | RavenDB",
+            "og:description": "Why should your database keep you busy? RavenDB will make life so simple for you, we're gonna transform the Roaring 20's into the Boring 20's.",
+            "og:url": "ravendb-wants-to-be-the-most-boring-database-ever",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-wants-to-be-the-most-boring-database-ever&fileName=ravendb-wants-to-be-the-most-boring-database-ever.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "The Best Database - The Most Boring Ever | RavenDB",
+            "twitter:description": "Why should your database keep you busy? RavenDB will make life so simple for you, we're gonna transform the Roaring 20's into the Boring 20's.",
+            "twitter:url": "https://ravendb.net/articles/ravendb-wants-to-be-the-most-boring-database-ever"
+        }
+    },
+    {
+        "Path": "veteran-software-architect-pits-nosql-database-mongodb-vs-ravendb.markdown",
+        "Name": "Veteran Software Architect pits MongoDB vs RavenDB | RavenDB",
+        "Mappings": [],
+        "Metadata": {
+            "title": "The Best NoSQL Database - MongoDB vs RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/veteran-software-architect-pits-nosql-database-mongodb-vs-ravendb",
+            "publishedAt": "2020-01-09",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "Veteran Software Architect tests MongoDB against RavenDB NoSQL Database for Performance, ACID Integrity, Ease of Use, GUI, DBaaS Cloud Offering, and more.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Veteran Software Architect pits MongoDB vs RavenDB",
+            "og:description": "Veteran Software Architect tests MongoDB against RavenDB NoSQL Database for Performance, ACID Integrity, Ease of Use, GUI, DBaaS Cloud Offering, and more.",
+            "og:url": "veteran-software-architect-pits-nosql-database-mongodb-vs-ravendb",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/veteran-software-architect-pits-nosql-database-mongodb-vs-ravendb&fileName=veteran-software-architect-pits-nosql-database-mongodb-vs-ravendb.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Veteran Software Architect pits MongoDB vs RavenDB",
+            "twitter:description": "Veteran Software Architect tests MongoDB against RavenDB NoSQL Database for Performance, ACID Integrity, Ease of Use, GUI, DBaaS Cloud Offering, and more.",
+            "twitter:url": "https://ravendb.net/articles/veteran-software-architect-pits-nosql-database-mongodb-vs-ravendb"
         }
 	}
 ]

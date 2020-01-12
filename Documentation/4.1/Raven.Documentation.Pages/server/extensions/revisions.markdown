@@ -12,13 +12,13 @@ You can configure the revisions feature using the studio:
 By default, the revisions feature will track history for all the documents and never purge old revisions. 
 You can configure this for all collections (using the default configuration) and you can have a configuration for a specific collection.
 
-Configuration Options:
+#### Configuration Options:
 
 | Configuration option | Description |
 | - | - |
-| **Purge on delete** | Configure whether to delete the revisions upon document delete or create a delete marker instead. |
-| **Limit # of revisions** | Configure how much revisions to keep. Default: unlimited. |
-| **Limit # of revisions by age** | Configure a minimum retention time before the revisions can be expired. Default: None. |
+| **PurgeOnDelete** | Configure whether to delete the revisions upon document delete or create a delete marker instead. |
+| **MinimumRevisionsToKeep ** | Configure how much revisions to keep. Default: unlimited. |
+| **MinimumRevisionAgeToKeep ** | Configure a minimum retention time before the revisions can be expired. Default: None. |
 | **Disabled** | If true, disable the revisions feature for this configuration (default or specific collection). Default: false. |
 
 You can also configure the revisions feature using the client:

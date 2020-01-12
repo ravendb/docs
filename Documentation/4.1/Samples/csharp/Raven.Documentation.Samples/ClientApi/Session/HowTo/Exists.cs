@@ -9,17 +9,15 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 		private interface IExists
 		{
             #region exists_1
-		    bool Exists(string id)
-		        #endregion
-	        ;
-
-            #region asyn_exists_1
-		    Task<bool> ExistsAsync(string documentId, string name, CancellationToken token = default)
+		    bool Exists(string id);
             #endregion
-            ;
+
+            #region exists_1_async
+            Task<bool> ExistsAsync(string documentId, CancellationToken token = default);
+            #endregion
         }
 
-        public Exists()
+        public async Task Existence()
 		{
 			using (var store = new DocumentStore())
 			{
@@ -27,13 +25,26 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 				{
 				    #region exists_2
 				    bool exists = session.Advanced.Exists("employees/1-A");
+
 				    if (exists)
 				    {
-				        //do something...
+				        //do something
 				    }
                     #endregion
                 }
-			}
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region exists_2_async
+                    bool exists = await asyncSession.Advanced.ExistsAsync("employees/1-A");
+
+                    if (exists)
+                    {
+                        //do something
+                    }
+                    #endregion
+                }
+            }
 		}
 	}
 }

@@ -3,9 +3,10 @@
 Instead of pulling full documents in query results you can just grab some pieces of data from documents. You can also transform the projected
 results. The projections are defined in LINQ with the usage of:
 
-- [Select](../../../client-api/session/querying/how-to-project-query-results#select)
-- [ProjectInto](../../../client-api/session/querying/how-to-project-query-results#projectinto)
-- [OfType (As)](../../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection)
+- [Select](../../../client-api/session/querying/how-to-project-query-results#select)  
+- [SelectFields](../../../client-api/session/querying/how-to-project-query-results#selectfields)  
+- [ProjectInto](../../../client-api/session/querying/how-to-project-query-results#projectinto)  
+- [OfType (As)](../../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection)  
 
 {PANEL:Select}
 
@@ -129,6 +130,47 @@ select {
      Name : e.FirstName, 
      Metadata : getMetadata(e)
 }
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL:SelectFields}
+
+The `SelectFields` method can only be used with the [Document Query](../../../client-api/session/querying/document-query/what-is-document-query). 
+It has two overloads:
+
+{CODE-BLOCK: csharp}
+// 1) By array of fields
+IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
+// 2) By projection type
+IDocumentQuery<TProjection> SelectFields<TProjection>();
+{CODE-BLOCK/}
+
+1) The fields of the projection are specified as a `string` array of field names. It also takes the type of the projection as 
+a generic parameter.  
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync selectFields@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Async selectFields_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Index projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Class projections_9_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Companies/ByContact'
+select Name, Phone
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+2) The projection is defined by simply passing the projection type as the generic parameter.  
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync selectFields_2@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Async selectFields_2_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Index projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Class projections_9_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Companies/ByContact'
+select Name, Phone
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
