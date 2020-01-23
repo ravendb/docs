@@ -43,7 +43,7 @@ The only question was, which database do we use for each system? Which database 
 
 <div class="text-center" style="margin: 30px"><iframe width="560" height="315" src="https://www.youtube.com/embed/IuRLGdGnqSU?t=50" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
-To expand our systems, we needed a database that could support microservices, perform fast, and give us [high availability](https://ravendb.net/whyravendb/high-availability) over a distributed network.
+To expand our systems, we needed a database that could support microservices, perform fast, and give us [high availability](https://ravendb.net/why-ravendb/high-availability) over a distributed network.
 
 We believe in our database so much that it's at the core of ***every RavenDB*** system. Every developer, marketer, and salesperson uses a RavenDB database to do his job.
 

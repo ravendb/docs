@@ -65,7 +65,7 @@ Our error messages are thorough, guiding you to the solutions at the moment you 
 
 Our API and documentation are designed to be easy to use and understand, relieving you of the burden of calling support every time you want to figure something new out.
 
-RavenDB's query language, RQL, is the SQL of the Document Database. 80% of it is the traditional query language and the rest is human readable, quick to learn, and [simple to use with great documentation to back it up](https://ravendb.net/whyravendb/ease-of-use).
+RavenDB's query language, RQL, is the SQL of the Document Database. 80% of it is the traditional query language and the rest is human readable, quick to learn, and [simple to use with great documentation to back it up](https://ravendb.net/why-ravendb/ease-of-use).
 
 On the cloud you can set up a [RavenDB Cloud managed database](https://cloud.ravendb.net/) instance in 2 minutes. If you are using RavenDB on premises, the setup wizard will take you 10. You don't need to read long manuals for setup or security. Protocols are built into your system to make sure the most common security vulnerabilities are tackled before you go to production.
 
