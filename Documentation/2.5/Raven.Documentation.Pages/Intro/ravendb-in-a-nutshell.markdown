@@ -55,6 +55,6 @@ A list of outstanding bugs can be found here: [https://issues.hibernatingrhinos.
 
 ## Licensing and support
 
-RavenDB is released as open-source under the AGPL license. What that means is it is freely available, but if you want to use this with proprietary software, you **must** buy a [commercial license](https://ravendb.net/licensing).
+RavenDB is released as open-source under the AGPL license. What that means is it is freely available, but if you want to use this with proprietary software, you **must** buy a [commercial license](https://ravendb.net/buy).
 
 RavenDB has a very active [mailing list](https://groups.google.com/forum/#!forum/ravendb), where users and RavenDB developers attend all queries quickly and efficiently.
