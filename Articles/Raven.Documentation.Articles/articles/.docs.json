@@ -1297,5 +1297,34 @@
             "twitter:description": "Veteran Software Architect tests MongoDB against RavenDB NoSQL Database for Performance, ACID Integrity, Ease of Use, GUI, DBaaS Cloud Offering, and more.",
             "twitter:url": "https://ravendb.net/articles/veteran-software-architect-pits-nosql-database-mongodb-vs-ravendb"
         }
+    },
+    {
+        "Path": "a-lean-nosql-database-for-2020.markdown",
+        "Name": "A Lean Database for 2020 | RavenDB",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Keeping Our New Year’s Resolution: A Lean Database for 2020",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/a-lean-nosql-database-for-2020",
+            "publishedAt": "2020-01-27",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "On the Cloud, there is a hidden cost to a new version of software: Bloat. For 2020 and beyond, RavenDB promises to keep its NoSQL Database lean and mean.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Keeping Our New Year’s Resolution: A Lean Database for 2020",
+            "og:description": "On the Cloud, there is a hidden cost to a new version of software: Bloat. For 2020 and beyond, RavenDB promises to keep its NoSQL Database lean and mean.",
+            "og:url": "a-lean-nosql-database-for-2020",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/a-lean-nosql-database-for-2020&fileName=a-lean-nosql-database-for-2020.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Keeping Our New Year’s Resolution: A Lean Database for 2020",
+            "twitter:description": "On the Cloud, there is a hidden cost to a new version of #software: Bloat. For 2020 and beyond @RavenDB promises to keep its #NoSQL #Database lean and mean.",
+            "twitter:url": "https://ravendb.net/articles/a-lean-nosql-database-for-2020"
+        }
 	}
 ]
