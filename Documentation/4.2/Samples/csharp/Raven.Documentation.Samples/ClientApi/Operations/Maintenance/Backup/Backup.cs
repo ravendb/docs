@@ -34,14 +34,14 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 {
                     LocalSettings = new LocalSettings
                     {
-                        //Backup files local path
+                        //Local path for storing the backup
                         FolderPath = @"E:\RavenBackups"
                     },
 
                     //Full Backup period (Cron expression for a 3-hours period)
                     FullBackupFrequency = "0 */3 * * *",
 
-                    //Type can be Backup or Snapshot
+                    //Set backup type to Logical-Backup
                     BackupType = BackupType.Backup,
 
                     //Task Name
@@ -64,14 +64,14 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 {
                     LocalSettings = new LocalSettings
                     {
-                        //Backup files local path
+                        //Local path for storing the backup
                         FolderPath = @"E:\RavenBackups"
                     },
 
                     //Full Backup period (Cron expression for a 3-hours period)
                     FullBackupFrequency = "0 */3 * * *",
 
-                    //Type can be Backup or Snapshot
+                    //Set backup type to Logical-Backup
                     BackupType = BackupType.Backup,
 
                     //Task Name
@@ -96,17 +96,17 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                     },
 
                     #region backup_type_snapshot
-                    //Type can be Backup or Snapshot
+                    //Set backup type to Snapshot
                     BackupType = BackupType.Snapshot,
                     #endregion
 
                     #region backup_full_backup
-                    //Full Backup period (Cron expression for a 6-hours period)
+                    //A full-backup will run every 6-hours (Cron expression)
                     FullBackupFrequency = "0 */6 * * *",
                     #endregion
 
                     #region backup_incremental_backup
-                    //Cron expression: set incremental backup period ("*/20 * * * *" is a 20-minutes period)
+                    //An incremental-backup will run every 20 minutes (Cron expression)
                     IncrementalBackupFrequency = "*/20 * * * *",
                     #endregion
 
@@ -144,6 +144,25 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                         AccountKey = "key"
                     },
 
+                    //Amazon S3 bucket settings.
+                    S3Settings = new S3Settings
+                    {
+                        AwsAccessKey = "your access key here",
+                        AwsSecretKey = "your secret key here",
+                        AwsRegionName = "OPTIONAL",
+                        BucketName = "john-bucket"
+                    },
+
+                    //Amazon Glacier settings.
+                    GlacierSettings = new GlacierSettings
+                    {
+                        AwsAccessKey = "your access key here",
+                        AwsSecretKey = "your secret key here",
+                        AwsRegionName = "OPTIONAL",
+                        VaultName = "john-glacier",
+                        RemoteFolderName = "john/backups"
+                    },
+
                     //Google Cloud Backup settings
                     GoogleCloudSettings = new GoogleCloudSettings
                     {
@@ -151,11 +170,11 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                         RemoteFolderName = "BackupFolder",
                         GoogleCredentialsJson = "GoogleCredentialsJson"
                     }
+
                 };
                 var operation = new UpdatePeriodicBackupOperation(config);
                 var result = await docStore.Maintenance.SendAsync(operation);
                 #endregion
-            }
 
             using (var docStore = new DocumentStore
             {
@@ -189,15 +208,16 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                     }
                 };
                 #region initiate_immediate_backup_execution
+                //Create a new backup task
                 var operation = new UpdatePeriodicBackupOperation(config);
                 var result = await docStore.Maintenance.SendAsync(operation);
 
-                //run a backup task immediately
+                //Run the backup task immediately
                 await docStore.Maintenance.SendAsync(new StartBackupOperation(true, result.TaskId));
-                #endregion
+                    #endregion
 
                 #region get_backup_execution_results
-                //Provide GetPeriodicBackupStatusOperation with the task ID returned by RavenDB  
+                //Pass the the ongoing backup task ID to GetPeriodicBackupStatusOperation  
                 var backupStatus = new GetPeriodicBackupStatusOperation(result.TaskId);
                 #endregion
             }
@@ -232,17 +252,17 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 #region restore_last_file_name_to_restore
                 //Last incremental backup file to restore from
                 restoreConfiguration.LastFileNameToRestore = @"2018-12-26-12-00.ravendb-incremental-backup";
-                #endregion
+                    #endregion
 
                 #region restore_to_specific__data_directory
-                //Restore to a pre-chosen folder
+                //Restore to the specified directory path
                 var dataPath = @"C:\Users\RavenDB\backups\2018-12-26-16-17.ravendb-Products-A-backup\restoredDatabaseLocation";
                 restoreConfiguration.DataDirectory = dataPath;
                 #endregion
 
                 #region restore_disable_ongoing_tasks_true
                 //Do or do not run ongoing tasks after restoration.
-                //Default setting is FALSE, to allow tasks' execution when backup is restored.
+                //Default setting is FALSE, to allow tasks' execution when the backup is restored.
                 restoreConfiguration.DisableOngoingTasks = true;
                 #endregion
             }
@@ -271,9 +291,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
             }.Initialize())
             {
                 #region restore_encrypted_database
-                // restore encrypted database
+                //Restore an encrypted database from an encrypted snapshot
 
-                // restore configuration
                 var restoreConfiguration = new RestoreBackupConfiguration();
 
                 //New database name
@@ -283,6 +302,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 var backupPath = @"C:\Users\RavenDB\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
                 restoreConfiguration.BackupLocation = backupPath;
 
+                //Specify the key that was used to encrypt the backup file
                 restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
 
                 var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);

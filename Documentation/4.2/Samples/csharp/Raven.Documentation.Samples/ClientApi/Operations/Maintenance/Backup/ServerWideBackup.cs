@@ -24,26 +24,18 @@ namespace SlowTests.Server.Documents.PeriodicBackup
                         FolderPath = "localFolderPath"
                     },
 
-                    //Microsoft Azure settings.
-                    AzureSettings = new AzureSettings
-                    {
-                        AccountKey = "Azure Account Key",
-                        AccountName = "Azure Account Name",
-                        RemoteFolderName = "john/backups"
-                    },
-
                     //FTP settings
                     FtpSettings = new FtpSettings
                     {
                         Url = "ftps://localhost/john/backups"
                     },
 
-                    //Google Cloud Backup settings
-                    GoogleCloudSettings = new GoogleCloudSettings
+                    //Microsoft Azure settings.
+                    AzureSettings = new AzureSettings
                     {
-                        BucketName = "Google Cloud Bucket",
-                        RemoteFolderName = "BackupFolder",
-                        GoogleCredentialsJson = "GoogleCredentialsJson"
+                        AccountKey = "Azure Account Key",
+                        AccountName = "Azure Account Name",
+                        RemoteFolderName = "john/backups"
                     },
 
                     //Amazon S3 bucket settings.
@@ -65,6 +57,14 @@ namespace SlowTests.Server.Documents.PeriodicBackup
                         VaultName = "john-glacier",
                         RemoteFolderName = "john/backups"
                     },
+
+                    //Google Cloud Backup settings
+                    GoogleCloudSettings = new GoogleCloudSettings
+                    {
+                        BucketName = "Google Cloud Bucket",
+                        RemoteFolderName = "BackupFolder",
+                        GoogleCredentialsJson = "GoogleCredentialsJson"
+                    }
                 };
 
                 var result = await store.Maintenance.Server.SendAsync(new PutServerWideBackupConfigurationOperation(putConfiguration));

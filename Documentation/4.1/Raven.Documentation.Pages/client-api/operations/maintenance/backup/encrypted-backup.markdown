@@ -83,16 +83,16 @@ Restoring an encrypted snapshot is almost identical to restoring an unencrypted 
 {PANEL/}
 
 ## Related Articles
-**Client Articles**:  
-[Backup Overview](../../../../server/ongoing-tasks/backup-overview)  
-[Backup](../../../../client-api/operations/maintenance/backup/backup)  
-[Restore](../../../../client-api/operations/maintenance/backup/restore)  
+###Client API  
+- [Backup Overview](../../../../server/ongoing-tasks/backup-overview)  
+- [Backup](../../../../client-api/operations/maintenance/backup/backup)  
+- [Restore](../../../../client-api/operations/maintenance/backup/restore)  
 
-**Studio Articles**:  
-[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
-[Create Database from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
+###Studio  
+- [The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
+- [Create Database from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
 
-**Security**:  
-[Database Encryption](../../../../server/security/encryption/database-encryption)  
-[Security Overview](../../../../server/security/overview)  
-[Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  
+###Security  
+- [Database Encryption](../../../../server/security/encryption/database-encryption)  
+- [Security Overview](../../../../server/security/overview)  
+- [Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  

@@ -5,17 +5,19 @@
 
 * Create a backup of your data to secure it or to preserve a copy of it in its current state for future reference.  
 
-* RavenDB's ongoing Backup task is designed to run [continuously](../../../../server/ongoing-tasks/backup-overview#backup--restore-overview).  
-  You can run it as a one-time operation as well, using [export](../../../../client-api/smuggler/what-is-smuggler#export) or executing a backup-task [immediately](../../../../client-api/operations/maintenance/backup/backup#initiate-immediate-backup-execution).  
+* RavenDB's Backup task is an [Ongoing-Task](../../../../studio/database/tasks/ongoing-tasks/general-info) 
+  designed to run periodically on a pre-defined schedule.  
+  You can run it as a one-time operation as well, by using [Export](../../../../client-api/smuggler/what-is-smuggler#export) 
+  or executing a backup-task [immediately](../../../../client-api/operations/maintenance/backup/backup#initiate-immediate-backup-execution).  
 
 * In this page:  
   * [Backup Types](../../../../client-api/operations/maintenance/backup/backup#backup-types)  
-      * [Logical-Backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup)  
+      * [Logical-Backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup)  
       * [Snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot)  
   * [Backup Scope](../../../../client-api/operations/maintenance/backup/backup#backup-scope)  
       * [Full Backup](../../../../client-api/operations/maintenance/backup/backup#full-backup)  
       * [Incremental Backup](../../../../client-api/operations/maintenance/backup/backup#incremental-backup)  
-  * [Backup to Remote Destinations](../../../../client-api/operations/maintenance/backup/backup#backup-to-remote-destinations)  
+  * [Backup to Local and Remote Destinations](../../../../client-api/operations/maintenance/backup/backup#backup-to-local-and-remote-destinations)  
   * [Server-Wide Backup](../../../../client-api/operations/maintenance/backup/backup#server-wide-backup)  
   * [Initiate Immediate Backup Execution](../../../../client-api/operations/maintenance/backup/backup#initiate-immediate-backup-execution)  
   * [Recommended Precautions](../../../../client-api/operations/maintenance/backup/backup#recommended-precautions)  
@@ -30,15 +32,15 @@
 
 * Data is backed-up in [compressed](../../../../server/ongoing-tasks/backup-overview#compression) JSON files.  
 
-* During restoration, RavenDB -  
+* During the restoration, RavenDB -  
    * Re-inserts all data into the database.  
    * Re-indexes the data.  
 
-* Restoration Time is therefore **slower** than that required when restoring a Snapshot.  
+* Restoration Time is, therefore, **slower** than that required when restoring a Snapshot.  
 
-* Backup size is **significantly smaller** than that of a Snapshot.
+* Backup file size is **significantly smaller** than that of a Snapshot.
 
-* Code Sample:
+* The following code sample defines a full-backup task that would be executed every 3 hours:  
   {CODE logical_full_backup_every_3_hours@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
   Note the usage of [Cron scheduling](https://en.wikipedia.org/wiki/Cron) when setting backup frequency.  
 
@@ -46,12 +48,11 @@
 
 ####Snapshot
 
-* **Snapshot** backups are available for **Enterprise subscribers only**.  
-    A SnapShot is a compressed binary duplication of the [database and journals](../../../../server/storage/directory-structure#storage--directory-structure) file structure at a given point-in-time.  
-
+* A SnapShot is a compressed binary duplication of the [database and journals](../../../../server/storage/directory-structure#storage--directory-structure) file structure at a given point-in-time.  
+  Snapshot-backups are available only for **Enterprise subscribers**.  
 * During restoration -
-   * Re-indexing is not required.  
    * Re-inserting data into the database is not required.  
+   * Re-indexing is not required.  
 
 * Restoration is typically **faster** than that of a logical backup.  
 
@@ -64,13 +65,13 @@
 
 ####Basic Comparison Between a Logical-Backup and a Snapshot:
 
-  | Backup Type | Stored Format | Restoration speed | Task characteristics | Size
-  | ------ | ------ | ------ | ------ |
-  | Snapshot | Compressed Binary Image | Fast | Ongoing Background Task | Larger than logical-backup's
-  | Logical backup |  Compressed Textual Data | Slow | Ongoing Background Task | Smaller than Snapshot's
+  | Backup Type | Stored Format | Restoration speed | Size
+  | ------ | ------ | ------ |
+  | Snapshot | Compressed Binary Image | Fast | Larger than a logical-backup
+  | Logical backup |  Compressed Textual Data | Slow | Smaller than a Snapshot
 
 {NOTE: Make sure your server has access to the local backup path.}
-Verify that RavenDB is allowed to store backup files in the path set in `LocalSettings.FolderPath`.
+Verify that RavenDB is allowed to store files in the path set in `LocalSettings.FolderPath`.
 {NOTE/}
 
 
@@ -81,56 +82,70 @@ Verify that RavenDB is allowed to store backup files in the path set in `LocalSe
 
 As described in [the overview](../../../../server/ongoing-tasks/backup-overview#backing-up-and-restoring-a-database), a backup task can create **full** and **incremental** backups.  
 
-* Both backup operations add a single new backup file to the backup folder each time they run. leaving existing backup files untouched.  
-* Both are operated by an **ongoing task**.  
+* A Backup Task can be defined to create either a full data backup or an incremental backup.  
+  In both cases, the backup task adds a single new backup file to the backup folder each time it runs,
+  leaving the existing backup files untouched.  
 
-####Full Backup
+---
 
-* There are no preliminary conditions to creating a full backup. Any node can perform this task.  
+####Full-Backup
 
-* To run a full backup, set `FullBackupFrequency`.
+
+* **File Format**  
+  A full-backup is a **compressed JSON file** if it is a logical 
+  backup, or a **compressed binary file** if it is a snapshot.  
+
+* **Task Ownership**  
+  There are no preliminary conditions for creating a full-backup. 
+  Any node can perform this task.  
+
+* **To run a full-backup**  
+  Set `FullBackupFrequency`.
   {CODE backup_full_backup@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
 ---
 
-####Incremental Backup
+####Incremental-Backup
 
-* An incremental-backup file is **always in JSON format**. 
-  It is so even when the full backup it supplements is a binary snapshot.  
-* Incremental Backup ownership
-   * An incremental backup can be created only by the node that currently owns the backup task.  
-   * The ownership is granted dynamically by the cluster.  
-   * A node can run the incremental backup task, only after creating a full backup at least once.  
+* **File Format**  
+  An incremental-backup file is **always in JSON format**. 
+  It is so even when the full-backup it supplements is a binary snapshot.  
 
-* To run an incremental backup, set `IncrementalBackupFrequency`.
+* **Task Ownership**  
+  The ownership of an incremental-backup task is granted dynamically by the cluster.  
+  An incremental-backup can be executed only by the same node that currently owns the backup task.  
+  A node can run an incremental-backup, only after running full-backup at least once.  
+
+* **To run an incremental-backup**  
+  Set `IncrementalBackupFrequency`.
   {CODE backup_incremental_backup@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
 {PANEL/}
 
-{PANEL: Backup to Remote Destinations}
+{PANEL: Backup to Local and Remote Destinations}
 
-* Backups can be made locally, as well as to a set of remote locations including -  
+* Backups can be made **locally**, as well as to a set of **remote locations** including -  
    * A network path
    * An FTP/SFTP target
-   * Amazon S3 
    * Azure Storage 
+   * Amazon S3 
    * Amazon Glacier 
    * Google Cloud
 
-* When setting remote destination/s, RavenDB will store the data locally first and then transfer the data 
-  to the remote destination/s from that local storage.  
-   * If a local folder is not included in your destinations list, RavenDB would store the data in a temporary local 
-     folder and remove it when the transfer is complete.  
-   * If a local folder **is** defined in your destinations list, it would also serve as RavenDB's intermediate local storage 
-     and the data will not be removed when the transfer is complete.  
+* RavenDB will store data in a local folder first, and transfer it to the remote 
+  destination from the local one.  
+   * If a local folder hasn't been specified, RavenDB will use the system's **temp** 
+     folder as temporary storage and delete the local files when the transfer ends.  
+   * If a local folder **has** been specified, RavenDB will use it both for the transfer 
+     and as its permanent local backup location.  
 
-* Remote Backup Destinations Code Sample:
+* Local and Remote Destinations Settings Code Sample:  
   {CODE backup_remote_destinations@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
  
  {INFO: Tip}
-    You can change your Access Management in Amazon S3 so the user doing backup don't have full access, 
-    read more [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_access-management.html).   
-    for example:
+    Use AWS [IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_access-management.html) (Identity and Access Management) 
+    to restrict users access while they create backups.  
+    E.g. -  
     {CODE-BLOCK:json}
         {
             "Version": "2012-10-17",
@@ -159,9 +174,9 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
 
 {PANEL: Server-Wide Backup}
 
-You can create a Server-Wide Backup task to back-up all the databases in your cluster at a scheduled time.
+You can create a Server-Wide Backup task to back-up **all the databases in your cluster** at a scheduled time.
 
-* Backups can be made locally, as well as to a [set of remote locations](../../../../client-api/operations/maintenance/backup/backup#backup-to-remote-destinations).  
+* Backups can be made locally, as well as to a [set of remote locations](../../../../client-api/operations/maintenance/backup/backup#backup-to-local-and-remote-destinations).  
 
 * Server-wide Backup Code Sample:
   {CODE server_wide_backup_configuration@ClientApi\Operations\Maintenance\Backup\ServerWideBackup.cs /}
@@ -170,7 +185,8 @@ You can create a Server-Wide Backup task to back-up all the databases in your cl
 
 {PANEL: Initiate Immediate Backup Execution}
 
-The Backup task [runs continuously](../../../../server/ongoing-tasks/backup-overview#backup--restore-overview) as an ongoing task, but you can also operate the task immediately if you wish to.  
+The Backup task is [executed periodically](../../../../server/ongoing-tasks/backup-overview#backup--restore-overview) on its predefined schedule.  
+If needed, it can also be executed immediately.  
 
 * To execute an existing backup task immediately, use the `StartBackupOperation` method.  
    {CODE initiate_immediate_backup_execution@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
@@ -182,14 +198,14 @@ The Backup task [runs continuously](../../../../server/ongoing-tasks/backup-over
     
         | Parameter | Type | Functionality |
         | ------ | ------ | ------ |
-        | isFullBackup | bool | true: full backup <br> false: incremental backup |
-        | taskId |  long | The task ID returned by RavenDB |
+        | isFullBackup | bool | true: full-backup <br> false: incremental-backup |
+        | taskId |  long | The existing backup task ID |
 
 
 * To verify the execution results, use the `GetPeriodicBackupStatusOperation` method.  
   {CODE get_backup_execution_results@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
    * Return Value:  
-     The status structure that **GetPeriodicBackupStatusOperation** returns, is filled with backup parameters you previously configured and with the execution results.  
+     The **PeriodicBackupStatus** object returned from **GetPeriodicBackupStatusOperation** is filled with the previously configured backup parameters and with the execution results.  
      {CODE periodic_backup_status@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 {PANEL/}
 
@@ -201,35 +217,38 @@ The Backup task [runs continuously](../../../../server/ongoing-tasks/backup-over
    * A reliable point-in-time freeze of backed up data.  
    * An ACIDity of backed-up data, to keep its independence during restoration.  
      
-* **Regularly remove backup files**.  
-  Note that RavenDB does **not** automatically remove backup files. As they continue to aggregate, it is important that you take care of their regular removal.  
-  You can use services like crontab (a linux scheduling procedure) to create an old-backups-removal routine.  
+* **Remove old backup files regularly**.  
+  RavenDB does **not** remove old backup files automatically. 
+  As these files continue to aggregate, it is important that you take care of their regular removal.  
+  You can use services like crontab (a Linux scheduling procedure) to create an old-backups-removal routine.  
 
-* **Locate backup files in a location other than your database's**.  
+* **Store backup files in a location other than your database's**.  
   Note that backup files are always stored in a local folder first (even when the final backup destination is remote).  
   Make sure that this local folder is not where your database is stored, as a precaution to keep vacant database storage space.  
      
 {WARNING/}
 {PANEL/}
 
- 
-## Related Articles
+## Related Articles  
+###Server  
+- [Backup Overview](../../../../server/ongoing-tasks/backup-overview)
 
-**Studio Articles**:   
-[Create a Database : From Backup](../../../../studio/server/databases/create-new-database/from-backup)   
-[Create a Database : General Flow](../../../../studio/server/databases/create-new-database/general-flow)        
-[Create a Database : Encrypted](../../../../studio/server/databases/create-new-database/encrypted)      
-[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)    
+###Client API  
+- [Restore](../../../../client-api/operations/maintenance/backup/restore)  
+- [Encrypted-Backup : Create & Restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)  
+- [Backup FAQ](../../../../client-api/operations/maintenance/backup/faq)  
+- [What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)  
 
-**Client Articles**:  
-[Restore](../../../../client-api/operations/maintenance/backup/restore)   
-[Operations: How to Restore a Database from Backup](../../../../client-api/operations/server-wide/restore-backup)    
-[What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)  
-[Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)   
+###Studio  
+- [The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
+- [Create Database: from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
+- [Create a Database: General Flow](../../../../studio/server/databases/create-new-database/general-flow)  
+- [Create a Database: Encrypted](../../../../studio/server/databases/create-new-database/encrypted)  
 
-**Server Articles**:  
-[Backup Overview](../../../../server/ongoing-tasks/backup-overview)
+###Security  
+- [Database Encryption](../../../../server/security/encryption/database-encryption)  
+- [Security Overview](../../../../server/security/overview)  
+- [Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  
 
-**Migration Articles**:  
-[Migration](../../../../migration/server/data-migration)   
-
+###Migration  
+- [Migration](../../../../migration/server/data-migration)   
