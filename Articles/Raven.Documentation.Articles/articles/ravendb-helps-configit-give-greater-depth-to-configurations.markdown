@@ -48,7 +48,7 @@ As Configit continued to expand, so did the scale and the scope of their data. T
 
 Some of the catalogs their software was supporting had up to 100,000 components and products inside.
 
-Documents for configurations for these products expanded to tens of thousands of lines. This put functionality and performance into play. RavenDB needed to store and move documents with huge amounts of information and they had to do it while [continuing to meet high-performance standards](https://ravendb.net/whyravendb/high-performance).
+Documents for configurations for these products expanded to tens of thousands of lines. This put functionality and performance into play. RavenDB needed to store and move documents with huge amounts of information and they had to do it while [continuing to meet high-performance standards](https://ravendb.net/why-ravendb/high-performance).
 
 As Configit upgraded from RavenDB 3.0 to RavenDB 4.2, which is over 10 times faster, they were able to meet their functionality and performance needs.
 
