@@ -24,99 +24,143 @@
 
 {PANEL: Why use Counters?}
 
-* **Convenient counting mechanism**  
-Counters are very easy to manage, using simple API methods or through the Studio.  
-E.g. Use counters when you want to -  
-  - Keep track of the number of times a document has been viewed or rated.  
-  - Count how many visitors from certain countries or regions read a document.  
-  - Continuously record the number of visitors on an event page.  
-  - Avoid having to update the whole document for just a numeric value change.  
-  - Have a need for a high-throughput counter (also see **Distributed Values** below).  
+####Convenient Counting Mechanism
 
-* **Distributed Values**  
+Counters are very easy to manage, using simple API methods or through the Studio.  
+
+E.g. Use counters when you want to -  
+
+- Keep track of the number of times a document has been viewed or rated.  
+- Count how many visitors from certain countries or regions read a document.  
+- Continuously record the number of visitors on an event page.  
+- Avoid having to update the whole document for just a numeric value change.  
+- Have a need for a high-throughput counter (also see **Distributed Values** below).  
+
+---
+
+####Distributed Values
+
 A Counter's value is [distributed between cluster nodes](../../../client-api/session/counters/counters-in-clusters).  
 Among the advantages of this:  
 
- * The cluster **remains available** even when nodes crash.  
- * Any node can provide or modify a Counter's value immediately, without checking or coordinating this with other nodes.  
+* The cluster **remains available** even when nodes crash.  
+* Any node can provide or modify a Counter's value immediately, without checking or coordinating this with other nodes.  
 
-* **High performance, Low resources**  
+---
+
+####High Performance, Low Resources
+
 A document includes the Counter's _name_, while the Counter's actual _value_ is kept in a separate location.  
 Modifying a Counter's value doesn't require the modification of the document itself.  
 This results in a performant and uncostly operation.
 
-* **High-frequency counting**  
+---
+
+####High-Frequency Counting
+
 Counters are especially useful when a very large number of counting operations is required,  
 because of their speed and low resources usage.  
-For example:  
-  - Use Counters for an online election page, to continuously update a Number-Of-Votes Counter for each candidate.  
-  - Continuously update Counters with the number of visitors in different sections of a big online store.  
+
+E.g. Use Counters - 
+
+- For an online election page, to continuously update a Number-Of-Votes Counter for each candidate.  
+- To continuously update Counters with the number of visitors in different sections of a big online store.  
+
 {PANEL/}
 
 {PANEL: Overview}
 
-* **Design**  
-  A document's metadata contains only the ***Counters' names-list*** for this document.  
-  ***Counter Values*** are not kept in the document's metadata, but in a separate location.  
-  * Therefore, changes like adding a new counter or deleting an existing counter trigger a document change,  
-    while simply modifying the Counter Value does not.  
+#### Design
 
-* **Cumulative Counter Actions**  
-   - Counter value-modification actions are cumulative, the order in which they are executed doesn't matter.  
-     E.g., It doesn't matter if a Counter has been incremented by 2 and then by 7, or by 7 first and then by 2.  
-   - When a Counter is deleted, the sequence of Counter actions becomes non-cumulative and may require [special attention](../../../client-api/session/counters/counters-in-clusters#concurrent-delete-and-increment).  
+A document's metadata contains only the ***Counters' names-list*** for this document.  
+***Counter Values*** are not kept in the document's metadata, but in a separate location.  
 
-* **Counters and conflicts**  
-  * Counter actions (for either name or value) do not cause conflicts.  
-      - Counter actions can be executed concurrently or in any order, without causing a conflict.  
-      - You can successfully modify Counters while their document is being modified by a different client.  
-  * Counters actions can still be performed when their related documents are in a conflicted state.  
-
-* **Counters cost**  
-  * Counters are designated to lower the cost of counting, but do come with a price.  
-     * **All the names** of a document's Counters are added to its content, increasing its size.  
-     * **Counter values** occupy storage space.  
-  * Be aware that the negligible amount of resources required by a few Counters, 
-    may become significant when there are many.  
-    A single document with thousands of Counters is probably an indication of a modeling mistake, 
-    for example.
+Therefore, changes like adding a new counter or deleting an existing counter trigger a document change,  
+while simply modifying the Counter Value does not.  
 
 ---
 
-* **Counter Naming Convention**  
-    * Valid characters: All visible characters, [including Unicode symbols](../../../studio/database/documents/document-view/additional-features/counters#section)  
-    * Length: Up to 512 bytes  
-    * Encoding: UTF-8  
+####Cumulative Counter Actions
 
-* **Counter Value**  
-    * Valid range: Signed 64-bit integer (-9223372036854775808 to 9223372036854775807)  
-    * Only integer additions are supported (no floats or other mathematical operations).
+- Counter value-modification actions are cumulative, the order in which they are executed doesn't matter.  
+  E.g., It doesn't matter if a Counter has been incremented by 2 and then by 7, or by 7 first and then by 2.  
+- When a Counter is deleted, the sequence of Counter actions becomes non-cumulative and may require 
+  [special attention](../../../client-api/session/counters/counters-in-clusters#concurrent-delete-and-increment).  
 
-* **Number of Counters per document**  
-    * RavenDB doesn't limit the number of Counters you can create.  
-    * Note that the Counter names are stored in the document metadata and impact the size of the document.  
+---
 
-* **`HasCounters` Flag**  
-    * When a Counter is added to a document, RavenDB automatically sets a `HasCounters` Flag in the document's metadata.  
-    * When all Counters are removed from a document, the server automatically removes this flag.  
+####Counters and Conflicts
+
+Counter actions (for either name or value) **do not cause conflicts**.  
+
+- Counter actions can be executed concurrently or in any order, without causing a conflict.  
+- You can successfully modify Counters while their document is being modified by a different client.  
+
+{NOTE: }
+Counters actions **can still be performed** when their related documents are in a conflicted state.  
+{NOTE/}
+
+---
+
+####Counters Cost
+
+Counters are designated to lower the cost of counting, but do come with a price.  
+
+* **All the names** of a document's Counters are added to its content, increasing its size.  
+* **Counter values** occupy storage space.  
+
+{NOTE: }
+Be aware that the negligible amount of resources required by a few Counters, 
+may become significant when there are many.  
+A single document with thousands of Counters is probably an indication of a modeling mistake, 
+for example.  
+{NOTE/}
+
+---
+
+####Counters Naming Convention
+
+* Valid characters: All visible characters, [including Unicode symbols](../../../studio/database/documents/document-view/additional-features/counters#section)  
+* Length: Up to 512 bytes  
+* Encoding: UTF-8  
+
+---
+
+####Counter Values
+
+* Valid range: Signed 64-bit integer (-9223372036854775808 to 9223372036854775807)  
+* Only integer additions are supported (no floats or other mathematical operations).
+
+---
+
+####Number of Counters Per Document
+
+RavenDB doesn't limit the number of Counters you can create.  
+
+{NOTE: }
+Note that the Counter names are stored in the document metadata and [do impact the size of the document](../../../client-api/session/counters/overview#counters-cost).  
+{NOTE/}
+
+---
+
+####The `HasCounters` Flag
+
+When a Counter is added to a document, RavenDB automatically sets a `HasCounters` Flag in the document's metadata.  
+When all Counters are removed from a document, the server automatically removes this flag.  
+
 {PANEL/}
 
 {PANEL: Managing Counters}
 
-###Enabling the Counters Feature
+####Enabling the Counters Feature
 
-* Counters management is currently an **experimental feature** of RavenDB, and is disabled by default.  
-
-*  To enable this feature, follow these steps:  
-  - Open the RavenDB server folder, e.g. `C:\Users\Dave\Downloads\RavenDB-4.1.1-windows-x64\Server`  
-  - Open settings.json for editing.  
-  - Enable the Experimental Features -  
-    Verify that the json file contains the following line: **"Features.Availability": "Experimental"**  
-  - Save settings.json, and restart RavenDB Server.  
+Counters management is an experimental feature and is disabled by default.  
+To activate it you need to edit RavenDB's [configuration file](../../../server/configuration/configuration-options#json) 
+and enable [experimental features](../../../server/configuration/core-configuration#features.availability).  
 
 ---
 
-###Counter Methods and the `CountersFor` object
+####Counter Methods and the `CountersFor` Object
 
 Managing Counters is performed using the `CountersFor` Session object.  
 
@@ -149,7 +193,7 @@ Managing Counters is performed using the `CountersFor` Session object.
 
 ---
 
-### Managing Counters using `Operations`
+####Managing Counters Using `Operations`
 
 * In addition to working with the high-level Session, you can manage Counters using the low-level [Operations](../../../client-api/operations/what-are-operations).  
 

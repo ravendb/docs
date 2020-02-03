@@ -128,7 +128,7 @@ When Delete **is** executed, the order of execution **does** matter.
 
 ####In a Single-Server System
 
-Different clients may simultaneously request to Delete and Increment the same Counter.  
+Different ***clients*** may simultaneously request to Delete and Increment the same Counter.  
 
 * The result depends upon the server's **order of execution**.  
    * If Delete is executed _last_, the Counter will be permanently deleted.  
@@ -140,9 +140,9 @@ Different clients may simultaneously request to Delete and Increment the same Co
 
 Different ***nodes*** may concurrently Delete and Increment the same Counter.  
 
-* The outcome depends upon the order of ***replication***.  
-   * If the node that deleted the counter replicates the change _last_, the Counter will be permanently deleted.  
-   * If the node that incremented the counter replicates the change _last_, the Counter will be deleted but then re-created with the value of the Increment action as its initial value.  
+* It is considered a conflict, that we resolve in favor of the **increment** action.  
+* The incrementing node will simply ignore the delete action.  
+* The deleting node will delete the Counter, but re-insert it upon the incoming replication.  
 
 {PANEL/}
 
