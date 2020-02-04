@@ -1,4 +1,4 @@
-# Counters And Other Features
+# Counters and Other Features
 ---
 
 {NOTE: }

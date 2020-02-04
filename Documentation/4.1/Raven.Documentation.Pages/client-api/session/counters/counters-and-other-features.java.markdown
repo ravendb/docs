@@ -43,8 +43,13 @@ Create queries **using code**, or send the server **raw queries** for execution.
 
 * Either way, you can query Counters **by name** but **not by value**.  
   This is because queries are generally [based on indexes](../../../start/getting-started#example-iii---querying), and Counter values are [not indexed](../../../client-api/session/counters/counters-and-other-features#counters-and-indexing).  
-* Counter values **can** be [projected](../../../../indexes/querying/projections) from query results, as demonstrated in the following examples.  
+* Counter values **can** be [projected](../../../indexes/querying/projections) from query results, as demonstrated in the following examples.  
   This way a client can get Counter values from a query without downloading whole documents.  
+
+* Use [Session.Query](../../../client-api/session/querying/how-to-query#session.query) to code queries yourself.  
+   * **Returned Counter Value**: **Accumulated**  
+     A Counter's value is returned as a single sum, with no specification of the Counter's value on each node.
+     {CODE counters_region_query@ClientApi\Session\Counters\Counters.cs /}
 
 * Use [rawQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
    * You can use the `counter` method.  

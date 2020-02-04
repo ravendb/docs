@@ -15,7 +15,6 @@
   * [Why use Counters?](../../../client-api/session/counters/overview#why-use-counters?)  
   * [Overview](../../../client-api/session/counters/overview#overview)  
   * [Managing Counters](../../../client-api/session/counters/overview#managing-counters)  
-      * [Enabling the Counters Feature](../../../client-api/session/counters/overview#enabling-the-counters-feature)  
       * [Counter Methods and the `CountersFor` object](../../../client-api/session/counters/overview#counter-methods-and-the--object)  
       * [Managing Counters using `Operations`](../../../client-api/session/counters/overview#managing-counters-using-)
 {NOTE/}
@@ -91,13 +90,15 @@ while simply modifying the Counter Value does not.
 
 ####Counters and Conflicts
 
-Counter actions (for either name or value) **do not cause conflicts**.  
+Counter actions (for either name or value) almost never cause conflicts.  
+The only exception to this is [concurrent `Delete` and `Increment`](../../../client-api/session/counters/counters-in-clusters#concurrent-delete-and-increment) 
+actions by multiple cluster nodes.  
 
 - Counter actions can be executed concurrently or in any order, without causing a conflict.  
 - You can successfully modify Counters while their document is being modified by a different client.  
 
 {NOTE: }
-Counters actions **can still be performed** when their related documents are in a conflicted state.  
+Counter actions **can still be performed** when their related documents are in a conflicted state.  
 {NOTE/}
 
 ---
@@ -152,14 +153,6 @@ When all Counters are removed from a document, the server automatically removes 
 
 {PANEL: Managing Counters}
 
-####Enabling the Counters Feature
-
-Counters management is an experimental feature and is disabled by default.  
-To activate it you need to edit RavenDB's [configuration file](../../../server/configuration/configuration-options#json) 
-and enable [experimental features](../../../server/configuration/core-configuration#features.availability).  
-
----
-
 ####Counter Methods and the `CountersFor` Object
 
 Managing Counters is performed using the `CountersFor` Session object.  
@@ -187,8 +180,8 @@ Managing Counters is performed using the `CountersFor` Session object.
   You can Use `CountersFor` by **explicitly passing it a document ID** (without pre-loading the document).  
   You can also use `CountersFor` by passing it **the document object**.  
   {CODE-TABS}
-  {CODE-TAB:java:Pass-CountersFor-Document-ID counters_region_CountersFor_without_document_load@ClientApi\Session\Counters\Counters.java /}
-  {CODE-TAB:java:Pass-CountersFor-Document-Object counters_region_CountersFor_with_document_load@ClientApi\Session\Counters\Counters.java /}
+  {CODE-TAB:csharp:Pass-CountersFor-Document-ID counters_region_CountersFor_without_document_load@ClientApi\Session\Counters\Counters.cs /}
+  {CODE-TAB:csharp:Pass-CountersFor-Document-Object counters_region_CountersFor_with_document_load@ClientApi\Session\Counters\Counters.cs /}
   {CODE-TABS/}
 
 ---
