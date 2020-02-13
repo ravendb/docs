@@ -1326,5 +1326,63 @@
             "twitter:description": "On the Cloud, there is a hidden cost to a new version of #software: Bloat. For 2020 and beyond @RavenDB promises to keep its #NoSQL #Database lean and mean.",
             "twitter:url": "https://ravendb.net/articles/a-lean-nosql-database-for-2020"
         }
+    },
+    {
+        "Path": "connecting-ravendb-nosql-database-to-your-application.markdown",
+        "Name": "Connecting RavenDB NoSQL Database to Your Application | RavenDB",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Connecting RavenDB NoSQL Database to Your Application",
+            "likeSection": "yes",
+            "url": "connecting-ravendb-nosql-database-to-your-application",
+            "publishedAt": "2020-02-12",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "RavenDB Core Developer Michael Yarichuk connects a RavenDB Document Database to your application, performing CRUD operations to show you whats under the hood.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Connecting RavenDB NoSQL Database to Your Application",
+            "og:description": "RavenDB Core Developer Michael Yarichuk connects a RavenDB Document Database to your application, performing CRUD operations to show you whats under the hood.",
+            "og:url": "connecting-ravendb-nosql-database-to-your-application",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/connecting-ravendb-nosql-database-to-your-application&fileName=connecting-ravendb-nosql-database-to-your-application.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Connecting RavenDB NoSQL Database to Your Application",
+            "twitter:description": "RavenDB Core Developer Michael Yarichuk connects a RavenDB Document Database to your application, performing CRUD operations to show you whats under the hood.",
+            "twitter:url": "https://ravendb.net/articles/connecting-ravendb-nosql-database-to-your-application"
+        }
+    },
+    {
+        "Path": "nosql-databases-navigating-the-new-frontier-of-information-in-big-data-and-iot.markdown",
+        "Name": "Navigating the New Frontier of Information: Big Data and IoT | RavenDB",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Navigating the New Frontier of Information: Big Data and IoT",
+            "likeSection": "yes",
+            "url": "nosql-databases-navigating-the-new-frontier-of-information-in-big-data-and-iot",
+            "publishedAt": "2020-02-13",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "What powers Big Data and the Internet of Things are Database systems managing hundreds of thousands of endpoints processing petabytes of data in real-time.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Navigating the New Frontier of Information: Big Data and IoT",
+            "og:description": "What powers Big Data and the Internet of Things are Database systems managing hundreds of thousands of endpoints processing petabytes of data in real-time.",
+            "og:url": "nosql-databases-navigating-the-new-frontier-of-information-in-big-data-and-iot",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-databases-navigating-the-new-frontier-of-information-in-big-data-and-iot&fileName=nosql-databases-navigating-the-new-frontier-of-information-in-big-data-and-iot.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Navigating the New Frontier of Information: Big Data and IoT",
+            "twitter:description": "What powers Big Data and the Internet of Things are Database systems managing hundreds of thousands of endpoints processing petabytes of data in real-time.",
+            "twitter:url": "https://ravendb.net/articles/nosql-databases-navigating-the-new-frontier-of-information-in-big-data-and-iot"
+        }
 	}
 ]
