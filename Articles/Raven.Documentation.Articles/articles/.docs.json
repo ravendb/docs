@@ -1384,5 +1384,34 @@
             "twitter:description": "What powers Big Data and the Internet of Things are Database systems managing hundreds of thousands of endpoints processing petabytes of data in real-time.",
             "twitter:url": "https://ravendb.net/articles/nosql-databases-navigating-the-new-frontier-of-information-in-big-data-and-iot"
         }
+	},
+    {
+        "Path": "codeproject-presents-ravendb-cloud-step-by-step.markdown",
+        "Name": "Spin up a RavenDB Cloud Database | RavenDB",
+        "Mappings": [],
+        "Metadata": {
+            "title": "CodeProject Presents: RavenDB Cloud Step by Step",
+            "likeSection": "yes",
+            "url": "codeproject-presents-ravendb-cloud-step-by-step",
+            "publishedAt": "2020-02-24",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "It takes more time to read on how to spin up a RavenDB Cloud Database than to actually spin it up. Judah Gabriel Hamingo walks you through it on CodeProject.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "CodeProject Presents: RavenDB Cloud Step by Step",
+            "og:description": "It takes more time to read on how to spin up a RavenDB Cloud Database than to actually spin it up. Judah Gabriel Hamingo walks you through it on CodeProject.",
+            "og:url": "codeproject-presents-ravendb-cloud-step-by-step",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/codeproject-presents-ravendb-cloud-step-by-step&fileName=codeproject-presents-ravendb-cloud-step-by-step.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "CodeProject Presents: RavenDB Cloud Step by Step",
+            "twitter:description": "It takes more time to read on how to spin up a RavenDB Cloud Database than to actually spin it up. Judah Gabriel Hamingo walks you through it on CodeProject.",
+            "twitter:url": "https://ravendb.net/articles/codeproject-presents-ravendb-cloud-step-by-step"
+        }
 	}
 ]
