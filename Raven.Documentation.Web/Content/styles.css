@@ -11,12 +11,53 @@
   font-style: normal;
 }
 .dev-controls {
+  z-index: 1;
   display: flex;
   flex-shrink: 1;
   flex-direction: column;
-  background-color: inherit;
   position: fixed;
-  bottom: 100px;
+  bottom: 0;
+  right: 5%;
+  padding: 20px;
+  transition: all .5s ease;
+  background-color: #293038;
+  border: 1px solid #393f47;
+  border-bottom: none;
+}
+.articles-controls .hidden-controls {
+  transform: translateY(160px);
+}
+.hidden-controls {
+  transform: translateY(210px);
+}
+.dev-controls h3 {
+  margin: 0!important;
+  font-size: 21px;
+}
+.dev-controls .flex-horizontal {
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.dev-controls .flex-horizontal button {
+  display: flex;
+  justify-content: center;
+  height: 28px;
+  background: none;
+  border: none;
+  outline: none;
+  margin-right: 0;
+  margin-left: 20px;
+}
+.dev-controls .flex-horizontal button i {
+  width: inherit;
+  height: inherit;
+  font-size: 16px;
+  line-height: 27px;
+  color: #98a6b7;
+}
+.dev-controls hr {
+  margin: 15px 0;
 }
 .dev-controls .btn {
   text-transform: uppercase;

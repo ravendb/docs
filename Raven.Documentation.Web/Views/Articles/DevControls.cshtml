@@ -1,10 +1,30 @@
-﻿<div class="dev-controls padding" style="position: fixed; bottom: 100px; right: 200px;">
-    <h2>Development</h2>
-    <div class="control">
-        <a href="~/articles/generate?key=@ViewBag.ArticleKey" class="btn btn-success">Generate articles</a>
-    </div>
-
-    <div class="control">
-        <a class="btn btn-default" href="/">go to docs</a>
+﻿<div class="articles-controls">
+    <div id="devControls" class="dev-controls hidden-controls">
+        <div class="flex-horizontal">
+            <h3>Development Tools</h3>
+            <button id="hideBtn" class="btn-close hidden"><i class="glyphicon glyphicon-chevron-down" onclick="hideControls()"></i></button>
+            <button id="showBtn" class="btn-show"><i class="glyphicon glyphicon-chevron-up" onclick="showControls()"></i></button>
+        </div>
+        <div class="control">
+            <a href="~/articles/generate?key=@ViewBag.ArticleKey" class="btn btn-success">Generate articles</a>
+        </div>
+        <div class="control">
+            <a class="btn btn-default" href="/">go to docs</a>
+        </div>
     </div>
 </div>
+<script type="text/javascript">
+    var controlsVisibility = document.getElementById("devControls");
+    var hideBtn = document.getElementById("hideBtn");
+    var showBtn = document.getElementById("showBtn");
+    function showControls() {
+        controlsVisibility.classList.remove("hidden-controls");
+        hideBtn.classList.remove("hidden");
+        showBtn.classList.add("hidden");
+    }
+    function hideControls() {
+        controlsVisibility.classList.add("hidden-controls");
+        showBtn.classList.remove("hidden");
+        hideBtn.classList.add("hidden");
+    }
+</script>
