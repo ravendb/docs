@@ -45,17 +45,6 @@ public class Filtering {
 
     //region filtering_7_4
     public static class Orders_ByTotalPrice extends AbstractIndexCreationTask {
-        public static class Result {
-            private double totalPrice;
-
-            public double getTotalPrice() {
-                return totalPrice;
-            }
-
-            public void setTotalPrice(double totalPrice) {
-                this.totalPrice = totalPrice;
-            }
-        }
         public Orders_ByTotalPrice() {
             map = "docs.Orders.Select(order => new {" +
                 "    TotalPrice = Enumerable.Sum(order.Lines, x => ((decimal)((((decimal) x.Quantity) * x.PricePerUnit) * (1M - x.Discount))))" +
@@ -120,9 +109,8 @@ public class Filtering {
             try (IDocumentSession session = store.openSession()) {
                 //region filtering_7_1
                 List<Order> results = session
-                    .query(Orders_ByTotalPrice.Result.class, Orders_ByTotalPrice.class)
+                    .query(Order.class, Orders_ByTotalPrice.class)
                     .whereGreaterThan("TotalPrice", 50)
-                    .ofType(Order.class)
                     .toList();
                 //endregion
             }

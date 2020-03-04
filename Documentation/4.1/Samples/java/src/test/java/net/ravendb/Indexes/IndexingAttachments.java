@@ -61,18 +61,6 @@ public class IndexingAttachments {
 
     //region index
     public static class Employees_ByAttachmentNames extends AbstractIndexCreationTask {
-        public static class Result {
-            private String[] attachmentNames;
-
-            public String[] getAttachmentNames() {
-                return attachmentNames;
-            }
-
-            public void setAttachmentNames(String[] attachmentNames) {
-                this.attachmentNames = attachmentNames;
-            }
-        }
-
         public Employees_ByAttachmentNames() {
             map = "from e in docs.Employees\n" +
                 "let attachments = AttachmentsFor(e)\n" +
@@ -89,8 +77,8 @@ public class IndexingAttachments {
 
             try (IDocumentSession session = store.openSession()) {
                 //region query1
-                //return all employees that have CV attached
-                session.query(Employees_ByAttachmentNames.Result.class, Employees_ByAttachmentNames.class)
+                //return all employees that have an attachment called "cv.pdf"
+                List<Employee> employees = session.query(Employee.class, Employees_ByAttachmentNames.class)
                     .containsAny("attachmentNames", Lists.newArrayList("cv.pdf"))
                     .toList();
                 //endregion

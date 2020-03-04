@@ -42,7 +42,7 @@ namespace Raven.Documentation.Samples.Indexes
             {
                 Map = employees => from e in employees
                                    let attachments = AttachmentsFor(e)
-                                   select new
+                                   select new Result
                                    {
                                        AttachmentNames = attachments.Select(x => x.Name).ToArray()
                                    };
@@ -57,7 +57,7 @@ namespace Raven.Documentation.Samples.Indexes
                 using (var session = store.OpenSession())
                 {
                     #region query1
-                    // return all employees that have CV attached
+                    //return all employees that have an attachment called "cv.pdf"
                     List<Employee> employees = session
                         .Query<Employees_ByAttachmentNames.Result, Employees_ByAttachmentNames>()
                         .Where(x => x.AttachmentNames.Contains("cv.pdf"))
@@ -69,7 +69,7 @@ namespace Raven.Documentation.Samples.Indexes
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region query2
-                    // return all employees that have CV attached
+                    //return all employees that have an attachment called "cv.pdf"
                     List<Employee> employees = await asyncSession
                         .Query<Employees_ByAttachmentNames.Result, Employees_ByAttachmentNames>()
                         .Where(x => x.AttachmentNames.Contains("cv.pdf"))
@@ -81,7 +81,7 @@ namespace Raven.Documentation.Samples.Indexes
                 using (var session = store.OpenSession())
                 {
                     #region query3
-                    // return all employees that have CV attached
+                    //return all employees that have an attachment called "cv.pdf"
                     List<Employee> employees = session
                         .Advanced
                         .DocumentQuery<Employee, Employees_ByAttachmentNames>()

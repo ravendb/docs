@@ -21,36 +21,6 @@ public class FanoutIndexes {
 
     //region fanout_index_def_2
     public static class Product_Sales extends AbstractIndexCreationTask {
-        public static class Result {
-            private String product;
-            private int count;
-            private double total;
-
-            public String getProduct() {
-                return product;
-            }
-
-            public void setProduct(String product) {
-                this.product = product;
-            }
-
-            public int getCount() {
-                return count;
-            }
-
-            public void setCount(int count) {
-                this.count = count;
-            }
-
-            public double getTotal() {
-                return total;
-            }
-
-            public void setTotal(double total) {
-                this.total = total;
-            }
-        }
-
         public Product_Sales() {
             map = "docs.Orders.SelectMany(order => order.Lines, (order, line) => new { " +
                 "    Product = line.Product, " +

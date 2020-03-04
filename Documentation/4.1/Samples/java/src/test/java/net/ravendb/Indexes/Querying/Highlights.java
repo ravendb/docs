@@ -18,7 +18,7 @@ public class Highlights {
 
     //region highlights_1
     public static class BlogPosts_ByContent extends AbstractIndexCreationTask {
-        public static class Result {
+        public static class Projection {
             private String content;
 
             public String getContent() {
@@ -41,27 +41,6 @@ public class Highlights {
 
     //region highlights_7
     public static class BlogPosts_ByCategory_Content extends AbstractIndexCreationTask {
-        public static class Result {
-            private String category;
-            private String content;
-
-            public String getCategory() {
-                return category;
-            }
-
-            public void setCategory(String category) {
-                this.category = category;
-            }
-
-            public String getContent() {
-                return content;
-            }
-
-            public void setContent(String content) {
-                this.content = content;
-            }
-        }
-
         public BlogPosts_ByCategory_Content() {
             map = "docs.Posts.Select(post => new { post.category, post.content })";
 
@@ -110,11 +89,11 @@ public class Highlights {
                 HighlightingOptions highlightingOptions = new HighlightingOptions();
                 highlightingOptions.setPreTags(new String[] { "**" });
                 highlightingOptions.setPostTags(new String[] { "**" });
-                List<BlogPosts_ByContent.Result> results = session
-                    .query(BlogPosts_ByContent.class, BlogPosts_ByContent.class)
+                List<BlogPosts_ByContent.Projection> results = session
+                    .query(BlogPost.class, BlogPosts_ByContent.class)
                     .highlight("content", 128, 1, highlightingOptions, highlightsRef)
                     .search("content", "raven")
-                    .selectFields(BlogPosts_ByContent.Result.class)
+                    .selectFields(BlogPosts_ByContent.Projection.class)
                     .toList();
                 //endregion
             }
@@ -127,9 +106,9 @@ public class Highlights {
                 highlightingOptions.setPreTags(new String[] { "**" });
                 highlightingOptions.setPostTags(new String[] { "**" });
                 highlightingOptions.setGroupKey("category");
-                List<BlogPosts_ByCategory_Content.Result> results = session
+                List<BlogPost> results = session
                     .advanced()
-                    .documentQuery(BlogPosts_ByCategory_Content.Result.class, BlogPosts_ByCategory_Content.class)
+                    .documentQuery(BlogPost.class, BlogPosts_ByCategory_Content.class)
                     .highlight("content", 128, 1, highlightingOptions, highlightsRef)
                     .search("content", "raven")
                     .toList();

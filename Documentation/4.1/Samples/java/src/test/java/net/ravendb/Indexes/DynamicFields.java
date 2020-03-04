@@ -56,27 +56,6 @@ public class DynamicFields {
 
     //region dynamic_fields_2
     public static class Products_ByAttribute extends AbstractIndexCreationTask {
-        public static class Result {
-            private String color;
-            private String size;
-
-            public String getColor() {
-                return color;
-            }
-
-            public void setColor(String color) {
-                this.color = color;
-            }
-
-            public String getSize() {
-                return size;
-            }
-
-            public void setSize(String size) {
-                this.size = size;
-            }
-        }
-
         public Products_ByAttribute() {
             map = "docs.Products.Select(p => new { " +
                 "    _ = p.Attributes.Select(attribute => this.CreateField(attribute.name, attribute.value, false, true)) " +
@@ -90,9 +69,8 @@ public class DynamicFields {
             try (IDocumentSession session = store.openSession()) {
                 //region dynamic_fields_4
                 List<Product> results = session
-                    .query(Products_ByAttribute.Result.class, Products_ByAttribute.class)
+                    .query(Product.class, Products_ByAttribute.class)
                     .whereEquals("color", "red")
-                    .ofType(Product.class)
                     .toList();
                 //endregion
             }
