@@ -4,8 +4,11 @@ using System.Linq;
 using Raven.Client;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
+using Raven.Client.Documents.Operations.Sorters;
+using Raven.Client.Documents.Queries.Sorting;
 using Raven.Client.Documents.Session;
 using Raven.Documentation.Samples.Orders;
+using Sparrow.Json.Parsing;
 
 namespace Raven.Documentation.Samples.Indexes.Querying
 {
@@ -320,6 +323,38 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .ToList();
                     #endregion
                 }
+            }
+
+            using (var documentStore = new DocumentStore())
+            {
+                /*
+                #region custom_1
+                PutSortersOperation(params SorterDefinition[] sortersToAdd)
+                #endregion
+
+                #region custom_2
+                public class SorterDefinition
+                {
+                    public string Name { get; set; }
+                    public string Code { get; set; }
+                }
+                #endregion
+                */
+
+                #region custom_3
+                //Assign the code of your new sorter as a `string`
+                var sorterCode = "<code of custom sorter>";
+
+                //Create one or more `SorterDefinition` objects
+                var customSorterDefinition = new SorterDefinition
+                {
+                    Name = "MySorter",
+                    Code = sorterCode
+                };
+
+                //Send the new sorters to the server
+                documentStore.Maintenance.Send(new PutSortersOperation(customSorterDefinition));
+                #endregion
             }
         }
     }
