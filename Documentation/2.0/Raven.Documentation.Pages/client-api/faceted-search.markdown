@@ -1,10 +1,10 @@
-﻿# Faceted Search
+# Faceted Search
 
 When displaying a large amount of data, often paging is used to make viewing the data manageable. However it's also useful to give some context of the entire data-set and a easy way to drill-down into particular categories. The common approach to doing this is "faceted search", as shown in the image below. __Note__ how the count of each category within the current search is across the top.
 
 ![Facets](images\CNET_faceted_search_2.jpg)
 
-To achieve this in RavenDB, lets say you have a document like this:
+To achieve this in RavenDB, let's say you have a document like this:
 
 {CODE-START:json /}
 { 

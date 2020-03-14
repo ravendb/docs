@@ -1,4 +1,4 @@
-﻿# Plugins
+# Plugins
 
 Under `Raven.Database.Plugins` namespace various interfaces and classes can be found that might be used to extend the database behavior.
 
@@ -17,7 +17,7 @@ Triggers can be divided to four categories:
 
 ### PUT triggers
 
-To create his own trigger, one must inherit from `AbstractPutTrigger` or `AbstractAttachmentPutTrigger`, but before we will do that lets take a look at them more closely.
+To create his own trigger, one must inherit from `AbstractPutTrigger` or `AbstractAttachmentPutTrigger`, but before we will do that let's take a look at them more closely.
 
 {CODE plugins_1@Server\Extending\Plugins\Index.cs /}
 

@@ -1,4 +1,4 @@
-﻿# Bundle: Scripted Index Results
+# Bundle: Scripted Index Results
 
 Scripted Index Results bundle allows you to attach scripts to indexes. Those scripts can operate on the results of the indexing. It opens a lot of opportunities like a modification
 of documents by index calculated values or recursive map/reduce indexes.
@@ -18,7 +18,7 @@ Let us assume that we have the following index:
 
 {CODE index_def@Server\Extending\Bundles\ScriptedIndexResults.cs /}
 
-Now we want to embed the reduced values inside the company document, so lets create the setup document:
+Now we want to embed the reduced values inside the company document, so let's create the setup document:
 
 {CODE sample_setup_doc@Server\Extending\Bundles\ScriptedIndexResults.cs /}
 

@@ -88,14 +88,14 @@ namespace RavenDBTestDriver
                     if (InitializeFromPath(path))
                         return _serverPath;
                 }
-                //If we got here we didn't have ENV:RavenServerTestPath setup for us maybe this is a CI enviroement
+                //If we got here we didn't have ENV:RavenServerTestPath setup for us maybe this is a CI environment
                 path = Environment.GetEnvironmentVariable("Raven_Server_CI_Path");
                 if (string.IsNullOrEmpty(path) == false)
                 {
                     if (InitializeFromPath(path))
                         return _serverPath;
                 }
-                //We couldn't find Raven.Server in either enviroment variables lets look for it in the current directory
+                //We couldn't find Raven.Server in either environment variables let's look for it in the current directory
                 foreach (var file in Directory.GetFiles(Environment.CurrentDirectory, $"{RavenServerName}.exe; {RavenServerName}.dll"))
                 {
                     if (InitializeFromPath(file))

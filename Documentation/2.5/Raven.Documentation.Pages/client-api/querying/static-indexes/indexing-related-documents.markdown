@@ -1,7 +1,7 @@
-﻿# Indexing Related Documents
+# Indexing Related Documents
 
 To extend indexing capabilities and simplify many scenarios, we have introduced the possibility to index related documents. 
-For start, lets consider a simple `Customer - Invoice` scenario where you want to lookup for an `Invoice` by `Customer Name`.
+For start, let's consider a simple `Customer - Invoice` scenario where you want to lookup for an `Invoice` by `Customer Name`.
 
 {CODE indexing_related_documents_1@ClientApi\Querying\StaticIndexes\IndexingRelatedDocuments.cs /}
 
