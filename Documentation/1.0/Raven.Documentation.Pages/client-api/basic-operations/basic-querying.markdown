@@ -1,4 +1,4 @@
-﻿# Basic query support in RavenDB
+# Basic query support in RavenDB
 
 Once data has been stored in RavenDB, we have seen how it can be retrieved by id, updated and deleted. The next useful operation is the ability to query based on some aspect of the documents that have been stored. 
 
@@ -12,7 +12,7 @@ Or, using a different syntax, to find all blog posts that have at least 10 comme
 
 That Just Works(tm) and gives us all the blog posts matching the criteria we have specified.
 
-As usual, lets have a look at the HTTP communication for the first operation:
+As usual, let's have a look at the HTTP communication for the first operation:
 
 	GET /indexes/dynamic/BlogPosts?query=Category:RavenDB&start=0&pageSize=128 HTTP/1.1
 	Accept-Encoding: deflate,gzip

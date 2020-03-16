@@ -1,10 +1,10 @@
-﻿#Boosting
+#Boosting
 
 Another great feature that Lucene engine provides and RavenDB leverages is called `boosting`. This feature gives user the ability to manually tune the relevance level of matching documents when performing a query. 
 
 From the index perspective we can associate with an index entry a boosting factor and the higher value it has, the more relevant term will be. To do this we must use `Boost` extension method from `Raven.Client.Linq.Indexing` namespace.
 
-To illustrate it better, lets jump straight into the example
+To illustrate it better, let's jump straight into the example
 
 {CODE boosting_1@ClientApi\Querying\StaticIndexes\Boosting.cs /}
 

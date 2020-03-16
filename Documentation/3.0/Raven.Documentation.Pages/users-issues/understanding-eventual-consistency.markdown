@@ -21,7 +21,7 @@ So, in RavenDB:
 - At any time you query an index, you will get whatever is already in that index, regardless of the state of the copying that's going on in the background.  This is why sometimes indexes are "stale".
 - If you query without specifying an index, and Raven needs a new index to answer your query, it will start building an index on the fly and return you *some* of those results right away.  It only blocks long enough to give you one page of results.  It then continues building the index in the background so next time you query you will have more data available.
 
-So now lets give an example that shows the down side to this approach.
+So now let's give an example that shows the down side to this approach.
 
 - A sales person goes to a "products list" page that is sorted alphabetically.
 - On the first page, they see that "Apples" aren't currently being sold.

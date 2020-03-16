@@ -102,7 +102,7 @@ as you can see this query will return you a tuple of order & customer.
 
 Due to the functional nature of the API we have the ability to compose queries.
 
-For example lets say we wanted all of the customers born on a certain date and all of the orders placed on that same date. We can define the following
+For example let's say we wanted all of the customers born on a certain date and all of the orders placed on that same date. We can define the following
 
 	let ordersOn (date : DateTime) = 
 		raven { 

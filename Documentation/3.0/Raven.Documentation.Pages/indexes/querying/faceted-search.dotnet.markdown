@@ -5,7 +5,7 @@ When displaying a large amount of data, often paging is used to make viewing the
 ![Facets](images\CNET_faceted_search_2.jpg)
 
 <br />
-To achieve this in RavenDB, lets say you have a document like this:
+To achieve this in RavenDB, let's say you have a document like this:
 
 {CODE camera@Faceted.cs /}
 

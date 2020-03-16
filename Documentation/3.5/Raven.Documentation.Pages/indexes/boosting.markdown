@@ -4,7 +4,7 @@ Another great feature that Lucene engine provides and RavenDB leverages is calle
 
 From the index perspective we can associate with an index entry a boosting factor and the higher value it has, the more relevant term will be. To do this we must use `Boost` extension method from `Raven.Client.Linq.Indexing` namespace.
 
-To illustrate it better, lets jump straight into the example. To perform a query that will return employees that either `FirstName` or `LastName` is equal to **Bob** and to promote employees (move them to the top of the results) that `FirstName` matches the phrase, we must first create an index with boosted entry.
+To illustrate it better, let's jump straight into the example. To perform a query that will return employees that either `FirstName` or `LastName` is equal to **Bob** and to promote employees (move them to the top of the results) that `FirstName` matches the phrase, we must first create an index with boosted entry.
 
 {CODE-TABS}
 {CODE-TAB:csharp:AbstractIndexCreationTask boosting_2@Indexes\Boosting.cs /}
