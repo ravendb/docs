@@ -132,7 +132,7 @@ order by Name as alphanumeric
 
 If your data contains geographical locations, you might want to sort the query result by distance from a given point.
 
-This can be achived by using the `OrderByDistance` and `OrderByDistanceDescending` methods (API reference [here](../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance)):
+This can be achieved by using the `OrderByDistance` and `OrderByDistanceDescending` methods (API reference [here](../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance)):
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_9_1@Indexes\Querying\Sorting.cs /}
@@ -144,6 +144,21 @@ where spatial.within(Coordinates, spatial.circle(500, 30, 30))
 order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1234, 23.4321))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+## Creating a Custom Sorter
+
+Lucene also allows you to create your own custom sorters. Create a sorter that inherits from the Lucene class 
+[FieldComparator](https://lucene.apache.org/core/3_0_3/api/core/org/apache/lucene/search/FieldComparator.html), and send it to the 
+server using a `PutSortersOperation`:  
+
+{CODE-TABS}
+{CODE-TAB:csharp:PutSortersOperation custom_1@Indexes/Querying/Sorting.cs/}
+{CODE-TAB:csharp:SorterDefinition custom_2@Indexes/Querying/Sorting.cs/}
+{CODE-TABS/}
+<br/>
+### Example
+
+{CODE:csharp custom_3@Indexes/Querying/Sorting.cs/}
 
 ## Related Articles
 
