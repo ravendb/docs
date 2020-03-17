@@ -128,7 +128,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "session", "session", "{F136
 		Documentation\4.1\Samples\python\clientapi\session\OpeningSession.py = Documentation\4.1\Samples\python\clientapi\session\OpeningSession.py
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Cli", "Raven.Documentation.Cli\Raven.Documentation.Cli.csproj", "{89952490-BFC8-4A90-8E39-C72A155730CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Cli", "Raven.Documentation.Cli\Raven.Documentation.Cli.csproj", "{89952490-BFC8-4A90-8E39-C72A155730CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.0", "5.0", "{C275FC50-F01D-4CC5-ABDC-5687200706E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{E159221C-89A9-4F63-9AFE-2DD2C82B79A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "csharp", "csharp", "{EC8420BE-4026-4789-B198-088B2BC71442}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Samples", "Documentation\5.0\Samples\csharp\Raven.Documentation.Samples\Raven.Documentation.Samples.csproj", "{5527C2ED-78E3-4525-A856-B7F4F96D5CE1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Pages", "Documentation\5.0\Raven.Documentation.Pages\Raven.Documentation.Pages.csproj", "{45A336B6-74A0-4579-AE6E-5BD4A424A813}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -220,6 +230,14 @@ Global
 		{89952490-BFC8-4A90-8E39-C72A155730CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89952490-BFC8-4A90-8E39-C72A155730CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89952490-BFC8-4A90-8E39-C72A155730CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5527C2ED-78E3-4525-A856-B7F4F96D5CE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5527C2ED-78E3-4525-A856-B7F4F96D5CE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5527C2ED-78E3-4525-A856-B7F4F96D5CE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5527C2ED-78E3-4525-A856-B7F4F96D5CE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45A336B6-74A0-4579-AE6E-5BD4A424A813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45A336B6-74A0-4579-AE6E-5BD4A424A813}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45A336B6-74A0-4579-AE6E-5BD4A424A813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45A336B6-74A0-4579-AE6E-5BD4A424A813}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -273,6 +291,11 @@ Global
 		{3685941D-AE26-4EDD-9082-E0B4D71AC5D9} = {C88AC7B6-8A58-480E-BF84-78AE54158EEC}
 		{95B60E29-F453-4DC6-ABEC-0E48BC00269D} = {67166E1C-0FCE-4939-870F-D0E31AD42F9E}
 		{F136D675-74B8-4A9D-AD15-B04B7EE453AC} = {95B60E29-F453-4DC6-ABEC-0E48BC00269D}
+		{C275FC50-F01D-4CC5-ABDC-5687200706E7} = {02197DA7-3859-4919-98A7-4FAFC4D75F2B}
+		{E159221C-89A9-4F63-9AFE-2DD2C82B79A4} = {C275FC50-F01D-4CC5-ABDC-5687200706E7}
+		{EC8420BE-4026-4789-B198-088B2BC71442} = {E159221C-89A9-4F63-9AFE-2DD2C82B79A4}
+		{5527C2ED-78E3-4525-A856-B7F4F96D5CE1} = {EC8420BE-4026-4789-B198-088B2BC71442}
+		{45A336B6-74A0-4579-AE6E-5BD4A424A813} = {C275FC50-F01D-4CC5-ABDC-5687200706E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4542080-0E46-4D6E-80B7-DCBFA1100C43}

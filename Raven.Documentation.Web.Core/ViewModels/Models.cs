@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Raven.Documentation.Parser.Data;
 using Raven.Documentation.Parser.Helpers;
 
@@ -88,6 +87,7 @@ namespace Raven.Documentation.Web.Core.ViewModels
     {
         public static readonly List<string> AllVersions = new List<string>
         {
+            "5.0",
             "4.2",
             "4.1",
             "4.0", 
