@@ -27,7 +27,7 @@ namespace Raven.Documentation.Parser.Helpers
             if (IsLegacyVersion(minVersion))
                 return new List<string> {minVersion};
 
-            var minorVersions = GetAllMinorVersions(minVersion);
+            var minorVersions = GetNonLegacyVersions();
 
             var query = minorVersions
                 .Where(x => VersionsParser.IsEqualOrLower(minVersion, x));
@@ -44,14 +44,9 @@ namespace Raven.Documentation.Parser.Helpers
             return versionNumber < FirstAnalyzedVersionNumber;
         }
 
-        private List<string> GetAllMinorVersions(string version)
+        private List<string> GetNonLegacyVersions()
         {
-            var major = VersionsParser.GetMajorVersion(version);
-            var majorPattern = $"{major}.";
-
-            return _allVersions
-                .Where(x => x.StartsWith(majorPattern))
-                .ToList();
+            return _allVersions.Where(x => IsLegacyVersion(x) == false).ToList();
         }
     }
 }

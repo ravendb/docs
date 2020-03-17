@@ -32,7 +32,7 @@ namespace Raven.Documentation.Parser.Compilation.ToC
 
         private static List<TableOfContents> OrderDuplicateTocsByPriority(List<MergeContext.Entry> duplicateEntries)
         {
-            return duplicateEntries.OrderByDescending(x => x.SourceDirectoryVerion).Select(x => x.TableOfContents).ToList();
+            return duplicateEntries.OrderByDescending(x => x.SourceDirectoryVersion).Select(x => x.TableOfContents).ToList();
         }
 
         private static TableOfContents MergeTocs(List<TableOfContents> tocs)
@@ -89,13 +89,13 @@ namespace Raven.Documentation.Parser.Compilation.ToC
                 }
             }
 
-            private void AddCompiled(string sourceDirectoryVerion, TableOfContents tableOfContents)
+            private void AddCompiled(string sourceDirectoryVersion, TableOfContents tableOfContents)
             {
                 var key = GetKey(tableOfContents);
                 var entry = new Entry
                 {
                     TableOfContents = tableOfContents,
-                    SourceDirectoryVerion = sourceDirectoryVerion
+                    SourceDirectoryVersion = sourceDirectoryVersion
                 };
 
                 if (_compiledTocs.ContainsKey(key))
@@ -122,7 +122,7 @@ namespace Raven.Documentation.Parser.Compilation.ToC
             {
                 public TableOfContents TableOfContents { get; set; }
 
-                public string SourceDirectoryVerion { get; set; }
+                public string SourceDirectoryVersion { get; set; }
             }
         }
     }
