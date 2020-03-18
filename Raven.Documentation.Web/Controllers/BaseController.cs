@@ -3,9 +3,11 @@ using System.Web.Mvc;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
 using Raven.Documentation.Parser.Data;
+using Raven.Documentation.Web.Helpers;
 
 namespace Raven.Documentation.Web.Controllers
 {
+    [NoCache]
     public abstract partial class BaseController : Controller
     {
         protected Language CurrentLanguage { get; private set; }

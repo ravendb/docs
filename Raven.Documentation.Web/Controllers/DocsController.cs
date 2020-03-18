@@ -18,7 +18,6 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Queries;
 using Raven.Client.Documents.Session;
-using Raven.Documentation.Parser.Compilation;
 using Raven.Documentation.Web.Models;
 
 namespace Raven.Documentation.Web.Controllers
