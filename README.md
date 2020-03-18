@@ -16,3 +16,4 @@ If you have any questions please visit our [community group](http://groups.googl
 2. Add `Documentation/[[version]]/Samples/csharp/Raven.Documentation.Samples/Raven.Documentation.Samples.csproj` project, similarly as above.
 3. Add version to the `AllVersions` list in `Raven.Documentation.Web.Core.ViewModels.DocsVersion`.
 4. Run `scripts/populateDocsJson.ps1` in order to populate the correct directory structure and `.docs.json` files in the newly added `Raven.Documentation.Pages` project. Please check the script parameters for details.
+5. Add version to the `RouteConfig.RouteAvailableVersions` constant.

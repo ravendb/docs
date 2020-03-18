@@ -191,6 +191,7 @@
     <Compile Include="Helpers\DebugHelper.cs" />
     <Compile Include="Helpers\EnumExtensions.cs" />
     <Compile Include="Helpers\HtmlHelperExtensions.cs" />
+    <Compile Include="Helpers\NoCacheAttribute.cs" />
     <Compile Include="Helpers\NoOpGitFileInformationProvider.cs" />
     <Compile Include="Indexes\DocumentationPages_ByKey.cs" />
     <Compile Include="Indexes\DocumentationPages_LanguagesAndVersions.cs" />
