@@ -1413,5 +1413,34 @@
             "twitter:description": "It takes more time to read on how to spin up a RavenDB Cloud Database than to actually spin it up. Judah Gabriel Hamingo walks you through it on CodeProject.",
             "twitter:url": "https://ravendb.net/articles/codeproject-presents-ravendb-cloud-step-by-step"
         }
+    },
+    {
+        "Path": "codeproject-presents-how-ravendb-models-data-using-indexes.markdown",
+        "Name": "How to Model Data using Indexes",
+        "Mappings": [],
+        "Metadata": {
+            "title": "How to Model Data using Indexes | RavenDB",
+            "likeSection": "yes",
+            "url": "codeproject-presents-how-ravendb-models-data-using-indexes",
+            "publishedAt": "2020-03-18",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "RavenDB indexes use MapReduce tallies to aggregate data. Why stop there when you can use these aggregations to predict what your database will eventually query?",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "How to Model Data using Indexes",
+            "og:description": "RavenDB indexes use MapReduce tallies to aggregate data. Why stop there when you can use these aggregations to predict what your database will eventually query?",
+            "og:url": "codeproject-presents-how-ravendb-models-data-using-indexes",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/codeproject-presents-how-ravendb-models-data-using-indexes&fileName=codeproject-presents-how-ravendb-models-data-using-indexes.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "How to Model Data using Indexes",
+            "twitter:description": "RavenDB indexes use MapReduce tallies to aggregate data. Why stop there when you can use these aggregations to predict what your database will eventually query?",
+            "twitter:url": "https://ravendb.net/articles/codeproject-presents-how-ravendb-models-data-using-indexes"
+        }
 	}
 ]
