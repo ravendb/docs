@@ -1442,5 +1442,34 @@
             "twitter:description": "RavenDB indexes use MapReduce tallies to aggregate data. Why stop there when you can use these aggregations to predict what your database will eventually query?",
             "twitter:url": "https://ravendb.net/articles/codeproject-presents-how-ravendb-models-data-using-indexes"
         }
+    },
+    {
+        "Path": "convenience-of-development-using-a-document-database.markdown",
+        "Name": "The Convenience of Development Using a Document Database",
+        "Mappings": [],
+        "Metadata": {
+            "title": "The Convenience of Development Using a Document Database | RavenDB",
+            "likeSection": "yes",
+            "url": "convenience-of-development-using-a-document-database",
+            "publishedAt": "2020-03-23",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "Impudence mismatch costs time, money and complexity. Why force a square peg in a round hole if a document database takes in data how your application codes it?",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "The Convenience of Development Using a Document Database",
+            "og:description": "Impudence mismatch costs time, money and complexity. Why force a square peg in a round hole if a document database takes in data how your application codes it?",
+            "og:url": "convenience-of-development-using-a-document-database",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/convenience-of-development-using-a-document-database&fileName=convenience-of-development-using-a-document-database.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "The Convenience of Development Using a Document Database",
+            "twitter:description": "Impudence mismatch costs time, money and complexity. Why force a square peg in a round hole if a document database takes in data how your application codes it?",
+            "twitter:url": "https://ravendb.net/articles/convenience-of-development-using-a-document-database"
+        }
 	}
 ]
