@@ -1471,5 +1471,34 @@
             "twitter:description": "Impudence mismatch costs time, money and complexity. Why force a square peg in a round hole if a document database takes in data how your application codes it?",
             "twitter:url": "https://ravendb.net/articles/convenience-of-development-using-a-document-database"
         }
-	}
+    },
+    {
+        "Path": "ravendb-amberwood-help-millions-african-farmers.markdown",
+        "Name": "RavenDB and Amberwood Help Millions of African Farmers",
+        "Mappings": [],
+        "Metadata": {
+            "title": "RavenDB and Amberwood Help Millions of African Farmers",
+            "likeSection": "yes",
+            "url": "ravendb-amberwood-help-millions-african-farmers",
+            "publishedAt": "2020-03-23",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "RavenDB NoSQL Document Database and Amberwood Trading team up to digitalize the African Cashew Industry and bring prosperity to over 4 million African farmers.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "RavenDB and Amberwood Help Millions of African Farmers",
+            "og:description": "RavenDB NoSQL Document Database and Amberwood Trading team up to digitalize the African Cashew Industry and bring prosperity to over 4 million African farmers.",
+            "og:url": "ravendb-amberwood-help-millions-african-farmers",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-amberwood-help-millions-african-farmers&fileName=ravendb-amberwood-help-millions-african-farmers.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "RavenDB and Amberwood Help Millions of African Farmers",
+            "twitter:description": "RavenDB NoSQL Document Database and Amberwood Trading team up to digitalize the African Cashew Industry and bring prosperity to over 4 million African farmers.",
+            "twitter:url": "https://ravendb.net/articles/ravendb-amberwood-help-millions-african-farmers"
+        }
+    }
 ]
