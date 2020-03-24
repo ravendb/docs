@@ -123,7 +123,7 @@ namespace Raven.Documentation.Samples.Indexes
             public Employees_ByFullName()
             {
                 Map = employees => from employee in employees
-                                   select new
+                                   select new Result
                                    {
                                        FullName = employee.FirstName + " " + employee.LastName
                                    };
@@ -164,7 +164,7 @@ namespace Raven.Documentation.Samples.Indexes
             public Employees_ByYearOfBirth()
             {
                 Map = employees => from employee in employees
-                                   select new
+                                   select new Result
                                    {
                                        YearOfBirth = employee.Birthday.Year
                                    };
@@ -207,7 +207,7 @@ namespace Raven.Documentation.Samples.Indexes
             public Employees_ByBirthday()
             {
                 Map = employees => from employee in employees
-                                   select new
+                                   select new Result
                                    {
                                        Birthday = employee.Birthday
                                    };
@@ -249,7 +249,7 @@ namespace Raven.Documentation.Samples.Indexes
             public Employees_ByCountry()
             {
                 Map = employees => from employee in employees
-                                   select new
+                                   select new Result
                                    {
                                        Country = employee.Address.Country
                                    };
@@ -291,7 +291,7 @@ namespace Raven.Documentation.Samples.Indexes
             public Employees_Query()
             {
                 Map = employees => from employee in employees
-                                   select new
+                                   select new Result
                                    {
                                        Query = new[]
                                         {

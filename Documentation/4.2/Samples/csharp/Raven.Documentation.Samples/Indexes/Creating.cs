@@ -28,10 +28,10 @@ namespace Raven.Documentation.Samples.Indexes
                 public Orders_Totals()
                 {
                     Map = orders => from order in orders
-                                    select new
+                                    select new Result
                                     {
-                                        order.Employee,
-                                        order.Company,
+                                        Employee = order.Employee,
+                                        Company = order.Company,
                                         Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
                                     };
                 }

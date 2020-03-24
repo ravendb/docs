@@ -69,9 +69,9 @@ namespace Raven.Documentation.Samples.Indexes
 
                 public string DisplayName { get; set; }
 
-                public string Collection { get; set; }
+                public object Collection { get; set; }
 
-                public string Content { get; set; }
+                public string[] Content { get; set; }
             }
 
             public class Projection
@@ -86,9 +86,9 @@ namespace Raven.Documentation.Samples.Indexes
             public Smart_Search()
             {
                 AddMap<Company>(companies => from c in companies
-                    select new
+                    select new Result
                     {
-                        c.Id,
+                        Id = c.Id,
                         Content = new[]
                         {
                             c.Name
@@ -98,9 +98,9 @@ namespace Raven.Documentation.Samples.Indexes
                     });
 
                 AddMap<Product>(products => from p in products
-                    select new
+                    select new Result
                     {
-                        p.Id,
+                        Id = p.Id,
                         Content = new[]
                         {
                             p.Name
@@ -110,9 +110,9 @@ namespace Raven.Documentation.Samples.Indexes
                     });
 
                 AddMap<Employee>(employees => from e in employees
-                    select new
+                    select new Result
                     {
-                        e.Id,
+                        Id = e.Id,
                         Content = new[]
                         {
                             e.FirstName,

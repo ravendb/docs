@@ -35,13 +35,13 @@ namespace Raven.Documentation.Samples.Indexes
         {
             public class Result
             {
-                public string[] Authors { get; set; }
+                public IEnumerable<string> Authors { get; set; }
             }
 
             public BlogPosts_ByCommentAuthor()
             {
                 Map = posts => from post in posts
-                               select new
+                               select new Result
                                {
                                    Authors = Recurse(post, x => x.Comments).Select(x => x.Author)
                                };

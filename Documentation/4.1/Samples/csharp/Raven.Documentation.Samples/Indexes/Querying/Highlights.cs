@@ -21,9 +21,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
             public BlogPosts_ByContent()
             {
                 Map = posts => from post in posts
-                               select new
+                               select new Result
                                {
-                                   post.Content
+                                   Content = post.Content
                                };
 
                 Index(x => x.Content, FieldIndexing.Search);
@@ -46,10 +46,10 @@ namespace Raven.Documentation.Samples.Indexes.Querying
             public BlogPosts_ByCategory_Content()
             {
                 Map = posts => from post in posts
-                               select new
+                               select new Result
                                {
-                                   post.Category,
-                                   post.Content
+                                   Category = post.Category,
+                                   Content = post.Content
                                };
 
                 Reduce = results => from result in results

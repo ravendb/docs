@@ -69,7 +69,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
             public Products_ByName_Search()
             {
                 Map = products => from product in products
-                                  select new
+                                  select new Result
                                   {
                                       Name = product.Name,
                                       NameForSorting = product.Name
