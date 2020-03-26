@@ -2,9 +2,15 @@
 
 ##CustomizeJsonSerializer
 
-If you need to modify `JsonSerializer` object used by the client when sending entities to the server you can register a customization action:
+To modify the `JsonSerializer` object used by the client when sending entities to the server, register a customization action:
 
 {CODE customize_json_serializer@ClientApi\Configuration\Serialization.cs /}
+
+##CustomizeJsonDeserializer
+
+To modify the `JsonSerializer` object used by the client to deserialize entities loaded from the server, you can register a customization action:
+
+{CODE customize_json_deserializer@ClientApi\Configuration\Serialization.cs /}
 
 ##DeserializeEntityFromBlittable
 
