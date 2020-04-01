@@ -18,4 +18,4 @@ You can even use indexes to create a fully event-sourced system where documents 
 
 Deploy all of it with code!
 
-In this article, RavenDB Rockstar Kamran Ayub codes away to <a href="https://www.codeproject.com/Articles/1348454/Data-Modeling-with-Indexes-in-RavenDB" target="_blank">take you on a guided tour</a> of modeling your data with RavenDB Indexes.
+In this article, RavenDB Rockstar Kamran Ayub codes away to <a href="https://www.codeproject.com/Articles/1348454/Data-Modeling-with-Indexes-in-RavenDB" target="_blank" rel="nofollow">take you on a guided tour</a> of modeling your data with RavenDB Indexes.

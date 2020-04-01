@@ -82,7 +82,7 @@ This can be a health care application where you want X-rays and test results as 
 
 ## What You Can Create in Your Studio
 
-<a href="https://www.gartner.com/reviews/review/view/556267"><img class="img-responsive" alt="The RavenDB NoSQL Document Database makes development frictionless, reducing your software release cycle" src="images/perfect-fit-for-release-cycles.jpg" /></a>
+<a href="https://www.gartner.com/reviews/review/view/556267" rel="nofollow"><img class="img-responsive" alt="The RavenDB NoSQL Document Database makes development frictionless, reducing your software release cycle" src="images/perfect-fit-for-release-cycles.jpg" /></a>
 
 The Management Studio is more than monitoring. You can run your entire data system off it. With a point and a click you can set up a new regular or encrypted database. You can create new documents and assign them to a specific collection. If the documents you need to make are very similar to those in a particular collection, you can clone new documents that are duplicates of other documents and edit from there.
 

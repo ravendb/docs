@@ -6,13 +6,13 @@
 
 <p class="text-center">
 <button id="podcast-play-button" class="play-button" style=""><i class="icon-play" style="margin-right:20px"></i>Play Podcast</button>
-<a href="https://s3-us-west-2.amazonaws.com/static.ravendb.net/dotnetrocks_1541_ravendb4.mp3" download><button id="download-podcast-button" class="download-podcast-button"><i class="icon-download" style="margin-right:20px"></i>Download .mp3</button></a>
+<a href="https://s3-us-west-2.amazonaws.com/static.ravendb.net/dotnetrocks_1541_ravendb4.mp3" download rel="nofollow"><button id="download-podcast-button" class="download-podcast-button"><i class="icon-download" style="margin-right:20px"></i>Download .mp3</button></a>
 </p>
 
 <br/>
 
 <p>
-.NET Rocks hosts Carl Franklin and Richard Campbell talk to <a href="https://kamranicus.com/">Kamran Ayub</a> about RavenDB 4.0 and NoSQL. Kamran talks about the evolution of RavenDB from its 2.0 version to its <em>new Enterprise Grade release</em>, his use cases for it, <em>the amazing set of new features</em> you get with 4.0, how it compares to MongoDB, the stability it gives you for data storage, cross-platform use, and what you get in the free community version.
+.NET Rocks hosts Carl Franklin and Richard Campbell talk to <a href="https://kamranicus.com/" rel="nofollow">Kamran Ayub</a> about RavenDB 4.0 and NoSQL. Kamran talks about the evolution of RavenDB from its 2.0 version to its <em>new Enterprise Grade release</em>, his use cases for it, <em>the amazing set of new features</em> you get with 4.0, how it compares to MongoDB, the stability it gives you for data storage, cross-platform use, and what you get in the free community version.
 </p>
 
 <br/>

@@ -19,6 +19,6 @@ In this quick tour, you will see in code how RavenDB:
 
 You also have resources to use the RavenDB Bootcamp and to download RavenDB CEO Oren Eini's book *Inside RavenDB*.
 
-When you're ready to take the first steps in connecting their application to a NoSQL Document Database with high performance and lots of pleasant surprises, <a href="https://www.codeproject.com/Articles/5254222/RavenDB-A-NoSQL-Database-in-Easy-Mode" target="_blank">this is just for you</a>.
+When you're ready to take the first steps in connecting their application to a NoSQL Document Database with high performance and lots of pleasant surprises, <a href="https://www.codeproject.com/Articles/5254222/RavenDB-A-NoSQL-Database-in-Easy-Mode" target="_blank" rel="nofollow">this is just for you</a>.
 
 If you are ready to take your application to the next level, we offer one on one live demonstrations of RavenDB given by our development team. Find the right time for you and [schedule yourself an opportunity](https://ravendb.net/live-demo) to move your data to the next generation of information.

@@ -10,11 +10,11 @@ The current “cloud computing race” has vendors offering Service Level Agreem
 ## But What about Cost?
 
 Cloud providers maintain that cloud computing offers cost reductions. A company that uses a cloud-based model translates capital expenditure (CapEx) properties like physical hardware to operational expenditure (OpEx), gaining improved technical services like an infrastructure easily adjustable for one-off or irregular computing tasks.<br/>
-<a href="https://www.statista.com/statistics/545977/worldwide-cloud-computing-spending/">Available figures</a> on global cloud computing expenditure in the Asia Pacific, EMEA, and North America regions reveal that contemporary organizations are using the cloud for operational and business needs more than ever before.
+<a href="https://www.statista.com/statistics/545977/worldwide-cloud-computing-spending/" rel="nofollow">Available figures</a> on global cloud computing expenditure in the Asia Pacific, EMEA, and North America regions reveal that contemporary organizations are using the cloud for operational and business needs more than ever before.
 
 ![The right NoSQL Document Database can unify multiple server requests, lowering your own cloud expenditures.](images/chart.jpg)
 
-<p style="text-align: center"><em>Source: <a href="https://www.statista.com/statistics/545977/worldwide-cloud-computing-spending/">www.statista.com</a></em></p>
+<p style="text-align: center"><em>Source: <a href="https://www.statista.com/statistics/545977/worldwide-cloud-computing-spending/" rel="nofollow">www.statista.com</a></em></p>
 
 In spite of the advantages cloud-service providers offer businesses, organizations (especially startups) need to be aware of potential cost drawbacks when choosing to adopt cloud platforms.
 

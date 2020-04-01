@@ -4,7 +4,7 @@
 
 {SOCIAL-MEDIA-LIKE/}<br/>
 
-Veteran software architect Szymon Warda at IndexOutOfRange <a href="https://indexoutofrange.com/RavenDBvsMongoDB" target="_blank">compares MongoDB to RavenDB</a> to find the best fit for his latest project.
+Veteran software architect Szymon Warda at IndexOutOfRange <a href="https://indexoutofrange.com/RavenDBvsMongoDB" target="_blank" rel="nofollow">compares MongoDB to RavenDB</a> to find the best fit for his latest project.
 
 He is looking for a [NoSQL Document Database](https://ravendb.net/features) that meets the following standards:
 
@@ -18,7 +18,7 @@ He is looking for a [NoSQL Document Database](https://ravendb.net/features) that
 
 
 <div class="text-center margin-top">
-    <a href="https://indexoutofrange.com/RavenDBvsMongoDB/" target="_blank"><img src="images/indexoutofrange.jpg" alt="Szymon Warda's MongoDB vs RavenDB article"></a>
+    <a href="https://indexoutofrange.com/RavenDBvsMongoDB/" target="_blank" rel="nofollow"><img src="images/indexoutofrange.jpg" alt="Szymon Warda's MongoDB vs RavenDB article"></a>
 </div>
 <br/>
 
@@ -28,4 +28,4 @@ He is looking for a [NoSQL Document Database](https://ravendb.net/features) that
 
 For *over 13 years*, Szymon Warda has been programming .NET on projects as a Chief Software Architect, Team Leader, and Senior Programmer. He has been speaking at conferences and blogging for over 5 years.
 
-See how he pits <a href="https://indexoutofrange.com/RavenDBvsMongoDB/" target="_blank">RavenDB against MongoDB</a> in these 6 categories and determines which is the best NoSQL solution for your next project.
+See how he pits <a href="https://indexoutofrange.com/RavenDBvsMongoDB/" target="_blank" rel="nofollow">RavenDB against MongoDB</a> in these 6 categories and determines which is the best NoSQL solution for your next project.

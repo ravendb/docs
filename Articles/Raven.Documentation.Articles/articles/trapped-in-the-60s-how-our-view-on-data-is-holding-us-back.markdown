@@ -16,7 +16,7 @@ If we can move on from Creedence Clearwater Revival, then we are ready to embrac
 
 ## Escaping the Excel Syndrome
 
-From the time of go-go boots and lava lamps, we have been thinking of data in rows and columns. Electronic spreadsheets were [invented in the 1960s](https://en.wikipedia.org/wiki/Spreadsheet) and we have been looking at data with these eyes ever since.
+From the time of go-go boots and lava lamps, we have been thinking of data in rows and columns. Electronic spreadsheets were <a href="https://en.wikipedia.org/wiki/Spreadsheet" rel="nofollow">invented in the 1960s</a> and we have been looking at data with these eyes ever since.
 
 Call it the Excel syndrome.
 

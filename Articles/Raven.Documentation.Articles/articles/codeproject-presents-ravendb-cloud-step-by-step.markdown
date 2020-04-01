@@ -5,7 +5,7 @@
 {SOCIAL-MEDIA-LIKE/}
 
 <br/>
-It takes more time to read about how to spin up a RavenDB Cloud Database than to spin it up. Judah Gabriel Himango does a great job of <a href="https://www.codeproject.com/Articles/5164620/Getting-Started-with-RavenDB-Cloud-Database" target="_blank">walking you through it</a>.
+It takes more time to read about how to spin up a RavenDB Cloud Database than to spin it up. Judah Gabriel Himango does a great job of <a href="https://www.codeproject.com/Articles/5164620/Getting-Started-with-RavenDB-Cloud-Database" target="_blank" rel="nofollow">walking you through it</a>.
 
 See how Judah spins up a free instance of RavenDB Cloud. He secures it with a certificate and then shows you the code to connect from a C# web app.
 
@@ -21,4 +21,4 @@ Judah goes over in detail:
 * Working with multiple nodes in a database cluster,
 * Creating and Querying in your RavenDB database cluster.
 
-See the article at <a href="https://www.codeproject.com/Articles/5164620/Getting-Started-with-RavenDB-Cloud-Database" target="_blank">codeproject.com</a>.
+See the article at <a href="https://www.codeproject.com/Articles/5164620/Getting-Started-with-RavenDB-Cloud-Database" target="_blank" rel="nofollow">codeproject.com</a>.
