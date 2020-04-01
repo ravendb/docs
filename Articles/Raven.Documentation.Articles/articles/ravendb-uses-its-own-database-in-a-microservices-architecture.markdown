@@ -8,7 +8,7 @@
 ### How RavenDB Uses its Own Database in a Microservices Architecture for all its Data Needs
 <p class="lead">There was a story about a guy that worked for Coke company for 20 years. One day he was seen at lunch drinking a Pepsi. The company suspended him without pay. About a month later, he gets a check from Pepsi reimbursing him for his contribution to their marketing efforts.</p>
 
-There is no greater red flag for a product than knowing that the makers of that product are not confident enough to use it. If you see Tim Cook installing an Android 10 on a Samsung Galaxy phone, you might want to reconsider <a href="https://techcrunch.com/2019/10/28/apple-releases-ios-13-2-with-deep-fusion/" target="_blank">queuing up for that iPhone 11 Pro</a>. However, if he is playing Dick Tracy on his Apple Watch Series 5, then getting your loved one the latest iPad may be the way to go.
+There is no greater red flag for a product than knowing that the makers of that product are not confident enough to use it. If you see Tim Cook installing an Android 10 on a Samsung Galaxy phone, you might want to reconsider <a href="https://techcrunch.com/2019/10/28/apple-releases-ios-13-2-with-deep-fusion/" target="_blank" rel="nofollow">queuing up for that iPhone 11 Pro</a>. However, if he is playing Dick Tracy on his Apple Watch Series 5, then getting your loved one the latest iPad may be the way to go.
 
 Everybody tells you their database is the fastest, easiest to use, with the highest ROI. They all tell you their version of the perfect fairy tale. It's only once your payment clears do you see that they suddenly stopped sweating.
 

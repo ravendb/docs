@@ -6,7 +6,7 @@
 
 <p class="text-center">
 <button id="podcast-play-button" class="play-button" style=""><i class="icon-play" style="margin-right:20px"></i>Play Podcast</button>
-<a href="https://s3-us-west-2.amazonaws.com/static.ravendb.net/2019-04-29-podcast-ravendb-42.mp3" download><button id="download-podcast-button" class="download-podcast-button"><i class="icon-download" style="margin-right:20px"></i>Download .mp3</button></a>
+<a href="https://s3-us-west-2.amazonaws.com/static.ravendb.net/2019-04-29-podcast-ravendb-42.mp3" download rel="nofollow"><button id="download-podcast-button" class="download-podcast-button"><i class="icon-download" style="margin-right:20px"></i>Download .mp3</button></a>
 </p>
 
 

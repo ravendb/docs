@@ -125,7 +125,7 @@ else:
 {CODE-BLOCK:python}
  entity = entity.__class__(**entity_initialize_dict)
  {CODE-BLOCK/}
-* see <a href="https://docs.python.org/2/library/inspect.html">https://docs.python.org/2/library/inspect.html</a> for more information.
+* see <a href="https://docs.python.org/2/library/inspect.html" rel="nofollow">https://docs.python.org/2/library/inspect.html</a> for more information.
 
 After making the match we can use entity_initialize_dict to initialize our object. This action will solve many problems up ahead. 
 For example, if our class inherits from another class and it doesn't contain all the fields of the base class in the __init__ method, 
@@ -157,7 +157,7 @@ that can handle most CRUD scenarios, including full support for replication, fai
 
 
 for more information please visit:<br >
-<a href="https://github.com/ravendb/RavenDB-Python-Client">https://github.com/ravendb/RavenDB-Python-Client</a><br >
+<a href="https://github.com/ravendb/RavenDB-Python-Client" rel="nofollow">https://github.com/ravendb/RavenDB-Python-Client</a><br >
 <a href="https://ravendb.net">https://ravendb.net</a><br >
 
 Author : <b>Idan Haim Shalom</b>

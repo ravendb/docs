@@ -8,7 +8,7 @@
 
 Technology and modern manufacturing methods have laid waste to the days of "You can have any color you want as long as its black." Customers, both individual and business, have plenty of options on how to put together exactly what they want.
 
-<a href="https://configit.com/" target="_blank">Configit</a> develops configuration technology solutions for manufacturers worldwide. They enable them to make sure products with complex and diverse configurations are safe for the public to use and up to each customer's tailored standards.
+<a href="https://configit.com/" target="_blank" rel="nofollow">Configit</a> develops configuration technology solutions for manufacturers worldwide. They enable them to make sure products with complex and diverse configurations are safe for the public to use and up to each customer's tailored standards.
 
 <div class="pull-left margin-right">
   <div class="quote-textbox-left">

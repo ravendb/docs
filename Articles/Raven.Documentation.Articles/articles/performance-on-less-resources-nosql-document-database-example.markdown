@@ -8,7 +8,7 @@ ZAP is one of only two Yellow Pages franchises in the world to go completely dig
 They needed to fix a series of legacy websites with rapidly deteriorating performance, and increase the amount of information they could provide their users - while retaining top SEO ranking. Performance, especially on mobile devices, is a critical factor in SEO - so time was of the essence.<br/>
 Follow through this article to see what happened when RavenDB – a NoSQL document database - was put into action.
 
-<a href="https://youtu.be/THeXFDMxr6s" target="_blank">
+<a href="https://youtu.be/THeXFDMxr6s" target="_blank" rel="nofollow">
 <img class="img-responsive" alt="Follow this article to see how a Yellow Pages Company has doubled performance and tripled the data presented to users while using fewer servers, just by using RavenDB - the NoSQL Document Database." src="images/what-businesses-are-saying-about-ravendb.jpg" />
 </a>
 

@@ -1,4 +1,4 @@
-# Using A NoSQL Database for Black Friday: The Gift that Keeps On Giving <br/><small>by <a href="https://www.linkedin.com/in/sabrina-globus-3609ba34/">Sabrina Globus</a></small>
+# Using A NoSQL Database for Black Friday: The Gift that Keeps On Giving <br/><small>by <a href="https://www.linkedin.com/in/sabrina-globus-3609ba34/" rel="nofollow">Sabrina Globus</a></small>
 
 ![A NoSQL Database on Black Friday: The Gift that Keeps Giving](images/nosql-database-on-black-friday-ravendb-document-database.jpg)
 
@@ -39,7 +39,7 @@ On just a single server, load balance also becomes an issue as too many people a
 
 The single server model means you have a single point of failure. Your house of cards is standing on top of the jack of diamonds. If there is just one problem with the server your entire application can go down. All your users are vulnerable to time outs, freezes, reloads, and crashes. 
 
-an [ITIC study](https://itic-corp.com/blog/2016/08/cost-of-hourly-downtime-soars-81-of-enterprises-say-it-exceeds-300k-on-average/) reported that 98% of organizations say a single hour of downtime costs over $100,000.
+an <a href="https://itic-corp.com/blog/2016/08/cost-of-hourly-downtime-soars-81-of-enterprises-say-it-exceeds-300k-on-average/" rel="nofollow">ITIC study</a> reported that 98% of organizations say a single hour of downtime costs over $100,000.
 
 ### C. Your Options are Limited
 
