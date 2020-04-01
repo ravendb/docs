@@ -21,6 +21,10 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     CustomizeJsonSerializer = serializer => throw new CodeOmitted()
                     #endregion
                     ,
+                    #region customize_json_deserializer
+                    CustomizeJsonDeserializer = serializer => throw new CodeOmitted()
+                    #endregion
+                    ,
                     #region DeserializeEntityFromBlittable
                     DeserializeEntityFromBlittable = (type, blittable) => throw new CodeOmitted()
                     #endregion

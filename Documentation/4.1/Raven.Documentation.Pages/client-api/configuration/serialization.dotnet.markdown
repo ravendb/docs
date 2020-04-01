@@ -6,6 +6,12 @@ If you need to modify `JsonSerializer` object used by the client when sending en
 
 {CODE customize_json_serializer@ClientApi\Configuration\Serialization.cs /}
 
+##CustomizeJsonDeserializer
+
+To modify the `JsonSerializer` object used by the client to deserialize entities loaded from the server, you can register a customization action:
+
+{CODE customize_json_deserializer@ClientApi\Configuration\Serialization.cs /}
+
 ##DeserializeEntityFromBlittable
 
 In order to customize the entity deserialization from blittable JSON you can use define `DeserializeEntityFromBlittable` implementation:
