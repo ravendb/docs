@@ -7,17 +7,17 @@
 * Configuration options for backups (both on premise and RavenDB Cloud)  
 
 * In this page:  
-    * [Server.LocalRootPath](../../server/configuration/backup-configuration#server.localrootpath)  
-    * [Server.AllowedDestinations](../../server/configuration/backup-configuration#server.alloweddestinations)  
-    * [Server.AllowedAwsRegions](../../server/configuration/backup-configuration#server.allowedawsregions)  
-    * [Server.MaxNumberOfConcurrentBackups](../../server/configuration/backup-configuration#server.maxnumberofconcurrentbackups)  
-    * [Server.LowMemoryBackupDelayInMin](../../server/configuration/backup-configuration#server.lowmemorybackupdelayinmin)  
+    * [Backup.LocalRootPath](../../server/configuration/backup-configuration#Backup.localrootpath)  
+    * [Backup.AllowedDestinations](../../server/configuration/backup-configuration#Backup.alloweddestinations)  
+    * [Backup.AllowedAwsRegions](../../server/configuration/backup-configuration#Backup.allowedawsregions)  
+    * [Backup.MaxNumberOfConcurrentBackups](../../server/configuration/backup-configuration#Backup.maxnumberofconcurrentbackups)  
+    * [Backup.LowMemoryBackupDelayInMin](../../server/configuration/backup-configuration#Backup.lowmemorybackupdelayinmin)  
 
 {NOTE/}
 
 ---
 
-{PANEL:Server.LocalRootPath}
+{PANEL:Backup.LocalRootPath}
 
 Local backups can only be created under this root path.  
 
@@ -27,7 +27,7 @@ Local backups can only be created under this root path.
 
 {PANEL/}
 
-{PANEL:Server.AllowedDestinations}
+{PANEL:Backup.AllowedDestinations}
 
 Semicolon separated list of allowed backup destinations. If not specified, all destinations are allowed.   
 
@@ -46,7 +46,7 @@ Possible values:
 
 {PANEL/}
 
-{PANEL:Server.AllowedAwsRegions}
+{PANEL:Backup.AllowedAwsRegions}
 
 Semicolon separated list of allowed AWS regions. If not specified, all regions are allowed.  
 
@@ -56,7 +56,7 @@ Semicolon separated list of allowed AWS regions. If not specified, all regions a
 
 {PANEL/}
 
-{PANEL:Server.MaxNumberOfConcurrentBackups}
+{PANEL:Backup.MaxNumberOfConcurrentBackups}
 
 Maximum number of concurrent backup tasks.  
 
@@ -67,7 +67,7 @@ Maximum number of concurrent backup tasks.
 
 {PANEL/}
 
-{PANEL:Server.LowMemoryBackupDelayInMin}
+{PANEL:Backup.LowMemoryBackupDelayInMin}
 
 Number of minutes to delay the backup if the server enters a low memory state.  
 
