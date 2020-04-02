@@ -31,11 +31,18 @@ Spatial indexes can be queried using the `Spatial` method which contains a full 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **shapeWkt** | string | WKT-based shape to be used in operation |
+| **shapeWkt** | string | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape to be used in operation |
 | **relation** | `SpatialRelation` | Shape relation. Can be `Within`, `Contains`, `Disjoint`, `Intersects` |
 | **distErrorPercent** | double | Maximum distance error tolerance in percents. Default: 0.025 |
 | **radius** or **latitude** or **longitude** | double | Used to define a radius circle |
 | **radiusUnits** or **units** | `SpatialUnits` | Determines if circle or shape should be calculated in `Kilometers` or `Miles` |
+
+{INFO: Polygons}
+When using `spatial.wkt()` to define a **polygon**, the vertices (points that form the corners of the polygon) must be listed 
+in a counter-clockwise order:  
+<br/>
+![](images/spatial_1.png)
+{INFO/}
 
 ### Example I
 
@@ -72,7 +79,7 @@ To sort by distance from given point use the `OrderByDistance` method. The close
 | **path** | `Expression<Func<T, object>>` | Path to spatial field in index |
 | **fieldName** | string | Path to spatial field in index |
 | **field** | `Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField>` or `DynamicSpatialField` | Factory or field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
-| **shapeWkt** | string | WKT-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
+| **shapeWkt** | string | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
 | **latitude** or **longitude** | double | Used to define a point from which distance will be measured |
 
 ### Example
