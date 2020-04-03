@@ -71,18 +71,6 @@ public class IndexingRelatedDocuments {
 
     //region indexing_related_documents_2
     public static class Products_ByCategoryName extends AbstractIndexCreationTask {
-        public static class Result {
-            private String categoryName;
-
-            public String getCategoryName() {
-                return categoryName;
-            }
-
-            public void setCategoryName(String categoryName) {
-                this.categoryName = categoryName;
-            }
-        }
-
         public Products_ByCategoryName() {
             map = "docs.Products.Select(product => new { " +
                 "    CategoryName = (this.LoadDocument(product.Category, \"Categories\")).Name " +
@@ -93,27 +81,6 @@ public class IndexingRelatedDocuments {
 
     //region indexing_related_documents_5
     public static class Authors_ByNameAndBooks extends AbstractIndexCreationTask {
-        public static class Result {
-            private String name;
-            private List<String> books;
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public List<String> getBooks() {
-                return books;
-            }
-
-            public void setBooks(List<String> books) {
-                this.books = books;
-            }
-        }
-
         public Authors_ByNameAndBooks() {
             map = "docs.Authors.Select(author => new { " +
                 "    name = author.name, " +
@@ -141,9 +108,8 @@ public class IndexingRelatedDocuments {
             try (IDocumentSession session = store.openSession()) {
                 //region indexing_related_documents_7
                 List<Product> results = session
-                    .query(Products_ByCategoryName.Result.class, Products_ByCategoryName.class)
+                    .query(Product.class, Products_ByCategoryName.class)
                     .whereEquals("CategoryName", "Beverages")
-                    .ofType(Product.class)
                     .toList();
                 //endregion
             }
@@ -165,10 +131,9 @@ public class IndexingRelatedDocuments {
             try (IDocumentSession session = store.openSession()) {
                 //region indexing_related_documents_8
                 List<Author> results = session
-                    .query(Authors_ByNameAndBooks.Result.class, Authors_ByNameAndBooks.class)
+                    .query(Author.class, Authors_ByNameAndBooks.class)
                     .whereEquals("name", "Andrzej Sapkowski")
                     .whereEquals("books", "The Witcher")
-                    .ofType(Author.class)
                     .toList();
                 //endregion
             }

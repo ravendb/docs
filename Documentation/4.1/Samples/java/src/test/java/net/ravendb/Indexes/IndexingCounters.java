@@ -18,18 +18,6 @@ public class IndexingCounters {
 
     //region index
     public static class Companies_ByCounterNames extends AbstractIndexCreationTask {
-        public static class Result {
-            private String[] counterNames;
-
-            public String[] getCounterNames() {
-                return counterNames;
-            }
-
-            public void setCounterNames(String[] counterNames) {
-                this.counterNames = counterNames;
-            }
-        }
-
         public Companies_ByCounterNames() {
             map = "from e in docs.Employees\n" +
                 "let counterNames = CounterNamesFor(e)\n" +

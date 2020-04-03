@@ -72,18 +72,6 @@ public class JavaScript {
 
     //region javaScriptindexes_1_0
     public static class Employees_ByYearOfBirth extends AbstractJavaScriptIndexCreationTask {
-        public static class Result {
-            private int yearOfBirth;
-
-            public int getYearOfBirth() {
-                return yearOfBirth;
-            }
-
-            public void setYearOfBirth(int yearOfBirth) {
-                this.yearOfBirth = yearOfBirth;
-            }
-        }
-
         public Employees_ByYearOfBirth() {
             setMaps(Sets.newHashSet("map('Employees', function (employee){\n" +
                 "            return {\n" +
@@ -92,21 +80,10 @@ public class JavaScript {
                 "        })"));
         }
     }
+    //endregion
 
     //region javaScriptindexes_1_2
     public static class Employees_ByBirthday extends AbstractJavaScriptIndexCreationTask {
-        public static class Result {
-            private Date birthday;
-
-            public Date getBirthday() {
-                return birthday;
-            }
-
-            public void setBirthday(Date birthday) {
-                this.birthday = birthday;
-            }
-        }
-
         public Employees_ByBirthday() {
             setMaps(Sets.newHashSet("map('Employees', function (employee){\n" +
                 "            return {\n" +
@@ -119,18 +96,6 @@ public class JavaScript {
 
     //region javaScriptindexes_1_4
     public static class Employees_ByCountry extends AbstractJavaScriptIndexCreationTask {
-        public static class Result {
-            private String country;
-
-            public String getCountry() {
-                return country;
-            }
-
-            public void setCountry(String country) {
-                this.country = country;
-            }
-        }
-
         public Employees_ByCountry() {
             setMaps(Sets.newHashSet("map('Employees', function (employee){\n" +
                 "            return {\n" +
@@ -143,18 +108,6 @@ public class JavaScript {
 
     //region javaScriptindexes_1_6
     public static class Employees_Query extends AbstractJavaScriptIndexCreationTask {
-        public static class Result {
-            private String[] query;
-
-            public String[] getQuery() {
-                return query;
-            }
-
-            public void setQuery(String[] query) {
-                this.query = query;
-            }
-        }
-
         public Employees_Query() {
             setMaps(Sets.newHashSet("map('Employees', function (employee) {\n" +
                 "            return {\n" +
@@ -185,11 +138,6 @@ public class JavaScript {
 
     //region map_reduce_0_0
     public static class Products_ByCategory extends AbstractJavaScriptIndexCreationTask {
-        public static class Result {
-            private String category;
-            private int count;
-        }
-
         public Products_ByCategory() {
             setMaps(Sets.newHashSet("map('products', function(p){\n" +
                 "            return {\n" +
@@ -211,45 +159,6 @@ public class JavaScript {
 
     //region map_reduce_1_0
     public static class Product_Average_ByCategory extends AbstractJavaScriptIndexCreationTask {
-        public static class Result {
-            private String category;
-            private double priceSum;
-            private double priceAverage;
-            private int productCount;
-
-            public String getCategory() {
-                return category;
-            }
-
-            public void setCategory(String category) {
-                this.category = category;
-            }
-
-            public double getPriceSum() {
-                return priceSum;
-            }
-
-            public void setPriceSum(double priceSum) {
-                this.priceSum = priceSum;
-            }
-
-            public double getPriceAverage() {
-                return priceAverage;
-            }
-
-            public void setPriceAverage(double priceAverage) {
-                this.priceAverage = priceAverage;
-            }
-
-            public int getProductCount() {
-                return productCount;
-            }
-
-            public void setProductCount(int productCount) {
-                this.productCount = productCount;
-            }
-        }
-
         public Product_Average_ByCategory() {
             setMaps(Sets.newHashSet("map('products', function(product){\n" +
                 "    return {\n" +
@@ -277,36 +186,6 @@ public class JavaScript {
 
     //region map_reduce_2_0
     public static class Product_Sales extends AbstractJavaScriptIndexCreationTask {
-        public static class Result {
-            private String product;
-            private int count;
-            private double total;
-
-            public String getProduct() {
-                return product;
-            }
-
-            public void setProduct(String product) {
-                this.product = product;
-            }
-
-            public int getCount() {
-                return count;
-            }
-
-            public void setCount(int count) {
-                this.count = count;
-            }
-
-            public double getTotal() {
-                return total;
-            }
-
-            public void setTotal(double total) {
-                this.total = total;
-            }
-        }
-
         public Product_Sales() {
             setMaps(Sets.newHashSet("map('orders', function(order){\n" +
                 "            var res = [];\n" +
@@ -334,45 +213,6 @@ public class JavaScript {
 
     //region map_reduce_3_0
     public static class Product_Sales_ByMonth extends AbstractJavaScriptIndexCreationTask {
-        public static class Result {
-            private String product;
-            private Date month;
-            private int count;
-            private double total;
-
-            public String getProduct() {
-                return product;
-            }
-
-            public void setProduct(String product) {
-                this.product = product;
-            }
-
-            public Date getMonth() {
-                return month;
-            }
-
-            public void setMonth(Date month) {
-                this.month = month;
-            }
-
-            public int getCount() {
-                return count;
-            }
-
-            public void setCount(int count) {
-                this.count = count;
-            }
-
-            public double getTotal() {
-                return total;
-            }
-
-            public void setTotal(double total) {
-                this.total = total;
-            }
-        }
-
         public Product_Sales_ByMonth() {
             setMaps(Sets.newHashSet("map('orders', function(order){\n" +
                 "            var res = [];\n" +
@@ -421,18 +261,6 @@ public class JavaScript {
 
     //region static_sorting2
     private static class Products_ByName extends AbstractJavaScriptIndexCreationTask {
-        public static class Result {
-            private String analyzedName;
-
-            public String getAnalyzedName() {
-                return analyzedName;
-            }
-
-            public void setAnalyzedName(String analyzedName) {
-                this.analyzedName = analyzedName;
-            }
-        }
-
         public Products_ByName() {
             setMaps(Sets.newHashSet("map('products', function (u){\n" +
                 "    return {\n" +
@@ -455,18 +283,6 @@ public class JavaScript {
 
     //region indexing_related_documents_2
     public static class Products_ByCategoryName extends AbstractJavaScriptIndexCreationTask {
-        public static class Result {
-            private String categoryName;
-
-            public String getCategoryName() {
-                return categoryName;
-            }
-
-            public void setCategoryName(String categoryName) {
-                this.categoryName = categoryName;
-            }
-        }
-
         public Products_ByCategoryName() {
             setMaps(Sets.newHashSet("map('products', function(product ){\n" +
                 "            return {\n" +
@@ -479,27 +295,6 @@ public class JavaScript {
 
     //region indexing_related_documents_5
     public static class Authors_ByNameAndBookNames extends AbstractJavaScriptIndexCreationTask {
-        public static class Result {
-            private String name;
-            private List<String> books;
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public List<String> getBooks() {
-                return books;
-            }
-
-            public void setBooks(List<String> books) {
-                this.books = books;
-            }
-        }
-
         public Authors_ByNameAndBookNames() {
             setMaps(Sets.newHashSet("map('author', function(a){\n" +
                 "            return {\n" +
@@ -513,18 +308,6 @@ public class JavaScript {
 
     //region indexes_2
     public static class BlogPosts_ByCommentAuthor extends AbstractJavaScriptIndexCreationTask {
-        public static class Result {
-            private String[] authors;
-
-            public String[] getAuthors() {
-                return authors;
-            }
-
-            public void setAuthors(String[] authors) {
-                this.authors = authors;
-            }
-        }
-
         public BlogPosts_ByCommentAuthor() {
             setMaps(Sets.newHashSet("map('BlogPosts', function(b){\n" +
                 "            var names = [];\n" +

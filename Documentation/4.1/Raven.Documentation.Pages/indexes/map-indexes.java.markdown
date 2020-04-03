@@ -32,7 +32,7 @@ Let's create an index that will help us search for `Employees` by their `FirstNa
 {CODE-TABS}
 {CODE-TAB:java indexes_2@Indexes/Map.java /}
 {CODE-TAB:java:JavaScript-syntax javaScriptindexes_2@Indexes/JavaScript.java /}
-{CODE-TABS}
+{CODE-TABS/}
 
 - The final step is to [deploy it](../indexes/creating-and-deploying) to the server and issue a query using the session [Query](../client-api/session/querying/how-to-query) method:
 

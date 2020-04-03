@@ -48,27 +48,6 @@ public class Sorting {
 
     //region sorting_6_4
     public static class Products_ByName_Search extends AbstractIndexCreationTask {
-        public static class Result {
-            private String name;
-            private String nameForSorting;
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public String getNameForSorting() {
-                return nameForSorting;
-            }
-
-            public void setNameForSorting(String nameForSorting) {
-                this.nameForSorting = nameForSorting;
-            }
-        }
-
         public Products_ByName_Search() {
             map = "docs.Products.Select(product => new {" +
                 "    Name = product.Name," +

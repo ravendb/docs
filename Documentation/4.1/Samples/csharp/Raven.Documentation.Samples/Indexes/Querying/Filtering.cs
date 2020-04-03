@@ -49,7 +49,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
             public Orders_ByTotalPrice()
             {
                 Map = orders => from order in orders
-                                select new
+                                select new Result
                                 {
                                     TotalPrice = order.Lines.Sum(x => (x.Quantity * x.PricePerUnit) * (1 - x.Discount))
                                 };

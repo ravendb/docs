@@ -39,7 +39,7 @@ namespace Raven.Documentation.Samples.Indexes
 			{
 				Map = orders => from order in orders
 					from line in order.Lines
-					select new
+					select new Result
 					{
 						Product = line.Product,
 						Count = 1,

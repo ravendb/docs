@@ -40,7 +40,7 @@ namespace Raven.Documentation.Samples.Indexes
             public Products_ByCategoryName()
             {
                 Map = products => from product in products
-                                  select new
+                                  select new Result
                                   {
                                       CategoryName = LoadDocument<Category>(product.Category).Name
                                   };
@@ -55,13 +55,13 @@ namespace Raven.Documentation.Samples.Indexes
             {
                 public string Name { get; set; }
 
-                public IList<string> Books { get; set; }
+                public IEnumerable<string> Books { get; set; }
             }
 
             public Authors_ByNameAndBooks()
             {
                 Map = authors => from author in authors
-                                 select new
+                                 select new Result
                                  {
                                      Name = author.Name,
                                      Books = author.BookIds.Select(x => LoadDocument<Book>(x).Name)

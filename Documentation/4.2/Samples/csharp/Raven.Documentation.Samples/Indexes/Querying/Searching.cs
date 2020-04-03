@@ -29,13 +29,13 @@ namespace Raven.Documentation.Samples.Indexes.Querying
         {
             public class Result
             {
-                public string Query;
+                public object Query;
             }
 
             public Users_Search()
             {
                 Map = users => from user in users
-                               select new
+                               select new Result
                                {
                                    Query = new object[]
                                    {

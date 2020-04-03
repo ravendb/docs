@@ -21,7 +21,7 @@ Let's assume that we want to count the number of products for each category. To 
 {CODE-TABS}
 {CODE-TAB:java:LINQ map_reduce_0_0@Indexes\MapReduceIndexes.java /}
 {CODE-TAB:java:JavaScript map_reduce_0_0@Indexes\JavaScript.java /}
-{CODE-TABS}
+{CODE-TABS/}
 
 and issue the query:
 
@@ -63,7 +63,7 @@ We want to know how many times each product was ordered and how much we earned f
 {CODE-TABS}
 {CODE-TAB:java:LINQ map_reduce_2_0@Indexes\MapReduceIndexes.java /}
 {CODE-TAB:java:JavaScript map_reduce_2_0@Indexes\JavaScript.java /}}
-{CODE-TABS}
+{CODE-TABS/}
 
 and send the query:
 

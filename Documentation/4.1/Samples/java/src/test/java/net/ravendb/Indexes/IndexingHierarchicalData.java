@@ -85,18 +85,6 @@ public class IndexingHierarchicalData {
 
     //region indexes_2
     public static class BlogPosts_ByCommentAuthor extends AbstractIndexCreationTask {
-        public static class Result {
-            private String[] authors;
-
-            public String[] getAuthors() {
-                return authors;
-            }
-
-            public void setAuthors(String[] authors) {
-                this.authors = authors;
-            }
-        }
-
         public BlogPosts_ByCommentAuthor() {
             map = "docs.BlogPosts.Select(post => new { " +
                 "    authors = this.Recurse(post, x => x.comments).Select(x0 => x0.author) " +
@@ -128,9 +116,8 @@ public class IndexingHierarchicalData {
             try (IDocumentSession session = store.openSession()) {
                 //region indexes_4
                 List<BlogPost> results = session
-                    .query(BlogPosts_ByCommentAuthor.Result.class, BlogPosts_ByCommentAuthor.class)
+                    .query(BlogPost.class, BlogPosts_ByCommentAuthor.class)
                     .whereEquals("authors", "Ayende Rahien")
-                    .ofType(BlogPost.class)
                     .toList();
                 //endregion
             }

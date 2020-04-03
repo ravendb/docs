@@ -28,7 +28,7 @@ namespace Raven.Documentation.Samples.Indexes
             {
                 Map = employees => from e in employees
                                    let counterNames = CounterNamesFor(e)
-                                   select new
+                                   select new Result
                                    {
                                        CounterNames = counterNames.ToArray()
                                    };
