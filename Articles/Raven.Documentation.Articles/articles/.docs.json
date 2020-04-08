@@ -1500,5 +1500,34 @@
             "twitter:description": "RavenDB NoSQL Document Database and Amberwood Trading team up to digitalize the African Cashew Industry and bring prosperity to over 4 million African farmers.",
             "twitter:url": "https://ravendb.net/articles/ravendb-amberwood-help-millions-african-farmers"
         }
+    },
+    {
+        "Path": "acid-transactions-in-nosql-ravendb-vs-mongodb.markdown",
+        "Name": "ACID Transactions in NoSQL Databases",
+        "Mappings": [],
+        "Metadata": {
+            "title": "ACID Transactions in NoSQL Databases",
+            "likeSection": "yes",
+            "url": "acid-transactions-in-nosql-ravendb-vs-mongodb",
+            "publishedAt": "2020-04-08",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "What is ACID? What is a cluster? How did two NoSQL databases become ACID at the cluster level?.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "ACID Transactions in NoSQL Databases",
+            "og:description": "What is ACID? What is a cluster? How did two NoSQL databases become ACID at the cluster level?",
+            "og:url": "acid-transactions-in-nosql-ravendb-vs-mongodb",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/acid-transactions-in-nosql-ravendb-vs-mongodb&fileName=acid-transactions-in-nosql-ravendb-vs-mongodb.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "ACID Transactions in NoSQL Databases",
+            "twitter:description": "What is ACID? What is a cluster? How did two NoSQL databases become ACID at the cluster level?",
+            "twitter:url": "https://ravendb.net/articles/acid-transactions-in-nosql-ravendb-vs-mongodb"
+        }
     }
 ]
