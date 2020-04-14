@@ -1529,5 +1529,34 @@
             "twitter:description": "What is ACID? What is a cluster? How did two NoSQL databases become ACID at the cluster level?",
             "twitter:url": "https://ravendb.net/articles/acid-transactions-in-nosql-ravendb-vs-mongodb"
         }
+    },
+    {
+        "Path": "starnet-taps-ravendb-nosql-database-for-gaming-applications.markdown",
+        "Name": "A NoSQL Database for online gaming",
+        "Mappings": [],
+        "Metadata": {
+            "title": "A NoSQL Database for online gaming",
+            "likeSection": "yes",
+            "url": "starnet-taps-ravendb-nosql-database-for-gaming-applications",
+            "publishedAt": "2020-04-14",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "StarNet chose the RavenDB NoSQL Database, to meet the growing demands of their rapidly expanding gaming platform.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "A NoSQL Database for online gaming",
+            "og:description": "An upset in the semifinals spikes traffic for a gaming application. To achieve the flexibility needed for today’s data, StarNet uses the RavenDB NoSQL Database.",
+            "og:url": "starnet-taps-ravendb-nosql-database-for-gaming-applications",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/starnet-taps-ravendb-nosql-database-for-gaming-applications&fileName=starnet-taps-ravendb-nosql-database-for-gaming-applications.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "A NoSQL Database for online gaming",
+            "twitter:description": "An upset in the semifinals spikes traffic for a gaming application. To achieve the flexibility needed for today’s data, StarNet uses the RavenDB NoSQL Database.",
+            "twitter:url": "https://ravendb.net/articles/starnet-taps-ravendb-nosql-database-for-gaming-applications"
+        }
     }
 ]
