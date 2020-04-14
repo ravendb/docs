@@ -1530,7 +1530,36 @@
             "twitter:url": "https://ravendb.net/articles/acid-transactions-in-nosql-ravendb-vs-mongodb"
         }
     },
-    {
+{
+        "Path": "nosql-database-creates-personal-experience-for-every-user.markdown",
+        "Name": "NoSQL Database for Demanding Workloads",
+        "Mappings": [],
+        "Metadata": {
+            "title": "NoSQL Database Creates a Personal Experience for Every User",
+            "likeSection": "yes",
+            "url": "nosql-database-creates-personal-experience-for-every-user",
+            "publishedAt": "2020-04-14",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "A first class database will allow your system to meet more demanding workloads. See how View.DO uses the RavenDB NoSQL Database to make it happen.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "NoSQL Database Creates a Personal Experience for Every User",
+            "og:description": "A first class database will allow your system to meet more demanding workloads. See how View.DO uses the RavenDB NoSQL Database to make it happen.",
+            "og:url": "nosql-database-creates-personal-experience-for-every-user",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-database-creates-personal-experience-for-every-user&fileName=nosql-database-creates-personal-experience-for-every-user.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "NoSQL Database Creates a Personal Experience for Every User",
+            "twitter:description": "A first class database will allow your system to meet more demanding workloads. See how View.DO uses the RavenDB NoSQL Database to make it happen.",
+            "twitter:url": "https://ravendb.net/articles/nosql-database-creates-personal-experience-for-every-user"
+        }
+},
+{
         "Path": "starnet-taps-ravendb-nosql-database-for-gaming-applications.markdown",
         "Name": "A NoSQL Database for online gaming",
         "Mappings": [],
@@ -1558,5 +1587,5 @@
             "twitter:description": "An upset in the semifinals spikes traffic for a gaming application. To achieve the flexibility needed for today’s data, StarNet uses the RavenDB NoSQL Database.",
             "twitter:url": "https://ravendb.net/articles/starnet-taps-ravendb-nosql-database-for-gaming-applications"
         }
-    }
+}
 ]
