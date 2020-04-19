@@ -39,6 +39,8 @@ To solve this problem, use an [Elastic IP address](https://docs.aws.amazon.com/A
 Let's open ports 443 and 38888 for use by RavenDB. You may choose other port numbers off course and restrict access by IP.
 RavenDB will use port 443 for HTTPS requests and port 38888 for TCP connections. We allow all incoming traffic on these ports by using 0.0.0.0.
 
+By default there are no restrictions for outgoing traffic. If you choose to edit the outbound firewall rules, please make sure you keep port 80 open. It is required for downloading the .Net Core dependencies.
+
 ![4](images/aws-linux/4.png)
 
 Review your settings and launch the VM.
