@@ -1,0 +1,41 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "2bc22ef1-450e-4ae9-aa6f-56b0b47977d9",
+        "Mappings": []
+    },
+    {
+        "Path": "/client-api",
+        "Name": "Client API",
+        "Mappings": []
+    },
+    {
+        "Path": "/querying",
+        "Name": "Querying",
+        "Mappings": []
+    },
+    {
+        "Path": "/indexing",
+        "Name": "Indexing",
+        "Mappings": []
+    },
+    {
+        "Path": "rollup.markdown",
+        "Name": "Rollup",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+
+    {
+        "Path": "/timeseries-and-other-features",
+        "Name": "Time Series and Other Features",
+        "Mappings": []
+    },
+    {
+        "Path": "design.markdown",
+        "Name": "Design",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    }
+]

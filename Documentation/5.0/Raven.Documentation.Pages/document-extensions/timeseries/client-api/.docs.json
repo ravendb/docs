@@ -1,0 +1,50 @@
+[
+    {
+        "Path": "api-overview.markdown",
+        "Name": "API Overview",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "creating-timeseries.markdown",
+        "Name": "Creating Time Series",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "deleting-timeseries.markdown",
+        "Name": "Deleting Time Series",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "modifying-timeseries.markdown",
+        "Name": "Modifying Time Series",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "bulk-timeseries-operations.markdown",
+        "Name": "Bulk Time Series Operations",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "loading-and-including-timeseries.markdown",
+        "Name": "Loading and Including Time Series",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "patching-timeseries.markdown",
+        "Name": "Patching Time Series",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "time-series-and-the-changes-api.markdown",
+        "Name": "Time Series and the Changes API",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    }
+]

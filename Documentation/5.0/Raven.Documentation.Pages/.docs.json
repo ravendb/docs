@@ -40,6 +40,11 @@
         "Mappings": []
     },
     {
+        "Path": "/document-extensions",
+        "Name": "Document Extensions",
+        "Mappings": []
+    },
+    {
         "Path": "/cloud",
         "Name": "Cloud",
         "Mappings": []
