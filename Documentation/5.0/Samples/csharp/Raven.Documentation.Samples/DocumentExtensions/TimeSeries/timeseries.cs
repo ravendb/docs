@@ -20,8 +20,8 @@ namespace Rvn.Ch02
             };
             docStore.Initialize();
 
-            #region counters_region_CountersFor_with_document_load
-            // Use CountersFor by passing it a document object
+            #region timeseries_region_TimeSeriesFor_with_document_load
+            // Use TimeSeriesFor by passing it a document object
 
             // 1. Open a session
             using (var session = docStore.OpenSession())
@@ -43,8 +43,8 @@ namespace Rvn.Ch02
             }
             #endregion
 
-            #region counters_region_CountersFor_without_document_load
-            // Use CountersFor without loading a document
+            #region timeseries_region_TimeSeriesFor_without_document_load
+            // Use TimeSeriesFor without loading a document
 
             // 1. Open a session
             using (var session = docStore.OpenSession())
