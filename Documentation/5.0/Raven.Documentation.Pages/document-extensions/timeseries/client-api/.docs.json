@@ -6,44 +6,44 @@
         "Mappings": []
     },
     {
-        "Path": "creating-timeseries.markdown",
-        "Name": "Creating Time Series",
+        "Path": "append-time-series-entries.markdown",
+        "Name": "Append Time-Series Entries",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "deleting-timeseries.markdown",
-        "Name": "Deleting Time Series",
+        "Path": "remove-time-series-entries.markdown",
+        "Name": "Remove Time-Series Entries",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "modifying-timeseries.markdown",
-        "Name": "Modifying Time Series",
+        "Path": "get-time-series.markdown",
+        "Name": "Get Time-Series",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "bulk-timeseries-operations.markdown",
-        "Name": "Bulk Time Series Operations",
+        "Path": "bulk-time-series-operations.markdown",
+        "Name": "Bulk Time-Series Operations",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "loading-and-including-timeseries.markdown",
-        "Name": "Loading and Including Time Series",
+        "Path": "include-time-series.markdown",
+        "Name": "Include Time-Series",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "patching-timeseries.markdown",
-        "Name": "Patching Time Series",
+        "Path": "patch-time-series.markdown",
+        "Name": "Patch Time-Series",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
         "Path": "time-series-and-the-changes-api.markdown",
-        "Name": "Time Series and the Changes API",
+        "Name": "Time-Series and the Changes API",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     }
