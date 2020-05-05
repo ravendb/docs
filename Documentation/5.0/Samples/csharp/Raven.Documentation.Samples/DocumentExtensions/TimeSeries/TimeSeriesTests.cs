@@ -353,8 +353,31 @@ namespace SlowTests.Client.TimeSeries.Session
                     }));
                 #endregion
 
+                #region timeseries_region_Use-BulkInsert-To-Append-2-Entries
+                // Use BulkInsert to append 2 time-series entries
+                using (var bulkInsert = store.BulkInsert())
+                {
+                    using (var timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentID, "Heartrate"))
+                    {
+                        timeSeriesBulkInsert.Append(baseline.AddMinutes(2), 61d, "watches/fitbit");
+                        timeSeriesBulkInsert.Append(baseline.AddMinutes(3), 62d, "watches/apple-watch");
+                    }
+                }
+                #endregion
 
-
+                #region timeseries_region_Use-BulkInsert-To-Append-100-Entries
+                // Use BulkInsert to append 100 time-series entries
+                for (int minute = 0; minute < 100; minute++)
+                {
+                    using (var bulkInsert = store.BulkInsert())
+                    {
+                        using (var timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "Heartrate"))
+                        {
+                            timeSeriesBulkInsert.Append(baseline.AddMinutes(minute), new double[] { minute }, "watches/fitbit");
+                        }
+                    }
+                }
+                #endregion
 
 
 

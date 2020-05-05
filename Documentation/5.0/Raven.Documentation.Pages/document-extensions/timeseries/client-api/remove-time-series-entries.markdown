@@ -75,7 +75,7 @@ It has an advantage over `session.Remove`, in that it allows you to bundle
 a series of Remove actions in a list and execute tham all in a single call.  
 
 Learn how to use `TimeSeriesBatchOperation` [in the article dedicated to 
-time-series operations](../../../document-extensions/timeseries/client-api/time-series-operations#use-timeseriesbatchoperation-to-remove).  
+time-series operations](../../../document-extensions/timeseries/client-api/time-series-operations#use--to-remove).  
 
 
 {PANEL/}
