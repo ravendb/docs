@@ -69,36 +69,14 @@ Here, we remove a range of time-series entries from a time-series.
 
 {PANEL: Removing Time-Series Entries Using `TimeSeriesBatchOperation`}
 
-`TimeSeriesBatchOperation` can append or remove multiple time-series entries.  
-To instruct it which operations to perform, provide it with `TimeSeriesOperation` constructs.  
+Remove ranges of time-series entries using the `TimeSeriesBatchOperation` 
+operation.  
+It has an advantage over `session.Remove`, in that it allows you to bundle 
+a series of Remove actions in a list and execute tham all in a single call.  
 
-* `TimeSeriesOperation`  
-  {CODE TimeSeriesOperation-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+Learn how to use `TimeSeriesBatchOperation` [in the article dedicated to 
+time-series operations](../../../document-extensions/timeseries/client-api/time-series-operations#use-timeseriesbatchoperation-to-remove).  
 
----
-
-#### Usage Flow  
-
-* Create a `TimeSeriesOperation` instance  
-   * Populate the `TimeSeriesOperation` instance with -  
-      The time-series name.  
-      A list of removals.  
-   * The list of removals is constructed of `RemoveOperation` instances.  
-      Each instance defines a range of entries that will be removed from the time-series.  
-   * Set a removal range using -  
-     `From` - the timestamp of the first time-series entry of the range  
-     `To` - the timestamp of the last time-series entry to be removed.  
-* Create a `TimeSeriesBatchOperation` instance.  
-    * Pass its constructor the document ID and the `TimeSeriesOperation` instance you've created.  
-* Call `store.Operations.Send` to execute the operation.  
-    * Pass it the `TimeSeriesBatchOperation` instance you've created.  
-
----
-
-#### Code Sample
-
-Here, we remove two ranges of entries from a time-series.  
-{CODE timeseries_region_Remove-Range-Using-TimeSeriesBatchOperation@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}
 

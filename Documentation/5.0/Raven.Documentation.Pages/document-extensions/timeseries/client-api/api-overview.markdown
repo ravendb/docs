@@ -55,18 +55,19 @@ When the last entry is removed, the series is removed.
 You can manage time-series using the session `TimeSeriesFor` object.  
 
 * **`TimeSeriesFor`Methods**:  
-  * `TimeSeriesFor.Append`  
-     `Append` is used to create and update time-series and time-series entries.  
+  * [TimeSeriesFor.Append](../../../document-extensions/timeseries/client-api/append-time-series-entries)  
+     Use this method to create and update time-series and time-series entries.  
      When an existing time-series entry is appended, it is updated with the new data. 
      When a non-existing time-series entry is appended, it is created.  
      An attempt to append a time-series entry to a non-existing time-series, 
      creates the time-series and appends it this entry.  
-  * `TimeSeriesFor.Get`  
-    `Get` retrieves a value or a range of values from a time-series at the 
-    specified timestamps.  
-  * `CountersFor.Remove`  
-    `Remove` deletes a time-series entry from a time-series.  
+  * [CountersFor.Remove](../../../document-extensions/timeseries/client-api/remove-time-series-entries)  
+    Use this method to remove a time-series entry from a time-series.  
     When a time-series' last entry is removed, the time-series is removed as well.  
+  * [TimeSeriesFor.Get](../../../document-extensions/timeseries/client-api/get-time-series)  
+    Use this method to retrieve time-series data.  
+    You can specify the time-series entry, or range of entries, whose values 
+    you want to get.  
 
 *  **Usage Flow**:  
   * Open a session.  
@@ -101,36 +102,40 @@ time-series' names.
 
 {PANEL: Managing Time-Series Using `store` Operations}
 
-There are time-series actions that can be performed by both store operations 
-and session methods. Each interface offers its advantages, e.g. the transactional 
-guarantee provided by the session interface vs low-level commands' lack of it 
-(in case you prefer not to bundle separate operations into a single transaction, 
-for example).  
+Time-series and their entries can be appended, removed and retrieved via both 
+[session methods](../../../document-extensions/timeseries/client-api/api-overview#managing-time-series-using-session-methods)`
+and [store operations](../../../document-extensions/timeseries/client-api/time-series-operations).  
 
-An action that is currently available only through store operations, 
-is the loading of a document's multiple time-series by `GetTimeSeriesOperation`.  
+* The main advantage session methods have over store operations is the 
+  transactional guarantee they provide.  
+* There are actions that are only available via store operations.  
 
-
----
-
-#### `GetTimeSeriesOperation`: Get Time-Series Data  
-
-You can use this method to retrieve data from several diffrent time-series 
-of a document.  
-
-* Pass `GetTimeSeriesOperation` a `TimeSeriesRange` construct to provide 
-  it with the **start** and **end** time and dates and with the name of 
-  the time-series you want to update.  
-
-* Retrieved results are put in a class holding a dictionary of 
-  `TimeSeriesRangeResult` classes.  
+If you need to perform an action for which you have both a session method and 
+a store operation and neither has a clear advantage over the other, simply 
+choose the one you're more comfortable with.  
 
 ---
 
-#### `TimeSeriesBatchOperation`: Append or Remove data from a time-series  
-    
-* Pass `TimeSeriesBatchOperation` a `TimeSeriesOperation` construct to 
-  instruct it what to do.  
+#### Commonly Used Time-Series Operations
+
+* `TimeSeriesBatchOperation`  
+  Use this operation to append and remove time-series and time-series entries.  
+  `TimeSeriesBatchOperation` has an advantage over `session.Append` and 
+  `session.Remove`, in allowing you to bundle a series of Append and/or 
+  Remove operations in a list and execute tham in a single call.  
+* `GetTimeSeriesOperation`  
+  Use this operation to retrieve time-series data.  
+  `GetTimeSeriesOperation` has an advantage over `session.Get`, in allowing 
+  you to retrieve data from multiple time-series of a selected document in 
+  a single call.  
+* `ConfigureTimeSeriesOperation`  
+  Use this operation to manage time-series roll-up and retention policies.  
+
+Learn how to use `TimeSeriesBatchOperation` and `GetTimeSeriesOperation`in the 
+[article dedicated to operations](../../../document-extensions/timeseries/client-api/time-series-operations).  
+
+Learn how to use `ConfigureTimeSeriesOperation` in the article dedicated to 
+[rollup and retention](../../../document-extensions/timeseries/rollup-and-retention).  
 
 {PANEL/}
 

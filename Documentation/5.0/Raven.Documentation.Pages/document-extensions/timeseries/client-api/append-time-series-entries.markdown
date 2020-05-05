@@ -93,31 +93,12 @@ The three values will be appended at the same timestamp.
 
 {PANEL: Appending Time-Series Entries Using `TimeSeriesBatchOperation`}
 
-`TimeSeriesBatchOperation` can append or remove multiple time-series entries.  
-To instruct it which operations to perform, provide it with `TimeSeriesOperation` constructs.  
+Append time-series entries using the `TimeSeriesBatchOperation` operation.  
+It has an advantage over `session.Append`, in that it allows you to bundle 
+a series of Append actions in a list and execute tham all in a single call.  
 
-* `TimeSeriesOperation`  
-  {CODE TimeSeriesOperation-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-
----
-
-#### Usage Flow  
-
-* Create an instance of `TimeSeriesOperation`  
-    * Populate it with a new `AppendOperation` list for every time-series entry you want to append.  
-    * Populate each `AppendOperation` list with the properties of the time-series 
-      entry that you want to append.  
-* Create a `TimeSeriesBatchOperation` instance.  
-    * Pass its constructor the document ID and the `TimeSeriesOperation` instance you've created.  
-* Call `store.Operations.Send` to execute the operation.  
-    * Pass it the `TimeSeriesBatchOperation` instance you've created.  
-
----
-
-#### Code Sample
-
-Here, we append a time-series two entries using `TimeSeriesBatchOperation`.  
-{CODE timeseries_region_Append-Using-TimeSeriesBatchOperation@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+Learn how to use `TimeSeriesBatchOperation` [in the article dedicated to 
+time-series operations](../../../document-extensions/timeseries/client-api/time-series-operations#use-timeseriesbatchoperation-to-append).  
 
 {PANEL/}
 

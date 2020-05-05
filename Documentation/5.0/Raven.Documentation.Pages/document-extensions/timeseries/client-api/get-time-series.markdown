@@ -76,7 +76,15 @@ and get its "Heartrate" time-series data.
 {PANEL/}
 
 {PANEL: Get Time-Series Entries Using `GetTimeSeriesOperaion`}
-...
+
+Get time-series entries using the `GetTimeSeriesOperaion` operation.  
+It has an advantage over `session.Get`, in that it allows you to retrieve 
+data from multiple time-series of a selected document in a single call.  
+
+Learn how to use `GetTimeSeriesOperaion` [in the article dedicated to 
+time-series operations](../../../document-extensions/timeseries/client-api/time-series-operations#gettimeseriesoperation:-get-time-series-data).  
+
+
 {PANEL/}
 
 ## Related articles

@@ -24,8 +24,8 @@
         "Mappings": []
     },
     {
-        "Path": "bulk-time-series-operations.markdown",
-        "Name": "Bulk Time-Series Operations",
+        "Path": "time-series-operations.markdown",
+        "Name": "Time-Series Operations",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },

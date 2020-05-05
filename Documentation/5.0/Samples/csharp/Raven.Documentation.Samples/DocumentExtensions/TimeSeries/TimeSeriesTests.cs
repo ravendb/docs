@@ -325,6 +325,39 @@ namespace SlowTests.Client.TimeSeries.Session
 
                 store.Operations.Send(timeSeriesBatch);
                 #endregion
+
+                #region timeseries_region_Get-Single-Time-Series
+                // Get all values of a single time-series
+                var SingleTimesSeriesDetails = store.Operations.Send(
+                    new GetTimeSeriesOperation(documentId, "RoutineHeartrate", DateTime.MinValue, DateTime.MaxValue));
+                #endregion
+
+                #region timeseries_region_Get-Multiple-Time-Series
+                // Get chosen values of two time-series
+                var MultipletimesSeriesDetails = store.Operations.Send(
+                    new GetTimeSeriesOperation(documentId, new List<TimeSeriesRange>
+                    {
+                        new TimeSeriesRange
+                        {
+                            Name = "RoutineHeartrate",
+                            From = baseline.AddMinutes(1),
+                            To = baseline.AddMinutes(10)
+                        },
+
+                        new TimeSeriesRange
+                        {
+                            Name = "BicycleHeartrate",
+                            From = baseline.AddMinutes(1),
+                            To = baseline.AddMinutes(10)
+                        }
+                    }));
+                #endregion
+
+
+
+
+
+
             }
         }
 
@@ -378,11 +411,19 @@ namespace SlowTests.Client.TimeSeries.Session
             #endregion
         }
 
-
-
-
-
+        #region TimeSeriesRangeResult-class
+        public class TimeSeriesRangeResult
+        {
+            public DateTime From, To;
+            public TimeSeriesEntry[] Entries;
+            public long? TotalResults;
+            internal string Hash;
         }
+        #endregion
+
 
 
     }
+
+
+}
