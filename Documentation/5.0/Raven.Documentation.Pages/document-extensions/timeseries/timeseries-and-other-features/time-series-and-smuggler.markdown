@@ -1,4 +1,4 @@
-﻿# Time Series and Smuggler
+﻿# Time-Series and Smuggler
 ---
 
 {NOTE: }

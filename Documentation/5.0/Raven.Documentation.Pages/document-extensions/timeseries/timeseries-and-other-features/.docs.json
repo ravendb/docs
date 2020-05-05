@@ -1,25 +1,31 @@
 [
     {
         "Path": "time-series-and-other-features-overview.markdown",
-        "Name": "Time Series and Other Features Overview",
+        "Name": "Overview",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
         "Path": "time-series-and-revisions.markdown",
-        "Name": "Time Series and Revisions",
+        "Name": "Time-Series and Revisions",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
         "Path": "time-series-and-smuggler.markdown",
-        "Name": "Time Series and Smuggler",
+        "Name": "Time-Series and Smuggler",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
         "Path": "time-series-and-ongoing-tasks.markdown",
-        "Name": "Time Series and Ongoing Tasks",
+        "Name": "Time-Series and Ongoing Tasks",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "time-series-and-the-changes-api.markdown",
+        "Name": "Time-Series and the Changes API",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     }

@@ -1,4 +1,4 @@
-﻿# Time Series and Revisions
+﻿# Time-Series and Revisions
 ---
 
 {NOTE: }

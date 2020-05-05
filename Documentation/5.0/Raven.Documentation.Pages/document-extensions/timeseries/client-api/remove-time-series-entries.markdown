@@ -57,7 +57,7 @@ timestamp to an end timestamp).
 
 ---
 
-#### Code Samples  
+#### Usage Samples  
 
 Here, we remove a single time-series entry from a time-series.  
 {CODE timeseries_region_Remove-TimeSeriesFor-Single-Time-Point@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}

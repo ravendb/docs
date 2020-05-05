@@ -62,7 +62,7 @@
 
 ---
 
-#### Code Samples  
+#### Usage Samples  
 
 Here, we retrieve all time-series entries of a time-series.  
 {CODE timeseries_region_TimeSeriesFor-Get-Single-Value-Using-Document-ID@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}

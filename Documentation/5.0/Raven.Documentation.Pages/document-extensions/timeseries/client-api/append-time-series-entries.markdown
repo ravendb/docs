@@ -76,7 +76,7 @@ The second method updates the entry with a value of type `IEnumerable double`.
 
 ---
 
-#### Code Samples  
+#### Usage Samples  
 
 Here, we pass `TimeSeriesFor.Append` the value using a `double`, 
 and repeat it in a loop to append multiple time-series entries.  

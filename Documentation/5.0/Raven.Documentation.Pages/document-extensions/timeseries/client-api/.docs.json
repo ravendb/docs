@@ -36,14 +36,8 @@
         "Mappings": []
     },
     {
-        "Path": "patch-time-series.markdown",
-        "Name": "Patch Time-Series",
-        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
-        "Mappings": []
-    },
-    {
-        "Path": "time-series-and-the-changes-api.markdown",
-        "Name": "Time-Series and the Changes API",
+        "Path": "patching-time-series.markdown",
+        "Name": "Patching Time-Series",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     }

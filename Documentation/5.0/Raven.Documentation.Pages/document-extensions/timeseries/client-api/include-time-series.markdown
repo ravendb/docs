@@ -56,7 +56,7 @@ via `session.Load`, use `IncludeTimeSeries`.
 
 ---
 
-#### Code Samples  
+#### Usage Samples  
 
 Here, we **load** a document using `session.Load` and **include** 
 a selected range of entries from a time-series named "Heartrate".  
@@ -103,7 +103,7 @@ via `session.Query`, use `IncludeTimeSeries`.
 
 ---
 
-#### Code Samples  
+#### Usage Samples  
 
 Here, we **load** a document using `session.Query` and **include** 
 a whole time-series named "Heartrate".  
@@ -130,7 +130,7 @@ simply embed an `include timeseries` statement in your RQL.
 
 ---
 
-#### Code Sample
+#### Usage Sample
 
 Here, we include the whole "Heartrate" time-series while running a raw query to 
 load the document that owns it.  

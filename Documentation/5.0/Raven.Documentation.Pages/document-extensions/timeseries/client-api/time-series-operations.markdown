@@ -61,7 +61,7 @@ an `TimeSeriesOperation` instance for each Append or Remove action.
 
 ---
 
-#### Code Sample
+#### Usage Sample
 
 Here, we append a time-series two entries using `TimeSeriesBatchOperation`.  
 {CODE timeseries_region_Append-Using-TimeSeriesBatchOperation@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
@@ -90,7 +90,7 @@ Here, we append a time-series two entries using `TimeSeriesBatchOperation`.
 
 ---
 
-#### Code Sample
+#### Usage Sample
 
 Here, we remove two ranges of entries from a time-series.  
 {CODE timeseries_region_Remove-Range-Using-TimeSeriesBatchOperation@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
@@ -127,7 +127,7 @@ There are two overloads of this operation.
    * TimeSeriesRangeResult:
      {CODE TimeSeriesRangeResult-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-#### Code Sample
+#### Usage Sample
 
 Here, we retrieve all entries of a single time-series.  
 {CODE timeseries_region_Get-Single-Time-Series@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
@@ -152,7 +152,7 @@ Here, we retrieve all entries of a single time-series.
 
 ---
 
-#### Code Sample
+#### Usage Sample
 
 Here, we retrieve chosen entries from two time-series.  
 {CODE timeseries_region_Get-Multiple-Time-Series@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  

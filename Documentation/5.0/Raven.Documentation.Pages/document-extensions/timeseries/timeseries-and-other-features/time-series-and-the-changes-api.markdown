@@ -1,4 +1,4 @@
-﻿# Time Series and the Changes API
+﻿# Time-Series and the Changes API
 ---
 
 {NOTE: }
