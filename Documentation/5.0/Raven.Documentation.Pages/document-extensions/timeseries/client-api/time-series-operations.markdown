@@ -15,6 +15,7 @@ and `store operations`.
    * The retrieval of multiple time-series' data in a single server call  
    * Managing time-series rollup and retention policies  
    * Appending time-series in bulk  
+   * Patching time-series data to multiple documents.  
 
 {INFO: }
 If you need to perform an action that can be accomplished by both 
@@ -32,6 +33,7 @@ comfortable with.
      * [Get A Single Time-Series' Data](../../../document-extensions/timeseries/client-api/time-series-operations#get-a-single-time-series-data)  
      * [Get Multiple Time-Series Data](../../../document-extensions/timeseries/client-api/time-series-operations#get-multiple-time-series-data)  
   * [`ConfigureTimeSeriesOperation`: Manage Rollup and Retention Policies](../../../document-extensions/timeseries/client-api/time-series-operations#configuretimeseriesoperation:-manage-rollup-and-retention-policies)  
+  * [`PatchOperation`: Patch Time-Series Data To Documents](../../../document-extensions/timeseries/client-api/time-series-operations#configuretimeseriesoperation:-manage-rollup-and-retention-policies)  
 {NOTE/}
 
 ---
@@ -205,6 +207,16 @@ Use `ConfigureTimeSeriesOperation` to manage time-series rollup and retention po
 
 Learn how to use this operation in the article dedicated to 
 [rollup and retention](../../../document-extensions/timeseries/rollup-and-retention).  
+
+{PANEL/}
+
+{PANEL: `PatchOperation`: Patch Time-Series Data To Documents}
+
+Using `PatchOperation` to patch time-series data to documents 
+has an advantage over using `session.Advanced.Defer`, in that 
+it allows you to patch multiple documents.  
+
+
 
 {PANEL/}
 

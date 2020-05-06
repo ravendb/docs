@@ -249,6 +249,86 @@ namespace SlowTests.Client.TimeSeries.Session
                     .Get(start, end);
             }
             #endregion
+
+            #region timeseries_region_Patch-A-Document-A-Single-Time-Series-Entry
+            // Patch a document a single time-series entry
+            using (var session = store.OpenSession())
+            {
+                var baseline = DateTime.Today;
+
+                session.Advanced.Defer(new PatchCommandData("users/1-A", null,
+                    new PatchRequest
+                    {
+                        Script = @"timeseries(this, args.timeseries).
+                                        append( 
+                                                args.timestamp, 
+                                                args.values, 
+                                                args.tag
+                                               );",
+                        Values =
+                        {
+                                { "timeseries", "Heartrate" },
+                                { "timestamp", baseline.AddMinutes(1) },
+                                { "values", 59d },
+                                { "tag", "watches/fitbit" }
+                        }
+                    }, null));
+                session.SaveChanges();
+            }
+            #endregion
+
+            #region timeseries_region_Patch-Append-A-Document-100-TS-Entries
+            var baseline = DateTime.Today;
+
+            // Create an array of values to patch
+            var toAppend = Enumerable.Range(0, 100)
+                .Select(i => new Tuple<DateTime, double>
+                            (baseline.AddSeconds(i), 59d))
+                .ToArray();
+
+            session.Advanced.Defer(new PatchCommandData("users/1-A", null,
+                new PatchRequest
+                {
+                    Script = @"
+                                var i = 0;
+                                for(i = 0; i < args.toAppend.length; i++)
+                                {
+                                    timeseries(id(this), args.timeseries)
+                                    .append (
+                                      new Date(args.toAppend[i].Item1), 
+                                      args.toAppend[i].Item2, 
+                                      args.tag);
+                                }",
+
+                    Values =
+                    {
+                                { "timeseries", "Heartrate" },
+                                { "toAppend", toAppend },
+                                { "tag", "watches/fitbit" }
+                    }
+                }, null));
+            session.SaveChanges();
+            #endregion
+
+            #region timeseries_region_Patch-Remove-From-A-Document-50-TS-Entries
+            // Remove time-series entries
+            session.Advanced.Defer(new PatchCommandData("users/1-A", null,
+                new PatchRequest
+                {
+                    Script = @"timeseries(this, args.timeseries).remove(args.from, args.to);",
+                    Values =
+                    {
+                                { "timeseries", "Heartrate" },
+                                { "from", baseline.AddSeconds(0) },
+                                { "to", baseline.AddSeconds(49) }
+                    }
+                }, null));
+            session.SaveChanges();
+            #endregion
+
+
+
+
         }
 
         public void ReebStoreOperationsTests()
