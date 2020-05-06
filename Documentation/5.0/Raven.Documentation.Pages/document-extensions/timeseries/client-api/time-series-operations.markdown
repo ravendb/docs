@@ -12,10 +12,11 @@ and `store operations`.
   transactional guarantee `session` methods provide.  
 * There are time-series actions that are only available via store operations, 
   including -  
-   * The retrieval of multiple time-series' data in a single server call  
-   * Managing time-series rollup and retention policies  
-   * Appending time-series in bulk  
-   * Patching time-series data to multiple documents.  
+   * Appending, removing and getting the data of **multiple time-series** 
+     in a single operation.  
+   * Managing time-series **rollup and retention policies**  
+   * Performing **queries** and patching time-series data to 
+     **multiple chosen documents**.  
 
 {INFO: }
 If you need to perform an action that can be accomplished by both 
@@ -34,6 +35,7 @@ comfortable with.
      * [Get Multiple Time-Series Data](../../../document-extensions/timeseries/client-api/time-series-operations#get-multiple-time-series-data)  
   * [`ConfigureTimeSeriesOperation`: Manage Rollup and Retention Policies](../../../document-extensions/timeseries/client-api/time-series-operations#configuretimeseriesoperation:-manage-rollup-and-retention-policies)  
   * [`PatchOperation`: Patch Time-Series Data To Documents](../../../document-extensions/timeseries/client-api/time-series-operations#configuretimeseriesoperation:-manage-rollup-and-retention-policies)  
+  * [`PatchByQueryOperation`: Patch Time-Series Data By Query](../../../document-extensions/timeseries/client-api/time-series-operations#patchbyqueryoperation:-patch-time-series-data-by-query)  
 {NOTE/}
 
 ---
@@ -164,7 +166,7 @@ There are two overloads of this operation.
    * The time-series name  
    * Range start: Timestamp for the first time-series entry to be retrieved  
    * Range end: Timestamp for the last time-series entry to be retrieved  
-* Use `store.Operations.Send` to execute the operation.  
+* Call `store.Operations.Send` to execute the operation.  
 * Data is returned into a `dictionary of `TimeSeriesRangeResult` classes.  
    * TimeSeriesRangeResult:
      {CODE TimeSeriesRangeResult-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
@@ -187,7 +189,7 @@ Here, we retrieve all entries of a single time-series.
    * **Name** - The time-series name  
    * **From** - Range start, the timestamp for the first time-series entry to be retrieved  
    * **To** - Range end, the timestamp for the last time-series entry to be retrieved  
-* Use `store.Operations.Send` to execute the operation.  
+* Call `store.Operations.Send` to execute the operation.  
 * Data is returned into into a `dictionary of `TimeSeriesRangeResult` classes.  
    * TimeSeriesRangeResult:
      {CODE TimeSeriesRangeResult-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
@@ -212,14 +214,77 @@ Learn how to use this operation in the article dedicated to
 
 {PANEL: `PatchOperation`: Patch Time-Series Data To Documents}
 
-Using `PatchOperation` to patch time-series data to documents 
-has an advantage over using `session.Advanced.Defer`, in that 
-it allows you to patch multiple documents.  
+Use `PatchOperation` to run a Java Script that patches time-series 
+entries to a document or removes them from it.  
 
+---
 
+#### Usage Flow  
+
+* Pass `PatchOperation` -  
+   * the document ID  
+   * the change vector if you need to (or `null` if not)  
+   * a new `PatchRequest` instance  
+* Use the `PatchRequest` instance to pass `PatchOperation` 
+  a Java Script that specifies whether to Append or Remove 
+  time-series entries and how to perform it.  
+* Call `store.Operations.Send` to execute the operation.  
+
+---
+
+#### Usage Samples  
+
+Here, we use `PatchOperation` to patch a document a single 
+time-series entry.  
+The script draws its arguments from its "Values" section.  
+{CODE TS_region-Operation_Patch-Append-Single-TS-Entry@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+
+Here, we provide `PatchOperation`with a script that patches 
+100 time-series entries to a document.  
+Timestamps and values are drawn from an array, and other 
+arguments are provided in the "Values" section.  
+{CODE TS_region-Operation_Patch-Append-100-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+
+Here, we use `PatchOperation` to remove a range of 50 time-series 
+entries from a document.  
+{CODE TS_region-Operation_Patch-Remove-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}
 
+{PANEL: `PatchByQueryOperation`: Patch Time-Series Data By Query}
+
+Use `PatchByQueryOperation` to run a query and patch the documents 
+it finds. It is useful when you want to patch data time-series data 
+to multiple documents.  
+You can also use this operation to remove and get time-series data 
+from multiple documents.  
+
+---
+
+#### Usage Flow  
+
+* Create a `PatchByQueryOperation` operation.  
+* Pass `PatchByQueryOperation` a new `IndexQuery` instance as an argument.  
+* Add the `IndexQuery` instance a Java Script that specifies 
+   the query you want to run.  
+* Call `store.Operations.Send` to execute the operation.  
+
+---
+
+#### Usage Samples  
+
+Here, the query we provide `PatchByQueryOperation` appends 
+a time-series entry to all user documents.  
+{CODE TS_region-PatchByQueryOperation-Append-To-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+
+Here, the query removes time-series from located documents.  
+{CODE TS_region-PatchByQueryOperation-Remove-From-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+
+Here, we get selected ranges of time-series entries from the documents 
+located by the query.  
+{CODE TS_region-PatchByQueryOperation-Get@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+
+{PANEL/}
 
 ## Related articles
 **Studio Articles**:  

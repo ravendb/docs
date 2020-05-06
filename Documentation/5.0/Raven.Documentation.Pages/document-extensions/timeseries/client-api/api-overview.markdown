@@ -118,24 +118,26 @@ choose the one you're more comfortable with.
 
 #### Commonly Used Time-Series Operations
 
-* `TimeSeriesBatchOperation`  
+* [`TimeSeriesBatchOperation`](../../../document-extensions/timeseries/client-api/time-series-operations#timeseriesbatchoperation:-append-and-remove-time-series-data)  
   Use this operation to append and remove time-series and time-series entries.  
   `TimeSeriesBatchOperation` has an advantage over `session.Append` and 
   `session.Remove`, in allowing you to bundle a series of Append and/or 
   Remove operations in a list and execute tham in a single call.  
-* `GetTimeSeriesOperation`  
+* [`BulkInsert`](../../../document-extensions/timeseries/client-api/time-series-operations#bulkinsert:-append-time-series-in-bulk)  
+  Use this operation to append time-series entries in bulk.  
+* [`GetTimeSeriesOperation`](../../../document-extensions/timeseries/client-api/time-series-operations#gettimeseriesoperation:-get-time-series-data)  
   Use this operation to retrieve time-series data.  
   `GetTimeSeriesOperation` has an advantage over `session.Get`, in allowing 
   you to retrieve data from multiple time-series of a selected document in 
   a single call.  
-* `ConfigureTimeSeriesOperation`  
+* [`ConfigureTimeSeriesOperation`](../../../document-extensions/timeseries/client-api/time-series-operations#configuretimeseriesoperation:-manage-rollup-and-retention-policies)  
   Use this operation to manage time-series roll-up and retention policies.  
-
-Learn how to use `TimeSeriesBatchOperation` and `GetTimeSeriesOperation`in the 
-[article dedicated to operations](../../../document-extensions/timeseries/client-api/time-series-operations).  
-
-Learn how to use `ConfigureTimeSeriesOperation` in the article dedicated to 
-[rollup and retention](../../../document-extensions/timeseries/rollup-and-retention).  
+* [`PatchOperation`](../../../document-extensions/timeseries/client-api/time-series-operations#configuretimeseriesoperation:-manage-rollup-and-retention-policies)  
+  Use this operation to run a Java Script that patches time-series entries 
+  to a document or removes them from it.  
+* [`PatchByQueryOperation`](../../../document-extensions/timeseries/client-api/time-series-operations#patchbyqueryoperation:-patch-time-series-data-by-query)  
+  Use this operation to run a query and patch time-series entries to found 
+  documents.  
 
 {PANEL/}
 

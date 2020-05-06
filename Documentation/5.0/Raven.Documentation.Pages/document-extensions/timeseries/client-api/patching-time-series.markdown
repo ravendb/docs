@@ -3,22 +3,25 @@
 
 {NOTE: }
 
-You can patch time-series to a document or a series of documents 
-using either a `session` methods or a `document store` operation.  
+You can patch time-series data to a document using either 
+a `session` method or `document store` operations.  
 
 * In this page:  
-   * [Patching Time-Series Using `session.Advanced.Defer`](../../../document-extensions/timeseries/client-api/patching-time-series#patching-time-series-using-session.advanced.defer)  
-   * [Patching Time-Series Using `PatchOperation`](../../../document-extensions/timeseries/client-api/patching-time-series#patching-time-series-using-patchoperation)  
+   * [Patching Time-Series Date Using `session.Advanced.Defer`](../../../document-extensions/timeseries/client-api/patching-time-series#patching-time-series-data-using-session.advanced.defer)  
+   * [Patching Time-Series Date Using `store operations`](../../../document-extensions/timeseries/client-api/patching-time-series#patching-time-series-date-using-store-operations)  
 {NOTE/}
 
 ---
 
-{PANEL: Patching Time-Series Using `session.Advanced.Defer`}
+{PANEL: Patching Time-Series Data Using `session.Advanced.Defer`}
 
-To patch time-series entries to a document or to remove entries 
-from a document, call `session.Advanced.Defer`.  
-Instruct `session.Advanced.Defer` which actions to perform, 
-by passing it a Java Script.  
+Use `session.Advanced.Defer` to run a Java Script that patches time-series 
+entries to a document or removes them from it.  
+
+You can handle a single document at a time.  
+Since this is a `session` method however, you can call 
+`session.Advanced.Defer` multiple times and call `session.saveChanges()` 
+to execute them all in a single transaction.  
 
 ---
 
@@ -42,26 +45,32 @@ by passing it a Java Script.
 Here, we use `session.Advanced.Defer` to patch a document a single 
 time-series entry.  
 The script draws its arguments from its "Values" section.  
-{CODE timeseries_region_Patch-A-Document-A-Single-Time-Series-Entry@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE TS_region-Session_Patch-Append-Single-TS-Entry@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 Here, we provide `session.Advanced.Defer`with a script that patches 
 100 time-series entries to a document. Timestamps and values are drawn 
 from an array, and other arguments are provided in the "Values" section.  
-{CODE timeseries_region_Patch-Append-A-Document-100-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE TS_region-Session_Patch-Append-100-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 Here, we remove a range of 50 time-series entries from a document.  
-{CODE timeseries_region_Patch-Remove-From-A-Document-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE TS_region-Session_Patch-Remove-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 {PANEL/}
 
-{PANEL: Patching Time-Series Using `PatchOperation`}
+{PANEL: Patching Time-Series Date Using `store operations`}
 
-Patch time-series data via the `document store` using `PatchOperation`.  
-It has an advantage over `session.Advanced.Defer`, in that it allows you 
-to patch multiple documents.  
+There are two document-store patching operations.  
 
-Learn how to use `PatchOperation` with time-series [in the article 
-dedicated to time-series operations](../../../).  
+* The first is `PatchOperation`.  
+  Use it to run a Java Script that patches time-series entries to 
+  a document or removes them from it.  
+  Learn how to use it [here](../../../document-extensions/timeseries/client-api/time-series-operations#configuretimeseriesoperation:-manage-rollup-and-retention-policies).  
+* The second is `PatchByQueryOperation`.  
+  Use it to query your database and perform time-series operations 
+  on located documents.  
+  `PatchByQueryOperation` is very helpful when you want to perform 
+  time-series actions on multiple documents.  
+  Learn how to use it [here](../../../document-extensions/timeseries/client-api/time-series-operations#patchbyqueryoperation:-patch-time-series-data-by-query).  
 
 {PANEL/}
 

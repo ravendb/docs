@@ -1,7 +1,18 @@
 ﻿using System;
 using System.Linq;
-using Xunit.Abstractions;
+using FastTests;
 using Raven.Client.Documents;
+using Raven.Tests.Core.Utils.Entities;
+using Xunit;
+using Xunit.Abstractions;
+using System.Collections.Generic;
+using Raven.Server.Utils;
+using MongoDB.Driver;
+using Raven.Client.Documents.Operations.TimeSeries;
+using Raven.Client.Documents.Commands.Batches;
+using PatchRequest = Raven.Client.Documents.Operations.PatchRequest;
+using Raven.Client.Documents.Operations;
+using Xunit.Abstractions;
 
 namespace SlowTests.Client.TimeSeries.Session
 {
@@ -11,7 +22,7 @@ namespace SlowTests.Client.TimeSeries.Session
         {
         }
 
-        public void TimeSeriesSessionTests()
+        public void SessionTests()
         {
             var store = new DocumentStore
             {
@@ -250,7 +261,7 @@ namespace SlowTests.Client.TimeSeries.Session
             }
             #endregion
 
-            #region timeseries_region_Patch-A-Document-A-Single-Time-Series-Entry
+            #region TS_region-Session_Patch-Append-Single-TS-Entry
             // Patch a document a single time-series entry
             using (var session = store.OpenSession())
             {
@@ -277,7 +288,7 @@ namespace SlowTests.Client.TimeSeries.Session
             }
             #endregion
 
-            #region timeseries_region_Patch-Append-A-Document-100-TS-Entries
+            #region TS_region-Session_Patch-Append-100-TS-Entries
             var baseline = DateTime.Today;
 
             // Create an array of values to patch
@@ -310,7 +321,7 @@ namespace SlowTests.Client.TimeSeries.Session
             session.SaveChanges();
             #endregion
 
-            #region timeseries_region_Patch-Remove-From-A-Document-50-TS-Entries
+            #region TS_region-Session_Patch-Remove-50-TS-Entries
             // Remove time-series entries
             session.Advanced.Defer(new PatchCommandData("users/1-A", null,
                 new PatchRequest
@@ -326,12 +337,9 @@ namespace SlowTests.Client.TimeSeries.Session
             session.SaveChanges();
             #endregion
 
-
-
-
         }
 
-        public void ReebStoreOperationsTests()
+        public void StoreOperationsTests()
         {
             #region timeseries_region_Append-Using-TimeSeriesBatchOperation
             const string documentId = "users/john";
@@ -458,6 +466,123 @@ namespace SlowTests.Client.TimeSeries.Session
                     }
                 }
                 #endregion
+
+                #region TS_region-Operation_Patch-Append-Single-TS-Entry
+                store.Operations.Send(new PatchOperation("users/1-A", null,
+                    new PatchRequest
+                    {
+                        Script = "timeseries(this, args.timeseries).append(args.timestamp, args.values, args.tag);",
+                        Values =
+                        {
+                            { "timeseries", "Heartrate" },
+                            { "timestamp", baseline.AddMinutes(1) },
+                            { "values", 59d },
+                            { "tag", "watches/fitbit" }
+                        }
+                    }));
+                #endregion
+
+                #region TS_region-Operation_Patch-Append-100-TS-Entries
+                // Create an array of values to patch
+                var toAppend = Enumerable.Range(0, 100)
+                 .Select(i => new Tuple<DateTime, double>
+                                (baseline.AddSeconds(i), 59d))
+                    .ToArray();
+
+                store.Operations.Send(new PatchOperation("users/1-A", null,
+                    new PatchRequest
+                    {
+                        Script = "var i = 0; " +
+                        "for (i = 0; i < args.toAppend.length; i++) " +
+                        "{timeseries(id(this), " +
+                        "args.timeseries).append(" +
+                        "new Date(" +
+                        "args.toAppend[i]." +
+                        "Item1), " +
+                        "args.toAppend[i].Item2, args.tag);" +
+                        "}",
+                        Values =
+                        {
+                                { "timeseries", "Heartrate" },
+                                { "toAppend", toAppend },
+                                { "tag", "watches/fitbit" }
+                        }
+                    }));
+                #endregion
+
+                #region TS_region-Operation_Patch-Remove-50-TS-Entries
+                store.Operations.Send(new PatchOperation("users/1-A", null,
+                    new PatchRequest
+                    {
+                        Script = "timeseries(this, args.timeseries).remove(args.from, args.to);",
+                        Values =
+                        {
+                                { "timeseries", "Heartrate" },
+                                { "from", baseline.AddSeconds(0) },
+                                { "to", baseline.AddSeconds(49) }
+                        }
+                    }));
+                #endregion
+
+                #region TS_region-PatchByQueryOperation-Append-To-Multiple-Docs
+                // Append time-series to all users
+                var appendOperation = new PatchByQueryOperation(new IndexQuery
+                {
+                    Query = @"from Users as u update
+                                {
+                                    timeseries(u, $name).append($time, $values, $tag)
+                                }",
+                    QueryParameters = new Parameters
+                            {
+                                { "name", "Heartrate" },
+                                { "time", baseline.AddMinutes(1) },
+                                { "values", new[]{59d} },
+                                { "tag", "watches/fitbit" }
+                            }
+                });
+                store.Operations.Send(appendOperation);
+                #endregion
+
+                #region TS_region-PatchByQueryOperation-Remove-From-Multiple-Docs
+                // Remove time-series from all users
+                var removeOperation = new PatchByQueryOperation(new IndexQuery
+                {
+                    Query = @"from Users as u
+                                update
+                                {
+                                    timeseries(u, $name).remove($from, $to)
+                                }",
+                    QueryParameters = new Parameters
+                            {
+                                { "name", "Heartrate" },
+                                { "from", DateTime.MinValue },
+                                { "to", DateTime.MaxValue }
+                            }
+                });
+                store.Operations.Send(removeOperation);
+                #endregion
+
+                #region TS_region-PatchByQueryOperation-Get
+                // Get ranges of time-series entries from all users 
+                var getOperation = new PatchByQueryOperation(new IndexQuery
+                {
+                    Query = @"from Users as u
+                                update
+                                {
+                                    timeseries(u, $name).get($from, $to)
+                                }",
+                    QueryParameters = new Parameters
+                            {
+                                { "name", "Heartrate" },
+                                { "from", DateTime.MinValue },
+                                { "to", DateTime.MaxValue }
+                            }
+                });
+                store.Operations.Send(appendOperation);
+                #endregion
+
+
+
 
 
 
