@@ -1,4 +1,7 @@
-﻿# Time Series Design
+﻿# Time-Series Design
+
+
+
 ---
 
 {NOTE: }
@@ -6,64 +9,94 @@
 * ...  
 
 * In this page:  
-  * [Design]()  
-  * []()  
+  * [Time-Series Structure](../../document-extensions/timeseries/design#time-series-structure)  
+  * [Success, Failure and Conflicts](../../document-extensions/timeseries/design#success,-failure-and-conflicts)  
+  * [The `HasTimeSeries` Flag](../../document-extensions/timeseries/design#the-hastimeseries-flag)  
+
   * []()  
 {NOTE/}
 
 ---
 
-{PANEL: Design}
+{PANEL: Time-Series Structure}
 
-* A time series is an array of `Double` values.  
-  Its keys are Time Points, ordered by time.  
+A time-series is an array of `IEnumerable`-type time-series entries.  
+Each entry consists of a **timestamp**, a **tag**, and an array of **values**.  
 
-- | Key| Value | Tag |
-|:-------------:|:-------------:|:-------------:|
-| Time Point |  An array of Doubles | Optional, indicates the measurement origin; <br> A reference to the document |
+* `TimeSeriesEntry` 
 
-{INFO: Time Points}
+| Parameters | Type | Description |
+|:-------------|:-------------|:-------------|
+| `Timestamp` | DateTime | Entry's time signature |
+| `Tag` | string | Entry's tag |
+| `Values` | double[] | Entry's values array  |
 
-- **Units**  
-  Time points are measured in milliseconds. Measurement ticks are rounded **down**.  
-- **Offset**  
-  Each time-point in a time series' [segment]() is indicated by its **offset** from the previous point.  
-- **Distance**  
-  Each offset's **distance** from the previous offset is also indicated.  
-  This is helpful in series of a fixed change, like **1, 2, 3** - where the offset would normally be 
-  1 and the distance from the previous offset would be 0.  
-  RavenDB uses these repeated 0's while compressing the series for storage, to minimize the amount 
-  of storage needed for it.  
-- **Encoding**  
-  We encode Time Series usinf Facebook Gorilla encoding.  
-{INFO/}
+* A time series includes a reference to the document it extends, by the document's ID.  
 
----
-
-#### References
-
-* The document refers to its time series extensions in its metadata.  
-   - **The `HasTimeSeries` Flag**  
-     When a time series is added to a document, RavenDB automatically sets a `HasTimeSeries` Flag in the document's metadata.  
-     When all time series have been removed from a document, the server automatically removes this flag.  
-* A time series contains a reference to the document it extends, by the document's name.  
+* Time-series are encoded using Facebook Gorilla encoding.  
 
 ---
 
 ####Segments
 
-* A short series is contained in a single segment.  
-* A longer (over 32k) series is contained in multiple segments.  
-* A new segment is also opened when a long period of time [25 days?] has passed 
+Time-series may be constructed of segments.  
+
+* A time-series of up to 32k entries is contained in a single segment.  
+* A time-series longet than 32k entries is contained in multiple segments.  
+* A new segment is also created when a period of more than 25 days has passed 
   since the last measurement.  
-
----
-
-####Number of Time Series Per Document
-...
 
 {PANEL/}
 
+{PANEL: Success, Failure and Conflicts}
+
+---
+
+####Success
+
+As long as its owner document exists, updating a Time-Serie will always succeed.  
+
+---
+
+####Transactions
+
+When a session transaction that includes a time-series modification fails for any 
+reason, the time-series modification is reverted.  
+
+---
+
+####No Conflicts
+
+Time-series actions do not cause conflicts.  
+
+* **When a time-series is updated by multiple cluster Nodes**  
+   * When a time-series' data is replicated by multiple nodes, the data 
+     from all nodes is merged into a single series.  
+   * When multiple nodes append **different values** at the same timestamp, 
+     the **bigger value** is chosen for this entry.  
+   * When multiple nodes apppend **different amount of values** for the same 
+     timestamp, the **bigger amount of values** is chosen for this entry.  
+   * When an existing value at a certain timestamp is deleted by a node 
+     and updated by another node, the deletion is chosen.  
+
+* **When a time-series is updated By multiple clients of the same node**  
+   * When a time-series' value at a certain timestamp is appended by 
+     multiple clients more or less simultaneously, the last one is chosen.  
+   * When an existing value at a certain timestamp is deleted by a client 
+     and updated by another client, the last action is chosen.  
+
+{PANEL/}
+
+
+{PANEL: The `HasTimeSeries` Flag}
+
+* `HasTimeSeries` Flag
+    * When the first time-series is added to a document, RavenDB automatically sets 
+      a `HasTimeSeries` Flag in the document's metadata.  
+    * When all time-series have been removed from a document, RavenDB automatically 
+      removes the flag.  
+
+ {PANEL/}
 
 ## Related articles
 **Studio Articles**:  

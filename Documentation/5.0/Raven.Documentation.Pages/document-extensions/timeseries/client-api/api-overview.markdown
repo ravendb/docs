@@ -16,7 +16,6 @@ time-series.
   * [Creating and Removing Time-Series](../../../document-extensions/timeseries/client-api/api-overview#creating-and-removing-time-series)  
   * [Managing Time-Series Using `session` methods](../../../document-extensions/timeseries/client-api/api-overview#managing-time-series-using-session-methods)  
   * [Managing Time-Series Using `store` Operations](../../../document-extensions/timeseries/client-api/api-overview#managing-time-series-using-store-operations)  
-  * [Success, Failure and Conflicts](../../../document-extensions/timeseries/client-api/api-overview#success,-failure-and-conflicts)  
 
 {NOTE/}
 
@@ -138,43 +137,6 @@ choose the one you're more comfortable with.
 * [`PatchByQueryOperation`](../../../document-extensions/timeseries/client-api/time-series-operations#patchbyqueryoperation:-patch-time-series-data-by-query)  
   Use this operation to run a query and patch time-series entries to found 
   documents.  
-
-{PANEL/}
-
-{PANEL: Success, Failure and Conflicts}
-
----
-
-####Success
-As long as the document exists, updating a Time Serie will always succeed.  
-
----
-
-####Transactions
-When a transaction that includes a time-series modification fails for any 
-reason, the Counter modification is reverted.  
-
----
-
-####No Conflicts
-
-Time-series actions do not cause conflicts.  
-
-* **Updates By Multiple Cluster Nodes**  
-   * When a time-series' data is replicated by multiple nodes, the data 
-     from all nodes is merged into a single series.  
-   * When multiple nodes append **different values** at the same timestamp, 
-     the **bigger value** is chosen for this entry.  
-   * When multiple nodes apppend **different amount of values** for the same 
-     timestamp, the **bigger amount of values** is chosen for this entry.  
-   * When an existing value at a certain timestamp is deleted by a node 
-     and updated by another node, the deletion is chosen.  
-
-* **Updates By Multiple Clients Of The Same Node**  
-   * When a time-series' value at a certain timestamp is appended by 
-     multiple clients more or less simultaneously, the last one is chosen.  
-   * When an existing value at a certain timestamp is deleted by a client 
-     and updated by another client, the last action is chosen.  
 
 {PANEL/}
 
