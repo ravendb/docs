@@ -1,0 +1,32 @@
+[
+    {
+        "Path": "append-ts-data.markdown",
+        "Name": "Append Time-Series Data",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "remove-ts-data.markdown",
+        "Name": "Remove Time-Series Data",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "get-ts-data.markdown",
+        "Name": "Get Time-Series Data",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "include-ts-data.markdown",
+        "Name": "Include Time-Series Data",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "patch-ts-data.markdown",
+        "Name": "Patch Time-Series Data",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    }
+]

@@ -1,31 +1,30 @@
-﻿# Include Time Series  
+﻿# Include Time-Series Data 
 ---
 
 {NOTE: }
 
-You can [Include](../../../client-api/session/loading-entities#load-with-includes) 
-a time-series or a part of it while loading a document.  
-Included time-series data is retrieved in the same request as its owner-document 
-and is held by the session, so it can be immediately retrieved when needed with no 
-additional remote calls.
+[Include](../../../client-api/session/loading-entities#load-with-includes) 
+a document's time-series data while loading the document.  
+The included time-series data is held by the client's session, 
+so it can be handed to the user with no additional trip to the 
+server the instant it is required.  
 
 * Time-series data can be included while -  
    * Loading a document using `session.Load`  
-   * Loading a document using `session.LoadAsync`  
-   * Querying documents using `session.Query`  
-   * Querying documents using raw RQL via `session.Advanced.RawQuery`  
+   * Loading a document **by a query** via `session.Query`  
+   * Loading a document **by a raw query** via `session.Advanced.RawQuery`  
 
 * In this page:  
-  * [Including Time-Series While Loading a Document](../../../document-extensions/timeseries/client-api/include-time-series#including-time-series-while-loading-a-document)  
-  * [Including Time-Series While Querying Documents](../../../document-extensions/timeseries/client-api/include-time-series#including-time-series-while-querying-documents)  
-      * [Via `Session.Query`](../../../document-extensions/timeseries/client-api/include-time-series#include-time-series-while-querying-via-)  
-      * [Via `session.Advanced.RawQuery`](../../../document-extensions/timeseries/client-api/include-time-series#include-time-series-while-querying-via--1)  
+  * [Include Time-Series Data While Loading Via `Session.Load`](../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data#include-time-series-data-while-loading-via-session.load)  
+  * [Include Time-Series Data During a Query](../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data#include-time-seriess-data-during-a-query)  
+     * [Via `Session.Query`](../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data#include-ts-data-while-querying-via-)  
+     * [Via `session.Advanced.RawQuery`](../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data#include-ts-data-while-querying-via--1)  
 
 {NOTE/}
 
 ---
 
-{PANEL: Including Time-Series While Loading a Document}
+{PANEL: Include Time-Series Data While Loading Via `Session.Load`}
 
 To include a time-series or a part of it while loading a document 
 via `session.Load`, use `IncludeTimeSeries`.  
@@ -69,11 +68,11 @@ the session but from the server, with a much costlier delay.
 
 {PANEL/}
 
-{PANEL: Including Time-Series While Querying Documents}
+{PANEL: Include Time-SeriesS Data During a Query}
 
 ---
 
-### Include time-series while querying via `Session.Query`  
+## Include TS Data While Querying Via `Session.Query`  
 
 To include time-series or parts of them while loading documents 
 via `session.Query`, use `IncludeTimeSeries`.  
@@ -113,7 +112,7 @@ from the session, with no additional trip to the server.
 
 ---
 
-### Include time-series while querying via `session.Advanced.RawQuery`  
+## Include TS Data While Querying Via `session.Advanced.RawQuery`  
 
 
 To include time-series or parts of them while querying via `session.Advanced.RawQuery`, 

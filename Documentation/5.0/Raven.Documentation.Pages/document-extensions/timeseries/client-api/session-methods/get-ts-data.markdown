@@ -1,32 +1,42 @@
-﻿# Get Time-Series  
+﻿# Get Time-Series Data 
 
 ---
 
 {NOTE: }
 
-* You can use the session `TimeSeriesFor.Get` method to retrieve 
-  a time-series' data.  
-  Data retrieved using `TimeSeriesFor.Get` is **cached in clients' local storage**.  
+* Get a **single time-series entry** or a **range of entries** 
+  using the session method `TimeSeriesFor.Get`.  
+* Get the **names of a document's time-series** using the 
+  session method `Advanced.GetTimeSeriesFor`.  
 
-* You can also use the store `GetTimeSeriesOperaion` operation to retrieve 
-  time-series data.  
-  With `GetTimeSeriesOperaion` you can retrieve the data of **multiple time-series**.  
+{INFO: }
+`session.TimeSeriesFor.Get` retrieves a single time-series' data.  
+To retrieve multiple time-series' data in a single call, use the 
+[GetTimeSeriesOperaion](../../../../document-extensions/timeseries/client-api/store-operations/get-TS-data) 
+document-store operation.  
+{INFO/}
 
 * In this page:  
-   * [Get Time-Series Entry Using `session.TimeSeriesFor.Get`](../../../document-extensions/timeseries/client-api/get-time-series#get-time-series-entry-using-session.timeseriesfor.get)  
-   * [Get Time-Series Entry Using `GetTimeSeriesOperaion`](../../../document-extensions/timeseries/client-api/get-time-series#get-time-series-entries-using-gettimeseriesoperaion)  
-
+   * [`TimeSeriesFor.Get`: Get Time-Series Data](../../../../document-extensions/timeseries/client-api/session-methods/get-ts-data#timeseriesfor.get:-get-time-series-data)  
+      * [Definition](../../../../document-extensions/timeseries/client-api/session-methods/get-ts-data#definition)  
+      * [Usage Flow](../../../../document-extensions/timeseries/client-api/session-methods/get-ts-data#usage-flow)  
+      * [Usage Samples](../../../../document-extensions/timeseries/client-api/session-methods/get-ts-data#usage-samples)  
+   * [`Advanced.GetTimeSeriesFor`: Get Time-Series Names](../../../../document-extensions/timeseries/client-api/session-methods/get-ts-data#advanced.gettimeseriesfor:-get-time-series-names)  
+      * [Definition](../../../../document-extensions/timeseries/client-api/session-methods/get-ts-data#definition-1)  
+      * [Usage Flow](../../../../document-extensions/timeseries/client-api/session-methods/get-ts-data#usage-flow-1)  
+      * [Usage Samples](../../../../document-extensions/timeseries/client-api/session-methods/get-ts-data#usage-sample)  
 
 {NOTE/}
 
 ---
 
-{PANEL: Get Time-Series Entry Using `session.TimeSeriesFor.Get`}
+{PANEL: `TimeSeriesFor.Get`: Get Time-Series Data}
+
+---
 
 #### `TimeSeriesFor.Get` Definition
 
 {CODE TimeSeriesFor-Get-definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
 
 * Parameters:  
 
@@ -52,7 +62,7 @@
 
 ---
 
-#### Usage Flow  
+#### `TimeSeriesFor.Get` Usage Flow  
 
 * Open a session.  
 * Create an instance of `TimeSeriesFor`.  
@@ -62,7 +72,7 @@
 
 ---
 
-#### Usage Samples  
+#### `TimeSeriesFor.Get` Usage Samples  
 
 Here, we retrieve all time-series entries of a time-series.  
 {CODE timeseries_region_TimeSeriesFor-Get-Single-Value-Using-Document-ID@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
@@ -75,15 +85,17 @@ and get its "Heartrate" time-series data.
 
 {PANEL/}
 
-{PANEL: Get Time-Series Entries Using `GetTimeSeriesOperaion`}
+{PANEL: `Advanced.GetTimeSeriesFor`: Get Time-Series Names}
 
-Get time-series entries using the `GetTimeSeriesOperaion` operation.  
-It has an advantage over `session.Get`, in that it allows you to retrieve 
-data from multiple time-series of a selected document in a single call.  
+Use this method to retrieve the names of a document's time-series.  
 
-Learn how to use `GetTimeSeriesOperaion` [in the article dedicated to 
-time-series operations](../../../document-extensions/timeseries/client-api/time-series-operations#gettimeseriesoperation:-get-time-series-data).  
+#### `Advanced.GetTimeSeriesFor` Definition
 
+#### `Advanced.GetTimeSeriesFor` Usage Flow
+
+#### `Advanced.GetTimeSeriesFor` Usage Sample
+
+{CODE timeseries_region_Retrieve-TimeSeries-Names@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}
 

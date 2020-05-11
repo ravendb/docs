@@ -1,28 +1,24 @@
-﻿# Remove Time-Series Entries
+﻿# Remove Time-Series Data
 
 ---
 
 {NOTE: }
 
-You can use the session `TimeSeriesFor.Remove` method to remove 
-a **single time-series entry**, or a **range of time-series entries**.  
+Remove time-series data using the session method `TimeSeriesFor.Remove`.  
+You can remove a **single time-series entry** or a **range of entries**.  
 
-You can also use the store `TimeSeriesBatchOperation` operation to 
-remove time-series entries.  
-
-* A time-series is removed, when all its time-series entries are removed.  
-* When a document is deleted, all its time-series are deleted with it.  
+* **Removing a time-series**  
+  Removing all entries of a time-series, removes the whole series.  
 
 * In this page:  
-   * [Removing Time-Series Entries Using `session.TimeSeriesFor.Remove`](../../../document-extensions/timeseries/client-api/remove-time-series-entries#removing-time-series-entries-using-session.timeseriesfor.remove)  
-   * [Removing Time-Series Entries Using `TimeSeriesBatchOperation`](../../../document-extensions/timeseries/client-api/remove-time-series-entries#removing-time-series-entries-using-timeseriesbatchoperation)  
+   * [`TimeSeriesFor.Remove` Definition](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#timeseriesfor.remove-definition)  
+   * [Usage Flow](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#usage-flow)  
+   * [Usage Samples](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#usage-samples)  
 {NOTE/}
 
 ---
 
-{PANEL: Removing Time-Series Entries Using `session.TimeSeriesFor.Remove`}
-
-#### `TimeSeriesFor.Remove` Definition
+{PANEL: `TimeSeriesFor.Remove` Definition}
 
 To remove a time-series entry, use one of `TimeSeriesFor`'s two `Remove` methods.  
 One overload method removes a single time-series entry (by its timestamp), 
@@ -44,9 +40,9 @@ timestamp to an end timestamp).
      | `from` | DateTime | Remove the range of time-series entries starting at this timestamp |
      | `to` | DateTime | Remove the range of time-series entries ending at this timestamp |
 
----
+{PANEL/}
 
-#### Usage Flow  
+{PANEL: Usage Flow}
 
 * Open a session.  
 * Create an instance of `TimeSeriesFor`.  
@@ -55,28 +51,15 @@ timestamp to an end timestamp).
 * Call `TimeSeriesFor.Remove`.  
 * Call `session.SaveChanges` for the action to take effect on the server.  
 
----
+{PANEL/}
 
-#### Usage Samples  
+{PANEL: Usage Samples}
 
 Here, we remove a single time-series entry from a time-series.  
 {CODE timeseries_region_Remove-TimeSeriesFor-Single-Time-Point@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 Here, we remove a range of time-series entries from a time-series.  
 {CODE timeseries_region_TimeSeriesFor-Remove-Time-Points-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-{PANEL/}
-
-{PANEL: Removing Time-Series Entries Using `TimeSeriesBatchOperation`}
-
-Remove ranges of time-series entries using the `TimeSeriesBatchOperation` 
-operation.  
-It has an advantage over `session.Remove`, in that it allows you to bundle 
-a series of Remove actions in a list and execute tham all in a single call.  
-
-Learn how to use `TimeSeriesBatchOperation` [in the article dedicated to 
-time-series operations](../../../document-extensions/timeseries/client-api/time-series-operations#use--to-remove).  
-
 
 {PANEL/}
 

@@ -6,39 +6,13 @@
         "Mappings": []
     },
     {
-        "Path": "append-time-series-entries.markdown",
-        "Name": "Append Time-Series Entries",
-        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Path": "/session-methods",
+        "Name": "Session Methods",
         "Mappings": []
     },
     {
-        "Path": "remove-time-series-entries.markdown",
-        "Name": "Remove Time-Series Entries",
-        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
-        "Mappings": []
-    },
-    {
-        "Path": "get-time-series.markdown",
-        "Name": "Get Time-Series",
-        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
-        "Mappings": []
-    },
-    {
-        "Path": "time-series-operations.markdown",
-        "Name": "Time-Series Operations",
-        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
-        "Mappings": []
-    },
-    {
-        "Path": "include-time-series.markdown",
-        "Name": "Include Time-Series",
-        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
-        "Mappings": []
-    },
-    {
-        "Path": "patching-time-series.markdown",
-        "Name": "Patching Time-Series",
-        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Path": "/store-operations",
+        "Name": "Store Operations",
         "Mappings": []
     }
 ]

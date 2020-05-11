@@ -1,42 +1,34 @@
-﻿# Append Time-Series Entries
+﻿# Append Time-Series Data
 
 ---
 
 {NOTE: }
 
-A time-series is an array of time-series entries. Each entry is 
-populated with a **timestamp**, a **value (or values)**, and an 
-optional **tag**.  
+Append time-series data using the session method `TimeSeriesFor.Append`.  
+You can append a single time-series entry at a time.  
+An entry contains a **timestamp** that marks the entry's location in the 
+time-series, 1 to 32 `double`-type **values**, and optionally a **tag**.  
 
-You can use the session `TimeSeriesFor.Append` method to add 
-a single time-series entry, or update an existing entry.  
-
-You can use the store `TimeSeriesBatchOperation` operation to 
-add or update time-series entries in bulk.  
-
-{INFO: }
-
-* When time-series entries are appended to a **non-existing time-series**, 
-  the **time-series is created**.  
-* When a **non-existing time-series entry** is appended, the **time-series entry 
-  is created**.  
-* When **an existing time-series entry** is appended, the **entry 
-  is updated** with the appended data.  
-
-{INFO/}
+* **Creating a time-series**  
+  Appending a time-series entry to a non-existing time-series, 
+  **creates the time-series** and adds it the new entry.  
+* **Creating a time-series entry**  
+  Appending an existing time-series a new entry, **adds the entry** 
+  to the series at the provided timestamp.  
+* **Updating a time-series entry**  
+  Appending a time-series entry to a time-series that already contains 
+  an entry at this timestamp, **updates the existing entry** with the 
+  appended data. 
 
 * In this page:  
-   * [Appending Time-Series Entries Using `session.TimeSeriesFor.Append`](../../../document-extensions/timeseries/client-api/append-time-series-entries#appending-time-series-entries-using-session.timeseriesfor.append)  
-   * [Appending Time-Series Entries Using `TimeSeriesBatchOperation`](../../../document-extensions/timeseries/client-api/append-time-series-entries#appending-time-series-entries-using-timeseriesbatchoperation)  
+   * [`TimeSeriesFor.Append` Definition](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#timeseriesfor.append-definition)  
+   * [Usage Flow](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#usage-flow)  
+   * [Usage Samples](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#usage-samples)  
 {NOTE/}
 
 ---
 
-{PANEL: Appending Time-Series Entries Using `session.TimeSeriesFor.Append`}
-
----
-
-#### `TimeSeriesFor.Append` Definition
+{PANEL: `TimeSeriesFor.Append` Definition}
 
 To append a time-series entry, use one of the two `TimeSeriesFor.Append` methods.  
 One method updates the time-series entry with a value of type `double`.  
@@ -63,9 +55,9 @@ The second method updates the entry with a value of type `IEnumerable double`.
      | `values` | IEnumerable<double> | Update the time-series entry with these values. <br> For a new time-series entry, these will be its initial values. |
      | `tag` | string | Time-series entry's tag <br> The tag is optional. |
 
----
+{PANEL/}
 
-#### Usage Flow  
+{PANEL: Usage Flow}
 
 * Open a session.  
 * Create an instance of `TimeSeriesFor`.  
@@ -74,9 +66,9 @@ The second method updates the entry with a value of type `IEnumerable double`.
 * Call `TimeSeriesFor.Append`.  
 * Call `session.SaveChanges` for the action to take effect on the server.  
 
----
+{PANEL/}
 
-#### Usage Samples  
+{PANEL: Usage Samples}
 
 Here, we pass `TimeSeriesFor.Append` the value using a `double`, 
 and repeat it in a loop to append multiple time-series entries.  
@@ -88,17 +80,6 @@ If you prefer a bulk operation, use
 Here, we pass an IEnumerable with three values to `TimeSeriesFor.Append`.  
 The three values will be appended at the same timestamp.  
 {CODE timeseries_region_Append-With-IEnumerable@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-{PANEL/}
-
-{PANEL: Appending Time-Series Entries Using `TimeSeriesBatchOperation`}
-
-Append time-series entries using the `TimeSeriesBatchOperation` operation.  
-It has an advantage over `session.Append`, in that it allows you to bundle 
-a series of Append actions in a list and execute tham all in a single call.  
-
-Learn how to use `TimeSeriesBatchOperation` [in the article dedicated to 
-time-series operations](../../../document-extensions/timeseries/client-api/time-series-operations#use--to-append).  
 
 {PANEL/}
 
