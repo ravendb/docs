@@ -4,41 +4,76 @@
 
 {NOTE: }
 
-Remove time-series data using the session method `TimeSeriesFor.Remove`.  
+Remove time-series data using `TimeSeriesFor.Remove`.  
 You can remove a **single time-series entry** or a **range of entries**.  
 
-* **Removing a time-series**  
-  Removing all entries of a time-series, removes the whole series.  
-
 * In this page:  
-   * [`TimeSeriesFor.Remove` Definition](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#timeseriesfor.remove-definition)  
-   * [Usage Flow](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#usage-flow)  
-   * [Usage Samples](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#usage-samples)  
+      * [`TimeSeriesFor.Remove`](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#timeseriesfor.remove)  
+      * [Syntax](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#timeseriesfor.remove-syntx)  
+         * [Overload 1 - Remove a Single Time-Series Entry.](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#overload-1)  
+         * [Overload 2 - Remove a Range Of Time-Series Entries](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#overload-2)  
+      * [Usage Flow](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#usage-flow)  
+      * [Usage Samples](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#usage-samples)  
 {NOTE/}
 
 ---
 
-{PANEL: `TimeSeriesFor.Remove` Definition}
+{PANEL: `TimeSeriesFor.Remove`}
 
-To remove a time-series entry, use one of `TimeSeriesFor`'s two `Remove` methods.  
-One overload method removes a single time-series entry (by its timestamp), 
-and the second method removes a range of time-series entries (from a start 
-timestamp to an end timestamp).  
+`TimeSeriesFor.Remove` is used for the removal of time-series and 
+time-series entries.  
 
-* **First Overload**: Remove a single time-series entry.  
-     {CODE TimeSeriesFor-Remove-definition-single-timepoint@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+There is no need to explicitly remove a time-series; 
+the series is removed when all its entries are removed.  
 
-     | Parameters | Type | Description |
-     |:-------------|:-------------|:-------------|
-     | `at` | DateTime | Timestamp of the time-series entry you want to remove |
+{PANEL/}
 
-* **Second Overload**: Remove a range of time-series entries.  
+{PANEL: `TimeSeriesFor.Remove` Syntx}
+
+There are two `TimeSeriesFor.Remove` methods:  
+[Overload 1](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#overload-1) 
+- Remove a single time-series entry.  
+[Overload 2](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#overload-2) 
+- Remove a range of time-series entries.  
+
+---
+
+#### Overload 1:  
+
+* **Definition**
+  {CODE TimeSeriesFor-Remove-definition-single-timepoint@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+
+* **Parameters**  
+
+    | Parameters | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `at` | DateTime | Timestamp of the time-series entry you want to remove |
+
+* **Return Value**  
+  No return value.  
+
+* **Exceptions**  
+  Exceptions are not generated.  
+
+---
+
+#### Overload 2:  
+
+* **Definition**
      {CODE TimeSeriesFor-Remove-definition-range-of-timepoints@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+
+* Parameters  
 
      | Parameters | Type | Description |
      |:-------------|:-------------|:-------------|
      | `from` | DateTime | Remove the range of time-series entries starting at this timestamp |
      | `to` | DateTime | Remove the range of time-series entries ending at this timestamp |
+
+* **Return Value**  
+  No return value.  
+
+* **Exceptions**  
+  Exceptions are not generated.  
 
 {PANEL/}
 
@@ -55,10 +90,12 @@ timestamp to an end timestamp).
 
 {PANEL: Usage Samples}
 
-Here, we remove a single time-series entry from a time-series.  
+In this sample we use the [first overload](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#overload-1) 
+to remove a single entry from a time-series.  
 {CODE timeseries_region_Remove-TimeSeriesFor-Single-Time-Point@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-Here, we remove a range of time-series entries from a time-series.  
+In this sample we use the [second overload](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#overload-2) 
+to remove a range of entries from a time-series.  
 {CODE timeseries_region_TimeSeriesFor-Remove-Time-Points-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 {PANEL/}

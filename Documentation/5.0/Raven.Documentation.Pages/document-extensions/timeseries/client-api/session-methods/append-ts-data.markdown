@@ -4,67 +4,93 @@
 
 {NOTE: }
 
-Append time-series data using the session method `TimeSeriesFor.Append`.  
+* Create and update time-series and their entries using `TimeSeriesFor.Append`.  
 
-You can append a single [time-series entry](../../../../document-extensions/timeseries/design#time-series-entries) at a time.  
-
-Note that you can call `TimeSeriesFor.Append` multiple times before
-calling `session.saveChanges` once and carrying out all the append 
-actions in a single transaction.  
-
-{INFO: }
-
-* **Creating a time-series**  
-  Appending a time-series entry to a non-existing time-series, 
-  **creates the time-series** and adds it the new entry.  
-* **Creating a time-series entry**  
-  Appending an existing time-series a new entry, **adds the entry** 
-  to the series at the provided timestamp.  
-* **Updating a time-series entry**  
-  Appending a time-series entry to a time-series that already contains 
-  an entry at this timestamp, **updates the existing entry** with the 
-  appended data. 
-
-{INFO/}
+* You can append a single [time-series entry](../../../../document-extensions/timeseries/design#time-series-entries) at a time.  
+  Note, however, that you can `Append` as many times as you need to before calling 
+  `session.saveChanges`, to append multiple entries in a single transaction.  
 
 * In this page:  
-   * [`TimeSeriesFor.Append` Definition](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#timeseriesfor.append-definition)  
-   * [Usage Flow](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#usage-flow)  
-   * [Usage Samples](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#usage-samples)  
+      * [`TimeSeriesFor.Append`](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#timeseriesfor.append)  
+      * [Syntax](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#timeseriesfor.append-syntax)  
+         * [Overload 1 - Append Entry With Single Value](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#overload-1)  
+         * [Overload 2 - Append Entry With Multiple Values](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#overload-2)  
+      * [Usage Flow](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#timeseriesfor.append-usage-flow)  
+      * [Usage Samples](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#timeseriesfor.append-usage-samples)  
 {NOTE/}
+
+
 
 ---
 
-{PANEL: `TimeSeriesFor.Append` Definition}
+{PANEL: `TimeSeriesFor.Append`}
 
-To append a time-series entry, use one of the two `TimeSeriesFor.Append` methods.  
-One method updates the time-series entry with a value of type `double`.  
-The second method updates the entry with a value of type `IEnumerable double`.  
-
-* **First Overload**: Value type is `double`.  
-  Use this method to update the time-series entry with a single value.  
-     {CODE TimeSeriesFor-Append-definition-double@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-     | Parameters | Type | Description |
-     |:-------------|:-------------|:-------------|
-     | `timestamp` | DateTime | Time-series entry's timestamp |
-     | `value` | double | Update the time-series entry with this value. <br> For a new time-series entry, this will be its initial value. |
-     | `tag` | string | Time-series entry's tag <br> The tag is optional. |
-
-* **Second Overload**: Value type is `IEnumerable double`.  
-  Use this method to update the time-series entry with multiple values 
-  of different types.  
-     {CODE TimeSeriesFor-Append-definition-inum@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-     | Parameters | Type | Description |
-     |:-------------|:-------------|:-------------|
-     | `timestamp` | DateTime | Time-series entry's timestamp |
-     | `values` | IEnumerable<double> | Update the time-series entry with these values. <br> For a new time-series entry, these will be its initial values. |
-     | `tag` | string | Time-series entry's tag <br> The tag is optional. |
+* `TimeSeriesFor.Append` is used for the creation of time-series and 
+  time-series entries, and for the modification of entries values.  
+   * **Creating a Time-Series**  
+     Append an entry to a time-series that doesn't exist yet,  
+     to create the time-series and add it the new entry.  
+   * **Creating a Time-Series Entry**  
+     Append an existing time-series a new entry,  
+     to add the entry to this series at the specified timestamp.  
+   * **Modifying Entry Values**  
+     Append a time-series an entry it already has,  
+     to update the existing entry with new data. 
 
 {PANEL/}
 
-{PANEL: Usage Flow}
+{PANEL: `TimeSeriesFor.Append` Syntax}
+
+There are two `TimeSeriesFor.Append` methods:  
+[Overload 1](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#overload-1) 
+- Append an entry with a single value.  
+[Overload 2](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#overload-2) 
+- Append an entry with multiple values.  
+
+---
+
+#### Overload 1:  
+
+* **Definition**
+  {CODE TimeSeriesFor-Append-definition-double@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+
+* **Parameters**  
+
+    | Parameters | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `timestamp` | DateTime | Time-series entry's timestamp |
+    | `value` | double | Update the time-series entry with this value. <br> For a new time-series entry, this will be its initial value. |
+    | `tag` | string | Time-series entry's tag <br> The tag is optional. |
+
+* **Return Value**  
+  No return value.  
+
+* **Exceptions**  
+  Exceptions are not generated.  
+
+---
+
+#### Overload 2:  
+* **Definition**
+  {CODE TimeSeriesFor-Append-definition-inum@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+
+* **Parameters**  
+
+    | Parameters | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `timestamp` | DateTime | Time-series entry's timestamp |
+    | `values` | IEnumerable<double> | Update the time-series entry with these values. <br> For a new time-series entry, these will be its initial values. |
+    | `tag` | string | Time-series entry's tag <br> The tag is optional. |
+
+* **Return Value**  
+  No return value.  
+
+* **Exceptions**  
+  Exceptions are not generated.  
+
+{PANEL/}
+
+{PANEL: `TimeSeriesFor.Append` Usage Flow}
 
 * Open a session.  
 * Create an instance of `TimeSeriesFor`.  
@@ -75,18 +101,17 @@ The second method updates the entry with a value of type `IEnumerable double`.
 
 {PANEL/}
 
-{PANEL: Usage Samples}
+{PANEL: `TimeSeriesFor.Append` Usage Samples}
 
-Here, we pass `TimeSeriesFor.Append` the value using a `double`, 
-and repeat it in a loop to append multiple time-series entries.  
-Note that the session will still execute all actions in a single transaction.  
-If you prefer a bulk operation, use 
-[TimeSeriesBatchOperation](../../../document-extensions/timeseries/client-api/api-overview#managing-time-series-using-store-operations).  
-{CODE timeseries_region_TimeSeriesFor-Append-TimeSeries-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+* In this sample we use the [first overload](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#overload-1) 
+  to append an entry with a single value.  
+  Though We tun a loop to append a few entries, all entries are appended in a single 
+  transaction when `SaveChanges()` is called.  
+   {CODE timeseries_region_TimeSeriesFor-Append-TimeSeries-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-Here, we pass an IEnumerable with three values to `TimeSeriesFor.Append`.  
-The three values will be appended at the same timestamp.  
-{CODE timeseries_region_Append-With-IEnumerable@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+* In this sample we use the [second overload](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#overload-2) 
+  to append a time-series entry with three values.  
+   {CODE timeseries_region_Append-With-IEnumerable@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 {PANEL/}
 

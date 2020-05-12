@@ -13,6 +13,7 @@ using Raven.Client.Documents.Commands.Batches;
 using PatchRequest = Raven.Client.Documents.Operations.PatchRequest;
 using Raven.Client.Documents.Operations;
 using Xunit.Abstractions;
+using Raven.Client.Documents.Session;
 
 namespace SlowTests.Client.TimeSeries.Session
 {
@@ -127,7 +128,7 @@ namespace SlowTests.Client.TimeSeries.Session
             {
                 session.Store(new { Name = "John" }, "users/john");
 
-                var tsf = session.TimeSeriesFor("users/john", "Heartrate");
+                ISessionDocumentTimeSeries tsf = session.TimeSeriesFor("users/john", "Heartrate");
 
                 for (int i = 0; i < 10; i++)
                 {
@@ -607,18 +608,22 @@ namespace SlowTests.Client.TimeSeries.Session
     private interface IFoo
     {
         #region TimeSeriesFor-Append-definition-double
+        // Append an entry with a single value (double)
         void Append(DateTime timestamp, double value, string tag = null);
         #endregion
 
         #region TimeSeriesFor-Append-definition-inum
+        // Append an entry with multiple values (IEnumerable)
         void Append(DateTime timestamp, IEnumerable<double> values, string tag = null);
         #endregion
 
         #region TimeSeriesFor-Remove-definition-single-timepoint
+        // Remove a single time-series entry
         void Remove(DateTime at);
         #endregion
 
         #region TimeSeriesFor-Remove-definition-range-of-timepoints
+        // Remove a range of time-series entries
         void Remove(DateTime from, DateTime to);
         #endregion
 
