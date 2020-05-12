@@ -5,9 +5,14 @@
 {NOTE: }
 
 Append time-series data using the session method `TimeSeriesFor.Append`.  
-You can append a single time-series entry at a time.  
-An entry contains a **timestamp** that marks the entry's location in the 
-time-series, 1 to 32 `double`-type **values**, and optionally a **tag**.  
+
+You can append a single [time-series entry](../../../../document-extensions/timeseries/design#time-series-entries) at a time.  
+
+Note that you can call `TimeSeriesFor.Append` multiple times before
+calling `session.saveChanges` once and carrying out all the append 
+actions in a single transaction.  
+
+{INFO: }
 
 * **Creating a time-series**  
   Appending a time-series entry to a non-existing time-series, 
@@ -19,6 +24,8 @@ time-series, 1 to 32 `double`-type **values**, and optionally a **tag**.
   Appending a time-series entry to a time-series that already contains 
   an entry at this timestamp, **updates the existing entry** with the 
   appended data. 
+
+{INFO/}
 
 * In this page:  
    * [`TimeSeriesFor.Append` Definition](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#timeseriesfor.append-definition)  

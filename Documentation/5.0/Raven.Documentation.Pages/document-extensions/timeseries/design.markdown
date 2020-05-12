@@ -1,75 +1,116 @@
 ﻿# Time-Series Design
 
-
-
 ---
 
 {NOTE: }
 
-* ...  
+A time-series is an array of Gorilla-encoded `IEnumerable` entries 
+that extends a specific single document.  
 
 * In this page:  
   * [Time-Series Structure](../../document-extensions/timeseries/design#time-series-structure)  
-  * [Success, Failure and Conflicts](../../document-extensions/timeseries/design#success,-failure-and-conflicts)  
-  * [The `HasTimeSeries` Flag](../../document-extensions/timeseries/design#the-hastimeseries-flag)  
+     * [Document Extension](../../document-extensions/timeseries/design#document-extension)  
+     * [The `HasTimeSeries` Flag](../../document-extensions/timeseries/design#the--flag)  
+     * [Segmentation](../../document-extensions/timeseries/design#segmentation)  
+     * [Time-Series Entries](../../document-extensions/timeseries/design#time-series-entries)  
+  * [Updating Time-Series](../../document-extensions/timeseries/design#updating-time-series)  
+     * [Document Change](../../document-extensions/timeseries/design#document-change)  
+     * [Success](../../document-extensions/timeseries/design#success)  
+     * [No Conflicts](../../document-extensions/timeseries/design#no-conflicts)  
+     * [Transactions](../../document-extensions/timeseries/design#transactions)  
 
-  * []()  
 {NOTE/}
 
 ---
 
 {PANEL: Time-Series Structure}
 
-A time-series is an array of `IEnumerable`-type time-series entries.  
-Each entry consists of a **timestamp**, a **tag**, and an array of **values**.  
+---
 
-* `TimeSeriesEntry` 
+#### Document Extension  
 
-| Parameters | Type | Description |
-|:-------------|:-------------|:-------------|
-| `Timestamp` | DateTime | Entry's time signature |
-| `Tag` | string | Entry's tag |
-| `Values` | double[] | Entry's values array  |
+A time-series is related to the document it extsnds, by -  
 
-* A time series includes a reference to the document it extends, by the document's ID.  
-
-* Time-series are encoded using Facebook Gorilla encoding.  
+* A **reference to the time-series** in the document's metadata.  
+  The time-series' **name** is kept in the document's metadata.  
+  The time-series' **data** is stored in a different location.  '
+* A **reference to the document** in the time-series' data.  
 
 ---
 
-####Segments
+#### The `HasTimeSeries` Flag
 
-Time-series may be constructed of segments.  
+* When the first time-series is added to a document, RavenDB automatically sets 
+  a `HasTimeSeries` Flag in the document's metadata.
+  {CODE-BLOCK: JSON}
+{
+    "Name": "Paul",
+    "@metadata": {
+        "@collection": "Users",
+        "@flags": "HasTimeSeries"
+    }
+}
+{CODE-BLOCK/}
+
+
+* When all time-series have been removed from a document, RavenDB will 
+  automatically remove the flag.  
+
+---
+
+#### Segmentation
+
+A time-series array is constructed of segments.  
 
 * A time-series of up to 32k entries is contained in a single segment.  
 * A time-series longet than 32k entries is contained in multiple segments.  
 * A new segment is also created when a period of more than 25 days has passed 
   since the last measurement.  
 
+---
+
+#### Time-Series Entries
+
+Each time-series entry is an `IEnumerable` with three values.  
+
+* `TimeSeriesEntry` 
+
+    | Parameters | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `Timestamp` | DateTime | Time signature |
+    | `Tag` | string | Optional tag |
+    | `Values` | double[] | An array of up to 32 values |
+
 {PANEL/}
 
-{PANEL: Success, Failure and Conflicts}
+{PANEL: Updating Time-Series}
 
 ---
 
-####Success
+#### Document Change  
 
-As long as its owner document exists, updating a Time-Serie will always succeed.  
+* **Name Change**  
+  **Creating** or **removing** a time-series adds or removes its name 
+  to/from the metadata of the document it extends.  
+  These actions **will** invoke a document-change event.  
+* **Data Updates**  
+  Modifying time-series data does **not** invoke a document-change event, 
+  as long as it doesn't create a new time-series or remove an existing one.  
 
 ---
 
-####Transactions
+#### Success
 
-When a session transaction that includes a time-series modification fails for any 
-reason, the time-series modification is reverted.  
+Updating a time-series is designed to succeed without causing any conflict.  
+As long as the document it extends exists, updating a Time-Serie will always succeed.  
 
 ---
 
-####No Conflicts
+#### No Conflicts
 
 Time-series actions do not cause conflicts.  
 
-* **When a time-series is updated by multiple cluster Nodes**  
+* **Time-series update by multiple cluster Nodes**  
    * When a time-series' data is replicated by multiple nodes, the data 
      from all nodes is merged into a single series.  
    * When multiple nodes append **different values** at the same timestamp, 
@@ -79,24 +120,20 @@ Time-series actions do not cause conflicts.
    * When an existing value at a certain timestamp is deleted by a node 
      and updated by another node, the deletion is chosen.  
 
-* **When a time-series is updated By multiple clients of the same node**  
+* **Time-series update By multiple clients of the same node**  
    * When a time-series' value at a certain timestamp is appended by 
      multiple clients more or less simultaneously, the last one is chosen.  
    * When an existing value at a certain timestamp is deleted by a client 
      and updated by another client, the last action is chosen.  
 
+---
+
+#### Transactions
+
+When a session transaction that includes a time-series modification 
+fails for any reason, the time-series modification is reverted.  
+
 {PANEL/}
-
-
-{PANEL: The `HasTimeSeries` Flag}
-
-* `HasTimeSeries` Flag
-    * When the first time-series is added to a document, RavenDB automatically sets 
-      a `HasTimeSeries` Flag in the document's metadata.  
-    * When all time-series have been removed from a document, RavenDB automatically 
-      removes the flag.  
-
- {PANEL/}
 
 ## Related articles
 **Studio Articles**:  

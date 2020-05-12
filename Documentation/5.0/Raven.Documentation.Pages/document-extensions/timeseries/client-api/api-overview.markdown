@@ -5,13 +5,13 @@
 
 The Time-Series API includes a set of [session](../../../client-api/session/what-is-a-session-and-how-does-it-work) 
 methods and [store](../../../client-api/what-is-a-document-store) 
-[operations](../../../client-api/operations/what-are-operations) 
-that you can **append** (create and update), **get**, **remove**, 
-**include**, **patch** and **query** time-series data with.  
+[operations](../../../client-api/operations/what-are-operations).  
+You can use the API to **append** (create and update), **get**, 
+**remove**, **include**, **patch** and **query** time-series data.  
 
 * In this page:  
   * [Creating and Removing Time-Series Data](../../../document-extensions/timeseries/client-api/api-overview#creating-and-removing-time-series-data)  
-  * [`session` Methods -or- `document-store` Operations?](../../../document-extensions/timeseries/client-api/api-overview#session-methods--or--document-store-operations?)  
+  * [`session` Methods -vs- `document-store` Operations](../../../document-extensions/timeseries/client-api/api-overview#session-methods--vs--document-store-operations)  
   * [Available Time-Series `session` methods](../../../document-extensions/timeseries/client-api/api-overview#available-time-series-session-methods)  
   * [Available Time-Series `store` Operations](../../../document-extensions/timeseries/client-api/api-overview#available-time-series-store-operations)  
 
@@ -30,13 +30,16 @@ There is no need to explicitly create or delete a time-series.
 
 {PANEL/}
 
-{PANEL: `session` Methods -or- `document-store` Operations?}
+{PANEL: `session` Methods -vs- `document-store` Operations}
 
-Many time-series functions are available through both `session` methods 
-and `document-store` operations. You can **append**, **remove**, **get** 
-and **patch** time-series data through both interfaces.  
+Some time-series functions are available through both `session` methods 
+and `document-store` operations:  
+You can **append**, **remove**, **get** and **patch** time-series data 
+through both interfaces.  
 
-There are, though, functionalities unique to each interface.  
+---
+
+There are also functionalities unique to each interface.  
 
 * **Time-series functionalities unique to the `session`interface**:  
    * `session` methods provide a **transactional guarantee**.  
