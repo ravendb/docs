@@ -49,30 +49,27 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                 var DatabaseTSConfig = new TimeSeriesConfiguration();
                 DatabaseTSConfig.Collections["Sales"] = salesTSConfig;
 
-                //Send the database time-series configuration to the server
-                store.Maintenance.ForDatabase("ExampleDatabase")
-                                 .Send(new ConfigureTimeSeriesOperation(DatabaseTSConfig));
+                //Send the time-series configuration to the server
+                store.Maintenance.Send(new ConfigureTimeSeriesOperation(DatabaseTSConfig));
                 #endregion
 
                 #region rollup_and_retention_1
                 //Create local instance of the time-series "rawSales"
                 //in the document "sales/1"
-                var rawTimeSeries = session.TimeSeriesFor("sales/1", "rawSales");
+                var rawTS = session.TimeSeriesFor("sales/1", "rawSales");
 
-                //Create local instance of the rollup time-series - first method
-                var rollupTimeSeries = session.TimeSeriesFor("sales/1",
+                //Create local instance of the rollup time-series - first method:
+                var dailyRollupTS = session.TimeSeriesFor("sales/1",
                                                               "rawSales@DailyRollupForOneYear");
 
-                //Create local instance of the rollup time-series - second method
+                //Create local instance of the rollup time-series - second method:
                 //using the rollup policy itself and the raw time-series' name
                 var rollupTimeSeries2 = session.TimeSeriesFor("sales/1",
                                                       dailyRollup.GetTimeSeriesName("rawSales"));
 
-                Assert.Equal(rollupTimeSeries, rollupTimeSeries2);
-
                 //Retrieve all the data from both time-series
-                var rawData = rawTimeSeries.Get(DateTime.MinValue, DateTime.MaxValue).ToList();
-                var rollupData = rollupTimeSeries.Get(DateTime.MinValue, DateTime.MaxValue).ToList();
+                var rawData = rawTS.Get(DateTime.MinValue, DateTime.MaxValue).ToList();
+                var rollupData = dailyRollupTS.Get(DateTime.MinValue, DateTime.MaxValue).ToList();
                 #endregion
             }
         }
