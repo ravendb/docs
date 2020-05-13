@@ -9,7 +9,7 @@ You can remove a **single time-series entry** or a **range of entries**.
 
 * In this page:  
       * [`TimeSeriesFor.Remove`](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#timeseriesfor.remove)  
-      * [Syntax](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#timeseriesfor.remove-syntx)  
+      * [Syntax](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#syntx)  
          * [Overload 1 - Remove a Single Time-Series Entry.](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#overload-1)  
          * [Overload 2 - Remove a Range Of Time-Series Entries](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#overload-2)  
       * [Usage Flow](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#usage-flow)  
@@ -28,7 +28,7 @@ the series is removed when all its entries are removed.
 
 {PANEL/}
 
-{PANEL: `TimeSeriesFor.Remove` Syntx}
+{PANEL: Syntx}
 
 There are two `TimeSeriesFor.Remove` methods:  
 [Overload 1](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#overload-1) 

@@ -12,11 +12,11 @@
 
 * In this page:  
       * [`TimeSeriesFor.Append`](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#timeseriesfor.append)  
-      * [Syntax](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#timeseriesfor.append-syntax)  
+      * [Syntax](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#syntax)  
          * [Overload 1 - Append Entry With Single Value](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#overload-1)  
          * [Overload 2 - Append Entry With Multiple Values](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#overload-2)  
-      * [Usage Flow](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#timeseriesfor.append-usage-flow)  
-      * [Usage Samples](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#timeseriesfor.append-usage-samples)  
+      * [Usage Flow](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#usage-flow)  
+      * [Usage Samples](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#usage-samples)  
 {NOTE/}
 
 
@@ -39,7 +39,7 @@
 
 {PANEL/}
 
-{PANEL: `TimeSeriesFor.Append` Syntax}
+{PANEL: Syntax}
 
 There are two `TimeSeriesFor.Append` methods:  
 [Overload 1](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#overload-1) 
@@ -90,7 +90,7 @@ There are two `TimeSeriesFor.Append` methods:
 
 {PANEL/}
 
-{PANEL: `TimeSeriesFor.Append` Usage Flow}
+{PANEL: Usage Flow}
 
 * Open a session.  
 * Create an instance of `TimeSeriesFor`.  
@@ -101,7 +101,7 @@ There are two `TimeSeriesFor.Append` methods:
 
 {PANEL/}
 
-{PANEL: `TimeSeriesFor.Append` Usage Samples}
+{PANEL: Usage Samples}
 
 * In this sample we use the [first overload](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#overload-1) 
   to append an entry with a single value.  

@@ -12,13 +12,13 @@
         "Mappings": []
     },
     {
-        "Path": "get-ts-data.markdown",
+        "Path": "/get-ts-data",
         "Name": "Get Time-Series Data",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "include-ts-data.markdown",
+        "Path": "/include-ts-data",
         "Name": "Include Time-Series Data",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []

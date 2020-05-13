@@ -14,6 +14,8 @@ using PatchRequest = Raven.Client.Documents.Operations.PatchRequest;
 using Raven.Client.Documents.Operations;
 using Xunit.Abstractions;
 using Raven.Client.Documents.Session;
+using Raven.Client.Documents.Session.TimeSeries;
+using Raven.Client.Documents.Linq;
 
 namespace SlowTests.Client.TimeSeries.Session
 {
@@ -57,11 +59,11 @@ namespace SlowTests.Client.TimeSeries.Session
             using (var session = store.OpenSession())
             {
                 // Use the session to load a document
-                var user = session.Load<User>("users/john");
+                User user = session.Load<User>("users/john");
 
                 // Pass the document object returned from session.Load as a param
                 // Retrieve a single value from the time series
-                var val = session.TimeSeriesFor(user, "Heartrate")
+                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(user, "Heartrate")
                     .Get(DateTime.MinValue, DateTime.MaxValue);
             }
             #endregion
@@ -71,13 +73,12 @@ namespace SlowTests.Client.TimeSeries.Session
             using (var session = store.OpenSession())
             {
                 // Use the session to load a document
-                var user = session.Load<User>("users/john");
+                User user = session.Load<User>("users/john");
 
                 // Pass the document object returned from session.Load as a param
                 // Retrieve a single value from the time series
-                var val = session.TimeSeriesFor(user, "Heartrate")
-                    .Get(DateTime.MinValue, DateTime.MaxValue)
-                    .Single();
+                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(user, "Heartrate")
+                    .Get(DateTime.MinValue, DateTime.MaxValue);
             }
             #endregion
 
@@ -86,7 +87,7 @@ namespace SlowTests.Client.TimeSeries.Session
             // by passing TimeSeriesFor.Get an explict document ID
             using (var session = store.OpenSession())
             {
-                var val = session.TimeSeriesFor("users/john", "Heartrate")
+                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor("users/john", "Heartrate")
                     .Get(DateTime.MinValue, DateTime.MaxValue);
             }
             #endregion
@@ -96,14 +97,14 @@ namespace SlowTests.Client.TimeSeries.Session
             // and get its Heartrate time-series values
             using (var session = store.OpenSession())
             {
-                var baseline = DateTime.Today;
+                baseline = DateTime.Today;
 
-                var query = session.Query<User>()
+                IRavenQueryable<User> query = session.Query<User>()
                     .Where(u => u.Name == "John");
 
                 var result = query.ToList();
 
-                var val = session.TimeSeriesFor(result[0], "Heartrate")
+                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "Heartrate")
                     .Get(DateTime.MinValue, DateTime.MaxValue);
 
                 session.SaveChanges();
@@ -115,8 +116,8 @@ namespace SlowTests.Client.TimeSeries.Session
             using (var session = store.OpenSession())
             {
                 #region timeseries_region_Retrieve-TimeSeries-Names
-                var user = session.Load<User>("users/john");
-                var tsNames = session.Advanced.GetTimeSeriesFor(user);
+                User user = session.Load<User>("users/john");
+                List<string> tsNames = session.Advanced.GetTimeSeriesFor(user);
                 #endregion
             }
 
@@ -215,11 +216,11 @@ namespace SlowTests.Client.TimeSeries.Session
             {
                 var baseline = DateTime.Today;
 
-                var user = session.Load<User>("users/1-A", includeBuilder =>
+                User user = session.Load<User>("users/1-A", includeBuilder =>
                     includeBuilder.IncludeTimeSeries("Heartrate",
                     baseline.AddMinutes(200), baseline.AddMinutes(299)));
 
-                var val = session.TimeSeriesFor("users/1-A", "Heartrate")
+                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor("users/1-A", "Heartrate")
                     .Get(baseline.AddMinutes(200), baseline.AddMinutes(299));
             }
             #endregion
@@ -228,16 +229,16 @@ namespace SlowTests.Client.TimeSeries.Session
             // Query for a document and include a whole time-series
             using (var session = store.OpenSession())
             {
-                var baseline = DateTime.Today;
+                baseline = DateTime.Today;
 
-                var query = session.Query<User>()
+                IRavenQueryable<User> query = session.Query<User>()
                     .Where(u => u.Name == "John")
                     .Include(includeBuilder => includeBuilder.IncludeTimeSeries(
                         "Heartrate", DateTime.MinValue, DateTime.MaxValue));
 
                 var result = query.ToList();
 
-                var val = session.TimeSeriesFor(result[0], "Heartrate")
+                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "Heartrate")
                     .Get(DateTime.MinValue, DateTime.MaxValue);
             }
             #endregion
@@ -246,18 +247,19 @@ namespace SlowTests.Client.TimeSeries.Session
             // Include a Time Series in a Raw Query
             using (var session = store.OpenSession())
             {
-                var baseline = DateTime.Today;
+                baseline = DateTime.Today;
 
                 var start = baseline;
                 var end = baseline.AddHours(1);
 
-                var query = session.Advanced.RawQuery<User>("from Users include timeseries('Heartrate', $start, $end)")
-                    .AddParameter("start", start)
-                    .AddParameter("end", end);
+                IRawDocumentQuery<User> query = session.Advanced.RawQuery<User>
+                    ("from Users include timeseries('Heartrate', $start, $end)")
+                        .AddParameter("start", start)
+                        .AddParameter("end", end);
 
                 var result = query.ToList();
 
-                var val = session.TimeSeriesFor(result[0], "Heartrate")
+                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "Heartrate")
                     .Get(start, end);
             }
             #endregion
@@ -266,7 +268,7 @@ namespace SlowTests.Client.TimeSeries.Session
             // Patch a document a single time-series entry
             using (var session = store.OpenSession())
             {
-                var baseline = DateTime.Today;
+                baseline = DateTime.Today;
 
                 session.Advanced.Defer(new PatchCommandData("users/1-A", null,
                     new PatchRequest
@@ -290,7 +292,7 @@ namespace SlowTests.Client.TimeSeries.Session
             #endregion
 
             #region TS_region-Session_Patch-Append-100-TS-Entries
-            var baseline = DateTime.Today;
+            baseline = DateTime.Today;
 
             // Create an array of values to patch
             var toAppend = Enumerable.Range(0, 100)
@@ -635,14 +637,46 @@ namespace SlowTests.Client.TimeSeries.Session
         TBuilder IncludeTimeSeries(string name, DateTime from, DateTime to);
         #endregion
 
+        #region GetTimeSeriesFor-definition
+        List<string> GetTimeSeriesFor<T>(T instance);
+        #endregion
+
+        #region Load-definition
+        T Load<T>(string id, Action<IIncludeBuilder<T>> includes);
+        #endregion
+
+        #region Include-definition
+        IRavenQueryable<TResult> Include<TResult>(this IQueryable<TResult> source, Action<IQueryIncludeBuilder<TResult>> includes)
+        #endregion
+
+        #region RawQuery-definition
+        IRawDocumentQuery<T> RawQuery<T>(string query);
+        #endregion
+
+        #region PatchCommandData-definition
+        public PatchCommandData(string id, string changeVector, PatchRequest patch, PatchRequest patchIfMissing)
+        #endregion
+
+        #region PatchRequest-definition
+        public class PatchRequest
+        {
+            // Patching script
+            public string Script { get; set; }
+            // Values that can be used by the patching script
+            public Dictionary<string, object> Values { get; set; }
+            //...
+        }
+        #endregion
+
         #region TimeSeriesOperation-class
         public class TimeSeriesOperation
         {
             public List<AppendOperation> Appends;
             public List<RemoveOperation> Removals;
             public string Name;
-            #endregion
+            //...
         }
+        #endregion
 
         #region TimeSeriesRangeResult-class
         public class TimeSeriesRangeResult
