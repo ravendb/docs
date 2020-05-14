@@ -68,17 +68,16 @@ There are also functionalities unique to each interface.
   Use this method to **Create and update time-series data**.  
 * [TimeSeriesFor.Remove](../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data)  
   Use this method to **Remove time-series data**.  
-* [TimeSeriesFor.Get](../../../document-extensions/timeseries/client-api/session-methods/get-ts-data)  
-  Use this method to **Retrieve time-series data**.  
-* [session.Advanced.GetTimeSeriesFor](../../../document-extensions/timeseries/client-api/session-methods/get-ts-data#retrieve-time-series-names:-session.advanced.gettimeseriesfor)  
-  Use this method to **retrieve a document's time-series' names**.  
-* [IncludeTimeSeries](../../../document-extensions/timeseries/client-api/session-methods/include-ts-data)  
-  Use this include-builder argument with `session.Load` or 
-  `session.Query` to **include time-series data while loading documents**.  
-  You can also use `session.Advanced.RawQuery` with an `include timeseries` 
-  statement to **include Time-series data while running a raw query**.  
+* [TimeSeriesFor.Get](../../../document-extensions/timeseries/client-api/session-methods/get-ts-data/get-ts-entries)  
+  Use this method to **Retrieve time-series Entries**.  
+* [Advanced.GetTimeSeriesFor](../../../document-extensions/timeseries/client-api/session-methods/get-ts-data/get-ts-names)  
+  Use this method to **Retrieve time-series Names**.  
 * [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session-methods/patch-ts-data)  
   Use this method to **patch time-series data to a document**.  
+* **To include time-series data** -  
+   * [Use IncludeTimeSeries while loading a document via session.Load](../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-session-load)  
+   * [Use IncludeTimeSeries while retrieving a document via session.Query](../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-session-query)  
+   * [Use RQL while running a raw query](../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-raw-queries)  
 {PANEL/}
 
 {PANEL: Available Time-Series `store` Operations}
@@ -93,14 +92,14 @@ There are also functionalities unique to each interface.
   `GetTimeSeriesOperation` has an advantage over `session.Get`, in allowing 
   you to retrieve data from multiple time-series of a selected document in 
   a single call.  
-* [ConfigureTimeSeriesOperation](../../../document-extensions/timeseries/rollup-and-retention#time-series-rollup-and-retention)  
+* [ConfigureTimeSeriesOperation](../../../document-extensions/timeseries/rollup-and-retention)  
   Use this operation to **manage time-series roll-up and retention policies**.  
-* [PatchOperation](../../../document-extensions/timeseries/client-api/store-operations/patch-TS-data#patchoperation:-patch-time-series-data-to-documents)  
+* [PatchOperation](../../../document-extensions/timeseries/client-api/store-operations/patch-TS-data/patch-a-document)  
   Use this operation to **patch time-series data to a single document**.  
-* [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/store-operations/patch-TS-data#patchbyqueryoperation:-patch-time-series-data-by-query)  
+* [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/store-operations/patch-TS-data/patch-queried-documents)  
   Use this operation to **patch time-series data to documents located 
   by a query**.  
-* [BulkInsert](../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk)  
+* [BulkInsert.TimeSeriesFor.Append](../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk)  
   Use this operation to **append a large quantity of time-series data**.  
 
 {PANEL/}

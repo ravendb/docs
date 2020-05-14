@@ -1,4 +1,5 @@
-﻿# Append Time-Series Data
+﻿## `TimeSeriesFor.Append`
+# Append Time-Series Data
 
 ---
 

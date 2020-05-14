@@ -1,4 +1,5 @@
-﻿# Get Time-Series Data
+﻿## `GetTimeSeriesOperaion`
+# Get Time-Series Data
 
 ---
 

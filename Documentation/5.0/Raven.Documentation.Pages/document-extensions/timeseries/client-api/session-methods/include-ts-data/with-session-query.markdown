@@ -1,4 +1,5 @@
-﻿## Include Time-Series Data With `session.Query`
+﻿## `IncludeTimeSeries`
+# Include TS Data With `session.Query`
 
 ---
 

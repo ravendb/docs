@@ -1,4 +1,5 @@
-﻿# Get Time-Series Entries 
+﻿## `TimeSeriesFor.Get`
+# Get Time-Series Entries 
 
 ---
 

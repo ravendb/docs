@@ -1,4 +1,5 @@
-﻿# Get Time-Series Names
+﻿## `Advanced.GetTimeSeriesFor`
+# Get Time-Series Names
 
 ---
 

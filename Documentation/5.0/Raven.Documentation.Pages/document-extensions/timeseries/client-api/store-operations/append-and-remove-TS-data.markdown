@@ -1,4 +1,5 @@
-﻿# Append and Remove Time-Series Data
+﻿## `TimeSeriesBatchOperation`
+# Append and Remove Time-Series Data
 
 ---
 

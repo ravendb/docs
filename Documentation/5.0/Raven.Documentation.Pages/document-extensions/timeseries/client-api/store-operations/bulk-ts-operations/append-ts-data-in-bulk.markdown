@@ -1,4 +1,5 @@
-﻿# Append Time-Series In Bulk
+﻿## `BulkInsert.TimeSeriesFor.Append`
+# Append Time-Series In Bulk
 
 ---
 

@@ -1,5 +1,5 @@
-﻿# `PatchByQueryOperation`
-## Patch Queried Documents
+﻿## `PatchByQueryOperation`
+# Patch TS Data to Queried Documents
 
 ---
 

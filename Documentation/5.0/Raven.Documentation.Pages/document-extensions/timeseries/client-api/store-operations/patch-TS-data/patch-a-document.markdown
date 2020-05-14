@@ -1,5 +1,5 @@
-﻿# `PatchOperation`  
-## patch Time-Series Entries To a Document  
+﻿## `PatchOperation`  
+# Patch TS Data To a Document  
 
 ---
 

@@ -1,10 +1,11 @@
-﻿## Include Time-Series Data with `session.Advanced.RawQuery`
+﻿## `session.Advanced.RawQuery`
+# Include TS Data With Raw Queries
 
 ---
 
 {NOTE: }
 
-You can include time-series data during a raw RQL query 
+You can include time-series data while running a raw RQL query 
 via `session.Advanced.RawQuery`.  
 
 * [Include Time-Series Data with `Advanced.RawQuery`](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-raw-queries#include-time-series-data-with-advanced.rawquery)  

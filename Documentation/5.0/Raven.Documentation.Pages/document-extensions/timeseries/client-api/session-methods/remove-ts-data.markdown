@@ -1,4 +1,5 @@
-﻿# Remove Time-Series Data
+﻿## `TimeSeriesFor.Remove`
+# Remove Time-Series Data
 
 ---
 
