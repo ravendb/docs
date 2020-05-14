@@ -18,7 +18,7 @@ To patch time-series data to a document, use `session.Advanced.Defer`.
 
 * `Advanced.Defer` uses a custom Java Script to -  
   * Patch time-series entries to a document.  
-  * Removes time-series entries from a document.  
+  * Remove time-series entries from a document.  
 * You can handle a single document at a time.  
 
 {PANEL/}
@@ -56,10 +56,10 @@ To patch time-series data to a document, use `session.Advanced.Defer`.
 * Call `session.Advanced.Defer` and pass it a `PatchCommandData` instance.  
 * Pass the `PatchCommandData` constructor method -  
    * the document ID  
-   * the change vector, if needed (or `null` if not)  
+   * the change vector or `null`)  
    * a `PatchRequest` instance  
-* Fill the `PatchRequest` instance with your script and its values.  
-  The script can be used to append and remove time-series entries.  
+* Add the `PatchRequest` instance a Java Script.  
+  Use the script to append or remove time-series entries.  
 * Call `session.SaveChanges()` to perform the patch.  
 
 {PANEL/}

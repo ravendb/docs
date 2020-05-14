@@ -8,7 +8,7 @@ To add a large quantity of time-series entries to your database,
 use `BulkInsert.TimeSeriesFor.Append`.  
 
 * In this page:  
-   * [BulkInsert.TimeSeriesFor.Append](../../../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk#bulkinsert.timeseriesfor.append)  
+   * [`BulkInsert.TimeSeriesFor.Append`](../../../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk#bulkinsert.timeseriesfor.append)  
    * [Syntax](../../../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk#syntax)  
       * [Overload 1 - Bulk-Insert Single-Value Entries](../../../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk#overload-1-each-appended-entry-has-a-single-value)  
       * [Overload 2 - Bulk-Insert Multiple-Values Entries](../../../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk#overload-2-each-appended-entry-has-multiple-values)  

@@ -517,15 +517,15 @@ namespace SlowTests.Client.TimeSeries.Session
                 store.Operations.Send(new PatchOperation("users/1-A", null,
                     new PatchRequest
                     {
-                        Script = "var i = 0; " +
-                        "for (i = 0; i < args.toAppend.length; i++) " +
-                        "{timeseries(id(this), " +
-                        "args.timeseries).append(" +
-                        "new Date(" +
-                        "args.toAppend[i]." +
-                        "Item1), " +
-                        "args.toAppend[i].Item2, args.tag);" +
-                        "}",
+                        Script = @"var i = 0; 
+                            for (i = 0; i < args.toAppend.length; i++) 
+                            {timeseries(id(this), 
+                            args.timeseries).append(
+                            new Date(
+                            args.toAppend[i].
+                            Item1), 
+                            args.toAppend[i].Item2, args.tag);
+                            }",
                         Values =
                         {
                                 { "timeseries", "Heartrate" },
@@ -551,7 +551,7 @@ namespace SlowTests.Client.TimeSeries.Session
 
                 #region TS_region-PatchByQueryOperation-Append-To-Multiple-Docs
                 // Append time-series to all users
-                var appendOperation = new PatchByQueryOperation(new IndexQuery
+                PatchByQueryOperation appendOperation = new PatchByQueryOperation(new IndexQuery
                 {
                     Query = @"from Users as u update
                                 {
@@ -570,7 +570,7 @@ namespace SlowTests.Client.TimeSeries.Session
 
                 #region TS_region-PatchByQueryOperation-Remove-From-Multiple-Docs
                 // Remove time-series from all users
-                var removeOperation = new PatchByQueryOperation(new IndexQuery
+                PatchByQueryOperation removeOperation = new PatchByQueryOperation(new IndexQuery
                 {
                     Query = @"from Users as u
                                 update
@@ -589,7 +589,7 @@ namespace SlowTests.Client.TimeSeries.Session
 
                 #region TS_region-PatchByQueryOperation-Get
                 // Get ranges of time-series entries from all users 
-                var getOperation = new PatchByQueryOperation(new IndexQuery
+                PatchByQueryOperation getOperation = new PatchByQueryOperation(new IndexQuery
                 {
                     Query = @"from Users as u
                                 update
@@ -603,21 +603,11 @@ namespace SlowTests.Client.TimeSeries.Session
                                 { "to", DateTime.MaxValue }
                             }
                 });
-                store.Operations.Send(appendOperation);
+                Operation getOp = store.Operations.Send(getOperation);
                 #endregion
-
-
-
-
-
 
             }
         }
-
-
-
-
-
 
         private IDisposable GetDocumentStore()
         {
@@ -755,8 +745,21 @@ namespace SlowTests.Client.TimeSeries.Session
         #region BulkInsert-Append-Single-Value-Definition
         public void Append(DateTime timestamp, double value, string tag = null)
         #endregion
+
         #region BulkInsert-Append-Multiple-Values-Definition
         public void Append(DateTime timestamp, IEnumerable<double> values, string tag = null)
+        #endregion
+
+        #region PatchOperation-Definition
+        public PatchOperation(string id, string changeVector, PatchRequest patch, PatchRequest patchIfMissing = null, bool skipPatchIfChangeVectorMismatch = false)
+        #endregion
+
+        #region PatchByQueryOperation-Definition
+        public PatchByQueryOperation(IndexQuery queryToUpdate, QueryOperationOptions options = null)
+        #endregion
+
+        #region Store-Operations-send-Definition
+        public Operation Send(IOperation<OperationIdResult> operation, SessionInfo sessionInfo = null)
         #endregion
 
 

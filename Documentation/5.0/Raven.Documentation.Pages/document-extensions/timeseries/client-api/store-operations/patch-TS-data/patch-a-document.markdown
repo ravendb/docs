@@ -1,4 +1,5 @@
-﻿# Patch a Document
+﻿# `PatchOperation`  
+## patch Time-Series Entries To a Document  
 
 ---
 
@@ -6,101 +7,81 @@
 
 * Use `PatchOperation` to patch time-series data to a single document 
   loaded by its ID.  
-* Use `PatchByQueryOperation` to query your database and 
-  patch time-series data to the documents your query locates.  
 
 * In this page:  
-  * [`PatchOperation`: Patch a Document](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#patchoperation:-patch-a-document)  
-     * [Definition](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#definition)  
-     * [Usage Flow](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#usage-flow)  
-     * [Usage Samples](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#usage-samples)  
-  * [`PatchByQueryOperation`: Patch Queried Documents](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#patchbyqueryoperation:-patch-queried-documents)  
-     * [Definition](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#definition-1)  
-     * [Usage Flow](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#usage-flow-1)  
-     * [Usage Samples](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#usage-samples-1)  
+  * [`PatchOperation`](../../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data/patch-a-document#patchoperation)  
+     * [Syntax](../../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data/patch-a-document#syntax)  
+     * [Usage Flow](../../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data/patch-a-document#usage-flow)  
+     * [Usage Samples](../../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data/patch-a-document#usage-samples)  
 {NOTE/}
 
 ---
 
-{PANEL: `PatchOperation`: Patch a Document}
+{PANEL: `PatchOperation`}
 
-`PatchOperation` allows you to run a Java Script that patches 
-time-series entries to a loaded document, or removes entries 
-from it.  
-
----
-
-#### `PatchOperation` Definition  
-
----
-
-#### Usage Flow  
-
-* Pass `PatchOperation` -  
-   * the document ID  
-   * the change vector if you need to (or `null` if not)  
-   * a new `PatchRequest` instance  
-* Use the `PatchRequest` instance to pass `PatchOperation` 
-  a Java Script that specifies whether to Append or Remove 
-  time-series entries and how to perform it.  
-* Call `store.Operations.Send` to execute the operation.  
-
----
-
-#### Usage Samples  
-
-Here, we use `PatchOperation` to patch a document a single 
-time-series entry.  
-The script draws its arguments from its "Values" section.  
-{CODE TS_region-Operation_Patch-Append-Single-TS-Entry@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-
-Here, we provide `PatchOperation`with a script that patches 
-100 time-series entries to a document.  
-Timestamps and values are drawn from an array, and other 
-arguments are provided in the "Values" section.  
-{CODE TS_region-Operation_Patch-Append-100-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-
-Here, we use `PatchOperation` to remove a range of 50 time-series 
-entries from a document.  
-{CODE TS_region-Operation_Patch-Remove-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+* `PatchOperation` uses a custom Java Script to -  
+  * Patch time-series entries to a document.  
+  * Remove time-series entries from a document.  
 
 {PANEL/}
 
-{PANEL: `PatchByQueryOperation`: Patch Queried Documents}
+{PANEL: Syntax}
 
-`PatchByQueryOperation` allows you to run a query and patch 
-time-series data to all the documents it finds.  
-You can use this operation not only to append data, but also to 
-remove or get time-series data from located documents.  
+* **`PatchOperation`**  
+   * **Definition**  
+     {CODE PatchOperation-definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+   * **Parameters**  
 
----
+        | Parameters | Type | Description |
+        |:-------------|:-------------|:-------------|
+        | `id` | `string` | Patched document ID |
+        | `changeVector` | `string` | Change vector, to verify that the document hasn't been modified. <br> Can be `null`. |
+        | `patch` | `PatchRequest` | The patching Java Script |
+        | `patchIfMissing` | `PatchRequest` | Patching Java Script to be used if the document isn't found |
+        | `skipPatchIfChangeVectorMismatch` | `bool` | If true, do not patch if the document has been modified <br> default: **false** |
 
-#### `PatchByQueryOperation` Definition  
+* **`PatchRequest`**  
+   * **Definition**  
+     {CODE PatchRequest-definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
----
+   * **Parameters**  
 
-#### Usage Flow  
+        | Parameters | Type | Description |
+        |:-------------|:-------------|:-------------|
+        | `Script` | `string` | Patching script |
+        | `Values` | `Dictionary<string, object>` | Values that the patching script can use |
 
-* Create a `PatchByQueryOperation` operation.  
-* Pass `PatchByQueryOperation` a new `IndexQuery` instance as an argument.  
-* Add the `IndexQuery` instance a Java Script that specifies 
-   the query you want to run.  
+{PANEL/}
+
+{PANEL: Usage Flow}
+
+* Create an instance of `PatchOperation` and pass its constructor -  
+   * the document ID  
+   * the change vector (or `null`)  
+   * a new `PatchRequest` instance  
+* Use the `PatchRequest` instance to pass `PatchOperation` 
+  a Java Script.  
+  Use the script to append or remove time-series entries.  
 * Call `store.Operations.Send` to execute the operation.  
 
----
+{PANEL/}
 
-#### Usage Samples  
+{PANEL: Usage Samples}
 
-Here, the query we provide `PatchByQueryOperation` appends 
-a time-series entry to all user documents.  
-{CODE TS_region-PatchByQueryOperation-Append-To-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+* In this sample, we use `PatchOperation` to patch a document a single 
+  time-series entry.  
+  The script draws its arguments from its "Values" section.  
+  {CODE TS_region-Operation_Patch-Append-Single-TS-Entry@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-Here, the query removes time-series from located documents.  
-{CODE TS_region-PatchByQueryOperation-Remove-From-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+* In this sample, we provide `PatchOperation`with a script that patches 
+  100 time-series entries to a document.  
+  Timestamps and values are drawn from an array, and other 
+  arguments are provided in the "Values" section.  
+  {CODE TS_region-Operation_Patch-Append-100-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-Here, we get selected ranges of time-series entries from the documents 
-located by the query.  
-{CODE TS_region-PatchByQueryOperation-Get@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+* In this sample, we use `PatchOperation` to remove a range of 50 time-series 
+  entries from a document.  
+  {CODE TS_region-Operation_Patch-Remove-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}
 
