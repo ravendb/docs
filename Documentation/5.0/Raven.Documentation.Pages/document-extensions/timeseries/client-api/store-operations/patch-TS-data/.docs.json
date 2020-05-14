@@ -1,0 +1,14 @@
+[
+    {
+        "Path": "patch-a-document.markdown",
+        "Name": "Patch a Document",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "patch-queried-documents.markdown",
+        "Name": "Patch Queried Documents",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    }
+]

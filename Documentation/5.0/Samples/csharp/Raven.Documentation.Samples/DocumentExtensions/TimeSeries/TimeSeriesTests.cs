@@ -16,6 +16,8 @@ using Xunit.Abstractions;
 using Raven.Client.Documents.Session;
 using Raven.Client.Documents.Session.TimeSeries;
 using Raven.Client.Documents.Linq;
+using Raven.Client.Documents.BulkInsert;
+using static Raven.Client.Documents.BulkInsert.BulkInsertOperation;
 
 namespace SlowTests.Client.TimeSeries.Session
 {
@@ -446,9 +448,9 @@ namespace SlowTests.Client.TimeSeries.Session
 
                 #region timeseries_region_Use-BulkInsert-To-Append-2-Entries
                 // Use BulkInsert to append 2 time-series entries
-                using (var bulkInsert = store.BulkInsert())
+                using (BulkInsertOperation bulkInsert = store.BulkInsert())
                 {
-                    using (var timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentID, "Heartrate"))
+                    using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentID, "Heartrate"))
                     {
                         timeSeriesBulkInsert.Append(baseline.AddMinutes(2), 61d, "watches/fitbit");
                         timeSeriesBulkInsert.Append(baseline.AddMinutes(3), 62d, "watches/apple-watch");
@@ -460,15 +462,35 @@ namespace SlowTests.Client.TimeSeries.Session
                 // Use BulkInsert to append 100 time-series entries
                 for (int minute = 0; minute < 100; minute++)
                 {
-                    using (var bulkInsert = store.BulkInsert())
+                    using (BulkInsertOperation bulkInsert = store.BulkInsert())
                     {
-                        using (var timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "Heartrate"))
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "Heartrate"))
                         {
                             timeSeriesBulkInsert.Append(baseline.AddMinutes(minute), new double[] { minute }, "watches/fitbit");
                         }
                     }
                 }
                 #endregion
+
+                #region BulkInsert-overload-2-Append-100-Multi-Value-Entries
+                IEnumerable<double> values = new List<double>
+                        {59d, 63d, 71d, 69d, 64, 65d };
+
+                // Use BulkInsert to append 100 multi-values time-series entries
+                for (int minute = 0; minute < 100; minute++)
+                {
+                    using (BulkInsertOperation bulkInsert = store.BulkInsert())
+                    {
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "Heartrate"))
+                        {
+                            timeSeriesBulkInsert.Append(baseline.AddMinutes(minute), values, "watches/fitbit");
+                        }
+                    }
+                }
+                #endregion
+
+
+
 
                 #region TS_region-Operation_Patch-Append-Single-TS-Entry
                 store.Operations.Send(new PatchOperation("users/1-A", null,
@@ -668,12 +690,38 @@ namespace SlowTests.Client.TimeSeries.Session
         }
         #endregion
 
+        #region TimeSeriesBatchOperation-definition
+        public TimeSeriesBatchOperation(string documentId, TimeSeriesOperation operation)
+        #endregion
+
         #region TimeSeriesOperation-class
         public class TimeSeriesOperation
         {
+            // A list of Append actions
             public List<AppendOperation> Appends;
+
+            // A list of Remove actions
             public List<RemoveOperation> Removals;
+
             public string Name;
+            //...
+        }
+        #endregion
+
+        #region AppendOperation-class
+        public class AppendOperation
+        {
+            public DateTime Timestamp;
+            public double[] Values;
+            public string Tag;
+            //...
+        }
+        #endregion
+
+        #region RemoveOperation-class
+        public class RemoveOperation
+        {
+            public DateTime From, To;
             //...
         }
         #endregion
@@ -688,6 +736,28 @@ namespace SlowTests.Client.TimeSeries.Session
         }
         #endregion
 
+        #region GetTimeSeriesOperation-Definition-Overload1
+        public GetTimeSeriesOperation(string docId, string timeseries, DateTime from, DateTime to, int start = 0, int pageSize = int.MaxValue)
+        #endregion
+
+        #region GetTimeSeriesOperation-Definition-Overload2
+        public GetTimeSeriesOperation(string docId, IEnumerable<TimeSeriesRange> ranges, int start = 0, int pageSize = int.MaxValue)
+        #endregion
+
+        #region TimeSeriesRange-class
+        public class TimeSeriesRange
+        {
+            public string Name;
+            public DateTime From, To;
+        }
+        #endregion
+
+        #region BulkInsert-Append-Single-Value-Definition
+        public void Append(DateTime timestamp, double value, string tag = null)
+        #endregion
+        #region BulkInsert-Append-Multiple-Values-Definition
+        public void Append(DateTime timestamp, IEnumerable<double> values, string tag = null)
+        #endregion
 
 
     }

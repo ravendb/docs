@@ -12,7 +12,7 @@
         "Mappings": []
     },
     {
-        "Path": "patch-TS-data.markdown",
+        "Path": "/patch-TS-data",
         "Name": "Patch Time-Series Data",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []

@@ -6,78 +6,106 @@
 
 Get time-series data using `GetTimeSeriesOperaion`.  
 
-`GetTimeSeriesOperaion` allows you to retrieve data from multiple 
-time-series of a selected document in a single call.  
-
 * In this page:  
-  * [`GetTimeSeriesOperation` Definition](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#gettimeseriesoperation-definition)  
-  * [Get A Single Time-Series' Data](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#get-a-single-time-series)  
-     * [Usage Flow](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#usage-flow)  
-     * [Usage Sample](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#usage-sample)  
-  * [Get Multiple Time-Series Data](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#get-multiple-time-series-data)  
-     * [Usage Flow](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#usage-flow-1)  
-     * [Usage Sample](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#usage-sample-1)  
+      * [`GetTimeSeriesOperation`](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#gettimeseriesoperation)  
+      * [Syntax](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#syntax)  
+         * [Overload 1 - Retrieve a Single Time-Series' Data](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#overload-1-retrieve-a-single-time-series-data)  
+         * [Overload 2 - Retrieve Multiple Time-Series' Data](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#overload-2-retrieve-multiple-time-series-data)  
+      * [Usage Flow](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#usage-flow)  
+      * [Usage Samples](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#usage-samples)  
+
 {NOTE/}
 
 ---
 
-{PANEL: `GetTimeSeriesOperation` Definition}
+{PANEL: `GetTimeSeriesOperation`}
 
-There are two `GetTimeSeriesOperation` overloads.  
-
-* Use the first overload to retrieve a single time-series' data.  
-* Use the second overload to retrieve multiple time-series' data.  
+Use `GetTimeSeriesOperaion` to retrieve data from a single 
+time-series or from multiple time-series.  
 
 {PANEL/}
 
-{PANEL: Get A Single Time-Series' Data}
+{PANEL: Syntax}
+
+There are two `GetTimeSeriesOperation` methods:  
+[Overload 1](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#overload-1-retrieve-a-single-time-series-data) 
+- Retrieve a single time-series' data.  
+[Overload 2](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#overload-2-retrieve-multiple-time-series-data) 
+- Retrieve multiple time-series' data.  
 
 ---
 
-#### Usage Flow
+#### Overload 1: Retrieve a Single Time-Series' Data  
+
+* **Definition**
+  {CODE GetTimeSeriesOperation-Definition-Overload1@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+
+* **Parameters**  
+
+    | Parameters | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `docId` | `string` | Document ID |
+    | `timeseries` | `string` | Time-series name |
+    | `from` | `DateTime` | Range start |
+    | `to` | `DateTime` | Range end |
+    | `start` | `int` | Start of first Page |
+    | `pageSize` | `int` | Size of each page |
+
+* **Return Value**: **`TimeSeriesRangeResult`**  
+     {CODE TimeSeriesRangeResult-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+
+* **Exceptions**  
+  Exceptions are not generated.  
+
+---
+
+#### Overload 2: Retrieve Multiple Time-Series' Data  
+
+* **Definition**
+  {CODE GetTimeSeriesOperation-Definition-Overload2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+
+* **Parameters**  
+
+    | Parameters | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `docId` | `string` | Document ID |
+    | `ranges` | `IEnumerable<TimeSeriesRange>` <br> {CODE TimeSeriesRange-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}| A list of time-series ranges to Get |
+    | `start` | `int` | Start of first Page |
+    | `pageSize` | `int` | Size of each page |
+
+* **Return Value**: a dictionary of `TimeSeriesRangeResult` classes.  
+     {CODE TimeSeriesRangeResult-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+
+* **Exceptions**  
+  Exceptions are not generated.  
+
+{PANEL/}
+
+{PANEL: Usage Flow}
 
 * Pass `GetTimeSeriesOperation` -  
-   * The document ID  
-   * The time-series name  
-   * Range start: Timestamp for the first time-series entry to be retrieved  
-   * Range end: Timestamp for the last time-series entry to be retrieved  
+   * For a single time-series:  
+     Document ID, Time-Series Name, Range Start, Range End.  
+   * For multiple time-series:  
+     Document ID, a List of `TimeSeriesRange` instances.  
+     Each `TimeSeriesRange` instance defines a Time-Series Name, Range Start, and Range End.  
 * Call `store.Operations.Send` to execute the operation.  
 * Data is returned into a `dictionary of `TimeSeriesRangeResult` classes.  
-   * TimeSeriesRangeResult:
-     {CODE TimeSeriesRangeResult-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-
-#### Usage Sample
-
-Here, we retrieve all entries of a single time-series.  
-{CODE timeseries_region_Get-Single-Time-Series@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}
 
+{PANEL: Usage Samples}
 
-{PANEL: Get Multiple Time-Series Data}
+* In this sample, we use the [first overload](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#overload-1-retrieve-a-single-time-series-data) 
+  to retrieve all entries of a single time-series.  
+   {CODE timeseries_region_Get-Single-Time-Series@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
----
-
-#### Usage Flow
-
-* Pass `GetTimeSeriesOperation` the document ID and a list of `TimeSeriesRange` instances.  
-  Each `TimeSeriesRange` instance defines -  
-   * **Name** - The time-series name  
-   * **From** - Range start, the timestamp for the first time-series entry to be retrieved  
-   * **To** - Range end, the timestamp for the last time-series entry to be retrieved  
-* Call `store.Operations.Send` to execute the operation.  
-* Data is returned into into a `dictionary of `TimeSeriesRangeResult` classes.  
-   * TimeSeriesRangeResult:
-     {CODE TimeSeriesRangeResult-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-
----
-
-#### Usage Sample
-
-Here, we retrieve chosen entries from two time-series.  
-{CODE timeseries_region_Get-Multiple-Time-Series@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+* In this sample, we use the [second overload](../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data#overload-2-retrieve-multiple-time-series-data) 
+  to retrieve chosen entries from two time-series.  
+   {CODE timeseries_region_Get-Multiple-Time-Series@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}
+
 
 ## Related articles
 **Studio Articles**:  
