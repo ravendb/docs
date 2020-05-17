@@ -69,12 +69,22 @@ milliseconds are the minimum resolution in RavenDB time-series. The timestamp fo
 rollup entry is the *end* of the span it represents, so it is a round number of time 
 units minus one millisecond.  
 
+For example, if the aggregation span is one day, the spans will start at times like:  
+`2020-01-01 00:00:00`,  
+`2020-01-02 00:00:00`,  
+`2020-01-03 00:00:00`,  
+And the corresponding end times will be:  
+`2020-01-01 23:59:59.9999`,  
+`2020-01-02 23:59:59.9999`,  
+`2020-01-03 23:59:59.9999`,  
+
 **Name**:  
 A rollup time-series name has this format:  
 `"<name of raw time-series>@<name of time-series policy>"`  
 It is a combination of the name of the raw time-series and the name of the 
 time-series policy separated by a `@` character - in the image above these are 
-"Heartrate & Blood Pressure" and "ByMinute" respectively.  
+"Heartrate & Blood Pressure" and "ByMinute" respectively. For this reason, neither 
+a time-series name nor a policy name can have the character `@` in it.
 
 {PANEL/}
 
@@ -95,6 +105,7 @@ to send the new configurations to the server.
 ####The two types of time-series policy:
 
 {CODE-BLOCK: csharp}
+// Rollup policies
 public class TimeSeriesPolicy
 {
     public string Name;
@@ -102,6 +113,8 @@ public class TimeSeriesPolicy
     public TimeValue AggregationTime;
 }
 
+// A retention policy for the raw TS
+// Only one per collection
 public class RawTimeSeriesPolicy : TimeSeriesPolicy
 {
     public string Name;
@@ -110,11 +123,18 @@ public class RawTimeSeriesPolicy : TimeSeriesPolicy
 }
 {CODE-BLOCK/}
 
+#### `TimeSeriesPolicy`:
 | Property | Description |
 | - | - |
 | `Name` | This `string` is used to create the names of the rollup time-series created by this policy.<br/>`Name` is added to the name of the raw time-series - with `@` as a separator - to create the name of the resulting rollup time-series. |
-| `RetentionTime` | Time-series entries older than this time span (see `TimeValue` below) are automatically deleted. Applies to the original, or "raw" time-series in the case of `RawTimeSeriesPolicy`, or to the rollup time-series created by a `TimeSeriesPolicy`. |
+| `RetentionTime` | Time-series entries older than this time span (see `TimeValue` below) are automatically deleted. |
 | `AggregationTime` | The time-series data being rolled up is divided at round time units, into parts of this length of time. Each of these parts is aggregated into an entry of the rollup time-series. |
+
+#### `RawTimeSeriesPolicy`:
+| Property | Description |
+| - | - |
+| `Name` | This `string` is used to create the names of the rollup time-series created by this policy.<br/>`Name` is added to the name of the raw time-series - with `@` as a separator - to create the name of the resulting rollup time-series. |
+| `RetentionTime` | Time-series entries older than this time span (see `TimeValue` below) are automatically deleted. |
 <br/>
 ####The `TimeValue` struct
 
@@ -133,7 +153,7 @@ public struct TimeValue : IDynamicJson, IEquatable<TimeValue>
 
 Each of the above `TimeValue` methods returns a `TimeValue` object representing a 
 whole number of the specified time units. These are passed as the aggregation and 
-retention span of time-series policies.  
+retention spans of time-series policies.  
 <br/>
 ####`TimeSeriesCollectionConfiguration` and `TimeSeriesConfiguration`
 
@@ -153,8 +173,8 @@ public class TimeSeriesConfiguration
 | Property | Description |
 | - | - |
 | `Disabled` | If set to `true`, rollup processes will stop, and time-series data will not be deleted by retention policies. |
-| `Policies` | Populate this `List` with your time-series policies, including the `RawTimeSeriesPolicy`. The order does not matter. |
-| `Collections` | Populate this `Dictionary` with the `TimeSeriesCollectionConfiguration`s and the name of the corresponding collection. |
+| `Policies` | Populate this `List` with your time-series policies, including up to one `RawTimeSeriesPolicy`. |
+| `Collections` | Populate this `Dictionary` with the `TimeSeriesCollectionConfiguration`s and the names of the corresponding collections. |
 <br/>
 ####The Time-Series Configuration Operation
 
@@ -162,7 +182,7 @@ public class TimeSeriesConfiguration
 public ConfigureTimeSeriesOperation(TimeSeriesConfiguration configuration);
 {CODE-BLOCK/}
 
-Pass this your `TimeSeriesConfiguration`, see usage example below.
+Pass this your `TimeSeriesConfiguration`, see usage example below. How to use an [operation](../../client-api/operations/what-are-operations).
 
 {PANEL/}
 
