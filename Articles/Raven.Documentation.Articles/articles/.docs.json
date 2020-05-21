@@ -1587,5 +1587,63 @@
             "twitter:description": "An upset in the semifinals spikes traffic for a gaming application. To achieve the flexibility needed for today’s data, StarNet uses the RavenDB NoSQL Database.",
             "twitter:url": "https://ravendb.net/articles/starnet-taps-ravendb-nosql-database-for-gaming-applications"
         }
+},
+{
+        "Path": "ravendb-counters-graph-api-javascript-index-clusterwide-acid.markdown",
+        "Name": "NoSQL Database Counters, Graph API, JavaScript Index, Clusterwide ACID",
+        "Mappings": [],
+        "Metadata": {
+            "title": "NoSQL Database Counters, Graph API, JavaScript Index, Clusterwide ACID",
+            "likeSection": "yes",
+            "url": "ravendb-counters-graph-api-javascript-index-clusterwide-acid",
+            "publishedAt": "2020-05-21",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "RavenDB 4.2 NoSQL database comes with some fantastic new features: Graph Queries, Clusterwide Transactions, Distributed Counters, JavaScript Indexes, and Revert Revisions.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "RavenDB Counters, Graph API, JavaScript Index, Clusterwide ACID",
+            "og:description": "RavenDB 4.2 NoSQL database comes with some fantastic new features: Graph Queries, Clusterwide Transactions, Distributed Counters, JavaScript Indexes, and Revert Revisions.",
+            "og:url": "ravendb-counters-graph-api-javascript-index-clusterwide-acid",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-counters-graph-api-javascript-index-clusterwide-acid&fileName=ravendb-counters-graph-api-javascript-index-clusterwide-acid.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "RavenDB Counters, Graph API, JavaScript Index, Clusterwide ACID",
+            "twitter:description": "RavenDB 4.2 NoSQL database comes with some fantastic new features: Graph Queries, Clusterwide Transactions, Distributed Counters, JavaScript Indexes, and Revert Revisions.",
+            "twitter:url": "https://ravendb.net/articles/ravendb-counters-graph-api-javascript-index-clusterwide-acid"
+        }
+},
+{
+        "Path": "nosql-document-database-indexing.markdown",
+        "Name": "NoSQL Document Database Indexing",
+        "Mappings": [],
+        "Metadata": {
+            "title": "NoSQL Indexing | Indexing NoSQL Database | NoSQL Index",
+            "likeSection": "yes",
+            "url": "nosql-document-database-indexing",
+            "publishedAt": "2020-05-21",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "Document database indexing in RavenDB compared to MongoDB, another NoSQL document database, as well as the relational database, PostgreSQL. Indexing document properties.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "NoSQL Indexing | Indexing NoSQL Database | NoSQL Index",
+            "og:description": "Document database indexing in RavenDB compared to MongoDB, another NoSQL document database, as well as the relational database, PostgreSQL. Indexing document properties.",
+            "og:url": "nosql-document-database-indexing",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-document-database-indexing&fileName=nosql-document-database-indexing.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "NoSQL Indexing | Indexing NoSQL Database | NoSQL Index",
+            "twitter:description": "Document database indexing in RavenDB compared to MongoDB, another NoSQL document database, as well as the relational database, PostgreSQL. Indexing document properties.",
+            "twitter:url": "https://ravendb.net/articles/nosql-document-database-indexing"
+        }
 }
 ]
