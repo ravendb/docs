@@ -7,13 +7,13 @@ Time-series are sets of numeric data associated with timestamps and ordered by t
 allows you to edit, query and index time-series data, as well as view it as list of entries or as a graph.  
 
 * In this page:
-  * [Document View](/../../../../studio/database/document-extensions/time-series#document-view)
-    * [Create New Time-Series / New Entry](/../../../../studio/database/document-extensions/time-series#create-new-time-series)
-  * [Time-Series View](/../../../../studio/database/document-extensions/time-series#time-series-view)
-    * [Edit Entry](/../../../../studio/database/document-extensions/time-series#editing-an-entry)
-    * [Delete Range](/../../../../studio/database/document-extensions/time-series#deleting-a-range-of-entries)
-  * [Graphical Display & Querying](/../../../../studio/database/document-extensions/time-series#querying-time-series)
-    * [Graph View](/../../../../studio/database/document-extensions/time-series#time-series-graph-view)
+  * [Document View](../../../studio/database/document-extensions/time-series#document-view)
+    * [Create New Time-Series / New Entry](../../../studio/database/document-extensions/time-series#create-new-time-series)
+  * [Time-Series View](../../../studio/database/document-extensions/time-series#time-series-view)
+    * [Edit Entry](../../../studio/database/document-extensions/time-series#editing-an-entry)
+    * [Delete Range](../../../studio/database/document-extensions/time-series#deleting-a-range-of-entries)
+  * [Graphical Display & Querying](../../../studio/database/document-extensions/time-series#querying-time-series)
+    * [Graph View](../../../studio/database/document-extensions/time-series#time-series-graph-view)
 
 {NOTE/}
 
@@ -30,18 +30,22 @@ allows you to edit, query and index time-series data, as well as view it as list
 {WARNING/}
 
 {INFO: Info}
-Displays the time-series':  
+1. Displays the time-series':  
 
 * Name  
 * The number of entries it contains  
-* The range of time from the first entry in the time-series to the last  
+* The range of time from the first to the last entry in the time-series
 {INFO/}  
+
 ---
+
 #### Create new Time-Series (by Creating a First Entry)
 
 ![](images/new-entry.png)  
 
 {WARNING: }
+A time-series must contain at least one entry when it is created (and a time-series is deleted when all 
+of its entries are deleted).  
 1. Create the new time-series' name.  
 2. Select a timestamp for the new entry.  
 3. Create an optional tag.  
@@ -66,7 +70,9 @@ Displays the time-series entry's:
 * Optional tag `string`  
 * The numerical data; between 1 and 32 `double` values.  
 {INFO/}  
+
 ---
+
 #### Editing an Entry
 
 ![](images/time-series-entry.png)  
@@ -74,10 +80,12 @@ Displays the time-series entry's:
 {WARNING: }
 1. Edit the optional tag.  
 2. Edit a numerical value.  
-3. Add an additional value.  
+3. Add another value (up to 32).  
 4. Delete value.  
 {WARNING/}
+
 ---
+
 #### Deleting a Range of Entries
 
 ![](images/delete-range.png)  
@@ -110,7 +118,9 @@ To specify a range of time-series entries:
 2. Go to this series' time-series view, discussed above.  
 3. Go to graph view, shown below.  
 {WARNING/}
+
 ---
+
 #### Time-Series Graph View
 
 ![](images/time-series-graph.png)  
