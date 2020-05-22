@@ -50,7 +50,8 @@
         "Path": "list.markdown",
         "Name": "List of Differences in Public API",
         "DiscussionId": "851fb18d-fddb-47c7-be01-b0772cfad244",
-        "Mappings": []
+        "Mappings": [],
+        "LastSupportedVersion": "4.2"
     },
     {
         "Path": "/session",

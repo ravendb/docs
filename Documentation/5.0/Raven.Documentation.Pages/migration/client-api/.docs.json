@@ -12,12 +12,6 @@
         "Mappings": []
     },
     {
-        "Path": "list.markdown",
-        "Name": "List of Differences in Public API",
-        "DiscussionId": "e30ff793-8c8e-4392-b406-7f653130c48b",
-        "Mappings": []
-    },
-    {
         "Path": "/session",
         "Name": "Session",
         "Mappings": []
