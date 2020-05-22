@@ -29,7 +29,7 @@ namespace Raven.Documentation.Web.Controllers
                  (?<=[^A-Z])(?=[A-Z]) |
                  (?<=[A-Za-z])(?=[^A-Za-z])", RegexOptions.IgnorePatternWhitespace);
 
-        public static string DefaultVersion = "4.1";
+        public static string DefaultVersion = "5.0";
 
         public static Language DefaultLanguage = Language.Csharp;
 

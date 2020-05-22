@@ -1,8 +1,8 @@
 # Migration: Introduction to 4.x to 5.0 Migration
 
-{NOTE:Migration from 3.x}
+{NOTE:Migration from RavenDB 3.x}
 
-If you are interested in migrating Client API from earlier version (e.g. 3.x) please visit following [article](https://ravendb.net/docs/article-page/4.2/csharp/migration/client-api/introduction). This article only focuses on differences between 4.x and 5.0 version of RavenDB Client API.
+If you are interested in migrating Client API from earlier version please visit our dedicated [article](https://ravendb.net/docs/article-page/4.2/csharp/migration/client-api/introduction). Current article focuses only on differences between 4.x and 5.0 version of RavenDB Client API.
 
 {NOTE/}
 
