@@ -120,6 +120,10 @@ namespace Links
             public static class Assets
             {
                 public static readonly string prism_css = T4MVCHelpers.ProcessAssetPath("~/Content/prism.css");
+                public static readonly string Site_css_ = T4MVCHelpers.ProcessAssetPath("~/Content/Site.css");
+                public static readonly string Site_min_css_ = T4MVCHelpers.ProcessAssetPath("~/Content/Site.min.css");
+                public static readonly string styles_css_ = T4MVCHelpers.ProcessAssetPath("~/Content/styles.css");
+                public static readonly string styles_min_css_ = T4MVCHelpers.ProcessAssetPath("~/Content/styles.min.css");
             }
         }
     }
