@@ -48,7 +48,7 @@ There are also functionalities unique to each interface.
      You can, for instance, gather multiple session actions 
      (e.g. the update of a time-series and the modification 
      of a document) and execute them in a single transaction 
-     by calling `session.saveChanges`, to ensure that they 
+     by calling `session.SaveChanges`, to ensure that they 
      would all be completed or all be reverted.  
    * You can use `session` methods to `include` time-series while 
      loading documents.  
@@ -65,13 +65,18 @@ There are also functionalities unique to each interface.
 {PANEL: Available Time-Series `session` methods}
 
 * [TimeSeriesFor.Append](../../../document-extensions/timeseries/client-api/session-methods/append-ts-data)  
-  Use this method to **Create and update time-series data**.  
+  Use this method to **Append entries to a time-series** 
+  (creating the series, if it didn't previously exist).  
 * [TimeSeriesFor.Remove](../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data)  
-  Use this method to **Remove time-series data**.  
-* [TimeSeriesFor.Get](../../../document-extensions/timeseries/client-api/session-methods/get-ts-data/get-ts-entries)  
-  Use this method to **Retrieve time-series Entries**.  
+  Use this method to **Remove a range of entries from a time-series** 
+  (removing the series completely, if all the data is removed).  
+  * [TimeSeriesFor.Get](../../../document-extensions/timeseries/client-api/session-methods/get-ts-data/get-ts-entries)  
+  Use this method to **Retrieve raw time-series entries** 
+  for a data range or for all entries.  
 * [Advanced.GetTimeSeriesFor](../../../document-extensions/timeseries/client-api/session-methods/get-ts-data/get-ts-names)  
   Use this method to **Retrieve time-series Names**.  
+  This can be computed directly from the document metadata and requires no 
+  additional server roundtrips.  
 * [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session-methods/patch-ts-data)  
   Use this method to **patch time-series data to a document**.  
 * **To include time-series data** -  
@@ -84,14 +89,12 @@ There are also functionalities unique to each interface.
 
 * [TimeSeriesBatchOperation](../../../document-extensions/timeseries/client-api/store-operations/append-and-remove-TS-data)  
   Use this operation to **append and remove time-series data**.  
-  `TimeSeriesBatchOperation` has an advantage over `session.Append` and 
-  `session.Remove`, in allowing you to bundle a series of Append and/or 
-  Remove operations in a list and execute tham in a single call.  
+  You can bundle a series of Append and/or Remove operations in a list and 
+  execute them in a single call.  
 * [GetTimeSeriesOperation](../../../document-extensions/timeseries/client-api/store-operations/get-TS-data)  
   Use this operation to **retrieve time-series data**.  
-  `GetTimeSeriesOperation` has an advantage over `session.Get`, in allowing 
-  you to retrieve data from multiple time-series of a selected document in 
-  a single call.  
+  `GetTimeSeriesOperation` has an advantage over `session.TimeSeries.Get`, in allowing 
+  you to retrieve data from multiple time-series of a selected document in a single call.  
 * [ConfigureTimeSeriesOperation](../../../document-extensions/timeseries/rollup-and-retention)  
   Use this operation to **manage time-series roll-up and retention policies**.  
 * [PatchOperation](../../../document-extensions/timeseries/client-api/store-operations/patch-TS-data/patch-a-document)  

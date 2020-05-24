@@ -9,7 +9,7 @@
 
 * You can append a single [time-series entry](../../../../document-extensions/timeseries/design#time-series-entries) at a time.  
   Note, however, that you can `Append` as many times as you need to before calling 
-  `session.saveChanges`, to append multiple entries in a single transaction.  
+  `session.SaveChanges`, to append multiple entries in a single transaction.  
 
 * In this page:  
       * [`TimeSeriesFor.Append`](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#timeseriesfor.append)  

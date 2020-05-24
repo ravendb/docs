@@ -4,8 +4,8 @@
 
 {NOTE: }
 
-A time-series is an array of Gorilla-encoded `IEnumerable` entries 
-that extends a specific single document.  
+A time-series is an array of Gorilla-encoded entries, that is related 
+to a single specific document.  
 
 * In this page:  
   * [Time-Series Structure](../../document-extensions/timeseries/design#time-series-structure)  
@@ -29,7 +29,7 @@ that extends a specific single document.
 
 #### Document Extension  
 
-A time-series is related to the document it extsnds, by -  
+A time-series is related to the document it extends, by -  
 
 * A **reference to the time-series** in the document's metadata.  
   The time-series' **name** is kept in the document's metadata.  
@@ -71,7 +71,7 @@ A time-series array is constructed of segments.
 
 #### Time-Series Entries
 
-Each time-series entry is an `IEnumerable` with three values.  
+Each time-series entry is composed of:  
 
 * `TimeSeriesEntry` 
 
