@@ -6,18 +6,11 @@
 Many time-series applications produce massive amounts of data at a steady rate. 
 **Time-Series Policies** help you to manage your data in two ways:  
 
-* *Rollup* - the process of summarizing time-series data by aggregating it into the 
+* Creating **Rollups** - summarizing time-series data by aggregating it into the 
 form of a new, lower resolution time-series.  
 
-* *Retention* - limiting the amount of time that time-series data is kept before 
-being deleted.  
-
-There are two kinds of policies:  
-
-1. `RawTimeSeriesPolicy` - defines *only* a retention span, which applies to the 
-original, or "raw", time-series.  
-2. `TimeSeriesPolicy` - defines the creation of rollup time-series and the retention 
-span for those time-series.  
+* Limiting a time-series' **Retention** - the amount of time that time-series data 
+is kept before being deleted.  
 
 * In this page:  
   * [Time-Series Policies](../../document-extensions/timeseries/rollup-and-retention#time-series-policies)  
@@ -30,19 +23,13 @@ span for those time-series.
 
 {PANEL: Time-Series Policies}  
 
-A collection can be configured with multiple time-series policies which apply to all 
-time-series in the collection.  
-*Raw* time-series policies define the retention span for all raw time-series - there 
-is up to one of these per collection. The other time-series policies each define the 
-creation of rollups. Each raw time-series gets each of the rollups defined by the 
-collection configuration. A rollup time-series belongs to the same document as the 
-raw time-series.  
-<br/>
-###Rollups  
+#### What are Rollups?
 
-The **rollup** process divides time-series entries into chunks of a specified span 
-of time (such as a minute, or a day). The data from all the entries in this span is 
-aggregated into six useful values:  
+A rollup is a time-series that summarizes the data from an original time-series. It 
+is created by dividing time-series entries into set spans of time, like a second or 
+a week. Each entry in the rollup time-series represents one of those spans, and 
+contains an aggregation of the entries in that span. The data from the original 
+time-series is aggregated into just six values:  
 
   * *First* - the value of the first entry in the span.  
   * *Last* - the value of the last entry.  
@@ -50,6 +37,9 @@ aggregated into six useful values:
   * *Max* - the largest value.  
   * *Sum* - the sum of all the values in the span.  
   * *Count* - the total number of entries in the span.  
+
+This results in a much more compact time series that still contains useful 
+information about the original. Let's look at an example of rollup data:  
 <br/>
 !["Rollup time-series entries"](images/rollup-1.png "A rollup time-series' entries")
 
@@ -59,24 +49,22 @@ aggregations are made for each of the values. A new "rollup" time-series is crea
 with one entry for each span. If the raw time-series has *n* values per entry, the 
 rollup time-series will have _6*n_ per entry: the first six will be the summary of 
 the first raw value, the next six will be aggregations of the next raw value, and 
-so on.  
+so on. Because entries are limited to 32 values, rollups are limited to the first 
+five values of an original time series entry, resulting in 30 aggregate values.  
 
 **Timestamp**:  
 The aggregation span is a round number of one of these time units: a second, day, 
 week, month, or year. The span includes all entries starting at a round number of time 
-units, and ending at another round number *minus one millisecond* inclusive - since 
-milliseconds are the minimum resolution in RavenDB time-series. The timestamp for a 
-rollup entry is the *end* of the span it represents, so it is a round number of time 
-units minus one millisecond.  
+units, and ending at another round number - *minus one millisecond* inclusive (since 
+milliseconds are the minimal resolution in RavenDB time-series). The timestamp for a 
+rollup entry is the beginning of the span it represents, so it is a round number of time 
+units.  
 
 For example, if the aggregation span is one day, the spans will start at times like:  
 `2020-01-01 00:00:00`,  
 `2020-01-02 00:00:00`,  
 `2020-01-03 00:00:00`,  
-And the corresponding end times will be:  
-`2020-01-01 23:59:59.9999`,  
-`2020-01-02 23:59:59.9999`,  
-`2020-01-03 23:59:59.9999`,  
+And these will also be the time-stamps of the rollup entries.  
 
 **Name**:  
 A rollup time-series name has this format:  
@@ -123,14 +111,16 @@ public class RawTimeSeriesPolicy : TimeSeriesPolicy
 }
 {CODE-BLOCK/}
 
-#### `TimeSeriesPolicy`:
+`TimeSeriesPolicy`:  
+
 | Property | Description |
 | - | - |
 | `Name` | This `string` is used to create the names of the rollup time-series created by this policy.<br/>`Name` is added to the name of the raw time-series - with `@` as a separator - to create the name of the resulting rollup time-series. |
 | `RetentionTime` | Time-series entries older than this time span (see `TimeValue` below) are automatically deleted. |
 | `AggregationTime` | The time-series data being rolled up is divided at round time units, into parts of this length of time. Each of these parts is aggregated into an entry of the rollup time-series. |
 
-#### `RawTimeSeriesPolicy`:
+`RawTimeSeriesPolicy`:  
+
 | Property | Description |
 | - | - |
 | `Name` | This `string` is used to create the names of the rollup time-series created by this policy.<br/>`Name` is added to the name of the raw time-series - with `@` as a separator - to create the name of the resulting rollup time-series. |
@@ -151,9 +141,16 @@ public struct TimeValue : IDynamicJson, IEquatable<TimeValue>
 }
 {CODE-BLOCK/}
 
-Each of the above `TimeValue` methods returns a `TimeValue` object representing a 
+`Each of the above `TimeValue` methods returns a `TimeValue` object representing a 
 whole number of the specified time units. These are passed as the aggregation and 
 retention spans of time-series policies.  
+
+{INFO: }
+The main reason we use `TimeValue` rather than something like `TimeSpan` is that 
+`TimeSpan` doesn't have a notion of 'months', because a calendar month is not a 
+standard unit of time (since it ranges from 28-31 days). `TimeValue` enables you 
+to define retention and aggregation spans for a calendar month.  
+{/INFO}
 <br/>
 ####`TimeSeriesCollectionConfiguration` and `TimeSeriesConfiguration`
 
@@ -173,7 +170,7 @@ public class TimeSeriesConfiguration
 | Property | Description |
 | - | - |
 | `Disabled` | If set to `true`, rollup processes will stop, and time-series data will not be deleted by retention policies. |
-| `Policies` | Populate this `List` with your time-series policies, including up to one `RawTimeSeriesPolicy`. |
+| `Policies` | Populate this `List` with your rollup policies |
 | `Collections` | Populate this `Dictionary` with the `TimeSeriesCollectionConfiguration`s and the names of the corresponding collections. |
 <br/>
 ####The Time-Series Configuration Operation

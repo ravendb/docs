@@ -24,13 +24,16 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                 #region rollup_and_retention_0
                 //Policy for the original ("raw") time-series,
                 //to keep the data for one week
-                var rawRetention = new RawTimeSeriesPolicy(TimeValue.FromDays(7));
+                var oneWeek = TimeValue.FromDays(7);
+                var rawRetention = new RawTimeSeriesPolicy(oneWeek);
 
                 //Roll-up the data for each day,
                 //and keep the results for one year
+                var oneDay = TimeValue.FromDays(1);
+                var oneYear = TimeValue.FromYears(1);
                 var dailyRollup = new TimeSeriesPolicy("DailyRollupForOneYear",
-                                                       TimeValue.FromDays(1),
-                                                       TimeValue.FromYears(1));
+                                                       oneDay,
+                                                       oneYear);
 
                 //Enter the above policies into a 
                 //time-series collection configuration
