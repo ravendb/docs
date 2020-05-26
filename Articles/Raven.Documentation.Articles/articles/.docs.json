@@ -23,7 +23,7 @@
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/choosing-the-best-nosql-database",
             "publishedAt": "2017-09-01",
-            "subcategories": "nosql-database,data-security",
+            "subcategories": "nosql-database,database-security",
             "canonicalLink": "href=\"https://ravendb.net/articles/ravendb-elasticsearch-best-open-source-nosql-database \""
 
         },
@@ -85,7 +85,7 @@
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/why-are-so-many-nosql-databases-getting-hacked",
             "publishedAt": "2017-10-02",
-            "subcategories": "nosql-database,data-security"
+            "subcategories": "nosql-database,database-security"
         },
         "SeoMetaProperties": {
             "description": "Over 100,000 MongoDB databases have been hijacked. Hackers have also raided servers hosting data on ElasticSearch, Apache CouchDB, and Hadoop. What's going on?",
@@ -293,7 +293,7 @@
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/making-how-to-set-up-a-database-easy-for-nosql-document-database",
             "publishedAt": "2018-01-02",
-            "subcategories": "data-security"
+            "subcategories": "database-security"
         },
         "SeoMetaProperties": {
             "description": "Perform a simple NoSql Database download. Includes easy install, raven security encryption, and setup. How to set up a database is easy with our setup wizard.",
@@ -323,7 +323,7 @@
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/ravendb40-passes-intense-security-check",
             "publishedAt": "2018-03-14",
-            "subcategories": "data-security"
+            "subcategories": "database-security"
         },
         "SeoMetaProperties": {
             "description": "To protect our users from any data breach, we hired a third-party security firm and told them to do their worst with RavenDB.",
@@ -412,7 +412,7 @@
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/security-vulnerability-advisory-for-ravendb-2018-06-12",
             "publishedAt": "2018-06-12",
-            "subcategories": "data-security"
+            "subcategories": "database-security"
         },
         "SeoMetaProperties": {
             "description": "During routine internal security testing, a remotely exploitable issue was discovered. This issue has been addressed and is available in release: 4.0.5",
