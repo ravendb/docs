@@ -47,8 +47,8 @@ Setting up an IoT Big Data infrastructure requires a lot of your database. Here'
 <p style="text-align:justify">
 <strong>No Surprises:</strong> If the capacity of the hardware isn't going to change, then the promises your database makes in terms of lightweight memory and disk space usage <em>must be kept over multiple version upgrades</em>. Fitting into lean edge devices, your database is putting on tight jeans. It cannot afford to gain any significant amount of weight. Over the last bundle of new versions, especially the great leap into RavenDB 4.0, we required no additional computing resources. We give you more with each release while keeping RavenDB as lightweight as possible.</p>
 <br/>
-<div class="text-center margin-bottom">
-    <a href="https://cloud.ravendb.net"><img src="images/ravendb-cloud.png" alt="Managed Cloud Hosting"/></a>
+<div class="margin-bottom">
+    <a href="https://cloud.ravendb.net"><img src="images/ravendb-cloud.png" class="img-responsive m-0-auto" alt="Managed Cloud Hosting"/></a>
 </div>
 <br/>
 **Working Offline:** With so many edge points, parts of your system will inevitably go offline. One example is a Fitbit device that collected data and was put in a drawer for six months before it could upload to a server. Once the user decides to get back into the fitness program and put it on his wrist, your database needs to transmit the older data even after being off the network for half a year. Another example can be when users go into an elevator, a train, or take a 2-week hike in the Everglades. RavenDB will work with nodes or any data collection point offline, collecting data even when the database is disconnected from the network. Once your connection is restored, RavenDB will update the entire database system with the new data. The ability to keep working under network partition is vital for systems like health care, banking, and point of sale where your infrastructure must be available at all times and information can never be lost.
@@ -65,7 +65,7 @@ Setting up an IoT Big Data infrastructure requires a lot of your database. Here'
 
 **Pull and Push Replication Up and Down Your Data Journey:** One example is when the company headquarters decides to offer a "buy one get one free" sale on all purchases of Sammy's Frosted Cookies. The central server at HQ will have to communicate this to their thousands of point of sale registers worldwide, so the next time Jimmy gets his way, the computer will tell the cashier to tell his mommy she can go and get another package free of charge. RavenDB supports edge processing both to and from the edge, enabling a fast-moving and efficient IoT database system.<br/>
 <br/>
-<div class="text-center">
-    <a href="https://ravendb.net/whitepapers/ravendb-point-of-sale-database"><img src="images/point-of-sale-database.jpg" alt="RavenDB Point of Sale Database Whitepaper"/></a>
+<div>
+    <a href="https://ravendb.net/whitepapers/ravendb-point-of-sale-database"><img src="images/point-of-sale-database.jpg" class="img-responsive m-0-auto" alt="RavenDB Point of Sale Database Whitepaper"/></a>
 </div>
 <br/>

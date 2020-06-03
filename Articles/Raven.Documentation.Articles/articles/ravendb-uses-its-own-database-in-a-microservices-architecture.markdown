@@ -18,8 +18,8 @@ Are they using it themselves?
 
 A company with real confidence in what it tells you it's product can do will use it on their own systems. That is why RavenDB runs RavenDB database as the centerpiece of its own microservices environment.
 
-<div class="text-center" style="margin: 30px">
-    <a href="https://cloud.ravendb.net" target="_blank"><img src="images/ravendb-cloud.png" class="img-responsive" style="margin: 0 auto;"/></a>
+<div style="margin: 30px">
+    <a href="https://cloud.ravendb.net" target="_blank"><img src="images/ravendb-cloud.png" class="img-responsive m-0-auto" alt="RavenDB Cloud"/></a>
 </div>
 
 ### Expanding from Monolith to Microservices
@@ -35,8 +35,8 @@ We exercised the best option - establish a microservices architecture and reorga
 
 The only question was, which database do we use for each system? Which database would we trust our own money, information, and future to?
 
-<div class="text-center" style="margin: 30px">
-    <a href="https://ravendb.net/learn/webinars/ravenDB-101-querying-indexing-aggregates-document-database-cloud-on-prem-hybrid-environment"><img src="images/ravendb-101.jpg" alt="RavenDB 101 Webinar Available On-Demand" class="img-responsive" style="margin: 0 auto;"/></a>
+<div style="margin: 30px">
+    <a href="https://ravendb.net/learn/webinars/ravenDB-101-querying-indexing-aggregates-document-database-cloud-on-prem-hybrid-environment"><img src="images/ravendb-101.jpg" alt="RavenDB 101 Webinar Available On-Demand" class="img-responsive m-0-auto"/></a>
 </div>
 
 ### We Aren't Only RavenDB Developers, We Are Also Clients
@@ -73,6 +73,6 @@ At RavenDB, RavenDB is responsible for the following tasks:
 
 *We will never ask you to trust RavenDB to do anything it isn't already doing for us.*
 
-<div class="text-center" style="margin: 30px">
-    <a href="https://ravendb.net/whitepapers/mongodb-ravendb-best-nosql-open-source-document-database"><img src="images/ravendb-vs-mongodb.png" alt="RavenDB vs MongoDB Whitepaper" class="img-responsive" style="margin: 0 auto;"/></a>
+<div style="margin: 30px">
+    <a href="https://ravendb.net/whitepapers/mongodb-ravendb-best-nosql-open-source-document-database"><img src="images/ravendb-vs-mongodb.png" alt="RavenDB vs MongoDB Whitepaper" class="img-responsive m-0-auto"/></a>
 </div>

@@ -17,8 +17,8 @@ He is looking for a [NoSQL Document Database](https://ravendb.net/features) that
 - **It won't bite you** at the worst possible moment. The database cannot break down when you least expect it. It cannot have security breeches when everybody is watching. It needs to work seamlessly and effortlessly at all times.
 
 
-<div class="text-center margin-top">
-    <a href="https://indexoutofrange.com/RavenDBvsMongoDB/" target="_blank" rel="nofollow"><img src="images/indexoutofrange.jpg" alt="Szymon Warda's MongoDB vs RavenDB article"></a>
+<div class="margin-top">
+    <a href="https://indexoutofrange.com/RavenDBvsMongoDB/" target="_blank" rel="nofollow"><img src="images/indexoutofrange.jpg" class="img-responsive m-0-auto" alt="Szymon Warda's MongoDB vs RavenDB article"></a>
 </div>
 <br/>
 

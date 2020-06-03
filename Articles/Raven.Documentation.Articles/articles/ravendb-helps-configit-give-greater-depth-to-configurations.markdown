@@ -52,8 +52,8 @@ Documents for configurations for these products expanded to tens of thousands of
 
 As Configit upgraded from RavenDB 3.0 to RavenDB 4.2, which is over 10 times faster, they were able to meet their functionality and performance needs.
 
-<div class="text-center" style="margin: 30px">
-    <img src="images/configit.jpg" class="img-responsive" alt="The fact that RavenDB can store the entire document and continue to perform well is really impressive.">
+<div style="margin: 30px">
+    <img src="images/configit.jpg" class="img-responsive m-0-auto" alt="The fact that RavenDB can store the entire document and continue to perform well is really impressive.">
 </div>
 
 ## The Bottom Line
@@ -64,6 +64,6 @@ As Configit continues its rise to the top of their market, they have a database 
 
 Special thanks to Torsten B. Hagemann, Peter Tiedemann, Arian Kadkhoda at Configit for their generous help.
 
-<div class="text-center" style="margin: 30px">
-    <a href="https://cloud.ravendb.net"><img src="images/ravendb-cloud.png" class="img-responsive" alt="RavenDB Cloud" style="margin: 0 auto;"/></a>
+<div style="margin: 30px">
+    <a href="https://cloud.ravendb.net"><img src="images/ravendb-cloud.png" class="img-responsive m-0-auto" alt="RavenDB Cloud"/></a>
 </div>

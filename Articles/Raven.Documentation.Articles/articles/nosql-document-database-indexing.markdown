@@ -21,7 +21,7 @@ RavenDB offers both "auto indexes" and "static indexes". Auto Indexes are genera
 If we had a fresh RavenDB database without any indexes, we could safely issue the following query to get all Employees by a specific department key:
 
 <div class="text-center margin-top-xs margin-bottom-xs">
-    <img src="images/nosql-document-database-indexing/1.png" alt="Screenshot-1"/>
+    <img src="images/nosql-document-database-indexing/1.png" class="img-responsive m-0-auto" alt="Screenshot-1"/>
 </div>
 
 This query will generate an auto index named "Auto/Employees/ByDepartment" if it doesn't yet exist and will start building it. For a new auto index, initially RavenDB will perform a quick indexing operation to try and return results immediately after which it will fully rebuild the index. This is what it means to be "stale" or "eventually consistent" from the perspective of an application.
@@ -29,7 +29,7 @@ This query will generate an auto index named "Auto/Employees/ByDepartment" if it
 Normally, auto indexes are optimized well enough that you will not need to customize them but for full control, you can promote them to static indexes to customize the way it is built. Static indexes can be specified for queries like so:
 
 <div class="text-center margin-top-xs margin-bottom-xs">
-    <img src="images/nosql-document-database-indexing/2.png" alt="Screenshot-2"/>
+    <img src="images/nosql-document-database-indexing/2.png" class="img-responsive m-0-auto" alt="Screenshot-2"/>
 </div>
 
 By specifying a second generic argument, we've told RavenDB to specifically use the `EMPLOYEES_BYDEPARTMENT` static index which we now have defined in our codebase.
@@ -52,7 +52,7 @@ RavenDB strives to be easy to manage and one way it accomplishes this is through
 <p>The simplest index in RavenDB is a Map index which selects fields from a collection. For example, using <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/" target="_blank" rel="nofollow">C# LINQ</a> a Map function for an "Employees by Department" index may look like this:</p>
 
 <div class="text-center margin-top-xs margin-bottom-xs">
-    <img src="images/nosql-document-database-indexing/3.png" alt="Screenshot-3"/>
+    <img src="images/nosql-document-database-indexing/3.png" class="img-responsive m-0-auto" alt="Screenshot-3"/>
 </div>
 
 This selects `DEPARTMENTID` as an indexed field which allows querying the Employee collection by department. Unlike SQL "views" the results of a query on this index will be the **full Employee document** not the projected fields.
@@ -62,7 +62,7 @@ Both RavenDB and MongoDB support the idea of a "covering index" using [stored fi
 It is simple to add filter conditions using the LINQ `WHERE` clause. Only employees who are considered "active" (non-terminated) would be indexed:
 
 <div class="text-center margin-top-xs margin-bottom-xs">
-    <img src="images/nosql-document-database-indexing/4.png" alt="Screenshot-4"/>
+    <img src="images/nosql-document-database-indexing/4.png" class="img-responsive m-0-auto" alt="Screenshot-4"/>
 </div>
 
 Since indexes are written in C# or JavaScript, any valid expression or native function is supported. You can also import other libraries for usage within C# and JavaSCript indexes as [additional sources](https://ravendb.net/docs/article-page/4.2/csharp/indexes/extending-indexes). Computed expressions affect the build time of your index so it's best to use the Studio to examine how your indexes are performing.
@@ -70,7 +70,7 @@ Since indexes are written in C# or JavaScript, any valid expression or native fu
 The Map step has access to the full document and power of C#/JavaScript so you can include complex expressions such as computing order totals from line items and even [loading related documents](https://ravendb.net/docs/article-page/4.2/csharp/indexes/indexing-related-documents) during indexing time:
 
 <div class="text-center margin-top-xs margin-bottom-xs">
-    <img src="images/nosql-document-database-indexing/5.png" alt="Screenshot-5"/>
+    <img src="images/nosql-document-database-indexing/5.png" class="img-responsive m-0-auto" alt="Screenshot-5"/>
 </div>
 
 <p>MongoDB and PostgreSQL indexes are similar to how most databases work where you specify the column(s) to index. Multicolumn indexes are more limited than Map indexes in RavenDB because the <a href="https://docs.mongodb.com/manual/core/index-compound/#sort-order" target="_blank" rel="nofollow">order of columns matters</a>. One major feature of PostgreSQL is that it can index JSON <a href="https://www.postgresql.org/docs/current/datatype-json.html" target="_blank" rel="nofollow">using the jsonb data type</a> and supports special JSON operators in queries. This allows you to mimic the design of document storage by storing JSON into columns that can be queried alongside traditional data type columns.</p>
@@ -83,7 +83,7 @@ Perhaps the biggest difference between MongoDB and RavenDB is that MongoDB **doe
 For example, we can transform our "Employees by Department" Map index into a "Count of Employees by Department" Map/Reduce index by adding a `COUNT` property to the Map definition and a Reduce step to sum up the `COUNT` grouped by `DEPARTMENTID`:
 
 <div class="text-center margin-top-xs margin-bottom-xs">
-    <img src="images/nosql-document-database-indexing/6.png" alt="Screenshot-6"/>
+    <img src="images/nosql-document-database-indexing/6.png" class="img-responsive m-0-auto" alt="Screenshot-6"/>
 </div>
 
 Since RavenDB evaluates these expressions at indexing time on the database server, query performance remains fast, allowing you to offload aggregate computations to the database instead of your client application.
@@ -91,7 +91,7 @@ Since RavenDB evaluates these expressions at indexing time on the database serve
 In MongoDB, the `AGGREGATE` command uses JSON objects assembled into a pipeline that refer to built-in commands (prefixed with `$`). The aggregation framework commands use compiled native code which performs better than the more flexible `MAPREDUCE` operation. For example, to count of the total number of employees in each department you would use the `$GROUP` and `$SUM` aggregate functions:
 
 <div class="text-center margin-top-xs margin-bottom-xs">
-    <img src="images/nosql-document-database-indexing/7.png" alt="Screenshot-7"/>
+    <img src="images/nosql-document-database-indexing/7.png" class="img-responsive m-0-auto" alt="Screenshot-7"/>
 </div>
 
 This would need to be re-run each time you wanted new results. You can use the `$OUT` or `$MERGE` commands to output to sharded or non-sharded collections. For maximum flexibility, MongoDB offers the `MAPREDUCE` command which can run arbitrary JavaScript functions and can also output to collections.

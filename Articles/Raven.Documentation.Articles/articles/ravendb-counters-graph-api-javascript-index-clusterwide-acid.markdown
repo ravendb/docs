@@ -5,9 +5,9 @@
 {SOCIAL-MEDIA-LIKE/}
 
 
-<div class="text-center margin-top-xs margin-bottom-xs">
+<div class="margin-top-xs margin-bottom-xs">
     <a href="https://www.codeproject.com/Articles/4553133/Whats-New-in-RavenDB-4-2" target="_blank" rel="nofollow">
-        <img src="images/codeproject.jpg" alt="Codeproject Article"/>
+        <img src="images/codeproject.jpg" class="img-responsive m-0-auto" alt="Codeproject Article"/>
     </a>
 </div>
 
@@ -23,7 +23,7 @@ JavaScript indexes are an alternative way to perform complex modelling logic ver
 
 You can also revert documents to previous revisions without downtime by taking your database offline and annoying your users. RavenDB utilizes its existing <a href="https://www.codeproject.com/Articles/4553133/Whats-New-in-RavenDB-4-2" target="_blank" rel="nofollow">revisions feature</a> so you can restore to a snapshot in time while maintaining read-access to the database.
 
-<div class="text-center margin-top-xs margin-bottom-xs">
-    <a href="https://ravendb.net/live-demo"><img src="images/live-demo-banner.jpg" alt="Schedule a FREE Demo of RavenDB"/></a>
+<div class="margin-top-xs margin-bottom-xs">
+    <a href="https://ravendb.net/live-demo"><img src="images/live-demo-banner.jpg" class="img-responsive m-0-auto" alt="Schedule a FREE Demo of RavenDB"/></a>
 </div>
 
