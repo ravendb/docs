@@ -60,7 +60,7 @@ in numerous ways. E.g. -
   You can watch and manage time-series using the GUI.  
 * **Time-Series Querying and Aggregation**  
   High-performance queries and aggregations can be performed over 
-  time-series [tags and values](../../document-extensions/timeseries/overview#time-series-entries) 
+  time-series [timestamps, tags and values](../../document-extensions/timeseries/overview#time-series-entries) 
   using LINQ expressions and raw RQL.  
 * **Time-Series Indexing**  
   Time-series can be indexed using LINQ expressions.  
@@ -69,8 +69,8 @@ in numerous ways. E.g. -
      You can set time-series rollup policies to aggregate large series into 
      smaller sets by your definitions.  
    * **Retention Policies**  
-     You can set time-series retention policies to automatically remove series 
-     that have reached an expiration threshhold.  
+     You can set time-series retention policies to automatically remove 
+     time-series entries that have reached an expiration threshhold.  
 * **[Including Time-Series](../../document-extensions/timeseries/client-api/session-methods/include-ts-data/include-ts-overview)**  
   You can include (pre-fetch) time-series data while loading documents, 
   so they'd be held by the client's sesion and instantly delivered to the 

@@ -1,19 +1,19 @@
 [
     {
-        "Path": "queries-overview.markdown",
-        "Name": "Overview",
+        "Path": "dynamic-queries.markdown",
+        "Name": "Dynamic Queries",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "/dynamic-time-series-queries",
-        "Name": "Dynamic Time-Series Queries",
+        "Path": "client-raw-query.markdown",
+        "Name": "Client Raw Query",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "/indexed-time-series-queries",
-        "Name": "Indexed Time-Series Queries",
+        "Path": "client-linq-query.markdown",
+        "Name": "Client LINQ Query",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     }

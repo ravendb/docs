@@ -606,6 +606,41 @@ namespace SlowTests.Client.TimeSeries.Session
                 Operation getOp = store.Operations.Send(getOperation);
                 #endregion
 
+                #region timeseries_region_Raw-Query-Non-Aggregated
+                // Raw query with no aggregation
+                IRawDocumentQuery<TimeSeriesRawResult> nonAggregatedRawQuery =
+                    session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+                            declare timeseries out(user) 
+                            {
+                                from user.HeartRate between $start and $end
+                                offset '02:00'
+                            }
+                            from Users as u where Age < 30
+                            select out(u)
+                            ")
+                    .AddParameter("start", baseline)
+                    .AddParameter("end", baseline.AddMonths(2));
+
+                var nonAggregatedRawQueryResult = nonAggregatedRawQuery.ToList();
+                #endregion
+
+                #region timeseries_region_Raw-Query-Aggregated
+                // Raw time-series query with aggregation
+                IRawDocumentQuery<TimeSeriesAggregationResult> aggregatedRawQuery =
+                    session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
+                            from Users as u where Age < 30
+                            select timeseries(
+                                from HeartRate between 
+                                    '2020-05-27T00:00:00.0000000Z' 
+                                        and '2020-06-23T00:00:00.0000000Z'
+                                group by '7 days'
+                                select min(), max())
+                            ");
+
+                var aggregatedRawQueryResult = aggregatedRawQuery.ToList();
+                #endregion
+
+
             }
         }
 
