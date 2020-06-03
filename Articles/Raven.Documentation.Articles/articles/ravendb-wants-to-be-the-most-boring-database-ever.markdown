@@ -60,8 +60,8 @@ No need for shopping this Black Friday, you've got everything you need.
 
 Along with native parts all under the hood, we also have prepackaged and installed solutions for full text search, spatial search, MapReduce, Automatic Caching, Automatic Indexing, Optimistic Concurrency and a lot more. This spares you a lot of complexity and cost as you don't have to venture outside the walls of your database to do everything it should be doing in the first place.
 
-<div class="text-center margin-bottom">
-    <a href="https://cloud.ravendb.net"><img src="images/ravendb-cloud.png" alt="Managed Cloud Hosting"/></a>
+<div class="margin-bottom">
+    <a href="https://cloud.ravendb.net"><img src="images/ravendb-cloud.png" class="img-responsive m-0-auto" alt="Managed Cloud Hosting"/></a>
 </div>
 
 - **The Cloud can be interesting, but you probably should focus on its business value first**
@@ -86,6 +86,6 @@ There's even more to the bore!
 
 The definition of boredom is when you have nothing to do. For 2020 and beyond, we want every RavenDB developer to feel that way about managing their data so they can better entertain themselves by making the best application out there.
 
-<div class="text-center">
-    <a href="https://ravendb.net/live-demo"><img src="images/live-demo-banner.jpg" alt="Schedule a FREE Demo of RavenDB"/></a>
+<div>
+    <a href="https://ravendb.net/live-demo"><img src="images/live-demo-banner.jpg" class="img-responsive m-0-auto" alt="Schedule a FREE Demo of RavenDB"/></a>
 </div>

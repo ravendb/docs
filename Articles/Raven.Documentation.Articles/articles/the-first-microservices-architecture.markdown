@@ -29,8 +29,8 @@ This is the challenge of the monolith architecture. Each part of the architectur
 
 ### Scaling Out for Flexibility
 
-<div class="text-center" style="margin: 30px">
-    <a href="https://cloud.ravendb.net" target="_blank"><img src="images/ravendb-cloud.png" class="img-responsive" style="margin: 0 auto;"/></a>
+<div style="margin: 30px">
+    <a href="https://cloud.ravendb.net" target="_blank"><img src="images/ravendb-cloud.png" class="img-responsive m-0-auto" alt="RavenDB Cloud"/></a>
 </div>
 
 What happens when we create a factory with 6 work stations? Each station requires 4 specific steps in putting together a lamp and is manned by 3 workers. When a worker at one station finishes his task, he puts it on the conveyor belt for the next worker to perform his mini-process. Two workers are assigned at the end of the line to pack each assembled lamp as it arrives.
@@ -61,8 +61,8 @@ Over the coming years, complexity of applications must be reined in. Microservic
 
 ### About RavenDB
 
-<div class="text-center" style="margin: 30px">
-    <a href="https://ravendb.net/whitepapers/mongodb-ravendb-best-nosql-open-source-document-database"><img src="images/ravendb-vs-mongodb.png" class="img-responsive" style="margin: 0 auto;"></a>
+<div style="margin: 30px">
+    <a href="https://ravendb.net/whitepapers/mongodb-ravendb-best-nosql-open-source-document-database"><img src="images/ravendb-vs-mongodb.png" class="img-responsive m-0-auto" alt="RavenDB vs MongoDB Whitepaper"></a>
 </div>
 
 First developed in 2009, RavenDB is an Open Source [NoSQL Distributed Database](https://ravendb.net) that gives you unprecedented performance while maintaining ACID guarantees. RavenDB does this by being the only database to give you automatic indexes while leveraging the document model to eliminate your need for JOINS and *select N+1* functions that require excessive trips to the server, slow down your application, and squander your cloud budget. [RavenDB](https://ravendb.net) is quick to set up and easy to use. Its' query language, RQL, is 80% SQL, making most developers familiar with it from the start. [RavenDB Cloud](https://cloud.ravendb.net) is the managed cloud service, using automatic caching, burstable instances, and cost-free scaling to keep your cloud costs minimal and predictable, making sure you only pay for resources you are using. You can spin up a DBaaS instance on AWS, Azure, or GCP in minutes.

@@ -20,8 +20,8 @@ An effective monitoring system can be put in place to confirm the quality of Afr
 We at RavenDB are so excited about this opportunity. We gave the people responsible for this project *free instances and support* for RavenDB.
 
 ## The Cumbersome Chain in Cashew Commerce
-<div class="text-center">
-    <img src="images/amberwood-1.jpg" class="img-responsive" alt="RavenDB is so smooth, I don't notice it."/>
+<div>
+    <img src="images/amberwood-1.jpg" class="img-responsive m-0-auto" alt="RavenDB is so smooth, I don't notice it."/>
 </div>
 <br/>
 Jeremy Holt, CEO of Amberwood Trading, has been in the cashew business for over a decade. He is also a self-taught programmer. RavenDB was so easy for him to use; he taught himself using ravendb.net learning resources.
@@ -49,16 +49,16 @@ They can be seen on any device, computer, tablet, or mobile phone. A banker can 
 This cuts three weeks of the time it takes for the farmer to sell his crop, the exporter to get paid, and wholesalers and retailers to purchase more cashews, adding liquidity to every step in the supply chain.
 
 ## NoSQL Database Features That Make it Happen
-<div class="text-center">
-    <img src="images/amberwood-2.jpg" class="img-responsive" alt="The process isn't simple, but RavenDB allows it to be."/>
+<div>
+    <img src="images/amberwood-2.jpg" class="img-responsive m-0-auto" alt="The process isn't simple, but RavenDB allows it to be."/>
 </div>
 <br/>
 An application that focuses on traversing government and business documents is a perfect fit for a document [NoSQL database](https://ravendb.net). The data is received the same way it's prepared in the physical forms. RavenDB uses JSON objects which mirror the abstract objects application programming languages use to move data to and from their database.
 
 Information moves smooth as silk from end to end.<br/>
 <br/>
-<div class="text-center">
-    <a href="https://cloud.ravendb.net"><img src="images/ravendb-cloud.png" alt="RavenDB Cloud"/></a>
+<div>
+    <a href="https://cloud.ravendb.net"><img src="images/ravendb-cloud.png" class="img-responsive m-0-auto" alt="RavenDB Cloud"/></a>
 </div>
 <br/>
 

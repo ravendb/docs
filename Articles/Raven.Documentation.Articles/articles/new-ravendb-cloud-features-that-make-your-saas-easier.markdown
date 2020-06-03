@@ -27,4 +27,5 @@ If someone can access your email, they cannot get to your cloud instance because
 RavenDB gives you added insurance against anyone poaching your data by giving you [encrypted backups](https://ravendb.net/docs/article-page/4.2/csharp/client-api/operations/maintenance/backup/encrypted-backup). Now *you* are the only one who can see your data.
 
 **10% discount throughout 2019.** Nothing makes life easier more than saving money. The average cost savings for projects that migrate to the cloud is 16%. We decided to send you two thirds the distance to the goal line before you even get started. Don't worry - we offer all sorts of features that can double, even more than triple your cost savings, but this is a good start. For anyone looking to start in 2020, we offer discounts for increased use and time commitments.<br/><br/>
-<a href="https://cloud.ravendb.net" target="_blank"><img src="images/ravendb-cloud.png" class="img-responsive"/></a>
+
+<a href="https://cloud.ravendb.net" target="_blank"><img src="images/ravendb-cloud.png" class="img-responsive m-0-auto" alt="RavenDB Cloud"/></a>

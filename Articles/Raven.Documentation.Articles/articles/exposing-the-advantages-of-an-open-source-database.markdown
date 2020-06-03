@@ -56,7 +56,7 @@ We kept that in mind when we built RavenDB. We made sure that everything you nee
 We are a part of today's latest trend in technology: Less is More.
 
 <br/>
-<div class="text-center">
-    <a href="https://ravendb.net/whitepapers/mongodb-ravendb-best-nosql-open-source-document-database"><img src="images/ravendb-vs-mongodb.png" class="img-responsive" style="margin: auto;" alt="RavenDB vs MongoDB Whitepaper"/></a>
+<div >
+    <a href="https://ravendb.net/whitepapers/mongodb-ravendb-best-nosql-open-source-document-database"><img src="images/ravendb-vs-mongodb.png" class="img-responsive m-0-auto" alt="RavenDB vs MongoDB Whitepaper"/></a>
 </div>
 <br/>

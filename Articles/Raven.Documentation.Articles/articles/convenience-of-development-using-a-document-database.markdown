@@ -33,8 +33,8 @@ Setting up an IoT Big Data infrastructure requires a lot of your database. Here'
 
 **It works well on older and smaller machines:** Smaller machines are a given, but if you set up an IoT System where you have 500,000 car doors with small chips processing data, you won't be able to replace those chips in a hardware update. Your software must be able to work on limited hardware with little expectation of added capacity throughout the life of the project. We built RavenDB to accommodate older machines with less computing power, knowing that at the later stages of multi-year projects, nobody will replace the hardware - but you will still need cutting edge performance. <br/>
 <br/>
-<div class="text-center">
-    <a href="https://cloud.ravendb.net/"><img src="images/ravendb-cloud.png" alt="RavenDB Cloud"/></a>
+<div>
+    <a href="https://cloud.ravendb.net/"><img src="images/ravendb-cloud.png" class="img-responsive m-0-auto" alt="RavenDB Cloud"/></a>
 </div>
 <br/>
 
@@ -61,8 +61,8 @@ There are two reasons why the task is not as challenging as you may think, and t
 
 It's as easy as that, and the benefits will fit into your application, *and your bank account*, as smoothly as a document modeled data will fit into your next application object.<br/>
 <br/>
-<div class="text-center">
-    <a href="https://ravendb.net/live-demo"><img src="images/live-demo-banner.jpg" alt="Schedule a free one-on-one live RavenDB Demo"/></a>
+<div>
+    <a href="https://ravendb.net/live-demo"><img src="images/live-demo-banner.jpg" class="img-responsive m-0-auto" alt="Schedule a free one-on-one live RavenDB Demo"/></a>
 </div>
 <br/>
 

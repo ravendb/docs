@@ -53,8 +53,8 @@ They then reviewed RavenDB.
 
 They performed the same tests on RavenDB as they did for MongoDB and Cassandra. StarNet was very pleased with how RavenDB's ground-up approach met its core requirements.
 
-<div class="text-center margin-bottom">
-    <a href="https://cloud.ravendb.net"><img src="images/ravendb-cloud.png" alt="Managed Cloud Hosting"/></a>
+<div class="margin-bottom">
+    <a href="https://cloud.ravendb.net"><img src="images/ravendb-cloud.png" class="img-responsive m-0-auto" alt="Managed Cloud Hosting"/></a>
 </div>
 
 For example, executing a multi-document update on RavenDB in a single transaction as users scaled was easy and did not cause any performance degradation. StarNet was able to tune the database on rare occasions with [negligible downtime](https://ravendb.net/learn/webinars/when-failure-is-not-an-option-for-your-database). They also had to transfer NoSQL data to an SQL Server for legacy player stats and reporting. That too, was easy to configure.
@@ -73,7 +73,7 @@ Thanks to RavenDB, StarNet now has a platform that is reliable, borderless, secu
 
 StarNet plans to expand its cluster size. They want to onboard more legacy game applications onto RavenDB. They want to deploy more applications to a RavenDB cluster that is centrally managed and reportable while [scaling out to accommodate thousands of users](https://ravendb.net/articles/from-monolith-to-microservices-scaling-out-your-architecture) using devices of various forms and capabilities. Rapid deployment of new features onto new devices for new games and quick adaption to new government regulations and laws would not have been possible without RavenDB.
 
-<div class="text-center">
-    <a href="https://ravendb.net/live-demo"><img src="images/live-demo-banner.jpg" alt="Schedule a FREE Demo of RavenDB"/></a>
+<div>
+    <a href="https://ravendb.net/live-demo"><img src="images/live-demo-banner.jpg" class="img-responsive m-0-auto" alt="Schedule a FREE Demo of RavenDB"/></a>
 </div>
 

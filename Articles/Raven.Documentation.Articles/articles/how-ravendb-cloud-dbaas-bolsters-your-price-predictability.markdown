@@ -35,7 +35,7 @@ RavenDB will also warn you when you are getting low on credits and need to reple
 They are also able to run at full speed knowing that if things get tight, they will be warned, and the contingency plan will be implemented.
 
 <br/>
-<a href="https://ravendb.net/learn/webinars/delegating-your-backend-work-to-ravendb-cloud-dbaas"><img src="images/delegating-your-backend-work-to-ravendb-cloud.png" class="img-responsive"/></a>
+<a href="https://ravendb.net/learn/webinars/delegating-your-backend-work-to-ravendb-cloud-dbaas"><img src="images/delegating-your-backend-work-to-ravendb-cloud.png" class="img-responsive m-0-auto" alt="Delegating Your Backend Work to RavenDB Cloud Webinar"/></a>
 <br/>
 
 **Scale in and out at no expense.** If you don't need all the resources you originally provisioned, why should have to pay to return them? *RavenDB is one of the few databases to offer* you the freedom to choose a more resource efficient plan at no cost to your business and no disruption to your systems. Simply choose the new plan, and your database will be on it in 15 minutes with no disruption of service.
@@ -59,4 +59,4 @@ RavenDB can say, "IOPS is too small, not enough data is moving to storage based 
 Since you configure the limit to what you can invest in a specific time period, RavenDB can auto-adjust without going beyond what you expect to spend in the cloud. Your minimal cost will be as steady as your optimal performance.
 
 <br/>
-<a href="https://cloud.ravendb.net" target="_blank"><img src="images/ravendb-cloud.png" class="img-responsive"/></a>
+<a href="https://cloud.ravendb.net" target="_blank"><img src="images/ravendb-cloud.png" class="img-responsive m-0-auto" alt="RavenDB Cloud"/></a>
