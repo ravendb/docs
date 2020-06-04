@@ -7,7 +7,7 @@
 By using RavenDB's transactional NoSQL ACID database, Sparkling Logic can now build robust solutions for the decision management marketplace that features extensive flexibility and faster performance.
 
 <div class="flex-vertical text-center margin-top-sm margin-bottom-sm" style="align-items:center">
-    <img src="images/sparkling-logic.svg" style="max-width:240px" alt="Sparkling Logic"/>
+    <img src="images/sparkling-logic.png" class="img-responsive m-0-auto" alt="Sparkling Logic"/>
     <small class="margin-top-sm">Using a database in a way you’ve never seen before.</small>
 </div>
 
