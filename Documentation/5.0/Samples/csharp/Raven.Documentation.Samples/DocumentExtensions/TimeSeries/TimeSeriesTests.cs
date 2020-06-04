@@ -606,40 +606,174 @@ namespace SlowTests.Client.TimeSeries.Session
                 Operation getOp = store.Operations.Send(getOperation);
                 #endregion
 
-                #region timeseries_region_Raw-Query-Non-Aggregated
-                // Raw query with no aggregation
+                #region ts_region_Raw-Query-Non-Aggregated-Declare-Syntax
+                // May 17 2020, 00:00:00
+                var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
+
+                // Raw query with no aggregation - Declare syntax
                 IRawDocumentQuery<TimeSeriesRawResult> nonAggregatedRawQuery =
                     session.Advanced.RawQuery<TimeSeriesRawResult>(@"
-                            declare timeseries out(user) 
+                            declare timeseries getHeartRate(user) 
                             {
-                                from user.HeartRate between $start and $end
-                                offset '02:00'
+                                from user.HeartRate 
+                                    between $start and $end
+                                    offset '02:00'
                             }
                             from Users as u where Age < 30
-                            select out(u)
+                            select getHeartRate(u)
                             ")
                     .AddParameter("start", baseline)
-                    .AddParameter("end", baseline.AddMonths(2));
+                    .AddParameter("end", baseline.AddHours(24));
 
                 var nonAggregatedRawQueryResult = nonAggregatedRawQuery.ToList();
                 #endregion
 
-                #region timeseries_region_Raw-Query-Aggregated
-                // Raw time-series query with aggregation
+                #region ts_region_Raw-Query-Non-Aggregated-Select-Syntax
+                // May 17 2020, 00:00:00
+                var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
+
+                // Raw query with no aggregation - Select syntax
+                IRawDocumentQuery<TimeSeriesRawResult> nonAggregatedRawQuery =
+                    session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+                            from Users as u where Age < 30                            
+                            select timeseries (
+                                from HeartRate 
+                                    between $start and $end
+                                    offset '02:00'
+                            )")
+                    .AddParameter("start", baseline)
+                    .AddParameter("end", baseline.AddHours(24));
+
+                var nonAggregatedRawQueryResult = nonAggregatedRawQuery.ToList();
+                #endregion
+
+                #region ts_region_Raw-Query-Aggregated
+                // May 17 2020, 00:00:00
+                var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
+
+                // Raw Query with aggregation
                 IRawDocumentQuery<TimeSeriesAggregationResult> aggregatedRawQuery =
                     session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
-                            from Users as u where Age < 30
+                            from Users as u
                             select timeseries(
-                                from HeartRate between 
-                                    '2020-05-27T00:00:00.0000000Z' 
-                                        and '2020-06-23T00:00:00.0000000Z'
-                                group by '7 days'
+                                from HeartRate 
+                                    between $start and $end
+                                group by '1 days'
                                 select min(), max())
-                            ");
+                            ")
+                    .AddParameter("start", baseline)
+                    .AddParameter("end", baseline.AddDays(7));
 
                 var aggregatedRawQueryResult = aggregatedRawQuery.ToList();
                 #endregion
 
+                #region ts_region_LINQ-1-Select-Timeseries
+                using (var session = store.OpenSession())
+                {
+                    IRavenQueryable<TimeSeriesRawResult> query = (IRavenQueryable<TimeSeriesRawResult>)session
+                        .Query<User>()
+                            .Where(u => u.Age < 30)
+                                .Select(q => RavenQuery.TimeSeries(q, "HeartRate")
+                                .ToList());
+
+                    var result = query.ToList();
+                }
+                #endregion
+
+                #region ts_region_LINQ-2-RQL-Equivalent
+                using (var session = store.OpenSession())
+                {
+                    IRawDocumentQuery<TimeSeriesRawResult> nonAggregatedRawQuery =
+                        session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+                            from Users as u where Age < 30                            
+                            select timeseries (
+                                from HeartRate
+                            )");
+
+                    var nonAggregatedRawQueryResult = nonAggregatedRawQuery.ToList();
+                }
+                #endregion
+
+                // Query - LINQ format with Range selection
+                using (var session = store.OpenSession())
+                {
+                    var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
+
+                    #region ts_region_LINQ-3-Range-Selection
+                    IRavenQueryable<TimeSeriesRawResult> query =
+                        (IRavenQueryable<TimeSeriesRawResult>)session.Query<User>()
+                            .Where(u => u.Age < 30)
+                            .Select(q => RavenQuery.TimeSeries(q, "HeartRate", baseline, baseline.AddDays(3))
+                            .ToList());
+                    #endregion
+
+                    var result = query.ToList();
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
+
+                    #region ts_region_LINQ-4-Where
+                    IRavenQueryable<TimeSeriesRawResult> query =
+                    (IRavenQueryable<TimeSeriesRawResult>)session.Query<User>()
+
+                            // Choose user profiles of users under the age of 30
+                            .Where(u => u.Age < 30)
+
+                            .Select(q => RavenQuery.TimeSeries(q, "HeartRate", baseline, baseline.AddDays(3))
+
+                            // Filter Time-Series entries: choose only those with a "watches/fitbit" tag.  
+                            .Where(ts => ts.== "watches/fitbit")
+                    #endregion
+
+                            .ToList());
+
+                    var result = query.ToList();
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region ts_region_LINQ-5-LoadTag
+                    IRavenQueryable<TimeSeriesRawResult> query =
+                        (IRavenQueryable<TimeSeriesRawResult>)session.Query<Company>()
+
+                            .Where(c => c.Address.Country == "USA")
+
+                            .Select(q => RavenQuery.TimeSeries(q, "StockPrice")
+
+                            // Choose local brokers
+                            .LoadTag<Employee>()
+                            .Where((ts, src) => src.Address.Country == "USA")
+
+                            .ToList());
+
+                    var result = query.ToList();
+                    #endregion
+
+                }
+
+                // Query - LINQ format - Aggregation 
+                using (var session = store.OpenSession())
+                {
+                    var baseline = DateTime.Today;
+
+                    #region ts_region_LINQ-6-Aggregation
+                    IRavenQueryable<TimeSeriesAggregationResult> query = session.Query<User>()
+                        .Where(u => u.Age > 72)
+                        .Select(q => RavenQuery.TimeSeries(q, "Heartrate", baseline, baseline.AddDays(10))
+                            .Where(ts => ts.Tag == "watches/fitbit")
+                            .GroupBy(g => g.Days(1))
+                            .Select(g => new
+                            {
+                                Avg = g.Average(),
+                                Cnt = g.Count()
+                            })
+                            .ToList());
+                    #endregion
+
+                    var result = query.ToList();
+                }
 
             }
         }
@@ -698,6 +832,10 @@ namespace SlowTests.Client.TimeSeries.Session
 
         #region RawQuery-definition
         IRawDocumentQuery<T> RawQuery<T>(string query);
+        #endregion
+
+        #region Query-definition
+        IRavenQueryable<T> Query<T>(string indexName = null, string collectionName = null, bool isMapReduce = false);
         #endregion
 
         #region PatchCommandData-definition
@@ -797,6 +935,9 @@ namespace SlowTests.Client.TimeSeries.Session
         public Operation Send(IOperation<OperationIdResult> operation, SessionInfo sessionInfo = null)
         #endregion
 
+        #region RavenQuery-TimeSeries-Definition
+        public static ITimeSeriesQueryable TimeSeries(object documentInstance, string name, DateTime from, DateTime to)
+        #endregion
 
     }
 

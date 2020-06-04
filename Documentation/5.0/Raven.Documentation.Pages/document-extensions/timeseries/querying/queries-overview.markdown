@@ -12,7 +12,7 @@
 
 * In this page:  
   * [Server and Client Queries](../../../document-extensions/timeseries/querying/queries-overview#server-and-client-queries)  
-  * [Server and Client Queries](../../../document-extensions/timeseries/querying/queries-overview#dynamic-queries-and-indexed-queries)  
+  * [Dynamic and Indexed Queries](../../../document-extensions/timeseries/querying/queries-overview#dynamic-and-indexed-queries)  
   * [Query Range Selection](../../../document-extensions/timeseries/querying/queries-overview#query-range-selection)  
   * [Filtering](../../../document-extensions/timeseries/querying/queries-overview#filtering)  
   * [Aggregation and Projection](../../../document-extensions/timeseries/querying/queries-overview#aggregation-and-projection)  
@@ -39,7 +39,7 @@ also be translated to RQL before their execution by the server).
 
 ---
 
-#### Dynamic Queries and Indexed Queries
+#### Dynamic and Indexed Queries
 
 * As long as a time-series is unindexed, you can query it using 
   [dynamic queries](../../../document-extensions/timeseries/querying/dynamic-queries).  

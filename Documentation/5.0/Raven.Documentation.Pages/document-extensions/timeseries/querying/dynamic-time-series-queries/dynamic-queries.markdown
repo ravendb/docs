@@ -12,12 +12,14 @@
     
 * In this page:  
   * [Dynamic Queries](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#dynamic-queries)  
-  * [Basic Syntax](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#basic-syntax)  
-      * [Alternative Syntax: Declare a Time-Series Function](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#alternative-syntax-declare-a-time-series-function)  
-  * [Query Range](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#query-range)  
-  * [Filtering](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#filtering)  
-  * [Aggregation](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#aggregation)  
-  * [Projection](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#projection)  
+  * [Syntax](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#syntax)  
+     * [`select timeseries` Syntax: Creating a Time-Series Section](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#syntax-creating-a-time-series-section)  
+     * [`declare timeseries` Syntax: Declaring a Time-Series Function](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#syntax-declaring-a-time-series-function)  
+  * [Choose Query Range - `between` x `and` y](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#choose-query-range---between-x-and-y)  
+  * [Filtering - `where`](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#filtering---where)  
+     * [Using Tags as References - `load tag`](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#using-tags-as-references---)  
+  * [Aggregation - `group by`](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#aggregation---group-by)  
+  * [Projection - `select`](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#projection---select)  
 
 {NOTE/}
 
@@ -31,18 +33,29 @@ using its [query optimizer](../../../../indexes/querying/what-is-rql#query-optim
 
 {PANEL/}
 
-{PANEL: Basic Syntax}
+{PANEL: Syntax}
 
-  This is the basic RQL syntax of a dynamic time-series query.  
+You can query time-series using two different syntaxes.  
+Choose the syntax you're more comfortable with.  
 
-  {CODE-BLOCK: JSON}
-  //Look for time-series named "HeartRate" in user profiles of users under 30.
+* [`select timeseries` syntax](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#syntax-creating-a-time-series-section)  
+* [`declare timeseries` syntax](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#syntax-declaring-a-time-series-function)  
 
-  from Users as u where Age < 30
-  select timeseries(
-      from HeartRate
-  )
-  {CODE-BLOCK/}
+---
+
+#### `select timeseries` Syntax: Creating a Time-Series Section
+
+This syntax allows you to encapsulate your query's time-series functionality 
+in a `select timeseries` section.  
+
+{CODE-BLOCK: JSON}
+//Look for time-series named "HeartRate" in user profiles of users under 30.
+
+from Users as u where Age < 30
+select timeseries(
+    from HeartRate
+)
+{CODE-BLOCK/}
 
 * `from Users as u where Age < 30`  
   This **document query** locates the documents whose time-series we want to query.  
@@ -68,15 +81,15 @@ using its [query optimizer](../../../../indexes/querying/what-is-rql#query-optim
 
 ---
 
-#### Alternative Syntax: Declare a Time-Series Function
+#### `declare timeseries` Syntax: Declaring a Time-Series Function
 
-You can use an alternative syntax, that introduces greater flexibility to your queries 
-(allowing you, for example, to pass arguments to your query).  
+This syntax allows you to declare a time-series function and call it 
+from your query. It introduces greater flexibility to your queries as 
+you can, for example, pass arguments to/by the time-series function.  
 
-To use this syntax, **declare a timeseries function** and call the function from your query.  
-
-Here is a query in both syntaxes.  
-We pick users whose age is under 30, and retrieve a range of a time-series called "HeartRate".  
+Here is a query in both syntaxes. It picks users whose age is under 30, 
+and if they own a time-series named "HeartRate" retrieves a range of entries 
+from this series.  
 
 
 | With Time-Series Function | Without Time-Series Function |
@@ -104,9 +117,9 @@ select ts(jog)
 
 {PANEL/}
 
-{PANEL: Query Range }
+{PANEL: Choose Query Range - `between` x `and` y}
 
-Use `between` to specify a range of time-series entries to query.  
+Use `between` and `and` to specify a range of time-series entries to query.  
 The range start and end entries are chosen by their timestamps, in UTC format.  
 
 
@@ -126,7 +139,7 @@ select timeseries(
 
 {PANEL/}
 
-{PANEL: Filtering}
+{PANEL: Filtering - `where`}
 
 Use `where` to filter time-series entries by their **tags** or **values**.  
 
@@ -147,12 +160,12 @@ select timeseries(
 
 ---
 
-#### `load Tag `
+#### Using Tags as References - `load tag`
 
-Use the `load Tag ` expression to load a document whose ID is stored in 
-a time-series entry.  
-Use `load Tag ` with `where` to filter your results by the contents of the 
-loaded document, as we do in the following example.  
+Use the `load Tag ` expression to **load a document** whose ID is stored in 
+a time-series entry's tag.  
+Use `load Tag ` with `where` to **filter your results by properties of the 
+loaded document**, as we do in the following example.  
 
 {CODE-BLOCK: JSON}
 from Companies as c where c.Address.Country = "USA"
@@ -170,10 +183,11 @@ select timeseries(
 * `load Tag as emp`  
    We know in advance, that the tag of each time-series entry contains 
    the ID of an Employee document.  
-   Here, we use the `load tag` expression to load not the ID but 
-   the actual employee document.  
+   Here, we use the `load tag` expression to load the employee profile 
+   referred to by each tag.  
 * `where emp.Title == "Vice President, Sales"`  
-   And finally, we filter the results by the contents of the Employee document.  
+   And finally, we filter time-series entries by the **Title** property 
+   of employee documents they refer to.  
 
 The result-set of this sample includes time-series entries with 
 references (IDs stored in their tags) to a Sales Vice-President's profile.  
@@ -181,7 +195,7 @@ references (IDs stored in their tags) to a Sales Vice-President's profile.
 
 {PANEL/}
 
-{PANEL: Aggregation}
+{PANEL: Aggregation - `group by`}
 
 Use `group by` to group the result-set in groups of a chosen resolution.  
 
@@ -216,7 +230,7 @@ select timeseries(
 
 {PANEL/}
 
-{PANEL: Projection}
+{PANEL: Projection - `select`}
 
 Use `select` to choose the values that would be projected to the client.  
 
@@ -238,8 +252,10 @@ select timeseries(
      find the highest first-value, check all the second values of time-series 
      entries and find the highest second-value, and so on.  
    * The projected result will be an array of values.  
-     Its length will be as the length of the series-entry with highest number 
-     of values.  
+     The array's length will be as the length of the series-entry with highest 
+     number of values.  
+     Its first value will be the highest first value, its second value 
+     the highest second value, and so on.  
 
 {INFO: You can select values by these criteria:}
 
@@ -255,11 +271,10 @@ select timeseries(
 
 {INFO: Selecting values from aggregated and non-aggregated result-sets}
 
-* When values are selected from a result-set that **hasn't** been aggregated 
-  (grouped):  
-  Values are selected from the entire result-set.  
-* When values are selected from a result-set that **has** been aggregated:  
-  Values are selected per-group.  
+* When values are selected from a result-set that **hasn't** been aggregated (grouped),  
+  they are selected from the entire result-set.  
+* When values are selected from a result-set that **has** been aggregated,  
+  they are selected per-group.  
 
 {INFO/}
 

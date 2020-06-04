@@ -6,14 +6,14 @@
         "Mappings": []
     },
     {
-        "Path": "client-raw-query.markdown",
-        "Name": "Client Raw Query",
+        "Path": "client-raw-rql-queries.markdown",
+        "Name": "Client Raw RQL Queries",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "client-linq-query.markdown",
-        "Name": "Client LINQ Query",
+        "Path": "client-linq-queries.markdown",
+        "Name": "Client LINQ Queries",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     }
