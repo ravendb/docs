@@ -14,8 +14,8 @@ For years, view.DO has been operating in a Windows environment using core RDBMS 
 
 To create radically new ways of presenting tailored information to their users, a fundamentally new approach to system design was needed.
 
-<div class="text-center margin-bottom">
-    <a href="https://cloud.ravendb.net"><img src="images/ravendb-cloud.png" alt="Managed Cloud Hosting"/></a>
+<div class="margin-bottom">
+    <a href="https://cloud.ravendb.net"><img src="images/ravendb-cloud.png" class="img-responsive m-0-auto" alt="Managed Cloud Hosting"/></a>
 </div>
 
 ## Seizing the Opportunity with RavenDB NoSQL Database
@@ -67,7 +67,7 @@ view.DO intends to leverage RavenDB's SQL [ETL Services](https://ravendb.net/why
 
 view.DO is on a hi-growth path, and they have the confidence that RavenDB will be a reliable document storage solution to further enable that growth.
 
-<div class="text-center">
-    <a href="https://ravendb.net/live-demo"><img src="images/live-demo-banner.jpg" alt="Schedule a FREE Demo of RavenDB"/></a>
+<div>
+    <a href="https://ravendb.net/live-demo"><img src="images/live-demo-banner.jpg" class="img-responsive m-0-auto" alt="Schedule a FREE Demo of RavenDB"/></a>
 </div>
 

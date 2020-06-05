@@ -1622,7 +1622,7 @@
         "Name": "NoSQL Document Database Indexing",
         "Mappings": [],
         "Metadata": {
-            "title": "NoSQL Indexing | Indexing NoSQL Database | NoSQL Index",
+            "title": "NoSQL Document Database Indexing",
             "likeSection": "yes",
             "url": "nosql-document-database-indexing",
             "publishedAt": "2020-05-21",
@@ -1644,6 +1644,35 @@
             "twitter:title": "NoSQL Indexing | Indexing NoSQL Database | NoSQL Index",
             "twitter:description": "Document database indexing in RavenDB compared to MongoDB, another NoSQL document database, as well as the relational database, PostgreSQL. Indexing document properties.",
             "twitter:url": "https://ravendb.net/articles/nosql-document-database-indexing"
+        }
+},
+{
+        "Path": "how-sparkling-logic-uses-ravendb-nosql-document-database.markdown",
+        "Name": "How Sparkling Logic Uses the RavenDB NoSQL Document Database",
+        "Mappings": [],
+        "Metadata": {
+            "title": "How Sparkling Logic Uses the RavenDB NoSQL Document Database",
+            "likeSection": "yes",
+            "url": "how-sparkling-logic-uses-ravendb-nosql-document-database",
+            "publishedAt": "2020-06-02",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "See why using RavenDB's NoSQL transactional ACID database, Sparkling Logic can now build robust solutions for the decision management marketplace that includes extensive flexibility and faster performance.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "NoSQL ACID Database | NoSQL Database Use Case",
+            "og:description": "See why using RavenDB's NoSQL transactional ACID database, Sparkling Logic can now build robust solutions for the decision management marketplace that includes extensive flexibility and faster performance.",
+            "og:url": "how-sparkling-logic-uses-ravendb-nosql-document-database",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/how-sparkling-logic-uses-ravendb-nosql-document-database&fileName=how-sparkling-logic-uses-ravendb-nosql-document-database.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "NoSQL ACID Database | NoSQL Database Use Case",
+            "twitter:description": "See why using RavenDB's NoSQL transactional ACID database, Sparkling Logic can now build robust solutions for the decision management marketplace that includes extensive flexibility and faster performance.",
+            "twitter:url": "https://ravendb.net/articles/how-sparkling-logic-uses-ravendb-nosql-document-database"
         }
 }
 ]

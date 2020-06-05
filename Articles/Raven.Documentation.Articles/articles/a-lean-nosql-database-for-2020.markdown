@@ -29,8 +29,8 @@ Every year, RavenDB resolves to stay lean so your Database ROI should consistent
 
 We designed RavenDB to be lightweight, consuming as little memory as possible. In terms of memory usage, disk space, and performance, RavenDB 5.0 is more efficient than RavenDB 3.5, consuming fewer resources while giving you superior performance.<br/>
 <br/>
-<div class="text-center margin-bottom">
-    <a href="https://cloud.ravendb.net"><img src="images/ravendb-cloud.png" alt="Managed Cloud Hosting"/></a>
+<div class="margin-bottom">
+    <a href="https://cloud.ravendb.net"><img src="images/ravendb-cloud.png" class="img-responsive m-0-auto" alt="Managed Cloud Hosting"/></a>
 </div>
 <br/>
 We are not bloatware, making sure that the memory consumption you have expected from RavenDB on your systems will not change. As we add new features to your database, we make sure RavenDB focuses on doing what a database should do and only adding features that enable you to process tomorrow's data faster.
@@ -49,7 +49,7 @@ You can also use RavenDB effectively on edge devices, which can carry minimal am
 
 For 2020 and beyond, we at RavenDB are happy to keep the same yearly resolution: To stay lean.<br/>
 <br/>
-<div class="text-center">
-    <a href="https://ravendb.net/live-demo"><img src="images/see-for-yourself.png" class="img-responsive" style="margin: auto;" alt="Schedule a one on one free demo of RavenDB"></a>
+<div>
+    <a href="https://ravendb.net/live-demo"><img src="images/see-for-yourself.png" class="img-responsive m-0-auto" alt="Schedule a one on one free demo of RavenDB"></a>
 </div>
 <br/>
