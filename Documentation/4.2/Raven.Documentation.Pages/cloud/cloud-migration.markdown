@@ -1,4 +1,4 @@
-# RavenDB on the Cloud: Migration
+# Cloud: Migration
 ---
 
 {NOTE: }
