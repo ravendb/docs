@@ -1,4 +1,4 @@
-# RavenDB on the Cloud: Backup And Restore
+# Cloud: Backup And Restore
 ---
 
 {NOTE: }

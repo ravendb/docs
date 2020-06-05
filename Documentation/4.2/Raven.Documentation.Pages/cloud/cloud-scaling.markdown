@@ -1,4 +1,4 @@
-# RavenDB on the Cloud: Scaling
+# Cloud: Scaling
 ---
 
 {NOTE: }
