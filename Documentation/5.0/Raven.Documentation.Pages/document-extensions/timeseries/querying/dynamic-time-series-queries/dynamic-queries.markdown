@@ -136,6 +136,22 @@ select timeseries(
   * `between '2020-05-27T00:00:00.0000000Z' and '2020-06-23T00:00:00.0000000Z'`  
     If the query ends here, all entries between the given timestamps will be retrieved.  
     If the query continues, any additional filtering will relate only to this range.  
+      
+      {INFO: }
+      You can use the Studio to try these queries.  
+      Using the studio, you can use parameters for a clearer query.  
+      E.g. -  
+      {CODE-BLOCK: JSON}
+      $from = '2020-05-27T00:00:00.0000000Z'
+$to = '2020-06-23T00:00:00.0000000Z'
+
+from Users as jog where Age < 30
+select timeseries(
+   from HeartRate 
+   between $from and $to
+)
+      {CODE-BLOCK/}
+      {INFO/}
 
 {PANEL/}
 

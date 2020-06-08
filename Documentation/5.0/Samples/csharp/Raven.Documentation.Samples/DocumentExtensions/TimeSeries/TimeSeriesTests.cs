@@ -18,6 +18,9 @@ using Raven.Client.Documents.Session.TimeSeries;
 using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.BulkInsert;
 using static Raven.Client.Documents.BulkInsert.BulkInsertOperation;
+using Raven.Client.Documents.Indexes.TimeSeries;
+using Raven.Client.Documents.Queries.TimeSeries;
+using Raven.Client.Documents.Queries;
 
 namespace SlowTests.Client.TimeSeries.Session
 {
@@ -775,8 +778,88 @@ namespace SlowTests.Client.TimeSeries.Session
                     var result = query.ToList();
                 }
 
+                // index queries
+                #region ts_region_Index-TS-Queries-1-session-Query
+                // Query time-series index using session.Query
+                using (var session = store.OpenSession())
+                {
+                    var results = session.Query<SimpleIndex.Result, SimpleIndex>()
+                        .ToList();
+                }
+                #endregion
+
+                #region ts_region_Index-TS-Queries-2-session-Query-with-Linq
+                // Enhance the query using LINQ expressions
+                var chosenDate = new DateTime(2020, 5, 20);
+                using (var session = store.OpenSession())
+                {
+                    var results = session.Query<SimpleIndex.Result, SimpleIndex>()
+                        .Where(w => w.Date < chosenDate)
+                        .OrderBy(o => o.HeartBeat)
+                        .ToList();
+                }
+                #endregion
+
+                #region ts_region_Index-TS-Queries-3-DocumentQuery
+                // Query time-series index using DocumentQuery
+                using (var session = store.OpenSession())
+                {
+                    var results = session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
+                        .ToList();
+                }
+                #endregion
+
+                #region ts_region_Index-TS-Queries-4-DocumentQuery-with-Linq
+                // Query time-series index using DocumentQuery with Linq-like expressions
+                using (var session = store.OpenSession())
+                {
+                    var results = session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
+                        .WhereEquals("HeartBeat", 70)
+                        .ToList();
+                }
+                #endregion
+
+                #region ts_region_Index-TS-Queries-5-session-Query-Async
+                // Time-series async index query using session.Query
+                using (var session = store.OpenAsyncSession())
+                {
+                    var results = await session.Query<SimpleIndex.Result, SimpleIndex>()
+                        .ToListAsync();
+                }
+                #endregion
+
+
             }
         }
+
+        #region ts_region_Index-TS-Queries-6-Index-Definition-And-Results-Class
+        public class SimpleIndex : AbstractTimeSeriesIndexCreationTask<Employee>
+        {
+
+            public class Result
+            {
+                public double HeartBeat { get; set; }
+                public DateTime Date { get; set; }
+                public string User { get; set; }
+            }
+
+            public SimpleIndex()
+            {
+                AddMap(
+                    "HeartRate",
+                    timeSeries => from ts in timeSeries
+                                  from entry in ts.Entries
+                                  select new
+                                  {
+                                      HeartBeat = entry.Values[0],
+                                      entry.Timestamp.Date,
+                                      User = ts.DocumentId
+                                  });
+            }
+        }
+        #endregion
+
+
 
         private IDisposable GetDocumentStore()
         {
