@@ -32,11 +32,11 @@ using LINQ expressions.
 
 * Definitions  
    
-   * `session.Query` Definition  
+   * `session.Query`  
      {CODE-BLOCK: JSON}
      IRavenQueryable<T> Query<T, TIndexCreator>() where TIndexCreator : AbstractCommonApiForIndexes, new();
      {CODE-BLOCK/}
-   * `DocumentQuery` definition  
+   * `DocumentQuery`  
      {CODE-BLOCK: JSON}
      IDocumentQuery<T> DocumentQuery<T, TIndexCreator>() where TIndexCreator : AbstractCommonApiForIndexes, new();
      {CODE-BLOCK/}
@@ -51,7 +51,7 @@ using LINQ expressions.
 * **Return Values**  
 
     As return values are specific to each index, we need to define 
-    a unique container for results retrieved from each index.  
+    a matching results container.  
 
     In the following sample we define a **map index** that collects three fields from the "HeartRate" 
     time-series, a "Results" container for the results, and an **index query** that uses both.

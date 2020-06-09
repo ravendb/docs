@@ -783,7 +783,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 // Query time-series index using session.Query
                 using (var session = store.OpenSession())
                 {
-                    var results = session.Query<SimpleIndex.Result, SimpleIndex>()
+                    List<SimpleIndex.Result> results = session.Query<SimpleIndex.Result, SimpleIndex>()
                         .ToList();
                 }
                 #endregion
@@ -793,7 +793,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 var chosenDate = new DateTime(2020, 5, 20);
                 using (var session = store.OpenSession())
                 {
-                    var results = session.Query<SimpleIndex.Result, SimpleIndex>()
+                    List<SimpleIndex.Result> results = session.Query<SimpleIndex.Result, SimpleIndex>()
                         .Where(w => w.Date < chosenDate)
                         .OrderBy(o => o.HeartBeat)
                         .ToList();
@@ -804,7 +804,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 // Query time-series index using DocumentQuery
                 using (var session = store.OpenSession())
                 {
-                    var results = session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
+                    List<SimpleIndex.Result> results = session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
                         .ToList();
                 }
                 #endregion
@@ -813,7 +813,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 // Query time-series index using DocumentQuery with Linq-like expressions
                 using (var session = store.OpenSession())
                 {
-                    var results = session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
+                    List<SimpleIndex.Result> results = session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
                         .WhereEquals("HeartBeat", 70)
                         .ToList();
                 }
@@ -823,7 +823,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 // Time-series async index query using session.Query
                 using (var session = store.OpenAsyncSession())
                 {
-                    var results = await session.Query<SimpleIndex.Result, SimpleIndex>()
+                    List<SimpleIndex.Result> results = await session.Query<SimpleIndex.Result, SimpleIndex>()
                         .ToListAsync();
                 }
                 #endregion
