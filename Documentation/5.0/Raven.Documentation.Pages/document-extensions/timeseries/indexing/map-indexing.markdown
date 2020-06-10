@@ -20,7 +20,7 @@ Indexing time series can speed-up finding them and the documents that contain th
 RavenDB supports time series indexing **by name**, but **not by value**.  
 
 * **Time Series indexing**  
-    Re-indexing due to time series name modification is rare enough to pause no performance issues.  
+    Re-indexing due to time series name modification is rare enough to cause no performance issues.  
     To index a document's time series by name, use [TimeSeriesFor]().  
   
 * **Time Series Values indexing**  
@@ -35,7 +35,11 @@ RavenDB supports time series indexing **by name**, but **not by value**.
 Use these time-series specific alternatives to the standard [indexing API]()
 
 `AbstractTimeSeriesIndexCreationTask : AbstractIndexCreationTask[Base]`
+
+This one really makes no difference, exists so features can be filled in in the future.  
 `TimeSeriesIndexDefinition : IndexDefinition`
+
+Show in one example
 `TimeSeriesIndexDefinitionBuilder<TDocument, TReduceResult> : AbstractIndexDefinitionBuilder<TDocument, TReduceResult, TimeSeriesIndexDefinition>`
 
 

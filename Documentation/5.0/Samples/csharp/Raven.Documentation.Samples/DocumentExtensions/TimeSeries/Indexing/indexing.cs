@@ -1,17 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Indexes.TimeSeries;
+using Raven.Client.Documents.Operations.Indexes;
+using Sparrow.Extensions;
+using Xunit;
+using Xunit.Abstractions;
+using System.Collections.Generic;
+
 
 namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Indexing
 {
     class indexing
     {
-        //method syntax simple map
+        public void Examples()
+        {
+            //map multimap mapreduce
+            var documentStore = new DocumentStore
+            {
+                Urls = new[] { "http://localhost:8080" },
+                Database = "products"
+            };
+            documentStore.Initialize();
+
+            //
+            documentStore.Maintenance.Send(new PutIndexesOperation(
+                                           new TimeSeriesIndexDefinition
+                                           {
+                                               Name = "MyTsIndex",
+                                               Maps = {
+                                               "from ts in timeSeries" +
+                                               "from entry in ts.Entries" +
+                                               "select new" +
+                                               "{" +
+                                               "    HeartBeat = entry.Values[0]," +
+                                               "    entry.Timestamp.Date," +
+                                               "}"
+                                               }
+                                           }
+            ));
+        }
+        //
 
 
-        //strong/query syntax map
         private class MyTsIndex : AbstractTimeSeriesIndexCreationTask<Company>
         {
             public MyTsIndex()
@@ -19,12 +52,12 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Indexing
                 AddMap(
                     "HeartRate",
                     timeSeries => from ts in timeSeries
-                                  from entry in ts.Entries
-                                  select new
-                                  {
-                                      HeartBeat = entry.Values[0],
-                                      entry.Timestamp.Date,
-                                  });
+                                    from entry in ts.Entries
+                                    select new
+                                    {
+                                        HeartBeat = entry.Values[0],
+                                        entry.Timestamp.Date,
+                                    });
             }
         }
 
@@ -36,18 +69,18 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Indexing
                 AddMap<Company>(
                     "HeartRate",
                     timeSeries => from ts in timeSeries
-                                  from entry in ts.Entries
-                                  select entry.Values[0]);
+                                    from entry in ts.Entries
+                                    select entry.Values[0]);
 
                 AddMap<User>(
                     "HeartRate",
                     timeSeries => from ts in timeSeries
-                                  from entry in ts.Entries
-                                  select entry.Values[0]);
+                                    from entry in ts.Entries
+                                    select entry.Values[0]);
             }
         }
 
-        //strong/query syntax mapreduce
+        //mapreduce
         private class AverageHeartRateDaily_ByDateAndUser : AbstractTimeSeriesIndexCreationTask<User>
         {
 
@@ -56,12 +89,14 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Indexing
                 AddMap(
                     "HeartRate",
                     timeSeries => from ts in timeSeries
-                                  from entry in ts.Entries
-                                  select new
-                                  {
-                                      HeartBeat = entry.Value,
-                                      Count = 1
-                                  });
+                                    from entry in ts.Entries
+                                    select new
+                                    {
+                                        HeartBeat = entry.Value,
+                                        User = ts.DocumentId,
+                                        Date = entry.Timestamp,
+                                        Count = 1
+                                    });
 
                 Reduce = results => from r in results
                                     group r by new { r.Date, r.User } into g
@@ -74,5 +109,13 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Indexing
                                     };
             }
         }
+    }
+
+    internal class User
+    {
+    }
+
+    internal class Company
+    {
     }
 }
