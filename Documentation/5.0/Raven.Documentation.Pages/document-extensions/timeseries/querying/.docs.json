@@ -1,19 +1,31 @@
 [
     {
-        "Path": "queries-overview.markdown",
-        "Name": "Overview",
+        "Path": "queries-overview-and-syntax.markdown",
+        "Name": "Overview and Syntax",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "/dynamic-time-series-queries",
-        "Name": "Dynamic Time-Series Queries",
+        "Path": "choosing-query-range.markdown",
+        "Name": "Choosing Query Range",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "/indexed-time-series-queries",
-        "Name": "Indexed Time-Series Queries",
+        "Path": "filtering.markdown",
+        "Name": "Filtering",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "aggregation-and-projection.markdown",
+        "Name": "Aggregation and Projection",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "indexed-queries.markdown",
+        "Name": "Indexed Queries",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     }

@@ -28,5 +28,11 @@
         "Name": "Patch Time-Series Data",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
+    },
+    {
+        "Path": "/query-time-series",
+        "Name": "Query Time-Series",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
     }
 ]

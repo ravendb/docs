@@ -1,16 +1,22 @@
-﻿# Time-Series Raw RQL Queries
+﻿## `session.Advanced.RawQuery`
+# Time-Series Raw RQL Queries
 ---
 
 {NOTE: }
 
-* Clients can [express time-series queries in RQL](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries) 
+* Clients can [express time-series queries in RQL](../../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries) 
   and send them to the server for execution using the `session.Advanced.RawQuery` method.  
   
+
+{INFO: }
+Learn more about time-series queries in the [section dedicated to this subject](../../../../../document-extensions/timeseries/querying/queries-overview).  
+{INFO/}
+
     
-* [Client Raw RQL Queries](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/client-raw-rql-queries#client-raw-rql-queries)  
-   * [Syntax](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/client-raw-rql-queries#syntax)  
-   * [Usage Flow](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/client-raw-rql-queries#usage-flow)  
-   * [Usage Samples](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/client-raw-rql-queries#usage-samples)  
+* [Client Raw RQL Queries](../../../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries#client-raw-rql-queries)  
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries#syntax)  
+   * [Usage Flow](../../../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries#usage-flow)  
+   * [Usage Samples](../../../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries#usage-samples)  
 
 {NOTE/}
 
@@ -21,12 +27,6 @@
 To send a raw RQL query to the server, use `session.Advanced.RawQuery`.  
 `RawQuery`transmits queries to the server without checking or altering 
 their contents, time-series contents or otherwise  
-
-* **Offset**  
-  The server and client time-zones may be different.  
-  Client queries can take this into consideration by defining an 
-  **offset** that adjusts the UTC timestamp values they send the 
-  server to the server's time-zone.  
 
 {PANEL/}
 
@@ -45,7 +45,7 @@ their contents, time-series contents or otherwise
    * **Return Value**:  
       * **`IRawDocumentQuery<TimeSeriesAggregationResult>`**  for aggregated data.  
         When the query 
-        [aggregates time-series entries](../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries#aggregation---group-by), 
+        [aggregates time-series entries](../../../document-extensions/timeseries/querying/aggregation), 
         the results are returned in an aggregated array.  
       * **`IRawDocumentQuery<TimeSeriesRawResult>`** for non-aggregated data.  
         When the query **doesn't aggregate** time-series entries, 
@@ -69,7 +69,6 @@ their contents, time-series contents or otherwise
 * In this sample, a raw RQL query retrieves 24 hours of HeartRate data from users under the age of 30.  
   The query does not aggregate data, so we retrieve its results using a `TimeSeriesRawResult` list.  
   We define an **offset**, to adjust retrieved results to the client's local time-zone.  
-  The query uses the **time-series function** `declare` syntax.  
 
     {CODE-TABS}
     {CODE-TAB:csharp:Declare-Syntax ts_region_Raw-Query-Non-Aggregated-Declare-Syntax@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
