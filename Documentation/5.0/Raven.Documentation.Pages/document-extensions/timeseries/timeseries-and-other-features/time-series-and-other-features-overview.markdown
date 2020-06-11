@@ -37,8 +37,6 @@ and how the various features handle time series values.
 | [Changes API]() | _TS Value Modification_ |
 | [Revision creation]() | _Document Change_ |
 
-{NOTE/}
-
 {PANEL/}
 
 ## Related articles

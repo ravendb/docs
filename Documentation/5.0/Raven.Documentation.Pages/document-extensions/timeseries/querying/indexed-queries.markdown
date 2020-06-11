@@ -1,4 +1,6 @@
-﻿# Indexed Time-Series Queries 
+﻿## Time-Series Queries:
+# Indexed Queries
+
 ---
 
 {NOTE: }

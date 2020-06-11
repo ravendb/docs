@@ -814,7 +814,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 using (var session = store.OpenSession())
                 {
                     List<SimpleIndex.Result> results = session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
-                        .WhereEquals("HeartBeat", 70)
+                        .WhereEquals("Tag", "watches/fitbit")
                         .ToList();
                 }
                 #endregion
@@ -841,6 +841,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 public double HeartBeat { get; set; }
                 public DateTime Date { get; set; }
                 public string User { get; set; }
+                public string Tag { get; set; }
             }
 
             public SimpleIndex()
@@ -853,7 +854,8 @@ namespace SlowTests.Client.TimeSeries.Session
                                   {
                                       HeartBeat = entry.Values[0],
                                       entry.Timestamp.Date,
-                                      User = ts.DocumentId
+                                      User = ts.DocumentId,
+                                      Tag = entry.Tag
                                   });
             }
         }
@@ -1018,8 +1020,12 @@ namespace SlowTests.Client.TimeSeries.Session
         public Operation Send(IOperation<OperationIdResult> operation, SessionInfo sessionInfo = null)
         #endregion
 
-        #region RavenQuery-TimeSeries-Definition
+        #region RavenQuery-TimeSeries-Definition-With-Range
         public static ITimeSeriesQueryable TimeSeries(object documentInstance, string name, DateTime from, DateTime to)
+        #endregion
+
+        #region RavenQuery-TimeSeries-Definition-Without-Range
+        public static ITimeSeriesQueryable TimeSeries(object documentInstance, string name)
         #endregion
 
     }
