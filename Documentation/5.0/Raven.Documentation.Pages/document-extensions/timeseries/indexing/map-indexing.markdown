@@ -54,7 +54,20 @@ the segment, as well as some aggregate values that summarize the data in the seg
 {PANEL/}
 
 {PANEL: Examples}
+Creating a time-series index using `TimeSeriesIndexDefinition`:
+{CODE indexes_IndexDefinition@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
 
+Creating a time-series index using `AbstractTimeSeriesIndexCreationTask`:
+{CODE indexes_CreationTask@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
+
+Creating a multi-map time-series index:
+{CODE indexes_MultiMapCreationTask@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
+
+Creating a map-reduce index:
+{CODE indexes_MapReduce@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
+
+Creating a builder for time-series indexes using `TimeSeriesIndexDefinitionBuilder`, and using it to create an index.
+{CODE indexes_IndexDefinitionBuilder@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
 {PANEL/}
 ## Related articles
 **Studio Articles**:  

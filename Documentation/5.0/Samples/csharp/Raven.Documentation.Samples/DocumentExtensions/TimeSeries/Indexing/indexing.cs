@@ -13,11 +13,10 @@ using System.Collections.Generic;
 
 namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Indexing
 {
-    class indexing
+    class Indexing
     {
         public void Examples()
         {
-            //map multimap mapreduce TimeSeriesNamesFor
             var documentStore = new DocumentStore
             {
                 Urls = new[] { "http://localhost:8080" },
@@ -25,106 +24,136 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Indexing
             };
             documentStore.Initialize();
 
-            //
+            #region indexes_IndexDefinition
             #region indexes_IndexDefinition
             documentStore.Maintenance.Send(new PutIndexesOperation(
-                                           new TimeSeriesIndexDefinition
-                                           {
-                                               Name = "MyTsIndex",
-                                               Maps = {
-                                               "from ts in timeSeries" +
-                                               "from entry in ts.Entries" +
-                                               "select new" +
-                                               "{" +
-                                               "    HeartBeat = entry.Values[0]," +
-                                               "    entry.Timestamp.Date," +
-                                               "}"
-                                               }
-                                           }
-            ));
+                                      new TimeSeriesIndexDefinition
+                                      {
+                                          Name = "Stocks_ByTradeVolume",
+                                          Maps = {
+                                          "from ts in timeSeries.Companies.StockPrice " +
+                                          "from entry in ts.Entries " +
+                                          "select new " +
+                                          "{ " +
+                                          "    TradeVolume = entry.Values[4], " +
+                                          "    entry.Timestamp.Date " +
+                                          "}"
+                                          }
+                                      }));
             #endregion
-
 
             #region indexes_IndexDefinitionBuilder
-            var TSIndexDefBuilder = new TimeSeriesIndexDefinitionBuilder<Company>("bob's index");
+            var TSIndexDefBuilder = 
+                new TimeSeriesIndexDefinitionBuilder<Company>("Stocks_ByTradeVolume");
+
             TSIndexDefBuilder.AddMap("StockPrice",
                         timeseries => from ts in timeseries
-                                      from entry in ts.Entries
-                                      select entry.Value);
+                                        from entry in ts.Entries
+                                        select new
+                                        {
+                                            TradeVolume = entry.Values[4],
+                                            entry.Timestamp.Date
+                                        });
 
-
+            documentStore.Maintenance.Send(new PutIndexesOperation(
+                            TSIndexDefBuilder.ToIndexDefinition(documentStore.Conventions)));
             #endregion
-        }
-        //
 
+
+        }
+        
         #region indexes_CreationTask
-        private class MyTsIndex : AbstractTimeSeriesIndexCreationTask<Company>
+        public class Stocks_ByTradeVolume : AbstractTimeSeriesIndexCreationTask<Company>
         {
-            public MyTsIndex()
+            public Stocks_ByTradeVolume()
             {
-                AddMap(
-                    "HeartRate",
+                AddMap("StockPrice",
+                        timeseries => from ts in timeseries
+                                      from entry in ts.Entries
+                                      select new
+                                      {
+                                          TradeVolume = entry.Values[4],
+                                          entry.Timestamp.Date
+                                      });
+            }
+        }
+        #endregion
+
+        #region indexes_MultiMapCreationTask
+        public class Vehicles_ByLocation : AbstractMultiMapTimeSeriesIndexCreationTask
+        {
+            public Vehicles_ByLocation()
+            {
+                AddMap<Plane>(
+                    "GPS_Coordinates",
+                    timeSeries => from ts in timeSeries
+                                  from entry in ts.Entries
+                                  select new 
+                                  {
+                                      Latitude = entry.Values[0],
+                                      Longitude = entry.Values[0],
+                                      entry.Timestamp
+                                  });
+
+                AddMap<Ship>(
+                    "GPS_Coordinates",
                     timeSeries => from ts in timeSeries
                                   from entry in ts.Entries
                                   select new
                                   {
-                                      HeartBeat = entry.Values[0],
-                                      entry.Timestamp.Date,
+                                      Latitude = entry.Values[0],
+                                      Longitude = entry.Values[0],
+                                      entry.Timestamp
                                   });
             }
         }
         #endregion
 
-        //strong/query syntax multi map
-        #region indexes_MultiMapCreationTask
-        private class MyMultiMapTsIndex : AbstractMultiMapTimeSeriesIndexCreationTask
-        {
-            public MyMultiMapTsIndex()
-            {
-                AddMap<Employee>(
-                    "HeartRate",
-                    timeSeries => from ts in timeSeries
-                                    from entry in ts.Entries
-                                    select entry.Values[0]);
-
-                AddMap<User>(
-                    "HeartRate",
-                    timeSeries => from ts in timeSeries
-                                    from entry in ts.Entries
-                                    select entry.Values[0]);
-            }
-        }
-        #endregion
-
         #region indexes_MapReduce
-        private class MyMapReduceTSIndex : AbstractTimeSeriesIndexCreationTask<Company, MyMapReduceTSIndex.Result>
+        public class TradeVolume_PerDay_ByCountry : 
+                     AbstractTimeSeriesIndexCreationTask<Company, TradeVolume_PerDay_ByCountry.Result>
         {
             public class Result
             {
                 public double TradeVolume { get; set; }
                 public DateTime Date { get; set; }
-                public string CompanyID { get; set; }
+                public string Country { get; set; }
             }
 
-            public MyMapReduceTSIndex()
+            public TradeVolume_PerDay_ByCountry()
             {
                 AddMap(
-                    "HeartRate",
+                    "StockPrice",
                     timeSeries => from ts in timeSeries
-                                    from entry in ts.Entries
-                                    select new Result
-                                    {
-                                        TradeVolume = entry.Values[4],
-                                        CompanyID = ts.DocumentId,
-                                        Date = entry.Timestamp,
-                                    });
+                                  let company = LoadDocument<Company>(ts.DocumentId)
+                                  from entry in ts.Entries
+                                  select new Result
+                                  {
+                                      TradeVolume = entry.Values[4],
+                                      Date = entry.Timestamp.Date,
+                                      Country = company.Address.Country
+                                  });
 
-                Reduce = results => from r in results
-                                    group r by new { r.Date, r.CompanyID } into g
-                                    select new Result();
+                    Reduce = results => 
+                                  from r in results
+                                  group r by new { r.Date, r.Country } into g
+                                  select new Result
+                                  {
+                                      TradeVolume = g.Sum(x => x.TradeVolume),
+                                      Date = g.Key.Date,
+                                      Country = g.Key.Country
+                                  };
             }
         }
         #endregion
+    }
+
+    internal class Ship
+    {
+    }
+
+    internal class Plane
+    {
     }
 
     internal class Employee
@@ -137,5 +166,11 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Indexing
 
     internal class Company
     {
+        public Address Address { get; set; }
+    }
+
+    internal class Address
+    {
+        public string Country { get; set; }
     }
 }
