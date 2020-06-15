@@ -40,9 +40,8 @@ select timeseries(
 {CODE-BLOCK/}
   
 * `where Tag='watches/fitbit'`  
-  In this example we retrieve time-series entries whose tag is 'watches/fitbit'.  
-  To filter entries by their by value, use **Value**. E.g.:  
-  `where Value < 80`  
+  Retrieve time-series entries whose tag is 'watches/fitbit'.  
+  To filter entries by their by value use **Value**, e.g.`where Value < 80`.  
 
 ---
 
@@ -54,25 +53,20 @@ Use `load Tag ` with `where` to **filter your results by properties of the
 loaded document**, as we do in the following example.  
 
 {CODE-BLOCK: JSON}
-from Companies as c where c.Address.Country = "USA"
+from Companies as Company where Company.Address.Country = "USA"
 select timeseries(
     from StockPrice
-       load Tag as emp
-       where emp.Title == "Sales Representative"
-)   
+       load Tag as Broker
+       where Broker.Title == "Sales Representative"
+    )
 {CODE-BLOCK/}
 
-* `load Tag as emp`  
-   We know in advance that the tag of each StockPrice entry contains 
-   the ID of an Employee document.  
-   Here, we use `load tag` to load the employee profile referred to 
-   by each tag.  
-* `where emp.Title == "Sales Representative"`  
-   Here, we filter time-series entries by the **Title** property 
-   of the employee documents the entries refer to.  
-   If the sales representatives the entries refer to are stock brokers 
-   for example, we can now [group](), for example, the successful ones 
-   whose services we'd like to hire.  
+* `load Tag as Broker`  
+   Load the document each entry's tag refers to.  
+   Here, we load profiles of potential stock brokers.  
+* `where Broker.Title == "Sales Representative"`  
+   Filter time-series entries so we remain with those 
+   referring to sales representatives.  
 
 {PANEL/}
 
@@ -81,22 +75,22 @@ select timeseries(
 {INFO: }
 You can run queries from your client using raw RQL and LINQ.  
 
-* Learn how to run a raw RQL time-series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries).  
 * Learn how to run a LINQ time-series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries).  
+* Learn how to run a raw RQL time-series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries).  
 
 {INFO/}
 
-To filter results, use `where` in a raw RQL query or `Where()` in a LINQ query.  
+To filter results, use `Where()` in a LINQ query or `where` in a raw RQL query.  
 To filter results by a tag reference to a document, 
-use `load tag` in a raw RQL query or `LoadTag()` in a LINQ query.  
+use `LoadTag()` in a LINQ query or `load tag` in a raw RQL query.  
 
 * In this sample, we send the query we 
   [presented above](../../../document-extensions/timeseries/querying/filtering#using-tags-as-references---) 
   to the server in raw RQL and in LINQ format.
 
     {CODE-TABS}
-    {CODE-TAB:csharp:Raw-RQL ts_region_Filter-By-load-Tag-Raw-RQL@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
     {CODE-TAB:csharp:LINQ ts_region_Filter-By-LoadTag-LINQ@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+    {CODE-TAB:csharp:Raw-RQL ts_region_Filter-By-load-Tag-Raw-RQL@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
     {CODE-TABS/}
 
 {PANEL/}

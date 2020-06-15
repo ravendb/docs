@@ -70,7 +70,8 @@ project entries by a chosen criteria.
 
 {INFO/}
 
-* In this sample, we group entries of the HeartRate time-series.  
+* In this sample, we group entries of users' HeartRate time-series 
+  and project the lowest and highest values of each group.  
   Each HeartRate entry holds a single value.
     {CODE-BLOCK: JSON}
 from Users as u where Age < 30
@@ -84,19 +85,20 @@ from Users as u where Age < 30
     )
     {CODE-BLOCK/}
    * **group by '1 days'**  
-     We group each user's HeartRate time-series entries 
-     in consequtive 1-day groups.  
+     We group each user's HeartRate time-series entries in consequtive 1-day groups.  
    * **select min(), max()**  
-     We then select the lowest (`Min`) and highest (`Max`) 
-     values of each group, and project them to the client.  
+     We select the lowest and highest values of each group and project them to the client.  
 
-* In this sample, we group entries of the StockPrice time-series.  
-  Each StockPrice entry holds five values:  
-  Values[0] - **Open** price  
-  Values[1] - **Close** price  
-  Values[2] - **High** price  
-  Values[3] - **Low** price  
-  Values[4] - Trade **Volume**  
+* In this sample, we group entries of companies' StockPrice time-series 
+  in consequtive 7-day groups and project the highest and lowest values 
+  of each group.  
+  Each StockPrice entry holds five values, the query returns the `Max` 
+  and `Min` values of each:  
+  Values[0] - **Open** - stock price when the trade opens  
+  Values[1] - **Close** - stock price when the trade ends  
+  Values[2] - **High** - highest stock price during trade time  
+  Values[3] - **Low** - lowest stock price during trade time  
+  Values[4] - **Volume** - overall trade volume  
     {CODE-BLOCK: JSON}
 declare timeseries SP(c) 
 {
@@ -109,22 +111,24 @@ from Companies as c
 where c.Address.Country = 'USA'
 select c.Name, SP(c)
     {CODE-BLOCK/}
+   * **where Values[4] > 500000**  
+     Query stock price behavior when the trade volume is high.  
    * **group by '7 day'**  
-     We group each company's StockPrice time-series entries 
-     in consequtive 7-day groups.  
+     Group each company's StockPrice entries in consequtive 7-day groups.  
    * **select max(), min()**  
-     We then select the lowest (`Min`) and highest (`Max`) 
-     values of each group, and project them to the client.  
+     Select the highest (`Max`) and lowest (`Min`) 
+     values of each group and project them to the client.  
      Since each entry holds 5 values, the query will project 
-     5 `Min` values for each group (the lowest Values[0], 
-     the lowest Values[1], etc.) and 5 `Max` values for each 
-     group (the highest Values[0], the highest Values[1], etc.).  
+     5 `Max` values for each group (the highest Values[0], highest 
+     Values[1], etc.) and 5 `Min` values for each group (the lowest 
+     Values[0], lowest Values[1], etc.).  
    * **select c.Name, SP(c)**  
-     Projecting the company's name along with the `Min` and `Max` 
-     time-series values clarifies the query results.  
+     Project the company's name along with the time-series query 
+     results to make the results easier to read and understand.  
 
-* This sample is similar to the previous one, except that 
-  time-series entries are **not aggregated**.  
+* This sample is similar to the one above it, except that time-series 
+  entries are **not aggregated**, so the highest and lowest values are 
+  collected not from each group but from the entire result-set.  
     {CODE-BLOCK: JSON}
 declare timeseries SP(c) 
 {
@@ -137,10 +141,9 @@ where c.Address.Country = 'USA'
 select c.Name, SP(c)
     {CODE-BLOCK/}
    * **select max(), min()**  
-     Since there is no aggregation, time-series entries are 
-     selected from the entire result-set and only 10 values 
-     will be projected to the client: 5 Min values and 5 Max 
-     values for the entire range.  
+     Since there is no aggregation, the entire result-set is queried 
+     and the results include only the all-time highest and lowest Open, 
+     Close, High, Low and Volume values.  
 
 {PANEL/}
 
@@ -148,23 +151,24 @@ select c.Name, SP(c)
 
 {INFO: }
 You can run queries from your client using raw RQL and LINQ.  
-* Learn how to run a raw RQL time-series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries).  
+
 * Learn how to run a LINQ time-series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries).  
+* Learn how to run a raw RQL time-series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries).  
+
 {INFO/}
 
-To aggregate time-series entries, use `group by` in a raw RQL query or `GroupBy()` 
-in a LINQ query.  
-To select time-series values for projection, use `select` in a raw RQL query 
-or `Select()` in a LINQ query.  
+To aggregate time-series entries, use `GroupBy()` in a LINQ query 
+or `group by` in a raw RQL query.  
+To select time-series values for projection, use `Select()` in a LINQ query 
+or `select` in a raw RQL query.  
 
-* These are three forms of the same query, using raw RQL "declare" and "select" syntaxes 
-  and LINQ.  
+* Here we express the query we've discussed above using 
+  LINQ and both RQL syntaxes.  
     {CODE-TABS}
+    {CODE-TAB:csharp:LINQ ts_region_LINQ-Aggregation-and-Projection-StockPrice@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
     {CODE-TAB:csharp:Raw-RQL-Select-Syntax ts_region_Raw-RQL-Select-Syntax-Aggregation-and-Projection-StockPrice@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
     {CODE-TAB:csharp:Raw-RQL-Declare-Syntax ts_region_Raw-RQL-Declare-Syntax-Aggregation-and-Projection-StockPrice@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-    {CODE-TAB:csharp:LINQ ts_region_LINQ-Aggregation-and-Projection-StockPrice@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
     {CODE-TABS/}
-
 
 {PANEL/}
 

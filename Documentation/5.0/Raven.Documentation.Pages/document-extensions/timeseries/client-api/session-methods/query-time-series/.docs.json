@@ -1,13 +1,13 @@
 [
     {
-        "Path": "raw-rql-queries.markdown",
-        "Name": "Raw RQL Queries",
+        "Path": "linq-queries.markdown",
+        "Name": "LINQ Queries",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "linq-queries.markdown",
-        "Name": "LINQ Queries",
+        "Path": "raw-rql-queries.markdown",
+        "Name": "Raw RQL Queries",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     }
