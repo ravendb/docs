@@ -16,8 +16,8 @@
         "Mappings": []
     },
     {
-        "Path": "/indexing",
-        "Name": "Indexing",
+        "Path": "indexing.markdown",
+        "Name": "Indexing Time-Series",
         "Mappings": []
     },
     {

@@ -31,7 +31,7 @@ This one really makes no difference, exists so features can be filled in in the 
 Show in one example
 `TimeSeriesIndexDefinitionBuilder<TDocument, TReduceResult> : AbstractIndexDefinitionBuilder<TDocument, TReduceResult, TimeSeriesIndexDefinition>`
 
-####`TimeSeriesSegment` object
+#### `TimeSeriesSegment` object  
 
 Time-series are divided into **segments** in storage, each containing several consecutive entries. The 
 number of entries per segment can vary widely depending on the size and compressibility of the entries. 
@@ -55,30 +55,32 @@ the segment, as well as some aggregate values that summarize the data in the seg
 
 {PANEL: Examples}
 Creating a time-series index using `TimeSeriesIndexDefinition`:
-{CODE indexes_IndexDefinition@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
+{CODE indexes_IndexDefinition@DocumentExtensions\TimeSeries\Indexing.cs /}
 
 Creating a time-series index using `AbstractTimeSeriesIndexCreationTask`:
-{CODE indexes_CreationTask@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
+{CODE indexes_CreationTask@DocumentExtensions\TimeSeries\Indexing.cs /}
 
 Creating a multi-map time-series index:
-{CODE indexes_MultiMapCreationTask@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
+{CODE indexes_MultiMapCreationTask@DocumentExtensions\TimeSeries\Indexing.cs /}
 
 Creating a map-reduce index:
-{CODE indexes_MapReduce@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
+{CODE indexes_MapReduce@DocumentExtensions\TimeSeries\Indexing.cs /}
 
 Creating a builder for time-series indexes using `TimeSeriesIndexDefinitionBuilder`, and using it to create an index.
-{CODE indexes_IndexDefinitionBuilder@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
+{CODE indexes_IndexDefinitionBuilder@DocumentExtensions\TimeSeries\Indexing.cs /}
 {PANEL/}
+
 ## Related articles
 **Studio Articles**:  
 [Studio Time Series Management]()  
 
-**Client-API - Session Articles**:  
-[Time Series Overview]()  
-[Creating and Modifying Time Series]()  
-[Deleting Time Series]()  
-[Retrieving Time Series Values]()  
-[Time Series and Other Features]()  
+**Indexes**:  
+[What are Indexes](../../indexes/what-are-indexes)  
+[Creating and Deploying Indexes](../../indexes/creating-and-deploying)  
+[Map Indexes](../../indexes/map-indexes)  
+[Creating and Deploying Indexes](../../indexes/creating-and-deploying)  
+[Multi-Map Indexes](../../indexes/multi-map-indexes)  
+[Map-Reduce Indexes](../../indexes/map-reduce-indexes)  
 
 **Client-API - Operations Articles**:  
 [Time Series Operations]()  
