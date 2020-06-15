@@ -14,41 +14,37 @@
 
 {PANEL: }
 
-### Time Series and Indexing  
+### Indexing Time Series  
 
-Indexing time series can speed-up finding them and the documents that contain them.  
-RavenDB supports time series indexing **by name**, but **not by value**.  
+Time-series indexes are used to index time-series data, as opposed to documents. 
+The API for creating time-series indexes is very similar to creating any other index, 
+with a few minor differences described here:  
 
-* **Time Series indexing**  
-    Re-indexing due to time series name modification is rare enough to pause no performance issues.  
-    To index a document's time series by name, use [TimeSeriesFor]().  
-  
-* **Time Series Values indexing**  
-    Indexing by values contained in time series is **not** provided, changing values will not trigger indexing of the document.  
-    Time series are designed for high-throughput scenarios, and performance cannot afford the re-indexing cost of each change.  
+The two main ways to create time-series indexes are:
+1. Create a class that inherits from `AbstractTimeSeriesIndexCreationTask`, or in the 
+case of a multi-map index, use `AbstractMultiMapTimeSeriesIndexCreationTask`.
+2. Create a new `TimeSeriesIndexDefinition`.
 
-**Map Index sample here**
-
-{PANEL/}
-
-{PANEL: }
-Use these time-series specific alternatives to the standard [indexing API]()
-
-`AbstractTimeSeriesIndexCreationTask : AbstractIndexCreationTask[Base]`
+This one really makes no difference, exists so features can be filled in in the future.  
 `TimeSeriesIndexDefinition : IndexDefinition`
-`TimeSeriesIndexDefinitionBuilder<TDocument, TReduceResult> : AbstractIndexDefinitionBuilder<TDocument, TReduceResult, TimeSeriesIndexDefinition>`
 
+Show in one example
+`TimeSeriesIndexDefinitionBuilder<TDocument, TReduceResult> : AbstractIndexDefinitionBuilder<TDocument, TReduceResult, TimeSeriesIndexDefinition>`
 
 ####`TimeSeriesSegment` object
 
-Time-series are divided into **segments** in storage, each containing several consecutive entries. 
-Segments can be referenced within the index syntax. This exposes aggregate values.  
+Time-series are divided into **segments** in storage, each containing several consecutive entries. The 
+number of entries per segment can vary widely depending on the size and compressibility of the entries. 
+Entries that are more than 25 days apart will be stored in different segments.  
+
+Segments are useful because they can be referenced within time-series indexes to access the entries in 
+the segment, as well as some aggregate values that summarize the data in the segment:  
 
 | Property | Type | Description |
 | - | - | - |
 | DocumentId | string | The [ID]() of the document this time-series belongs to |
 | Name | string | The name of the time-series this segment belongs to |
-| Min | double[] | The smallest values from all entries in the segment. `Min[0]` is the smallest of all the *first* values in the entries of this segment, `Min[1]` is the smallest second value, and so on. |
+| Min | double[] | The smallest values from all entries in the segment. The places in this array correspond to the  |
 | Max | double[] | The largest values from all entries in the segment |
 | Sum | double[] | The sums of values from all entries in the segment. The first `Sum` is the sum of all first values, and so on. |
 | Count | int | The number of entries in this segment |
@@ -57,6 +53,22 @@ Segments can be referenced within the index syntax. This exposes aggregate value
 | Entries | `TimeSeriesEntry[]` | The segment's entries themselves |
 {PANEL/}
 
+{PANEL: Examples}
+Creating a time-series index using `TimeSeriesIndexDefinition`:
+{CODE indexes_IndexDefinition@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
+
+Creating a time-series index using `AbstractTimeSeriesIndexCreationTask`:
+{CODE indexes_CreationTask@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
+
+Creating a multi-map time-series index:
+{CODE indexes_MultiMapCreationTask@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
+
+Creating a map-reduce index:
+{CODE indexes_MapReduce@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
+
+Creating a builder for time-series indexes using `TimeSeriesIndexDefinitionBuilder`, and using it to create an index.
+{CODE indexes_IndexDefinitionBuilder@DocumentExtensions\TimeSeries\Indexing\Indexing.cs /}
+{PANEL/}
 ## Related articles
 **Studio Articles**:  
 [Studio Time Series Management]()  
