@@ -20,8 +20,8 @@
 
 {PANEL: Choosing Query Range}
 
-Use `between` and `and` to specify a range of time-series entries to query.  
-The entries are chosen by their timestamps, in UTC format.  
+In an RQL query, use `between` and `and` to specify a range of time-series 
+entries to query. The entries are chosen by their timestamps, in UTC format.  
 
 {CODE-BLOCK: JSON}
 from Users as jog where Age < 30
@@ -59,17 +59,22 @@ select timeseries(
 
 {INFO: }
 You can run queries from your client using raw RQL and LINQ.  
+
 * Learn how to run a raw RQL time-series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries).  
 * Learn how to run a LINQ time-series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries).  
+
 {INFO/}
 
 ---
 
 #### Choosing a Range Using Raw RQL
 
-In this sample, a raw RQL query retrieves 24 hours of HeartRate data from users under the age of 30.  
-The query does not aggregate data, so we retrieve its results using a `TimeSeriesRawResult` list.  
-We define an **offset**, to adjust retrieved results to the client's local time-zone.  
+To choose a range as part of a raw RQL query, use the `between` and `and` keywords.  
+
+In this sample, a raw RQL query chooses the profiles of users under the age of 30 and 
+retrieves a 24-hours range from each.  
+An **offset** is defined, adding two hours to retrieved timestamps to adjust them 
+to the client's local time-zone.  
  {CODE-TABS}
  {CODE-TAB:csharp:Declare-Syntax ts_region_Raw-Query-Non-Aggregated-Declare-Syntax@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
  {CODE-TAB:csharp:Select-Syntax ts_region_Raw-Query-Non-Aggregated-Select-Syntax@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
@@ -79,9 +84,10 @@ We define an **offset**, to adjust retrieved results to the client's local time-
 
 #### Choosing a Range Using LINQ
 
-To choose a range using LINQ expressions, invoke the `RavenQuery.TimeSeries` overload 
-that specifies a range by passing it a **range start** and a **range end** arguments.  
-  
+To choose a range as part of a LINQ query, pass `RavenQuery.TimeSeries` 
+a `from` and a `to` DateTime values.  
+Omitting these values will load the entire series.  
+
 * **`RavenQuery.TimeSeries` Definitions**  
    {CODE RavenQuery-TimeSeries-Definition-Without-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
    {CODE RavenQuery-TimeSeries-Definition-With-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}

@@ -726,7 +726,7 @@ namespace SlowTests.Client.TimeSeries.Session
 
                             .Select(q => RavenQuery.TimeSeries(q, "HeartRate", baseline, baseline.AddDays(3))
 
-                            // Filter Time-Series entries: choose only those with a "watches/fitbit" tag.  
+                            // Filter time-series entries by their tag.  
                             .Where(ts => ts.== "watches/fitbit")
                     #endregion
 
@@ -737,27 +737,48 @@ namespace SlowTests.Client.TimeSeries.Session
 
                 using (var session = store.OpenSession())
                 {
-                    #region ts_region_LINQ-5-LoadTag
-                    IRavenQueryable<TimeSeriesRawResult> query =
-                        (IRavenQueryable<TimeSeriesRawResult>)session.Query<Company>()
+                    // May 17 2020, 00:00:00
+                    var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
 
-                            .Where(c => c.Address.Country == "USA")
+                    #region ts_region_Filter-By-load-Tag-Raw-RQL
+                    IRawDocumentQuery<TimeSeriesRawResult> nonAggregatedRawQuery =
+                        session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+                            from Companies as c where c.Address.Country = 'USA'
+                            select timeseries(
+                                from StockPrice
+                                   load Tag as emp
+                                   where emp.Title == 'Sales Representative'
+                            )");
 
-                            .Select(q => RavenQuery.TimeSeries(q, "StockPrice")
-
-                            // Choose local brokers
-                            .LoadTag<Employee>()
-                            .Where((ts, src) => src.Address.Country == "USA")
-
-                            .ToList());
-
-                    var result = query.ToList();
+                    var result = nonAggregatedRawQuery.ToList();
                     #endregion
-
                 }
+            }
 
-                // Query - LINQ format - Aggregation 
-                using (var session = store.OpenSession())
+            // Query - LINQ format - LoadTag to find a stock broker
+            using (var session = store.OpenSession())
+            {
+                var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
+
+                #region ts_region_Filter-By-LoadTag-LINQ
+                IRavenQueryable<TimeSeriesRawResult> query =
+                    (IRavenQueryable<TimeSeriesRawResult>)session.Query<Orders.Company>()
+
+                        .Where(c => c.Address.Country == "USA")
+                        .Select(q => RavenQuery.TimeSeries(q, "StockPrice")
+                        
+                        .LoadTag<Employee>()
+                        .Where((ts, src) => src.Title == "Sales Representative")
+                        
+                        .ToList());
+
+                var result = query.ToList();
+                #endregion
+            }
+
+
+            // Query - LINQ format - Aggregation 
+            using (var session = store.OpenSession())
                 {
                     var baseline = DateTime.Today;
 
@@ -775,7 +796,81 @@ namespace SlowTests.Client.TimeSeries.Session
                             .ToList());
                     #endregion
 
+
+                // Query - LINQ format - StockPrice
+                using (var session = store.OpenSession())
+                {
+                    var baseline = new DateTime(2020, 5, 17);
+
+                    #region ts_region_LINQ-Aggregation-and-Projection-StockPrice
+                    IRavenQueryable<TimeSeriesAggregationResult> query = session.Query<Orders.Company>()
+                        .Where(c => c.Address.Country == "USA")
+                        .Select(q => RavenQuery.TimeSeries(q, "StockPrice")
+                            .Where(ts => ts.Values[4] > 500000)
+                            .GroupBy(g => g.Days(7))
+                            .Select(g => new
+                            {
+                                Min = g.Min(),
+                                Max = g.Max()
+                            })
+                            .ToList());
+
                     var result = query.ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    var baseline = new DateTime(2020, 5, 17);
+
+                    var start = baseline;
+                    var end = baseline.AddHours(1);
+
+                    #region ts_region_Raw-RQL-Select-Syntax-Aggregation-and-Projection-StockPrice
+                    IRawDocumentQuery<TimeSeriesAggregationResult> aggregatedRawQuery =
+                        session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
+                            from Companies as c
+                                where c.Address.Country = 'USA'
+                                select timeseries ( 
+                                    from StockPrice 
+                                    where Values[4] > 500000
+                                        group by '7 day'
+                                        select max(), min()
+                                )
+                            ");
+
+                    var aggregatedRawQueryResult = aggregatedRawQuery.ToList();
+                    #endregion
+                }
+
+                // Raw Query - StockPrice
+                using (var session = store.OpenSession())
+                {
+                    var baseline = new DateTime(2020, 5, 17);
+
+                    var start = baseline;
+                    var end = baseline.AddHours(1);
+
+                    #region ts_region_Raw-RQL-Declare-Syntax-Aggregation-and-Projection-StockPrice
+                    IRawDocumentQuery<TimeSeriesAggregationResult> aggregatedRawQuery =
+                        session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
+                            declare timeseries SP(c) {
+                                from c.StockPrice
+                                where Values[4] > 500000
+                                group by '7 day'
+                                select max(), min()
+                            }
+                            from Companies as c
+                            where c.Address.Country = 'USA'
+                            select c.Name, SP(c)"
+                            );
+
+                    var aggregatedRawQueryResult = aggregatedRawQuery.ToList();
+                    #endregion
+                }
+
+
+                var result = query.ToList();
                 }
 
                 // index queries
