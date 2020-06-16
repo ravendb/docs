@@ -1,4 +1,4 @@
-﻿# Time Series Map Indexing  
+﻿# Time-Series Indexing  
 ---
 
 {NOTE: }
@@ -13,8 +13,12 @@ JavaScript syntax is not supported.
 {INFO/}
 
 * In this page:  
-  * [Syntax](../../document-extensions/indexing#syntax)  
-  * [Examples](../../document-extensions/indexing#examples)  
+  * [Syntax](../../document-extensions/timeseries/indexing#syntax)  
+      * [`AbstractTimeSeriesIndexCreationTask`](../../document-extentions/timeseries/indexes#section)  
+      * [`AbstractMultiMapMultiMapIndexCreationTask`](../../document-extensions/timeseries/indexing#section-1)
+      * [`TimeSeriesIndexDefinition`](../../document-extensions/timeseries/indexing#section-2)
+      * [`TimeSeriesSegment` Object](../../document-extensions/timeseries/indexing#object)
+  * [Examples](../../document-extensions/timeseries/indexing#examples)  
 
 {NOTE/}
 
@@ -24,7 +28,16 @@ JavaScript syntax is not supported.
 
 The are two main ways to create a time-series index:  
 
-#### 1) Create a class that inherits from `AbstractTimeSeriesIndexCreationTask<>`  
+1. Create a class that inherits from   
+  * [`AbstractTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing#section) for [map](../../indexes/map-indexes) and 
+  [map-reduce](../../indexes/map-reduce-indexes) time-series indexes.  
+  * [`AbstractMultiMapMultiMapIndexCreationTask`](../../document-extensions/timeseries/indexing#section-1) for [multi-map](../../indexes/multi-map-indexes) time-series indexes.  
+
+2. Create a [`TimeSeriesIndexDefinition`](../../document-extensions/timeseries/indexing#section-2).
+
+---
+
+### `AbstractTimeSeriesIndexCreationTask`  
 
 {CODE-BLOCK: csharp}
 public abstract class AbstractTimeSeriesIndexCreationTask : 
@@ -48,33 +61,64 @@ public class AbstractTimeSeriesIndexCreationTask<TDocument, TReduceResult> { }
 
 | Method | Parameters | Description |
 | - | - | - |
-| `AddMap()` | `string timeseries`, `Expression map` | Sets a map function for all time-series in the database that have the specified name (the first parameter) |
+| `AddMap()` | `string timeseries`, `Expression map` | Sets a map function for all time-series in the database with specified name (the first parameter) |
 | `AddMapForAll()` | `Expression map` | Sets a map function for all time-series in the database |
 
-See the example [below]().
+See the example [below](../../document-extensions/timeseries/indexing#section-4).
 
-#### 2) Create a `TimeSeriesIndexDefinition`
+---
+
+### `AbstractMultiMapTimeSeriesIndexCreationTask`
+
+{CODE-BLOCK: csharp}
+public abstract class AbstractMultiMapTimeSeriesIndexCreationTask
+{
+    protected void AddMap<TSource>(string timeSeries, 
+                          Expression<Func<IEnumerable<TimeSeriesSegment>, 
+                                          IEnumerable>> map);
+
+    protected void AddMapForAll<TBase>(
+                          Expression<Func<IEnumerable<TimeSeriesSegment>, 
+                                          IEnumerable>> map);
+}
+
+// Specify a type for the reduce result  
+public abstract class AbstractMultiMapTimeSeriesIndexCreationTask<TReduceResult> { }
+{CODE-BLOCK/}
+
+| Method | Parameters | Description |
+| - | - | - |
+| `AddMap<TSource>()` | `string timeseries`, `Expression map` | Sets a map function for all time-series with the specified name (the first parameter) that belong to documents with the type `TSource` |
+| `AddMapForAll<TBase>()` | `Expression map` | Sets a map function for all time-series that belong to documents with either the type `TBase` _or_ any type that inherits from `TBase` |
+
+See the example [below](../../document-extensions/timeseries/indexing#section-5).
+
+---
+
+### `TimeSeriesIndexDefinition`
 
 {CODE-BLOCK: csharp}
 public class TimeSeriesIndexDefinition : IndexDefinition
 {CODE-BLOCK/}
 
-For now, `TimeSeriesIndexDefinition` is functionally equivalent to 
+For now, `TimeSeriesIndexDefinition` is functionally equivalent to the 
 [normal `IndexDefinition`](../../indexes/creating-and-deploying#using-maintenance-operations). 
 Using it for time-series indexes is recommended - it exists in case additional functionality is 
-added in future versions of RavenDB. See the example [below]().  
+added in future versions of RavenDB. 
+
+See the example [below](../../document-extensions/timeseries/indexing#section-3).  
 
 ---
 
 ### `TimeSeriesSegment` object  
 
-The LINQ syntax for the indexes themselves is the same, and in addition you can reference the low 
-level `TimeSeriesSegment` object.  
+When indexing time-series entries, they are accessed through a subdivision of the time-series 
+called a _segment_. In general the LINQ syntax looks somethintg like this:  
 
-Time-series are divided into **segments** in storage, each containing several consecutive entries. The 
-number of entries per segment can vary widely, depending on the size and compressibility of the entries. 
-Segments are up to 2 kb. If there is a gap of 25 days or more between two consecutive entries, they are 
-always stored in different segments.  
+{CODE-BLOCK: sql}
+from segment in timeseries
+from entry in segment
+{CODE-BLOCK/}
 
 Segments are useful because they can be referenced within time-series indexes to access the entries in 
 the segment, as well as some aggregate values that summarize the data in the segment:  
@@ -90,30 +134,44 @@ the segment, as well as some aggregate values that summarize the data in the seg
 | Start | DateTime | The timestamp of the first entry in the segment |
 | End | DateTime | The timestamp of the last entry in the segment |
 | Entries | `TimeSeriesEntry[]` | The segment's entries themselves |
+
+These are the properties of a `TimeSeriesEntry`, which are exposed in the LINQ syntax:  
+
+{CODE-BLOCK: csharp}
+public class TimeSeriesEntry
+{
+    public DateTime Timestamp;
+    public string Tag;
+    public double[] Values;
+
+    // This is exactly equivalent to Values[0]
+    public double Value;
+}
+{CODE-BLOCK/}
 {PANEL/}
 
 {PANEL: Examples}
 Creating a time-series index using `TimeSeriesIndexDefinition`:
 {CODE indexes_IndexDefinition@DocumentExtensions\TimeSeries\Indexing.cs /}
 
-Creating a time-series index using `AbstractTimeSeriesIndexCreationTask`:
+#### `AbstractTimeSeriesIndexCreationTask`
 {CODE indexes_CreationTask@DocumentExtensions\TimeSeries\Indexing.cs /}
 
-Creating a multi-map time-series index:
+#### `AbstractMultiMapTimeSeriesIndexCreationTask`
 {CODE indexes_MultiMapCreationTask@DocumentExtensions\TimeSeries\Indexing.cs /}
 
-Creating a map-reduce index:
+#### Map-Reduce Time-Series Index
 {CODE indexes_MapReduce@DocumentExtensions\TimeSeries\Indexing.cs /}
 
-Creating a builder for time-series indexes using `TimeSeriesIndexDefinitionBuilder`, and using it to create an index.
+Yet another way to create a time-series index is to create a 
+`TimeSeriesIndexDefinitionBuilder`, and use it to create a 
+`TimeSeriesIndexDefinition`.  
 {CODE indexes_IndexDefinitionBuilder@DocumentExtensions\TimeSeries\Indexing.cs /}
 {PANEL/}
 
 ## Related articles  
-**Studio Articles**:  
-[Studio Time Series Management]()  
 
-**Indexes**:  
+### Indexes  
 [What are Indexes](../../indexes/what-are-indexes)  
 [Creating and Deploying Indexes](../../indexes/creating-and-deploying)  
 [Map Indexes](../../indexes/map-indexes)  
@@ -122,7 +180,5 @@ Creating a builder for time-series indexes using `TimeSeriesIndexDefinitionBuild
 [Map-Reduce Indexes](../../indexes/map-reduce-indexes)  
 [Indexing Related Documents](../../indexes/indexing-related-documents)  
 
-**Client-API**:  
+### Client-API**  
 [Working with Document IDs](../../client-api/document-identifiers/working-with-document-identifiers)  
-
-[Time Series Operations]()  
