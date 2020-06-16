@@ -25,7 +25,6 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Indexing
             documentStore.Initialize();
 
             #region indexes_IndexDefinition
-            #region indexes_IndexDefinition
             documentStore.Maintenance.Send(new PutIndexesOperation(
                                       new TimeSeriesIndexDefinition
                                       {
