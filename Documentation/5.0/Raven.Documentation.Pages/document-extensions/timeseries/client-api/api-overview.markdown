@@ -66,17 +66,17 @@ There are also functionalities unique to each interface.
 
 * [TimeSeriesFor.Append](../../../document-extensions/timeseries/client-api/session-methods/append-ts-data)  
   Use this method to **Append entries to a time-series** 
-  (creating the series, if it didn't previously exist).  
+  (creating the series if it didn't previously exist).  
 * [TimeSeriesFor.Remove](../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data)  
   Use this method to **Remove a range of entries from a time-series** 
-  (removing the series completely, if all the data is removed).  
-  * [TimeSeriesFor.Get](../../../document-extensions/timeseries/client-api/session-methods/get-ts-data/get-ts-entries)  
+  (removing the series completely if all entries have been removed).  
+ * [TimeSeriesFor.Get](../../../document-extensions/timeseries/client-api/session-methods/get-ts-data/get-ts-entries)  
   Use this method to **Retrieve raw time-series entries** 
-  for a data range or for all entries.  
+  for all entries or for a chosen entries range.  
 * [Advanced.GetTimeSeriesFor](../../../document-extensions/timeseries/client-api/session-methods/get-ts-data/get-ts-names)  
   Use this method to **Retrieve time-series Names**.  
-  This can be computed directly from the document metadata and requires no 
-  additional server roundtrips.  
+  Series names are fetched by `GetTimeSeriesFor` directly from their parent documents' 
+  metadata, requiring no additional server roundtrips.  
 * [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session-methods/patch-ts-data)  
   Use this method to **patch time-series data to a document**.  
 * **To include time-series data** -  

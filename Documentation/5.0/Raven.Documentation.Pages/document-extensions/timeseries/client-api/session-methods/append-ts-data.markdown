@@ -106,8 +106,8 @@ There are two `TimeSeriesFor.Append` methods:
 
 * In this sample we use the [first overload](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#overload-1) 
   to append an entry with a single value.  
-  Though We tun a loop to append a few entries, all entries are appended in a single 
-  transaction when `SaveChanges()` is called.  
+  Though We run a loop to append multiple entries, all entries are appended in a single 
+  transaction when `SaveChanges` is called.  
    {CODE timeseries_region_TimeSeriesFor-Append-TimeSeries-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 * In this sample we use the [second overload](../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data#overload-2) 
