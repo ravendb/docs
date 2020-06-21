@@ -1,4 +1,5 @@
 ﻿# Time-Series Indexing  
+
 ---
 
 {NOTE: }
@@ -10,6 +11,11 @@ API for [creating document indexes](../../indexes/creating-and-deploying).
 {INFO: }
 Unlike document indexes, time-series indexes currently support only LINQ syntax. 
 JavaScript syntax is not supported.  
+
+RavenDB does not create [dynamic](../../studio/database/indexes/indexes-overview#indexes-types) 
+time-series indexes in response to queries - time-series indexes are only be created as 
+[static](../../studio/database/indexes/indexes-overview#indexes-types) indexes from a 
+client application or from the Studio.  
 {INFO/}
 
 * In this page:  
