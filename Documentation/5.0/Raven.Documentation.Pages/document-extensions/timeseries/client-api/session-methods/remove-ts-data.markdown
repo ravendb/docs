@@ -6,7 +6,8 @@
 {NOTE: }
 
 Remove time-series data using `TimeSeriesFor.Remove`.  
-You can remove a **single time-series entry** or a **range of entries**.  
+
+* You can remove a **single time-series entry** or a **range of entries**.  
 
 * In this page:  
       * [`TimeSeriesFor.Remove`](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#timeseriesfor.remove)  
@@ -55,6 +56,8 @@ There are two `TimeSeriesFor.Remove` methods:
 
 * **Exceptions**  
   Exceptions are not generated.  
+  Attempting to remove nonexistent entries results in a noop 
+  and does not generate an exception.  
 
 ---
 
@@ -75,6 +78,8 @@ There are two `TimeSeriesFor.Remove` methods:
 
 * **Exceptions**  
   Exceptions are not generated.  
+  Attempting to remove nonexistent entries results in a noop 
+  and does not generate an exception.  
 
 {PANEL/}
 

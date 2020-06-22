@@ -51,8 +51,8 @@ namespace SlowTests.Client.TimeSeries.Session
 
                 // Create an instance of TimeSeriesFor
                 // Pass an explicit document ID to the TimeSeriesFor constructor 
-                // Append a heartrate of 70 at the first-minute timestamp 
-                session.TimeSeriesFor("users/john", "Heartrate")
+                // Append a HeartRate of 70 at the first-minute timestamp 
+                session.TimeSeriesFor("users/john", "HeartRate")
                     .Append(baseline.AddMinutes(1), 70d, "watches/fitbit");
 
                 session.SaveChanges();
@@ -68,7 +68,7 @@ namespace SlowTests.Client.TimeSeries.Session
 
                 // Pass the document object returned from session.Load as a param
                 // Retrieve a single value from the time series
-                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(user, "Heartrate")
+                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(user, "HeartRate")
                     .Get(DateTime.MinValue, DateTime.MaxValue);
             }
             #endregion
@@ -82,24 +82,24 @@ namespace SlowTests.Client.TimeSeries.Session
 
                 // Pass the document object returned from session.Load as a param
                 // Retrieve a single value from the time series
-                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(user, "Heartrate")
+                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(user, "HeartRate")
                     .Get(DateTime.MinValue, DateTime.MaxValue);
             }
             #endregion
 
             #region timeseries_region_TimeSeriesFor-Get-Single-Value-Using-Document-ID
-            // retrieve all time points of a time-series named "Heartratea" 
+            // retrieve all entries of a time-series named "HeartRate" 
             // by passing TimeSeriesFor.Get an explict document ID
             using (var session = store.OpenSession())
             {
-                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor("users/john", "Heartrate")
+                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor("users/john", "HeartRate")
                     .Get(DateTime.MinValue, DateTime.MaxValue);
             }
             #endregion
 
             #region timeseries_region_Pass-TimeSeriesFor-Get-Query-Results
             // Query for a document with the Name property "John" 
-            // and get its Heartrate time-series values
+            // and get its HeartRate time-series values
             using (var session = store.OpenSession())
             {
                 baseline = DateTime.Today;
@@ -109,7 +109,7 @@ namespace SlowTests.Client.TimeSeries.Session
 
                 var result = query.ToList();
 
-                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "Heartrate")
+                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "HeartRate")
                     .Get(DateTime.MinValue, DateTime.MaxValue);
 
                 session.SaveChanges();
@@ -129,12 +129,12 @@ namespace SlowTests.Client.TimeSeries.Session
             #region timeseries_region_TimeSeriesFor-Append-TimeSeries-Range
             var baseline = DateTime.Today;
 
-            // Append 10 heartrate values
+            // Append 10 HeartRate values
             using (var session = store.OpenSession())
             {
                 session.Store(new { Name = "John" }, "users/john");
 
-                ISessionDocumentTimeSeries tsf = session.TimeSeriesFor("users/john", "Heartrate");
+                ISessionDocumentTimeSeries tsf = session.TimeSeriesFor("users/john", "HeartRate");
 
                 for (int i = 0; i < 10; i++)
                 {
@@ -149,8 +149,8 @@ namespace SlowTests.Client.TimeSeries.Session
             var baseline = DateTime.Today;
             using (var session = store.OpenSession())
             {
-                //remove a single time point
-                session.TimeSeriesFor("users/john", "Heartrate")
+                //remove a single entry
+                session.TimeSeriesFor("users/john", "HeartRate")
                     .Remove(baseline.AddMinutes(4));
 
                 session.SaveChanges();
@@ -160,12 +160,12 @@ namespace SlowTests.Client.TimeSeries.Session
             #region timeseries_region_TimeSeriesFor-Remove-Time-Points-Range
             var baseline = DateTime.Today;
 
-            // Append 10 heartrate values
+            // Append 10 HeartRate values
             using (var session = store.OpenSession())
             {
                 session.Store(new { Name = "John" }, "users/john");
 
-                var tsf = session.TimeSeriesFor("users/john", "Heartrate");
+                var tsf = session.TimeSeriesFor("users/john", "HeartRate");
 
                 for (int i = 0; i < 10; i++)
                 {
@@ -178,7 +178,7 @@ namespace SlowTests.Client.TimeSeries.Session
             // remove a range of 4 values from the time series
             using (var session = store.OpenSession())
             {
-                session.TimeSeriesFor("users/john", "Heartrate")
+                session.TimeSeriesFor("users/john", "HeartRate")
                     .Remove(baseline.AddSeconds(4), baseline.AddSeconds(7));
 
                 session.SaveChanges();
@@ -193,21 +193,15 @@ namespace SlowTests.Client.TimeSeries.Session
                 // Open a session
                 using (var session = store.OpenSession())
                 {
-                    // Use the session to create a document
+                    // Create a document
                     session.Store(new { Name = "John" }, "users/john");
 
-                    IEnumerable<double> values = new List<double>
-                    {
-                        65d,
-                        52d,
-                        72d
-                    };
-
-                    // Create an instance of TimeSeriesFor
-                    // Pass an explicit document ID to the TimeSeriesFor constructor 
-                    // Append the three IEnumerable heartrates at the first-minute timestamp 
-                    session.TimeSeriesFor("users/john", "Heartrate")
-                        .Append(baseline.AddMinutes(1), values, "watches/fitbit");
+                    // Pass TimeSeriesFor an explicit document ID
+                    // Append values at the first-minute timestamp 
+                    session.TimeSeriesFor("users/john", "HeartRate")
+                    .Append(baseline.AddMinutes(1),
+                            new[] { 65d, 52d, 72d },
+                            "watches/fitbit");
 
                     session.SaveChanges();
                 }
@@ -222,10 +216,10 @@ namespace SlowTests.Client.TimeSeries.Session
                 var baseline = DateTime.Today;
 
                 User user = session.Load<User>("users/1-A", includeBuilder =>
-                    includeBuilder.IncludeTimeSeries("Heartrate",
+                    includeBuilder.IncludeTimeSeries("HeartRate",
                     baseline.AddMinutes(200), baseline.AddMinutes(299)));
 
-                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor("users/1-A", "Heartrate")
+                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor("users/1-A", "HeartRate")
                     .Get(baseline.AddMinutes(200), baseline.AddMinutes(299));
             }
             #endregion
@@ -239,11 +233,11 @@ namespace SlowTests.Client.TimeSeries.Session
                 IRavenQueryable<User> query = session.Query<User>()
                     .Where(u => u.Name == "John")
                     .Include(includeBuilder => includeBuilder.IncludeTimeSeries(
-                        "Heartrate", DateTime.MinValue, DateTime.MaxValue));
+                        "HeartRate", DateTime.MinValue, DateTime.MaxValue));
 
                 var result = query.ToList();
 
-                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "Heartrate")
+                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "HeartRate")
                     .Get(DateTime.MinValue, DateTime.MaxValue);
             }
             #endregion
@@ -258,13 +252,13 @@ namespace SlowTests.Client.TimeSeries.Session
                 var end = baseline.AddHours(1);
 
                 IRawDocumentQuery<User> query = session.Advanced.RawQuery<User>
-                    ("from Users include timeseries('Heartrate', $start, $end)")
+                    ("from Users include timeseries('HeartRate', $start, $end)")
                         .AddParameter("start", start)
                         .AddParameter("end", end);
 
                 var result = query.ToList();
 
-                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "Heartrate")
+                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "HeartRate")
                     .Get(start, end);
             }
             #endregion
@@ -286,7 +280,7 @@ namespace SlowTests.Client.TimeSeries.Session
                                                );",
                         Values =
                         {
-                                { "timeseries", "Heartrate" },
+                                { "timeseries", "HeartRate" },
                                 { "timestamp", baseline.AddMinutes(1) },
                                 { "values", 59d },
                                 { "tag", "watches/fitbit" }
@@ -321,7 +315,7 @@ namespace SlowTests.Client.TimeSeries.Session
 
                     Values =
                     {
-                                { "timeseries", "Heartrate" },
+                                { "timeseries", "HeartRate" },
                                 { "toAppend", toAppend },
                                 { "tag", "watches/fitbit" }
                     }
@@ -337,7 +331,7 @@ namespace SlowTests.Client.TimeSeries.Session
                     Script = @"timeseries(this, args.timeseries).remove(args.from, args.to);",
                     Values =
                     {
-                                { "timeseries", "Heartrate" },
+                                { "timeseries", "HeartRate" },
                                 { "from", baseline.AddSeconds(0) },
                                 { "to", baseline.AddSeconds(49) }
                     }
@@ -364,7 +358,7 @@ namespace SlowTests.Client.TimeSeries.Session
 
                 var timeSeriesOp = new TimeSeriesOperation
                 {
-                    Name = "Heartrate",
+                    Name = "HeartRate",
                     Appends = new List<TimeSeriesOperation.AppendOperation>()
                     {
                         new TimeSeriesOperation.AppendOperation
@@ -399,7 +393,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 // remove a range of 5 minutes from time-series start
                 timeSeriesOp = new TimeSeriesOperation
                 {
-                    Name = "Heartrate",
+                    Name = "HeartRate",
 
                     Removals = new List<TimeSeriesOperation.RemoveOperation>()
                     {
@@ -424,36 +418,36 @@ namespace SlowTests.Client.TimeSeries.Session
 
                 #region timeseries_region_Get-Single-Time-Series
                 // Get all values of a single time-series
-                var SingleTimesSeriesDetails = store.Operations.Send(
-                    new GetTimeSeriesOperation(documentId, "RoutineHeartrate", DateTime.MinValue, DateTime.MaxValue));
+                TimeSeriesRangeResult singleTimeSeriesRange = store.Operations.Send(
+                    new GetTimeSeriesOperation(documentId, "HeartRate", DateTime.MinValue, DateTime.MaxValue));
                 #endregion
 
                 #region timeseries_region_Get-Multiple-Time-Series
-                // Get chosen values of two time-series
-                var MultipletimesSeriesDetails = store.Operations.Send(
-                    new GetTimeSeriesOperation(documentId, new List<TimeSeriesRange>
-                    {
-                        new TimeSeriesRange
-                        {
-                            Name = "RoutineHeartrate",
-                            From = baseline.AddMinutes(1),
-                            To = baseline.AddMinutes(10)
-                        },
+                // Get value ranges from two time-series using GetMultipleTimeSeriesOperation
+                TimeSeriesDetails timesSeriesDetails = store.Operations.Send(
+                        new GetMultipleTimeSeriesOperation(documentId, new List<TimeSeriesRange>
+                            {
+                                new TimeSeriesRange
+                                {
+                                    Name = "ExcersizeHeartRate",
+                                    From = baseTime.AddHours(1),
+                                    To = baseTime.AddHours(10)
+                                },
 
-                        new TimeSeriesRange
-                        {
-                            Name = "BicycleHeartrate",
-                            From = baseline.AddMinutes(1),
-                            To = baseline.AddMinutes(10)
-                        }
-                    }));
+                                new TimeSeriesRange
+                                {
+                                    Name = "RestHeartRate",
+                                    From = baseTime.AddHours(11),
+                                    To = baseTime.AddHours(20)
+                                }
+                            }));
                 #endregion
 
                 #region timeseries_region_Use-BulkInsert-To-Append-2-Entries
                 // Use BulkInsert to append 2 time-series entries
                 using (BulkInsertOperation bulkInsert = store.BulkInsert())
                 {
-                    using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentID, "Heartrate"))
+                    using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentID, "HeartRate"))
                     {
                         timeSeriesBulkInsert.Append(baseline.AddMinutes(2), 61d, "watches/fitbit");
                         timeSeriesBulkInsert.Append(baseline.AddMinutes(3), 62d, "watches/apple-watch");
@@ -467,7 +461,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 {
                     using (BulkInsertOperation bulkInsert = store.BulkInsert())
                     {
-                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "Heartrate"))
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRate"))
                         {
                             timeSeriesBulkInsert.Append(baseline.AddMinutes(minute), new double[] { minute }, "watches/fitbit");
                         }
@@ -484,7 +478,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 {
                     using (BulkInsertOperation bulkInsert = store.BulkInsert())
                     {
-                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "Heartrate"))
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRate"))
                         {
                             timeSeriesBulkInsert.Append(baseline.AddMinutes(minute), values, "watches/fitbit");
                         }
@@ -502,7 +496,7 @@ namespace SlowTests.Client.TimeSeries.Session
                         Script = "timeseries(this, args.timeseries).append(args.timestamp, args.values, args.tag);",
                         Values =
                         {
-                            { "timeseries", "Heartrate" },
+                            { "timeseries", "HeartRate" },
                             { "timestamp", baseline.AddMinutes(1) },
                             { "values", 59d },
                             { "tag", "watches/fitbit" }
@@ -531,7 +525,7 @@ namespace SlowTests.Client.TimeSeries.Session
                             }",
                         Values =
                         {
-                                { "timeseries", "Heartrate" },
+                                { "timeseries", "HeartRate" },
                                 { "toAppend", toAppend },
                                 { "tag", "watches/fitbit" }
                         }
@@ -545,7 +539,7 @@ namespace SlowTests.Client.TimeSeries.Session
                         Script = "timeseries(this, args.timeseries).remove(args.from, args.to);",
                         Values =
                         {
-                                { "timeseries", "Heartrate" },
+                                { "timeseries", "HeartRate" },
                                 { "from", baseline.AddSeconds(0) },
                                 { "to", baseline.AddSeconds(49) }
                         }
@@ -562,7 +556,7 @@ namespace SlowTests.Client.TimeSeries.Session
                                 }",
                     QueryParameters = new Parameters
                             {
-                                { "name", "Heartrate" },
+                                { "name", "HeartRate" },
                                 { "time", baseline.AddMinutes(1) },
                                 { "values", new[]{59d} },
                                 { "tag", "watches/fitbit" }
@@ -582,7 +576,7 @@ namespace SlowTests.Client.TimeSeries.Session
                                 }",
                     QueryParameters = new Parameters
                             {
-                                { "name", "Heartrate" },
+                                { "name", "HeartRate" },
                                 { "from", DateTime.MinValue },
                                 { "to", DateTime.MaxValue }
                             }
@@ -601,7 +595,7 @@ namespace SlowTests.Client.TimeSeries.Session
                                 }",
                     QueryParameters = new Parameters
                             {
-                                { "name", "Heartrate" },
+                                { "name", "HeartRate" },
                                 { "from", DateTime.MinValue },
                                 { "to", DateTime.MaxValue }
                             }
@@ -785,7 +779,7 @@ namespace SlowTests.Client.TimeSeries.Session
                     #region ts_region_LINQ-6-Aggregation
                     IRavenQueryable<TimeSeriesAggregationResult> query = session.Query<User>()
                         .Where(u => u.Age > 72)
-                        .Select(q => RavenQuery.TimeSeries(q, "Heartrate", baseline, baseline.AddDays(10))
+                        .Select(q => RavenQuery.TimeSeries(q, "HeartRate", baseline, baseline.AddDays(10))
                             .Where(ts => ts.Tag == "watches/fitbit")
                             .GroupBy(g => g.Days(1))
                             .Select(g => new
@@ -1075,16 +1069,25 @@ namespace SlowTests.Client.TimeSeries.Session
             public DateTime From, To;
             public TimeSeriesEntry[] Entries;
             public long? TotalResults;
-            internal string Hash;
+            
+            //..
         }
         #endregion
 
-        #region GetTimeSeriesOperation-Definition-Overload1
-        public GetTimeSeriesOperation(string docId, string timeseries, DateTime from, DateTime to, int start = 0, int pageSize = int.MaxValue)
+        #region GetTimeSeriesOperation-Definition
+        public GetTimeSeriesOperation(string docId, string timeseries, DateTime? @from = null, DateTime? to = null, int start = 0, int pageSize = int.MaxValue)
         #endregion
 
-        #region GetTimeSeriesOperation-Definition-Overload2
-        public GetTimeSeriesOperation(string docId, IEnumerable<TimeSeriesRange> ranges, int start = 0, int pageSize = int.MaxValue)
+        #region TimeSeriesDetails-class
+        public class TimeSeriesDetails
+        {
+            public string Id { get; set; }
+            public Dictionary<string, List<TimeSeriesRangeResult>> Values { get; set; }
+        }
+        #endregion
+
+        #region GetMultipleTimeSeriesOperation-Definition
+        public GetMultipleTimeSeriesOperation(string docId, IEnumerable<TimeSeriesRange> ranges, int start = 0, int pageSize = int.MaxValue)
         #endregion
 
         #region TimeSeriesRange-class

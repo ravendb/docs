@@ -1,0 +1,14 @@
+[
+  {
+    "Path": "get-TS-data.markdown",
+    "Name": "From a Single Time-Series",
+    "DiscussionId": "15672af6-b12d-418c-a8a3-aef1fc9dfa61",
+    "Mappings": []
+  },
+  {
+    "Path": "get-multiple-TS-data.markdown",
+    "Name": "From Multiple Time-Series",
+    "DiscussionId": "c8a11e4a-118b-4413-ba6c-7c6fdd414fa2",
+    "Mappings": []
+  }
+]

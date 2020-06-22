@@ -6,7 +6,15 @@
 {NOTE: }
 
 Get a range of time-series entries using `TimeSeriesFor.Get`.  
-Results can be sliced to pages and retrieved gradually.  
+
+* Results can be sliced to pages and retrieved gradually.  
+
+{INFO: }
+[Include](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/include-ts-overview) 
+time-series data while [loading](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-session-load) 
+or [querying](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-session-query) 
+documents, to keep the data locally in the client's session and refrain from unnecessary additional trips to the server.  
+{INFO/}
 
 * In this page:  
    * [`TimeSeriesFor.Get`](../../../../../document-extensions/timeseries/client-api/session-methods/get-ts-data/get-ts-entries#timeseriesfor.get)  
@@ -22,12 +30,9 @@ Results can be sliced to pages and retrieved gradually.
 
 Use `TimeSeriesFor.Get` to get a range of a document's time-series entries.  
 
-* You can retrieve time-series data **for a single document**.  
-   * You can, however, call `TimeSeriesFor.Get` as many times as you 
-     need to before executing saveChanges(), to retrieve multiple 
-     documents' time-series data in a single transaction.  
-   * To retrieve multiple documents' time-series' data in a single 
-     call, use the [GetTimeSeriesOperaion](../../../../document-extensions/timeseries/client-api/store-operations/get-TS-data) 
+* `TimeSeriesFor.Get` retrieves a single document's time-series data.  
+   * To retrieve multiple documents' time-series' data, 
+     use the [GetTimeSeriesOperaion](../../../../document-extensions/timeseries/client-api/store-operations/get-TS-data) 
      document-store operation instead.  
 * You can slice retrieved data to **pages** to get time-series entries 
   gradually, one custom-size page at a time.  
@@ -51,13 +56,16 @@ Use `TimeSeriesFor.Get` to get a range of a document's time-series entries.
 * **Return Value**  
 
      **`IEnumerable<TimeSeriesEntry>`**  
-     Time-series entries are returned in an array of TimeSeriesEntry IEnumerables.  
+     Time-series entries are returned in an array of TimeSeriesEntry instances.  
      {CODE-BLOCK: JSON}
+public class TimeSeriesEntry
 {
   public DateTime Timestamp { get; set; }
   public string Tag { get; set; }
   public double[] Values { get; set; }
   public double Value => Values[0];
+
+  //..
 }
     {CODE-BLOCK/}
 

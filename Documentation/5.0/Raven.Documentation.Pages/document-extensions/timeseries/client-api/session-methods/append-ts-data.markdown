@@ -60,7 +60,7 @@ There are two `TimeSeriesFor.Append` methods:
     | Parameters | Type | Description |
     |:-------------|:-------------|:-------------|
     | `timestamp` | DateTime | Time-series entry's timestamp |
-    | `value` | double | Update the time-series entry with this value. <br> For a new time-series entry, this will be its initial value. |
+    | `value` | double | For a new time-series entry, this will be its initial value. <br> For an existing entry, update the value with the one provided here.|
     | `tag` | string | Time-series entry's tag <br> The tag is optional. |
 
 * **Return Value**  
@@ -80,7 +80,7 @@ There are two `TimeSeriesFor.Append` methods:
     | Parameters | Type | Description |
     |:-------------|:-------------|:-------------|
     | `timestamp` | DateTime | Time-series entry's timestamp |
-    | `values` | IEnumerable<double> | Update the time-series entry with these values. <br> For a new time-series entry, these will be its initial values. |
+    | `values` | IEnumerable<double> | For a new time-series entry, these will be its initial values. <br> For an existing entry, update the values with the ones provided here. |
     | `tag` | string | Time-series entry's tag <br> The tag is optional. |
 
 * **Return Value**  
@@ -96,7 +96,7 @@ There are two `TimeSeriesFor.Append` methods:
 * Open a session.  
 * Create an instance of `TimeSeriesFor`.  
     * Either pass `TimeSeriesFor` an explicit document ID, -or-  
-    * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+    * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.Query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
 * Call `TimeSeriesFor.Append`.  
 * Call `session.SaveChanges` for the action to take effect on the server.  
 
