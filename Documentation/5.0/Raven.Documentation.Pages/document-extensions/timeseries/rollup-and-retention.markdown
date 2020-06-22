@@ -25,49 +25,50 @@ is kept before being deleted.
 
 #### What are Rollups?
 
-A rollup is a time-series that summarizes the data from an original time-series. It 
-is created by dividing time-series entries into set spans of time, like a second or 
-a week. Each entry in the rollup time-series represents one of those spans, and 
-contains an aggregation of the entries in that span. The data from the original 
-time-series is aggregated into just six values:  
+A **rollup** is a time-series that summarizes the data from another time-series 
+by dividing time-series entries into set units of time (like a second or a week). 
+Each entry in the rollup time-series represents one of those units, and the data 
+from that unit in the original time-series is aggregated into six values:  
 
-  * *First* - the value of the first entry in the span.  
-  * *Last* - the value of the last entry.  
-  * *Min* - the smallest value.  
-  * *Max* - the largest value.  
-  * *Sum* - the sum of all the values in the span.  
-  * *Count* - the total number of entries in the span.  
+* *First* - the value of the first entry in the unit.  
+* *Last* - the value of the last entry.  
+* *Min* - the smallest value.  
+* *Max* - the largest value.  
+* *Sum* - the sum of all the values in the unit.  
+* *Count* - the total number of entries in the unit.  
 
-This results in a much more compact time series that still contains useful 
-information about the original. Let's look at an example of rollup data:  
+This results in a much more compact time-series that still contains useful 
+information about the original time-series (also called the "named" or "raw" 
+time-series). Rollup time-series are created automatically according to 
+**rollup policies**. Rollup policies apply to all documents in a collection, and 
+each collection can have multiple policies.  
+
+Let's look at an example of rollup data:  
 <br/>
 !["Rollup time-series entries"](images/rollup-1.png "A rollup time-series' entries")
 
-**Values**:  
-Time-series entry can have an array of numerical values, so each of these six 
-aggregations are made for each of the values. A new "rollup" time-series is created 
-with one entry for each span. If the raw time-series has *n* values per entry, the 
-rollup time-series will have _6*n_ per entry: the first six will be the summary of 
-the first raw value, the next six will be aggregations of the next raw value, and 
-so on. Because entries are limited to 32 values, rollups are limited to the first 
-five values of an original time series entry, resulting in 30 aggregate values.  
+**1) Values:**  
+Each group of six values represents one value in the original entries. If the raw 
+time-series has *n* values per entry, the rollup time-series will have _6*n_ per entry: 
+the first six summarize the first raw value, the next six summarize the next raw value, 
+and so on. Because time-series entries are limited to 32 values, rollups are limited to 
+the first five values of an original time series entry, or 30 aggregate values.  
 
-**Timestamp**:  
-The aggregation span is a round number of one of these time units: a second, day, 
-week, month, or year. The span includes all entries starting at a round number of time 
-units, and ending at another round number - *minus one millisecond* inclusive (since 
-milliseconds are the minimal resolution in RavenDB time-series). The timestamp for a 
-rollup entry is the beginning of the span it represents, so it is a round number of time 
-units.  
+**2) Timestamp:**  
+The aggregation spans always begin at a round number of one of these time units: a 
+second, minute, hour, day, week, month, or year. So the span includes all entries 
+starting at a round number of time units, and ending at the next round number *minus 
+one millisecond* (since milliseconds are the minimal resolution in RavenDB 
+time-series). The timestamp for a rollup entry is the beginning of the span it 
+represents.  
 
 For example, if the aggregation span is one day, the spans will start at times like:  
 `2020-01-01 00:00:00`,  
 `2020-01-02 00:00:00`,  
-`2020-01-03 00:00:00`,  
-And these will also be the time-stamps of the rollup entries.  
+`2020-01-03 00:00:00` etc.  
 
-**Name**:  
-A rollup time-series name has this format:  
+**3) Name:**  
+A rollup time-series' name has this format:  
 `"<name of raw time-series>@<name of time-series policy>"`  
 It is a combination of the name of the raw time-series and the name of the 
 time-series policy separated by a `@` character - in the image above these are 
@@ -129,9 +130,8 @@ public class RawTimeSeriesPolicy : TimeSeriesPolicy
 ####The `TimeValue` struct
 
 {CODE-BLOCK: csharp}
-public struct TimeValue : IDynamicJson, IEquatable<TimeValue>
+public struct TimeValue
 {
-    
     public static TimeValue FromSeconds(int seconds);
     public static TimeValue FromMinutes(int minutes);
     public static TimeValue FromHours(int hours);
@@ -159,6 +159,7 @@ public class TimeSeriesCollectionConfiguration
 {
     public bool Disabled;
     public List<TimeSeriesPolicy> Policies;
+    public RawTimeSeriesPolicy RawPolicy;
 }
 
 public class TimeSeriesConfiguration
@@ -171,6 +172,7 @@ public class TimeSeriesConfiguration
 | - | - |
 | `Disabled` | If set to `true`, rollup processes will stop, and time-series data will not be deleted by retention policies. |
 | `Policies` | Populate this `List` with your rollup policies |
+| `RawPolicy` | The `RawTimeSeriesPolicy`, the retention policy for the raw time-series |
 | `Collections` | Populate this `Dictionary` with the `TimeSeriesCollectionConfiguration`s and the names of the corresponding collections. |
 <br/>
 ####The Time-Series Configuration Operation
