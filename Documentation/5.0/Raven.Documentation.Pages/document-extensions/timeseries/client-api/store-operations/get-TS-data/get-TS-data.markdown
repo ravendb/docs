@@ -11,7 +11,7 @@ Get a single time-series' data using `GetTimeSeriesOperation`.
       * [`GetTimeSeriesOperation`](../../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data/get-ts-data#gettimeseriesoperation)  
       * [Syntax](../../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data/get-ts-data#syntax)  
       * [Usage Flow](../../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data/get-ts-data#usage-flow)  
-      * [Usage Samples](../../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data/get-ts-data#usage-samples)  
+      * [Usage Samples](../../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data/get-ts-data#usage-sample)  
 
 {NOTE/}
 
@@ -46,7 +46,6 @@ time-series.
 * **Return Value**: **`TimeSeriesRangeResult`**  
      {CODE TimeSeriesRangeResult-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-  
       When a nonexistent time-series is requested, 
       the return value will be `null`.  
       When a nonexistent entries-range is requested, 
@@ -67,7 +66,7 @@ time-series.
 
 {PANEL/}
 
-{PANEL: Usage Samples}
+{PANEL: Usage Sample}
 
 * In this sample, we retrieve all the entries of a time-series.  
    {CODE timeseries_region_Get-Single-Time-Series@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  

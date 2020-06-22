@@ -263,63 +263,42 @@ namespace SlowTests.Client.TimeSeries.Session
             }
             #endregion
 
-            #region TS_region-Session_Patch-Append-Single-TS-Entry
-            // Patch a document a single time-series entry
-            using (var session = store.OpenSession())
-            {
-                baseline = DateTime.Today;
-
-                session.Advanced.Defer(new PatchCommandData("users/1-A", null,
-                    new PatchRequest
-                    {
-                        Script = @"timeseries(this, args.timeseries).
-                                        append( 
-                                                args.timestamp, 
-                                                args.values, 
-                                                args.tag
-                                               );",
-                        Values =
-                        {
-                                { "timeseries", "HeartRate" },
-                                { "timestamp", baseline.AddMinutes(1) },
-                                { "values", 59d },
-                                { "tag", "watches/fitbit" }
-                        }
-                    }, null));
-                session.SaveChanges();
-            }
-            #endregion
-
             #region TS_region-Session_Patch-Append-100-TS-Entries
-            baseline = DateTime.Today;
+            var baseline = DateTime.Today;
 
-            // Create an array of values to patch
-            var toAppend = Enumerable.Range(0, 100)
-                .Select(i => new Tuple<DateTime, double>
-                            (baseline.AddSeconds(i), 59d))
-                .ToArray();
+            // Create arrays of timestamps and random values to patch
+            List<double> values = new List<double>();
+            List<DateTime> timeStamps = new List<DateTime>();
+
+            for (var cnt = 0; cnt < 100; cnt++)
+            {
+                values.Add(68 + Math.Round(19 * new Random().NextDouble()));
+                timeStamps.Add(baseline.AddSeconds(cnt));
+            }
 
             session.Advanced.Defer(new PatchCommandData("users/1-A", null,
                 new PatchRequest
                 {
                     Script = @"
                                 var i = 0;
-                                for(i = 0; i < args.toAppend.length; i++)
+                                for(i = 0; i < $values.length; i++)
                                 {
-                                    timeseries(id(this), args.timeseries)
+                                    timeseries(id(this), $timeseries)
                                     .append (
-                                      new Date(args.toAppend[i].Item1), 
-                                      args.toAppend[i].Item2, 
-                                      args.tag);
+                                       new Date($timeStamps[i]), 
+                                       $values[i], 
+                                       $tag);
                                 }",
 
                     Values =
                     {
                                 { "timeseries", "HeartRate" },
-                                { "toAppend", toAppend },
+                                { "timeStamps", timeStamps },
+                                { "values", values },
                                 { "tag", "watches/fitbit" }
                     }
                 }, null));
+
             session.SaveChanges();
             #endregion
 
@@ -328,7 +307,11 @@ namespace SlowTests.Client.TimeSeries.Session
             session.Advanced.Defer(new PatchCommandData("users/1-A", null,
                 new PatchRequest
                 {
-                    Script = @"timeseries(this, args.timeseries).remove(args.from, args.to);",
+                    Script = @"timeseries(this, $timeseries)
+                             .remove(
+                                $from, 
+                                $to
+                              );",
                     Values =
                     {
                                 { "timeseries", "HeartRate" },
@@ -424,7 +407,7 @@ namespace SlowTests.Client.TimeSeries.Session
 
                 #region timeseries_region_Get-Multiple-Time-Series
                 // Get value ranges from two time-series using GetMultipleTimeSeriesOperation
-                TimeSeriesDetails timesSeriesDetails = store.Operations.Send(
+                TimeSeriesDetails multipleTimesSeriesDetails = store.Operations.Send(
                         new GetMultipleTimeSeriesOperation(documentId, new List<TimeSeriesRange>
                             {
                                 new TimeSeriesRange
@@ -493,7 +476,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 store.Operations.Send(new PatchOperation("users/1-A", null,
                     new PatchRequest
                     {
-                        Script = "timeseries(this, args.timeseries).append(args.timestamp, args.values, args.tag);",
+                        Script = "timeseries(this, $timeseries).append($timestamp, $values, $tag);",
                         Values =
                         {
                             { "timeseries", "HeartRate" },
@@ -505,30 +488,37 @@ namespace SlowTests.Client.TimeSeries.Session
                 #endregion
 
                 #region TS_region-Operation_Patch-Append-100-TS-Entries
-                // Create an array of values to patch
-                var toAppend = Enumerable.Range(0, 100)
-                 .Select(i => new Tuple<DateTime, double>
-                                (baseline.AddSeconds(i), 59d))
-                    .ToArray();
+                var baseline = DateTime.Today;
+
+                // Create arrays of timestamps and random values to patch
+                List<double> values = new List<double>();
+                List<DateTime> timeStamps = new List<DateTime>();
+
+                for (var cnt = 0; cnt < 100; cnt++)
+                {
+                    values.Add(68 + Math.Round(19 * new Random().NextDouble()));
+                    timeStamps.Add(baseline.AddSeconds(cnt));
+                }
 
                 store.Operations.Send(new PatchOperation("users/1-A", null,
                     new PatchRequest
                     {
                         Script = @"var i = 0; 
-                            for (i = 0; i < args.toAppend.length; i++) 
-                            {timeseries(id(this), 
-                            args.timeseries).append(
-                            new Date(
-                            args.toAppend[i].
-                            Item1), 
-                            args.toAppend[i].Item2, args.tag);
+                            for (i = 0; i < $values.length; i++) 
+                            {timeseries(id(this), $timeseries)
+                            .append (
+                                      new Date($timeStamps[i]), 
+                                      $values[i], 
+                                      $tag);
                             }",
                         Values =
                         {
                                 { "timeseries", "HeartRate" },
-                                { "toAppend", toAppend },
+                                { "timeStamps", timeStamps},
+                                { "values", values },
                                 { "tag", "watches/fitbit" }
                         }
+
                     }));
                 #endregion
 
@@ -536,7 +526,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 store.Operations.Send(new PatchOperation("users/1-A", null,
                     new PatchRequest
                     {
-                        Script = "timeseries(this, args.timeseries).remove(args.from, args.to);",
+                        Script = "timeseries(this, $timeseries).remove($from, $to);",
                         Values =
                         {
                                 { "timeseries", "HeartRate" },

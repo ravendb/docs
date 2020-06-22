@@ -7,6 +7,9 @@
 
 To patch time-series data to a document, use `session.Advanced.Defer`.  
 
+* This is the same [Defer](../../../../client-api/operations/patching/single-document#non-typed-session-api) 
+  method we ordinarily use for patching, with additional Java Script API for the patching of time-series data.  
+
 * [Patching Time-Series Data Using `session.Advanced.Defer`](../../../../document-extensions/timeseries/client-api/session-methods/patch-ts-data#patching-time-series-data-using-session.advanced.defer)  
    * [Syntax](../../../../document-extensions/timeseries/client-api/session-methods/patch-ts-data#syntax)  
    * [Usage Flow](../../../../document-extensions/timeseries/client-api/session-methods/patch-ts-data#usage-flow)  
@@ -18,9 +21,8 @@ To patch time-series data to a document, use `session.Advanced.Defer`.
 
 {PANEL: Patching Time-Series Data Using `session.Advanced.Defer`}
 
-* `Advanced.Defer` uses a custom Java Script to -  
-  * Patch time-series entries to a document.  
-  * Remove time-series entries from a document.  
+* The custom Java Script you pass [Defer](../../../../client-api/operations/patching/single-document#non-typed-session-api) 
+  can patch time-series entries to a document or remove entries from a document.  
 * You can handle a single document at a time.  
 
 {PANEL/}
@@ -59,28 +61,17 @@ To patch time-series data to a document, use `session.Advanced.Defer`.
 * Pass the `PatchCommandData` constructor method -  
    * the document ID  
    * the change vector or `null`)  
-   * a `PatchRequest` instance  
-* Add the `PatchRequest` instance a Java Script.  
-  Use the script to append or remove time-series entries.  
+   * a `PatchRequest` instance with a Java Script that appends or removes time-series entries.  
 * Call `session.SaveChanges()` to perform the patch.  
 
 {PANEL/}
 
 {PANEL: Usage Samples}
 
-* In this sample, we use `session.Advanced.Defer` to patch 
-  a single time-series entry to a document .  
-  The script draws its arguments from its "Values" section.  
-  {CODE TS_region-Session_Patch-Append-Single-TS-Entry@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-* In this sample, we provide `session.Advanced.Defer`with 
-  a script that patches 100 time-series entries to a document.  
-  Timestamps and values are drawn from an array, and other 
-  arguments are provided in the "Values" section.  
+* In this sample, we pass `Defer`a script that patches a document 100 time-series entries with random heartrate values.  
   {CODE TS_region-Session_Patch-Append-100-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-* In this sample, we remove a range of 50 time-series entries 
-  from a document.  
+* In this sample, we remove a range of 50 time-series entries from a document.  
   {CODE TS_region-Session_Patch-Remove-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 {PANEL/}

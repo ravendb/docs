@@ -25,8 +25,11 @@ Remove time-series data using `TimeSeriesFor.Remove`.
 `TimeSeriesFor.Remove` is used for the removal of time-series and 
 time-series entries.  
 
-There is no need to explicitly remove a time-series; 
-the series is removed when all its entries are removed.  
+* There is no need to explicitly remove a time-series; 
+  the series is removed when all its entries are removed.  
+* Attempting to remove nonexistent entries results in a noop 
+  and generates no exception.  
+
 
 {PANEL/}
 
