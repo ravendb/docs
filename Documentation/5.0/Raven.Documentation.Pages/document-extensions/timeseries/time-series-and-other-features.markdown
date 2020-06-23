@@ -3,10 +3,10 @@
 ---
 
 {NOTE: }
-This page describes how time-series interact with various other RavenDB 
+* This page describes how time-series interact with various other RavenDB 
 features.  
 
-In this page:  
+* In this page:  
   * [General Features](../..document-extensions/timeseries/time-series-and-other-features#general-features)  
   * [Smuggler](../..document-extensions/timeseries/time-series-and-other-features#smuggler)  
   * [Ongoing Tasks](../..document-extensions/timeseries/time-series-and-other-features#ongoing-tasks)  
