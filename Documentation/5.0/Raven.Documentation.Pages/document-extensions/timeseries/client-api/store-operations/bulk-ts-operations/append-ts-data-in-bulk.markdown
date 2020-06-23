@@ -20,9 +20,9 @@ use `BulkInsert.TimeSeriesFor.Append`.
 
 {PANEL: `BulkInsert.TimeSeriesFor.Append`}
 
-`store.BulkInsert` is efficient in appending large quantities of data to 
-the database. Use it to append time-series data by using its `TimeSeriesFor` 
-interface's `Append` method.  
+The `store.BulkInsert` operation is highly efficient in appending large quantities 
+of data to the database. To append time-series data in bulk, use the operation's 
+`TimeSeriesFor.Append` method.  
 
 {PANEL/}
 

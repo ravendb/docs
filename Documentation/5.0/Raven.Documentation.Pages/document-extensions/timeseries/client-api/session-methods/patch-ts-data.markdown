@@ -5,10 +5,9 @@
 
 {NOTE: }
 
-To patch time-series data to a document, use `session.Advanced.Defer`.  
-
-* This is the same [Defer](../../../../client-api/operations/patching/single-document#non-typed-session-api) 
-  method we ordinarily use for patching, with additional Java Script API for the patching of time-series data.  
+* To patch time-series data to a document, use `session.Advanced.Defer`.  
+   * You can pass `Defer` a script to Append, Get, and Remove time-series entries.  
+   * You can handle a single document at a time.  
 
 * [Patching Time-Series Data Using `session.Advanced.Defer`](../../../../document-extensions/timeseries/client-api/session-methods/patch-ts-data#patching-time-series-data-using-session.advanced.defer)  
    * [Syntax](../../../../document-extensions/timeseries/client-api/session-methods/patch-ts-data#syntax)  
@@ -21,9 +20,14 @@ To patch time-series data to a document, use `session.Advanced.Defer`.
 
 {PANEL: Patching Time-Series Data Using `session.Advanced.Defer`}
 
-* The custom Java Script you pass [Defer](../../../../client-api/operations/patching/single-document#non-typed-session-api) 
-  can patch time-series entries to a document or remove entries from a document.  
-* You can handle a single document at a time.  
+{INFO: }
+
+* [Defer](../../../../client-api/operations/patching/single-document#non-typed-session-api) 
+  is used for patching in general, not necessarily for time-series data patching.  
+* To patch time-series data, you need to customize the Javascript `Defer` uses.  
+* Learn about customizable Javascripts and the JS time-series API [here](../../../../document-extensions/timeseries/client-api/ts-javascript-api).  
+
+{INFO/}
 
 {PANEL/}
 
@@ -69,7 +73,7 @@ To patch time-series data to a document, use `session.Advanced.Defer`.
 {PANEL: Usage Samples}
 
 * In this sample, we pass `Defer`a script that patches a document 100 time-series entries with random heartrate values.  
-  {CODE TS_region-Session_Patch-Append-100-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+  {CODE TS_region-Session_Patch-Append-100-Random-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 * In this sample, we remove a range of 50 time-series entries from a document.  
   {CODE TS_region-Session_Patch-Remove-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}

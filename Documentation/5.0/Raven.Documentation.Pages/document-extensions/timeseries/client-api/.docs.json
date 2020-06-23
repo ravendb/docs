@@ -14,5 +14,11 @@
         "Path": "/store-operations",
         "Name": "Store Operations",
         "Mappings": []
+    },
+    {
+        "Path": "TS-javascript-api.markdown",
+        "Name": "Time-Series JavaScript API",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
     }
 ]

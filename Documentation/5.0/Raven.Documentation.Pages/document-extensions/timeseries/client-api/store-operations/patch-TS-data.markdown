@@ -6,9 +6,9 @@
 {NOTE: }
 
 * Time-series data can be patched -  
-   * To a single document, located by its ID.  
-   * To multiple documents located by a query.  
-* Patching operations can be used to append, retrieve and remove time-series entries.  
+   * to a single document located by its ID, using [PatchOperation](../../../../client-api/operations/patching/single-document#patching-how-to-perform-single-document-patch-operations).  
+   * to multiple documents located by a query, using [PatchByQueryOperation](../../../../client-api/operations/patching/set-based).  
+* Both patching operations can be used to Append, Get and Remove time-series entries.  
 
 * In this page:  
   * [Patching Operations](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#patching-operations)  
@@ -27,28 +27,28 @@
 
 {PANEL: Patching Operations}
 
-* To **load a document by its ID and patch it time-series data**, use [PatchOperation](../../../../../client-api/operations/patching/single-document#patching-how-to-perform-single-document-patch-operations).  
-  `PatchOperation` can be used to **append** and **remove** time-series entries.  
+{INFO: }
+
+* To patch time-series data, use `PatchOperation` or `PatchByQueryOperation`.  
+* `PatchOperation` is RavenDB's operation for single-document patching, and 
+  `PatchByQueryOperation` is used for set-based document operations. 
+  None is dedicated to handling time-series.  
+  You can use both to patch time-series data, by customizing the Javascript 
+  they are using.  
+* Learn about customizable Javascripts and the JS time-series API [here](../../../../document-extensions/timeseries/client-api/ts-javascript-api).  
+
+{INFO/}
+
+* Use `PatchOperation` to **load a document by its ID and patch it time-series data**.  
 
     Here, for example, we use `PatchOperation` to patch a document a single time-series entry.
     {CODE TS_region-Operation_Patch-Append-Single-TS-Entry@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-    {INFO: }
-    This is the ordinary `PatchOperation` method we use for single-document patch 
-    operations, with its custom script using the time-series JS API.  
-    {INFO/}
-
-* To **run a document query and patch time-series data to documents you find**, use [PatchByQueryOperation](../../../../../client-api/operations/patching/set-based).  
-  `PatchByQueryOperation` can be used to **append**, **get** and **remove** time-series entries.  
+* Use `PatchByQueryOperation` to **run a document query and patch time-series data to documents you find**.  
 
     Here, we use `PatchByQueryOperation` to append a time-series entry to all 
-    documents in the User collection.
+    documents of the User collection.
     {CODE TS_region-PatchByQueryOperation-Append-To-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-    {INFO: }
-    This is the ordinary `PatchByQueryOperation` method we use for set-based document 
-    operations, with its custom script using the time-series JS API.  
-    {INFO/}
 
 {PANEL/}
 

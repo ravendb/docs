@@ -263,7 +263,7 @@ namespace SlowTests.Client.TimeSeries.Session
             }
             #endregion
 
-            #region TS_region-Session_Patch-Append-100-TS-Entries
+            #region TS_region-Session_Patch-Append-100-Random-TS-Entries
             var baseline = DateTime.Today;
 
             // Create arrays of timestamps and random values to patch
@@ -276,6 +276,45 @@ namespace SlowTests.Client.TimeSeries.Session
                 timeStamps.Add(baseline.AddSeconds(cnt));
             }
 
+            session.Advanced.Defer(new PatchCommandData("users/1-A", null,
+                new PatchRequest
+                {
+                    Script = @"
+                                var i = 0;
+                                for(i = 0; i < $values.length; i++)
+                                {
+                                    timeseries(id(this), $timeseries)
+                                    .append (
+                                       new Date($timeStamps[i]), 
+                                       $values[i], 
+                                       $tag);
+                                }",
+
+                    Values =
+                    {
+                                { "timeseries", "HeartRate" },
+                                { "timeStamps", timeStamps },
+                                { "values", values },
+                                { "tag", "watches/fitbit" }
+                    }
+                }, null));
+
+            session.SaveChanges();
+            #endregion
+
+            var baseline = DateTime.Today;
+
+            // Create arrays of timestamps and random values to patch
+            List<double> values = new List<double>();
+            List<DateTime> timeStamps = new List<DateTime>();
+
+            for (var cnt = 0; cnt < 100; cnt++)
+            {
+                values.Add(68 + Math.Round(19 * new Random().NextDouble()));
+                timeStamps.Add(baseline.AddSeconds(cnt));
+            }
+
+            #region TS_region-Session_Patch-Append-100-TS-Entries
             session.Advanced.Defer(new PatchCommandData("users/1-A", null,
                 new PatchRequest
                 {
