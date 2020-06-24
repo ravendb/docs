@@ -1,4 +1,4 @@
-﻿## Time-Series Queries:
+﻿## Time Series Queries:
 # Aggregarion and Projection
 
 ---
@@ -6,8 +6,8 @@
 {NOTE: }
 
 * **Aggregation**  
-  Queris can easily create powerful statistics by aggregating time-series (or 
-  chosen ranges of time-series entries) into groups by chosen time frames like 
+  Queris can easily create powerful statistics by aggregating time series (or 
+  chosen ranges of time series entries) into groups by chosen time frames like 
   an hour or a week, and retrieving values from each group by criteria like `Min` 
   for the lowest value, `Count` for the number of values in the group, etc.  
   
@@ -20,7 +20,7 @@
 
     {INFO: Projecting values from Aggregated and Non-Aggregated result-sets}
 
-    * When values are selected from a time-series (or a range of time-series 
+    * When values are selected from a time series (or a range of time series 
      entries) that **has** been aggregated, they are selected per-group.  
     * When values are selected from a series or a range that **hasn't** 
       been aggregated, they are selected from the entire result-set.  
@@ -41,7 +41,7 @@
 {PANEL: Aggregation and Projection}
 
 In an RQL query, use the `group by` expression to aggregate 
-time-series (or ranges of time-series entries) in groups by 
+time series (or ranges of time series entries) in groups by 
 a chosen resolution, and the `select` keyword to choose and 
 project entries by a chosen criteria.    
 
@@ -70,7 +70,7 @@ project entries by a chosen criteria.
 
 {INFO/}
 
-* In this sample, we group entries of users' HeartRate time-series 
+* In this sample, we group entries of users' HeartRate time series 
   and project the lowest and highest values of each group.  
   Each HeartRate entry holds a single value.
     {CODE-BLOCK: JSON}
@@ -85,11 +85,11 @@ from Users as u where Age < 30
     )
     {CODE-BLOCK/}
    * **group by '1 days'**  
-     We group each user's HeartRate time-series entries in consequtive 1-day groups.  
+     We group each user's HeartRate time series entries in consequtive 1-day groups.  
    * **select min(), max()**  
      We select the lowest and highest values of each group and project them to the client.  
 
-* In this sample, we group entries of companies' StockPrice time-series 
+* In this sample, we group entries of companies' StockPrice time series 
   in consequtive 7-day groups and project the highest and lowest values 
   of each group.  
   Each StockPrice entry holds five values, the query returns the `Max` 
@@ -123,10 +123,10 @@ select c.Name, SP(c)
      Values[1], etc.) and 5 `Min` values for each group (the lowest 
      Values[0], lowest Values[1], etc.).  
    * **select c.Name, SP(c)**  
-     Project the company's name along with the time-series query 
+     Project the company's name along with the time series query 
      results to make the results easier to read and understand.  
 
-* This sample is similar to the one above it, except that time-series 
+* This sample is similar to the one above it, except that time series 
   entries are **not aggregated**, so the highest and lowest values are 
   collected not from each group but from the entire result-set.  
     {CODE-BLOCK: JSON}
@@ -152,14 +152,14 @@ select c.Name, SP(c)
 {INFO: }
 You can run queries from your client using raw RQL and LINQ.  
 
-* Learn how to run a LINQ time-series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries).  
-* Learn how to run a raw RQL time-series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries).  
+* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries).  
+* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries).  
 
 {INFO/}
 
-To aggregate time-series entries, use `GroupBy()` in a LINQ query 
+To aggregate time series entries, use `GroupBy()` in a LINQ query 
 or `group by` in a raw RQL query.  
-To select time-series values for projection, use `Select()` in a LINQ query 
+To select time series values for projection, use `Select()` in a LINQ query 
 or `select` in a raw RQL query.  
 
 * Here we express the query we've discussed above using 

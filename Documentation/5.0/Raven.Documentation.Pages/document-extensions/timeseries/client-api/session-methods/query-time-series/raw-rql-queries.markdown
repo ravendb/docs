@@ -1,15 +1,15 @@
 ﻿## `session.Advanced.RawQuery`
-# Time-Series Raw RQL Queries
+# Time Series Raw RQL Queries
 ---
 
 {NOTE: }
 
-* Clients can [express time-series queries in RQL](../../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries) 
+* Clients can [express time series queries in RQL](../../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries) 
   and send them to the server for execution using the `session.Advanced.RawQuery` method.  
   
 
 {INFO: }
-Learn more about time-series queries in the [section dedicated to this subject](../../../../../document-extensions/timeseries/querying/queries-overview).  
+Learn more about time series queries in the [section dedicated to this subject](../../../../../document-extensions/timeseries/querying/queries-overview).  
 {INFO/}
 
     
@@ -26,7 +26,7 @@ Learn more about time-series queries in the [section dedicated to this subject](
 
 To send a raw RQL query to the server, use `session.Advanced.RawQuery`.  
 `RawQuery`transmits queries to the server without checking or altering 
-their contents, time-series contents or otherwise  
+their contents, time series contents or otherwise  
 
 {PANEL/}
 
@@ -45,11 +45,11 @@ their contents, time-series contents or otherwise
    * **Return Value**:  
       * **`IRawDocumentQuery<TimeSeriesAggregationResult>`**  for aggregated data.  
         When the query 
-        [aggregates time-series entries](../../../document-extensions/timeseries/querying/aggregation), 
+        [aggregates time series entries](../../../document-extensions/timeseries/querying/aggregation), 
         the results are returned in an aggregated array.  
       * **`IRawDocumentQuery<TimeSeriesRawResult>`** for non-aggregated data.  
-        When the query **doesn't aggregate** time-series entries, 
-        the results are returned in a list of time-series results.  
+        When the query **doesn't aggregate** time series entries, 
+        the results are returned in a list of time series results.  
 
 {PANEL/}
 

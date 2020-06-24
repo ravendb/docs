@@ -17,7 +17,7 @@
   },
   {
     "Path": "indexing.markdown",
-    "Name": "Indexing Time-Series",
+    "Name": "Indexing Time Series",
     "DiscussionId": "f23052eb-3c53-4984-a2cd-03a0ff9835d3",
     "Mappings": []
   },
@@ -29,7 +29,7 @@
   },
   {
     "Path": "time-series-and-other-features.markdown",
-    "Name": "Time-Series and Other Features",
+    "Name": "Time Series and Other Features",
     "DiscussionId": "902e7192-9e86-4b98-9f8a-0df0b6c731f9",
     "Mappings": []
   },

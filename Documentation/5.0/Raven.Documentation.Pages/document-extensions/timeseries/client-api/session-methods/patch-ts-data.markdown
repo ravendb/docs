@@ -1,15 +1,15 @@
 ﻿## `session.Advanced.Defer`
-# Patch Time-Series Data
+# Patch Time Series Data
 
 ---
 
 {NOTE: }
 
-* To patch time-series data to a document, use `session.Advanced.Defer`.  
-   * You can pass `Defer` a script to Append, Get, and Remove time-series entries.  
+* To patch time series data to a document, use `session.Advanced.Defer`.  
+   * You can pass `Defer` a script to Append, Get, and Remove time series entries.  
    * You can handle a single document at a time.  
 
-* [Patching Time-Series Data Using `session.Advanced.Defer`](../../../../document-extensions/timeseries/client-api/session-methods/patch-ts-data#patching-time-series-data-using-session.advanced.defer)  
+* [Patching Time Series Data Using `session.Advanced.Defer`](../../../../document-extensions/timeseries/client-api/session-methods/patch-ts-data#patching-time-series-data-using-session.advanced.defer)  
    * [Syntax](../../../../document-extensions/timeseries/client-api/session-methods/patch-ts-data#syntax)  
    * [Usage Flow](../../../../document-extensions/timeseries/client-api/session-methods/patch-ts-data#usage-flow)  
    * [Usage Samples](../../../../document-extensions/timeseries/client-api/session-methods/patch-ts-data#usage-samples)  
@@ -18,14 +18,14 @@
 
 ---
 
-{PANEL: Patching Time-Series Data Using `session.Advanced.Defer`}
+{PANEL: Patching Time Series Data Using `session.Advanced.Defer`}
 
 {INFO: }
 
 * [Defer](../../../../client-api/operations/patching/single-document#non-typed-session-api) 
-  is used for patching in general, not necessarily for time-series data patching.  
-* To patch time-series data, you need to customize the Javascript `Defer` uses.  
-* Learn about customizable Javascripts and the JS time-series API [here](../../../../document-extensions/timeseries/client-api/ts-javascript-api).  
+  is used for patching in general, not necessarily for time series data patching.  
+* To patch time series data, you need to customize the Javascript `Defer` uses.  
+* Learn about customizable Javascripts and the JS time series API [here](../../../../document-extensions/timeseries/client-api/ts-javascript-api).  
 
 {INFO/}
 
@@ -65,17 +65,17 @@
 * Pass the `PatchCommandData` constructor method -  
    * the document ID  
    * the change vector or `null`)  
-   * a `PatchRequest` instance with a Java Script that appends or removes time-series entries.  
+   * a `PatchRequest` instance with a Java Script that appends or removes time series entries.  
 * Call `session.SaveChanges()` to perform the patch.  
 
 {PANEL/}
 
 {PANEL: Usage Samples}
 
-* In this sample, we pass `Defer`a script that patches a document 100 time-series entries with random heartrate values.  
+* In this sample, we pass `Defer`a script that patches a document 100 time series entries with random heartrate values.  
   {CODE TS_region-Session_Patch-Append-100-Random-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-* In this sample, we remove a range of 50 time-series entries from a document.  
+* In this sample, we remove a range of 50 time series entries from a document.  
   {CODE TS_region-Session_Patch-Remove-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 {PANEL/}

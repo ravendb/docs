@@ -1,11 +1,11 @@
 ﻿## `GetTimeSeriesOperation`
-# Get a Time-Series Data
+# Get a Time Series Data
 
 ---
 
 {NOTE: }
 
-Get a single time-series' data using `GetTimeSeriesOperation`.  
+Get a single time series' data using `GetTimeSeriesOperation`.  
 
 * In this page:  
       * [`GetTimeSeriesOperation`](../../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data/get-ts-data#gettimeseriesoperation)  
@@ -20,9 +20,9 @@ Get a single time-series' data using `GetTimeSeriesOperation`.
 {PANEL: `GetTimeSeriesOperation`}
 
 Use `GetTimeSeriesOperation` to retrieve data from a single 
-time-series.  
+time series.  
 
-* To retrieve data from multiple time-series, use 
+* To retrieve data from multiple time series, use 
   [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/store-operations/get-TS-data/get-multiple-TS-data).  
 
 {PANEL/}
@@ -37,7 +37,7 @@ time-series.
     | Parameters | Type | Description |
     |:-------------|:-------------|:-------------|
     | `docId` | `string` | Document ID |
-    | `timeseries` | `string` | Time-series name |
+    | `timeseries` | `string` | Time series name |
     | `from` | `DateTime` | Range start |
     | `to` | `DateTime` | Range end |
     | `start` | `int` | Start of first Page |
@@ -46,7 +46,7 @@ time-series.
 * **Return Value**: **`TimeSeriesRangeResult`**  
      {CODE TimeSeriesRangeResult-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-      When a nonexistent time-series is requested, 
+      When a nonexistent time series is requested, 
       the return value will be `null`.  
       When a nonexistent entries-range is requested, 
       the return value will be a `TimeSeriesRangeResult` object with an 
@@ -60,7 +60,7 @@ time-series.
 {PANEL: Usage Flow}
 
 * Pass `GetTimeSeriesOperation` -  
-     Document ID, Time-Series Name, Range Start, Range End.  
+     Document ID, Time Series Name, Range Start, Range End.  
 * Call `store.Operations.Send` to execute the operation.  
 * Data is returned into a `dictionary of `TimeSeriesRangeResult` classes.  
 
@@ -68,8 +68,8 @@ time-series.
 
 {PANEL: Usage Sample}
 
-* In this sample, we retrieve all the entries of a time-series.  
-   {CODE timeseries_region_Get-Single-Time-Series@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+* In this sample, we retrieve all the entries of a time series.  
+   {CODE timeseries_region_Get-Single-Time Series@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}
 

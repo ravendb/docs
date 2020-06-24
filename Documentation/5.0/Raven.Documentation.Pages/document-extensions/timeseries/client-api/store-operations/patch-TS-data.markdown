@@ -1,14 +1,14 @@
 ﻿## `PatchOperation`, `PatchByQueryOperation`  
-# Patch Time-Series Data  
+# Patch Time Series Data  
 
 ---
 
 {NOTE: }
 
-* Time-series data can be patched -  
+* Time series data can be patched -  
    * to a single document located by its ID, using [PatchOperation](../../../../client-api/operations/patching/single-document#patching-how-to-perform-single-document-patch-operations).  
    * to multiple documents located by a query, using [PatchByQueryOperation](../../../../client-api/operations/patching/set-based).  
-* Both patching operations can be used to Append, Get and Remove time-series entries.  
+* Both patching operations can be used to Append, Get and Remove time series entries.  
 
 * In this page:  
   * [Patching Operations](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#patching-operations)  
@@ -29,24 +29,24 @@
 
 {INFO: }
 
-* To patch time-series data, use `PatchOperation` or `PatchByQueryOperation`.  
+* To patch time series data, use `PatchOperation` or `PatchByQueryOperation`.  
 * `PatchOperation` is RavenDB's operation for single-document patching, and 
   `PatchByQueryOperation` is used for set-based document operations. 
-  None is dedicated to handling time-series.  
-  You can use both to patch time-series data, by customizing the Javascript 
+  None is dedicated to handling time series.  
+  You can use both to patch time series data, by customizing the Javascript 
   they are using.  
-* Learn about customizable Javascripts and the JS time-series API [here](../../../../document-extensions/timeseries/client-api/ts-javascript-api).  
+* Learn about customizable Javascripts and the JS time series API [here](../../../../document-extensions/timeseries/client-api/ts-javascript-api).  
 
 {INFO/}
 
-* Use `PatchOperation` to **load a document by its ID and patch it time-series data**.  
+* Use `PatchOperation` to **load a document by its ID and patch it time series data**.  
 
-    Here, for example, we use `PatchOperation` to patch a document a single time-series entry.
+    Here, for example, we use `PatchOperation` to patch a document a single time series entry.
     {CODE TS_region-Operation_Patch-Append-Single-TS-Entry@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-* Use `PatchByQueryOperation` to **run a document query and patch time-series data to documents you find**.  
+* Use `PatchByQueryOperation` to **run a document query and patch time series data to documents you find**.  
 
-    Here, we use `PatchByQueryOperation` to append a time-series entry to all 
+    Here, we use `PatchByQueryOperation` to append a time series entry to all 
     documents of the User collection.
     {CODE TS_region-PatchByQueryOperation-Append-To-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
@@ -91,7 +91,7 @@
    * the change vector (or `null`)  
    * a new `PatchRequest` instance  
 * Use the `PatchRequest` instance to pass `PatchOperation` 
-  a Java Script that appends or removes time-series entries.  
+  a Java Script that appends or removes time series entries.  
 * Call `store.Operations.Send` to execute the operation.  
 
 ---
@@ -99,12 +99,12 @@
 #### Usage Samples
 
 * In this sample, we provide `PatchOperation`with a script that patches 
-  100 time-series entries to a document.  
+  100 time series entries to a document.  
   Timestamps and values are drawn from an array, and other 
   arguments are provided in the "Values" section.  
   {CODE TS_region-Operation_Patch-Append-100-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-* In this sample, we use `PatchOperation` to remove a range of 50 time-series 
+* In this sample, we use `PatchOperation` to remove a range of 50 time series 
   entries from a document.  
   {CODE TS_region-Operation_Patch-Remove-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
@@ -144,7 +144,7 @@
 
 #### Usage Samples
 
-* In this sample, we run a document query and remove the HeartRate time-series 
+* In this sample, we run a document query and remove the HeartRate time series 
   from documents we find.  
    {CODE TS_region-PatchByQueryOperation-Remove-From-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 

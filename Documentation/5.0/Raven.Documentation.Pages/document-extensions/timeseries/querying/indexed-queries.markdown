@@ -1,15 +1,15 @@
-﻿## Time-Series Queries:
+﻿## Time Series Queries:
 # Indexed Queries
 
 ---
 
 {NOTE: }
 
-* Time-series indexes are not generated automatically by the server, but static 
+* Time series indexes are not generated automatically by the server, but static 
   indexes can be created by clients or using the Studio. As any other index, static 
-  time-series indexes can be queried.  
+  time series indexes can be queried.  
   
-* Querying a time-series index projects the contents of fields specified 
+* Querying a time series index projects the contents of fields specified 
   in the index' `select` clause. The result-set can then be further filtered 
   using LINQ expressions.  
   
@@ -24,7 +24,7 @@
 
 {PANEL: Indexed Queries}
 
-You can query time-series indexes using `session.Query` and 
+You can query time series indexes using `session.Query` and 
 `session.Advanced.DocumentQuery`, and enhance the queries 
 using LINQ expressions.  
 
@@ -56,7 +56,7 @@ using LINQ expressions.
     a matching results container.  
 
     In the following sample we define a **map index** that collects three fields from the "HeartRate" 
-    time-series, a "Results" container for the results, and an **index query** that uses both.
+    time series, a "Results" container for the results, and an **index query** that uses both.
     {CODE ts_region_Index-TS-Queries-6-Index-Definition-And-Results-Class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
     {CODE ts_region_Index-TS-Queries-1-session-Query@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
@@ -65,7 +65,7 @@ using LINQ expressions.
 {PANEL: Usage Samples}
 
 * **Indexed Queries**  
-  To query a time-series index, call `session.Query` or `session.Advanced.DocumentQuery`.  
+  To query a time series index, call `session.Query` or `session.Advanced.DocumentQuery`.  
    {CODE-TABS}
    {CODE-TAB:csharp:session.Query ts_region_Index-TS-Queries-1-session-Query@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
    {CODE-TAB:csharp:DocumentQuery ts_region_Index-TS-Queries-3-DocumentQuery@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
