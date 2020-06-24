@@ -69,7 +69,7 @@ time series.
 {PANEL: Usage Sample}
 
 * In this sample, we retrieve all the entries of a time series.  
-   {CODE timeseries_region_Get-Single-Time Series@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+   {CODE timeseries_region_Get-Single-Time-Series@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}
 

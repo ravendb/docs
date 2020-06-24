@@ -100,11 +100,11 @@ There are two `TimeSeriesFor.Remove` methods:
 
 In this sample we use the [first overload](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#overload-1) 
 to remove a single entry from a time series.  
-{CODE timeseries_region_Remove-TimeSeriesFor-Single-Time Point@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE timeseries_region_Remove-TimeSeriesFor-Single-Time-Point@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 In this sample we use the [second overload](../../../../document-extensions/timeseries/client-api/session-methods/remove-ts-data#overload-2) 
 to remove a range of entries from a time series.  
-{CODE timeseries_region_TimeSeriesFor-Remove-Time Points-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE timeseries_region_TimeSeriesFor-Remove-Time-Points-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 {PANEL/}
 
