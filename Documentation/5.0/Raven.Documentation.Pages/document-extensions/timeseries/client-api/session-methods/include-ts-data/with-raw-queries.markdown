@@ -5,10 +5,10 @@
 
 {NOTE: }
 
-You can include time-series data while running a raw RQL query 
+You can include time series data while running a raw RQL query 
 via `session.Advanced.RawQuery`.  
 
-* [Include Time-Series Data with `Advanced.RawQuery`](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-raw-queries#include-time-series-data-with-advanced.rawquery)  
+* [Include Time Series Data with `Advanced.RawQuery`](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-raw-queries#include-time-series-data-with-advanced.rawquery)  
    * [Syntax](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-raw-queries#syntax)  
    * [Usage Flow](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-raw-queries#usage-flow)  
    * [Usage Samples](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-raw-queries#usage-sample)  
@@ -17,9 +17,9 @@ via `session.Advanced.RawQuery`.
 
 ---
 
-{PANEL: Include Time-Series Data with `Advanced.RawQuery`}
+{PANEL: Include Time Series Data with `Advanced.RawQuery`}
 
-To include time-series data while querying via `Advanced.RawQuery`, 
+To include time series data while querying via `Advanced.RawQuery`, 
 use the `include timeseries` expression in your RQL query.  
 
 {PANEL/}
@@ -53,7 +53,7 @@ public interface IRawDocumentQuery<T> :
 * Call `session.Advanced.RawQuery`  
   Use `include timeseries` in your query  
 * Pass `include timeseries` its arguments:  
-   * **Time-series name**  
+   * **Time series name**  
    * **Range start**  
    * **Range end**  
 
@@ -62,7 +62,7 @@ public interface IRawDocumentQuery<T> :
 {PANEL: Usage Sample}
 
 In this sample, we use a raw query to retrieve a document 
-and include data from the documkent's "Heartrate" time-series.  
+and include data from the documkent's "Heartrate" time series.  
 
 {CODE timeseries_region_Raw-Query-Document-And-Include-TimeSeries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 

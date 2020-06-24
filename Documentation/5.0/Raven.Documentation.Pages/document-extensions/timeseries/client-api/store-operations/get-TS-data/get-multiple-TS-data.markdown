@@ -1,11 +1,11 @@
 ﻿## `GetMultipleTimeSeriesOperation`
-# Get Multiple Time-Series Data
+# Get Multiple Time Series Data
 
 ---
 
 {NOTE: }
 
-Get multiple time-series data using `GetMultipleTimeSeriesOperation`.  
+Get multiple time series data using `GetMultipleTimeSeriesOperation`.  
 
 * In this page:  
       * [`GetMultipleTimeSeriesOperation`](../../../../../document-extensions/timeseries/client-api/store-operations/get-ts-data/get-multiple-ts-data#getmultipletimeseriesoperation)  
@@ -20,7 +20,7 @@ Get multiple time-series data using `GetMultipleTimeSeriesOperation`.
 {PANEL: `GetMultipleTimeSeriesOperation`}
 
 Use `GetMultipleTimeSeriesOperation` to retrieve data from 
-multiple time-series.  
+multiple time series.  
 
 {PANEL/}
 
@@ -34,7 +34,7 @@ multiple time-series.
     | Parameters | Type | Description |
     |:-------------|:-------------|:-------------|
     | `docId` | `string` | Document ID |
-    | `ranges` | `IEnumerable<TimeSeriesRange>` | Ranges of Time-Series Entries |
+    | `ranges` | `IEnumerable<TimeSeriesRange>` | Ranges of Time Series Entries |
     | `start` | `int` | Start of first Page |
     | `pageSize` | `int` | Size of each page |
 
@@ -46,7 +46,7 @@ multiple time-series.
      {CODE TimeSeriesDetails-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
      {CODE TimeSeriesRangeResult-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-       When a nonexistent time-series or entries-range is requested, 
+       When a nonexistent time series or entries-range is requested, 
        the return value for the erronous range is a `TimeSeriesRangeResult` 
        object with an empty `Entries` property.  
 
@@ -58,10 +58,10 @@ multiple time-series.
 {PANEL: Usage Flow}
 
 * Pass `GetMultipleTimeSeriesOperation` -  
-   * The time-series parent-Document ID  
+   * The time series parent-Document ID  
    * A **TimeSeriesRange** instance for each entries range you want 
      it to retrieve.  
-* Populate each TimeSeriesRange instance with a **time-Series name**, 
+* Populate each TimeSeriesRange instance with a **time Series name**, 
   a **range start** timestamp (`From`), and a **range end** timestamp (`To`).  
 * Call `store.Operations.Send` to execute the operation.  
 
@@ -69,8 +69,8 @@ multiple time-series.
 
 {PANEL: Usage Sample}
 
-* In this sample, we retrieve chosen entries from two time-series.  
-   {CODE timeseries_region_Get-Multiple-Time-Series@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+* In this sample, we retrieve chosen entries from two time series.  
+   {CODE timeseries_region_Get-Multiple-Time Series@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}
 

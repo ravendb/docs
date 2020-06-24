@@ -1,11 +1,11 @@
 ﻿## `TimeSeriesBatchOperation`
-# Append and Remove Time-Series Data
+# Append and Remove Time Series Data
 
 ---
 
 {NOTE: }
 
-To **Append** and **Remove** multiple time-series entries, use `TimeSeriesBatchOperation`.  
+To **Append** and **Remove** multiple time series entries, use `TimeSeriesBatchOperation`.  
 
 * In this page:  
   * [`TimeSeriesBatchOperation`](../../../../document-extensions/timeseries/client-api/store-operations/append-and-remove-ts-data#timeseriesbatchoperation)  
@@ -18,7 +18,7 @@ To **Append** and **Remove** multiple time-series entries, use `TimeSeriesBatchO
 
 {PANEL: `TimeSeriesBatchOperation`}
 
-`TimeSeriesBatchOperation` executes a list of time-series entries **Append** 
+`TimeSeriesBatchOperation` executes a list of time series entries **Append** 
 and **Remove** actions.  
 The list is prepared beforehand in a `TimeSeriesOperation` instance using 
 **TimeSeriesOperation.Append** and **TimeSeriesOperation.Remove**, and is 
@@ -30,7 +30,7 @@ passed to `TimeSeriesBatchOperation` as an argumenjt.
 
 * `TimeSeriesBatchOperation`  
   **This is the operation you need to execute to append and remove 
-  time-series entries.**  
+  time series entries.**  
 
    * **Definition**  
      {CODE TimeSeriesBatchOperation-definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
@@ -44,7 +44,7 @@ passed to `TimeSeriesBatchOperation` as an argumenjt.
 
 * `TimeSeriesOperation`  
   **This is the configuration class provided to `TimeSeriesBatchOperation` 
-  as an argument, with a list of time-series entries Append and Remove actions.**  
+  as an argument, with a list of time series entries Append and Remove actions.**  
 
       {CODE-BLOCK:JSON}
       public class TimeSeriesOperation
@@ -59,14 +59,14 @@ passed to `TimeSeriesBatchOperation` as an argumenjt.
 
          | Property | Type | Description |
          |:-------------|:-------------|:-------------|
-         | `Name` | `string` | Time-Series name |
+         | `Name` | `string` | Time Series name |
          | `Append` | `method` | Add an Append action to the list |
          | `Remove` | `method` | Add a Remove action to the list |
 
 
 ---
 
-   * To add a time-series entry Append action, call `TimeSeriesOperation.Append`.
+   * To add a time series entry Append action, call `TimeSeriesOperation.Append`.
       {CODE-BLOCK:JSON}
       public void Append(AppendOperation appendOperation)
       {CODE-BLOCK/}
@@ -89,7 +89,7 @@ passed to `TimeSeriesBatchOperation` as an argumenjt.
 
 ---
 
-   * To add a time-series entry Remove action, call `TimeSeriesOperation.Remove`.
+   * To add a time series entry Remove action, call `TimeSeriesOperation.Remove`.
       {CODE-BLOCK:JSON}
       public void Remove(RemoveOperation removeOperation)
       {CODE-BLOCK/}
@@ -113,7 +113,7 @@ passed to `TimeSeriesBatchOperation` as an argumenjt.
 {PANEL: Usage Flow}
 
 * Create an instance of `TimeSeriesOperation`  
-   * Add it the **time-series name**.  
+   * Add it the **time series name**.  
 
 * Prepare the Append and Remove sequence.  
    * Call `TimeSeriesOperation.Append` to add an Append action  
@@ -135,10 +135,10 @@ passed to `TimeSeriesBatchOperation` as an argumenjt.
 {PANEL: Usage Samples}
 
 * In this sample, we use `TimeSeriesBatchOperation` to append 
-  a time-series two entries.  
+  a time series two entries.  
    {CODE timeseries_region_Append-Using-TimeSeriesBatchOperation@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-* In this sample, we remove two ranges of entries from a time-series.  
+* In this sample, we remove two ranges of entries from a time series.  
    {CODE timeseries_region_Remove-Range-Using-TimeSeriesBatchOperation@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}

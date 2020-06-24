@@ -1,20 +1,20 @@
-﻿## Time-Series Queries:
+﻿## Time Series Queries:
 # Overview and Syntax
 
 ---
 
 {NOTE: }
 
-* Time-series querying is native to RavenDB's RQL.  
+* Time series querying is native to RavenDB's RQL.  
   
-* Clients can express time-series queries in RQL and LINQ expressions to, 
-  for example, expose the behavior of a process that populates a time-series 
-  over time, and to locate documents related to chosen time-series entries.  
+* Clients can express time series queries in RQL and LINQ expressions to, 
+  for example, expose the behavior of a process that populates a time series 
+  over time, and to locate documents related to chosen time series entries.  
 
-* Queries can be exectued over time-series indexes.  
+* Queries can be exectued over time series indexes.  
 
 * In this page:  
-  * [Time-Series Queries](../../../document-extensions/timeseries/querying/queries-overview-and-syntax#time-series-queries)
+  * [Time Series Queries](../../../document-extensions/timeseries/querying/queries-overview-and-syntax#time-series-queries)
   * [Server and Client Queries](../../../document-extensions/timeseries/querying/queries-overview-and-syntax#server-and-client-queries)  
   * [Dynamic and Indexed Queries](../../../document-extensions/timeseries/querying/queries-overview-and-syntax#dynamic-and-indexed-queries)  
   * [Syntax](../../../document-extensions/timeseries/querying/queries-overview-and-syntax#syntax)  
@@ -26,16 +26,16 @@
 
 ---
 
-{PANEL: Time-Series Queries}
+{PANEL: Time Series Queries}
 
-Time-series query can -  
+Time series query can -  
 
-* [Choose a range of time-series entries](../../../document-extensions/timeseries/querying/choosing-query-range) 
+* [Choose a range of time series entries](../../../document-extensions/timeseries/querying/choosing-query-range) 
   to query from.  
 * [Filter](../../../document-extensions/timeseries/querying/filtering) 
-  time-series entries by their tags, values and timestamps.  
+  time series entries by their tags, values and timestamps.  
 * [Aggregate](../../../document-extensions/timeseries/querying/aggregation) 
-  time-series entries into groups by a chosen resolution, e.g. gather the prices 
+  time series entries into groups by a chosen resolution, e.g. gather the prices 
   of a stock that's been collected over the past two months to week-long groups).  
 * [Select](../../../document-extensions/timeseries/querying/aggregation) 
   entries by various criteria, e.g. by the min and max values of each aggregated group.  
@@ -46,25 +46,25 @@ Time-series query can -
 
 {PANEL: Server and Client Queries}
 
-Time-series queries are executed by the server and their results are projected 
+Time series queries are executed by the server and their results are projected 
 to the client, so they require very little client computation resources.  
 
-* The server runs time-series queries using RQL.  
-* Clients can phrase time-series queries in **raw RQL** or using **LINQ expressions** 
+* The server runs time series queries using RQL.  
+* Clients can phrase time series queries in **raw RQL** or using **LINQ expressions** 
   (which will be automatically translated to RQL before their execution by the server).  
 
 {PANEL/}
 
 {PANEL: Dynamic and Indexed Queries}
 
-Time-series indexes are not created automatically by the server, but static time-series 
+Time series indexes are not created automatically by the server, but static time series 
 indexes can be created by clients (or using the Studio).  
 
-* Use **dynamic queries** when time-series you query are unindexed 
+* Use **dynamic queries** when time series you query are unindexed 
   or when you prefer that RavenDB would choose an index automatically 
   using its [query optimizer](../../../../indexes/querying/what-is-rql#query-optimizer). E.g. - 
    {CODE-BLOCK: JSON}
-//Look for time-series named "HeartRate" in user profiles of users under 30.
+//Look for time series named "HeartRate" in user profiles of users under 30.
 from Users as u where Age < 30
     select timeseries(
     from HeartRate
@@ -82,7 +82,7 @@ from index 'SimpleIndex'
 
 {PANEL: Syntax}
 
-You can query time-series using two equivalent syntaxes, 
+You can query time series using two equivalent syntaxes, 
 choose the syntax you're comfortable with.  
 
 * [`select timeseries` syntax](../../../document-extensions/timeseries/querying/queries-overview-and-syntax#syntax-creating-a-time-series-section)  
@@ -90,13 +90,13 @@ choose the syntax you're comfortable with.
 
 ---
 
-#### `select timeseries` Syntax: Creating a Time-Series Section
+#### `select timeseries` Syntax: Creating a Time Series Section
 
-This syntax allows you to encapsulate your query's time-series functionality 
+This syntax allows you to encapsulate your query's time series functionality 
 in a `select timeseries` section.  
 
 {CODE-BLOCK: JSON}
-//Look for time-series named "HeartRate" in user profiles of users under 30.
+//Look for time series named "HeartRate" in user profiles of users under 30.
 
 from Users as u where Age < 30
 select timeseries(
@@ -105,13 +105,13 @@ select timeseries(
 {CODE-BLOCK/}
 
 * `from Users as u where Age < 30`  
-  This **document query** locates the documents whose time-series we want to query.  
+  This **document query** locates the documents whose time series we want to query.  
   
     {INFO: }
-    A typical time-series query starts by locating a single document.  
-    For example, to query a stock prices time-series we can locate 
+    A typical time series query starts by locating a single document.  
+    For example, to query a stock prices time series we can locate 
     a specific company's profile in the Companies collection first, 
-    and then query the StockPrices time-series that extends this profile.  
+    and then query the StockPrices time series that extends this profile.  
       {CODE-BLOCK: JSON}
       from Companies as c where Name = 'Apple'
       select timeseries(
@@ -121,25 +121,25 @@ select timeseries(
     {INFO/}
 
 * `select timeseries`  
-  The `select` clause defines the time-series query.  
+  The `select` clause defines the time series query.  
 
 * `from HeartRate`  
-  The `from` keyword is used to select the time-series we'd query, by its name.  
+  The `from` keyword is used to select the time series we'd query, by its name.  
 
 ---
 
-#### `declare timeseries` Syntax: Declaring a Time-Series Function
+#### `declare timeseries` Syntax: Declaring a Time Series Function
 
-This syntax allows you to declare a time-series function and call it 
+This syntax allows you to declare a time series function and call it 
 from your query. It introduces greater flexibility to your queries as 
-you can, for example, pass arguments to/by the time-series function.  
+you can, for example, pass arguments to/by the time series function.  
 
 Here is a query in both syntaxes. It picks users whose age is under 30, 
-and if they own a time-series named "HeartRate" retrieves a range of entries 
+and if they own a time series named "HeartRate" retrieves a range of entries 
 from this series.  
 
 
-| With Time-Series Function | Without Time-Series Function |
+| With Time Series Function | Without Time Series Function |
 |:---:|:---:|
 | {CODE-BLOCK: JSON}
 declare timeseries ts(jogger){

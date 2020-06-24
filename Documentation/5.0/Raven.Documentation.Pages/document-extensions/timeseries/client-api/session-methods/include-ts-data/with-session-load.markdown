@@ -5,7 +5,7 @@
 
 {NOTE: }
 
-You can include a time-series or a part of it while loading a document 
+You can include a time series or a part of it while loading a document 
 via `session.Load`.  
 
 * [`session.Load` and `IncludeTimeSeries`](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-session-load#session.load-and-includetimeseries)  
@@ -20,7 +20,7 @@ via `session.Load`.
 
 {PANEL: `session.Load` and `IncludeTimeSeries`}
 
-To include time-series data while retrieving documents via `session.Load`, 
+To include time series data while retrieving documents via `session.Load`, 
 pass `session.Load` the `IncludeTimeSeries` method of the `IIncludeBuilder` 
 interface as an argument.  
 
@@ -46,9 +46,9 @@ interface as an argument.
 
         | Parameters | Type | Description |
         |:-------------|:-------------|:-------------|
-        | `name` | `string` | Time-series Name |
-        | `from` | `DateTime?` | Time-series range start <br> when null, `from` will default to `DateTime.MinValue`. |
-        | `to` | `DateTime?` | Time-series range end <br>  <br> when null, `to` will default to `DateTime.MaxValue`. |
+        | `name` | `string` | Time series Name |
+        | `from` | `DateTime?` | Time series range start <br> when null, `from` will default to `DateTime.MinValue`. |
+        | `to` | `DateTime?` | Time series range end <br>  <br> when null, `to` will default to `DateTime.MaxValue`. |
 
 {PANEL/}
 
@@ -58,7 +58,7 @@ interface as an argument.
 * Call `session.Load` and pass it -  
    * The **Document ID**  
    * The **`IncludeTimeSeries`** method with its argumrnts:  
-     **Time-series name**  
+     **Time series name**  
      **Range start**  
      **Range end**  
 
@@ -67,10 +67,10 @@ interface as an argument.
 {PANEL: Usage Sample}
 
 In this sample, we load a document using `session.Load` and include 
-a selected range of entries from a time-series named "Heartrate".  
+a selected range of entries from a time series named "Heartrate".  
 {CODE timeseries_region_Load-Document-And-Include-TimeSeries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-The entries we Get after including the time-series, are retrieved 
+The entries we Get after including the time series, are retrieved 
 **from the session's cache**.  
 
 {PANEL/}

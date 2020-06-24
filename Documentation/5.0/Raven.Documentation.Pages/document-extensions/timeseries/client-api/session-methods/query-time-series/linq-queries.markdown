@@ -1,19 +1,19 @@
 ﻿## `session.Query`
-# Time-Series LINQ Queries
+# Time Series LINQ Queries
 ---
 
 {NOTE: }
 
-* To query time-series using LINQ expressions, use `session.Query`.  
+* To query time series using LINQ expressions, use `session.Query`.  
 * RavenDB will translate a LINQ query to RQL before transmitting 
   it to the server for execution.  
 
 {INFO: }
-Learn more about time-series queries in the [section dedicated to this subject](../../../../../document-extensions/timeseries/querying/queries-overview).  
+Learn more about time series queries in the [section dedicated to this subject](../../../../../document-extensions/timeseries/querying/queries-overview).  
 {INFO/}
 
 * In this page:  
-   * [Time-Series LINQ Queries](../../../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries#time-series-linq-queries)  
+   * [Time Series LINQ Queries](../../../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries#time-series-linq-queries)  
       * [Syntax](../../../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries#syntax)  
       * [Usage Flow](../../../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries#usage-flow)  
       * [Usage Samples](../../../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries#usage-samples)  
@@ -22,12 +22,12 @@ Learn more about time-series queries in the [section dedicated to this subject](
 
 ---
 
-{PANEL: Time-Series LINQ Queries}
+{PANEL: Time Series LINQ Queries}
 
-To build a time-series LINQ query, run a document query using `session.Query` 
+To build a time series LINQ query, run a document query using `session.Query` 
 and extend it using LINQ expressions.  
 Here is a simple LINQ query that chooses users by their age and retrieves their 
-HeartRate time-series, and the RQL equivalent for this query.  
+HeartRate time series, and the RQL equivalent for this query.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:LINQ ts_region_LINQ-1-Select-Timeseries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
@@ -47,11 +47,11 @@ Learn more about `session.Query` [here](../../../../client-api/session/querying/
 
 * **`IRavenQueryable<TimeSeriesAggregationResult>`**  for aggregated data.  
   When the query 
-  [aggregates time-series entries](../../../document-extensions/timeseries/querying/aggregation), 
+  [aggregates time series entries](../../../document-extensions/timeseries/querying/aggregation), 
   the results are returned in an aggregated array.  
 * **`IRavenQueryable<TimeSeriesRawResult>`** for non-aggregated data.  
-  When the query **doesn't aggregate** time-series entries, 
-  the results are returned in a list of time-series results.  
+  When the query **doesn't aggregate** time series entries, 
+  the results are returned in a list of time series results.  
 
 {PANEL/}
 
@@ -59,9 +59,9 @@ Learn more about `session.Query` [here](../../../../client-api/session/querying/
 
 * Open a session  
 * Call `session.Query`.  
-   - Run a document query to locate documents whose time-series you want to query.  
-   - Extend the query using LINQ expressions to find and project time-series data.  
-     Start with `Select` to choose a time-series.  
+   - Run a document query to locate documents whose time series you want to query.  
+   - Extend the query using LINQ expressions to find and project time series data.  
+     Start with `Select` to choose a time series.  
 * Retrieve the results using -  
   `TimeSeriesAggregationResult` for aggregated data  
    -or-  
@@ -70,7 +70,7 @@ Learn more about `session.Query` [here](../../../../client-api/session/querying/
 
 {PANEL: Usage Samples}
 
-* In this sample, we select a three-days range from the HeartRate time-series.  
+* In this sample, we select a three-days range from the HeartRate time series.  
   {CODE ts_region_LINQ-3-Range-Selection@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 * The first occurance of `Where` in the following example, filters documents.  

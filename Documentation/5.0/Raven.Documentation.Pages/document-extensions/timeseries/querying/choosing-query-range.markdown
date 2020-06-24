@@ -1,12 +1,12 @@
-﻿## Time-Series Queries:
+﻿## Time Series Queries:
 # Choosing Query Range
 
 ---
 
 {NOTE: }
 
-* Queries can be performed over whole time-series or over a chosen range 
-  of time-series entries, e.g. only entries collected during the last 7 days.  
+* Queries can be performed over whole time series or over a chosen range 
+  of time series entries, e.g. only entries collected during the last 7 days.  
     
 * In this page:  
   * [Choosing Query Range](../../../document-extensions/timeseries/querying/choosing-query-range#choosing-query-range)  
@@ -20,7 +20,7 @@
 
 {PANEL: Choosing Query Range}
 
-In an RQL query, use `between` and `and` to specify a range of time-series 
+In an RQL query, use `between` and `and` to specify a range of time series 
 entries to query. The entries are chosen by their timestamps, in UTC format.  
 
 {CODE-BLOCK: JSON}
@@ -60,8 +60,8 @@ select timeseries(
 {INFO: }
 You can run queries from your client using raw RQL and LINQ.  
 
-* Learn how to run a LINQ time-series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries).  
-* Learn how to run a raw RQL time-series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries).  
+* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries).  
+* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries).  
 
 {INFO/}
 
@@ -82,11 +82,11 @@ Omitting these values will load the entire series.
     | Parameters | Type | Description |
     |:-------------|:-------------|:-------------|
     | `documentInstance` | `object` | Document Instance |
-    | `name` | `string` | Time-Series Name |
+    | `name` | `string` | Time Series Name |
     | `from` | `DateTime` | Range Start |
     | `to` | `DateTime` | Range End |
   
-* In this sample, we select a three-days range from the HeartRate time-series.
+* In this sample, we select a three-days range from the HeartRate time series.
   {CODE ts_region_LINQ-3-Range-Selection@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 ---
@@ -98,7 +98,7 @@ To choose a range as part of a raw RQL query, use the `between` and `and` keywor
 In this sample, a raw RQL query chooses the profiles of users under the age of 30 and 
 retrieves a 24-hours range from each.  
 An **offset** is defined, adding two hours to retrieved timestamps to adjust them 
-to the client's local time-zone.  
+to the client's local time zone.  
  {CODE-TABS}
  {CODE-TAB:csharp:Declare-Syntax ts_region_Raw-Query-Non-Aggregated-Declare-Syntax@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
  {CODE-TAB:csharp:Select-Syntax ts_region_Raw-Query-Non-Aggregated-Select-Syntax@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}

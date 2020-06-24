@@ -1,19 +1,19 @@
-﻿## Time-Series Queries:
+﻿## Time Series Queries:
 # Filtering
 
 ---
 
 {NOTE: }
 
-* Time-series entries can be filtered by their **value** (e.g. to 
-  retrieve a "Thermometer" time-series entries whose measurement exceed 
+* Time series entries can be filtered by their **value** (e.g. to 
+  retrieve a "Thermometer" time series entries whose measurement exceed 
   32 Celsius degrees) or **tag** (e.g. to retrieve all the entries whose 
   tag is "Thermometer No. 3").  
 
 * Entries can also be filtered by the **contents of a document they refer to**.  
-  A time-series entry's tag can contain the **ID of a document**. 
+  A time series entry's tag can contain the **ID of a document**. 
   A query can **load the document** that the entry refers to, check 
-  its properties and filter time-series entries by them.  
+  its properties and filter time series entries by them.  
 
 * In this page:  
   * [Filtering Results](../../../document-extensions/timeseries/querying/filtering#filtering)  
@@ -26,7 +26,7 @@
 
 {PANEL: Filtering}
 
-In an RQL query, use the `where` keyword to filter time-series entries 
+In an RQL query, use the `where` keyword to filter time series entries 
 by their **tags** or **values**.  
 
 {CODE-BLOCK: JSON}
@@ -40,7 +40,7 @@ select timeseries(
 {CODE-BLOCK/}
   
 * `where Tag='watches/fitbit'`  
-  Retrieve time-series entries whose tag is 'watches/fitbit'.  
+  Retrieve time series entries whose tag is 'watches/fitbit'.  
   To filter entries by their by value use **Value**, e.g.`where Value < 80`.  
 
 ---
@@ -48,7 +48,7 @@ select timeseries(
 #### Using Tags as References - `load tag`
 
 Use the `load Tag ` expression to **load a document** whose ID is stored in 
-a time-series entry's tag.  
+a time series entry's tag.  
 Use `load Tag ` with `where` to **filter your results by properties of the 
 loaded document**, as we do in the following example.  
 
@@ -65,7 +65,7 @@ select timeseries(
    Load the document each entry's tag refers to.  
    Here, we load profiles of potential stock brokers.  
 * `where Broker.Title == "Sales Representative"`  
-   Filter time-series entries so we remain with those 
+   Filter time series entries so we remain with those 
    referring to sales representatives.  
 
 {PANEL/}
@@ -75,8 +75,8 @@ select timeseries(
 {INFO: }
 You can run queries from your client using raw RQL and LINQ.  
 
-* Learn how to run a LINQ time-series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries).  
-* Learn how to run a raw RQL time-series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries).  
+* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries).  
+* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries).  
 
 {INFO/}
 

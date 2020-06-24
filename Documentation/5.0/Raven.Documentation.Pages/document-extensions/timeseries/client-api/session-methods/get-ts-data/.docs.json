@@ -1,13 +1,13 @@
 [
     {
         "Path": "get-ts-entries.markdown",
-        "Name": "Get Time-Series Entries",
+        "Name": "Get Time Series Entries",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
         "Path": "get-ts-names.markdown",
-        "Name": "Get Time-Series Names",
+        "Name": "Get Time Series Names",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     }
