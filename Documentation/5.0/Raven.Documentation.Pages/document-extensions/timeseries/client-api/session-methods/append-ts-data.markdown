@@ -36,7 +36,7 @@
      to add the entry to this series at the specified timestamp.  
    * **Modifying Entry Values**  
      Append a time-series an entry it already has,  
-     to update the existing entry with new data. 
+     to update the existing entry with the new data. 
 
 {PANEL/}
 
@@ -60,14 +60,14 @@ There are two `TimeSeriesFor.Append` methods:
     | Parameters | Type | Description |
     |:-------------|:-------------|:-------------|
     | `timestamp` | DateTime | Time-series entry's timestamp |
-    | `value` | double | For a new time-series entry, this will be its initial value. <br> For an existing entry, update the value with the one provided here.|
-    | `tag` | string | Time-series entry's tag <br> The tag is optional. |
+    | `value` | double | Entry's value |
+    | `tag` | string | Entry's tag <br> The tag is optional. |
 
 * **Return Value**  
   No return value.  
 
 * **Exceptions**  
-  Exceptions are not generated.  
+  If the document doesn't exist, a `DocumentDoesNotExistException` exception is thrown.  
 
 ---
 
@@ -80,14 +80,15 @@ There are two `TimeSeriesFor.Append` methods:
     | Parameters | Type | Description |
     |:-------------|:-------------|:-------------|
     | `timestamp` | DateTime | Time-series entry's timestamp |
-    | `values` | IEnumerable<double> | For a new time-series entry, these will be its initial values. <br> For an existing entry, update the values with the ones provided here. |
-    | `tag` | string | Time-series entry's tag <br> The tag is optional. |
+    | `values` | IEnumerable<double> | Entry's values |
+    | `tag` | string | Entry's tag <br> The tag is optional. |
 
 * **Return Value**  
   No return value.  
 
 * **Exceptions**  
-  Exceptions are not generated.  
+  If the document doesn't exist, a `DocumentDoesNotExistException` exception is thrown.  
+
 
 {PANEL/}
 
@@ -96,7 +97,8 @@ There are two `TimeSeriesFor.Append` methods:
 * Open a session.  
 * Create an instance of `TimeSeriesFor`.  
     * Either pass `TimeSeriesFor` an explicit document ID, -or-  
-    * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.Query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+      Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.Query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+    * Pass `TimeSeriesFor` the time-series name.  
 * Call `TimeSeriesFor.Append`.  
 * Call `session.SaveChanges` for the action to take effect on the server.  
 

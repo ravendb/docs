@@ -41,7 +41,7 @@ Use this method to get all the names of a document's time-series.
      An array of the loaded document's time-series names.  
 
 * **Exceptions**  
-  Exceptions are not generated.  
+  If the instance is not tracked by the session, an `ArgumentException` exception is thrown.  
 
 {PANEL/}
 

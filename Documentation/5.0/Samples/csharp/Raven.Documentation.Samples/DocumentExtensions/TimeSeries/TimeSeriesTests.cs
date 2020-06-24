@@ -363,9 +363,8 @@ namespace SlowTests.Client.TimeSeries.Session
 
         }
 
-        public void StoreOperationsTests()
+        public void ReebUseTimeSeriesBatchOperation()
         {
-            #region timeseries_region_Append-Using-TimeSeriesBatchOperation
             const string documentId = "users/john";
 
             using (var store = GetDocumentStore())
@@ -376,71 +375,44 @@ namespace SlowTests.Client.TimeSeries.Session
                     session.SaveChanges();
                 }
 
+                #region timeseries_region_Append-Using-TimeSeriesBatchOperation
                 var baseline = DateTime.Today;
 
-                var timeSeriesOp = new TimeSeriesOperation
+                var timeSeriesExcersizeneHeartRate = new TimeSeriesOperation
                 {
-                    Name = "HeartRate",
-                    Appends = new List<TimeSeriesOperation.AppendOperation>()
-                    {
-                        new TimeSeriesOperation.AppendOperation
-                        {
-                            Tag = "watches/fitbit",
-                            Timestamp = baseline.AddMinutes(1),
-                            Values = new[]
-                            {
-                                65d
-                            }
-                        },
-
-                        new TimeSeriesOperation.AppendOperation
-                        {
-                            Tag = "watches/fitbit",
-                            Timestamp = baseline.AddMinutes(2),
-                            Values = new[]
-                            {
-                                68d
-                            }
-                        }
-                    }
+                    Name = "RoutineHeartRate"
                 };
 
-                var timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesOp);
+                timeSeriesExcersizeneHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(1), Values = new[] { 79d } });
+                timeSeriesExcersizeneHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(2), Values = new[] { 82d } });
+                timeSeriesExcersizeneHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(3), Values = new[] { 80d } });
+                timeSeriesExcersizeneHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(4), Values = new[] { 78d } });
+
+                var timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesExcersizeneHeartRate);
 
                 store.Operations.Send(timeSeriesBatch);
-
                 #endregion
+
 
                 #region timeseries_region_Remove-Range-Using-TimeSeriesBatchOperation
-                // remove a range of 5 minutes from time-series start
-                timeSeriesOp = new TimeSeriesOperation
+                var removeEntries = new TimeSeriesOperation
                 {
-                    Name = "HeartRate",
-
-                    Removals = new List<TimeSeriesOperation.RemoveOperation>()
-                    {
-                        new TimeSeriesOperation.RemoveOperation
-                        {
-                            From = baseline.AddMinutes(20),
-                            To = baseline.AddMinutes(50)
-                        },
-
-                        new TimeSeriesOperation.RemoveOperation
-                        {
-                            From = baseline.AddMinutes(70),
-                            To = baseline.AddMinutes(100)
-                        }
-                    }
+                    Name = "RoutineHeartRate"
                 };
 
-                timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesOp);
+                removeEntries.Remove(new TimeSeriesOperation.RemoveOperation { From = baseline.AddMinutes(2), To = baseline.AddMinutes(3) });
 
-                store.Operations.Send(timeSeriesBatch);
+                var removeEntriesBatch = new TimeSeriesBatchOperation(documentId, removeEntries);
+
+                store.Operations.Send(removeEntriesBatch);
                 #endregion
+            }
+        }
 
-                #region timeseries_region_Get-Single-Time-Series
-                // Get all values of a single time-series
-                TimeSeriesRangeResult singleTimeSeriesRange = store.Operations.Send(
+
+        #region timeseries_region_Get-Single-Time-Series
+        // Get all values of a single time-series
+        TimeSeriesRangeResult singleTimeSeriesRange = store.Operations.Send(
                     new GetTimeSeriesOperation(documentId, "HeartRate", DateTime.MinValue, DateTime.MaxValue));
                 #endregion
 
@@ -1055,20 +1027,6 @@ namespace SlowTests.Client.TimeSeries.Session
 
         #region TimeSeriesBatchOperation-definition
         public TimeSeriesBatchOperation(string documentId, TimeSeriesOperation operation)
-        #endregion
-
-        #region TimeSeriesOperation-class
-        public class TimeSeriesOperation
-        {
-            // A list of Append actions
-            public List<AppendOperation> Appends;
-
-            // A list of Remove actions
-            public List<RemoveOperation> Removals;
-
-            public string Name;
-            //...
-        }
         #endregion
 
         #region AppendOperation-class

@@ -55,11 +55,9 @@ There are also functionalities unique to each interface.
      Included time-series data is held by the client's session, 
      and can be handed to the user the instant it is required.  
 * **Time-series functionalities unique to the `store`interface**:  
-   * Appending, removing and getting the data of **multiple time-series** 
-     in a single operation.  
+   * Getting the data of **multiple time-series** in a single operation.  
    * Managing time-series **rollup and retention policies**.  
-   * Patching time-series data to **multiple documents** located 
-     by a query.  
+   * Patching time-series data to **multiple documents** located by a query.  
 {PANEL/}
 
 {PANEL: Available Time-Series `session` methods}

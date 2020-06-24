@@ -10,10 +10,13 @@ Get a range of time-series entries using `TimeSeriesFor.Get`.
 * Results can be sliced to pages and retrieved gradually.  
 
 {INFO: }
-[Include](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/include-ts-overview) 
-time-series data while [loading](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-session-load) 
-or [querying](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-session-query) 
-documents, to keep the data locally in the client's session and refrain from unnecessary additional trips to the server.  
+
+* [Include](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/include-ts-overview) 
+  time-series data while [loading](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-session-load) 
+  or [querying](../../../../../document-extensions/timeseries/client-api/session-methods/include-ts-data/with-session-query) 
+  documents, to keep the data locally in the client's session and refrain from unnecessary additional trips to the server.  
+* When caching is enabled, time-series data is kept in the session cache as well.  
+
 {INFO/}
 
 * In this page:  
@@ -79,7 +82,8 @@ public class TimeSeriesEntry
 * Open a session.  
 * Create an instance of `TimeSeriesFor`.  
     * Either pass `TimeSeriesFor` an explicit document ID, -or-  
-    * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+      Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.Query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+    * Pass `TimeSeriesFor` the time-series name.  
 * Call `TimeSeriesFor.Get`.  
 
 {PANEL/}

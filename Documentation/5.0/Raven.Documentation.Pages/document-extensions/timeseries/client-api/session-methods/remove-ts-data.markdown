@@ -58,9 +58,8 @@ There are two `TimeSeriesFor.Remove` methods:
   No return value.  
 
 * **Exceptions**  
-  Exceptions are not generated.  
-  Attempting to remove nonexistent entries results in a noop 
-  and does not generate an exception.  
+   * If the document doesn't exist, a `DocumentDoesNotExistException` exception is thrown.  
+   * Attempting to remove nonexistent entries results in a noop and does not generate an exception.  
 
 ---
 
@@ -80,9 +79,8 @@ There are two `TimeSeriesFor.Remove` methods:
   No return value.  
 
 * **Exceptions**  
-  Exceptions are not generated.  
-  Attempting to remove nonexistent entries results in a noop 
-  and does not generate an exception.  
+   * If the document doesn't exist, a `DocumentDoesNotExistException` exception is thrown.  
+   * Attempting to remove nonexistent entries results in a noop and does not generate an exception.  
 
 {PANEL/}
 
@@ -91,7 +89,8 @@ There are two `TimeSeriesFor.Remove` methods:
 * Open a session.  
 * Create an instance of `TimeSeriesFor`.  
     * Either pass `TimeSeriesFor` an explicit document ID, -or-  
-    * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+      Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.Query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+    * Pass `TimeSeriesFor` the time-series name.  
 * Call `TimeSeriesFor.Remove`.  
 * Call `session.SaveChanges` for the action to take effect on the server.  
 

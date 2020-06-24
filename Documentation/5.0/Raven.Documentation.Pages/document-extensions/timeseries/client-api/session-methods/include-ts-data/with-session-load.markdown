@@ -36,7 +36,7 @@ interface as an argument.
         | Parameters | Type | Description |
         |:-------------|:-------------|:-------------|
         | `id` | `string` | Document ID |
-        | `includes` | `Action<IIncludeBuilder<T>>` | Include Objest |
+        | `includes` | `Action<IIncludeBuilder<T>>` | Include Object |
 
 * **`IncludeTimeSeries`**  
    * **Definition**  
@@ -46,9 +46,9 @@ interface as an argument.
 
         | Parameters | Type | Description |
         |:-------------|:-------------|:-------------|
-        | `name` | string | Time-series Name |
-        | `from` | DateTime | Time-series range start |
-        | `to` | DateTime | Time-series range end |
+        | `name` | `string` | Time-series Name |
+        | `from` | `DateTime?` | Time-series range start <br> when null, `from` will default to `DateTime.MinValue`. |
+        | `to` | `DateTime?` | Time-series range end <br>  <br> when null, `to` will default to `DateTime.MaxValue`. |
 
 {PANEL/}
 

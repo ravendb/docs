@@ -34,9 +34,9 @@ method of the `IQueryIncludeBuilder` interface as an argument.
 
         | Parameters | Type | Description |
         |:-------------|:-------------|:-------------|
-        | `name` | string | Time-series Name |
-        | `from` | DateTime | Time-series range start |
-        | `to` | DateTime | Time-series range end |
+        | `name` | `string` | Time-series Name |
+        | `from` | `DateTime?` | Time-series range start |
+        | `to` | `DateTime?` | Time-series range end |
 
 {PANEL/}
 

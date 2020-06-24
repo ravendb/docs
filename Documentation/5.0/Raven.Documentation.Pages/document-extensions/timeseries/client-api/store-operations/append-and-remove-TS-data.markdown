@@ -5,10 +5,7 @@
 
 {NOTE: }
 
-To append or remove single or multiple time-series entries, 
-use `TimeSeriesBatchOperation`.  
-You can create a list of Append and Remove actions, and 
-execute them all in a single call.  
+To **Append** and **Remove** multiple time-series entries, use `TimeSeriesBatchOperation`.  
 
 * In this page:  
   * [`TimeSeriesBatchOperation`](../../../../document-extensions/timeseries/client-api/store-operations/append-and-remove-ts-data#timeseriesbatchoperation)  
@@ -21,19 +18,23 @@ execute them all in a single call.
 
 {PANEL: `TimeSeriesBatchOperation`}
 
-To instruct `TimeSeriesBatchOperation` which actions to perform, pass it 
-an `TimeSeriesOperation` instance for each Append or Remove action.  
+`TimeSeriesBatchOperation` executes a list of time-series entries **Append** 
+and **Remove** actions.  
+The list is prepared beforehand in a `TimeSeriesOperation` instance using 
+**TimeSeriesOperation.Append** and **TimeSeriesOperation.Remove**, and is 
+passed to `TimeSeriesBatchOperation` as an argumenjt.  
 
 {PANEL/}
 
 {PANEL: Syntax}
 
 * `TimeSeriesBatchOperation`  
-  **This is the operation you need to execute to appends and removes 
+  **This is the operation you need to execute to append and remove 
   time-series entries.**  
 
    * **Definition**  
      {CODE TimeSeriesBatchOperation-definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+
    * **Parameters**  
 
         | Parameters | Type | Description |
@@ -43,41 +44,68 @@ an `TimeSeriesOperation` instance for each Append or Remove action.
 
 * `TimeSeriesOperation`  
   **This is the configuration class provided to `TimeSeriesBatchOperation` 
-  as an argument, with a list of TS-entries Append and Remove actions.**  
+  as an argument, with a list of time-series entries Append and Remove actions.**  
 
-   * **Definition**  
-     {CODE TimeSeriesOperation-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-   * **Properties**  
+      {CODE-BLOCK:JSON}
+      public class TimeSeriesOperation
+      {
+          public string Name;
+          public void Append(AppendOperation appendOperation)
+          public void Remove(RemoveOperation removeOperation)
 
-        | Property | Type | Description |
-        |:-------------|:-------------|:-------------|
-        | `Appends` | `List<AppendOperation>` | A list of TS-entry Append actions |
-        | `Removals` | `List<RemoveOperation>` | A list of TS-entry Remove actions |
+          //..
+      }
+      {CODE-BLOCK/}
 
-* `AppendOperation`  
-  **This class defines a single TS-entry Append action.**
+         | Property | Type | Description |
+         |:-------------|:-------------|:-------------|
+         | `Name` | `string` | Time-Series name |
+         | `Append` | `method` | Add an Append action to the list |
+         | `Remove` | `method` | Add a Remove action to the list |
 
-   * **Definition**  
-     {CODE AppendOperation-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-   * **Properties**  
 
-        | Property | Type | Description |
-        |:-------------|:-------------|:-------------|
-        | `Timestamp` | `DateTime` | The TS entry will be appended at this timestamp |
-        | `Values` | `double[]` | New values for the TS entry |
-        | `Tag` | `string` | An optional tag for the TS entry |
+---
 
-* `RemoveOperation`  
-  **This class defines a single Remove action, of a range of TS entries.**
+   * To add a time-series entry Append action, call `TimeSeriesOperation.Append`.
+      {CODE-BLOCK:JSON}
+      public void Append(AppendOperation appendOperation)
+      {CODE-BLOCK/}
+      {CODE-BLOCK:JSON}
+      public class AppendOperation
+      {
+          public DateTime Timestamp;
+          public double[] Values;
+          public string Tag;
 
-   * **Definition**  
-     {CODE RemoveOperation-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-   * **Properties**  
+          //..
+      }
+      {CODE-BLOCK/}
 
-        | Property | Type | Description |
-        |:-------------|:-------------|:-------------|
-        | `From` | `DateTime` | Range start: TS entries will be removed from this timestamp on |
-        | `To` | `DateTime[]` | Range end: entries will be removed to this timestamp |
+         | Property | Type | Description |
+         |:-------------|:-------------|:-------------|
+         | `Timestamp` | `DateTime` | The TS entry will be appended at this timestamp |
+         | `Values` | `double[]` | Entry values |
+         | `Tag` | `string` | Entry tag (optional) |
+
+---
+
+   * To add a time-series entry Remove action, call `TimeSeriesOperation.Remove`.
+      {CODE-BLOCK:JSON}
+      public void Remove(RemoveOperation removeOperation)
+      {CODE-BLOCK/}
+      {CODE-BLOCK:JSON}
+      public class RemoveOperation
+      {
+          public DateTime? From, To;
+
+          //..
+      }
+      {CODE-BLOCK/}
+
+         | Property | Type | Description |
+         |:-------------|:-------------|:-------------|
+         | `From` | `DateTime` | Range start <br> TS entries will be removed starting at this timestamp |
+         | `To` | `DateTime` | Range end <br> entries will be removed up to this timestamp |
 
 {PANEL/}
 
@@ -85,14 +113,15 @@ an `TimeSeriesOperation` instance for each Append or Remove action.
 {PANEL: Usage Flow}
 
 * Create an instance of `TimeSeriesOperation`  
+   * Add it the **time-series name**.  
 
-* Add the `TimeSeriesOperation` instance an `AppendOperation` list.  
-  Add the list an `AppendOperation` instance for each Append action you want 
-  to perform.  
+* Prepare the Append and Remove sequence.  
+   * Call `TimeSeriesOperation.Append` to add an Append action  
+   * Call `TimeSeriesOperation.Remove` to add a Remove action  
 
-* Add the `TimeSeriesOperation` instance a `RemoveOperation` list.  
-  Add the list a `RemoveOperation` instance for each Remove action you want 
-  to perform.  
+        {INFO: }
+         NOTE: Remove actions will be executed **before** Append actions.  
+        {INFO/}
 
 * Create a `TimeSeriesBatchOperation` instance.  
   Pass it the **document ID** and your **`TimeSeriesOperation` instance**  
