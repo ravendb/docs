@@ -5,8 +5,10 @@
 
 {NOTE: }
 
-To add a large quantity of time-series entries to your database, 
-use `BulkInsert.TimeSeriesFor.Append`.  
+* `store.BulkInsert` is RavenDB's high-performance data insertion operation.  
+  Its `TimeSeriesFor` interface resembles [session.TimeSeriesFor](../../../../../document-extensions/timeseries/client-api/session-methods/append-ts-data) 
+  in its ability to append multiple time-series entries in a single transaction, 
+  while omitting the liabilities of the `session` interface to gain much higher speed.  
 
 * In this page:  
    * [`BulkInsert.TimeSeriesFor.Append`](../../../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk#bulkinsert.timeseriesfor.append)  
@@ -20,33 +22,52 @@ use `BulkInsert.TimeSeriesFor.Append`.
 
 {PANEL: `BulkInsert.TimeSeriesFor.Append`}
 
-The `store.BulkInsert` operation is highly efficient in appending large quantities 
-of data to the database. To append time-series data in bulk, use the operation's 
-`TimeSeriesFor.Append` method.  
+Create a `BulkInsert` instance, pass its `TimeSeriesFor` method the document's ID 
+and time-series name, and then call `TimeSeriesFor.Append` as many times as you need 
+to. All the Append operations you perform this way will be executed in 
+a single transaction.  
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-There are two bulk-insert Append methods:  
-[Overload 1](../../../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk#overload-1-each-appended-entry-has-a-single-value) 
-- Each appended entry has a single value.  
-[Overload 2](../../../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk#overload-2-each-appended-entry-has-multiple-values) 
-- Each appended entry has multiple values.  
+* **`TimeSeriesFor` Definition**
+    {CODE-BLOCK: JSON}
+    public TimeSeriesBulkInsert TimeSeriesFor(string id, string name)
+    {CODE-BLOCK/}
+
+* **Parameters**  
+
+    | Parameters | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `id` | `string` | Document ID |
+    | `name` | `string` | Time-Series Name |
+
+* **Return Value**: **`TimeSeriesBulkInsert`**  
+
+---
+
+* There are two Append overloads:  
+   * [Overload 1](../../../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk#overload-1-each-appended-entry-has-a-single-value) - 
+     Each appended entry has a single value.  
+   * [Overload 2](../../../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk#overload-2-each-appended-entry-has-multiple-values) - 
+     Each appended entry has multiple values.  
 
 ---
 
 #### Overload 1: Each appended entry has a single value  
 
 * **Definition**
-  {CODE BulkInsert-Append-Single-Value-Definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+    {CODE-BLOCK:JSON}
+    public void Append(DateTime timestamp, double value, string tag = null)
+    {CODE-BLOCK/}
 
 * **Parameters**  
 
     | Parameters | Type | Description |
     |:-------------|:-------------|:-------------|
     | `timestamp` | `DateTime` | TS-entry's timestamp |
-    | `value` | `double` | Single TS-entry value |
+    | `value` | `double` | A single value |
     | `tag` | `string` | TS-entry's tag (optional) |
 
 * **Return Value**: **`void`**  
@@ -56,14 +77,16 @@ There are two bulk-insert Append methods:
 #### Overload 2: Each appended entry has multiple values  
 
 * **Definition**
-  {CODE BulkInsert-Append-Multiple-Values-Definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+    {CODE-BLOCK:JSON}
+    public void Append(DateTime timestamp, ICollection<double> values, string tag = null)
+    {CODE-BLOCK/}
 
 * **Parameters**  
 
     | Parameters | Type | Description |
     |:-------------|:-------------|:-------------|
     | `timestamp` | `DateTime` | TS-entry's timestamp |
-    | `values` | `IEnumerable<double>` | Multiple TS-entry values |
+    | `values` | `ICollection<double>` | Multiple values |
     | `tag` | `string` | TS-entry's tag (optional) |
 
 * **Return Value**: **`void`**  
@@ -72,11 +95,11 @@ There are two bulk-insert Append methods:
 
 {PANEL: Usage Flow}
 
-* Create a `store.BulkInsert` operation.  
-* Create an instance of the operation's `TimeSeriesFor` interface.  
-* Pass `TimeSeriesFor`'s constructor the document ID and time-series name  
-* Call `TimeSeriesFor.Append`.  
-  Pass it -  
+* Create a `store.BulkInsert` instance.  
+* Pass the instance's `TimeSeriesFor` -  
+  **The document ID**  
+  **The time-series name**  
+* Call `TimeSeriesFor.Append` as many times as you like. Pass it -  
    * The appended entry's **timestamp**  
    * **A single value** ([overload 1](../../../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk#overload-1-each-appended-entry-has-a-single-value))  
      -or-  
@@ -88,16 +111,16 @@ There are two bulk-insert Append methods:
 {PANEL: Usage Samples}
 
 * In this sample, we use [overload 1](../../../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk#overload-1-each-appended-entry-has-a-single-value) 
-  to append a time-series two entries.  
+  to append a time-series two entries in a single transaction.  
    {CODE timeseries_region_Use-BulkInsert-To-Append-2-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 * In this sample, we use [overload 1](../../../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk#overload-1-each-appended-entry-has-a-single-value) 
-  to append a time-series a hundred entries.  
+  to append a time-series a hundred entries in a single transaction.  
    {CODE timeseries_region_Use-BulkInsert-To-Append-100-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 * In this sample, we use [overload 2](../../../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk#overload-2-each-appended-entry-has-multiple-values) 
-  to append a time-series a hundred multi-values entries.  
-   {CODE BulkInsert-overload-2-Append-100-Multi-Value-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+  to append a time-series two saets of values in a single transaction.  
+   {CODE BulkInsert-overload-2-Two-HeartRate-Sets@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}
 

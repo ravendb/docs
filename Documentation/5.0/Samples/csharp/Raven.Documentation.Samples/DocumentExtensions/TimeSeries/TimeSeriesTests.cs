@@ -478,33 +478,30 @@ namespace SlowTests.Client.TimeSeries.Session
                 #endregion
 
                 #region timeseries_region_Use-BulkInsert-To-Append-100-Entries
-                // Use BulkInsert to append 100 time-series entries
-                for (int minute = 0; minute < 100; minute++)
+                // Append 100 entries in a single transaction
+                using (BulkInsertOperation bulkInsert = store.BulkInsert())
                 {
-                    using (BulkInsertOperation bulkInsert = store.BulkInsert())
+                    using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRate"))
                     {
-                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRate"))
+                        for (int minute = 0; minute < 100; minute++)
                         {
-                            timeSeriesBulkInsert.Append(baseline.AddMinutes(minute), new double[] { minute }, "watches/fitbit");
+                            timeSeriesBulkInsert.Append(baseline.AddMinutes(minute), new double[] { 80d }, "watches/fitbit");
                         }
                     }
                 }
                 #endregion
 
-                #region BulkInsert-overload-2-Append-100-Multi-Value-Entries
-                IEnumerable<double> values = new List<double>
-                        {59d, 63d, 71d, 69d, 64, 65d };
+                #region BulkInsert-overload-2-Two-HeartRate-Sets
+                ICollection<double> ExcersizeHeartRate = new List<double>
+                        { 89d, 82d, 85d };
 
-                // Use BulkInsert to append 100 multi-values time-series entries
-                for (int minute = 0; minute < 100; minute++)
+                ICollection<double> RestingHeartRate = new List<double>
+                        {59d, 63d, 61d, 64d, 64d, 65d };
+
+                using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRate"))
                 {
-                    using (BulkInsertOperation bulkInsert = store.BulkInsert())
-                    {
-                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRate"))
-                        {
-                            timeSeriesBulkInsert.Append(baseline.AddMinutes(minute), values, "watches/fitbit");
-                        }
-                    }
+                    timeSeriesBulkInsert.Append(baseline.AddMinutes(2), ExcersizeHeartRate, "watches/fitbit");
+                    timeSeriesBulkInsert.Append(baseline.AddMinutes(3), RestingHeartRate, "watches/apple-watch");
                 }
                 #endregion
 
@@ -1125,14 +1122,6 @@ namespace SlowTests.Client.TimeSeries.Session
             public string Name;
             public DateTime From, To;
         }
-        #endregion
-
-        #region BulkInsert-Append-Single-Value-Definition
-        public void Append(DateTime timestamp, double value, string tag = null)
-        #endregion
-
-        #region BulkInsert-Append-Multiple-Values-Definition
-        public void Append(DateTime timestamp, IEnumerable<double> values, string tag = null)
         #endregion
 
         #region PatchOperation-Definition
