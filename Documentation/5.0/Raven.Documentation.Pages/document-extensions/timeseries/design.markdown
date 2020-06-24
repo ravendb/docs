@@ -185,14 +185,9 @@ fails for any reason, the time series modification is reverted.
 
 ## Related articles
 **Studio Articles**:  
-[Studio Time Series Management]()  
+[Studio Time Series Management](../../studio/database/document-extensions/time-series)  
 
-**Client-API - Session Articles**:  
-[Time Series Overview]()  
-[Creating and Modifying Time Series]()  
-[Deleting Time Series]()  
-[Retrieving Time Series Values]()  
-[Time Series and Other Features]()  
-
-**Client-API - Operations Articles**:  
-[Time Series Operations]()  
+**Time Series Articles**:  
+[Time Series Overview](../../document-extensions/timeseries/overview)  
+[API Overview](../../document-extensions/timeseries/client-api/api-overview)  
+[Time Series and Other Features](../../document-extensions/timeseries/time-series-and-other-features)  

@@ -198,7 +198,7 @@ How to access a rollup time series:
 
 ## Related articles  
 ###Studio  
-[Time Series Interface in Studio]()
+[Time Series Interface in Studio](../../studio/database/document-extensions/time-series)
 
 ###Time Series  
 [Time Series Overview](../../document-extensions/timeseries/overview)  

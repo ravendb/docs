@@ -20,7 +20,7 @@ client application or from the Studio.
 
 * In this page:  
   * [Syntax](../../document-extensions/timeseries/indexing#syntax)  
-      * [`AbstractTimeSeriesIndexCreationTask`](../../document-extentions/timeseries/indexes#section)  
+      * [`AbstractTimeSeriesIndexCreationTask`](../../document-extentions/timeseries/indexing#section)  
       * [`AbstractMultiMapMultiMapIndexCreationTask`](../../document-extensions/timeseries/indexing#section-1)
       * [`TimeSeriesIndexDefinition`](../../document-extensions/timeseries/indexing#section-2)
       * [`TimeSeriesSegment` Object](../../document-extensions/timeseries/indexing#object)
@@ -177,6 +177,10 @@ Yet another way to create a time series index is to create a
 {PANEL/}
 
 ## Related articles  
+
+###Time Series  
+[Time Series Overview](../../document-extensions/timeseries/overview)  
+[API Overview](../../document-extensions/timeseries/client-api/api-overview)  
 
 ### Indexes  
 [What are Indexes](../../indexes/what-are-indexes)  

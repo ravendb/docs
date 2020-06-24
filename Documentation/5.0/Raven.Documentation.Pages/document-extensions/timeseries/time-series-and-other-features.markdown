@@ -7,10 +7,10 @@
 features.  
 
 * In this page:  
-  * [General Features](../..document-extensions/timeseries/time-series-and-other-features#general-features)  
-  * [Smuggler](../..document-extensions/timeseries/time-series-and-other-features#smuggler)  
-  * [Ongoing Tasks](../..document-extensions/timeseries/time-series-and-other-features#ongoing-tasks)  
-  * [Revisions](../..document-extensions/timeseries/time-series-and-other-features#revisions)  
+  * [General Features](../../document-extensions/timeseries/time-series-and-other-features#general-features)  
+  * [Smuggler](../../document-extensions/timeseries/time-series-and-other-features#smuggler)  
+  * [Ongoing Tasks](../../document-extensions/timeseries/time-series-and-other-features#ongoing-tasks)  
+  * [Revisions](../../document-extensions/timeseries/time-series-and-other-features#revisions)  
 {NOTE/}
 
 ---
