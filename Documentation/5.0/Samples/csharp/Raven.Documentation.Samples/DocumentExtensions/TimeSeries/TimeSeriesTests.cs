@@ -583,22 +583,43 @@ namespace SlowTests.Client.TimeSeries.Session
                 #endregion
 
                 #region TS_region-PatchByQueryOperation-Get
-                // Get ranges of time-series entries from all users 
-                PatchByQueryOperation getOperation = new PatchByQueryOperation(new IndexQuery
+                PatchByQueryOperation getExcersizeHeartRateOperation = new PatchByQueryOperation(new IndexQuery
                 {
-                    Query = @"from Users as u
-                                update
-                                {
-                                    timeseries(u, $name).get($from, $to)
-                                }",
-                    QueryParameters = new Parameters
+                    Query = @"
+                        declare function foo(doc){
+                            var entries = timeseries(doc, $name).get($from, $to);
+                            var differentTags = [];
+                            for (var i = 0; i < entries.length; i++)
                             {
-                                { "name", "HeartRate" },
-                                { "from", DateTime.MinValue },
-                                { "to", DateTime.MaxValue }
+                                var e = entries[i];
+                                if (e.Tag !== null)
+                                {
+                                    if (!differentTags.includes(e.Tag))
+                                    {
+                                        differentTags.push(e.Tag);
+                                    }
+                                }
                             }
+                            doc.NumberOfUniqueTagsInTS = differentTags.length;
+                            return doc;
+                        }
+
+                        from Users as u
+                        update
+                        {
+                            put(id(u), foo(u))
+                        }",
+
+                    QueryParameters = new Parameters
+                    {
+                        { "name", "ExcersizeHeartRate" },
+                        { "from", DateTime.MinValue },
+                        { "to", DateTime.MaxValue }
+                    }
                 });
-                Operation getOp = store.Operations.Send(getOperation);
+
+                var result = store.Operations.Send(getExcersizeHeartRateOperation).WaitForCompletion();
+
                 #endregion
 
                 #region ts_region_Raw-Query-Non-Aggregated-Declare-Syntax

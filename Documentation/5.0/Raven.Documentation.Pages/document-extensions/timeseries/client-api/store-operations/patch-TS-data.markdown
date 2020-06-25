@@ -19,7 +19,7 @@
   * [`PatchByQueryOperation`](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#patchbyqueryoperation)  
      * [Syntax](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#syntax-1)  
      * [Usage Flow](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#usage-flow-1)  
-     * [Usage Sample](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#usage-sample)  
+     * [Usage Samples](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#usage-samples-1)  
 
 {NOTE/}
 
@@ -142,11 +142,17 @@
 
 ---
 
-#### Usage Sample
+#### Usage Samples
 
 * In this sample, we run a document query and remove the HeartRate time series 
   from documents we find.  
    {CODE TS_region-PatchByQueryOperation-Remove-From-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+
+* In this sample, we patch each User document a "NumberOfUniqueTagsInTS" field with 
+  the number of different tags in the user's "ExcersizeHeartRate" time series.  
+  To do this, we use the JS `get` method to get each time series' entries (the 
+  range we choose includes them all), and check each entry's tag.  
+   {CODE TS_region-PatchByQueryOperation-Get@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}
 
