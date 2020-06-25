@@ -33,9 +33,9 @@ Get a range of time series entries using `TimeSeriesFor.Get`.
 
 Use `TimeSeriesFor.Get` to get a range of a document's time series entries.  
 
-* `TimeSeriesFor.Get` retrieves a single document's time series data.  
-   * To retrieve multiple documents' time series' data, 
-     use the [GetTimeSeriesOperaion](../../../../document-extensions/timeseries/client-api/store-operations/get-TS-data) 
+* `TimeSeriesFor.Get` retrieves a range of entries from a single time series.  
+   * To retrieve multiple series' data, 
+     use the [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/store-operations/get-TS-data/get-multiple-TS-data) 
      document-store operation instead.  
 * You can slice retrieved data to **pages** to get time series entries 
   gradually, one custom-size page at a time.  
@@ -81,8 +81,9 @@ public class TimeSeriesEntry
 
 * Open a session.  
 * Create an instance of `TimeSeriesFor`.  
-    * Either pass `TimeSeriesFor` an explicit document ID, -or-  
-      Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.Query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+    * Either pass `TimeSeriesFor` an explicit document ID,  
+      -or-  
+      Pass it an [entity tracked by the session](../../../../../client-api/session/loading-entities), e.g. a document object returned from [session.Query](../../../../../client-api/session/querying/how-to-query) or from [session.Load](../../../../../client-api/session/loading-entities#load).  
     * Pass `TimeSeriesFor` the time series name.  
 * Call `TimeSeriesFor.Get`.  
 
@@ -99,15 +100,16 @@ public class TimeSeriesEntry
 {PANEL/}
 
 ## Related articles
-**Studio Articles**:  
-[Studio Time Series Management]()  
 
-**Client-API - Session Articles**:  
-[Time Series Overview]()  
-[Creating and Modifying Time Series]()  
-[Deleting Time Series]()  
-[Retrieving Time Series Values]()  
-[Time Series and Other Features]()  
+**Client API**  
+[Time Series API Overview](../../../../../document-extensions/timeseries/client-api/api-overview)  
 
-**Client-API - Operations Articles**:  
-[Time Series Operations]()  
+**Studio Articles**  
+[Studio Time Series Management](../../../../../studio/database/document-extensions/time-series)  
+
+**Querying and Indexing**  
+[Time Series Querying](../../../../../document-extensions/timeseries/querying/queries-overview-and-syntax)  
+[Time Series Indexing](../../../../../document-extensions/timeseries/indexing)  
+
+**Policies**  
+[Time Series Rollup and Retention](../../../../../document-extensions/timeseries/rollup-and-retention)  

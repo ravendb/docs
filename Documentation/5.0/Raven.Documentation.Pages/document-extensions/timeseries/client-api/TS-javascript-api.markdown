@@ -1,5 +1,4 @@
-﻿# Time Series & JavaScript API
----
+﻿# Time Series & JavaScript
 
 {NOTE: }
 
@@ -106,15 +105,21 @@ Use this method to retrieve a range of time series entries.
 {PANEL/}
 
 ## Related articles
-**Studio Articles**:  
-[Studio Time Series Management]()  
 
-**Client-API - Session Articles**:  
-[Time Series Overview]()  
-[Creating and Modifying Time Series]()  
-[Deleting Time Series]()  
-[Retrieving Time Series Values]()  
-[Time Series and Other Features]()  
+**Time Series Overview**  
+[Time Series Overview](../../../document-extensions/timeseries/overview)  
 
-**Client-API - Operations Articles**:  
-[Time Series Operations]()  
+**Studio Articles**  
+[Studio Time Series Management](../../../studio/database/document-extensions/time-series)  
+
+**Patching Time Series Data**  
+[Patching in a Session](../../../document-extensions/timeseries/client-api/session-methods/patch-ts-data)  
+[Patching Operation](../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#patchoperation)  
+[Patc By Query Operation](../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#patchbyqueryoperation)  
+
+**Querying and Indexing**  
+[Time Series Querying](../../../document-extensions/timeseries/querying/queries-overview-and-syntax)  
+[Time Series Indexing](../../../document-extensions/timeseries/indexing)  
+
+**Policies**  
+[Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)  

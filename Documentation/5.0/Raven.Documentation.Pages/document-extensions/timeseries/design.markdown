@@ -4,12 +4,12 @@
 
 {NOTE: }
 
-* Time series are a sequence of numerical data associated with timestamps 
-and sorted chronologically.  
+* Time series are sequences of numerical data associated with timestamps 
+  and sorted chronologically.  
 
-* The RavenDB Time Series feature is a document extension. It much faster 
-and more efficient for this purpose than storing time series data as JSON 
-within the document.  
+* RavenDB's Time Series feature is a document extension, gaining by it 
+  much greater speed and efficiency than it would have gained as JSON-formatted 
+  data within a document.  
 
 * In this page:  
   * [Time Series Structure](../../document-extensions/timeseries/design#time-series-structure)  
@@ -85,7 +85,7 @@ automatically removes the flag.
 
 ---
 
-#### Segments
+#### Segmentation
 
 At the server storage level, time series data is divided into **segments**.  
 
@@ -184,10 +184,16 @@ fails for any reason, the time series modification is reverted.
 {PANEL/}
 
 ## Related articles
-**Studio Articles**:  
+
+**Client API**  
+[Time Series API Overview](../../document-extensions/timeseries/client-api/api-overview)  
+
+**Studio Articles**  
 [Studio Time Series Management](../../studio/database/document-extensions/time-series)  
 
-**Time Series Articles**:  
-[Time Series Overview](../../document-extensions/timeseries/overview)  
-[API Overview](../../document-extensions/timeseries/client-api/api-overview)  
-[Time Series and Other Features](../../document-extensions/timeseries/time-series-and-other-features)  
+**Querying and Indexing**  
+[Time Series Querying](../../document-extensions/timeseries/querying/queries-overview-and-syntax)  
+[Time Series Indexing](../../document-extensions/timeseries/indexing)  
+
+**Policies**  
+[Time Series Rollup and Retention](../../document-extensions/timeseries/rollup-and-retention)  

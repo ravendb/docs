@@ -19,7 +19,7 @@
   * [`PatchByQueryOperation`](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#patchbyqueryoperation)  
      * [Syntax](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#syntax-1)  
      * [Usage Flow](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#usage-flow-1)  
-     * [Usage Samples](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#usage-samples-1)  
+     * [Usage Sample](../../../../document-extensions/timeseries/client-api/store-operations/patch-ts-data#usage-sample)  
 
 {NOTE/}
 
@@ -142,27 +142,28 @@
 
 ---
 
-#### Usage Samples
+#### Usage Sample
 
 * In this sample, we run a document query and remove the HeartRate time series 
   from documents we find.  
    {CODE TS_region-PatchByQueryOperation-Remove-From-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-* In this sample, we run a query and **get** a range of entries from the documents we find.  
-   {CODE TS_region-PatchByQueryOperation-Get@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-
 {PANEL/}
 
 ## Related articles
-**Studio Articles**:  
-[Studio Time Series Management]()  
 
-**Client-API - Session Articles**:  
-[Time Series Overview]()  
-[Creating and Modifying Time Series]()  
-[Deleting Time Series]()  
-[Retrieving Time Series Values]()  
-[Time Series and Other Features]()  
+**Time Series and JavaScript**  
+[The Time Series JavaScript API](../../../../document-extensions/timeseries/client-api/ts-javascript-api)  
 
-**Client-API - Operations Articles**:  
-[Time Series Operations]()  
+**Client API**  
+[Time Series API Overview](../../../../document-extensions/timeseries/client-api/api-overview)  
+
+**Studio Articles**  
+[Studio Time Series Management](../../../../studio/database/document-extensions/time-series)  
+
+**Querying and Indexing**  
+[Time Series Querying](../../../../document-extensions/timeseries/querying/queries-overview-and-syntax)  
+[Time Series Indexing](../../../../document-extensions/timeseries/indexing)  
+
+**Policies**  
+[Time Series Rollup and Retention](../../../../document-extensions/timeseries/rollup-and-retention)  

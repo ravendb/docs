@@ -89,15 +89,15 @@ There are also functionalities unique to each interface.
   Use this operation to **append and remove time series data**.  
   You can bundle a series of Append and/or Remove operations in a list and 
   execute them in a single call.  
-* [GetTimeSeriesOperation](../../../document-extensions/timeseries/client-api/store-operations/get-TS-data)  
+* [GetTimeSeriesOperation](../../../document-extensions/timeseries/client-api/store-operations/get-TS-data/get-TS-data)  
   Use this operation to **retrieve time series data**.  
   `GetTimeSeriesOperation` has an advantage over `session.TimeSeries.Get`, in allowing 
   you to retrieve data from multiple time series of a selected document in a single call.  
 * [ConfigureTimeSeriesOperation](../../../document-extensions/timeseries/rollup-and-retention)  
   Use this operation to **manage time series roll-up and retention policies**.  
-* [PatchOperation](../../../document-extensions/timeseries/client-api/store-operations/patch-TS-data/patch-a-document)  
+* [PatchOperation](../../../document-extensions/timeseries/client-api/store-operations/patch-TS-data#patchoperation)  
   Use this operation to **patch time series data to a single document**.  
-* [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/store-operations/patch-TS-data/patch-queried-documents)  
+* [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/store-operations/patch-TS-data#patchbyqueryoperation)  
   Use this operation to **patch time series data to documents located 
   by a query**.  
 * [BulkInsert.TimeSeriesFor.Append](../../../document-extensions/timeseries/client-api/store-operations/bulk-ts-operations/append-ts-data-in-bulk)  
@@ -106,15 +106,16 @@ There are also functionalities unique to each interface.
 {PANEL/}
 
 ## Related articles
-**Studio Articles**:  
-[Studio Time Series Management]()  
 
-**Client-API - Session Articles**:  
-[Time Series Overview]()  
-[Creating and Modifying Time Series]()  
-[Deleting Time Series]()  
-[Retrieving Time Series Values]()  
-[Time Series and Other Features]()  
+**Time Series Overview**  
+[Time Series Overview](../../../document-extensions/timeseries/overview)  
 
-**Client-API - Operations Articles**:  
-[Time Series Operations]()  
+**Studio Articles**  
+[Studio Time Series Management](../../../studio/database/document-extensions/time-series)  
+
+**Querying and Indexing**  
+[Time Series Querying](../../../document-extensions/timeseries/querying/queries-overview-and-syntax)  
+[Time Series Indexing](../../../document-extensions/timeseries/indexing)  
+
+**Policies**  
+[Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)  

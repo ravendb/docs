@@ -64,7 +64,7 @@
 * Call `session.Advanced.Defer` and pass it a `PatchCommandData` instance.  
 * Pass the `PatchCommandData` constructor method -  
    * the document ID  
-   * the change vector or `null`)  
+   * the change vector (or `null`)  
    * a `PatchRequest` instance with a Java Script that appends or removes time series entries.  
 * Call `session.SaveChanges()` to perform the patch.  
 
@@ -81,15 +81,19 @@
 {PANEL/}
 
 ## Related articles
-**Studio Articles**:  
-[Studio Time Series Management]()  
 
-**Client-API - Session Articles**:  
-[Time Series Overview]()  
-[Creating and Modifying Time Series]()  
-[Deleting Time Series]()  
-[Retrieving Time Series Values]()  
-[Time Series and Other Features]()  
+**Time Series and JavaScript**  
+[The Time Series JavaScript API](../../../../document-extensions/timeseries/client-api/ts-javascript-api)  
 
-**Client-API - Operations Articles**:  
-[Time Series Operations]()  
+**Client API**  
+[Time Series API Overview](../../../../document-extensions/timeseries/client-api/api-overview)  
+
+**Studio Articles**  
+[Studio Time Series Management](../../../../studio/database/document-extensions/time-series)  
+
+**Querying and Indexing**  
+[Time Series Querying](../../../../document-extensions/timeseries/querying/queries-overview-and-syntax)  
+[Time Series Indexing](../../../../document-extensions/timeseries/indexing)  
+
+**Policies**  
+[Time Series Rollup and Retention](../../../../document-extensions/timeseries/rollup-and-retention)  

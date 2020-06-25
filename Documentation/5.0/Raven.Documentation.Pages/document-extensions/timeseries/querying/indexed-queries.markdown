@@ -5,7 +5,8 @@
 
 {NOTE: }
 
-* Time series indexes are not generated automatically by the server, but static 
+* Time series [indexes](../../../document-extensions/timeseries/indexing) 
+  are not generated automatically by the server, but static 
   indexes can be created by clients or using the Studio. As any other index, static 
   time series indexes can be queried.  
   
@@ -14,9 +15,9 @@
   using LINQ expressions.  
   
 * In this page:  
-  * [Indexed Queries](../../../../document-extensions/timeseries/querying/indexed-time-series-queries/indexed-queries#indexed-queries)  
-  * [Syntax](../../../../document-extensions/timeseries/querying/indexed-time-series-queries/indexed-queries#syntax)  
-  * [Usage Samples](../../../../document-extensions/timeseries/querying/indexed-time-series-queries/indexed-queries#usage-samples)  
+  * [Indexed Queries](../../../document-extensions/timeseries/querying/indexed-queries#indexed-queries)  
+  * [Syntax](../../../document-extensions/timeseries/querying/indexed-queries#syntax)  
+  * [Usage Samples](../../../document-extensions/timeseries/querying/indexed-queries#usage-samples)  
 
 {NOTE/}
 
@@ -87,15 +88,20 @@ You can run asynchronous queries if you don't want your application to wait for 
 {PANEL/}
 
 ## Related articles
-**Studio Articles**:  
-[Studio Time Series Management]()  
 
-**Client-API - Session Articles**:  
-[Time Series Overview]()  
-[Creating and Modifying Time Series]()  
-[Deleting Time Series]()  
-[Retrieving Time Series Values]()  
-[Time Series and Other Features]()  
+**Time Series Overview**  
+[Time Series Overview](../../../document-extensions/timeseries/overview)  
 
-**Client-API - Operations Articles**:  
-[Time Series Operations]()  
+**Studio Articles**  
+[Studio Time Series Management](../../../studio/database/document-extensions/time-series)  
+
+**Time Series Indexing**  
+[Time Series Indexing](../../../document-extensions/timeseries/indexing)  
+
+**Time Series Queries**  
+[Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)  
+[Filtering](../../../document-extensions/timeseries/querying/filtering)  
+[Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projection)  
+
+**Policies**  
+[Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)  

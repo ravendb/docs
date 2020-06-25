@@ -34,13 +34,12 @@ Time series query can -
   to query from.  
 * [Filter](../../../document-extensions/timeseries/querying/filtering) 
   time series entries by their tags, values and timestamps.  
-* [Aggregate](../../../document-extensions/timeseries/querying/aggregation) 
+* [Aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projection) 
   time series entries into groups by a chosen resolution, e.g. gather the prices 
   of a stock that's been collected over the past two months to week-long groups).  
-* [Select](../../../document-extensions/timeseries/querying/aggregation) 
-  entries by various criteria, e.g. by the min and max values of each aggregated group.  
-* [Project](../../../document-extensions/timeseries/querying/projection) 
-  selected entries to the client.  
+* Select entries by various criteria, e.g. by the min and max values of each aggregated group, 
+  and [project](../../../document-extensions/timeseries/querying/aggregation-and-projection) 
+  them to the client.  
 
 {PANEL/}
 
@@ -62,7 +61,7 @@ indexes can be created by clients (or using the Studio).
 
 * Use **dynamic queries** when time series you query are unindexed 
   or when you prefer that RavenDB would choose an index automatically 
-  using its [query optimizer](../../../../indexes/querying/what-is-rql#query-optimizer). E.g. - 
+  using its [query optimizer](../../../indexes/querying/what-is-rql#query-optimizer). E.g. - 
    {CODE-BLOCK: JSON}
 //Look for time series named "HeartRate" in user profiles of users under 30.
 from Users as u where Age < 30
@@ -166,15 +165,21 @@ select ts(jog)
 
 
 ## Related articles
-**Studio Articles**:  
-[Studio Time Series Management]()  
 
-**Client-API - Session Articles**:  
-[Time Series Overview]()  
-[Creating and Modifying Time Series]()  
-[Deleting Time Series]()  
-[Retrieving Time Series Values]()  
-[Time Series and Other Features]()  
+**Time Series Overview**  
+[Time Series Overview](../../../document-extensions/timeseries/overview)  
 
-**Client-API - Operations Articles**:  
-[Time Series Operations]()  
+**Studio Articles**  
+[Studio Time Series Management](../../../studio/database/document-extensions/time-series)  
+
+**Time Series Indexing**  
+[Time Series Indexing](../../../document-extensions/timeseries/indexing)  
+
+**Time Series Queries**  
+[Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)  
+[Filtering](../../../document-extensions/timeseries/querying/filtering)  
+[Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projection)  
+[Indexed Time Series Queries](../../../document-extensions/timeseries/querying/indexed-queries)
+
+**Policies**  
+[Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)  

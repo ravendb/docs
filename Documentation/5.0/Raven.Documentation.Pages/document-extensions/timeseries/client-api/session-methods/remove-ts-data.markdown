@@ -88,8 +88,9 @@ There are two `TimeSeriesFor.Remove` methods:
 
 * Open a session.  
 * Create an instance of `TimeSeriesFor`.  
-    * Either pass `TimeSeriesFor` an explicit document ID, -or-  
-      Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.Query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+    * Either pass `TimeSeriesFor` an explicit document ID,  
+      -or-  
+      Pass it an [entity tracked by the session](../../../../client-api/session/loading-entities), e.g. a document object returned from [session.Query](../../../../client-api/session/querying/how-to-query) or from [session.Load](../../../../client-api/session/loading-entities#load).  
     * Pass `TimeSeriesFor` the time series name.  
 * Call `TimeSeriesFor.Remove`.  
 * Call `session.SaveChanges` for the action to take effect on the server.  
@@ -109,15 +110,16 @@ to remove a range of entries from a time series.
 {PANEL/}
 
 ## Related articles
-**Studio Articles**:  
-[Studio Time Series Management]()  
 
-**Client-API - Session Articles**:  
-[Time Series Overview]()  
-[Creating and Modifying Time Series]()  
-[Deleting Time Series]()  
-[Retrieving Time Series Values]()  
-[Time Series and Other Features]()  
+**Client API**  
+[Time Series API Overview](../../../../document-extensions/timeseries/client-api/api-overview)  
 
-**Client-API - Operations Articles**:  
-[Time Series Operations]()  
+**Studio Articles**  
+[Studio Time Series Management](../../../../studio/database/document-extensions/time-series)  
+
+**Querying and Indexing**  
+[Time Series Querying](../../../../document-extensions/timeseries/querying/queries-overview-and-syntax)  
+[Time Series Indexing](../../../../document-extensions/timeseries/indexing)  
+
+**Policies**  
+[Time Series Rollup and Retention](../../../../document-extensions/timeseries/rollup-and-retention)  

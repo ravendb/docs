@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-You can [Include](../../../client-api/session/loading-entities#load-with-includes) 
+You can [Include](../../../../../client-api/session/loading-entities#load-with-includes) 
 documents' time series data while retrieving the documents.  
 The included time series data is held by the client's session, 
 so it can be handed to the user the instant it is required - 
@@ -18,15 +18,16 @@ with no additional trip to the server.
 {NOTE/}
 
 ## Related articles
-**Studio Articles**:  
-[Studio Time Series Management]()  
 
-**Client-API - Session Articles**:  
-[Time Series Overview]()  
-[Creating and Modifying Time Series]()  
-[Deleting Time Series]()  
-[Retrieving Time Series Values]()  
-[Time Series and Other Features]()  
+**Client API**  
+[Time Series API Overview](../../../../../document-extensions/timeseries/client-api/api-overview)  
 
-**Client-API - Operations Articles**:  
-[Time Series Operations]()  
+**Studio Articles**  
+[Studio Time Series Management](../../../../../studio/database/document-extensions/time-series)  
+
+**Querying and Indexing**  
+[Time Series Querying](../../../../../document-extensions/timeseries/querying/queries-overview-and-syntax)  
+[Time Series Indexing](../../../../../document-extensions/timeseries/indexing)  
+
+**Policies**  
+[Time Series Rollup and Retention](../../../../../document-extensions/timeseries/rollup-and-retention)  

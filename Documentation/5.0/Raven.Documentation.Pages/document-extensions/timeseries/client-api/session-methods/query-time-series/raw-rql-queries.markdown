@@ -4,8 +4,8 @@
 
 {NOTE: }
 
-* Clients can [express time series queries in RQL](../../../../../document-extensions/timeseries/querying/dynamic-time-series-queries/dynamic-queries) 
-  and send them to the server for execution using the `session.Advanced.RawQuery` method.  
+* Clients can express time series queries in RQL and send them to the server 
+  for execution using the `session.Advanced.RawQuery` method.  
   
 
 {INFO: }
@@ -45,7 +45,7 @@ their contents, time series contents or otherwise
    * **Return Value**:  
       * **`IRawDocumentQuery<TimeSeriesAggregationResult>`**  for aggregated data.  
         When the query 
-        [aggregates time series entries](../../../document-extensions/timeseries/querying/aggregation), 
+        [aggregates time series entries](../../../../../document-extensions/timeseries/querying/aggregation-and-projection), 
         the results are returned in an aggregated array.  
       * **`IRawDocumentQuery<TimeSeriesRawResult>`** for non-aggregated data.  
         When the query **doesn't aggregate** time series entries, 
@@ -87,15 +87,16 @@ their contents, time series contents or otherwise
 
 
 ## Related articles
-**Studio Articles**:  
-[Studio Time Series Management]()  
 
-**Client-API - Session Articles**:  
-[Time Series Overview]()  
-[Creating and Modifying Time Series]()  
-[Deleting Time Series]()  
-[Retrieving Time Series Values]()  
-[Time Series and Other Features]()  
+**Client API**  
+[Time Series API Overview](../../../../../document-extensions/timeseries/client-api/api-overview)  
 
-**Client-API - Operations Articles**:  
-[Time Series Operations]()  
+**Studio Articles**  
+[Studio Time Series Management](../../../../../studio/database/document-extensions/time-series)  
+
+**Querying and Indexing**  
+[Time Series Querying](../../../../../document-extensions/timeseries/querying/queries-overview-and-syntax)  
+[Time Series Indexing](../../../../../document-extensions/timeseries/indexing)  
+
+**Policies**  
+[Time Series Rollup and Retention](../../../../../document-extensions/timeseries/rollup-and-retention)  

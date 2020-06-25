@@ -31,9 +31,9 @@
       * [Transactions Performance](../../document-extensions/timeseries/overview#transactions-performance)  
       * [Common-Queries Performance](../../document-extensions/timeseries/overview#common-queries-performance)  
   * [Time Series Entries](../../document-extensions/timeseries/overview#time-series-entries)  
-      * [The Timestamp](../../document-extensions/timeseries/overview#the-timestamp)  
-      * [The Values](../../document-extensions/timeseries/overview#the-values)  
-      * [The Tag](../../document-extensions/timeseries/overview#the-tag)  
+      * [Timestamps](../../document-extensions/timeseries/overview#timestamps)  
+      * [Values](../../document-extensions/timeseries/overview#values)  
+      * [Tags](../../document-extensions/timeseries/overview#tags)  
 
 {NOTE/}
 
@@ -94,7 +94,8 @@ revisions, are **document extensions**.
 Notable time series features include -  
 
 * **Highly-Efficient Storage Management**  
-  Time series data is [compressed and segmented](../../document-extensions/timeseries/overview#efficient-storage-and-querying) 
+  Time series data is [compressed](../../document-extensions/timeseries/design#compression) 
+  and [segmented](../../document-extensions/timeseries/overview#time-series-segments) 
   to minimize storage usage and transmission time.  
 * **A Thorough Set of API Methods**  
   The [time series API](../../document-extensions/timeseries/client-api/api-overview)**  
@@ -102,7 +103,7 @@ Notable time series features include -
 * **Full GUI Support**  
   Time series can be viewed and managed using the [Studio](../../studio/database/document-extensions/time-series).  
 * **Time Series Querying and Aggregation**  
-    * [High-performance common queries](../../document-extensions/timeseries/overview#efficient-storage-and-querying)  
+    * [High-performance common queries](../../document-extensions/timeseries/overview#common-queries-performance)  
       The results of a set of common queries are prepared in advance in time series segments' 
       headers, so the response to querying for a series **minimum value**, for example, is 
       returned nearly instantly.  
@@ -110,7 +111,7 @@ Notable time series features include -
       Flexible queries and aggregations can be executed using LINQ expressions and raw RQL 
       over time series **timestamps**, **tags** and **values**.  
 * **Time Series Indexing**  
-  Time series can be [indexed by clients](../../ocument-extensions/timeseries/indexing) or using the Studio.  
+  Time series can be [indexed by clients](../../document-extensions/timeseries/indexing) or using the Studio.  
 * [Rollup and Retention Policies](../../document-extensions/timeseries/rollup-and-retention)  
    * **Rollup Policies**  
      You can set time series rollup policies to aggregate large series into 
@@ -131,9 +132,10 @@ Notable time series features include -
 {PANEL: Time Series Data}
 
 Time series **names** are kept in their parent documents' metadata, while their 
-**data** is kept [separately](../../).  
+**data** is kept [separately](../../document-extensions/timeseries/overview#separate-name-and-data-storage).  
 Time series data is **compressed** and composed of consecutive 
-[segments](../../) and [entries](../../).  
+[segments](../../document-extensions/timeseries/overview#time-series-segments) and 
+[entries](../../document-extensions/timeseries/overview#time-series-entries).  
 
 {PANEL/}
 
@@ -187,22 +189,20 @@ Each entry is composed of a **timestamp**, 1 to 32 **values**, and an **optional
 
 ---
 
-#### The Timestamp
+#### Timestamps
 
 {INFO: }
 A single `DateTime` timestamp marks each entry in a millisecond precision.  
-
-E.g. in a heartrate time series, timestamps would indicate the time in which each 
-heartrate measurement has been taken.  
 {INFO/}
 
 Timestamps, and therefore time series entries, are always ordered **by time**, 
 from the oldest timestamp to the newest.  
-Timestamps are the reference points for the appendage and removal of values.  
+E.g. in a heartrate time series, timestamps would indicate the time in which each 
+heartrate measurement has been taken.  
 
 ---
 
-#### The Values
+#### Values
 
 {INFO: }
 Up to 32 `double` **values** can be appended per-entry.  
@@ -226,7 +226,7 @@ values may be a requirement for some time series. Here are a few examples.
 
 ---
 
-#### The Tag
+#### Tags
 
 {INFO: }
 A single **optional** `string` tag can be added per entry.  
@@ -252,15 +252,17 @@ Here is why.
 {PANEL/}
 
 ## Related articles
-**Studio Articles**:  
-[Studio Time Series Management]()  
 
-**Client-API - Session Articles**:  
-[Time Series Overview]()  
-[Creating and Modifying Time Series]()  
-[Deleting Time Series]()  
-[Retrieving Time Series Values]()  
-[Time Series and Other Features]()  
+**Client API**  
+[Time Series API Overview](../../document-extensions/timeseries/client-api/api-overview)  
 
-**Client-API - Operations Articles**:  
-[Time Series Operations]()  
+**Studio Articles**  
+[Studio Time Series Management](../../studio/database/document-extensions/time-series)  
+
+**Querying and Indexing**  
+[Time Series Querying](../../document-extensions/timeseries/querying/queries-overview-and-syntax)  
+[Time Series Indexing](../../document-extensions/timeseries/indexing)  
+
+**Policies**  
+[Time Series Rollup and Retention](../../document-extensions/timeseries/rollup-and-retention)  
+
