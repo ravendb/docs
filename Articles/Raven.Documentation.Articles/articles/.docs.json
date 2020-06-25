@@ -1674,5 +1674,34 @@
             "twitter:description": "See why using RavenDB's NoSQL transactional ACID database, Sparkling Logic can now build robust solutions for the decision management marketplace that includes extensive flexibility and faster performance.",
             "twitter:url": "https://ravendb.net/articles/how-sparkling-logic-uses-ravendb-nosql-document-database"
         }
+},
+{
+        "Path": "how-simple-store-uses-ravendb-nosql-document-database-for-digital-ecommerce.markdown",
+        "Name": "How Simple Store Uses RavenDB NoSQL Document Database for Digital eCommerce",
+        "Mappings": [],
+        "Metadata": {
+            "title": "How Simple Store Uses RavenDB NoSQL Document Database for Digital eCommerce",
+            "likeSection": "yes",
+            "url": "how-simple-store-uses-ravendb-nosql-document-database-for-digital-ecommerce",
+            "publishedAt": "2020-06-25",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "NoSQL database enables a private database for each user. Automatic Indexing and Aggregated MapReduce make complex computations fast using NoSQL for Ecommerce.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "RavenDB Helps Simple Store Give Businesses an eCommerce Platform",
+            "og:description": "RavenDB enables Simple Store to offer a private database to each user. Automatic Indexing and Aggregated MapReduce make complex computations lightning fast.",
+            "og:url": "https://ravendb.net/articles/how-simple-store-uses-ravendb-nosql-document-database-for-digital-ecommerce",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/how-simple-store-uses-ravendb-nosql-document-database-for-digital-ecommerce&fileName=how-simple-store-uses-ravendb-nosql-document-database-for-digital-ecommerce.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "RavenDB Helps Simple Store Give Businesses an eCommerce Platform",
+            "twitter:description": "RavenDB enables Simple Store to offer a private database to each user. Automatic Indexing and Aggregated MapReduce make complex computations lightning fast.",
+            "twitter:url": "https://ravendb.net/articles/how-simple-store-uses-ravendb-nosql-document-database-for-digital-ecommerce"
+        }
 }
 ]
