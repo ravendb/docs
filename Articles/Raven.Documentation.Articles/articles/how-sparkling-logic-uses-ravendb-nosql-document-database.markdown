@@ -12,7 +12,7 @@ By using RavenDB's transactional NoSQL ACID database, Sparkling Logic can now bu
 </div>
 
 <div class="f-s-quote margin-top-sm margin-bottom-sm">
-    <span class="quote-content">"Effective Decision Management needs transaction support for ever-evolving documents. It needs versioning. It needs powerful and intuitive queries. Millions of dollars and critical decisions go through our platform every day, this is a mission critical platform."</span>
+    <span class="quote-content">Effective Decision Management needs transaction support for ever-evolving documents. It needs versioning. It needs powerful and intuitive queries. Millions of dollars and critical decisions go through our platform every day, this is a mission critical platform.</span>
     <span class="quote-author margin-top-xs margin-bottom-xs">Carlos Serrano, CTO at Sparkling Logic, Inc.</span>
 </div>
 
@@ -63,7 +63,7 @@ Sparkling Logic has leveraged the following to enhance the value of their platfo
 The powerful **querying system is very intuitive and very natural to use**. In the Sparkling Logic customers world, it is necessary to follow complex relationships between parts of the decision logic, as well as between parts of the decision logic and data models. These relations are at the heart of the effective design, implementation and optimization of decisions.
 
 <div class="f-s-quote margin-top-sm margin-bottom-sm">
-    <span class="quote-content">"A document database without querying power would have become a bottleneck. RavenDB gave us the querying power we needed without sacrificing the flexibility in the documents."</span>
+    <span class="quote-content">A document database without querying power would have become a bottleneck. RavenDB gave us the querying power we needed without sacrificing the flexibility in the documents.</span>
     <span class="quote-author margin-top-xs margin-bottom-xs">Carlos Serrano, CTO at Sparkling Logic, Inc.</span>
 </div>
 
