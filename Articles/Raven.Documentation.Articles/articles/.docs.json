@@ -1622,7 +1622,7 @@
         "Name": "NoSQL Document Database Indexing",
         "Mappings": [],
         "Metadata": {
-            "title": "NoSQL Document Database Indexing",
+            "title": "NoSQL Indexing | Indexing NoSQL Database | NoSQL Index",
             "likeSection": "yes",
             "url": "nosql-document-database-indexing",
             "publishedAt": "2020-05-21",
@@ -1651,7 +1651,7 @@
         "Name": "How Sparkling Logic Uses the RavenDB NoSQL Document Database",
         "Mappings": [],
         "Metadata": {
-            "title": "How Sparkling Logic Uses the RavenDB NoSQL Document Database",
+            "title": "NoSQL ACID Database | NoSQL Database Use Case",
             "likeSection": "yes",
             "url": "how-sparkling-logic-uses-ravendb-nosql-document-database",
             "publishedAt": "2020-06-02",
@@ -1680,7 +1680,7 @@
         "Name": "How Simple Store Uses RavenDB NoSQL Document Database for Digital eCommerce",
         "Mappings": [],
         "Metadata": {
-            "title": "How Simple Store Uses RavenDB NoSQL Document Database for Digital eCommerce",
+            "title": "NoSQL for E-commerce | NoSQL Database for E-commerce | NoSQL Data Modeling",
             "likeSection": "yes",
             "url": "how-simple-store-uses-ravendb-nosql-document-database-for-digital-ecommerce",
             "publishedAt": "2020-06-25",
