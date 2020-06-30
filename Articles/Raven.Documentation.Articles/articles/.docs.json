@@ -1703,5 +1703,34 @@
             "twitter:description": "RavenDB enables Simple Store to offer a private database to each user. Automatic Indexing and Aggregated MapReduce make complex computations lightning fast.",
             "twitter:url": "https://ravendb.net/articles/how-simple-store-uses-ravendb-nosql-document-database-for-digital-ecommerce"
         }
+},
+{
+    "Path": "nosql-database-query-process.markdown",
+    "Name": "NoSQL Database Query Process",
+    "Mappings": [],
+    "Metadata": {
+        "title": "NoSQL Database Query Process",
+        "likeSection": "yes",
+        "url": "nosql-database-query-process",
+        "publishedAt": "2020-06-26",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "NoSQL database query process is more complicated than it used to be in SQL. Read how RavenDB offers a highly structured and advanced way of querying data.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "NoSQL Database Query Process",
+        "og:description": "NoSQL database query process is more complicated than it used to be in SQL. Read how RavenDB offers a highly structured and advanced way of querying data.",
+        "og:url": "https://ravendb.net/articles/nosql-database-query-process",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-database-query-process&fileName=how-simple-store-uses-ravendb-nosql-document-database-for-digital-ecommerce.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "NoSQL Database Query Process",
+        "twitter:description": "NoSQL database query process is more complicated than it used to be in SQL. Read how RavenDB offers a highly structured and advanced way of querying data.",
+        "twitter:url": "https://ravendb.net/articles/nosql-database-query-process"
+    }
 }
 ]
