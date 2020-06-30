@@ -52,22 +52,5 @@ namespace Raven.Documentation.Parser
 
             return key;
         }
-
-        protected override string ExtractTitle(FolderItem page, HtmlDocument htmlDocument)
-        {
-            string title = null;
-            page.Metadata?.TryGetValue("title", out title);
-
-            return string.IsNullOrEmpty(title) ? base.ExtractTitle(page, htmlDocument) : RemoveTitleSuffix(title);
-        }
-
-        private string RemoveTitleSuffix(string title)
-        {
-            if (title.EndsWith(TitleSuffix) == false)
-                return title;
-
-            var resultLength = title.Length - TitleSuffix.Length;
-            return title.Substring(0, resultLength);
-        }
     }
 }
