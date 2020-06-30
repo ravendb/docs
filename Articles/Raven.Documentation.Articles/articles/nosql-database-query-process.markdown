@@ -58,11 +58,9 @@ Due to this requirement for a manual update to denormalized documents means that
 2. Transactional data that is fixed at a point in time and needs to be retained as is (our example of an Invoice at point of sale)
 3. Any data that is referenced by lots of documents in the system (Author)
 
-#### Documentation and Examples
+#### Documentation
 
 The RavenDB documentation about Denormalization can be found [here](https://ravendb.net/docs/article-page/4.2/Csharp/client-api/how-to/handle-document-relationships#denormalization).
-
-Click [here]() for an example of property Denormalization in Crux.
 
 <div class="flex-vertical text-center margin-top-sm margin-bottom-sm" style="align-items:center">
     <img src="images/nosql-database-query-process/3.jpg" class="img-responsive m-0-auto" alt="Indexing"/>
@@ -98,11 +96,9 @@ It is also worth being aware that not all data processing is suitable for Indexi
 2. Parent objects with only a few children (User-Created Type)
 3. Anything that changes but doesn't change very often (Contact Details)
 
-#### Documentation and Examples
+#### Documentation
 
 There is extensive documentation on RavenDB Indexing that can be found [here](https://ravendb.net/docs/article-page/4.2/csharp/indexes/what-are-indexes).
-
-Click here to see an example of a RavenDB Index crunching some stats on Crux.
 
 <div class="flex-vertical text-center margin-top-sm margin-bottom-sm" style="align-items:center">
     <img src="images/nosql-database-query-process/4.jpg" class="img-responsive m-0-auto" alt="Projections"/>
@@ -131,11 +127,9 @@ Once the Projection has executed the result set is ready to be consumed and is s
 2. Common data that is related to a lot of other Documents (Product Category)
 3. If its not clear where the data goes its usually safer to stick it in the Projection
 
-#### Documentation and Examples
+#### Documentation
 
 The RavenDB documentation about Projections can be found [here](https://ravendb.net/docs/article-page/4.2/Csharp/indexes/querying/projections).
-
-Click here for an example of a Projection decorating a result from an Index in Crux.
 
 <div class="flex-vertical text-center margin-top-sm margin-bottom-sm" style="align-items:center">
     <img src="images/nosql-database-query-process/5.jpg" class="img-responsive m-0-auto" alt="Lazy Queries"/>
@@ -159,11 +153,9 @@ By marking a query as being Lazy it delays execution. This then allows another L
 2. Results that require further joins with external data (Quoted Price)
 3. The absolute last resort when it is not clear how to fit it all into an Index or Projection
 
-#### Documentation and Examples
+#### Documentation
 
 The RavenDB documentation about Lazy Queries can be found [here](https://ravendb.net/docs/article-page/4.2/csharp/client-api/session/querying/how-to-perform-queries-lazily).
-
-Click here for an example of a Dashboard getting two data sets using Laziness in Crux.
 
 ### Conclusion
 
