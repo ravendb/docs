@@ -1,14 +1,14 @@
-﻿# Time Series Design
+﻿# Design: Time Series
 
 ---
 
 {NOTE: }
 
-* Time series are sequences of numerical data associated with timestamps 
+* Time series are sequences of numerical values, associated with timestamps 
   and sorted chronologically.  
 
-* RavenDB's Time Series feature is a document extension, gaining by it 
-  much greater speed and efficiency than it would have gained as JSON-formatted 
+* RavenDB Time Series are stored and managed as document extensions, gaining 
+  much greater speed and efficiency than they would have had as JSON-formatted 
   data within a document.  
 
 * In this page:  
@@ -56,9 +56,11 @@ Each time series entry is composed of:
     | `Tag` | string | An optional tag for an entry. Can be any string up to 255 bytes. Possible uses for the tag: descriptions or metadata for individual entries; storing a document id, which can then be referenced when querying a time series. This is the only component of the entry that is not numerical. |
     | `Values` | double[] | An array of up to 32 `double` values |
 
-Doubles with higher precision - i.e. more digits after the decimal point - 
-are much less compressible. In other words `1.234` takes up more space 
-than `1,234`.
+{NOTE: }
+Doubles with higher precision - i.e. more digits after the decimal point, 
+are much less compressible.  
+In other words, `1.672` takes up more space than `1672`.
+{NOTE/}
 
 ---
 
@@ -91,8 +93,8 @@ At the server storage level, time series data is divided into **segments**.
 
 * Segments contain a number of consecutive entries from the same 
 time series.  
-* Segments have a maximum size of 2 kB.  
-* The 2 kb limit means that a segment can only contain up to 32k entries,
+* Segments have a maximum size of 2 KB.  
+* The 2 KB limit means that a segment can only contain up to 32k entries,
 so a time series with more than 32k entries will always be stored in
 multiple segments.  
 * In practice, segments usually contain far fewer than 32k entries, 
@@ -104,7 +106,7 @@ the amount depends on the size of the entries (after compression).
 is ~24.86 days (`int.MaxValue` milliseconds). So if an entry is 24.86 days 
 or later than the first entry in the current segment, it will become the 
 first entry in a new segment. A consquence of this is that in a sparse time 
-series segments can be significantly smaller than 2 kB.  
+series segments can be significantly smaller than 2 KB.  
 
 Segments also store the aggregate values that summarize the data they 
 contain, such as the averages of entry values. For this reason, it's 
@@ -117,7 +119,7 @@ Read more about how to use segments [here](../../document-extensions/timeseries/
 
 Time series data is stored using a format called [Gorilla compression](https://www.vldb.org/pvldb/vol8/p1816-teller.pdf). 
 On top of the Gorilla compression, the time series segments are compressed 
-using the [Lz4 algorithm](https://lz4.github.io/lz4/).
+using the [LZ4 algorithm](https://lz4.github.io/lz4/).
 
 {PANEL/}
 
@@ -186,13 +188,13 @@ fails for any reason, the time series modification is reverted.
 ## Related articles
 
 **Client API**  
-[Time Series API Overview](../../document-extensions/timeseries/client-api/api-overview)  
+[Time Series API Overview](../../document-extensions/timeseries/client-api/overview)  
 
 **Studio Articles**  
 [Studio Time Series Management](../../studio/database/document-extensions/time-series)  
 
 **Querying and Indexing**  
-[Time Series Querying](../../document-extensions/timeseries/querying/queries-overview-and-syntax)  
+[Time Series Querying](../../document-extensions/timeseries/querying/overview-and-syntax)  
 [Time Series Indexing](../../document-extensions/timeseries/indexing)  
 
 **Policies**  

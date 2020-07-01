@@ -1,19 +1,20 @@
-﻿# Time Series Indexing  
+﻿# Indexing: Time Series
 
 ---
 
 {NOTE: }
 
-Time series indexes are used to index time series data, as opposed to document fields. 
-The API for creating time series indexes is very similar to (and inherits from) the 
-API for [creating document indexes](../../indexes/creating-and-deploying).  
+Time series indexes index time series [segments](../../document-extensions/timeseries/design#segmentation), 
+as opposed to document fields.  
+The API for creating time series indexes is very similar to (and it inherits 
+from) the API for [creating document indexes](../../indexes/creating-and-deploying).  
 
 {INFO: }
 Unlike document indexes, time series indexes currently support only LINQ syntax. 
 JavaScript syntax is not supported.  
 
 RavenDB does not create [dynamic](../../studio/database/indexes/indexes-overview#indexes-types) 
-time series indexes in response to queries - time series indexes are only be created as 
+time series indexes in response to queries, but can be created as 
 [static](../../studio/database/indexes/indexes-overview#indexes-types) indexes from a 
 client application or from the Studio.  
 {INFO/}
@@ -127,7 +128,7 @@ from entry in segment
 {CODE-BLOCK/}
 
 Segments are useful because they can be referenced within time series indexes to access the entries in 
-the segment, as well as some aggregate values that summarize the data in the segment:  
+the segment, as well as some aggregated values that summarize the data in the segment:  
 
 | Property | Type | Description |
 | - | - | - |
@@ -180,7 +181,7 @@ Yet another way to create a time series index is to create a
 
 ###Time Series  
 [Time Series Overview](../../document-extensions/timeseries/overview)  
-[API Overview](../../document-extensions/timeseries/client-api/api-overview)  
+[API Overview](../../document-extensions/timeseries/client-api/overview)  
 
 ### Indexes  
 [What are Indexes](../../indexes/what-are-indexes)  

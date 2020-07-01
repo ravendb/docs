@@ -87,14 +87,12 @@ namespace SlowTests.Client.TimeSeries.Session
             }
             #endregion
 
-            #region timeseries_region_TimeSeriesFor-Get-Single-Value-Using-Document-ID
+            #region timeseries_region_Get-All-Entries-Using-Document-ID
             // retrieve all entries of a time-series named "HeartRate" 
             // by passing TimeSeriesFor.Get an explict document ID
-            using (var session = store.OpenSession())
-            {
-                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor("users/john", "HeartRate")
-                    .Get(DateTime.MinValue, DateTime.MaxValue);
-            }
+            // Include all time points - from the first timestamp to the last
+            TimeSeriesEntry[] val = session.TimeSeriesFor("users/john", "HeartRate")
+                .Get(DateTime.MinValue, DateTime.MaxValue);
             #endregion
 
             #region timeseries_region_Pass-TimeSeriesFor-Get-Query-Results
@@ -102,19 +100,114 @@ namespace SlowTests.Client.TimeSeries.Session
             // and get its HeartRate time-series values
             using (var session = store.OpenSession())
             {
-                baseline = DateTime.Today;
+                var baseline = DateTime.Today;
 
                 IRavenQueryable<User> query = session.Query<User>()
                     .Where(u => u.Name == "John");
 
                 var result = query.ToList();
 
-                IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "HeartRate")
+                TimeSeriesEntry[] val = session.TimeSeriesFor(result[0], "HeartRate")
                     .Get(DateTime.MinValue, DateTime.MaxValue);
 
                 session.SaveChanges();
             }
             #endregion
+
+            #region timeseries_region_Get-Strongly-Typed
+            bool goingUp = false;
+
+            // Use Get
+            using (var session = store.OpenSession())
+            {
+                // get entries by GetAsync, using the strongly typed StockPrice class
+                var results = session.TimeSeriesFor<StockPrice>("users/john")
+                    .Get();
+
+                var ClosePriceDay1 = results[0].Value.Close;
+                var ClosePriceDay2 = results[1].Value.Close;
+                var ClosePriceDay3 = results[2].Value.Close;
+
+                if ((ClosePriceDay2 > ClosePriceDay1)
+                    &&
+                    (ClosePriceDay3 > ClosePriceDay2))
+                    goingUp = true;
+            }
+            #endregion
+
+            #region timeseries_region_Append-Strongly-Typed-1
+            using (var session = store.OpenSession())
+            {
+                session.Store(new User { Name = "John" }, "users/john");
+
+                // Append coordinates
+                session.TimeSeriesFor<RoutePoint>("users/john")
+                    .Append(DateTime.Now, new RoutePoint
+                    {
+                        Latitude = 40.712776,
+                        Longitude = -74.005974
+                    }, "watches/anotherFirm");
+
+                session.SaveChanges();
+            }
+            #endregion
+
+            #region timeseries_region_Append-Strongly-Typed-2
+            // append multi-value entries using a registered time series type
+            using (var session = store.OpenSession())
+            {
+                session.Store(new User { Name = "John" }, "users/john");
+
+                session.TimeSeriesFor<StockPrice>("users/john")
+                .Append(baseline.AddDays(1), new StockPrice
+                {
+                    Open = 52,
+                    Close = 54,
+                    High = 63.5,
+                    Low = 51.4,
+                    Volume = 9824,
+                }, "companies/kitchenAppliances");
+
+                session.TimeSeriesFor<StockPrice>("users/john")
+                .Append(baseline.AddDays(2), new StockPrice
+                {
+                    Open = 54,
+                    Close = 55,
+                    High = 61.5,
+                    Low = 49.4,
+                    Volume = 8400,
+                }, "companies/kitchenAppliances");
+
+                session.TimeSeriesFor<StockPrice>("users/john")
+                .Append(baseline.AddDays(3), new StockPrice
+                {
+                    Open = 55,
+                    Close = 57,
+                    High = 65.5,
+                    Low = 50,
+                    Volume = 9020,
+                }, "companies/kitchenAppliances");
+
+                session.SaveChanges();
+            }
+            #endregion
+
+            #region timeseries_region_Strongly-Typed-Query
+            using (var session = store.OpenSession())
+            {
+                IRavenQueryable<TimeSeriesRawResult<StockPrice>> query =
+                    session.Query<Company>()
+                    .Where(c => c.Address1 == "New York")
+                    .Select(q => RavenQuery.TimeSeries<StockPrice>(q, "StockPrices", baseline, baseline.AddDays(3))
+                        .Where(ts => ts.Tag == "companies/kitchenAppliances")
+                        .ToList());
+            }
+            #endregion
+
+            #region timeseries_region_Strongly-Typed-Register
+            await store.TimeSeries.RegisterAsync<User, RoutePoint>();
+            #endregion 
+
 
 
             // retrieve time series names
@@ -815,7 +908,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 {
                     var baseline = new DateTime(2020, 5, 17);
 
-                    #region ts_region_LINQ-Aggregation-and-Projection-StockPrice
+                    #region ts_region_LINQ-Aggregation-and-Projections-StockPrice
                     IRavenQueryable<TimeSeriesAggregationResult> query = session.Query<Orders.Company>()
                         .Where(c => c.Address.Country == "USA")
                         .Select(q => RavenQuery.TimeSeries(q, "StockPrice")
@@ -839,7 +932,7 @@ namespace SlowTests.Client.TimeSeries.Session
                     var start = baseline;
                     var end = baseline.AddHours(1);
 
-                    #region ts_region_Raw-RQL-Select-Syntax-Aggregation-and-Projection-StockPrice
+                    #region ts_region_Raw-RQL-Select-Syntax-Aggregation-and-Projections-StockPrice
                     IRawDocumentQuery<TimeSeriesAggregationResult> aggregatedRawQuery =
                         session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                             from Companies as c
@@ -864,7 +957,7 @@ namespace SlowTests.Client.TimeSeries.Session
                     var start = baseline;
                     var end = baseline.AddHours(1);
 
-                    #region ts_region_Raw-RQL-Declare-Syntax-Aggregation-and-Projection-StockPrice
+                    #region ts_region_Raw-RQL-Declare-Syntax-Aggregation-and-Projections-StockPrice
                     IRawDocumentQuery<TimeSeriesAggregationResult> aggregatedRawQuery =
                         session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                             declare timeseries SP(c) {
@@ -1004,12 +1097,24 @@ namespace SlowTests.Client.TimeSeries.Session
         #endregion
 
         #region TimeSeriesFor-Get-definition
-        IEnumerable<TimeSeriesEntry> Get(DateTime from, DateTime to, int start = 0, int pageSize = int.MaxValue);
+        TimeSeriesEntry[] Get(DateTime? from = null, DateTime? to = null, 
+            int start = 0, int pageSize = int.MaxValue);
+        #endregion
+
+        #region TimeSeriesFor-Get-Strongly-Typed
+        //The stongly-typed API is used, to address time series values by name.
+        TimeSeriesEntry<TValues>[] Get(DateTime? from = null, DateTime? to = null, 
+            int start = 0, int pageSize = int.MaxValue);
         #endregion
 
         #region IncludeTimeSeries-definition
         TBuilder IncludeTimeSeries(string name, DateTime from, DateTime to);
         #endregion
+
+        #region BulkInsert.TimeSeriesFor-definition
+        public TimeSeriesBulkInsert TimeSeriesFor(string id, string name)
+        #endregion
+
 
         #region GetTimeSeriesFor-definition
         List<string> GetTimeSeriesFor<T>(T instance);
@@ -1020,7 +1125,8 @@ namespace SlowTests.Client.TimeSeries.Session
         #endregion
 
         #region Include-definition
-        IRavenQueryable<TResult> Include<TResult>(this IQueryable<TResult> source, Action<IQueryIncludeBuilder<TResult>> includes)
+        IRavenQueryable<TResult> Include<TResult>(this IQueryable<TResult> source, 
+            Action<IQueryIncludeBuilder<TResult>> includes)
         #endregion
 
         #region RawQuery-definition
@@ -1028,11 +1134,13 @@ namespace SlowTests.Client.TimeSeries.Session
         #endregion
 
         #region Query-definition
-        IRavenQueryable<T> Query<T>(string indexName = null, string collectionName = null, bool isMapReduce = false);
+        IRavenQueryable<T> Query<T>(string indexName = null, 
+            string collectionName = null, bool isMapReduce = false);
         #endregion
 
         #region PatchCommandData-definition
-        public PatchCommandData(string id, string changeVector, PatchRequest patch, PatchRequest patchIfMissing)
+        public PatchCommandData(string id, string changeVector, PatchRequest patch, 
+            PatchRequest patchIfMissing)
         #endregion
 
         #region PatchRequest-definition
@@ -1050,14 +1158,24 @@ namespace SlowTests.Client.TimeSeries.Session
         public TimeSeriesBatchOperation(string documentId, TimeSeriesOperation operation)
         #endregion
 
+        #region Append-Operation-Definition-1
+        // Each appended entry has a single value.
+        public void Append(DateTime timestamp, double value, string tag = null)
+        #endregion
+
+        #region Append-Operation-Definition-2
+        // Each appended entry has multiple values.
+        public void Append(DateTime timestamp, ICollection<double> values, string tag = null)
+        #endregion
+
         #region AppendOperation-class
         public class AppendOperation
-        {
-            public DateTime Timestamp;
-            public double[] Values;
-            public string Tag;
-            //...
-        }
+            {
+                public DateTime Timestamp;
+                public double[] Values;
+                public string Tag;
+                //...
+            }
         #endregion
 
         #region RemoveOperation-class
@@ -1080,7 +1198,8 @@ namespace SlowTests.Client.TimeSeries.Session
         #endregion
 
         #region GetTimeSeriesOperation-Definition
-        public GetTimeSeriesOperation(string docId, string timeseries, DateTime? @from = null, DateTime? to = null, int start = 0, int pageSize = int.MaxValue)
+        public GetTimeSeriesOperation(string docId, string timeseries, 
+            DateTime? @from = null, DateTime? to = null, int start = 0, int pageSize = int.MaxValue)
         #endregion
 
         #region TimeSeriesDetails-class
@@ -1092,7 +1211,8 @@ namespace SlowTests.Client.TimeSeries.Session
         #endregion
 
         #region GetMultipleTimeSeriesOperation-Definition
-        public GetMultipleTimeSeriesOperation(string docId, IEnumerable<TimeSeriesRange> ranges, int start = 0, int pageSize = int.MaxValue)
+        public GetMultipleTimeSeriesOperation(string docId, IEnumerable<TimeSeriesRange> ranges, 
+            int start = 0, int pageSize = int.MaxValue)
         #endregion
 
         #region TimeSeriesRange-class
@@ -1104,7 +1224,8 @@ namespace SlowTests.Client.TimeSeries.Session
         #endregion
 
         #region PatchOperation-Definition
-        public PatchOperation(string id, string changeVector, PatchRequest patch, PatchRequest patchIfMissing = null, bool skipPatchIfChangeVectorMismatch = false)
+        public PatchOperation(string id, string changeVector, PatchRequest patch, 
+            PatchRequest patchIfMissing = null, bool skipPatchIfChangeVectorMismatch = false)
         #endregion
 
         #region PatchByQueryOperation-Definition
@@ -1116,14 +1237,59 @@ namespace SlowTests.Client.TimeSeries.Session
         #endregion
 
         #region RavenQuery-TimeSeries-Definition-With-Range
-        public static ITimeSeriesQueryable TimeSeries(object documentInstance, string name, DateTime from, DateTime to)
+        public static ITimeSeriesQueryable TimeSeries(object documentInstance, 
+            string name, DateTime from, DateTime to)
         #endregion
 
         #region RavenQuery-TimeSeries-Definition-Without-Range
         public static ITimeSeriesQueryable TimeSeries(object documentInstance, string name)
         #endregion
 
+
+    #region RegisterAsync-Definitions
+    public Task RegisterAsync<TCollection, TTimeSeriesEntry>(string name = null)
+    public Task RegisterAsync<TCollection>(string name, string[] valueNames)
+    public Task RegisterAsync(string collection, string name, string[] valueNames)
+    #endregion
+
+
+
+
+    #region TimeSeriesEntry-Definition
+    public class TimeSeriesEntry
+    {
+        public DateTime Timestamp { get; set; }
+        public double[] Values { get; set; }
+        public string Tag { get; set; }
+        public bool IsRollup { get; set; }
+
+        public double Value
+
+        //..
     }
+    #endregion
+
+    #region Custom-Data-Type-1
+    private struct StockPrice
+    {
+        [TimeSeriesValue(0)] public double Open;
+        [TimeSeriesValue(1)] public double Close;
+        [TimeSeriesValue(2)] public double High;
+        [TimeSeriesValue(3)] public double Low;
+        [TimeSeriesValue(4)] public double Volume;
+    }
+    #endregion
+
+    #region Custom-Data-Type-2
+    private struct RoutePoint
+    {
+        [TimeSeriesValue(0)] public double Latitude;
+        [TimeSeriesValue(1)] public double Longitude;
+    }
+    #endregion
+
+
+}
 
 
 }

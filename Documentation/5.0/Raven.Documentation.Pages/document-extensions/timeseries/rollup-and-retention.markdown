@@ -202,7 +202,7 @@ How to access a rollup time series:
 
 ###Time Series  
 [Time Series Overview](../../document-extensions/timeseries/overview)  
-[API Overview](../../document-extensions/timeseries/client-api/api-overview)  
+[API Overview](../../document-extensions/timeseries/client-api/overview)  
 
 ###Client-API  
 [What Are Operations?](../../client-api/operations/what-are-operations)

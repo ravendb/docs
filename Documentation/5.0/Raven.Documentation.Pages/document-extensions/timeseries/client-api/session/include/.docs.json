@@ -6,24 +6,20 @@
         "Mappings": []
     },
     {
-        "Path": "/session",
-        "Name": "Session",
-        "Mappings": []
-    },
-    {
-        "Path": "/operations",
-        "Name": "Operations",
-        "Mappings": []
-    },
-    {
-        "Path": "javascript-support.markdown",
-        "Name": "JavaScript Support",
+        "Path": "with-session-load.markdown",
+        "Name": "With Load",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "strongly-typed-api.markdown",
-        "Name": "Strongly Typed API",
+        "Path": "with-session-query.markdown",
+        "Name": "With Query",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "with-raw-queries.markdown",
+        "Name": "With Raw Queries",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     }

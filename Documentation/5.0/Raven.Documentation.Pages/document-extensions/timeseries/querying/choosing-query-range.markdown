@@ -1,5 +1,4 @@
-﻿## Time Series Queries:
-# Choosing Query Range
+﻿# Querying: Choosing Time Series Range
 
 ---
 
@@ -35,7 +34,6 @@ select timeseries(
   
   * `between '2020-05-27T00:00:00.0000000Z' and '2020-06-23T00:00:00.0000000Z'`  
     Retrieve all entries between these two timestamps.  
-    (If the query continues, any additional filtering will pick data from this range.)  
       
       {INFO: }
       You can use the Studio to try these queries.  
@@ -60,8 +58,8 @@ select timeseries(
 {INFO: }
 You can run queries from your client using raw RQL and LINQ.  
 
-* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries).  
-* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries).  
+* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session/query/linq-queries).  
+* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session/query/rql-queries).  
 
 {INFO/}
 
@@ -119,7 +117,7 @@ to the client's local time zone.
 
 **Time Series Queries**  
 [Filtering](../../../document-extensions/timeseries/querying/filtering)  
-[Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projection)  
+[Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)  
 [Indexed Time Series Queries](../../../document-extensions/timeseries/querying/indexed-queries)
 
 **Policies**  

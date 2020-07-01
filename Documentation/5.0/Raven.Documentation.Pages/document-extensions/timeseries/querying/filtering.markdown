@@ -1,5 +1,4 @@
-﻿## Time Series Queries:
-# Filtering
+﻿# Querying: Filtering Time Series
 
 ---
 
@@ -75,8 +74,8 @@ select timeseries(
 {INFO: }
 You can run queries from your client using raw RQL and LINQ.  
 
-* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/linq-queries).  
-* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session-methods/query-time-series/raw-rql-queries).  
+* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session/query/linq-queries).  
+* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session/query/rql-queries).  
 
 {INFO/}
 
@@ -108,7 +107,7 @@ use `LoadTag()` in a LINQ query or `load tag` in a raw RQL query.
 
 **Time Series Queries**  
 [Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)  
-[Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projection)  
+[Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)  
 [Indexed Time Series Queries](../../../document-extensions/timeseries/querying/indexed-queries)
 
 **Policies**  

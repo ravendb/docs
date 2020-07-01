@@ -1,31 +1,37 @@
 [
     {
-        "Path": "overview-and-syntax.markdown",
-        "Name": "Overview and Syntax",
+        "Path": "append.markdown",
+        "Name": "Append",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "choosing-query-range.markdown",
-        "Name": "Choosing Query Range",
+        "Path": "remove.markdown",
+        "Name": "Remove",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "filtering.markdown",
-        "Name": "Filtering",
+        "Path": "/get",
+        "Name": "Get",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "aggregation-and-projections.markdown",
-        "Name": "Aggregation and Projections",
+        "Path": "/include",
+        "Name": "Include",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
     {
-        "Path": "indexed-queries.markdown",
-        "Name": "Indexed Queries",
+        "Path": "patch.markdown",
+        "Name": "Patch",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "querying-overview.markdown",
+        "Name": "Querying Overview",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     }

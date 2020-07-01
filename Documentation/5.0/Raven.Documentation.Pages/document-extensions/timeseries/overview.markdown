@@ -10,12 +10,9 @@
   with high efficiency and performance.  
 
 * RavenDB Time series can be managed and utilized using a thorough set of 
-  [API methods](../../document-extensions/timeseries/client-api/api-overview), 
+  [API methods](../../document-extensions/timeseries/client-api/overview), 
   the [Studio](../../studio/database/document-extensions/time-series), 
   and [various RavenDB features](../../document-extensions/timeseries/timeseries-and-other-features/time series-and-other-features-overview#time series-and-other-features---overview).  
-
-* Time series functionality is fully integrated into RavenDB's 
-  distributed environment and document model.  
 
 * Time series data is **compressed** to lower storage usage and transaction time.  
 
@@ -60,7 +57,7 @@ handled by time series.
 
 ## RavenDB's Time Series Implementation  
 
-Time series functionality is fully integrated in RavenDB's 
+Time series functionality is fully integrated into RavenDB's 
 distributed environment and document model.  
 
 ---
@@ -68,24 +65,28 @@ distributed environment and document model.
 #### Distrubuted Time Series
 
 Distributed clients and nodes can modify time series concurrently; the 
-modifications are merged by the cluster with [no conflict](../../document-extensions/timeseries/design#no-conflicts).  
+modifications are merged by the cluster [without conflict](../../document-extensions/timeseries/design#no-conflicts).  
 
 ---
 
 #### Time Series as Document Extensions
 
-RavenDB’s Time Series, like its distributed counters, attachments and document 
-revisions, are **document extensions**.  
+RavenDB’s Time Series, like its 
+[distributed counters](../../client-api/session/counters/overview), 
+[attachments](../../client-api/session/attachments/what-are-attachments) 
+and [document revisions](../../client-api/session/revisions/what-are-revisions), 
+are **document extensions**.  
 
-   {INFO: }
-    A time series always extends a single specific document.  
-    The context and source of the time series can be kept clear this way, 
-    and time series management can use the comfort and strength of the 
-    document interface.  
-    A barometer's specifications document, for example, can be the parent 
-    document for a time series that is populated with measurements taken 
-    by a barometer of this specification.  
-   {INFO/}
+* A time series always extends a single specific document.  
+  The context and source of the time series can be kept clear this way, 
+  and time series management can use the comfort and strength of the 
+  document interface.  
+  A barometer's specifications document, for example, can be the parent 
+  document for a time series that is populated with measurements taken 
+  by a barometer of this specification.  
+
+* Like the other document extensions, time series can take part in fully 
+  transactional operations.  
 
 ---
 
@@ -98,7 +99,7 @@ Notable time series features include -
   and [segmented](../../document-extensions/timeseries/overview#time-series-segments) 
   to minimize storage usage and transmission time.  
 * **A Thorough Set of API Methods**  
-  The [time series API](../../document-extensions/timeseries/client-api/api-overview)**  
+  The [time series API](../../document-extensions/timeseries/client-api/overview)**  
   includes a variety of `session methods` and `store operations`.  
 * **Full GUI Support**  
   Time series can be viewed and managed using the [Studio](../../studio/database/document-extensions/time-series).  
@@ -107,11 +108,11 @@ Notable time series features include -
       The results of a set of common queries are prepared in advance in time series segments' 
       headers, so the response to querying for a series **minimum value**, for example, is 
       returned nearly instantly.  
-    * [LINQ and raw RQL queries](../../document-extensions/timeseries/querying/queries-overview-and-syntax)  
+    * [LINQ and raw RQL queries](../../document-extensions/timeseries/querying/overview-and-syntax)  
       Flexible queries and aggregations can be executed using LINQ expressions and raw RQL 
       over time series **timestamps**, **tags** and **values**.  
 * **Time Series Indexing**  
-  Time series can be [indexed by clients](../../document-extensions/timeseries/indexing) or using the Studio.  
+  Time series can be [indexed](../../document-extensions/timeseries/indexing).  
 * [Rollup and Retention Policies](../../document-extensions/timeseries/rollup-and-retention)  
    * **Rollup Policies**  
      You can set time series rollup policies to aggregate large series into 
@@ -119,13 +120,13 @@ Notable time series features include -
    * **Retention Policies**  
      You can set time series retention policies to automatically remove 
      time series entries that have reached their expiration date/time.  
-* [Including Time Series](../../document-extensions/timeseries/client-api/session-methods/include-ts-data/include-ts-overview)  
+* [Including Time Series](../../document-extensions/timeseries/client-api/session/include/overview)  
   You can include (pre-fetch) time series data while loading documents.  
-  Included data is held by the client's sesion, and is instantly delivered 
-  to the user when it is requested.  
+  Included data is held by the client's sesion, and is delivered to the 
+  user with no additional server calls.  
 * **Patching**  
   You can patch time series data to your documents.  
-  (visit the [API documentation](../../document-extensions/timeseries/client-api/api-overview) to learn more).  
+  (visit the [API documentation](../../document-extensions/timeseries/client-api/overview) to learn more).  
 
 {PANEL/}
 
@@ -140,9 +141,6 @@ Time series data is **compressed** and composed of consecutive
 {PANEL/}
 
 {PANEL: Separate Name and Data Storage}
-
-A time series’ **name** is kept at its parent-document's metadata, while 
-its **data** is kept separately.  
 
 The separation of names and data prevents time series value updates from 
 invoking document-change events, keeping documents' availability and performance 
@@ -254,13 +252,13 @@ Here is why.
 ## Related articles
 
 **Client API**  
-[Time Series API Overview](../../document-extensions/timeseries/client-api/api-overview)  
+[Time Series API Overview](../../document-extensions/timeseries/client-api/overview)  
 
 **Studio Articles**  
 [Studio Time Series Management](../../studio/database/document-extensions/time-series)  
 
 **Querying and Indexing**  
-[Time Series Querying](../../document-extensions/timeseries/querying/queries-overview-and-syntax)  
+[Time Series Querying](../../document-extensions/timeseries/querying/overview-and-syntax)  
 [Time Series Indexing](../../document-extensions/timeseries/indexing)  
 
 **Policies**  

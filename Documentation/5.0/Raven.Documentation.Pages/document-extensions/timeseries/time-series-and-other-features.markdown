@@ -24,9 +24,9 @@ changes to time series data.
 * The [Changes API](../../client-api/changes/what-is-changes-api) service 
 is triggered by changes to time series data.  
 * Learn about how to **index** time series [here](../../document-extensions/timeseries/indexing).  
-* Learn about how to **query** time series data [here](../../document-extensions/timeseries/querying/queries-overview-and-syntax).  
+* Learn about how to **query** time series data [here](../../document-extensions/timeseries/querying/overview-and-syntax).  
 * Learn how to **include** time series with `session.Load()` and in queries 
-[here](../../document-extensions/timeseries/client-api/session-methods/include-ts-data/include-ts-overview).  
+[here](../../document-extensions/timeseries/client-api/session/include/overview).  
 {PANEL/}
 
 {PANEL: Smuggler}
@@ -120,9 +120,9 @@ client. This is the general JSON format of the time series snapshot:
 
 ### Time Series  
 [Time Series Overview](../../document-extensions/timeseries/overview)  
-[Include Time Series](../../document-extensions/timeseries/client-api/session-methods/include-ts-data/include-ts-overview)  
+[Include Time Series](../../document-extensions/timeseries/client-api/session/include/overview)  
 [Time Series Indexing](../../document-extensions/timeseries/indexing)  
-[Querying Time Series](../../document-extensions/timeseries/querying/queries-overview-and-syntax)  
+[Querying Time Series](../../document-extensions/timeseries/querying/overview-and-syntax)  
 
 ### Client-API  
 [Session Entity Tracking](../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes)  

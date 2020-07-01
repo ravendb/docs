@@ -1,5 +1,4 @@
-﻿## Time Series Queries:
-# Indexed Queries
+﻿# Querying: Time Series & Static Indexes
 
 ---
 
@@ -82,8 +81,8 @@ using LINQ expressions.
      {CODE ts_region_Index-TS-Queries-4-DocumentQuery-with-Linq@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 * **Async queries**  
-You can run asynchronous queries if you don't want your application to wait for the results.  
-{CODE ts_region_Index-TS-Queries-5-session-Query-Async@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+  If you are coding in asynchronous manner, you can take leverage of the async support of our queries.
+  {CODE ts_region_Index-TS-Queries-5-session-Query-Async@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 {PANEL/}
 
@@ -101,7 +100,7 @@ You can run asynchronous queries if you don't want your application to wait for 
 **Time Series Queries**  
 [Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)  
 [Filtering](../../../document-extensions/timeseries/querying/filtering)  
-[Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projection)  
+[Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)  
 
 **Policies**  
 [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)  

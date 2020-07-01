@@ -90,7 +90,7 @@ old indexes that are now superseded by the new index.
 
 {PANEL: `declare`}
 
-The keyword `declare` gives you the ability to create a JS function that can be reused in `select` (when projection is done). You can read more about it [here](../../client-api/session/querying/how-to-project-query-results#example-iv---projection-with-).
+The keyword `declare` gives you the ability to create a JavaScript function that can be reused in `select` (when projection is done). You can read more about it [here](../../client-api/session/querying/how-to-project-query-results#example-iv---projection-with-).
 
 {PANEL/}
 
@@ -260,7 +260,7 @@ Projections can be performed by using `select`. Please read our dedicated projec
 
 {PANEL: `update`}
 
-To patch documents on the server-side, use `update` with the desired JS script that will be applied to any documents matching the query criteria. For more information, please refer to our [patching article](../../client-api/operations/patching/set-based).
+To patch documents on the server-side, use `update` with the desired JavaScript script that will be applied to any documents matching the query criteria. For more information, please refer to our [patching article](../../client-api/operations/patching/set-based).
 
 {PANEL/}
 
