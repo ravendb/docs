@@ -1,4 +1,5 @@
-# A NoSQL Database in Easy Mode <br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# A NoSQL Database in Easy Mode
+<small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![Integration with Relational Databases](images/connecting-ravendb-nosql-database-to-your-application.jpg)
 

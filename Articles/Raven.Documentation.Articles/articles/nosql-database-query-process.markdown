@@ -1,4 +1,5 @@
 # NoSQL Database Query Process
+<small>by Richard Norman</small>
 
 ![NoSQL database enables a private database for each user. Automatic Indexing and Aggregated MapReduce make complex computations fast using NoSQL for Ecommerce."](images/nosql-database-query-process.jpg)
 

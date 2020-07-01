@@ -1,4 +1,5 @@
-# Database Basics for Successful Agile Transformation<br/><small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
+# Database Basics for Successful Agile Transformation
+<small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
 ![Database Basics for Successful Agile Transformation](images/nosql-database-basics-for-succesful-agile-transformation.jpg)
 
@@ -21,7 +22,7 @@ Many databases cannot natively handle the form and size of today’s data so the
 The RavenDB Multimodel NoSQL Database has it’s own storage engine, MapReduce for aggregating data, GUI to enable you to perform operations at the click of a mouse and to monitor the operational performance of your data, memory management like garbage collection, text search and prides itself on <em>adapting to different environments</em> while not needing any babysitting by the Database Administrator (DBA).
 
 <a href="https://www.gartner.com/reviews/review/view/609931" rel="nofollow">
-    <img class="img-responsive" alt="Gartner Peer Review" src="images/performance-is-awesome.jpg" />
+    <img class="img-responsive m-0-auto" alt="Gartner Peer Review" src="images/performance-is-awesome.jpg" />
 </a>
 
 ## Improve Business Agility and Faster Cycle Times with the Right NoSQL Database

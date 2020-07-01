@@ -1,4 +1,5 @@
-# Cost Cutting on the Cloud with a NoSQL Document Database<br/><small>by <a href="mailto:oren@hibernatingrhinos.com">Oren Eini</a></small>
+# Cost Cutting on the Cloud with a NoSQL Document Database
+<small>by <a href="mailto:oren@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![The right NoSQL Document Database can make several server requests register as one, lowering your cloud costs tremendously.](images/cost-cutting-on-the-cloud-with-a-nosql-document-database.jpg)
 

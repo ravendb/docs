@@ -1,4 +1,5 @@
-# Performance on Less Resources: A NoSQL Document Database Usage Example<br/><small>by <a href="mailto:oren@hibernatingrhinos.com">Oren Eini</a></small>
+# Performance on Less Resources: A NoSQL Document Database Usage Example
+<small>by <a href="mailto:oren@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![Performance on Less Resources: A NoSQL Document Database Usage Example](images/performance-on-less-resources-nosql-document-database-example.jpg)
 
@@ -9,7 +10,7 @@ They needed to fix a series of legacy websites with rapidly deteriorating perfor
 Follow through this article to see what happened when RavenDB – a NoSQL document database - was put into action.
 
 <a href="https://youtu.be/THeXFDMxr6s" target="_blank" rel="nofollow">
-<img class="img-responsive" alt="Follow this article to see how a Yellow Pages Company has doubled performance and tripled the data presented to users while using fewer servers, just by using RavenDB - the NoSQL Document Database." src="images/what-businesses-are-saying-about-ravendb.jpg" />
+<img class="img-responsive m-0-auto" alt="Follow this article to see how a Yellow Pages Company has doubled performance and tripled the data presented to users while using fewer servers, just by using RavenDB - the NoSQL Document Database." src="images/what-businesses-are-saying-about-ravendb.jpg" />
 </a>
 
 
@@ -74,7 +75,7 @@ Migrating to RavenDB enabled ZAP to do a lot of things better!
     <li>As bounce-rate dropped and site-engagement improved dramatically, pages per visit surged.</li>
     <li>Zap developers’ productivity has improved as new features can be easily added now, reducing Time-to-Market.<br>
     </ul>
-<a href="https://youtu.be/7MuqEPgq_Yk"  target="_blank" ><img class="img-responsive" alt="Zapping Ever Faster" src="images/zapping-ever-faster.jpg"/></a>
+<a href="https://youtu.be/7MuqEPgq_Yk"  target="_blank" ><img class="img-responsive m-0-auto" alt="Zapping Ever Faster" src="images/zapping-ever-faster.jpg"/></a>
 <hr style="border-color: grey">
 <div class="bottom-line">
     <strong>About RavenDB</strong><br/>

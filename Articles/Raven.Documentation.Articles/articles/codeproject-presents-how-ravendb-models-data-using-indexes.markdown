@@ -1,4 +1,5 @@
-# How RavenDB Models Data using Indexes <br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# How RavenDB Models Data using Indexes
+<small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![How RavenDB Models Data using Indexes](images/codeproject-presents-how-ravendb-models-data-using-indexes.jpg)
 

@@ -1,4 +1,5 @@
-# Code Project: RavenDB NoSQL Database Counters, Graph API, JavaScript Index, Clusterwide ACID <br/><small>by Kamran Ayub</small>
+# Code Project: RavenDB NoSQL Database Counters, Graph API, JavaScript Index, Clusterwide ACID
+<small>by Kamran Ayub</small>
 
 ![RavenDB 4.2 NoSQL database comes with some fantastic new features: Graph Queries, Clusterwide Transactions, Distributed Counters, JavaScript Indexes, and Revert Revisions.](images/ravendb-counters-graph-api-javascript-index-clusterwide-acid.jpg)
 

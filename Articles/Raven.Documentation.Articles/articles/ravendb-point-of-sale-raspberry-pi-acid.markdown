@@ -1,4 +1,5 @@
-# Performing Well on Older Machines and Smaller Hardware<br/><small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
+# Performing Well on Older Machines and Smaller Hardware
+<small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
 ![Performing Well on Older Machines and Smaller Hardware](images/ravendb-point-of-sale-raspberry-pi-acid.jpg)
 

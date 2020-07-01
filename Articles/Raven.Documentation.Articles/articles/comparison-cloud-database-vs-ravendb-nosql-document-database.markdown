@@ -1,4 +1,5 @@
-# Comparison: Cloud Database vs RavenDB NoSQL Document Database<br/><small>by <a href="mailto:oren@hibernatingrhinos.com">Oren Eini</a></small>
+# Comparison: Cloud Database vs RavenDB NoSQL Document Database
+<small>by <a href="mailto:oren@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![The right NoSQL Document Database can make several server requests register as one, lowering your cloud costs tremendously.](images/comparison-cloud-database-vs-ravendb-nosql-document-database.jpg)
 
@@ -40,7 +41,7 @@ Our data profiler tells you where your queries and indexes cost performance, ena
 
 Whether you run RavenDB locally or on the cloud, you aren’t nickeled and dimed at each turn but get this vital state-of-the-art property, in an outstanding speed and at a predictable price.
 
-<a href="https://ravendb.net/whitepapers/ravendb-healthcare-database-schedule-appointments-detect-fraud-security-phi" target="_blank"><img class="img-responsive" style="margin:auto" alt="Preventing Headaches: RavenDB in the Service of Healthcare" src="images/rdb-healthcare-whitepaper.jpg" /></a>
+<a href="https://ravendb.net/whitepapers/ravendb-healthcare-database-schedule-appointments-detect-fraud-security-phi" target="_blank"><img class="img-responsive m-0-auto" alt="Preventing Headaches: RavenDB in the Service of Healthcare" src="images/rdb-healthcare-whitepaper.jpg" /></a>
 
 ### *Issue #4: There is no procedure for disaster recovery backup. If you have accidentally deleted or corrupted your data, you have 8 hours to fix it, or else.*
 

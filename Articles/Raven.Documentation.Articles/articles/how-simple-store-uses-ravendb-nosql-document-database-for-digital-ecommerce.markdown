@@ -1,4 +1,5 @@
-# Simple Store Uses NoSQL for E-commerce <br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# Simple Store Uses NoSQL for E-commerce
+<small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![NoSQL database enables a private database for each user. Automatic Indexing and Aggregated MapReduce make complex computations fast using NoSQL for Ecommerce."](images/how-simple-store-uses-ravendb-nosql-document-database-for-digital-ecommerce.jpg)
 

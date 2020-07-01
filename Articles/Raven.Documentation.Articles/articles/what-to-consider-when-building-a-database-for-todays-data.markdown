@@ -1,4 +1,5 @@
-# What to Consider when Building a Database for Today's Data<br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# What to Consider when Building a Database for Today's Data
+<small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![What to Consider when Building a Database for Today's Data](images/what-to-consider-when-building-a-database-for-todays-data.jpg)
 

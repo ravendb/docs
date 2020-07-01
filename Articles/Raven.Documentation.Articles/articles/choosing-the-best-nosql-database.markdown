@@ -1,4 +1,5 @@
-# RavenDB or Elastic: The best database for you? <br/><small>Choosing the best NoSQL database</small>
+# RavenDB or Elastic: The best database for you?
+<small>Choosing the best NoSQL database</small>
 
 ![RavenDB or Elastic: The best database for you?](images/beach_crossroads.jpg)
 

@@ -1,4 +1,5 @@
-# Transforming Data Modeling Standards <br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# Transforming Data Modeling Standards
+<small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![How our 1960s View of Data is Holding us Back](images/trapped-in-the-60s-how-our-view-on-data-is-holding-us-back.jpg)
 

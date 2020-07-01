@@ -1,4 +1,5 @@
-# RavenDB vs Elasticsearch: The Best Open Source NoSQL Database<br/><small>by <a href="mailto:oren@hibernatingrhinos.com">Oren Eini</a></small>
+# RavenDB vs Elasticsearch: The Best Open Source NoSQL Database
+<small>by <a href="mailto:oren@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![The right NoSQL Document Database can make several server requests register as one, lowering your cloud costs tremendously.](images/ravendb-elasticsearch-best-open-source-nosql-database.jpg)
 
@@ -51,7 +52,7 @@ ElasticSearch is a distributed document store database. <br/>
 #### RavenDB
 RavenDB is a multi-model database that includes a Document Store, Key-Value Store, Graph API, Distributed Counters and Binary Attachments. 
 
-<a href="https://ravendb.net/whitepapers/ravendb-healthcare-database-schedule-appointments-detect-fraud-security-phi" target="_blank"><img class="img-responsive" style="margin:auto" alt="Preventing Headaches: RavenDB in the Service of Healthcare" src="images/rdb-healthcare-whitepaper.jpg" /></a>
+<a href="https://ravendb.net/whitepapers/ravendb-healthcare-database-schedule-appointments-detect-fraud-security-phi" target="_blank"><img class="img-responsive m-0-auto" alt="Preventing Headaches: RavenDB in the Service of Healthcare" src="images/rdb-healthcare-whitepaper.jpg" /></a>
 
 ## Version Control and Auditing
 

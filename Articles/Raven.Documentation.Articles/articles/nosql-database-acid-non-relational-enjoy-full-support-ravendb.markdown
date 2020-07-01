@@ -1,4 +1,5 @@
-# Enjoy Our Full Support<br/><small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
+# Enjoy Our Full Support
+<small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
 ![Enjoy Our Full Support](images/nosql-database-acid-non-relational-enjoy-full-support-ravendb.jpg)
 

@@ -1,4 +1,5 @@
-# A NoSQL Database System Architecture for the IoT<br/><small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
+# A NoSQL Database System Architecture for the IoT
+<small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
 ![A NoSQL Database System Architecture for the IoT](images/a-nosql-database-system-architecture-for-the-iot.jpg)
 

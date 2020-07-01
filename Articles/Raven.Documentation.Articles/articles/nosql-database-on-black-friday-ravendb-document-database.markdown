@@ -1,4 +1,5 @@
-# Using A NoSQL Database for Black Friday: The Gift that Keeps On Giving <br/><small>by <a href="https://www.linkedin.com/in/sabrina-globus-3609ba34/" rel="nofollow">Sabrina Globus</a></small>
+# Using A NoSQL Database for Black Friday: The Gift that Keeps On Giving
+<small>by <a href="https://www.linkedin.com/in/sabrina-globus-3609ba34/" rel="nofollow">Sabrina Globus</a></small>
 
 ![A NoSQL Database on Black Friday: The Gift that Keeps Giving](images/nosql-database-on-black-friday-ravendb-document-database.jpg)
 

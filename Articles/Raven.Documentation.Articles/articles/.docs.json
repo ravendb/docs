@@ -1722,7 +1722,7 @@
         "og:title": "NoSQL Database Query Process",
         "og:description": "NoSQL database query process is more complicated than it used to be in SQL. Read how RavenDB offers a highly structured and advanced way of querying data.",
         "og:url": "https://ravendb.net/articles/nosql-database-query-process",
-        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-database-query-process&fileName=how-simple-store-uses-ravendb-nosql-document-database-for-digital-ecommerce.jpg",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-database-query-process&fileName=nosql-database-query-process.jpg",
         "og:image:width": "280",
         "og:image:height": "280",
         "twitter:card": "summary_large_image",
