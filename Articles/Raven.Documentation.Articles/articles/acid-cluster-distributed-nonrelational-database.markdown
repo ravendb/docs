@@ -1,4 +1,5 @@
-# ACID 2020: The Next Generation of Data Consistency<br/><small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
+# ACID 2020: The Next Generation of Data Consistency
+<small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
 ![ACID 2020: The Next Generation of Data Consistency](images/acid-cluster-distributed-nonrelational-database.jpg)
 

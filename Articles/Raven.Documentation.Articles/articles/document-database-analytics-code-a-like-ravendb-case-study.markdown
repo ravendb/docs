@@ -1,4 +1,5 @@
-# Codealike: Using RavenDB for Developer Analytics<br/><small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
+# Codealike: Using RavenDB for Developer Analytics
+<small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
 ![Codealike: Using RavenDB for Developer Analytics](images/document-database-analytics-code-a-like-ravendb-case-study.jpg)
 
@@ -28,5 +29,5 @@
 </div>
 
 <a href="https://ravendb.net/learn/bootcamp">
-    <img class="img-responsive center-block" alt="RavenDB Bootcamp" src="images/bootcamp-banner.png" href="https://ravendb.net/learn/bootcamp"/>
+    <img class="img-responsive m-0-auto" alt="RavenDB Bootcamp" src="images/bootcamp-banner.png" href="https://ravendb.net/learn/bootcamp"/>
 </a>

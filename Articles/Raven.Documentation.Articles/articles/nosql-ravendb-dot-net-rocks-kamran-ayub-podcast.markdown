@@ -1,4 +1,5 @@
-# .NET Rocks with Kamran Ayub Talking about RavenDB V4<br/><small>by .NET Rocks with Kamran Ayub</a></small>
+# .NET Rocks with Kamran Ayub Talking about RavenDB V4
+<small>by .NET Rocks with Kamran Ayub</a></small>
 
 ![.NET Rocks with Kamran Ayub Talking about RavenDB V4](images/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg)
 
@@ -27,5 +28,5 @@
 <br/>
 
 <a href="https://ravendb.net/learn/bootcamp">
-    <img class="img-responsive" alt="RavenDB Bootcamp" src="images/bootcamp-banner.png" href="https://ravendb.net/learn/bootcamp"/>
+    <img class="img-responsive m-0-auto" alt="RavenDB Bootcamp" src="images/bootcamp-banner.png" href="https://ravendb.net/learn/bootcamp"/>
 </a>

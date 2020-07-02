@@ -1,4 +1,5 @@
-# How Fintech Developer TSWG Uses a NoSQL Document Database <br/><small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
+# How Fintech Developer TSWG Uses a NoSQL Document Database
+<small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
 ![NoSQL Database for Digital Banking Applications](images/nosql-database-for-digital-banking-applications.jpg)
 
@@ -29,7 +30,7 @@ They needed a database that was *fast*, and guaranteed ACID promises, making sur
 
 **Rarer is the need to move fast greater then when someone wants their money.**
 
-<a href="https://ravendb.net/articles/ravendb-42-review-graphs-counters-revisions-and-more"><img class="img-responsive" src="images/podcast.png" alt="Listen to Oren Eini's talk about RavenDB 4.2 in this informative podcast"></a>
+<a href="https://ravendb.net/articles/ravendb-42-review-graphs-counters-revisions-and-more"><img class="img-responsive m-0-auto" src="images/podcast.png" alt="Listen to Oren Eini's talk about RavenDB 4.2 in this informative podcast"></a>
 
 ### The System Works' Options: Microsoft SQL vs RavenDB NoSQL Document Database
 At first, they tried Microsoft’s SQL Database. The relational model was able to do the job, but having to take pieces of information from different places and join tables before serving their customer’s requests chocked performance. Their application was not able to provide the speed their users needed, especially when calling out information over mobile devices.

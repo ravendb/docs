@@ -1,4 +1,5 @@
-# NoSQL Database for Greater Insight<br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# NoSQL Database for Greater Insight
+<small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![RavenDB NoSQL Database Helps Configit Give their Customers Greater Insight to their Configurations](images/ravendb-helps-configit-give-greater-depth-to-configurations.jpg)
 

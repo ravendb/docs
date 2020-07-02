@@ -1,4 +1,5 @@
-# NoSQL Database Helping Millions of African Cashew Farmers <br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# NoSQL Database Helping Millions of African Cashew Farmers
+<small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![NoSQL Database Helping Millions of African Cashew Farmers](images/ravendb-amberwood-help-millions-african-farmers.jpg)
 

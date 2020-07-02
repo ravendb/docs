@@ -1,4 +1,5 @@
-# NoSQL Document Database Indexing <br/><small>by Kamran Ayub</small>
+# NoSQL Document Database Indexing
+<small>by Kamran Ayub</small>
 
 ![Document database indexing in RavenDB compared to MongoDB, another NoSQL document database, as well as the relational database, PostgreSQL. Indexing document properties.](images/nosql-document-database-indexing.jpg)
 

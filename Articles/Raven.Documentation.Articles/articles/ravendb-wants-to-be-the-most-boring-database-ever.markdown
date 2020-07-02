@@ -1,4 +1,5 @@
-# The Best Database is The Most Boring Ever <br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# The Best Database is The Most Boring Ever
+<small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![The Best Database is The Most Boring Ever](images/ravendb-wants-to-be-the-most-boring-database-ever.jpg)
 

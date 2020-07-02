@@ -1,4 +1,5 @@
-# How to Spin up a RavenDB Cloud Database <br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# How to Spin up a RavenDB Cloud Database
+<small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![How to Spin up a RavenDB Cloud Database](images/codeproject-presents-ravendb-cloud-step-by-step.jpg)
 

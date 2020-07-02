@@ -1,4 +1,5 @@
-# Navigating the New Frontier of Information <br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# Navigating the New Frontier of Information
+<small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![Navigating the New Frontier of Information: Big Data in IoT](images/nosql-databases-navigating-the-new-frontier-of-information-in-big-data-and-iot.jpg)
 

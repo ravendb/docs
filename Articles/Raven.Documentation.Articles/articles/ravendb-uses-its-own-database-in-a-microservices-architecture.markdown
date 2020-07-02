@@ -1,4 +1,5 @@
-# We Use Our Own Database<br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# We Use Our Own Database
+<small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![How RavenDB Uses its Own Database in a Microservices Architecture for all its Data Needs](images/ravendb-uses-its-own-database-in-a-microservices-architecture.jpg)
 

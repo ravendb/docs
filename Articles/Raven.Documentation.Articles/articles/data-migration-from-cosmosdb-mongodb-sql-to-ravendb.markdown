@@ -1,4 +1,5 @@
-# Migrating data to RavenDB<br/><small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
+# Migrating data to RavenDB
+<small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
 ![Migrating data to RavenDB](images/data-migration-from-cosmosdb-mongodb-sql-to-ravendb.png)
 
@@ -41,7 +42,7 @@ If this is your first time using RavenDB, your data will most likely be stored i
 
 <div class="margin-bottom flex-vertical" style="align-items: center;">
     <div>
-        <img style="margin:auto" class="img-responsive" alt="Migration" src="images/demo-migration-2.jpg" />
+        <img class="img-responsive m-0-auto" alt="Migration" src="images/demo-migration-2.jpg" />
         <div class="caption">RavenDB SQL Migration</div>
     </div>
 </div>

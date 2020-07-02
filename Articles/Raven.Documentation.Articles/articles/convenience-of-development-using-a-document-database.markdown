@@ -1,4 +1,5 @@
-# Convenience of Development with a Document Database <br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# Convenience of Development with a Document Database
+<small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![Convenience of Development with a Document Database](images/convenience-of-development-using-a-document-database.jpg)
 

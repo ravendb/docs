@@ -1,4 +1,5 @@
-# Keeping Our New Year's Resolution: A Lean Database for 2020 <br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# Keeping Our New Year's Resolution: A Lean Database for 2020
+<small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![For 2020 and beyond, RavenDB promises to keep its NoSQL Database lean and mean.](images/a-lean-nosql-database-for-2020.jpg)
 

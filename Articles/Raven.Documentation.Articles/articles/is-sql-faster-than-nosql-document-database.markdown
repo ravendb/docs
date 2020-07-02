@@ -1,4 +1,4 @@
-# Is SQL Really Faster than a NoSQL Document Database?</a></small>
+# Is SQL Really Faster than a NoSQL Document Database?
 
 ![Is SQL Really Faster than a NoSQL Document Database?](images/is-sql-faster-than-nosql-document-database.jpg)
 
@@ -25,7 +25,7 @@ RavenDB is the only document database to use [automatic indexes](https://ravendb
 
 There are other performance advantages in the document model: Reading the entire result from a single point in the physical disk is much faster than reading small bits from different places on the disk, even on SSD. In a distributed data network, having to fetch bits and pieces of data from the ends of the earth and put it together in one place can be a disaster in performance and complexity.
 
-<a href="https://cloud.ravendb.net/" target="_blank"><img class="img-responsive" src="images/ravendb-cloud.png" style="margin: 30px 0" alt="Try out RavenDB Cloud for Free"></a>
+<a href="https://cloud.ravendb.net/" target="_blank"><img class="img-responsive m-0-auto" src="images/ravendb-cloud.png" style="margin: 30px 0" alt="Try out RavenDB Cloud for Free"></a>
 
 ### Data Modeling Made Easy
 

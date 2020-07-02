@@ -1,4 +1,5 @@
-# 7 Ways The Right Database Pays for Itself<br/><small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
+# 7 Ways The Right Database Pays for Itself
+<small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
 ![7 Ways The Right Database Pays for Itself](images/cost-benefits-ravendb-nosql-acid-database.jpg)
 

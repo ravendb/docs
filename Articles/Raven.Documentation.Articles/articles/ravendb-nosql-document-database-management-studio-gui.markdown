@@ -1,4 +1,5 @@
-# RavenDB NoSQL Management Studio GUI<br/><small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
+# RavenDB NoSQL Management Studio GUI
+<small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
 ![RavenDB NoSQL Management Studio GUI](images/ravendb-nosql-document-database-management-studio-gui.jpg)
 
@@ -9,7 +10,7 @@
 # RavenDB Document Database Management Studio
 
 <a href="https://ravendb.net/">
-    <img class="img-responsive" alt="RavenDB GUI Management Studio aims to make your Document Database experience easy to use." src="images/orens-quote-2.png" />
+    <img class="img-responsive m-0-auto" alt="RavenDB GUI Management Studio aims to make your Document Database experience easy to use." src="images/orens-quote-2.png" />
 </a>
 
 <strong>The RavenDB NoSQL Document Database Management Studio</strong> is the <strong>Apple of Databases</strong>, and you don’t need to pay extra or waste time and effort attaching it as an addon. It’s a native part of RavenDB that comes free with every license: <a href="https://ravendb.net/download">Community</a>, Professional, and <a href="https://ravendb.net/buy">Enterprise</a>.
@@ -34,17 +35,17 @@ Create code, set up queries, monitor indexes and MapReduce aggregates in our all
         <li><em>Extensive logging & incident reporting</em></li>
     </ul>
     <a href="https://ravendb.net/download">
-        <img class="img-responsive" style= "margin: auto; padding-bottom: 20px" alt="Try it out" src="images/management-banner.jpg" />
+        <img class="img-responsive m-0-auto" style= "padding-bottom: 20px" alt="Try it out" src="images/management-banner.jpg" />
     </a>
 </div>
 
 ## What you can Monitor with the Management Studio
 
-<a href="http://live-test.ravendb.net/studio/index.html"><img class="img-responsive" alt="Monitor performance internals with our NoSQL Database GUI" src="images/management-screen-1.jpg" /></a>
+<a href="http://live-test.ravendb.net/studio/index.html"><img class="img-responsive m-0-auto" alt="Monitor performance internals with our NoSQL Database GUI" src="images/management-screen-1.jpg" /></a>
 
 ## Monitor Your Database Topology
 
-<a href="http://live-test.ravendb.net/studio/index.html"><img class="img-responsive" alt="A distributed database needs a good graphical interface for its topography" src="images/management-screen-2.jpg" /></a>
+<a href="http://live-test.ravendb.net/studio/index.html"><img class="img-responsive m-0-auto" alt="A distributed database needs a good graphical interface for its topography" src="images/management-screen-2.jpg" /></a>
 
 For a distributed database, your database topology consists of databases and nodes that make up your cluster. At any moment, you can see which nodes are carrying what databases. You can also see which server locations the nodes are hosted on. Monitor what tasks each are performing, who are the lead nodes, and to where ETL processes are replicating to.
 
@@ -68,7 +69,7 @@ You can see which indexes are applied to which databases, how they are performin
 
 Monitor Big Data with our MapReduce Visualizer that lets you track the progress of data aggregations step by step. It graphs the relations between your documents and aggregate results.
 
-<a href="http://live-test.ravendb.net/studio/index.html"><img class="img-responsive" alt="Visualize your MapReduce for Document Database Aggregations" src="images/management-screen-3.jpg" /></a>
+<a href="http://live-test.ravendb.net/studio/index.html"><img class="img-responsive m-0-auto" alt="Visualize your MapReduce for Document Database Aggregations" src="images/management-screen-3.jpg" /></a>
 
 You can see the documents that went into each aggregation individually or segmented. You can also monitor how long each step in the <a href="https://ravendb.net/docs/article-page/4.1/csharp/indexes/map-reduce-indexes">Map and Reduce</a> process took to determine performance bumps that can be quickly smoothed.
 
@@ -82,13 +83,13 @@ This can be a health care application where you want X-rays and test results as 
 
 ## What You Can Create in Your Studio
 
-<a href="https://www.gartner.com/reviews/review/view/556267" rel="nofollow"><img class="img-responsive" alt="The RavenDB NoSQL Document Database makes development frictionless, reducing your software release cycle" src="images/perfect-fit-for-release-cycles.jpg" /></a>
+<a href="https://www.gartner.com/reviews/review/view/556267" rel="nofollow"><img class="img-responsive m-0-auto" alt="The RavenDB NoSQL Document Database makes development frictionless, reducing your software release cycle" src="images/perfect-fit-for-release-cycles.jpg" /></a>
 
 The Management Studio is more than monitoring. You can run your entire data system off it. With a point and a click you can set up a new regular or encrypted database. You can create new documents and assign them to a specific collection. If the documents you need to make are very similar to those in a particular collection, you can clone new documents that are duplicates of other documents and edit from there.
 
 Using the studio, you can perform queries, create indexes, patch bundles of documents, and when it is all done, you can see the results and export them to a CSV file.
 
-<a href="http://live-test.ravendb.net/studio/index.html"><img class="img-responsive" alt="Perform queries, create indexes, export your data results to a CSV file with RavenDB Management Studio." src="images/management-screen-4.jpg" /></a>
+<a href="http://live-test.ravendb.net/studio/index.html"><img class="img-responsive m-0-auto" alt="Perform queries, create indexes, export your data results to a CSV file with RavenDB Management Studio." src="images/management-screen-4.jpg" /></a>
 
 For aggregations, you can create MapReduce indexes where you see the results and the segments or even documents that comprise them.
 
@@ -118,7 +119,7 @@ With the studio, you can schedule a backup or snapshot of the database and deter
 
 <a href="https://ravendb.net/docs/article-page/4.1/csharp/studio/database/tasks/ongoing-tasks/external-replication-task#external-replication---details-in-tasks-list-view"><h2>External Replication - Details in Tasks List View</h2></a>
 
-<a href="http://live-test.ravendb.net/studio/index.html"><img class="img-responsive" alt="ETL Replication to backups, relational SQL databases, the cloud, and more with your NoSQL RavenDB Document Database" src="images/management-screen-5.jpg" /></a>
+<a href="http://live-test.ravendb.net/studio/index.html"><img class="img-responsive m-0-auto" alt="ETL Replication to backups, relational SQL databases, the cloud, and more with your NoSQL RavenDB Document Database" src="images/management-screen-5.jpg" /></a>
 
 ## It’s All Here
 

@@ -1,6 +1,7 @@
-# Making &quot;How to set up a Database&quot; Really Easy<br/><small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
+# Making "How to set up a Database" Really Easy
+<small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
-![Making &quot;How to set up a Database&quot; Really Easy](images/making-how-to-set-up-a-database-easy-for-nosql-document-database.jpg)
+![Making "How to set up a Database" Really Easy](images/making-how-to-set-up-a-database-easy-for-nosql-document-database.jpg)
 
 {SOCIAL-MEDIA-LIKE/}
 

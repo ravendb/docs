@@ -1,4 +1,5 @@
-# A Cloud DBaaS that Predicts And Cuts Costs<br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# A Cloud DBaaS that Predicts And Cuts Costs
+<small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
 ![How RavenDB Cloud DBaaS Bolsters Your Price Predictability](images/how-ravendb-cloud-dbaas-bolsters-your-price-predictability.jpg)
 
