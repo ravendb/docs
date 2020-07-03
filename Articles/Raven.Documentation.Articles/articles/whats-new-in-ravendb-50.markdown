@@ -73,7 +73,7 @@ Time series measurements support named values to help understand what measuremen
 
 #### Querying Over a Date Range
 
-Once the data is recorded, we can query it. We can leverage RavenDB 5.0's new date range querying syntax for making it easier to retrieve all the values and bucket them by day, selecting the last time series entry each day:
+Once the data is recorded, we can query it. We can leverage RavenDB 5.0's new date range querying syntax for making it easier to retrieve time series data. In the following query, we can query the past 6 months worth of stock price data, selecting the minimum and maximum values we've recorded:
 
 <pre>
     <code class="language-csharp">from Companies  
