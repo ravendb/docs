@@ -1732,5 +1732,34 @@
         "twitter:description": "NoSQL database query process is more complicated than it used to be in SQL. Read how RavenDB offers a highly structured and advanced way of querying data.",
         "twitter:url": "https://ravendb.net/articles/nosql-database-query-process"
     }
+},
+{
+    "Path": "whats-new-in-ravendb-50.markdown",
+    "Name": "What’s New in RavenDB 5.0",
+    "Mappings": [],
+    "Metadata": {
+        "title": "RavenDB 5.0 | NoSQL Database New Features | What’s New",
+        "likeSection": "yes",
+        "url": "whats-new-in-ravendb-50",
+        "publishedAt": "2020-07-03",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "RavenDB NoSQL document database new features include query and index time series data, schedule periodic document refreshes, customize database compression, and a host of quality of life improvements and bug fixes.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "What's New in RavenDB 5.0",
+        "og:description": "RavenDB NoSQL document database new features include query and index time series data, schedule periodic document refreshes, customize database compression, and a host of quality of life improvements and bug fixes.",
+        "og:url": "https://ravendb.net/articles/whats-new-in-ravendb-50",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/whats-new-in-ravendb-50&fileName=whats-new-in-ravendb-50.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "What's New in RavenDB 5.0",
+        "twitter:description": "RavenDB NoSQL document database new features include query and index time series data, schedule periodic document refreshes, customize database compression, and a host of quality of life improvements and bug fixes.",
+        "twitter:url": "https://ravendb.net/articles/whats-new-in-ravendb-50"
+    }
 }
 ]
