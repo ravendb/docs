@@ -6,6 +6,11 @@
         "IsPlaceholder": "true"
     },
     {
+        "Path": "/document-extensions",
+        "Name": "Document Extensions",
+        "Mappings": []
+    },
+    {
         "Path": "/settings",
         "Name": "Settings",
         "Mappings": [],
