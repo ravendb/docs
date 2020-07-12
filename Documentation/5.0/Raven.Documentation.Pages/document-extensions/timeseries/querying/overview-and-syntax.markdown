@@ -133,8 +133,8 @@ from your query. It introduces greater flexibility to your queries as
 you can, for example, pass arguments to/by the time series function.  
 
 Here is a query in both syntaxes. It picks users whose age is under 30, 
-and if they own a time series named "HeartRate" retrieves a range of entries 
-from this series.  
+and if they own a time series named "HeartRate", retrieves a range of 
+its entries.  
 
 
 | With Time Series Function | Without Time Series Function |
@@ -159,6 +159,12 @@ select ts(jog)
       and 
        '2020-06-23T00:00:00.0000000Z')
     {CODE-BLOCK/}|
+
+---
+
+Queries can use both declared time series functions and custom JavaScript functions.  
+The JavaScript functions can then call the time series functions, pass them arguments, 
+use and manipulate their results.  
 
 {PANEL/}
 

@@ -1,30 +1,25 @@
-﻿# Operations: Append in Bulk
+﻿# Bulk Insert: How to Append Time Series
 
 ---
 
 {NOTE: }
 
 * `store.BulkInsert` is RavenDB's high-performance data insertion operation.  
-  Its `TimeSeriesFor` interface resembles [session.TimeSeriesFor](../../../../../document-extensions/timeseries/client-api/session/append) 
-  in its ability to append multiple time series entries in a single transaction, 
-  while omitting the liabilities of the `session` interface to gain much higher speed.  
+  Using its `TimeSeriesFor` interface's `Append` method resembles using 
+  [session.TimeSeriesFor](../../../../../document-extensions/timeseries/client-api/session/append), 
+  but `session` liabilities are omitted so a much greater speed is gained.  
+
+* You can bulk-insert **a single time series** at a time.  
+
+* To bulk-insert an additional time series concurrently, open an additional **BulkInsertOperation** 
+  instance.  
 
 * In this page:  
-   * [`BulkInsert.TimeSeriesFor.Append`](../../../../../document-extensions/timeseries/client-api/operations/bulk-insert/append-in-bulk#bulkinsert.timeseriesfor.append)  
       * [Syntax](../../../../../document-extensions/timeseries/client-api/operations/bulk-insert/append-in-bulk#syntax)  
       * [Usage Flow](../../../../../document-extensions/timeseries/client-api/operations/bulk-insert/append-in-bulk#usage-flow)  
       * [Usage Samples](../../../../../document-extensions/timeseries/client-api/operations/bulk-insert/append-in-bulk#usage-samples)  
 
 {NOTE/}
-
-{PANEL: `BulkInsert.TimeSeriesFor.Append`}
-
-Create a `BulkInsert` instance, pass its `TimeSeriesFor` method the document's ID 
-and time series name, and then call `TimeSeriesFor.Append` as many times as you need 
-to. All the Append operations you perform this way will be executed in 
-a single transaction.  
-
-{PANEL/}
 
 {PANEL: Syntax}
 
@@ -57,7 +52,7 @@ a single transaction.
 * Pass the instance's `TimeSeriesFor` -  
    * Document ID  
    * Time series name  
-* Call `TimeSeriesFor.Append` as many times as you like. Pass it -  
+* Call `Append` as many times as you like. Pass it -  
    * The entry's Timestamp  
    * The entry's Value or Values  
    * The entry's Tag (optional)  
@@ -66,13 +61,13 @@ a single transaction.
 
 {PANEL: Usage Samples}
 
-* In this sample, we append a time series two entries in a single transaction.  
+* In this sample, we append two entries to a time series.  
    {CODE timeseries_region_Use-BulkInsert-To-Append-2-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-* In this sample, we append a time series a hundred entries in a single transaction.  
+* In this sample, we append a hundred entries to a time series.  
    {CODE timeseries_region_Use-BulkInsert-To-Append-100-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-* In this sample, we append a time series two saets of values in a single transaction.  
+* In this sample, we append two sets of values to a time series.  
    {CODE BulkInsert-overload-2-Two-HeartRate-Sets@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}

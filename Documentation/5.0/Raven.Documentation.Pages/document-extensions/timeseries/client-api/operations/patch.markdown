@@ -7,7 +7,7 @@
 * Time series data can be patched -  
    * to a single document located by its ID, using [PatchOperation](../../../../client-api/operations/patching/single-document#patching-how-to-perform-single-document-patch-operations).  
    * to multiple documents located by a query, using [PatchByQueryOperation](../../../../client-api/operations/patching/set-based).  
-* Both patching operations can be used to Append, Get and Remove time series entries.  
+* Both patching operations can be used to Append, Get and Delete time series entries.  
 
 * In this page:  
   * [Patching Operations](../../../../document-extensions/timeseries/client-api/operations/patch#patching-operations)  
@@ -89,7 +89,7 @@
    * the change vector (or `null`)  
    * a new `PatchRequest` instance  
 * Use the `PatchRequest` instance to pass `PatchOperation` 
-  a JavaScript that appends or removes time series entries.  
+  a JavaScript that appends or deletes time series entries.  
 * Call `store.Operations.Send` to execute the operation.  
 
 ---
@@ -102,9 +102,9 @@
   arguments are provided in the "Values" section.  
   {CODE TS_region-Operation_Patch-Append-100-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-* In this sample, we use `PatchOperation` to remove a range of 50 time series 
+* In this sample, we use `PatchOperation` to delete a range of 50 time series 
   entries from a document.  
-  {CODE TS_region-Operation_Patch-Remove-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+  {CODE TS_region-Operation_Patch-Delete-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}
 
@@ -142,12 +142,12 @@
 
 #### Usage Samples
 
-* In this sample, we run a document query and remove the HeartRate time series 
+* In this sample, we run a document query and delete the HeartRate time series 
   from documents we find.  
-   {CODE TS_region-PatchByQueryOperation-Remove-From-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+   {CODE TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 * In this sample, we patch each User document a "NumberOfUniqueTagsInTS" field with 
-  the number of different tags in the user's "ExcersizeHeartRate" time series.  
+  the number of different tags in the user's "ExerciseHeartRate" time series.  
   To do this, we use the JavaScript `get` method to get each time series' entries (the 
   range we choose includes them all), and check each entry's tag.  
    {CODE TS_region-PatchByQueryOperation-Get@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  

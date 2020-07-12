@@ -1,4 +1,4 @@
-﻿# Querying: Aggregaring and Projecting Time Series
+﻿# Querying: Aggregating and Projecting Time Series
 
 ---
 

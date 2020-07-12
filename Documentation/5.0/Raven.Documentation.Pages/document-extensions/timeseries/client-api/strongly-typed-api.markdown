@@ -5,14 +5,11 @@
 * Use the strongly-typed API to define time series types that can be used 
   by the time series methods (e.g. Append and Get) to address and manage 
   time series values by name.
-* Register your time series types with the database record, so the Studio 
-  would be able to present your time series values by their names.  
 
 * In this page:  
   * [The Strongly-Typed API](../../../document-extensions/timeseries/client-api/strongly-typed-api#the-strongly-typed-api)  
-      * [Defining a Time Series Type](../../../document-extensions/timeseries/client-api/strongly-typed-api#defining-a-time-series-type)  
-      * [Registering a Time Series Type](../../../document-extensions/timeseries/client-api/strongly-typed-api#registering-a-time-series-type)  
-      * [Usage Samples](../../../document-extensions/timeseries/client-api/strongly-typed-api#usage-samples)  
+  * [Defining a Time Series Type](../../../document-extensions/timeseries/client-api/strongly-typed-api#defining-a-time-series-type)  
+  * [Usage Samples](../../../document-extensions/timeseries/client-api/strongly-typed-api#usage-samples)  
 
 {NOTE/}
 
@@ -43,38 +40,6 @@ E.g, -
 
 The class can then be used by time series methods like Append.  
 {CODE timeseries_region_Append-Strongly-Typed-1@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-{PANEL/}
-
-{PANEL: Registering a Time Series Type}
-
-Registering a custom time series type to the database record acquaints 
-it to the Studio, so when you view and manage time series values via the Studio 
-they would be presented by name.  
-
-To register a time series type, call `store.TimeSeries.RegisterAsync`.  
-
-* `store.TimeSeries.RegisterAsync` definition  
-   {CODE RegisterAsync-Definitions@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-
-* Parameters  
-
-       | Parameter | Type | Explanation 
-       | --- | --- | --- |
-       | `TCollection` | Collection type | The time-series' collection  
-       | `collection` | `string` | collection (when `TCollection` is not provided)
-       | `TTimeSeriesEntry` | Time series type | The custom time-series type 
-       | `name` | `string ` | Time series name 
-       | `valueNames` | `string[]` | Names (name per value) 
-
----
-
-Here, for example, we register the `RoutePoint` type we've defined earlier.
-{CODE timeseries_region_Strongly-Typed-Register@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-
-And this is the Studio Time Series view after appending a few RoutePoint coordinates.  
-!["Studio Time Series View"](images/time-series-view-coordinates.png "Studio Time Series View")
-
 
 {PANEL/}
 
@@ -110,3 +75,6 @@ And this is the Studio Time Series view after appending a few RoutePoint coordin
 
 **Policies**  
 [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)  
+
+**Time Series Types**  
+[Registering Time Series Types](../../../document-extensions/timeseries/client-api/register-time-series-types)  

@@ -4,8 +4,8 @@
 
 {NOTE: }
 
-Time series indexes index time series [segments](../../document-extensions/timeseries/design#segmentation), 
-as opposed to document fields.  
+Time series indexes process time series [segments](../../document-extensions/timeseries/design#segmentation), 
+rather than document fields.  
 The API for creating time series indexes is very similar to (and it inherits 
 from) the API for [creating document indexes](../../indexes/creating-and-deploying).  
 
@@ -119,16 +119,16 @@ See the example [below](../../document-extensions/timeseries/indexing#samples).
 
 ### `TimeSeriesSegment` object  
 
-When indexing time series entries, they are accessed through a subdivision of the time series 
-called a _segment_. In general the LINQ syntax looks somethintg like this:  
+Time series entries are indexes through the [segment](../../document-extensions/timeseries/design#segmentation) 
+they are stored in, using LINQ syntax that resembles this one:  
 
 {CODE-BLOCK: sql}
 from segment in timeseries
 from entry in segment
 {CODE-BLOCK/}
 
-Segments are useful because they can be referenced within time series indexes to access the entries in 
-the segment, as well as some aggregated values that summarize the data in the segment:  
+Segment properties include the entries data, and the aggregated values that 
+RavenDB automatically updates and keeps in the segment's header:  
 
 | Property | Type | Description |
 | - | - | - |

@@ -39,8 +39,8 @@ time series.
     |:-------------|:-------------|:-------------|
     | `docId` | `string` | Document ID |
     | `timeseries` | `string` | Time series name |
-    | `from` | `DateTime` | Range start |
-    | `to` | `DateTime` | Range end |
+    | `from` (optional) | `DateTime?` | Range start  <br> Default: `DateTime.Min` ||
+    | `to` (optional) | `DateTime?` | Range end  <br> Default: `DateTime.Max` ||
     | `start` | `int` | Start of first Page |
     | `pageSize` | `int` | Size of each page |
 
@@ -90,8 +90,8 @@ multiple time series.
     |:-------------|:-------------|:-------------|
     | `docId` | `string` | Document ID |
     | `ranges` | `IEnumerable<TimeSeriesRange>` | Ranges of Time Series Entries |
-    | `start` | `int` | Start of first Page |
-    | `pageSize` | `int` | Size of each page |
+    | `start` (optional) | `int` | Start of first Page <br> Default: 0 |
+    | `pageSize` (optional) | `int` | Size of each page <br> Default: int.MaxValue |
 
      Pass `GetMultipleTimeSeriesOperation` a **TimeSeriesRange** instance 
      For each entries range you want it to retrieve.

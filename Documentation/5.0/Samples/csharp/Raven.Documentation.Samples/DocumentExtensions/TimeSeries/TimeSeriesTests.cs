@@ -205,7 +205,7 @@ namespace SlowTests.Client.TimeSeries.Session
             #endregion
 
             #region timeseries_region_Strongly-Typed-Register
-            await store.TimeSeries.RegisterAsync<User, RoutePoint>();
+            store.TimeSeries.Register<User, RoutePoint>();
             #endregion 
 
 
@@ -238,19 +238,19 @@ namespace SlowTests.Client.TimeSeries.Session
             }
             #endregion
 
-            #region timeseries_region_Remove-TimeSeriesFor-Single-Time-Point
+            #region timeseries_region_Delete-TimeSeriesFor-Single-Time-Point
             var baseline = DateTime.Today;
             using (var session = store.OpenSession())
             {
-                //remove a single entry
+                //Delete a single entry
                 session.TimeSeriesFor("users/john", "HeartRate")
-                    .Remove(baseline.AddMinutes(4));
+                    .Delete(baseline.AddMinutes(4));
 
                 session.SaveChanges();
             }
             #endregion
 
-            #region timeseries_region_TimeSeriesFor-Remove-Time-Points-Range
+            #region timeseries_region_TimeSeriesFor-Delete-Time-Points-Range
             var baseline = DateTime.Today;
 
             // Append 10 HeartRate values
@@ -268,11 +268,11 @@ namespace SlowTests.Client.TimeSeries.Session
                 session.SaveChanges();
             }
 
-            // remove a range of 4 values from the time series
+            // Delete a range of 4 values from the time series
             using (var session = store.OpenSession())
             {
                 session.TimeSeriesFor("users/john", "HeartRate")
-                    .Remove(baseline.AddSeconds(4), baseline.AddSeconds(7));
+                    .Delete(baseline.AddSeconds(4), baseline.AddSeconds(7));
 
                 session.SaveChanges();
             }
@@ -434,13 +434,13 @@ namespace SlowTests.Client.TimeSeries.Session
             session.SaveChanges();
             #endregion
 
-            #region TS_region-Session_Patch-Remove-50-TS-Entries
-            // Remove time-series entries
+            #region TS_region-Session_Patch-Delete-50-TS-Entries
+            // Delete time-series entries
             session.Advanced.Defer(new PatchCommandData("users/1-A", null,
                 new PatchRequest
                 {
                     Script = @"timeseries(this, $timeseries)
-                             .remove(
+                             .delete(
                                 $from, 
                                 $to
                               );",
@@ -471,33 +471,33 @@ namespace SlowTests.Client.TimeSeries.Session
                 #region timeseries_region_Append-Using-TimeSeriesBatchOperation
                 var baseline = DateTime.Today;
 
-                var timeSeriesExcersizeneHeartRate = new TimeSeriesOperation
+                var timeSeriesExerciseHeartRate = new TimeSeriesOperation
                 {
                     Name = "RoutineHeartRate"
                 };
 
-                timeSeriesExcersizeneHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(1), Values = new[] { 79d } });
-                timeSeriesExcersizeneHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(2), Values = new[] { 82d } });
-                timeSeriesExcersizeneHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(3), Values = new[] { 80d } });
-                timeSeriesExcersizeneHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(4), Values = new[] { 78d } });
+                timeSeriesExerciseHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(1), Values = new[] { 79d } });
+                timeSeriesExerciseHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(2), Values = new[] { 82d } });
+                timeSeriesExerciseHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(3), Values = new[] { 80d } });
+                timeSeriesExerciseHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(4), Values = new[] { 78d } });
 
-                var timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesExcersizeneHeartRate);
+                var timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesExerciseHeartRate);
 
                 store.Operations.Send(timeSeriesBatch);
                 #endregion
 
 
-                #region timeseries_region_Remove-Range-Using-TimeSeriesBatchOperation
-                var removeEntries = new TimeSeriesOperation
+                #region timeseries_region_Delete-Range-Using-TimeSeriesBatchOperation
+                var deleteEntries = new TimeSeriesOperation
                 {
                     Name = "RoutineHeartRate"
                 };
 
-                removeEntries.Remove(new TimeSeriesOperation.RemoveOperation { From = baseline.AddMinutes(2), To = baseline.AddMinutes(3) });
+                deleteEntries.Delete(new TimeSeriesOperation.DeleteOperation { From = baseline.AddMinutes(2), To = baseline.AddMinutes(3) });
 
-                var removeEntriesBatch = new TimeSeriesBatchOperation(documentId, removeEntries);
+                var deleteEntriesBatch = new TimeSeriesBatchOperation(documentId, deleteEntries);
 
-                store.Operations.Send(removeEntriesBatch);
+                store.Operations.Send(deleteEntriesBatch);
                 #endregion
             }
         }
@@ -516,7 +516,7 @@ namespace SlowTests.Client.TimeSeries.Session
                             {
                                 new TimeSeriesRange
                                 {
-                                    Name = "ExcersizeHeartRate",
+                                    Name = "ExerciseHeartRate",
                                     From = baseTime.AddHours(1),
                                     To = baseTime.AddHours(10)
                                 },
@@ -557,7 +557,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 #endregion
 
                 #region BulkInsert-overload-2-Two-HeartRate-Sets
-                ICollection<double> ExcersizeHeartRate = new List<double>
+                ICollection<double> ExerciseHeartRate = new List<double>
                         { 89d, 82d, 85d };
 
                 ICollection<double> RestingHeartRate = new List<double>
@@ -565,7 +565,7 @@ namespace SlowTests.Client.TimeSeries.Session
 
                 using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRate"))
                 {
-                    timeSeriesBulkInsert.Append(baseline.AddMinutes(2), ExcersizeHeartRate, "watches/fitbit");
+                    timeSeriesBulkInsert.Append(baseline.AddMinutes(2), ExerciseHeartRate, "watches/fitbit");
                     timeSeriesBulkInsert.Append(baseline.AddMinutes(3), RestingHeartRate, "watches/apple-watch");
                 }
                 #endregion
@@ -623,11 +623,11 @@ namespace SlowTests.Client.TimeSeries.Session
                     }));
                 #endregion
 
-                #region TS_region-Operation_Patch-Remove-50-TS-Entries
+                #region TS_region-Operation_Patch-Delete-50-TS-Entries
                 store.Operations.Send(new PatchOperation("users/1-A", null,
                     new PatchRequest
                     {
-                        Script = "timeseries(this, $timeseries).remove($from, $to);",
+                        Script = "timeseries(this, $timeseries).delete($from, $to);",
                         Values =
                         {
                                 { "timeseries", "HeartRate" },
@@ -656,14 +656,14 @@ namespace SlowTests.Client.TimeSeries.Session
                 store.Operations.Send(appendOperation);
                 #endregion
 
-                #region TS_region-PatchByQueryOperation-Remove-From-Multiple-Docs
-                // Remove time-series from all users
-                PatchByQueryOperation removeOperation = new PatchByQueryOperation(new IndexQuery
+                #region TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs
+                // Delete time-series from all users
+                PatchByQueryOperation deleteOperation = new PatchByQueryOperation(new IndexQuery
                 {
                     Query = @"from Users as u
                                 update
                                 {
-                                    timeseries(u, $name).remove($from, $to)
+                                    timeseries(u, $name).delete($from, $to)
                                 }",
                     QueryParameters = new Parameters
                             {
@@ -672,11 +672,11 @@ namespace SlowTests.Client.TimeSeries.Session
                                 { "to", DateTime.MaxValue }
                             }
                 });
-                store.Operations.Send(removeOperation);
+                store.Operations.Send(deleteOperation);
                 #endregion
 
                 #region TS_region-PatchByQueryOperation-Get
-                PatchByQueryOperation getExcersizeHeartRateOperation = new PatchByQueryOperation(new IndexQuery
+                PatchByQueryOperation getExerciseHeartRateOperation = new PatchByQueryOperation(new IndexQuery
                 {
                     Query = @"
                         declare function foo(doc){
@@ -705,13 +705,13 @@ namespace SlowTests.Client.TimeSeries.Session
 
                     QueryParameters = new Parameters
                     {
-                        { "name", "ExcersizeHeartRate" },
+                        { "name", "ExerciseHeartRate" },
                         { "from", DateTime.MinValue },
                         { "to", DateTime.MaxValue }
                     }
                 });
 
-                var result = store.Operations.Send(getExcersizeHeartRateOperation).WaitForCompletion();
+                var result = store.Operations.Send(getExerciseHeartRateOperation).WaitForCompletion();
 
                 #endregion
 
@@ -861,19 +861,19 @@ namespace SlowTests.Client.TimeSeries.Session
                 }
             }
 
-            // Query - LINQ format - LoadTag to find a stock broker
+            // Query - LINQ format - LoadByTag to find a stock broker
             using (var session = store.OpenSession())
             {
                 var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
 
-                #region ts_region_Filter-By-LoadTag-LINQ
+                #region ts_region_Filter-By-LoadByTag-LINQ
                 IRavenQueryable<TimeSeriesRawResult> query =
                     (IRavenQueryable<TimeSeriesRawResult>)session.Query<Orders.Company>()
 
                         .Where(c => c.Address.Country == "USA")
                         .Select(q => RavenQuery.TimeSeries(q, "StockPrice")
                         
-                        .LoadTag<Employee>()
+                        .LoadByTag<Employee>()
                         .Where((ts, src) => src.Title == "Sales Representative")
                         
                         .ToList());
@@ -1086,14 +1086,14 @@ namespace SlowTests.Client.TimeSeries.Session
         void Append(DateTime timestamp, IEnumerable<double> values, string tag = null);
         #endregion
 
-        #region TimeSeriesFor-Remove-definition-single-timepoint
-        // Remove a single time-series entry
-        void Remove(DateTime at);
+        #region TimeSeriesFor-Delete-definition-single-timepoint
+        // Delete a single time-series entry
+        void Delete(DateTime at);
         #endregion
 
-        #region TimeSeriesFor-Remove-definition-range-of-timepoints
-        // Remove a range of time-series entries
-        void Remove(DateTime from, DateTime to);
+        #region TimeSeriesFor-Delete-definition-range-of-timepoints
+        // Delete a range of time-series entries
+        void Delete(DateTime from, DateTime to);
         #endregion
 
         #region TimeSeriesFor-Get-definition
@@ -1178,8 +1178,8 @@ namespace SlowTests.Client.TimeSeries.Session
             }
         #endregion
 
-        #region RemoveOperation-class
-        public class RemoveOperation
+        #region DeleteOperation-class
+        public class DeleteOperation
         {
             public DateTime From, To;
             //...
@@ -1246,10 +1246,10 @@ namespace SlowTests.Client.TimeSeries.Session
         #endregion
 
 
-    #region RegisterAsync-Definitions
-    public Task RegisterAsync<TCollection, TTimeSeriesEntry>(string name = null)
-    public Task RegisterAsync<TCollection>(string name, string[] valueNames)
-    public Task RegisterAsync(string collection, string name, string[] valueNames)
+    #region Register-Definitions
+    public void Register<TCollection, TTimeSeriesEntry>(string name = null)
+    public void Register<TCollection>(string name, string[] valueNames)
+    public void Register(string collection, string name, string[] valueNames)
     #endregion
 
 

@@ -7,7 +7,7 @@ The Time Series client API includes a set of [session](../../../client-api/sessi
 methods and [store](../../../client-api/what-is-a-document-store) 
 [operations](../../../client-api/operations/what-are-operations).  
 You can use the API to **append** (create and update), **get**, 
-**remove**, **include**, **patch** and **query** time series data.  
+**delete**, **include**, **patch** and **query** time series data.  
 
 * In this page:  
   * [Creating and Removing Time Series](../../../document-extensions/timeseries/client-api/overview#creating-and-removing-time-series)  
@@ -22,11 +22,11 @@ You can use the API to **append** (create and update), **get**,
 {PANEL: Creating and Removing Time Series}
 
 A time series is constructed of time series **entries**, which can 
-be created and removed using the API.  
+be created and deleted using the API.  
 There is no need to explicitly create or delete a time series.  
 
 * A time series is created when the first entry is appended to it.  
-* A time series is deleted when all entries are removed from it.  
+* A time series is deleted when all entries are deleted from it.  
 
 {PANEL/}
 
@@ -34,7 +34,7 @@ There is no need to explicitly create or delete a time series.
 
 Some time series functions are available through both `session` methods 
 and `document-store` operations:  
-You can **append**, **remove**, **get** and **patch** time series data 
+You can **append**, **delete**, **get** and **patch** time series data 
 through both interfaces.  
 
 ---
@@ -66,9 +66,9 @@ There are also functionalities unique to each interface.
 * [TimeSeriesFor.Append](../../../document-extensions/timeseries/client-api/session/append)  
   Use this method to **Append entries to a time series** 
   (creating the series if it didn't previously exist).  
-* [TimeSeriesFor.Remove](../../../document-extensions/timeseries/client-api/session/remove)  
-  Use this method to **Remove a range of entries from a time series** 
-  (removing the series completely if all entries have been removed).  
+* [TimeSeriesFor.Delete](../../../document-extensions/timeseries/client-api/session/delete)  
+  Use this method to **delete a range of entries from a time series** 
+  (removing the series completely if all entries have been deleted).  
  * [TimeSeriesFor.Get](../../../document-extensions/timeseries/client-api/session/get/get-entries)  
   Use this method to **Retrieve raw time series entries** 
   for all entries or for a chosen entries range.  
@@ -86,9 +86,9 @@ There are also functionalities unique to each interface.
 
 {PANEL: Available Time Series `store` Operations}
 
-* [TimeSeriesBatchOperation](../../../document-extensions/timeseries/client-api/operations/append-and-remove)  
-  Use this operation to **append and remove time series data**.  
-  You can bundle a series of Append and/or Remove operations in a list and 
+* [TimeSeriesBatchOperation](../../../document-extensions/timeseries/client-api/operations/append-and-delete)  
+  Use this operation to **append and delete time series entries**.  
+  You can bundle a series of Append and/or Delete operations in a list and 
   execute them in a single call.  
 * [GetTimeSeriesOperation](../../../document-extensions/timeseries/client-api/operations/get#gettimeseriesoperation)  
   Use this operation to Get entries from a single time series.  
@@ -97,9 +97,9 @@ There are also functionalities unique to each interface.
 * [ConfigureTimeSeriesOperation](../../../document-extensions/timeseries/rollup-and-retention)  
   Use this operation to **manage time series roll-up and retention policies**.  
 * [PatchOperation](../../../document-extensions/timeseries/client-api/operations/patch#patchoperation)  
-  Use this operation to append/remove time series data to/from a single document.  
+  Use this operation to append/delete time series entries to/from a single document.  
 * [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch#patchbyqueryoperation)  
-  Use this operation to run a query and append/remove time series data to/from 
+  Use this operation to run a query and append/delete time series entries to/from 
   matching documents.  
   by a query**.  
 * [BulkInsert.TimeSeriesFor.Append](../../../document-extensions/timeseries/client-api/operations/bulk-insert/append-in-bulk)  

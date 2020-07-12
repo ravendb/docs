@@ -19,9 +19,8 @@ documents has been extended to allow manipulations involving time series.
 * In this page:  
   * [JavaScript API methods](../../../document-extensions/timeseries/client-api/javascript-support#javascript-api-methods)  
      * [timeseries - Choose a Time Series](../../../document-extensions/timeseries/client-api/javascript-support#section)  
-     * [timeseries.append - Append Untagged Entry](../../../document-extensions/timeseries/client-api/javascript-support#section-1)  
-     * [timeseries.append - Append Tagged Entry](../../../document-extensions/timeseries/client-api/javascript-support#section-2)  
-     * [timeseries.remove - Remove Entries Range](../../../document-extensions/timeseries/client-api/javascript-support#section-3)  
+     * [timeseries.append - Append an Entry](../../../document-extensions/timeseries/client-api/javascript-support#section-1)  
+     * [timeseries.delete - Delete Entries Range](../../../document-extensions/timeseries/client-api/javascript-support#section-3)  
      * [timeseries.get - Get Entries Range](../../../document-extensions/timeseries/client-api/javascript-support#section-4)  
   * [Usage Samples](../../../document-extensions/timeseries/client-api/javascript-support#usage-samples)  
 
@@ -40,43 +39,36 @@ The JavaScript time series API includes these methods:
 Choose a time series by the ID of its owner document and by the series name.  
 
        | Parameter | Type | Explanation 
-       |:---:|:---:|:---:|
-       | doc | `string` | Document ID  
+       |:---:|:---:| --- |
+       | doc | `string` <br> or <br> `document instance` | Document ID, e.g. `timeseries('users/1-A', 'StockPrice')` <br> <br> e.g. `timeseries(this, 'StockPrice')`  
        | name | `string` | Time Series Name  
 
 ---
 
-#### `timeseries.append (timestamp, values)`  
+#### `timeseries.append`  
 
-Use this method to append time series entries to a document.   
+* You can use two overloads, to append **tagged** or **untagged** time series entries.  
+   * `timeseries.append (timestamp, values)`  
+   * `timeseries.append (timestamp, values, tag)`
 
-| Parameter | Type | Explanation
-|:---:|:---:|:---:|
-| timestamp | `DateTime` | Timestamp 
-| values | `double[]` | Values 
+* Parameters:  
 
----
-
-#### `timeseries.append (timestamp, values, tag)`
-
-Use this method to append to a document time series entries with tags.  
-
-| Parameter | Type | Explanation 
-|:---:|:---:|:---:|
-| timestamp | `DateTime` | Timestamp 
-| values | `double[]` | Values 
-| tag | `string` | Tag 
+      | Parameter | Type | Explanation
+      |:---:|:---:| --- |
+      | timestamp | `DateTime` | Timestamp 
+      | values | `double[]` | Values 
+      | tag | `string` | Tag 
 
 ---
 
-#### `timeseries.remove (from, to)`  
+#### `timeseries.delete (from, to)`  
 
-Use this method to remove a range of entries from a document.  
+Use this method to delete a range of entries from a document.  
 
 | Parameter | Type | Explanation 
-|:---:|:---:|:---:|
-| from | `DateTime` | Range Start 
-| to | `DateTime` | Range End 
+|:---:|:---:| --- |
+| from (optional) | `DateTime` | Range Start <br> Default: `DateTime.Min` 
+| to (optional) | `DateTime` | Range End <br> Default: `DateTime.Max` 
 
 ---
 
@@ -85,9 +77,9 @@ Use this method to remove a range of entries from a document.
 Use this method to retrieve a range of time series entries.  
 
 | Parameter | Type | Explanation 
-|:---:|:---:|:---:|
-| from | `DateTime` | Range Start 
-| to | `DateTime` | Range End 
+|:---:|:---:| --- |
+| from (optional) | `DateTime` | Range Start <br> Default: `DateTime.Min` 
+| to (optional) | `DateTime` | Range End <br> Default: `DateTime.Max` 
 
 {PANEL/}
 
@@ -99,9 +91,8 @@ Use this method to retrieve a range of time series entries.
 
 
 * In this sample, we pass [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch#patchbyqueryoperation) 
-  a script that runs a document query and removes the HeartRate time series from 
-  matching documents.  
-   {CODE TS_region-PatchByQueryOperation-Remove-From-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+  a script that runs a document query and deletes the HeartRate time series from matching documents.  
+   {CODE TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 {PANEL/}
 

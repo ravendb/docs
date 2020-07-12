@@ -40,8 +40,8 @@ from that unit in the original time series is aggregated into six values:
 This results in a much more compact time series that still contains useful 
 information about the original time series (also called the "named" or "raw" 
 time series). Rollup time series are created automatically according to 
-**rollup policies**. Rollup policies apply to all documents in a collection, and 
-each collection can have multiple policies.  
+**rollup policies**. Rollup policies apply to all timeseries of every document 
+in the given collection, and each collection can have multiple policies.  
 
 Let's look at an example of rollup data:  
 <br/>
@@ -51,7 +51,8 @@ Let's look at an example of rollup data:
 Each group of six values represents one value in the original entries. If the raw 
 time series has *n* values per entry, the rollup time series will have _6*n_ per entry: 
 the first six summarize the first raw value, the next six summarize the next raw value, 
-and so on. Because time series entries are limited to 32 values, rollups are limited to 
+and so on.  
+Because time series entries are limited to 32 values, rollups are limited to 
 the first five values of an original time series entry, or 30 aggregate values.  
 
 **2) Timestamp:**  

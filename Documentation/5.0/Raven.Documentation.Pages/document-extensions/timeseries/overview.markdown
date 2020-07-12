@@ -173,9 +173,9 @@ would be retrieved and queried, and only relevant segments would be updated.
 
 #### Common Queries Performance
 Segmentation also helps provide results for common queries extremely 
-fast, since results for such queries as `Min`, `Max`, `Average` and 
-others are automatically stored and updated in segment headers, and 
-are always available for instant retrieval.  
+fast, since results for such queries as `Min`, `Max` and others are 
+automatically stored and updated in segment headers, and are always 
+available for instant retrieval.  
   
 {PANEL/}
 
@@ -192,6 +192,8 @@ Each entry is composed of a **timestamp**, 1 to 32 **values**, and an **optional
 {INFO: }
 A single `DateTime` timestamp marks each entry in a millisecond precision.  
 {INFO/}
+
+Timestamps are always indicated using [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).  
 
 Timestamps, and therefore time series entries, are always ordered **by time**, 
 from the oldest timestamp to the newest.  
@@ -231,21 +233,27 @@ A single **optional** `string` tag can be added per entry.
 {INFO/}
 
 Tags are designated to provide information regarding their entries.  
-A tag can be a **short descriptive text**.  
-A tag can also be a **reference to a document** by the document's ID.  
 
-Using tags as references to documents, **is the preferabble way to use them**. 
-Here is why.  
+* **Descriptive Tags**  
+  A tag can be a **short descriptive text**.  
 
-* The short (ID-long) reference, e.g. "watches/fitbit", refers us 
-  to a text that is as long and as structured as we'd like it to be.  
-* While time series entries are queried, the query can load the 
-  documents their tags refer to and filter the results by the 
-  documents' contents.  
-  E.g., the query can -  
-  **1.** load time series entries whose tags refer to device-specification documents.  
-  **2.** retrieve and examine the specification document referred to by each entry.  
-  **3.** project to the client only values measured by Japanese devices.  
+* **Reference Tags**  
+  A tag can also contain a document's ID, and function as a **reference to this document**.  
+  
+    A reference-tag is preferable when we want the tag to be very short and yet refer us 
+    to an unlimited source of information.    
+  
+    Reference-tags can be used to [filter time series data](../../document-extensions/timeseries/querying/filtering#using-tags-as-references---) 
+    during a query.  
+    **E.g.**, the query can -  
+    **1.** load time series entries whose tags refer to device-specification documents.  
+    **2.** retrieve and examine the specification document referred to by each entry.  
+    **3.** project to the client only values measured by Japanese devices.  
+
+    {INFO: }
+    Prefer re-using a few tags many times over using many unique tags,  
+    to minimize memory and storage usage and optimize time series performance.  
+    {INFO/}
 
 {PANEL/}
 

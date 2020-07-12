@@ -81,8 +81,8 @@ Omitting these values will load the entire series.
     |:-------------|:-------------|:-------------|
     | `documentInstance` | `object` | Document Instance |
     | `name` | `string` | Time Series Name |
-    | `from` | `DateTime` | Range Start |
-    | `to` | `DateTime` | Range End |
+    | `from` (optional) | `DateTime` | Range Start <br> Default: `DateTime.Min` |
+    | `to` (optional) | `DateTime` | Range End <br> Default: `DateTime.Max` |
   
 * In this sample, we select a three-days range from the HeartRate time series.
   {CODE ts_region_LINQ-3-Range-Selection@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}

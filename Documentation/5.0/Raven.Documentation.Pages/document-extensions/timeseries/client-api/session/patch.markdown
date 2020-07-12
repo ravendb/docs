@@ -1,10 +1,10 @@
-﻿# Session: Patch Time Series Data
+﻿# Session: Patch Time Series
 
 ---
 
 {NOTE: }
 
-* To patch time series data to a document, use `session.Advanced.Defer`.  
+* To patch time series entries to a document, use `session.Advanced.Defer`.  
    * You can pass `Defer` a script to Append, Get, and Remove time series entries.  
    * You can handle a single document at a time.  
 
@@ -64,7 +64,7 @@
   {CODE TS_region-Session_Patch-Append-100-Random-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 * In this sample, we remove a range of 50 time series entries from a document.  
-  {CODE TS_region-Session_Patch-Remove-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+  {CODE TS_region-Session_Patch-Delete-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 {PANEL/}
 

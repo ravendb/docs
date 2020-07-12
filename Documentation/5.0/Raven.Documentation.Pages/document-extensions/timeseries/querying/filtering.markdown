@@ -28,19 +28,40 @@
 In an RQL query, use the `where` keyword to filter time series entries 
 by their **tags** or **values**.  
 
+* Filter entries by tag using `where Tag`.  
+  E.g. -  
+   * {CODE-BLOCK: JSON}
+from Users as u where Age < 30
+select timeseries(
+    from HeartRate 
+       between '2020-05-27T00:00:00.0000000Z' 
+            and '2020-06-23T00:00:00.0000000Z'
+       // Where this is the tag
+       where Tag == 'watches/fitbit'
+)
+{CODE-BLOCK/}
+   * {CODE-BLOCK: JSON}
+from Users as u where Age < 30
+select timeseries(
+    from HeartRate 
+       between '2020-05-27T00:00:00.0000000Z' 
+            and '2020-06-23T00:00:00.0000000Z'
+       // Where the tag is one of several options
+       where Tag in ('watches/Letsfit', 'watches/Willful', 'watches/Lintelek')
+)
+{CODE-BLOCK/}
+  
+* Filter entries by value using `where Value`.  
+  E.g. -  
 {CODE-BLOCK: JSON}
 from Users as u where Age < 30
 select timeseries(
     from HeartRate 
        between '2020-05-27T00:00:00.0000000Z' 
             and '2020-06-23T00:00:00.0000000Z'
-       where Tag='watches/fitbit'
+       where Value < 80
 )
 {CODE-BLOCK/}
-  
-* `where Tag='watches/fitbit'`  
-  Retrieve time series entries whose tag is 'watches/fitbit'.  
-  To filter entries by their by value use **Value**, e.g.`where Value < 80`.  
 
 ---
 
@@ -81,14 +102,14 @@ You can run queries from your client using raw RQL and LINQ.
 
 To filter results, use `Where()` in a LINQ query or `where` in a raw RQL query.  
 To filter results by a tag reference to a document, 
-use `LoadTag()` in a LINQ query or `load tag` in a raw RQL query.  
+use `LoadByTag()` in a LINQ query or `load tag` in a raw RQL query.  
 
 * In this sample, we send the query we 
   [presented above](../../../document-extensions/timeseries/querying/filtering#using-tags-as-references---) 
   to the server in raw RQL and in LINQ format.
 
     {CODE-TABS}
-    {CODE-TAB:csharp:LINQ ts_region_Filter-By-LoadTag-LINQ@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+    {CODE-TAB:csharp:LINQ ts_region_Filter-By-LoadByTag-LINQ@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
     {CODE-TAB:csharp:Raw-RQL ts_region_Filter-By-load-Tag-Raw-RQL@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
     {CODE-TABS/}
 
