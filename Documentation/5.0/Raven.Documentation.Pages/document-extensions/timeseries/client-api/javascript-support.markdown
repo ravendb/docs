@@ -20,8 +20,8 @@ documents has been extended to allow manipulations involving time series.
   * [JavaScript API methods](../../../document-extensions/timeseries/client-api/javascript-support#javascript-api-methods)  
      * [timeseries - Choose a Time Series](../../../document-extensions/timeseries/client-api/javascript-support#section)  
      * [timeseries.append - Append an Entry](../../../document-extensions/timeseries/client-api/javascript-support#section-1)  
-     * [timeseries.delete - Delete Entries Range](../../../document-extensions/timeseries/client-api/javascript-support#section-3)  
-     * [timeseries.get - Get Entries Range](../../../document-extensions/timeseries/client-api/javascript-support#section-4)  
+     * [timeseries.delete - Delete Entries Range](../../../document-extensions/timeseries/client-api/javascript-support#section-2)  
+     * [timeseries.get - Get Entries Range](../../../document-extensions/timeseries/client-api/javascript-support#section-3)  
   * [Usage Samples](../../../document-extensions/timeseries/client-api/javascript-support#usage-samples)  
 
 {NOTE/}
@@ -76,10 +76,33 @@ Use this method to delete a range of entries from a document.
 
 Use this method to retrieve a range of time series entries.  
 
-| Parameter | Type | Explanation 
-|:---:|:---:| --- |
-| from (optional) | `DateTime` | Range Start <br> Default: `DateTime.Min` 
-| to (optional) | `DateTime` | Range End <br> Default: `DateTime.Max` 
+* Parameters:  
+
+      | Parameter | Type | Explanation 
+      |:---:|:---:| --- |
+      | from (optional) | `DateTime` | Range Start <br> Default: `DateTime.Min` 
+      | to (optional) | `DateTime` | Range End <br> Default: `DateTime.Max` 
+
+* Return Type:  
+  Values are returned in an array of time series entries, i.e. -
+
+      {CODE-BLOCK:JSON}
+  [
+	{
+		"Timestamp" : ...
+		"Tag": ...
+		"Values": ...
+		"IsRollup": ...
+	},
+	{
+		"Timestamp" : ...
+		"Tag": ...
+		"Values": ...
+		"IsRollup": ...
+	}
+	...
+  ]
+  {CODE-BLOCK/}
 
 {PANEL/}
 

@@ -81,7 +81,7 @@ using LINQ expressions.
      {CODE ts_region_Index-TS-Queries-4-DocumentQuery-with-Linq@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 * **Async queries**  
-  If you are coding in asynchronous manner, you can take leverage of the async support of our queries.
+  You can run asynchronous queries as well.
   {CODE ts_region_Index-TS-Queries-5-session-Query-Async@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 {PANEL/}

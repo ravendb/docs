@@ -114,28 +114,47 @@ namespace SlowTests.Client.TimeSeries.Session
             }
             #endregion
 
-            #region timeseries_region_Get-Strongly-Typed
+            #region timeseries_region_Get-NO-Named-Values
+            // Is the stock's closing-price rising?
             bool goingUp = false;
 
-            // Use Get
             using (var session = store.OpenSession())
             {
-                // get entries by GetAsync, using the strongly typed StockPrice class
-                var results = session.TimeSeriesFor<StockPrice>("users/john")
+                TimeSeriesEntry[] val = session.TimeSeriesFor("users/john", "StockPrices")
                     .Get();
 
-                var ClosePriceDay1 = results[0].Value.Close;
-                var ClosePriceDay2 = results[1].Value.Close;
-                var ClosePriceDay3 = results[2].Value.Close;
+                var closePriceDay1 = val[0].Values[1];
+                var closePriceDay2 = val[1].Values[1];
+                var closePriceDay3 = val[2].Values[1];
 
-                if ((ClosePriceDay2 > ClosePriceDay1)
+                if ((closePriceDay2 > closePriceDay1)
                     &&
-                    (ClosePriceDay3 > ClosePriceDay2))
+                    (closePriceDay3 > closePriceDay2))
                     goingUp = true;
             }
             #endregion
 
-            #region timeseries_region_Append-Strongly-Typed-1
+            #region timeseries_region_Get-Named-Values
+            // Is the stock's closing-price rising?
+            bool goingUp = false;
+
+            using (var session = store.OpenSession())
+            {
+                TimeSeriesEntry<StockPrice>[] val = session.TimeSeriesFor<StockPrice>("users/john")
+                    .Get();
+
+                var closePriceDay1 = val[0].Value.Close;
+                var closePriceDay2 = val[1].Value.Close;
+                var closePriceDay3 = val[2].Value.Close;
+
+                if ((closePriceDay2 > closePriceDay1)
+                    &&
+                    (closePriceDay3 > closePriceDay2))
+                    goingUp = true;
+            }
+            #endregion
+
+            #region timeseries_region_Append-Named-Values-1
             using (var session = store.OpenSession())
             {
                 session.Store(new User { Name = "John" }, "users/john");
@@ -152,7 +171,7 @@ namespace SlowTests.Client.TimeSeries.Session
             }
             #endregion
 
-            #region timeseries_region_Append-Strongly-Typed-2
+            #region timeseries_region_Append-Named-Values-2
             // append multi-value entries using a registered time series type
             using (var session = store.OpenSession())
             {
@@ -192,7 +211,7 @@ namespace SlowTests.Client.TimeSeries.Session
             }
             #endregion
 
-            #region timeseries_region_Strongly-Typed-Query
+            #region timeseries_region_Named-Values-Query
             using (var session = store.OpenSession())
             {
                 IRavenQueryable<TimeSeriesRawResult<StockPrice>> query =
@@ -204,7 +223,7 @@ namespace SlowTests.Client.TimeSeries.Session
             }
             #endregion
 
-            #region timeseries_region_Strongly-Typed-Register
+            #region timeseries_region_Named-Values-Register
             store.TimeSeries.Register<User, RoutePoint>();
             #endregion 
 
@@ -1101,7 +1120,7 @@ namespace SlowTests.Client.TimeSeries.Session
             int start = 0, int pageSize = int.MaxValue);
         #endregion
 
-        #region TimeSeriesFor-Get-Strongly-Typed
+        #region TimeSeriesFor-Get-Named-Values
         //The stongly-typed API is used, to address time series values by name.
         TimeSeriesEntry<TValues>[] Get(DateTime? from = null, DateTime? to = null, 
             int start = 0, int pageSize = int.MaxValue);

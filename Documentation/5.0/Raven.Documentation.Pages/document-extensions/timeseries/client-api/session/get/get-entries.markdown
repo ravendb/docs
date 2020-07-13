@@ -42,7 +42,7 @@ To get a range of time series entries, use one of the `TimeSeriesFor.Get` method
 
 * There are two `TimeSeriesFor.Get` methods:  
    {CODE TimeSeriesFor-Get-definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-   {CODE TimeSeriesFor-Get-Strongly-Typed@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+   {CODE TimeSeriesFor-Get-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 * **Parameters**  
 
@@ -54,11 +54,10 @@ To get a range of time series entries, use one of the `TimeSeriesFor.Get` method
     | `pagesize` | `int` | Paging page-size. <br> E.g. set `pagesize` to 10 to retrieve pages of 10 entries. <br> Default: int.MaxValue, for all time series entries. |
 
 * **Return Values**  
-   * **`TimeSeriesEntry[]`** - an array of time series entry classes.  
+   * **`TimeSeriesEntry[]`** - an array of time series entry classes.
       {CODE TimeSeriesEntry-Definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-   * **`TimeSeriesEntry<TValues>[]`**  
-     The [strongly-typed API](../../../../../document-extensions/timeseries/client-api/strongly-typed-api) 
-     can be used to address retrieved values by name.  
+   * **`TimeSeriesEntry<TValues>[]`** - 
+     Time series values that can be referred to [by name](../../../../../document-extensions/timeseries/client-api/named-time-series-values).  
 
 {PANEL/}
 
@@ -85,11 +84,16 @@ To get a range of time series entries, use one of the `TimeSeriesFor.Get` method
 * In this sample we query for a document and get its "Heartrate" time series data.  
    {CODE timeseries_region_Pass-TimeSeriesFor-Get-Query-Results@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-* Here we retrieve entries and use the strongly typed API to check their values 
-  by name (as previously defined by the StockPrice structure).  
-  We check whether a stock's closing-time price is rising over three trade days.  
-   {CODE timeseries_region_Get-Strongly-Typed@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-   {CODE Custom-Data-Type-1@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+* Here, we check whether a stock's closing-time price is rising from day to day (over three days).  
+  Since each time series entry contains multiple StockPrice values, we include a sample that 
+  uses [named time series values](../../../../../document-extensions/timeseries/client-api/named-time-series-values) 
+  to make the code easier to read.  
+   
+{CODE-TABS}
+{CODE-TAB:csharp:Native timeseries_region_Get-NO-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE-TAB:csharp:Named timeseries_region_Get-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE-TABS/}
+
 {PANEL/}
 
 ## Related articles

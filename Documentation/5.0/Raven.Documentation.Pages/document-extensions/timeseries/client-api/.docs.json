@@ -22,14 +22,8 @@
         "Mappings": []
     },
     {
-        "Path": "strongly-typed-api.markdown",
-        "Name": "Strongly Typed API",
-        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
-        "Mappings": []
-    },
-    {
-        "Path": "register-time-series-types.markdown",
-        "Name": "Registering Time Series Types",
+        "Path": "named-time-series-values.markdown",
+        "Name": "Named Time Series Values",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     }

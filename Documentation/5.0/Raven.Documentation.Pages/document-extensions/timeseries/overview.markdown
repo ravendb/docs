@@ -12,7 +12,7 @@
 * RavenDB Time series can be managed and utilized using a thorough set of 
   [API methods](../../document-extensions/timeseries/client-api/overview), 
   the [Studio](../../studio/database/document-extensions/time-series), 
-  and [various RavenDB features](../../document-extensions/timeseries/timeseries-and-other-features/time series-and-other-features-overview#time series-and-other-features---overview).  
+  and [various RavenDB features](../..//document-extensions/timeseries/time-series-and-other-features).  
 
 * Time series data is **compressed** to lower storage usage and transaction time.  
 
