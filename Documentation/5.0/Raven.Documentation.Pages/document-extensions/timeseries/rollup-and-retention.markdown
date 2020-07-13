@@ -25,23 +25,32 @@ is kept before being deleted.
 
 #### What are Rollups?
 
-A **rollup** is a time series that summarizes the data from another time series 
-by dividing time series entries into set units of time (like a second or a week). 
-Each entry in the rollup time series represents one of those units, and the data 
-from that unit in the original time series is aggregated into six values:  
+A **rollup** is a time series that summarizes the data from another time series, 
+with each rollup entry representing a specific time frame in the original time 
+series. Each rollup entry contains 6 values that aggregate the data from all the 
+entries in the original time frame:  
 
-* *First* - the value of the first entry in the unit.  
+* *First* - the value of the first entry in the frame.  
 * *Last* - the value of the last entry.  
 * *Min* - the smallest value.  
 * *Max* - the largest value.  
-* *Sum* - the sum of all the values in the unit.  
-* *Count* - the total number of entries in the unit.  
+* *Sum* - the sum of all the values in the frame.  
+* *Count* - the total number of entries in the frame.  
 
 This results in a much more compact time series that still contains useful 
 information about the original time series (also called the "named" or "raw" 
 time series). Rollup time series are created automatically according to 
 **rollup policies**. Rollup policies apply to all timeseries of every document 
-in the given collection, and each collection can have multiple policies.  
+in the given collection. Each collection can be configured to have multiple 
+policies.  
+
+The rollup policies for a given collection are not applied independently. A given 
+raw time series is rolled up using the policy with the shortest aggregation 
+frame. Then that rollup time series is rolled up using the policy with the 
+_next_ shortest aggregation frame, and so on.  
+
+[Querying with group-by](..\..\document-extensions\timeseries\querying\aggregation-and-projections) 
+will transparently traverse over the rollups to retrieve the relevant results.  
 
 Let's look at an example of rollup data:  
 <br/>
@@ -56,17 +65,15 @@ Because time series entries are limited to 32 values, rollups are limited to
 the first five values of an original time series entry, or 30 aggregate values.  
 
 **2) Timestamp:**  
-The aggregation spans always begin at a round number of one of these time units: a 
-second, minute, hour, day, week, month, or year. So the span includes all entries 
-starting at a round number of time units, and ending at the next round number *minus 
+The aggregation frame always begin at a round number of one of these time units: a 
+second, minute, hour, day, week, month, or year. So the frame includes all entries 
+starting at a round number of time units, and ending at a round number *minus 
 one millisecond* (since milliseconds are the minimal resolution in RavenDB 
-time series). The timestamp for a rollup entry is the beginning of the span it 
+time series). The timestamp for a rollup entry is the beginning of the frame it 
 represents.  
 
-For example, if the aggregation span is one day, the spans will start at times like:  
-`2020-01-01 00:00:00`,  
-`2020-01-02 00:00:00`,  
-`2020-01-03 00:00:00` etc.  
+For example, if the aggregation frame is three days, a frame will start and end at a 
+time stamps like: `2020-01-01 00:00:00` - `2020-01-03 23:59:59.999`.
 
 **3) Name:**  
 A rollup time series' name has this format:  

@@ -3,21 +3,25 @@
 ---
 
 {NOTE: }
+
 * This page describes how time series interact with various other RavenDB 
 features.  
+
+* Features that are not listed here either have no special behavior in 
+regard to time series, or they have their own pages describing how they 
+interact with time series (such as [indexing](../../document-extensions/timeseries/indexing)).
 
 * In this page:  
   * [General Features](../../document-extensions/timeseries/time-series-and-other-features#general-features)  
   * [Smuggler](../../document-extensions/timeseries/time-series-and-other-features#smuggler)  
   * [Ongoing Tasks](../../document-extensions/timeseries/time-series-and-other-features#ongoing-tasks)  
   * [Revisions](../../document-extensions/timeseries/time-series-and-other-features#revisions)  
+
 {NOTE/}
 
 ---
 
-{PANEL: General Features}
-Most RavenDB features apply to time series in ways analogous to other types of 
-data and document extensions.  
+{PANEL: General Features}  
 
 * The Document Session [tracks](../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
 changes to time series data.  
@@ -70,6 +74,11 @@ and _loads_ it to some external target. Neither the **RavenDB ETL** nor the
 **SQL ETL** tasks can access or operate on time series data.  
 * [Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions) 
 send data to "worker" clients in batches.
+
+{INFO: }
+Support for time series in ETL is planned for one of the next releases.
+{INFO/}
+
 {PANEL/}
 
 {PANEL: Revisions}
