@@ -78,10 +78,10 @@ time series entries.
 
 {PANEL: Usage Samples}
 
-* In this sample we delete a single entry from a time series.  
+* Delete a single entry:  
    {CODE timeseries_region_Delete-TimeSeriesFor-Single-Time-Point@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-* In this sample we delete a range of entries from a time series.  
+* Delete a range of entries:  
    {CODE timeseries_region_TimeSeriesFor-Delete-Time-Points-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 {PANEL/}

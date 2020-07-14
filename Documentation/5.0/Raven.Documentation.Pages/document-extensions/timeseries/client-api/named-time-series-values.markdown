@@ -47,16 +47,14 @@ The class can then be used by time series methods like Append.
 
 #### Usage Samples
 
-* In this sample we define a StockPrice type, and then use it while 
-  appending StockPrice entries.
+* In this sample we define a StockPrice type, and use it while appending StockPrice entries.
   {CODE Custom-Data-Type-1@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
   {CODE timeseries_region_Append-Named-Values-2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-* In this sample we Get StockPrice values by name, to check whether a stock's closing-time 
-  price is ascending over time.
+* Here we Get StockPrice values by name, to check whether a stock's closing-time price is ascending over time.
    {CODE timeseries_region_Get-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-* In this query we use the custom StockPrice type to address retrieved values by name.
+* In this query we use the custom StockPrice type, so we can address trade Volume by name.
    {CODE timeseries_region_Named-Values-Query@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 {PANEL/}

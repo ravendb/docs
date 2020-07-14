@@ -79,8 +79,12 @@
   transaction when `SaveChanges` is executed.  
    {CODE timeseries_region_TimeSeriesFor-Append-TimeSeries-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-* In this sample we append a time series entry with three values.  
-   {CODE timeseries_region_Append-With-IEnumerable@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+* Here, we append multi-value StockPrice entries.  
+  Notice the clarity gained by [naming the values](../../../../document-extensions/timeseries/client-api/named-time-series-values).  
+   {CODE-TABS}
+   {CODE-TAB:csharp:Native timeseries_region_Append-Unnamed-Values-2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+   {CODE-TAB:csharp:Named timeseries_region_Append-Named-Values-2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+   {CODE-TABS/}
 
 {PANEL/}
 

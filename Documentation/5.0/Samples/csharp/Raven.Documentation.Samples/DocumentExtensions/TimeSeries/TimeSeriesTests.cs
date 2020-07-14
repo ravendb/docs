@@ -172,46 +172,75 @@ namespace SlowTests.Client.TimeSeries.Session
             #endregion
 
             #region timeseries_region_Append-Named-Values-2
-            // append multi-value entries using a registered time series type
+            // append multi-value entries by name
             using (var session = store.OpenSession())
             {
                 session.Store(new User { Name = "John" }, "users/john");
 
                 session.TimeSeriesFor<StockPrice>("users/john")
-                .Append(baseline.AddDays(1), new StockPrice
-                {
-                    Open = 52,
-                    Close = 54,
-                    High = 63.5,
-                    Low = 51.4,
-                    Volume = 9824,
-                }, "companies/kitchenAppliances");
+                .Append(baseline.AddDays(1), 
+                    new StockPrice
+                    {
+                        Open = 52,
+                        Close = 54,
+                        High = 63.5,
+                        Low = 51.4,
+                        Volume = 9824,
+                    }, "companies/kitchenAppliances");
 
                 session.TimeSeriesFor<StockPrice>("users/john")
-                .Append(baseline.AddDays(2), new StockPrice
-                {
-                    Open = 54,
-                    Close = 55,
-                    High = 61.5,
-                    Low = 49.4,
-                    Volume = 8400,
-                }, "companies/kitchenAppliances");
+                .Append(baseline.AddDays(2), 
+                    new StockPrice
+                    {
+                        Open = 54,
+                        Close = 55,
+                        High = 61.5,
+                        Low = 49.4,
+                        Volume = 8400,
+                    }, "companies/kitchenAppliances");
 
                 session.TimeSeriesFor<StockPrice>("users/john")
-                .Append(baseline.AddDays(3), new StockPrice
-                {
-                    Open = 55,
-                    Close = 57,
-                    High = 65.5,
-                    Low = 50,
-                    Volume = 9020,
-                }, "companies/kitchenAppliances");
+                .Append(baseline.AddDays(3), 
+                    new StockPrice
+                    {
+                        Open = 55,
+                        Close = 57,
+                        High = 65.5,
+                        Low = 50,
+                        Volume = 9020,
+                    }, "companies/kitchenAppliances");
 
                 session.SaveChanges();
             }
             #endregion
 
+            #region timeseries_region_Append-Unnamed-Values-2
+            using (var session = store.OpenSession())
+            {
+                session.Store(new User { Name = "John" }, "users/john");
+
+                session.TimeSeriesFor("users/john", "StockPrices")
+                .Append(baseline.AddDays(1),
+                    new[] { 52, 54, 63.5, 51.4, 9824 }, "companies/kitchenAppliances");
+
+                session.TimeSeriesFor("users/john", "StockPrices")
+                .Append(baseline.AddDays(2),
+                    new[] { 54, 55, 61.5, 49.4, 8400 }, "companies/kitchenAppliances");
+
+                session.TimeSeriesFor("users/john", "StockPrices")
+                .Append(baseline.AddDays(3),
+                    new[] { 55, 57, 65.5, 50, 9020 }, "companies/kitchenAppliances");
+
+                session.SaveChanges();
+            }
+            #endregion
+
+            double day1Volume;
+            double day2Volume;
+            double day3Volume;
+
             #region timeseries_region_Named-Values-Query
+            // Named Values Query
             using (var session = store.OpenSession())
             {
                 IRavenQueryable<TimeSeriesRawResult<StockPrice>> query =
@@ -220,8 +249,33 @@ namespace SlowTests.Client.TimeSeries.Session
                     .Select(q => RavenQuery.TimeSeries<StockPrice>(q, "StockPrices", baseline, baseline.AddDays(3))
                         .Where(ts => ts.Tag == "companies/kitchenAppliances")
                         .ToList());
+
+                var result = query.ToList()[0];
+
+                day1Volume = result.Results[0].Value.Volume;
+                day2Volume = result.Results[1].Value.Volume;
+                day3Volume = result.Results[2].Value.Volume;
             }
             #endregion
+
+            #region timeseries_region_Unnamed-Values-Query
+            using (var session = store.OpenSession())
+            {
+                IRavenQueryable<TimeSeriesRawResult> query =
+                    session.Query<Company>()
+                    .Where(c => c.Address1 == "New York")
+                    .Select(q => RavenQuery.TimeSeries(q, "StockPrices", baseline, baseline.AddDays(3))
+                        .Where(ts => ts.Tag == "companies/kitchenAppliances")
+                        .ToList());
+
+                var result = query.ToList()[0];
+
+                day1Volume = result.Results[0].Values[4];
+                day2Volume = result.Results[1].Values[4];
+                day3Volume = result.Results[2].Values[4];
+            }
+            #endregion
+
 
             #region timeseries_region_Named-Values-Register
             store.TimeSeries.Register<User, RoutePoint>();
@@ -269,7 +323,6 @@ namespace SlowTests.Client.TimeSeries.Session
             }
             #endregion
 
-            #region timeseries_region_TimeSeriesFor-Delete-Time-Points-Range
             var baseline = DateTime.Today;
 
             // Append 10 HeartRate values
@@ -287,6 +340,7 @@ namespace SlowTests.Client.TimeSeries.Session
                 session.SaveChanges();
             }
 
+            #region timeseries_region_TimeSeriesFor-Delete-Time-Points-Range
             // Delete a range of 4 values from the time series
             using (var session = store.OpenSession())
             {

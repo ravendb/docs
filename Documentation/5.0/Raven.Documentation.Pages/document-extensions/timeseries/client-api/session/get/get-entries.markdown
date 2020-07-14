@@ -88,11 +88,10 @@ To get a range of time series entries, use one of the `TimeSeriesFor.Get` method
   Since each time series entry contains multiple StockPrice values, we include a sample that 
   uses [named time series values](../../../../../document-extensions/timeseries/client-api/named-time-series-values) 
   to make the code easier to read.  
-   
-{CODE-TABS}
-{CODE-TAB:csharp:Native timeseries_region_Get-NO-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-{CODE-TAB:csharp:Named timeseries_region_Get-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-{CODE-TABS/}
+   {CODE-TABS}
+   {CODE-TAB:csharp:Native timeseries_region_Get-NO-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+   {CODE-TAB:csharp:Named timeseries_region_Get-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+   {CODE-TABS/}
 
 {PANEL/}
 

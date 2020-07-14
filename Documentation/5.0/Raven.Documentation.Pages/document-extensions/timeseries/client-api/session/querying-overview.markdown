@@ -84,7 +84,14 @@ Learn more about `session.Query` [here](../../../../client-api/session/querying/
   The second occurance of `Where` filters entries.
   {CODE ts_region_LINQ-4-Where@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-* In the following sample, we group heart-rate data of people above the age of 72 
+* Here, we retrieve a company's stock trade data.  
+  Note the usage of named values, so we may address trade Volume [by name](../../../../document-extensions/timeseries/client-api/named-time-series-values).  
+   {CODE-TABS}
+   {CODE-TAB:csharp:Native timeseries_region_Unnamed-Values-Query@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+   {CODE-TAB:csharp:Named timeseries_region_Named-Values-Query@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+   {CODE-TABS/}
+
+* Here, we group heart-rate data of people above the age of 72 
   into 1-day groups, and retrieve each group's average heartrate and number of measurements.  
   The aggregated results are retrieved into an `IRavenQueryable<TimeSeriesAggregationResult>` array.  
   {CODE ts_region_LINQ-6-Aggregation@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
