@@ -21,7 +21,7 @@ client application or from the Studio.
 
 * In this page:  
   * [Syntax](../../document-extensions/timeseries/indexing#syntax)  
-      * [`AbstractTimeSeriesIndexCreationTask`](../../document-extentions/timeseries/indexing#section)  
+      * [`AbstractTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing#section)  
       * [`AbstractMultiMapMultiMapIndexCreationTask`](../../document-extensions/timeseries/indexing#section-1)
       * [`TimeSeriesIndexDefinition`](../../document-extensions/timeseries/indexing#section-2)
       * [`TimeSeriesSegment` Object](../../document-extensions/timeseries/indexing#object)
@@ -33,7 +33,7 @@ client application or from the Studio.
 
 {PANEL: Syntax }
 
-The are two main ways to create a time series index:  
+There are two main ways to create a time series index:  
 
 1. Create a class that inherits from   
   * [`AbstractTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing#section) for [map](../../indexes/map-indexes) and 
@@ -128,7 +128,7 @@ from entry in segment
 {CODE-BLOCK/}
 
 Segment properties include the entries data, and the aggregated values that 
-RavenDB automatically updates and keeps in the segment's header:  
+RavenDB automatically updates in the segment's header.  
 
 | Property | Type | Description |
 | - | - | - |
@@ -187,7 +187,6 @@ Yet another way to create a time series index is to create a
 [What are Indexes](../../indexes/what-are-indexes)  
 [Creating and Deploying Indexes](../../indexes/creating-and-deploying)  
 [Map Indexes](../../indexes/map-indexes)  
-[Creating and Deploying Indexes](../../indexes/creating-and-deploying)  
 [Multi-Map Indexes](../../indexes/multi-map-indexes)  
 [Map-Reduce Indexes](../../indexes/map-reduce-indexes)  
 [Indexing Related Documents](../../indexes/indexing-related-documents)  

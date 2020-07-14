@@ -5,7 +5,7 @@
 {NOTE: }
 
 * Time series entries can be filtered by their **value** (e.g. to 
-  retrieve a "Thermometer" time series entries whose measurement exceed 
+  retrieve a "Thermometer" time series entries whose measurement exceeds 
   32 Celsius degrees) or **tag** (e.g. to retrieve all the entries whose 
   tag is "Thermometer No. 3").  
 

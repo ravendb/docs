@@ -19,7 +19,7 @@
 * In this page:  
   * [Overview](../../document-extensions/timeseries/overview#overview)  
      * [RavenDB's Time Series Implementation](../../document-extensions/timeseries/overview#ravendbs-time-series-implementation)  
-     * [Distrubuted Time Series](../../document-extensions/timeseries/overview#distrubuted-time-series)  
+     * [Distributed Time Series](../../document-extensions/timeseries/overview#distributed-time-series)  
      * [Time Series as Document Extensions](../../document-extensions/timeseries/overview#time-series-as-document-extensions)  
      * [Time Series Features](../../document-extensions/timeseries/overview#time-series-features)  
   * [Time Series Data](../../document-extensions/timeseries/overview#time-series-data)  
@@ -45,7 +45,7 @@ and create other helpful statistics.
 Here are a few examples for value streams that can be easily and effectively 
 handled by time series.  
 
-* _A sequence of heartrate values can be collected from a smart 
+* _A sequence of heart rate values can be collected from a smart 
   wrist-watch_, and be used to build a person's training program.  
 * _Weather-stations' measurements_ collected over a chosen time period 
   can be compared to equivalent past periods to predict the weather.  
@@ -62,7 +62,7 @@ distributed environment and document model.
 
 ---
 
-#### Distrubuted Time Series
+#### Distributed Time Series
 
 Distributed clients and nodes can modify time series concurrently; the 
 modifications are merged by the cluster [without conflict](../../document-extensions/timeseries/design#no-conflicts).  
@@ -122,7 +122,7 @@ Notable time series features include -
      time series entries that have reached their expiration date/time.  
 * [Including Time Series](../../document-extensions/timeseries/client-api/session/include/overview)  
   You can include (pre-fetch) time series data while loading documents.  
-  Included data is held by the client's sesion, and is delivered to the 
+  Included data is held by the client's session, and is delivered to the 
   user with no additional server calls.  
 * **Patching**  
   You can patch time series data to your documents.  
@@ -153,7 +153,7 @@ are.
 
 Time series are composed of consecutive **segments**.  
 When a time series is created, its values are held in a single segment.  
-As the number of values grow (or when a certain amount of time has passed 
+As the number of values grows (or when a certain amount of time has passed 
 since the last entry appendage), segments are added to the series.  
 
 {INFO: }
@@ -190,15 +190,15 @@ Each entry is composed of a **timestamp**, 1 to 32 **values**, and an **optional
 #### Timestamps
 
 {INFO: }
-A single `DateTime` timestamp marks each entry in a millisecond precision.  
+A single `DateTime` timestamp marks each entry in millisecond precision.  
 {INFO/}
 
 Timestamps are always indicated using [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).  
 
 Timestamps, and therefore time series entries, are always ordered **by time**, 
 from the oldest timestamp to the newest.  
-E.g. in a heartrate time series, timestamps would indicate the time in which each 
-heartrate measurement has been taken.  
+E.g. in a heart rate time series, timestamps would indicate the time in which each 
+heart rate measurement has been taken.  
 
 ---
 

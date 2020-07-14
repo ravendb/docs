@@ -74,7 +74,7 @@
 
 {PANEL: Usage Samples}
 
-* In this sample we append an entry with a single value.  
+* In this sample, we append an entry with a single value.  
   Though We run a loop to append multiple entries, all entries are appended in a single 
   transaction when `SaveChanges` is executed.  
    {CODE timeseries_region_TimeSeriesFor-Append-TimeSeries-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  

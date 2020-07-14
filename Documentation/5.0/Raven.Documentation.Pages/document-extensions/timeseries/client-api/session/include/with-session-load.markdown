@@ -56,7 +56,7 @@ interface as an argument.
 * Open a session  
 * Call `session.Load` and pass it -  
    * The **Document ID**  
-   * The **`IncludeTimeSeries`** method with its argumrnts:  
+   * The **`IncludeTimeSeries`** method with its arguments:  
      **Time series name**  
      **Range start**  
      **Range end**  

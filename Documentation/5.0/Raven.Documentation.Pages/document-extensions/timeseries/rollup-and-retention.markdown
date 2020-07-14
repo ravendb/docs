@@ -40,7 +40,7 @@ entries in the original time frame:
 This results in a much more compact time series that still contains useful 
 information about the original time series (also called the "named" or "raw" 
 time series). Rollup time series are created automatically according to 
-**rollup policies**. Rollup policies apply to all timeseries of every document 
+**rollup policies**. Rollup policies apply to all time series of every document 
 in the given collection. Each collection can be configured to have multiple 
 policies.  
 
@@ -65,7 +65,7 @@ Because time series entries are limited to 32 values, rollups are limited to
 the first five values of an original time series entry, or 30 aggregate values.  
 
 **2) Timestamp:**  
-The aggregation frame always begin at a round number of one of these time units: a 
+The aggregation frame always begins at a round number of one of these time units: a 
 second, minute, hour, day, week, month, or year. So the frame includes all entries 
 starting at a round number of time units, and ending at a round number *minus 
 one millisecond* (since milliseconds are the minimal resolution in RavenDB 

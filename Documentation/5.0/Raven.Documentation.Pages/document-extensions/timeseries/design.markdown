@@ -106,7 +106,7 @@ Each segment contains a number of consecutive entries from the same time series.
     * The maximum time gap between the first and last entries in a segment is 
       ~24.86 days (`int.MaxValue` milliseconds). Adding an entry that is further 
       than that from the first segment entry, would add it as the first entry 
-      of a new segment. As a consquence, segments of sparsely-updated time series 
+      of a new segment. As a consequence, segments of sparsely-updated time series 
       can be significantly smaller than 2 KB.  
     * The maximum number of unique tags allowed per segment, is 127.  
       A higher number than that, would cause the creation of a new segment.  
@@ -122,8 +122,8 @@ Each segment contains a number of consecutive entries from the same time series.
    - The segment's values **Sum**  
 
       {NOTE: }
-      The existence of aggregate values make it worthwhile to reference individual segments 
-      in indexes and queries.  
+      The existence of aggregate values makes it worthwhile to reference individual 
+      segments in indexes and queries.  
       {NOTE/}
 
       {NOTE: }
@@ -149,9 +149,9 @@ using the [LZ4 algorithm](https://lz4.github.io/lz4/).
 
 * **Name Change**  
   **Creating** or **deleting** a time series adds or removes its name 
-  from the metadata of the document it extends.  
-  This modification counts as document-change event, and so it triggers 
-  processes such as revisions.  
+  to/from the metadata of the document it belongs to.  
+  This modification triggers a document-change event, and processes such 
+  as revisions.  
 * **Data Updates**  
   Modifying time series data does **not** invoke a document-change event, 
   as long as it doesn't create a new time series or remove an existing one.  

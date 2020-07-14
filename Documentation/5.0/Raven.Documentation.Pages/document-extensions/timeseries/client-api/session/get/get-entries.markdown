@@ -31,7 +31,7 @@ To get a range of time series entries, use one of the `TimeSeriesFor.Get` method
 `TimeSeriesFor.Get` retrieves a range of entries from a single time series.  
      
 * To retrieve multiple series' data, use the 
-  [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get/get-multiple-TS-data) 
+  [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get#getmultipletimeseriesoperation) 
   document-store operation.  
 * Retrieved data can be sliced to **pages** to get time series entries 
   gradually, one custom-size page at a time.  

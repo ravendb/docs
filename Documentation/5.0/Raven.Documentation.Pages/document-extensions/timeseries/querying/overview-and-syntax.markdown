@@ -107,9 +107,9 @@ select timeseries(
   
     {INFO: }
     A typical time series query starts by locating a single document.  
-    For example, to query a stock prices time series we can locate 
-    a specific company's profile in the Companies collection first, 
-    and then query the StockPrices time series that extends this profile.  
+    For example, to query a time series of stock prices, we can first 
+    locate a specific company's profile in the Companies collection, 
+    and then query the StockPrices time series that belongs to this profile.  
       {CODE-BLOCK: JSON}
       from Companies as c where Name = 'Apple'
       select timeseries(

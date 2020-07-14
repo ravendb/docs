@@ -47,7 +47,7 @@ time series.
 * **Return Value**: **`TimeSeriesRangeResult`**  
      {CODE TimeSeriesRangeResult-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-   * Requesting a time series that doesn't existing will return `null`.  
+   * Requesting a time series that doesn't exist will return `null`.  
    * Requesting an entries range that doesn't exist will return a `TimeSeriesRangeResult` object with an 
      empty `Entries` property.  
 
@@ -102,7 +102,7 @@ multiple time series.
      {CODE TimeSeriesRangeResult-class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
     * When a time series or an entries range that do not exist are requested, 
-      the return value for the erronous range is a `TimeSeriesRangeResult` 
+      the return value for the erroneous range is a `TimeSeriesRangeResult` 
       object with an empty `Entries` property.  
 
 * **Exceptions**  

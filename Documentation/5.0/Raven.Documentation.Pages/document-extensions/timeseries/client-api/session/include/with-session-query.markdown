@@ -42,7 +42,7 @@ method of the `IQueryIncludeBuilder` interface as an argument.
 {PANEL: Usage Flow}
 
 * Open a session  
-* Call `session.Query`with the `Include` Linq expression  
+* Call `session.Query` with the `Include` Linq expression  
   Pass it the `IncludeTimeSeries` method as an argument  
 * Pass `IncludeTimeSeries` its arguments:  
    * **Time series name**  

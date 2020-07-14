@@ -15,7 +15,7 @@
   and projected to the client.  
   When a query does **not** select specific criteria, RavenDB will consider it 
   an implicit selection of **all** criteria and project to the client the values 
-  from each group, that match each criteria.  
+  from each group, that match each criterion.  
 
     {INFO: Projecting values from Aggregated and Non-Aggregated result-sets}
 
@@ -84,12 +84,12 @@ from Users as u where Age < 30
     )
     {CODE-BLOCK/}
    * **group by '1 days'**  
-     We group each user's HeartRate time series entries in consequtive 1-day groups.  
+     We group each user's HeartRate time series entries in consecutive 1-day groups.  
    * **select min(), max()**  
      We select the lowest and highest values of each group and project them to the client.  
 
 * In this sample, we group entries of companies' StockPrice time series 
-  in consequtive 7-day groups and project the highest and lowest values 
+  in consecutive 7-day groups and project the highest and lowest values 
   of each group.  
   Each StockPrice entry holds five values, the query returns the `Max` 
   and `Min` values of each:  
@@ -113,7 +113,7 @@ select c.Name, SP(c)
    * **where Values[4] > 500000**  
      Query stock price behavior when the trade volume is high.  
    * **group by '7 day'**  
-     Group each company's StockPrice entries in consequtive 7-day groups.  
+     Group each company's StockPrice entries in consecutive 7-day groups.  
    * **select max(), min()**  
      Select the highest (`Max`) and lowest (`Min`) 
      values of each group and project them to the client.  

@@ -54,7 +54,7 @@ Use this method to get all the names of a document's time series.
 
 {PANEL: Usage Sample}
 
-In this sample we load a user document and use `Advanced.GetTimeSeriesFor` 
+In this sample, we load a user document and use `Advanced.GetTimeSeriesFor` 
 to get a list of its time series' names.  
 {CODE timeseries_region_Retrieve-TimeSeries-Names@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 

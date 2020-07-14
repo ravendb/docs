@@ -39,7 +39,7 @@ property that can be used to export chosen database items to an external
 file or to import database items from an existing file into the database.  
 
 To [configure smuggler](../../client-api/smuggler/what-is-smuggler#databasesmugglerexportoptions) 
-to handle time series, add the paramater `DatabaseItemType.TimeSeries` 
+to handle time series, add the parameter `DatabaseItemType.TimeSeries` 
 to the `OperateOnTypes` object.  
 
 {CODE-BLOCK: csharp}

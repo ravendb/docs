@@ -59,8 +59,8 @@
 
 {PANEL: Usage Samples}
 
-* In this sample, we pass `Defer`a script that appends a document 100 time series 
-  entries with random heartrate values.  
+* In this sample, we pass `Defer` a script that appends a document 100 time series 
+  entries with random heart rate values.  
   {CODE TS_region-Session_Patch-Append-100-Random-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 * In this sample, we remove a range of 50 time series entries from a document.  

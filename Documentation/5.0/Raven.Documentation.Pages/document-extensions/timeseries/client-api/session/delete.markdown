@@ -30,7 +30,7 @@ time series entries.
 
 {PANEL/}
 
-{PANEL: Syntx}
+{PANEL: Syntax}
 
 * There are two `TimeSeriesFor.Delete` methods:  
    * Delete a single time series entry.

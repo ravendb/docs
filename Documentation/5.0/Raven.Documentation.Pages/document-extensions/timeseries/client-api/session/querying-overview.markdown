@@ -92,7 +92,7 @@ Learn more about `session.Query` [here](../../../../client-api/session/querying/
    {CODE-TABS/}
 
 * Here, we group heart-rate data of people above the age of 72 
-  into 1-day groups, and retrieve each group's average heartrate and number of measurements.  
+  into 1-day groups, and retrieve each group's average heart rate and number of measurements.  
   The aggregated results are retrieved into an `IRavenQueryable<TimeSeriesAggregationResult>` array.  
   {CODE ts_region_LINQ-6-Aggregation@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
