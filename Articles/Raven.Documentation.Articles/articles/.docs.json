@@ -788,11 +788,11 @@
             "subcategories": "nosql-database"
         },
         "SeoMetaProperties": {
-            "description": "Graph Queries, Pull Replication, Revert Revisions, are all new features in RavenDB 4.2. RavenDB 4.2 also gives stable release to Clusterwide Transactions, JavaScript Indexes, and Distributed Counters.",
+            "description": "Graph Queries, Pull Replication, Revert Revisions, are new features in RavenDB 4.2 with Clusterwide Transactions, JavaScript Indexes, and Distributed Counters.",
             "og:site_name": "RavenDB",
             "og:type": "website",
             "og:title": "Graphs, Counters, Revisions and More: A RavenDB 4.2 Review | RavenDB",
-            "og:description": "Graph Queries, Pull Replication, Revert Revisions, are all new features in RavenDB 4.2. RavenDB 4.2 also gives stable release to Clusterwide Transactions, JavaScript Indexes, and Distributed Counters.",
+            "og:description": "Graph Queries, Pull Replication, Revert Revisions, are new features in RavenDB 4.2 with Clusterwide Transactions, JavaScript Indexes, and Distributed Counters.",
             "og:url": "https://ravendb.net/articles/ravendb-42-review-graphs-counters-revisions-and-more",
             "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-42-review-graphs-counters-revisions-and-more&fileName=ravendb-42-review-graphs-counters-revisions-and-more.jpg",
             "og:image:width": "280",
@@ -801,7 +801,7 @@
             "twitter:creator": "@RavenDB",
             "twitter:site": "@RavenDB",
             "twitter:title": "Graphs, Counters, Revisions and More: A RavenDB 4.2 Review | RavenDB",
-            "twitter:description": "Graph Queries, Pull Replication, Revert Revisions, are all new features in RavenDB 4.2. RavenDB 4.2 also gives stable release to Clusterwide Transactions, JavaScript Indexes, and Distributed Counters.",
+            "twitter:description": "Graph Queries, Pull Replication, Revert Revisions, are new features in RavenDB 4.2 with Clusterwide Transactions, JavaScript Indexes, and Distributed Counters.",
             "twitter:url": "https://ravendb.net/articles/ravendb-42-review-graphs-counters-revisions-and-more"
         }
     },
@@ -897,7 +897,7 @@
         "Name": "21 Improvements to Our NoSQL Document Database",
         "Mappings": [],
         "Metadata": {
-            "title": "21 Improvements to Our NoSQL Document Database",
+            "title": "21 Improvements to Our NoSQL Document Database | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/21-improvements-to-our-nosql-document-database",
             "publishedAt": "2019-08-21",
@@ -984,7 +984,7 @@
         "Name": "Exposing the Advantages of an Open Source Database",
         "Mappings": [],
         "Metadata": {
-            "title": "Exposing the Advantages of an Open Source Database | RavenDB",
+            "title": "Open Source Database Advantages | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/exposing-the-advantages-of-an-open-source-database",
             "publishedAt": "2019-10-22",
@@ -1067,62 +1067,62 @@
         }
     },
 	{
-			"Path": "ravendb-vs-mongodb-performance-cost-and-complexity.markdown",
-			"Name": "RavenDB vs MongoDB: Database Performance, Cost, and Complexity",
-			"Mappings": [],
-			"Metadata": {
-				"title": "RavenDB vs MongoDB: Database Performance, Cost, and Complexity",
-				"likeSection": "yes",
-				"url": "https://ravendb.net/articles/ravendb-vs-mongodb-performance-cost-and-complexity",
-				"publishedAt": "2019-11-05",
-				"subcategories": "nosql-database"
-			},
-			"SeoMetaProperties": {
-				"description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
-				"og:site_name": "RavenDB",
-				"og:type": "website",
-				"og:title": "RavenDB vs MongoDB: Performance, Cost, and Complexity",
-				"og:description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
-				"og:url": "https://ravendb.net/articles/ravendb-vs-mongodb-performance-cost-and-complexity",
-				"og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-vs-mongodb-performance-cost-and-complexity&fileName=ravendb-vs-mongodb-performance-cost-and-complexity.jpg",
-				"og:image:width": "280",
-				"og:image:height": "280",
-				"twitter:card": "summary_large_image",
-				"twitter:creator": "@RavenDB",
-				"twitter:site": "@RavenDB",
-				"twitter:title": "RavenDB vs MongoDB: Performance, Cost, and Complexity",
-				"twitter:description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
-				"twitter:url": "https://ravendb.net/articles/ravendb-vs-mongodb-performance-cost-and-complexity"
-			}
+		"Path": "ravendb-vs-mongodb-performance-cost-and-complexity.markdown",
+		"Name": "RavenDB vs MongoDB: Database Performance, Cost, and Complexity",
+		"Mappings": [],
+		"Metadata": {
+			"title": "RavenDB vs MongoDB: Database Performance, Cost, and Complexity",
+			"likeSection": "yes",
+			"url": "https://ravendb.net/articles/ravendb-vs-mongodb-performance-cost-and-complexity",
+			"publishedAt": "2019-11-05",
+			"subcategories": "nosql-database"
+		},
+        "SeoMetaProperties": {
+            "description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "RavenDB vs MongoDB: Performance, Cost, and Complexity",
+            "og:description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
+            "og:url": "https://ravendb.net/articles/ravendb-vs-mongodb-performance-cost-and-complexity",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-vs-mongodb-performance-cost-and-complexity&fileName=ravendb-vs-mongodb-performance-cost-and-complexity.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "RavenDB vs MongoDB: Performance, Cost, and Complexity",
+            "twitter:description": "Hundreds of Application Developers ask us all the time: How does RavenDB compare to MongoDB where it counts? In Performance, Cost, and Complexity?",
+            "twitter:url": "https://ravendb.net/articles/ravendb-vs-mongodb-performance-cost-and-complexity"
+        }
 	},
 	{
-			"Path": "how-ravendb-cloud-dbaas-bolsters-your-price-predictability.markdown",
-			"Name": "DbaaS Price and Cloud Database Costs",
-			"Mappings": [],
-			"Metadata": {
-				"title": "DbaaS Price and Cloud Database Costs",
-				"likeSection": "yes",
-				"url": "https://ravendb.net/articles/how-ravendb-cloud-dbaas-bolsters-your-price-predictability",
-				"publishedAt": "2019-11-04",
-				"subcategories": "nosql-database"
-			},
-			"SeoMetaProperties": {
-				"description": "The primary goal in using any DBaaS or SaaS tool is to cut costs. The challenge is to anticipate your next database cloud bill. RavenDB Cloud helps you accomplish both.",
-				"og:site_name": "RavenDB",
-				"og:type": "website",
-				"og:title": "How RavenDB Cloud DBaaS Bolsters Your Price Predictability",
-				"og:description": "The primary goal in using any DBaaS or SaaS tool is to cut costs. The challenge is to anticipate your next cloud bill. RavenDB Cloud helps you accomplish both.",
-				"og:url": "https://ravendb.net/articles/how-ravendb-cloud-dbaas-bolsters-your-price-predictability",
-				"og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/how-ravendb-cloud-dbaas-bolsters-your-price-predictability&fileName=how-ravendb-cloud-dbaas-bolsters-your-price-predictability.jpg",
-				"og:image:width": "280",
-				"og:image:height": "280",
-				"twitter:card": "summary_large_image",
-				"twitter:creator": "@RavenDB",
-				"twitter:site": "@RavenDB",
-				"twitter:title": "How RavenDB Cloud DBaaS Bolsters Your Price Predictability",
-				"twitter:description": "The primary goal in using any DBaaS or SaaS tool is to cut costs. The challenge is to anticipate your next cloud bill. RavenDB Cloud helps you accomplish both.",
-				"twitter:url": "https://ravendb.net/articles/how-ravendb-cloud-dbaas-bolsters-your-price-predictability"
-			}
+		"Path": "how-ravendb-cloud-dbaas-bolsters-your-price-predictability.markdown",
+		"Name": "DbaaS Price and Cloud Database Costs",
+		"Mappings": [],
+        "Metadata": {
+            "title": "DbaaS Price and Cloud Database Costs",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/how-ravendb-cloud-dbaas-bolsters-your-price-predictability",
+            "publishedAt": "2019-11-04",
+            "subcategories": "nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "The primary goal in using any DBaaS or SaaS tool is to cut costs. The challenge is to anticipate your next database cloud bill. RavenDB Cloud helps you accomplish both.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "How RavenDB Cloud DBaaS Bolsters Your Price Predictability",
+            "og:description": "The primary goal in using any DBaaS or SaaS tool is to cut costs. The challenge is to anticipate your next cloud bill. RavenDB Cloud helps you accomplish both.",
+            "og:url": "https://ravendb.net/articles/how-ravendb-cloud-dbaas-bolsters-your-price-predictability",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/how-ravendb-cloud-dbaas-bolsters-your-price-predictability&fileName=how-ravendb-cloud-dbaas-bolsters-your-price-predictability.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "How RavenDB Cloud DBaaS Bolsters Your Price Predictability",
+            "twitter:description": "The primary goal in using any DBaaS or SaaS tool is to cut costs. The challenge is to anticipate your next cloud bill. RavenDB Cloud helps you accomplish both.",
+            "twitter:url": "https://ravendb.net/articles/how-ravendb-cloud-dbaas-bolsters-your-price-predictability"
+        }
     },
     {
         "Path": "new-ravendb-cloud-features-that-make-your-saas-easier.markdown",
@@ -1252,11 +1252,11 @@
             "subcategories": "nosql-database"
         },
         "SeoMetaProperties": {
-            "description": "Why should your database keep you busy? RavenDB will make life so simple for you, we're gonna transform the Roaring 20's into the Boring 20's.",
+            "description": "Why should your database keep you busy? Your database should make life simple for you - transforming the Roaring 20’s into the Boring 20’s.",
             "og:site_name": "RavenDB",
             "og:type": "website",
-            "og:title": "The Best Database - The Most Boring Ever | RavenDB",
-            "og:description": "Why should your database keep you busy? RavenDB will make life so simple for you, we're gonna transform the Roaring 20's into the Boring 20's.",
+            "og:title": "RavenDB Wants to be the Most Boring Database Ever",
+            "og:description": "Why should your database keep you busy? RavenDB will make life so simple for you, we’re gonna transform the Roaring 20’s into the Boring 20’s.",
             "og:url": "https://ravendb.net/articles/ravendb-wants-to-be-the-most-boring-database-ever",
             "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-wants-to-be-the-most-boring-database-ever&fileName=ravendb-wants-to-be-the-most-boring-database-ever.jpg",
             "og:image:width": "280",
@@ -1264,8 +1264,8 @@
             "twitter:card": "summary_large_image",
             "twitter:creator": "@RavenDB",
             "twitter:site": "@RavenDB",
-            "twitter:title": "The Best Database - The Most Boring Ever | RavenDB",
-            "twitter:description": "Why should your database keep you busy? RavenDB will make life so simple for you, we're gonna transform the Roaring 20's into the Boring 20's.",
+            "twitter:title": "RavenDB Wants to be the Most Boring Database Ever",
+            "twitter:description": "Why should your database keep you busy? RavenDB will make life so simple for you, we’re gonna transform the Roaring 20’s into the Boring 20’s.",
             "twitter:url": "https://ravendb.net/articles/ravendb-wants-to-be-the-most-boring-database-ever"
         }
     },
@@ -1303,7 +1303,7 @@
         "Name": "A Lean Database for 2020 | RavenDB",
         "Mappings": [],
         "Metadata": {
-            "title": "Keeping Our New Year’s Resolution: A Lean Database for 2020",
+            "title": "A Lean Database for 2020 | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/a-lean-nosql-database-for-2020",
             "publishedAt": "2020-01-27",
@@ -1314,7 +1314,7 @@
             "og:site_name": "RavenDB",
             "og:type": "website",
             "og:title": "Keeping Our New Year’s Resolution: A Lean Database for 2020",
-            "og:description": "On the Cloud, there is a hidden cost to a new version of software: Bloat. For 2020 and beyond, RavenDB promises to keep its NoSQL Database lean and mean.",
+            "og:description": "On the Cloud, there is a hidden cost to a new version of software: Bloat. For 2020 and beyond RavenDB promises to keep its NoSQL Database lean and mean.",
             "og:url": "https://ravendb.net/articles/a-lean-nosql-database-for-2020",
             "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/a-lean-nosql-database-for-2020&fileName=a-lean-nosql-database-for-2020.jpg",
             "og:image:width": "280",
@@ -1390,7 +1390,7 @@
         "Name": "Spin up a RavenDB Cloud Database | RavenDB",
         "Mappings": [],
         "Metadata": {
-            "title": "CodeProject Presents: RavenDB Cloud Step by Step",
+            "title": "Spin up a RavenDB Cloud Database",
             "likeSection": "yes",
             "url": "codeproject-presents-ravendb-cloud-step-by-step",
             "publishedAt": "2020-02-24",
@@ -1426,10 +1426,10 @@
             "subcategories": "nosql-database"
         },
         "SeoMetaProperties": {
-            "description": "RavenDB indexes use MapReduce tallies to aggregate data. Why stop there when you can use these aggregations to predict what your database will eventually query?",
+            "description": "RavenDB indexes use mapReduce tallies to aggregate data. Why stop there when you can use these aggregations to predict what your database will eventually query?",
             "og:site_name": "RavenDB",
             "og:type": "website",
-            "og:title": "How to Model Data using Indexes",
+            "og:title": "How RavenDB Models Data using Indexes",
             "og:description": "RavenDB indexes use MapReduce tallies to aggregate data. Why stop there when you can use these aggregations to predict what your database will eventually query?",
             "og:url": "https://ravendb.net/articles/codeproject-presents-how-ravendb-models-data-using-indexes",
             "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/codeproject-presents-how-ravendb-models-data-using-indexes&fileName=codeproject-presents-how-ravendb-models-data-using-indexes.jpg",
@@ -1438,7 +1438,7 @@
             "twitter:card": "summary_large_image",
             "twitter:creator": "@RavenDB",
             "twitter:site": "@RavenDB",
-            "twitter:title": "How to Model Data using Indexes",
+            "twitter:title": "How RavenDB Models Data using Indexes",
             "twitter:description": "RavenDB indexes use MapReduce tallies to aggregate data. Why stop there when you can use these aggregations to predict what your database will eventually query?",
             "twitter:url": "https://ravendb.net/articles/codeproject-presents-how-ravendb-models-data-using-indexes"
         }
@@ -1477,7 +1477,7 @@
         "Name": "RavenDB and Amberwood Help Millions of African Farmers",
         "Mappings": [],
         "Metadata": {
-            "title": "RavenDB and Amberwood Help Millions of African Farmers",
+            "title": "NoSQL Database and Amberwood Help Millions of African Farmers",
             "likeSection": "yes",
             "url": "ravendb-amberwood-help-millions-african-farmers",
             "publishedAt": "2020-03-23",
@@ -1513,7 +1513,7 @@
             "subcategories": "nosql-database"
         },
         "SeoMetaProperties": {
-            "description": "What is ACID? What is a cluster? How did two NoSQL databases become ACID at the cluster level?.",
+            "description": "What is ACID? What is a cluster? How did two NoSQL databases become ACID at the cluster level?",
             "og:site_name": "RavenDB",
             "og:type": "website",
             "og:title": "ACID Transactions in NoSQL Databases",
@@ -1535,7 +1535,7 @@
         "Name": "NoSQL Database for Demanding Workloads",
         "Mappings": [],
         "Metadata": {
-            "title": "NoSQL Database Creates a Personal Experience for Every User",
+            "title": "NoSQL Database for Demanding Workloads",
             "likeSection": "yes",
             "url": "nosql-database-creates-personal-experience-for-every-user",
             "publishedAt": "2020-04-14",
@@ -1546,7 +1546,7 @@
             "og:site_name": "RavenDB",
             "og:type": "website",
             "og:title": "NoSQL Database Creates a Personal Experience for Every User",
-            "og:description": "A first class database will allow your system to meet more demanding workloads. See how View.DO uses the RavenDB NoSQL Database to make it happen.",
+            "og:description": "A first class database can give every visitor to your website a customized first class experience. View.DO uses the RavenDB NoSQL Database to make it happen.",
             "og:url": "https://ravendb.net/articles/nosql-database-creates-personal-experience-for-every-user",
             "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-database-creates-personal-experience-for-every-user&fileName=nosql-database-creates-personal-experience-for-every-user.jpg",
             "og:image:width": "280",
@@ -1555,7 +1555,7 @@
             "twitter:creator": "@RavenDB",
             "twitter:site": "@RavenDB",
             "twitter:title": "NoSQL Database Creates a Personal Experience for Every User",
-            "twitter:description": "A first class database will allow your system to meet more demanding workloads. See how View.DO uses the RavenDB NoSQL Database to make it happen.",
+            "twitter:description": "A first class database can give every visitor to your website a customized first class experience. View.DO uses the RavenDB NoSQL Database to make it happen.",
             "twitter:url": "https://ravendb.net/articles/nosql-database-creates-personal-experience-for-every-user"
         }
 },
@@ -1574,7 +1574,7 @@
             "description": "StarNet chose the RavenDB NoSQL Database, to meet the growing demands of their rapidly expanding gaming platform.",
             "og:site_name": "RavenDB",
             "og:type": "website",
-            "og:title": "A NoSQL Database for online gaming",
+            "og:title": "StarNet Taps RavenDB NoSQL Database for Gaming Applications",
             "og:description": "An upset in the semifinals spikes traffic for a gaming application. To achieve the flexibility needed for today’s data, StarNet uses the RavenDB NoSQL Database.",
             "og:url": "https://ravendb.net/articles/starnet-taps-ravendb-nosql-database-for-gaming-applications",
             "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/starnet-taps-ravendb-nosql-database-for-gaming-applications&fileName=starnet-taps-ravendb-nosql-database-for-gaming-applications.jpg",
@@ -1583,7 +1583,7 @@
             "twitter:card": "summary_large_image",
             "twitter:creator": "@RavenDB",
             "twitter:site": "@RavenDB",
-            "twitter:title": "A NoSQL Database for online gaming",
+            "twitter:title": "StarNet Taps RavenDB NoSQL Database for Gaming Applications",
             "twitter:description": "An upset in the semifinals spikes traffic for a gaming application. To achieve the flexibility needed for today’s data, StarNet uses the RavenDB NoSQL Database.",
             "twitter:url": "https://ravendb.net/articles/starnet-taps-ravendb-nosql-database-for-gaming-applications"
         }
@@ -1604,7 +1604,7 @@
             "og:site_name": "RavenDB",
             "og:type": "website",
             "og:title": "RavenDB Counters, Graph API, JavaScript Index, Clusterwide ACID",
-            "og:description": "RavenDB 4.2 NoSQL database comes with some fantastic new features: Graph Queries, Clusterwide Transactions, Distributed Counters, JavaScript Indexes, and Revert Revisions.",
+            "og:description": "RavenDB 4.2 comes with some fantastic new features: Graph Queries, Clusterwide Transactions, Distributed Counters, JavaScript Indexes, and Revert Revisions.",
             "og:url": "https://ravendb.net/articles/ravendb-counters-graph-api-javascript-index-clusterwide-acid",
             "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-counters-graph-api-javascript-index-clusterwide-acid&fileName=ravendb-counters-graph-api-javascript-index-clusterwide-acid.jpg",
             "og:image:width": "280",
@@ -1613,7 +1613,7 @@
             "twitter:creator": "@RavenDB",
             "twitter:site": "@RavenDB",
             "twitter:title": "RavenDB Counters, Graph API, JavaScript Index, Clusterwide ACID",
-            "twitter:description": "RavenDB 4.2 NoSQL database comes with some fantastic new features: Graph Queries, Clusterwide Transactions, Distributed Counters, JavaScript Indexes, and Revert Revisions.",
+            "twitter:description": "RavenDB 4.2 comes with some fantastic new features: Graph Queries, Clusterwide Transactions, Distributed Counters, JavaScript Indexes, and Revert Revisions.",
             "twitter:url": "https://ravendb.net/articles/ravendb-counters-graph-api-javascript-index-clusterwide-acid"
         }
 },
@@ -1661,8 +1661,8 @@
             "description": "See why using RavenDB's NoSQL transactional ACID database, Sparkling Logic can now build robust solutions for the decision management marketplace that includes extensive flexibility and faster performance.",
             "og:site_name": "RavenDB",
             "og:type": "website",
-            "og:title": "NoSQL ACID Database | NoSQL Database Use Case",
-            "og:description": "See why using RavenDB's NoSQL transactional ACID database, Sparkling Logic can now build robust solutions for the decision management marketplace that includes extensive flexibility and faster performance.",
+            "og:title": "How Sparkling Logic Uses the RavenDB NoSQL Document Database",
+            "og:description": "Sparkling Logic enables businesses to automate the process of making risky decisions. They use the RavenDB NoSQL Database in a way you have never seen before.",
             "og:url": "https://ravendb.net/articles/how-sparkling-logic-uses-ravendb-nosql-document-database",
             "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/how-sparkling-logic-uses-ravendb-nosql-document-database&fileName=how-sparkling-logic-uses-ravendb-nosql-document-database.jpg",
             "og:image:width": "280",
@@ -1670,8 +1670,8 @@
             "twitter:card": "summary_large_image",
             "twitter:creator": "@RavenDB",
             "twitter:site": "@RavenDB",
-            "twitter:title": "NoSQL ACID Database | NoSQL Database Use Case",
-            "twitter:description": "See why using RavenDB's NoSQL transactional ACID database, Sparkling Logic can now build robust solutions for the decision management marketplace that includes extensive flexibility and faster performance.",
+            "twitter:title": "How Sparkling Logic Uses the RavenDB NoSQL Document Database",
+            "twitter:description": "Sparkling Logic enables businesses to automate the process of making risky decisions. They use the RavenDB NoSQL Database in a way you have never seen before.",
             "twitter:url": "https://ravendb.net/articles/how-sparkling-logic-uses-ravendb-nosql-document-database"
         }
 },
@@ -1719,7 +1719,7 @@
         "description": "NoSQL database query process is more complicated than it used to be in SQL. Read how RavenDB offers a highly structured and advanced way of querying data.",
         "og:site_name": "RavenDB",
         "og:type": "website",
-        "og:title": "NoSQL Database Query Process",
+        "og:title": "NoSQL Database Query | NoSQL Query process | Querying NoSQL DB",
         "og:description": "NoSQL database query process is more complicated than it used to be in SQL. Read how RavenDB offers a highly structured and advanced way of querying data.",
         "og:url": "https://ravendb.net/articles/nosql-database-query-process",
         "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-database-query-process&fileName=nosql-database-query-process.jpg",
@@ -1728,7 +1728,7 @@
         "twitter:card": "summary_large_image",
         "twitter:creator": "@RavenDB",
         "twitter:site": "@RavenDB",
-        "twitter:title": "NoSQL Database Query Process",
+        "twitter:title": "NoSQL Database Query | NoSQL Query process | Querying NoSQL DB",
         "twitter:description": "NoSQL database query process is more complicated than it used to be in SQL. Read how RavenDB offers a highly structured and advanced way of querying data.",
         "twitter:url": "https://ravendb.net/articles/nosql-database-query-process"
     }
@@ -1748,7 +1748,7 @@
         "description": "RavenDB NoSQL document database new features include query and index time series data, schedule periodic document refreshes, customize database compression, and a host of quality of life improvements and bug fixes.",
         "og:site_name": "RavenDB",
         "og:type": "website",
-        "og:title": "What's New in RavenDB 5.0",
+        "og:title": "RavenDB 5.0 | NoSQL Database New Features | What’s New",
         "og:description": "RavenDB NoSQL document database new features include query and index time series data, schedule periodic document refreshes, customize database compression, and a host of quality of life improvements and bug fixes.",
         "og:url": "https://ravendb.net/articles/whats-new-in-ravendb-50",
         "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/whats-new-in-ravendb-50&fileName=whats-new-in-ravendb-50.jpg",
@@ -1757,7 +1757,7 @@
         "twitter:card": "summary_large_image",
         "twitter:creator": "@RavenDB",
         "twitter:site": "@RavenDB",
-        "twitter:title": "What's New in RavenDB 5.0",
+        "twitter:title": "RavenDB 5.0 | NoSQL Database New Features | What’s New",
         "twitter:description": "RavenDB NoSQL document database new features include query and index time series data, schedule periodic document refreshes, customize database compression, and a host of quality of life improvements and bug fixes.",
         "twitter:url": "https://ravendb.net/articles/whats-new-in-ravendb-50"
     }
