@@ -72,6 +72,10 @@ namespace Raven.Documentation.Parser.Data
         Migration,
 
         [Prefix("cloud")]
-        Cloud
+        Cloud,
+
+        [Prefix("document-extensions")]
+        [Description("Document Extensions")]
+        DocumentExtensions
     }
 }
