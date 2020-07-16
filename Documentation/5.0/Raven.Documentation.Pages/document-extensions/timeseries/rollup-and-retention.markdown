@@ -1,4 +1,4 @@
-﻿# Time Series Rollup and Retention
+﻿# Time Series Rollups and Retention
 ---
 
 {NOTE: }
@@ -56,13 +56,15 @@ Let's look at an example of rollup data:
 <br/>
 !["Rollup time series entries"](images/rollup-1.png "A rollup time series' entries")
 
-**1) Values:**  
-Each group of six values represents one value in the original entries. If the raw 
-time series has *n* values per entry, the rollup time series will have _6*n_ per entry: 
-the first six summarize the first raw value, the next six summarize the next raw value, 
-and so on.  
-Because time series entries are limited to 32 values, rollups are limited to 
-the first five values of an original time series entry, or 30 aggregate values.  
+<br/>
+
+**1) Name:**  
+A rollup time series' name has this format:  
+`"<name of raw time series>@<name of time series policy>"`  
+It is a combination of the name of the raw time series and the name of the 
+time series policy separated by a `@` character - in the image above these are 
+"HeartRates" and "byHour" respectively. For this reason, neither 
+a time series name nor a policy name can have the character `@` in it.
 
 **2) Timestamp:**  
 The aggregation frame always begins at a round number of one of these time units: a 
@@ -73,15 +75,20 @@ time series). The timestamp for a rollup entry is the beginning of the frame it
 represents.  
 
 For example, if the aggregation frame is three days, a frame will start and end at a 
-time stamps like: `2020-01-01 00:00:00` - `2020-01-03 23:59:59.999`.
+time stamps like:  
+`2020-01-01 00:00:00` - `2020-01-03 23:59:59.999`.
 
-**3) Name:**  
-A rollup time series' name has this format:  
-`"<name of raw time series>@<name of time series policy>"`  
-It is a combination of the name of the raw time series and the name of the 
-time series policy separated by a `@` character - in the image above these are 
-"Heartrate & Blood Pressure" and "ByMinute" respectively. For this reason, neither 
-a time series name nor a policy name can have the character `@` in it.
+**3) Values:**  
+Each group of six values represents one value in the original entries. If the raw 
+time series has *n* values per entry, the rollup time series will have _6*n_ per entry: 
+the first six summarize the first raw value, the next six summarize the next raw value, 
+and so on. The aggregate values have the names:  
+`"First (<name of raw value>)", "Last (<name of raw value>)", ...` respectively.  
+Because time series entries are limited to 32 values, rollups are limited to 
+the first five values of an original time series entry, or 30 aggregate values.  
+
+
+
 
 {PANEL/}
 
