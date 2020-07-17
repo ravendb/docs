@@ -72,7 +72,9 @@ via the Studio they would be presented by name.
 To register a time series type, call `store.TimeSeries.Register`.  
 
 * `store.TimeSeries.Register` definition  
-   {CODE Register-Definitions@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+   {CODE Register-Definition-1@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+   {CODE Register-Definition-2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+   {CODE Register-Definition-3@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 * Parameters  
 

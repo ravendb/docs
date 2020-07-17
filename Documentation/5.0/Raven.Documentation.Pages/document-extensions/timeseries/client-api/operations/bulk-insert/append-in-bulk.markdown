@@ -24,7 +24,9 @@
 {PANEL: Syntax}
 
 *   `BulkInsert.TimeSeriesFor`
-    {CODE BulkInsert.TimeSeriesFor-definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+    {CODE-BLOCK: JSON}
+    public TimeSeriesBulkInsert TimeSeriesFor(string id, string name)
+    {CODE-BLOCK/}
 
      | Parameters | Type | Description |
      |:-------------|:-------------|:-------------|
