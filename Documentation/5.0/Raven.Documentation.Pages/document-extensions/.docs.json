@@ -8,5 +8,10 @@
         "Path": "/counters",
         "Name": "Counters",
         "Mappings": []
+    },
+    {
+        "Path": "/attachments",
+        "Name": "Attachments",
+        "Mappings": []
     }
 ]
