@@ -64,11 +64,11 @@ of its entries are deleted).
 {WARNING/}
 
 {INFO: }
-Displays the time series entry's:  
+Displays the time series entrys':  
 
 * Timestamp  
+* The numerical data: between 1 and 32 `double` values.  
 * Optional tag `string`  
-* The numerical data; between 1 and 32 `double` values.  
 {INFO/}  
 
 ---
