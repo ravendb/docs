@@ -208,7 +208,7 @@ so it can be immediately retrieved when needed with no additional remote calls.
 
 ## Related articles
 **Studio Articles**:  
-[Studio Counters Management](../../../studio/database/documents/document-view/additional-features/counters#counters)  
+[Studio Counters Management](../../../studio/database/document-extensions/counters#counters)  
 
 **Client-API - Session Articles**:  
 [Counters Overview](../../document-extensions/counters/overview)  

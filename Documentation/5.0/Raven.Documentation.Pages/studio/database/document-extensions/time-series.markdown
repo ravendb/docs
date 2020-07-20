@@ -8,12 +8,12 @@ allows you to edit, query and index time series data, as well as view it as list
 
 * In this page:
   * [Document View](../../../studio/database/document-extensions/time-series#document-view)
-    * [Create New Time Series / New Entry](../../../studio/database/document-extensions/time-series#create-new-time-series)
+     * [Create New Time Series / New Entry](../../../studio/database/document-extensions/time-series#create-new-time-series-by-creating-a-first-entry)
   * [Time Series View](../../../studio/database/document-extensions/time-series#time-series-view)
-    * [Edit Entry](../../../studio/database/document-extensions/time-series#editing-an-entry)
-    * [Delete Range](../../../studio/database/document-extensions/time-series#deleting-a-range-of-entries)
-  * [Graphical Display & Querying](../../../studio/database/document-extensions/time-series#querying-time-series)
-    * [Graph View](../../../studio/database/document-extensions/time-series#time-series-graph-view)
+     * [Edit Entry](../../../studio/database/document-extensions/time-series#editing-an-entry)
+     * [Delete Range](../../../studio/database/document-extensions/time-series#deleting-a-range-of-entries)
+  * [Querying Time Series](../../../studio/database/document-extensions/time-series#querying-time-series)
+     * [Graphical View](../../../studio/database/document-extensions/time-series#graphical-view)
 
 {NOTE/}
 
@@ -121,7 +121,7 @@ To specify a range of time series entries:
 
 ---
 
-#### Time Series Graph View
+#### Graphical View
 
 ![](images/time-series/time-series-graph.png)  
 

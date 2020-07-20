@@ -9,7 +9,7 @@
    * Voting results  
    * Any event related to the document  
 
-* Create and manage Counters using API methods, or through the [Studio](../../../studio/database/documents/document-view/additional-features/counters).  
+* Create and manage Counters using API methods, or through the [Studio](../../../studio/database/document-extensions/counters).  
 
 * In this page:  
   * [Why use Counters?](../../document-extensions/counters/overview#why-use-counters?)  
@@ -121,7 +121,7 @@ for example.
 
 ####Counters Naming Convention
 
-* Valid characters: All visible characters, [including Unicode symbols](../../../studio/database/documents/document-view/additional-features/counters#section)  
+* Valid characters: All visible characters, [including Unicode symbols](../../../studio/database/document-extensions/counters#section)  
 * Length: Up to 512 bytes  
 * Encoding: UTF-8  
 
@@ -196,7 +196,7 @@ can operate on a set of Counters of different documents in a single request.
 
 ## Related articles
 **Studio Articles**:  
-[Studio Counters Management](../../../studio/database/documents/document-view/additional-features/counters#counters)  
+[Studio Counters Management](../../../studio/database/document-extensions/counters#counters)  
 
 **Client-API - Session Articles**:  
 [Creating and Modifying Counters](../../document-extensions/counters/create-or-modify)  
