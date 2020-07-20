@@ -115,7 +115,10 @@
 #### Syntax
 
 * **`store.Operations.Send` Definition**  
-  {CODE Store-Operations-send-Definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+  {CODE-BLOCK: JSON}
+  public Operation Send(IOperation<OperationIdResult> operation, 
+                        SessionInfo sessionInfo = null)
+  {CODE-BLOCK/}
 
 * **`PatchByQueryOperation` Definition**  
   {CODE PatchByQueryOperation-definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}

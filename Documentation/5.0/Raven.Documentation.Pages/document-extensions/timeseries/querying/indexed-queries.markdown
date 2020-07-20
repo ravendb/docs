@@ -36,11 +36,13 @@ using LINQ expressions.
    
    * `session.Query`  
      {CODE-BLOCK: JSON}
-     IRavenQueryable<T> Query<T, TIndexCreator>() where TIndexCreator : AbstractCommonApiForIndexes, new();
+     IRavenQueryable<T> Query<T, TIndexCreator>() where TIndexCreator 
+     : AbstractCommonApiForIndexes, new();
      {CODE-BLOCK/}
    * `DocumentQuery`  
      {CODE-BLOCK: JSON}
-     IDocumentQuery<T> DocumentQuery<T, TIndexCreator>() where TIndexCreator : AbstractCommonApiForIndexes, new();
+     IDocumentQuery<T> DocumentQuery<T, TIndexCreator>() where TIndexCreator 
+     : AbstractCommonApiForIndexes, new();
      {CODE-BLOCK/}
 
 * **Parameters** 

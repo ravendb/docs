@@ -26,7 +26,9 @@ Use this method to get all the names of a document's time series.
 {PANEL: Syntax}
 
 * **Definition**  
-  {CODE GetTimeSeriesFor-definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+  {CODE-BLOCK:JSON}
+  List<string> GetTimeSeriesFor<T>(T instance);
+  {CODE-BLOCK/}
 
 * **Parameters**  
 

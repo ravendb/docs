@@ -9,7 +9,7 @@ You can include time series data while retrieving a document via `session.Query`
 * [`session.Query` and `IncludeTimeSeries`](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query#session.query-and-includetimeseries)  
    * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query#syntax)  
    * [Usage Flow](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query#usage-flow)  
-   * [Usage Samples](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query#usage-samples)  
+   * [Usage Sample](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query#usage-sample)  
 
 {NOTE/}
 
@@ -51,7 +51,7 @@ method of the `IQueryIncludeBuilder` interface as an argument.
 
 {PANEL/}
 
-{PANEL: Usage Samples}
+{PANEL: Usage Sample}
 
 In this sample, we retrieve a document using `session.Query` and 
 **include** entries from the time series "Heartrate".  

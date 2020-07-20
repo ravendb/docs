@@ -110,7 +110,7 @@ Use this method to retrieve a range of time series entries.
 
 * In this sample, we pass [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session/patch) 
   a script that appends a document 100 time series entries.  
-  {CODE TS_region-Session_Patch-Append-100-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+  {CODE TS_region-Session_Patch-Append-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 
 * In this sample, we pass [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch#patchbyqueryoperation) 
