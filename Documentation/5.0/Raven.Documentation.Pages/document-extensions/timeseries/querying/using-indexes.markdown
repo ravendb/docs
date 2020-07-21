@@ -1,4 +1,4 @@
-﻿# Querying: Time Series & Static Indexes
+﻿# Querying: Using Indexes
 
 ---
 
@@ -14,15 +14,15 @@
   using LINQ expressions.  
   
 * In this page:  
-  * [Indexed Queries](../../../document-extensions/timeseries/querying/indexed-queries#indexed-queries)  
-  * [Syntax](../../../document-extensions/timeseries/querying/indexed-queries#syntax)  
-  * [Usage Samples](../../../document-extensions/timeseries/querying/indexed-queries#usage-samples)  
+  * [Query Using Indexes](../../../document-extensions/timeseries/querying/using-indexes#indexed-queries)  
+  * [Syntax](../../../document-extensions/timeseries/querying/using-indexes#syntax)  
+  * [Usage Samples](../../../document-extensions/timeseries/querying/using-indexes#usage-samples)  
 
 {NOTE/}
 
 ---
 
-{PANEL: Indexed Queries}
+{PANEL: Query Using Indexes}
 
 You can query time series indexes using `session.Query` and 
 `session.Advanced.DocumentQuery`, and enhance the queries 
@@ -66,7 +66,7 @@ using LINQ expressions.
 
 {PANEL: Usage Samples}
 
-* **Indexed Queries**  
+* **Querying an Index**  
   To query a time series index, call `session.Query` or `session.Advanced.DocumentQuery`.  
    {CODE-TABS}
    {CODE-TAB:csharp:session.Query ts_region_Index-TS-Queries-1-session-Query@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
@@ -74,7 +74,7 @@ using LINQ expressions.
    {CODE-TABS/}
 
 
-* **Enhancing index queries**  
+* **Enhancing Index Queries**  
 
    * When you call `session.Query`, You can add LINQ expressions to your query.  
      {CODE ts_region_Index-TS-Queries-2-session-Query-with-Linq@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}

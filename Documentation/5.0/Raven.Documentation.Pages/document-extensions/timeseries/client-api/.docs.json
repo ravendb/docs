@@ -16,6 +16,12 @@
         "Mappings": []
     },
     {
+        "Path": "/bulk-insert",
+        "Name": "Bulk Insert",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
         "Path": "javascript-support.markdown",
         "Name": "JavaScript Support",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",

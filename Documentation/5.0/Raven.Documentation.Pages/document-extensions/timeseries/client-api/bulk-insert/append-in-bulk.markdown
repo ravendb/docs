@@ -6,7 +6,7 @@
 
 * `store.BulkInsert` is RavenDB's high-performance data insertion operation.  
   Using its `TimeSeriesFor` interface's `Append` method resembles using 
-  [session.TimeSeriesFor](../../../../../document-extensions/timeseries/client-api/session/append), 
+  [session.TimeSeriesFor](../../../../document-extensions/timeseries/client-api/session/append), 
   but `session` liabilities are omitted so a much greater speed is gained.  
 
 * You can bulk-insert **a single time series** at a time.  
@@ -15,9 +15,9 @@
   instance.  
 
 * In this page:  
-      * [Syntax](../../../../../document-extensions/timeseries/client-api/operations/bulk-insert/append-in-bulk#syntax)  
-      * [Usage Flow](../../../../../document-extensions/timeseries/client-api/operations/bulk-insert/append-in-bulk#usage-flow)  
-      * [Usage Samples](../../../../../document-extensions/timeseries/client-api/operations/bulk-insert/append-in-bulk#usage-samples)  
+      * [Syntax](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#syntax)  
+      * [Usage Flow](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#usage-flow)  
+      * [Usage Samples](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#usage-samples)  
 
 {NOTE/}
 
@@ -77,14 +77,14 @@
 ## Related articles
 
 **Client API**  
-[Time Series API Overview](../../../../../document-extensions/timeseries/client-api/overview)  
+[Time Series API Overview](../../../../document-extensions/timeseries/client-api/overview)  
 
 **Studio Articles**  
-[Studio Time Series Management](../../../../../studio/database/document-extensions/time-series)  
+[Studio Time Series Management](../../../../studio/database/document-extensions/time-series)  
 
 **Querying and Indexing**  
-[Time Series Querying](../../../../../document-extensions/timeseries/querying/overview-and-syntax)  
-[Time Series Indexing](../../../../../document-extensions/timeseries/indexing)  
+[Time Series Querying](../../../../document-extensions/timeseries/querying/overview-and-syntax)  
+[Time Series Indexing](../../../../document-extensions/timeseries/indexing)  
 
 **Policies**  
-[Time Series Rollup and Retention](../../../../../document-extensions/timeseries/rollup-and-retention)  
+[Time Series Rollup and Retention](../../../../document-extensions/timeseries/rollup-and-retention)  

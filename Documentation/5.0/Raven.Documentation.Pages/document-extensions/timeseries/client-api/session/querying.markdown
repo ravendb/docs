@@ -1,7 +1,11 @@
-﻿# Session: Time Series Querying Overview
+﻿# Session: Time Series Querying 
 ---
 
 {NOTE: }
+
+   {INFO: }
+   Learn more about time series queries in the [section dedicated to this subject](../../../../document-extensions/timeseries/querying/overview-and-syntax).  
+   {INFO/}
 
 * **LINQ Queries**  
   To query time series using LINQ expressions, use `session.Query`.  
@@ -11,19 +15,15 @@
   Clients can express time series queries in RQL and send them to the server 
   for execution using the `session.Advanced.RawQuery` method.  
 
-{INFO: }
-Learn more about time series queries in the [section dedicated to this subject](../../../../document-extensions/timeseries/querying/queries-overview).  
-{INFO/}
-
 * In this page:  
-   * [Time Series LINQ Queries](../../../../document-extensions/timeseries/client-api/session/querying-overview#time-series-linq-queries)  
-      * [Syntax](../../../../document-extensions/timeseries/client-api/session/querying-overview#syntax)  
-      * [Usage Flow](../../../../document-extensions/timeseries/client-api/session/querying-overview#usage-flow)  
-      * [Usage Samples](../../../../document-extensions/timeseries/client-api/session/querying-overview#usage-samples)  
-   * [Client Raw RQL Queries](../../../../document-extensions/timeseries/client-api/session/querying-overview#client-raw-rql-queries)  
-      * [RQL Queries Syntax](../../../../document-extensions/timeseries/client-api/session/querying-overview#rql-queries-syntax)  
-      * [RQL Queries Usage Flow](../../../../document-extensions/timeseries/client-api/session/querying-overview#rql-queries-usage-flow)  
-      * [RQL Queries Usage Samples](../../../../document-extensions/timeseries/client-api/session/querying-overview#rql-queries-usage-samples)  
+   * [Time Series LINQ Queries](../../../../document-extensions/timeseries/client-api/session/querying#time-series-linq-queries)  
+      * [Syntax](../../../../document-extensions/timeseries/client-api/session/querying#syntax)  
+      * [Usage Flow](../../../../document-extensions/timeseries/client-api/session/querying#usage-flow)  
+      * [Usage Samples](../../../../document-extensions/timeseries/client-api/session/querying#usage-samples)  
+   * [Client Raw RQL Queries](../../../../document-extensions/timeseries/client-api/session/querying#client-raw-rql-queries)  
+      * [RQL Queries Syntax](../../../../document-extensions/timeseries/client-api/session/querying#rql-queries-syntax)  
+      * [RQL Queries Usage Flow](../../../../document-extensions/timeseries/client-api/session/querying#rql-queries-usage-flow)  
+      * [RQL Queries Usage Samples](../../../../document-extensions/timeseries/client-api/session/querying#rql-queries-usage-samples)  
 
 {NOTE/}
 
