@@ -2,6 +2,7 @@
     {
         "Path": "what-are-attachments.markdown",
         "Name": "What are Attachments",
+        "LastSupportedVersion": "4.2",
         "DiscussionId": "262e0347-d051-4557-b05d-664907ea4768",
         "Mappings": [
             {
@@ -13,6 +14,7 @@
     {
         "Path": "storing.markdown",
         "Name": "Storing",
+        "LastSupportedVersion": "4.2",
         "DiscussionId": "97f38576-78a9-4406-907b-f4be2f8b66ca",
         "Mappings": [
             {
@@ -24,6 +26,7 @@
     {
         "Path": "loading.markdown",
         "Name": "Loading",
+        "LastSupportedVersion": "4.2",
         "DiscussionId": "ec590f47-f7ff-4baf-b94e-d46e4f99340d",
         "Mappings": [
             {
@@ -35,6 +38,7 @@
     {
         "Path": "deleting.markdown",
         "Name": "Deleting",
+        "LastSupportedVersion": "4.2",
         "DiscussionId": "55c0445c-f0c8-48e0-a99c-45050824a33d",
         "Mappings": [
             {
