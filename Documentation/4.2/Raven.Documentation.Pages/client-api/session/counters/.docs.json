@@ -3,6 +3,7 @@
         "Path": "overview.markdown",
         "Name": "Overview",
         "DiscussionId": "4b025409-89dd-4afc-bb8e-40511d09b7f4",
+        "LastSupportedVersion": "4.2",
         "Mappings": [
             {
                 "Version": 5.0,
@@ -58,6 +59,7 @@
         "Path": "counters-in-clusters.markdown",
         "Name": "Counters in Clusters",
         "DiscussionId": "3a5ec3ed-d536-4012-8dc8-a365886df8ee",
+        "LastSupportedVersion": "4.2",
         "Mappings": [
             {
                 "Version": 5.0,
