@@ -23,6 +23,8 @@ The time in seconds to wait before canceling a query related operation (patch/de
 - **Default**: `300`
 - **Scope**: Server-wide or per database
 
+The timeout is delayed every time a query result is processed. The timeout will be exceeded only if no document is processed within that time.
+
 {PANEL/}
 
 {PANEL:Databases.OperationTimeoutInSec}
