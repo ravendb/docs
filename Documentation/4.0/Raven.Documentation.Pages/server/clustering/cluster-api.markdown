@@ -47,7 +47,7 @@ Invoke-WebRequest -Method Put -URI "http://<server-url>/admin/cluster/node?url=<
 
 ### cURL
 
-{CODE-BLOCK:plain}
+{CODE-BLOCK: bash}
 curl -X PUT http://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<node-tag>&watcher=<is-watcher>&assignedCores=<assigned-cores> --cert <path-to-pem-cert>
 {CODE-BLOCK/}
 
@@ -65,7 +65,7 @@ SecurityClearance: `Cluster Admin`
 
 ### Example
 
-{CODE-BLOCK:plain}
+{CODE-BLOCK: bash}
 curl -X DELETE http://<server-url>/admin/cluster/node?nodeTag=<node-tag>
 {CODE-BLOCK/}
 
@@ -86,7 +86,7 @@ SecurityClearance: `Operator`
 
 ### Example
 
-{CODE-BLOCK:plain}
+{CODE-BLOCK: bash}
 curl -X POST http://<server-url>/admin/cluster/promote?nodeTag=<node-tag>
 {CODE-BLOCK/}
 
@@ -106,7 +106,7 @@ SecurityClearance: `Operator`
 
 ### Example
 
-{CODE-BLOCK:plain}
+{CODE-BLOCK: bash}
 curl -X POST http://<server-url>/admin/cluster/demote?nodeTag=<node-tag>
 {CODE-BLOCK/}
 
@@ -120,7 +120,7 @@ SecurityClearance: `Operator`
 
 ### Example
 
-{CODE-BLOCK:plain}
+{CODE-BLOCK: bash}
 curl -X POST http://<server-url>/admin/cluster/reelect
 {CODE-BLOCK/}
 
@@ -134,7 +134,7 @@ SecurityClearance: `Operator`
 
 ### Example
 
-{CODE-BLOCK:plain}
+{CODE-BLOCK: bash}
 curl -X POST http://<server-url>/admin/cluster/timeout
 {CODE-BLOCK/}
 
@@ -149,8 +149,8 @@ SecurityClearance: `Cluster Admin`
 
 ### Example
 
-{CODE-BLOCK:plain}
-curl -X POST http://<server-url>/admin/cluster/bootstrap
+{CODE-BLOCK: bash}
+curl -X POST http://<server-url>/admin/cluster/bootstrap -d '{}'
 {CODE-BLOCK/}
 
  {PANEL/}
