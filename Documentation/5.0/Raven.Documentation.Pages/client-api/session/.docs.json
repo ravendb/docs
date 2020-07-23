@@ -76,16 +76,6 @@
         "Mappings": []
     },
     {
-        "Path": "/attachments",
-        "Name": "Attachments",
-        "Mappings": []
-    },
-    {
-        "Path": "/counters",
-        "Name": "Counters",
-        "Mappings": []
-    },
-    {
         "Path": "/revisions",
         "Name": "Revisions",
         "Mappings": []

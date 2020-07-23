@@ -102,7 +102,7 @@ There are also functionalities unique to each interface.
   Use this operation to run a query and append/delete time series entries to/from 
   matching documents.  
   by a query**.  
-* [BulkInsert.TimeSeriesFor.Append](../../../document-extensions/timeseries/client-api/operations/bulk-insert/append-in-bulk)  
+* [BulkInsert.TimeSeriesFor.Append](../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk)  
   Use this operation to append time series entries in bulk.  
 
 {PANEL/}

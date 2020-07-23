@@ -24,8 +24,8 @@
         "Mappings": []
     },
     {
-        "Path": "indexed-queries.markdown",
-        "Name": "Indexed Queries",
+        "Path": "using-indexes.markdown",
+        "Name": "Using Indexes",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     }
