@@ -15,6 +15,11 @@
         "Mappings": []
     },
     {
+        "Path": "/document-extensions",
+        "Name": "Document Extensions",
+        "Mappings": []
+    },
+    {
         "Path": "/server",
         "Name": "Server",
         "Mappings": []
@@ -37,11 +42,6 @@
     {
         "Path": "/users-issues",
         "Name": "Users Issues",
-        "Mappings": []
-    },
-    {
-        "Path": "/document-extensions",
-        "Name": "Document Extensions",
         "Mappings": []
     },
     {
