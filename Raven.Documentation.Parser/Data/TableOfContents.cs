@@ -12,6 +12,8 @@
 		public string Version { get; set; }
 
 		public Category Category { get; set; }
+        
+        public int? Position { get; set; }
 
 		public List<TableOfContentsItem> Items { get; set; }
 

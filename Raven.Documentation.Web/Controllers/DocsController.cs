@@ -461,7 +461,10 @@ namespace Raven.Documentation.Web.Controllers
 
         private List<TableOfContents> GetTableOfContents(string version)
         {
-            return Session.Query<TableOfContents>().Where(x => x.Version == version).ToList();
+            return Session.Query<TableOfContents>()
+                .Where(x => x.Version == version)
+                .OrderBy(x => x.Position)
+                .ToList();
         }
 
 
