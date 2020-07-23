@@ -16,18 +16,30 @@ namespace Raven.Documentation.Parser.Compilation.ToC
                 mergeContext.AddCompiled(folderCompilationResult);
             }
 
-            var resultTocs = mergeContext.GetUnique();
-
-            var duplicatedEntries = mergeContext.GetDuplicated();
-
-            foreach (var duplicateGroup in duplicatedEntries)
-            {
-                var orderedDuplicates = OrderDuplicateTocsByPriority(duplicateGroup.Value);
-                var mergedToc = MergeTocs(orderedDuplicates);
-                resultTocs.Add(mergedToc);
-            }
-
+            var resultTocs = mergeContext.CompiledTocs
+                .SelectMany(x => x.Value)
+                .Select(x => MergeToTableOfContents(x, mergeContext))
+                .ToList();
+            
             return resultTocs;
+        }
+
+        private static TableOfContents MergeToTableOfContents(MergeContext.RootItemEntry rootItem, MergeContext mergeContext)
+        {
+            if (rootItem.ContainsMultipleItems)
+            {
+                var orderedDuplicates = OrderDuplicateTocsByPriority(rootItem.Entries);
+                var mergedToc = MergeTocs(orderedDuplicates);
+                AssignTocPosition(mergedToc, mergeContext);
+                
+                return mergedToc;
+            }
+            
+            var singleItem = rootItem.Entries.Single();
+            var toc = singleItem.TableOfContents;
+            AssignTocPosition(toc, mergeContext);
+            
+            return toc;
         }
 
         private static List<TableOfContents> OrderDuplicateTocsByPriority(List<MergeContext.Entry> duplicateEntries)
@@ -73,11 +85,17 @@ namespace Raven.Documentation.Parser.Compilation.ToC
             }
         }
 
+        private static void AssignTocPosition(TableOfContents toc, MergeContext mergeContext)
+        {
+            var categoryIndex = mergeContext.GetCategoryIndex(toc.Version, toc.Category);
+            toc.Position = categoryIndex;
+        }
+
         private class MergeContext
         {
-            private readonly Dictionary<string, List<Entry>> _compiledTocs = new Dictionary<string, List<Entry>>();
+            private readonly Dictionary<string, List<Category>> _orderedCategories = new Dictionary<string, List<Category>>();
 
-            private static string GetKey(TableOfContents toc) => $"{toc.Version}/{toc.Category}";
+            public Dictionary<string, List<RootItemEntry>> CompiledTocs { get; } = new Dictionary<string, List<RootItemEntry>>();
 
             public void AddCompiled(TableOfContentsCompiler.TocFolderCompilationResult folderCompilationResult)
             {
@@ -91,31 +109,57 @@ namespace Raven.Documentation.Parser.Compilation.ToC
 
             private void AddCompiled(string sourceDirectoryVersion, TableOfContents tableOfContents)
             {
-                var key = GetKey(tableOfContents);
+                AddToOrderedCategories(sourceDirectoryVersion, tableOfContents);
+                
+                var version = tableOfContents.Version;
+
                 var entry = new Entry
                 {
                     TableOfContents = tableOfContents,
                     SourceDirectoryVersion = sourceDirectoryVersion
                 };
+                
+                if (CompiledTocs.ContainsKey(version) == false)
+                    CompiledTocs[version] = new List<RootItemEntry>();
 
-                if (_compiledTocs.ContainsKey(key))
-                    _compiledTocs[key].Add(entry);
+                var existingRootItem = CompiledTocs[version].SingleOrDefault(x => x.Category == tableOfContents.Category);
+
+                if (existingRootItem == null)
+                {
+                    var rootItem = new RootItemEntry {Category = tableOfContents.Category};
+                    rootItem.Entries.Add(entry);
+                    CompiledTocs[version].Add(rootItem);
+                }
                 else
-                    _compiledTocs[key] = new List<Entry> { entry };
+                {
+                    existingRootItem.Entries.Add(entry);
+                }
             }
 
-            public List<KeyValuePair<string, List<Entry>>> GetDuplicated()
+            private void AddToOrderedCategories(string sourceDirectoryVersion, TableOfContents tableOfContents)
             {
-                return _compiledTocs.Where(x => x.Value.Count > 1).ToList();
+                var category = tableOfContents.Category;
+
+                if (_orderedCategories.ContainsKey(sourceDirectoryVersion) == false)
+                    _orderedCategories[sourceDirectoryVersion] = new List<Category>();
+                
+                if (_orderedCategories[sourceDirectoryVersion].Contains(category) == false)
+                    _orderedCategories[sourceDirectoryVersion].Add(category);
             }
 
-            public List<TableOfContents> GetUnique()
+            public int GetCategoryIndex(string version, Category category)
             {
-                return _compiledTocs
-                    .Where(x => x.Value.Count == 1)
-                    .SelectMany(x => x.Value)
-                    .Select(x => x.TableOfContents)
-                    .ToList();
+                var categories = _orderedCategories[version];
+                return categories.IndexOf(category);
+            }
+
+            internal class RootItemEntry
+            {
+                public Category Category { get; set; }
+
+                public List<Entry> Entries { get; } = new List<Entry>();
+
+                public bool ContainsMultipleItems => Entries.Count > 1;
             }
 
             internal class Entry
