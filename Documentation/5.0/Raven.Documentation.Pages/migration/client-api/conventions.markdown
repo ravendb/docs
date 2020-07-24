@@ -30,7 +30,7 @@ This property was introduced in order to be able to abstract the JSON serializat
 
 {PANEL:How to Migrate}
 
-If you have previosuly set-up one of the following conventions:
+If you have previously set-up one of the following conventions:
 
 - `CustomizeJsonSerializer`
 - `CustomizeJsonDeserializer`
