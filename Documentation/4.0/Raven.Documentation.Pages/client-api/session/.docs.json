@@ -55,6 +55,12 @@
     ]
   },
   {
+    "Path": "updating-entities.markdown",
+    "Name": "Updating Entities",
+    "DiscussionId": "73ca8393-a2c6-482d-8af7-0b8ff91b8575",
+    "Mappings": []
+  },
+  {
     "Path": "saving-changes.markdown",
     "Name": "Saving changes",
     "DiscussionId": "5842cdd5-169a-474d-aa33-68408d314331",
