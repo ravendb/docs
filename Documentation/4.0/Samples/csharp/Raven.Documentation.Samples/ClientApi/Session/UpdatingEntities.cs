@@ -40,7 +40,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.UpdatingEntities
             return store;
         }
 
-        public void simpleSample()
+        public void updateEntitiesSyns()
         {
             using (var store = getDocumentStore())
             {
@@ -71,7 +71,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.UpdatingEntities
                     session.SaveChanges();
                 }
 
-                #region load-company-and-update-its-type
+                #region load-company-and-update-its-type-sync
                 using (var session = store.OpenSession())
                 {
                     // Load a document
@@ -85,7 +85,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.UpdatingEntities
                 }
                 #endregion
 
-                #region query-companies-and-update-their-type
+                #region query-companies-and-update-their-type-sync
                 using (var session = store.OpenSession())
                 {
                     // Query: find public companies
@@ -107,6 +107,75 @@ namespace Raven.Documentation.Samples.ClientApi.Session.UpdatingEntities
 
             }
         }
+
+        async public void updateEntitiesAsyns()
+        {
+            using (var store = getDocumentStore())
+            {
+                var baseline = DateTime.Today;
+
+                // Open a session
+                using (var session = store.OpenSession())
+                {
+                    // Use the session to create a document
+                    session.Store(new Company
+                    {
+                        Name = "KitchenAppliances",
+                        Type = Company.CompanyType.Public
+                    }, "companies/KitchenAppliances");
+
+                    session.Store(new Company
+                    {
+                        Name = "ShoeAppliances",
+                        Type = Company.CompanyType.Public
+                    }, "companies/ShoeAppliances");
+
+                    session.Store(new Company
+                    {
+                        Name = "CarAppliances",
+                        Type = Company.CompanyType.Public
+                    }, "companies/CarAppliances");
+
+                    session.SaveChanges();
+                }
+
+                #region load-company-and-update-its-type-async
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    // Load a document
+                    Company company = await asyncSession.LoadAsync<Company>("companies/KitchenAppliances");
+
+                    // Update the company's type
+                    company.Type = Company.CompanyType.Private;
+
+                    // Apply changes
+                    await asyncSession.SaveChangesAsync();
+                }
+                #endregion
+
+                #region query-companies-and-update-their-type-async
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    // Query: find public companies
+                    IRavenQueryable<Company> query = asyncSession.Query<Company>()
+                        .Where(c => c.Type == Company.CompanyType.Public);
+
+                    var result = await query.ToListAsync();
+
+                    // Change company type from public to private
+                    for (var l = 0; l < result.Count; l++)
+                    {
+                        result[l].Type = Company.CompanyType.Private;
+                    }
+
+                    // Apply changes
+                    await asyncSession.SaveChangesAsync();
+                }
+                #endregion
+
+            }
+        }
+
 
         private class Company
         {

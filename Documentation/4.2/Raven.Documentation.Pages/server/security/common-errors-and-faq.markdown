@@ -306,7 +306,7 @@ The credentials supplied to the package were not recognized (The SSL connection 
 2) Another solution is to use the `MachineKeySet` flag during certificate creation:  
 
 {CODE-BLOCK:csharp}
-[DocumentStore].Certificate = new x509certificate2("[path to your pfx file]", 
+[DocumentStore].Certificate = new X509Certificate2("[path to your pfx file]", 
                                                   (string)null, X509KeyStorageFlags.MachineKeySet);  
 {CODE-BLOCK/}
 
