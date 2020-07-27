@@ -319,6 +319,8 @@ The following keywords and methods are available in RQL:
   - sum()
   - count()
   - [facet()](../../indexes/querying/faceted-search)
+  - [timeseries()](../../document-extensions/timeseries/querying/overview-and-syntax#syntax)
+  - [counter()](../../document-extensions/counters/counters-and-other-features#counters-and-queries)
 - [UPDATE](../../indexes/querying/what-is-rql#update)
 - [INCLUDE](../../indexes/querying/what-is-rql#include)
 
