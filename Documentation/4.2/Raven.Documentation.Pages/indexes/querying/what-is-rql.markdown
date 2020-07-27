@@ -68,11 +68,10 @@ time and return results at the same speed regardless of the size of the data.
 You can read more about indexes [here](../indexing-basics).   
 
 
-{NOTE: Exceptions: Time-Series and Counters}
-Queries in RavenDB will always use an index, with the exception of [distributed time-series]() 
-and [distributed counters]().  
-Time-series and counters are **not** automatically indexed. They **can** be indexed manually.  
-When indexes are not created for them manually, time-series and counters are queried with no index.  
+{NOTE: Exception: Counters}
+Queries in RavenDB will always use an index, with the exception of [distributed counters]().  
+Counters are **not** automatically indexed. They **can** be indexed manually.  
+When an index has not been created manually for counters, they are queried without an index.  
 {NOTE/}
 
 {NOTE: Indexing and queries in RavenDB }
