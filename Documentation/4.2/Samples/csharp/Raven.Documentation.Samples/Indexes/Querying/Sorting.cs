@@ -8,7 +8,6 @@ using Raven.Client.Documents.Operations.Sorters;
 using Raven.Client.Documents.Queries.Sorting;
 using Raven.Client.Documents.Session;
 using Raven.Documentation.Samples.Orders;
-using Sparrow.Json.Parsing;
 
 namespace Raven.Documentation.Samples.Indexes.Querying
 {

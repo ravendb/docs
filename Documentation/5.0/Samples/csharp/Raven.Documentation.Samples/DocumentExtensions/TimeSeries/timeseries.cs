@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using System.Threading;
 using Raven.Client.Documents.Smuggler;
 
-namespace Rvn.Ch02
+namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
 {
-    class Program
+    public class TimeSeries
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var docStore = new DocumentStore
             {

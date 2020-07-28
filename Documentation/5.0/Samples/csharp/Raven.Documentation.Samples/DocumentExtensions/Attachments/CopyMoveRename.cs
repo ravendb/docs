@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Session;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.Attachments
