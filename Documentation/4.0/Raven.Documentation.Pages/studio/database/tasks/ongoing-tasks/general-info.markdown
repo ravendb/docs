@@ -4,7 +4,7 @@
 {NOTE: }
 
 * Ongoing tasks are ***work tasks*** defined for the database.  
-* Once defined, these tasks are ***ongoing*** , meaning that they will do the defined work for any data change in the database.  
+* Once defined, these tasks are ***ongoing***, meaning that they will do the defined work for any data change in the database.  
 * Each task has a responsible node from the Database Group nodes, this node will actually perform the defined task work.  
 * The available ongoing tasks are:  
   * [External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task)  
