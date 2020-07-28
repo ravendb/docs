@@ -24,7 +24,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 				#region bulk_insert_changes_2
 				using (BulkInsertOperation bulkInsert = store.BulkInsert())
 				{
-					IDisposable subscribtion = store
+					IDisposable subscription = store
 						.Changes()
 						.ForBulkInsert(bulkInsert.OperationId)
 						.Subscribe(change =>
@@ -56,8 +56,8 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 					}
 					finally
 					{
-						if (subscribtion != null)
-							subscribtion.Dispose();
+						if (subscription != null)
+							subscription.Dispose();
 					}
 				}
 				#endregion

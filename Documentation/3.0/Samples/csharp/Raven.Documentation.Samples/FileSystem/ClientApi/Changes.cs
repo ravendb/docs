@@ -34,7 +34,7 @@
 			{
 				#region for_folder_2
 
-				IDisposable subscribtion = store
+				IDisposable subscription = store
 					.Changes()
 					.ForFolder("/documents/books")
 					.Subscribe(change =>
@@ -55,7 +55,7 @@
 
 			{
 				#region for_synchronization_2
-				IDisposable subscribtion = store
+				IDisposable subscription = store
 					.Changes()
 					.ForSynchronization()
 					.Subscribe(notification =>
@@ -78,7 +78,7 @@
 
 			{
 				#region for_conflicts_2
-				IDisposable subscribtion = store
+				IDisposable subscription = store
 					.Changes()
 					.ForConflicts()
 					.Subscribe(conflict =>
@@ -98,7 +98,7 @@
 
 			{
 				#region for_configuration_2
-				IDisposable subscribtion = store
+				IDisposable subscription = store
 					.Changes()
 					.ForConfiguration()
 					.Subscribe(change =>

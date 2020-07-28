@@ -12,7 +12,7 @@
 | debug/indexing-batch-stats | GET |  | Indexing performance stats shown for indexing batches | |
 | debug/reducing-batch-stats | GET |  | Indexing performance stats shown for reducing batches | |
 | debug/plugins | GET | | Returns active plugins e.g. triggers and startup tasks. | |
-| debug/changes | GET | | Returns Changes API connection details e.g. connection identifier or subscribtion details. | |
+| debug/changes | GET | | Returns Changes API connection details e.g. connection identifier or subscription details. | |
 | debug/sql-replication-stats | GET | | Various metrics with SQL Replication performance. | |
 | debug/metrics | GET | | All database metrics. | |
 | debug/config | GET | | Database configuration file. | |
