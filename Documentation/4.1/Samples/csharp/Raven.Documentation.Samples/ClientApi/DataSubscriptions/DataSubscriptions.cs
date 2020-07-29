@@ -155,6 +155,45 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                     Projection = x => new
                     {
                         Id = x.Id,
+                        Total = x.Lines.Sum(line => line.PricePerUnit * line.Quantity)
+                    }
+                });
+
+            #endregion
+
+            #region create_filter_and_projection_RQL
+
+            name = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+            {
+                Query = @"declare function getOrderLinesSum(doc){
+                                var sum = 0;
+                                for (var i in doc.Lines) { sum += doc.Lines[i];}
+                                return sum;
+                            }
+
+                            declare function projectOrder(doc){
+                                return {
+                                    Id: order.Id,
+                                    Total: getOrderLinesSum(order)
+                                };
+                            }
+
+                            From Orders as o 
+                            Where getOrderLinesSum(o) > 100
+                            Select projectOrder(o)"
+            });
+
+            #endregion
+
+            #region create_filter_and_load_document_generic
+
+            name = store.Subscriptions.Create(
+                new SubscriptionCreationOptions<Order>()
+                {
+                    Filter = x => x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 100,
+                    Projection = x => new
+                    {
+                        Id = x.Id,
                         Total = x.Lines.Sum(line => line.PricePerUnit * line.Quantity),
                         ShipTo = x.ShipTo,
                         EmployeeName = RavenQuery.Load<Employee>(x.Employee).FirstName + " " +
@@ -164,7 +203,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 
             #endregion
 
-            #region create_filter_and_projection_RQL
+            #region create_filter_and_load_document_RQL
 
             name = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
             {
