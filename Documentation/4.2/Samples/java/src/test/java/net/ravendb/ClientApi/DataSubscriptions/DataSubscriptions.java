@@ -154,6 +154,29 @@ public class DataSubscriptions {
                 "}" +
                 "" +
                 " declare function projectOrder(doc) {" +
+                "    return {" +
+                "        Id: order.Id," +
+                "        Total: getOrderLinesSum(order)" +
+                "    }" +
+                " }" +
+                " from order as o " +
+                " where getOrderLinesSum(o) > 100 " +
+                " select projectOrder(o)");
+
+            name = store.subscriptions().create(options);
+            //endregion
+        }
+
+        {
+            //region create_filter_and_load_document_RQL
+            SubscriptionCreationOptions options = new SubscriptionCreationOptions();
+            options.setQuery(" declare function getOrderLinesSum(doc) {" +
+                "  var sum = 0; " +
+                "  for (var i in doc.Lines) { sum += doc.Lines[i]; }" +
+                "  return sum;" +
+                "}" +
+                "" +
+                " declare function projectOrder(doc) {" +
                 "    var employee = LoadDocument(doc.Employee); " +
                 "    return {" +
                 "        Id: order.Id," +

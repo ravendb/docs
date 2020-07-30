@@ -44,7 +44,7 @@ Here we create a subscription on Orders collection, which total order revenue is
 
 Here we create a subscription on Orders collection, which total order revenue is greater than 100, and return ID, total revenue, shipping address and responsible employee name.
 
-{CODE:java create_filter_and_projection_RQL@ClientApi\DataSubscriptions\DataSubscriptions.java /}
+{CODE:java create_filter_and_load_document_RQL@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 {PANEL/}
 
