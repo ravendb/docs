@@ -12,7 +12,7 @@ The full license string for RavenDB. If License is specified, it overrides the `
 
 {PANEL:License.Path}
 
-The path to the license file for RavenDB.
+Full or relative path to the license file for RavenDB.
 
 - **Type**: `string`
 - **Default**: `license.json`

@@ -50,7 +50,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 			using (var store = new DocumentStore())
 			{
 				#region document_changes_2
-				IDisposable subscribtion = store
+				IDisposable subscription = store
 					.Changes()
 					.ForDocument("employees/1")
 					.Subscribe(
@@ -72,7 +72,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 			using (var store = new DocumentStore())
 			{
 				#region document_changes_4
-				IDisposable subscribtion = store
+				IDisposable subscription = store
 					.Changes()
 					.ForDocumentsInCollection<Employee>()
 					.Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
@@ -83,7 +83,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 			{
 				#region document_changes_5
 				string collectionName = store.Conventions.GetTypeTagName(typeof(Employee));
-				IDisposable subscribtion = store
+				IDisposable subscription = store
 					.Changes()
 					.ForDocumentsInCollection(collectionName)
 					.Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
@@ -93,7 +93,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 			using (var store = new DocumentStore())
 			{
 				#region document_changes_7
-				IDisposable subscribtion = store
+				IDisposable subscription = store
 					.Changes()
 					.ForDocumentsOfType<Employee>()
 					.Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
@@ -104,7 +104,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 			{
 				#region document_changes_8
 				string typeName = store.Conventions.FindClrTypeName(typeof(Employee));
-				IDisposable subscribtion = store
+				IDisposable subscription = store
 					.Changes()
 					.ForDocumentsOfType(typeName)
 					.Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
@@ -114,7 +114,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 			using (var store = new DocumentStore())
 			{
 				#region document_changes_1_0
-				IDisposable subscribtion = store
+				IDisposable subscription = store
 					.Changes()
 					.ForDocumentsStartingWith("employees/1") // employees/1, employees/10, employees/11, etc.
 					.Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
@@ -124,7 +124,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 			using (var store = new DocumentStore())
 			{
 				#region document_changes_1_2
-				IDisposable subscribtion = store
+				IDisposable subscription = store
 					.Changes()
 					.ForAllDocuments() // employees/1, orders/1, customers/1, etc.
 					.Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));

@@ -21,7 +21,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 			using (var store = new DocumentStore())
 			{
 				#region transformer_changes_2
-				IDisposable subscribtion = store
+				IDisposable subscription = store
 					.Changes()
 					.ForAllTransformers()
 					.Subscribe(
