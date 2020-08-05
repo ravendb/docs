@@ -1761,5 +1761,34 @@
         "twitter:description": "RavenDB NoSQL document database new features include query and index time series data, schedule periodic document refreshes, customize database compression, and a host of quality of life improvements and bug fixes.",
         "twitter:url": "https://ravendb.net/articles/whats-new-in-ravendb-50"
     }
+},
+{
+    "Path": "a-nosql-database-that-fits-in-your-network-with-ease.markdown",
+    "Name": "A NoSQL Database That Fits in Your Network With Ease",
+    "Mappings": [],
+    "Metadata": {
+        "title": "A NoSQL Database That Fits in Your Network With Ease | RavenDB Tools for Inter-Database Communication | Easy to Use NoSQL Database",
+        "likeSection": "yes",
+        "url": "a-nosql-database-that-fits-in-your-network-with-ease",
+        "publishedAt": "2020-08-05",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "RavenDB features that allow easy setup for network environments or data pipelines.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "A NoSQL Database That Fits in Your Network With Ease",
+        "og:description": "RavenDB features that allow easy setup for network environments or data pipelines.",
+        "og:url": "https://ravendb.net/articles/a-nosql-database-that-fits-in-your-network-with-ease",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/a-nosql-database-that-fits-in-your-network-with-ease&fileName=etl-website.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "A NoSQL Database That Fits in Your Network With Ease",
+        "twitter:description": "RavenDB features that allow easy setup for network environments or data pipelines.",
+        "twitter:url": "https://ravendb.net/articles/a-nosql-database-that-fits-in-your-network-with-ease"
+    }
 }
 ]
