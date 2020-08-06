@@ -115,7 +115,16 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
    * Azure Storage 
    * Amazon Glacier 
 
-* RavenDB will store data in a local folder first, and transfer it to the remote destination from the local one.  
+* RavenDB will store data in a local folder first, and transfer it to the remote 
+  destination from the local one.  
+   * If a local folder hasn't been specified, RavenDB will use the 
+     temp folder defined in its Storage.TempPath setting.  
+     If Storage.TempPath is not defined, the temporary files 
+     will be created at the same location as the data file.  
+     In either case, the folder will be used as temporary storage 
+     and the local files deleted from it when the transfer is completed.
+   * If a local folder **has** been specified, RavenDB will use it both 
+     for the transfer and as its permanent local backup location.  
 
 * Remote Backup Destinations Code Sample:
   {CODE backup_remote_destinations@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
