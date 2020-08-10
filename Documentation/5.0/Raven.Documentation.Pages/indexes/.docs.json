@@ -160,6 +160,12 @@
     "Mappings": []
   },
   {
+    "Path": "indexing-compare-exchange-values.markdown",
+    "Name": "Indexing Compare Exchange Values",
+    "DiscussionId": "d4b5cd08-7c45-4dbb-9a83-c1536e3c5290",
+    "Mappings": []
+  },
+  {
     "Path": "converting-to-json-and-accessing-metadata.markdown",
     "Name": "Converting to JSON and Accessing Metadata",
     "DiscussionId": "2fe7313c-df13-478b-acd3-08c5b4d21a1d",
