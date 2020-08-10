@@ -6,13 +6,13 @@ using Raven.Client.ServerWide.Operations;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
 {
-    public class EncryptedBackups
+    public class User
     {
-        public class User
-        {
-            public string Name { get; set; }
-        }
+        public string Name { get; set; }
+    }
 
+    class Program
+    {
         static void Main(string[] args)
         {
             var a = MainInternal();
@@ -23,7 +23,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
         {
 
             #region encrypted_database
-
+            
             // path to the certificate you received during the server setup
             var cert = new X509Certificate2(@"C:\Users\RavenDB\authentication_key\admin.client.certificate.RavenDBdom.pfx");
 
@@ -87,17 +87,49 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
             {
                 #region use_database_encryption_key_full_sample
 
+                //Encrypting a logical-backup using the database encryption key
                 var config = new PeriodicBackupConfiguration
                 {
-                    //additional settings here..
+                    //Additional settings here..
                     //..
 
-                    //This is a logical-backup
+                    //Set backup type to logical-backup
                     BackupType = BackupType.Backup,
 
                     BackupEncryptionSettings = new BackupEncryptionSettings
                     {
                         //Use the same encryption key as the database
+                        EncryptionMode = EncryptionMode.UseDatabaseKey
+                    }
+                };
+                var operation = new UpdatePeriodicBackupOperation(config);
+                var result = await docStore.Maintenance.SendAsync(operation);
+
+                #endregion
+            }
+
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "https://a.RavenDBdom.development.run" },
+                Database = "encryptedDatabase",
+                Certificate = cert
+            }.Initialize())
+            {
+                #region encrypted_snapshot
+
+                var config = new PeriodicBackupConfiguration
+                {
+                    //Additional settings here..
+                    //..
+
+                    //Set backup type to snapshot.
+                    //If the database is encrypted, its snapshot will be encrypted as well.
+                    BackupType = BackupType.Snapshot,
+
+                    BackupEncryptionSettings = new BackupEncryptionSettings
+                    {
+                        //To encrypt a snapshot, EncryptionMode must be set to EncryptionMode.UseDatabaseKey.  
+                        //Setting it to other values will generate an InvalidOperationException.  
                         EncryptionMode = EncryptionMode.UseDatabaseKey
                     }
                 };

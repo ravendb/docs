@@ -65,8 +65,8 @@
 
   | Backup Type | Stored Format | Restoration speed | Task characteristics | Size
   | ------ | ------ | ------ | ------ |
-  | Snapshot | Compressed Binary Image | Fast | Ongoing Background Task | Larger than logical-backup's
-  | Logical backup |  Compressed Textual Data | Slow | Ongoing Background Task | Smaller than Snapshot's
+  | Snapshot | Compressed Binary Image | Fast | Ongoing Background Task | Larger than a logical-backup
+  | Logical backup |  Compressed Textual Data | Slow | Ongoing Background Task | Smaller than a Snapshot
 
 {NOTE: Make sure your server has access to the local backup path.}
 Verify that RavenDB is allowed to store backup files in the path set in `LocalSettings.FolderPath`.
@@ -99,7 +99,7 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
 * Incremental Backup ownership
    * An incremental backup can be created only by the node that currently owns the backup task.  
    * The ownership is granted dynamically by the cluster.  
-   * A node can run the incremental backup task, only after creating a full backup at least once.  
+   * A node can run the incremental backup task only after creating a full backup at least once.  
 
 * To run an incremental backup, set `IncrementalBackupFrequency`.
   {CODE backup_incremental_backup@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
@@ -115,15 +115,24 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
    * Azure Storage 
    * Amazon Glacier 
 
-* RavenDB will store data in a local folder first, and transfer it to the remote destination from the local one.  
+* RavenDB will store data in a local folder first, and transfer it to the remote 
+  destination from the local one.  
+   * If a local folder hasn't been specified, RavenDB will use the 
+     temp folder defined in its Storage.TempPath setting.  
+     If Storage.TempPath is not defined, the temporary files 
+     will be created at the same location as the data file.  
+     In either case, the folder will be used as temporary storage 
+     and the local files deleted from it when the transfer is completed.
+   * If a local folder **has** been specified, RavenDB will use it both 
+     for the transfer and as its permanent local backup location.  
 
 * Remote Backup Destinations Code Sample:
   {CODE backup_remote_destinations@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
  
  {INFO: Tip}
-    You can change youer Access Management in Amazon S3 so the user doing backup don't have full access, 
-    read more [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_access-management.html).   
-    for example:
+    Use AWS [IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_access-management.html) (Identity and Access Management) 
+    to restrict users access while they create backups.  
+    E.g. -  
     {CODE-BLOCK:json}
         {
             "Version": "2012-10-17",
@@ -198,21 +207,21 @@ The Backup task [runs continuously](../../../../server/ongoing-tasks/backup-over
  
 ## Related Articles
 
-**Studio Articles**:   
-[Create a Database : From Backup](../../../../studio/server/databases/create-new-database/from-backup)   
-[Create a Database : General Flow](../../../../studio/server/databases/create-new-database/general-flow)        
-[Create a Database : Encrypted](../../../../studio/server/databases/create-new-database/encrypted)      
-[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)    
+###Studio   
+- [Create a Database : From Backup](../../../../studio/server/databases/create-new-database/from-backup)   
+- [Create a Database : General Flow](../../../../studio/server/databases/create-new-database/general-flow)        
+- [Create a Database : Encrypted](../../../../studio/server/databases/create-new-database/encrypted)      
+- [The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)    
 
-**Client Articles**:  
-[Restore](../../../../client-api/operations/maintenance/backup/restore)   
-[Operations: How to Restore a Database from Backup](../../../../client-api/operations/server-wide/restore-backup)    
-[What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)  
-[Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)   
+###Client API  
+- [Restore](../../../../client-api/operations/maintenance/backup/restore)   
+- [Operations: How to Restore a Database from Backup](../../../../client-api/operations/server-wide/restore-backup)    
+- [What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)  
+- [Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)   
 
-**Server Articles**:  
-[Backup Overview](../../../../server/ongoing-tasks/backup-overview)
+###Server  
+- [Backup Overview](../../../../server/ongoing-tasks/backup-overview)
 
-**Migration Articles**:  
-[Migration](../../../../migration/server/data-migration)   
+###Migration  
+- [Migration](../../../../migration/server/data-migration)   
 
