@@ -16,6 +16,7 @@
   * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
   * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features#counters-and-other-features-summary)  
   * [Including Counters](../../document-extensions/counters/counters-and-other-features#including-counters)  
+  * [Counters Bulk-Insert](../../document-extensions/counters/counters-and-other-features#counters-bulk-insert)  
 {NOTE/}
 
 ---
@@ -204,6 +205,41 @@ so it can be immediately retrieved when needed with no additional remote calls.
     {CODE-TAB:csharp:IncludeCounter counters_region_query_include_single_Counter@DocumentExtensions\Counters\counters.cs /}
     {CODE-TAB:csharp:IncludeCounters counters_region_query_include_multiple_Counters@DocumentExtensions\Counters\counters.cs /}
     {CODE-TABS/}
+
+---
+
+###Counters Bulk-Insert  
+`store.BulkInsert` is RavenDB's high-performance data insertion operation.  
+Use its `CountersFor` interface's `Increment` method to add or update counters with great speed.  
+
+* Syntax  
+
+   * `CountersFor`
+       {CODE CountersFor-definition@DocumentExtensions\Counters\BulkInsert.cs /}
+
+        | Parameters | Type | Description |
+        |:-------------|:-------------|:-------------|
+        | `id` | `string` | Document ID |
+
+   *   `Increment`
+          {CODE Increment-definition@DocumentExtensions\Counters\BulkInsert.cs /}
+
+           | Parameters | Type | Description |
+           |:-------------|:-------------|:-------------|
+           | `name` | `string` | Counter Name |
+           | `delta` | `long` | Default: 1L |
+
+* Usage Flow  
+
+   * Create a `store.BulkInsert` instance.  
+   * Pass the instance's `CountersFor` interface, the document ID  
+   * Call `Increment` as many times as you like. Pass it -  
+     The Counter Name and Value (delta to be added).
+
+* Usage Sample  
+  In this sample, we attach a counter to all User documents.
+   {CODE bulk-insert-counters@DocumentExtensions\Counters\BulkInsert.cs /}  
+
 
 {PANEL/}
 
