@@ -11,9 +11,9 @@ using System.Text;
 
 namespace Documentation.Samples.DocumentExtensions.TimeSeries
 {
-    public class BulkInsertAttachments
+    public class BulkInsertCounters
     {
-        private BulkInsertAttachments(ITestOutputHelper output)
+        private BulkInsertCounters(ITestOutputHelper output)
         {
         }
 
@@ -37,8 +37,10 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             return store;
         }
 
+        // bulk insert Counters
+        // Use BulkInsert.TimeSeriesBulkInsert.Append with doubles
         [Fact]
-        public async void ReebAppendUsingBulkInsert()
+        public async void ReebBulkInsertCounters()
         {
             using (var store = getDocumentStore())
             {
@@ -69,10 +71,10 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     session.SaveChanges();
                 }
 
-                #region bulk-insert-attachment
                 List<User> result;
 
-                // Choose user profiles to attach files to
+                #region bulk-insert-counters
+                // Choose user profiles to add counters to
                 using (var session = store.OpenSession())
                 {
                     IRavenQueryable<User> query = session.Query<User>()
@@ -81,21 +83,17 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     result = query.ToList();
                 }
 
-                // Bulk-insert an attachment to the chosen users
                 using (var bulkInsert = store.BulkInsert())
                 {
                     for (var user = 0; user < result.Count; user++)
                     {
-                        byte[] byteArray = Encoding.UTF8.GetBytes("some contents here");
-                        var stream = new MemoryStream(byteArray);
-
                         string userId = result[user].Id;
-                        
-                        // Choose the document to attach to
-                        var attachmentsFor = bulkInsert.AttachmentsFor(userId);
 
-                        // Attach the stream
-                        await attachmentsFor.StoreAsync("attName", stream);
+                        // Choose document
+                        var countersFor = bulkInsert.CountersFor(userId);
+
+                        // Add or Increment a counter
+                        await bulkInsert.CountersFor(userId).IncrementAsync("downloaded", 100);
                     }
                 }
                 #endregion
@@ -112,19 +110,19 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             public int Age { get; set; }
         }
 
-        #region AttachmentsFor-definition
-        public AttachmentsBulkInsert AttachmentsFor(string id)
+        #region CountersFor-definition
+        public CountersBulkInsert CountersFor(string id)
         #endregion
         {
-            return new AttachmentsBulkInsert();
+            return new CountersBulkInsert();
         }
 
-        public struct AttachmentsBulkInsert
+        public struct CountersBulkInsert
         {
         }
 
-        #region AttachmentsFor.Store-definition
-        public void Store(string name, Stream stream, string contentType = null)
+        #region Increment-definition
+        public void Increment(string name, long delta = 1L)
         #endregion
         {
         }

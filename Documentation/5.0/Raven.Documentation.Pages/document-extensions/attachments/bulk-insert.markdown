@@ -37,7 +37,7 @@
 {PANEL: Usage Flow}
 
 * Create a `store.BulkInsert` instance.  
-* Pass the instance's `AttachmentsFor` -  
+* Pass the instance's `AttachmentsFor` interface -  
    * Document ID  
 * Call `Store` as many times as you like. Pass it -  
    * The attachment Name, Stream, and Type  
