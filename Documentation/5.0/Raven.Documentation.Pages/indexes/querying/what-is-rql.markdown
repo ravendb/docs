@@ -20,6 +20,8 @@ Queries in RavenDB use an SQL-like language called **RQL** (Raven Query Language
      * [`select`](../../indexes/querying/what-is-rql#select)  
      * [`update`](../../indexes/querying/what-is-rql#update)  
      * [`include`](../../indexes/querying/what-is-rql#include)  
+     * [`with`](../../indexes/querying/what-is-rql#with)  
+     * [`match`](../../indexes/querying/what-is-rql#match)  
      * [`Keywords and Methods Summary`](../../indexes/querying/what-is-rql#keywords-and-methods)  
 
 {NOTE/}
@@ -104,10 +106,10 @@ You have two options:
   This option is used to perform:
    - Collection queries that perform just basic ID filtering.  
      When this is the case, there is no need to query an index 
-     and the required document is returned directlry from the storage.  
+     and the required document is returned directly from the storage.  
      E.g.  
      `from Companies where id() == 'companies/1-A'`  
-   - Dynamic queries that are executed using [auto indexs](../../indexes/creating-and-deploying#auto-indexes).  
+   - Dynamic queries that are executed using [auto indexes](../../indexes/creating-and-deploying#auto-indexes).  
 
       {INFO:All Documents}
        In order to query all documents, the `@all_docs` keyword can be used:
@@ -275,6 +277,42 @@ The keyword `include` has been introduced to support:
 
 {PANEL/}
 
+{PANEL: `with`}
+
+The keyword `with` is used to determine the data source of a [graph query](../../indexes/querying/graph/graph-queries).  
+There are two types of `with` clauses, regular `with` and `with edges`.
+
+- with: `with {from Orders} as o`  
+  The above statement means that the data source referred to by the alias `o` is the result of the `from Orders` query  
+    
+- with edges: `with edges (Lines) { where Discount >= 0.25 select Product } as cheap`  
+  The above statement means that our data source is the property `Lines` of the source documents and we filter all lines that match `Discount >= 0.25` query
+  the destination referred to by the `cheap` alias is the product pointed by the `Product` property of the order line  
+    
+For more details regarding graph queries please read the following article about [graph query](../../indexes/querying/graph/graph-queries) 
+
+{PANEL/}
+
+{PANEL: `match`}
+
+The keyword `match` is used to determine the pattern of a [graph query](../../indexes/querying/graph/graph-queries).  
+`match (Orders as o)-[Lines as cheap where Discount >= 0.25 select Product]->(Products as p)`  
+The above statement means that we are searching for a pattern that starts with an order and traverse using the
+order lines referred to by the `Lines` property where their `Discount` property is larger than 25%  and the destination is the product referred to by the `Product` property.  
+
+A match may contain an edge in both direction, a right edge would look like so `(node1)-[right]->(node2)` and a left one would look like so `(node1)<-[left]-(node2)`.  
+Any combination of edges is allowed in a match clause e.g.  
+`(node1)-[right]->(node2)<-[left]-(node3)`  
+The above match will actually be translated to:  
+`(node1)-[right]->(node2)`  
+and  
+`(node3)-[left]->(node2)`  
+where the `and` is a set intersection between the two patterns.  
+
+For more details regarding graph queries please read the following article about [graph query](../../indexes/querying/graph/graph-queries)  
+
+{PANEL/}
+
 {PANEL: Keywords and Methods}
 
 The following keywords and methods are available in RQL:
@@ -303,7 +341,7 @@ The following keywords and methods are available in RQL:
   - [moreLikeThis()](../../client-api/session/querying/how-to-use-morelikethis)
 - [ORDER BY](../../indexes/querying/what-is-rql#order-by)
   - [ASC | ASCENDING](../../indexes/querying/sorting#basics)
-  - [DESC | DESCEDING](../../indexes/querying/sorting#basics)
+  - [DESC | DESCENDING](../../indexes/querying/sorting#basics)
   - [AS](../../indexes/querying/sorting#basics)
     - [string](../../indexes/querying/sorting#basics)
     - [long](../../indexes/querying/sorting#basics)
@@ -323,6 +361,8 @@ The following keywords and methods are available in RQL:
   - [counter()](../../document-extensions/counters/counters-and-other-features#counters-and-queries)
 - [UPDATE](../../indexes/querying/what-is-rql#update)
 - [INCLUDE](../../indexes/querying/what-is-rql#include)
+- [WITH](../../indexes/querying/what-is-rql#with)
+- [MATCH](../../indexes/querying/what-is-rql#match)
 
 With the following operators:
 
