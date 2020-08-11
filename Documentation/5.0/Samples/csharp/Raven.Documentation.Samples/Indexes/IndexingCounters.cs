@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
+using Raven.Client.Documents.Indexes.Counters;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.Indexes
@@ -16,7 +17,7 @@ namespace Raven.Documentation.Samples.Indexes
             #endregion
         }
 
-        #region index
+        #region index_0
         public class Companies_ByCounterNames : AbstractIndexCreationTask<Company>
         {
             public class Result
@@ -32,6 +33,38 @@ namespace Raven.Documentation.Samples.Indexes
                                    {
                                        CounterNames = counterNames.ToArray()
                                    };
+            }
+        }
+        #endregion
+
+        #region index_1
+        private class MyCounterIndex : AbstractCountersIndexCreationTask<Company>
+        {
+            public MyCounterIndex()
+            {
+                AddMap("Likes", counters => from counter in counters
+                                                select new
+                                                {
+                                                    Likes = counter.Value,
+                                                    Name = counter.Name,
+                                                    User = counter.DocumentId
+                                                });
+            }
+        }
+        #endregion
+
+        #region index_2
+        private class MyCounterIndex_AllCounters : AbstractCountersIndexCreationTask<Company>
+        {
+            public MyCounterIndex_AllCounters()
+            {
+                AddMapForAll(counters => from counter in counters
+                                         select new
+                                         {
+                                             Count = counter.Value,
+                                             Name = counter.Name,
+                                             User = counter.DocumentId
+                                         });
             }
         }
         #endregion
@@ -77,5 +110,14 @@ namespace Raven.Documentation.Samples.Indexes
                 }
             }
         }
+
+        #region counter_entry
+        public class CounterEntry
+        {
+            public string DocumentId { get; set; }
+            public string Name { get; set; }
+            public long Value { get; set; }
+        }
+        #endregion
     }
 }
