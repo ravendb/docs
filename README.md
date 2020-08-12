@@ -10,6 +10,33 @@ Need help?
 ----------
 If you have any questions please visit our [community group](http://groups.google.com/group/ravendb/).
 
+## Language-specific docs inheritance between documentation versions
+
+### Rules
+
+1. If a documentation directory for a specific version does not contain any markdown file related to a documentation page, then all the documentation pages are inherited from the previous documentation version.
+2. If a documentation directory contains any markdown file for a documentation page (for example - dotnet only), then the parser assumes that the current version has an entirely new set of documents. No document from the previous version is inherited.
+
+This behavior ensures us that we don't show obsolete inherited documents for a documentation version. There is a reason why a new language-specific documentation page was introduced for a doc version (for example, the API was changed). This means that all other languages should be also treated as different from the previous version.
+
+### Example
+
+In the case of `client-api/data-subscriptions/creation/examples`, we have these files in the directories:
+
+- v4.0: dotnet, java, js
+- v4.1: dotnet, java
+- v4.2: dotnet
+- v5.0: no documents
+
+So for v4.1 the parser assumes that the v4.1 version should support dotnet and java. No document from v4.0 is inherited.
+
+The v5.0 directory does not contain any related document, so the documents are inherited from the previous version. v4.2 contains only dotnet document, so v5.0 will support dotnet only.
+
+### Fixing missing language page
+
+In order to fix the missing language page, the related markdown file should be copied from the previous version. The pasted file should be analyzed to indicate what needs to be updated for the current documentation version.
+
+
 ## Adding new documentation version
 
 1. Add `Documentation/[[version]]/Raven.Documentation.Pages/Raven.Documentation.Pages.csproj` project. Make sure that it references the correct RavenDB nuget packages versions.
