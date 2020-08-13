@@ -3,15 +3,15 @@
 ---
 
 {NOTE: }
-
 In this page:  
 
-[Create subscription on all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription-on-all-documents-in-a-collection)  
-[Create subscription with filtering](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering)  
-[Create subscription with filtering and projection](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering-and-projection)  
-[Create subscription with load document in filter projection](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-load-document-in-filter-projection)  
-[Create subscription with include statement](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-include-statement)  
-[Create revisions enabled subscription](../../../client-api/data-subscriptions/creation/examples#create-revisions-enabled-subscription)  
+* [Create subscription on all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription-on-all-documents-in-a-collection)  
+* [Create subscription with filtering](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering)  
+* [Create subscription with filtering and projection](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering-and-projection)  
+* [Create subscription with load document in filter projection](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-load-document-in-filter-projection)  
+* [Create subscription with include statement](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-include-statement)  
+* [Create revisions enabled subscription](../../../client-api/data-subscriptions/creation/examples#create-revisions-enabled-subscription)  
+* [Update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription)  
 
 {NOTE/}
 
@@ -76,7 +76,6 @@ It is recommended to prefer this approach when possible both because of clarity 
 
 {PANEL/}
 
-
 {PANEL:Create revisions enabled subscription}
 
 Here we create a subscription on Orders collection, which returns current and previous version of the subscriptions. 
@@ -89,9 +88,16 @@ Please see the [page](../../../client-api/data-subscriptions/advanced-topics/sub
 
 {PANEL/}
 
+{PANEL:Update existing subscription}
+Here we update the filter query of an existing data subscription named "my subscription".  
+{CODE:csharp update_subscription_example_0@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
-
-
+In addition to names, subscriptions also have a **subscription id** on the server side. The 
+id can be used to identify the subscription instead of using its name. This allows use to change 
+an existing subscription's name by specifying the subscription with the id, and submitting 
+a new string in the `Name` field of the `SubscriptionUpdateOptions`.  
+{CODE:csharp update_subscription_example_1@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{PANEL/}
 
 ## Related Articles
 

@@ -70,7 +70,12 @@ usage:
 {PANEL/}
 
 {PANEL: Updating subscription}
-{INFO This operation can only be performed through the management studio /}
+
+See [example](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription) 
+and [api description](../../../client-api/data-subscriptions/creation/api-overview#update-subscription).  
+
+{CODE updating_subscription@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
 {PANEL/}
 
 {PANEL: Getting subscription status}
@@ -126,6 +131,8 @@ The class is available through `DocumentStore`'s `Subscriptions` property.
 | **GetSubscriptionWorker(string subscriptionName, string database)** | `SubscriptionWorker<dynamic>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `BlittableJsonReader`, wrapped by dynamic object. |
 | **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
 | **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)** | `SubscriptionWorker<dynamic>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `BlittableJsonReader`, wrapped by dynamic object. |
+| **Update(SubscriptionUpdateOptions options, string database = null)** | `string` | Updates an existing data subscription. |
+| **UpdateAsync(SubscriptionUpdateOptions options, string database = null, CancellationToken token = default)** | `Task<string>` | Updates an existing data subscription. |
 
 {PANEL/}
 
