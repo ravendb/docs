@@ -25,15 +25,14 @@
 ### Counters and Indexing  
 
 Indexing Counters can speed-up finding them and the documents that contain them.  
-RavenDB supports Counters-indexing **by name**, but **not by value**.  
 
-* **Counter-Names indexing**  
+* **Indexing Counter Values**
+    Dynamic indexes (aka auto-indexes) _cannot_ index counter values. To index counter values, 
+    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../../indexes/indexing-counters)).
+
+* **Indexing Counter-Names**  
     Re-indexing due to Counter-name modification is normally rare enough to pause no performance issues.  
-    To index a document's Counters by name, use [counterNamesFor](../../../indexes/indexing-counters#indexes--indexing-counters).  
-  
-* **Counter-Values indexing**  
-    Indexing by Counter-value is **not** provided, changing the Counter's value will not trigger indexing of the document.  
-    Counters are designed for high-throughput scenarios and cannot afford the re-indexing cost of each change.  
+    To index a document's Counters by name, use [counterNamesFor](../../indexes/indexing-counters#section).  
 
 ---
 
