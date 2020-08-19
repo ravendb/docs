@@ -16,9 +16,9 @@ You can configure this for all collections (using the default configuration) and
 
 | Configuration option | Description |
 | - | - |
-| **PurgeOnDelete** | Configure whether to delete the revisions upon document delete or create a delete marker instead. |
-| **MinimumRevisionsToKeep ** | Configure how much revisions to keep. Default: unlimited. |
-| **MinimumRevisionAgeToKeep ** | Configure a minimum retention time before the revisions can be expired. Default: None. |
+| **PurgeOnDelete** | Configure whether to delete the revisions upon document delete or create a delete marker instead. Default: false. |
+| **MinimumRevisionsToKeep** | Configure the minimum number of revisions to keep. Default: none. |
+| **MinimumRevisionAgeToKeep** | Configure a minimum retention time before the revisions can be expired. Default: none. |
 | **Disabled** | If true, disable the revisions feature for this configuration (default or specific collection). Default: false. |
 
 You can also configure the revisions feature using the client:
