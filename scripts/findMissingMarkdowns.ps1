@@ -1,9 +1,10 @@
 param (
-    [string] $Version = "4.0",
     [array] $LanguagesToCheck = @("dotnet", "java", "js")
 )
 
 $ErrorActionPreference = "Stop"
+
+$excludedVersions = @("1.0", "2.0", "2.5", "3.0", "3.5")
 
 $validationFailed = $false;
 
@@ -19,7 +20,7 @@ function Get-MarkdownLanguage($file) {
     return $split[1];
 }
 
-function Validate-Markdown($key, $languages, $folder) {
+function Validate-Markdown($version, $key, $languages, $folder) {
     if ($languages.length -eq 1 -and ($languages[0] -eq "All")) {
         return;
     }
@@ -27,18 +28,18 @@ function Validate-Markdown($key, $languages, $folder) {
     foreach ($expectedLang in $LanguagesToCheck) {
         if (-not ($languages -contains $expectedLang)) {
             $global:validationFailed = $true;
-            Write-Host "Missing $expectedLang for $key in $folder"
+            Write-Host "[$version $expectedLang] '$key' in '$folder'"
         }
     }
 }
 
-function Validate-Markdowns( $dict, $folder ) {
+function Validate-Markdowns($version, $dict, $folder) {
     foreach ($item in $dict.GetEnumerator()) {
-        Validate-Markdown $item.Name $item.Value $folder;
+        Validate-Markdown $version $item.Name $item.Value $folder;
     }
 }
 
-function Traverse-Pages($path) {
+function Traverse-Pages($version, $path) {
     $markdownFiles = Get-ChildItem $path | Where { $_.Extension -eq ".markdown" };
 
     $dict = @{};
@@ -55,21 +56,23 @@ function Traverse-Pages($path) {
         }
     }
 
-    Validate-Markdowns $dict $path;
+    Validate-Markdowns $version $dict $path;
 
     $nestedFolders = Get-ChildItem $path -Directory;
 
     foreach ($nestedFolder in $nestedFolders) {
         $nestedPath = [io.path]::combine($path, $nestedFolder);
-        Traverse-Pages $nestedPath;
+        Traverse-Pages $version $nestedPath;
     }
 
     return;
 }
 
-function Traverse-Documentation() {
-    $path = [io.path]::combine(".", $Version, "Raven.Documentation.Pages");
-    Traverse-Pages $path;
+function Traverse-Documentation($versionsToCheck) {
+    foreach ($version in $versionsToCheck) {
+        $path = [io.path]::combine(".", $version, "Raven.Documentation.Pages");
+        Traverse-Pages $version $path;
+    }
 
     if ($global:validationFailed) {
         Write-Error "Validation failed"
@@ -79,10 +82,19 @@ function Traverse-Documentation() {
     }
 }
 
-Write-Host $PSScriptRoot
+function Get-VersionsToCheck() {
+    $allVersions = Get-ChildItem -Directory | Select-Object -ExpandProperty Name
+
+    return $allVersions | Where-Object {$excludedVersions.Contains($_) -eq $false}
+}
+
+Write-Host "Missing markdown files:"
 Push-Location ([io.path]::combine($PSScriptRoot, "../Documentation"))
+
+$versionsToCheck = Get-VersionsToCheck
+
 try {
-    Traverse-Documentation
+    Traverse-Documentation $versionsToCheck
 }
 finally {
     Pop-Location
