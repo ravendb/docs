@@ -1,8 +1,14 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.Operations.Attachments;
+using Raven.Client.ServerWide;
+using Raven.Client.ServerWide.Operations;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.Attachments
 {
@@ -18,6 +24,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Attachments
             #region GetSyntax
             AttachmentResult Get(string documentId, string name);
             AttachmentResult Get(object entity, string name);
+            IEnumerator<AttachmentEnumeratorResult> Get(IEnumerable<AttachmentRequest> attachments);
             AttachmentName[] GetNames(object entity);
             AttachmentResult GetRevision(string documentId, string name, string changeVector);
             bool Exists(string documentId, string name);
@@ -26,6 +33,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Attachments
             #region GetSyntaxAsync
             Task<AttachmentResult> GetAsync(string documentId, string name, CancellationToken token = default);
             Task<AttachmentResult> GetAsync(object entity, string name, CancellationToken token = default);
+            Task<IEnumerator<AttachmentEnumeratorResult>> GetAsync(IEnumerable<AttachmentRequest> attachments, CancellationToken token = default);
             Task<AttachmentResult> GetRevisionAsync(string documentId, string name, string changeVector, CancellationToken token = default);
             Task<bool> ExistsAsync(string documentId, string name, CancellationToken token = default);
             #endregion
@@ -213,5 +221,141 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Attachments
             public string Description { get; set; }
             public string[] Tags { get; set; }
         }
+
+
+        // attachments multi-get
+        // BulkInsert.a few attachments and then get them with a single request
+        public async void AttachmentsMultiGet()
+        {
+            using (var store = getDocumentStore())
+            {
+                // Create documents to add attachments to
+                using (var session = store.OpenSession())
+                {
+                    var user1 = new User
+                    {
+                        Name = "Lilly",
+                        Age = 20
+                    };
+                    session.Store(user1);
+
+                    var user2 = new User
+                    {
+                        Name = "Betty",
+                        Age = 25
+                    };
+                    session.Store(user2);
+
+                    var user3 = new User
+                    {
+                        Name = "Robert",
+                        Age = 29
+                    };
+                    session.Store(user3);
+
+                    session.SaveChanges();
+                }
+
+                List<User> result;
+
+                using (var session = store.OpenSession())
+                {
+                    IRavenQueryable<User> query = session.Query<User>()
+                        .Where(u => u.Age < 30);
+
+                    result = query.ToList();
+                }
+
+                // Query for users younger than 30, add an attachment
+                using (var bulkInsert = store.BulkInsert())
+                {
+                    for (var user = 0; user < result.Count; user++)
+                    {
+                        byte[] byteArray = Encoding.UTF8.GetBytes("some contents here");
+                        var stream = new MemoryStream(byteArray);
+
+                        string userId = result[user].Id;
+                        var attachmentsFor = bulkInsert.AttachmentsFor(userId);
+
+                        for (var attNum = 0; attNum < 10; attNum++)
+                        {
+                            stream.Position = 0;
+                            await attachmentsFor.StoreAsync(result[user].Name + attNum, stream);
+                        }
+
+                    }
+                }
+
+                // attachments multi-get (sync)
+                using (var session = store.OpenSession())
+                {
+                    for (var userCnt = 0; userCnt < result.Count; userCnt++)
+                    {
+                        string userId = result[userCnt].Id;
+                        #region GetAllAttachments
+                        // Load a user profile
+                        var user = session.Load<User>(userId);
+
+                        // Get the names of files attached to thie document
+                        IEnumerable<AttachmentRequest> attachmentNames = session.Advanced.Attachments.GetNames(user).Select(x => new AttachmentRequest(userId, x.Name));
+
+                        // Get the attached files
+                        IEnumerator<AttachmentEnumeratorResult> attachmentsEnumerator = session.Advanced.Attachments.Get(attachmentNames);
+                        #endregion
+                    }
+                }
+
+                // attachments multi-get (Async)
+                using (var session = store.OpenAsyncSession())
+                {
+                    for (var userCnt = 0; userCnt < result.Count; userCnt++)
+                    {
+                        string userId = result[userCnt].Id;
+                        #region GetAllAttachmentsAsync
+                        // Load a user profile
+                        var user = await session.LoadAsync<User>(userId);
+
+                        // Get the names of files attached to thie document
+                        IEnumerable<AttachmentRequest> attachmentNames = session.Advanced.Attachments.GetNames(user).Select(x => new AttachmentRequest(userId, x.Name));
+
+                        // Get the attached files
+                        IEnumerator<AttachmentEnumeratorResult> attachmentsEnumerator = await session.Advanced.Attachments.GetAsync(attachmentNames);
+                        #endregion
+                    }
+                }
+
+            }
+        }
+
+        public DocumentStore getDocumentStore()
+        {
+            DocumentStore store = new DocumentStore
+            {
+                Urls = new[] { "http://localhost:8080" },
+                Database = "TestDatabase"
+            };
+            store.Initialize();
+
+            var parameters = new DeleteDatabasesOperation.Parameters
+            {
+                DatabaseNames = new[] { "TestDatabase" },
+                HardDelete = true,
+            };
+            store.Maintenance.Server.Send(new DeleteDatabasesOperation(parameters));
+            store.Maintenance.Server.Send(new CreateDatabaseOperation(new DatabaseRecord("TestDatabase")));
+
+            return store;
+        }
+
+        private class User
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+            public string LastName { get; set; }
+            public string AddressId { get; set; }
+            public int Count { get; set; }
+            public int Age { get; set; }
+        }
+
     }
 }
