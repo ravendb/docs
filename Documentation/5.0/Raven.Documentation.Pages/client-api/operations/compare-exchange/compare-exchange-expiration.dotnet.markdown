@@ -1,16 +1,15 @@
-﻿# Compare Exchange Expiration and Metadata
+﻿# Compare Exchange Expiration
 ---
 
 {NOTE: }
 
-* RavenDB 5.0 added metadata to compare exchange values.  
+* Compare exchange value expiration works very similar to [document expiration](../../../server/extensions/expiration).  
 
-* Use the `@expires` field in the metadata to schedule an expiration for a 
-compare exchange value. This works very similar to [document expiration](../../../server/extensions/expiration).  
+* Use the `@expires` field in a [compare exchange value's metadata](../../../client-api/operations/compare-exchange/compare-exchange-metadata) to schedule its expiration.  
 
 * In this page:
-  * [syntax](../../../client-api/operations/compare-exchange/compare-exchange-expiration-metadata#syntax)
-  * [examples](../../../client-api/operations/compare-exchange/compare-exchange-expiration-metadata#examples)
+  * [Syntax](../../../client-api/operations/compare-exchange/compare-exchange-expiration#syntax)
+  * [Examples](../../../client-api/operations/compare-exchange/compare-exchange-expiration#examples)
 
 {NOTE/}
 
@@ -24,11 +23,7 @@ deletion by the expiration feature. The _exact_ time this happens depends
 on the expiration frequency and other 
 [expiration configurations](../../../server/extensions/expiration#configuring-the-expiration-feature).  
 
-Editing compare exchange metadata works much the same as editing a 
-[document's metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata) 
-- it is a root property of the compare exchange value object.  
-
-To set a compare exchange value to expire, simple put a `DateTime` value 
+To set a compare exchange value to expire, simply put a `DateTime` value 
 (in UTC format) in the `@expires` field, then to send it to the server.  
 
 {PANEL/}
@@ -50,6 +45,7 @@ Updating an existing key with `PutCompareExchangeValueOperation<T>`:
 ### Client API
 - [Session: How to Get and Modify Entity Metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata)
 - [Compare Exchange: Overview](../../../client-api/operations/compare-exchange/overview)
+- [Compare Exchange Metadata](../../../client-api/operations/compare-exchange/compare-exchange-metadata)
 
 ### Server
 - [Document Expiration](../../../server/extensions/expiration)

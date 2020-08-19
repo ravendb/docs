@@ -35,9 +35,15 @@
     "Mappings": []
   },
   {
-    "Path": "compare-exchange-expiration-metadata.markdown",
-    "Name": "Compare Exchange Expiration and Metadata",
+    "Path": "compare-exchange-expiration.markdown",
+    "Name": "Compare Exchange Expiration",
     "DiscussionId": "14b18c8c-28fc-4c97-b435-b4176d4e1a26",
+    "Mappings": []
+  },
+  {
+    "Path": "compare-exchange-metadata.markdown",
+    "Name": "Compare Exchange Metadata",
+    "DiscussionId": "42e13e99-2dfb-4f8c-9cde-f0a2cbfccfe0",
     "Mappings": []
   }
 ]
