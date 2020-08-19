@@ -49,7 +49,15 @@ You can write the following code to get back the data below:
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Cameras/ByManufacturerModelCostDateOfListingAndMegapixels' 
 where Cost between 100 and 300
-select facet(Manufacturer), facet(Cost <= 200, Cost between 200 and 400, Cost between 400 and 600, Cost between 600 and 800, Cost >= 800), facet(Megapixels <= 3, Megapixels between 3 and 7, Megapixels between 7 and 10, Megapixels >= 10)
+select facet(Manufacturer), 
+       facet(Cost <= 200, 
+             Cost between 200 and 400, 
+             Cost between 400 and 600, Cost between 600 and 800, 
+             Cost >= 800), 
+       facet(Megapixels <= 3, 
+             Megapixels between 3 and 7, 
+             Megapixels between 7 and 10, 
+             Megapixels >= 10)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -147,7 +155,7 @@ where Cost between 100 and 300
 select facet(id('facets/CameraFacets'))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
+<br/>
 ### Stale Results
 
 The faceted search does not take into account a staleness of an index. You can wait for non stale results by customizing your query with the `WaitForNonStaleResults` method.
