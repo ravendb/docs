@@ -1790,5 +1790,34 @@
         "twitter:description": "RavenDB features that allow easy setup for network environments or data pipelines.",
         "twitter:url": "https://ravendb.net/articles/a-nosql-database-that-fits-in-your-network-with-ease"
     }
+},
+{
+    "Path": "rollup-and-data-retention-in-ravendb-time-series.markdown",
+    "Name": "Rollup and Data Retention in RavenDB Time Series",
+    "Mappings": [],
+    "Metadata": {
+        "title": "NoSQL Data Retention | Data Retention and Rollup | NoSQL Time Series",
+        "likeSection": "yes",
+        "url": "rollup-and-data-retention-in-ravendb-time-series",
+        "publishedAt": "2020-08-19",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "Track data in small time intervals while commanding data rollup to larger aggregates and dictating data retention policy using RavenDB NoSQL database Time Series.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "Rollup and Data Retention in RavenDB Time Series",
+        "og:description": "Track data in small time intervals while commanding data rollup to larger aggregates and dictating data retention policy using RavenDB Time Series.",
+        "og:url": "https://ravendb.net/articles/rollup-and-data-retention-in-ravendb-time-series",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/rollup-and-data-retention-in-ravendb-time-series&fileName=rollup-and-data-retention-in-ravendb-time-series.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "Rollup and Data Retention in RavenDB Time Series",
+        "twitter:description": "Track data in small time intervals while commanding data rollup to larger aggregates and dictating data retention policy using RavenDB Time Series.",
+        "twitter:url": "https://ravendb.net/articles/rollup-and-data-retention-in-ravendb-time-series"
+    }
 }
 ]
