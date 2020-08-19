@@ -72,7 +72,7 @@ usage:
 {PANEL: Updating subscription}
 
 See [example](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription) 
-and [api description](../../../client-api/data-subscriptions/creation/api-overview#update-subscription).  
+and [API description](../../../client-api/data-subscriptions/creation/api-overview#update-subscription).  
 
 {CODE updating_subscription@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 

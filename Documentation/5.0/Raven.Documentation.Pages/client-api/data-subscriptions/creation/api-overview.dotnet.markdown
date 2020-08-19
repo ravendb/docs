@@ -42,7 +42,7 @@ Non generic version of the class, relies on user's full knowledge of the RQL que
 | Member | Type | Description |
 |--------|:-----|-------------| 
 | **Name** | `string` | User defined name of the subscription: allows to have a human readable identification of a subscription. The name must be unique in the database. |
-| **Query** | `string` | **Required.** RQL query that describes the subscription. That RQL comes with additional support to javascript clause inside the 'Where' statement and special semantics for subscriptions on documents revisions. |
+| **Query** | `string` | **Required.** RQL query that describes the subscription. That RQL comes with additional support to JavaScript clause inside the 'Where' statement and special semantics for subscriptions on documents revisions. |
 | **ChangeVector** | `string` | Allows to define a change vector, from which the subscription will start processing. It might be useful for ad-hoc processes that need to process only recent changes in data, for that specific use, the field may receive a special value: "LastDocument", that will take the latest change vector in the machine. |
 | **MentorNode** | `string` | Allows to define a specific node in the cluster that we want to treat the subscription. That's useful in cases when one server is preffered over other, either because of stronger hardware or closer geographic proximity to clients etc. |
 
@@ -58,8 +58,8 @@ An RQL statement will be built based on the fields.
 |--------|:-----|-------------| 
 | **&lt;T&gt;** | type | Type of the object, from which the collection will be derived. |
 | **Name** | `string` | User defined name of the subscription: allows to have a human readable identification of a subscription. The name must be unique in the database. |
-| **Filter** | `Expression<Func<T, bool>>` | Lambda describing filter logic for the subscription. Will be translated to a javascript function.
-| **Projection** | `Expression<Func<T, object>>` | Lambda describing the projection of returned documents. Will be translated to a javascript function. |
+| **Filter** | `Expression<Func<T, bool>>` | Lambda describing filter logic for the subscription. Will be translated to a JavaScript function.
+| **Projection** | `Expression<Func<T, object>>` | Lambda describing the projection of returned documents. Will be translated to a JavaScript function. |
 | **Includes** | `Action<ISubscriptionIncludeBuilder<T>>` | Action with an [ISubscriptionIncludeBuilder](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-include-statement) parameter that allows you to define includes for the subscription. |
 | **ChangeVector** | `string` | Allows to define a change vector, from which the subscription will start processing. It might be useful for ad-hoc processes that need to process only recent changes in data, for that specific use, the field may receive a special value: "LastDocument", that will take the latest change vector in the machine. |
 | **MentorNode** | `string` | Allows to define a specific node in the cluster that we want to treat the subscription. That's useful in cases when one server is preffered over other, either because of stronger hardware or closer geographic proximity to clients etc. |
@@ -86,13 +86,13 @@ Modifies an existing data subscription. Method is accessible at `DocumentStore.S
 
 {PANEL: SubscriptionUpdateOptions}
 
-Inherits from `SubscriptionCreationOptions` and has all the same fields (see [above](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions)) plus two.  
+Inherits from `SubscriptionCreationOptions` and has all the same fields (see [above](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions)) plus the two additional fields described below:  
 
 {CODE sub_update_options@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
 | Parameter | Type | Description |
 | - | - | - |
-| **Id** | `long?` | Unique server-side ID of the data subscription, see description of the [subscription state object](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#getting-subscription-status). `Id` can be used instead of the subscription update options `Name` field, and takes precedence over it. This allows you to change the subscription's name: submit a subscription's id, and submit a different name in the `Name` field. |
+| **Id** | `long?` | Unique server-side ID of the data subscription, see description of the [subscription state object](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#getting-subscription-status). `Id` can be used instead of the subscription update options `Name` field, and takes precedence over it. This allows you to change the subscription's name: submit a subscription's ID, and submit a different name in the `Name` field. |
 | **CreateNew** | `bool` | If set to `true`, and the specified subscription does not exist, the subscription is created. If set to `false`, and the specified subscription does not exist, an exception is thrown. |
 
 {PANEL/}
@@ -101,7 +101,7 @@ Inherits from `SubscriptionCreationOptions` and has all the same fields (see [ab
 
 All subscriptions, are eventually translated to an RQL-like statement. These statements has four parts:
 
-* Functions definition part, like in ordinary RQL. Those functions can contain any javascript code,
+* Functions definition part, like in ordinary RQL. Those functions can contain any JavaScript code,
   and also supports `load` and `include` operations.
 
 * From statement, defining the documents source, ex: `from Orders`. The from statement can only address collections, therefore, indexes are not supported.    
@@ -122,7 +122,7 @@ Usage of JavaScript ES5 syntax is supported.
 {INFO/}
 
 {INFO: Paths}
-Paths in subscriptions RQL statements are treated as Javascript indirections and not like regular RQL paths.  
+Paths in subscriptions RQL statements are treated as JavaScript indirections and not like regular RQL paths.  
 It means that a query that in RQL would look like:  
 
 ```
