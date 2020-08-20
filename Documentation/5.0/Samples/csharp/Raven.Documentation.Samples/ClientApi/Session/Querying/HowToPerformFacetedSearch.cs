@@ -359,6 +359,48 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .ExecuteAsync();
                     #endregion
                 }
+
+                using (var session = store.OpenSession())
+                {
+                    #region facet_5_1
+                    Dictionary<string, FacetResult> facets = session
+                        .Query<Camera>("Camera/Costs")
+                        .AggregateBy(builder => builder
+                            .ByField(x => x.Manufacturer)
+                            .MinOn(x => x.Cost)
+                            .MaxOn(x => x.Megapixels)
+                            .MaxOn(x => x.Zoom))
+                        .AndAggregateBy(builder => builder
+                            .ByRanges(
+                                camera => camera.Cost < 400m,
+                                camera => camera.Cost >= 400m)
+                            .AverageOn(x => x.Cost)
+                            .MaxOn(x => x.Cost)
+                            .MinOn(x => x.Cost))
+                        .Execute();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region facet_5_2
+                    Dictionary<string, FacetResult> facets = await asyncSession
+                        .Query<Camera>("Camera/Costs")
+                        .AggregateBy(builder => builder
+                            .ByField(x => x.Manufacturer)
+                            .MinOn(x => x.Cost)
+                            .MaxOn(x => x.Megapixels)
+                            .MaxOn(x => x.Zoom))
+                        .AndAggregateBy(builder => builder
+                            .ByRanges(
+                                camera => camera.Cost < 400m,
+                                camera => camera.Cost >= 400m)
+                            .AverageOn(x => x.Cost)
+                            .MaxOn(x => x.Cost)
+                            .MinOn(x => x.Cost))
+                        .ExecuteAsync();
+                    #endregion
+                }
             }
         }
     }
