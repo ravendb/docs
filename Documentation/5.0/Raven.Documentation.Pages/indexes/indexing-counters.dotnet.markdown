@@ -3,7 +3,7 @@
 
 {INFO: }
 
-This page has been moved to the Counters section in Document Extensions: [Indexing Counters](../document-extensions/counters/indexing-counters)  
+This page has been moved to the Counters section in Document Extensions: [Indexing Counters](../document-extensions/counters/indexing)  
 
 {INFO/}
 
@@ -16,4 +16,4 @@ This page has been moved to the Counters section in Document Extensions: [Indexi
 
 ### Document Extensions  
 - [Counters: Overview](../document-extensions/counters/overview)  
-- [Indexing Counters](../document-extensions/counters/indexing-counters)  
+- [Indexing Counters](../document-extensions/counters/indexing)  

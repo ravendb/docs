@@ -9,8 +9,8 @@ that inherits from `AbstractCountersIndexCreationTask`.
 * Auto-indexes for counters are not available at this time.  
 
 * In this page:  
-  * [Syntax](../../document-extensions/counters/indexing-counters#syntax)  
-  * [Querying the Index](../../document-extensions/counters/indexing-counters#querying-the-index)  
+  * [Syntax](../../document-extensions/counters/indexing#syntax)  
+  * [Querying the Index](../../document-extensions/counters/indexing#querying-the-index)  
 
 {NOTE/}
 

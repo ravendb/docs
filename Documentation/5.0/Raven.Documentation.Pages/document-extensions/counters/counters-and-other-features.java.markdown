@@ -28,11 +28,11 @@ Indexing Counters can speed-up finding them and the documents that contain them.
 
 * **Indexing Counter Values**
     Dynamic indexes (aka auto-indexes) _cannot_ index counter values. To index counter values, 
-    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../../document-extensions/counters/indexing-counters)).
+    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../../document-extensions/counters/indexing)).
 
 * **Indexing Counter Names**  
     Re-indexing due to Counter-name modification is normally rare enough to pause no performance issues.  
-    To index a document's Counters by name, use [counterNamesFor](../../document-extensions/counters/indexing-counters#section).  
+    To index a document's Counters by name, use [counterNamesFor](../../document-extensions/counters/indexing#section).  
 
 ---
 
