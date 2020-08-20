@@ -2,13 +2,12 @@
 
 {NOTE: }
 
-* The `LoadBalanceBehavior` convention determines whether the nodes 
-  topology used to handle client requests, can be chosen by a client session.  
-* When enabled, a session can select its handling topology by `tag`.  
-  Client requests that use the same tag, are served by the same topology.  
-* Using pre-set topologies enables clients and administrators to load-balance requests 
-  as they please. E.g., frequent employee-related and product-related requests can be 
-  handled by an "**employees_top**" and a "**products_top**" topologies, respectively.  
+* The `LoadBalanceBehavior` convention determines whether a client session 
+  is allowed to select the topology that would handle its requests.  
+  When enabled, a session can select a topology by `tag`. Client requests 
+  sent by sessions that use the same tag, are handled by the same topology.  
+* Clients and administrators can use tags to load-balance traffic, e.g. by 
+  using the topology tagged "users/1-A" for requests sent by this user.  
 
 * In this page:  
    * [LoadBalanceBehavior Options](../../../client-api/session/configuration/use-session-context-for-load-balancing#loadbalancebehavior-options)  
@@ -18,9 +17,9 @@
 {PANEL: LoadBalanceBehavior Options}
 
   * `None`  
-    Nodes are chosen to serve read requests by the 
-    [ReadBalanceBehavior convention](../../../client-api/configuration/load-balance-and-failover#readbalancebehavior-options), 
-    and to server write requests by the [Preferred Node](../../../client-api/configuration/load-balance-and-failover#preferred-node) 
+    Read requests are handled based on the 
+    [ReadBalanceBehavior convention](../../../client-api/configuration/load-balance-and-failover#readbalancebehavior-options).  
+    Write requests are handled by the [Preferred Node](../../../client-api/configuration/load-balance-and-failover#preferred-node) 
     calculated by the client.  
 
   * `UseSessionContext`
@@ -28,16 +27,16 @@
        The topology is selected by `tag`.  
        Requests that use the same tag, are served by the same topology.  
        The same nodes are used for **Read** and **Write** requests.  
-     * Administrators can override client selections, selecting the 
-       topology that would handle client requests by its hash seed.  
+     * Administrators can disable this feature, or add a hash to randomize 
+       the topology that would be selected for the client when it uses a tag.  
      * Using this option to choose client request-handling topology 
        influences only the client, causing no change in replication 
        or other server functions.  
 
-  {WARNING: }
-  Enabling this feature increases the chance for conflicts, 
-  as multiple sessions may approach a shared document using different tags.  
-  {WARNING/}
+  {NOTE: }
+  Conflicts may rarely happen, when multiple sessions that use different tags 
+  modify a shared document concurrently. 
+  {NOTE/}
 
 ##Example I
 In this example, a client session chooses its topology by tag.  

@@ -28,7 +28,7 @@
   * Allow client sessions to select their topology by tag, 
     so they'd be able to load-balance their requests.  
   
-  * Optionally, select a hash seed to fix the topology that clients would use.  
+  * Optionally, select a hash seed to randomize the topology that clients would use.  
 
   * You can choose either **3** or **4**.  
 

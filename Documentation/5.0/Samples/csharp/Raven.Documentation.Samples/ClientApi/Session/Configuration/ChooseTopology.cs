@@ -15,7 +15,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Configuration
         {
         }
 
-        public DocumentStore getDocumentStore()
+        public DocumentStore GetDocumentStore()
         {
             DocumentStore store = new DocumentStore
             {
@@ -71,7 +71,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Configuration
 
         public void AdministratorLoadBalancing()
         {
-            using (var store = getDocumentStore())
+            using (var store = GetDocumentStore())
             {
                 var requestExecutor = store.GetRequestExecutor();
 

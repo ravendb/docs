@@ -9,19 +9,27 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
     {
         public Cluster()
         {
-            var store = new DocumentStore()
+            var store1 = new DocumentStore()
             {
+                #region ReadBalanceBehavior
                 Conventions = new DocumentConventions
                 {
-                    #region ReadBalanceBehavior
                     ReadBalanceBehavior = ReadBalanceBehavior.FastestNode
-                    #endregion
-                    ,
-                    #region LoadBalanceBehavior
-                    LoadBalanceBehavior = LoadBalanceBehavior.UseSessionContext
-                    #endregion
                 }
+                #endregion
+            };
+
+
+            var store2 = new DocumentStore()
+            {
+                #region LoadBalanceBehavior
+                Conventions = new DocumentConventions
+                {
+                    LoadBalanceBehavior = LoadBalanceBehavior.UseSessionContext
+                }
+                #endregion
             };
         }
+
     }
 }
