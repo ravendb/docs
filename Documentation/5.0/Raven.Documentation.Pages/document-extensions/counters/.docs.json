@@ -89,5 +89,20 @@
             "Key": "client-api/session/counters/counters-in-clusters"
         }
     ]
+  },
+  {
+    "Path": "indexing.markdown",
+    "Name": "Indexing Counters",
+    "DiscussionId": "70d5091b-af23-4d21-bb4e-7ce21a31c753",
+    "Mappings": [
+      {
+        "Version": 4.2,
+        "Key": "indexes/indexing-counters"
+      },
+      {
+        "Version": 4.1,
+        "Key": "indexes/indexing-counters"
+      }
+    ]
   }
 ]
