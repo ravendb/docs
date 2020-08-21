@@ -36,9 +36,11 @@ To execute facet (aggregation) query using the session `Query` method, use the `
 | **displayName** | string | If set, results of a facet will be returned under this name |
 | **options** | `FacetOptions` | Non-default options that should be used for operation |
 
+### Calculation Operations
+
 `SumOn()`,`MinOn()`,`MinOn()`, or `AverageOn()` add a calculation on numerical fields to each facet. 
 For example, `AverageOn(x => x.Cost)` adds to each facet the sum of the costs of all the results in that 
-facet. See [example below](../../../client-api/session/querying/how-to-perform-a-faceted-search#example-ii-using-builder). 
+facet. See [example below](../../../client-api/session/querying/how-to-perform-a-faceted-search#example-iv). 
 These calculation operations can take any numerical field in the results of the query. Multiple of these 
 operations can be added to each facet clause, and can be called for multiple fields.  
 
@@ -54,6 +56,8 @@ operations can be added to each facet clause, and can be called for multiple fie
 | **PageSize** | int | Used to limit facet results to the given value |
 
 ## Example I
+
+Query using `Facet` and `RangeFacet`:  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync facet_2_1@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
@@ -74,11 +78,9 @@ facet(Megapixels < 3,
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Example II Using Builder
+## Example II
 
-In this example note the facets on the field `Cost`. Calling the function 
-`AverageOn(x => x.Cost)` (or `average(Cost)` in RQL) adds to each facet 
-the average value of `Cost` within that facet.  
+Query using builder:  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync facet_3_1@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
@@ -108,6 +110,29 @@ facet(Megapixels < 3,
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Camera/Costs' 
 select facet(id('facets/CameraFacets'))
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+## Example IV
+
+Demonstrates how calculation operations can be added to facet queries. 
+Multiple operations can be added on each facet, for multiple fields.  
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync facet_5_1@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
+{CODE-TAB:csharp:Async facet_5_2@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Camera/Costs'
+select
+facet(Manufacturer,
+      min(Cost),
+      max(Megapixels),
+      max(Zoom)),
+facet(Cost < 400,
+      Cost >= 400,
+      avg(Cost),
+      max(Cost),
+      min(Cost))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
