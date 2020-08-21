@@ -1819,5 +1819,34 @@
         "twitter:description": "Track data in small time intervals while commanding data rollup to larger aggregates and dictating data retention policy using RavenDB Time Series.",
         "twitter:url": "https://ravendb.net/articles/rollup-and-data-retention-in-ravendb-time-series"
     }
+},
+{
+    "Path": "save-time-and-money-with-non-relational-database-data-compression.markdown",
+    "Name": "Non Relational Databases | NoSQL Data Compression",
+    "Mappings": [],
+    "Metadata": {
+        "title": "Non Relational Databases | NoSQL Data Compression",
+        "likeSection": "yes",
+        "url": "save-time-and-money-with-non-relational-database-data-compression",
+        "publishedAt": "2020-08-21",
+        "subcategories": "nosql-database,data-storage"
+    },
+    "SeoMetaProperties": {
+        "description": "Using Non Relational Databases Data Compression, you get the benefits of a document database with the storage savings and performance of an SQL legacy model.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "Save Time and Money with Non Relational Database Data Compression",
+        "og:description": "Using Non Relational Database Data Compression, you get the benefits of a document database with the storage savings and performance of an SQL legacy model.",
+        "og:url": "https://ravendb.net/articles/save-time-and-money-with-non-relational-database-data-compression",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/save-time-and-money-with-non-relational-database-data-compression&fileName=save-time-and-money-with-non-relational-database-data-compression.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "Save Time and Money with Non Relational Database Data Compression",
+        "twitter:description": "Using Non Relational Database Data Compression, you get the benefits of a document database with the storage savings and performance of an SQL legacy model.",
+        "twitter:url": "https://ravendb.net/articles/save-time-and-money-with-non-relational-database-data-compression"
+    }
 }
 ]
