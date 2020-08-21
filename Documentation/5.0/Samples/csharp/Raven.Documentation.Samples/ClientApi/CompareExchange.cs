@@ -190,6 +190,21 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                                 cmpxchgValue.Index));
                     #endregion
                 }
+
+                using (IAsyncDocumentSession session = store.OpenAsyncSession())
+                {
+                    #region metadata_0
+                    // Create a new compare exchange value
+                    var cmpxchgValue = session.Advanced.ClusterTransaction.CreateCompareExchangeValue("key", "value");
+
+                    // Add a field to the metadata
+                    // with a value of type string
+                    cmpxchgValue.Metadata["Field name"] = "some value";
+
+                    // Retrieve metadata as a dictionary
+                    IDictionary<string, object> cmpxchgMetadata = cmpxchgValue.Metadata;
+                    #endregion
+                }
             }
         }
 
