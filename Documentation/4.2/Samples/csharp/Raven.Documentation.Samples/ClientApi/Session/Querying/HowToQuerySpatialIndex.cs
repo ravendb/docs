@@ -98,6 +98,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             #endregion
 
             #region spatial_6
+            // From point
             IOrderedQueryable<T> OrderByDistance<T>(
                 Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> field,
                 double latitude,
@@ -118,6 +119,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 double latitude,
                 double longitude);
 
+            // From center of WKT shape
             IOrderedQueryable<T> OrderByDistance<T>(
                 Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> field,
                 string shapeWkt);
@@ -133,9 +135,33 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             IOrderedQueryable<T> OrderByDistance<T>(
                 string fieldName,
                 string shapeWkt);
+
+            // Rounding
+            IOrderedQueryable<T> OrderByDistance<T>(
+                Expression<Func<T, object>> path,
+                double latitude,
+                double longitude,
+                double roundFactor);
+
+            IOrderedQueryable<T> OrderByDistance<T>(
+                string fieldName,
+                double latitude,
+                double longitude,
+                double roundFactor);
+            
+            IOrderedQueryable<T> OrderByDistance<T>(
+                Expression<Func<T, object>> path,
+                string shapeWkt,
+                double roundFactor);
+
+            IOrderedQueryable<T> OrderByDistance<T>(
+                string fieldName,
+                string shapeWkt,
+                double roundFactor);
             #endregion
 
             #region spatial_8
+            // From point
             IOrderedQueryable<T> OrderByDistanceDescending<T>(
                 Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> field,
                 double latitude,
@@ -156,6 +182,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 double latitude,
                 double longitude);
 
+            // From center of WKT shape
             IOrderedQueryable<T> OrderByDistanceDescending<T>(
                 Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> field,
                 string shapeWkt);
@@ -171,6 +198,29 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             IOrderedQueryable<T> OrderByDistanceDescending<T>(
                 string fieldName,
                 string shapeWkt);
+
+            // Rounding
+            IOrderedQueryable<T> OrderByDistanceDescending<T>(
+                Expression<Func<T, object>> path,
+                double latitude,
+                double longitude,
+                double roundFactor);
+
+            IOrderedQueryable<T> OrderByDistanceDescending<T>(
+                string fieldName,
+                double latitude,
+                double longitude,
+                double roundFactor);
+            
+            IOrderedQueryable<T> OrderByDistanceDescending<T>(
+                Expression<Func<T, object>> path,
+                string shapeWkt,
+                double roundFactor);
+
+            IOrderedQueryable<T> OrderByDistanceDescending<T>(
+                string fieldName,
+                string shapeWkt,
+                double roundFactor);
             #endregion
         }
 
@@ -273,11 +323,48 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     // sort results by distance from 32.1234 latitude and 23.4321 longitude point
                     List<House> results = await asyncSession
                         .Query<House>()
-                        .Spatial(
-                            factory => factory.Point(x => x.Latitude, x => x.Longitude),
-                            criteria => criteria.WithinRadius(10, 32.1234, 23.4321))
                         .OrderByDistance(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude), 32.1234, 23.4321)
+                        .ToListAsync();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region spatial_7_2
+                    // Return all entities and sort results by distance.
+                    // Round the distance up to the nearest 100 km.
+                    // Then sort alphabetically by the entity Name.
+                    List<House> results = session
+                        .Query<House>()
+                        .OrderByDistance(
+                            factory => factory.Point(
+                                x => x.Latitude,
+                                x => x.Longitude)
+                            .RoundTo(100),
+                            32.1234,
+                            23.4321)
+                        .ThenBy(x => x.Name)
+                        .ToList();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region spatial_7_3
+                    // Return all entities and sort results by distance.
+                    // Round the distance up to the nearest 100 km.
+                    // Then sort alphabetically by the entity Name.
+                    List<House> results = await asyncSession
+                        .Query<House>()
+                        .OrderByDistance(
+                            factory => factory.Point(
+                                x => x.Latitude,
+                                x => x.Longitude)
+                            .RoundTo(100),
+                            32.1234,
+                            23.4321)
+                        .ThenBy(x => x.Name)
                         .ToListAsync();
                     #endregion
                 }
