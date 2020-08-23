@@ -38,6 +38,12 @@ The next time that a client asks for a range of numbers from the server for this
 
 {NOTE/}
 
+{INFO: Identity Parts Separator}
+By default, document IDs created by the server use the character / to separate their components. 
+This separator can be changed to any other character except | in the 
+[Document Store Conventions](../../client-api/configuration/conventions#changing-the-identity-separator).  
+{NOTE/}
+
 ## Related Articles
 
 ### Document Identifiers

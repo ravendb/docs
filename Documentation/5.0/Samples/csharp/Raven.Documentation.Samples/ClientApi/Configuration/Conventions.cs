@@ -78,6 +78,10 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     #region AddIdFieldToDynamicObjects
                     AddIdFieldToDynamicObjects = false
                     #endregion
+                    ,
+                    #region IdentityPartsSeparator
+                    IdentityPartsSeparator = '~'
+                    #endregion
                 }
             };
             

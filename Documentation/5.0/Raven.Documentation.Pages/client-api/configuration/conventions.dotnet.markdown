@@ -103,6 +103,19 @@ You have to customize *JsonSerializer* and *PropertyNameConverter*.
 
 {CODE PropertyCasing@ClientApi\Configuration\Conventions.cs /}
 
+### Changing the Identity Separator
+
+Changes the default **separator** for automatically generated document IDs. Can be any `char` 
+except `|` (pipe). Default: `/` (forward slash).  
+
+This affects these ID generation strategies:  
+
+* [Server-Side ID](../../server/kb/document-identifier-generation#server-side-id)
+* [Identity](../../server/kb/document-identifier-generation#identity)
+* [HiLo Algorithm](../../server/kb/document-identifier-generation#hilo-algorithm)
+
+{CODE IdentityPartsSeparator@ClientApi\Configuration\Conventions.cs /}
+
 ## TopologyCacheLocation
 
 Changes the location of topology cache files. Setting this value will check directory existance and write permissions. By default it is set to the application base directory (`AppContext.BaseDirectory`).

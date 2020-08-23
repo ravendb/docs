@@ -25,9 +25,15 @@
   * Generated from a _Map-Reduce index output_:
       * **6 - Artificial Document ID**  
 
-* The below description refers to the _server-side ID generation behaviour_ when saving a document by REST API.  
+* The description below refers to the _server-side ID generation behaviour_ when saving a document by REST API.  
   For creating a document from the **Client API** see [Working with Document Identifiers](../../client-api/document-identifiers/working-with-document-identifiers)  
   For creating a document from the **Studio** see [Create New Document](../../studio/database/documents/create-new-document#create-new-document)  
+
+{INFO: Identity Parts Separator}
+By default, document IDs created by the server use the character / to separate their components. 
+This separator can be changed to any other character except | in the 
+[Document Store Conventions](../../client-api/configuration/conventions#changing-the-identity-separator).  
+{NOTE/}
 
 * In this page:  
   * [Semantic ID](../../server/kb/document-identifier-generation#semantic-id)  
