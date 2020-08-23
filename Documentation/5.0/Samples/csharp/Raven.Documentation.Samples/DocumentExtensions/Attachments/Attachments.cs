@@ -301,6 +301,21 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Attachments
 
                         // Get the attached files
                         IEnumerator<AttachmentEnumeratorResult> attachmentsEnumerator = session.Advanced.Attachments.Get(attachmentNames);
+
+                        // Go through the document's attachments
+                        while (attachmentsEnumerator.MoveNext())
+                        {
+                            AttachmentEnumeratorResult res = attachmentsEnumerator.Current;
+
+                            AttachmentDetails attachmentDetails = res.Details; // attachment details
+
+                            Stream attachmentStream = res.Stream; // attachment contents
+
+                            // In this case it is a string attachment, that can be decoded back to text 
+                            var ms = new MemoryStream();
+                            attachmentStream.CopyTo(ms);
+                            string decodedStream = Encoding.UTF8.GetString(ms.ToArray());
+                        }
                         #endregion
                     }
                 }
@@ -320,6 +335,21 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Attachments
 
                         // Get the attached files
                         IEnumerator<AttachmentEnumeratorResult> attachmentsEnumerator = await session.Advanced.Attachments.GetAsync(attachmentNames);
+
+                        // Go through the document's attachments
+                        while (attachmentsEnumerator.MoveNext())
+                        {
+                            AttachmentEnumeratorResult res = attachmentsEnumerator.Current;
+
+                            AttachmentDetails attachmentDetails = res.Details; // attachment details
+
+                            Stream attachmentStream = res.Stream; // attachment contents
+
+                            // In this case it is a string attachment, that can be decoded back to text 
+                            var ms = new MemoryStream();
+                            attachmentStream.CopyTo(ms);
+                            string decodedStream = Encoding.UTF8.GetString(ms.ToArray());
+                        }
                         #endregion
                     }
                 }

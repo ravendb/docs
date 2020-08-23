@@ -22,7 +22,8 @@ There are a few methods that allow you to download attachments from a database:
 {CODE-TABS/}
 
 ## Example II
-Here, we load all the attachments of a document.  
+Here, we load multiple string attachments we previously created for a document. We then 
+go through them, and decode each attachment to its original text.  
 {CODE-TABS}
 {CODE-TAB:csharp:Sync GetAllAttachments@DocumentExtensions\Attachments\Attachments.cs /}
 {CODE-TAB:csharp:Async GetAllAttachmentsAsync@DocumentExtensions\Attachments\Attachments.cs /}
