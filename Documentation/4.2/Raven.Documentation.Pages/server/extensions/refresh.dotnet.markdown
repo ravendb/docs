@@ -10,9 +10,9 @@ that react to document updates.
 * Refresh is scheduled using the `@refresh` flag in a document's [metadata](../../client-api/session/how-to/get-and-modify-entity-metadata).  
 
 * In this page:  
-  * [Overview](../../server/extensions/document-refresh#overview)  
-  * [Syntax](../../server/extensions/document-refresh#syntax)  
-  * [Examples](../../server/extensions/document-refresh#examples)  
+  * [Overview](../../server/extensions/refresh#overview)  
+  * [Syntax](../../server/extensions/refresh#syntax)  
+  * [Examples](../../server/extensions/refresh#examples)  
 
 {NOTE/}
 
