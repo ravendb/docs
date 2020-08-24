@@ -14,6 +14,7 @@ You can:
 - [index nested data](../indexes/map-indexes#indexing-nested-data)
 - [index fields from related documents](../indexes/indexing-related-documents)
 - [index fields from multiple collections](../indexes/indexing-polymorphic-data#multi-map-indexes)
+- [configure whether to index a document if the specified fields are `null`](../indexes/map-indexes#indexing-missing-fields)
 - ...and more. 
 
 ## Indexing Single Fields
@@ -222,6 +223,15 @@ If a document relationship is represented by the document's ID, you can use the 
 ## Indexing Multiple Collections
 
 Read the article dedicated to `Multi-Map` indexes [here](../indexes/indexing-polymorphic-data#multi-map-indexes).
+
+## Indexing Missing Fields
+
+By default, indexes will not index a document that contains none of the specified fields. This behavior can be changed 
+using the [Indexing.IndexEmptyEntries](../server/configuration/indexing-configuration#indexing.indexemptyentries) 
+configuration option.  
+
+The option [Indexing.IndexMissingFieldsAsNull](../server/configuration/indexing-configuration#indexing.indexmissingfieldsasnull) 
+determines whether missing fields in documents are indexed with the value `null`, or not indexed at all.  
 
 ## Related Articles
 

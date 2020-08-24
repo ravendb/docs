@@ -214,6 +214,26 @@ Max time to wait in seconds when forcing the storage environment flush and sync 
 
 {PANEL/}
 
+{PANEL:Indexing.IndexMissingFieldsAsNull}
+
+Indicates if missing fields should be indexed same as 'null' values or not.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
+{PANEL:Indexing.IndexEmptyEntries}
+
+Indicates if empty index entries should be indexed by static indexes.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
 {PANEL:Indexing.MapBatchSize}
 
 Maximum number of documents to be processed by the index per indexing batch.
