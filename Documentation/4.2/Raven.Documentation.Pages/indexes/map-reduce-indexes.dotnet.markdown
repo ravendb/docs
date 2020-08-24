@@ -81,9 +81,53 @@ from 'Product/Sales'
 
 {PANEL:Reduce Results as Artificial Documents}
 
-In addition to storing the aggregation results in the index, the map-reduce indexes can also output reduce results as documents to a specified collection.
-In order to create such documents, called _artificial_, you need to define the target collection using the `OutputReduceToCollection` property in the index definition.
+#### Map-Reduce Output Documents
 
+In addition to storing the aggregation results in the index, the map-reduce index can also output 
+those reduce results as documents to a specified collection. In order to create these documents, 
+called "_artificial_", you need to define the target collection using the `OutputReduceToCollection` 
+property in the index definition.  
+
+Writing map-reduce outputs into documents allows you to define additional indexes on top of them 
+that give you the option to create recursive map-reduce operations. This way, you can do 
+daily/monthly/yearly summaries very cheaply and easy.  
+
+In addition, you can also apply the usual operations on artificial documents (e.g. data 
+subscriptions or ETL).  
+
+#### Reference Documents
+
+To help organize these output documents, the map-reduce index can also create an additional 
+collection of artificial _reference documents_. These documents aggregate the output documents 
+and contain their document IDs.  
+
+The collection name and document IDs of reference documents can be customized. The format you 
+give to their document ID also determines how the output documents are grouped.  
+
+Learn more in [Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index).
+
+#### Syntax
+
+The map-reduce output documents are configured with these properties of 
+`IndexDefinition`:  
+
+{CODE-BLOCK:csharp }
+string OutputReduceToCollection;
+
+string PatternReferencesCollectionName;
+
+string PatternForOutputReduceToCollectionReferences;
+{CODE-BLOCK/}
+
+* `OutputReduceToCollection` - Collection name for the output documents.  
+
+* `PatternReferencesCollectionName` - Collection name for the reference documents.  
+
+* `PatternForOutputReduceToCollectionReferences` - Document ID format for reference documents. 
+This ID references the fields of the reduce function output, which determines how the output 
+documents are aggregated.  
+
+#### Example
 {CODE-TABS}
 {CODE-TAB:csharp:LINQ map_reduce_3_0@Indexes\MapReduceIndexes.cs /}
 {CODE-TAB:csharp:JavaScript map_reduce_3_0@Indexes\JavaScript.cs /}}

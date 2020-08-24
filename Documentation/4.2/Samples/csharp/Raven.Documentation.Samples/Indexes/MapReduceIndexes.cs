@@ -116,7 +116,6 @@ namespace Raven.Documentation.Samples.Indexes
     }
     #endregion
 
-    #region map_reduce_3_0
     public class Product_Sales_ByMonth : AbstractIndexCreationTask<Order, Product_Sales_ByMonth.Result>
     {
         public class Result
@@ -130,6 +129,8 @@ namespace Raven.Documentation.Samples.Indexes
             public decimal Total { get; set; }
         }
 
+        /*
+        #region map_reduce_3_0
         public Product_Sales_ByMonth()
         {
             Map = orders => from order in orders
@@ -153,9 +154,12 @@ namespace Raven.Documentation.Samples.Indexes
                                 };
 
             OutputReduceToCollection = "MonthlyProductSales";
+            PatternReferencesCollectionName = "MonthlyProductSales/References";
+            PatternForOutputReduceToCollectionReferences = "ProductSales/{Total}/{Month}";
         }
+        #endregion
+        */
     }
-    #endregion
 
     public class MapReduceIndexes
     {
