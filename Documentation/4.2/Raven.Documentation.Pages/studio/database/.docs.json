@@ -15,5 +15,10 @@
         "Path": "/tasks",
         "Name": "Tasks",
         "Mappings": []
+    },
+    {
+        "Path": "/indexes",
+        "Name": "Indexes",
+        "Mappings": []
     }
 ]

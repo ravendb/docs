@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Documentation.Samples.Orders;
@@ -116,47 +117,6 @@ namespace Raven.Documentation.Samples.Indexes
     }
     #endregion
 
-    #region map_reduce_3_0
-    public class Product_Sales_ByMonth : AbstractIndexCreationTask<Order, Product_Sales_ByMonth.Result>
-    {
-        public class Result
-        {
-            public string Product { get; set; }
-
-            public DateTime Month { get; set; }
-
-            public int Count { get; set; }
-
-            public decimal Total { get; set; }
-        }
-
-        public Product_Sales_ByMonth()
-        {
-            Map = orders => from order in orders
-                            from line in order.Lines
-                            select new
-                            {
-                                Product = line.Product,
-                                Month = new DateTime(order.OrderedAt.Year, order.OrderedAt.Month, 1),
-                                Count = 1,
-                                Total = ((line.Quantity * line.PricePerUnit) * (1 - line.Discount))
-                            };
-
-            Reduce = results => from result in results
-                                group result by new { result.Product, result.Month } into g
-                                select new
-                                {
-                                    Product = g.Key.Product,
-                                    Month = g.Key.Month,
-                                    Count = g.Sum(x => x.Count),
-                                    Total = g.Sum(x => x.Total)
-                                };
-
-            OutputReduceToCollection = "MonthlyProductSales";
-        }
-    }
-    #endregion
-
     public class MapReduceIndexes
     {
         public MapReduceIndexes()
@@ -226,4 +186,71 @@ namespace Raven.Documentation.Samples.Indexes
             }
         }
     }
+
+    
+    public class Product_Sales_ByMonth : AbstractIndexCreationTask<Order, Product_Sales_ByMonth.Result>
+    {
+        public class Result
+        {
+            public string Product { get; set; }
+
+            public DateTime Month { get; set; }
+
+            public int Count { get; set; }
+
+            public decimal Total { get; set; }
+        }
+
+        
+        #region map_reduce_3_0
+        public Product_Sales_ByMonth()
+        {
+            Map = orders => from order in orders
+                            from line in order.Lines
+                            select new
+                            {
+                                Product = line.Product,
+                                Month = new DateTime(order.OrderedAt.Year, order.OrderedAt.Month, 1),
+                                Count = 1,
+                                Total = ((line.Quantity * line.PricePerUnit) * (1 - line.Discount))
+                            };
+
+            Reduce = results => from result in results
+                                group result by new { result.Product, result.Month } into g
+                                select new
+                                {
+                                    Product = g.Key.Product,
+                                    Month = g.Key.Month,
+                                    Count = g.Sum(x => x.Count),
+                                    Total = g.Sum(x => x.Total)
+                                };
+
+            OutputReduceToCollection = "MonthlyProductSales";
+            PatternReferencesCollectionName = "MonthlyProductSales/References";
+            PatternForOutputReduceToCollectionReferences = x => $"sales/monthly/{x.Month}";
+        }
+        #endregion
+        
+    }
+
+    /*
+    class foo 
+    {
+        #region syntax
+        string OutputReduceToCollection;
+
+        string PatternReferencesCollectionName;
+
+        // Using IndexDefinition
+        string PatternForOutputReduceToCollectionReferences;
+
+        // Inheriting from AbstractGenericIndexCreationTask<TReduceResult>
+        Expression<Func<TReduceResult, string>> PatternForOutputReduceToCollectionReferences;
+        #endregion
+
+        private class TReduceResult
+        {
+        }
+    }
+    */
 }

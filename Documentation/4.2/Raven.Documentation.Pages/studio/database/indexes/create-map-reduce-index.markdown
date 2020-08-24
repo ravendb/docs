@@ -139,15 +139,29 @@
 
 {PANEL:  Saving Map-Reduce Results in a Collection (Artificial Documents)}
 
-* The results of the Map-Reduce index can be saved as documents in a new collection.  
-  These documents, that are created by the Map-Reduce index, are called **Artificial Documents**.  
+* The results of the Map-Reduce index can be saved as _output documents_ in a new output collection.  
 
-* Specify the name of the collection you want the results to be saved in.  
-  Note: the collection specified must be _empty_.  
+* These output documents can be further aggregated by _reference documents_, documents that contain 
+the document IDs of output documents.
+
+* These documents created by Map-Reduce Indexes are called **Artificial Documents**.  
+
+* Learn more about using Artificial Documents from the client code in [Map-Reduce Indexes: Reduce Results as Artificial Documents](../../../indexes/map-reduce-indexes#reduce-results-as-artificial-documents).  
 
 ![Figure 5. Save Map-Reduce Results into a Collection](images/create-map-reduce-index-5.png "Save Map-Reduce Results into a Collection")
 
-![Figure 6. An Artificial Document](images/create-map-reduce-index-6.png "An Artificial Document in the CompaniesOrders Collection")
+1. Specify the name of the collection you want the output documents to be saved in.  
+   Note: the collection specified must be _empty_.  
+
+2. Specify a pattern for the reference document IDs. By including reduce function fields, this 
+pattern determines which output documents will be included in each reference document.  
+
+3. The name of the collection for the reference documents. By default, this is 
+`<output collection name>/Reference`.  
+
+![Figure 6. An Artificial Document](images/create-map-reduce-index-6.png "An Artificial Document in the collection CompaniesOrders")
+
+![Figure 7. A Reference Document](images/create-map-reduce-index-7.png "A Reference Document in the collection CompaniesOrders/Reference")
 
 {NOTE: }
 ####  Artificial Documents -vs- Regular Documents  
@@ -196,7 +210,6 @@
 
   2. Artificial documents cannot use [Revisions](../../../server/extensions/revisions) or [Attachments](../../../client-api/session/attachments/what-are-attachments).  
 
-* Learn more about using Artificial Documents from the client code in [Reduce Results as Artificial Documents](../../../indexes/map-reduce-indexes#reduce-results-as-artificial-documents)  
 {NOTE/}
 {PANEL/}
 
