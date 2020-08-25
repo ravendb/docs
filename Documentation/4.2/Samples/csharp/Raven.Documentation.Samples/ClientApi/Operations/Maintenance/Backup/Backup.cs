@@ -175,6 +175,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 var operation = new UpdatePeriodicBackupOperation(config);
                 var result = await docStore.Maintenance.SendAsync(operation);
                 #endregion
+            }
 
             using (var docStore = new DocumentStore
             {

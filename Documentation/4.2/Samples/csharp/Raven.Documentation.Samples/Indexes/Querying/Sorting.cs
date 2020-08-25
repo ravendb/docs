@@ -83,7 +83,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
         #endregion
 
         #region sorting_9_3
-        public class Events_ByCoordinates : AbstractIndexCreationTask<Event>
+        private class Events_ByCoordinates : AbstractIndexCreationTask<Event>
         {
             public Events_ByCoordinates()
             {
@@ -95,6 +95,15 @@ namespace Raven.Documentation.Samples.Indexes.Querying
             }
         }
         #endregion
+
+        private class Event
+        {
+            public string Id { get; set; }
+            public bool Happy { get; set; }
+            public string Name { get; set; }
+            public double Latitude { get; set; }
+            public double Longitude { get; set; }
+        }
 
         public Sorting()
         {
