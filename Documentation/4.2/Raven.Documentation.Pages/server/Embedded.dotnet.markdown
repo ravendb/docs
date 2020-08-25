@@ -1,4 +1,24 @@
 # Server: Running an Embedded Instance
+---
+
+{NOTE: }
+
+* This page explains how to run RavenDB as an embedded server.
+
+* In this page:  
+
+  * [Overview](../server/embedded#overview)  
+  * [Prerequisites](../server/embedded#prerequisites)  
+  * [Getting Started](../server/embedded#getting-started)  
+      * [Installation](../server/embedded#installation)  
+      * [Starting the Server](../server/embedded#starting-the-server)  
+      * [Security](../server/embedded#security)  
+      * [Document Store](../server/embedded#document-store)  
+      * [Get Server URL and Process ID](../server/embedded#get-server-url-and-process-id)  
+
+{NOTE/}
+
+---
 
 {PANEL:Overview}
 
@@ -82,6 +102,8 @@ Could not load file or assembly 'System.Runtime.CompilerServices.Unsafe, Version
 Install-Package RavenDB.Embedded -Version 4.1.0
 {CODE-BLOCK/}
 
+---
+
 ### Starting the Server
 
 RavenDB Embedded Server is available under `EmbeddedServer.Instance`. In order to start it call `StartServer` method.
@@ -89,7 +111,7 @@ RavenDB Embedded Server is available under `EmbeddedServer.Instance`. In order t
 
 For more control on how to start the server just pass to `StartServer` method a `ServerOptions` object and that`s it.
 
-{INFO:ServerOptions}
+#### ServerOptions
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
@@ -102,11 +124,10 @@ For more control on how to start the server just pass to `StartServer` method a 
 | **CommandLineArgs** | `List<string>` | The [command lines arguments](../server/configuration/configuration-options#command-line-arguments) to start the server with |
 | **ServerDirectory** | string | The path to the server binary files<sup>[*](../server/embedded#setting-server-directory) |
 
-{INFO /}
-
 {CODE start_server_with_options@Server\Embedded.cs /}
 
-{NOTE: }
+Without the `ServerOptions`, RavenDB server will start with a default values on `127.0.0.1:{Random Port}`.
+
 #### Setting Server Directory
 In case you're not interested in installing the .Net run-time environment on your system, you can -  
 
@@ -118,10 +139,34 @@ In case you're not interested in installing the .Net run-time environment on you
    * `Raven.Server.exe` in Windows  
    * `Raven.Server` in Posix  
 
-   {CODE start_server_with_server_directory_option@Server\Embedded.cs /}
-{NOTE/}
+{CODE start_server_with_server_directory_option@Server\Embedded.cs /}
 
-{NOTE  Without the `ServerOptions`, RavenDB server will start with a default values on `127.0.0.1:{Random Port}`  /}
+#### Restarting the Server
+
+To restart the server, use the method `<embedded server>.RestartServerAsync()`.
+
+{CODE-BLOCK:csharp}
+public async Task RestartServerAsync();
+{CODE-BLOCK/}
+
+In code:
+
+{CODE restart_server@Server\Embedded.cs /}
+
+#### ServerProcessExited Event
+
+Use `<embedded server>.ServerProcessExited` to observe when the server has crashed or exited.  
+
+{CODE-BLOCK:csharp}
+event EventHandler<ServerProcessExitedEventArgs>? ServerProcessExited;
+{CODE-BLOCK/}
+
+Uses arguments of type `ServerProcessExitedEventArgs`, which inherits from `System.EventArgs` 
+and has no parameters - leave empty:  
+
+{CODE:csharp server_process_exited@Server\Embedded.cs /}
+
+---
 
 ### Security
 
@@ -140,6 +185,8 @@ This option is useful when you want to protect your certificate (private key) wi
 RavenDB will invoke a process you specify, so you can write your own scripts / mini programs and apply whatever logic you need. It creates a clean separation between RavenDB and the secret store in use.
 RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
 In this options you can control on your client certificate and to use in a different certificate for your client.
+
+---
 
 ### Document Store
 
@@ -167,12 +214,27 @@ For more control on the process you can call the methods with `DatabaseOptions` 
 {CODE-TAB:csharp:Async get_async_document_store_with_database_options@Server\Embedded.cs /}}
 {CODE-TABS/}
 
-### Get Server URL
+---
+
+### Get Server URL and Process ID
+
+#### Server URL
 
 The `GetServerUriAsync` method can be used to retrieve the Embedded server URL. It must be called after server was started, because it waits for the server initialization to complete.
 The URL can be used for example for creating a custom document store, omitting the `GetDocumentStore` method entirely.
 
 {CODE get_server_url_async@Server/Embedded.cs /}
+
+#### Process ID
+
+The `GetServerProcessIdAsync` method can be used to retrieve the system-generated process ID for the 
+embedded server.  
+
+{CODE-BLOCK:csharp}
+public async Task<int> GetServerProcessIdAsync(CancellationToken token = default);
+{CODE-BLOCK/}
+
+{CODE get_server_process_id@Server/Embedded.cs /}
 
 {PANEL/}
 

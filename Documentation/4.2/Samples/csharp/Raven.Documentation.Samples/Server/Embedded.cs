@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using System.Threading.Tasks;
 using Raven.Client.ServerWide;
 using Raven.Embedded;
@@ -19,6 +20,10 @@ namespace Raven.Documentation.Samples.Server
                     // Your code here
                 }
             }
+            #endregion
+
+            #region restart_server
+            await EmbeddedServer.Instance.RestartServerAsync();
             #endregion
 
             #region get_async_document_store
@@ -41,9 +46,20 @@ namespace Raven.Documentation.Samples.Server
             Uri url = await EmbeddedServer.Instance.GetServerUriAsync();
 
             #endregion
+
+            #region get_server_process_id
+
+            int processID = await EmbeddedServer.Instance.GetServerProcessIdAsync();
+
+            #endregion
+
+            #region server_process_exited
+            var args = new ServerProcessExitedEventArgs() { };
+            #endregion
+
         }
 
-        public Embedded()
+        public void EmbeddedSamples()
         {
             #region embedded_example
             EmbeddedServer.Instance.StartServer();
@@ -110,7 +126,7 @@ namespace Raven.Documentation.Samples.Server
             var serverOptionsWithExec = new ServerOptions();
             var certificate = new X509Certificate2();
             serverOptionsWithExec.Secured(
-                certExec: "powershell",
+                certLoadExec: "powershell",
                 certExecArgs: "C:\\secrets\\give_me_cert.ps1",
                 serverCertThumbprint: certificate.Thumbprint,
                 clientCert: certificate);
@@ -122,8 +138,6 @@ namespace Raven.Documentation.Samples.Server
                 FrameworkVersion = "2.1.2",
                 DotNetPath = "PATH_TO_DOTNET_EXEC"
             });
-
-
             #endregion
 
         }
