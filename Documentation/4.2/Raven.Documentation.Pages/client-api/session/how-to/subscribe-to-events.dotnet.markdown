@@ -5,7 +5,9 @@ The concept of events provides users with a mechanism to perform custom actions 
 The event is invoked when a particular action is executed on an entity or querying is performed.
 
 {INFO:Subscribing to an event}
-Subscribing an event can be done in the `DocumentStore` object, which will be valid for all future sessions or subscribing in an already opened session with `session.Advanced` which will overwrite the existing event for the current session. 
+Subscribing an event can be done in the `DocumentStore` object, which will be valid for all future sessions or subscribing in an already opened session with `session.Advanced` which will overwrite the existing event for the current session.  
+
+Events are also accessible statically from the `IDocumentStore` interface. To do so, simply cast a `DocumentStore` object to `IDocumentStore`.
 {INFO/}
 
 {PANEL:OnBeforeStore}
