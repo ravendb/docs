@@ -84,7 +84,7 @@ Set whether Raven's HTTP server should allow response compression to happen when
 
 Set the compression level to be used when compressing HTTP responses with GZip.
 
-- **Type**: `enum` (`Optimal`, `Fastest`, `NoCompression`)
+- **Type**: `enum CompressionLevel` (`Optimal`, `Fastest`, `NoCompression`)
 - **Default**: `Fastest`
 - **Scope**: Server-wide only
 
@@ -94,7 +94,7 @@ Set the compression level to be used when compressing HTTP responses with GZip.
 
 Set the compression level to be used when compressing HTTP responses with Deflate.
 
-- **Type**: `enum` (`Optimal`, `Fastest`, `NoCompression`)
+- **Type**: `enum CompressionLevel` (`Optimal`, `Fastest`, `NoCompression`)
 - **Default**: `Fastest`
 - **Scope**: Server-wide only
 
@@ -104,8 +104,30 @@ Set the compression level to be used when compressing HTTP responses with Deflat
 
 Set the compression level to be used when compressing static files.
 
-- **Type**: `enum` (`Optimal`, `Fastest`, `NoCompression`)
+- **Type**: `enum CompressionLevel` (`Optimal`, `Fastest`, `NoCompression`)
 - **Default**: `Optimal`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Http.UseLibuv}
+
+{DANGER: For experts, use with caution}
+Switches Kestrel to use Libuv.
+{DANGER/}
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Http.Protocols}
+
+Sets HTTP protocols that should be supported by the server.
+
+- **Type**: `enum HttpProtocols` ( `None = 0`, `Http1 = 1`, `Http2 = 2`, `Http1AndHttp2 = 3`)
+- **Default**: `DefaultValueSetInConstructor`
 - **Scope**: Server-wide only
 
 {PANEL/}
