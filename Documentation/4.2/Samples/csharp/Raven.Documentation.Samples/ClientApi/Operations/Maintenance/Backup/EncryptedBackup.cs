@@ -4,7 +4,7 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.Backups;
 using Raven.Client.ServerWide.Operations;
 
-namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
+namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.EncryptedBackup
 {
     public class User
     {

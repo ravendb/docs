@@ -379,7 +379,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     #region search_22_0
                     IList<User> users = session
                         .Query<User>()
-                        .Search(x => x.Name, "John Steve", @operator: SearchOperator.Or)
+                        .Search(x => x.Name, "John Steve", 1, SearchOptions.Guess, @operator: SearchOperator.Or)
                         .ToList();
                     #endregion
                 }
@@ -400,7 +400,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     #region search_22_2
                     IList<User> users = session
                         .Query<User>()
-                        .Search(x => x.Name, "John Steve", @operator: SearchOperator.And)
+                        .Search(x => x.Name, "John Steve", 1, SearchOptions.Guess, @operator: SearchOperator.And)
                         .ToList();
                     #endregion
                 }

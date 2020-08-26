@@ -13,7 +13,6 @@ using Raven.Client.Documents.Queries;
 using Raven.Client.Documents.Session;
 using Raven.Client.Http;
 using Raven.Client.ServerWide;
-using Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup;
 using Raven.Documentation.Samples.Indexes.Querying;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations
