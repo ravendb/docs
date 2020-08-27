@@ -2,6 +2,8 @@
 
 *RavenDB* uses *Kestrel* Server built in .NET Core. HTTP configuration options give a way to set *Kestrel's* options. See [Kestrel API](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel?view=aspnetcore-1.1)
 
+This page lists the configuration options contained in the `HttpConfiguration` object.
+
 <br>
 
 {PANEL:Http.MinDataRateBytesPerSec}
@@ -126,8 +128,13 @@ Switches Kestrel to use Libuv.
 
 Sets HTTP protocols that should be supported by the server.
 
-- **Type**: `enum HttpProtocols` ( `None = 0`, `Http1 = 1`, `Http2 = 2`, `Http1AndHttp2 = 3`)
+- **Type**: `enum HttpProtocols` ( `None`, `Http1`, `Http2`, `Http1AndHttp2`)
 - **Default**: `DefaultValueSetInConstructor`
 - **Scope**: Server-wide only
+
+By default, the HTTP protocol is set by the constructor of `HttpConfiguration` (that's what 
+is meant by the value `DefaultValueSetInConstructor`).  
+The HTTP protocol is chosen according to the value of `PlatformDetails.CanUseHttp2`, which is 
+`true` if the platform running RavenD is Windows 10 or higher, or POSIX.  
 
 {PANEL/}
