@@ -68,7 +68,7 @@ An RQL statement will be built based on the fields.
 
 {PANEL: Update Subscription}
 
-Modifies an existing data subscription. Method is accessible at `DocumentStore.Subscriptions.Update()`.
+Modifies an existing data subscription. These methods are accessible at `DocumentStore.Subscriptions`.  
 
 {CODE updating_subscription@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
