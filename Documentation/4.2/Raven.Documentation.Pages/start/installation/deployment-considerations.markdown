@@ -57,7 +57,7 @@ Any deployment, aside from maybe on a developer machine, should use the secured 
 
 RavenDB will typically use two ports. One for HTTPS traffic, for clients and browsers and one for TCP, used by the cluster nodes to
 communicate with each other. Both the HTTPS and TCP traffic are encrypted by default (unless you explicitly specify the unsecured setup)
-using TLS 1.2. Be sure to open both ports in the firewall to allow the cluster node to talk to one another. 
+using TLS 1.2 (or 1.3). Be sure to open both ports in the firewall to allow the cluster node to talk to one another. 
 
 RavenDB should _not_ typically be deployed behind a reversed proxy. The typical advantages of reverse proxies are based on their ability
 to load balance, cache responses, etc. These features are great when proxying a web application, but actively harmful when you are talking

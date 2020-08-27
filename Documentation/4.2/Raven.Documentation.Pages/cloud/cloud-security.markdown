@@ -5,7 +5,7 @@
 
 RavenDB cloud products use several layers of security.  
 
-* All instances are encrypted using HTTPS / TLS 1.2.  
+* All instances are encrypted using HTTPS and TLS protocol version 1.2 or 1.3.  
 
 * Servers and client applications authenticate each other using X.509 certificates.  
   {INFO: }

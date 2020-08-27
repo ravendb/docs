@@ -142,7 +142,7 @@ allowed to connect your database instance.
   Click this button to edit your product's list of Allowed IPs.  
   !["Manage Product: Edit IPs"](images\portal-products-0061-manage-security-addresses.png "Manage Product: Edit IPs")  
   The default setting, 0.0.0.0/0, grants access to **all** IP addresses.  
-  All your RavenDB Cloud instances are secured using TLS 1.2 and X509 certificates, but you can increase your 
+  All your RavenDB Cloud instances are secured using TLS 1.2 or 1.3 and X509 certificates, but you can increase your 
   system's security further using this in-depth security measure and restrict access to your cloud instance to 
   well-known sources, e.g. your application servers. **We recommend it.**  
   
