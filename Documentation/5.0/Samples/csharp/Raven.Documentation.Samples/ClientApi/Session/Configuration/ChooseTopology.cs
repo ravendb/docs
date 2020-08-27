@@ -48,7 +48,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Configuration
         public void clientSessionLoadBalancing()
         {
             #region LoadBalanceBehavior
-            string context = "usersTopology";
+            string currentUserID = "usersTopology";
 
             using var store = new DocumentStore
             {
@@ -56,7 +56,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Configuration
                 {
                     ReadBalanceBehavior = ReadBalanceBehavior.RoundRobin,
                     LoadBalanceBehavior = LoadBalanceBehavior.UseSessionContext,
-                    LoadBalancerPerSessionContextSelector = db => context
+                    LoadBalancerPerSessionContextSelector = db => currentUserID
                 }
             }.Initialize();
 

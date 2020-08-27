@@ -12,16 +12,17 @@
 
 ![Figure 1. Client Configuration Per Database](images/client-configuration-database-1.png "Specific Client Configuration Per Database")
 
+
 **1. Identity parts separator**  
 
-  * Choose a separator to improve identities readability.  
-    The default value is "/".  
-    
+  * Changes the default **separator** for automatically generated document IDs.  
+    You can use any `char` except `|` (pipe).  
+    Default value: `/`  
 
 **2. Max number of requests per session**  
 
   * Set this number to restrict the number of requests (***Reads*** & ***Writes***) per session in the client API.  
-    The default value is 30.  
+    Default value: 30  
 
 **3. Use Session Context for Load Balancing**  
 
@@ -29,8 +30,6 @@
     so they'd be able to load-balance their requests.  
   
   * Optionally, select a hash seed to randomize the topology that clients would use.  
-
-  * You can choose either **3** or **4**.  
 
 **4. Read balance behavior**  
 
