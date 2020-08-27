@@ -12,6 +12,7 @@ using Raven.Client.Documents.Operations.Configuration;
 using Raven.Client.Documents.Queries;
 using Raven.Client.Documents.Session;
 using Raven.Client.Http;
+using Raven.Client.Json;
 using Raven.Client.ServerWide;
 using Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup;
 using Raven.Documentation.Samples.Indexes.Querying;
@@ -191,9 +192,12 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     #endregion
                 }
 
-                using (IAsyncDocumentSession session = store.OpenAsyncSession())
+                #region metadata_0
+                using (IAsyncDocumentSession session = store.OpenAsyncSession(
+                                                       new SessionOptions { 
+                                                           TransactionMode = TransactionMode.ClusterWide 
+                                                       }))
                 {
-                    #region metadata_0
                     // Create a new compare exchange value
                     var cmpxchgValue = session.Advanced.ClusterTransaction.CreateCompareExchangeValue("key", "value");
 
@@ -203,13 +207,37 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
                     // Retrieve metadata as a dictionary
                     IDictionary<string, object> cmpxchgMetadata = cmpxchgValue.Metadata;
-                    #endregion
                 }
+                #endregion
+
+
+            }
+        }
+
+        public async Task AsyncExample()
+        {
+            using (var documentStore = new DocumentStore())
+            {
+                #region metadata_1
+                // Create some metadata
+                var cmpxchgMetadata = new MetadataAsDictionary {
+                                          ["Year"] = "2020" 
+                                      };
+
+                // Create/update the compare exchange value "best"
+                await documentStore.Operations.SendAsync(
+                    new PutCompareExchangeValueOperation<User>(
+                        "best", 
+                        new User { Name = "Alice" }, 
+                        0, 
+                        cmpxchgMetadata));
+                #endregion
             }
         }
 
         private class User
         {
+            public string Name { get; set; }
             public int Age { get; set; }
         }
     }
