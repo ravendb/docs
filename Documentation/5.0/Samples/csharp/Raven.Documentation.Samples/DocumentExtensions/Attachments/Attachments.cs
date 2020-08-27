@@ -296,7 +296,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Attachments
                         // Load a user profile
                         var user = session.Load<User>(userId);
 
-                        // Get the names of files attached to thie document
+                        // Get the names of files attached to this document
                         IEnumerable<AttachmentRequest> attachmentNames = session.Advanced.Attachments.GetNames(user).Select(x => new AttachmentRequest(userId, x.Name));
 
                         // Get the attached files
@@ -330,7 +330,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Attachments
                         // Load a user profile
                         var user = await session.LoadAsync<User>(userId);
 
-                        // Get the names of files attached to thie document
+                        // Get the names of files attached to this document
                         IEnumerable<AttachmentRequest> attachmentNames = session.Advanced.Attachments.GetNames(user).Select(x => new AttachmentRequest(userId, x.Name));
 
                         // Get the attached files
