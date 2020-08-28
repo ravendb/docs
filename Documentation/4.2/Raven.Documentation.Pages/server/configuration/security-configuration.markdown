@@ -224,3 +224,16 @@ Allow to specify well known certificate thumbprints that will be trusted by the 
 - **Scope**: Server-wide only
 
 {PANEL/}
+
+{PANEL:Security.TlsCipherSuites}
+
+{DANGER: For experts, use with caution}
+Defines a list of supported TLS Cipher Suites. Values must be semicolon separated.
+{DANGER/}
+
+- **Type**: `TlsCipherSuite[]`
+- **Example**: `TLS_RSA_WITH_RC4_128_MD5;TLS_RSA_WITH_RC4_128_SHA`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+{PANEL/}

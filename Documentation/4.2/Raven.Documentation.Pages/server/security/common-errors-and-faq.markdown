@@ -255,9 +255,9 @@ catch {
 }
 {CODE-BLOCK/}
 
-### Not using TLS 1.2
+### Not using TLS
 
-The RavenDB clients use TLS 1.2 by default. If you want to use other clients please make sure to use the TLS 1.2 security protocol.
+The RavenDB clients use TLS 1.2 by default. If you want to use other clients please make sure to use the TLS security protocol version 1.2 or 1.3.
 
 {CODE-TABS}
 {CODE-TAB-BLOCK:json:Bad Request (400) sample response}

@@ -29,7 +29,7 @@ Load the client certificate in PowerShell:
 $cert = Get-PfxCertificate -FilePath C:\secrets\admin.client.certificate.example.pfx
 {CODE-BLOCK/}
 
-Make sure to use TLS 1.2:
+Make sure to use TLS 1.2 (or 1.3):
 {CODE-BLOCK:powershell}
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 {CODE-BLOCK/}

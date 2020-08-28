@@ -64,7 +64,7 @@ To figure out what the new limit should be, look at the exception thrown by Rave
 
 To enable encryption in RavenDB, the user must first [enable authentication](../../../server/security/authentication/certificate-configuration) and HTTPS (by providing a certificate).
 
-Enabling Authentication and HTTPS (using the TLS 1.2 protocol) provides privacy and integrity of the data in transit. It protects against man-in-the-middle attacks, eavesdropping, and tampering of the communication.
+Enabling Authentication and HTTPS (using the TLS protocol version 1.2 or 1.3) provides privacy and integrity of the data in transit. It protects against man-in-the-middle attacks, eavesdropping, and tampering of the communication.
 
 Using the encryption feature together with HTTPS provides assurance that your data is safe both at rest and in transit.
 
