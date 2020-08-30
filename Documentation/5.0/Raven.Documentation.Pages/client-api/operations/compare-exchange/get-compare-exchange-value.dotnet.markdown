@@ -29,6 +29,13 @@
 | **Value** | `T` | The existing value that _Key_ has |
 | **Index** | long |  The version number of the _Value_ that is stored for the specified _Key_ |
 
+{INFO: Session Interface and Lazy Get}
+You can also get compare exchange values through the [session cluster transactions](../../../client-api/session/cluster-transaction) 
+at `session.Advanced.ClusterTransaction`.  
+
+This method also exposes methods getting compare exchange [lazily](../../../client-api/session/cluster-transaction#get-compare-exchange-lazily).  
+{INFO/}
+
 {PANEL/}
 
 {PANEL: Example I - Value is 'long'} 
@@ -47,3 +54,7 @@
 - [Get Compare-Exchange Values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
 - [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
 - [Delete a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+
+### Session
+
+- [Cluster Transaction - Overview](../../../client-api/session/cluster-transaction)

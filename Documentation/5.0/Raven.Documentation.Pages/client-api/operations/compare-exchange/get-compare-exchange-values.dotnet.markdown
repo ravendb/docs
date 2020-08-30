@@ -36,6 +36,14 @@
 | Return Value | Description |
 | ------------- | ----- |
 | `Dictionary<string, CompareExchangeValue<T>>` | A Dictionary containing _'Key'_ to _'CompareExchangeValue'_ associations |
+
+{INFO: Session Interface and Lazy Get}
+You can also get compare exchange values through the [session cluster transactions](../../../client-api/session/cluster-transaction) 
+at `session.Advanced.ClusterTransaction`.  
+
+This method also exposes methods getting compare exchange [lazily](../../../client-api/session/cluster-transaction#get-compare-exchange-lazily).  
+{INFO/}
+
 {PANEL/}
 
 {PANEL: Example I - Get Values for Specified Keys}
@@ -56,3 +64,7 @@
 - [Get a Compare-Exchange Value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
 - [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
 - [Delete a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+
+### Session
+
+- [Cluster Transaction - Overview](../../../client-api/session/cluster-transaction)

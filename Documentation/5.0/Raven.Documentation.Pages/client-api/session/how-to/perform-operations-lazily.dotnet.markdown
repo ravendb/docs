@@ -9,6 +9,8 @@ Available operations are:
 - `Load` - described [here](../../../client-api/session/loading-entities#load).
 - `Load with Includes` - described [here](../../../client-api/session/loading-entities#load-with-includes).
 - `LoadStartingWith` - described [here](../../../client-api/session/loading-entities#loadstartingwith).
+- `GetCompareExchangeValue` - described [here](../../../client-api/session/cluster-transaction#get-compare-exchange-lazily).  
+
 
 ## Querying
 
@@ -29,3 +31,4 @@ To execute all pending lazy operations use `ExecuteAllPendingLazyOperations` met
 ### Session
 
 - [How to Perform Queries Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
+- [Cluster Transaction - Overview](../../../client-api/session/cluster-transaction)
