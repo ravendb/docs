@@ -94,24 +94,6 @@ If the value is already exists `SaveChanges()` will throw a `ConcurrencyExceptio
 {CODE-TAB:csharp:Async new_compare_exchange_async@ClientApi\Session\ClusterTransactions\ClusterTransactions.cs /}
 {CODE-TABS/}
 
-### Update Compare Exchange
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync methods_5_sync@ClientApi\Session\ClusterTransactions\ClusterTransactions.cs /}
-{CODE-TAB:csharp:Async methods_async_5@ClientApi\Session\ClusterTransactions\ClusterTransactions.cs /}
-{CODE-TABS/}
-
-| Parameters | Type | Description |
-| ------------- | ------------- | ----- |
-| **item** | `CompareExchangeValue<T>` | The item to update |
-
-If the value was changed by someone else the `SaveChanges()` will throw a `ConcurrencyException`.
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync update_compare_exchange@ClientApi\Session\ClusterTransactions\ClusterTransactions.cs /}
-{CODE-TAB:csharp:Async update_compare_exchange_async@ClientApi\Session\ClusterTransactions\ClusterTransactions.cs /}
-{CODE-TABS/}
-
 ### Delete Compare Exchange
 
 {CODE-TABS}

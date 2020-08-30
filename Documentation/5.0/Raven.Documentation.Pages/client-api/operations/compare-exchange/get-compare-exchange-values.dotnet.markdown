@@ -19,13 +19,10 @@
 {PANEL: Syntax}
 
 **Methods**:
-{CODE get_list_0@ClientApi\Operations\CompareExchange.cs /}
-
 {CODE get_list_1@ClientApi\Operations\CompareExchange.cs /}
 
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
-| **keys** | string[] | List of keys to get |
 | **startWith** | string | A common prefix for those keys whose values should be returned |
 | **start** | int | The number of items that should be skipped |
 | **pageSize** | int | The maximum number of values that will be retrieved |
@@ -44,11 +41,6 @@ at `session.Advanced.ClusterTransaction`.
 This method also exposes methods getting compare exchange [lazily](../../../client-api/session/cluster-transaction#get-compare-exchange-lazily).  
 {INFO/}
 
-{PANEL/}
-
-{PANEL: Example I - Get Values for Specified Keys}
-
-{CODE get_list_2@ClientApi\Operations\CompareExchange.cs /}  
 {PANEL/}
 
 {PANEL: Example II - Get Values for Keys with Common Prefix}

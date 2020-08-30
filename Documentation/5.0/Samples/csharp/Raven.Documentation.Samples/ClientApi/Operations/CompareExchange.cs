@@ -87,13 +87,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     #endregion
                 }
 
-                {
+                /*{ This overload is no longer available
                     #region get_list_2
                     Dictionary<string, CompareExchangeValue<string>> compareExchangeValues
                         = store.Operations.Send(
                             new GetCompareExchangeValuesOperation<string>(new[] { "Key-1", "Key-2" }));
                     #endregion
-                }
+                }*/
 
                 {
                     #region get_list_3

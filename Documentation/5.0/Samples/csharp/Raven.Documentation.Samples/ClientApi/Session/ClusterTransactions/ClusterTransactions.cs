@@ -36,17 +36,17 @@ namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
                     await session.SaveChangesAsync();
                     #endregion
 
-                    #region update_compare_exchange_async
-                    // load the existing dns record of ravendb.net
-                    CompareExchangeValue<DNS> result = await session.Advanced.ClusterTransaction.GetCompareExchangeValueAsync<DNS>(key: "ravendb.net");
+                    //#region update_compare_exchange_async
+                    //// load the existing dns record of ravendb.net
+                    //CompareExchangeValue<DNS> result = await session.Advanced.ClusterTransaction.GetCompareExchangeValueAsync<DNS>(key: "ravendb.net");
 
-                    // change the ip
-                    result.Value.IpAddress = "52.32.173.150";
-                    session.Advanced.ClusterTransaction.UpdateCompareExchangeValue(result);
+                    //// change the ip
+                    //result.Value.IpAddress = "52.32.173.150";
+                    //session.Advanced.ClusterTransaction.UpdateCompareExchangeValue(result);
                     
-                    // save the changes
-                    await session.SaveChangesAsync();
-                    #endregion
+                    //// save the changes
+                    //await session.SaveChangesAsync();
+                    //#endregion
 
                     var key = "key";
                     var keys = new[] {"key"};
@@ -69,9 +69,9 @@ namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
                     session.Advanced.ClusterTransaction.DeleteCompareExchangeValue(key, index);
                     #endregion
 
-                    #region methods_async_5
-                    session.Advanced.ClusterTransaction.UpdateCompareExchangeValue(new CompareExchangeValue<T>(key, index, value));
-                    #endregion
+                    //#region methods_async_5
+                    //session.Advanced.ClusterTransaction.UpdateCompareExchangeValue(new CompareExchangeValue<T>(key, index, value));
+                    //#endregion
 
                     #region methods_async_lazy_1
                     // Single value
@@ -105,17 +105,17 @@ namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
                     session.SaveChanges();
                     #endregion
 
-                    #region update_compare_exchange_sync
-                    // load the existing dns record of ravendb.net
-                    CompareExchangeValue<DNS> result = session.Advanced.ClusterTransaction.GetCompareExchangeValue<DNS>(key: "ravendb.net");
+                    //#region update_compare_exchange_sync
+                    //// load the existing dns record of ravendb.net
+                    //CompareExchangeValue<DNS> result = session.Advanced.ClusterTransaction.GetCompareExchangeValue<DNS>(key: "ravendb.net");
 
-                    // change the ip
-                    result.Value.IpAddress = "52.32.173.150";
-                    session.Advanced.ClusterTransaction.UpdateCompareExchangeValue(result);
+                    //// change the ip
+                    //result.Value.IpAddress = "52.32.173.150";
+                    //session.Advanced.ClusterTransaction.UpdateCompareExchangeValue(result);
 
-                    // save the changes
-                    session.SaveChanges();
-                    #endregion
+                    //// save the changes
+                    //session.SaveChanges();
+                    //#endregion
 
 
                     var key = "key";
@@ -139,9 +139,9 @@ namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
                     session.Advanced.ClusterTransaction.DeleteCompareExchangeValue(key, index);
                     #endregion
 
-                    #region methods_5_sync
-                    session.Advanced.ClusterTransaction.UpdateCompareExchangeValue(new CompareExchangeValue<T>(key, index, value));
-                    #endregion
+                    //#region methods_5_sync
+                    //session.Advanced.ClusterTransaction.UpdateCompareExchangeValue(new CompareExchangeValue<T>(key, index, value));
+                    //#endregion
 
                     #region methods_sync_lazy_1
                     // Single value
