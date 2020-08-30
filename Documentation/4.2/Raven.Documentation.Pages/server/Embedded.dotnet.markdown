@@ -161,10 +161,7 @@ Use `<embedded server>.ServerProcessExited` to observe when the server has crash
 event EventHandler<ServerProcessExitedEventArgs>? ServerProcessExited;
 {CODE-BLOCK/}
 
-Uses arguments of type `ServerProcessExitedEventArgs`, which inherits from `System.EventArgs` 
-and has no parameters - leave empty:  
-
-{CODE:csharp server_process_exited@Server\Embedded.cs /}
+Event data is of type `ServerProcessExitedEventArgs`.
 
 ---
 
