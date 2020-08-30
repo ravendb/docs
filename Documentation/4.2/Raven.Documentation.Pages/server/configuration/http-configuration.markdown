@@ -133,8 +133,8 @@ Sets HTTP protocols that should be supported by the server.
 - **Scope**: Server-wide only
 
 By default, the HTTP protocol is set by the constructor of `HttpConfiguration` (that's what 
-is meant by the value `DefaultValueSetInConstructor`).  
-The HTTP protocol is chosen according to the value of `PlatformDetails.CanUseHttp2`, which is 
-`true` if the platform running RavenD is Windows 10 or higher, or POSIX.  
+is meant by the value "`DefaultValueSetInConstructor`"). If the platform running RavenD is 
+either Windows 10 or higher, Windows Server 2016 or newer, or POSIX, the constructor sets 
+Http.Protocols to `Http1AndHttp2`. Otherwise, it is set to `Http1`.  
 
 {PANEL/}
