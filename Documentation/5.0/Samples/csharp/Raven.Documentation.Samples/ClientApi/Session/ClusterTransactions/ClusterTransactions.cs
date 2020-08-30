@@ -72,6 +72,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
                     #region methods_async_5
                     session.Advanced.ClusterTransaction.UpdateCompareExchangeValue(new CompareExchangeValue<T>(key, index, value));
                     #endregion
+
+                    #region methods_async_lazy_1
+                    // Single value
+                    session.Advanced.ClusterTransaction.Lazily.GetCompareExchangeValueAsync<T>(key);
+
+                    // Multiple values
+                    session.Advanced.ClusterTransaction.Lazily.GetCompareExchangeValuesAsync<T>(keys);
+                    #endregion
                 }
             }
         }
@@ -133,6 +141,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
 
                     #region methods_5_sync
                     session.Advanced.ClusterTransaction.UpdateCompareExchangeValue(new CompareExchangeValue<T>(key, index, value));
+                    #endregion
+
+                    #region methods_sync_lazy_1
+                    // Single value
+                    session.Advanced.ClusterTransaction.Lazily.GetCompareExchangeValue<T>(key);
+                    
+                    // Multiple values
+                    session.Advanced.ClusterTransaction.Lazily.GetCompareExchangeValues<T>(keys);
                     #endregion
                 }
             }
