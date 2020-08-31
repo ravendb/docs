@@ -6,12 +6,13 @@
 
 In this page:  
 
-[Create subscription on all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription-on-all-documents-in-a-collection)  
-[Create subscription with filtering](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering)  
-[Create subscription with filtering and projection](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering-and-projection)  
-[Create subscription with load document in filter projection](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-load-document-in-filter-projection)  
-[Create subscription with include statement](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-include-statement)  
-[Create revisions enabled subscription](../../../client-api/data-subscriptions/creation/examples#create-revisions-enabled-subscription)  
+* [Create subscription on all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription-on-all-documents-in-a-collection)  
+* [Create subscription with filtering](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering)  
+* [Create subscription with filtering and projection](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering-and-projection)  
+* [Create subscription with load document in filter projection](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-load-document-in-filter-projection)  
+* [Create subscription with include statement](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-include-statement)  
+  * [Including counters](../../../client-api/data-subscriptions/creation/examples#including-counters)  
+* [Create revisions enabled subscription](../../../client-api/data-subscriptions/creation/examples#create-revisions-enabled-subscription)  
 
 {NOTE/}
 
@@ -59,20 +60,48 @@ Here we create a subscription on Orders collection, which total order revenue is
 
 {PANEL:Create subscription with include statement}
 
-Here we create a subscription on Orders collection, which returns the orders and brings along all products mentioned in the order as included documents. 
+Here we create a subscription on the collection Orders, which returns the orders and brings along all products mentioned in the order as included documents. 
 See the usage example [here](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents).
 
-Include statements supported only with raw RQL. Include statements come in two forms, like in any other RQL statements:  
+Include statements can be added to a subscription in the raw RQL, or with the **`ISubscriptionIncludeBuilder`**.  
+
+The subscription include builder is assigned to the option **Includes** in `SubscriptionCreationOptions<T>` 
+(see [subscription API overview](../../../client-api/data-subscriptions/creation/api-overview)). It 
+supports methods for including documents as well as counters. These methods can be chained.  
+
+In raw RQL, include statements come in two forms, like in any other RQL statements:  
 1. Include statement in the end of the query, starting with the `include` keyword, followed by paths to the field containing the ids of the documents to include.  
 If projection is performed, the mechanism will look for the paths in the projected result, rather then the original document.  
 It is recommended to prefer this approach when possible both because of clarity of the query and slightly better performance.  
 2. Include function call inside a 'declared' function.  
 
 {CODE-TABS}
-{CODE-TAB:csharp:Generic-syntax create_subscription_with_includes_strongly_typed@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE-TAB:csharp:Builder-syntax create_subscription_with_includes_strongly_typed@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {CODE-TAB:csharp:RQL-path-syntax create_subscription_with_includes_rql_path@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {CODE-TAB:csharp:RQL-javascript-syntax create_subscription_with_includes_rql_javascript@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {CODE-TABS/}
+
+---
+
+#### Including Counters
+
+`ISubscriptionIncludeBuilder` has three methods for including counters:  
+
+{CODE:csharp include_builder_counter_methods@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
+`IncludeCounter` is used to specify a single counter, and `IncludeCounters` for multiple counters. `IncludeAllCounters` 
+retrieves all counters from all subscribed documents.  
+
+| Parameters | Type | Description |
+| - | - | - |
+| **name** | `string` | The name of a counter. The subscription will include all counters with this name that are contained in the documents the subscription retrieves. |
+| **names** | `string[]` | Array of counter names. |
+
+In this example, we create a subscription that uses all three methods to include counters. This demonstrates 
+how the methods can be chained (needless to say, calling `IncludeAllCounters()` makes the other two methods 
+redundant).  
+
+{CODE:csharp create_subscription_include_counters_builder@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
 {PANEL/}
 

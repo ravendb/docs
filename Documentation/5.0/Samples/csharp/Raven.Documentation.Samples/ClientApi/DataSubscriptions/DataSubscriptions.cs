@@ -390,6 +390,26 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                             from Orders as o select includeProducts(o)"
             });
             #endregion
+
+            /*
+            #region include_builder_counter_methods
+            ISubscriptionIncludeBuilder<T> IncludeCounter(string name);
+
+            ISubscriptionIncludeBuilder<T> IncludeCounters(string[] names);
+
+            ISubscriptionIncludeBuilder<T> IncludeAllCounters();
+            #endregion
+            */
+
+            #region create_subscription_include_counters_builder
+            store.Subscriptions.Create(new SubscriptionCreationOptions<Order>()
+            {
+                Includes = builder => builder
+                    .IncludeCounter("numLines")
+                    .IncludeCounters(new[] { "pros", "cons" })
+                    .IncludeAllCounters()
+            });
+            #endregion
         }
 
         public interface IMaintainanceOperations
