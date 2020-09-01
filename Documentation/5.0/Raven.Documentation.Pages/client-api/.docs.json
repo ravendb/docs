@@ -99,5 +99,11 @@
     "Path": "/rest-api",
     "Name": "REST API",
     "Mappings": []
+  },
+  {
+    "Path": "documents-compression.markdown",
+    "Name": "Documents Compression",
+    "DiscussionId": "a306d29b-4a36-4533-8f7e-870bf0ac2af2",
+    "Mappings": []
   }
 ]

@@ -13,8 +13,7 @@
     {
         "Path": "/settings",
         "Name": "Settings",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "/tasks",
