@@ -1848,5 +1848,34 @@
         "twitter:description": "Using Non Relational Database Data Compression, you get the benefits of a document database with the storage savings and performance of an SQL legacy model.",
         "twitter:url": "https://ravendb.net/articles/save-time-and-money-with-non-relational-database-data-compression"
     }
+},
+{
+    "Path": "tended-app-uses-the-database-for-startups-to-spice-up-date-night.markdown",
+    "Name": "Database for Startups | Tended App Use Case",
+    "Mappings": [],
+    "Metadata": {
+        "title": "Database for Startups | Tended App Use Case",
+        "likeSection": "yes",
+        "url": "tended-app-uses-the-database-for-startups-to-spice-up-date-night",
+        "publishedAt": "2020-09-03",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "How RavenDB proven database for startups allowed Tended App to maintain a digital checklist distributed over user devices to make leaving the kids at home a worry free experience.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "Tended App Uses the Database for Startups to Spice Up Date Night",
+        "og:description": "Tended App uses the database for startups to maintain a digital checklist distributed over user devices to make leaving the kids at home a worry free experience.",
+        "og:url": "https://ravendb.net/articles/tended-app-uses-the-database-for-startups-to-spice-up-date-night",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/tended-app-uses-the-database-for-startups-to-spice-up-date-night&fileName=tended-app-uses-the-database-for-startups-to-spice-up-date-night.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "Tended App Uses the Database for Startups to Spice Up Date Night",
+        "twitter:description": "Tended App uses the database for startups to maintain a digital checklist distributed over user devices to make leaving the kids at home a worry free experience.",
+        "twitter:url": "https://ravendb.net/articles/tended-app-uses-the-database-for-startups-to-spice-up-date-night"
+    }
 }
 ]
