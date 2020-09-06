@@ -44,7 +44,7 @@ namespace Raven.Documentation.Samples.ClientApi
                 // Enable compression on collection Orders
                 // Enable compression of revisions on all 
                 // collections
-                record.DocumentsCompression = new DocumentsCompressionConfiguration(true, "Orders");
+                record.DocumentsCompression = new DocumentsCompressionConfiguration(compressRevisions: true, "Orders");
 
                 // Update the server
                 store.Maintenance.Server.Send(new UpdateDatabaseOperation(record, record.Etag));

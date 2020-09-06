@@ -51,3 +51,14 @@ and on the revisions of all collections:
 {CODE:csharp Example_0@ClientApi/DocumentsCompression.cs /}  
 
 {PANEL/}
+
+## Related Articles
+
+### Client API
+
+- [What are Operations](../client-api/operations/what-are-operations)
+
+### Studio
+
+- [Documents Compression](../studio/database/settings/documents-compression)
+- [Database Record](../studio/database/settings/database-record)

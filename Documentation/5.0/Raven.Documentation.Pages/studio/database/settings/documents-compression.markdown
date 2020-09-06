@@ -55,3 +55,13 @@ see its subdirectories.
 {WARNING/}
 
 {PANEL/}
+
+## Related Articles
+
+### Client API
+
+- [Documents Compression](../../../client-api/documents-compression)
+
+### Studio
+
+- [Database Record](../../../studio/database/settings/database-record)
