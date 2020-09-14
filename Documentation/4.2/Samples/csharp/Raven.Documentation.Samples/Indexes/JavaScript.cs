@@ -317,7 +317,7 @@ namespace Raven.Documentation.Samples.Indexes
                           from line in order.Lines
                           select new {
                               line.Product, 
-                              OrderedAt = order.OrderedAt,
+                              Date = order.OrderedAt,
                               Profit = line.Quantity * line.PricePerUnit * (1 - line.Discount)
                           };"
                     },
@@ -326,14 +326,14 @@ namespace Raven.Documentation.Samples.Indexes
                           group r by new { r.OrderedAt, r.Product }
                           into g
                           select new { 
-                              g.Key.Product,
-                              g.Key.OrderedAt,
+                              Product = g.Key.Product,
+                              Date = g.Key.Date,
                               Profit = g.Sum(r => r.Profit)
                           };",
 
                     OutputReduceToCollection = "DailyProductSales",
                     PatternReferencesCollectionName = "DailyProductSales/References",
-                    PatternForOutputReduceToCollectionReferences = "sales/daily/{OrderedAt:yyyy-MM-dd}"
+                    PatternForOutputReduceToCollectionReferences = "sales/daily/{Date:yyyy-MM-dd}"
                 };
             }
         }
