@@ -107,7 +107,7 @@ give to their document ID also determines how the output documents are grouped.
 Because reference documents have well known, predictable IDs, they are easier to plug into 
 indexes and other operations, and can serve as an intermediary for the output documents whose 
 IDs are less predictable. This allows you to chain map-reduce indexes in a recursive fashion, 
-see [example ii](../indexes/map-reduce-indexes#example-ii).  
+see [Example II](../indexes/map-reduce-indexes#example-ii).  
 
 Learn more about how to configure output and reference documents in the 
 [Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index).  
@@ -116,29 +116,38 @@ Learn more about how to configure output and reference documents in the
 
 #### IDs
 
-The identifiers of map reduce output documents are generated as:  
+The identifiers of **map reduce output documents** have three components in this format:  
 
-`<OutputCollectionName>/<hash-of-reduce-key>`  
+`<Output collection name>/<Raft Command ID>/<hash of reduce key values>`  
 
-The index in [example i](../indexes/map-reduce-indexes#example-i) might generate an output document ID like this:  
+The index in [Example I](../indexes/map-reduce-indexes#example-i) might generate an output document 
+ID like this:  
 
 `DailyProductSales/35/14369232530304891504`  
 
-The numeric part is the hash of the reduce key values, in this case: `hash(Product, Month)`.  
+"`/35/`" is the [Raft Command ID](../server/clustering/rachis/consensus-operations#raft-commands-implementation-details) 
+of the index update that created this output document. The last part of the document 
+identifier (the unique part) is the hash of the reduce key values - in this case: 
+`hash(Product, Month)`.  
 
 If the aggregation value for a given reduce key changes then we overwrite the artificial 
 document. It will get removed once there is no result for a given reduce key.  
 
-The identifiers of reference documents follow some pattern you choose, and this pattern 
+The identifiers of **reference documents** follow some pattern you choose, and this pattern 
 determines which output documents are held by a given reference document.  
 
-The index in [example i](../indexes/map-reduce-indexes#example-i) has this pattern for reference documents:  
+The index in [Example I](../indexes/map-reduce-indexes#example-i) has this pattern for reference documents:  
 
 `sales/daily/{Date:yyyy-MM-dd}`
 
 And this produces reference document IDs like this:
 
 `sales/daily/1998-05-06`
+
+The pattern is built using the same syntax as 
+[the `StringBuilder.AppendFormat` method](https://docs.microsoft.com/en-us/dotnet/api/system.text.stringbuilder.appendformat). 
+See [here](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings) 
+to learn about the date formatting in particular.  
 
 #### Metadata
 
@@ -160,7 +169,7 @@ The map-reduce output documents are configured with these properties of
 | Parameters | Type | Description |
 | - | - | - |
 | **OutputReduceToCollection** | `string` | Collection name for the output documents. |
-| **PatternReferencesCollectionName** | `string` | Collection name for the reference documents. |
+| **PatternReferencesCollectionName** | `string` | Optional collection name for the reference documents - by default it is `<OutputReduceToCollection>/References`. |
 | **PatternForOutputReduceToCollectionReferences** | `string` / `Expression<Func<TReduceResult, string>>` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](/indexes/creating-and-deploying#using-maintenance-operations) or [AbstractIndexCreationTask](../indexes/creating-and-deploying#using-abstractindexcreationtask). |
 
 To index artificial documents in strongly typed syntax (LINQ), you will need the 
