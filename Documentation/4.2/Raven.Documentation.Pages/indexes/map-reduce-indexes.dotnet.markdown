@@ -95,6 +95,9 @@ to, for example, recursively create daily, monthly, and yearly summaries on the 
 In addition, you can also apply the usual operations on artificial documents (e.g. data 
 subscriptions or ETL).  
 
+If the aggregation value for a given reduce key changes, we overwrite the output document. If the 
+given reduce key no longer has a result, the output document will be removed.  
+
 #### Reference Documents
 
 To help organize these output documents, the map-reduce index can also create an additional 
@@ -118,20 +121,24 @@ Learn more about how to configure output and reference documents in the
 
 The identifiers of **map reduce output documents** have three components in this format:  
 
-`<Output collection name>/<Raft Command ID>/<hash of reduce key values>`  
+`<Output collection name>/<incrementing value>/<hash of reduce key values>`  
 
 The index in [Example I](../indexes/map-reduce-indexes#example-i) might generate an output document 
 ID like this:  
 
 `DailyProductSales/35/14369232530304891504`  
 
-"`/35/`" is the [Raft Command ID](../server/clustering/rachis/consensus-operations#raft-commands-implementation-details) 
-of the index update that created this output document. The last part of the document 
-identifier (the unique part) is the hash of the reduce key values - in this case: 
-`hash(Product, Month)`.  
-
-If the aggregation value for a given reduce key changes then we overwrite the artificial 
-document. It will get removed once there is no result for a given reduce key.  
+* "DailyProductSales" is the collection name specified for the output documents.  
+* The middle part is an incrementing integer assigned by the server. This number grows by some 
+amount whenever the index definition is modified. This can be useful because when an index definition 
+changes, there is a brief transition phase when the new output documents are being created, but the 
+old output documents haven't been deleted yet (this phase is called 
+["side-by-side indexing"](../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing)). 
+During this phase, the output collection contains output documents created both by the old version 
+and the new version of the index, and they can be distinguished by this value: the new output 
+documents will always have a higher value (by 1 or more).  
+* The last part of the document ID (the unique part) is the hash of the reduce key values - in this 
+case: `hash(Product, Month)`.  
 
 The identifiers of **reference documents** follow some pattern you choose, and this pattern 
 determines which output documents are held by a given reference document.  
