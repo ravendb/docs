@@ -231,6 +231,84 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                         0, 
                         cmpxchgMetadata));
                 #endregion
+
+                // -Include examples-
+
+                #region include_load
+                using (IDocumentSession session = documentStore.OpenSession())
+                {
+                    // Load a user document, include the compare exchange value
+                    // with the key equal to the user's Name field
+                    var user = session.Load<User>("users/1-A", 
+                                                  includes => includes.IncludeCompareExchangeValue(
+                                                      x => x.Name));
+
+                    // Getting the compare exchange value does not require
+                    // another call to the server
+                    var value = session.Advanced.ClusterTransaction
+                                                .GetCompareExchangeValue<string>(user.Name);
+                }
+                #endregion
+
+                #region include_load_async
+                using (IAsyncDocumentSession session = documentStore.OpenAsyncSession())
+                {
+                    // Load a user document, include the compare exchange value
+                    // with the key equal to the user's Name field
+                    var user = await session.LoadAsync<User>("users/1-A", 
+                                                             includes => includes.IncludeCompareExchangeValue(
+                                                                 x => x.Name));
+
+                    // Getting the compare exchange value does not require
+                    // another call to the server
+                    var value = await session.Advanced.ClusterTransaction
+                                                      .GetCompareExchangeValueAsync<string>(user.Name);
+                }
+                #endregion
+
+                using (IDocumentSession session = documentStore.OpenSession())
+                {
+                    #region include_linq_query
+                    var users = session.Query<User>()
+                        .Include(builder => builder.IncludeCompareExchangeValue(x => x.Name))
+                        .ToList();
+
+                    List<CompareExchangeValue<string>> compareExchangeValues = null;
+
+                    // Getting the compare exchange values does not require
+                    // additional calls to the server
+                    foreach (User u in users){
+                        compareExchangeValues.Add(session.Advanced.ClusterTransaction
+                                                      .GetCompareExchangeValue<string>(u.Name));
+                    }
+                    #endregion
+                }
+
+                using (IDocumentSession session = documentStore.OpenSession())
+                {
+                    #region include_raw_query
+                    var users = session.Advanced
+                        .RawQuery<User>(@"
+                            declare function includeCEV(user) {
+                                includes.cmpxchg(user.name);
+                                return user;
+                            }
+
+                            from Users as u
+                            select includeCEV(u)"
+                        )
+                        .ToList();
+
+                    List<CompareExchangeValue<string>> compareExchangeValues = null;
+
+                    // Getting the compare exchange values does not require
+                    // additional calls to the server
+                    foreach (User u in users){
+                        compareExchangeValues.Add(session.Advanced.ClusterTransaction
+                                                      .GetCompareExchangeValue<string>(u.Name));
+                    }
+                    #endregion
+                }
             }
         }
 
@@ -239,5 +317,16 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             public string Name { get; set; }
             public int Age { get; set; }
         }
+
+        #region include_builder
+        public interface ICompareExchangeValueIncludeBuilder<T, out TBuilder>
+        {
+            TBuilder IncludeCompareExchangeValue(string path);
+
+            TBuilder IncludeCompareExchangeValue(Expression<Func<T, string>> path);
+
+            TBuilder IncludeCompareExchangeValue(Expression<Func<T, IEnumerable<string>>> path);
+        }
+        #endregion
     }
 }

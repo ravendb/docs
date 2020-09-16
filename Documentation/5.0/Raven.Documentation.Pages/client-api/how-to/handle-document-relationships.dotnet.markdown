@@ -54,7 +54,7 @@ But what happens when the user's address is changed? We will have to perform an 
 
 ## Includes
 
-The **Includes** feature addresses the limitations of denormalization. Instead of one object containing copies of the properties from another object, it is only necessary to hold a reference to the second object. Then the server can be instructed to pre-load the referenced document at the same time that the root object is retrieved. We do this using:
+The **Includes** feature addresses the limitations of denormalization. Instead of one object containing copies of the properties from another object, it is only necessary to hold a reference to the second object. This object can be a document, a [counter](../../document-extensions/counters/counters-and-other-features#including-counters), a [time series](../../document-extensions/timeseries/client-api/session/include/overview), or a [compare exchange value](../../client-api/operations/compare-exchange/include-compare-exchange). Then the server can be instructed to pre-load the referenced object at the same time that the root object is retrieved. We do this using:
 
 {CODE includes_1_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 
@@ -224,6 +224,10 @@ For most cases where denormalization is not an option, Includes are probably the
 
 ## Related Articles
 
+### Client API
+
+- [Include Compare Exchange Values](../../client-api/operations/compare-exchange/include-compare-exchange)
+
 ### Indexes
 
 - [Indexing Basics](../../indexes/indexing-basics)
@@ -232,3 +236,8 @@ For most cases where denormalization is not an option, Includes are probably the
 ### Querying
 
 - [Basics](../../indexes/querying/basics)
+
+### Document Extensions
+
+- [Include Time Series](../../document-extensions/timeseries/client-api/session/include/overview)
+- [Including Counters](../../document-extensions/counters/counters-and-other-features#including-counters)
