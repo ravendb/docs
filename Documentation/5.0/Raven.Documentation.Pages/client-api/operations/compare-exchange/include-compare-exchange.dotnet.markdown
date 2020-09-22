@@ -35,13 +35,19 @@ along with `Session.Load()` or LINQ queries.
 
 #### RQL
 
-Use the [`includes.cmpxchg()` method](../../../indexes/querying/what-is-rql#include) in a 
-declared function to include compare exchange values.
+In an RQL query, you can use the [`include` keyword](../../../indexes/querying/what-is-rql#include) 
+followed by `cmpxchg()` to include a compare exchange value:  
+
+{CODE-BLOCK:sql }
+include cmpxchg(key)
+{CODE-BLOCK/}
+
+In [javascript functions](../../../indexes/querying/what-is-rql#declare) within queries, 
+use `includes.cmpxchg()` (see the RawQuery example 
+[below](../../../client-api/operations/compare-exchange/include-compare-exchange#examples)):  
 
 {CODE-BLOCK:javascript }
-declare function foo(key) {
-    includes.cmpxchg(key);
-}
+includes.cmpxchg(key);
 {CODE-BLOCK/}
 
 | Parameter | Type | Description |

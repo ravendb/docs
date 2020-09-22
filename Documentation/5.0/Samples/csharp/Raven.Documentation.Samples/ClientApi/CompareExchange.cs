@@ -287,17 +287,22 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 using (IDocumentSession session = documentStore.OpenSession())
                 {
                     #region include_raw_query
+                    // RawQuery demonstrating two ways to include
+                    // compare exchange values
                     var users = session.Advanced
                         .RawQuery<User>(@"
                             declare function includeCEV(user) {
-                                includes.cmpxchg(user.name);
+                                includes.cmpxchg(user.FirstName);
                                 return user;
                             }
 
                             from Users as u
-                            select includeCEV(u)"
+                            select includeCEV(u)
+                            include cmpxchg(u.LastName)"
                         )
                         .ToList();
+                    // includeCEV() returns the same User entity it
+                    // received, without modifying it
 
                     List<CompareExchangeValue<string>> compareExchangeValues = null;
 
@@ -305,7 +310,10 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     // additional calls to the server
                     foreach (User u in users){
                         compareExchangeValues.Add(session.Advanced.ClusterTransaction
-                                                      .GetCompareExchangeValue<string>(u.Name));
+                                                      .GetCompareExchangeValue<string>(u.FirstName));
+
+                        compareExchangeValues.Add(session.Advanced.ClusterTransaction
+                                                      .GetCompareExchangeValue<string>(u.LastName));
                     }
                     #endregion
                 }
@@ -316,6 +324,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
         {
             public string Name { get; set; }
             public int Age { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
         }
 
         #region include_builder
