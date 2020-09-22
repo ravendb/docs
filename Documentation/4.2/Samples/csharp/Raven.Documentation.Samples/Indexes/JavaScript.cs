@@ -305,48 +305,36 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
 
         #region map_reduce_3_0
-        public class Product_Sales_ByMonth : AbstractJavaScriptIndexCreationTask
+        public class Product_Sales_ByDate : AbstractIndexCreationTask
         {
-            public class Result
+            public override IndexDefinition CreateIndexDefinition()
             {
-                public string Product { get; set; }
-
-                public DateTime Month { get; set; }
-
-                public int Count { get; set; }
-
-                public decimal Total { get; set; }
-            }
-
-            public Product_Sales_ByMonth()
-            {
-                Maps = new HashSet<string>()
+                return new IndexDefinition
                 {
-                    @"map('orders', function(order){
-                            var res = [];
-                            order.Lines.forEach(l => {
-                                res.push({
-                                    Product: l.Product,
-                                    Month: new Date( (new Date(order.OrderedAt)).getFullYear(),(new Date(order.OrderedAt)).getMonth(),1),
-                                    Count: 1,
-                                    Total: (l.Quantity * l.PricePerUnit) * (1- l.Discount)
-                                })
-                            });
-                            return res;
-                        })"
-                    };
+                    Maps =
+                    {
+                        @"from order in docs.Orders
+                          from line in order.Lines
+                          select new {
+                              line.Product, 
+                              Date = order.OrderedAt,
+                              Profit = line.Quantity * line.PricePerUnit * (1 - line.Discount)
+                          };"
+                    },
+                    Reduce = 
+                        @"from r in results
+                          group r by new { r.OrderedAt, r.Product }
+                          into g
+                          select new { 
+                              Product = g.Key.Product,
+                              Date = g.Key.Date,
+                              Profit = g.Sum(r => r.Profit)
+                          };",
 
-                Reduce = @"groupBy(x => ({Product: x.Product, Month: x.Month}))
-                    .aggregate(g => {
-                    return {
-                        Product: g.key.Product,
-                        Month: g.key.Month,
-                        Count: g.values.reduce((sum, x) => x.Count + sum, 0),
-                        Total: g.values.reduce((sum, x) => x.Total + sum, 0)
-                    }
-                })";
-
-                OutputReduceToCollection = "MonthlyProductSales";
+                    OutputReduceToCollection = "DailyProductSales",
+                    PatternReferencesCollectionName = "DailyProductSales/References",
+                    PatternForOutputReduceToCollectionReferences = "sales/daily/{Date:yyyy-MM-dd}"
+                };
             }
         }
         #endregion
