@@ -35,6 +35,12 @@
     "Mappings": []
   },
   {
+    "Path": "include-compare-exchange.markdown",
+    "Name": "Include Compare Exchange Values",
+    "DiscussionId": "0c0bdb13-a5a5-465e-8859-64fd3f46b769",
+    "Mappings": []
+  },
+  {
     "Path": "compare-exchange-expiration.markdown",
     "Name": "Compare Exchange Expiration",
     "DiscussionId": "14b18c8c-28fc-4c97-b435-b4176d4e1a26",
