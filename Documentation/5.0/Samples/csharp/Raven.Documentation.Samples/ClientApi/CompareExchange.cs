@@ -287,33 +287,46 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 using (IDocumentSession session = documentStore.OpenSession())
                 {
                     #region include_raw_query
-                    // RawQuery demonstrating two ways to include
-                    // compare exchange values
-                    var users = session.Advanced
+                    // First method: from body of query
+                    var users1 = session.Advanced
+                        .RawQuery<User>(@"
+                            from Users as u
+                            select u
+                            include cmpxchg(u.Name)"
+                        )
+                        .ToList();
+
+                    List<CompareExchangeValue<string>> compareExchangeValues1 = null;
+
+                    // Getting the compare exchange values does not require
+                    // additional calls to the server
+                    foreach (User u in users1){
+                        compareExchangeValues1.Add(session.Advanced.ClusterTransaction
+                                                   .GetCompareExchangeValue<string>(u.Name));
+                    }
+
+
+                    // Second method: from a JavaScript function
+                    var users2 = session.Advanced
                         .RawQuery<User>(@"
                             declare function includeCEV(user) {
-                                includes.cmpxchg(user.FirstName);
+                                includes.cmpxchg(user.Name);
                                 return user;
                             }
 
                             from Users as u
-                            select includeCEV(u)
-                            include cmpxchg(u.LastName)"
+                            select includeCEV(u)"
                         )
                         .ToList();
-                    // includeCEV() returns the same User entity it
-                    // received, without modifying it
+                    // Note that includeCEV() returns the same User 
+                    // entity it received, without modifying it
 
-                    List<CompareExchangeValue<string>> compareExchangeValues = null;
+                    List<CompareExchangeValue<string>> compareExchangeValues2 = null;
 
-                    // Getting the compare exchange values does not require
-                    // additional calls to the server
-                    foreach (User u in users){
-                        compareExchangeValues.Add(session.Advanced.ClusterTransaction
-                                                      .GetCompareExchangeValue<string>(u.FirstName));
-
-                        compareExchangeValues.Add(session.Advanced.ClusterTransaction
-                                                      .GetCompareExchangeValue<string>(u.LastName));
+                    // Does not require calls to the server
+                    foreach (User u in users2){
+                        compareExchangeValues2.Add(session.Advanced.ClusterTransaction
+                                                   .GetCompareExchangeValue<string>(u.Name));
                     }
                     #endregion
                 }
@@ -324,8 +337,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
         {
             public string Name { get; set; }
             public int Age { get; set; }
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
         }
 
         #region include_builder
