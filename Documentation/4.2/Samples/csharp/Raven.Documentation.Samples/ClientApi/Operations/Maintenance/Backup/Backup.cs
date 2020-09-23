@@ -176,6 +176,24 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 var result = await docStore.Maintenance.SendAsync(operation);
                 #endregion
             }
+            
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "Products"
+            }.Initialize())
+            {
+                #region backup_retentionpolicy
+                var config = new PeriodicBackupConfiguration
+                {
+                    RetentionPolicy = new RetentionPolicy
+                    {
+                        Disabled = false, // False is the default value
+                        MinimumBackupAgeToKeep = TimeSpan.FromDays(100)
+                    }
+                };
+                #endregion
+            }
 
             using (var docStore = new DocumentStore
             {
