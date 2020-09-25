@@ -124,7 +124,7 @@ user for authentication purposes to "ravendb", `-a SHA` sets the authentication 
 
 **Example request for server URL, and the response:**  
 
-![](images/monitoring-zabbix-snmpget.PNG)  
+![](images/monitoring-zabbix-snmpget.PNG "NoSQL DB - Monitoring Zabbix snmpget")  
 
 {NOTE:Accessing OID value via HTTP}
 Individual OID values can be retrieved via HTTP `GET` endpoint `<serverUrl>/monitoring/snmp?oid=<oid>`  

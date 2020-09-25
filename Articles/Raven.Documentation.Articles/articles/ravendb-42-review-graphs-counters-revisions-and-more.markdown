@@ -14,7 +14,7 @@
 
 <br>
 
- <img src="images/oren.png" style="float: right; width: 17%; margin: 45px; margin-top: -10px;"><p style="text-align: justify">Just 14 months after we released a major version of RavenDB, we are pleased to announce the release of RavenDB 4.2. In this podcast, we go over all of the features that have graduated from experimental to fully operational, and the new features that will expand your ability to process data and keep up with the speed of information.</p>
+ <img src="images/oren.png" alt="RavenDB CEO & Founder Oren Eini" style="float: right; width: 17%; margin: 45px; margin-top: -10px;"><p style="text-align: justify">Just 14 months after we released a major version of RavenDB, we are pleased to announce the release of RavenDB 4.2. In this podcast, we go over all of the features that have graduated from experimental to fully operational, and the new features that will expand your ability to process data and keep up with the speed of information.</p>
 
 
 <br>

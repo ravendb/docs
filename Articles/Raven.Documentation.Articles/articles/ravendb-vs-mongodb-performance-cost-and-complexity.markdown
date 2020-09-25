@@ -121,8 +121,8 @@ Mentioned in both Gartner and Forrester research, RavenDB is a pioneer in NoSQL 
 Over 1,000 businesses use RavenDB for IoT, Big Data, Microservices Architecture, fast performance, a distributed data network, and everything you need to support a modern application stack for today's user. For more information, please visit [ravendb.net](ravendb.net) or contact.
 <br/>
 <div class="article-color-banners">
-    <a href="https://ravendb.net/learn/webinars"><img src="images/webinars.png" class="img-responsive"/></a>
-    <a href="https://ravendb.net/news/use-cases"><img src="images/use-cases.png" class="img-responsive"/></a>
-    <a href="https://ravendb.net/learn/docs-guide"><img src="images/documentation.png" class="img-responsive"/></a>
-    <a href="https://ravendb.net/learn/bootcamp"><img src="images/bootcamp.png" class="img-responsive"/></a>
+    <a href="https://ravendb.net/learn/webinars"><img src="images/webinars.png" alt="NoSQL ACID Database Webinars" class="img-responsive"/></a>
+    <a href="https://ravendb.net/news/use-cases"><img src="images/use-cases.png" alt="NoSQL ACID Database Use Cases" class="img-responsive"/></a>
+    <a href="https://ravendb.net/learn/docs-guide"><img src="images/documentation.png" alt="NoSQL Database Documentation" class="img-responsive"/></a>
+    <a href="https://ravendb.net/learn/bootcamp"><img src="images/bootcamp.png" alt="NoSQL Database RavenDB Bootcamp" class="img-responsive"/></a>
 </div>
