@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Conventions;
+using Raven.Client.Json.Serialization;
+using Raven.Client.Json.Serialization.NewtonsoftJson;
 using Sparrow;
 
 namespace Raven.Documentation.Samples.ClientApi.Configuration
@@ -17,22 +19,24 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
             {
                 Conventions =
                 {
-                    #region customize_json_serializer
-                    CustomizeJsonSerializer = serializer => throw new CodeOmitted()
-                    #endregion
-                    ,
-                    #region customize_json_deserializer
-                    CustomizeJsonDeserializer = serializer => throw new CodeOmitted()
-                    #endregion
-                    ,
-                    #region DeserializeEntityFromBlittable
-                    DeserializeEntityFromBlittable = (type, blittable) => throw new CodeOmitted()
-                    #endregion
-                    ,
-                    #region json_contract_resolver
-                    JsonContractResolver = new CustomJsonContractResolver()
-                    #endregion
-                    ,
+                    Serialization = new NewtonsoftJsonSerializationConventions
+                    {
+                        #region customize_json_serializer
+                        CustomizeJsonSerializer = serializer => throw new CodeOmitted()
+                        #endregion
+                        ,
+                        #region customize_json_deserializer
+                        CustomizeJsonDeserializer = serializer => throw new CodeOmitted()
+                        #endregion
+                        ,
+                        #region DeserializeEntityFromBlittable
+                        DeserializeEntityFromBlittable = (type, blittable) => throw new CodeOmitted()
+                        #endregion
+                        ,
+                        #region json_contract_resolver
+                        JsonContractResolver = new CustomJsonContractResolver()
+                        #endregion
+                    },
                     #region preserve_doc_props_not_found_on_model
                     PreserveDocumentPropertiesNotFoundOnModel = true
                     #endregion
@@ -69,6 +73,10 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
     #region custom_json_contract_resolver_based_on_default
     public class CustomizedRavenJsonContractResolver : DefaultRavenContractResolver
     {
+        public CustomizedRavenJsonContractResolver(ISerializationConventions conventions) : base(conventions)
+        {
+        }
+
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
             throw new CodeOmitted();

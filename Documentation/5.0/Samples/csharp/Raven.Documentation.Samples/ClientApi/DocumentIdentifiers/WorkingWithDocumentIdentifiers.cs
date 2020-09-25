@@ -99,7 +99,7 @@ namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
                 ["Name"] = "My RavenDB"
             };
 
-            var blittableDoc = session.Advanced.EntityToBlittable.ConvertEntityToBlittable(doc, null);
+            var blittableDoc = session.Advanced.JsonConverter.ToBlittable(doc, null);
 
             var command = new PutDocumentCommand("products/", null, blittableDoc);
 
@@ -131,7 +131,7 @@ namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
                 ["Name"] = "My RavenDB"
             };
 
-            var blittableDoc = session.Advanced.EntityToBlittable.ConvertEntityToBlittable(doc, null);
+            var blittableDoc = session.Advanced.JsonConverter.ToBlittable(doc, null);
 
             var putCommand = new PutDocumentCommand("products/" + identity, null, blittableDoc);
 
