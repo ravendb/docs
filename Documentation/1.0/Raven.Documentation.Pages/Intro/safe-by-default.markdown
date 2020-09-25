@@ -2,7 +2,7 @@
 
 One of the key design principles that guided the development of RavenDB is that it should be *safe by default*. RavenDB will let you shoot yourself in the foot, but only after you make it absolutely clear that this is what you actually want to do.
 
-This design was influenced by the [Release It!](https://pragprog.com/book/mnee/release-it) book (a highly recommended read!) and years of looking at dozens and hundreds of code bases and production failures. 
+This design was influenced by the [Release It!](https://pragprog.com/titles/mnee2/release-it-second-edition/) book (a highly recommended read!) and years of looking at dozens and hundreds of code bases and production failures. 
 
 ## Unbounded result sets
 
