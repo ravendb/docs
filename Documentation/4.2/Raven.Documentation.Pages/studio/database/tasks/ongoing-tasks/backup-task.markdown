@@ -12,11 +12,13 @@
   * **Backup Type** - Select Backup/Snapshot  
   * **Backup Time** - Schedule the task time  
   * **Backup Content** - Select Full/Incremental  
+  * **Backup Retention Policy** - Schedule deletion of backups
   * **Backup Destination** - Select the backup destination  
 
 * In this page:  
   * [Backup Task - Definition](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---definition)  
   * [Backup Task - Scheduling](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---content-&-scheduling)  
+  * [Backup Task - Retention Policy](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---retention-policy)  
   * [Backup Task - Destination](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---destination)  
   * [Backup Task - Details in Tasks List View](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---details-in-tasks-list-view)  
   * [Backup Task - When Cluster or Node are Down](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---when-cluster-or-node-are-down)  
@@ -77,9 +79,21 @@
   * An Incremental Backup is scheduled every 6 hours  
 {PANEL/}
 
+{PANEL: Backup Task - Retention Policy}
+
+![Figure 3. Backup Retention Policy](images/backup-task-2_5.png "Retention Policy")
+
+1. Enable / disable the retention policy. If disabled, the backups are stored indefinitely. 
+If enabled, deletion can be scheduled.  
+
+2. Select the retention period. Once a backup is older than the specified amount of time, 
+it will be deleted during the next scheduled backup task.  
+
+{PANEL/}
+
 {PANEL: Backup Task - Destination}
 
-![Figure 3. Backup Task Destinations](images/backup-task-3.png "Backup Destinations")
+![Figure 4. Backup Task Destinations](images/backup-task-3.png "Backup Destinations")
 
 * Select backup destinations and enter your credentials for each  
 
@@ -97,7 +111,7 @@
 
 {PANEL: Backup Task - Details in Tasks List View}
 
-![Figure 4. Backup Task - Task List View](images/backup-task-4.png "Tasks List View Details")
+![Figure 5. Backup Task - Task List View](images/backup-task-4.png "Tasks List View Details")
 
 1. **Backup Task Details**:
    *  Task Status - Active / Not Active / Not on Node  
