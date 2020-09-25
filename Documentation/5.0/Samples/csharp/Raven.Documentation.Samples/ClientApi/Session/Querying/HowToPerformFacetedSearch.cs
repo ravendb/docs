@@ -149,7 +149,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                             },
                             Aggregations =
                             {
-                                { FacetAggregation.Average, "Cost" }
+                                {
+                                    FacetAggregation.Average,
+                                    new HashSet<FacetAggregationField> { new FacetAggregationField { Name = "Cost" } }
+                                }
                             }
                         })
                         .AndAggregateBy(new RangeFacet<Camera>
@@ -191,7 +194,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                             },
                             Aggregations =
                             {
-                                { FacetAggregation.Average, "Cost" }
+                                {
+                                    FacetAggregation.Average,
+                                    new HashSet<FacetAggregationField> { new FacetAggregationField { Name = "Cost" } }
+                                }
                             }
                         })
                         .AndAggregateBy(new RangeFacet<Camera>
