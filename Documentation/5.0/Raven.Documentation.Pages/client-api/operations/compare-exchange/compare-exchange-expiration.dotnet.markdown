@@ -32,11 +32,11 @@ To set a compare exchange value to expire, simply put a `DateTime` value
 
 Creating a new key with `CreateCompareExchangeValue()`:
 
-{CODE:csharp expiration_0@ClientApi/CompareExchange.cs /}
+{CODE:csharp expiration_0@ClientApi/Operations/CompareExchange.cs /}
 
 Updating an existing key with `PutCompareExchangeValueOperation<T>`:
 
-{CODE:csharp expiration_1@ClientApi/CompareExchange.cs /}
+{CODE:csharp expiration_1@ClientApi/Operations/CompareExchange.cs /}
 
 {PANEL/}
 

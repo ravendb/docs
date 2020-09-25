@@ -21,12 +21,12 @@ The metadata can be used to set [compare exchange expiration](../../../client-ap
 
 The metadata is accessible as a root property of the compare exchange value object:  
 
-{CODE:csharp metadata_0@ClientApi/CompareExchange.cs /}
+{CODE:csharp metadata_0@ClientApi/Operations/CompareExchange.cs /}
 
 You can send it as a parameter of the 
 [Put Compare Exchange Value operation](/client-api/operations/compare-exchange/put-compare-exchange-value):  
 
-{CODE:csharp metadata_1@ClientApi/CompareExchange.cs /}
+{CODE:csharp metadata_1@ClientApi/Operations/CompareExchange.cs /}
 
 
 {PANEL/}
