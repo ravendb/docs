@@ -27,7 +27,7 @@ the server.
 Chain the method `IncludeCompareExchangeValue()` to include compare exchange values 
 along with `Session.Load()` or LINQ queries.  
 
-{CODE:csharp include_builder@ClientApi/CompareExchange.cs /}
+{CODE:csharp include_builder@ClientApi/Operations/CompareExchange.cs /}
 
 | Parameter | Type | Description |
 | - | - | - |
@@ -59,10 +59,10 @@ includes.cmpxchg(key);
 {PANEL: Examples}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Load include_load@ClientApi/CompareExchange.cs /}
-{CODE-TAB:csharp:LoadAsync include_load_async@ClientApi/CompareExchange.cs /}
-{CODE-TAB:csharp:Query include_linq_query@ClientApi/CompareExchange.cs /}
-{CODE-TAB:csharp:RawQuery(RQL) include_raw_query@ClientApi/CompareExchange.cs /}
+{CODE-TAB:csharp:Load include_load@ClientApi/Operations/CompareExchange.cs /}
+{CODE-TAB:csharp:LoadAsync include_load_async@ClientApi/Operations/CompareExchange.cs /}
+{CODE-TAB:csharp:Query include_linq_query@ClientApi/Operations/CompareExchange.cs /}
+{CODE-TAB:csharp:RawQuery(RQL) include_raw_query@ClientApi/Operations/CompareExchange.cs /}
 {CODE-TABS/}
 
 {PANEL/}
