@@ -30,7 +30,7 @@ For example, given this sample text:
 
 * **WhitespaceAnalyzer** will just tokenize on white spaces:
 
-    `[The]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs,]   [bob@hotmail.com]   [123432.]`
+    `[The]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs,]   [Bob@hotmail.com]   [123432.]`
 
 * **KeywordAnalyzer** will perform no tokenization, and will consider the whole text a stream as one token:
 
