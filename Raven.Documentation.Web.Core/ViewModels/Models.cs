@@ -87,6 +87,7 @@ namespace Raven.Documentation.Web.Core.ViewModels
     {
         public static readonly List<string> AllVersions = new List<string>
         {
+            "5.1",
             "5.0",
             "4.2",
             "4.1",
@@ -110,7 +111,7 @@ namespace Raven.Documentation.Web.Core.ViewModels
             }
         }
 
-        public const string Default = "4.0";
+        public const string Default = "5.0";
 
         public enum DocsMode
         {
