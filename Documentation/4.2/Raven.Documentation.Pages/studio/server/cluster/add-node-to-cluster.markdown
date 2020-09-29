@@ -39,10 +39,15 @@ Note: This option is only available when the server is in the `Passive` state.
 <br/>
 ![Figure 2. Adding a new node](images/cluster-add-node-2.png "Adding a new Node")
 
-**1.** Enter the URL of the server for the new node  
-**2.** Decide if to add the new node as a `Member` -or- as a `Watcher` (difference explained in [Cluster View](cluster-view))  
-**3.** Click to use all available cores -or- Enter the number of cores to be assigned for this node  
-**4.** Click _Test connection_ to test the connection for the above url entered  
+1. Enter the server URL of the new node  
+2. Manually select a **Node Tag** for the new node. 
+   The node tage is a unique identifier made up of 1-4 uppercase letters. By default, the tag of the 
+   first node in a cluster is `A`, the second `B`, and so on. After `Z`, the next node will get the 
+   tag `AA`, the next `AB`, and so on.  
+3. Decide whether to add the new node as a `Member` -or- as a `Watcher` (difference explained in [Cluster View](cluster-view))  
+4. Toggle whether to use all available cores on the machine for this node  
+5. Set a maximum number of cores that can be used by this node  
+6. Click _Test connection_ to verify that your cluster can communicate with the server at the specified URL  
 
 When done, click *Save* to add this server as a node to the cluster  
 

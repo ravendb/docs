@@ -54,6 +54,19 @@ across a fault-tolerant, [High-Availability](https://en.wikipedia.org/wiki/High-
 * The node state is recorded in the relevant database groups so that the cluster can maintain the database replication factor and re-distribute its work tasks if needed.  
 {NOTE/}
 
+{NOTE: CPU Core Distribution}
+
+* A cluster is limited in the maximum number of CPU cores that can be used by all of its nodes 
+at a given time.  
+* This limit is determined by the cluster's RavenDB license. For example, a Community licensed 
+cluster can have up to 3 cores. This means that when there is just one node in the cluster, it 
+can use 1-3 cores. If there are 3 nodes, each of them can only use 1 core (a RavenDB server 
+cannot be assigned less than 1 core).  
+* The number of assigned cores is divided evenly between all the nodes of a cluster.  
+* A node can be limited to a maximum number of cores it can use. This can be configured 
+[in the Studio](../../studio/server/cluster/cluster-view#reassign-cores).  
+{NOTE/}
+
 ## Related Articles
 
 ### Cluster in the Studio

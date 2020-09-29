@@ -41,7 +41,7 @@ Optional parameters (for the Add Node endpoint):
 | - | - | - |
 | tag | `string` | 1-4 uppercase unicode letters (default: 'A' - 'Z' assigned by order of addition) |
 | watcher | `bool` | Add the node as a [Watcher](../../../server/clustering/rachis/cluster-topology#watcher) (default: `false`) |
-| assignedCores | `uint` | Number of cores to assign to this node (default: number of processors) |
+| maxUtilizedCores | `uint` | Maximum number of cores that can be assigned to this node (default: number of processors) |
 
 See the [Cluster API page](../../../server/clustering/cluster-api) for usage examples.
 

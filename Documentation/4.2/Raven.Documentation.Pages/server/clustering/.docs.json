@@ -31,5 +31,11 @@
     "Name": "Best Practice and Configuration",
     "DiscussionId": "8bb01e3d-cd81-4308-bddb-4cfd68909ead",
     "Mappings": []
+  },
+  {
+    "Path": "cluster-api.markdown",
+    "Name": "Cluster API",
+    "DiscussionId": "9c0416b3-5600-46c5-9c57-4c58ebfc9026",
+    "Mappings": []
   }
 ]

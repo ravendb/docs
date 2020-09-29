@@ -7,7 +7,7 @@
   working to achieve the same goal.  
 
 * Using the Raft consensus protocol, the cluster distributes work among the various nodes, handles failures, recovery, and more.  
-  The cluster Member nodes elect a [Leader](../../server/cluster/cluster-view#cluster-nodes-types) - a node that manages the cluster state.  
+  The cluster Member nodes elect a [Leader](../../../studio/server/cluster/cluster-view#cluster-nodes-types) - a node that manages the cluster state.  
 
 * This view shows your cluster's current state and structure.  
 
@@ -18,11 +18,12 @@
   * And much more  
 
 * In this page:  
-  * [Cluster View Stats](../../server/cluster/cluster-view#cluster-view-stats)  
-  * [Cluster View Operations](../../server/cluster/cluster-view#cluster-view-operations)  
-  * [Cluster Nodes Types](../../server/cluster/cluster-view#cluster-nodes-types)  
-  * [Cluster Nodes States & Types Flow](../../server/cluster/cluster-view#cluster-nodes-states-&-types-flow)  
-  * [Cluster-Wide operation -vs- Database Operations](../../server/cluster/cluster-view#cluster-wide-operation--vs--database-operations)  
+  * [Cluster View Stats](../../../studio/server/cluster/cluster-view#cluster-view-stats)  
+  * [Cluster View Operations](../../../studio/server/cluster/cluster-view#cluster-view-operations)  
+  * [Reassign Cores](../../../studio/server/cluster/cluster-view#reassign-cores)  
+  * [Cluster Nodes Types](../../../studio/server/cluster/cluster-view#cluster-nodes-types)  
+  * [Cluster Nodes States & Types Flow](../../../studio/server/cluster/cluster-view#cluster-nodes-states-&-types-flow)  
+  * [Cluster-Wide operation -vs- Database Operations](../../../studio/server/cluster/cluster-view#cluster-wide-operation--vs--database-operations)  
 {NOTE/}
 
 ---
@@ -75,6 +76,23 @@
    Remove the node from the cluster. Note: The server on this node is not shut down.
 {PANEL/}
 
+{PANEL: Reassign Cores}
+
+![Figure 3. Reassign Cores](images/cluster-view-3.png "Reassign Cores")
+
+{WARNING: }
+1. Set a maximum number of cores that can be used by this node  
+{WARNING/}
+
+{INFO: }
+1. Number of cores this node is currently using  
+2. Number of available cores on this node's machine  
+{INFO/}
+
+Learn more in [Add Node to Cluster](../../../studio/server/cluster/add-node-to-cluster#add-another-node-to-the-cluster).
+
+{PANEL/}
+
 {PANEL: Cluster Nodes Types}
 
 * **Member**
@@ -102,9 +120,10 @@
   * Updated by the leader to the latest Raft state.  
 
 {PANEL/}
+
 {PANEL: Cluster Nodes States & Types Flow}
 
-![Figure 3. States Flow](images/cluster-states.png "States Flow")
+![Figure 4. States Flow](images/cluster-states.png "States Flow")
 
 {PANEL}
 

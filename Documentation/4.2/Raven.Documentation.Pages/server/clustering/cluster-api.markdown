@@ -24,10 +24,10 @@ Adding a node to the cluster can be done using an HTTP PUT request to the `/admi
 
 | Argument | Description | Required | Default |
 | - | - | - | - |
-| new-node-url | The address of the new node we want to add to the cluster | true | -
-| new-node-tag | 1-4 uppercase unicode letters | false | 'A' - 'Z' assigned by order of addition
-| is-watcher | Add the new node as a watcher | false | false
-| assigned-cores | The number of cores to assign to the new node | false | number of processors on the machine or the license limit (smallest)
+| new-node-url | The address of the new node we want to add to the cluster | true | - |
+| new-node-tag | 1-4 uppercase unicode letters | false | 'A' - 'Z' assigned by order of addition |
+| is-watcher | Add the new node as a watcher | false | `false` |
+| max-utilized-cores | The maximum number of cores that can be assigned to the new node | false | Number of processors on the machine or the license limit (smallest) |
 
 SecurityClearance: `Cluster Admin`
 
@@ -42,13 +42,13 @@ SecurityClearance: `Cluster Admin`
 {CODE-BLOCK:powershell}
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $clientCert = Get-PfxCertificate -FilePath <path-to-pfx-cert>
-Invoke-WebRequest -Method Put -URI "http://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<new-node-tag>&watcher=<is-watcher>&assignedCores=<assigned-cores> -Certificate $cert"
+Invoke-WebRequest -Method Put -URI "http://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<new-node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores> -Certificate $cert"
 {CODE-BLOCK/}
 
 ### cURL
 
 {CODE-BLOCK: bash}
-curl -X PUT http://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<node-tag>&watcher=<is-watcher>&assignedCores=<assigned-cores> --cert <path-to-pem-cert>
+curl -X PUT http://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores> --cert <path-to-pem-cert>
 {CODE-BLOCK/}
 
 {PANEL/}
