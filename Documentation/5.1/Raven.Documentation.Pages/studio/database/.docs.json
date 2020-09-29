@@ -1,0 +1,24 @@
+[
+    {
+        "Path": "/documents",
+        "Name": "Documents",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/document-extensions",
+        "Name": "Document Extensions",
+        "Mappings": []
+    },
+    {
+        "Path": "/settings",
+        "Name": "Settings",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/tasks",
+        "Name": "Tasks",
+        "Mappings": []
+    }
+]
