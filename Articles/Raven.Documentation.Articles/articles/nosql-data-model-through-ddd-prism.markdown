@@ -2,7 +2,7 @@
 <h1>NoSQL Data Model Through the DDD Prism</h1>
 <small>by <a href="mailto:alex.a.klaus@gmail.com">Alex Klaus</a></small>
 
-![Practical modelling of the same database for a traditional SQL and a NoSQL. Comparison of the two approaches and their alignment with the DDD (Domain Driven Design).](images/yabt1/nosql-data-model-through-ddd-prism.jpg)
+![Practical modelling of the same database for a traditional SQL and a NoSQL. Comparison of the two approaches and their alignment with the DDD (Domain Driven Design).](images/nosql-data-model-through-ddd-prism.jpg)
 
 {SOCIAL-MEDIA-LIKE/}
 

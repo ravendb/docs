@@ -2,7 +2,7 @@
 <h1>Building an enterprise application with the .NET Core and RavenDB NoSQL database</h1>
 <small>by <a href="mailto:alex.a.klaus@gmail.com">Alex Klaus</a></small>
 
-![Leveraging the .NET Core + RavenDB NoSQL database to build enterprise applications"](images/yabt/building-application-with-net-core-and-ravendb-nosql-database.jpg)
+![Leveraging the .NET Core + RavenDB NoSQL database to build enterprise applications"](images/building-application-with-net-core-and-ravendb-nosql-database.jpg)
 
 {SOCIAL-MEDIA-LIKE/}
 
