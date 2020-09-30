@@ -13,6 +13,7 @@
     * [Backup.MaxNumberOfConcurrentBackups](../../server/configuration/backup-configuration#backup.maxnumberofconcurrentbackups)  
     * [Backup.ConcurrentBackupsDelayInSec](../../server/configuration/backup-configuration#backup.concurrentbackupsdelayinsec)  
     * [Backup.LowMemoryBackupDelayInMin](../../server/configuration/backup-configuration#backup.lowmemorybackupdelayinmin)  
+    * [Server.CpuCredits.ExhaustionBackupDelayInMin](../../server/configuration/backup-configuration#server.cpucredits.exhaustionbackupdelayinmin)  
 
 {NOTE/}
 
@@ -87,6 +88,25 @@ Number of minutes to delay the backup if the server enters a low memory state.
 - **TimeUnit**: `TimeUnit.Minutes`  
 - **Default**: `10`  
 - **Scope**: Server-wide only  
+
+{PANEL/}
+
+{WARNING: Advanced configuration options - experts only}{WARNING/}
+
+{PANEL:Server.CpuCredits.ExhaustionBackupDelayInMin}
+
+**EXPERT:** When CPU credits are exhausted, backup tasks are canceled. This value 
+determines how many minutes the server will wait before retrying the backup task.  
+
+- **Type**: `TimeSetting`  
+- **TimeUnit**: `TimeUnit.Minutes`  
+- **Default**: `10`  
+- **Scope**: Server-wide only  
+
+{INFO: }
+If you have an enterprise license, you can access information about CPU credits 
+using [SNMP](../../server/administration/SNMP/snmp).  
+{INFO/}
 
 {PANEL/}
 
