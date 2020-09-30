@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Documentation.Samples.Orders;
 
@@ -61,5 +62,39 @@ namespace Raven.Documentation.Samples.Indexes
             public Company ObjectValue { get; set; }
         }
         #endregion
+
+        #region tryconvert_postal
+        public class Employees_ByPostalCode : AbstractIndexCreationTask<Employee>
+        {
+            public class Result {
+                public long PostalCode { get; set; }
+            }
+
+            public Employees_ByPostalCode()
+            {
+                Map = employees => from employee in employees
+                                   select new Result
+                                   {
+                                       PostalCode = TryConvert<long>(employee.Address.PostalCode) ?? -1
+                                   };
+            }
+        }
+        #endregion
+
+        public void Query() {
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region query
+                    List<Employee> employeesWithoutPostalCode = session
+                        .Query<Employees_ByPostalCode.Result, Employees_ByPostalCode>()
+                        .Where(x => x.PostalCode == -1)
+                        .OfType<Employee>()
+                        .ToList();
+                    #endregion
+                }
+            }
+        }
     }
 }

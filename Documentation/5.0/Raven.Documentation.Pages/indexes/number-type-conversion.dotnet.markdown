@@ -24,7 +24,7 @@ types - `int`, `long`, `float`, or `double`. They are called from within the
 index. If the submitted value cannot be converted to the specified type, these methods return 
 `null`.  
 
-In LINQ syntax, use `TryConvert<T>()`:  
+In **LINQ syntax**, use `TryConvert<T>()`:  
 
 {CODE-BLOCK:csharp}
 protected T? TryConvert<T>(object value)
@@ -33,9 +33,13 @@ protected T? TryConvert<T>(object value)
 | Parameter | Type | Description |
 | - | - | - |
 | **T** | Generic type parameter | The numerical type to which you want to convert your value. Possible values:<br/>- `int`<br/>- `long`<br/>- `float`<br/>- `double` |
-| **value** | `object` | The value you want to convert, such as a document field. If you pass a `string` or `object`, the method will attempt to parse them for a numerical value. |
+| **value** | `object` | The value you want to convert, such as a document field. If you pass a `string` or `object`, the method will attempt to parse it for a numerical value. |
 
-In JavaScript syntax, use `tryConvertToNumber()`.
+{SAFE: }
+Available from version 5.1 and later  
+{SAFE/}
+
+In **JavaScript syntax**, use `tryConvertToNumber()`.
 
 {CODE-BLOCK:javascript}
 tryConvertToNumber(value)
@@ -43,7 +47,7 @@ tryConvertToNumber(value)
 
 | Parameter | Type | Description |
 | - | - | - |
-| **value** | `object` | The value you want to convert, such as a document field. If you pass a `string` or `object`, the method will attempt to parse them for a numerical value. |
+| **value** | `object` | The value you want to convert, such as a document field. If you pass a `string` or `object`, the method will attempt to parse it for a numerical value. |
 
 {PANEL/}
 
@@ -59,6 +63,20 @@ failure, the field is indexed with value `-1` instead.
 {CODE-TAB:csharp:JavaScript tryconvert_js@Indexes/NumberTypeConversion.cs /}
 {CODE-TAB:csharp:Class tryconvert_class@Indexes/NumberTypeConversion.cs /}
 {CODE-TABS/}
+
+---
+
+This next index takes the [`string` field `Employee.Address.PostalCode`](../start/about-examples) 
+and attempts to convert it to `long`.  
+
+The query below it finds all employees that do not have a valid `PostalCode` field - whether 
+because the employee does not have a postal code or because the value could not be converted to 
+a valid `long`.  
+
+{CODE:csharp tryconvert_postal@Indexes/NumberTypeConversion.cs /}
+Query:  
+
+{CODE:csharp query@Indexes/NumberTypeConversion.cs /}
 
 {PANEL/}
 
