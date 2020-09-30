@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Queries;
+using Raven.Client.Documents.Session.Loaders;
 using Raven.Client.Documents.Subscriptions;
 using Raven.Client.Exceptions.Database;
 using Raven.Client.Exceptions.Documents.Subscriptions;
@@ -24,12 +25,65 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
         {
             #region subscriptionCreationOverloads
             string Create(SubscriptionCreationOptions options, string database = null);
-            string Create<T>(Expression<Func<T, bool>> predicate = null, SubscriptionCreationOptions options = null, string database = null);
+            string Create<T>(Expression<Func<T, bool>> predicate = null, 
+                             SubscriptionCreationOptions options = null, string database = null);
             string Create<T>(SubscriptionCreationOptions<T> options, string database = null);
 
-            Task<string> CreateAsync(SubscriptionCreationOptions options, string database = null, CancellationToken token = default);
-            Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate = null, SubscriptionCreationOptions options = null, string database = null, CancellationToken token = default);
-            Task<string> CreateAsync<T>(SubscriptionCreationOptions<T> options, string database = null, CancellationToken token = default);
+            Task<string> CreateAsync(SubscriptionCreationOptions options,
+                                     string database = null,
+                                     CancellationToken token = default);
+
+            Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate = null,
+                                        SubscriptionCreationOptions options = null,
+                                        string database = null,
+                                        CancellationToken token = default);
+
+            Task<string> CreateAsync<T>(SubscriptionCreationOptions<T> options,
+                                        string database = null,
+                                        CancellationToken token = default);
+            #endregion
+        }
+
+        private interface IUpdatingSubscription
+        {
+            #region updating_subscription
+            string Update(SubscriptionUpdateOptions options, string database = null);
+
+            Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = null, 
+                                CancellationToken token = default);
+            #endregion
+        }
+
+        private interface ISubscriptionCreationOptions
+        {
+            #region sub_create_options
+            public class SubscriptionCreationOptions
+            {
+                public string Name { get; set; }
+                public string Query { get; set; }
+                public string ChangeVector { get; set; }
+                public string MentorNode { get; set; }
+            }
+            #endregion
+
+            #region sub_create_options_strong
+            public class SubscriptionCreationOptions<T>
+            {
+                public string Name { get; set; }
+                public Expression<Func<T, bool>> Filter { get; set; }
+                public Expression<Func<T, object>> Projection { get; set; }
+                public Action<ISubscriptionIncludeBuilder<T>> Includes { get; set; }
+                public string ChangeVector { get; set; }
+                public string MentorNode { get; set; }
+            }
+            #endregion
+
+            #region sub_update_options
+            public class SubscriptionUpdateOptions : SubscriptionCreationOptions
+            {
+                public long? Id { get; set; }
+                public bool CreateNew { get; set; }
+            }
             #endregion
         }
 
@@ -408,6 +462,26 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                     .IncludeCounter("numLines")
                     .IncludeCounters(new[] { "pros", "cons" })
                     .IncludeAllCounters()
+            });
+            #endregion
+
+            #region update_subscription_example_0
+            store.Subscriptions.Update(new SubscriptionUpdateOptions()
+            {
+                Name = "my subscription",
+                Query = "From Orders"
+            });
+            #endregion
+
+            #region update_subscription_example_1
+            SubscriptionState mySubscription = store.Subscriptions.GetSubscriptionState("my subscription");
+
+            long subscriptionId = mySubscription.SubscriptionId;
+
+            store.Subscriptions.Update(new SubscriptionUpdateOptions()
+            {
+                Id = subscriptionId,
+                Name = "new name"
             });
             #endregion
         }
