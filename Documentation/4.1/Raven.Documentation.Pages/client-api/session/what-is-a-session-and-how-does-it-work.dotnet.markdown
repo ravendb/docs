@@ -90,7 +90,7 @@
 
 {PANEL: Reducing Server Calls (Best Practices) For:}
 #### The Select N+1 Problem
-* The [Select N+1 problem](http://blogs.microsoft.co.il/gilf/2010/08/18/select-n1-problem-how-to-decrease-your-orm-performance/) is common 
+* The Select N+1 problem is common 
   with all ORMs and ORM-like APIs.  
   It results in an excessive number of remote calls to the server, which makes a query very expensive.  
 * Make use of RavenDB's `include()` method to include related documents and avoid this issue.  
