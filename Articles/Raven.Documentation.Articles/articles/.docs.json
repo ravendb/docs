@@ -1877,5 +1877,63 @@
         "twitter:description": "Tended App uses the database for startups to maintain a digital checklist distributed over user devices to make leaving the kids at home a worry free experience.",
         "twitter:url": "https://ravendb.net/articles/tended-app-uses-the-database-for-startups-to-spice-up-date-night"
     }
+},
+{
+    "Path": "building-application-with-net-core-and-ravendb-nosql-database.markdown",
+    "Name": "Building an application with .NET Core and RavenDB NoSQL Database",
+    "Mappings": [],
+    "Metadata": {
+        "title": "NoSQL Database for Enterprise Application | Building with .NET Core and RavenDB NoSQL Database",
+        "likeSection": "yes",
+        "url": "building-application-with-net-core-and-ravendb-nosql-database",
+        "publishedAt": "2020-09-28",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "Leveraging the .NET Core and RavenDB NoSQL database to build enterprise applications.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "NoSQL Database for Enterprise Application | Building with .NET Core and RavenDB NoSQL Database",
+        "og:description": "Leveraging the .NET Core and RavenDB NoSQL database to build enterprise applications.",
+        "og:url": "https://ravendb.net/articles/building-application-with-net-core-and-ravendb-nosql-database",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/building-application-with-net-core-and-ravendb-nosql-database&fileName=building-application-with-net-core-and-ravendb-nosql-database-social.jpg",
+        "og:image:width": "1200",
+        "og:image:height": "628",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "NoSQL Database for Enterprise Application | Building with .NET Core and RavenDB NoSQL Database",
+        "twitter:description": "Leveraging the .NET Core and RavenDB NoSQL database to build enterprise applications.",
+        "twitter:url": "https://ravendb.net/articles/building-application-with-net-core-and-ravendb-nosql-database"
+    }
+},
+{
+    "Path": "nosql-data-model-through-ddd-prism.markdown",
+    "Name": "NoSQL Data Model through the DDD prism",
+    "Mappings": [],
+    "Metadata": {
+        "title": "NoSQL Data Model | Database Structure | YABT",
+        "likeSection": "yes",
+        "url": "nosql-data-model-through-ddd-prism",
+        "publishedAt": "2020-09-29",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "NoSQL Data Model. Practical modelling of the same database for a traditional SQL and a NoSQL. Comparison of the two approaches and their alignment with the DDD (Domain Driven Design).",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "NoSQL Data Model | Database Structure | YABT",
+        "og:description": "NoSQL Data Model. Practical modelling of the same database for a traditional SQL and a NoSQL. Comparison of the two approaches and their alignment with the DDD (Domain Driven Design).",
+        "og:url": "https://ravendb.net/articles/nosql-data-model-through-ddd-prism",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-data-model-through-ddd-prism&fileName=nosql-data-model-through-ddd-prism-social.jpg",
+        "og:image:width": "1200",
+        "og:image:height": "628",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "NoSQL Data Model | Database Structure | YABT",
+        "twitter:description": "NoSQL Data Model. Practical modelling of the same database for a traditional SQL and a NoSQL. Comparison of the two approaches and their alignment with the DDD (Domain Driven Design).",
+        "twitter:url": "https://ravendb.net/articles/nosql-data-model-through-ddd-prism"
+    }
 }
 ]
