@@ -1,4 +1,4 @@
-<p class="text-muted" style="margin:0;"><small>Yet Another Bug Tracker: Start of the Series</small></p>
+<p><small class="series-name">Yet Another Bug Tracker: Start of the Series</small></p>
 <h1>Building an enterprise application with the .NET Core and RavenDB NoSQL database</h1>
 <small>by <a href="mailto:alex.a.klaus@gmail.com">Alex Klaus</a></small>
 
