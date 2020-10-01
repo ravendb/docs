@@ -1,4 +1,4 @@
-<p class="text-muted" style="margin:0;"><small>Yet Another Bug Tracker: Article #1</small></p>
+<p><small class="series-name">Yet Another Bug Tracker: Article #1</small></p>
 <h1>NoSQL Data Model Through the DDD Prism</h1>
 <small>by <a href="mailto:alex.a.klaus@gmail.com">Alex Klaus</a></small>
 
