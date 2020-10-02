@@ -13,7 +13,7 @@ In this page:
 * [Create subscription with include statement](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-include-statement)  
   * [Including counters](../../../client-api/data-subscriptions/creation/examples#including-counters)  
 * [Create revisions enabled subscription](../../../client-api/data-subscriptions/creation/examples#create-revisions-enabled-subscription)  
-
+* [Update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription)  
 {NOTE/}
 
 ---
@@ -70,7 +70,7 @@ The subscription include builder is assigned to the option **Includes** in `Subs
 supports methods for including documents as well as counters. These methods can be chained.  
 
 In raw RQL, include statements come in two forms, like in any other RQL statements:  
-1. Include statement in the end of the query, starting with the `include` keyword, followed by paths to the field containing the ids of the documents to include.  
+1. Include statement in the end of the query, starting with the `include` keyword, followed by paths to the field containing the IDs of the documents to include.  
 If projection is performed, the mechanism will look for the paths in the projected result, rather then the original document.  
 It is recommended to prefer this approach when possible both because of clarity of the query and slightly better performance.  
 2. Include function call inside a 'declared' function.  
@@ -118,9 +118,20 @@ Please see the [page](../../../client-api/data-subscriptions/advanced-topics/sub
 
 {PANEL/}
 
+{PANEL:Update existing subscription}
 
+Here we update the filter query of an existing data subscription named "my subscription".  
 
+{CODE:csharp update_subscription_example_0@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
+In addition to names, subscriptions also have a **subscription ID** on the server side. The 
+ID can be used to identify the subscription instead of using its name. This allows use to change 
+an existing subscription's name by specifying the subscription with the ID, and submitting 
+a new string in the `Name` field of the `SubscriptionUpdateOptions`.  
+
+{CODE:csharp update_subscription_example_1@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
+{PANEL/}
 
 ## Related Articles
 
