@@ -9,8 +9,8 @@
 * Learn more about how numbers are stored in RavenDB [here](../server/kb/numbers-in-ravendb).  
 
 * In this page:  
-  * [Syntax](..\indexes\number-type-conversion#syntax)
-  * [Examples](..\indexes\number-type-conversion#examples)
+  * [Syntax](..\indexes\number-type-conversion#syntax)  
+  * [Examples](..\indexes\number-type-conversion#examples)  
 
 {NOTE/}
 
@@ -34,10 +34,6 @@ protected T? TryConvert<T>(object value)
 | - | - | - |
 | **T** | Generic type parameter | The numerical type to which you want to convert your value. Possible values:<br/>- `int`<br/>- `long`<br/>- `float`<br/>- `double` |
 | **value** | `object` | The value you want to convert, such as a document field. If you pass a `string` or `object`, the method will attempt to parse it for a numerical value. |
-
-{SAFE: }
-Available from version 5.1 and later  
-{SAFE/}
 
 In **JavaScript syntax**, use `tryConvertToNumber()`.
 

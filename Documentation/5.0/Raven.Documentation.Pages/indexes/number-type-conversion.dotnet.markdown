@@ -9,8 +9,8 @@
 * Learn more about how numbers are stored in RavenDB [here](../server/kb/numbers-in-ravendb).  
 
 * In this page:  
-  * [Syntax](..\indexes\number-type-conversion#syntax)
-  * [Examples](..\indexes\number-type-conversion#examples)
+  * [Syntax](..\indexes\number-type-conversion#syntax)  
+  * [Examples](..\indexes\number-type-conversion#examples)  
 
 {NOTE/}
 
@@ -18,13 +18,11 @@
 
 {PANEL: Syntax}
 
-The following methods are used to convert values into one of the common primitive numerical 
-types - `int`, `long`, `float`, or `double`. They are called from within the 
+`TryConvert<T>()` is used to convert values into one of the common primitive numerical 
+types - `int`, `long`, `float`, or `double`. It is called from within the 
 [Map](../indexes/map-indexes) or [Reduce](../indexes/map-reduce-indexes) functions of the 
-index. If the submitted value cannot be converted to the specified type, these methods return 
+index. If the submitted value cannot be converted to the specified type, this method returns 
 `null`.  
-
-In **LINQ syntax**, use `TryConvert<T>()`:  
 
 {CODE-BLOCK:csharp}
 protected T? TryConvert<T>(object value)
@@ -35,32 +33,17 @@ protected T? TryConvert<T>(object value)
 | **T** | Generic type parameter | The numerical type to which you want to convert your value. Possible values:<br/>- `int`<br/>- `long`<br/>- `float`<br/>- `double` |
 | **value** | `object` | The value you want to convert, such as a document field. If you pass a `string` or `object`, the method will attempt to parse it for a numerical value. |
 
-{SAFE: }
-Available from version 5.1 and later  
-{SAFE/}
-
-In **JavaScript syntax**, use `tryConvertToNumber()`.
-
-{CODE-BLOCK:javascript}
-tryConvertToNumber(value)
-{CODE-BLOCK/}
-
-| Parameter | Type | Description |
-| - | - | - |
-| **value** | `object` | The value you want to convert, such as a document field. If you pass a `string` or `object`, the method will attempt to parse it for a numerical value. |
-
 {PANEL/}
 
 {PANEL: Examples}
 
 The class `Item` has fields of type `int`, `long`, `float`, `double`, `string`, and an object 
-field of type [Company](../start/about-examples). The following indexes take an `Item` 
-entity and attempt to convert each of its fields into the corresponding type. In case of 
+field of type [Company](../start/about-examples). The following index takes an `Item` 
+entity and attempts to convert each of its fields into the corresponding type. In case of 
 failure, the field is indexed with value `-1` instead.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:LINQ tryconvert_linq@Indexes/NumberTypeConversion.cs /}
-{CODE-TAB:csharp:JavaScript tryconvert_js@Indexes/NumberTypeConversion.cs /}
 {CODE-TAB:csharp:Class tryconvert_class@Indexes/NumberTypeConversion.cs /}
 {CODE-TABS/}
 
