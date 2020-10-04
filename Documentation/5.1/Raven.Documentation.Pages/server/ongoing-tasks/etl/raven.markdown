@@ -1,4 +1,4 @@
-﻿# Ongoing Tasks: RavenDB ETL 
+﻿# Ongoing Tasks: RavenDB ETL  
 ---
 
 {NOTE: }
@@ -18,6 +18,7 @@
   * [Empty Script](../../../server/ongoing-tasks/etl/raven#empty-script)  
   * [Attachments](../../../server/ongoing-tasks/etl/raven#attachments) 
   * [Counters](../../../server/ongoing-tasks/etl/raven#counters)  
+  * [Time Series](../../../server/ongoing-tasks/etl/raven#time-series)  
   * [Revisions](../../../server/ongoing-tasks/etl/raven#revisions)  
   * [Deletions](../../../server/ongoing-tasks/etl/raven#deletions)  
   * [Example](../../../server/ongoing-tasks/etl/raven#example)  
@@ -302,6 +303,121 @@ Counters sent by ETL process always _override_ the existing value on the destina
 
 {PANEL/}
 
+{PANEL: Time Series}
+
+* By default, time series are not transferred along with their documents during ETL. And 
+by default, changes to time series do not trigger ETL on the document that time series 
+is attached to (they don't change the document's change vector and are not considered a 
+document modification).  
+* Time series can be included in an ETL process using the time series behavior function. 
+This function can be defined in the script to set the conditions under which a time 
+series is included.  
+* Another way of sending a time series is to explicitly add it to a document using 
+`loadTimeSeries()`.  
+* If a time series is included by an ETL script, it means that the ETL process will be 
+triggered when the time series is modified.  
+
+#### Time Series Behavior Function
+
+The time series behavior function is defined in the script and should have the 
+following signature:
+
+{CODE-BLOCK:javascript}
+function loadTimeSeriesOf<collection name>Behavior(docId, timeSeriesName) {
+   return [true | false]; 
+}
+{CODE-BLOCK/}
+{CODE-BLOCK:javascript}
+function loadTimeSeriesOf<collection name>Behavior(docId, timeSeriesName) {
+   return [true | false]; 
+}
+{CODE-BLOCK/}
+
+| Parameter | Type | Description |
+| - | - | - |
+| **<collection name>** | A part of the function's name | Determines which collection's documents this behavior function applies to. A function named `loadTimeSeriesOfEmployeesBehavior` will apply on all time series in the collection `Employees` |
+| **docId** | `string` | This parameter is not used for calling the function - the function is applied to all documents in the collection. This parameter is used inside the function to refer to the documents' ID. |
+| **timeSeriesName** | `string` | This parameter is not used for calling the function - the function is applied to all time series in the collection. This parameter is used inside the function to refer to the time series' name. |
+
+* The time series behavior function can _only_ be applied to time series whose source 
+collection and target collection have the same name.  
+* The function returns a boolean. If it returns `true`, then the time series is loaded to 
+its destination.  
+
+#### Example
+
+* The following script is defined on `Companies` collection. The behavior function loads 
+each document in the collection using `load(docId)`, then filters by the document's 
+`Address.Country` property, as well as the name of the time series, to retrieve only 
+stock price data for French companies.
+
+{CODE-BLOCK:javascript}
+loadToCompanies(this);
+
+function loadTimeSeriesOfCompaniesBehavior(docId, timeSeriesName) {
+   var company = load(docId);
+
+   if (company.Address.Country == 'France' && timeSeriesName = 'StockPrices')
+        return true;
+}
+{CODE-BLOCK/}
+
+#### Adding time series explicitly in a script
+
+* The reason the behavior function cannot be used if the target collection has a 
+different name from the source collection, is that a time series can't be transferred 
+if the ID the document will have on the target side isn't known on the source side. This 
+limitation can be circumvented by giving a document an ID on the source side and 
+loading a time series to that document explicitly:
+
+{CODE-BLOCK:javascript}
+// ETL script for Employees collection
+var company = loadToCompanies({ Name: this.Name + ' ' + this.LastName });
+
+company.addTimeSeries(loadTimeSeries('StockPrices'));
+{CODE-BLOCK/}
+
+* In the above example, the time series `StockPrices` will be sent together with its 
+associated document. This is accomplished with the following methods:  
+  - `loadTimeSeries(name)` returns a reference to a time series that is then passed to 
+`addTimeSeries()`.  
+  - `<doc>.addTimeSeries(timeSeriesRef)` adds the time series to the document `<doc>'.
+
+{INFO: Important}
+Since the transformation script is run on document update, time series added explicitly 
+(`addTimeSeries()`) will be loaded along with documents _only_ if document itself is 
+changed.  
+This means that incremented time series values won't be sent until a document they 
+extend is modified.  
+{INFO/}
+
+{NOTE: Time series value override by ETL}
+Time series sent by ETL process always _override_ the existing value on the 
+destination. ETL doesn't send an _increment_ time series command, it sets the value 
+using a _put_ command.  
+{NOTE/}
+
+#### Filtering by start and end date
+
+Both the behavior funtion and `loadTimeSeries()` accept a start and end date as 
+second and third parameters.  
+
+{CODE-BLOCK:javascript}
+company.addTimeSeries(loadTimeSeries('StockPrices', new Date(2020, 3, 26), new Date(2020, 3, 28)));
+{CODE-BLOCK/}
+
+{CODE-BLOCK:javascript}
+function loadTimeSeriesOfUsersBehavior(doc, ts)
+{
+    return {
+        from: new Date(2020, 3, 26),
+        to: new Date(2020, 3, 28)
+    };
+};
+{CODE-BLOCK/}
+
+{PANEL/}
+
 {PANEL: Revisions}
 
 * Revisions are _not_ sent by the ETL process.  
@@ -442,3 +558,9 @@ loadToEmployees({
 
 - [Define RavenDB ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
 - [Define SQL ETL Task in Studio](../../../todo-update-me-later)
+
+### Document Extensions
+
+- [Attachments](../../../document-extensions/attachments/what-are-attachments)
+- [Counters](../../../document-extensions/counters/overview)
+- [Time Series](../../../document-extensions/timeseries/overview)

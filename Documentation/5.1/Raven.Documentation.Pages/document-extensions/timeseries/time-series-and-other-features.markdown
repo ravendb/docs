@@ -65,13 +65,15 @@ destination server rather than the source server.
 whole database at a certain point in time and can be used to restore the 
 database later. All kinds of backups include time series data: "logical"-backup 
 and snapshot, full and incremental.  
+* [RavenDB ETL](../../server/ongoing-tasks/etl/raven#time-series) is a type of 
+task that _extracts_ some portion of the data from a database, _transforms_ it 
+according to a script, and _loads_ it to another RavenDB database on another 
+server.  
 
 #### Cannot be applied to time series
 
-* [ETL](../../server/ongoing-tasks/etl/basics) is a type of task that _extracts_ 
-some portion of the data from a database, _transforms_ it according to a script, 
-and _loads_ it to some external target. Neither the **RavenDB ETL** nor the 
-**SQL ETL** tasks can access or operate on time series data.  
+* [SQL ETL](../../server/ongoing-tasks/etl/basics), another type of ETL that 
+can set a relational database as its target.  
 * [Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions) 
 send data to "worker" clients in batches.
 
