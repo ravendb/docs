@@ -24,8 +24,8 @@ Subscription creation is accessible through `DocumentStore`'s `Subscriptions` Pr
 | ------------- | ------------- | ----- |
 | **predicate** | `Expression<Func<T, bool>>` | Predicate that returns a boolean, describing filter of the subscription documents |
 | **options** | `SubscriptionCreationOptions<T>` | Contains subscription creation options |
-| **database** | `string` | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. 
-| **token** | `CancellationToken` | Cancellation token used in order to halt the worker operation. ||
+| **database** | `string` | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
+| **token** | `CancellationToken` | Cancellation token used in order to halt the worker operation. |
 
 | Return value | |
 | ------------- | ----- |
@@ -54,8 +54,8 @@ An RQL statement will be built based on the fields.
 |--------|:-----|-------------| 
 | **&lt;T&gt;** | type | Type of the object, from which the collection will be derived. |
 | **Name** | `string` | User defined name of the subscription: allows to have a human readable identification of a subscription. The name must be unique in the database. |
-| **Filter** | `Expression<Func<T, bool>>` | Lambda describing filter logic for the subscription. Will be translated to a javascript function.
-| **Projection** | `Expression<Func<T, object>>` | Lambda describing the projection of returned documents. |Will be translated to a javascript function
+| **Filter** | `Expression<Func<T, bool>>` | Lambda describing filter logic for the subscription. Will be translated to a javascript function. |
+| **Projection** | `Expression<Func<T, object>>` | Lambda describing the projection of returned documents. Will be translated to a javascript function. |
 | **ChangeVector** | `string` | Allows to define a change vector, from which the subscription will start processing. It might be useful for ad-hoc processes that need to process only recent changes in data, for that specific use, the field may receive a special value: "LastDocument", that will take the latest change vector in the machine. |
 | **MentorNode** | `string` | Allows to define a specific node in the cluster that we want to treat the subscription. That's useful in cases when one server is preffered over other, either because of stronger hardware or closer geographic proximity to clients etc. |
 

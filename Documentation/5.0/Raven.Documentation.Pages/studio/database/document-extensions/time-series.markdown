@@ -21,7 +21,7 @@ allows you to edit, query and index time series data, as well as view it as list
 
 {PANEL: Document View}
 
-![](images/time-series/document-time-series.png)  
+![](images/time-series/document-time-series.png "NoSQL Database Time Series - Document Time Series")  
 
 {WARNING: Actions}
 1. To view a documents' time series, go to its page and click the time series tab on the right.  
@@ -41,7 +41,7 @@ allows you to edit, query and index time series data, as well as view it as list
 
 #### Create new Time Series (by Creating a First Entry)
 
-![](images/time-series/new-entry.png)  
+![](images/time-series/new-entry.png "NoSQL Database Time Series - New Entry")  
 
 {WARNING: }
 A time series must contain at least one entry when it is created (and a time series is deleted when all 
@@ -56,7 +56,7 @@ of its entries are deleted).
 
 {PANEL: Time Series View}
 
-![](images/time-series/time-series-view.png)  
+![](images/time-series/time-series-view.png "NoSQL DB Time Series - Time Series View")  
 
 {WARNING: }
 1. Create a new entry to add to this time series.  
@@ -75,7 +75,7 @@ Displays the time series entrys':
 
 #### Editing an Entry
 
-![](images/time-series/time-series-entry.png)  
+![](images/time-series/time-series-entry.png "NoSQL Database Time Series - Entry")  
 
 {WARNING: }
 1. Edit the optional tag.  
@@ -88,7 +88,7 @@ Displays the time series entrys':
 
 #### Deleting a Range of Entries
 
-![](images/time-series/delete-range.png)  
+![](images/time-series/delete-range.png "NoSQL DB Time Series - Delete Range")  
 
 {WARNING: }
 To specify a range of time series entries:  
@@ -97,13 +97,13 @@ To specify a range of time series entries:
 3. Select the last entry's timestamp as the start of the range.  
 {WARNING/}
 
-![](images/time-series/delete-range-2.png)  
+![](images/time-series/delete-range-2.png "NoSQL Database Time Series - Delete Range")  
 
 {PANEL/}
 
 {PANEL: Querying Time Series}
 
-![](images/time-series/time-series-query.png)  
+![](images/time-series/time-series-query.png "NoSQL DB Time Series - Time Series Query")  
 
 {INFO: }
 1. A simple query for all time series in the collection `Companies` and the name `StockPrice`.
@@ -123,7 +123,7 @@ To specify a range of time series entries:
 
 #### Graphical View
 
-![](images/time-series/time-series-graph.png)  
+![](images/time-series/time-series-graph.png "NoSQL Database Time Series - Graph")  
 
 {WARNING: }
 1. Toggle a certain value in the graph.  

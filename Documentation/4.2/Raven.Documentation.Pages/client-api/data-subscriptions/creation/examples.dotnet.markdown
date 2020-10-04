@@ -62,7 +62,13 @@ Here we create a subscription on Orders collection, which total order revenue is
 Here we create a subscription on Orders collection, which returns the orders and brings along all products mentioned in the order as included documents. 
 See the usage example [here](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents).
 
-Include statements supported only with raw RQL. Include statements come in two forms, like in any other RQL statements:  
+Include statements can be added to a subscription in the raw RQL, or with the **`ISubscriptionIncludeBuilder`**.  
+
+The subscription include builder is assigned to the option **Includes** in `SubscriptionCreationOptions<T>` 
+(see [subscription API overview](../../../client-api/data-subscriptions/creation/api-overview)). It 
+supports methods for including documents. These methods can be chained.  
+
+In raw RQL, include statements come in two forms, like in any other RQL statements:  
 1. Include statement in the end of the query, starting with the `include` keyword, followed by paths to the field containing the ids of the documents to include.  
 If projection is performed, the mechanism will look for the paths in the projected result, rather then the original document.  
 It is recommended to prefer this approach when possible both because of clarity of the query and slightly better performance.  

@@ -46,7 +46,7 @@ More information about QuadTree can be found [here](https://en.wikipedia.org/wik
 
 By default the precision level (`maxTreeLevel`) for GeohashPrefixTree is set to **9** and for QuadPrefixTree the value is **23**, which means that the coordinates are represented by a 9 or 23 character string. The difference exists, because the `QuadTree` representation would be much less precise if the level would be the same.
 
-1. Geohash precision values (from [http://unterbahn.com](http://unterbahn.com/2009/11/metric-dimensions-of-geohash-partitions-at-the-equator/)).
+1. Geohash precision values (from unterbahn.com).
 
 | Level | E-W distance at equator | N-S distance at equator |
 |:-----------------------|:---------------------|:---------------------|

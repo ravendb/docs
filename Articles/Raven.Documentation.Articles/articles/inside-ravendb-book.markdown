@@ -26,8 +26,8 @@ Topics include:
 
 <p>You will gain the skills to put RavenDB to good work in your projects.</p>
 
-<a href="https://www.amazon.com/Inside-RavenDB-4-0-Oren-Eini/dp/1719946213/ref=sr_1_1" rel="nofollow">
-    <img class="img-responsive m-0-auto" alt="Get the &quot;Inside RavenDB 4.0&quot; book now" src="images/get-the-book.jpg" href="https://www.amazon.com/Inside-RavenDB-4-0-Oren-Eini/dp/1719946213/ref=sr_1_1"/>
+<a href="https://www.amazon.com/Inside-RavenDB-4-0-Oren-Eini/dp/1719946213" rel="nofollow" target="_blank">
+    <img class="img-responsive m-0-auto" alt="Get the &quot;Inside RavenDB 4.0&quot; book now" src="images/get-the-book.jpg" />
 </a>
 
 <div class="bottom-line">
