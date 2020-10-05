@@ -1,6 +1,6 @@
 <p><small class="series-name">Yet Another Bug Tracker: Start of the Series</small></p>
 <h1>Building an enterprise application with the .NET Core and RavenDB NoSQL database</h1>
-<small>by <a href="mailto:alex.a.klaus@gmail.com">Alex Klaus</a></small>
+<small>by <a href="https://alex-klaus.com" target="_blank" rel="nofollow">Alex Klaus</a></small>
 
 ![Leveraging the .NET Core + RavenDB NoSQL database to build enterprise applications"](images/building-application-with-net-core-and-ravendb-nosql-database.jpg)
 
@@ -56,7 +56,7 @@ Our diagram has some resemblance with the classic Onion diagram:
 
 <ul>
     <li>
-        "NoSQL Data Model through the DDD prism"<br/>
+        <a href="https://ravendb.net/articles/nosql-data-model-through-ddd-prism">"NoSQL Data Model through the DDD prism"</a><br/>
         <span class="text-muted">Leveraging the <em>Domain-driven Design</em> (DDD) to define the problem area (<em>Bounded context</em>) of the project. Designing a potential relational model and the NoSQL model utilised in the <em>YABT</em> (with aggregates, entities, value objects, etc.).</span>
     </li>
     <li class="margin-top-xs">

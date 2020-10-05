@@ -1,6 +1,6 @@
 <p><small class="series-name">Yet Another Bug Tracker: Article #1</small></p>
 <h1>NoSQL Data Model Through the DDD Prism</h1>
-<small>by <a href="mailto:alex.a.klaus@gmail.com">Alex Klaus</a></small>
+<small>by <a href="https://alex-klaus.com" target="_blank" rel="nofollow">Alex Klaus</a></small>
 
 ![Practical modelling of the same database for a traditional SQL and a NoSQL. Comparison of the two approaches and their alignment with the DDD (Domain Driven Design).](images/nosql-data-model-through-ddd-prism.jpg)
 
