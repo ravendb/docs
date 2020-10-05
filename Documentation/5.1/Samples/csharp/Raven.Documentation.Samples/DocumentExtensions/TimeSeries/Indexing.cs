@@ -108,6 +108,24 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Indexing
         }
         #endregion
 
+        #region indexes_AbstractJavaScriptCreationTask
+        public class Company_TradeVolume_ByDate : AbstractJavaScriptTimeSeriesIndexCreationTask
+        {
+            public Company_TradeVolume_ByDate()
+            {
+                Maps = new HashSet<string> { @"
+                    timeSeries.map('Companies', 'StockPrices', function (ts) {
+                        return ts.Entries.map(entry => ({
+                                Volume: entry.Values[0],
+                                Date: entry.Timestamp,
+                                Company: ts.DocumentId
+                        }));
+                    })"
+                };
+            }
+        }
+        #endregion
+
         #region indexes_MapReduce
         public class TradeVolume_PerDay_ByCountry : 
                      AbstractTimeSeriesIndexCreationTask<Company, TradeVolume_PerDay_ByCountry.Result>
