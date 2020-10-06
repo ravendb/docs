@@ -1964,5 +1964,34 @@
         "twitter:description": "ACID transactions that just work, automatic indexes, and a self-sustaining system to let you focus more on your product makes RavenDB the database for startups.",
         "twitter:url": "https://ravendb.net/articles/battle-crate-uses-ravendb-to-become-the-aws-of-gaming"
     }
+},
+{
+    "Path": "a-grown-up-database-for-startups.markdown",
+    "Name": "A Grown-Up Database for Startups",
+    "Mappings": [],
+    "Metadata": {
+        "title": "Database for Startups | 11 ways a NoSQL Database Proves Itself",
+        "likeSection": "yes",
+        "url": "a-grown-up-database-for-startups",
+        "publishedAt": "2020-10-06",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "11 ways a database for startups minimizes diversion from your app while maximizing the value it is designed to deliver.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "A Grown-Up Database for Startups",
+        "og:description": "A grown-up database for startups needs minimal supervision to do its task. Developers can put more time and resources bringing their application to production.",
+        "og:url": "https://ravendb.net/articles/a-grown-up-database-for-startups",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/a-grown-up-database-for-startups&fileName=a-grown-up-database-for-startups.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "A Grown-Up Database for Startups",
+        "twitter:description": "A grown-up database for startups needs minimal supervision to do its task. Developers can put more time and resources bringing their application to production.",
+        "twitter:url": "https://ravendb.net/articles/a-grown-up-database-for-startups"
+    }
 }
 ]
