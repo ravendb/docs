@@ -441,7 +441,7 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
 
         #region indexes_2
-        public class BlogPosts_ByCommentAuthor : AbstractJavaScriptIndexCreationTask
+        public class BlogPosts_ByComentAuthor : AbstractJavaScriptIndexCreationTask
         {
             public class Result
             {
@@ -466,6 +466,28 @@ namespace Raven.Documentation.Samples.Indexes
                                         names.push(x.Author);
                                         x.Comments.forEach(x => getNames(x, names));
                                  }"
+                };
+            }
+        }
+
+        public class BlogPosts_ByCommentAuthor : AbstractJavaScriptIndexCreationTask
+        {
+            public class Result
+            {
+                public string[] Authors { get; set; }
+            }
+
+            public BlogPosts_ByCommentAuthor()
+            {
+                Maps = new HashSet<string>
+                {
+                    @"map('Posts', function (post) {
+                        return recurse(post, x => x.Comments).map(function (comment) {
+                            return {
+                                Authors: comment.Author
+                            };
+                        });
+                    });"
                 };
             }
         }
