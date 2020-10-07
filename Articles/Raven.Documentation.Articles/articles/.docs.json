@@ -1993,5 +1993,34 @@
         "twitter:description": "A grown-up database for startups needs minimal supervision to do its task. Developers can put more time and resources bringing their application to production.",
         "twitter:url": "https://ravendb.net/articles/a-grown-up-database-for-startups"
     }
+},
+{
+    "Path": "document-oriented-database-for-startups-offers-solution-for-27-dollars.markdown",
+    "Name": "Document-oriented Database for Startups Offers Solution for $27",
+    "Mappings": [],
+    "Metadata": {
+        "title": "Document-oriented Database | Database for Startups",
+        "likeSection": "yes",
+        "url": "document-oriented-database-for-startups-offers-solution-for-27-dollars",
+        "publishedAt": "2020-10-07",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "The world will be rebuilt with innovation! The document-oriented database for startups, offers shared instances to get you started at minimum complexity, time, and cost.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "Document-oriented Database for Startups Offers Solution for $27",
+        "og:description": "The world will be rebuilt with innovation! RavenDB, the database for startups, offers shared instances to get you started at minimum complexity, time, and cost.",
+        "og:url": "https://ravendb.net/articles/document-oriented-database-for-startups-offers-solution-for-27-dollars",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/document-oriented-database-for-startups-offers-solution-for-27-dollars&fileName=document-oriented-database-for-startups-offers-solution-for-27-dollars.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "Document-oriented Database for Startups Offers Solution for $27",
+        "twitter:description": "The world will be rebuilt with innovation! RavenDB, the database for startups, offers shared instances to get you started at minimum complexity, time, and cost.",
+        "twitter:url": "https://ravendb.net/articles/document-oriented-database-for-startups-offers-solution-for-27-dollars"
+    }
 }
 ]
