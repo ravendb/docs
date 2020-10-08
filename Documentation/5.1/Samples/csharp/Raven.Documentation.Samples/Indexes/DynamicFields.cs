@@ -55,6 +55,27 @@ namespace Raven.Documentation.Samples.Indexes
         }
         #endregion
 
+        #region dynamic_fields_JS_index
+        private class CreateFieldItems_JavaScript : AbstractJavaScriptIndexCreationTask
+        {
+            public CreateFieldItems_JavaScript()
+            {
+                Maps = new HashSet<string>
+                {
+                    @"map('Products', function (p) {
+                        return {
+                            _: p.Attributes.foreach(x => createField(x.Name, x.Value, { 
+                                   indexing: 'Exact',
+                                   storage: true,
+                                   termVector: null
+                               })
+                        };
+                    })",
+                };
+            }
+        }
+        #endregion
+
         public void Dynamic()
         {
             using (var store = new DocumentStore())
