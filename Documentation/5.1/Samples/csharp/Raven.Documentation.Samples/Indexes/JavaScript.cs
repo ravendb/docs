@@ -481,6 +481,30 @@ namespace Raven.Documentation.Samples.Indexes
         }
         #endregion
 
+        #region indexes_3
+        public class BlogPosts_ByCommentAuthor_JS : AbstractJavaScriptIndexCreationTask
+        {
+            public class Result
+            {
+                public string[] Authors { get; set; }
+            }
+
+            public BlogPosts_ByCommentAuthor_JS()
+            {
+                Maps = new HashSet<string>
+                {
+                    @"map('Posts', function (post) {
+                        return recurse(post, x => x.Comments).map(function (comment) {
+                            return {
+                                Authors: comment.Author
+                            };
+                        });
+                    });"
+                };
+            }
+        }
+        #endregion
+
         #region spatial_search_1
         private class Events_ByNameAndCoordinates : AbstractJavaScriptIndexCreationTask
         {

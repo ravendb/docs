@@ -11,7 +11,7 @@ The answer to that is that RavenDB contains built-in support for indexing hierar
 {CODE-TABS}
 {CODE-TAB:csharp:AbstractIndexCreationTask indexes_2@Indexes\IndexingHierarchicalData.cs /}
 {CODE-TAB:csharp:Operation indexes_3@Indexes\IndexingHierarchicalData.cs /}
-{CODE-TAB:csharp:JavaScript indexes_2@Indexes\JavaScript.cs /}
+{CODE-TAB:csharp:JavaScript indexes_3@Indexes\JavaScript.cs /}
 {CODE-TABS/}
 
 This will index all the comments in the thread, regardless of their location in the hierarchy.
