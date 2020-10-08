@@ -145,7 +145,16 @@
     "Path": "indexing-attachments.markdown",
     "Name": "Indexing Attachments",
     "DiscussionId": "6b51906a-f480-48a0-ad5b-91fee56949cd",
-    "Mappings": []
+    "Mappings": [
+      {
+        "Version": 5.1,
+        "Key": "document-extensions/attachments/indexing"
+      },
+      {
+        "Version": 5.0,
+        "Key": "document-extensions/attachments/indexing"
+      }
+    ]
   },
   {
     "Path": "indexing-counters.markdown",

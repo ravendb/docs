@@ -91,6 +91,21 @@
     ]
   },
   {
+    "Path": "indexing.markdown",
+    "Name": "Indexing",
+    "DiscussionId": "ddcd2649-d802-4401-8fc9-ac9489b9deef",
+    "Mappings": [
+      {
+        "Version": 4.2,
+        "Key": "indexes/indexing-attachments"
+      },
+      {
+        "Version": 4.1,
+        "Key": "indexes/indexing-attachments"
+      }
+    ]
+  },
+  {
     "Path": "bulk-insert.markdown",
     "Name": "Bulk Insert",
     "DiscussionId": "133d2139-bfe4-46bd-81d7-60d798cf1001",
