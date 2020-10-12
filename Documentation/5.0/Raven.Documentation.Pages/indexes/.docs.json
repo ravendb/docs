@@ -142,12 +142,6 @@
     ]
   },
   {
-    "Path": "indexing-attachments.markdown",
-    "Name": "Indexing Attachments",
-    "DiscussionId": "6b51906a-f480-48a0-ad5b-91fee56949cd",
-    "Mappings": []
-  },
-  {
     "Path": "indexing-counters.markdown",
     "Name": "Indexing Counters",
     "DiscussionId": "439e9ec8-773a-4bdf-8bfa-bafa7a48ece6",
@@ -164,6 +158,17 @@
     "Name": "Indexing Compare Exchange Values",
     "DiscussionId": "d4b5cd08-7c45-4dbb-9a83-c1536e3c5290",
     "Mappings": []
+  },
+  {
+    "Path": "converting-to-json-and-accessing-metadata.markdown",
+    "Name": "Converting to JSON and Accessing Metadata",
+    "DiscussionId": "2fe7313c-df13-478b-acd3-08c5b4d21a1d",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/static-indexes/defining-static-index#using--and-"
+      }
+    ]
   },
   {
     "Path": "number-type-conversion.markdown",
