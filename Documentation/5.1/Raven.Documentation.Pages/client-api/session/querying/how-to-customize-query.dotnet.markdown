@@ -1,4 +1,7 @@
 # Session: Querying: How to Customize a Query
+---
+
+{NOTE: }
 
 The following query customization options are available in the `IDocumentQueryCustomization` interface:
 
@@ -7,8 +10,13 @@ The following query customization options are available in the `IDocumentQueryCu
 - [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query#afterstreamexecuted)
 - [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
 - [NoTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
+- [ProjectionBehavior](../../../client-api/session/querying/how-to-customize-query#projectionbehavior)
 - [RandomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
 - [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
+
+{NOTE/}
+
+---
 
 {PANEL:BeforeQueryExecuted}
 
@@ -99,6 +107,38 @@ To disable entity tracking by `Session` use `NoTracking`. Usage of this option w
 ### Example
 
 {CODE customize_3_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+{PANEL/}
+
+{PANEL: ProjectionBehavior}
+
+By default, queries are satisfied with the values stored in the index. If the index 
+doesn’t contain the requested values, they are retrieved from the documents 
+themselves.  
+
+This behavior can be configured using the `Projection` option, which takes a 
+`ProjectionBehavior`:  
+
+{CODE projectionbehavior@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+* `Default` - query will be satisfied with indexed data when possible, and directly 
+from the document when it is not.  
+* `FromIndex` - query will be satisfied with indexed data when possible, and when 
+it is not, the field is skipped.  
+* `FromIndexOrThrow` - query will be satisfied with indexed data. If the index does 
+not contain the requested data, an exception is thrown.  
+* `FromDocument` - query will be satisfied with document data when possible, and 
+when it is not, the field is skipped.  
+* `FromDocumentOrThrow` - query will be satisfied with document data. If the 
+document does not contain the requested data, an exception is thrown.  
+
+### Example
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query projectionbehavior_query@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:RawQuery projectionbehavior_rawquery@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:DocumentQuery projectionbehavior_docquery@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TABS/}
 
 {PANEL/}
 

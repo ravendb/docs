@@ -34,6 +34,18 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             IDocumentQueryCustomization NoTracking();
             #endregion
 
+            #region projectionbehavior
+            IDocumentQueryCustomization Projection(ProjectionBehavior projectionBehavior);
+
+            public enum ProjectionBehavior {
+                Default,
+                FromIndex,
+                FromIndexOrThrow,
+                FromDocument,
+                FromDocumentOrThrowyy
+            }
+            #endregion
+
             #region customize_4_0
             IDocumentQueryCustomization RandomOrdering();
 
@@ -100,6 +112,34 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     List<Employee> results = session.Query<Employee>()
                         .Customize(x => x.NoTracking())
                         .Where(x => x.FirstName == "Robert")
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region projectionbehavior_query
+                    List<Employee> results = session.Query<Employee>()
+                        .Customize(x => x.Projection(ProjectionBehavior.FromDocument))
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region projectionbehavior_rawquery
+                    List<Employee> results = session.Advanced.RawQuery<Employee>(
+                        @"from Employees")
+                        .Projection(ProjectionBehavior.FromDocument)
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region projectionbehavior_docquery
+                    List<Employee> results = session.Advanced.DocumentQuery<Employee>()
+                        .SelectFields<Employee>(ProjectionBehavior.FromDocument)
                         .ToList();
                     #endregion
                 }

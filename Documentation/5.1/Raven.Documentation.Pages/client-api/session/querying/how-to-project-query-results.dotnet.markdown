@@ -174,6 +174,20 @@ select Name, Phone
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+#### Projection Behavior
+
+The `SelectFields` methods can also take a `ProjectionBehavior` parameter, which 
+determines whether the query should retrieve indexed data or directly retrieve 
+document data, and what to do when the data can't be retrieved. Learn more 
+[here](../../../client-api/session/querying/how-to-customize-query#projectionbehavior).  
+
+{CODE-BLOCK: csharp}
+IDocumentQuery<TProjection> SelectFields<TProjection>(ProjectionBehavior projectionBehavior,
+                                                      params string[] fields);
+
+IDocumentQuery<TProjection> SelectFields<TProjection>(ProjectionBehavior projectionBehavior);
+{CODE-BLOCK/}
+
 {PANEL/}
 
 {PANEL:ProjectInto}
