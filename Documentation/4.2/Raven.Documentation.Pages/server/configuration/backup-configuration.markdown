@@ -92,10 +92,6 @@ Number of minutes to delay the backup if the server enters a low memory state.
 
 {PANEL/}
 
-{WARNING: Advanced configuration options - experts only}{WARNING/}
-
-
-
 ## Related Articles  
 
 ### Cloud  
