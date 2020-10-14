@@ -8,8 +8,8 @@ In the first example we will show how to make a secure call using PowerShell, cU
 
 - [Add node to the cluster](../../server/clustering/cluster-api#add-node-to-the-cluster)
 - [Delete node from the cluster](../../server/clustering/cluster-api#delete-node-from-the-cluster)
-- [Promote a watcher node](../../server/clustering/cluster-api#promote-a-watcher-node)
-- [Demote a watcher node](../../server/clustering/cluster-api#demote-a-watcher-node)
+- [Promote a watcher node](../../server/clustering/cluster-api#promote-a-node)
+- [Demote a watcher node](../../server/clustering/cluster-api#demote-a-node)
 - [Force elections](../../server/clustering/cluster-api#force-elections)
 - [Force timeout](../../server/clustering/cluster-api#force-timeout)
 - [Bootstrap the cluster](../../server/clustering/cluster-api#bootstrap-cluster)
@@ -33,7 +33,7 @@ SecurityClearance: `Cluster Admin`
 
 ### C# Client
 
-* To make a secure call, the Document Store must be supplied with the client certificate ([example](../../client-api/setting-up-authentication-and-authorization)).
+* To make a secure call, the Document Store must be supplied with the client certificate ([example](../../client-api/setting-up-authentication-and-authorization#example---initializing-document-store-with-a-client-certificate)).
 
 {CODE add_node_with_args@ClusterAPI.cs /}
 
@@ -42,13 +42,13 @@ SecurityClearance: `Cluster Admin`
 {CODE-BLOCK:powershell}
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $clientCert = Get-PfxCertificate -FilePath <path-to-pfx-cert>
-Invoke-WebRequest -Method Put -URI "http://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<new-node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores> -Certificate $cert"
+Invoke-WebRequest -Method Put -URI "https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<new-node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores> -Certificate $cert"
 {CODE-BLOCK/}
 
 ### cURL
 
 {CODE-BLOCK: bash}
-curl -X PUT http://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores> --cert <path-to-pem-cert>
+curl -X PUT https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores> --cert <path-to-pem-cert>
 {CODE-BLOCK/}
 
 {PANEL/}
@@ -66,7 +66,7 @@ SecurityClearance: `Cluster Admin`
 ### Example
 
 {CODE-BLOCK: bash}
-curl -X DELETE http://<server-url>/admin/cluster/node?nodeTag=<node-tag>
+curl -X DELETE https://<server-url>/admin/cluster/node?nodeTag=<node-tag>
 {CODE-BLOCK/}
 
 {PANEL/}
@@ -82,7 +82,7 @@ endpoint with the following argument:
 
 The POST request body should be empty.
 
-SecurityClearance: `Operator`
+SecurityClearance: `ClusterAdmin`
 
 ### Example
 
@@ -102,7 +102,7 @@ Demoting a node can be done using an HTTP POST request to the `/admin/cluster/de
 
 The POST request body should be empty.
 
-SecurityClearance: `Operator`
+SecurityClearance: `ClusterAdmin`
 
 ### Example
 
