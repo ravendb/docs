@@ -6,7 +6,7 @@
 
 {SOCIAL-MEDIA-LIKE/}
 
-<p>The <a href="https://github.com/ravendb/samples-yabt" target="_blank" rel="nofollow">Yet Another Bug Tracker</a> (YABT) we're building in this series is a simplified version of a bug-tracking tool that implements some basic functionality. In spite of its simplicity, we leverage the <a href="https://en.wikipedia.org/wiki/Domain-driven_design" target="_blank" rel="nofollow">Domain-driven Design</a> (DDD) to describe independent problem areas as <a href="https://martinfowler.com/bliki/BoundedContext.html" target="_blank" rel="nofollow">Bounded Context</a>, and emphasizes a common language to talk about these problems - the <a href="https://martinfowler.com/bliki/UbiquitousLanguage.html" target="_blank" rel="nofollow">Ubiquitous Language</a>, and adopt technical concepts and patterns, like rich models, aggregates, value objects, etc.</p>
+<p>The <a href="https://github.com/ravendb/samples-yabt" target="_blank" rel="nofollow">Yet Another Bug Tracker</a> (YABT) we're building in this series is a simplified version of a bug-tracking tool that implements some basic functionality. In spite of its simplicity, we leverage the <a href="https://en.wikipedia.org/wiki/Domain-driven_design" target="_blank" rel="nofollow">Domain-driven Design</a> (DDD) to describe independent problem areas as <a href="https://martinfowler.com/bliki/BoundedContext.html" target="_blank" rel="nofollow">Bounded Context</a>, emphasize a common language (<a href="https://martinfowler.com/bliki/UbiquitousLanguage.html" target="_blank" rel="nofollow">Ubiquitous Language</a>) to talk about these problems, and also adopt technical concepts and patterns, like rich models, aggregates, value objects, etc.</p>
 
 But this article is not about the *DDD*, so for more information refer to the gurus:
 
@@ -33,26 +33,26 @@ There is a good practice:
 
 > Implement one database per *Bounded Context* to avoid a monolith architecture.
 
-So, to make the *YABT* simpler, we cut off auxiliary functionality (like user registration, subscriptions, etc.) and implement only the main bounded context. This way the *YABT* maintains a few entities:
+So, to make the *YABT* simpler, we cut off auxiliary functionality (like user registration, subscriptions, etc.) and implement only the main bounded context. This way we have settled on the following entities:
 
 <ul>
     <li class="margin-top-xs">
-        <em>Backlog Item</em> - basic properties of user stories, bugs, features, etc.
+        <em>Backlog Item</em> – basic properties of user stories, bugs, features, etc.
     </li>
     <li class="margin-top-xs">
-        <em>Custom Field</em> - to spice things up we're adding <em>Backlog Items</em> custom properties managed by the user.
+        <em>Custom Field</em> – to spice things up we're adding <em>Backlog Items</em> custom properties managed by the user.
     </li>
     <li class="margin-top-xs">
-        <em>Comment</em> - discussions on individual <em>Backlog Items</em>.
+        <em>Comment</em> – discussions on individual <em>Backlog Items</em>.
     </li>
     <li class="margin-top-xs">
         <em>Sprint</em>.
     </li>
     <li class="margin-top-xs">
-        <em>Project</em> - for grouping <em>Backlog Items</em>, <em>Sprints</em> and <em>Users</em>, and providing a context for the user's session.
+        <em>Project</em> – for grouping <em>Backlog Items</em>, <em>Sprints</em> and <em>Users</em>, and providing a context for the user's session.
     </li>
     <li class="margin-top-xs">
-        <em>User</em> - represents team members for <em>Projects</em>, registered users with rudimentary user management.
+        <em>User</em> – represents team members for <em>Projects</em>, registered users with rudimentary user management.
     </li>
 </ul>
 
@@ -107,19 +107,19 @@ Overexposing the database is a common felony in the SQL realm.
 The key properties of *aggregates*:
 
 <ul>
-    <li class="margin-top-xs">Aggregates are the basic element of transfer of data storage - you request to load or save whole aggregates.</li>
+    <li class="margin-top-xs">Aggregates are the basic element of transfer of data storage – you request to load or save whole aggregates.</li>
     <li class="margin-top-xs">Any references from outside the aggregate should only go to the aggregate root.</li>
 </ul>
 
-<p>Properly structured <em>Aggregates</em> reduce <code>JOINS</code> in queries that deteriorate the performance and add fragility for <a href="https://en.wikipedia.org/wiki/Eventual_consistency" target="_blank" rel="nofollow">eventually consistent</a> references.</p>
+<p>Properly structured <em>Aggregates</em> reduce <code>JOIN</code>s in queries that deteriorate the performance and add fragility for <a href="https://en.wikipedia.org/wiki/Eventual_consistency" target="_blank" rel="nofollow">eventually consistent</a> references.</p>
 
-Jumping to the final diagram, we are getting this:
+Jumping to the final diagram, we get this:
 
 <div class="margin-top-sm margin-bottom-sm">
     <img src="images/yabt1/3.png" class="img-responsive m-0-auto" alt="Final diagram"/>
 </div>
 
-*Note:* Similar to the ER diagram above, this one doesn't show all the fields of the aggregates for simplicity.
+*Note:* For simplicity, this diagram doesn't show all the fields of the final aggregates.
 
 As you see, the `BacklogItem` aggregate is quite rich with many nested collections:
 
@@ -127,25 +127,27 @@ As you see, the `BacklogItem` aggregate is quite rich with many nested collectio
     <li class="margin-top-xs"><code>LinkedBacklogItems</code> represents dependencies to other <em>Backlog Items</em> (parent/child, related, blocked, etc.).</li>
     <li class="margin-top-xs"><code>ModifiedBy</code> has a history of all modifications of the <em>Backlog Item</em>. Whenever a user changes a value of field, links to another item, writes a comment, etc. a record will appear in this collection.</li>
     <li class="margin-top-xs"><code>CustomFields</code> has values of custom fields specified by the user.</li>
-    <li class="margin-top-xs"><code>Comments</code> - as a part of the <em>Backlog Item</em>, they will never be queried or edited independently, or referenced outside of the <em>Backlog Item</em>. <code>Comment</code> has a collection of mentioned users that will play its role on querying <em>Backlog Items</em> requiring attention of the current user.</li>
+    <li class="margin-top-xs"><code>Comments</code> –- as a part of the <em>Backlog Item</em>, they will never be queried or edited independently, or referenced outside of the <em>Backlog Item</em>. <code>Comment</code> has a collection of mentioned users that will play its role on querying <em>Backlog Items</em> requiring attention of the current user.</li>
 </ul>
 
 All the 5 aggregates have references, and you may have noticed that in some cases it's just an `ID`, in others it's a bundle of 2+ fields (e.g. `ID` and `Name`). There will be a separate article on managing references between aggregates, but as a rule of thumb:
 
 <ul>
     <li class="margin-top-xs">If a reference is used for filtering only, then an <code>ID</code> is sufficient.</li>
-    <li class="margin-top-xs">If a reference is going to be exposed to the consumer, then additional fields of the referred entity are included to avoid excessive <code>JOINS</code> in queries (e.g. the comment's author has <code>ID</code> and <code>Name</code> that duplicates the name of the referred <code>User</code> record).</li>
+    <li class="margin-top-xs">If a reference is going to be exposed to the consumer along with some fields of the referred entity, then those fields need to be included into the reference. This way we avoid excessive <code>JOIN</code>s in queries (e.g. the comment's author has <code>ID</code> and <code>Name</code> that duplicates the name of the referred <code>User</code> record).</li>
 </ul>
 
 #### 3.3. Convenience of using RavenDB
 
-<p>Many NoSQL databases have a very modest limit on the document/record size that could affect the decision of bringing the <em>Comments</em> inside of the <code>BacklogItem</code> aggregate. While usually we should expect less than a dozen of comments with the total size in KB rather than in MB, a production system shouldn't shy away of a couple of megabytes of comments. And it's not a concern for <em>RavenDB</em>. Though, technically the document/record can be <a href="https://ayende.com/blog/156865/ravendb-net-memory-management-and-variable-size-obese-documents" target="_blank" rel="nofollow">up to 2GB</a>, the <a href="https://stackoverflow.com/a/45031998/968003" target="_blank" rel="nofollow">optimal size should stay in megabytes</a> that still is more than enough for a <code>BacklogItem</code> with hundreds of comments (that admittedly would be a rare case). Another limitation of some NoSQL vendors is inability of querying a subset of fields forcing the developer to fetch whole records. It can pose a performance concern if unnecessary fields are heavy, like for our common request of listing 3-4 main fields of <em>Backlog Items</em> and omitting potentially bulky comments. <em>RavenDB</em> gives a way of <a href="https://ravendb.net/docs/article-page/latest/csharp/client-api/session/querying/how-to-project-query-results">grabbing only necessary fields</a>.</p>
+<p>Many NoSQL databases have a very modest limit on the document/record size that could affect the decision of bringing the <em>Comments</em> inside of the <code>BacklogItem</code> aggregate. While usually we should expect less than a dozen of comments with the total size in KB rather than in MB, a production system shouldn't shy away of a couple of megabytes of comments. And it's not a concern for <em>RavenDB</em>. Though, technically the document/record can be <a href="https://ayende.com/blog/156865/ravendb-net-memory-management-and-variable-size-obese-documents" target="_blank" rel="nofollow">up to 2GB</a>, the <a href="https://stackoverflow.com/a/45031998/968003" target="_blank" rel="nofollow">optimal size should stay in megabytes</a> that still is more than enough for a <code>BacklogItem</code> with hundreds of comments (that admittedly would be a rare case).
+
+Another limitation of some NoSQL vendors is inability of querying a subset of fields forcing the developer to fetch whole records. It can pose a performance concern if unnecessary fields are heavy, like for our common request of listing 3-4 main fields of <em>Backlog Items</em> and omitting potentially bulky comments. <em>RavenDB</em> gives a way of <a href="https://ravendb.net/docs/article-page/latest/csharp/client-api/session/querying/how-to-project-query-results">grabbing only necessary fields</a>.</p>
 
 Another common concern that may affect the database model is immature indexes preventing certain filtering, grouping and data aggregation. Well, <em>RavenDB</em> has got your back here and we will consider various scenarios involving indexes in the *YABT* series.
 
 That's it.
 
-<p>Check out the full source code at our repository on <a href="https://github.com/ravendb/samples-yabt" target="_blank" rel="nofollow">GitHub</a> and let us know what you think. Stay tuned for the next article in the <em>YABT</em> series.</p>
+<p>Check out the full source code at our repository on GitHub - <a href="https://github.com/ravendb/samples-yabt" target="_blank" rel="nofollow">github.com/ravendb/samples-yabt</a> and let us know what you think. Stay tuned for the next articles in the <em>YABT</em> series.</p>
 
 <h4 class="margin-top">Read more articles in this series</h4>
 <hr style="border-color:rgba(34,37,43,.15);">

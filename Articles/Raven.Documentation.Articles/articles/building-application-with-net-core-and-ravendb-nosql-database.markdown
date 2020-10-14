@@ -14,7 +14,7 @@ We want to give as much of practical knowledge as possible, so let's build a rea
 
 ### Case Study
 <hr style="border-color:rgba(34,37,43,.15);">
-<p>We may come from different experiences and backgrounds but all developers are familiar with bug tracking systems, a necessary evil of the contemporary software development. We know the <a href="https://softwareengineering.stackexchange.com/a/134420" target="_blank" rel="nofollow">domain</a>, the <a href="https://martinfowler.com/bliki/UbiquitousLanguage.html" target="_blank" rel="nofollow">ubiquitous language</a> (<em>"backlog"</em>, <em>"sprint"</em>, <em>"project"</em>, etc.), how such systems get consumed by the end-user. Eventually we did not have much of a choice on what our intended application would do 🙂 and here we go - our project is one more solution for a well-known problem and it's called <em>"Yet Another Bug Tracker"</em>.</p>
+<p>We may come from different experiences and backgrounds but all developers are familiar with bug tracking systems, a necessary evil of the contemporary software development. We know the <a href="https://softwareengineering.stackexchange.com/a/134420" target="_blank" rel="nofollow">domain</a>, the <a href="https://martinfowler.com/bliki/UbiquitousLanguage.html" target="_blank" rel="nofollow">ubiquitous language</a> (<em>"backlog"</em>, <em>"sprint"</em>, <em>"project"</em>, etc.), how such systems get consumed by the end-user. Eventually we did not have much of a choice on what our intended application would do 🙂 and here we go – our project is one more solution for a well-known problem and it's called <em>"Yet Another Bug Tracker"</em>.</p>
 
 <p>The source code is available at <a href="https://github.com/ravendb/samples-yabt" target="_blank" rel="nofollow">github.com/ravendb/samples-yabt</a>.
 
@@ -93,7 +93,7 @@ Our diagram has some resemblance with the classic Onion diagram:
     </li>
     <li class="margin-top-xs">
         "Dive in Map-reduce indexes of RavenDB"<br/>
-        <span class="text-muted">Using <a href="https://ravendb.net/docs/article-page/latest/csharp/studio/database/indexes/create-map-reduce-index">Map-Reduce Index</a> we'll build recent user's activity - backlog items edited by the user with details of the performed action.</span>
+        <span class="text-muted">Using <a href="https://ravendb.net/docs/article-page/latest/csharp/studio/database/indexes/create-map-reduce-index">Map-Reduce Index</a> we'll build recent user's activity – backlog items edited by the user with details of the performed action.</span>
     </li>
 </ul>
 
