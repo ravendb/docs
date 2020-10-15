@@ -87,7 +87,7 @@ SecurityClearance: `ClusterAdmin`
 ### Example
 
 {CODE-BLOCK: bash}
-curl -X POST http://<server-url>/admin/cluster/promote?nodeTag=<node-tag> -d ''
+curl -X POST https://<server-url>/admin/cluster/promote?nodeTag=<node-tag> -d ''
 {CODE-BLOCK/}
 
 {PANEL/}
@@ -107,7 +107,7 @@ SecurityClearance: `ClusterAdmin`
 ### Example
 
 {CODE-BLOCK: bash}
-curl -X POST http://<server-url>/admin/cluster/demote?nodeTag=<node-tag> -d ''
+curl -X POST https://<server-url>/admin/cluster/demote?nodeTag=<node-tag> -d ''
 {CODE-BLOCK/}
 
 {PANEL/}
@@ -121,7 +121,7 @@ SecurityClearance: `Operator`
 ### Example
 
 {CODE-BLOCK: bash}
-curl -X POST http://<server-url>/admin/cluster/reelect -d ''
+curl -X POST https://<server-url>/admin/cluster/reelect -d ''
 {CODE-BLOCK/}
 
 {PANEL/}
@@ -135,7 +135,7 @@ SecurityClearance: `Operator`
 ### Example
 
 {CODE-BLOCK: bash}
-curl -X POST http://<server-url>/admin/cluster/timeout -d ''
+curl -X POST https://<server-url>/admin/cluster/timeout -d ''
 {CODE-BLOCK/}
 
 {PANEL/}
@@ -150,7 +150,7 @@ SecurityClearance: `Cluster Admin`
 ### Example
 
 {CODE-BLOCK: bash}
-curl -X POST http://<server-url>/admin/cluster/bootstrap -d ''
+curl -X POST https://<server-url>/admin/cluster/bootstrap -d ''
 {CODE-BLOCK/}
 
  {PANEL/}

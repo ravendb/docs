@@ -26,7 +26,7 @@ by sending the following REST API call:
 | Fetch Topology | `GET` | /cluster/topology |
 
 ###Modifying the Topology  
-With [Cluster Operator](../../security/authorization/security-clearance-and-permissions#operator) privileges, 
+With [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin) privileges, 
 the client can modify the cluster through the [Studio](../../../studio/server/cluster/cluster-view#cluster-view-operations),  
 or by using the following REST API calls:  
 
@@ -101,7 +101,7 @@ The Rachis state defines the **current role** of the node in the cluster.
 
 * For example, the decision to add a database to a node will be either accepted by the entire cluster (eventually) or fail to register altogether.  
 
-* [Raft Commands](../../../server/clustering/rachis/what-is-rachis#implementation-details) can't be accepted while there is no Leader or if the Leader is down.  
+* [Raft Commands](../../../server/clustering/rachis/consensus-operations#raft-commands-implementation-details) can't be accepted while there is no Leader or if the Leader is down.  
 {NOTE/}
 
 {NOTE: }
@@ -122,11 +122,11 @@ as watchers don’t take part in majority calculations.
 
 Node types can be altered on the fly by using the following REST API calls:
 
-| Action | Method | URL |
-| - | - | - |
-| Promote Watcher to be a Member | `POST` | /admin/cluster/promote |
-| Demote Member to be a Watcher | `POST` | /admin/cluster/demote |
-| Force Elections | `POST` | /admin/cluster/reelect |
+| Action | Method | URL | Clearance |
+| - | - | - | - |
+| Promote Watcher to be a Member | `POST` | /admin/cluster/promote | ClusterAdmin |
+| Demote Member to be a Watcher | `POST` | /admin/cluster/demote | ClusterAdmin |
+| Force Elections | `POST` | /admin/cluster/reelect | Operator |
 
 See the [Cluster API page](../../../server/clustering/cluster-api) for usage examples.
 {PANEL/}

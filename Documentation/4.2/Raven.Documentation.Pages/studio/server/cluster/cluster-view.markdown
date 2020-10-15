@@ -70,8 +70,9 @@
    This option is available only on the Leader node  
    A new voting process will be triggered and a new Leader will be elected  
 5. **Force Timeout**  
-   The default configuration for the RavenDB cluster is that each node expects to get a heartbeat from the cluster leader (default: every 300 milliseconds).  
-   Clicking 'Force Timeout' will trigger actions on the node as if it did Not hear from the Leader in this time period.  
+   The default configuration for the RavenDB cluster is that each node expects to get a heartbeat from the cluster leader  
+   (default: every 300 milliseconds).  
+   Clicking 'Force Timeout' will trigger actions on the node as if it did not hear from the Leader in this time period.  
 6. **Remove Node from Cluster**  
    Remove the node from the cluster. Note: The server on this node is not shut down.
 {PANEL/}

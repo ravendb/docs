@@ -72,7 +72,7 @@ cannot be assigned less than 1 core).
 ### Cluster in the Studio
 - [Cluster View](../../studio/server/cluster/cluster-view)
 - [Adding Node to Cluster](../../studio/server/cluster/add-node-to-cluster)  
-- [Cluster Observer Log](../../studio/server/cluster/cluster-observer)  
+- [Cluster Observer Log](../../studio/server/debug/advanced/cluster-observer)  
 - [Database Group View](../../studio/database/settings/manage-database-group)  
 - [Ongoing Work Tasks](../../studio/database/tasks/ongoing-tasks/general-info)  
 - [Cluster-Operations -vs- DB-Operations](../../studio/server/cluster/cluster-view#cluster-wide-operation--vs--database-operations)  
