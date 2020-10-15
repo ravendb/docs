@@ -10,7 +10,8 @@ _-or-_
 * When scheduling a **Server-Wide Backup Task**, RavenDB actually creates a 
   [regular ongoing backup task](../../studio/database/tasks/ongoing-tasks/backup-task) 
   for each database in the cluster, and a backup will be created for each database at the specified scheduled time.  
-  The prefix '**Server Wide Backup**' is added to the name of the created ongoing backup tasks.  
+  The prefix '**Server Wide Backup**' is added to the name of the created ongoing backup tasks. 
+  Databases can be manually excluded from this task.  
   
 * Server-Wide backups are similar to their per-database equivalents.  
   You can create [Full](../../client-api/operations/maintenance/backup/backup#full-backup) 
@@ -59,13 +60,23 @@ The settings are similar to those of a [regular backup task](../../studio/databa
    Select 'Backup' for a [logical backup](../../client-api/operations/maintenance/backup/backup#logical-backup) 
    or 'Snapshot' for a [snapshot image](../../client-api/operations/maintenance/backup/backup#snapshot).  
   
-3. **Schedule**  
+3. **Exclude databases**
+   Toggle whether to exclude some of the databases from the server-wide backup, 
+   then select databases and press 'add'.
+
+4. **Schedule**  
    Define task contents (Full and/or Incremental) and schedule execution time.  
  
-4. **Retention Policy**  
+5. **Retention Policy**  
    Define the minimum amount of time to keep Backups (and Snapshots) in the system.  
   
-5. **Encryption**  
+6. **Encryption**  
+   See below.  
+
+7. **Destination**  
+   See [below](../../studio/server/server-wide-backup#destination).  
+
+### Encryption
 
    ![Figure 4. Backup Encryption](images/server-wide-backup_04-encryption.png "Figure 4. Backup Encryption")
 
@@ -91,11 +102,12 @@ The settings are similar to those of a [regular backup task](../../studio/databa
       Not Encrypted | Snapshot Image | Backup is not encrypted, <br> **even if encryption is enabled**  
       {INFO/}
 
-6. **Destination**  
-   Backup files can be stored locally and/or remotely.  
-   Backup files are created in a separate child folder per database, under a common root folder.  
+### Destination  
 
-   ![Figure 5. Backup Destination Folder](images/server-wide-backup_05-destination-local.png "Figure 5. Backup Destination Folder")
+Backup files can be stored locally and/or remotely.  
+Backup files are created in a separate child folder per database, under a common root folder.  
+
+![Figure 5. Backup Destination Folder](images/server-wide-backup_05-destination-local.png "Figure 5. Backup Destination Folder")
 
 {PANEL/}
 
