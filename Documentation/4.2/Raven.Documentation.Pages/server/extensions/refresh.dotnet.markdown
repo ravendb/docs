@@ -62,7 +62,7 @@ To activate and/or configure document refreshing, the server needs to be sent a
 
 Alternatively, document refreshing can also be configured in the studio, under **Settings > Document Refresh**.
 
-![](images/StudioRefresh.png)
+![](images/StudioRefresh.png "NoSQL DB Server - Document Refresh")
 
 {PANEL/}
 

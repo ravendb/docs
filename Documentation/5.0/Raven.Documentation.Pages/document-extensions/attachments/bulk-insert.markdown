@@ -1,4 +1,4 @@
-﻿# Bulk Insert: How to Append Time Series
+﻿# Bulk Insert: How to Add Attachments
 
 ---
 

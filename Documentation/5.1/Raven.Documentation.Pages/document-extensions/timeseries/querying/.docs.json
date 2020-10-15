@@ -1,0 +1,32 @@
+[
+    {
+        "Path": "overview-and-syntax.markdown",
+        "Name": "Overview and Syntax",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "choosing-query-range.markdown",
+        "Name": "Choosing Query Range",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "filtering.markdown",
+        "Name": "Filtering",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "aggregation-and-projections.markdown",
+        "Name": "Aggregation and Projections",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "using-indexes.markdown",
+        "Name": "Using Indexes",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    }
+]

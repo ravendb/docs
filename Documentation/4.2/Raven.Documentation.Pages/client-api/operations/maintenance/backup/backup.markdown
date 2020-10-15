@@ -18,6 +18,7 @@
       * [Full Backup](../../../../client-api/operations/maintenance/backup/backup#full-backup)  
       * [Incremental Backup](../../../../client-api/operations/maintenance/backup/backup#incremental-backup)  
   * [Backup to Local and Remote Destinations](../../../../client-api/operations/maintenance/backup/backup#backup-to-local-and-remote-destinations)  
+  * [Backup Retention Policy](../../../../client-api/operations/maintenance/backup/backup#backup-retention-policy)  
   * [Server-Wide Backup](../../../../client-api/operations/maintenance/backup/backup#server-wide-backup)  
   * [Initiate Immediate Backup Execution](../../../../client-api/operations/maintenance/backup/backup#initiate-immediate-backup-execution)  
   * [Recommended Precautions](../../../../client-api/operations/maintenance/backup/backup#recommended-precautions)  
@@ -174,6 +175,37 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
         }
     {CODE-BLOCK/}
  {INFO/}
+{PANEL/}
+
+{PANEL: Backup Retention Policy}
+
+By default, backups are stored indefinitely. The backup retention policy sets 
+a retention period, at the end of which backups are deleted. Deletion occurs 
+during the next scheduled backup task after the end of the retention period.  
+
+Full backups and their corresponding incremental backups are deleted together. 
+Before a full backup can be deleted, all of its incremental backups must be older 
+than the retention period as well.  
+
+The retention policy is a property of `PeriodicBackupConfiguration`:  
+
+{CODE-BLOCK:csharp }
+public class RetentionPolicy
+{
+    public bool Disabled { get; set; }
+    public TimeSpan? MinimumBackupAgeToKeep { get; set; }
+}
+{CODE-BLOCK/}
+
+| Parameter | Type | Description |
+| - | - | - |
+| **Disabled** | `bool` | If set to `true`, backups will be retained indefinitely, and not deleted. Default: false |
+| **MinimumBackupAgeToKeep** | `TimeSpan` | The minimum amount of time to retain a backup. Once a backup is older than this time span, it will be deleted during the next scheduled backup task. |
+
+#### Example
+
+{CODE:csharp backup_retentionpolicy@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+
 {PANEL/}
 
 {PANEL: Server-Wide Backup}

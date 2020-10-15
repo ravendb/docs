@@ -108,7 +108,7 @@ Using RavenDB, you can enjoy superior performance, reduced cost in both time and
 
 **We offer 2 FREE hours of POC support, along with reference materials to help you command the best tools for your next project.**
 
-Contact us at [info@ravendb.net](info@ravendb.net)
+Contact us at [info@ravendb.net](mailto:info@ravendb.net)
 
 Take a free instance of RavenDB Cloud or DBaaS Managed Cloud Service at [cloud.ravendb.net](https://cloud.ravendb.net)
 
@@ -118,11 +118,11 @@ Or take a free RavenDB On Premise download at [ravendb.net/download](https://rav
 
 Mentioned in both Gartner and Forrester research, RavenDB is a pioneer in NoSQL database technology with over 2 million downloads and thousands of customers from Startups to Fortune 100 Large Enterprises.
 
-Over 1,000 businesses use RavenDB for IoT, Big Data, Microservices Architecture, fast performance, a distributed data network, and everything you need to support a modern application stack for today's user. For more information, please visit [ravendb.net](ravendb.net) or contact.
+Over 1,000 businesses use RavenDB for IoT, Big Data, Microservices Architecture, fast performance, a distributed data network, and everything you need to support a modern application stack for today's user. For more information, please visit [ravendb.net](https://ravendb.net) or contact.
 <br/>
 <div class="article-color-banners">
-    <a href="https://ravendb.net/learn/webinars"><img src="images/webinars.png" class="img-responsive"/></a>
-    <a href="https://ravendb.net/news/use-cases"><img src="images/use-cases.png" class="img-responsive"/></a>
-    <a href="https://ravendb.net/learn/docs-guide"><img src="images/documentation.png" class="img-responsive"/></a>
-    <a href="https://ravendb.net/learn/bootcamp"><img src="images/bootcamp.png" class="img-responsive"/></a>
+    <a href="https://ravendb.net/learn/webinars"><img src="images/webinars.png" alt="NoSQL ACID Database Webinars" class="img-responsive"/></a>
+    <a href="https://ravendb.net/news/use-cases"><img src="images/use-cases.png" alt="NoSQL ACID Database Use Cases" class="img-responsive"/></a>
+    <a href="https://ravendb.net/learn/docs-guide"><img src="images/documentation.png" alt="NoSQL Database Documentation" class="img-responsive"/></a>
+    <a href="https://ravendb.net/learn/bootcamp"><img src="images/bootcamp.png" alt="NoSQL Database RavenDB Bootcamp" class="img-responsive"/></a>
 </div>

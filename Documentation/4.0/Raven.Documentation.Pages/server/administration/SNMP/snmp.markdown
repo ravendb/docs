@@ -60,7 +60,7 @@ snmpget -v 3 -l authNoPriv -u ravendb -a SHA -A ravendb live-test.ravendb.net 1.
 
 Where "ravendb" is the community string and "live-test.ravendb.net" is the host.
 
-![Figure 7. Monitoring : How to setup Zabbix monitoring: snmpget result](images/monitoring-zabbix-snmpget.PNG) 
+![Figure 7. Monitoring : How to setup Zabbix monitoring: snmpget result](images/monitoring-zabbix-snmpget.PNG "NoSQL DB - Monitoring Zabbix snmpget") 
 
 For your convenience we've also added the list of metrics and their associated OIDs here:   
 

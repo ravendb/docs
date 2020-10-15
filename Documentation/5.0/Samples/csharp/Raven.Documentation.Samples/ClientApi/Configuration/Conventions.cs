@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Serialization;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations;
+using Raven.Client.Json.Serialization.NewtonsoftJson;
 using Sparrow;
 
 namespace Raven.Documentation.Samples.ClientApi.Configuration
@@ -71,7 +72,10 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     #endregion
                     ,
                     #region PropertyCasing
-                    CustomizeJsonSerializer = s => s.ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    Serialization = new NewtonsoftJsonSerializationConventions
+                    {
+                        CustomizeJsonSerializer = s => s.ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    },
                     PropertyNameConverter = mi => FirstCharToLower(mi.Name)
                     #endregion
                     ,
