@@ -96,10 +96,15 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                 using (var session = store.OpenSession())
                 {
                     var product = session.Load<Product>("products/1-A");
+                    var product2 = session.Load<Product>("products/2-A");
+
+                    // OnBeforeDelete is triggered whether you
+                    // call Delete() on an entity or on its ID
                     session.Delete(product);
+                    session.SaveChanges(); // NotSupportedException will be thrown
 
-
-                    session.SaveChanges(); // NotSupportedException will be thrown here
+                    session.Delete("products/2-A");
+                    session.SaveChanges(); // NotSupportedException will be thrown
                 }
                 #endregion
             }

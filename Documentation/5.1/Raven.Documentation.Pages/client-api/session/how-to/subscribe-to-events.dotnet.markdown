@@ -28,9 +28,28 @@ After we subscribe to the event, every stored entity will invoke the method.
 
 {PANEL:OnBeforeDelete}
 
-This event is invoked as a part of `SaveChanges`, but before it actually sends the deleted entities to the server.
+This event is invoked as a part of `SaveChanges`, but before it actually sends the deleted entities to the server.  
+It should be defined with this signature:  
 
-It takes the argument `BeforeDeleteEventArgs`, that consists of the `Session` entity's ID and the entity itself.
+{CODE-BLOCK: csharp}
+private void OnBeforeDeleteEvent(object sender, BeforeDeleteEventArgs args);
+{CODE-BLOCK/}
+
+| Parameters | Type | Description |
+| - | - | - |
+| **sender** | `IDocumentSession` | The session on which `SaveChanges()` has been called, triggering this event |
+| **args** | `BeforeDeleteEventArgs` | `args` contains the session on which `SaveChanges()` has been called, the ID of the document being deleted, and the document itself. |
+
+The class `BeforeDeleteEventArgs`:
+
+{CODE-BLOCK: csharp}
+public class BeforeDeleteEventArgs
+{
+    public InMemoryDocumentSessionOperations Session;
+    public string DocumentId;
+    public object Entity;
+}
+{CODE-BLOCK/}
 
 ### Example
 
