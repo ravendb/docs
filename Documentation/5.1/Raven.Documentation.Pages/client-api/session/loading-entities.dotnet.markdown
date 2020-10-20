@@ -1,13 +1,23 @@
 # Session: Loading Entities
+---
 
-There are various methods with many overloads that allow users to download documents from a database and convert them to entities. This article will cover the following methods:
+{NOTE: }
+
+There are severl methods with many overloads that allow users to download documents 
+from the database and convert them to entities. This article will cover the following 
+methods:  
 
 - [Load](../../client-api/session/loading-entities#load)
 - [Load with Includes](../../client-api/session/loading-entities#load-with-includes)
 - [Load - multiple entities](../../client-api/session/loading-entities#load---multiple-entities)
 - [LoadStartingWith](../../client-api/session/loading-entities#loadstartingwith)
+- [ConditionalLoad](../../client-api/session/loading-entities#conditionalload)
 - [Stream](../../client-api/session/loading-entities#stream)
 - [IsLoaded](../../client-api/session/loading-entities#isloaded)
+
+{NOTE/}
+
+---
 
 {PANEL:Load}
 
@@ -18,13 +28,13 @@ The most basic way to load a single entity is to use one of the `Load` methods.
 {CODE-TAB:csharp:Async loading_entities_1_0_async@ClientApi\Session\LoadingEntities.cs /}
 {CODE-TABS/} 
 
-| Parameters | | |
+| Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **id** | string | Identifier of a document that will be loaded. |
+| **id** | `string` | Identifier of a document that will be loaded. |
 
-| Return Value | |
+| Return Type | Description |
 | ------------- | ----- |
-| TResult | Instance of `TResult` or `null` if a document with a given ID does not exist. |
+| `TResult` | Instance of `TResult` or `null` if a document with a given ID does not exist. |
 
 ### Example
 
@@ -43,13 +53,13 @@ When there is a 'relationship' between documents, those documents can be loaded 
 
 {CODE loading_entities_2_0@ClientApi\Session\LoadingEntities.cs /}
 
-| Parameters | | |
+| Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **path** | string or Expression | Path in documents in which the server should look for 'referenced' documents. |
+| **path** | `string` or Expression | Path in documents in which the server should look for 'referenced' documents. |
 
-| Return Value | |
+| Return Type | Description |
 | ------------- | ----- |
-| ILoaderWithInclude | The `Include` method by itself does not materialize any requests but returns loader containing methods such as `Load`. |
+| `ILoaderWithInclude` | The `Include` method by itself does not materialize any requests but returns loader containing methods such as `Load`. |
 
 ### Example I
 
@@ -78,13 +88,13 @@ To load multiple entities at once, use one of the following `Load` overloads.
 {CODE-TAB:csharp:Async loading_entities_3_0_async@ClientApi\Session\LoadingEntities.cs /}
 {CODE-TABS/} 
 
-| Parameters | | |
+| Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **ids** | IEnumerable<string> | Multiple document identifiers to load |
+| **ids** | `IEnumerable<string>` | Multiple document identifiers to load |
 
-| Return Value | |
+| Return Type | Description |
 | ------------- | ----- |
-| Dictionary<string, TResult> | Instance of Dictionary which maps document identifiers to `TResult` or `null` if a document with given ID doesn't exist. |
+| `Dictionary<string, TResult>` | Instance of Dictionary which maps document identifiers to `TResult` or `null` if a document with given ID doesn't exist. |
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync loading_entities_3_1@ClientApi\Session\LoadingEntities.cs /}
@@ -102,19 +112,19 @@ To load multiple entities that contain a common prefix, use the `LoadStartingWit
 {CODE-TAB:csharp:Async loading_entities_4_0_async@ClientApi\Session\LoadingEntities.cs /}
 {CODE-TABS/}
 
-| Parameters | | |
+| Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **idPrefix** | string |  prefix for which the documents should be returned  |
-| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
-| **start** | int | number of documents that should be skipped  |
-| **pageSize** | int | maximum number of documents that will be retrieved |
-| **exclude** | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
-| **skipAfter** | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
+| **idPrefix** | `string` |  prefix for which the documents should be returned  |
+| **matches** | `string` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | `int` | number of documents that should be skipped  |
+| **pageSize** | `int` | maximum number of documents that will be retrieved |
+| **exclude** | `string` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **skipAfter** | `string` | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
 
-| Return Value | |
+| Return Type | Description |
 | ------------- | ----- |
-| TResult[] | Array of entities matching given parameters. |
-| Stream | Output entities matching given parameters as a stream. |
+| `TResult[]` | Array of entities matching given parameters. |
+| `Stream` | Output entities matching given parameters as a stream. |
 
 ### Example I
 
@@ -132,6 +142,41 @@ To load multiple entities that contain a common prefix, use the `LoadStartingWit
 
 {PANEL/}
 
+{PANEL: ConditionalLoad}
+
+The `ConditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector), 
+and if this change vector matches the document's current change vector on the server 
+side, it is not loaded. If the change vectors do not match, the document is loaded.  
+
+In other words, this method can be used to check whether a document has been modified 
+since the last time its change vector was recorded, so that the cost of loading it 
+can be saved if it has not been modified.  
+
+The method is accessible from the `session.Advanced` operations.  
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync loading_entities_7_0@ClientApi\Session\LoadingEntities.cs /}
+{CODE-TAB:csharp:Async loading_entities_7_0_async@ClientApi\Session\LoadingEntities.cs /}
+{CODE-TABS/} 
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **id** | `string` | The identifier of a document to be loaded. |
+| **changeVector** | `string` | The change vector you want to compare with the server-side change vector. If the change vectors match, the document is not loaded. |
+
+| Return Type | Description |
+| ------------- | ----- |
+| ValueTuple `(T Entity, string ChangeVector)` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector.<br/>If the change vectors match, the method returns `default` as the entity, and the current change vector.<br/>If the specified document, the method returns only `default` without a change vector. |
+
+### Example
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync loading_entities_7_1@ClientApi\Session\LoadingEntities.cs /}
+{CODE-TAB:csharp:Async loading_entities_7_1_async@ClientApi\Session\LoadingEntities.cs /}
+{CODE-TABS/} 
+
+{PANEL/}
+
 {PANEL:Stream}
 
 Entities can be streamed from the server using one of the following `Stream` methods from the `Advanced` session operations.
@@ -141,19 +186,19 @@ Entities can be streamed from the server using one of the following `Stream` met
 {CODE-TAB:csharp:Async loading_entities_5_0_async@ClientApi\Session\LoadingEntities.cs /}
 {CODE-TABS/}
 
-| Parameters | | |
+| Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **startsWith** | string | prefix for which documents should be streamed |
-| **matches** | string | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
-| **start** | int | number of documents that should be skipped  |
-| **pageSize** | int | maximum number of documents that will be retrieved |
-| **skipAfter** | string | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
-| streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+| **startsWith** | `string` | prefix for which documents should be streamed |
+| **matches** | `string | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
+| **start** | `int` | number of documents that should be skipped  |
+| **pageSize** | `int` | maximum number of documents that will be retrieved |
+| **skipAfter** | `string` | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
+| `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
-| Return Value | |
+| Return Type | Description |
 | ------------- | ----- |
-| IEnumerator<[StreamResult](../../glossary/stream-result)> | Enumerator with entities. |
-| streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+| `IEnumerator<[StreamResult](../../glossary/stream-result)>` | Enumerator with entities. |
+| `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 
 ### Example I
@@ -186,13 +231,13 @@ To check if an entity is attached to a session, e.g. it has been loaded previous
 
 {CODE loading_entities_6_0@ClientApi\Session\LoadingEntities.cs /}
 
-| Parameters | | |
+| Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **id** | string | Entity ID for which the check should be performed. |
+| **id** | `string` | Entity ID for which the check should be performed. |
 
-| Return Value | |
+| Return Type | Description |
 | ------------- | ----- |
-| bool | Indicates if an entity with a given ID is loaded. |
+| `bool` | Indicates if an entity with a given ID is loaded. |
 
 ### Example
 

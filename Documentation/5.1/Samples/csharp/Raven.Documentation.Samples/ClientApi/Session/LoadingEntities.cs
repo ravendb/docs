@@ -120,6 +120,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session
             #region loading_entities_6_0
             bool IsLoaded(string id);
             #endregion
+
+            #region loading_entities_7_0
+            (T Entity, string ChangeVector) ConditionalLoad<T>(string id, string changeVector);
+            #endregion
+
+            #region loading_entities_7_0_async
+            Task<(T Entity, string ChangeVector)> ConditionalLoadAsync<T>(string id, string changeVector);
+            #endregion
         }
 
         public async Task LoadingEntitiesXY()
@@ -353,7 +361,81 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                     isLoaded = asyncSession.Advanced.IsLoaded("employees/1"); // true
                     #endregion
                 }
+
+                #region loading_entities_7_1
+                string changeVector;
+                User user = new User { Name = "Bob" };
+
+                using (var session = store.OpenSession())
+                {
+                    session.Store(user, "users/1");
+                    session.SaveChanges();
+
+                    changeVector = session.Advanced.GetChangeVectorFor(user);
+                }
+
+                // New session which does not track our User entity
+                using (var session = store.OpenSession())
+                {
+                    // The given change vector matches 
+                    // the server-side change vector
+                    // Does not load the document
+                    var result1 = session.Advanced
+                                   .ConditionalLoad<User>("users/1", changeVector);
+
+                    // Modify the document
+                    user.Name = "Bob Smith";
+                    session.Store(user);
+                    session.SaveChanges();
+
+                    // Change vectors do not match
+                    // Loads the document
+                    var result2 = session.Advanced
+                                   .ConditionalLoad<User>("users/1", changeVector);
+                }
+                #endregion
+            }
+
+            using (var store = new DocumentStore())
+            {
+                #region loading_entities_7_1_async
+                string changeVector;
+                User user = new User { Name = "Bob" };
+
+                using (var session = store.OpenAsyncSession())
+                {
+                    await session.StoreAsync(user, "users/1");
+                    await session.SaveChangesAsync();
+
+                    changeVector = session.Advanced.GetChangeVectorFor(user);
+                }
+
+                // New session which does not track our User entity
+                using (var session = store.OpenAsyncSession())
+                {
+                    // The given change vector matches 
+                    // the server-side change vector
+                    // Does not load the document
+                    var result1 = await session.Advanced
+                                   .ConditionalLoadAsync<User>("users/1", changeVector);
+
+                    // Modify the document
+                    user.Name = "Bob Smith";
+                    await session.StoreAsync(user);
+                    await session.SaveChangesAsync();
+
+                    // Change vectors do not match
+                    // Loads the document
+                    var result2 = await session.Advanced
+                                   .ConditionalLoadAsync<User>("users/1", changeVector);
+                }
+                #endregion
             }
         }
+    }
+
+    internal class User
+    {
+        public string Name { get; internal set; }
     }
 }
