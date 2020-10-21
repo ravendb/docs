@@ -35,8 +35,27 @@ This dashboard provides a diagnostic overview of the RavenDB server performance 
 
 6. **Storage:**   
    Databases size on disk
+
 {PANEL/}
 
+---
+
+{INFO: Help Us Improve Prompt}
+When you first launch RavenDB, you will see this prompt asking if you'd be willing to 
+anonymously share some Studio usage data with us in order to help us improve RavenDB:  
+
+![](images/help-us-improve.png)
+
+Once you respond to this prompt, it should not appear again. However, in some scenarios, 
+such as running RavenDB embedded, or working without browser cookies, the prompt may 
+appear again.  
+
+If necessary, you can add this flag to the Studio URL to prevent the prompt from 
+appearing:  
+
+`<Studio URL>#dashboard?disableAnalytics=true`
+
+{INFO/}
 
 
 

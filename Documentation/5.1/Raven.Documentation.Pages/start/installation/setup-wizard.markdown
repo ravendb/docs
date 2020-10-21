@@ -28,6 +28,24 @@
   * [Secure Setup with a Let's Encrypt Certificate](../../start/installation/setup-wizard#secure-setup-with-a-let)
   * [Secure Setup with a Self-Obtained Certificate](../../start/installation/setup-wizard#secure-setup-with-your-own-certificate)
   * [Unsecure Setup](../../start/installation/setup-wizard#unsecure-setup)
+
+{INFO: Help Us Improve Prompt}
+When you first launch RavenDB, you will see this prompt asking if you'd be willing to 
+anonymously share some Studio usage data with us in order to help us improve RavenDB:  
+
+![](images/setup/help-us-improve.png)
+
+Once you respond to this prompt, it should not appear again. However, in some scenarios, 
+such as running RavenDB embedded, or working without browser cookies, the prompt may 
+appear again.  
+
+If necessary, you can add this flag to the Studio URL to prevent the prompt from 
+appearing:  
+
+`<Studio URL>#dashboard?disableAnalytics=true`
+
+{INFO/}
+
 {NOTE/}
 
 ---
