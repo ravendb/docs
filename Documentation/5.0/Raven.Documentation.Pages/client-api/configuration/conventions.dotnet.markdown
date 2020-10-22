@@ -128,6 +128,11 @@ Determines whether an Id field is automatically added to dynamic objects. Defaul
 
 {CODE AddIdFieldToDynamicObjects@ClientApi\Configuration\Conventions.cs /}
 
+## ShouldIgnoreEntityChanges
+
+This function can be configured to disable entity tracking for certain entities. 
+Learn more [here](../../client-api/session/configuration/how-to-disable-tracking#shouldignoreentitychanges-method)
+
 ## Related Articles
 
 ### Conventions

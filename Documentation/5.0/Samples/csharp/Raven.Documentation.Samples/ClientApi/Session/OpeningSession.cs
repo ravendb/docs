@@ -207,6 +207,37 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                 }
                 #endregion
             }
+
+            #region ignore_entity_function
+            using (var store = new DocumentStore()
+            {
+                Conventions =
+                {
+                    ShouldIgnoreEntityChanges =
+                        (session, entity, id) => (entity is Employee e) &&
+                                                 (e.FirstName == "Bob")
+                }
+            }.Initialize())
+            {
+                using (IDocumentSession Session = store.OpenSession())
+                {
+                    var employee1 = new Employee() { Id = "employees/1",
+                                                     FirstName = "Alice" };
+                    var employee2 = new Employee() { Id = "employees/2",
+                                                     FirstName = "Bob" };
+
+                    Session.Store(employee1); // Entity is tracked
+                    Session.Store(employee2); // Entity is ignored
+
+                    Session.SaveChanges(); // Only employee1 is persisted
+
+                    employee1.FirstName = "Bob"; // Entity is now ignored
+                    employee2.FirstName = "Alice"; // Entity is now tracked
+
+                    Session.SaveChanges(); // Only employee2 is persisted
+                }
+            }
+            #endregion
         }
     }
 }
