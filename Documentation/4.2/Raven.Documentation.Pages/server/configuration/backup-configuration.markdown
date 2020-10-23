@@ -4,7 +4,9 @@
 
 {NOTE: }
 
-* Configuration options for backups (both on premise and RavenDB Cloud)  
+* Configuration options for backups (both on premise and RavenDB Cloud).  
+
+* Another relevant server configuration option can be found [here](../../server/configuration/server-configuration#server.cpucredits.exhaustionbackupdelayinmin).
 
 * In this page:  
     * [Backup.LocalRootPath](../../server/configuration/backup-configuration#backup.localrootpath)  
@@ -100,3 +102,4 @@ Number of minutes to delay the backup if the server enters a low memory state.
 
 ### Server  
 - [Backup Overview](../../server/ongoing-tasks/backup-overview)  
+- [Server Configuration](../../server/configuration/server-configuration)  
