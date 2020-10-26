@@ -70,10 +70,16 @@ In the cases above, we described situations in which a worker will try to reconn
 * `MaxErroneousPeriod` - The maximum time in which the worker is allowed to be in erroneous state. After that time passes, the worker will stop trying to reconnect
 {INFO/}
 
+{INFO: `OnUnexpectedSubscriptionError`}
+`OnUnexpectedSubscriptionError` is the event raised when a connection failure occurs 
+between the subscription worker and the server and it throws an unexpected exception. 
+When this occurs, the worker will automatically try to reconnect again. This event is 
+useful for logging these unexpected exceptions.
+{INFO/}
 
 {PANEL/}
 
-{PANEL: Workers interplay}
+{PANEL: Worker interplay}
 There can only be one active subscription worker working on a subscription. 
 Nevertheless, there are scenarios where it is required to interact between an existing subscription worker and one that tries to connect. 
 This relationship and interoperation is configured by the `SubscriptionConnectionOptions` `Strategy` field.  
