@@ -58,7 +58,6 @@ When a Windows password is **changed** the following actions are taken:
 Changing a password this way is supported and RavenDB is not affected.
 
 On the other hand, if the password was **reset** (either by you or by the administrator), secrets **cannot be decrypted anymore**.
-Please see the [Microsoft Support article](https://support.microsoft.com/en-us/help/309408/how-to-troubleshoot-the-data-protection-api-dpapi#7) to understand the issue.
 
 If you still need to reset the password for some reason, please follow these steps to ensure that secret keys which are protected with DPAPI aren't lost.
 
