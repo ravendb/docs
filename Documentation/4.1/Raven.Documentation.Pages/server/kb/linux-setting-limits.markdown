@@ -1,4 +1,4 @@
-Linux: Setting limits
+# Linux: Setting limits
 ---
 Linux security limits might degrade RavenDB performance (and in encrypted database it might prevent actual functionality, see : `TODO : https://github.com/ravendb/docs/pull/975`), even if physical resources allows higher performance. Also debugging might be affected (i.e. : core dump creation).
 Setting these limits in a persistant to recommended values way can be achived by editing `/etc/security/limits.conf` with:
