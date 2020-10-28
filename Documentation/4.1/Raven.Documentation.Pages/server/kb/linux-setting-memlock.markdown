@@ -1,4 +1,4 @@
-Linux: Setting `memlock` when using encrypted database
+# Linux: Setting memlock when using encrypted database
 ---
 Encrypted database uses extensively sodium library which requires high values of locked memory limits.
 `memlock` refers to memory that will not be paged out, and it's limit can be viewed usign `ulimit -l`.
