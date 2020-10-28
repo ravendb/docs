@@ -19,7 +19,7 @@ storage.
 
 {PANEL: Configure Documents Compression}
 
-![](images/documents-compression.png)
+![RavenDB Document Compression Configuration](images/documents-compression.png "RavenDB Document Compression Configuration")
 
 {WARNING: }
 
@@ -45,7 +45,7 @@ Each database has a page **Stats** > **Storage Report** that displays detailed i
 about the contents of its storage. Go here to see the effects of the compression. Refresh the 
 page to see changes.  
 
-![](images/storage-report.png)
+![RavenDB Storage Report](images/storage-report.png "RavenDB Storage Report")
 
 {WARNING: }
 

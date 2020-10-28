@@ -106,7 +106,7 @@ appear as though they are part of the document's metadata, but it's not really
 part of the document. When a revision is viewed in the studio, this 
 "time series snapshot" looks like this:  
 
-![](images/TSSnapshot.png "NoSQL Database Time Series Feature")
+![NoSQL Database Time Series Feature](images/TSSnapshot.png "NoSQL Database Time Series Feature")
 
 This time series snapshot can also be accessed by loading a revision in the 
 client. This is the general JSON format of the time series snapshot:  

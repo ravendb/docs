@@ -32,7 +32,8 @@ Where the shape is in [WKT](https://en.wikipedia.org/wiki/Well-known_text_repres
 When using `spatial.wkt()` to define a **polygon**, the vertices (points that form the corners of the polygon) must be listed 
 in a counter-clockwise order:  
 <br/>
-![](images/spatial_1.png "NoSQL ACID DB - Query a Spatial Index")
+
+![NoSQL ACID DB - Query a Spatial Index](images/spatial_1.png "NoSQL ACID DB - Query a Spatial Index")
 {INFO/}
 
 ## Static Indexes

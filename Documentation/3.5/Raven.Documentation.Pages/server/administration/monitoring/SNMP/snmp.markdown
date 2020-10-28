@@ -57,7 +57,10 @@ snmpget -v 3 -l authNoPriv -u ravendb -a SHA -A ravendb live-test.ravendb.net 1.
 
 Where "ravendb" is the community string and "live-test.ravendb.net" is the host.
 
-![Figure 7. Monitoring : How to setup Zabbix monitoring: snmpget result](images/monitoring-zabbix-snmpget.PNG "NoSQL DB - Monitoring Zabbix snmpget") 
+{CODE-BLOCK:plain}
+efrat@efrat-VirtualBox:~/SNMP$ snmpget -v 2c -c ravendb live-test-.ravendb.net 1.3.6.1.4.1.45751.1.1.1.2
+iso.3.6.1.4.1.45751.1.1.1.2 = Timeticks: (333684) 0:55:36.84
+{CODE-BLOCK/}
 
 For your convenience we've also added the list of metrics and their associated OIDs here:   
 
