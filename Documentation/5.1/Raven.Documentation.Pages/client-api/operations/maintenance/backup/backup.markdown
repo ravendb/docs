@@ -39,7 +39,7 @@
 
 * Restoration Time is, therefore, **slower** than that required when restoring a Snapshot.  
 
-* Backup file size is **significantly smaller** than that of a Snapshot.
+* Backup file size is **significantly smaller** than that of a Snapshot.  
 
 * The following code sample defines a full-backup task that would be executed every 3 hours:  
   {CODE logical_full_backup_every_3_hours@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
@@ -66,13 +66,13 @@
 
 ####Basic Comparison Between a Logical-Backup and a Snapshot:
 
-  | Backup Type | Stored Format | Restoration speed | Size
-  | ------ | ------ | ------ |
-  | Snapshot | Compressed Binary Image | Fast | Larger than a logical-backup
-  | Logical backup |  Compressed Textual Data | Slow | Smaller than a Snapshot
+  | Backup Type | Stored Format | Restoration speed | Size |
+  | ------ | ------ | ------ | - |
+  | Snapshot | Compressed Binary Image | Fast | Larger than a logical-backup |
+  | Logical backup |  Compressed Textual Data | Slow | Smaller than a Snapshot |
 
 {NOTE: Make sure your server has access to the local backup path.}
-Verify that RavenDB is allowed to store files in the path set in `LocalSettings.FolderPath`.
+Verify that RavenDB is allowed to store files in the path set in `LocalSettings.FolderPath`.  
 {NOTE/}
 
 
@@ -84,7 +84,7 @@ Verify that RavenDB is allowed to store files in the path set in `LocalSettings.
 As described in [the overview](../../../../server/ongoing-tasks/backup-overview#backing-up-and-restoring-a-database), a backup task can create **full** and **incremental** backups.  
 
 * A Backup Task can be defined to create either a full data backup or an incremental backup.  
-  In both cases, the backup task adds a single new backup file to the backup folder each time it runs,
+  In both cases, the backup task adds a single new backup file to the backup folder each time it runs, 
   leaving the existing backup files untouched.  
 
 ---
@@ -118,20 +118,21 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
   A node can run an incremental-backup, only after running full-backup at least once.  
 
 * **To run an incremental-backup**  
-  Set `IncrementalBackupFrequency`.
-  {CODE backup_incremental_backup@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+  Set `IncrementalBackupFrequency`.  
+
+{CODE backup_incremental_backup@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
 {PANEL/}
 
 {PANEL: Backup to Local and Remote Destinations}
 
 * Backups can be made **locally**, as well as to a set of **remote locations** including -  
-   * A network path
-   * An FTP/SFTP target
-   * Azure Storage 
-   * Amazon S3 
-   * Amazon Glacier 
-   * Google Cloud
+   * A network path  
+   * An FTP/SFTP target  
+   * Azure Storage  
+   * Amazon S3  
+   * Amazon Glacier  
+   * Google Cloud  
 
 * RavenDB will store data in a local folder first, and transfer it to the remote 
   destination from the local one.  
@@ -140,7 +141,7 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
      If Storage.TempPath is not defined, the temporary files 
      will be created at the same location as the data file.  
      In either case, the folder will be used as temporary storage 
-     and the local files deleted from it when the transfer is completed.
+     and the local files deleted from it when the transfer is completed.  
    * If a local folder **has** been specified, RavenDB will use it both 
      for the transfer and as its permanent local backup location.  
 
@@ -211,7 +212,7 @@ public class RetentionPolicy
 {PANEL: Server-Wide Backup}
 
 You can create a Server-Wide Backup task to back-up **all the databases in your cluster** at a scheduled time. 
-Individual databases can be excluded from the backup. Learn more in [Studio: Server-Wide Backup](../../../../studio/server/server-wide-backup).
+Individual databases can be excluded from the backup. Learn more in [Studio: Server-Wide Backup](../../../../studio/server/server-wide-backup).  
 
 * Backups can be made locally, as well as to a [set of remote locations](../../../../client-api/operations/maintenance/backup/backup#backup-to-local-and-remote-destinations).  
 
