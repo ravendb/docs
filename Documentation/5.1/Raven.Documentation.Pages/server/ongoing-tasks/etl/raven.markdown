@@ -314,15 +314,15 @@ documents by default.
 ### Time Series Load Behavior Function
 
 * The time series behavior function is defined in the script to set the conditions under 
-which a time series is included.  
+which time series data is loaded.  
+* The load behavior function evaluates each [time series segment](../../../document-extensions/timeseries/design#segmentation) 
+and decides whether to load it to the destination database. ETL only updates the data 
+that has changed: if only one time series entry is modified, only the segment that 
+entry belongs to is evaluated.  
 * Changes to time series trigger ETL on both the time series itself and on the document 
 it extends.  
-* Normally ETL deletes and replaces the existing data at the destination database. The 
-load behavior function, however, only updates the data that has changed. If only one 
-time series entry is modified, only the [time series segment](../../../document-extensions/timeseries/design#segmentation) 
-that entry belongs to is deleted and replaced.  
-* The function returns either a boolean, or an object with two `DateTime` values that 
-specify the time span of time series entries to load.  
+* The function returns either a boolean, or an object with two `Date` values that 
+specify the range of time series entries to load.  
 * The time series behavior function can _only_ be applied to time series whose source 
 collection and target collection have the same name. Loading a time series from an 
 Employees collection on the server side to a Users collection at the target database 
@@ -333,7 +333,7 @@ is not possible using the load behavior function.
 function loadTimeSeriesOf<collection name>Behavior(docId, timeSeriesName) {
    return [ true | false | <span of time> ];
 }
-//"span of time" refers to this type: {string?:from, string?:to}
+//"span of time" refers to this type: { string?: from, string?: to }
 {CODE-BLOCK/}
 
 | Parameter | Type | Description |
@@ -344,9 +344,9 @@ function loadTimeSeriesOf<collection name>Behavior(docId, timeSeriesName) {
 
 | Return Value | Description |
 | - | - |
-| `true` | If the behavior function returns `true`, all time series for its collection are loaded. This is the 'default' return value - if the ETL script is empty, the result is the same as if the load behavior functions for all collections returned `true`. |
-| `false` | Time series for this collection are not loaded |
-| **\<span of time>** | An object with two optional `DateTime` values: `from` and `to`. If this is the return value, the script loads all time series entries between these two times for all time series in the collection. If you leave `from` null, it defaults to the start of the time series, and if you leave `to` null, it defaults to the end of the time series. |
+| `true` | If the behavior function returns `true`, the given time series segment is loaded. |
+| `false` | The given time series segment is not loaded |
+| **\<span of time>** | An object with two optional `Date` values: `from` and `to`. If this is the return value, the script loads the time series entries between these two times. If you leave `from` or `to` undefined they default to the start or end of the time series respectively. |
 
 #### Example
 
@@ -381,8 +381,9 @@ employee.addTimeSeries(loadTimeSeries('StockPrices'));
 {CODE-BLOCK/}
 
 {WARNING: }
-ETL deletes and replaces the existing documents at the destination database, including 
-all time series, counters, and attachments.  
+When using `addTimeSeries`, `addAttachment`, and\or `addCounter`, ETL deletes and 
+replaces the existing documents at the destination database, including all time 
+series, counters, and attachments.  
 {WARNING/}
 
 {INFO: }
