@@ -23,7 +23,7 @@ data, or other irreversible harm.
 
 {PANEL: Console view}
 
-![](images/AdminJSConsole.png "NoSQL DB Server Debug - Admin JS Console")  
+![NoSQL DB Server Debug - Admin JS Console](images/AdminJSConsole.png "NoSQL DB Server Debug - Admin JS Console")  
 <br/>
 1. Select the target for the script you want to run. The options are `Server` and `Database`.  
 2. If you selected `Database` as your target, use this dropdown menu to select which database to run the script against.  
