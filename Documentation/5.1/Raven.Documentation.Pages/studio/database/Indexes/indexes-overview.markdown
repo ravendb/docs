@@ -115,7 +115,7 @@
 {NOTE/}
 {PANEL/}
 
-{PANEL: Indexes Types}
+{PANEL: Index Types}
 
 Indexes in RavenDB are split across the following multiple axes:
 
@@ -153,21 +153,20 @@ Indexes in RavenDB are split across the following multiple axes:
 
 * **Multi-Collection Indexes**:  
   Data from several collections can be indexed (each in a different Map) and the results are united in a single index.  
-  The only requirement is that all the Maps definitions have the same output shape.  
+  The only requirement is that all the Map definitions have the same output shape.  
 {NOTE/}
 {PANEL/}
 
-{PANEL: Fields Configuration Options}
+{PANEL: Field Configuration Options}
 
-Additional settings can be specified per field in the index-entry definition, configuring how the terms are indexed inside RavenDB.  
+Additional settings can be specified per field in the index-entry definition, configuring how the terms are indexed inside RavenDB. 
+See [here](../../../studio/database/indexes/create-map-index) to learn how to set thes options in the Studio.  
 
 * **Full Text Search**  
-  The original field data is split and tokenized according to the selected analyzer.      
+  The original field data is split and tokenized according to the selected analyzer. Learn more about analyzers [here](../../../indexes/using-analyzers#full-text-search).  
 
-  * Suggestions - Allow to find similar results to the string in your query. i.e. Martin -> Martine.  
-  * Term Vector - Allow to find similar documents based on shared indexed terms.  
-  * Indexing - Allow options such as searching for individual words inside the indexed terms or exact case-sensitive matches
-  * Learn more in: [Analyzers](../../../indexes/using-analyzers#full-text-search)
+  * Suggestions - Allow finding similar results to the string in your query. i.e. Martin -> Martine.  
+  * Term Vector - Allow finding similar documents based on shared indexed terms.  
 
 * **Spatial**  
   Allow geographical querying on longitude and latitude values or WKT values provided from the document.  

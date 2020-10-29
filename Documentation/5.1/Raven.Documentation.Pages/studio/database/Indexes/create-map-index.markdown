@@ -8,7 +8,7 @@
 * In this page:  
   * [Edit Index View](../../../studio/database/indexes/create-map-index#edit-index-view)  
   * [Index Fields & Terms](../../../studio/database/indexes/create-map-index#index-fields-&-terms)  
-  * [Index Fields Options](../../../studio/database/indexes/create-map-index#index-fields-options)  
+  * [Index Field Options](../../../studio/database/indexes/create-map-index#index-fields-options)  
   * [Configuration](../../../studio/database/indexes/create-map-index#configuration)  
   * [Additional Sources](../../../studio/database/indexes/create-map-index#additional-sources)  
   * [Spatial Field Options](../../../studio/database/indexes/create-map-index#spatial-field-options)  
@@ -70,49 +70,61 @@
    according to the specified [Field Options](../../../studio/database/indexes/create-map-index#fields-(index-entries)-options).  
 {PANEL/}
 
-{PANEL: Index Fields Options}
+{PANEL: Index Field Options}
 
-![Figure 3. Index Fields Options](images/create-map-index-3.png "Figure-4: Index Fields Options")
+![Figure 3a. Index Field Options](images/create-map-index-3.png "Figure-3a: Index Field Options")
 
-1. **Default values**  
-   Set the default values that will apply to _all_ index fields.  
+1. **Add a field**  
+   Create indexing options for one document field in the collection this index applies to.  
 
-2. **Add a Field**  
-   Override the default values with specific settings for selected index entries. 
+2. **Add default field options**  
+   Set default index field options for all indexed fields. [See below](../../../studio/database/indexes/create-map-index#default-index-field-options).  
 
 3. **Select Field**  
-   Select a field from the drop-down. The settings will override the default settings.  
+   Select a field from the drop-down. The options for this will override the default options.  
 
-4. * `Store` - Setting _'Store'_ will store the value of this field in the index itself.  
+4. **Advanced**  
+   Set advanced indexing options for the selected field.  
+
+5. * `Store` - Setting _'Store'_ will store the value of this field in the index itself.  
                At query time, if _'Store'_ is set, then the value is fetched directly from the index, instead of from the original document.  
                If the field value is not stored in the index then it will be fetched from the document.  
                Storing data in the index will increase the index size.  
                Learn more in [Storing Data in Index](../../../indexes/storing-data-in-index).  
 
-  *  `Full-Text-Search` - Set this to _'Yes'_ to allow searching for a particular text without having an exact match.  
-                          The terms that are being indexed are _tokens_ that are split from the original string according to the specified [Analyzer](../../../indexes/using-analyzers).  
+  *  `Full-Text-Search` - Set this to _'Yes'_ to allow searching for strings inside the text values of this field.  
+                          The terms that are indexed are _tokens_ that are split from the original string according to the specified [Analyzer](../../../indexes/using-analyzers).  
                           The Analyzer is set in the _'Indexing'_ dropdown. The default analyzer is a simple case-insensitive analyzer.  
 
-  * `Indexing` -  Specify which ***Analyzer*** will be used (under Advanced):  
-     * ***Exact*** - A no-operation analyzer. Text is not splitted and matches are case-sensitive.  
-     * ***Default*** - _'LowerCaseKeywordAnalyzer'_ is used. Matches are case-insensitive, the input string is converted to lowercase.  
-     * ***Search*** - Set a specific analyzer to use.  
-               The default option is _'StandardAnalyzer'_. Input strings are broken into individual terms on a word boundary and are lowercased, 
-               while omitting the 'stop words' (a, the, to, from, is, are, etc.) as well as possessive “s”.  
-               Details about the available analyzers can be found in [Indexes: Analyzers](../../../indexes/using-analyzers).  
+  * `Highlighting` - Set to _'Yes'_ to enable [Highlighting](../../../indexes/querying/highlighting). Requires 
+                     Storage to be set to 'Yes'. In the advanced options Indexing needs to be set to 'Search' and 
+                     Term Vector set to 'WithPositionsAndOffsets'.  
 
   * `Suggestions` -  Setting _'Suggestions'_ will allow you to query what the user probably meant to ask about. i.e. spelling errors.  
                       Learn more in this [Blog Post](https://ayende.com/blog/180899/queries-in-ravendb-i-suggest-you-can-do-better), 
                       and in [Querying: Suggestions](../../../indexes/querying/suggestions).  
 
-  *  `Term Vector` -  Term Vectors (under Advanced) are used in RavenDB's query feature [More Like This](../../../indexes/querying/morelikethis), 
+  * `Spatial` -  See [below](../../../studio/database/indexes/create-map-index#spatial-field-options)
+
+#### Advanced Index Field Options:  
+
+![Figure 3c. Advanced Index Field Options](images/create-map-index-advanced.png "Figure-3c: Advanced Index Field Options")
+
+  *  `Term Vector` -  Term Vectors are used in RavenDB's query feature [More Like This](../../../indexes/querying/morelikethis), 
                       which suggests documents that are similar to a selected document, based on shared indexed terms. i.e. suggest similar catalogs.  
                       A _'Term Vector'_ for a text paragraph will contain a list of all unique words and how often they appeared.  
                       Set _'full-text-search'_ on the field (index entry) and define it to have a _'Term Vector'_.  
                       Learn more in [Indexes: Term Vectors](../../../indexes/using-term-vectors), 
                       and in this [Blog Post](https://ayende.com/blog/180900/queries-in-ravendb-gimme-more-like-this).  
 
-  * `Spatial` -  See [below](../../../studio/database/indexes/create-map-index#spatial-field-options)
+  * `Indexing` -  This setting determines which [***Analyzer***](../../../indexes/using-analyzers) can be used:  
+     * ***Exact*** - The _'Keyword Analyzer'_ is used. The text is not split into tokens, the entire value of the field is treated as one token.  
+     * ***Default*** - The _'LowerCase Keyword Analyzer'_ is used. The text is not split into tokens. The text is converted to lower-case, and                     matches are case insensitive.  
+     * ***Search*** - Select an analyzer to use from the dropdown menu. If you set Indexing to 'Search' and do not select an analyzer, the analyzer               is _'StandardAnalyzer'_ by default.  
+
+#### Default Index Field Options:  
+
+![Figure 3b. Default Index Field Options](images/create-map-index-default.png "Figure-3b: Default Index Field Options")
 
 {PANEL/}
 
