@@ -1584,6 +1584,24 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     #endregion
                 }
 
+                // LINQ query group by tag
+                using (var session = store.OpenSession())
+                {
+                    #region LINQ_GroupBy_Tag
+                    var query = session.Query<User>()
+                        .Select(u => RavenQuery.TimeSeries(u, "Heartrate")
+                            .GroupBy(g => g
+                                    .Hours(1)
+                                    .ByTag()
+                                   )
+                            .Select(g => new
+                            {
+                                Max = g.Max(),
+                                Min = g.Min()
+                            }));
+                    #endregion
+                }
+
                 // Raw Query - StockPrice
                 using (var session = store.OpenSession())
                 {

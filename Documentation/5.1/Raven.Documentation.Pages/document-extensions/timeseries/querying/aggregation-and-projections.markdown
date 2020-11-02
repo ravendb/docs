@@ -5,10 +5,11 @@
 {NOTE: }
 
 * **Aggregation**  
-  Queries can easily create powerful statistics by aggregating time series 
+  Queries can easily create powerful statistics by aggregating time series entries 
   into groups by chosen time frames like an hour or a week, and retrieving 
   values from each group by criteria like `Min` for the lowest value, 
-  `Count` for the number of values in the group, etc.  
+  `Count` for the number of values in the group, etc. Time series data can also 
+  be aggregated using the entry [tags](../../../document-extensions/timeseries/overview#tags).  
   
 * **Projection** by criteria  
   Queries can explicitly select the criteria by which values would be retrieved 
@@ -26,12 +27,9 @@
 
     {INFO/}
 
-
-
-
 * In this page:  
-  * [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections#aggregation-and-projections)  
-  * [Client Usage Samples](../../../document-extensions/timeseries/querying/aggregation-and-projections#client-usage-samples)  
+  * [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections#aggregation-and-projection)  
+  * [Client Usage Examples](../../../document-extensions/timeseries/querying/aggregation-and-projections#client-usage-examples)  
 
 {NOTE/}
 
@@ -41,8 +39,8 @@
 
 In an RQL query, use the `group by` expression to aggregate 
 time series (or ranges of time series entries) in groups by 
-a chosen resolution, and the `select` keyword to choose and 
-project entries by a chosen criteria.    
+a chosen resolution or by the entry tag. Use the `select` 
+keyword to choose and project entries by a chosen criterion.  
 
 {INFO: You can aggregate entries by these time units:}  
 
@@ -54,6 +52,8 @@ project entries by a chosen criteria.
 * **Months**  
 * **Quarters**  
 * **Years**  
+
+* Entries can also be aggregated by their **tag**.
 
 {INFO/}
 
@@ -69,26 +69,26 @@ project entries by a chosen criteria.
 
 {INFO/}
 
-* In this sample, we group entries of users' HeartRate time series 
+* In this example, we group entries of users' HeartRate time series 
   and project the lowest and highest values of each group.  
   Each HeartRate entry holds a single value.
     {CODE-BLOCK: JSON}
-from Users as u where Age < 30
-    select timeseries(
-        from HeartRate between 
-            '2020-05-17T00:00:00.0000000Z' 
-            and '2020-05-23T00:00:00.0000000Z'
-                where Tag == 'watches/fitbit'
-        group by '1 days'
-        select min(), max()
-    )
+from Patients as p where Age < 30
+select timeseries(
+    from HeartRate between 
+        '2020-05-17T00:00:00.0000000Z' 
+        and '2020-05-23T00:00:00.0000000Z'
+            where Tag == 'watches/fitbit'
+    group by '1 days'
+    select min(), max()
+)
     {CODE-BLOCK/}
    * **group by '1 days'**  
      We group each user's HeartRate time series entries in consecutive 1-day groups.  
    * **select min(), max()**  
      We select the lowest and highest values of each group and project them to the client.  
 
-* In this sample, we group entries of companies' StockPrice time series 
+* In this example, we group entries of companies' StockPrice time series 
   in consecutive 7-day groups and project the highest and lowest values 
   of each group.  
   Each StockPrice entry holds five values, the query returns the `Max` 
@@ -125,10 +125,10 @@ select c.Name, SP(c)
      Project the company's name along with the time series query 
      results to make the results easier to read and understand.  
 
-* This sample is similar to the one above it, except that time series 
+* This example is similar to the one above it, except that time series 
   entries are **not aggregated**, so the highest and lowest values are 
   collected not from each group but from the entire result-set.  
-    {CODE-BLOCK: JSON}
+  {CODE-BLOCK: JSON}
 declare timeseries SP(c) 
 {
     from c.StockPrice 
@@ -138,15 +138,41 @@ declare timeseries SP(c)
 from Companies as c
 where c.Address.Country = 'USA'
 select c.Name, SP(c)
-    {CODE-BLOCK/}
-   * **select max(), min()**  
-     Since there is no aggregation, the entire result-set is queried 
-     and the results include only the all-time highest and lowest Open, 
-     Close, High, Low and Volume values.  
+  {CODE-BLOCK/}
+    * **select max(), min()**  
+      Since there is no aggregation, the entire result-set is queried 
+      and the results include only the all-time highest and lowest Open, 
+      Close, High, Low and Volume values.  
+
+* In these two example we group time series data by the entry tags. In 
+  the first query we simply use `group by tag` and also filter the results based 
+  on the tag value. In the second, we access the tag   using `load` and then filter:  
+  {CODE-BLOCK: sql}
+from Patients as p
+select timeseries(
+    from HeartRate
+    where Tag == 'watches/fitbit' | 'Heartrate_Monitor'
+    group by tag
+    select min(), max()
+)
+  {CODE-BLOCK/}
+  {CODE-BLOCK: sql}
+from Patients as p
+select timeseries(
+    from HeartRate
+    load Tag as monitor
+    where monitor == 'watches/fitbit' | 'Heartrate_Monitor'
+    group by tag
+    select min(), max()
+)
+  {CODE-BLOCK/}
+
+* Finally, in this example we group by time series in a LINQ query: 
+  {CODE LINQ_GroupBy_Tag@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 {PANEL/}
 
-{PANEL: Client Usage Samples}
+{PANEL: Client Usage Examples}
 
 {INFO: }
 You can run queries from your client using raw RQL and LINQ.  
