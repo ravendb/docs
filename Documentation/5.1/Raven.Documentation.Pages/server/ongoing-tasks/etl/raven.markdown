@@ -306,54 +306,54 @@ Counters sent by ETL process always _override_ the existing value on the destina
 {PANEL: Time Series}
 
 * If the transformation script is empty, time series are transferred along with their 
-documents during ETL by default.
-* Changes to time series trigger ETL only on the time series itself, unless the time 
-series Etag is smaller than that of the document it extends. If the time series' Etag is 
-smaller, ETL is triggered for the document as well.  
-* To load time series in an ETL process when the script isn't empty, use the *time 
-series behavior function.* This function is defined in the script to set the conditions 
-under which a time series is included.  
-* Another way of loading a time series into the script context is to explicitly add 
-them using `loadTimeSeries()`.  
-* If a time series is included by an ETL script, that ETL process will be triggered 
-when the time series is modified.  
+documents by default.  
+* When the script is not empty, ETL can be set for time series using either:  
+  * The **time series load behavior function**.  
+  * `loadTimeSeries()` and `addTimeSeries()`.  
 
-#### Time Series Behavior Function
+### Time Series Load Behavior Function
 
-The time series behavior function is defined in the script and should have the 
-following signature:
+* The time series behavior function is defined in the script to set the conditions under 
+which time series data is loaded.  
+* The load behavior function evaluates each [time series segment](../../../document-extensions/timeseries/design#segmentation) 
+and decides whether to load it to the destination database. ETL only updates the data 
+that has changed: if only one time series entry is modified, only the segment that 
+entry belongs to is evaluated.  
+* Changes to time series trigger ETL on both the time series itself and on the document 
+it extends.  
+* The function returns either a boolean, or an object with two `Date` values that 
+specify the range of time series entries to load.  
+* The time series behavior function can _only_ be applied to time series whose source 
+collection and target collection have the same name. Loading a time series from an 
+Employees collection on the server side to a Users collection at the target database 
+is not possible using the load behavior function.  
+* The function should be defined with the following signature:  
 
-{CODE-BLOCK:javascript}
+{CODE-BLOCK:java}
 function loadTimeSeriesOf<collection name>Behavior(docId, timeSeriesName) {
-   return [ true | false | <span of time> ]; 
+   return [ true | false | <span of time> ];
 }
+//"span of time" refers to this type: { string?: from, string?: to }
 {CODE-BLOCK/}
 
 | Parameter | Type | Description |
 | - | - | - |
-| **<collection name>** | A part of the function's name | Determines which collection's documents this behavior function applies to. A function named `loadTimeSeriesOfEmployeesBehavior` will apply on all time series in the collection `Employees` |
+| **\<collection name>** | A part of the function's name | Determines which collection's documents this behavior function applies to. A function named `loadTimeSeriesOfEmployeesBehavior` will apply on all time series in the collection `Employees` |
 | **docId** | `string` | This parameter is used inside the function to refer to the documents' ID |
 | **timeSeriesName** | `string` | This parameter is used inside the function to refer to the time series' name |
 
 | Return Value | Description |
 | - | - |
-| `true` | If the behavior function returns `true`, all time series for its collection are loaded. This is the 'default' return value - if the ETL script is empty, the result is the same as if the behavior functions for all collections returned `true`. |
-| `false` | Time series for this collection are not loaded |
-| <Span of time> | An object with two `DateTime` values: `from` and `to`. If the behavior function returns this, all time series entries in the collection between those two times are loaded. You can leave `to` null, which defaults to the end of the time series, as well as leave `from` null, which defaults to its start. |
-
-* The time series behavior function can _only_ be applied to time series whose source 
-collection and target collection have the same name. Loading a time series from an 
-Employees collection on the server side to a Users collection at the target database 
-is not possible.  
-* The function returns either a boolean, or an object with two `DateTime` values that 
-specify the time span of time series entries to load.  
+| `true` | If the behavior function returns `true`, the given time series segment is loaded. |
+| `false` | The given time series segment is not loaded |
+| **\<span of time>** | An object with two optional `Date` values: `from` and `to`. If this is the return value, the script loads the time series entries between these two times. If you leave `from` or `to` undefined they default to the start or end of the time series respectively. |
 
 #### Example
 
 * The following script is defined on `Companies` collection. The behavior function loads 
 each document in the collection into the script context using `load(docId)`, then filters 
-by the document's `Address.Country` property, as well as the name of the time series. 
-This retrieves only stock price data for French companies.  
+by the document's `Address.Country` property as well as the time series' name. This 
+sends only stock price data for French companies.  
 
 {CODE-BLOCK:javascript}
 loadToCompanies(this);
@@ -366,43 +366,37 @@ function loadTimeSeriesOfCompaniesBehavior(docId, timeSeriesName) {
 }
 {CODE-BLOCK/}
 
-#### Adding time series explicitly in a script
+### Adding Time Series to Documents
 
-* The behavior function cannot be used if the target collection has a different name 
-than the source collection. To do that, this script uses `loadTimeSeries()` and 
-`AddTimeSeries()`:  
+* Time series can be loaded into the script context using `loadTimeSeries()`.  
+* Once a time series is loaded into the script, it can be added to a document using 
+`AddTimeSeries()`.  
 
 {CODE-BLOCK:javascript}
-// ETL script for Employees collection
-var company = loadToCompanies({ Name: this.Name + ' ' + this.LastName });
+var employee = loadToEmployees({
+    Name: this.Name + ' ' + this.LastName
+});
 
-company.addTimeSeries(loadTimeSeries('StockPrices'));
+employee.addTimeSeries(loadTimeSeries('StockPrices'));
 {CODE-BLOCK/}
 
-* In the above example, the time series `StockPrices` will be sent together with its 
-associated document. This is accomplished with the following methods:  
-  - `loadTimeSeries(name)` returns a reference to a time series that is then passed to 
-`addTimeSeries()`.  
-  - `<doc>.addTimeSeries(timeSeriesRef)` adds the time series to the document `<doc>`.
+{WARNING: }
+When using `addTimeSeries`, `addAttachment`, and\or `addCounter`, ETL deletes and 
+replaces the existing documents at the destination database, including all time 
+series, counters, and attachments.  
+{WARNING/}
 
-{INFO: Important}
-Since the transformation script is run on document update, time series added explicitly 
-(`addTimeSeries()`) will be loaded along with documents _only_ if document itself is 
-changed.  
-This means that modified time series values won't be sent until a document they 
-extend is modified.  
+{INFO: }
+Since the transformation script is run on document update, time series added to 
+documents using `addTimeSeries()` will be loaded _only_ when the document they 
+extend has changed.  
 {INFO/}
-
-{NOTE: Time series value override by ETL}
-Time series sent by ETL process always _override_ the existing value on the 
-destination. ETL doesn't send a command to modify a time series, it overrides the value 
-using a _put_ command.  
-{NOTE/}
 
 #### Filtering by start and end date
 
-Both the behavior funtion and `loadTimeSeries()` accept a start and end date as 
-second and third parameters.  
+Both the behavior function and `loadTimeSeries()` accept a start and end date as 
+second and third parameters. If these are set, only time series data within this 
+time span is loaded to the destination database.  
 
 {CODE-BLOCK:javascript}
 company.addTimeSeries(loadTimeSeries('StockPrices', new Date(2020, 3, 26), new Date(2020, 3, 28)));
