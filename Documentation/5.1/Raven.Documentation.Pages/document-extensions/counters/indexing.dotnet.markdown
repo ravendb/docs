@@ -4,12 +4,14 @@
 {NOTE: }
 
 * To index counters, create a [static index](../indexes/creating-and-deploying#static-indexes) 
-that inherits from `AbstractCountersIndexCreationTask`.  
+that inherits from `AbstractCountersIndexCreationTask` or `AbstractJavaScriptCountersIndexCreationTask`.  
 
 * Auto-indexes for counters are not available at this time.  
 
 * In this page:  
   * [Syntax](../../document-extensions/counters/indexing#syntax)  
+  * [AbstractJavaScriptCountersIndexCreationTask](../../document-extensions/counters/indexing#section)  
+  * [CounterNamesFor](../../document-extensions/counters/indexing#section-1)  
   * [Querying the Index](../../document-extensions/counters/indexing#querying-the-index)  
 
 {NOTE/}
@@ -37,6 +39,33 @@ Examples of indexes using each method:
 {CODE-TAB:csharp:AddMapForAll index_2@Indexes\IndexingCounters.cs /}
 {CODE-TABS/}  
 <br/>
+
+---
+
+### `AbstractJavaScriptCountersIndexCreationTask`
+
+Creating an index inheriting from `AbstractJavaScriptCountersIndexCreationTask` allows 
+you to write your map and reduce functions in JavaScript.  
+Learn more about JavaScript indexes [here](../../indexes/javascript-indexes).  
+
+{CODE-BLOCK: csharp}
+public class AbstractJavaScriptCountersIndexCreationTask : AbstractCountersIndexCreationTask
+{
+    public HashSet<string> Maps;
+    protected string Reduce;
+}
+{CODE-BLOCK/}
+
+| Property | Type | Description |
+| - | - | - |
+| **Maps** | `HashSet<string>` | The set of javascript map functions |
+| **Reduce** | `string` | The javascript reduce function |
+
+Example:  
+
+{CODE:csharp index_3@DocumentExtensions\Counters\IndexingCounters.cs /}
+
+---
 
 ### `CounterNamesFor`
 

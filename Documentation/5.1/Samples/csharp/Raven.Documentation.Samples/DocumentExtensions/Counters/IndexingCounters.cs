@@ -69,6 +69,24 @@ namespace Raven.Documentation.Samples.Indexes
         }
         #endregion
 
+        #region index_3
+        private class MyMultiMapCounterIndex : AbstractJavaScriptCountersIndexCreationTask
+        {
+            public MyMultiMapCounterIndex()
+            {
+                Maps = new HashSet<string>
+                {
+                    @"counters.map('Blogposts', 'Likes', function (counter) {
+                        return {
+                            Likes: counter.Value,
+                            Name: counter.Name,
+                            Blog Post: counter.DocumentId
+                        };
+                    })"
+                };
+            }
+        }
+        #endregion
         public async Task Sample()
         {
             using (var store = new DocumentStore())
