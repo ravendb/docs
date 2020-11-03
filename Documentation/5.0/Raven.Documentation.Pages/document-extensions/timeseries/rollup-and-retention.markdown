@@ -21,7 +21,7 @@ is kept before being deleted.
 
 ---
 
-{PANEL: Time Series Policies}  
+{PANEL: Time Series Policies}
 
 #### What are Rollups?
 
@@ -55,9 +55,7 @@ will transparently traverse over the rollups to retrieve the relevant results.
 Let's look at an example of rollup data:  
 <br/>
 !["Rollup time series entries"](images/rollup-1.png "A rollup time series' entries")
-
 <br/>
-
 **1) Name:**  
 A rollup time series' name has this format:  
 `"<name of raw time series>@<name of time series policy>"`  
@@ -165,7 +163,7 @@ The main reason we use `TimeValue` rather than something like `TimeSpan` is that
 `TimeSpan` doesn't have a notion of 'months', because a calendar month is not a 
 standard unit of time (since it ranges from 28-31 days). `TimeValue` enables you 
 to define retention and aggregation spans for a calendar month.  
-{/INFO}
+{INFO/}
 <br/>
 ####`TimeSeriesCollectionConfiguration` and `TimeSeriesConfiguration`
 
@@ -190,13 +188,42 @@ public class TimeSeriesConfiguration
 | `RawPolicy` | The `RawTimeSeriesPolicy`, the retention policy for the raw time series |
 | `Collections` | Populate this `Dictionary` with the `TimeSeriesCollectionConfiguration`s and the names of the corresponding collections. |
 <br/>
-####The Time Series Configuration Operation
+#### The Time Series Configuration Operation
 
 {CODE-BLOCK: csharp}
 public ConfigureTimeSeriesOperation(TimeSeriesConfiguration configuration);
 {CODE-BLOCK/}
 
-Pass this your `TimeSeriesConfiguration`, see usage example below. How to use an [operation](../../client-api/operations/what-are-operations).
+Pass this your `TimeSeriesConfiguration`, see usage example below. How to use an [operation](../../client-api/operations/what-are-operations).  
+<br/>
+#### Casting Time Series Entries
+
+Time series entries are of one of the following classes:  
+
+{CODE-BLOCK: csharp}
+public class TimeSeriesEntry {   }
+public class TimeSeriesEntry<T> : TimeSeriesEntry {   }
+public class TimeSeriesRollupEntry<TValues> : TimeSeriesEntry {   }
+{CODE-BLOCK/}
+
+Read more about time series with generic types [here](../../../document-extensions/timeseries/client-api/named-time-series-value).
+
+If you have an existing rollup entry of type `TimeSeriesEntry`, you can 
+cast it to a `TimeSeriesRollupEntry` using `AsRollupEntry()`.  
+
+{CODE-BLOCK: csharp}
+public static TimeSeriesRollupEntry<T> AsRollupEntry<T>(this TimeSeriesEntry<T> entry);
+{CODE-BLOCK/}
+
+You can cast a `TimeSeriesRollupEntry` to a `TimeSeriesEntry` directly. 
+Its values will consist of all the `First` values of the rollup entry.  
+
+{CODE-BLOCK: csharp}
+var rollupEntry = new TimeSeriesRollupEntry<int>(
+                          new DateTime(2020,1,1));
+
+TimeSeriesEntry<int> TSEntry = (TimeSeriesEntry<int>)rollupEntry;
+{CODE-BLOCK/}
 
 {PANEL/}
 
@@ -213,12 +240,12 @@ How to access a rollup time series:
 
 ## Related articles  
 ###Studio  
-[Time Series Interface in Studio](../../studio/database/document-extensions/time-series)
+- [Time Series Interface in Studio](../../studio/database/document-extensions/time-series)
 
 ###Time Series  
-[Time Series Overview](../../document-extensions/timeseries/overview)  
-[API Overview](../../document-extensions/timeseries/client-api/overview)  
+- [Time Series Overview](../../document-extensions/timeseries/overview)  
+- [API Overview](../../document-extensions/timeseries/client-api/overview)  
 
 ###Client-API  
-[What Are Operations?](../../client-api/operations/what-are-operations)
+- [What Are Operations?](../../client-api/operations/what-are-operations)
 

@@ -22,9 +22,10 @@ client application or from the Studio.
 * In this page:  
   * [Syntax](../../document-extensions/timeseries/indexing#syntax)  
       * [`AbstractTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing#abstracttimeseriesindexcreationtask)  
-      * [`AbstractMultiMapMultiMapIndexCreationTask`](../../document-extensions/timeseries/indexing#abstractmultimaptimeseriesindexcreationtask)
-      * [`TimeSeriesIndexDefinition`](../../document-extensions/timeseries/indexing#timeseriesindexdefinition)
-      * [`TimeSeriesSegment` Object](../../document-extensions/timeseries/indexing#timeseriessegment-object)
+      * [`AbstractMultiMapTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing#abstractmultimaptimeseriesindexcreationtask)  
+      * [`AbstractJavaScriptTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing#abstractjavascripttimeseriesindexcreationtask)  
+      * [`TimeSeriesIndexDefinition`](../../document-extensions/timeseries/indexing#timeseriesindexdefinition)  
+      * [`TimeSeriesSegment` Object](../../document-extensions/timeseries/indexing#timeseriessegment-object)  
   * [Samples](../../document-extensions/timeseries/indexing#samples)  
 
 {NOTE/}
@@ -35,10 +36,11 @@ client application or from the Studio.
 
 There are two main ways to create a time series index:  
 
-1. Create a class that inherits from   
+1. Create a class that inherits from one of the abstract index creation task classes:   
   * [`AbstractTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing#abstracttimeseriesindexcreationtask) for [map](../../indexes/map-indexes) and 
   [map-reduce](../../indexes/map-reduce-indexes) time series indexes.  
-  * [`AbstractMultiMapMultiMapIndexCreationTask`](../../document-extensions/timeseries/indexing#abstractmultimaptimeseriesindexcreationtask) for [multi-map](../../indexes/multi-map-indexes) time series indexes.  
+  * [`AbstractMultiMapTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing#abstractmultimaptimeseriesindexcreationtask) for [multi-map](../../indexes/multi-map-indexes) time series indexes.  
+  * [`AbstractJavaScriptTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing#abstractjavascripttimeseriesindexcreationtask) for static javascript indexes.  
 
 2. Create a [`TimeSeriesIndexDefinition`](../../document-extensions/timeseries/indexing#timeseriesindexdefinition).
 
@@ -99,6 +101,26 @@ public abstract class AbstractMultiMapTimeSeriesIndexCreationTask<TReduceResult>
 | `AddMapForAll<TBase>()` | `Expression map` | Sets a map function for all time series that belong to documents with either the type `TBase` _or_ any type that inherits from `TBase` |
 
 See the example [below](../../document-extensions/timeseries/indexing#abstractmultimaptimeseriesindexcreationtask-1).
+
+---
+
+### AbstractJavaScriptTimeSeriesIndexCreationTask
+
+{CODE-BLOCK: csharp}
+public abstract class AbstractJavaScriptTimeSeriesIndexCreationTask : AbstractTimeSeriesIndexCreationTask
+{
+    public HashSet<string> Maps;
+    protected string Reduce;
+}
+{CODE-BLOCK/}
+
+| Property | Type | Description |
+| - | - | - |
+| `Maps` | `HashSet<string>` | The set of javascript map functions |
+| `Reduce` | `string` | The javascript reduce function |
+
+See the example [below](../../document-extensions/timeseries/indexing#abstractjavascripttimeseriesindexcreationtask-1).  
+Learn more about [JavaScript indexes](../../indexes/javascript-indexes).  
 
 ---
 
@@ -168,6 +190,9 @@ Creating a time series index using `TimeSeriesIndexDefinition`:
 #### AbstractMultiMapTimeSeriesIndexCreationTask  
 {CODE indexes_MultiMapCreationTask@DocumentExtensions\TimeSeries\Indexing.cs /}
 
+#### AbstractJavaScriptTimeSeriesIndexCreationTask  
+{CODE indexes_AbstractJavaScriptCreationTask@DocumentExtensions\TimeSeries\Indexing.cs /}
+
 #### Map-Reduce Time Series Index  
 {CODE indexes_MapReduce@DocumentExtensions\TimeSeries\Indexing.cs /}
 
@@ -179,7 +204,7 @@ Yet another way to create a time series index is to create a
 
 ## Related articles  
 
-###Time Series  
+### Time Series  
 [Time Series Overview](../../document-extensions/timeseries/overview)  
 [API Overview](../../document-extensions/timeseries/client-api/overview)  
 
@@ -189,6 +214,7 @@ Yet another way to create a time series index is to create a
 [Map Indexes](../../indexes/map-indexes)  
 [Multi-Map Indexes](../../indexes/multi-map-indexes)  
 [Map-Reduce Indexes](../../indexes/map-reduce-indexes)  
+[JavaScript Indexes](../../indexes/javascript-indexes)  
 [Indexing Related Documents](../../indexes/indexing-related-documents)  
 
 ### Client-API  

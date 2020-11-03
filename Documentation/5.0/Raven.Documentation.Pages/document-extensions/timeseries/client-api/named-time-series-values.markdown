@@ -43,6 +43,16 @@ E.g, -
 The class can then be used by time series methods like Append.  
 {CODE timeseries_region_Append-Named-Values-1@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
+{INFO: }
+A quick way of retrieving a time series entry's value, timestamp, and 
+tag is to use `Deconstruct()`:  
+
+{CODE-BLOCK:csharp}
+public void Deconstruct(out DateTime timestamp, out T value);
+public void Deconstruct(out DateTime timestamp, out T value, out string tag);
+{CODE-BLOCK/}
+{INFO/}
+
 ---
 
 #### Usage Samples
