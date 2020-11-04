@@ -265,8 +265,11 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 // append multi-value entries using a registered time series type
                 using (var session = store.OpenSession())
                 {
-                    session.Store(new Company { Name = "kitchenAppliances",
-                        Address = new Address { City = "New York" } },
+                    session.Store(new Company
+                    {
+                        Name = "kitchenAppliances",
+                        Address = new Address { City = "New York" }
+                    },
                                                 "companies/kitchenAppliances");
 
                     session.TimeSeriesFor<StockPrice>("companies/kitchenAppliances")
@@ -1797,7 +1800,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         (IRavenQueryable<TimeSeriesRawResult>)session.Query<User>()
                             .Where(u => u.Age < 30)
                             .Select(q => RavenQuery.TimeSeries(q, "HeartRate")
-                            //.Where(ts => ts.Tag == "watches/fitbit")
+                            .Where(ts => ts.Tag == "watches/fitbit")
                             .ToList());
 
                     var result = query.ToList();
@@ -1933,6 +1936,63 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                                 }
                 */
 
+            }
+        }
+
+        // Time series Document Query examples
+        public void TSDocumentQueries()
+        {
+            using (var store = getDocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region TS_DocQuery_1
+                    var query = session.Advanced.DocumentQuery<User>()
+                        .SelectTimeSeries(builder => builder
+                            .From("Heartrate")
+                            .ToList());
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region TS_DocQuery_2
+                    var query = session.Advanced.DocumentQuery<User>()
+                        .SelectTimeSeries(builder => builder
+                            .From("Heartrate")
+                            .Between(DateTime.Now, DateTime.Now.AddDays(1))
+                            .ToList());
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region TS_DocQuery_3
+                    var query1 = session.Advanced.DocumentQuery<User>()
+                        .SelectTimeSeries(builder => builder
+                            .From("Heartrate")
+                            .FromFirst(x => x.Days(3))
+                            .ToList());
+
+                    var query2 = session.Advanced.DocumentQuery<User>()
+                        .SelectTimeSeries(builder => builder
+                            .From("Heartrate")
+                            .FromLast(x => x.Days(3))
+                            .ToList());
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region TS_DocQuery_4
+                    var query = session.Advanced.DocumentQuery<User>()
+                        .SelectTimeSeries(builder => builder
+                            .From("Heartrate")
+                            .LoadByTag<Monitor>()
+                            .Where((entry, monitor) => entry.Value <= monitor.Accuracy)
+                            .ToList());
+                    #endregion
+                }
             }
         }
 
@@ -2481,7 +2541,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 // Query time-series index using session.Query
                 using (var session = store.OpenSession())
                 {
-                    List<SimpleIndex.Result> results = 
+                    List<SimpleIndex.Result> results =
                         session.Query<SimpleIndex.Result, SimpleIndex>()
                         .ToList();
                 }
@@ -2492,7 +2552,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 var chosenDate = new DateTime(2020, 5, 20);
                 using (var session = store.OpenSession())
                 {
-                    List<SimpleIndex.Result> results = 
+                    List<SimpleIndex.Result> results =
                         session.Query<SimpleIndex.Result, SimpleIndex>()
                         .Where(w => w.Date < chosenDate)
                         .OrderBy(o => o.HeartBeat)
@@ -2504,7 +2564,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 // Query time-series index using DocumentQuery
                 using (var session = store.OpenSession())
                 {
-                    List<SimpleIndex.Result> results = 
+                    List<SimpleIndex.Result> results =
                         session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
                         .ToList();
                 }
@@ -2514,7 +2574,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 // Query time-series index using DocumentQuery with Linq-like expressions
                 using (var session = store.OpenSession())
                 {
-                    List<SimpleIndex.Result> results = 
+                    List<SimpleIndex.Result> results =
                         session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
                         .WhereEquals("Tag", "watches/fitbit")
                         .ToList();
@@ -2525,7 +2585,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 // Time-series async index query using session.Query
                 using (var session = store.OpenAsyncSession())
                 {
-                    List<SimpleIndex.Result> results = 
+                    List<SimpleIndex.Result> results =
                         await session.Query<SimpleIndex.Result, SimpleIndex>()
                         .ToListAsync();
                 }
@@ -2647,7 +2707,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
     public class SampleTimeSeriesDefinitions
     {
         #region RavenQuery-TimeSeries-Definition-With-Range
-        public static ITimeSeriesQueryable TimeSeries(object documentInstance, 
+        public static ITimeSeriesQueryable TimeSeries(object documentInstance,
             string name, DateTime from, DateTime to)
         #endregion
         {
@@ -2655,7 +2715,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
         }
 
         #region RavenQuery-TimeSeries-Definition-Without-Range
-        public static ITimeSeriesQueryable TimeSeries(object documentInstance, 
+        public static ITimeSeriesQueryable TimeSeries(object documentInstance,
             string name)
         #endregion
         {
@@ -2671,8 +2731,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             public bool IsRollup { get; set; }
 
             public double Value;
-    
-        //..
+
+            //..
         }
         #endregion
 
@@ -2733,7 +2793,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             private class PatchCommandData
             {
                 #region PatchCommandData-definition
-                public PatchCommandData(string id, string changeVector, 
+                public PatchCommandData(string id, string changeVector,
                     PatchRequest patch, PatchRequest patchIfMissing)
                 #endregion
                 { }
@@ -2761,7 +2821,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             public class GetTimeSeriesOperation
             {
                 #region GetTimeSeriesOperation-Definition
-                public GetTimeSeriesOperation(string docId, string timeseries, DateTime? @from = null, 
+                public GetTimeSeriesOperation(string docId, string timeseries, DateTime? @from = null,
                     DateTime? to = null, int start = 0, int pageSize = int.MaxValue)
                 #endregion
                 { }
@@ -2781,7 +2841,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             public class GetMultipleTimeSeriesOperation
             {
                 #region GetMultipleTimeSeriesOperation-Definition
-                public GetMultipleTimeSeriesOperation(string docId, 
+                public GetMultipleTimeSeriesOperation(string docId,
                     IEnumerable<TimeSeriesRange> ranges, int start = 0, int pageSize = int.MaxValue)
                 #endregion
                 { }
@@ -2806,17 +2866,17 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             private class PatchOperation
             {
                 #region PatchOperation-Definition
-                public PatchOperation(string id, string changeVector, 
-                    PatchRequest patch, PatchRequest patchIfMissing = null, 
+                public PatchOperation(string id, string changeVector,
+                    PatchRequest patch, PatchRequest patchIfMissing = null,
                         bool skipPatchIfChangeVectorMismatch = false)
                 #endregion
                 { }
             }
 
-                private class PatchByQueryOperation
+            private class PatchByQueryOperation
             {
                 #region PatchByQueryOperation-Definition
-                public PatchByQueryOperation(IndexQuery queryToUpdate, 
+                public PatchByQueryOperation(IndexQuery queryToUpdate,
                     QueryOperationOptions options = null)
                 #endregion
                 { }
@@ -2832,7 +2892,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                 #region Append-Operation-Definition-2
                 // Each appended entry has multiple values.
-                public void Append(DateTime timestamp, 
+                public void Append(DateTime timestamp,
                     ICollection<double> values, string tag = null)
                 #endregion
                 { }
@@ -2861,6 +2921,14 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             #endregion
         }
     }
+
+    //Watch class for TS Document Query documentation
+    #region TS_DocQuery_class
+    public class Monitor
+    {
+        public double Accuracy { get; set; }
+    }
+    #endregion
 }
 
 

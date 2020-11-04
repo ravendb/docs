@@ -31,9 +31,9 @@
 
 {PANEL: Time Series LINQ Queries}
 
-To build a time series LINQ query, run a document query using `session.Query` 
-and extend it using LINQ expressions.  
-Here is a simple LINQ query that chooses users by their age and retrieves their 
+To build a time series LINQ query, start with `session.Query` and extend it 
+using LINQ expressions.  
+Here is a simple LINQ query that filters users by their age and retrieves their 
 HeartRate time series, and the RQL equivalent for this query.  
 
 {CODE-TABS}

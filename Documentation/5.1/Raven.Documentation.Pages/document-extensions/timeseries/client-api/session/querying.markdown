@@ -16,14 +16,16 @@
   for execution using the `session.Advanced.RawQuery` method.  
 
 * In this page:  
-   * [Time Series LINQ Queries](../../../../document-extensions/timeseries/client-api/session/querying#time-series-linq-queries)  
-      * [Syntax](../../../../document-extensions/timeseries/client-api/session/querying#syntax)  
-      * [Usage Flow](../../../../document-extensions/timeseries/client-api/session/querying#usage-flow)  
-      * [Usage Samples](../../../../document-extensions/timeseries/client-api/session/querying#usage-samples)  
-   * [Client Raw RQL Queries](../../../../document-extensions/timeseries/client-api/session/querying#client-raw-rql-queries)  
-      * [RQL Queries Syntax](../../../../document-extensions/timeseries/client-api/session/querying#rql-queries-syntax)  
-      * [RQL Queries Usage Flow](../../../../document-extensions/timeseries/client-api/session/querying#rql-queries-usage-flow)  
-      * [RQL Queries Usage Samples](../../../../document-extensions/timeseries/client-api/session/querying#rql-queries-usage-samples)  
+    * [Time Series LINQ Queries](../../../../document-extensions/timeseries/client-api/session/querying#time-series-linq-queries)  
+        * [Syntax](../../../../document-extensions/timeseries/client-api/session/querying#syntax)  
+        * [Usage Flow](../../../../document-extensions/timeseries/client-api/session/querying#usage-flow)  
+        * [Examples](../../../../document-extensions/timeseries/client-api/session/querying#examples)  
+            * [Session.Query](../../../../document-extensions/timeseries/client-api/session/querying#section-1)  
+            * [Session.Advanced.DocumentQuery](../../../../document-extensions/timeseries/client-api/session/querying#document-query-1)  
+    * [Client Raw RQL Queries](../../../../document-extensions/timeseries/client-api/session/querying#client-raw-rql-queries)  
+        * [RQL Queries Syntax](../../../../document-extensions/timeseries/client-api/session/querying#rql-queries-syntax)  
+        * [RQL Queries Usage Flow](../../../../document-extensions/timeseries/client-api/session/querying#rql-queries-usage-flow)  
+        * [RQL Queries Usage Samples](../../../../document-extensions/timeseries/client-api/session/querying#rql-queries-usage-samples)  
 
 {NOTE/}
 
@@ -31,10 +33,10 @@
 
 {PANEL: Time Series LINQ Queries}
 
-To build a time series LINQ query, start with `session.Query` and extend it 
-using LINQ expressions.  
-Here is a simple LINQ query that filters users by their age and retrieves their 
-HeartRate time series, and the RQL equivalent for this query.  
+To build a time series LINQ query, start with `session.Query` or `session.Advanced.DocumentQuery` 
+and extend it using LINQ expressions.  
+Here is a simple LINQ query that chooses users by their age and retrieves their HeartRate time 
+series, and the RQL equivalent for this query.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:LINQ ts_region_LINQ-1-Select-Timeseries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
@@ -45,12 +47,62 @@ HeartRate time series, and the RQL equivalent for this query.
 
 {PANEL: Syntax}
 
+### `Session.Query`
+
 `session.Query` Definition:  
 {CODE Query-definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 Learn more about `session.Query` [here](../../../../client-api/session/querying/how-to-query#session.query).  
 
-**Return Value**:  
+### Document Query
+
+The session [Document Query](../../../../indexes/querying/query-vs-document-query) accessible 
+at `session.Advanced` can be extended with several useful time series methods. To access these 
+methods, begin with the LINQ method `SelectTimeSeries()`:  
+
+{CODE-BLOCK: csharp}
+IDocumentQuery SelectTimeSeries(Func<ITimeSeriesQueryBuilder, TTimeSeries> timeSeriesQuery);
+{CODE-BLOCK/}
+
+`SelectTimeSeries()` takes an `ITimeSeriesQueryBuilder`. The builder has the following methods:  
+
+{CODE-BLOCK: csharp}
+From(string name);
+Between(DateTime start, DateTime end);
+FromLast(Action<ITimePeriodBuilder> timePeriod);
+FromFirst(Action<ITimePeriodBuilder> timePeriod);
+LoadByTag<TTag>();
+//LoadByTag is extended by a special version of Where():
+Where(Expression<Func<TimeSeriesEntry, TTag, bool>> predicate);
+{CODE-BLOCK/}
+
+| Parameter | Type | Description |
+| - | - | - |
+| **name** | `string` | The name of the time series (in one or more documents) to query |
+| **start** | `DateTime` | First parameter for `Between()`; the beginning of the time series range to filter. |
+| **end** | `DateTime` | Second parameter for `Between()`; the end of the time series range to filter. |
+| **timePeriod** | `Action<ITimePeriodBuilder>` | Expression returning a number of time units representing a time series range either at the beginning or end of the queried time series. |
+| `LoadByTag` type parameter | `TTag` | Time series entry tags can be just strings, but they can also document IDs, representing a reference to an entity. `LoadByTag` takes the type of the entity. |
+| **predicate** | `Expression<Func<TimeSeriesEntry, TTag, bool>>` |
+
+`FromLast()` and `FromFirst()` take an `ITimePeriodBuilder`, which is used to represent 
+a range of time from milliseconds to years:
+
+{CODE-BLOCK: csharp}
+public interface ITimePeriodBuilder
+{
+    Milliseconds(int duration);
+    Seconds(int duration);
+    Minutes(int duration);
+    Hours(int duration);
+    Days(int duration);
+    Months(int duration);
+    Quarters(int duration);
+    Years(int duration);
+}
+{CODE-BLOCK/}
+
+### Return Value:  
 
 * **`IRavenQueryable<TimeSeriesAggregationResult>`**  for aggregated data.  
   When the query 
@@ -65,7 +117,7 @@ Learn more about `session.Query` [here](../../../../client-api/session/querying/
 {PANEL: Usage Flow}
 
 * Open a session  
-* Call `session.Query`.  
+* Call `session.Query` or `session.Advanced.DocumentQuery`.  
    - Run a document query to locate documents whose time series you want to query.  
    - Extend the query using LINQ expressions to find and project time series data.  
      Start with `Select` to choose a time series.  
@@ -75,7 +127,9 @@ Learn more about `session.Query` [here](../../../../client-api/session/querying/
   `TimeSeriesRawResult` for non-aggregated data  
 {PANEL/}
 
-{PANEL: Usage Samples}
+{PANEL: Examples}
+
+### `Session.Query`
 
 * In this sample, we select a three-days range from the HeartRate time series.  
   {CODE ts_region_LINQ-3-Range-Selection@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
@@ -96,6 +150,24 @@ Learn more about `session.Query` [here](../../../../client-api/session/querying/
   The aggregated results are retrieved into an `IRavenQueryable<TimeSeriesAggregationResult>` array.  
   {CODE ts_region_LINQ-6-Aggregation@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
+### Document Query
+
+* A Document Query using only the `From()` method.  
+  {CODE TS_DocQuery_1@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+
+* A Document Query using `Between()`.  
+  {CODE TS_DocQuery_2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+
+* Two Document Queries using `FromFirst()` and `FromLast()`. These return the first three 
+  days of the 'HeartRate' time series, and the last three days, respectively.  
+  {CODE TS_DocQuery_3@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
+
+* A Document Query that filters time series entries by tags of the type `Monitor`. That is, the 
+  tags are document IDs of entities of type `Monitor`.  
+  {CODE-TABS}
+  {CODE-TAB:csharp:Query TS_DocQuery_4@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+  {CODE-TAB:csharp:Class TS_DocQuery_class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+  {CODE-TABS/}
 {PANEL/}
 
 {PANEL: Client Raw RQL Queries}
