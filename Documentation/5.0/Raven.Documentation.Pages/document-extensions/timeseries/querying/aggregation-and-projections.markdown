@@ -26,9 +26,6 @@
 
     {INFO/}
 
-
-
-
 * In this page:  
   * [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections#aggregation-and-projections)  
   * [Client Usage Samples](../../../document-extensions/timeseries/querying/aggregation-and-projections#client-usage-samples)  
@@ -69,22 +66,22 @@ project entries by a chosen criteria.
 
 {INFO/}
 
-* In this sample, we group entries of users' HeartRate time series 
+* In this sample, we group entries of users' HeartRates time series 
   and project the lowest and highest values of each group.  
-  Each HeartRate entry holds a single value.
+  Each HeartRates entry holds a single value.
     {CODE-BLOCK: JSON}
-from Users as u where Age < 30
-    select timeseries(
-        from HeartRate between 
-            '2020-05-17T00:00:00.0000000Z' 
-            and '2020-05-23T00:00:00.0000000Z'
-                where Tag == 'watches/fitbit'
-        group by '1 days'
-        select min(), max()
-    )
+from Employees as e
+select timeseries(
+    from HeartRates between 
+        '2020-05-17T00:00:00.0000000Z' 
+        and '2020-05-23T00:00:00.0000000Z'
+    where Tag == 'watches/fitbit'
+    group by '1 days'
+    select min(), max()
+)
     {CODE-BLOCK/}
    * **group by '1 days'**  
-     We group each user's HeartRate time series entries in consecutive 1-day groups.  
+     We group each user's HeartRates time series entries in consecutive 1-day groups.  
    * **select min(), max()**  
      We select the lowest and highest values of each group and project them to the client.  
 
