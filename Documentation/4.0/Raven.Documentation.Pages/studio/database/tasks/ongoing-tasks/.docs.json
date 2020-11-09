@@ -21,6 +21,11 @@
     "Path": "backup-task.markdown",
     "Name": "Backup Task",
     "DiscussionId": "4b07e2ec-3386-4e99-861f-7b9f56954d7d",
-    "Mappings": []
+    "Mappings": [
+        {
+            "Version": 5.1,
+            "Key": "studio/database/tasks/backup-task"
+        }
+    ]
   }
 ]
