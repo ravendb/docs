@@ -21,6 +21,7 @@
     "Path": "backup-task.markdown",
     "Name": "Backup Task",
     "DiscussionId": "b0f8aca6-dc25-4dc6-b2c8-35636c532a54",
+    "LastSupportedVersion": 5.0,
     "Mappings": [
         {
             "Version": 5.1,

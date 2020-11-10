@@ -16,6 +16,14 @@
         {
             "Version": 4.2,
             "Key": "studio/database/tasks/ongoing-tasks/backup-task"
+        },
+        {
+            "Version": 4.1,
+            "Key": "studio/database/tasks/ongoing-tasks/backup-task"
+        },
+        {
+            "Version": 4.0,
+            "Key": "studio/database/tasks/ongoing-tasks/backup-task"
         }
     ]
   },
