@@ -28,8 +28,8 @@ A [percentile](https://en.wikipedia.org/wiki/Percentile) of a time series
 is the value that divides the time series values by some ratio, when they 
 are arranged from smallest to largest.  
 
-For example, a 90th percentile is larger than 90% of the values in the 
-series, and smaller than the remaining 10%.  
+For example, a 90th percentile is greater than 90% of the values in the 
+series, and less than the remaining 10%.  
 {INFO/}
 
 * RQL method: `percentile()`
@@ -83,7 +83,6 @@ Queries with these methods return results with the following format:
 {
     "From": <first entry's timestamp>,
     "To": <last entry's timestamp>,
-    "Key": <entry tag ??? reviewers can you confirm?>,
     "Count": [
         <number of first values from each entry>,
         <number of second values from each entry>,

@@ -22,9 +22,9 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                 {
                     #region RQL_percentile
                     var query = session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
-                        from Patients as p
+                        from Employees as e
                         select timeseries(
-                            from p.HeartRate 
+                            from e.HeartRate 
                             select percentile(90)
                         )
                     ");
@@ -34,7 +34,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                 using (var session = store.OpenSession())
                 {
                     #region LINQ_percentile
-                    var query = session.Query<Patient>()
+                    var query = session.Query<Employee>()
                         .Select(p => RavenQuery.TimeSeries(p, "HeartRate")
                             .Select(x => new
                             {
@@ -49,9 +49,9 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                 {
                     #region RQL_slope
                     var query = session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
-                        from Patients as p 
+                        from Employees as e 
                         select timeseries(
-                            from p.HeartRate
+                            from e.HeartRate
                             group by 1 hour
                             select slope()
                         )
@@ -62,7 +62,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                 using (var session = store.OpenSession())
                 {
                     #region LINQ_slope
-                    var query = session.Query<Patient>()
+                    var query = session.Query<Employee>()
                         .Select(p => RavenQuery.TimeSeries(p, "HeartRate")
                             .GroupBy(g => g.Hours(1))
                             .Select(x => new
@@ -77,21 +77,30 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                 using (var session = store.OpenSession())
                 {
                     #region RQL_stddev
+                    //Example query with defined range
+                    var date = DateTime.Today;
+
                     var query = session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
-                        from Patients as p
+                        from Employees as e
                         select timeseries(
-                            from p.HeartRate 
+                            from e.HeartRate 
+                            between $start and $end
                             select stddev()
                         )
-                    ");
+                    ")
+                    .AddParameter("start", date)
+                    .AddParameter("end", date.AddDays(1));
                     #endregion
                 }
 
                 using (var session = store.OpenSession())
                 {
                     #region LINQ_stddev
-                    var query = session.Query<Patient>()
-                        .Select(p => RavenQuery.TimeSeries(p, "HeartRate")
+                    //Example query with defined range
+                    var date = DateTime.Today;
+
+                    var query = session.Query<Employee>()
+                        .Select(p => RavenQuery.TimeSeries(p, "HeartRate", date, date.AddDays(1))
                             .Select(x => new
                             {
                                 StdDev = x.StandardDeviation()
@@ -104,7 +113,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
         }
     }
 
-    internal class Patient
+    internal class Employee
     {
     }
 }
