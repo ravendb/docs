@@ -5,8 +5,8 @@
 
 * RavenDB lets you define a backup task per-database  
 _-or-_  
-  a **Server-Wide Backup Task** that backs up **all** the databases in your cluster. Specific databases can be 
-  manually excluded from this task.  
+  a **Server-Wide Backup Task** that backs up **all** the databases in your cluster.  
+  Specific databases can be manually excluded from this task.  
 
 * When scheduling a **Server-Wide Backup Task**, RavenDB actually creates a 
   [regular ongoing backup task](../../studio/database/tasks/ongoing-tasks/backup-task) 
@@ -42,8 +42,8 @@ Click the **Manage Server** main-menu item.
 
 ![Figure 2. Add Server-Wide Backup Task](images/server-wide-backup_02-new-task.png "Figure 2. Add Server-Wide Backup Task")
 
-1. Click the **Server-Wide Backup** menu item  
-2. Click the **Add Server-Wide Backup Task** button to add a new task  
+1. Click the **Server-Wide Tasks** menu item  
+2. Click the **Add Server-Wide Task** button to add a new task  
 
 ---
 
@@ -60,10 +60,10 @@ The settings are similar to those of a [regular backup task](../../studio/databa
    Select 'Backup' for a [logical backup](../../client-api/operations/maintenance/backup/backup#logical-backup) 
    or 'Snapshot' for a [snapshot image](../../client-api/operations/maintenance/backup/backup#snapshot).  
   
-3. **Exclude databases**
-   Toggle whether to exclude some of the databases from the server-wide backup.
-   Select an existing database from the dropdown, or enter a new database name of your choice,
-   then click 'Add Database'.
+3. **Exclude databases**  
+   Toggle whether to exclude some of the databases from the server-wide backup.  
+   Select an existing database from the dropdown, or enter a new database name of your choice, 
+   then click 'Add Database'.  
 
 4. **Schedule**  
    Define task contents (Full and/or Incremental) and schedule execution time.  
@@ -131,9 +131,10 @@ In both cases, you can restore the database by
 
 {PANEL: Server-Wide Backup Tasks in the Database Tasks View}
 
-The Server-Wide Backup Tasks created for each database, can be viewed in the database's Ongoing-Tasks view.  
-Use this view to see a task's details, or trigger an immediate backup for the selected database.  
-To edit or modify a Server-Wide task, navigate back to the [Server-Wide Backup view](#scheduling-a-server-wide-backup-task).  
+The Server-Wide Backup Tasks can also be viewed in both the database's [Ongoing-Tasks view](../../studio/database/tasks/ongoing-tasks/general-info) 
+& [Backups view.](../../studio/database/tasks/backup-task)  
+Use either one of these views to see a task's details, or trigger an immediate backup for the selected database.  
+To edit or modify a Server-Wide task, navigate back to the [Server-Wide Backup view](../../client-api/operations/maintenance/backup/backup#scheduling-a-server-wide-backup-task).  
 
 * Choose the database you're interested in.  
 

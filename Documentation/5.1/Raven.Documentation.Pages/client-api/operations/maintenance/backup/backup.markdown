@@ -211,14 +211,21 @@ public class RetentionPolicy
 
 {PANEL: Server-Wide Backup}
 
-You can create a Server-Wide Backup task to back-up **all the databases in your cluster** at a scheduled time. 
+You can create a Server-Wide Backup task to back-up **all the databases in your cluster** at a scheduled time.  
 Individual databases can be excluded from the backup. Learn more in [Studio: Server-Wide Backup](../../../../studio/server/server-wide-backup).  
 
-* Backups can be made locally, as well as to a [set of remote locations](../../../../client-api/operations/maintenance/backup/backup#backup-to-local-and-remote-destinations).  
+Backups can be made locally, as well as to a [set of remote locations](../../../../client-api/operations/maintenance/backup/backup#backup-to-local-and-remote-destinations).  
 
-* Server-wide Backup Code Sample:
-  {CODE server_wide_backup_configuration@ClientApi\Operations\Maintenance\Backup\ServerWideBackup.cs /}
- 
+#### Examples  
+
+A server-wide backup configuration that sets multiple destinations:  
+
+{CODE server_wide_backup_configuration@ClientApi\Operations\Maintenance\Backup\ServerWideBackup.cs /}  
+
+A server-wide backup configuration that excludes several of the databases on the server:  
+
+{CODE database_exclude_configuration@ClientApi\Operations\Maintenance\Backup\ServerWideBackup.cs /}  
+
 {PANEL/}
 
 {PANEL: Initiate Immediate Backup Execution}
