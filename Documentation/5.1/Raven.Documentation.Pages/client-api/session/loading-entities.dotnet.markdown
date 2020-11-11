@@ -43,7 +43,7 @@ The most basic way to load a single entity is to use one of the `Load` methods.
 {CODE-TAB:csharp:Async loading_entities_1_1_async@ClientApi\Session\LoadingEntities.cs /}
 {CODE-TABS/} 
 
-{NOTE In 4.x RavenDB, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported. /}
+{NOTE From RavenDB version 4.x onwards, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported. /}
 
 {PANEL/}
 
