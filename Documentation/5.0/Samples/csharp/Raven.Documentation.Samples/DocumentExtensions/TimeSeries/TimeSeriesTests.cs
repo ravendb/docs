@@ -65,7 +65,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     // Create an instance of TimeSeriesFor
                     // Pass an explicit document ID to the TimeSeriesFor constructor 
-                    // Append a HeartRates of 70 at the first-minute timestamp 
+                    // Append a heart rate of 70 at the first-minute timestamp 
                     session.TimeSeriesFor("users/john", "HeartRates")
                         .Append(baseline.AddMinutes(1), 70d, "watches/fitbit");
 
@@ -112,8 +112,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             using (var store = getDocumentStore())
             {
 
-                store.TimeSeries.Register<User, HeartRates>();
-                store.TimeSeries.Register<User, StockPrices>();
+                store.TimeSeries.Register<User, HeartRate>();
+                store.TimeSeries.Register<User, StockPrice>();
                 #region timeseries_region_Named-Values-Register
                 store.TimeSeries.Register<User, RoutePoint>();
                 #endregion
@@ -192,8 +192,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     //store.TimeSeries.Register<User, HeartRate>();
 
-                    session.TimeSeriesFor<HeartRates>("users/john")
-                        .Append(DateTime.Now, new HeartRates
+                    session.TimeSeriesFor<HeartRate>("users/john")
+                        .Append(DateTime.Now, new HeartRate
                         {
                             HeartRateMeasure = 80
                         }, "watches/anotherFirm");
@@ -207,8 +207,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 {
                     session.Store(new User { Name = "John" }, "users/john");
 
-                    session.TimeSeriesFor<StockPrices>("users/john")
-                    .Append(baseline.AddDays(1), new StockPrices
+                    session.TimeSeriesFor<StockPrice>("users/john")
+                    .Append(baseline.AddDays(1), new StockPrice
                     {
                         Open = 52,
                         Close = 54,
@@ -217,8 +217,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         Volume = 9824,
                     }, "companies/kitchenAppliances");
 
-                    session.TimeSeriesFor<StockPrices>("users/john")
-                    .Append(baseline.AddDays(2), new StockPrices
+                    session.TimeSeriesFor<StockPrice>("users/john")
+                    .Append(baseline.AddDays(2), new StockPrice
                     {
                         Open = 54,
                         Close = 55,
@@ -227,8 +227,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         Volume = 8400,
                     }, "companies/kitchenAppliances");
 
-                    session.TimeSeriesFor<StockPrices>("users/john")
-                    .Append(baseline.AddDays(3), new StockPrices
+                    session.TimeSeriesFor<StockPrice>("users/john")
+                    .Append(baseline.AddDays(3), new StockPrice
                     {
                         Open = 55,
                         Close = 57,
@@ -269,8 +269,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         Address = new Address { City = "New York" } },
                                                 "companies/kitchenAppliances");
 
-                    session.TimeSeriesFor<StockPrices>("companies/kitchenAppliances")
-                    .Append(baseline.AddDays(1), new StockPrices
+                    session.TimeSeriesFor<StockPrice>("companies/kitchenAppliances")
+                    .Append(baseline.AddDays(1), new StockPrice
                     {
                         Open = 52,
                         Close = 54,
@@ -279,8 +279,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         Volume = 9824,
                     }, "companies/kitchenAppliances");
 
-                    session.TimeSeriesFor<StockPrices>("companies/kitchenAppliances")
-                    .Append(baseline.AddDays(2), new StockPrices
+                    session.TimeSeriesFor<StockPrice>("companies/kitchenAppliances")
+                    .Append(baseline.AddDays(2), new StockPrice
                     {
                         Open = 54,
                         Close = 55,
@@ -289,8 +289,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         Volume = 8400,
                     }, "companies/kitchenAppliances");
 
-                    session.TimeSeriesFor<StockPrices>("companies/kitchenAppliances")
-                    .Append(baseline.AddDays(3), new StockPrices
+                    session.TimeSeriesFor<StockPrice>("companies/kitchenAppliances")
+                    .Append(baseline.AddDays(3), new StockPrice
                     {
                         Open = 55,
                         Close = 57,
@@ -311,10 +311,10 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 // Named Values Query
                 using (var session = store.OpenSession())
                 {
-                    IRavenQueryable<TimeSeriesRawResult<StockPrices>> query =
+                    IRavenQueryable<TimeSeriesRawResult<StockPrice>> query =
                         session.Query<Company>()
                         .Where(c => c.Address.City == "New York")
-                        .Select(q => RavenQuery.TimeSeries<StockPrices>(q, "StockPrices", baseline, baseline.AddDays(3))
+                        .Select(q => RavenQuery.TimeSeries<StockPrice>(q, "StockPrices", baseline, baseline.AddDays(3))
                             .Where(ts => ts.Tag == "companies/kitchenAppliances")
                             .ToList());
 
@@ -352,8 +352,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     User user = session.Load<User>("users/john");
 
                     // Pass the document object returned from session.Load as a param
-                    // Retrieve a single value from the "HeartRate" time series 
-                    TimeSeriesEntry[] val = session.TimeSeriesFor(user, "HeartRate")
+                    // Retrieve a single value from the "HeartRates" time series 
+                    TimeSeriesEntry[] val = session.TimeSeriesFor(user, "HeartRates")
                         .Get(DateTime.MinValue, DateTime.MaxValue);
                 }
 
@@ -385,7 +385,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 // Use Get with a Named type
                 using (var session = store.OpenSession())
                 {
-                    TimeSeriesEntry<StockPrices>[] val = session.TimeSeriesFor<StockPrices>("users/john")
+                    TimeSeriesEntry<StockPrice>[] val = session.TimeSeriesFor<StockPrice>("users/john")
                         .Get();
 
                     var closePriceDay1 = val[0].Value.Close;
@@ -403,7 +403,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 using (var session = store.OpenAsyncSession())
                 {
                     // get entries by GetAsync, using the strongly typed StockPrice class
-                    var results = await session.TimeSeriesFor<StockPrices>("users/john")
+                    var results = await session.TimeSeriesFor<StockPrice>("users/john")
                         .GetAsync();
 
                     var ClosePriceDay1 = results[0].Value.Close;
@@ -431,7 +431,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     session.TimeSeriesFor("users/john", "HeartRates")
                         .Delete(baseline.AddMinutes(1));
 
-                    session.TimeSeriesFor<StockPrices>("users/john").Delete(baseline.AddDays(1), baseline.AddDays(2));
+                    session.TimeSeriesFor<StockPrice>("users/john").Delete(baseline.AddDays(1), baseline.AddDays(2));
 
                     session.SaveChanges();
                 }
@@ -642,7 +642,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 #region timeseries_region_TimeSeriesFor-Append-TimeSeries-Range
                 var baseline = DateTime.Today;
 
-                // Append 10 HeartRates values
+                // Append 10 heart rate values
                 using (var session = store.OpenSession())
                 {
                     session.Store(new User { Name = "John" }, "users/john");
@@ -711,8 +711,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         .ToList();
                 }
 
-                // Append each employee a week (168 hours) of random exercise HeartRates values 
-                // and a week (168 hours) of random rest HeartRates values 
+                // Append each employee a week (168 hours) of random exercise HeartRate values 
+                // and a week (168 hours) of random rest HeartRate values 
                 var baseTime = new DateTime(2020, 5, 17);
                 Random randomValues = new Random();
                 using (var session = store.OpenSession())
@@ -2565,13 +2565,13 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
         }
         #endregion
 
-        private struct HeartRates
+        private struct HeartRate
         {
             [TimeSeriesValue(0)] public double HeartRateMeasure;
         }
 
         #region Custom-Data-Type-1
-        private struct StockPrices
+        private struct StockPrice
         {
             [TimeSeriesValue(0)] public double Open;
             [TimeSeriesValue(1)] public double Close;
