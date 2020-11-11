@@ -12,7 +12,7 @@ In this page:
 
 [SubscriptionWorker lifecycle](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#subscriptionworker-lifecycle)  
 [Error handling](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#error-handling)  
-[Workers interplay](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#workers-interplay)
+[Worker interplay](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay)
 
 {NOTE/}
 
@@ -70,7 +70,7 @@ In the cases above, we described situations in which a worker will try to reconn
 * `MaxErroneousPeriod` - The maximum time in which the worker is allowed to be in erroneous state. After that time passes, the worker will stop trying to reconnect
 {INFO/}
 
-{INFO: `OnUnexpectedSubscriptionError`}
+{INFO: OnUnexpectedSubscriptionError}
 `OnUnexpectedSubscriptionError` is the event raised when a connection failure occurs 
 between the subscription worker and the server and it throws an unexpected exception. 
 When this occurs, the worker will automatically try to reconnect again. This event is 
@@ -82,22 +82,21 @@ useful for logging these unexpected exceptions.
 {PANEL: Worker interplay}
 There can only be one active subscription worker working on a subscription. 
 Nevertheless, there are scenarios where it is required to interact between an existing subscription worker and one that tries to connect. 
-This relationship and interoperation is configured by the `SubscriptionConnectionOptions` `Strategy` field.  
-The strategy field is an enum, having the following values:  
+This relationship and interoperation is configured by the `SubscriptionWorkerOptions` `Strategy` field.  
+The strategy field is the enum `SubscriptionOpeningStrategy`, which has the following values:  
 
 * `OpenIfFree` - the server will allow the worker to connect only if there isn't any other currently connected workers.  
-  If there is a existing connection, the incoming worker will throw a SubscriptionInUseException.  
+  If there is a existing connection, the incoming worker will throw a `SubscriptionInUseException`.  
 * `WaitForFree` - If the client currently cannot open the subscription because it is used by another client, it will wait for the previous client to disconnect and only then will connect.  
   This is useful in client failover scenarios where there is one active client and another one already waiting to take its place.  
 * `TakeOver` - the server will allow an incoming connection to overthrow an existing one. It will behave according to the existing connection strategy:
-  * The existing connection has a strategy that is not `TakeOver`. In this case, the incoming connection will take over it causing the existing connection to throw a SubscriptionInUseException exception.  
+  * The existing connection has a strategy that is not `TakeOver`. In this case, the incoming connection will take over it causing the existing connection to throw a `SubscriptionInUseException`.  
   * The existing connection has a strategy that is `TakeOver`. In this case, the incoming connection will throw a SubscriptionInUseException exception.  
 {PANEL/}
 
-## Related Articles
+## Related Articles  
 
-**Data Subscriptions**:
+### Data Subscriptions  
 
-- [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
-- [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
-- [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
+- [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)  
+- [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)  
