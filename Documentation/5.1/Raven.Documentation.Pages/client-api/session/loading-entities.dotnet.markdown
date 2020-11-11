@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-There are severl methods with many overloads that allow users to download documents 
+There are several methods with many overloads that allow users to download documents 
 from the database and convert them to entities. This article will cover the following 
 methods:  
 
@@ -49,7 +49,11 @@ The most basic way to load a single entity is to use one of the `Load` methods.
 
 {PANEL:Load with Includes}
 
-When there is a 'relationship' between documents, those documents can be loaded in a single request call using the `Include + Load` methods.
+When there is a 'relationship' between documents, those documents can be loaded in a 
+single request call using the `Include + Load` methods. Learn more in 
+[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships).  
+See also [including counters](../../document-extensions/counters/counters-and-other-features#including-counters) 
+and [including time series](../../document-extensions/timeseries/client-api/session/include/overview).
 
 {CODE loading_entities_2_0@ClientApi\Session\LoadingEntities.cs /}
 
@@ -144,9 +148,11 @@ To load multiple entities that contain a common prefix, use the `LoadStartingWit
 
 {PANEL: ConditionalLoad}
 
-The `ConditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector), 
-and if this change vector matches the document's current change vector on the server 
-side, it is not loaded. If the change vectors do not match, the document is loaded.  
+The `ConditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector). 
+If the entity is tracked by the session, this method returns the entity. If the entity 
+is not tracked, it checks if the provided change vector matches the document's 
+current change vector on the server side. If they match, the entity is not loaded. 
+If the change vectors _do not_ match, the document is loaded.  
 
 In other words, this method can be used to check whether a document has been modified 
 since the last time its change vector was recorded, so that the cost of loading it 
@@ -189,15 +195,15 @@ Entities can be streamed from the server using one of the following `Stream` met
 | Parameter | Type | Description |
 | ------------- | ------------- | ----- |
 | **startsWith** | `string` | prefix for which documents should be streamed |
-| **matches** | `string | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
+| **matches** | `string` | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
 | **start** | `int` | number of documents that should be skipped  |
 | **pageSize** | `int` | maximum number of documents that will be retrieved |
 | **skipAfter** | `string` | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
-| `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+| **StreamQueryStats** | `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 | Return Type | Description |
 | ------------- | ----- |
-| `IEnumerator<[StreamResult](../../glossary/stream-result)>` | Enumerator with entities. |
+| `IEnumerator<`[StreamResult](../../glossary/stream-result)`>` | Enumerator with entities. |
 | `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 
