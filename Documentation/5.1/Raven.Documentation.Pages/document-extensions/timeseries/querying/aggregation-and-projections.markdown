@@ -44,7 +44,6 @@ keyword to choose and project entries by a chosen criterion.
 
 {INFO: You can aggregate entries by these time units:}  
 
-* **Milliseconds**  
 * **Seconds**  
 * **Minutes**  
 * **Hours**  
@@ -66,6 +65,11 @@ keyword to choose and project entries by a chosen criterion.
 * **First()** - values of the first series entry  
 * **Last()** - values of the last series entry  
 * **Count()** - overall number of values in series entries  
+* **Percentile(<number between 0 and 1.0>)** - the value that divides the other 
+values in the series by the given ratio.  
+* **Slope()** - the difference in value divided by the difference in time between 
+the first and last entries.  
+* **StandardDeviation()** - the _standard deviation_ of all the values.  
 
 {INFO/}
 
@@ -73,7 +77,8 @@ keyword to choose and project entries by a chosen criterion.
   and project the lowest and highest values of each group.  
   Each HeartRate entry holds a single value.
     {CODE-BLOCK: JSON}
-from Patients as p where Age < 30
+from Employees as e
+where e.Birthday > '1960-01-01'
 select timeseries(
     from HeartRate between 
         '2020-05-17T00:00:00.0000000Z' 
@@ -101,7 +106,7 @@ select timeseries(
     {CODE-BLOCK: JSON}
 declare timeseries SP(c) 
 {
-    from c.StockPrice 
+    from c.StockPrices 
     where Values[4] > 500000
         group by '7 day'
         select max(), min()
@@ -131,7 +136,7 @@ select c.Name, SP(c)
   {CODE-BLOCK: JSON}
 declare timeseries SP(c) 
 {
-    from c.StockPrice 
+    from c.StockPrices 
     where Values[4] > 500000
         select max(), min()
 }
@@ -148,20 +153,20 @@ select c.Name, SP(c)
   the first query we simply use `group by tag` and also filter the results based 
   on the tag value. In the second, we access the tag   using `load` and then filter:  
   {CODE-BLOCK: sql}
-from Patients as p
+from Employees as e
 select timeseries(
-    from HeartRate
-    where Tag == 'watches/fitbit' | 'Heartrate_Monitor'
+    from HeartRates
+    where Tag == 'watches/fitbit' or 'Heartrate_Monitor'
     group by tag
     select min(), max()
 )
   {CODE-BLOCK/}
   {CODE-BLOCK: sql}
-from Patients as p
+from Employees as e
 select timeseries(
-    from HeartRate
+    from HeartRates
     load Tag as monitor
-    where monitor == 'watches/fitbit' | 'Heartrate_Monitor'
+    where monitor == 'watches/fitbit' or 'Heartrate_Monitor'
     group by tag
     select min(), max()
 )
