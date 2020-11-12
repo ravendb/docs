@@ -108,6 +108,13 @@ namespace Raven.Documentation.Samples.Indexes
         }
     }
 
+    public class BlogPost
+    {
+        public string[] Tags { get; set; }
+        public string Content { get; set; }
+        public string Title { get; internal set; }
+    }
+
     /*
     #region analyzers_6
     public class MyAnalyzer : Lucene.Net.Analysis.Analyzer
