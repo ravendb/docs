@@ -6,7 +6,7 @@ using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Indexes.Counters;
 using Raven.Documentation.Samples.Orders;
 
-namespace Raven.Documentation.Samples.Indexes
+namespace Raven.Documentation.Samples.DocumentExtensions
 {
     public class IndexingCounters
     {
