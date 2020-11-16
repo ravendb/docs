@@ -158,8 +158,10 @@ That's it.
             <strong class="previous">Building an enterprise application with the .NET Core and RavenDB NoSQL database</strong>
         </div>
     </a>
-    <div class="nav-btn disabled margin-bottom-xs">
-        <small>Next in the series ›</small>
-        <strong class="next">Coming soon</strong>
-    </div>
+    <a href="https://ravendb.net/articles/hidden-side-of-document-ids-in-ravendb">
+        <div class="nav-btn margin-bottom-xs">
+            <small>Next in the series ›</small>
+            <strong class="next">Hidden Side of Document IDs in RavenDB</strong>
+        </div>
+    </a>
 </div>

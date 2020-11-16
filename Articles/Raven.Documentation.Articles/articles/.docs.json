@@ -2051,5 +2051,34 @@
         "twitter:description": "Why Non Relational Databases Today Cost Less? You can see the difference in how a single simple data query is constructed and computed.",
         "twitter:url": "https://ravendb.net/articles/why-non-relational-databases-today-cost-less-in-time-money-and-headache"
     }
+},
+{
+    "Path": "hidden-side-of-document-ids-in-ravendb.markdown",
+    "Name": "Hidden side of document IDs in RavenDB",
+    "Mappings": [],
+    "Metadata": {
+        "title": "NoSQL Database Document IDs | RavenDB",
+        "likeSection": "yes",
+        "url": "hidden-side-of-document-ids-in-ravendb",
+        "publishedAt": "2020-11-13",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "How to pass document IDs in the URL, mask the ID, drop the prefix, expose nested references, store processed IDs in the DB records, customise the ID, GUID, customise the ID convention, collect name, artificial ID.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "NoSQL Database Document IDs | RavenDB",
+        "og:description": "How to pass document IDs in the URL, mask the ID, drop the prefix, expose nested references, store processed IDs in the DB records, customise the ID, GUID, customise the ID convention, collect name, artificial ID.",
+        "og:url": "https://ravendb.net/articles/hidden-side-of-document-ids-in-ravendb",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/hidden-side-of-document-ids-in-ravendb&fileName=hidden-side-of-document-ids-in-ravendb.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "NoSQL Database Document IDs | RavenDB",
+        "twitter:description": "How to pass document IDs in the URL, mask the ID, drop the prefix, expose nested references, store processed IDs in the DB records, customise the ID, GUID, customise the ID convention, collect name, artificial ID.",
+        "twitter:url": "https://ravendb.net/articles/hidden-side-of-document-ids-in-ravendb"
+    }
 }
 ]
