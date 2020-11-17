@@ -47,7 +47,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                 using (var session = store.OpenSession())
                 {
                     #region direct
-                    var timeseries = session.TimeSeriesFor("user/1-A", "heartrate");
+                    var timeseries = session.TimeSeriesFor<HeartRate>("user/1-A");
                     var results = new List<TimeSeriesEntry>();
 
                     using (var TSstream = timeseries.Stream())
@@ -63,7 +63,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                 using (var session = store.OpenAsyncSession())
                 {
                     #region direct_async
-                    var timeseries = session.TimeSeriesFor("user/1-A", "heartrate");
+                    var timeseries = session.TimeSeriesFor<HeartRate>("user/1-A");
                     var results = new List<TimeSeriesEntry>();
                     var TSstream = await timeseries.StreamAsync();
 
@@ -130,5 +130,9 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                 }
             }
         }
+    }
+
+    class HeartRate
+    {
     }
 }
