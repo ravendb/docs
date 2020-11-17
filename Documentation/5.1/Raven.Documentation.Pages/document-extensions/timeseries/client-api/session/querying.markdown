@@ -35,7 +35,7 @@
 
 To build a time series LINQ query, start with `session.Query` or `session.Advanced.DocumentQuery` 
 and extend it using LINQ expressions.  
-Here is a simple LINQ query that chooses users by their age and retrieves their HeartRate time 
+Here is a simple LINQ query that chooses users by their age and retrieves their HeartRates time 
 series, and the RQL equivalent for this query.  
 
 {CODE-TABS}
@@ -82,7 +82,7 @@ Where(Expression<Func<TimeSeriesEntry, TTag, bool>> predicate);
 | **start** | `DateTime` | First parameter for `Between()`; the beginning of the time series range to filter. |
 | **end** | `DateTime` | Second parameter for `Between()`; the end of the time series range to filter. |
 | **timePeriod** | `Action<ITimePeriodBuilder>` | Expression returning a number of time units representing a time series range either at the beginning or end of the queried time series. |
-| `LoadByTag` type parameter | `TTag` | Time series entry tags can be just strings, but they can also document IDs, representing a reference to an entity. `LoadByTag` takes the type of the entity. |
+| `LoadByTag` type parameter | `TTag` | Time series entry tags can be just strings, but they can also be document IDs, representing a reference to an entity. `LoadByTag` takes the type of the entity. |
 | **predicate** | `Expression<Func<TimeSeriesEntry, TTag, bool>>` |
 
 `FromLast()` and `FromFirst()` take an `ITimePeriodBuilder`, which is used to represent 
@@ -131,7 +131,7 @@ public interface ITimePeriodBuilder
 
 ### `Session.Query`
 
-* In this sample, we select a three-days range from the HeartRate time series.  
+* In this sample, we select a three-day range from the HeartRates time series.  
   {CODE ts_region_LINQ-3-Range-Selection@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 * The first occurance of `Where` in the following example, filters documents.  
@@ -159,7 +159,7 @@ public interface ITimePeriodBuilder
   {CODE TS_DocQuery_2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 * Two Document Queries using `FromFirst()` and `FromLast()`. These return the first three 
-  days of the 'HeartRate' time series, and the last three days, respectively.  
+  days of the 'HeartRates' time series, and the last three days, respectively.  
   {CODE TS_DocQuery_3@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 * A Document Query that filters time series entries by tags of the type `Monitor`. That is, the 
