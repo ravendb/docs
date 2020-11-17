@@ -222,7 +222,7 @@ A server-wide backup configuration that sets multiple destinations:
 
 {CODE server_wide_backup_configuration@ClientApi\Operations\Maintenance\Backup\ServerWideBackup.cs /}  
 
-A server-wide backup configuration that excludes several of the databases on the server:  
+A server-wide backup configuration that excludes several databases:  
 
 {CODE database_exclude_configuration@ClientApi\Operations\Maintenance\Backup\ServerWideBackup.cs /}  
 
