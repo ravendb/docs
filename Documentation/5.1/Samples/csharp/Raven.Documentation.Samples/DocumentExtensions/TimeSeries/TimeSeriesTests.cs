@@ -96,7 +96,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 // Delete a single entry
                 using (var session = store.OpenSession())
                 {
-                    session.TimeSeriesFor<HeartRate>("users/john", "HeartRates")
+                    session.TimeSeriesFor<HeartRate>("users/john")
                         .Delete(baseline.AddMinutes(1));
 
                     session.SaveChanges();
