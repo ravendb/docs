@@ -109,7 +109,7 @@ Select the content to back up. Note: Both types can be scheduled.
   2. **Incremental Backup** 
      Incremental Backup will only back up the delta of the data since the last Backup that has occurred  
 
-Schedule the Backup Task time using a [Cron Expression](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html)  
+Schedule the Backup Task to occur at regular intervals (daily, monthly, hourly) at specific times.  
 {WARNING/}
 
 Notes:  
@@ -182,6 +182,7 @@ be automatically deleted.
 
 {INFO: }
 1. **Backup Task Details**:  
+
   *  Task Status - Active / Not Active / Not on Node  
   *  Destinations - List of all backup destinations defined  
   *  Last Full Backup - The last time a Full Backup was done 
@@ -189,6 +190,10 @@ be automatically deleted.
   *  Last Incremental Backup - The last time an Incremental Backup was done  
   *  Next Estimated Backup - Time for next backup 
      (Full Backup / Incremental Backup / Snapshot - depending on task definition)  
+  *  Last Executed on Node - The cluster node that most recently executed this periodic 
+     backup. This can be different from the "responsible node" chosen when the task was 
+     first defined, because when the responsible node is down, another node will be 
+     assigned the task.  
 {INFO/}
 
 {WARNING: }
@@ -208,7 +213,7 @@ be automatically deleted.
     thus, a new Ongoing Backup Task ***cannot*** be scheduled.  
 
   * If a Backup Task was _already_ defined and active when the cluster went down,  
-    then the Backup Task will still ***continue to execute*** on its defined schedule (on its responsible node).  
+    then the Backup Task will still ***continue to execute*** on its defined schedule (on its [responsible node](../../../server/clustering/distribution/highly-available-tasks#responsible-node)).  
     But, it will fail to be reported to the cluster and may be run again after the cluster has recovered.  
 
 * **When the responsible node is down**  
