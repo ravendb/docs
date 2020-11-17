@@ -2080,5 +2080,34 @@
         "twitter:description": "How to pass document IDs in the URL, mask the ID, drop the prefix, expose nested references, store processed IDs in the DB records, customise the ID, GUID, customise the ID convention, collect name, artificial ID.",
         "twitter:url": "https://ravendb.net/articles/hidden-side-of-document-ids-in-ravendb"
     }
+},
+{
+    "Path": "document-oriented-databases-can-conquer-costs-to-you-and-your-users.markdown",
+    "Name": "Document-oriented databases",
+    "Mappings": [],
+    "Metadata": {
+        "title": "Document-oriented databases | Why use a document-oriented database",
+        "likeSection": "yes",
+        "url": "document-oriented-databases-can-conquer-costs-to-you-and-your-users",
+        "publishedAt": "2020-11-17",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "Why can a relational database cost you and your users big time in poor data queries, while document-oriented databases can save everyone time and money.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "Document-oriented databases | Why use a document-oriented database",
+        "og:description": "Why can a relational database cost you and your users big time in poor data queries, while document-oriented databases can save everyone time and money.",
+        "og:url": "https://ravendb.net/articles/document-oriented-databases-can-conquer-costs-to-you-and-your-users",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/document-oriented-databases-can-conquer-costs-to-you-and-your-users&fileName=document-oriented-databases-can-conquer-costs-to-you-and-your-users.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "Document-oriented databases | Why use a document-oriented database",
+        "twitter:description": "Why can a relational database cost you and your users big time in poor data queries, while document-oriented databases can save everyone time and money.",
+        "twitter:url": "https://ravendb.net/articles/document-oriented-databases-can-conquer-costs-to-you-and-your-users"
+    }
 }
 ]
