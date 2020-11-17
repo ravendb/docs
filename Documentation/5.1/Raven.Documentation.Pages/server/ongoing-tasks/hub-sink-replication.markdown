@@ -273,7 +273,7 @@ select a different node for the job.
 
 **Server Articles**:  
 [External Replication](../../server/ongoing-tasks/external-replication)  
-[Authentication: Client Certificate Usage](../../server/security/authentication/client-certificate-usage)  
+[Client Certificate Usage](../../server/security/authentication/client-certificate-usage)  
 
 **Client Articles**:  
 [Adding a Connection String](../../client-api/operations/maintenance/connection-strings/add-connection-string#operations-how-to-add-a-connection-string)  

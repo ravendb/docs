@@ -138,3 +138,12 @@ Read about replication tasks Failover [Here](../../../../../server/ongoing-tasks
 **Studio Articles**:   
 [Replication Hub Task](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task)  
 [Replication Sink Task](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task)  
+
+**Server Articles**:  
+[External Replication](../../../../../server/ongoing-tasks/external-replication)  
+[Client Certificate Usage](../../../../../server/security/authentication/client-certificate-usage)  
+
+**Client Articles**:  
+[Adding a Connection String](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string#operations-how-to-add-a-connection-string)  
+
+

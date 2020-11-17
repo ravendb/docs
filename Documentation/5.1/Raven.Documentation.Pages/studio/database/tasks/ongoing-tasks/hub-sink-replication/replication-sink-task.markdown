@@ -185,3 +185,10 @@ While defining a Sink task using the Studio, you can -
 **Studio Articles**:   
 [Hub/Sink Replication: Overview](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)  
 [Replication Hub Task](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task)  
+
+**Server Articles**:  
+[External Replication](../../../../../server/ongoing-tasks/external-replication)  
+[Client Certificate Usage](../../../../../server/security/authentication/client-certificate-usage)  
+
+**Client Articles**:  
+[Adding a Connection String](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string#operations-how-to-add-a-connection-string)  
