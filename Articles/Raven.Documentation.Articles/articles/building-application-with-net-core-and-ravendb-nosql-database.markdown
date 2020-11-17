@@ -60,7 +60,7 @@ Our diagram has some resemblance with the classic Onion diagram:
         <span class="text-muted">Leveraging the <em>Domain-driven Design</em> (DDD) to define the problem area (<em>Bounded context</em>) of the project. Designing a potential relational model and the NoSQL model utilised in the <em>YABT</em> (with aggregates, entities, value objects, etc.).</span>
     </li>
     <li class="margin-top-xs">
-        "Hidden side of document ID's in RavenDB"<br/>
+        <a href="https://ravendb.net/articles/hidden-side-of-document-ids-in-ravendb">"Hidden side of document ID's in RavenDB"</a><br/>
         <span class="text-muted">A <em>RavenDB</em> <a href="https://ravendb.net/docs/article-page/latest/csharp/server/kb/document-identifier-generation">document identifier</a> is a string that is globally unique in the scope of the database. What document ID generation strategy to choose? The article covers pros and cons of some strategies and ways to mitigate the cons.</span>
     </li>
     <li class="margin-top-xs">

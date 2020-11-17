@@ -15,13 +15,13 @@ Consider the traditional URL format for updating/deleting/viewing an entity. For
 
 *What would you pass as the `{id}`?*
 
-Passing the document ID 'as is' is not an option. For ID `users/1-A` the URL `/api/users/users/1-A` not only looks ugly, it also will derail the routing if passed unencoded. Encoded ID `/api/users/users%2F1-A` though functional, looks rather puzzling and doesn't bring much joy either.
+Passing the document ID 'as is' would be suboptimal. For ID `users/1-A` the URL `/api/users/users/1-A` not only looks ugly, it also will derail the routing if passed unencoded. Encoded ID `/api/users/users%2F1-A` though functional, looks rather puzzling and doesn't bring much joy either.
 
 #### 1.1. Masking the ID
 
 <p><em>Oren Eini</em> <a href="https://ravendb.net/articles/avoiding-exposing-identifier-details-to-your-users">recommends to avoid exposing the ID</a> by masking it via encryption, so the URL would look like <code>/api/users/bPSPEZii22y5JwUibkQgUuXR3VHBDCbUhC343HBTnd1XMDFZMuok</code>. In <a href="https://ravendb.net/articles/avoiding-exposing-identifier-details-to-your-users">that blog post</a> he provides the code for using the AES encryption and then encoding to the Bitcoin format.</p>
 
-The main benefit is disguising the pace of growing records in a collection that could be visible through sequential IDs (e.g. how many orders were created between events *A* and *B*). However, for enterprise applications it would mean sacrificing the user experience – the format is not human-readable and harder to manage (e.g. accidentally miss a character or two when copy-paste).
+The main benefit is disguising the pace of growing records in a collection that could be visible through sequential IDs (e.g. how many orders were created between events *A* and *B*). However, for enterprise applications it would mean sacrificing the user experience – the format is not human-readable and harder to manage (e.g. accidentally miss a character or two when selecting for copy-paste).
 
 <p>This method is a bit faster than GUIDs due to lower impact on the <a href="https://en.wikipedia.org/wiki/B-tree" target="_blank" rel="nofollow">B-tree</a> index (though, Oren says: "<em>[impact] isn't going to be a major one before you get to 100 million records</em>"), but there can be a better approach.</p>
 
@@ -41,9 +41,9 @@ Once we know what kind of entity the short ID is for, the ID transition is trivi
     // From `1-A` to `users/1-A`
     static string GetFullId<T>(this IAsyncDocumentSession session, string shortId) where T : IEntity
     {
-        // Pluralise the collection name (e.g. for 'User' get 'Users', for 'Person' get 'people')
+        // Pluralise the collection name (e.g. 'User' becomes 'Users', 'Person' becomes 'People')
         var pluralisedName = DocumentConventions.DefaultGetCollectionName(typeof(T));
-        // Correct the casing (for 'Users' get 'users', for 'BacklogItems' get 'BacklogItems')
+        // Fix the later case - converts `Users` to `users`, `BacklogItems` to `backlogItems`
         var prefix = session.Advanced.DocumentStore.Conventions.TransformTypeCollectionNameToDocumentIdPrefix(pluralisedName);
 
         return $"{prefix}/{shortId}";
@@ -56,7 +56,7 @@ Once we know what kind of entity the short ID is for, the ID transition is trivi
 ### 2. Exposing nested references
 <hr style="border-color:rgba(34,37,43,.15);">
 
-It's getting more interesting when we need to process an entity with nested references to other entities.
+It's getting more interesting when we need to process an entity containing nested references.
 
 Take a sample *Backlog item* record from the *YABT* database:
 
@@ -125,7 +125,7 @@ Nothing is perfect and the downsides would be
 
 To have your ducks in a row at the DB level we can store full reference IDs and process them before exposing to the consumer. This way we avoid the downsides described above.
 
-At its minimum, we can call `GetShortId()` on all the properties of the returned DTO that require ID processing... It would be a bit tedious and prone to human error. So we need helper methods.
+At its minimum, we can call `GetShortId()` (described above) on all the properties of the returned DTO that require ID processing... It would be a bit tedious and prone to human error. So we need helper methods.
 
 Let's apply a constraint on all the classes with the ID property:
 
@@ -170,7 +170,7 @@ Hence a more generic implementation would require <a href="https://docs.microsof
         
         var idProp = type.GetProperty(nameof(IEntity.Id));
         if (idProp == null)
-            throw new NotImplementedException($"No public setter on '{nameof(IEntity.Id)}' property of '{type.Name}' type");
+            throw new NotImplementedException($"No '{nameof(IEntity.Id)}' property of '{type.Name}' type");
 
         idProp.SetValue(target, newRefId);
 
@@ -224,7 +224,7 @@ So before returning a DTO, we sanitise all the references by calling
     </code>
 </pre>
 
-And it's the main downside, the devs need to diligently call the method on the returning DTOs. The perfection at the DB level turns to be a bit of a hustle at the domain services level.
+And it's the main downside, the devs need to diligently call the method on the returning DTOs. The perfection at the DB level turns out to be a bit of a hustle at the domain services level.
 
 Of course, it can be taken one step further – looping through all the properties of the DTO via recursion, but we'll stop here.
 
