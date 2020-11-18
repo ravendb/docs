@@ -65,8 +65,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     // Create an instance of TimeSeriesFor
                     // Pass an explicit document ID to the TimeSeriesFor constructor 
-                    // Append a HeartRate of 70 at the first-minute timestamp 
-                    session.TimeSeriesFor("users/john", "HeartRate")
+                    // Append a heart rate of 70 at the first-minute timestamp 
+                    session.TimeSeriesFor("users/john", "HeartRates")
                         .Append(baseline.AddMinutes(1), 70d, "watches/fitbit");
 
                     session.SaveChanges();
@@ -87,8 +87,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     User user = session.Load<User>("users/john");
 
                     // Pass the document object returned from session.Load as a param
-                    // Retrieve a single value from the "HeartRate" time series 
-                    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(user, "HeartRate")
+                    // Retrieve a single value from the "HeartRates" time series 
+                    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(user, "HeartRates")
                         .Get(DateTime.MinValue, DateTime.MaxValue);
                 }
 
@@ -96,7 +96,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 // Delete a single entry
                 using (var session = store.OpenSession())
                 {
-                    session.TimeSeriesFor("users/john", "HeartRate")
+                    session.TimeSeriesFor("users/john", "HeartRates")
                         .Delete(baseline.AddMinutes(1));
 
                     session.SaveChanges();
@@ -166,7 +166,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     User user = session.Load<User>("users/john");
 
                     // Pass the document object returned from session.Load as a param
-                    // Retrieve a single value from the "HeartRate" time series 
+                    // Retrieve a single value from the "HeartRates" time series 
                     TimeSeriesEntry<RoutePoint>[] results =
                         session.TimeSeriesFor<RoutePoint>("users/john")
                         .Get();
@@ -178,8 +178,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 {
                     session.Store(new User { Name = "John" }, "users/john");
 
-                    // Append a HeartRate entry
-                    session.TimeSeriesFor("users/john", "HeartRate")
+                    // Append a HeartRates entry
+                    session.TimeSeriesFor("users/john", "HeartRates")
                         .Append(baseline.AddMinutes(1), 70d, "watches/fitbit");
 
                     session.SaveChanges();
@@ -352,8 +352,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     User user = session.Load<User>("users/john");
 
                     // Pass the document object returned from session.Load as a param
-                    // Retrieve a single value from the "HeartRate" time series 
-                    TimeSeriesEntry[] val = session.TimeSeriesFor(user, "HeartRate")
+                    // Retrieve a single value from the "HeartRates" time series 
+                    TimeSeriesEntry[] val = session.TimeSeriesFor(user, "HeartRates")
                         .Get(DateTime.MinValue, DateTime.MaxValue);
                 }
 
@@ -419,7 +419,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 // remove entries
                 /*using (var session = store.OpenSession())
                 {
-                    session.TimeSeriesFor("users/john", "HeartRate")
+                    session.TimeSeriesFor("users/john", "HeartRates")
                         .Delete(baseline.AddMinutes(1));
 
                     session.SaveChanges();
@@ -428,7 +428,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 // remove entries using a registered time series type
                 using (var session = store.OpenSession())
                 {
-                    session.TimeSeriesFor("users/john", "HeartRate")
+                    session.TimeSeriesFor("users/john", "HeartRates")
                         .Delete(baseline.AddMinutes(1));
 
                     session.TimeSeriesFor<StockPrice>("users/john").Delete(baseline.AddDays(1), baseline.AddDays(2));
@@ -466,7 +466,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     var result = query.ToList();
 
-                    session.TimeSeriesFor(result[0], "HeartRate")
+                    session.TimeSeriesFor(result[0], "HeartRates")
                         .Append(baseline.AddMinutes(1), 72d, "watches/fitbit");
 
                     session.SaveChanges();
@@ -474,7 +474,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                 #region timeseries_region_Pass-TimeSeriesFor-Get-Query-Results
                 // Query for a document with the Name property "John" 
-                // and get its HeartRate time-series values
+                // and get its HeartRates time-series values
                 using (var session = store.OpenSession())
                 {
                     var baseline = DateTime.Today;
@@ -484,7 +484,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     var result = query.ToList();
 
-                    TimeSeriesEntry[] val = session.TimeSeriesFor(result[0], "HeartRate")
+                    TimeSeriesEntry[] val = session.TimeSeriesFor(result[0], "HeartRates")
                         .Get(DateTime.MinValue, DateTime.MaxValue);
 
                     session.SaveChanges();
@@ -522,7 +522,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     for (var cnt = 0; cnt < 10; cnt++)
                     {
-                        session.TimeSeriesFor(result[0], "HeartRate")
+                        session.TimeSeriesFor(result[0], "HeartRates")
                             .Append(baseline.AddMinutes(cnt), 72d, "watches/fitbit");
                     }
 
@@ -536,10 +536,10 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     var baseline = DateTime.Today;
 
                     User user = session.Load<User>("users/1-A", includeBuilder =>
-                        includeBuilder.IncludeTimeSeries("HeartRate",
+                        includeBuilder.IncludeTimeSeries("HeartRates",
                         baseline.AddMinutes(3), baseline.AddMinutes(8)));
 
-                    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor("users/1-A", "HeartRate")
+                    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor("users/1-A", "HeartRates")
                         .Get(baseline.AddMinutes(3), baseline.AddMinutes(8));
                 }
                 #endregion
@@ -553,11 +553,11 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     IRavenQueryable<User> query = session.Query<User>()
                         .Where(u => u.Name == "John")
                         .Include(includeBuilder => includeBuilder.IncludeTimeSeries(
-                            "HeartRate", DateTime.MinValue, DateTime.MaxValue));
+                            "HeartRates", DateTime.MinValue, DateTime.MaxValue));
 
                     var result = query.ToList();
 
-                    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "HeartRate")
+                    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "HeartRates")
                         .Get(DateTime.MinValue, DateTime.MaxValue);
                 }
                 #endregion
@@ -572,13 +572,13 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     var end = baseline.AddHours(1);
 
                     IRawDocumentQuery<User> query = session.Advanced.RawQuery<User>
-                              ("from Users include timeseries('HeartRate', $start, $end)")
+                              ("from Users include timeseries('HeartRates', $start, $end)")
                         .AddParameter("start", start)
                         .AddParameter("end", end);
 
                     var result = query.ToList();
 
-                    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "HeartRate")
+                    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "HeartRates")
                         .Get(start, end);
                 }
                 #endregion
@@ -600,7 +600,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     // Use the session to create a document
                     session.Store(new User { Name = "John" }, "users/john");
 
-                    session.TimeSeriesFor("users/john", "HeartRate")
+                    session.TimeSeriesFor("users/john", "HeartRates")
                     .Append(baseline.AddMinutes(1),
                             new[] { 65d, 52d, 72d },
                             "watches/fitbit");
@@ -614,19 +614,19 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     User user = session.Load<User>("users/john");
 
                     // Pass the document object returned from session.Load as a param
-                    // Retrieve a single value from the "HeartRate" time series 
-                    TimeSeriesEntry[] val = session.TimeSeriesFor(user, "HeartRate")
+                    // Retrieve a single value from the "HeartRates" time series 
+                    TimeSeriesEntry[] val = session.TimeSeriesFor(user, "HeartRates")
                         .Get(DateTime.MinValue, DateTime.MaxValue);
 
                 }
 
-                // Get time series HeartRate's time points data
+                // Get time series HeartRates's time points data
                 using (var session = store.OpenSession())
                 {
 
                     #region timeseries_region_Get-All-Entries-Using-Document-ID
                     // Get all time series entries
-                    TimeSeriesEntry[] val = session.TimeSeriesFor("users/john", "HeartRate")
+                    TimeSeriesEntry[] val = session.TimeSeriesFor("users/john", "HeartRates")
                         .Get(DateTime.MinValue, DateTime.MaxValue);
                     #endregion
 
@@ -642,12 +642,12 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 #region timeseries_region_TimeSeriesFor-Append-TimeSeries-Range
                 var baseline = DateTime.Today;
 
-                // Append 10 HeartRate values
+                // Append 10 heart rate values
                 using (var session = store.OpenSession())
                 {
                     session.Store(new User { Name = "John" }, "users/john");
 
-                    ISessionDocumentTimeSeries tsf = session.TimeSeriesFor("users/john", "HeartRate");
+                    ISessionDocumentTimeSeries tsf = session.TimeSeriesFor("users/john", "HeartRates");
 
                     for (int i = 0; i < 10; i++)
                     {
@@ -662,7 +662,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 // Delete a range of entries from the time series
                 using (var session = store.OpenSession())
                 {
-                    session.TimeSeriesFor("users/john", "HeartRate")
+                    session.TimeSeriesFor("users/john", "HeartRates")
                         .Delete(baseline.AddSeconds(0), baseline.AddSeconds(9));
 
                     session.SaveChanges();
@@ -740,7 +740,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 #region timeseries_region_Get-Single-Time-Series
                 // Get all values of a single time-series
                 TimeSeriesRangeResult singleTimeSeriesDetails = store.Operations.Send(
-                    new GetTimeSeriesOperation(documentId, "HeartRate", DateTime.MinValue, DateTime.MaxValue));
+                    new GetTimeSeriesOperation(documentId, "HeartRates", DateTime.MinValue, DateTime.MaxValue));
                 #endregion
 
                 #region timeseries_region_Get-Multiple-Time-Series
@@ -848,7 +848,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     // Use BulkInsert to append 2 time-series entries
                     using (BulkInsertOperation bulkInsert = store.BulkInsert())
                     {
-                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRate"))
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRates"))
                         {
                             timeSeriesBulkInsert.Append(baseline.AddMinutes(2), 61d, "watches/fitbit");
                             timeSeriesBulkInsert.Append(baseline.AddMinutes(3), 62d, "watches/apple-watch");
@@ -860,7 +860,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     // Use BulkInsert to append 100 time-series entries
                     using (BulkInsertOperation bulkInsert = store.BulkInsert())
                     {
-                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRate"))
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRates"))
                         {
                             for (int minute = 0; minute < 100; minute++)
                             {
@@ -927,7 +927,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     // Use BulkInsert to append 100 multi-values time-series entries
                     using (BulkInsertOperation bulkInsert = store.BulkInsert())
                     {
-                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRate"))
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRates"))
                         {
                             for (int minute = 0; minute < 100; minute++)
                             {
@@ -973,7 +973,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     double[] values = { 59d };
                     const string tag = "watches/fitbit";
-                    const string timeseries = "HeartRate";
+                    const string timeseries = "HeartRates";
 
                     session.Advanced.Defer(new PatchCommandData(documentId, null,
                         new PatchRequest
@@ -1032,7 +1032,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                                        );",
                             Values =
                             {
-                                { "timeseries", "HeartRate" },
+                                { "timeseries", "HeartRates" },
                                 { "timestamp", baseline.AddMinutes(1) },
                                 { "values", 59d },
                                 { "tag", "watches/fitbit" }
@@ -1072,7 +1072,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         Script = "timeseries(this, $timeseries).append($timestamp, $values, $tag);",
                         Values =
                         {
-                            { "timeseries", "HeartRate" },
+                            { "timeseries", "HeartRates" },
                             { "timestamp", baseline.AddMinutes(1) },
                             { "values", 59d },
                             { "tag", "watches/fitbit" }
@@ -1132,7 +1132,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                             Values =
                             {
-                                { "timeseries", "HeartRate" },
+                                { "timeseries", "HeartRates" },
                                 { "timeStamps", timeStamps},
                                 { "values", values },
                                 { "tag", "watches/fitbit" }
@@ -1154,7 +1154,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                                       );",
                             Values =
                             {
-                                { "timeseries", "HeartRate" },
+                                { "timeseries", "HeartRates" },
                                 { "from", baseline.AddSeconds(0) },
                                 { "to", baseline.AddSeconds(49) }
                             }
@@ -1216,7 +1216,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                             Values =
                             {
-                                { "timeseries", "HeartRate" },
+                                { "timeseries", "HeartRates" },
                                 { "timeStamps", timeStamps},
                                 { "values", values },
                                 { "tag", "watches/fitbit" }
@@ -1279,7 +1279,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                             }",
                             Values =
                             {
-                                { "timeseries", "HeartRate" },
+                                { "timeseries", "HeartRates" },
                                 { "timeStamps", timeStamps},
                                 { "values", values },
                                 { "tag", "watches/fitbit" }
@@ -1295,7 +1295,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                             Script = "timeseries(this, $timeseries).delete($from, $to);",
                             Values =
                             {
-                                { "timeseries", "HeartRate" },
+                                { "timeseries", "HeartRates" },
                                 { "from", baseline.AddSeconds(0) },
                                 { "to", baseline.AddSeconds(49) }
                             }
@@ -1337,7 +1337,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     for (var cnt = 0; cnt < 120; cnt++)
                     {
-                        session.TimeSeriesFor(result[0], "HeartRate")
+                        session.TimeSeriesFor(result[0], "HeartRates")
                             .Append(baseline.AddDays(cnt), 72d, "watches/fitbit");
                     }
 
@@ -1353,7 +1353,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     #region ts_region_LINQ-6-Aggregation
                     IRavenQueryable<TimeSeriesAggregationResult> query = session.Query<User>()
                         .Where(u => u.Age > 72)
-                        .Select(q => RavenQuery.TimeSeries(q, "HeartRate", baseline, baseline.AddDays(10))
+                        .Select(q => RavenQuery.TimeSeries(q, "HeartRates", baseline, baseline.AddDays(10))
                             .Where(ts => ts.Tag == "watches/fitbit")
                             .GroupBy(g => g.Days(1))
                             .Select(g => new
@@ -1376,7 +1376,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     var end = baseline.AddHours(1);
 
                     IRawDocumentQuery<User> query = session.Advanced.RawQuery<User>
-                              ("from Users include timeseries('HeartRate', $start, $end)")
+                              ("from Users include timeseries('HeartRates', $start, $end)")
                         .AddParameter("start", start)
                         .AddParameter("end", end);
 
@@ -1385,7 +1385,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                             from Users as u where Age < 30
                             select timeseries(
-                                from HeartRate between 
+                                from HeartRates between 
                                     '2020-05-27T00:00:00.0000000Z' 
                                         and '2020-06-23T00:00:00.0000000Z'
                                 group by '7 days'
@@ -1442,7 +1442,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         .ToList();
                 }
 
-                // Append each employee a week (168 hours) of random HeartRate values 
+                // Append each employee a week (168 hours) of random HeartRates values 
                 var baseTime = new DateTime(2020, 5, 17);
                 Random randomValues = new Random();
                 using (var session = store.OpenSession())
@@ -1451,7 +1451,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     {
                         for (var tse = 0; tse < 168; tse++)
                         {
-                            session.TimeSeriesFor(UsersIdList[emp], "HeartRate")
+                            session.TimeSeriesFor(UsersIdList[emp], "HeartRates")
                             .Append(baseTime.AddHours(tse),
                                     (68 + Math.Round(19 * randomValues.NextDouble())),
                                     "watches/fitbit");
@@ -1460,14 +1460,14 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     session.SaveChanges();
                 }
 
-                // Query - LINQ format - HeartRate
+                // Query - LINQ format - HeartRates
                 using (var session = store.OpenSession())
                 {
                     var baseline = new DateTime(2020, 5, 17);
 
                     IRavenQueryable<TimeSeriesAggregationResult> query = session.Query<User>()
                         .Where(u => u.Age < 30)
-                        .Select(q => RavenQuery.TimeSeries(q, "HeartRate", baseline, baseline.AddDays(7))
+                        .Select(q => RavenQuery.TimeSeries(q, "HeartRates", baseline, baseline.AddDays(7))
                             .Where(ts => ts.Tag == "watches/fitbit")
                             .GroupBy(g => g.Days(1))
                             .Select(g => new
@@ -1480,7 +1480,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     var result = query.ToList();
                 }
 
-                // Query - LINQ format - StockPrice
+                // Query - LINQ format - StockPrices
                 using (var session = store.OpenSession())
                 {
                     var baseline = new DateTime(2020, 5, 17);
@@ -1488,7 +1488,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     #region ts_region_LINQ-Aggregation-and-Projections-StockPrice
                     IRavenQueryable<TimeSeriesAggregationResult> query = session.Query<Company>()
                         .Where(c => c.Address.Country == "USA")
-                        .Select(q => RavenQuery.TimeSeries(q, "StockPrice")
+                        .Select(q => RavenQuery.TimeSeries(q, "StockPrices")
                             .Where(ts => ts.Values[4] > 500000)
                             .GroupBy(g => g.Days(7))
                             .Select(g => new
@@ -1502,7 +1502,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     #endregion
                 }
 
-                // Raw Query - HeartRate using "where Tag in"
+                // Raw Query - HeartRates using "where Tag in"
                 using (var session = store.OpenSession())
                 {
                     var baseline = new DateTime(2020, 5, 17);
@@ -1515,7 +1515,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                             from Users as u where Age < 30
                             select timeseries(
-                                from HeartRate between 
+                                from HeartRates between 
                                     '2020-05-17T00:00:00.0000000Z' 
                                     and '2020-05-23T00:00:00.0000000Z'
                                     where Tag in ('watches/Letsfit', 'watches/Willful', 'watches/Lintelek')
@@ -1528,7 +1528,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 }
 
 
-                // Raw Query - HeartRate using "where Tag =="
+                // Raw Query - HeartRates using "where Tag =="
                 using (var session = store.OpenSession())
                 {
                     var baseline = new DateTime(2020, 5, 17);
@@ -1541,7 +1541,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                             from Users as u where Age < 30
                             select timeseries(
-                                from HeartRate between 
+                                from HeartRates between 
                                     '2020-05-17T00:00:00.0000000Z' 
                                     and '2020-05-23T00:00:00.0000000Z'
                                     where Tag == 'watches/fitbit'
@@ -1555,7 +1555,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 }
 
 
-                // Raw Query - StockPrice - Select Syntax
+                // Raw Query - StockPrices - Select Syntax
                 using (var session = store.OpenSession())
                 {
                     var baseline = new DateTime(2020, 5, 17);
@@ -1570,7 +1570,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                             from Companies as c
                                 where c.Address.Country = 'USA'
                                 select timeseries ( 
-                                    from StockPrice 
+                                    from StockPrices 
                                     where Values[4] > 500000
                                         group by '7 day'
                                         select max(), min()
@@ -1581,7 +1581,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     #endregion
                 }
 
-                // Raw Query - StockPrice
+                // Raw Query - StockPrices
                 using (var session = store.OpenSession())
                 {
                     var baseline = new DateTime(2020, 5, 17);
@@ -1594,7 +1594,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     IRawDocumentQuery<TimeSeriesAggregationResult> aggregatedRawQuery =
                         session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                             declare timeseries SP(c) {
-                                from c.StockPrice
+                                from c.StockPrices
                                 where Values[4] > 500000
                                 group by '7 day'
                                 select max(), min()
@@ -1640,10 +1640,10 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     var result = query.ToList();
 
-                    // Two weeks of hourly HeartRate values
+                    // Two weeks of hourly HeartRates values
                     for (var cnt = 0; cnt < 336; cnt++)
                     {
-                        session.TimeSeriesFor(result[0], "HeartRate")
+                        session.TimeSeriesFor(result[0], "HeartRates")
                             .Append(baseline.AddHours(cnt), 72d, "watches/fitbit");
                     }
 
@@ -1661,14 +1661,14 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     // Raw query with no aggregation - Declare syntax
                     IRawDocumentQuery<TimeSeriesRawResult> nonAggregatedRawQuery =
                         session.Advanced.RawQuery<TimeSeriesRawResult>(@"
-                            declare timeseries getHeartRate(user) 
+                            declare timeseries getHeartRates(user) 
                             {
-                                from user.HeartRate 
+                                from user.HeartRates 
                                     between $start and $end
                                     offset '02:00'
                             }
                             from Users as u where Age < 30
-                            select getHeartRate(u)
+                            select getHeartRates(u)
                             ")
                         .AddParameter("start", baseline)
                         .AddParameter("end", baseline.AddHours(24));
@@ -1689,7 +1689,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesRawResult>(@"
                             from Users as u where Age < 30                            
                             select timeseries (
-                                from HeartRate 
+                                from HeartRates 
                                     between $start and $end
                                     offset '02:00'
                             )")
@@ -1712,7 +1712,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                             from Users as u
                             select timeseries(
-                                from HeartRate 
+                                from HeartRates 
                                     between $start and $end
                                 group by '1 days'
                                 select min(), max())
@@ -1758,10 +1758,10 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     var result = query.ToList();
 
-                    // Two weeks of hourly HeartRate values
+                    // Two weeks of hourly HeartRates values
                     for (var cnt = 0; cnt < 336; cnt++)
                     {
-                        session.TimeSeriesFor(result[0], "HeartRate")
+                        session.TimeSeriesFor(result[0], "HeartRates")
                             .Append(baseline.AddHours(cnt), 72d, "watches/fitbit");
                     }
 
@@ -1780,7 +1780,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesRawResult>(@"
                             from Users as u where Age < 30                            
                             select timeseries (
-                                from HeartRate
+                                from HeartRates
                             )");
 
                     var nonAggregatedRawQueryResult = nonAggregatedRawQuery.ToList();
@@ -1796,7 +1796,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     IRavenQueryable<TimeSeriesRawResult> query =
                         (IRavenQueryable<TimeSeriesRawResult>)session.Query<User>()
                             .Where(u => u.Age < 30)
-                            .Select(q => RavenQuery.TimeSeries(q, "HeartRate")
+                            .Select(q => RavenQuery.TimeSeries(q, "HeartRates")
                             //.Where(ts => ts.Tag == "watches/fitbit")
                             .ToList());
 
@@ -1814,7 +1814,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     IRavenQueryable<TimeSeriesRawResult> query =
                         (IRavenQueryable<TimeSeriesRawResult>)session.Query<User>()
                             .Where(u => u.Age < 30)
-                            .Select(q => RavenQuery.TimeSeries(q, "HeartRate", baseline, baseline.AddDays(3))
+                            .Select(q => RavenQuery.TimeSeries(q, "HeartRates", baseline, baseline.AddDays(3))
                             .ToList());
 
                     var result = query.ToList();
@@ -1833,7 +1833,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                             // Choose user profiles of users under the age of 30
                             .Where(u => u.Age < 30)
 
-                            .Select(q => RavenQuery.TimeSeries(q, "HeartRate", baseline, baseline.AddDays(3))
+                            .Select(q => RavenQuery.TimeSeries(q, "HeartRates", baseline, baseline.AddDays(3))
 
                             // Filter entries by tag.  
                             .Where(ts => ts.Tag == "watches/fitbit")
@@ -1856,7 +1856,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                             // Choose profiles of US companies
                             .Where(c => c.Address.Country == "USA")
 
-                            .Select(q => RavenQuery.TimeSeries(q, "StockPrice")
+                            .Select(q => RavenQuery.TimeSeries(q, "StockPrices")
 
                             .LoadByTag<Employee>()
                             .Where((ts, src) => src.Address.Country == "USA")
@@ -1878,7 +1878,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesRawResult>(@"
                             from Companies as c where c.Address.Country = 'USA'
                             select timeseries(
-                                from StockPrice
+                                from StockPrices
                                    load Tag as emp
                                    where emp.Title == 'Sales Representative'
                             )");
@@ -1898,7 +1898,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                             // Choose user profiles of users under the age of 30
                             .Where(c => c.Address.Country == "USA")
-                            .Select(q => RavenQuery.TimeSeries(q, "StockPrice")
+                            .Select(q => RavenQuery.TimeSeries(q, "StockPrices")
 
                             .LoadByTag<Employee>()
                             .Where((ts, src) => src.Title == "Sales Representative")
@@ -1919,7 +1919,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                                     IRavenQueryable<TimeSeriesRawResult> query = 
                                         (IRavenQueryable <TimeSeriesRawResult>)session.Query<User>()
                                         .Where(u => u.Age < 30)
-                                        .Select(q => RavenQuery.TimeSeries(q, "HeartRate", baseline, baseline.AddMonths(3))
+                                        .Select(q => RavenQuery.TimeSeries(q, "HeartRates", baseline, baseline.AddMonths(3))
                                             .Where(ts => ts.Tag == "watches/fitbit")
                                             //.GroupBy(g => g.Months(1))
                                             //.Select(g => new
@@ -1967,7 +1967,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     for (var cnt = 0; cnt < 120; cnt++)
                     {
-                        session.TimeSeriesFor(result[0], "HeartRate")
+                        session.TimeSeriesFor(result[0], "HeartRates")
                             .Append(baseline.AddDays(cnt), (68 + Math.Round(19 * randomValues.NextDouble())), "watches/fitbit");
                     }
 
@@ -1985,7 +1985,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesRawResult>(@"
                             declare timeseries ts(jogger) 
                             {
-                                from jogger.HeartRate 
+                                from jogger.HeartRates 
                                     between $start and $end
                             }
                             from Users as jog where Age < 30
@@ -2080,7 +2080,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                                 }",
                     QueryParameters = new Parameters
                             {
-                                { "name", "HeartRate" },
+                                { "name", "HeartRates" },
                                 { "from", DateTime.MinValue },
                                 { "to", DateTime.MaxValue }
                             }
@@ -2137,7 +2137,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                                 }",
                     QueryParameters = new Parameters
                             {
-                                { "name", "HeartRate" },
+                                { "name", "HeartRates" },
                                 { "from", DateTime.MinValue },
                                 { "to", DateTime.MaxValue }
                             }
@@ -2265,7 +2265,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                                 }",
                     QueryParameters = new Parameters
                             {
-                                { "name", "HeartRate" },
+                                { "name", "HeartRates" },
                                 { "from", DateTime.MinValue },
                                 { "to", DateTime.MaxValue }
                             }
@@ -2275,7 +2275,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             }
         }
 
-        // patch HeartRate TS to all employees
+        // patch HeartRates TS to all employees
         // using PatchByQueryOperation
         // not that all employees get the same times-series entries.
         [Fact]
@@ -2310,7 +2310,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 var baseTime = new DateTime(2020, 5, 17);
                 Random randomValues = new Random();
 
-                // an array with a week of random hourly HeartRate values
+                // an array with a week of random hourly HeartRates values
                 var valuesToAppend = Enumerable.Range(0, 168) // 168 hours a week
                     .Select(i =>
                     {
@@ -2338,7 +2338,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     QueryParameters = new Parameters
                             {
                                 {"valuesToAppend", valuesToAppend},
-                                { "name", "HeartRate" },
+                                { "name", "HeartRates" },
                             }
                 });
 
@@ -2387,7 +2387,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         .ToList();
                 }
 
-                // Append each employee a week (168 hours) of random HeartRate values 
+                // Append each employee a week (168 hours) of random HeartRates values 
                 var baseTime = new DateTime(2020, 5, 17);
                 Random randomValues = new Random();
                 using (var session = store.OpenSession())
@@ -2396,7 +2396,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     {
                         for (var tse = 0; tse < 168; tse++)
                         {
-                            session.TimeSeriesFor(employeesIdList[emp], "HeartRate")
+                            session.TimeSeriesFor(employeesIdList[emp], "HeartRates")
                             .Append(baseTime.AddHours(tse),
                                     (68 + Math.Round(19 * randomValues.NextDouble())),
                                     "watches/fitbit");
@@ -2448,7 +2448,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         .ToList();
                 }
 
-                // Append each employee a week (168 hours) of random HeartRate values 
+                // Append each employee a week (168 hours) of random HeartRates values 
                 var baseTime = new DateTime(2020, 5, 17);
                 Random randomValues = new Random();
                 using (var session = store.OpenSession())
@@ -2457,7 +2457,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     {
                         for (var tse = 0; tse < 168; tse++)
                         {
-                            session.TimeSeriesFor(employeesIdList[emp], "HeartRate")
+                            session.TimeSeriesFor(employeesIdList[emp], "HeartRates")
                             .Append(baseTime.AddHours(tse),
                                     (68 + Math.Round(19 * randomValues.NextDouble())),
                                     "watches/fitbit");
@@ -2550,7 +2550,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             public SimpleIndex()
             {
                 AddMap(
-                    "HeartRate",
+                    "HeartRates",
                     timeSeries => from ts in timeSeries
                                   from entry in ts.Entries
                                   select new
