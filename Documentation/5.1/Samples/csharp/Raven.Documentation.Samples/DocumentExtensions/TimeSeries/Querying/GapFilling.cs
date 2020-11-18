@@ -20,7 +20,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Querying
                     var query = session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                         from People
                         select timeseries(
-                            from HeartRate
+                            from HeartRates
                             group by 1 second
                             with interpolation(linear)
                         ");
@@ -31,7 +31,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Querying
                 {
                     #region LINQ_Query
                     var query = session.Query<People>()
-                        .Select(p => RavenQuery.TimeSeries(p, "HeartRate")
+                        .Select(p => RavenQuery.TimeSeries(p, "HeartRates")
                             .GroupBy(g => g
                                 .Hours(1)
                                 .WithOptions(new TimeSeriesAggregationOptions

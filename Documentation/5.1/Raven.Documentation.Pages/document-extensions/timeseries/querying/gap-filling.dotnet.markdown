@@ -4,9 +4,11 @@
 
 {NOTE: }
 
-* Time series queries can add data points to the results with values extrapolated 
-  from the entries on either side of the gap. This is called *interpolation*. 
-  There are two interpolation methods available:  
+* Time series queries can add extra data points into the gaps between entries. 
+  These data points get values extrapolated from the entries on either side of 
+  the gap. This is called _interpolation_.  
+
+* There are two interpolation methods available:  
   1. Nearest - add values equal to the value of the nearest entry.  
   2. Linear - place the data points on a straight line between the entries on 
      either side.  
@@ -22,8 +24,12 @@
 {PANEL: Syntax}
 
 To add interpolation to a time series query, start by grouping the data by some 
-unit. For example, if you have a time series with an entry for every hour, and 
-you want to fill in the gap with one data point per minute, group by 1 minute. 
+unit.  
+For example, suppose you have a time series with an entry for every hour, 
+but several hours are missing (1am, 3pm, etc.), and you want to fill those 
+gaps. You will want to group by 1 hour.  
+Or suppose you have a time series with an entry for every hour, and you want to 
+fill in the gap with one data point per minute: you will group by 1 minute.  
 See [here](../../../document-extensions/timeseries/querying/aggregation-and-projections) 
 to learn about aggregation in queries.  
 
