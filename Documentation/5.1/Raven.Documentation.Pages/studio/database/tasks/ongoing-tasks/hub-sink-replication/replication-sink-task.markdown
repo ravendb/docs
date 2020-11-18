@@ -117,8 +117,8 @@ While defining a Sink task using the Studio, you can -
    * **Use the server certificate**  
      ![Figure 8. New Replication Access](images/sink/sink_use-server-certificate.png "New Replication Access")
       Choose this option if you prefer to import and reuse the certificate 
-      that is already used by the server to validate clients access.  
-      The Studio will attemp to import it from the server. Use the 
+      that is already used by the server to validate client access.  
+      The Studio will attempt to import it from the server. Use the 
       **Download** button (**`a`**) if you need to locate it manually.  
 {PANEL/}
 
@@ -140,8 +140,8 @@ While defining a Sink task using the Studio, you can -
      Sink to Hub replication.  
      
          {INFO: }
-         Note that only prefixes that are defined in both lists 
-         will actully be replicated.  
+         Note that only prefixes that are defined in **both** lists 
+         will be replicated.  
          {INFO/}
 
 {PANEL/}

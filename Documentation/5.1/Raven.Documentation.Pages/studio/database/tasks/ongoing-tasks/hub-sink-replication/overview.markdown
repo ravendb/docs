@@ -28,6 +28,7 @@ and Sink replication tasks.
     * [Accesses and Certificates](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#accesses-and-certificates)  
     * [What does the replication include?](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#what-does-the-replication-include?)  
     * [Failover](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#failover)  
+    * [Backward Compatibility](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#backward-compatibility)  
 {NOTE/}
 
 ---
@@ -35,11 +36,11 @@ and Sink replication tasks.
 {PANEL: What is Hub/Sink Replication for?}
 
 * **Flexible Connectivity**  
-  The connection between Hub and Sink doesn't have to be continuous, 
-  and can be initiated by the Sink at will. This can be very helpful 
-  when the Sink instance tends to go offline, e.g. -  
+  The connection between Hub and Sink doesn't have to be continuous 
+  and can be initiated by the Sink at will.  
+  This can be very helpful when the Sink instance tends to go offline, e.g. -  
 
-   * On board ships that sail offshore and offline  
+   * Onboard ships that sail offshore and offline  
    * in a security installation that limits its communication time 
      with the outside world  
    * In a remote settlement that surfaces online every now and then  
@@ -51,7 +52,7 @@ and Sink replication tasks.
   The Hub can serve and be served by many Sinks using the same 
   port, **simplify security protocols** and **save server resources**.  
 
-    This can be useful whenever mulltiple devices (e.g. an array of 
+    This can be useful whenever multiple devices (e.g. an array of 
     security cameras) collect their records locally and replicate 
     them to a central database periodically.  
 
@@ -59,7 +60,7 @@ and Sink replication tasks.
 
 {PANEL: Filtered Replication}
 
-Filtered Replicatin allows you to choose the documents that would 
+Filtered Replication allows you to choose the documents that would 
 be replicated. Replicating only a selected part of your database 
 can be useful in numerous cases, e.g. -  
 
@@ -72,12 +73,12 @@ can be useful in numerous cases, e.g. -
   records of patients treated by this clinic.  
 
 * **As an additional security measure**  
-  A central databse that an array of traffic enforcement cameras replicate 
+  A central database that an array of traffic enforcement cameras replicate 
   speed tickets to, for example, can use Filtered Replication to restrict 
   each camera's replication to a single collection.  
   This will prevent a potential hacker from replicating a stolen camera's 
-  speed tickets to any other collection (e.g. in order to overrun existing 
-  tickets with blank ones).  
+  speed tickets to any other collection (e.g. to overrun existing tickets 
+  with blank ones).  
 
 {INFO: }
 
@@ -106,15 +107,15 @@ The connection between Hub and Sink tasks is validated using public-key cryptogr
 * **Issuing Certificates**  
   * You can issue a certificate from a few sources:  
      * **Create a new certificate** in the Hub task creation page.  
-     * **Import and reuse** the certificate that is already used by the server 
-       to validate clients access.  
+     * **Import and reuse** the certificate that is already used 
+       by the server to validate client access.  
      * **Provide a certificate** from any other source.  
   
 * **Export from Hub, Import by Sink**  
   After using the Hub task creation page to issue the certificate, 
   you need to export the certificate to a file. Any Sink task that 
   wishes to connect this Hub and Access, will import the file and 
-  keep the Hub's public key and its own priivate key.  
+  keep the Hub's public key and its own private key.  
   After the export, the Hub task will keep only its public key.  
 
 {PANEL/}
@@ -131,6 +132,10 @@ and [revisions](../../../../../server/extensions/revisions).
 
 {PANEL: Failover}
 Read about replication tasks Failover [Here](../../../../../server/ongoing-tasks/hub-sink-replication#failover).  
+{PANEL/}
+
+{PANEL: Backward-Compatibility}
+Read about Hub/Sink Replication backward compatibility with Pull Replication [Here](../../../../../server/ongoing-tasks/hub-sink-replication#backward-compatibility).  
 {PANEL/}
 
 ## Related Articles

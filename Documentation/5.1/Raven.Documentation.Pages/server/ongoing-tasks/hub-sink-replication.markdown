@@ -26,6 +26,7 @@ and Sink replication tasks.
      * [Defining a Connection String](../../server/ongoing-tasks/hub-sink-replication#defining-a-connection-string)  
    * [Usage Sample](../../server/ongoing-tasks/hub-sink-replication#usage-sample)  
    * [Failover](../../server/ongoing-tasks/hub-sink-replication#failover)  
+   * [Backward Compatibility](../../server/ongoing-tasks/hub-sink-replication#backward-compatibility)  
 {NOTE/}
 
 ---
@@ -37,8 +38,9 @@ To start replication via Hub and Sink tasks, you need to define -
 1. **A Hub task**  
 2. **Hub Access/es**  
    Multiple Sink tasks can connect the Hub using each access.  
-   For each access, you need to issue a certificate with the Hub's public key and with a private 
-   key (that the Hub task doesn't keep) for Sink tasks that need to connect the Hub using this access.  
+   For each access, you need to issue a certificate with the Hub's public key and with 
+   a private key (that the Hub task doesn't keep) for Sink tasks that need to connect the 
+   Hub using this access.  
 3. **Sink task/s**  
 
 When this is done, changed documents whose replication is allowed by 
@@ -248,21 +250,45 @@ also the Sink's responsibility to reconnect on network failure.
 ---
 
 ### Hub Failure 
-As part of the connection handshake, the Sink fetches an ordered 
-list of nodes from the Hub cluster. If defined, the preferred node 
-will be at the top of it.  
-The Sink will try to connect the first node in the list, and 
-proceed down the list with every failed attempt.  
-If connection fails with all nodes, the Sink will request 
-the list again. 
+As part of the connection handshake, the Sink fetches an ordered list 
+of nodes from the Hub cluster. If defined, the preferred node will be 
+at the top of it.  
+The Sink will try to connect the first node in the list, and proceed 
+down the list with every failed attempt.  
+If the connection fails with all nodes, the Sink will request the list again.  
 
 ---
 
 ### Sink Failure 
-If the failure occurrs on the Sink node, the Sink cluster will 
+If the failure occurs on the Sink node, the Sink cluster will 
 select a different node for the job.  
 
 {PANEL/}
+
+{PANEL: Backward Compatibility}
+
+RavenDB versions that precede 5.1 support **Pull Replication**, which allows 
+you to define *Hub and Sink* tasks and replicate data from Hub to Sink.  
+
+In RavenDB 5.1 and on, the *Pull Replication* feature is **replaced** by 
+the *Hub/Sink Replication* that allows everything *Pull Replication* does 
+and adds to it *Sink to Hub* replication and *Replication Filtering*.  
+
+* Pull Replication tasks defined on a RavenDB version earlier than 5.1, 
+  **will remain operative** when you upgrade to version 5.1 and on.  
+
+* A Hub or a Sink task that runs on a RavenDB version earlier than 5.1, 
+  **can** connect a Hub or a Sink defined on RavenDB 5.1 and on.  
+  You do **not** need to upgrade the task's instance to keep the task operative.  
+
+{INFO: }
+Upgrade RavenDB from a version earlier than 5.1 if you want to implement 
+*Hub/Sink Replication* added features, i.e. Sink-to-Hub replication and 
+Replication Filtering.  
+{INFO/}
+
+{PANEL/}
+
 
 ## Related Articles
 

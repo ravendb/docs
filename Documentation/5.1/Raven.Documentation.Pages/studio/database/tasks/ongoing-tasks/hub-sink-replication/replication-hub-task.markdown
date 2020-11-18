@@ -10,7 +10,7 @@ be replicated in either or both directions.
 Hub/Sink connections are secure, and require [certification](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#certificates).  
 
 While defining a Hub task using the Studio, you can -  
-* Issue certificates that would later on be imported by Sink tasks that wish to access it  
+* Issue certificates that would be imported later on by Sink tasks that wish to access it  
 * Choose replication direction/s (`Hub->Sink` / `Hub<-Sink` / `Hub<->Sink`)  
 * Use [Filtered Replication](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#filtered-replication) to choose which documents are to be replicated  
 
@@ -83,11 +83,11 @@ While defining a Hub task using the Studio, you can -
 
 2. **Certificate**  
    Use one of the two options to issue the certificate that the Hub and Sink 
-   tasks would use to establish their secure connection.  
+   tasks would use to establish a secure connection.  
     * **Upload existing certificate**  
       Choose this option if you prefer to import and reuse the certificate 
-      that is already used by the server to validate clients access.  
-      Chooseing it will open a file explorer window and allow you to 
+      that is already used by the server to validate client access.  
+      Choosing it will open a file explorer window and allow you to 
       search for the certificate.  
     * **Generate new certificate**  
       Choose this option to create a new certificate that would be used 
@@ -142,13 +142,15 @@ and remove them.
     * You can define wildcards using `*`.  
     * You can provide document IDs.  
 
-3. **Use above prefixes (Hub to Sink) for both directions**
+3. **Use above prefixes (Hub to Sink) for both directions**  
    Toggle this ON to allow replication of the same prefixes in 
    both directions, Hub to Sink and Sink to Hub.  
    Turning this option OFF will open a similar input box and 
    prefixes list for Sink to Hub replication.  
-   Note that only prefixes that are defined on both the Hub 
-   task and the Sink task will actully be replicated.  
+         {INFO: }
+         Note that only prefixes that are defined for both 
+         the Hub task and the Sink task will be replicated.  
+         {INFO/}
 
 {PANEL/}
 
