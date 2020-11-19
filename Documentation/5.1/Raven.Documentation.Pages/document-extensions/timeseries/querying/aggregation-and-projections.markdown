@@ -156,7 +156,7 @@ select c.Name, SP(c)
 from Employees as e
 select timeseries(
     from HeartRates
-    where Tag == 'watches/fitbit' or 'Heartrate_Monitor'
+    where Tag == 'watches/fitbit' or Tag == 'Heartrate_Monitor'
     group by tag
     select min(), max()
 )
@@ -166,7 +166,7 @@ from Employees as e
 select timeseries(
     from HeartRates
     load Tag as monitor
-    where monitor == 'watches/fitbit' or 'Heartrate_Monitor'
+    where monitor == 'watches/fitbit' or monitor == 'Heartrate_Monitor'
     group by tag
     select min(), max()
 )

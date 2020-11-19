@@ -265,12 +265,12 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 // append multi-value entries using a registered time series type
                 using (var session = store.OpenSession())
                 {
-                    session.Store(new Company
-                    {
+                    session.Store(new Company 
+                    { 
                         Name = "kitchenAppliances",
-                        Address = new Address { City = "New York" }
+                        Address = new Address { City = "New York" } 
                     },
-                                                "companies/kitchenAppliances");
+                    "companies/kitchenAppliances");
 
                     session.TimeSeriesFor<StockPrice>("companies/kitchenAppliances")
                     .Append(baseline.AddDays(1), new StockPrice
