@@ -9,16 +9,14 @@ namespace Raven.Documentation.Samples.Indexes
 {
     public class JavaScript
     {
-        
-        #region javaScriptindexes_1
         /*
+        #region javaScriptindexes_1
         public class Employees_ByFirstAndLastName : AbstractJavaScriptIndexCreationTask
         {
             // ...
         }
-        */
         #endregion
-        
+        */
 
         /*
         #region javaScriptindexes_2

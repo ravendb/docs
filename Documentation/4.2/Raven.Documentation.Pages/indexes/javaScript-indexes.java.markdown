@@ -18,7 +18,7 @@ AbstractJavaScriptIndexCreationTask inherits from AbstractIndexCreationTask
 `Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. 
 They indicate which documents can be searched by which fields.
 
-{CODE-BLOCK:json}
+{CODE-BLOCK:java}
    map(<collection-name>, function (document){
         return {
             // indexed properties go here e.g:
@@ -52,7 +52,7 @@ Map-Reduce indexes allow you to perform complex aggregations of data.
 The first stage, called the map, runs over documents and extracts portions of data according to the defined mapping function(s).
 Upon completion of the first phase, reduction is applied to the map results and the final outcome is produced.
 
-{CODE-BLOCK:json}
+{CODE-BLOCK:java}
    groupBy(x => {map properties})
         .aggregate(y => {
             return {
