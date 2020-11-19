@@ -65,8 +65,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     // Create an instance of TimeSeriesFor
                     // Pass an explicit document ID to the TimeSeriesFor constructor 
-                    // Append a heart rate of 70 at the first-minute timestamp 
-                    session.TimeSeriesFor("users/john", "HeartRates")
+                    // Append a HeartRate of 70 at the first-minute timestamp 
                         .Append(baseline.AddMinutes(1), 70d, "watches/fitbit");
 
                     session.SaveChanges();
@@ -1797,7 +1796,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         (IRavenQueryable<TimeSeriesRawResult>)session.Query<User>()
                             .Where(u => u.Age < 30)
                             .Select(q => RavenQuery.TimeSeries(q, "HeartRates")
-                            //.Where(ts => ts.Tag == "watches/fitbit")
+                            .Where(ts => ts.Tag == "watches/fitbit")
                             .ToList());
 
                     var result = query.ToList();
