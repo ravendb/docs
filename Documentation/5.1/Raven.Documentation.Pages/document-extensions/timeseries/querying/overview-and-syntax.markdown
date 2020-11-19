@@ -95,7 +95,7 @@ Another use case has to do with the compression of time series data. Numbers wit
 very high precision (i.e., many digits after the decimal point) are less compressible 
 than numbers with low precision. So for the purpose of storage, you might want to 
 change a value like `0.000018` to `18`. Then, when you query the data, you can scale 
-by `10^6` to restore the original value.  
+by `0.000001` to restore the original value.  
 
 Scaling is a part of both RQL and LINQ syntax:  
 * In **RQL**, use `scale <double>` in a time series query, and input your scaling 
