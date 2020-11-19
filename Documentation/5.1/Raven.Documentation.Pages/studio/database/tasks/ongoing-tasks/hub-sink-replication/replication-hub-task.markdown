@@ -110,8 +110,7 @@ While defining a Hub task using the Studio, you can -
      {INFO: }
      RavenDB prevents you from saving the access unless you download 
      the certificate, because this is your last chance to get hold of 
-     the Private key (which will be removed from the Hub task's reach 
-     when the access is saved).  
+     the Private key (which the Hub doesn't keep when the access is saved).  
      {INFO/}
    
 5. **Cancel / Save**  
@@ -139,17 +138,24 @@ and remove them.
    Enter each path you want the Hub to replicate to the Sink, 
    in the `Enter documents prefix` text box. Click `Add Prefix` 
    to add it to the prefix list.  
-    * You can define wildcards using `*`.  
-    * You can provide document IDs.  
+    * You can define a prefix that uses a wildcard (`*`).  
+      Place the wildcard in the prefix' suffix, after `/` or `-`.  
+      e.g. `products/*`  
+    * You can provide exact document IDs.  
 
 3. **Use above prefixes (Hub to Sink) for both directions**  
-   Toggle this ON to allow replication of the same prefixes in 
-   both directions, Hub to Sink and Sink to Hub.  
-   Turning this option OFF will open a similar input box and 
-   prefixes list for Sink to Hub replication.  
+    * You can define a single list of prefixes, that would be used for 
+      the filtering of both **incoming** and **outgoing** documents.  
+      To define a single list, toggle the switch **ON**.  
+    * You can also define two different prefix lists, one for 
+      *incoming* documents and another for *outgoing* documents.  
+      You can use this, for example, to allow the reception of 
+      a document but not its delivery (or vice versa).  
+      To define two separate lists, toggle the switch **OFF**.  
+
          {INFO: }
-         Note that only prefixes that are defined for both 
-         the Hub task and the Sink task will be replicated.  
+         Note that only paths approved for replication by 
+         both the Hub **and** the Sink, will be replicated.  
          {INFO/}
 
 {PANEL/}

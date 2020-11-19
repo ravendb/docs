@@ -3,7 +3,17 @@
         "Path": "overview.markdown",
         "Name": "Overview",
         "DiscussionId": "3ebce840-1ea8-4f9e-ae50-0275661a3c1d",
-        "Mappings": []
+        "Mappings": null,
+        "Mappings": [
+            {
+                "Version": 5.0,
+                "Key": "studio/database/tasks/ongoing-tasks/pull-replication"
+            },
+            {
+                "Version": 4.2,
+                "Key": "studio/database/tasks/ongoing-tasks/pull-replication"
+            }
+        ]
     },
     {
         "Path": "replication-hub-task.markdown",

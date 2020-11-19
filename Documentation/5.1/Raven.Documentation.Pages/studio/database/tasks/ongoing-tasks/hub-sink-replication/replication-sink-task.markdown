@@ -130,8 +130,10 @@ While defining a Sink task using the Studio, you can -
    * Enter each path you want the Hub to replicate to the Sink, in 
      the `Enter documents prefix` text box.  
      Click the `Add Prefix` button to add it to the prefix list.  
-     * You can define wildcards using `*`.  
-     * You can use document IDs.  
+      * You can define a prefix that uses a wildcard (`*`).  
+        Place the wildcard in the prefix' suffix, after `/` or `-`.  
+        e.g. `products/*`  
+      * You can provide exact document IDs.  
 
 2. **Use above prefixes (Hub to Sink) for both directions**
    * **Enable** this option to allow replication of the same prefixes 

@@ -38,10 +38,17 @@ To start replication via Hub and Sink tasks, you need to define -
 1. **A Hub task**  
 2. **Hub Access/es**  
    Multiple Sink tasks can connect the Hub using each access.  
-   For each access, you need to issue a certificate with the Hub's public key and with 
-   a private key (that the Hub task doesn't keep) for Sink tasks that need to connect the 
+   For each access, you need to issue a certificate with a private key 
+   (that the Hub doesn't keep) for Sink tasks that need to connect the 
    Hub using this access.  
 3. **Sink task/s**  
+4. **Filtering**  
+   You can enable or disable replication filtering, and specify paths 
+   to documents whose replication is allowed.  
+   Allowed paths are defined separately for the Hub and for the Sink.  
+   You can further increase filtering resolution, by defining separate 
+   lists of allowed paths for incoming and outgoing documents.  
+
 
 When this is done, changed documents whose replication is allowed by 
 both Hub and Sink will replicate.  
@@ -53,7 +60,7 @@ both Hub and Sink will replicate.
 Use `PutPullReplicationAsHubOperation` to register a new Hub task,  
 and configure it using a `PullReplicationDefinition` class.  
 
-{CODE-BLOCK: JSON}
+{CODE-BLOCK: csharp}
 await store.Maintenance.SendAsync(new PutPullReplicationAsHubOperation 
     (new PullReplicationDefinition {
         Name = "Hub1_Bidirectional",
@@ -63,7 +70,7 @@ await store.Maintenance.SendAsync(new PutPullReplicationAsHubOperation
 {CODE-BLOCK/}
 
 * **`PutPullReplicationAsHubOperation` definition**
-      {CODE-BLOCK: JSON}
+      {CODE-BLOCK: csharp}
       public PutPullReplicationAsHubOperation(string name)  
       public PutPullReplicationAsHubOperation(PullReplicationDefinition pullReplicationDefinition)
       {CODE-BLOCK/}
@@ -87,7 +94,7 @@ await store.Maintenance.SendAsync(new PutPullReplicationAsHubOperation
 Use `RegisterReplicationHubAccessOperation` to define a Hub Access,  
 and configure it using a `ReplicationHubAccess` class.  
 
-{CODE-BLOCK: JSON}
+{CODE-BLOCK: csharp}
 await store.Maintenance.SendAsync(new RegisterReplicationHubAccessOperation
    ("Hub1_Bidirectional", new ReplicationHubAccess {
         Name = "Access1",
@@ -104,7 +111,7 @@ await store.Maintenance.SendAsync(new RegisterReplicationHubAccessOperation
 {CODE-BLOCK/}
 
 * **`RegisterReplicationHubAccessOperation` definition**
-      {CODE-BLOCK: JSON}
+      {CODE-BLOCK: csharp}
       public RegisterReplicationHubAccessOperation(string hubName, ReplicationHubAccess access)  
       {CODE-BLOCK/}
 
@@ -121,7 +128,7 @@ await store.Maintenance.SendAsync(new RegisterReplicationHubAccessOperation
 To **Remove** an existing Access, use `UnregisterReplicationHubAccessOperation`.  
 
 * **`UnregisterReplicationHubAccessOperation` definition**:
-      {CODE-BLOCK: JSON}
+      {CODE-BLOCK: csharp}
       public UnregisterReplicationHubAccessOperation(string hubName, string thumbprint)  
       {CODE-BLOCK/}
 {INFO/}
@@ -132,7 +139,7 @@ To **Remove** an existing Access, use `UnregisterReplicationHubAccessOperation`.
 Use `UpdatePullReplicationAsSinkOperation` to define a Sink task,  
 and configure it using a `PullReplicationAsSink` class.  
 
-{CODE-BLOCK: JSON}
+{CODE-BLOCK: csharp}
 await store.Maintenance.SendAsync(new UpdatePullReplicationAsSinkOperation
    (new PullReplicationAsSink {
         ConnectionStringName = dbName + "_ConStr",
@@ -151,7 +158,7 @@ await store.Maintenance.SendAsync(new UpdatePullReplicationAsSinkOperation
 {CODE-BLOCK/}
 
 * **`UpdatePullReplicationAsSinkOperation` definition**
-      {CODE-BLOCK: JSON}
+      {CODE-BLOCK: csharp}
       public UpdatePullReplicationAsSinkOperation(PullReplicationAsSink pullReplication)  
       {CODE-BLOCK/}
 
@@ -176,7 +183,7 @@ The Sink needs a connection string to locate the Hub task it is to use.
 Use `PutConnectionStringOperation` to define a connection string,  
 and configure it using a `RavenConnectionString` class.  
 
-{CODE-BLOCK: JSON}
+{CODE-BLOCK: csharp}
 await storeA.Maintenance.SendAsync(
     new PutConnectionStringOperation<RavenConnectionString>(new RavenConnectionString
     {
@@ -193,7 +200,7 @@ Learn about Connection Strings [here](../../client-api/operations/maintenance/co
 
 {PANEL: Usage Sample}
 
-{CODE-BLOCK: JSON}
+{CODE-BLOCK: csharp}
 // Issue a certificate
 var pullCert = new X509Certificate2(File.ReadAllBytes(certificates.ClientCertificate2Path), 
     (string)null, X509KeyStorageFlags.Exportable);

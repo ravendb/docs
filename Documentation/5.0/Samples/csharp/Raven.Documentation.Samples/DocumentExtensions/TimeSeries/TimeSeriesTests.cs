@@ -57,20 +57,18 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             {
                 var baseline = DateTime.Today;
 
-                // Open a session
+                //append entries
                 using (var session = store.OpenSession())
                 {
-                    // Use the session to create a document
                     session.Store(new User { Name = "John" }, "users/john");
 
-                    // Create an instance of TimeSeriesFor
-                    // Pass an explicit document ID to the TimeSeriesFor constructor 
-                    // Append a HeartRate of 70 at the first-minute timestamp 
+                    // Append a HeartRates entry
+                    session.TimeSeriesFor("users/john", "HeartRates")
                         .Append(baseline.AddMinutes(1), 70d, "watches/fitbit");
 
                     session.SaveChanges();
                 }
-
+                
                 // Get time series names
                 using (var session = store.OpenSession())
                 {
