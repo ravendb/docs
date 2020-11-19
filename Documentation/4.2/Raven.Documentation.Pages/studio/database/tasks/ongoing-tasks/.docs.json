@@ -5,12 +5,18 @@
     "DiscussionId": "15835cd8-f5fd-4164-b492-444b6da61459",
     "Mappings": []
   },
-  {
-    "Path": "pull-replication.markdown",
-    "Name": "Pull Replication",
-    "DiscussionId": "3ebce840-1ea8-4f9e-ae50-0275661a3c1d",
-    "Mappings": []
-  },
+    {
+        "Path": "pull-replication.markdown",
+        "Name": "Pull Replication",
+        "DiscussionId": "3ebce840-1ea8-4f9e-ae50-0275661a3c1d",
+        "LastSupportedVersion": "5.0",
+        "Mappings": [
+            {
+                "Version": 5.1,
+                "Key": "studio/database/tasks/ongoing-tasks/hub-sink-replication/overview"
+            }
+        ]
+    },
   {
     "Path": "backup-task.markdown",
     "Name": "Backup Task",
