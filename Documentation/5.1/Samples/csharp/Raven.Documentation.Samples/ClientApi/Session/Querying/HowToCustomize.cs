@@ -42,7 +42,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 FromIndex,
                 FromIndexOrThrow,
                 FromDocument,
-                FromDocumentOrThrowyy
+                FromDocumentOrThrow
             }
             #endregion
 
