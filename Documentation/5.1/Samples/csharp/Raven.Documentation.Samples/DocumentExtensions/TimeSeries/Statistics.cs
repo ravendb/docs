@@ -35,7 +35,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                 {
                     #region LINQ_percentile
                     var query = session.Query<Employee>()
-                        .Select(p => RavenQuery.TimeSeries(p, "HeartRate")
+                        .Select(p => RavenQuery.TimeSeries(p, "HeartRates")
                             .Select(x => new
                             {
                                 P = x.Percentile(90)
@@ -51,7 +51,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                     var query = session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                         from Employees as e 
                         select timeseries(
-                            from e.HeartRate
+                            from e.HeartRates
                             group by 1 hour
                             select slope()
                         )
@@ -63,7 +63,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                 {
                     #region LINQ_slope
                     var query = session.Query<Employee>()
-                        .Select(p => RavenQuery.TimeSeries(p, "HeartRate")
+                        .Select(p => RavenQuery.TimeSeries(p, "HeartRates")
                             .GroupBy(g => g.Hours(1))
                             .Select(x => new
                             {
@@ -83,7 +83,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                     var query = session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                         from Employees as e
                         select timeseries(
-                            from e.HeartRate 
+                            from e.HeartRates 
                             between $start and $end
                             select stddev()
                         )
@@ -100,7 +100,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                     var date = DateTime.Today;
 
                     var query = session.Query<Employee>()
-                        .Select(p => RavenQuery.TimeSeries(p, "HeartRate", date, date.AddDays(1))
+                        .Select(p => RavenQuery.TimeSeries(p, "HeartRates", date, date.AddDays(1))
                             .Select(x => new
                             {
                                 StdDev = x.StandardDeviation()

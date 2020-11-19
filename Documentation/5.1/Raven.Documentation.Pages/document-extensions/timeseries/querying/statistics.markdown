@@ -32,8 +32,8 @@ For example, a 90th percentile is greater than 90% of the values in the
 series, and less than the remaining 10%.  
 {INFO/}
 
-* RQL method: `percentile()`
-* LINQ method: `Percentile()`
+* RQL method: `percentile()`  
+* LINQ method: `Percentile()`  
 
 The percentile method can be used to calculate any percentile in a time 
 series or range of time series entries. It takes one `double` value between 
@@ -44,10 +44,10 @@ See examples [below](../../../document-extensions/timeseries/querying/statistics
 
 ---
 
-### Slope
+### Slope  
 
-* RQL method: `slope()`
-* LINQ method: `slope()`
+* RQL method: `slope()`  
+* LINQ method: `slope()`  
 
 The slope of a time series or range of time series entries is the difference 
 between the first and last values of the range (disregarding the values in 
@@ -65,8 +65,8 @@ See examples [below](../../../document-extensions/timeseries/querying/statistics
 
 ### Standard Deviation
 
-* RQL method: `stddev()`
-* LINQ method: `StandardDeviation()`
+* RQL method: `stddev()`  
+* LINQ method: `StandardDeviation()`  
 
 These methods return the [standard deviation](https://en.wikipedia.org/wiki/Standard_deviation) 
 of time series values.  
