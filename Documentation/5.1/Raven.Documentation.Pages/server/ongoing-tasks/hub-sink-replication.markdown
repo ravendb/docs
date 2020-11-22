@@ -37,17 +37,17 @@ To start replication via Hub and Sink tasks, you need to define -
 
 1. **A Hub task**  
 2. **Hub Access/es**  
-   Multiple Sink tasks can connect the Hub using each access.  
-   For each access, you need to issue a certificate with a private key 
-   (that the Hub doesn't keep) for Sink tasks that need to connect the 
-   Hub using this access.  
+    * Multiple Sink tasks can connect a Hub using each access you define for it.  
+    * For each access, you need to issue a certificate with a private key 
+     (that the Hub doesn't keep) for Sink tasks that need to connect the 
+     Hub using this access.  
 3. **Sink task/s**  
 4. **Filtering**  
-   You can enable or disable replication filtering, and specify paths 
-   to documents whose replication is allowed.  
-   Allowed paths are defined separately for the Hub and for the Sink.  
-   You can further increase filtering resolution, by defining separate 
-   lists of allowed paths for incoming and outgoing documents.  
+    * You can enable or disable *replication filtering*, and specify the paths 
+      of documents whose replication is allowed.  
+    * Allowed paths are defined separately for the Hub and for the Sink.  
+    * You can further increase filtering resolution, by defining separate 
+      lists of allowed paths for *incoming* and *outgoing* documents.  
 
 
 When this is done, changed documents whose replication is allowed by 
@@ -169,7 +169,7 @@ await store.Maintenance.SendAsync(new UpdatePullReplicationAsSinkOperation
     | `Mode` | `PullReplicationMode` | Data Direction (HubToSink, SinkToHub, or Both) |
     | `AllowedHubToSinkPaths` | `string[]` | Allowed paths from Hub to Sink |
     | `AllowedSinkToHubPaths` | `string[]` | Allowed paths from Sink to Hub |
-    | `CertificateWithPrivateKey` | `string` | Certificate with a public key for a Hub Access and the Sink's Private key |
+    | `CertificateWithPrivateKey` | `string` | A certificate with the Sink's Private key |
     | `CertificatePassword` | `string` | Certificate Password |
     | `AccessName` | `string` | Access Name to connect to |
     | `HubName` | `string` | Hub Name to connect to |
@@ -277,15 +277,15 @@ select a different node for the job.
 RavenDB versions that precede 5.1 support **Pull Replication**, which allows 
 you to define *Hub and Sink* tasks and replicate data from Hub to Sink.  
 
-In RavenDB 5.1 and on, the *Pull Replication* feature is **replaced** by 
-the *Hub/Sink Replication* that allows everything *Pull Replication* does 
+In RavenDB 5.1 and on, *Pull Replication* is replaced and enhanced by 
+*Hub/Sink Replication*, which provides everything *Pull Replication* does 
 and adds to it *Sink to Hub* replication and *Replication Filtering*.  
 
 * Pull Replication tasks defined on a RavenDB version earlier than 5.1, 
   **will remain operative** when you upgrade to version 5.1 and on.  
 
-* A Hub or a Sink task that runs on a RavenDB version earlier than 5.1, 
-  **can** connect a Hub or a Sink defined on RavenDB 5.1 and on.  
+* A Hub or a Sink task that runs on a RavenDB version earlier than 
+  5.1, **can** connect a Hub or a Sink defined on RavenDB 5.1 and on.  
   You do **not** need to upgrade the task's instance to keep the task operative.  
 
 {INFO: }

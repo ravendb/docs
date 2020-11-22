@@ -15,7 +15,7 @@ and Sink replication tasks.
   whether to replicate data from *Hub to Sink* and/or from *Sink to Hub*.  
 
 * Replication can be [filtered](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#filtered-replication) 
-  by both Hub and Sink, using wildcards and document IDs, to select the 
+  by both the Hub and the Sink, and for both *incoming* and *outgoing* documents, using wildcards and document IDs, to select the 
   documents that would be replicated.  
 
 * The connection between Hub and Sink tasks is [secure](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#certificates), 

@@ -10,7 +10,7 @@ be replicated in either or both directions.
 Hub/Sink connections are secure, and require [certification](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#accesses-and-certificates).  
 
 While defining a Sink task using the Studio, you can -  
-* Import certificates issued by the Hubs it uses  
+* Import a certificate issued by the Hubs that this SInk uses  
 * Choose replication direction/s (`Hub->Sink` / `Hub<-Sink` / `Hub<->Sink`)  
 * Use [Filtered Replication](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#filtered-replication) to choose which documents are to be replicated  
 
@@ -46,8 +46,8 @@ While defining a Sink task using the Studio, you can -
      Sink to connect.  
      Importing a configuration file would fill **Sink**, **Access** 
      and **Filtering** fields you've filled while defining the Hub task, 
-     including the Hub task's certificate, and save you the effort 
-     of typing or defining them here again.  
+     including certification details, and save you the effort of redefining 
+     them here.  
 
 {PANEL: Sink Configuration}
 
@@ -103,8 +103,7 @@ While defining a Sink task using the Studio, you can -
    * Provide a name for this Sink access  
 
 2. **Certificate Source**  
-   Choose where the Sink certificate (with its own private key and 
-   the Hub's public key) is from. 
+   Choose a source for the Sink certificate.  
    ([Import Hub configuration](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task#import-configuration-from-hub) 
    to save yourself the need to redefine these details.)  
    * **Provide your own certificate**  
