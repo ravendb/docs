@@ -95,6 +95,8 @@ While defining a Hub task using the Studio, you can -
       Choosing to create a new certificate will open a page that would 
       allow you to choose its longevity.  
        ![Figure 5. New Certificate](images/hub/hub_generate-new-replication-certificate.png "New Certificate")
+            `1`. Choose how long the certificate would be valid before it expires.  
+            `2`. Generate the new certificate or cancel the operation.  
 
 
 3. **Information for Sink: Export access configuration**  
