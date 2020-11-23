@@ -6,61 +6,78 @@ using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Queries;
 using Raven.Documentation.Samples.Orders;
 using Raven.Client.Documents.Linq;
-using System.Collections.Generic;
 
 namespace Raven.Documentation.Samples.Indexes
 {
     class AdditionalAssemblies
     {
-        public void Examples()
+        public void Example()
         {
-            using (var store = new DocumentStore()) {
-                using (var session = store.OpenSession())
+            using (var store = new DocumentStore())
+            {
+                #region complex_index
+                store.Maintenance.Send(new PutIndexesOperation(new IndexDefinition
                 {
-                    #region index_1
-                    var runtimeIndex = new IndexDefinition
+                    Name = "Photographs/Tags",
+                    Maps =
                     {
-                        Name = "XmlIndex",
-                        Maps = {
-                            "from c in docs.Companies select new { Name = typeof(System.Xml.XmlNode).Name }"
-                        },
-                        AdditionalAssemblies = {
-                            AdditionalAssembly.FromRuntime("System.Xml", "System.Xml.ReaderWriter"),
-                            AdditionalAssembly.FromRuntime("System.Private.Xml")
-                        }
-                    };
-                    #endregion
-                }
-
-                using (var session = store.OpenSession())
-                {
-                    #region index_2
-                    var runtimeIndex = new IndexDefinition
+                        @"
+                        from p in docs.Photographs
+                        let photo = LoadAttachment(p, ""photo.png"")
+                        where photo != null
+                        let classified =  ImageClassifier.Classify(photo.GetContentAsStream())
+                        select new {
+                            e.Name,
+                            Tag = classified.Where(x => x.Value > 0.75f).Select(x => x.Key),
+                            _ = classified.Select(x => CreateField(x.Key, x.Value))
+                        }"
+                    },
+                    AdditionalSources = new System.Collections.Generic.Dictionary<string, string>
                     {
-                        Name = "XmlIndex",
-                        Maps = {
-                            "from c in docs.Companies select new { Name = typeof(System.Xml.XmlNode).Name }"
-                        },
-                        AdditionalAssemblies = {
-                            AdditionalAssembly.FromPath("C:/Path/To/Local/Assembly");
-                        }
-                    };
-                    #endregion
-                }
-
-                using (var session = store.OpenSession())
-                {
-                    #region index_3
-                    var runtimeIndex = new IndexDefinition
-                    {
-                        Name = "XmlIndex",
-                        Maps = {
-                            "from c in docs.Companies select new { Name = typeof(System.Xml.XmlNode).Name }"
-                        },
-                        AdditionalAssemblies =
                         {
-                            AdditionalAssembly.FromRuntime("System.Private.Xml"),
-                            AdditionalAssembly.FromNuGet("System.Xml.ReaderWriter", "4.3.1")
+                            "ImageClassifier", 
+                            @"
+                            public static class ImageClassifier
+                            {
+                                public static IDictionary<string, float> Classify(Stream s)
+                                {
+                                    // returns a list of descriptors with a
+                                    // value between 0 and 1 of how well the
+                                    // image matches that descriptor.
+                                }
+                            }"
+                        }
+
+                    },
+                    AdditionalAssemblies =
+                    {
+                        AdditionalAssembly.FromRuntime("System.Memory"),
+                        AdditionalAssembly.FromNuGet("System.Drawing.Common", "4.7.0"),
+                        AdditionalAssembly.FromNuGet("Microsoft.ML", "1.5.2")
+                    }
+                }));
+                #endregion
+            }
+
+            using (var store = new documentstore())
+            {
+                using (var session = store.opensession())
+                {
+                    #region simple_index
+                    var runtimeindex = new indexdefinition
+                    {
+                        name = "Dog_Pictures",
+                        maps = { @"
+                            from user in docs.Users
+                            let fileName = Path.GetFileName(user.ImagePath)
+                            where fileName = ""My_Dogs.jpeg""
+                            select new {
+                                user.Name,
+                                fileName
+                            }"
+                        },
+                        additionalassemblies = {
+                            additionalassembly.fromruntime("system.IO")
                         }
                     };
                     #endregion
