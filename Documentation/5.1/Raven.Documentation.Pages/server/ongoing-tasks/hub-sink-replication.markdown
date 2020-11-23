@@ -8,6 +8,11 @@ Hub/Sink replication is used to maintain a live replica of a database
 or a chosen part of it, through a secure connection between ongoing Hub 
 and Sink replication tasks.  
 
+RavenDB instances distributed onboard mobile library busses, for example, 
+can collect data locally (e.g. bus GPS coordinates and books returns and 
+borrows), and replicate it via local Sink tasks to the central library's 
+Hub whenever they are online.  
+
 {INFO: }
 
 * Learn more about **Hub/Sink replication** [Here](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview).  
@@ -38,9 +43,9 @@ To start replication via Hub and Sink tasks, you need to define -
 1. **A Hub task**  
 2. **Hub Access/es**  
     * Multiple Sink tasks can connect a Hub using each access you define for it.  
-    * For each access, you need to issue a certificate with a private key 
-     (that the Hub doesn't keep) for Sink tasks that need to connect the 
-     Hub using this access.  
+    * Each access has an associate certificate, that is used by the Sink to 
+      authenticate with the Hub. This certificate is used to identify the specific 
+      access and the relevant filters for the connection.  
 3. **Sink task/s**  
 4. **Filtering**  
     * You can enable or disable *replication filtering*, and specify the paths 
@@ -50,8 +55,8 @@ To start replication via Hub and Sink tasks, you need to define -
       lists of allowed paths for *incoming* and *outgoing* documents.  
 
 
-When this is done, changed documents whose replication is allowed by 
-both Hub and Sink will replicate.  
+When the tasks are defined, changed documents whose replication is allowed by 
+both the Hub and the Sink will replicate.  
 
 ---
 
@@ -202,7 +207,7 @@ Learn about Connection Strings [here](../../client-api/operations/maintenance/co
 
 {CODE-BLOCK: csharp}
 // Issue a certificate
-var pullCert = new X509Certificate2(File.ReadAllBytes(certificates.ClientCertificate2Path), 
+var pullCert = new X509Certificate2("/path/to/cert.pfx", 
     (string)null, X509KeyStorageFlags.Exportable);
 
 // Define a Hub task
@@ -224,6 +229,8 @@ await store.Maintenance.SendAsync(new RegisterReplicationHubAccessOperation(
             "products/*",
             "orders/*"
         },
+        
+        // The public portion of the certificate, in base 64
         CertificateBase64 = Convert.ToBase64String(pullCert.Export(X509ContentType.Cert))
     }));
 
@@ -258,8 +265,8 @@ also the Sink's responsibility to reconnect on network failure.
 
 ### Hub Failure 
 As part of the connection handshake, the Sink fetches an ordered list 
-of nodes from the Hub cluster. If defined, the preferred node will be 
-at the top of it.  
+of nodes from the Hub cluster. If a preferred node is defined (by explicitly 
+selecting a mentor node), it will be at the top of this list.  
 The Sink will try to connect the first node in the list, and proceed 
 down the list with every failed attempt.  
 If the connection fails with all nodes, the Sink will request the list again.  

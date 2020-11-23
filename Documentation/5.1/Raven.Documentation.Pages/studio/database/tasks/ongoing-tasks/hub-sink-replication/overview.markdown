@@ -8,8 +8,9 @@ Hub/Sink replication is used to maintain a live replica of a database
 or a chosen part of it, through a secure connection between ongoing Hub 
 and Sink replication tasks.  
 
-* Each Sink can access a single Hub.  
-  A Hub can be used by many Sinks.  
+* A Hub can be used by many Sinks.  
+
+* A database can define multiple Sinks in it, each for a different hub.  
 
 * The connection is always initiated by the Sink, but you can choose 
   whether to replicate data from *Hub to Sink* and/or from *Sink to Hub*.  
@@ -40,7 +41,7 @@ and Sink replication tasks.
   and can be initiated by the Sink at will.  
   This can be very helpful when the Sink instance tends to go offline, e.g. -  
 
-   * Using a cellular phone that may not always have connectivity  
+   * Using a cellular network that may not always have connectivity  
    * Using a laptop in a location with no WiFi
    * Onboard ships that sail offshore and offline  
    * in a security installation that limits its communication time 
@@ -85,7 +86,7 @@ can be useful in numerous cases, e.g. -
 {INFO: }
 
 * **Both the Hub and the Sink can filter data**  
-   Only documents defined by both, will be replicated.  
+   Only documents matching the filters defined by both, will be replicated.  
 * **Documents are selected by path**  
   Paths can include wildcards (`companies/*`) and 
   exact document IDs (`companies/88-A`).  
