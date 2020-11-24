@@ -116,7 +116,7 @@ Nothing is perfect and the downsides would be
     </pre>
     </li>
     <li class="margin-top-xs">
-        Some obscurity when looking at the record in the <em>RavenDB Studio</em>. It's not transparent what collection the reference is coming from and the <em>Studio</em> won't show a <a href="https://ravendb.net/docs/article-page/latest/csharp/studio/database/documents/document-view/document-view" target="_blank" rel="nofollow">list of related documents</a> for quick navigation.
+        Some obscurity when looking at the record in the <em>RavenDB Studio</em>. It's not transparent what collection the reference is coming from and the <em>Studio</em> won't show a <a href="https://ravendb.net/docs/article-page/latest/csharp/studio/database/documents/document-view" target="_blank" rel="nofollow">list of related documents</a> for quick navigation.
         <img src="images/yabt2/2.png" class="img-responsive margin-top-sm margin-bottom-sm" style="margin-left:auto;margin-right:auto;" alt="Related studio screenshot"/>
     </li>
 </ul>
@@ -228,7 +228,7 @@ And it's the main downside, the devs need to diligently call the method on the r
 
 Of course, it can be taken one step further – looping through all the properties of the DTO via recursion, but we'll stop here.
 
-<p>It's for you to decide which approach is better for your project. <em>YABT</em> is using the last one to provide a better <em>RavenDB</em> experience. Check out more <a href="https://github.com/ravendb/samples-yabt/tree/master/Domain/Helpers" target="_blank" rel="nofollow">helpers</a> used in the <em>YABT</em>.</p>
+<p>It's for you to decide which approach is better for your project. <em>YABT</em> is using the last one to provide a better <em>RavenDB</em> experience. Check out more <a href="https://github.com/ravendb/samples-yabt/tree/master/back-end/Domain/Helpers" target="_blank" rel="nofollow">helpers</a> used in the <em>YABT</em>.</p>
 
 ### 3. Customising the ID
 <hr style="border-color:rgba(34,37,43,.15);">
