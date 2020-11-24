@@ -6,6 +6,7 @@ using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Queries;
 using Raven.Documentation.Samples.Orders;
 using Raven.Client.Documents.Linq;
+using Raven.Client.Documents.Operations.Indexes;
 
 namespace Raven.Documentation.Samples.Indexes
 {
@@ -59,15 +60,15 @@ namespace Raven.Documentation.Samples.Indexes
                 #endregion
             }
 
-            using (var store = new documentstore())
+            using (var store = new DocumentStore())
             {
-                using (var session = store.opensession())
+                using (var session = store.OpenSession())
                 {
                     #region simple_index
-                    var runtimeindex = new indexdefinition
+                    var runtimeindex = new IndexDefinition
                     {
-                        name = "Dog_Pictures",
-                        maps = { @"
+                        Name = "Dog_Pictures",
+                        Maps = { @"
                             from user in docs.Users
                             let fileName = Path.GetFileName(user.ImagePath)
                             where fileName = ""My_Dogs.jpeg""
@@ -76,8 +77,8 @@ namespace Raven.Documentation.Samples.Indexes
                                 fileName
                             }"
                         },
-                        additionalassemblies = {
-                            additionalassembly.fromruntime("system.IO")
+                        AdditionalAssemblies = {
+                            AdditionalAssembly.FromRuntime("system.IO")
                         }
                     };
                     #endregion
