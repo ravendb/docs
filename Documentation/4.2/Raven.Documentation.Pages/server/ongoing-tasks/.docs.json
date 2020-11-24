@@ -1,19 +1,25 @@
 [
-  {
-    "Path": "/etl",
-    "Name": "ETL",
-    "Mappings": []
-  },
-  {
-    "Path": "pull-replication.markdown",
-    "Name": "Pull Replication",
-    "DiscussionId": "a668c1da-a2b5-4939-b749-bdf32c0ba830",
-    "Mappings": []
-  },
-  {
-    "Path": "backup-overview.markdown",
-    "Name": "Backup Overview",
-    "DiscussionId": "70d71f23-2b91-4c03-9171-115aa91d18fa",
-    "Mappings": []
-  }
+    {
+        "Path": "/etl",
+        "Name": "ETL",
+        "Mappings": []
+    },
+    {
+        "Path": "pull-replication.markdown",
+        "Name": "Pull Replication",
+        "DiscussionId": "3ebce840-1ea8-4f9e-ae50-0275661a3c1d",
+        "LastSupportedVersion": "5.0",
+        "Mappings": [
+            {
+                "Version": 5.1,
+                "Key": "server/ongoing-tasks/hub-sink-replication"
+            }
+        ]
+    },
+    {
+        "Path": "backup-overview.markdown",
+        "Name": "Backup Overview",
+        "DiscussionId": "70d71f23-2b91-4c03-9171-115aa91d18fa",
+        "Mappings": []
+    }
 ]
