@@ -40,6 +40,8 @@ Time series query can -
 * Select entries by various criteria, e.g. by the min and max values of each aggregated group, 
   and [project](../../../document-extensions/timeseries/querying/aggregation-and-projections) 
   them to the client.  
+* Calculate [statistical measures](../../../document-extensions/timeseries/querying/statistics): 
+  the percentile, slope, or standard deviation of a time series.  
 
 {PANEL/}
 
@@ -229,6 +231,7 @@ use and manipulate their results.
 [Filtering](../../../document-extensions/timeseries/querying/filtering)  
 [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)  
 [Indexed Time Series Queries](../../../document-extensions/timeseries/querying/indexed-queries)
+[Statistical Measures](../../../document-extensions/timeseries/querying/statistics)
 
 **Policies**  
 [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)  

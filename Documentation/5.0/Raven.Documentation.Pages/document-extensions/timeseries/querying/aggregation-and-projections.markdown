@@ -148,8 +148,8 @@ select c.Name, SP(c)
 {INFO: }
 You can run queries from your client using raw RQL and LINQ.  
 
-* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session/query/linq-queries).  
-* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session/query/rql-queries).  
+* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session/querying#time-series-linq-queries).  
+* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session/querying#client-raw-rql-queries).  
 
 {INFO/}
 
