@@ -78,7 +78,7 @@ namespace Raven.Documentation.Samples.Indexes
                             }"
                         },
                         AdditionalAssemblies = {
-                            AdditionalAssembly.FromRuntime("system.IO")
+                            AdditionalAssembly.FromRuntime("System.IO")
                         }
                     };
                     #endregion
