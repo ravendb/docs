@@ -35,8 +35,9 @@ Time series query can -
 * [Filter](../../../document-extensions/timeseries/querying/filtering) 
   time series entries by their tags, values and timestamps.  
 * [Aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections) 
-  time series entries into groups by a chosen resolution, e.g. gather the prices 
-  of a stock that's been collected over the past two months to week-long groups).  
+  time series entries into groups by a chosen time resolution, e.g. gather the prices 
+  of a stock that's been collected over the past two months to week-long groups). Entries can 
+  also be aggregated by their tags.  
 * Select entries by various criteria, e.g. by the min and max values of each aggregated group, 
   and [project](../../../document-extensions/timeseries/querying/aggregation-and-projections) 
   them to the client.  
@@ -65,10 +66,11 @@ indexes can be created by clients (or using the Studio).
   or when you prefer that RavenDB would choose an index automatically 
   using its [query optimizer](../../../indexes/querying/what-is-rql#query-optimizer). E.g. - 
    {CODE-BLOCK: JSON}
-//Look for time series named "HeartRate" in user profiles of users under 30.
-from Users as u where Age < 30
-    select timeseries(
-    from HeartRate
+//Look for time series named "HeartRates" in user profiles of users under 30.
+from Employees as e 
+where Birthday > '1990-01-01'
+select timeseries(
+    from HeartRates
 )
    {CODE-BLOCK/}
 
@@ -76,7 +78,7 @@ from Users as u where Age < 30
   can be performed over static indexes and their results. E.g. -
    {CODE-BLOCK: JSON}
 from index 'SimpleIndex'
-    where Tag = 'watches/fitbit'
+where Tag = 'watches/fitbit'
    {CODE-BLOCK/}
 
 {PANEL/}
@@ -142,13 +144,14 @@ in a `select timeseries` section.
 {CODE-BLOCK: JSON}
 //Look for time series named "HeartRate" in user profiles of users under 30.
 
-from Users as u where Age < 30
+from Employees as e 
+where Birthday > '1990-01-01'
 select timeseries(
     from HeartRate
 )
 {CODE-BLOCK/}
 
-* `from Users as u where Age < 30`  
+* `from Employees as e where Birthday > '1990-01-01'`  
   This **document query** locates the documents whose time series we want to query.  
   
     {INFO: }
@@ -157,7 +160,8 @@ select timeseries(
     locate a specific company's profile in the Companies collection, 
     and then query the StockPrices time series that belongs to this profile.  
       {CODE-BLOCK: JSON}
-      from Companies as c where Name = 'Apple'
+      from Companies
+      where Name = 'Apple'
       select timeseries(
           from StockPrices
       )
