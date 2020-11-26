@@ -64,7 +64,7 @@ Our diagram has some resemblance with the classic Onion diagram:
         <span class="text-muted">A <em>RavenDB</em> <a href="https://ravendb.net/docs/article-page/latest/csharp/server/kb/document-identifier-generation">document identifier</a> is a string that is globally unique in the scope of the database. What document ID generation strategy to choose? The article covers pros and cons of some strategies and ways to mitigate the cons.</span>
     </li>
     <li class="margin-top-xs">
-        "Power of Dynamic fields for indexing dictionaries and nested collections in RavenDB"<br/>
+        <a href="https://ravendb.net/articles/dynamic-fields-for-indexing">"Power of Dynamic fields for indexing dictionaries and nested collections in RavenDB"</a><br/>
         <span class="text-muted">Leveraging the <a href="https://ravendb.net/docs/article-page/latest/csharp/indexes/using-dynamic-fields">Dynamic fields</a> in the index, we'll fetch backlog items to build <em>"My recent tickets"</em> for the current user (ones modified by the user fetching the right timestamp in the history of modifications) and manage a collection of custom fields with searching capability.</span>
     </li>
     <li class="margin-top-xs">
