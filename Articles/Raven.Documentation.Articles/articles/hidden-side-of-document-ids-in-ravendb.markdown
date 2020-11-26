@@ -316,8 +316,10 @@ That's it. There are ample options, but let's be reasonable, apply features wise
             <strong class="previous">NoSQL Data Model Through DDD Prism</strong>
         </div>
     </a>
-    <div class="nav-btn disabled margin-bottom-xs">
-        <small>Next in the series ›</small>
-        <strong class="next">Coming soon</strong>
-    </div>
+    <a href="https://ravendb.net/articles/dynamic-fields-for-indexing">
+        <div class="nav-btn margin-bottom-xs">
+            <small>Next in the series ›</small>
+            <strong class="next">Dynamic Fields for Indexing</strong>
+        </div>
+    </a>
 </div>
