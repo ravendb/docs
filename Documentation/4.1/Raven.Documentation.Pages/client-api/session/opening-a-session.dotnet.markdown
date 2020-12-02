@@ -36,7 +36,7 @@
 | Parameter | Type | Description |
 |-|-|-|
 | **database** | `string` | The Session will operate on this database, overriding the default database set in the document store |
-| **options** | `SessionOptions` | An object with Session configuration options. See details [below]() |
+| **options** | `SessionOptions` | An object with Session configuration options. See details [below](../../client-api/session/opening-a-session#session-options) |
 
 | Return Value | Description |
 |-|-|

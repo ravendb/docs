@@ -65,8 +65,8 @@
   *  **Export CSV**: Export the collection data into a CSV file (visible columns only -or- all documents columns)  
   *  **Display**: Customize which columns to view. A custom column can be added  
 * 3  
-  * **Patch**: Patch documents in a collection or in an index. See [Patch Documents](../../../../todo-update-me-later)  
-  * **Query**: Query documents in a collection or in an index. See [Query Documents](../../../../todo-update-me-later)  
+  * **Patch**: Patch documents in a collection or in an index.  
+  * **Query**: Query documents in a collection or in an index.  
   * **Conflicts**: View and resolve conflicting documents. See [Conflicts](../../../studio/database/documents/conflicts-view)  
 {PANEL/}
 

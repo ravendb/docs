@@ -36,7 +36,7 @@
   * If not selected, then the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties))  
 
 3. **Connection String**  
-   * Select a [Connection String](../../../todo-update-me-later) from the pre-defined list -or-create a new connection string to be used  
+   * Select an existing connection string from the list or create a new one  
    * The connection string defines the destination database and its database group server nodes URLs  
 {PANEL/}
 
@@ -127,7 +127,5 @@
 
 ## Related Articles
 
-- [ETL Basics](../../../../server/ongoing-tasks/etl/raven)
-- [SQL ETL Task](../../../../server/ongoing-tasks/etl/sql)
-- [Define RavenDB ETL Task in Studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
-- [Define SQL ETL Task in Studio](../../../todo-update-me-later)
+- [ETL Basics](../../../../server/ongoing-tasks/etl/raven)  
+- [Define RavenDB ETL Task in Studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)  

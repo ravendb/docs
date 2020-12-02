@@ -205,7 +205,7 @@ double quotes within the request body using a backslash: `"` -> `\"`.
 | Field | Description |
 | - | - |
 | **TotalResults** | The total number of results of the query |
-| **CappedMaxResults** | The number of results retrieved after the [maximum page size](../../../csharp/indexes/querying/paging) is applied. If paging was not used, this field does not appear. |
+| **CappedMaxResults** | The number of results retrieved after the [maximum page size](../../../indexes/querying/paging) is applied. If paging was not used, this field does not appear. |
 | **SkippedResults** | The number of results that were skipped, e.g. because there were [duplicates](../../../indexes/querying/distinct) |
 | **DurationInMs** | Number of milliseconds it took to satisfy the query on the server side |
 | **IncludedPaths** | Array of the paths within the queried documents to the [related document](../../../client-api/how-to/handle-document-relationships#includes) IDs. Default: `null` |

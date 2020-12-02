@@ -78,6 +78,6 @@ as there will be a change to the document's metadata, as shown in example #2.
 
 ### Attachments
 
-- [Storing](../../../client-api/session/attachments/storing)
-- [Loading](../../../client-api/session/attachments/loading)
-- [Deleting](../../../client-api/session/attachments/deleting)
+- [Storing](../../document-extensions/attachments/storing)
+- [Loading](../../document-extensions/attachments/loading)
+- [Deleting](../../document-extensions/attachments/deleting)

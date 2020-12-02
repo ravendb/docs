@@ -3,10 +3,12 @@
 
 {NOTE: }
 
-* Schedule a **Backup Task** in order to backup your data.  
-  This will allow you to [restore the database](../../../todo-update-me-later) to a previous state from a specific point in time.  
+* Backups save your data at a specific point in time, and allow you to 
+  [restore](../../../../studio/server/databases/create-new-database/from-backup#create-a-database-from-backup) 
+  your database from that point. Learn more in [Backup Overview](../../../../server/ongoing-tasks/backup-overview).  
 
-* This task is _not_ replicating your data, see more below in [Backup -vs- Replication](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task--vs--replication-task)  
+* A backup is _not_ equivalent to replicating your data, as explained below in 
+  [Backup -vs- Replication](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task--vs--replication-task)  
 
 * Configure the following when creating a Backup Task:
   * **Backup Type** - Select Backup/Snapshot  

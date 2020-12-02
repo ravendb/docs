@@ -72,8 +72,8 @@ modifications are merged by the cluster [without conflict](../../document-extens
 #### Time Series as Document Extensions
 
 RavenDB’s Time Series, like its 
-[distributed counters](../../client-api/session/counters/overview), 
-[attachments](../../client-api/session/attachments/what-are-attachments) 
+[distributed counters](../../document-extensions/counters/overview), 
+[attachments](../../document-extensions/attachments/what-are-attachments) 
 and [document revisions](../../client-api/session/revisions/what-are-revisions), 
 are **document extensions**.  
 

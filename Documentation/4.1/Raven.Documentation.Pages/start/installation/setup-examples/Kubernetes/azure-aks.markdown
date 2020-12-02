@@ -156,11 +156,11 @@ kubectl delete sts ravendb
 
 ### Getting Started
 
-- [Getting Started](../../../start/getting-started)
+- [Getting Started](../../../../start/getting-started)
 
 ### Installation
 
-- [Setup Wizard](../../../start/installation/setup-wizard)
-- [Setup Examples: Docker (AWS ECS)](../../../start/installation/setup-examples/aws-docker-linux-vm)
-- [Setup Examples: Windows VM (AWS)](../../../start/installation/setup-examples/aws-windows-vm)
-- [Setup Examples: Linux VM (AWS)](../../../start/installation/setup-examples/aws-linux-vm)
+- [Setup Wizard](../../../../start/installation/setup-wizard)
+- [Setup Examples: Docker (AWS ECS)](../../../../start/installation/setup-examples/aws-docker-linux-vm)
+- [Setup Examples: Windows VM (AWS)](../../../../start/installation/setup-examples/aws-windows-vm)
+- [Setup Examples: Linux VM (AWS)](../../../../start/installation/setup-examples/aws-linux-vm)

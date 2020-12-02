@@ -195,4 +195,3 @@ All records created in a single ETL run, one per each `loadTo` call, will be sen
 ### Studio
 
 - [Define RavenDB ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
-- [Define SQL ETL Task in Studio](../../../todo-update-me-later)

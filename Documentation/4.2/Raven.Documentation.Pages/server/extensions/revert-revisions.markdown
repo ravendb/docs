@@ -4,7 +4,7 @@ Allow to revert the database to a specific point in time.
 
 {INFO: }
 
-This feature is available only if [Revisions](../../server/extenstions/revisions) are enabled.
+This feature is available only if [Revisions](../../server/extensions/revisions) are enabled.
 
 {INFO/}
 
@@ -33,4 +33,4 @@ For example when reverting to the point in time of `16/03/2019 09:55 UTC` the fo
 * Remaining documents will not be modified.
 
 ## Related Articles
-[Revisions](../../server/extenstions/revisions)
+[Revisions](../../server/extensions/revisions)

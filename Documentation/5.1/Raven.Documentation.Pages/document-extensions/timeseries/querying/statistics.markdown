@@ -56,7 +56,7 @@ between) divided by the difference in time.
 Queries that use this method must also [aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections) 
 the time series, grouping the entries into whole numbers of time units.  
 
-The difference in time is measured in milliseconds. Use [scaling](../../../document-extensions/timeseries/querying/scaling)
+The difference in time is measured in milliseconds. Use [scaling](../../../document-extensions/timeseries/querying/overview-and-syntax#scaling-query-results)
 to adjust the results to your preferred units.  
 
 See examples [below](../../../document-extensions/timeseries/querying/statistics#examples).  
@@ -136,7 +136,7 @@ these results for each of the aggregates.
 - [Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)  
 - [Filtering](../../../document-extensions/timeseries/querying/filtering)  
 - [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)  
-- [Indexed Time Series Queries](../../../document-extensions/timeseries/querying/indexed-queries)  
+- [Indexed Time Series Queries](../../../document-extensions/timeseries/querying/using-indexes)  
 
 ### Client API  
 

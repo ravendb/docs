@@ -182,8 +182,8 @@ select timeseries(
 {INFO: }
 You can run queries from your client using raw RQL and LINQ.  
 
-* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session/query/linq-queries).  
-* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session/query/rql-queries).  
+* Learn how to run a LINQ time series query [here](../../../document-extensions/timeseries/client-api/session/querying#time-series-linq-queries).  
+* Learn how to run a raw RQL time series query [here](../../../document-extensions/timeseries/client-api/session/querying#client-raw-rql-queries).  
 
 {INFO/}
 
@@ -216,7 +216,7 @@ or `select` in a raw RQL query.
 **Time Series Queries**  
 [Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)  
 [Filtering](../../../document-extensions/timeseries/querying/filtering)  
-[Indexed Time Series Queries](../../../document-extensions/timeseries/querying/indexed-queries)
+[Indexed Time Series Queries](../../../document-extensions/timeseries/querying/using-indexes)  
 
 **Policies**  
 [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)  

@@ -25,18 +25,18 @@ To restore a database from its backup, use **RestoreBackupOperation**.
 ## Related Articles
 
 **Studio Articles**:   
-[Create a Database : From Backup](../../../../studio/server/databases/create-new-database/from-backup)      
-[Create a Database : General Flow](../../../../studio/server/databases/create-new-database/general-flow)           
-[Create a Database : Encrypted](../../../../studio/server/databases/create-new-database/encrypted)        
-[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)      
+[Create a Database : From Backup](../../../studio/server/databases/create-new-database/from-backup)      
+[Create a Database : General Flow](../../../studio/server/databases/create-new-database/general-flow)           
+[Create a Database : Encrypted](../../../studio/server/databases/create-new-database/encrypted)        
+[The Backup Task](../../../studio/database/tasks/ongoing-tasks/backup-task)      
 
 **Client Articles**:  
-[Restore](../../../../client-api/operations/maintenance/backup/restore)   
-[What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)   
-[Backup](../../../../client-api/operations/maintenance/backup/backup)
+[Restore](../../../client-api/operations/maintenance/backup/restore)   
+[What Is Smuggler](../../../client-api/smuggler/what-is-smuggler)   
+[Backup](../../../client-api/operations/maintenance/backup/backup)
 
 **Server Articles**:  
-[Backup Overview](../../../../server/ongoing-tasks/backup-overview)
+[Backup Overview](../../../server/ongoing-tasks/backup-overview)
 
 **Migration Articles**:  
-[Migration](../../../../migration/server/data-migration) 
+[Migration](../../../migration/server/data-migration) 

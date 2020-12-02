@@ -101,7 +101,7 @@ It is usually easy to query the exposed metrics using a monitoring tool. ([Examp
 However, you should also be able to access those directly using any SNMP agent like [Net-SNMP](http://net-snmp.sourceforge.net/). 
 Each metric has a unique identifier (OID) and can be accessed individually.  
 
-The most basic SNMP commands are `snmpget`, `snmpset` and `snmptrapd` ([Read more](http://net-snmp.sourceforge.net/tutorial/tutorial-5/commands/)). 
+The most basic SNMP commands are `snmpget`, `snmpset` and `snmptrapd`.  
 For example, using the SNMP agent you could run the following snmpget commands which get the server 
 up-time metric.  
 

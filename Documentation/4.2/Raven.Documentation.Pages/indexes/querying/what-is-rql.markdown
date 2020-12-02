@@ -69,9 +69,11 @@ You can read more about indexes [here](../indexing-basics).
 
 
 {NOTE: Exception: Counters}
-Queries in RavenDB will always use an index, with the exception of [distributed counters]().  
-Counters are **not** automatically indexed. They **can** be indexed manually.  
-When an index has not been created manually for counters, they are queried without an index.  
+Queries in RavenDB are indexed automatically (unless they are already indexed).  
+[Distributed Counters](../../client-api/session/counters/overview) are an exception 
+to this rule: they are **not** indexed automatically, though they **can** be indexed 
+manually.  
+Counters that haven't been indexed manually, will be queried without index.  
 {NOTE/}
 
 {NOTE: Indexing and queries in RavenDB }
@@ -278,7 +280,7 @@ The keyword `include` has been introduced to support:
 
 {PANEL: `with`}
 
-The keyword `with` is used to determine the data source of a [graph query](../../indexes/querying/graph/graph-queries).  
+The keyword `with` is used to determine the data source of a [graph query](../../indexes/querying/graph/graph-queries-overview).  
 There are two types of `with` clauses, regular `with` and `with edges`.
 
 - with: `with {from Orders} as o`  
@@ -288,13 +290,11 @@ There are two types of `with` clauses, regular `with` and `with edges`.
   The above statement means that our data source is the property `Lines` of the source documents and we filter all lines that match `Discount >= 0.25` query
   the destination referred to by the `cheap` alias is the product pointed by the `Product` property of the order line  
     
-For more details regarding graph queries please read the following article about [graph query](../../indexes/querying/graph/graph-queries) 
-
 {PANEL/}
 
 {PANEL: `match`}
 
-The keyword `match` is used to determine the pattern of a [graph query](../../indexes/querying/graph/graph-queries).  
+The keyword `match` is used to determine the pattern of a [graph query](../../indexes/querying/graph/graph-queries-overview).  
 `match (Orders as o)-[Lines as cheap where Discount >= 0.25 select Product]->(Products as p)`  
 The above statement means that we are searching for a pattern that starts with an order and traverse using the
 order lines referred to by the `Lines` property where their `Discount` property is larger than 25%  and the destination is the product referred to by the `Product` property.  
@@ -307,8 +307,6 @@ The above match will actually be translated to:
 and  
 `(node3)-[left]->(node2)`  
 where the `and` is a set intersection between the two patterns.  
-
-For more details regarding graph queries please read the following article about [graph query](../../indexes/querying/graph/graph-queries)  
 
 {PANEL/}
 
@@ -393,9 +391,10 @@ And the following values:
 
 ### Client API
 
-- [How to Query](../../client-api/session/querying/how-to-query)
-- [How to Use RQL Directly When Querying](../../client-api/session/querying/how-to-query#session.advanced.rawquery)
+- [How to Query](../../client-api/session/querying/how-to-query)  
+- [How to Use RQL Directly When Querying](../../client-api/session/querying/how-to-query#session.advanced.rawquery)  
 
 ### Querying
 
-- [Basics](../../indexes/querying/basics)
+- [Basics](../../indexes/querying/basics)  
+- [Graph Queries Overview](../../indexes/querying/graph/graph-queries-overview)  

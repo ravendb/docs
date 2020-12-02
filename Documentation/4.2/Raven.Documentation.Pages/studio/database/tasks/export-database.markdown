@@ -1,35 +1,48 @@
 ﻿# Export Database to a .ravendbdump file
 
-A `.ravendbdump` file is the RavenDB format for exporting/importing a database. It is backwards compatible between RavenDB versions. 
-In order to export a `.ravendbdump` file we need an existing database. Let's select a database and navigate to `Settings`.  
+A `.ravendbdump` file is RavenDB's format for exporting/importing a database, with backward compatibility between RavenDB versions.  
+To export a `.ravendbdump` file, we need an existing database. Let's select a database and navigate to `Settings`.  
 
 ![Figure 1. Settings](images/export-database-select.png "Databases List")
 
-Select `Export Data` under `Tasks` submenu.
+Select `Export Data` under the `Tasks` submenu.  
 
 ![Figure 2. Export Database](images/export-database-export-database.png)
 
 ## Export options 
 
-Here you can filter the data you want to export, add encryption, select collections, configurations and apply a transform script on your documents.
+Here you can filter the data you want to export, add encryption, select collections and configurations, and apply a transform script on your documents.  
 
 ![Figure 3. Export Options](images/export-database-options.png "Export Options")
 
-- **Include Documents:** Determines whether or not documents contained in the database should be exported or not, if disabled _Attachments_ and _Counters_ will automatically be disabled too. 
-    - **Include Attachments:** Determines whether or not attachments contained in the database should be exported. 
-    - **Include Counters:** Determines whether or not Counters contained in the database should be exported. 
-    - **Include Revisions:** Determines whether or not Revisions contained in the database should be exported.
-    - **Include Conflicts:** Determines whether or not Conflicts contained in the database should be exported.
-- **Include Indexes:** Determines whether or not Indexes contained in the database should be exported. 
-    - **Remove Analyzers:** Determines whether or not Analyzers used by indexes contained in the file should be stripted or not. 
-- **Include Identities:** Determines whether or not Identities contained in the database should be exported.
-- **Include Compare Exchange:** Determines whether or not Compare Exchange values contained in the database should be exported.
-- **Include Subscriptions:** Determines whether or not Subscriptions contained in the database should be exported.
-- **Include Configuration and OngoingTasks:** Determines whether or not [server configurations and ongoing tasks](#customize-configuration-and-ongoing-tasks) should be exported.
+* **Include Documents**:  
+  Determines whether to export documents contained in the database.  
+  Disabling it automatically disables the exportation of **Attachments** and **Counters** as well.  
+    - **Include Attachments**:  
+      Determines whether to export attachments contained in the database.  
+    - **Include Counters**:  
+      Determines whether to export Counters contained in the database.  
+    - **Include Revisions**:  
+      Determines whether to export Revisions contained in the database.  
+    - **Include Conflicts**:  
+      Determines whether to export Conflicts contained in the database.  
+* **Include Indexes**:  
+  Determines whether to export Indexes contained in the database.  
+    - **Remove Analyzers**:  
+      Determines whether to strip Analyzers used by indexes contained in the file.  
+* **Include Identities**:  
+  Determines whether to export Identities contained in the database.  
+* **Include Compare Exchange**:  
+  Determines whether to export Compare Exchange values contained in the database.  
+* **Include Subscriptions**:  
+  Determines whether to export Subscriptions contained in the database.  
+* **Include Configuration and Ongoing Tasks**:  
+  Determines whether to export the server's 
+  [configuration and ongoing tasks](../../../studio/database/tasks/export-database#customize-configuration-and-ongoing-tasks).  
 
 #### Encrypt exported file
 
-Used to add an ecryption key when exporting database to encrypted file.
+Used to add an ecryption key when exporting the database to an encrypted file.  
 
 ## Advanced export options
 
@@ -37,8 +50,9 @@ Used to add an ecryption key when exporting database to encrypted file.
 
 ![Figure 4. Advanced Export Options - Export all collections](images/export-database-advanced-collections.png "Advanced export options - Export all collections")
 
-- **Export all collections:** Determines whether or not All database collections should be exported.
-    - If _Export all collections_ is disabled list of all database collections will be displayed with the ability to filter collections by name.
+- **Export all collections**:  
+  Determines whether to export All database collections.  
+    - If _Export all collections_ is disabled, a list of all database collections will be displayed with an option to filter collections by name.  
 
 ---
 
@@ -46,7 +60,8 @@ Used to add an ecryption key when exporting database to encrypted file.
 
 ![Figure 5. Advanced Export Options - Transform Script](images/export-database-advanced-transfrom-script.png "Advanced export options - Transform Script")
 
-- Use Transform Script: when enabled will allow to supply a transform javascript script to be operated on each document contained by the file
+- **Use Transform Script**:  
+  Enabling it allows you to provide a transform javascript, that would operate on each document contained by the file.  
 
 {CODE-BLOCK:javascript}
 var id = doc['@metadata']['@id'];
@@ -60,31 +75,41 @@ if (id === 'orders/999')
 
 ![Figure 6. Advanced Export Options - Customize Configuration and Ongoing Tasks](images/export-database-advanced-configuration.png "Advanced export options - Customize Configuration and Ongoing Tasks")
 
-**Ongoing tasks:**
+**Ongoing tasks**:  
 
-- **Periodic Backups:** Determines whether or not Periodic Backups tasks configuration should be imported or not. 
-- **External replications:** Determines whether or not External replications tasks configuration should be imported. 
-- **RavenDB ETLs:** Determines whether or not RavenDB ETLs tasks configuration should be imported.
-- **SQL ETLs:** Determines whether or not SQL ETLs tasks configuration should be imported.
-- **Pull Replication Sinks:** Determines whether or not Pull Replication Sinks tasks configuration should be imported. 
-- **Pull Replication Hubs:** Determines whether or not Pull Replication Hubs tasks configuration used by indexes should be stripted or not. 
+- **Periodic Backups**:  
+  Determines whether to export Periodic Backup tasks configuration.  
+- **External replications**:  
+  Determines whether to export External replications tasks configuration.  
+- **RavenDB ETLs**:  
+  Determines whether to export RavenDB ETLs tasks configuration.  
+- **SQL ETLs**:  
+  Determines whether to export SQL ETLs tasks configuration.  
+- **Pull Replication Sinks**:  
+  Determines whether to export Pull Replication Sink tasks configuration.  
+- **Pull Replication Hubs**:  
+  Determines whether to export Pull Replication Hub tasks configuration.  
 
 **Other:**
 
-- **Settings:** Determines whether or not Settings should be imported.
-- **Conflict Solver Configuration:** Determines whether or not Conflict Solver Configuration should be imported.
-- **Revisions Configuration:** Determines whether or not Revisions Configuration should be imported.
-- **Document Expiration:** Determines whether or not Document Expiration settings should be imported.
-- **Client Configuration:** Determines whether or not Client Configuration should be imported. 
-- **Custom Sorters:** Determines whether or not Custom Sorters should be stripted or not. 
-
-**Connection Strings:**
-
-- **RavenDB Connection Strings:** Determines whether or not RavenDB Connection Strings should be imported.
-- **SQL Connection Strings:** Determines whether or not SQL Connection Strings values should be imported.
+- **Settings**:  
+  Determines whether to export Settings.  
+- **Conflict Solver Configuration**:  
+  Determines whether to export Conflict Solver Configuration.  
+- **Revisions Configuration**:  
+  Determines whether to export Revisions Configuration.  
+- **Document Expiration**:  
+  Determines whether to export Document Expiration settings.  
+- **Client Configuration**:  
+  Determines whether to export Client Configuration.  
+- **Custom Sorters**:  
+  Determines whether to include Custom Sorters.  
+- **Connection Strings**:  
+   - **RavenDB Connection Strings** - Determines whether to export RavenDB Connection Strings.  
+   - **SQL Connection Strings:** Determines whether to export SQL Connection String values.  
 
 ---
 
 ### Copy command as PowerShell
 
-- Generates the commands to run the exporting logic from PowerShell.
+- Generates the commands to run the exporting logic from PowerShell.  

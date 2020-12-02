@@ -120,7 +120,7 @@ In both cases, you can restore the database by
 
 The Server-Wide Backup Tasks created for each database, can be viewed in the database's Ongoing-Tasks view.  
 You can use this view to see a task's details, or to trigger an immediate backup.  
-To edit or modify a Server-Wide task, navigate back to the [Server-Wide Backup view](#scheduling-a-server-wide-backup-task).  
+To edit or modify a Server-Wide task, navigate back to the [Server-Wide Backup view](../../studio/server/server-wide-backup#server-wide-backup-tasks-in-the-database-tasks-view).  
 
 * Choose the database you're interested in.  
 

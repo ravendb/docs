@@ -69,7 +69,7 @@ from Users as u where Age < 30
 )
    {CODE-BLOCK/}
 
-* [Indexed queries](../../../document-extensions/timeseries/querying/indexed-queries) 
+* [Indexed queries](../../../document-extensions/timeseries/querying/using-indexes) 
   can be performed over static indexes and their results. E.g. -
    {CODE-BLOCK: JSON}
 from index 'SimpleIndex'
@@ -184,7 +184,7 @@ use and manipulate their results.
 [Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)  
 [Filtering](../../../document-extensions/timeseries/querying/filtering)  
 [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)  
-[Indexed Time Series Queries](../../../document-extensions/timeseries/querying/indexed-queries)
+[Indexed Time Series Queries](../../../document-extensions/timeseries/querying/using-indexes)  
 
 **Policies**  
 [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)  

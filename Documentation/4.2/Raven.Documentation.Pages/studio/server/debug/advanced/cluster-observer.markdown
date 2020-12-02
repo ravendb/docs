@@ -22,8 +22,8 @@
 
 * Don't confuse the Database Group Topology with the Cluster Topology  
 
-* For more info about node types and states in the **Cluster** see [Cluster View](../../../studio/server/cluster/cluster-view)  
-  For more info about node types and states in the **Database Group** see [Database Group](../../database/settings/manage-database-group)  
+* For more info about node types and states in the **Cluster** see [Cluster View](../../../../studio/server/cluster/cluster-view)  
+  For more info about node types and states in the **Database Group** see [Database Group](../../../database/settings/manage-database-group)  
 {NOTE/}
 
 ---
@@ -70,7 +70,7 @@ Click `Refresh` to get latest actions performed by the Observer
 2. Once the node has caught up with the state of the Database Group, fully updated with the database data and finished indexing the last data sent to it, 
    the Observer will promote it to a full `Member`.  
 
-   For a detailed explanation of a Member actions and tasks within a database group see [Database Group](../../../studio/database/settings/manage-database-group)  
+   For a detailed explanation of a Member actions and tasks within a database group see [Database Group](../../../../studio/database/settings/manage-database-group)  
 {NOTE/}
 
 {NOTE: }
@@ -78,7 +78,7 @@ Click `Refresh` to get latest actions performed by the Observer
 
 1. Set the node to a `Rehab` state.  
 
-2. If 'Allow Dynamic Database Distribution' is set (see [Create Database](../../../studio/server/databases/create-new-database/general-flow)),  
+2. If 'Allow Dynamic Database Distribution' is set (see [Create Database](../../../../studio/server/databases/create-new-database/general-flow)),  
    then after a pre-configured time period, the Observer will add another node from the cluster to the Database Group in order to keep the replication factor.  
    The replacement node will be set to `Promotable` and will start catching up data from the other nodes in the group.  
 
@@ -120,4 +120,4 @@ Click `Refresh` to get latest actions performed by the Observer
 
 ## Related articles 
 
-- [Cluster Observer Details](../../../server/clustering/distribution/cluster-observer)  
+- [Cluster Observer Details](../../../../server/clustering/distribution/cluster-observer)  

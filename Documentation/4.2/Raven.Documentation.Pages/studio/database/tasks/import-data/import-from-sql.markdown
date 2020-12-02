@@ -3,33 +3,42 @@
 
 {NOTE: }
 
-* SQL Migration allows you to import your existing SQL Database into RavenDB.
+* SQL Migration allows you to import your existing SQL Database into RavenDB.  
 
-* Currently **MySQL**, **SQL Server**, **Oracle** and **PostgresSQL** are supported.
+* Currently supported:  
+   * **MySQL**  
+   * **SQL Server**  
+   * **Oracle**  
+   * **PostgresSQL**  
 
-* Import process is semi automatic. In SQL world each relation is represented by link from foreign key to primary key. 
-The fact that we can distinguish one-to-one, one-to-many, or many-to-one relationships requires knowledge about business model and can not be 
-generated without reasoning.  
+* The import process is semi-automatic. It needs to take into account SQL 
+  relations, represented by links between foreign keys and primary keys.  
+  Identifying one-to-one, one-to-many and many-to-one relations to perform 
+  a successful import, requires clear resolving of the original business model.  
 
-* NoSQL data model allows nested arrays/objects. In SQL it is rendered as additional table. In some cases such table is not natural and 
-it is created to satisfy 3rd normal form. Ex. `OrderLines` can be embedded inside `Order` object. It solves **select n+1 problem**.   
+* The NoSQL data model allows nested arrays/objects. In SQL such relations 
+  are rendered as additional tables, often unrelated to the natural data form. 
+  They are created to satisfy *Third normal form (3NF)*, e.g. by embedding 
+  `OrderLines` within an `Order` object to solve a potential *select n+1* problem.  
 
-* Another case when artificial table is created is *many-to-many* relationship. In NoSQL world it can be modeled as list of foreign object ids. 
-No extra table/collection is needed. 
+* Another case in which artificial tables are used is the creation of *many-to-many* 
+  relationships. In NoSQL, this can be modeled as a list of foreign object ids and 
+  require no extra table/collection.  
 
-* SQL Migrator tries to detect and automatically suggest best data model.
+* The SQL Migrator tries to detect and automatically suggest the best data model.  
 
-* Every change made during data model preparation maintains data integrity and cohesion. 
+* Every change made during data model preparations, maintains data integrity and cohesion.  
 
-* Primary / Foreign keys must be defined in source SQL database so migrator can work correctly.   
+* Primary/Foreign keys must be defined in the source SQL database, so the migrator 
+  would be able to perform correctly.  
 
 * In this page:
-  * [Pointing to source database](#pointing-to-source-database)
-  * [Sql Migration - View Properties](#sql-migration---view-properties)
-  * [Sql Migration - Handling relationships](#sql-migration---handling-relationships)
-  * [Filtering / Transforming documents](#filtering-/-transforming-documents)
-  * [Test 'filter / transform' scripts](#test-)
-  * [Data integrity helpers](#data-integrity-helpers)
+  * [Pointing to source database](../../../../studio/database/tasks/import-data/import-from-sql#pointing-to-source-database)  
+  * [Sql Migration - View Properties](../../../../studio/database/tasks/import-data/import-from-sql#sql-migration---view-properties)  
+  * [Sql Migration - Handling relationships](../../../../studio/database/tasks/import-data/import-from-sql#sql-migration---handling-relationships)  
+  * [Filtering / Transforming documents](../../../../studio/database/tasks/import-data/import-from-sql#filtering-/-transforming-documents)  
+  * [Test 'filter / transform' scripts](../../../../studio/database/tasks/import-data/import-from-sql#test-)  
+  * [Data integrity helpers](../../../../studio/database/tasks/import-data/import-from-sql#data-integrity-helpers)  
 {NOTE/}
 
 ---

@@ -285,7 +285,7 @@ If needed, it can also be executed immediately.
 - [What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)  
 
 ###Studio  
-- [The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
+- [The Backup Task](../../../../studio/database/tasks/backup-task)  
 - [Create Database: from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
 - [Create a Database: General Flow](../../../../studio/server/databases/create-new-database/general-flow)  
 - [Create a Database: Encrypted](../../../../studio/server/databases/create-new-database/encrypted)  

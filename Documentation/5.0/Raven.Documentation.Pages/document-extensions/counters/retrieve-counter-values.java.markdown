@@ -42,7 +42,8 @@
   * Open a session  
   * Create an instance of `countersFor`.  
       * Either pass `countersFor` an explicit document ID, -or-  
-      * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+      * Pass it an entity tracked by the session, e.g. a document object 
+        returned from `session.query` or from `session.load`.  
   * Execute `countersFor.get`
 
 {NOTE: }
@@ -72,7 +73,8 @@
 * Open a session.
 * Create an instance of `countersFor`.  
    * Either pass `countersFor` an explicit document ID, -or-  
-   * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+   * Pass it an entity tracked by the session, e.g. a document object returned from session.query 
+     or from session.load.  
 * Execute `countersFor.getAll`.
 
 {NOTE: }
@@ -84,8 +86,6 @@
 {PANEL/}
 
 ## Related articles
-**Studio Articles**:  
-[Studio Counters Management](../../../studio/database/document-extensions/counters#counters)  
 
 **Client-API - Session Articles**:  
 [Counters Overview](../../document-extensions/counters/overview)  
@@ -93,6 +93,3 @@
 [Deleting a Counter](../../document-extensions/counters/delete)  
 [Counters and other features](../../document-extensions/counters/counters-and-other-features)  
 [Counters In Clusters](../../document-extensions/counters/counters-in-clusters)  
-
-**Client-API - Operations Articles**:  
-[Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)  

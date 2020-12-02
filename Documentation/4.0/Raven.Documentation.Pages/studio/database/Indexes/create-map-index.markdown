@@ -47,7 +47,7 @@
 
   * At **query time**, when querying this index, the resulting documents can be searched on and further filtered  
     by these **Index Fields** defined and by the created **Terms**. 
-    See the query results on this index in [Query View](../../../todo-update-me-later)  
+    See the query results on this index in Query View.  
 
   * See more Map-Indexes examples in [Map Index defined from Code](../../../indexes/map-indexes)  
 {PANEL/}

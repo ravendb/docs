@@ -13,12 +13,12 @@
   * [RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)  
       * Write all database documents, or just part of it, to another RavenDB database  
       * Data can be filtered and modified with transformation scripts  
-  * [SQL ETL](../../../todo-update-me-later)  
+  * [SQL ETL](../../../../server/ongoing-tasks/etl/sql)  
       * Write the database data to a relational database  
       * Data can be mutated with transformation scripts  
   * [Backup](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
       * Schedule a backup or a snapshot of the database at a specified point in time  
-  * [Subscription](../../../todo-update-me-later)  
+  * [Subscription](../../../../client-api/data-subscriptions/what-are-data-subscriptions)  
       * Sending batches of documents that match a pre-defined query for processing on a client  
       * Data can be mutated with transformation scripts  
 
@@ -68,11 +68,11 @@
 ![Figure 3. Ongoing Tasks New Task](images/ongoing-tasks-general-3.png "Add Ongoing Task")
 
 * Select the preferred task to add  
-  1. See [adding Extrenal Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) task  
-  2. See [adding RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) task  
-  3. See [adding SQL ETL](../../../todo-update-me-later) task  
-  4. See [adding Backup](../../../../studio/database/tasks/ongoing-tasks/backup-task) task  
-  5. See [adding Subscription](../../../todo-update-me-later) task  
+  1. Adding an [Extrenal Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) task  
+  2. Adding a [RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) task  
+  3. Adding an [SQL ETL](../../../../server/ongoing-tasks/etl/sql) task  
+  4. Adding a [Backup](../../../../studio/database/tasks/ongoing-tasks/backup-task) task  
+  5. Adding a Subscription task  
 
 * Once the task is defined and saved, it will be written to the [Database Record](../../../../studio/database/settings/database-record)  
 

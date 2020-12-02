@@ -29,12 +29,13 @@
 {PANEL: `increment` Usage}
 
 *  **Flow**:  
-  - Open a session  
-  - Create an instance of `countersFor`.  
+  * Open a session  
+  * Create an instance of `countersFor`.  
       * Either pass `countersFor` an explicit document ID, -or-  
-      - Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.load](../../../client-api/session/loading-entities#load).  
-  - Execute `countersFor.increment`
-  - Execute `session.saveChanges` for the changes to take effect  
+      * Pass it an entity tracked by the session, e.g. a document object 
+        returned from `session.query` or from `session.load`.  
+  * Execute `countersFor.increment`
+  * Execute `session.saveChanges` for the changes to take effect  
 
 * **Note**:
     * Modifying a Counter using `increment` only takes effect when `session.saveChanges()` is executed.  
@@ -47,8 +48,6 @@
 {PANEL/}
 
 ## Related articles
-**Studio Articles**:  
-[Studio Counters Management](../../../studio/database/document-extensions/counters#counters)  
 
 **Client-API - Session Articles**:  
 [Counters Overview](../../document-extensions/counters/overview)  
@@ -56,6 +55,3 @@
 [Retrieving Counter Values](../../document-extensions/counters/retrieve-counter-values)  
 [Counters and other features](../../document-extensions/counters/counters-and-other-features)  
 [Counters In Clusters](../../document-extensions/counters/counters-in-clusters)  
-
-**Client-API - Operations Articles**:  
-[Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)  

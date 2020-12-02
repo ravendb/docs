@@ -19,6 +19,6 @@ There are a few methods that allow you to download attachments from a database:
 
 ### Attachments
 
-- [What are Attachments](../../../client-api/session/attachments/what-are-attachments)
-- [Storing](../../../client-api/session/attachments/storing)
-- [Deleting](../../../client-api/session/attachments/deleting)
+- [What are Attachments](../../document-extensions/attachments/what-are-attachments)  
+- [Storing](../../document-extensions/attachments/storing)  
+- [Deleting](../../document-extensions/attachments/deleting)  

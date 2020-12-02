@@ -85,10 +85,9 @@ A [document revision](../../../client-api/session/revisions/what-are-revisions) 
 
 ###Counters and Smuggler  
 
-[Smuggler](../../../client-api/smuggler/what-is-smuggler) is a DocumentStore property, that can be used 
-to [export](../../../client-api/smuggler/what-is-smuggler#databasesmugglerexportoptions) chosen 
-database items to an external file or to [import](../../../client-api/smuggler/what-is-smuggler#databasesmugglerimportoptions) 
-database items from an existing file into the database.  
+`Smuggler` is a DocumentStore property, that can be used to **export**chosen 
+database items to an external file or to **import** database items from an existing 
+file into the database.  
 
 * **Transferred Counter Value**: **Distributed**  
   Smuggler transfers the entire series of values that the different nodes maintain for a Counter.  
