@@ -2138,5 +2138,34 @@
         "twitter:description": "The power of dynamic fields for indexing dictionaries and nested collections in RavenDB.",
         "twitter:url": "https://ravendb.net/articles/dynamic-fields-for-indexing"
     }
+},
+{
+    "Path": "acid-transactions-prove-to-be-the-gift-that-keeps-on-giving.markdown",
+    "Name": "ACID Transactions for Shopper ID and Security Authentication",
+    "Mappings": [],
+    "Metadata": {
+        "title": "ACID Transactions | ACID NoSQL | RavenDB",
+        "likeSection": "yes",
+        "url": "acid-transactions-prove-to-be-the-gift-that-keeps-on-giving",
+        "publishedAt": "2020-12-02",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "InComm uses ACID transactions with RavenDB NoSQL Database for shopper ID and security authentication.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "ACID Transactions | ACID NoSQL | RavenDB",
+        "og:description": "InComm uses ACID transactions with RavenDB NoSQL Database for shopper ID and security authentication.",
+        "og:url": "https://ravendb.net/articles/acid-transactions-prove-to-be-the-gift-that-keeps-on-giving",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/acid-transactions-prove-to-be-the-gift-that-keeps-on-giving&fileName=acid-transactions-prove-to-be-the-gift-that-keeps-on-giving.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "ACID Transactions | ACID NoSQL | RavenDB",
+        "twitter:description": "InComm uses ACID transactions with RavenDB NoSQL Database for shopper ID and security authentication.",
+        "twitter:url": "https://ravendb.net/articles/acid-transactions-prove-to-be-the-gift-that-keeps-on-giving"
+    }
 }
 ]
