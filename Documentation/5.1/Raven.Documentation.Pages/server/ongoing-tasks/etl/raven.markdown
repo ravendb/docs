@@ -553,7 +553,6 @@ loadToEmployees({
 ### Studio
 
 - [Define RavenDB ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
-- [Define SQL ETL Task in Studio](../../../todo-update-me-later)
 
 ### Document Extensions
 

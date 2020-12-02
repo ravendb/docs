@@ -182,7 +182,7 @@ or `select` in a raw RQL query.
 **Time Series Queries**  
 [Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)  
 [Filtering](../../../document-extensions/timeseries/querying/filtering)  
-[Indexed Time Series Queries](../../../document-extensions/timeseries/querying/indexed-queries)
+[Indexed Time Series Queries](../../../document-extensions/timeseries/querying/using-indexes)
 
 **Policies**  
 [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)  

@@ -52,7 +52,7 @@
   * If not selected, then the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties))  
 
 4. **Connection String**  
-  * Select a [Connection String](../../../todo-update-me-later) from the pre-defined list -or-create a new connection string to be used.  
+  * Select a connection string from the pre-defined list -or- create a new connection string to be used.  
   * The connection string defines the external database and its server URLs to replicate to.  
 {PANEL/}
 

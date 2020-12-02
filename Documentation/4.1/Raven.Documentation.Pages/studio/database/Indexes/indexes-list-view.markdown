@@ -76,7 +76,7 @@
 
 1. **Crate a new index** - See more in [Create New Index](../../../studio/database/indexes/create-map-index).  
 
-2. **Query** - Click to query the index. See more in [Index Query](../../../todo-update-me-later)  
+2. **Query** - Click to query the index.  
    **Terms** - Click to view the index's terms that were actually indexed.  
    **Edit/View Index** - Click to edit/view the index definition.  
    Static-index: View and edit the index definition.  
@@ -124,7 +124,7 @@
    * A possible solution is to **reset** the index - restart the indexing process from scratch,  
      so that new data files for the index are created, replacing the corrupted ones.  
 
-**Note**: The detailed errors list can be found in [Index Errors View](../../../todo-update-later).  
+**Note**: The detailed errors list can be found in the **Index Errors** view.  
 {PANEL/}
 
 {PANEL: Indexes List View - Side by Side Indexing}

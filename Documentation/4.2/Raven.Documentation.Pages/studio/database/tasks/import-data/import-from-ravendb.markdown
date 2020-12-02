@@ -99,7 +99,9 @@
 - **Include Identities:** Determines whether or not Identities should be imported.
 - **Include Compare Exchange:** Determines whether or not Compare Exchange values should be imported.
 - **Include Subscriptions:** Determines whether or not Subscriptions should be imported.
-- **Include Configuration and OngoingTasks:** Determines whether or not [server configurations and ongoing tasks](#customize-configuration-and-ongoing-tasks) should be imported.
+- **Include Configuration and OngoingTasks:** Determines whether or not 
+  [server configurations and ongoing tasks](../../../../studio/database/tasks/import-data/import-from-ravendb#customize-configuration-and-ongoing-tasks) 
+  should be imported.  
 
 {NOTE:Importing an item that doesn’t exist}
 If any of the options is set but the source database doesn't contain any items of that type, the type will be skipped.  

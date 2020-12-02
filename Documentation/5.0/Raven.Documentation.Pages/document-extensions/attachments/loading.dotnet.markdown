@@ -34,6 +34,6 @@ go through them, and decode each attachment to its original text.
 
 ### Attachments
 
-- [What are Attachments](../../document-extensions/attachments/what-are-attachments)
-- [Storing](../../document-extensions/attachments/storing)
-- [Deleting](../../document-extensions/attachments/deleting)
+- [What are Attachments](../../document-extensions/attachments/what-are-attachments)  
+- [Storing](../../document-extensions/attachments/storing)  
+- [Deleting](../../document-extensions/attachments/deleting)  

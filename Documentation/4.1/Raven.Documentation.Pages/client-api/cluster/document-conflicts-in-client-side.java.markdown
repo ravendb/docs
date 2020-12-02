@@ -20,7 +20,7 @@ Fetching attachments of a conflicted document will throw `InvalidOperationExcept
 
 {CODE:java DELETE_Sample@ClientApi\Cluster\DocumentConflictsInClientSide.java /}
 
- * Incoming replication will resolve conflict if the incoming document has a larger [change vector](../../server/clustering/change-vector).
+ * Incoming replication will resolve conflict if the incoming document has a larger [change vector](../../server/clustering/replication/change-vector).
 
 ## Modifying conflict resolution from the client-side
 In RavenDB we can resolve conflicts either by resolving to the latest or by using a conflict resolution script to decide which one of the conflicted document variants are the ones that need to be kept. The following is an example of how we can set a conflict resolution script from the client-side.

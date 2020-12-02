@@ -26,7 +26,7 @@ Checkout the studio [walk-through](../../studio/database/tasks/ongoing-tasks/pul
 1. Define Hub on the _source_ database group.
 2. Define or import Sink definition to the _destination_ database group.
 3. The Sink will fetch the source topology and initiate the request to the Hub.
-4. The Hub will accept the connection and start sending the data just like a usual [Replication](../../server/ongoing-tasks/extrnal-replication).
+4. The Hub will accept the connection and start sending the data just like a usual [Replication](../../server/ongoing-tasks/external-replication).
 5. On a connection breakdown the Sink will be responsible to reconnect. 
 
 ## Using Certificates
@@ -58,7 +58,7 @@ If the failure occurred on the Sink node, the Sink cluster will select a differe
 ## Related Articles
 
 ###Server
-- [External Replication](../../server/ongoing-tasks/extrnal-replication)
+- [External Replication](../../server/ongoing-tasks/external-replication)
 
 ---
 

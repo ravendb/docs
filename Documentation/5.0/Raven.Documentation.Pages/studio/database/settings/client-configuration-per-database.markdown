@@ -35,14 +35,14 @@
 
   * Set the load-balance method that the client will use when accessing a node with ***Read*** requests.  
     The method selected will also affect the client's decision of which node to failover to in case of issues with the ***Read*** request.  
-    Note: ***Write*** requests will always access the [preferred node](../../client-api/configuration/load-balance-and-failover#preferred-node) calculated by the client.  
+    Note: ***Write*** requests will always access the [preferred node](../../../client-api/configuration/load-balance-and-failover#preferred-node) calculated by the client.  
 
   * Available options are:  
      * _None_  
      * _Round Robin_  
      * _Fastest Node_  
 
-  *  For a detailed explanation about each option see: [Read Balance Behavior Options](../../client-api/configuration/load-balance-and-failover#readbalancebehavior-options)  
+  *  For a detailed explanation about each option see: [Read Balance Behavior Options](../../../client-api/configuration/load-balance-and-failover#readbalancebehavior-options)  
 
 {PANEL/}
 

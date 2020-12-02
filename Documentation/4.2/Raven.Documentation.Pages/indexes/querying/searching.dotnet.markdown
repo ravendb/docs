@@ -4,7 +4,7 @@ Use the `Search()` extension method to perform a full-text search on a particula
 desired search terms separated by spaces. These search terms are matched with the terms in the index being queried.  
 
 An index's terms are derived from the values of the documents' textual fields. These values were converted into one or more terms 
-depending on which [Lucene analyzer](../../../indexes/using-analyzers) the index used.  
+depending on which [Lucene analyzer](../../indexes/using-analyzers) the index used.  
 
 Here is a code sample that uses the `Search` extension to get users with the name *John* or *Steve*:  
 
@@ -236,7 +236,7 @@ where search(Query, 'John')
 
 ### Indexes
 
-- [Analyzers](../../../indexes/using-analyzers)
+- [Analyzers](../../indexes/using-analyzers)
 - [Boosting](../../indexes/boosting)
 
 ### Querying

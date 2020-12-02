@@ -49,7 +49,7 @@ raw time series is rolled up using the policy with the shortest aggregation
 frame. Then that rollup time series is rolled up using the policy with the 
 _next_ shortest aggregation frame, and so on.  
 
-[Querying with group-by](..\..\document-extensions\timeseries\querying\aggregation-and-projections) 
+[Querying with group-by](../../document-extensions/timeseries/querying/aggregation-and-projections#aggregation-and-projection) 
 will transparently traverse over the rollups to retrieve the relevant results.  
 
 Let's look at an example of rollup data:  
@@ -206,7 +206,7 @@ public class TimeSeriesEntry<T> : TimeSeriesEntry {   }
 public class TimeSeriesRollupEntry<TValues> : TimeSeriesEntry {   }
 {CODE-BLOCK/}
 
-Read more about time series with generic types [here](../../../document-extensions/timeseries/client-api/named-time-series-value).
+Read more about time series with generic types [here](../../document-extensions/timeseries/client-api/named-time-series-values).
 
 If you have an existing rollup entry of type `TimeSeriesEntry`, you can 
 cast it to a `TimeSeriesRollupEntry` using `AsRollupEntry()`.  

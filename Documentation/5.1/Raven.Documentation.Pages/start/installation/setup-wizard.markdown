@@ -353,7 +353,7 @@ In the **Unsecure Mode**, all you need to do is specify the **IP address** and *
 4. **Environment**  
    This option only shows when creating a new cluster.  
    Select the label that will be shown in the Studio UI for this server.     
-   If you select 'None' now, you can still configure this later from the Studio. See [Studio Configuration](../../todo-update-me-later).  
+   If you select 'None' now, you can still configure this later from the Studio.  
 
 5. **Next** - Click Next when done configuring.  
 

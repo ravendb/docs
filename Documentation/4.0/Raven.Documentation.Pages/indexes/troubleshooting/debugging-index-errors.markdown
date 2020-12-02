@@ -85,11 +85,19 @@ A common case is an index that doesn't take into account that other documents al
 }
 {CODE-BLOCK/}
 
-This index makes an assumption that all documents have a `DateOfBirth` property and that the value of this property can be parsed to `DateTime`. A document that doesn't have that property will return `null` when it is accessed, resulting in a `ArgumentNullException` when the index is executed.
+This index makes an assumption that all documents have a `DateOfBirth` property and that 
+the value of this property can be parsed to `DateTime`. A document that doesn't have that 
+property will return `null` when it is accessed, resulting in a `ArgumentNullException` 
+when the index is executed.
 
-Because indexes are updated on a background thread, it is unlikely that users will be aware of those errors.  
+Because indexes are updated on a background thread, it is unlikely that users will be 
+aware of those errors.  
 
-RavenDB surfaces index execution errors in two places, the first is the index statistics and index error statistics. Accessible for programmatic access at `/indexes/stats` and `/indexes/errors` or in human readable form at [Studio](../../todo-update-me-later).
+Index execution errors can be viewed in two places:  
+
+* View **index statistics** and **index error statistics** 
+  in `/indexes/stats` and `/indexes/errors`.  
+* View indexes activity, including errors, in a human-readable form via [Studio](../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
 
 {CODE-TABS}
 {CODE-TAB-BLOCK:json:Statistics}

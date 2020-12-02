@@ -81,8 +81,7 @@ Using a `RawQuery`:
 - [Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)  
 - [Filtering](../../../document-extensions/timeseries/querying/filtering)  
 - [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)  
-- [Indexed Time Series Queries](../../../document-extensions/timeseries/querying/indexed-queries)  
-- [Get Time Series Entries](../../../document-extensions/timeseries/client-api/session/get/get-entries))  
+- [Get Time Series Entries](../../../document-extensions/timeseries/client-api/session/get/get-entries)  
 
 ### Client API
 - [How To Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results)  

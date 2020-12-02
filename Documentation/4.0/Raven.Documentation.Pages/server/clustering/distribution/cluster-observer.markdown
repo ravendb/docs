@@ -28,7 +28,8 @@ The _Cluster Observer_ stores its information **in memory**, so when the `Leader
 
 {PANEL: Interacting with the Cluster Observer}
 
-* You can interact with the `Cluster Observer` via the [Studio](../../../studio/server/cluster/cluster-observer), or with the following REST API calls:
+* You can interact with the `Cluster Observer` via the [Studio](../../../studio/server/cluster/cluster-observer), 
+  or with the following REST API calls:
 
 | URL | Method | Query Params. | Description |
 | - | - | - | - |

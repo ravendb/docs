@@ -53,9 +53,11 @@ The node is called a `Mentor Node` when its task is updating a _Rehab_ or a _Pro
 
 {PANEL: Tasks Relocation}
 
-* Upon a `Database Topology` change, _all_ existing tasks will be re-evaluated and re-distributed among the functional nodes.   
+* Upon a `Database Topology` change, _all_ existing tasks will be re-evaluated and 
+  re-distributed among the functional nodes.   
 
-* The responsible node for an `Ongoing Task` is also re-evalutated upon a change in the [unique hash value](../../../todo-update-me-later) of the Ongoing Task.  
+* The responsible node for an `Ongoing Task` is also re-evalutated upon a change in the 
+  unique hash value of the Ongoing Task.  
 
 {NOTE: }
 

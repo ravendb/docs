@@ -9,7 +9,7 @@
    * Voting results  
    * Any event related to the document  
 
-* Create and manage Counters using API methods, or through the [Studio](../../../studio/database/document-extensions/counters).  
+* Create and manage Counters using API methods, or through the [Studio](../../studio/database/document-extensions/counters).  
 
 * In this page:  
   * [Why use Counters?](../../document-extensions/counters/overview#why-use-counters?)  
@@ -121,7 +121,7 @@ for example.
 
 ####Counters Naming Convention
 
-* Valid characters: All visible characters, [including Unicode symbols](../../../studio/database/document-extensions/counters#section)  
+* Valid characters: All visible characters, including Unicode symbols  
 * Length: Up to 512 bytes  
 * Encoding: UTF-8  
 
@@ -165,9 +165,10 @@ Managing Counters is performed using the `CountersFor` Session object.
 
 *  **Usage Flow**:  
   * Open a session.  
-  * Create an instance of `CountersFor`.  
-      * Either pass `CountersFor` an explicit document ID, -or-  
-      * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+  * Create an instance of `countersFor`.  
+      * Either pass `countersFor` an explicit document ID, -or-  
+      * Pass it an entity tracked by the session, e.g. a document object 
+        returned from `session.query` or from `session.load`.  
   * Use Counter methods to manage the document's Counters.  
   * If you execute [Increment](../../document-extensions/counters/create-or-modify) or [Delete](../../document-extensions/counters/delete), call `session.SaveChanges` for the action to take effect on the server.  
 
@@ -188,15 +189,13 @@ Managing Counters is performed using the `CountersFor` Session object.
 
 ####Managing Counters Using `Operations`
 
-* In addition to working with the high-level Session, you can manage Counters using the low-level [Operations](../../../client-api/operations/what-are-operations).  
+* In addition to working with the high-level Session, you can manage Counters using the low-level [Operations](../../client-api/operations/what-are-operations).  
 
-* [CounterBatchOperation](../../../client-api/operations/counters/counter-batch) 
+* [CounterBatchOperation](../../client-api/operations/counters/counter-batch) 
 can operate on a set of Counters of different documents in a single request.
 {PANEL/}
 
 ## Related articles
-**Studio Articles**:  
-[Studio Counters Management](../../../studio/database/document-extensions/counters#counters)  
 
 **Client-API - Session Articles**:  
 [Creating and Modifying Counters](../../document-extensions/counters/create-or-modify)  
@@ -204,6 +203,3 @@ can operate on a set of Counters of different documents in a single request.
 [Retrieving Counter Values](../../document-extensions/counters/retrieve-counter-values)  
 [Counters and other features](../../document-extensions/counters/counters-and-other-features)  
 [Counters In Clusters](../../document-extensions/counters/counters-in-clusters)  
-
-**Client-API - Operations Articles**:  
-[Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)  

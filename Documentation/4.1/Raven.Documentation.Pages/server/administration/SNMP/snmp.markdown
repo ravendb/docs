@@ -49,7 +49,7 @@ The community string is used like a password. It is sent with each SNMP Get requ
 It is usually easy to query the exposed metrics using a monitoring tool. ([Example](./setup-zabbix)).   
 However, you should also be able to access those directly using any SNMP agent like [Net-SNMP](http://net-snmp.sourceforge.net/).   
 
-The most basic SNMP commands are `snmpget`, `snmpset` and `snmptrapd` ([Read more](http://net-snmp.sourceforge.net/tutorial/tutorial-5/commands/)).   
+The most basic SNMP commands are `snmpget`, `snmpset` and `snmptrapd`.  
 
 Each metric has a unique identifier (OID) and can be accessed individually.   
 For example, using the SNMP agent you could run the following snmpget command which gets the server up time metric:

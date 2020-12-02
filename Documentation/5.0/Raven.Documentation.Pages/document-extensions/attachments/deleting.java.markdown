@@ -14,6 +14,6 @@
 
 ### Attachments
 
-- [What are Attachments](../../../client-api/session/attachments/what-are-attachments)
-- [Storing](../../../client-api/session/attachments/storing)
-- [Loading](../../../client-api/session/attachments/loading)
+- [What are Attachments](../../document-extensions/attachments/what-are-attachments)  
+- [Storing](../../document-extensions/attachments/storing)  
+- [Loading](../../document-extensions/attachments/loading)  

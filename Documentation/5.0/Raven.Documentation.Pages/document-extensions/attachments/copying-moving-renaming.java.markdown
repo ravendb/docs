@@ -48,7 +48,7 @@ Attachment can be renamed using one of the `session.advanced().attachments().ren
 
 ### Attachments
 
-- [What are Attachments](../../../client-api/session/attachments/what-are-attachments)
-- [Storing](../../../client-api/session/attachments/storing)
-- [Loading](../../../client-api/session/attachments/loading)
-- [Deleting](../../../client-api/session/attachments/deleting)
+- [What are Attachments](../../document-extensions/attachments/what-are-attachments)  
+- [Storing](../../document-extensions/attachments/storing)  
+- [Loading](../../document-extensions/attachments/loading)  
+- [Deleting](../../document-extensions/attachments/deleting)  

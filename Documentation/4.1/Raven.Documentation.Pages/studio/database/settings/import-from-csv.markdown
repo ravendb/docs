@@ -84,4 +84,5 @@ Now that we've got a valid CSV file we can import it to RavenDB by selecting the
 
 ![Figure 1. Import CSV file](images/csv-import.JPG "Import CSV file")
 
-After importing the CSV file, the resulting document should look like the document [above](#how-should-i-format-my-documents-as-csv).
+After importing the CSV file, the resulting document should look like the document 
+[above](../../../studio/database/settings/import-from-csv#how-should-i-format-my-documents-as-csv).  

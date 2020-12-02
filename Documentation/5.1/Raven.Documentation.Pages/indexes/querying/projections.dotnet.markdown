@@ -200,7 +200,7 @@ select {
 
 {PANEL:SelectFields}
 
-The `SelectFields` method can only be used with the [Document Query](../../../client-api/session/querying/document-query/what-is-document-query). 
+The `SelectFields` method can only be used with the [Document Query](../../client-api/session/querying/document-query/what-is-document-query). 
 It has two overloads:
 
 {CODE-BLOCK: csharp}
@@ -240,7 +240,7 @@ select Name, Phone
 The `SelectFields` methods can also take a `ProjectionBehavior` parameter, which 
 determines whether the query should retrieve indexed data or directly retrieve 
 document data, and what to do when the data can't be retrieved. Learn more 
-[here](../../../client-api/session/querying/how-to-customize-query#projectionbehavior).  
+[here](../../client-api/session/querying/how-to-customize-query#projectionbehavior).  
 
 {CODE-BLOCK: csharp}
 IDocumentQuery<TProjection> SelectFields<TProjection>(ProjectionBehavior projectionBehavior,

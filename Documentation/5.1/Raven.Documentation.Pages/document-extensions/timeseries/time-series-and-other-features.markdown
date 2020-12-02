@@ -58,9 +58,9 @@ apply to time series data and some do not.
 
 * [External replication](../../server/ongoing-tasks/external-replication) 
 creates a complete copy of a database, including documents and their extensions.  
-* [Pull replication](../../server/ongoing-tasks/pull-replication) is similar 
-to external replication except that the process is initiated by the 
-destination server rather than the source server.  
+* [Hub/Sink replication](../../server/ongoing-tasks/hub-sink-replication) allows you 
+to create a live replica of a database or a part of it, including documents' 
+time series, using Hub and Sink tasks.  
 * [Backup](../../client-api/operations/maintenance/backup/backup)s save the 
 whole database at a certain point in time and can be used to restore the 
 database later. All kinds of backups include time series data: "logical"-backup 
@@ -144,7 +144,7 @@ client. This is the general JSON format of the time series snapshot:
 
 ### Server  
 [External replication](../../server/ongoing-tasks/external-replication)  
-[Pull replication](../../server/ongoing-tasks/pull-replication)  
+[Hub/Sink replication](../../server/ongoing-tasks/hub-sink-replication)  
 [Backup](../../client-api/operations/maintenance/backup/backup)  
 [ETL](../../server/ongoing-tasks/etl/basics)  
 

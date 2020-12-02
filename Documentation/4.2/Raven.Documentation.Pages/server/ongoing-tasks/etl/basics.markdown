@@ -58,7 +58,7 @@
   This makes deployment between environments easier.  
   For RavenDB ETL, multiple URLs can be configured in the connection string as the target database can reside on multiple nodes within the Database Group in the destination cluster. 
   If one of the destination nodes is down, RavenDB will run the ETL process against another node in the Database Group topology.  
-  See more in [Connection Strings](../../../todo-update-me-later)
+  See more in [Connection Strings](../../../client-api/operations/maintenance/connection-strings/add-connection-string)  
 
 * The tasks can be defined from code or from the [Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)  
 {PANEL/}
@@ -195,6 +195,4 @@ Details and examples for type specific ETL scripts can be found in the following
 
 ### Studio
 
-- [Define RavenDB ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
-- [Define SQL ETL Task in Studio](../../../todo-update-me-later)
-
+- [Define RavenDB ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)  

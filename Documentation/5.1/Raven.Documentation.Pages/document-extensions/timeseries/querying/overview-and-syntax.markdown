@@ -74,7 +74,7 @@ select timeseries(
 )
    {CODE-BLOCK/}
 
-* [Indexed queries](../../../document-extensions/timeseries/querying/indexed-queries) 
+* [Indexed queries](../../../document-extensions/timeseries/querying/using-indexes) 
   can be performed over static indexes and their results. E.g. -
    {CODE-BLOCK: JSON}
 from index 'SimpleIndex'
@@ -102,9 +102,12 @@ change a value like `0.000018` to `18`. Then, when you query the data, you can s
 by `0.000001` to restore the original value.  
 
 Scaling is a part of both RQL and LINQ syntax:  
+
 * In **RQL**, use `scale <double>` in a time series query, and input your scaling 
-factor as a double.  
+  factor as a double.  
 * In **LINQ**, use `.Scale(<double>)`.  
+
+---
 
 #### Examples:  
 
@@ -115,13 +118,13 @@ select timeseries(
     from HeartRate
     scale 60
 )
-{CODE-TAB-BLOCK}
+{CODE-TAB-BLOCK/}
 {CODE-TAB-BLOCK:csharp:LINQ}
 var query = session.Query<Patient>()
     .Select(p => RavenQuery.TimeSeries(p, "HeartRate")
     .Scale(60)
     .ToList());
-{CODE-TAB-BLOCK}
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 {PANEL/}
@@ -234,8 +237,8 @@ use and manipulate their results.
 [Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)  
 [Filtering](../../../document-extensions/timeseries/querying/filtering)  
 [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)  
-[Indexed Time Series Queries](../../../document-extensions/timeseries/querying/indexed-queries)
-[Statistical Measures](../../../document-extensions/timeseries/querying/statistics)
+[Indexed Time Series Queries](../../../document-extensions/timeseries/querying/using-indexes)  
+[Statistical Measures](../../../document-extensions/timeseries/querying/statistics)  
 
 **Policies**  
 [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)  

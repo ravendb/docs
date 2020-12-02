@@ -9,7 +9,7 @@
    * Voting results  
    * Any event related to the document  
 
-* Create and manage Counters using [API methods](../../../client-api/session/counters/overview) or through the Studio.  
+* Create and manage Counters using [API methods](../../../document-extensions/counters/overview) or through the Studio.  
 
 * In this page:  
   * [Viewing Counters Data](../../../studio/database/document-extensions/counters#viewing-counters-data)  
@@ -149,5 +149,5 @@ and **Import** them into your database when required.
 
 ## Related articles
 **Client API Articles**:  
-[Counters Overview (Session Usage)](../../../client-api/session/counters/overview)  
+[Counters Overview (Session Usage)](../../../document-extensions/counters/overview)  
 [Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)  

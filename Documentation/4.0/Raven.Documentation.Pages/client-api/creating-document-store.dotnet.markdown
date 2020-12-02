@@ -30,7 +30,7 @@ The following properties can be configured when creating a new Document Store:
     * **Note**: Do not create a Document Store with URLs that point to servers outside of your cluster.  
 
     * **Note**: This list is not binding. You can always modify your cluster later dynamically, add new nodes or remove existing ones as 
-    necessary. Learn more in [Cluster View Operations](../server/cluster/cluster-view#cluster-view-operations).  
+    necessary. Learn more in [Cluster View Operations](../studio/server/cluster/cluster-view#cluster-view-operations).  
 
 * **[Database](../client-api/setting-up-default-database)** (optional)  
   The default database which the Client will work against.  

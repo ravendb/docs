@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* To index counters, create a [static index](../indexes/creating-and-deploying#static-indexes) 
+* To index counters, create a [static index](../../indexes/creating-and-deploying#static-indexes) 
 that inherits from `AbstractCountersIndexCreationTask`.  
 
 * Auto-indexes for counters are not available at this time.  
@@ -64,9 +64,9 @@ Example of index using `CounterNamesFor`:
 ## Related Articles  
 
 ### Indexes  
-- [Indexing Related Documents](../indexes/indexing-related-documents)  
-- [Map-Reduce Indexes](../indexes/map-reduce-indexes)  
-- [Creating and Deploying Indexes](../indexes/creating-and-deploying)  
+- [Indexing Related Documents](../../indexes/indexing-related-documents)  
+- [Map-Reduce Indexes](../../indexes/map-reduce-indexes)  
+- [Creating and Deploying Indexes](../../indexes/creating-and-deploying)  
 
 ### Document Extensions  
-- [Counters: Overview](../document-extensions/counters/overview)  
+- [Counters: Overview](../../document-extensions/counters/overview)  

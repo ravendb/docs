@@ -17,6 +17,6 @@
 
 ### Attachments
 
-- [What are Attachments](../../document-extensions/attachments/what-are-attachments)
-- [Storing](../../document-extensions/attachments/storing)
-- [Loading](../../document-extensions/attachments/loading)
+- [What are Attachments](../../document-extensions/attachments/what-are-attachments)  
+- [Storing](../../document-extensions/attachments/storing)  
+- [Loading](../../document-extensions/attachments/loading)  

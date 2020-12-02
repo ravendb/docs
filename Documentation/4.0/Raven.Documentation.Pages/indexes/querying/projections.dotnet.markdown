@@ -200,7 +200,7 @@ select {
 
 {PANEL:SelectFields}
 
-The `SelectFields` method can only be used with the [Document Query](../../../client-api/session/querying/document-query/what-is-document-query). 
+The `SelectFields` method can only be used with the [Document Query](../../client-api/session/querying/document-query/what-is-document-query). 
 It has two overloads:
 
 {CODE-BLOCK: csharp}

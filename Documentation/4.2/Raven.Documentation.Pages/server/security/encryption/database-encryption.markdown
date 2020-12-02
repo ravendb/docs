@@ -83,7 +83,7 @@ Database encryption must be enabled when creating the database. If you wish to u
 {DANGER: Indexing transaction size}
 Indexing is most efficient when it is performed in the largest transactions possible. However, using encryption is very memory intensive, and if memory 
 runs out before the transaction completes, the entire transaction will fail. To avoid this, you can limit the size of indexing batches in encrypted 
-databases using [Indexing.Encrypted.TransactionSizeLimitInMb](../server/configuration/indexing-configuration#Indexing.Encrypted.TransactionSizeLimitInMb).  
+databases using [Indexing.Encrypted.TransactionSizeLimitInMb](../../../server/configuration/indexing-configuration#Indexing.Encrypted.TransactionSizeLimitInMb).  
 {DANGER/}
 
 

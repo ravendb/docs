@@ -9,7 +9,7 @@ _-or-_
   Specific databases can be manually excluded from this task.  
 
 * When scheduling a **Server-Wide Backup Task**, RavenDB actually creates a 
-  [regular ongoing backup task](../../studio/database/tasks/ongoing-tasks/backup-task) 
+  [regular ongoing backup task](../../studio/database/tasks/backup-task) 
   for each database in the cluster, and a backup will be created for each database at the specified scheduled time.  
   The prefix '**Server Wide Backup**' is added to the name of the created ongoing backup tasks.  
 
@@ -51,7 +51,7 @@ Click the **Manage Server** main-menu item.
 
 ![Figure 3. Task Configuration](images/server-wide-backup_03-task-configuration.png "Figure 3. Task Configuration")
 
-The settings are similar to those of a [regular backup task](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task).  
+The settings are similar to those of a [regular backup task](../../studio/database/tasks/backup-task#backup-task).  
 
 1. **Task Name**  
    Enter the Server-Wide Backup Task name.  
@@ -116,7 +116,7 @@ Backup files are created in a separate child folder per database, under a common
 
 There is no difference between restoring a database from a backup file created by the 
 [Server-Wide procedure](../../studio/server/server-wide-backup#scheduling-a-server-wide-backup-task) 
-and a [separately created backup](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task).  
+and a [separately created backup](../../studio/database/tasks/backup-task#backup-task).  
 In both cases, you can restore the database by 
 [Creating a New Database from Backup](../../studio/server/databases/create-new-database/from-backup#create-a-database-from-backup).  
 
@@ -166,7 +166,7 @@ To edit or modify a Server-Wide task, navigate back to the [Server-Wide Backup v
 
 * Since defining a Server-Wide backup actually creates regular backup tasks, 
   the behavior of a Server-Wide Backup Task when the cluster or responsible-node is down is identical to that of a regular backup task.  
-  See [Backup Task - When Cluster or Node are Down](../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---when-cluster-or-node-are-down).  
+  See [Backup Task - When Cluster or Node are Down](../../studio/database/tasks/backup-task#backup-task---when-cluster-or-node-are-down).  
 
 * A graphical view of the database group shows which node is responsible for which task.  
   
@@ -180,7 +180,7 @@ To edit or modify a Server-Wide task, navigate back to the [Server-Wide Backup v
 [Backup Overview](../../server/ongoing-tasks/backup-overview)  
 
 **Studio**  
-[Ongoing Backup Tasks](../../studio/database/tasks/ongoing-tasks/backup-task)  
+[Ongoing Backup Tasks](../../studio/database/tasks/backup-task)  
 [Restore: Create a Database From Backup](../../studio/server/databases/create-new-database/from-backup#create-a-database-from-backup)  
 [Database Encryption](../../studio/server/databases/create-new-database/encrypted#create-a-database-encrypted)  
 

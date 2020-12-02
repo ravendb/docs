@@ -26,7 +26,9 @@ Here you can filter the data you want to import, select configuration and apply 
 - **Include Identities:** Determines whether or not Identities contained in the file should be imported.
 - **Include Compare Exchange:** Determines whether or not Compare Exchange values contained in the file should be imported.
 - **Include Subscriptions:** Determines whether or not Subscriptions contained in the file should be imported.
-- **Include Configuration and OngoingTasks:** Determines whether or not [server configurations and ongoing tasks](#customize-configuration-and-ongoing-tasks) should be imported.
+- **Include Configuration and OngoingTasks:** Determines whether or not 
+  [server configurations and ongoing tasks](../../../../studio/database/tasks/import-data/import-data-file#customize-configuration-and-ongoing-tasks) 
+  should be imported.  
 {NOTE:Importing item that doesn’t exist}
 If any of the options is set but the other database doesn't contain any items of that type, the type will be skipped.
 {NOTE/}

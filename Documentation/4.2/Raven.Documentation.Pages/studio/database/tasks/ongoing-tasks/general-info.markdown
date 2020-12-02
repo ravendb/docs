@@ -71,12 +71,12 @@
 ![Figure 3. Ongoing Tasks New Task](images/general-info-003.png "Add Ongoing Task")
 
 * Select the preferred task to add  
-  1. See [adding Extrenal Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) task  
-  2. See [adding Pull Replication](../../../../studio/database/tasks/ongoing-tasks/pull-replication) task
-  3. See [adding RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) task  
-  4. See [adding SQL ETL](../../../todo-update-me-later) task  
-  5. See [adding Backup](../../../../studio/database/tasks/ongoing-tasks/backup-task) task  
-  6. See [adding Subscription](../../../todo-update-me-later) task  
+  1. Adding an [Extrenal Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) task  
+  2. Adding a [Pull Replication](../../../../studio/database/tasks/ongoing-tasks/pull-replication) task  
+  3. Adding a [RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) task  
+  4. Adding an [SQL ETL](../../../../server/ongoing-tasks/etl/sql) task  
+  5. Adding a [Backup](../../../../studio/database/tasks/ongoing-tasks/backup-task) task  
+  6. Adding a Subscription task  
 
 * Once the task is defined and saved, it will be written to the [Database Record](../../../../studio/database/settings/database-record)  
 

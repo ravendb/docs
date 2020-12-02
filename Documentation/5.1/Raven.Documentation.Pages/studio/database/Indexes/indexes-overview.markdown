@@ -36,7 +36,7 @@
 * Once defined, the index iterates over the documents, and for every field (document property) that is requested to be indexed,  
   a **map** is built between the terms derived from these fields and the actual documents that contain them.  
 
-* A [Query](../../../todo-update-me-later) operating on these fields ends up with a simple search from the queried terms to the list of documents that contain them.  
+* A **query** operating on these fields ends up with a simple search from the queried terms to the list of documents that contain them.  
 
 * After the first **indexing** run, the index will keep that map current _without_ re-processing the entire index data -  
   only update the relevant details when a document update happens in the database.  

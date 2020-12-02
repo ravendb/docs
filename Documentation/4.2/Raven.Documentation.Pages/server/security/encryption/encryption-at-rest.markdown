@@ -31,7 +31,7 @@ request, and when the transaction is finished, modified pages are encrypted and 
 {DANGER: Indexing transaction size}
 Indexing is most efficient when it is performed in the largest transactions possible. However, using encryption can be very memory intensive, and if memory 
 runs out before the transaction completes, the entire transaction will fail. To avoid this, you can limit the size of indexing batches in encrypted 
-databases using [Indexing.Encrypted.TransactionSizeLimitInMb](../server/configuration/indexing-configuration#Indexing.Encrypted.TransactionSizeLimitInMb). 
+databases using [Indexing.Encrypted.TransactionSizeLimitInMb](../../../server/configuration/indexing-configuration#Indexing.Encrypted.TransactionSizeLimitInMb). 
 The default limit is 64 MB.  
 {DANGER/}
 
