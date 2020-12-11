@@ -384,7 +384,7 @@ And here how we can query against that index:
 
 *Dynamic fields* lack of transparency. To have a look under the hood (e.g. see the [Index Terms](https://ravendb.net/docs/article-page/latest/csharp/studio/database/indexes/create-map-index#index-fields-&-terms)) use the *RavenDB Studio*.
 
-<p>If you open the <em>Index Terms</em> for an index when running one of the YABT tests covering the scenarios described above (e.g. <a href="https://github.com/ravendb/samples-yabt/blob/master/Domain.Tests/BacklogItemServices/BacklogItemListQueryByCustomFieldTests.cs" target="_blank" rel="nofollow">this one in the YABT repo</a>), you would see terms like:
+<p>If you open the <em>Index Terms</em> for an index when running one of the YABT tests covering the scenarios described above (e.g. <a href="https://github.com/ravendb/samples-yabt/blob/master/tests/Domain.Tests/BacklogItemServices/BacklogItem_List_Query_By_CustomField_Tests.cs" target="_blank" rel="nofollow">this one in the YABT repo</a>), you would see terms like:
 
 <div class="margin-top-sm margin-bottom-sm">
     <img src="images/yabt3/4.png" class="img-responsive m-0-auto" alt="RavenDB Studio Index Terms"/>
