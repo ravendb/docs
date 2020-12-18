@@ -1,6 +1,8 @@
 # Holding off Harvey with High Availability
 
-![RavenDB is an open source NoSQL document database](images/world-map-connections.jpg)
+<div class="article-img figure text-center">
+  <img src="images/world-map-connections.jpg" alt="RavenDB is an open source NoSQL document database" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

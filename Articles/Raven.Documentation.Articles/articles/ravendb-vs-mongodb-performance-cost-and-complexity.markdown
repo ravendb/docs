@@ -1,7 +1,9 @@
 # RavenDB vs MongoDB: Performance, Cost, and Complexity
 <small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
-![RavenDB vs MongoDB: Performance, Cost, and Complexity](images/ravendb-vs-mongodb-performance-cost-and-complexity.jpg)
+<div class="article-img figure text-center">
+  <img src="images/ravendb-vs-mongodb-performance-cost-and-complexity.jpg" alt="RavenDB vs MongoDB: Performance, Cost, and Complexity" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

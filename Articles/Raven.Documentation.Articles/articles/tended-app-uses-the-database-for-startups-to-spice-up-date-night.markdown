@@ -1,7 +1,9 @@
 # A Database for Startups Helps Revolutionize Date Night
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
-![How RavenDB proven database for startups allowed Tended App to maintain a digital checklist distributed over user devices to make leaving the kids at home a worry free experience."](images/tended-app-uses-the-database-for-startups-to-spice-up-date-night.jpg)
+<div class="article-img figure text-center">
+  <img src="images/tended-app-uses-the-database-for-startups-to-spice-up-date-night.jpg" alt="How RavenDB proven database for startups allowed Tended App to maintain a digital checklist distributed over user devices to make leaving the kids at home a worry free experience." class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

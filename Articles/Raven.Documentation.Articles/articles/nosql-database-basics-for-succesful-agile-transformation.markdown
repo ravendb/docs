@@ -1,7 +1,9 @@
 # Database Basics for Successful Agile Transformation
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
-![Database Basics for Successful Agile Transformation](images/nosql-database-basics-for-succesful-agile-transformation.jpg)
+<div class="article-img figure text-center">
+  <img src="images/nosql-database-basics-for-succesful-agile-transformation.jpg" alt="Database Basics for Successful Agile Transformation" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

@@ -1,7 +1,9 @@
 # Microservices Architecture – A Little History
 <small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
-![How RavenDB Uses its Own Database in a Microservices Architecture for all its Data Needs](images/the-first-microservices-architecture.jpg)
+<div class="article-img figure text-center">
+  <img src="images/the-first-microservices-architecture.jpg" alt="How RavenDB Uses its Own Database in a Microservices Architecture for all its Data Needs" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

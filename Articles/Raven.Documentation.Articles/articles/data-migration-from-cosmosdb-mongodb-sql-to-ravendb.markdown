@@ -1,7 +1,9 @@
 # Migrating data to RavenDB
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
-![Migrating data to RavenDB](images/data-migration-from-cosmosdb-mongodb-sql-to-ravendb.png)
+<div class="article-img figure text-center">
+  <img src="images/data-migration-from-cosmosdb-mongodb-sql-to-ravendb.png" alt="Migrating data to RavenDB" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

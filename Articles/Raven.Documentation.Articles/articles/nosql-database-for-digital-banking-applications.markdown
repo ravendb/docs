@@ -1,7 +1,9 @@
 # How Fintech Developer TSWG Uses a NoSQL Document Database
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
-![NoSQL Database for Digital Banking Applications](images/nosql-database-for-digital-banking-applications.jpg)
+<div class="article-img figure text-center">
+  <img src="images/nosql-database-for-digital-banking-applications.jpg" alt="NoSQL Database for Digital Banking Applications" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

@@ -1,7 +1,9 @@
 # Migrating to RavenDB 4.1 in 36,000 Locations
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
-![Code-A-Like: Using RavenDB for Developer Analytics](images/migrating-to-ravendb-at-36000-locations.jpg)
+<div class="article-img figure text-center">
+  <img src="images/migrating-to-ravendb-at-36000-locations.jpg" alt="Code-A-Like: Using RavenDB for Developer Analytics" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

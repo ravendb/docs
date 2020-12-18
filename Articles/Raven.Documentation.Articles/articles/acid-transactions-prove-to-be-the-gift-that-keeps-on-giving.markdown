@@ -1,7 +1,9 @@
 <h1>ACID Transactions for Shopper ID and Security Authentication</h1>
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
-![Why can a relational database cost you and your users big time in poor data queries, while document-oriented databases can save everyone time and money.](images/acid-transactions-prove-to-be-the-gift-that-keeps-on-giving.jpg)
+<div class="article-img figure text-center">
+  <img src="images/acid-transactions-prove-to-be-the-gift-that-keeps-on-giving.jpg" alt="Why can a relational database cost you and your users big time in poor data queries, while document-oriented databases can save everyone time and money." class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

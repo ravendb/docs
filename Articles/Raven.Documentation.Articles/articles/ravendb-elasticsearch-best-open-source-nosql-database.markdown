@@ -1,7 +1,9 @@
 # RavenDB vs Elasticsearch: The Best Open Source NoSQL Database
 <small>by <a href="mailto:oren@hibernatingrhinos.com">Oren Eini</a></small>
 
-![The right NoSQL Document Database can make several server requests register as one, lowering your cloud costs tremendously.](images/ravendb-elasticsearch-best-open-source-nosql-database.jpg)
+<div class="article-img figure text-center">
+  <img src="images/ravendb-elasticsearch-best-open-source-nosql-database.jpg" alt="The right NoSQL Document Database can make several server requests register as one, lowering your cloud costs tremendously." class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

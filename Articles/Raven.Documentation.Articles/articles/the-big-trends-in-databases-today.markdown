@@ -1,7 +1,9 @@
 # The Big Trends in Databases Today
 <small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
-![The Big Trends in Databases Today](images/the-big-trends-in-databases-today.jpg)
+<div class="article-img figure text-center">
+  <img src="images/the-big-trends-in-databases-today.jpg" alt="The Big Trends in Databases Today" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

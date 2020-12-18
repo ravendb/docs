@@ -1,7 +1,9 @@
 # Why a NoSQL Database is the Best Solution for a Startup
 <small>by <a href="https://www.linkedin.com/in/ravendb/" rel="nofollow">Oren Eini</a></small>
 
-![Why a NoSQL Database is the Best Solution for a Startup](images/ravendb-best-nosql-database-example-for-startups.jpg)
+<div class="article-img figure text-center">
+  <img src="images/ravendb-best-nosql-database-example-for-startups.jpg" alt="Why a NoSQL Database is the Best Solution for a Startup" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

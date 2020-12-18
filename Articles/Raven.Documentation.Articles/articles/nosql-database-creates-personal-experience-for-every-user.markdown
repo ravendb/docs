@@ -1,7 +1,9 @@
 # A NoSQL Database For More Demanding Workloads
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
-![A NoSQL Database For More Demanding Workloads](images/nosql-database-creates-personal-experience-for-every-user.jpg)
+<div class="article-img figure text-center">
+  <img src="images/nosql-database-creates-personal-experience-for-every-user.jpg" alt="A NoSQL Database For More Demanding Workloads" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

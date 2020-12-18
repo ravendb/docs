@@ -2,7 +2,9 @@
 <h1>NoSQL Data Model Through the DDD Prism</h1>
 <small>by <a href="https://alex-klaus.com" target="_blank" rel="nofollow">Alex Klaus</a></small>
 
-![Practical modelling of the same database for a traditional SQL and a NoSQL. Comparison of the two approaches and their alignment with the DDD (Domain Driven Design).](images/nosql-data-model-through-ddd-prism.jpg)
+<div class="article-img figure text-center">
+  <img src="images/nosql-data-model-through-ddd-prism.jpg" alt="Practical modelling of the same database for a traditional SQL and a NoSQL. Comparison of the two approaches and their alignment with the DDD (Domain Driven Design)." class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 
@@ -19,7 +21,7 @@ But this article is not about the *DDD*, so for more information refer to the gu
 <p>Luckily for the <em>YABT</em>, the bug-tracking domain is well-known to any dev and well-covered by <a href="https://vaughnvernon.co" target="_blank" rel="nofollow">Vaughn Vernon</a> in his books that is a good source for deeper understanding of our design decisions.</p>
 
 ### 1. Bounded context and Domain entities
-<hr style="border-color:rgba(34,37,43,.15);">
+<hr>
 
 The core model of a bug-tracking system would consist of a *Project*, *Backlog Item*, its *Comments* and of course *Sprint*. Each project has a *Team* linked to *Users* of the system that may bring other entities like subscriptions, payments, permissions, etc.
 
@@ -57,7 +59,7 @@ So, to make the *YABT* simpler, we cut off auxiliary functionality (like user re
 </ul>
 
 ### 2. Relational DB model
-<hr style="border-color:rgba(34,37,43,.15);">
+<hr>
 
 Before jumping to the database design, let's step back and talk about how the database could look like if we were using a conventional SQL database. This step is not required for designing a DB, and here it's shown purely for academic purposes.
 
@@ -88,7 +90,7 @@ Note that the ER diagram shown above is simplified and a few things were taken o
 Clearly that the final ER diagram for a such simple database would be much more cluttered, but you get the picture.
 
 ### 3. NoSQL model
-<hr style="border-color:rgba(34,37,43,.15);">
+<hr>
 
 #### 3.1. Need in DB structure
 
@@ -150,7 +152,6 @@ That's it.
 <p>Check out the full source code at our repository on GitHub - <a href="https://github.com/ravendb/samples-yabt" target="_blank" rel="nofollow">github.com/ravendb/samples-yabt</a> and let us know what you think. Stay tuned for the next articles in the <em>YABT</em> series.</p>
 
 <h4 class="margin-top">Read more articles in this series</h4>
-<hr style="border-color:rgba(34,37,43,.15);">
 <div class="series-nav">
     <a href="https://ravendb.net/articles/building-application-with-net-core-and-ravendb-nosql-database">
         <div class="nav-btn margin-bottom-xs">

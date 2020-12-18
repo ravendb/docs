@@ -1,7 +1,9 @@
 # A NoSQL Database for Online Gaming
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
-![A NoSQL Database for Online Gaming](images/starnet-taps-ravendb-nosql-database-for-gaming-applications.jpg)
+<div class="article-img figure text-center">
+  <img src="images/starnet-taps-ravendb-nosql-database-for-gaming-applications.jpg" alt="A NoSQL Database for Online Gaming" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

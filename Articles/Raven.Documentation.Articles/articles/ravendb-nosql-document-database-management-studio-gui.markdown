@@ -1,7 +1,9 @@
 # RavenDB NoSQL Management Studio GUI
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
-![RavenDB NoSQL Management Studio GUI](images/ravendb-nosql-document-database-management-studio-gui.jpg)
+<div class="article-img figure text-center">
+  <img src="images/ravendb-nosql-document-database-management-studio-gui.jpg" alt="RavenDB NoSQL Management Studio GUI" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

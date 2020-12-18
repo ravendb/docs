@@ -2,7 +2,9 @@
 <h1>Dynamic Fields for Indexing</h1>
 <small>by <a href="https://alex-klaus.com" target="_blank" rel="nofollow">Alex Klaus</a></small>
 
-![The power of dynamic fields for indexing dictionaries and nested collections in RavenDB](images/dynamic-fields-for-indexing.jpg)
+<div class="article-img figure text-center">
+  <img src="images/dynamic-fields-for-indexing.jpg" alt="The power of dynamic fields for indexing dictionaries and nested collections in RavenDB" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 
@@ -29,7 +31,7 @@ Here is a mock-up of the *Backlog Item* screen:
 </ul>
 
 ### 1. NoSQL solution
-<hr style="border-color:rgba(34,37,43,.15);">
+<hr>
 
 At first glance, the task is trivial. Flexibility of the *[NoSQL](https://ravendb.net)* does not require defining the structure upfront, so any fields can be easily added ad hoc. Though, the developers still need to be aware of the structure for two reasons:
 
@@ -187,7 +189,7 @@ Alternatively, we can go with a traditional approach of using the `ID` of the re
 <p>OK, it was a diversion. I hope, getting values from the <em>Custom Fields</em> along with the created/updated is straightforward (see <a href="https://github.com/ravendb/samples-yabt" target="_blank" rel="nofollow">YABT source code</a> for examples). So, we resolved the first issue and can build the presentation layer for a known data structure. But what about filtering on those fields?</p>
 
 ### 2. Filtering on sub-attributes... and sub- sub- attributes
-<hr style="border-color:rgba(34,37,43,.15);">
+<hr>
 
 There are two interesting cases requiring filtering the *Backlog items* on `ModifiedBy` and `CustomFields` properties:
 
@@ -380,7 +382,7 @@ And here how we can query against that index:
 </ol>
 
 ### 3. RavenDB Studio Tools
-<hr style="border-color:rgba(34,37,43,.15);">
+<hr>
 
 *Dynamic fields* lack of transparency. To have a look under the hood (e.g. see the [Index Terms](https://ravendb.net/docs/article-page/latest/csharp/studio/database/indexes/create-map-index#index-fields-&-terms)) use the *RavenDB Studio*.
 
@@ -397,7 +399,6 @@ That's it. Happy filtering.
 <p>Check out the full source code at our repository on GitHub - <a href="https://github.com/ravendb/samples-yabt" target="_blank" rel="nofollow">github.com/ravendb/samples-yabt</a> and let us know what you think. Stay tuned for the next articles in the <em>YABT</em> series.</p>
 
 <h4 class="margin-top">Read more articles in this series</h4>
-<hr style="border-color:rgba(34,37,43,.15);">
 <div class="series-nav">
     <a href="https://ravendb.net/articles/hidden-side-of-document-ids-in-ravendb">
         <div class="nav-btn margin-bottom-xs">

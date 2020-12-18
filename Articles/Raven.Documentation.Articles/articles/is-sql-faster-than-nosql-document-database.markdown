@@ -1,6 +1,8 @@
 # Is SQL Really Faster than a NoSQL Document Database?
 
-![Is SQL Really Faster than a NoSQL Document Database?](images/is-sql-faster-than-nosql-document-database.jpg)
+<div class="article-img figure text-center">
+  <img src="images/is-sql-faster-than-nosql-document-database.jpg" alt="Is SQL Really Faster than a NoSQL Document Database?" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

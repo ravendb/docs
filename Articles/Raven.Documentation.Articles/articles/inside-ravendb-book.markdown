@@ -1,7 +1,9 @@
 # Inside RavenDB 4.0
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
-![Inside RavenDB 4.0 by Oren Eini](images/inside-ravendb-book.jpg)
+<div class="article-img figure text-center">
+  <img src="images/inside-ravendb-book.jpg" alt="Inside RavenDB 4.0 by Oren Eini" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

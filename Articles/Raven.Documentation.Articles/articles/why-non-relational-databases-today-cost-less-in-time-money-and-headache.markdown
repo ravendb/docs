@@ -1,7 +1,9 @@
 <h1>Non Relational Databases Today Cost Less in Time, Money, and Headache</h1>
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
-![Why Non Relational Databases Today Cost Less? How with one simple change you can reduce developer time, cost and latency in your applications.](images/why-non-relational-databases-today-cost-less-in-time-money-and-headache.jpg)
+<div class="article-img figure text-center">
+  <img src="images/why-non-relational-databases-today-cost-less-in-time-money-and-headache.jpg" alt="Why Non Relational Databases Today Cost Less? How with one simple change you can reduce developer time, cost and latency in your applications." class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

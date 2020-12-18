@@ -1,7 +1,9 @@
 # Save Time and Money with Non Relational Database Data Compression
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
-![Using Non Relational Database Data Compression, you get the benefits of a document database with the storage savings and performance of an SQL legacy model."](images/save-time-and-money-with-non-relational-database-data-compression.jpg)
+<div class="article-img figure text-center">
+  <img src="images/save-time-and-money-with-non-relational-database-data-compression.jpg" alt="Using Non Relational Database Data Compression, you get the benefits of a document database with the storage savings and performance of an SQL legacy model." class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

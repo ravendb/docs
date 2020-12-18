@@ -1,7 +1,9 @@
 <h1>Document-oriented Databases - Saving Time and Money</h1>
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
-![Why can a relational database cost you and your users big time in poor data queries, while document-oriented databases can save everyone time and money.](images/document-oriented-databases-can-conquer-costs-to-you-and-your-users.jpg)
+<div class="article-img figure text-center">
+  <img src="images/document-oriented-databases-can-conquer-costs-to-you-and-your-users.jpg" alt="Why can a relational database cost you and your users big time in poor data queries, while document-oriented databases can save everyone time and money." class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

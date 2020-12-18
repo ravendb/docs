@@ -1,7 +1,9 @@
 <h1>Document-oriented Database for Startups Solution for a Handful of Dollars</h1>
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
-![A grown-up database for startups needs minimal supervision to do its task. Developers can put more time and resources bringing their application to production.](images/document-oriented-database-for-startups-offers-solution-for-27-dollars.jpg)
+<div class="article-img figure text-center">
+  <img src="images/document-oriented-database-for-startups-offers-solution-for-27-dollars.jpg" alt="A grown-up database for startups needs minimal supervision to do its task. Developers can put more time and resources bringing their application to production." class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

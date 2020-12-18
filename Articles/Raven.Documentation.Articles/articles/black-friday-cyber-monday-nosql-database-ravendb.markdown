@@ -1,6 +1,8 @@
 # Resolving the 3 Hidden Challenges of Holiday Traffic to Your Database
 
-![3 Hidden Challenges for Your Database on Black Friday](images/black-friday-cyber-monday-nosql-database-ravendb.jpg)
+<div class="article-img figure text-center">
+  <img src="images/black-friday-cyber-monday-nosql-database-ravendb.jpg" alt="3 Hidden Challenges for Your Database on Black Friday" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 
