@@ -16,7 +16,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Facets
 
             public FacetOptions Options { get; set; }
 
-            public Dictionary<FacetAggregation, string> Aggregations { get; set; }
+            public Dictionary<FacetAggregation, HashSet<FacetAggregationField>> Aggregations { get; set; }
 
             public string DisplayFieldName { get; set; }
         }
@@ -27,7 +27,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Facets
 
             public FacetOptions Options { get; set; }
 
-            public Dictionary<FacetAggregation, string> Aggregations { get; set; }
+            public Dictionary<FacetAggregation, HashSet<FacetAggregationField>> Aggregations { get; set; }
 
             public string DisplayFieldName { get; set; }
         }
@@ -40,7 +40,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Facets
 
             public FacetOptions Options { get; set; }
 
-            public Dictionary<FacetAggregation, string> Aggregations { get; set; }
+            public Dictionary<FacetAggregation, HashSet<FacetAggregationField>> Aggregations { get; set; }
 
             public string DisplayFieldName { get; set; }
         }
@@ -51,7 +51,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Facets
 
             public FacetOptions Options { get; set; }
 
-            public Dictionary<FacetAggregation, string> Aggregations { get; set; }
+            public Dictionary<FacetAggregation, HashSet<FacetAggregationField>> Aggregations { get; set; }
 
             public string DisplayFieldName { get; set; }
         }
