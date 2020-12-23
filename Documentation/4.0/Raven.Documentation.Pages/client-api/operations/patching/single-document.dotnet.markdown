@@ -1,15 +1,15 @@
 # Patching: How to Perform Single Document Patch Operations
 
 {NOTE: }
-The **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on the server-side and is useful as a performance enhancement or for updating denormalized data in entities.
+The **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on the server side and is useful as a performance enhancement or for updating denormalized data in entities.
 
 The current page deals with patch operations on single documents.
 
 Patching has three possible interfaces: [Typed Session API](../../../client-api/operations/patching/single-document#typed-session-api), [Non-Typed Session API](../../../client-api/operations/patching/single-document#non-typed-session-api), and [Operations API](../../../client-api/operations/patching/single-document#operations-api).
 
-In this page:  
-[API overview](../../../client-api/operations/patching/single-document#api-overview)  
-[Examples](../../../client-api/operations/patching/single-document#examples)  
+* In this page:  
+  * [API overview](../../../client-api/operations/patching/single-document#api-overview)  
+  * [Examples](../../../client-api/operations/patching/single-document#examples)  
 {NOTE/}
 
 ## API overview
@@ -74,7 +74,8 @@ The patch request will be sent to server only after the call to `SaveChanges`. T
 {PANEL/}
 
 {PANEL:Non-Typed Session API}
-The non-typed Session API for patches uses the `Session.Advanced.Defer` function that allows registering single or several commands.  
+
+The non-typed Session API for patches uses the `Session.Advanced.Defer` function which allows registering one or more commands.  
 One of the possible commands is the `PatchCommandData`, describing single document patch command.  
 The patch request will be sent to server only after the call to `SaveChanges`, this way it's possible to perform multiple operations in one request to the server.  
 
@@ -94,7 +95,7 @@ The patch request will be sent to server only after the call to `SaveChanges`, t
 
 {INFO: PatchRequest}
 
-We highly recommend using scripts with parameters. This allows RavenDB to cache scripts and boost performance. Parameters can be accessed in the script through the "args" object, and passed using PatchRequest's "Values" parameter.
+We highly recommend using scripts with parameters. This allows RavenDB to cache scripts and boost performance. Parameters can be accessed in the script through the `args` object, and passed using PatchRequest's "Values" parameter.
 
 | Members | | |
 | ------------- | ------------- | ----- |
@@ -105,12 +106,12 @@ We highly recommend using scripts with parameters. This allows RavenDB to cache 
 
 {PANEL/}
 
-
 {PANEL: Operations API}
+
 An operations interface that exposes the full functionality and allows performing ad-hoc patch operations without creating a session.  
 
-`Raven.Client.Documents.Operations.Send`
-`Raven.Client.Documents.Operations.SendAsync`
+`Raven.Client.Documents.Operations.Send`  
+`Raven.Client.Documents.Operations.SendAsync`  
 
 {CODE patch_non_generic_interface_in_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 
@@ -125,6 +126,35 @@ An operations interface that exposes the full functionality and allows performin
 | **skipPatchIfChangeVectorMismatch** | `bool` | If false and `changeVector` has value, and document with that ID and change vector was not found, will throw exception. |   
 
 {INFO/}
+
+{PANEL/}
+
+{PANEL: List of Script Methods}
+
+| **output** |  |
+| **log** |  |
+| **console** |  |
+| **include** |  |
+| **load** |  |
+| **LoadDocument** |  |
+| **loadPath** |  |
+| **del** |  |
+| **DeleteDocument** |  |
+| **put** |  |
+| **PutDocument** |  |
+| **cmpxchg** |  |
+| **getMetadata** |  |
+| **id** |  |
+| **lastModified** |  |
+| **startsWith** |  |
+| **endsWith** |  |
+| **regex** |  |
+| **Raven_ExplodeArgs** |  |
+| **Raven_Min** |  |
+| **Raven_Max** |  |
+| **convertJsTimeToTimeSpanString** |  |
+| **toStringWithFormat** |  |
+| **scalarToRawString** |  |
 
 {PANEL/}
 
