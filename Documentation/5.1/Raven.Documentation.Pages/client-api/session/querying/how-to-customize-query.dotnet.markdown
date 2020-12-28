@@ -113,7 +113,7 @@ To disable entity tracking by `Session` use `NoTracking`. Usage of this option w
 {PANEL: ProjectionBehavior}
 
 By default, queries are satisfied with the values stored in the index. If the index 
-doesn’t contain the requested values, they are retrieved from the documents 
+doesn't contain the requested values, they are retrieved from the documents 
 themselves.  
 
 This behavior can be configured using the `Projection` option, which takes a 
