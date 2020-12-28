@@ -131,30 +131,27 @@ An operations interface that exposes the full functionality and allows performin
 
 {PANEL: List of Script Methods}
 
-| **output** |  |
-| **log** |  |
-| **console** |  |
-| **include** |  |
-| **load** |  |
-| **LoadDocument** |  |
-| **loadPath** |  |
-| **del** |  |
-| **DeleteDocument** |  |
-| **put** |  |
-| **PutDocument** |  |
-| **cmpxchg** |  |
-| **getMetadata** |  |
-| **id** |  |
-| **lastModified** |  |
-| **startsWith** |  |
-| **endsWith** |  |
-| **regex** |  |
-| **Raven_ExplodeArgs** |  |
-| **Raven_Min** |  |
-| **Raven_Max** |  |
-| **convertJsTimeToTimeSpanString** |  |
-| **toStringWithFormat** |  |
-| **scalarToRawString** |  |
+| Method | Arguments | Description |
+| - | - | - |
+| **output** | `object` | Output to the debug log |
+| **include** | `string` or `string[]` | Loads into the context of the script one or more documents by their document IDs |
+| **load** | Document ID / path | Loads specified document to script context |
+| **loadPath** |  |  |
+| **del** | Document ID; change vector | Delete the given document by its ID. If you add the expected change vector and the document's current change vector does not match, the document will _not_ be deleted. |
+| **put** | Document ID; document; change vector |  |
+| **cmpxchg** |  |  |
+| **getMetadata** | Document | Returns the document's metadata |
+| **id** | Document | Returns the document's ID |
+| **lastModified** |  |  |
+| **startsWith** |  |  |
+| **endsWith** |  |  |
+| **regex** |  |  |
+| **Raven_ExplodeArgs** |  |  |
+| **Raven_Min** |  |  |
+| **Raven_Max** |  |  |
+| **convertJsTimeToTimeSpanString** |  |  |
+| **toStringWithFormat** |  |  |
+| **scalarToRawString** |  |  |
 
 {PANEL/}
 

@@ -130,19 +130,16 @@ An operations interface that exposes the full functionality and allows performin
 
 {PANEL/}
 
-{PANEL: List of Script Methods}
+{PANEL: List of Patch Script Methods}
 
 | **output** |  |
 | **log** |  |
 | **console** |  |
 | **include** |  |
 | **load** |  |
-| **LoadDocument** |  |
 | **loadPath** |  |
 | **del** |  |
-| **DeleteDocument** |  |
 | **put** |  |
-| **PutDocument** |  |
 | **cmpxchg** |  |
 | **getMetadata** |  |
 | **id** |  |

@@ -137,12 +137,9 @@ An operations interface that exposes the full functionality and allows performin
 | **console** |  |
 | **include** |  |
 | **load** |  |
-| **LoadDocument** |  |
 | **loadPath** |  |
 | **del** |  |
-| **DeleteDocument** |  |
 | **put** |  |
-| **PutDocument** |  |
 | **cmpxchg** |  |
 | **getMetadata** |  |
 | **id** |  |
