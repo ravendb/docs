@@ -40,7 +40,7 @@
   e.g. store a new document, modify an existing document, query your database, etc.  
   Any such operation '*loads*' the documents to the Session for tracking.  
 * The Session **tracks all changes** made to all entities that it has either loaded or stored.  
-  You don’t need to manually track the changes to these entities and decide what needs to be saved and what doesn’t.  
+  You don't need to manually track the changes to these entities and decide what needs to be saved and what doesn't.  
   The Session will do it for you.  
 * All these tracked changes are combined & persisted to the database only when calling `SaveChanges()`.  
 * Entity tracking can be disabled if needed. See:  

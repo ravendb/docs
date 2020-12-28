@@ -7,11 +7,11 @@
 
 <br/>
 
-Security has always been the top priority, even higher than performance. As part of the release cycle for RavenDB 4.0, we wanted an external audit to go over our security infrastructure and ensure that we didn’t miss any hole to which someone can enter. After over 100,000 instances of MongoDB, ElasticSearch, Apache CouchDB, and other non-relational databases were hacked into, we knew that we had to perform even more stringent security tests than ever before to make RavenDB 4.0 safer than ever.
+Security has always been the top priority, even higher than performance. As part of the release cycle for RavenDB 4.0, we wanted an external audit to go over our security infrastructure and ensure that we didn't miss any hole to which someone can enter. After over 100,000 instances of MongoDB, ElasticSearch, Apache CouchDB, and other non-relational databases were hacked into, we knew that we had to perform even more stringent security tests than ever before to make RavenDB 4.0 safer than ever.
 
 {SOCIAL-MEDIA-FOLLOW/}
 
-We hired one of the best security companies, staffed with the fiercest hackers in the industry, to do their worst to break down RavenDB’s defenses. We tasked them with finding out all of our vulnerabilities and holes so we know exactly what needs reinforcement.
+We hired one of the best security companies, staffed with the fiercest hackers in the industry, to do their worst to break down RavenDB's defenses. We tasked them with finding out all of our vulnerabilities and holes so we know exactly what needs reinforcement.
 
 The security team found 15 areas of weakness. We immediately got to work and resolved all the issues.
 
@@ -21,14 +21,14 @@ You can read the full report and the overall security architecture of RavenDB 4.
 
 RavenDB deploys cryptography essentially on two different fronts: symmetric cryptography of all data on disk, and asymmetric cryptography via X.509 certificates as a means of authentication between clients and servers.
 
-All symmetric encryption uses Daniel J. Bernstein’s <em>XChaCha20Poly1305</em> algorithm, as implemented in <em>libsodium</em>, with a randomized 192-bit nonce. There is no possibility of nonce-reuse, which means that it is considerably more resilient than adhoc designs that might make a best-effort attempt to avoid nonce-reuse, without ensuring it. Symmetric encryption covers the database main data store, index definitions, journal, temporary file streams, and secret handling. Such secret handling uses the Windows APIs for protected data, but only for a randomly generated encryption key, which is then used as part of the <em>XChaCha20Poly1305 AEAD</em>, to add a form of authentication. All long-term symmetric secrets are derived from a master key using the <em>Blake2b</em> hash function with a usage-specific context identifier.
+All symmetric encryption uses Daniel J. Bernstein's <em>XChaCha20Poly1305</em> algorithm, as implemented in <em>libsodium</em>, with a randomized 192-bit nonce. There is no possibility of nonce-reuse, which means that it is considerably more resilient than adhoc designs that might make a best-effort attempt to avoid nonce-reuse, without ensuring it. Symmetric encryption covers the database main data store, index definitions, journal, temporary file streams, and secret handling. Such secret handling uses the Windows APIs for protected data, but only for a randomly generated encryption key, which is then used as part of the <em>XChaCha20Poly1305 AEAD</em>, to add a form of authentication. All long-term symmetric secrets are derived from a master key using the <em>Blake2b</em> hash function with a usage-specific context identifier.
 
 {RAW}
 {{WHITEPAPER_BANNER}}
 {RAW/}
 
-At setup time, client and server certificates are generated. Clients trust the server’s self-signed certificate, and the server trusts each client based on a fingerprint of each client’s certificate. All data is exchanged over TLS, and TLS version failures for certificate failures are handled gracefully, with a webpage being shown indicating the failure status, rather than aborting the TLS handshake. Server certificates are optionally signed by Let’s Encrypt using a vendor-specific domain name. Certificates are generated using <em>BouncyCastle</em> and are 4096-bit RSA. 
-Keys, nonces, and certificate private keys are randomly generated using the operating system’s CSPRNG, either through <em>libsodium</em> or through <em>BouncyCastle</em>.
+At setup time, client and server certificates are generated. Clients trust the server's self-signed certificate, and the server trusts each client based on a fingerprint of each client's certificate. All data is exchanged over TLS, and TLS version failures for certificate failures are handled gracefully, with a webpage being shown indicating the failure status, rather than aborting the TLS handshake. Server certificates are optionally signed by Let's Encrypt using a vendor-specific domain name. Certificates are generated using <em>BouncyCastle</em> and are 4096-bit RSA. 
+Keys, nonces, and certificate private keys are randomly generated using the operating system's CSPRNG, either through <em>libsodium</em> or through <em>BouncyCastle</em>.
 
 ## Easy to Use Database Security
 

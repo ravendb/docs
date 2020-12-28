@@ -79,7 +79,7 @@
   * For example, consider an update to document `orders/77-A` in the above image.  
     First, the Map function is run on the updated document, giving a Map entry to write to **page #1047**.  
     Then, the Reduce function is run on this page, giving the final tally for page #1047.  
-    We’ll then recurse upward, toward **page #1391**, where the Reduce is run again.  
+    We'll then recurse upward, toward **page #1391**, where the Reduce is run again.  
 {PANEL/}
 
 ## Related Articles

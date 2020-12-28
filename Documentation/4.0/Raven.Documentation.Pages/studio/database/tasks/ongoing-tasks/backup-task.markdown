@@ -141,8 +141,8 @@
   ('live' meaning that any changes in the database will be reflected in the replica once they occur).  
   This is quite useful if you need to shift operations to a secondary data center.  
 
-*  But a replica isn't a backup... It doesn’t present good solutions to many backup scenarios.  
-   For example, it doesn’t protect you from an accidental collection delete,  
+*  But a replica isn't a backup... It doesn't present good solutions to many backup scenarios.  
+   For example, it doesn't protect you from an accidental collection delete,  
    or tell you the state of the system at, say, 9:03 AM last Friday.  
 
 * A backup keeps an exact state of the database at a specific point in time and can be restored  

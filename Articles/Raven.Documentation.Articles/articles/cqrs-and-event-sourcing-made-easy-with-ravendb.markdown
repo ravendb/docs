@@ -6,7 +6,7 @@ In this article, we will discuss some alternatives to adopt CQRS and Event Sourc
 
 ## What is CQRS (a quick review)?
 
-Back in 1980s, Bertrand Meyer introduced the term Command and Query Separation (CQS) to describe the principle that an object’s methods should be either commands or queries:  
+Back in 1980s, Bertrand Meyer introduced the term Command and Query Separation (CQS) to describe the principle that an object's methods should be either commands or queries:  
 
 - A command changes the state of the object and DOES NOT return any data.
 - A query returns data but DOES NOT alter the state of the object.

@@ -7,7 +7,7 @@
 
 <br/>
 
-As the pace of technology continues to accelerate, your next database may determine whether your business thrives in the new generation of commerce, or fades towards perilous oblivion. Today’s database must be able to perform fast, even with big data. It must be flexible, and able to scale as the amount of information you process increases exponentially. It must have high-availability, so all of your clients and customers will have access to you at any time, even in the presence of failure.  
+As the pace of technology continues to accelerate, your next database may determine whether your business thrives in the new generation of commerce, or fades towards perilous oblivion. Today's database must be able to perform fast, even with big data. It must be flexible, and able to scale as the amount of information you process increases exponentially. It must have high-availability, so all of your clients and customers will have access to you at any time, even in the presence of failure.  
 
 How do the best databases stand up to these challenges? Here is a comparison of two industry leaders, ElasticSearch and RavenDB:
 
@@ -15,7 +15,7 @@ How do the best databases stand up to these challenges? Here is a comparison of 
 
 #### ElasticSearch
 
-Elastic uses Apache’s Lucene open source search engine. Lucene is not ACID, meaning that it can loss or corrupt data. Elastic is transactional on the document level, but not the batch. If you try to commit 100 documents, and just 55.5 were committed when there was a power disruption or some other kind of error, the .5 document will not be saved, but the previous 55 will be committed. This leads to inconsistencies because only part of the transaction has been committed and not the whole batch. Certain failure modes can cause data corruption or data loss.
+Elastic uses Apache's Lucene open source search engine. Lucene is not ACID, meaning that it can loss or corrupt data. Elastic is transactional on the document level, but not the batch. If you try to commit 100 documents, and just 55.5 were committed when there was a power disruption or some other kind of error, the .5 document will not be saved, but the previous 55 will be committed. This leads to inconsistencies because only part of the transaction has been committed and not the whole batch. Certain failure modes can cause data corruption or data loss.
 
 #### RavenDB
 
@@ -47,7 +47,7 @@ Elastic offers no version control.
 
 #### RavenDB
 
-RavenDB supports version control at the database and collection level. Any change in a document will generate an immutable revision. You have access to the history of a document, containing all of its revisions. This is ideal for regulated industries where the law requires an organization’s data modification to track who did what and when. You can see the history of changes that have been made to any document in your database.
+RavenDB supports version control at the database and collection level. Any change in a document will generate an immutable revision. You have access to the history of a document, containing all of its revisions. This is ideal for regulated industries where the law requires an organization's data modification to track who did what and when. You can see the history of changes that have been made to any document in your database.
 
 You can keep these revisions for a period of time or for a number of revisions, or even keep full history of all changes ever made, giving you the complete view of everything that have happened in your database.
 
@@ -57,7 +57,7 @@ You can keep these revisions for a period of time or for a number of revisions, 
 
 #### ElasticSearch
 
-Elastic break it’s databases into shards, each being hosted on its own node. This speeds up performance in enabling each user to access the data he or she needs from the closest node, reducing latency. Simple queries can typically be answered by searching the index, but more complex queries, especially aggregation queries, may require iterating over the result set and tallying the final results each time you execute the query. 
+Elastic break it's databases into shards, each being hosted on its own node. This speeds up performance in enabling each user to access the data he or she needs from the closest node, reducing latency. Simple queries can typically be answered by searching the index, but more complex queries, especially aggregation queries, may require iterating over the result set and tallying the final results each time you execute the query. 
 
 #### RavenDB
 RavenDB supports dynamic queries as well as predefined indexes. When you make queries, the query optimizer will create indexes on the fly. As you make more queries, you are feeding the query optimizer to make better decisions to retrieve your data.
@@ -74,7 +74,7 @@ Elasticsearch aggressively caches data for future queries. Bitsets are reused wh
 
 RavenDB supports caching at multiple levels. Repeated requests to RavenDB are detected and often served directly from the cache, only talking to the server to verify that they are still current. This can dramatically reduce the number of bytes transferred over the network and improve overall system performance.
 
-RavenDB also supports aggressive caching, taking it one step further. With aggressive caching, you don’t even need to go to the server to verify that the cached data is current. Whenever data changes on a node, the server sends notifications to the client machines. Those caches with data that have been made outdated by the update will receive notifications that their cache has been invalidated. 
+RavenDB also supports aggressive caching, taking it one step further. With aggressive caching, you don't even need to go to the server to verify that the cached data is current. Whenever data changes on a node, the server sends notifications to the client machines. Those caches with data that have been made outdated by the update will receive notifications that their cache has been invalidated. 
 
 ## Sharding the Data 
 
@@ -86,7 +86,7 @@ To handle large data sets, Elastic will cut up, or shard its database into piece
 
 RavenDB is capable of handling very large datasets. Replications allow you to spread the load among multiple nodes. 
 
-RavenDB doesn’t support automatic sharding, but you can shard your data according to your needs, as long as you configure it manually. 
+RavenDB doesn't support automatic sharding, but you can shard your data according to your needs, as long as you configure it manually. 
 
 ## Communication with Machines Outside Your Cluster
 
@@ -100,7 +100,7 @@ You can perform Extract, Transform, and Load operations on ElasticSearch, but to
 
 #### RavenDB
 
-Raven supports automatic ETL processes to relational databases, such as SQL Server, Oracle and Postgres SQL. You don’t need an outside application, it is supported as a core part of the RavenDB. You can take the documents in your database, and have RavenDB replicate them to a relational database. This enables you to perform a wide variety of analysis and reporting on your data in a familiar setting, using your existing reporting toolset. 
+Raven supports automatic ETL processes to relational databases, such as SQL Server, Oracle and Postgres SQL. You don't need an outside application, it is supported as a core part of the RavenDB. You can take the documents in your database, and have RavenDB replicate them to a relational database. This enables you to perform a wide variety of analysis and reporting on your data in a familiar setting, using your existing reporting toolset. 
 
 ## Memory Management
 
@@ -108,9 +108,9 @@ Raven supports automatic ETL processes to relational databases, such as SQL Serv
 
 #### ElasticSearch
 
-The standard garbage collection (GC) for the JVM, which Elastic uses, can stop any programming flow at an arbitrary point. This is called Stop the World garbage collection and is a frequent performance hazard. when 75% of a computer’s memory is clogged with unused objects, the GC executed arbitrarily and automatically. Such GCs can cause higher CPU usage, increased latencies, and even cause shards to relocate frequently as Elastic tries to keep the cluster balanced and enough replicas available.  
+The standard garbage collection (GC) for the JVM, which Elastic uses, can stop any programming flow at an arbitrary point. This is called Stop the World garbage collection and is a frequent performance hazard. when 75% of a computer's memory is clogged with unused objects, the GC executed arbitrarily and automatically. Such GCs can cause higher CPU usage, increased latencies, and even cause shards to relocate frequently as Elastic tries to keep the cluster balanced and enough replicas available.  
 
-Elastic’s solution is to manually raise the % of memory being used that triggers GC to minimize the times garbage is collected. This requires higher resource allocation to the system then is actually needed.
+Elastic's solution is to manually raise the % of memory being used that triggers GC to minimize the times garbage is collected. This requires higher resource allocation to the system then is actually needed.
 
 #### RavenDB
 
@@ -140,15 +140,15 @@ Enjoy an additional layer of security as a full copy of your database is always 
 
 #### ElasticSearch
 
-ElasticSearch is a very specific tool for a very specific purpose, searching for data. It’s schema is tailored to its focus. With data types that must be declared, and initial database layout that is very rigid, Elastic is made to be a database search engine, finding the data wherever it may be. 
+ElasticSearch is a very specific tool for a very specific purpose, searching for data. It's schema is tailored to its focus. With data types that must be declared, and initial database layout that is very rigid, Elastic is made to be a database search engine, finding the data wherever it may be. 
 
 #### RavenDB
 
 As a document database, RavenDB is made to scale. As a transactional database, RavenDB was designed to hold “source of truth” information. It is meant to be the database where primary information is stored. 
 
-Say you move from New York to California, and you inform the population registry of your move. The main database of the Federal government will see to it that you get your tax refund in California, and that the total population of both states have changed. But you are still getting your mail sent to New York. In this case, the primary database is the Federal government, and the secondary one is the post office’s version.
+Say you move from New York to California, and you inform the population registry of your move. The main database of the Federal government will see to it that you get your tax refund in California, and that the total population of both states have changed. But you are still getting your mail sent to New York. In this case, the primary database is the Federal government, and the secondary one is the post office's version.
 
-Only a database that is able to report and update the most accurate data is suited to be a “source of truth” database. RavenDB is transactional and structure less. Its flexibility enables you to scale up seamlessly, while its ACIDity ensures that the current state of data is accurate. Elastic is structured, which makes it strong for its primary purpose, to search for information. But it’s strength is also its weakness, that it is better suited as a ‘secondary’ destination for data.
+Only a database that is able to report and update the most accurate data is suited to be a “source of truth” database. RavenDB is transactional and structure less. Its flexibility enables you to scale up seamlessly, while its ACIDity ensures that the current state of data is accurate. Elastic is structured, which makes it strong for its primary purpose, to search for information. But it's strength is also its weakness, that it is better suited as a ‘secondary' destination for data.
 
 > *Dreaming dreams no mortal ever dared to dream before.*
 >

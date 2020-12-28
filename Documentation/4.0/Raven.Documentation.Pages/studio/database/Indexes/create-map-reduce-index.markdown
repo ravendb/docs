@@ -120,7 +120,7 @@
 * Multi-Map-Reduce indexes allow us to aggregate data from multiple collections.  
 
 * In the below example we define three maps, on the `Companies`, `Suppliers` and `Employees` collections.  
-  In each map, we output a count for the type of the document we’re mapping, as well as the relevant City.  
+  In each map, we output a count for the type of the document we're mapping, as well as the relevant City.  
 
 ![Figure 4. Define Multi-Maps](images/create-map-reduce-index-4.png "Define Multi Maps")
 
@@ -170,7 +170,7 @@
 ####  Limitations
 
 * RavenDB will detect and generate an error if you have a cycle of artificial documents. 
-  You can’t define another Map-Reduce index that will output artificial documents 
+  You can't define another Map-Reduce index that will output artificial documents 
   if that will trigger (directly or indirectly) the same index.  
   Otherwise, you might set up a situation where the indexes run in an infinite loop.  
 

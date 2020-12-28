@@ -2,7 +2,7 @@
 
 When we develop an application that will be used by different users at the same time, there comes a time where we need to think about how we will handle the fact that multiple users will be working on the same document. How can we make our application aware of document changes so we can take the appropriate action when multiple users wants to store the same document without knowledge of each others changes?
 
-This can be achieved by using RavenDB’s optimistic concurrency option. Let's discuss two cases: one where we need only one session to load and store the document, and another one where we need two sessions.
+This can be achieved by using RavenDB's optimistic concurrency option. Let's discuss two cases: one where we need only one session to load and store the document, and another one where we need two sessions.
 
 We will use a simple scenario to explain these cases: users of our application can change the name of a person who is stored as a document in RavenDB .
 
@@ -24,7 +24,7 @@ So, in this case the solution to handle document changes is nice and easy. But w
 
 ## Optimistic concurrency – Using different sessions ##
 
-Let’s say we want to develop a more "complicated" application, for example an ASP MVC application. In the controller's `Load` method a session is started which is used to load a `Person` document, map the object to its model representation, which is then sent back to the user as a `JsonResult`. The session is then disposed.
+Let's say we want to develop a more "complicated" application, for example an ASP MVC application. In the controller's `Load` method a session is started which is used to load a `Person` document, map the object to its model representation, which is then sent back to the user as a `JsonResult`. The session is then disposed.
 
 The controller has another method to store the `Person` document, which uses another session. Because we use another session to store the document, RavenDB can't automatically derive anymore what the Etag number of the document was when it was loaded. So we will need to give that information.
 
@@ -36,7 +36,7 @@ The `JsonIgnore` attribute will make sure the Etag property will not be stored. 
 
 {CODE concurrency_4@ClientApi\Concurrency\UsingOptimisticConcurrencyInRealWorldScenarios.cs /}
 
-Remember the sessions used in the `Get`, `GetAll` and `Update` functions are different. Also notice we need to set `UseOptimisticConcurrency` to `true` on the session used in the `Update` function. If we don’t do this, no checks will be made, and the document will be saved when `SaveChanges` is called, overwriting previous changes. This behavior is used in RavenDb versions until stable build 888 *(current build when writing this article)*. In later builds, checks will be done automatically when you provide an Etag, so setting `UseOptimisticConcurrency` will not be needed anymore.
+Remember the sessions used in the `Get`, `GetAll` and `Update` functions are different. Also notice we need to set `UseOptimisticConcurrency` to `true` on the session used in the `Update` function. If we don't do this, no checks will be made, and the document will be saved when `SaveChanges` is called, overwriting previous changes. This behavior is used in RavenDb versions until stable build 888 *(current build when writing this article)*. In later builds, checks will be done automatically when you provide an Etag, so setting `UseOptimisticConcurrency` will not be needed anymore.
 
 Setting the Etag number like this has its flaws though: if you forget to set the Etag number, no checks will be done. It would be nice if the Etag number can be set automatically. Well, good news. It can be done.
 

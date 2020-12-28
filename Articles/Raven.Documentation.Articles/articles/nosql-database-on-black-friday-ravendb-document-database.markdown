@@ -7,9 +7,9 @@
 
 <br/>
 
-From Thanksgiving to New Year’s, the stakes couldn’t be higher. Relying solely on database technology that came out with disco is a huge risk. Adding a layer of NoSQL, especially a database that is also ACID, maximizes the ability of your database environment to handle large spikes in traffic and to provide the best service to all your users. 
+From Thanksgiving to New Year's, the stakes couldn't be higher. Relying solely on database technology that came out with disco is a huge risk. Adding a layer of NoSQL, especially a database that is also ACID, maximizes the ability of your database environment to handle large spikes in traffic and to provide the best service to all your users. 
 
-Just 500 milliseconds of web delay can cost you 5% of your projected sales. Performance is the new function. If it takes too long for your database to ferry information back and forth to your user, the user will abandon you. 25% of online sales fall through due to poor performance. That’s just half the cost. Poor performance is a customer service issue. It takes 6 times more money to retain a dissatisfied customer than to get a new one.
+Just 500 milliseconds of web delay can cost you 5% of your projected sales. Performance is the new function. If it takes too long for your database to ferry information back and forth to your user, the user will abandon you. 25% of online sales fall through due to poor performance. That's just half the cost. Poor performance is a customer service issue. It takes 6 times more money to retain a dissatisfied customer than to get a new one.
 
 ## The Limits of the Disco Database
 
@@ -20,9 +20,9 @@ Just 500 milliseconds of web delay can cost you 5% of your projected sales. Perf
     <div class="caption">Stayin Alive, 1977, the year relational databases were fully developed.</div>
 </div>
 
-The challenge for today’s database is to keep your data fresh at all times, available to users anywhere and whenever they want it, and to deliver the information they ask for as fast as you can. 
+The challenge for today's database is to keep your data fresh at all times, available to users anywhere and whenever they want it, and to deliver the information they ask for as fast as you can. 
 
-Since 1974, SQL has performed these functions. For the first 30 years of its use, it has performed these tasks diligently. With the emergence of massive amounts of data coming in from 3.5 billion smartphone users, and another billion on desktops, it’s questionable that a technology which emerged with the Bee Gees can handle the great scale up of the 21st century. 
+Since 1974, SQL has performed these functions. For the first 30 years of its use, it has performed these tasks diligently. With the emergence of massive amounts of data coming in from 3.5 billion smartphone users, and another billion on desktops, it's questionable that a technology which emerged with the Bee Gees can handle the great scale up of the 21st century. 
 
 {SOCIAL-MEDIA-FOLLOW/}
 
@@ -44,17 +44,17 @@ an <a href="https://itic-corp.com/blog/2016/08/cost-of-hourly-downtime-soars-81-
 
 ### C. Your Options are Limited
 
-The relational model gives you limited options to replicate your data. In SQL, it’s a difficult task that costs you. The tools that Database Admins have to work with are not up to the task to handle complex procedures like sharding, or other types of synthetic data replication. The schema itself restricts flexibility, making it difficult to adapt your data to new business environment’s like the holiday season or game changing technologies. 
+The relational model gives you limited options to replicate your data. In SQL, it's a difficult task that costs you. The tools that Database Admins have to work with are not up to the task to handle complex procedures like sharding, or other types of synthetic data replication. The schema itself restricts flexibility, making it difficult to adapt your data to new business environment's like the holiday season or game changing technologies. 
 
 *Why do we stay with SQL in commerce?* The best way to maintain the integrity of your data in an active application is with a fully transactional database that only the relational model can deliver. For ecommerce applications, this is vital. Every transaction must be committed to the database in its entirety or else you stand to upset a lot of good people giving you money.
 
-Organizations have historically stayed away from NoSQL solutions because they aren’t transactional, and they put the integrity of your data at risk. 
+Organizations have historically stayed away from NoSQL solutions because they aren't transactional, and they put the integrity of your data at risk. 
 
 Until now.
 
 ## NoSQL Database Advantages: Inheriting ACID while Advancing Performance
 
-To process huge amounts of requests coming in from a larger audience, you need better performance from your database. NoSql is the next generation of database that’s designed specifically for this purpose. In the age where performance is king, a new technology has assumed the throne. 
+To process huge amounts of requests coming in from a larger audience, you need better performance from your database. NoSql is the next generation of database that's designed specifically for this purpose. In the age where performance is king, a new technology has assumed the throne. 
 
 NoSQL resolves the issues left unchallenged by the disco database:
 
@@ -70,7 +70,7 @@ A NoSQL database like RavenDB  4.0 enables you to set up a cluster of nodes, eac
 
 A cluster of 3 or 5 nodes can handle most levels of traffic. But what if you are offering a special 2 for 1 deal to your customers in the next 48 hours? What happens when it is Cyber Monday and you are getting 10 times the normal amount of traffic, and 20 times the level of conversions? The busiest shopping day of the year is December 24. With the widespread use of same day delivery, this day could turn out to be a bigger surprise than you expected. Can you adapt on the fly?
 
-RavenDB allows you to set up extra nodes in a matter of minutes. Depending on how large your database is, it’s just a matter of hours before all your data is replicated to the new nodes. 
+RavenDB allows you to set up extra nodes in a matter of minutes. Depending on how large your database is, it's just a matter of hours before all your data is replicated to the new nodes. 
 
 You can quickly adapt to spiking traffic, maintaining top performance for your new users. 
 
@@ -103,7 +103,7 @@ Either way, you have a tremendous opportunity to take the great leap forward in 
 
 ## Our Credo
 
-At RavenDB, we want to make every step in the process as simple as possible so you can set up and start using the best NoSQL database on the market with ease. We are so confident in proving thorough solutions to all your database challenges that, while we will always provide top level service for all your support needs, we charge a fraction for it compared to our competitors. Your RavenDB database is designed to be a full-on solution that takes many of the arduous tasks involved with installation, security, operations, and repair, and integrates them into the back end so you don’t have to worry about it at all. 
+At RavenDB, we want to make every step in the process as simple as possible so you can set up and start using the best NoSQL database on the market with ease. We are so confident in proving thorough solutions to all your database challenges that, while we will always provide top level service for all your support needs, we charge a fraction for it compared to our competitors. Your RavenDB database is designed to be a full-on solution that takes many of the arduous tasks involved with installation, security, operations, and repair, and integrates them into the back end so you don't have to worry about it at all. 
 
 Where other database companies plow 75% of their revenues into winning new customers, we reinvest the majority of our resources into making the best full-service database to save you time and money on your next application. We take pride in dedicating our energy into living up to our core standard:
 

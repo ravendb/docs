@@ -7,7 +7,7 @@
   It is globally unique in the scope of the database. No two documents in the same database will have the same ID.  
 
 * Usually, the document ID will be composed of the collection name as the prefix, a slash and then the actual unique portion of the ID. 
-  But this is not a requirement, RavenDB doesn’t require that the collection prefix will be included within the document ID string.  
+  But this is not a requirement, RavenDB doesn't require that the collection prefix will be included within the document ID string.  
 
 * RavenDB server supports six document ID generation strategies:  
 
@@ -123,7 +123,7 @@
 * **When to use**:  
   * Use an identity only if you really need documents with absolute consecutive IDs,  
     i.e. when generating invoices, or upon legal obligation.  
-  * Note: using an identity _doesn’t_ protect you from skipping values in the sequence because:
+  * Note: using an identity _doesn't_ protect you from skipping values in the sequence because:
       *  Documents could have been deleted  
       *  A failed transaction still increments the identity value, thus causing a hole in the sequence
 

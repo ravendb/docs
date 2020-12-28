@@ -9,13 +9,13 @@ The release cycle of an application is a lot like the Daytona 500. You are up ag
 
 <img class="floating-right img-responsive" alt="making how to set up a database easy for nosql document database" src="images/fast-moving-cars.jpg" />
 
-The stakes couldn’t be higher.
+The stakes couldn't be higher.
 
 Your database is your pit crew. We keep the nuts and bolts of your engines running, and we work super-hard to keep you in the race. Even if you engineer your application for top performance, the wrong database can stall your work, forcing you to the back of the pack. The right database will add more horsepower, pushing you that much closer to the checkered flag.
 
 ## Vaulting You into the Pole Position (Top Seed)
 
-As a schemaless database, RavenDB start’s you coding a lot sooner. You don’t have to take into consideration setting up your schema when creating a NoSql database. Our flexible model enables you to shift left and get started quicker. As you release newer builds, you don’t need to slow down to make repairs to your schema.
+As a schemaless database, RavenDB start's you coding a lot sooner. You don't have to take into consideration setting up your schema when creating a NoSql database. Our flexible model enables you to shift left and get started quicker. As you release newer builds, you don't need to slow down to make repairs to your schema.
 
 An application evolves as your business discovers new types of information to collect, new ways to process it, and real returns in analyzing it. A schema can be a costly speed bump if every time you learn something new, you have to waste precious time retooling it. Our NoSql Document database keeps you powering ahead in the fast lane as you simply add new fields while in motion.
 
@@ -27,7 +27,7 @@ Your DevOps team will love it!
 
 ## Turning on the Ignition Sooner
 
-Our database works so you don’t waste your time or your money on tasks not related to coding your app. RavenDB is self-fixing, the most common problems databases face, RavenDB will take care of itself. You will spend less time on the phone talking to our support engineers.
+Our database works so you don't waste your time or your money on tasks not related to coding your app. RavenDB is self-fixing, the most common problems databases face, RavenDB will take care of itself. You will spend less time on the phone talking to our support engineers.
 
 One of the biggest delays in getting started is in installing your database. For RavenDB, we condensed the process from days, to hours, to even less. Here is our CEO, Oren Eini, setting up a multi-node cluster, ready for deployment, in under 10 minutes:
 
@@ -37,9 +37,9 @@ One of the biggest delays in getting started is in installing your database. For
     </div>
 </div>
 
-## Complex Security That’s Simple to Deploy
+## Complex Security That's Simple to Deploy
 
-We made security simple to manage in order to keep you in total control of your vault. In the run up to start developing your app, there is an urge to move fast and furious with setup. Too many knobs and buttons can lead to a vulnerability in how well your data is protected. Large and complicated documentation is an invitation for things to be overlooked. If there is a breach, the users won’t blame the people who made your database, they will blame you.
+We made security simple to manage in order to keep you in total control of your vault. In the run up to start developing your app, there is an urge to move fast and furious with setup. Too many knobs and buttons can lead to a vulnerability in how well your data is protected. Large and complicated documentation is an invitation for things to be overlooked. If there is a breach, the users won't blame the people who made your database, they will blame you.
 
 We know that, so we made security easy to understand but extremely difficult to attack. A simple to understand and easy to use security system keeps your team alert at all times.
 
@@ -49,13 +49,13 @@ We know that, so we made security easy to understand but extremely difficult to 
 
 ## What You Get
 
-Our <a href="https://ravendb.net/docs/article-page/4.0/csharp/start/setup-wizard">RavenDB Setup Wizard</a> guides you through each step seamlessly. To secure, you have two options. You can use the security you already have in your network and extend it to cover your database. Your other option is to use RavenDB’s security. You simply copy and paste your license number to a text field to apply the security. RavenDB provides rock solid security for your database.
+Our <a href="https://ravendb.net/docs/article-page/4.0/csharp/start/setup-wizard">RavenDB Setup Wizard</a> guides you through each step seamlessly. To secure, you have two options. You can use the security you already have in your network and extend it to cover your database. Your other option is to use RavenDB's security. You simply copy and paste your license number to a text field to apply the security. RavenDB provides rock solid security for your database.
 
 You can also run your database in an unsecured mode. This is a temporary possibility for developers using a single local computer at the initial stages of the development process. As long as you are using a local machine and nobody on the outside can see you or hear you, you can code without security.
 
-Once you begin to work beyond your local computer, RavenDB will flash a warning sign. You can’t continue until you read the warning, understand the risks, and decide on your next course of action. We made sure to put in this fail-safe measure. Other databases did not warn their customers of this exposure, and as a result, over 100,000 of NoSql database instances were hacked into.
+Once you begin to work beyond your local computer, RavenDB will flash a warning sign. You can't continue until you read the warning, understand the risks, and decide on your next course of action. We made sure to put in this fail-safe measure. Other databases did not warn their customers of this exposure, and as a result, over 100,000 of NoSql database instances were hacked into.
 
-We won’t let that happen to you.
+We won't let that happen to you.
 
 {SOCIAL-MEDIA-FOLLOW/}
 
@@ -63,7 +63,7 @@ If you are working in a closed network, and expanding beyond your local computer
 
 Only when you reach a point where you are satisfied with your current security environment will RavenDB will not let you proceed.
 
-We want your application’s race to the finish line to be as fast as possible, without any unnecessary pit stops, speed bumps, or accidents. RavenDB was designed so you can round each lap at even higher velocity.
+We want your application's race to the finish line to be as fast as possible, without any unnecessary pit stops, speed bumps, or accidents. RavenDB was designed so you can round each lap at even higher velocity.
 
 <div class="bottom-line">
 <p>

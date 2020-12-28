@@ -26,4 +26,4 @@ If you are a BizSpark startup company please contact us to get a special offer.
 
 ## Would I be forced to release my OSS projects using Raven under the AGPL?
 
-No, Raven’s AGPL license contains an explicit exception for OSS projects. You can release your project under any OSI approved license. Note, however, that you can’t change RavenDB's own licensing. Users of your project would still need to comply with RavenDB's licensing.
+No, Raven's AGPL license contains an explicit exception for OSS projects. You can release your project under any OSI approved license. Note, however, that you can't change RavenDB's own licensing. Users of your project would still need to comply with RavenDB's licensing.

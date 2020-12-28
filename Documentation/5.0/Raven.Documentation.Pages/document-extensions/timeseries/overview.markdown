@@ -71,7 +71,7 @@ modifications are merged by the cluster [without conflict](../../document-extens
 
 #### Time Series as Document Extensions
 
-RavenDB’s Time Series, like its 
+RavenDB's Time Series, like its 
 [distributed counters](../../document-extensions/counters/overview), 
 [attachments](../../document-extensions/attachments/what-are-attachments) 
 and [document revisions](../../client-api/session/revisions/what-are-revisions), 
