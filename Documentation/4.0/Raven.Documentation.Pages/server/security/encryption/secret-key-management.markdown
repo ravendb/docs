@@ -6,7 +6,9 @@ If the key is stored in plain text then any user that can access the key can acc
 In RavenDB this can be handled in either of two ways:
 
 1. [Providing a master key to RavenDB](../../../server/security/encryption/secret-key-management#providing-a-master-key-to-ravendb)
-2. [Relying on the OS protection methods](../../../server/security/encryption/secret-key-management#relying-on-the-os-protection-methods)
+2. []
+
+For [server store encryption](../../../server/security/encryption/server-store-encryption) there is a third method: [relying on Windows'' protection methods](../../../server/security/encryption/secret-key-management#relying-on-the-os-protection-methods).
 
 ## Providing a Master Key to RavenDB
 
