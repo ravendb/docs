@@ -1,16 +1,22 @@
 # Encryption: Secret Key Management
+---
+
+{NOTE: }
 
 One of the challenges in cryptosystems is "secret protection" - how to protect the encryption key.  
 If the key is stored in plain text then any user that can access the key can access the encrypted data. If the key is to be encrypted, another key is needed, and so on. 
 
-In RavenDB this can be handled in either of two ways:
+In RavenDB this can be handled in one of three ways:
 
 1. [Providing a master key to RavenDB](../../../server/security/encryption/secret-key-management#providing-a-master-key-to-ravendb)
-2. []
+2. [Relying on the OS protection methods](../../../server/security/encryption/secret-key-management#relying-on-the-os-protection-methods)
+3. [Advanced: Using the Admin Console](../../../server/security/encryption/secret-key-management#using-the-admin-js-console)
 
-For [server store encryption](../../../server/security/encryption/server-store-encryption) there is a third method: [relying on Windows'' protection methods](../../../server/security/encryption/secret-key-management#relying-on-the-os-protection-methods).
+{NOTE/}
 
-## Providing a Master Key to RavenDB
+---
+
+{PANEL: Providing a Master Key to RavenDB}
 
 If a master key is provided, RavenDB will use it to encrypt the secret keys of encrypted databases.
 
@@ -38,7 +44,9 @@ And [settings.json](../../configuration/configuration-options#json) can look lik
 
 Another way to provide a master key is to use a file containing the raw key bytes. In that case, set `Security.MasterKey.Path` in [settings.json](../../configuration/configuration-options#json) with the file path. RavenDB expects a cryptographically secure 256-bit key.
 
-## Relying on the OS Protection Methods
+{PANEL/}
+
+{PANEL: Relying on the OS Protection Methods}
 
 If a master key is not provided by the user RavenDB will use the following default behavior:
 
@@ -46,9 +54,9 @@ In **Windows**, secret keys are encrypted and stored using the [Data Protection 
 
 In **Unix**, RavenDB will generate a random master key and store it in the user's home folder with read/write permissions (octal 1600) only for the user who stored it. Then, RavenDB will use this master key to encrypt the secret keys of encrypted databases.
 
-## Changing/Resetting a Windows User Password
+### Changing/Resetting a Windows User Password
 
-This section is relevant only on Windows and only if you didn't supply a master key and chose to rely on the Windows protection methods.  
+This section is relevant only to [Server Store encryption](../../../server/security/encryption/server-store-encryption) and only if you chose to rely on the Windows protection methods.  
 
 Windows uses the **user password** to encrypt secrets in [DPAPI](https://docs.microsoft.com/en-us/previous-versions/ms995355(v=msdn.10)).
 When a Windows password is **changed** the following actions are taken:  
@@ -83,6 +91,41 @@ Then, run the following put-key command for **every** encrypted database. Supply
 This operation takes the key and protects it with the new Windows user password.
 After doing this for all databases you can run the server and continue working.
 
+{PANEL/}
+
+{PANEL: Using the Admin JS Console}
+
+{DANGER: Danger}
+Do not use the console unless you are sure about what you're doing. Running a 
+script in the Admin Console could cause your server to crash, cause loss of 
+data, or other irreversible harm.  
+{DANGER/}
+
+The server's Admin Console is [found in the Studio](../../../studio/server/debug/admin-js-console). 
+You can use it to access and change your master key. This method is useful for 
+changing the key when you change your Windows user account.  
+
+On the console page, select a database or the server. If you select a database, 
+the master key is read only, and can be accessed with this script:  
+
+{CODE-BLOCK:javascript }
+return database.MasterKey
+{CODE-BLOCK/}
+
+A master key can be modified with the script:  
+
+{CODE-BLOCK:javascript }
+server.ServerStore.PutSecretKey(string base64, string name, bool overwrite)
+{CODE-BLOCK/}
+
+| Parameter | Type | Description |
+| - | - | - |
+| **base64** | `string` | The new master key for the server store |
+| **name** | `string` | The name of the database for which to change the key |
+| **overwrite** | `string` | If this is false, an exception will be thrown. Be sure that this is what you want to do. |
+
+{PANEL/}
+
 ## Related Articles
 
 ### Encryption
@@ -94,3 +137,7 @@ After doing this for all databases you can run the server and continue working.
 ### Security
 
 - [Overview](../../../server/security/overview)
+
+### Studio
+
+- [Admin JS Console](../../../studio/server/debug/admin-js-console)
