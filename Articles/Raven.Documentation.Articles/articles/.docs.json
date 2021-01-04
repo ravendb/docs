@@ -2167,5 +2167,34 @@
         "twitter:description": "InComm uses ACID transactions with RavenDB NoSQL Database for shopper ID and security authentication.",
         "twitter:url": "https://ravendb.net/articles/acid-transactions-prove-to-be-the-gift-that-keeps-on-giving"
     }
+},
+{
+    "Path": "entity-relationships-in-nosql.markdown",
+    "Name": "Entity Relationships in NoSQL",
+    "Mappings": [],
+    "Metadata": {
+        "title": "Entity relationships in NoSQL – YABT | RavenDB",
+        "likeSection": "yes",
+        "url": "entity-relationships-in-nosql",
+        "publishedAt": "2021-01-04",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "Learn about the options for entity relationships in NoSQL in general and RavenDB in particular",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "Entity relationships in NoSQL – YABT | RavenDB",
+        "og:description": "Learn about the options for entity relationships in NoSQL in general and RavenDB in particular",
+        "og:url": "https://ravendb.net/articles/entity-relationships-in-nosql",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/entity-relationships-in-nosql&fileName=entity-relationships-in-nosql.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "Entity relationships in NoSQL – YABT | RavenDB",
+        "twitter:description": "Learn about the options for entity relationships in NoSQL in general and RavenDB in particular",
+        "twitter:url": "https://ravendb.net/articles/entity-relationships-in-nosql"
+    }
 }
 ]

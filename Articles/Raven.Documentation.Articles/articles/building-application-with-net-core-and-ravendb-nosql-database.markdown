@@ -70,7 +70,7 @@ Our diagram has some resemblance with the classic Onion diagram:
         <span class="text-muted">Leveraging the <a href="https://ravendb.net/docs/article-page/latest/csharp/indexes/using-dynamic-fields">Dynamic fields</a> in the index, we'll fetch backlog items to build <em>"My recent tickets"</em> for the current user (ones modified by the user fetching the right timestamp in the history of modifications) and manage a collection of custom fields with searching capability.</span>
     </li>
     <li class="margin-top-xs">
-        "One-to-many, many-to-many entity relationships in NoSQL"<br/>
+        <a href="https://ravendb.net/articles/entity-relationships-in-nosql">"One-to-many, many-to-many entity relationships in NoSQL"</a><br/>
         <span class="text-muted">How <em>'one-to-many'</em> and <em>'many-to-many'</em> relationships can be implemented in RavenDB. Consider examples of tickets referring users (have just ID or a reference object), implications of having comments as an entity in the Ticket aggregate, etc.</span>
     </li>
     <li class="margin-top-xs">
