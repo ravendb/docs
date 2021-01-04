@@ -406,8 +406,10 @@ That's it. Happy filtering.
             <strong class="previous">Hidden side of document IDs in RavenDB</strong>
         </div>
     </a>
-    <div class="nav-btn disabled margin-bottom-xs">
-        <small>Next in the series ›</small>
-        <strong class="next">Coming soon</strong>
-    </div>
+    <a href="https://ravendb.net/articles/entity-relationships-in-nosql">
+        <div class="nav-btn margin-bottom-xs">
+            <small>Next in the series ›</small>
+            <strong class="next">Entity Relationships in NoSQL</strong>
+        </div>
+    </a>
 </div>
