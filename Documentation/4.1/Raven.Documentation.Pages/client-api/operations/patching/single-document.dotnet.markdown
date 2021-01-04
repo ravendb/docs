@@ -7,6 +7,8 @@ The current page deals with patch operations on single documents.
 
 Patching has three possible interfaces: [Typed Session API](../../../client-api/operations/patching/single-document#typed-session-api), [Non-Typed Session API](../../../client-api/operations/patching/single-document#non-typed-session-api), and [Operations API](../../../client-api/operations/patching/single-document#operations-api).
 
+Patching can be done from the client as well as in the studio.  
+
 * In this page:  
   * [API overview](../../../client-api/operations/patching/single-document#api-overview)  
   * [Examples](../../../client-api/operations/patching/single-document#examples)  
@@ -132,32 +134,21 @@ An operations interface that exposes the full functionality and allows performin
 
 {PANEL: List of Script Methods}
 
-| **output** |  |
-| **log** |  |
-| **console** |  |
-| **include** |  |
-| **load** |  |
-| **loadPath** |  |
-| **del** |  |
-| **put** |  |
-| **cmpxchg** |  |
-| **getMetadata** |  |
-| **id** |  |
-| **lastModified** |  |
-| **startsWith** |  |
-| **endsWith** |  |
-| **regex** |  |
-| **Raven_ExplodeArgs** |  |
-| **Raven_Min** |  |
-| **Raven_Max** |  |
-| **convertJsTimeToTimeSpanString** |  |
-| **toStringWithFormat** |  |
-| **scalarToRawString** |  |
+| Method | Arguments | Description |
+| - | - | - |
+| **load** | `string` or `string[]` | Loads one or more documents into the context of the script by their document IDs |
+| **loadPath** | A document and a path to an ID within that document | Loads a related document by the path to its ID |
+| **del** | Document ID; change vector | Delete the given document by its ID. If you add the expected change vector and the document's current change vector does not match, the document will _not_ be deleted. |
+| **put** | Document ID; document; change vector | Create or overwrite a document with a specified ID and entity. If you try to overwrite an existing document and pass the expected change vector, the put will fail if the specified change vector does not match the document's current change vector. |
+| **cmpxchg** | Key | Load a compare exchange value into the context of the script using its key |
+| **getMetadata** | Document | Returns the document's metadata |
+| **id** | Document | Returns the document's ID |
+| **lastModified** | Document | Returns the `DateTime` of the most recent modification made to the given document |
+| **counter** | Document; counter name | Returns the value of the specified counter in the specified document |
+| **counterRaw** | Document; counter name | Returns the specified counter in the specified document as a key-value pair |
+| **incrementCounter** | Document; counter name | Increases the value of the counter by one |
+| **deleteCounter** | Document; counter name | Deletes the counter |
 
-| **counter** |  |
-| **counterRaw** |  |
-| **incrementCounter** |  |
-| **deleteCounter** |  |
 {PANEL/}
 
 {PANEL: Examples}

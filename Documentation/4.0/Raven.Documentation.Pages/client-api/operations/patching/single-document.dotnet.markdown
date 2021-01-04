@@ -3,9 +3,11 @@
 {NOTE: }
 The **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on the server side and is useful as a performance enhancement or for updating denormalized data in entities.
 
-The current page deals with patch operations on single documents.
+This page deals with patch operations on single documents.
 
 Patching has three possible interfaces: [Typed Session API](../../../client-api/operations/patching/single-document#typed-session-api), [Non-Typed Session API](../../../client-api/operations/patching/single-document#non-typed-session-api), and [Operations API](../../../client-api/operations/patching/single-document#operations-api).
+
+Patching can be done from the client as well as in the studio.  
 
 * In this page:  
   * [API overview](../../../client-api/operations/patching/single-document#api-overview)  
@@ -131,27 +133,18 @@ An operations interface that exposes the full functionality and allows performin
 
 {PANEL: List of Script Methods}
 
+This is a list of a few of the javascript methods that can be used in patch scripts.  
+
 | Method | Arguments | Description |
 | - | - | - |
-| **output** | `object` | Output to the debug log |
-| **include** | `string` or `string[]` | Loads into the context of the script one or more documents by their document IDs |
-| **load** | Document ID / path | Loads specified document to script context |
-| **loadPath** |  |  |
+| **load** | `string` or `string[]` | Loads one or more documents into the context of the script by their document IDs |
+| **loadPath** | A document and a path to an ID within that document | Loads a related document by the path to its ID |
 | **del** | Document ID; change vector | Delete the given document by its ID. If you add the expected change vector and the document's current change vector does not match, the document will _not_ be deleted. |
-| **put** | Document ID; document; change vector |  |
-| **cmpxchg** |  |  |
+| **put** | Document ID; document; change vector | Create or overwrite a document with a specified ID and entity. If you try to overwrite an existing document and pass the expected change vector, the put will fail if the specified change vector does not match the document's current change vector. |
+| **cmpxchg** | Key | Load a compare exchange value into the context of the script using its key |
 | **getMetadata** | Document | Returns the document's metadata |
 | **id** | Document | Returns the document's ID |
-| **lastModified** |  |  |
-| **startsWith** |  |  |
-| **endsWith** |  |  |
-| **regex** |  |  |
-| **Raven_ExplodeArgs** |  |  |
-| **Raven_Min** |  |  |
-| **Raven_Max** |  |  |
-| **convertJsTimeToTimeSpanString** |  |  |
-| **toStringWithFormat** |  |  |
-| **scalarToRawString** |  |  |
+| **lastModified** | Document | Returns the `DateTime` of the most recent modification made to the given document |
 
 {PANEL/}
 
