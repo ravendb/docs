@@ -1,7 +1,9 @@
 ﻿# A NoSQL Database That Fits in Your Network With Ease
 <small>by <a href="mailto:mor@ravendb.com">Mor Hilai</a></small>  
 
-![RavenDB’s Inter-Database Communication](images/etl-website.jpg)  
+<div class="article-img figure text-center">
+  <img src="images/etl-website.jpg" alt="RavenDB’s Inter-Database Communication" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}  
 

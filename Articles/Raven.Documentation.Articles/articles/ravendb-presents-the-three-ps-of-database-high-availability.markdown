@@ -1,7 +1,9 @@
 # RavenDB Presents the Three Ps of Database High Availability
 <small>How RavenDB Proliferates, Preserves, and Perpetuates your Data</small>
 
-![RavenDB Presents The Three Ps of Database High Availability](images/ravendb-presents-the-three-ps-of-database-high-availability-main.jpg)
+<div class="article-img figure text-center">
+  <img src="images/ravendb-presents-the-three-ps-of-database-high-availability-main.jpg" alt="RavenDB Presents The Three Ps of Database High Availability" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

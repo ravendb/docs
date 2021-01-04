@@ -1,7 +1,9 @@
 # Graphs, Counters, Revisions and More: A RavenDB 4.2 Review
 <small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
-![Graphs, Counters, Revisions and More: A RavenDB 4.2 Review](images/ravendb-42-review-graphs-counters-revisions-and-more.jpg)
+<div class="article-img figure text-center">
+  <img src="images/ravendb-42-review-graphs-counters-revisions-and-more.jpg" alt="Graphs, Counters, Revisions and More: A RavenDB 4.2 Review" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

@@ -1,6 +1,8 @@
 <h1 class="padding-bottom-sm">A Grown-Up Database for Startups</h1>
 
-![A grown-up database for startups needs minimal supervision to do its task. Developers can put more time and resources bringing their application to production.](images/a-grown-up-database-for-startups.jpg)
+<div class="article-img figure text-center">
+  <img src="images/a-grown-up-database-for-startups.jpg" alt="A grown-up database for startups needs minimal supervision to do its task. Developers can put more time and resources bringing their application to production." class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 
@@ -28,7 +30,7 @@ The right database is designed to make the process of managing data so self-guid
 Here are 11 Ways a Grown-up Database for Startups proves itself by minimizing diversion from your app while maximizing the value it is designed to deliver:
 
 <h4 class="margin-top-sm">1. The Database must be Schemaless</h4>
-<hr style="border-color:rgba(34,37,43,.15);">
+<hr>
 
 Right when you know the least about how your application will work in the real-world, relational databases and many document databases demand you label your data.
 
@@ -43,12 +45,12 @@ Just state your labels in a document and press start. If you have to add labels,
 One of our startup clients said that it took them six months to get to market instead of the twelve months they anticipated had they needed a schema.
 
 <h4 class="margin-top-sm">2. You Need Automatic Indexes</h4>
-<hr style="border-color:rgba(34,37,43,.15);">
+<hr>
 
 Indexes can take a long time to develop. Automatic indexing is where your database takes this task off your shoulders and does it for you. For every query, the right NoSQL solution will create its own index. If the index is already there, it will use it. If an already existing index is almost optimal, the database will update the index before executing the query.
 
 <h4 class="margin-top-sm">3. ACID Transactions are a Bare Minimum</h4>
-<hr style="border-color:rgba(34,37,43,.15);">
+<hr>
 
 The most fragile part of a startup, aside from the 1.0 version of your project, is your reputation. The worst type of disaster is when it isn't your fault.
 
@@ -63,7 +65,7 @@ ACID data consistency cannot cost you or your customers in performance. A good o
 </div>
 
 <h4 class="margin-top-sm">4. All the Moving Parts are in One Place</h4>
-<hr style="border-color:rgba(34,37,43,.15);">
+<hr>
 
 Full-Text Search. MapReduce Aggregations. A fully loaded UI. Automatic Caching. All of these can cost you in complexity if you have to add them on through external programs. Diverting time on these issues shouldn't be necessary. The right database system has all of this in the box the moment you open it up.
 

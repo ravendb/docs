@@ -1,7 +1,9 @@
 <h1>The Best Database For Startups Used by Battle Crate</h1>
 <small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
-![ACID transactions that just work, automatic indexes, and a self-sustaining system to let you focus more on your product makes RavenDB the database for startups.](images/battle-crate-uses-ravendb-to-become-the-aws-of-gaming.jpg)
+<div class="article-img figure text-center">
+  <img src="images/battle-crate-uses-ravendb-to-become-the-aws-of-gaming.jpg" alt="ACID transactions that just work, automatic indexes, and a self-sustaining system to let you focus more on your product makes RavenDB the database for startups." class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

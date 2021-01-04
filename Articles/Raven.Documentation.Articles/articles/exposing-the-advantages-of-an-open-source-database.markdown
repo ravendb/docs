@@ -1,7 +1,9 @@
 # An Open Source Database - Exposing the Advantages
 <small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
-![Exposing the Advantages of an Open Source Database](images/exposing-the-advantages-of-an-open-source-database.jpg)
+<div class="article-img figure text-center">
+  <img src="images/exposing-the-advantages-of-an-open-source-database.jpg" alt="Exposing the Advantages of an Open Source Database" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

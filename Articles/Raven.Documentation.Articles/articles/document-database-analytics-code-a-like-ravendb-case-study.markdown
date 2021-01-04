@@ -1,7 +1,9 @@
 # Codealike: Using RavenDB for Developer Analytics
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
-![Codealike: Using RavenDB for Developer Analytics](images/document-database-analytics-code-a-like-ravendb-case-study.jpg)
+<div class="article-img figure text-center">
+  <img src="images/document-database-analytics-code-a-like-ravendb-case-study.jpg" alt="Codealike: Using RavenDB for Developer Analytics" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

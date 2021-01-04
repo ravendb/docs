@@ -1,7 +1,9 @@
 # ACID Transactions in NoSQL? RavenDB vs MongoDB
 <small>by <a href="mailto:mor@ravendb.net">Mor Hilai</a></small>
 
-![ACID Transactions in NoSQL? RavenDB vs MongoDB](images/acid-transactions-in-nosql-ravendb-vs-mongodb.jpg)
+<div class="article-img figure text-center">
+  <img src="images/acid-transactions-in-nosql-ravendb-vs-mongodb.jpg" alt="ACID Transactions in NoSQL? RavenDB vs MongoDB" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

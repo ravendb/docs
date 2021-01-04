@@ -1,7 +1,9 @@
 # The Best Document Database Got Better: RavenDB 4’s 21 Improvements
 <small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
-![The Best Document Database Got Better: RavenDB 4’s 21 Improvements](images/21-improvements-to-our-nosql-document-database.jpg)
+<div class="article-img figure text-center">
+  <img src="images/21-improvements-to-our-nosql-document-database.jpg" alt="The Best Document Database Got Better: RavenDB 4’s 21 Improvements" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

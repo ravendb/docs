@@ -1,7 +1,9 @@
 # RavenDB 4.0 Passes Intense Security Check
 <small>by <a href="https://www.linkedin.com/in/ravendb/" rel="nofollow">Oren Eini</a></small>
 
-![RavenDB 4.0 Passes Intense Security Check](images/ravendb40-passes-intense-security-check.png)
+<div class="article-img figure text-center">
+  <img src="images/ravendb40-passes-intense-security-check.png" alt="RavenDB 4.0 Passes Intense Security Check" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

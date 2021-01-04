@@ -1,7 +1,9 @@
 # New Cloud Features that Make your Life Easier
 <small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
-![New Cloud Features that Make your Life Easier](images/new-ravendb-cloud-features-that-make-your-saas-easier.jpg)
+<div class="article-img figure text-center">
+  <img src="images/new-ravendb-cloud-features-that-make-your-saas-easier.jpg" alt="New Cloud Features that Make your Life Easier" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

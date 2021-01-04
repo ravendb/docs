@@ -1,7 +1,9 @@
 # A NoSQL Database in Easy Mode
 <small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
-![Integration with Relational Databases](images/connecting-ravendb-nosql-database-to-your-application.jpg)
+<div class="article-img figure text-center">
+  <img src="images/connecting-ravendb-nosql-database-to-your-application.jpg" alt="Integration with Relational Databases" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

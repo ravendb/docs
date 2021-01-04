@@ -1,7 +1,9 @@
 # NoSQL Data Retention and Rollups
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a></small>
 
-![Track data in small time intervals while commanding data rollup to larger aggregates and dictating data retention policy using RavenDB Time Series."](images/rollup-and-data-retention-in-ravendb-time-series.jpg)
+<div class="article-img figure text-center">
+  <img src="images/rollup-and-data-retention-in-ravendb-time-series.jpg" alt="Track data in small time intervals while commanding data rollup to larger aggregates and dictating data retention policy using RavenDB Time Series." class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

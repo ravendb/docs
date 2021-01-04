@@ -1,7 +1,9 @@
 # .NET Rocks with Kamran Ayub Talking about RavenDB V4
 <small>by .NET Rocks with Kamran Ayub</a></small>
 
-![.NET Rocks with Kamran Ayub Talking about RavenDB V4](images/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg)
+<div class="article-img figure text-center">
+  <img src="images/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg" alt=".NET Rocks with Kamran Ayub Talking about RavenDB V4" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

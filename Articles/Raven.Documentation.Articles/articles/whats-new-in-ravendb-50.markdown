@@ -1,7 +1,9 @@
 # What's New in RavenDB 5.0?
 <small>by Kamran Ayub</small>
 
-![RavenDB 5.0 New Features](images/whats-new-in-ravendb-50.jpg)
+<div class="article-img figure text-center">
+  <img src="images/whats-new-in-ravendb-50.jpg" alt="RavenDB 5.0 New Features" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

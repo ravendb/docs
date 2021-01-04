@@ -1,6 +1,8 @@
 # Why are so Many NoSQL Databases Getting Hacked?
 
-![Why are so Many NoSQL Databases Getting Hacked?](images/broken_db.jpg)
+<div class="article-img figure text-center">
+  <img src="images/broken_db.jpg" alt="Why are so Many NoSQL Databases Getting Hacked?" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

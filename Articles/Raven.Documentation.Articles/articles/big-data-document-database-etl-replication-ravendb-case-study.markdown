@@ -1,6 +1,8 @@
 # RavenDB Web Analytics Use Case: Big Data Creates Big Revenue
 
-![RavenDB Web Analytics Use Case: Big Data Creates Big Revenue](images/big-data-document-database-etl-replication-ravendb-case-study.jpg)
+<div class="article-img figure text-center">
+  <img src="images/big-data-document-database-etl-replication-ravendb-case-study.jpg" alt="RavenDB Web Analytics Use Case: Big Data Creates Big Revenue" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

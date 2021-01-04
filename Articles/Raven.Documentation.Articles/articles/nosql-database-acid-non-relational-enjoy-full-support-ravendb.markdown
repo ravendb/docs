@@ -1,7 +1,9 @@
 # Enjoy Our Full Support
 <small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
-![Enjoy Our Full Support](images/nosql-database-acid-non-relational-enjoy-full-support-ravendb.jpg)
+<div class="article-img figure text-center">
+  <img src="images/nosql-database-acid-non-relational-enjoy-full-support-ravendb.jpg" alt="Enjoy Our Full Support" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

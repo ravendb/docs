@@ -1,7 +1,9 @@
 # NoSQL ACID Database for Sparkling Logic
 <small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
-![Document database indexing in RavenDB compared to MongoDB, another NoSQL document database, as well as the relational database, PostgreSQL. Indexing document properties.](images/how-sparkling-logic-uses-ravendb-nosql-document-database.jpg)
+<div class="article-img figure text-center">
+  <img src="images/how-sparkling-logic-uses-ravendb-nosql-document-database.jpg" alt="Document database indexing in RavenDB compared to MongoDB, another NoSQL document database, as well as the relational database, PostgreSQL. Indexing document properties." class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}
 

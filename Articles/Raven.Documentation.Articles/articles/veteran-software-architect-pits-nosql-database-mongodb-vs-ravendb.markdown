@@ -1,7 +1,9 @@
 # Finding The Best NoSQL Database for Your Project
 <small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
 
-![Finding The Best NoSQL Database for Your Project](images/veteran-software-architect-pits-nosql-database-mongodb-vs-ravendb.jpg)
+<div class="article-img figure text-center">
+  <img src="images/veteran-software-architect-pits-nosql-database-mongodb-vs-ravendb.jpg" alt="Finding The Best NoSQL Database for Your Project" class="img-responsive img-thumbnail">
+</div>
 
 {SOCIAL-MEDIA-LIKE/}<br/>
 
