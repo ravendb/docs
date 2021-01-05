@@ -53,55 +53,9 @@ Our diagram has some resemblance with the classic Onion diagram:
 
 <p>Sure thing, the <em>YABT</em> follows the <a href="https://en.wikipedia.org/wiki/SOLID" target="_blank" rel="nofollow">SOLID principles</a>. It's by default.</p>
 
-### Planned articles
-<hr>
-
-<ul>
-    <li>
-        <a href="https://ravendb.net/articles/nosql-data-model-through-ddd-prism">"NoSQL Data Model through the DDD prism"</a><br/>
-        <span class="text-muted">Leveraging the <em>Domain-driven Design</em> (DDD) to define the problem area (<em>Bounded context</em>) of the project. Designing a potential relational model and the NoSQL model utilised in the <em>YABT</em> (with aggregates, entities, value objects, etc.).</span>
-    </li>
-    <li class="margin-top-xs">
-        <a href="https://ravendb.net/articles/hidden-side-of-document-ids-in-ravendb">"Hidden side of document ID's in RavenDB"</a><br/>
-        <span class="text-muted">A <em>RavenDB</em> <a href="https://ravendb.net/docs/article-page/latest/csharp/server/kb/document-identifier-generation">document identifier</a> is a string that is globally unique in the scope of the database. What document ID generation strategy to choose? The article covers pros and cons of some strategies and ways to mitigate the cons.</span>
-    </li>
-    <li class="margin-top-xs">
-        <a href="https://ravendb.net/articles/dynamic-fields-for-indexing">"Power of Dynamic fields for indexing dictionaries and nested collections in RavenDB"</a><br/>
-        <span class="text-muted">Leveraging the <a href="https://ravendb.net/docs/article-page/latest/csharp/indexes/using-dynamic-fields">Dynamic fields</a> in the index, we'll fetch backlog items to build <em>"My recent tickets"</em> for the current user (ones modified by the user fetching the right timestamp in the history of modifications) and manage a collection of custom fields with searching capability.</span>
-    </li>
-    <li class="margin-top-xs">
-        <a href="https://ravendb.net/articles/entity-relationships-in-nosql">"One-to-many, many-to-many entity relationships in NoSQL"</a><br/>
-        <span class="text-muted">How <em>'one-to-many'</em> and <em>'many-to-many'</em> relationships can be implemented in RavenDB. Consider examples of tickets referring users (have just ID or a reference object), implications of having comments as an entity in the Ticket aggregate, etc.</span>
-    </li>
-    <li class="margin-top-xs">
-        "Multi-tenanted databases with RavenDB"<br/>
-        <span class="text-muted">Managing multiple clients in one DB and multiple projects for one client.</span>
-    </li>
-    <li class="margin-top-xs">
-        "Building SQL-NoSQL integration SQL ETL Generic"<br/>
-        <span class="text-muted">Leveraging <a href="https://ravendb.net/docs/article-page/latest/csharp/server/ongoing-tasks/etl/sql">SQL ETL</a> for integration with SQL databases to use traditional OLAP/OLTP tools or mitigate skepticism of architects on using a NoSQL DB.</span>
-    </li>
-    <li class="margin-top-xs">
-        "Full-text search. Abandon ElasticSearch, embrace RavenDB"<br/>
-        <span class="text-muted">Finding text in the summary, comments and other fields of backlog items. Will talk about difficulties of searching in user names. Will leverage <a href="https://ravendb.net/docs/article-page/latest/Csharp/indexes/using-analyzers">analyzers</a> for different types of fields.</span>
-    </li>
-    <li class="margin-top-xs">
-        "Graph queries in RavenDB"<br/>
-        <span class="text-muted">Issues can be linked to each other (marked as <em>'related'</em>, <em>'blocker'</em>, <em>'caused by'</em>, etc.). Using <a href="https://ravendb.net/docs/article-page/latest/csharp/indexes/querying/graph/graph-queries-overview">Graph Querying</a> we'll show all linked tickets, developers assigned to a chain of tickets, etc.</span>
-    </li>
-    <li class="margin-top-xs">
-        "Quick Aggregation via Faceted Search"<br/>
-        <span class="text-muted">Calculate estimates on backlog items with using <a href="https://ravendb.net/docs/article-page/latest/csharp/indexes/querying/faceted-search">Faceted Search</a>. Show how many backlog items and total of points/hours are in the sprint (remains in the current, total in the next), backlog items marked as <em>'Done'</em> by the assigned user, counts per each tag/area, etc.</span>
-    </li>
-    <li class="margin-top-xs">
-        "Dive in Map-reduce indexes of RavenDB"<br/>
-        <span class="text-muted">Using <a href="https://ravendb.net/docs/article-page/latest/csharp/studio/database/indexes/create-map-reduce-index">Map-Reduce Index</a> we'll build recent user's activity – backlog items edited by the user with details of the performed action.</span>
-    </li>
-</ul>
-
 <p class="margin-top-xs">Check out the <a href="https://github.com/ravendb/samples-yabt" target="_blank" rel="nofollow">source code</a> of the <em>YABT</em>. Let us know what you think. Stay tuned!</p>
 
-<h4 class="margin-top">Read more articles in this series</h4>
+<a href="https://ravendb.net/news/use-cases/yabt-series"><h4 class="margin-top">Read more articles in this series</h4></a>
 <div class="series-nav">
     <div class="nav-btn disabled margin-bottom-xs">
         <small>‹ Previous in the series</small>
