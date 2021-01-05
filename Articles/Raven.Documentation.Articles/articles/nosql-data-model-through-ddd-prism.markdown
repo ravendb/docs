@@ -151,7 +151,7 @@ That's it.
 
 <p>Check out the full source code at our repository on GitHub - <a href="https://github.com/ravendb/samples-yabt" target="_blank" rel="nofollow">github.com/ravendb/samples-yabt</a> and let us know what you think. Stay tuned for the next articles in the <em>YABT</em> series.</p>
 
-<h4 class="margin-top">Read more articles in this series</h4>
+<a href="https://ravendb.net/news/use-cases/yabt-series"><h4 class="margin-top">Read more articles in this series</h4></a>
 <div class="series-nav">
     <a href="https://ravendb.net/articles/building-application-with-net-core-and-ravendb-nosql-database">
         <div class="nav-btn margin-bottom-xs">
