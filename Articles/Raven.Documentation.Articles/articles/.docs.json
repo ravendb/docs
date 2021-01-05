@@ -2180,11 +2180,11 @@
         "subcategories": "nosql-database"
     },
     "SeoMetaProperties": {
-        "description": "Learn about the options for entity relationships in NoSQL in general and RavenDB in particular",
+        "description": "Learn about the options for entity relationships in NoSQL in general and RavenDB in particular.",
         "og:site_name": "RavenDB",
         "og:type": "website",
         "og:title": "Entity relationships in NoSQL – YABT | RavenDB",
-        "og:description": "Learn about the options for entity relationships in NoSQL in general and RavenDB in particular",
+        "og:description": "Learn about the options for entity relationships in NoSQL in general and RavenDB in particular.",
         "og:url": "https://ravendb.net/articles/entity-relationships-in-nosql",
         "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/entity-relationships-in-nosql&fileName=entity-relationships-in-nosql.jpg",
         "og:image:width": "280",
@@ -2193,8 +2193,37 @@
         "twitter:creator": "@RavenDB",
         "twitter:site": "@RavenDB",
         "twitter:title": "Entity relationships in NoSQL – YABT | RavenDB",
-        "twitter:description": "Learn about the options for entity relationships in NoSQL in general and RavenDB in particular",
+        "twitter:description": "Learn about the options for entity relationships in NoSQL in general and RavenDB in particular.",
         "twitter:url": "https://ravendb.net/articles/entity-relationships-in-nosql"
+    }
+},
+{
+    "Path": "legal-discovery-platform-turns-to-document-oriented-database-for-fast-case-preparation.markdown",
+    "Name": "Document-oriented Database to Streamline Legal Process",
+    "Mappings": [],
+    "Metadata": {
+        "title": "Document-oriented Database to Streamline Legal Process",
+        "likeSection": "yes",
+        "url": "legal-discovery-platform-turns-to-document-oriented-database-for-fast-case-preparation",
+        "publishedAt": "2021-01-05",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "Legal Discovery platforms are turning to document oriented databases like RavenDB to prepare case files fast by indexing and searching Microsoft Word documents.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "Document-oriented Database to Streamline Legal Process",
+        "og:description": "Legal Discovery platforms are turning to document oriented databases like RavenDB to prepare case files fast by indexing and searching Microsoft Word documents.",
+        "og:url": "https://ravendb.net/articles/legal-discovery-platform-turns-to-document-oriented-database-for-fast-case-preparation",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/legal-discovery-platform-turns-to-document-oriented-database-for-fast-case-preparation&fileName=legal-discovery-platform-turns-to-document-oriented-database-for-fast-case-preparation.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "Document-oriented Database to Streamline Legal Process",
+        "twitter:description": "Legal Discovery platforms are turning to document oriented databases like RavenDB to prepare case files fast by indexing and searching Microsoft Word documents.",
+        "twitter:url": "https://ravendb.net/articles/legal-discovery-platform-turns-to-document-oriented-database-for-fast-case-preparation"
     }
 }
 ]
