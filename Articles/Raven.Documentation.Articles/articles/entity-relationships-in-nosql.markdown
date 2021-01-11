@@ -1,4 +1,5 @@
-<p><small class="series-name">Yet Another Bug Tracker: Article #4</small></p>
+<div class="series-top-nav"><small class="series-name">Yet Another Bug Tracker: Article #4</small>
+<a href="https://ravendb.net/news/use-cases/yabt-series"><small class="margin-top">Read more articles in this series ›</small></a></div>
 <h1>Entity Relationships in NoSQL (one-to-many, many-to-many)</h1>
 <small>by <a href="https://alex-klaus.com" target="_blank" rel="nofollow">Alex Klaus</a></small>
 
@@ -21,7 +22,7 @@ We know how to maintain a relationship between two tables in SQL. Normalise. Add
 
 Designing aggregates is a huge topic and a previous article of the *YABT* series "[NoSQL Data Model through the DDD prism](https://ravendb.net/articles/nosql-data-model-through-ddd-prism)" might be a good start. But here we focus on organising relationships between aggregates.
 
-As a starting point, let's take a "*one-to-many*" relationship between 3 entities of the *YABT* project: `Backlog Item`, `Comment` and `User`. The traditional relational diagram for them would look like this:
+As a starting point, let's take an "*one-to-many*" relationship between 3 entities of the *YABT* project: `Backlog Item`, `Comment` and `User`. The traditional relational diagram for them would look like this:
 
 <div class="margin-top-sm margin-bottom-sm">
     <img src="images/yabt4/1.png" class="img-responsive m-0-auto" alt="Relational diagram of Backlog Item, Comment and User"/>
@@ -82,12 +83,12 @@ So a `BacklogItem` record with nested comments would look like:
         "title": "Malfunction at the Springfield Nuclear Power Plant",
         "comments": [
             {
-            "timestamp": "2020-01-01T10:15:23",
-            "message": "Homer, what have you done?"
+                "timestamp": "2020-01-01T10:15:23",
+                "message": "Homer, what have you done?"
             },
             {
-            "timestamp": "2020-01-01T11:05:10",
-            "message": "Nothing, just left my donuts on the big red button."
+                "timestamp": "2020-01-01T11:05:10",
+                "message": "Nothing, just left my donuts on the big red button."
             }
         ]
     }
@@ -124,7 +125,7 @@ However, *RavenDB* has a trick up its sleeves (or wings) – storing often used 
 
 ##### How it could be used in YABT
 
-For our bug-tracker, we often want to show user names along with other records. For example, a list of backlog items might have 3 columns for referenced to users. Hmm... 3 references would be a stretch but bear with me.
+For our bug-tracker, we often want to show user names along with other records. For example, a list of backlog items might have 3 columns for referenced users. Hmm... 3 references would be a stretch but bear with me.
 
 <div class="margin-top-sm margin-bottom-sm">
     <img src="images/yabt4/3.png" class="img-responsive m-0-auto" alt="Backlog Items"/>
@@ -136,22 +137,22 @@ For an index like this:
 
 <pre>
     <code class="language-csharp" style="background:transparent;">
-    public class BacklogItems_ForList : AbstractIndexCreationTask<BacklogItem>
+    public class BacklogItems_ForList : AbstractIndexCreationTask&lt;BacklogItem&gt;
     {
         public BacklogItems_ForLists()
         {
             Map = tickets => 
                     from ticket in tickets
-                    let assignee   = LoadDocument<User>(ticket.AssigneeId)
-                    let modifiedBy = LoadDocument<User>(ticket.ModifiedById)
-                    let createdBy  = LoadDocument<User>(ticket.CreatedById)
+                    let assignee   = LoadDocument&lt;User&gt;(ticket.AssigneeId)
+                    let modifiedBy = LoadDocument&lt;User&gt;(ticket.ModifiedById)
+                    let createdBy  = LoadDocument&lt;User&gt;(ticket.CreatedById)
                     select new
                     {
-                    Id = ticket.Id,
-                    Title = ticket.Title,
-                    AssigneeName = assignee.NameWithInitials,
-                    CreatedByName = createdBy.NameWithInitials,
-                    ModifiedByName = modifiedBy.NameWithInitials,
+                        Id = ticket.Id,
+                        Title = ticket.Title,
+                        AssigneeName = assignee.NameWithInitials,
+                        CreatedByName = createdBy.NameWithInitials,
+                        ModifiedByName = modifiedBy.NameWithInitials,
                     };
             Stores.Add(x => x.AssigneeName, FieldStorage.Yes);   // Stores names of 'Assignee'
             Stores.Add(x => x.CreatedByName, FieldStorage.Yes);  // Stores names of 'CreatedBy'
@@ -216,7 +217,7 @@ To optimise the query for a list of backlog items, we duplicate user's names in 
     <img src="images/yabt4/5.png" class="img-responsive m-0-auto" alt="Duplicating fields"/>
 </div>
 
-It's clear a win on the read side. But what about keeping the duplicated values in sync with the corresponding `User` records?
+It's a clear win on the read side. But what about keeping the duplicated values in sync with the corresponding `User` records?
 
 ##### Propagating the change to other collections
 
@@ -241,7 +242,7 @@ In our example it will be updated by a static index:
 
 <pre>
     <code class="language-csharp" style="background:transparent;">
-    public class BacklogItems_ForList : AbstractIndexCreationTask<BacklogItem>
+    public class BacklogItems_ForList : AbstractIndexCreationTask&lt;BacklogItem&gt;
     {
         public BacklogItems_ForList()
         {
@@ -273,17 +274,17 @@ the operation will look like
         .Operations
         .Send(new PatchByQueryOperation(new IndexQuery
         {
-        Query = @"from index 'BacklogItems/ForList' as i
+            Query = @"from index 'BacklogItems/ForList' as i
                     where i.AssignedUserId == $userId
                     update
                     {
                     i.Assignee = $userRef;
                     }",
-        QueryParameters = new Parameters
-        {
-            { "userId", newUserReference.Id },
-            { "userRef", newUserReference },
-        }
+            QueryParameters = new Parameters
+            {
+                { "userId", newUserReference.Id },
+                { "userRef", newUserReference },
+            }
         })
     );
     </code>
@@ -293,7 +294,7 @@ the operation will look like
 
 <ul>
     <li class="margin-top-xs">
-        RavenDB doesn't do concurrency checks during the operation so if during the run a backlog item has changed the assignee, it will be overwritten.<br/>
+        RavenDB doesn't do concurrency checks during the operation so if during the run a backlog item has changed the assignee, then the its ID and name might be overwritten.<br/>
         <p>It can be mitigated by checking additional conditions before modifying a record (e.g. a timestamp of last modification).</p>
     </li>
     <li class="margin-top-xs">
@@ -302,7 +303,7 @@ the operation will look like
         <ul>
             <li class="margin-top-xs">wrapping the fragile logic in a <code>try/catch</code> if you can handle errors gracefully;</li>
             <li class="margin-top-xs">add a good test coverage to boost your confidence in the code;</li>
-            <li class="margin-top-xs">if the above is not enough, check out <em>Data subscriptions</em> mentioned below.</li>
+            <li class="margin-top-xs">if the above is not enough, check the <em>Data subscriptions</em> mentioned below.</li>
         </ul>
     </li>
 </ul>
@@ -336,7 +337,7 @@ and an index
 
 <pre>
     <code class="language-csharp" style="background:transparent;">
-    public class BacklogItems_ForList : AbstractIndexCreationTask<BacklogItem>
+    public class BacklogItems_ForList : AbstractIndexCreationTask&lt;BacklogItem&gt;
     {
         public BacklogItems_ForList()
         {
@@ -356,7 +357,7 @@ So we can query backlog items modified by a `userId`:
 
 <pre>
     <code class="language-csharp" style="background:transparent;">
-    from b in session.Query<BacklogItems_ForList>
+    from b in session.Query&lt;BacklogItems_ForList&gt;
     where b.ModifiedBy.Contains(userId)
     select new { b.Id, b.Title }
     </code>

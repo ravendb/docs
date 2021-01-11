@@ -1,4 +1,5 @@
-<p><small class="series-name">Yet Another Bug Tracker: Article #3</small></p>
+<div class="series-top-nav"><small class="series-name">Yet Another Bug Tracker: Article #3</small>
+<a href="https://ravendb.net/news/use-cases/yabt-series"><small class="margin-top">Read more articles in this series ›</small></a></div>
 <h1>Dynamic Fields for Indexing</h1>
 <small>by <a href="https://alex-klaus.com" target="_blank" rel="nofollow">Alex Klaus</a></small>
 
@@ -115,7 +116,7 @@ Taking it one level up from `JSON` to `C#` we get `RavenDB` models for persistin
         public string Title { get; set; }
 
         // List of all users who/when modified the ticket.
-        public IList<ChangedByUserReference> ModifiedBy { get; } = new List<ChangedByUserReference>();
+        public IList&lt;ChangedByUserReference&gt; ModifiedBy { get; } = new List&lt;ChangedByUserReference&gt;();
 
         // Resolve Who/when created & updated the ticket, no need to persist it in the DB
         [JsonIgnore]
@@ -124,7 +125,7 @@ Taking it one level up from `JSON` to `C#` we get `RavenDB` models for persistin
         public ChangedByUserReference LastUpdated => ModifiedBy?.OrderBy(m => m.Timestamp).LastOrDefault();
 
         // Custom properties of various data types. Stored as { custom field ID, value }
-        public IDictionary<string, object> CustomFields { get; set; }
+        public IDictionary&lt;string, object&gt; CustomFields { get; set; }
     }
 
     public class ChangedByUserReference
@@ -255,11 +256,11 @@ Here is a full example:
 
 <pre>
     <code class="language-csharp" style="background:transparent;">
-    public class BacklogItems_ForList : AbstractIndexCreationTask<BacklogItem>
+    public class BacklogItems_ForList : AbstractIndexCreationTask&lt;BacklogItem&gt;
     {
         public class Result
         {
-            public IDictionary<string, DateTime> ModifiedByUser { get; set; }
+            public IDictionary&lt;string, DateTime&gt; ModifiedByUser { get; set; }
         }
         public BacklogItems_ForList()
         {
@@ -283,7 +284,7 @@ Now we can get all the tickets modified by a user ID and sort in descending orde
 <pre>
     <code class="language-csharp" style="background:transparent;">
     var userKey = userId.Replace("/", "").ToLower();  // For 'users/1-A' get 'users1-A'
-    s.Query<Result, BacklogItems_ForList>()
+    s.Query&lt;Result, BacklogItems_ForList&gt;()
      .Where(t => t.ModifiedByUser[userKey] > DateTime.MinValue)
      .OrderByDescending(t => t.ModifiedByUser[userKey])
     </code>
@@ -313,11 +314,11 @@ So the index would require resolving `FieldType` of the custom field and running
 
 <pre>
     <code class="language-csharp" style="background:transparent;">
-    public class BacklogItems_ForList : AbstractIndexCreationTask<BacklogItem>
+    public class BacklogItems_ForList : AbstractIndexCreationTask&lt;BacklogItem&gt;
     {
         public class Result
         {
-            public IDictionary<string, string> CustomFields { get; set; }
+            public IDictionary&lt;string, string&gt; CustomFields { get; set; }
         }
         public BacklogItems_ForList()
         {
@@ -326,7 +327,7 @@ So the index would require resolving `FieldType` of the custom field and running
                 select new
                 {
                     __ = from x in ticket.CustomFields
-                            let fieldType = LoadDocument<CustomField.CustomField>(x.Key).FieldType
+                            let fieldType = LoadDocument&lt;CustomField.CustomField&gt;(x.Key).FieldType
                             let key = $"{nameof(Result.CustomFields)}_{x.Key.Replace("/", "").ToLower()}"
                             select 
                                 (fieldType == CustomFieldType.Text)
@@ -358,7 +359,7 @@ And here how we can query against that index:
     <pre>
         <code class="language-csharp" style="background:transparent;">
     var fieldKey = customFieldId.Replace("/", "").ToLower();  // For 'CustomFields/1-A' get 'customfields1-A'
-    s.Query<Result, BacklogItems_ForList>()
+    s.Query&lt;Result, BacklogItems_ForList&gt;()
     .Search(t => t.CustomFields[fieldKey], "Burns")</code>
     </pre>
     </li>
@@ -374,7 +375,7 @@ And here how we can query against that index:
     <pre>
         <code class="language-csharp" style="background:transparent;">
     var fieldKey = customFieldId.Replace("/", "").ToLower();  // For 'CustomFields/2-A' get 'customfields2-A'
-    s.Query<Result, BacklogItems_ForList>()
+    s.Query&lt;Result, BacklogItems_ForList&gt;()
     .Where(t => t.CustomFields[fieldKey] > 1_000_000)</code>
     </pre>
     A similar approach would be used for querying on user IDs.

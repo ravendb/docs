@@ -1,4 +1,5 @@
-<p><small class="series-name">Yet Another Bug Tracker: Article #2</small></p>
+<div class="series-top-nav"><small class="series-name">Yet Another Bug Tracker: Article #2</small>
+<a href="https://ravendb.net/news/use-cases/yabt-series"><small class="margin-top">Read more articles in this series ›</small></a></div>
 <h1>Hidden side of document IDs in RavenDB</h1>
 <small>by <a href="https://alex-klaus.com" target="_blank" rel="nofollow">Alex Klaus</a></small>
 
@@ -193,13 +194,13 @@ To make the solution a bit niter and sanitise multiple properties at once we add
 
 <pre>
     <code class="language-csharp" style="background:transparent">
-    static void RemoveEntityPrefixFromIds<T, TReference>(this T target, params Expression<Func<T, TReference>>[] referenceMemberLambdas) where TReference : IEntity
+    static void RemoveEntityPrefixFromIds&lt;T, TReference&gt;(this T target, params Expression&lt;Func&lt;T, TReference&gt;&gt;[] referenceMemberLambdas) where TReference : IEntity
     {
         foreach (var referenceMember in referenceMemberLambdas)
             target.RemoveEntityPrefixFromIds(referenceMember);
     }
 
-    static void RemoveEntityPrefixFromIds<T, TReference>(this T target, Expression<Func<T, TReference>> referenceMemberLambda) where TReference : IEntity
+    static void RemoveEntityPrefixFromIds&lt;T, TReference&gt;(this T target, Expression&lt;Func&lt;T, TReference&gt;&gt; referenceMemberLambda) where TReference : IEntity
     {
         if (   !(referenceMemberLambda.Body is MemberExpression referenceMemberSelectorExpression)
             || !(referenceMemberSelectorExpression.Member is PropertyInfo referenceProperty))

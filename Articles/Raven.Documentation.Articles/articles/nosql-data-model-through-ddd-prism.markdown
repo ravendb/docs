@@ -1,4 +1,5 @@
-<p><small class="series-name">Yet Another Bug Tracker: Article #1</small></p>
+<div class="series-top-nav"><small class="series-name">Yet Another Bug Tracker: Article #1</small>
+<a href="https://ravendb.net/news/use-cases/yabt-series"><small class="margin-top">Read more articles in this series ›</small></a></div>
 <h1>NoSQL Data Model Through the DDD Prism</h1>
 <small>by <a href="https://alex-klaus.com" target="_blank" rel="nofollow">Alex Klaus</a></small>
 
