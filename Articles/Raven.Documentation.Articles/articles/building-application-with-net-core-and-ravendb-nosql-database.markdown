@@ -1,4 +1,5 @@
-<p><small class="series-name">Yet Another Bug Tracker: Start of the Series</small></p>
+<div class="series-top-nav"><small class="series-name">Yet Another Bug Tracker: Start of the Series</small>
+<a href="https://ravendb.net/news/use-cases/yabt-series"><small class="margin-top">Read more articles in this series ›</small></a></div>
 <h1>Building an enterprise application with the .NET Core and RavenDB NoSQL database</h1>
 <small>by <a href="https://alex-klaus.com" target="_blank" rel="nofollow">Alex Klaus</a></small>
 
