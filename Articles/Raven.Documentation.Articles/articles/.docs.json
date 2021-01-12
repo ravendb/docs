@@ -1937,13 +1937,13 @@
     }
 },
 {
-    "Path": "battle-crate-uses-ravendb-to-become-the-aws-of-gaming.markdown",
-    "Name": "The Best Database for Startups Used by Battle Crate",
+    "Path": "serverflex-uses-ravendb-to-become-the-aws-of-gaming.markdown",
+    "Name": "The Best Database for Startups Used by ServerFlex",
     "Mappings": [],
     "Metadata": {
         "title": "Database for Startups | The Best Database for Startups with ACID Transactions",
         "likeSection": "yes",
-        "url": "battle-crate-uses-ravendb-to-become-the-aws-of-gaming",
+        "url": "serverflex-uses-ravendb-to-become-the-aws-of-gaming",
         "publishedAt": "2020-09-30",
         "subcategories": "nosql-database"
     },
@@ -1951,18 +1951,18 @@
         "description": "ACID transactions that just work, automatic indexes, and a self-sustaining system to let you focus more on your product makes RavenDB the best database for startups.",
         "og:site_name": "RavenDB",
         "og:type": "website",
-        "og:title": "Battle Crate Uses RavenDB to become the AWS of Gaming",
+        "og:title": "ServerFlex Uses RavenDB to become the AWS of Gaming",
         "og:description": "ACID transactions that just work, automatic indexes, and a self-sustaining system to let you focus more on your product makes RavenDB the database for startups.",
-        "og:url": "https://ravendb.net/articles/battle-crate-uses-ravendb-to-become-the-aws-of-gaming",
-        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/battle-crate-uses-ravendb-to-become-the-aws-of-gaming&fileName=battle-crate-uses-ravendb-to-become-the-aws-of-gaming.jpg",
+        "og:url": "https://ravendb.net/articles/serverflex-uses-ravendb-to-become-the-aws-of-gaming",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/serverflex-uses-ravendb-to-become-the-aws-of-gaming&fileName=serverflex-uses-ravendb-to-become-the-aws-of-gaming.jpg",
         "og:image:width": "280",
         "og:image:height": "280",
         "twitter:card": "summary_large_image",
         "twitter:creator": "@RavenDB",
         "twitter:site": "@RavenDB",
-        "twitter:title": "Battle Crate Uses RavenDB to become the AWS of Gaming",
+        "twitter:title": "ServerFlex Uses RavenDB to become the AWS of Gaming",
         "twitter:description": "ACID transactions that just work, automatic indexes, and a self-sustaining system to let you focus more on your product makes RavenDB the database for startups.",
-        "twitter:url": "https://ravendb.net/articles/battle-crate-uses-ravendb-to-become-the-aws-of-gaming"
+        "twitter:url": "https://ravendb.net/articles/serverflex-uses-ravendb-to-become-the-aws-of-gaming"
     }
 },
 {
