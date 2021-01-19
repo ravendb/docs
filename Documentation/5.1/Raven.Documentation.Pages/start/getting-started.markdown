@@ -69,7 +69,7 @@ If you are interested in hosting the server on a VM, please refer to
 When you first launch RavenDB, you will see this prompt asking if you'd be willing to 
 anonymously share some Studio usage data with us in order to help us improve RavenDB:  
 
-![Help us improve](images/help-us-improve.png "")
+![NoSQL Database Share Studio Usage](images/help-us-improve.png "Help Us Improve")
 
 Once you respond to this prompt, it should not appear again. However, in some scenarios, 
 such as running RavenDB embedded, or working without browser cookies, the prompt may 

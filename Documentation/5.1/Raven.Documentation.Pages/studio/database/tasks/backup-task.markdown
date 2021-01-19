@@ -41,7 +41,7 @@ to learn more.
 
 {PANEL: Backup List View}
 
-![](images/backup-task-view.png "'Backups' View")
+![NoSQL Database Backup Task View](images/backup-task-view.png "Backups View")
 
 {WARNING: }
 1. Create a **manual backup**, see the creation view [below](../../../studio/database/tasks/backup-task#creating-manual-backups).  
@@ -160,7 +160,7 @@ it will be deleted during the next scheduled backup task.
 
 ### Creating Manual Backups
 
-![](images/manual-backup.png "Manual backup creation")
+![NoSQL Database Manual Backup Creation](images/manual-backup.png "Manual Backup Creation")
 
 Manual backups have only some of the properties of periodic backups. The backup can 
 be _full_ or _snapshot_. The backup can be encrypted or not. The backup must have a 
@@ -178,7 +178,7 @@ be automatically deleted.
 
 {PANEL: Periodic Backup Details}
 
-![](images/backup-task-details.png "'Backups' View")
+![NoSQL Database Backup](images/backup-task-details.png "Backups View")
 
 {INFO: }
 1. **Backup Task Details**:  
