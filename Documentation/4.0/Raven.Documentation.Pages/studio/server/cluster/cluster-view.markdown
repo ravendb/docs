@@ -82,7 +82,7 @@
 
 * **Leader**
   * A Leader is a Member
-  * The Leader is responsible for monitoring the cluster’s health, making sure that decisions making is consistent at the cluster level,  
+  * The Leader is responsible for monitoring the cluster's health, making sure that decisions making is consistent at the cluster level,  
     as long as a majority of the nodes are functioning and can talk to one another. 
     For example, the decision to add a database to a node will be either accepted by the entire cluster (eventually) or fail to register altogether.  
   * The Leader maintains the database topology, which is fetched by the clients as part of their initialization.  
@@ -91,8 +91,8 @@
 * **Watcher**
   * A Watcher is a non-voting node in the cluster that is still fully managed by the cluster.  
   * A Watcher can be assigned databases and work to be done.  
-  * Grow your RavenDB cluster by adding Watchers without suffering from large voting majorities and the latencies they can incur,  
-    as these nodes don’t take part in majority calculations and are only there to watch what’s going on in the cluster.  
+  * Grow your RavenDB cluster by adding Watchers without suffering from large voting majorities and the latencies they can incur, 
+    as these nodes don't take part in majority calculations and are only there to watch what's going on in the cluster. 
     So cluster decisions can be made with a small majority of nodes while the actual size of the cluster can be much _higher_.  
   * Any number of Watchers can be added to handle the workload.  
 
@@ -154,7 +154,7 @@ Operations in RavenDB are usually divided into cluster-wide operations and inter
 
 * Any action/decision that is made at the cluster level and needs a Raft consensus (so that the cluster is always kept consistent).  
 * This decision will either be accepted by the entire cluster or completely fail to register.  
-  Note: An action is accepted by the entire cluster if a majority of the nodes have approved that action - if a majority of the nodes isn't available, we can’t proceed.  
+  Note: An action is accepted by the entire cluster if a majority of the nodes have approved that action - if a majority of the nodes isn't available, we can't proceed.  
 * i.e.:  
   * Creating/deleting/enabling/disabling a database  
   * Creating/deleting/modifying/enabling/disabling an [ongoing task](../../../studio/database/tasks/ongoing-tasks/general-info)  

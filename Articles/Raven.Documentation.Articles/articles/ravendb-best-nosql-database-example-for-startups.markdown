@@ -28,15 +28,15 @@ A NoSQL solution is better suited for your startup. Like the successful entrepre
 
 NoSQL is Schemaless. A schema is the blueprint for your database. It is a list of what items of data you will need, along with the types of data for each item. By nature, a schema is very rigid. If you suddenly decide that one type of data is useless, and you need to swap it for another, the process can be time consuming. 
 
-Schema’s, which are the foundation of every relational database, are very hard to change once they are set up. Once you complete work on a 10 story building, how simple is it to make changes to it’s foundation? 
+Schema's, which are the foundation of every relational database, are very hard to change once they are set up. Once you complete work on a 10 story building, how simple is it to make changes to it's foundation? 
 
-A startup knows the least about it’s business at the beginning. The learning curve is steepest at the initial phases. A database architecture that demands to hear how the story will end before you even write the first chapter limits your flexibility in making creative decisions to the untold challenges you will inevitably face.
+A startup knows the least about it's business at the beginning. The learning curve is steepest at the initial phases. A database architecture that demands to hear how the story will end before you even write the first chapter limits your flexibility in making creative decisions to the untold challenges you will inevitably face.
 
 <img class="floating-left img-responsive" alt="Why a NoSQL Database is the Best Solution for a Startup" src="images/flexibility.jpg" />
 
-That’s not fair, is it? 
+That's not fair, is it? 
 
-A NoSQL database, like RavenDB, doesn’t need a schema. It is based on JSON documents where you can add additional data fields without having to make any fundamental changes. As your business evolves, your database is able to evolve with it. A NoSQL solution makes your database as agile as you need it. 
+A NoSQL database, like RavenDB, doesn't need a schema. It is based on JSON documents where you can add additional data fields without having to make any fundamental changes. As your business evolves, your database is able to evolve with it. A NoSQL solution makes your database as agile as you need it. 
 
 Every startup has at least one <strong>EUREKA</strong> moment. That instant when you realize that if you do it differently, you take a giant leap towards your next goal. The right NoSQL solution will not hold you back. 
 
@@ -64,26 +64,26 @@ Every startup runs a race to the death. It needs to produce results as soon as p
 
 ## Crunching Big Data to Uncover the Right Opportunities
 
-It’s one thing to store half a million visits to your website, it’s another to aggregate the points of data into real metrics that can help you analyze what is happening, and what is the next step?
+It's one thing to store half a million visits to your website, it's another to aggregate the points of data into real metrics that can help you analyze what is happening, and what is the next step?
 Getting the numbers quickly impacts how fast your business can react to a changing situation, or capitalize on a newly discovered opportunity. 
 
 A relational database has to go over all the data points, and make tallies every time you ask for aggregate data. The processing time can be expensive. It can hoard server resources away from other operations. Users can experience a reduction in performance while your queries are running. 
 
-RavenDB uses a dynamic optimization model, constantly working to give you the best results and predicting what you’ll do next and doing the work ahead of time so you don’t have to wait.. When you create an aggregation, like generating total sales volume for Sunday, it will crunch the numbers the old-fashioned way just once. From then on, every new bit of data that fits the criteria for the aggregate will be automatically added to the tally on an ongoing basis. The next time you want to know about Sunday sales, the information will be sitting there waiting for you. This saves huge amounts of time, your business server resources, and gives you the information you need the moment you need it. 
+RavenDB uses a dynamic optimization model, constantly working to give you the best results and predicting what you'll do next and doing the work ahead of time so you don't have to wait.. When you create an aggregation, like generating total sales volume for Sunday, it will crunch the numbers the old-fashioned way just once. From then on, every new bit of data that fits the criteria for the aggregate will be automatically added to the tally on an ongoing basis. The next time you want to know about Sunday sales, the information will be sitting there waiting for you. This saves huge amounts of time, your business server resources, and gives you the information you need the moment you need it. 
 
 ## Being Ready to Succeed
 
 <img class="floating-right img-responsive" alt="Why a NoSQL Database is the Best Solution for a Startup" src="images/ready_to_run.jpg" />
 
-As a startup, traffic and conversions start slow, but on any given day they can EXPLODE unexpectedly. It’s not just the spike in traffic you need to be ready for, it’s the increase in conversions. Data writes are typically more time costly than reads so when more people are on line to buy, our NoSQL solution lets you set up extra cash registers fast. 
+As a startup, traffic and conversions start slow, but on any given day they can EXPLODE unexpectedly. It's not just the spike in traffic you need to be ready for, it's the increase in conversions. Data writes are typically more time costly than reads so when more people are on line to buy, our NoSQL solution lets you set up extra cash registers fast. 
 
-RavenDB offers a scale out architecture. You can expand the number of servers replicating and offering your database to your users in minutes. We don’t want your best day to be ruined by a frantic search for new capacity. The only pressure that should be felt now is in that space right between the champagne and the cork. 
+RavenDB offers a scale out architecture. You can expand the number of servers replicating and offering your database to your users in minutes. We don't want your best day to be ruined by a frantic search for new capacity. The only pressure that should be felt now is in that space right between the champagne and the cork. 
 
 ## Making Your Database a Part of the Development Team
 
 RavenDB was built to keep your eyes on the prize. 
 
-*We know how important it is to dedicate every precious moment you have towards building your product, and setting up your presence in the market*. You are in the race of your life. Wasting time on support is like running in place. At RavenDB, we offer the best support, but our primary goal is that you won’t need it. 
+*We know how important it is to dedicate every precious moment you have towards building your product, and setting up your presence in the market*. You are in the race of your life. Wasting time on support is like running in place. At RavenDB, we offer the best support, but our primary goal is that you won't need it. 
 
 We charge less for tech support because we know what the most common issues are, and we built in *automatic fixes* to handle them before you even notice. We fix your problems before you even have them.
 
@@ -117,7 +117,7 @@ At RavenDB, we support you in every phase of the process. <a href="https://raven
 <div class="bottom-line">
 
 <p>
-<a href="https://ravendb.net/"><strong>RavenDB</strong></a> is the industry’s premiere NoSQL ACID Document Database. Easy to install, quick to learn, and fast to secure, RavenDB is fully transactional across your entire database. RavenDB can be used on-premise or in cloud solutions like Amazon Web Services (AWS) and Microsoft Azure.
+<a href="https://ravendb.net/"><strong>RavenDB</strong></a> is the industry's premiere NoSQL ACID Document Database. Easy to install, quick to learn, and fast to secure, RavenDB is fully transactional across your entire database. RavenDB can be used on-premise or in cloud solutions like Amazon Web Services (AWS) and Microsoft Azure.
 </p>
 
 <p>
@@ -125,7 +125,7 @@ RavenDB has a built-in storage engine, <em>Voron</em>, that operates at speeds u
 </p>
 
 <p>
-Go schemaless and take advantage of our dynamic indexing to stay agile and keep your release cycle efficient. Avoid speed bumps in your development process with RavenDB’s high powered diagnostics. It reduces your need for tech support by detecting issues before they become problems.
+Go schemaless and take advantage of our dynamic indexing to stay agile and keep your release cycle efficient. Avoid speed bumps in your development process with RavenDB's high powered diagnostics. It reduces your need for tech support by detecting issues before they become problems.
 </p>
 
 <p>

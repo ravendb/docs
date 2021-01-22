@@ -29,7 +29,7 @@ Here you can filter the data you want to import, select configuration and apply 
 - **Include Configuration and OngoingTasks:** Determines whether or not 
   [server configurations and ongoing tasks](../../../../studio/database/tasks/import-data/import-data-file#customize-configuration-and-ongoing-tasks) 
   should be imported.  
-{NOTE:Importing item that doesn’t exist}
+{NOTE:Importing item that doesn't exist}
 If any of the options is set but the other database doesn't contain any items of that type, the type will be skipped.
 {NOTE/}
 

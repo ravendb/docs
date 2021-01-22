@@ -199,7 +199,7 @@ See [here](../../../studio/database/indexes/create-map-index) to learn how to se
   Index creation will fail if the majority of the nodes in the cluster is not reachable.  
 
 * Once an index is created against any node in the [Database Group](../../../studio/database/settings/manage-database-group), 
-  RavenDB will make sure that it’s definition is replicated to all the database’s nodes. 
+  RavenDB will make sure that its definition is replicated to all the database's nodes. 
   The indexing-process will occur separately on each node.  
 
 * Note: The [External Replication](../../../studio/database/tasks/ongoing-tasks/external-replication-task) ongoing-task does NOT replicate indexes.  

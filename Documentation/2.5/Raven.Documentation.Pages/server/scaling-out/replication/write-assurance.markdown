@@ -8,7 +8,7 @@ In order to handle write assurance, the client API allows you to wait until repl
 {CODE write_assurance_1@Server\ScalingOut\Replication\WriteAssurance.cs /}
 
 The Raven client will ping all of the replicas, waiting to see that replication has matched or exceeded the ETag that we just wrote. 
-You can specify the number of replicas that are required to consider the document write as "safe". Optionally you can also provide a timeout and if the nodes aren’t reachable, 
+You can specify the number of replicas that are required to consider the document write as "safe". Optionally you can also provide a timeout and if the nodes aren't reachable, 
 you will get an error about that. As the result the `WaitAsync` method returns the number of nodes that caught up to the specified ETag.
 
 You can also use parameterless version of the `WaitAsync` method:

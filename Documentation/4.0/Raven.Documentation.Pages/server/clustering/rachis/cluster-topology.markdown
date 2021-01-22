@@ -109,7 +109,7 @@ The Rachis state defines the **current role** of the node in the cluster.
 #### Watcher
 
 Increase your RavenDB cluster by adding Watchers with the advantage of _not_ suffering from large voting majorities and the latencies they can incur, 
-as watchers don’t take part in majority calculations.  
+as watchers don't take part in majority calculations.  
 
 * A Watcher can be assigned databases and tasks as a regular Member but is not included in the decisions making flow,
   so cluster decisions can be made with a small majority of nodes while the actual size of the cluster can be much higher.  

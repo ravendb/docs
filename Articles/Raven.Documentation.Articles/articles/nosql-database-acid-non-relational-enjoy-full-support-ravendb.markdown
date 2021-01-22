@@ -23,9 +23,9 @@ This provides real impact on your bottom line.
 
 ## Your Time and Money are Important
 
-In our experience with databases, we noticed that if you plan your database with too many knobs to turn or levers to pull, sooner or later the developers building apps around this database will have all sorts of questions for tech support on why everything isn’t working.
+In our experience with databases, we noticed that if you plan your database with too many knobs to turn or levers to pull, sooner or later the developers building apps around this database will have all sorts of questions for tech support on why everything isn't working.
 
-For the database developers, it’s a cash bonanza. For you, it can be a burden on your developer’s time, and certainly on your company’s resources. 
+For the database developers, it's a cash bonanza. For you, it can be a burden on your developer's time, and certainly on your company's resources. 
 
 We built our database with this in mind: to provide the best tech support when you need it, but to develop RavenDB to fix the most common problems before a developer even encounters them so you need that support at little as possible. We have been in business since the very beginning of NoSQL databases. We have seen it all, and then some. We know that a lot of the most common issues can be fixed by developing automatic built in solutions into your database that resolve these issues before they put a roadblock in your path. 
 

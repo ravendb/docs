@@ -43,7 +43,7 @@ across a fault-tolerant, [High-Availability](https://en.wikipedia.org/wiki/High-
 
 {NOTE: Distributed Work}
 
-* Whenever there’s a [Work Task](../../server/clustering/distribution/highly-available-tasks) for a _Database Group_ to do (e.g. a Backup task), 
+* Whenever there's a [Work Task](../../server/clustering/distribution/highly-available-tasks) for a _Database Group_ to do (e.g. a Backup task), 
   the cluster will decide which node will actually be responsible for it.  
 * These tasks are operational even if the node to which the client is connected to is down, as this nodes' tasks are **re-assigned** to other available nodes in the _Database Group_.  
 {NOTE/}

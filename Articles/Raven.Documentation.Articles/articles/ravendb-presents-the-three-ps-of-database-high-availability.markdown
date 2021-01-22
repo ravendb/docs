@@ -9,9 +9,9 @@
 
 <br/>
 
-One of the most vital necessities of an OLTP database is constant availability. Whether it’s an employee, customer, or developer accessing your application from Singapore, San Francisco, or Scandinavia, your data has to be whole, fresh, and available to them within milliseconds. The information has to appear on the screen the moment the *submit* button is pressed. 
+One of the most vital necessities of an OLTP database is constant availability. Whether it's an employee, customer, or developer accessing your application from Singapore, San Francisco, or Scandinavia, your data has to be whole, fresh, and available to them within milliseconds. The information has to appear on the screen the moment the *submit* button is pressed. 
 
-Using RavenDB, we take a multi-pronged approach to making sure your data never sleeps. Even if an asteroid were to hit the Pacific Ocean, knocking out half the machines on earth, it’s up to us to make sure your data is still accessible.
+Using RavenDB, we take a multi-pronged approach to making sure your data never sleeps. Even if an asteroid were to hit the Pacific Ocean, knocking out half the machines on earth, it's up to us to make sure your data is still accessible.
 
 ## Proliferating: A Replicating Cluster
 <img class="floating-left" alt="RavenDB Presents The Three Ps of Database High Availability" src="images/ravendb-presents-the-three-ps-of-database-high-availability-pic1.jpg" />
@@ -41,7 +41,7 @@ Even communication within your cluster will always be fluid, keeping your data f
 
 What happens when all the voting nodes are down? The chain of command is part of RavenDB, so a protocol is always followed making sure your database is always assigning leaders and voters, keeping your distributed database moving. 
 
-Performance is unaffected, and the user doesn’t realize that anything has changed. This is ideal for hosting multiple applications using different databases. Each database can be housed on some, but not all the nodes in a cluster, giving you auto recovery when a node needs to be repaired.
+Performance is unaffected, and the user doesn't realize that anything has changed. This is ideal for hosting multiple applications using different databases. Each database can be housed on some, but not all the nodes in a cluster, giving you auto recovery when a node needs to be repaired.
 
 {RAW}
 {{WHITEPAPER_BANNER}}
@@ -74,7 +74,7 @@ Backups allow you to have long term storage, and point in time recovery. You can
 
 <div class="bottom-line">
 <p>
-<a href="https://ravendb.net/"><strong>RavenDB</strong></a> is the industry’s premiere NoSQL ACID Document Database. Easy to install, quick to learn, and fast to secure, RavenDB is fully transactional across your entire database. RavenDB can be used on-premise or in cloud solutions like Amazon Web Services (AWS) and Microsoft Azure.
+<a href="https://ravendb.net/"><strong>RavenDB</strong></a> is the industry's premiere NoSQL ACID Document Database. Easy to install, quick to learn, and fast to secure, RavenDB is fully transactional across your entire database. RavenDB can be used on-premise or in cloud solutions like Amazon Web Services (AWS) and Microsoft Azure.
 </p>
 
 <p>
@@ -82,7 +82,7 @@ RavenDB has a built-in storage engine, <em>Voron</em>, that operates at speeds u
 </p>
 
 <p>
-Go schemaless and take advantage of our dynamic indexing to stay agile and keep your release cycle efficient. Avoid speed bumps in your development process with RavenDB’s high powered diagnostics. It reduces your need for tech support by detecting issues before they become problems.
+Go schemaless and take advantage of our dynamic indexing to stay agile and keep your release cycle efficient. Avoid speed bumps in your development process with RavenDB's high powered diagnostics. It reduces your need for tech support by detecting issues before they become problems.
 </p>
 
 <p>

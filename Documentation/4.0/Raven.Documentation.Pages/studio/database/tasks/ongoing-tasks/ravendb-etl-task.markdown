@@ -108,10 +108,10 @@
       In other words, we always _overwrite_ whatever exists on the other side, there is no [conflicts handling](../../../../studio/database/settings/conflict-resolution).  
 
     * The source database for the ETL process is the owner of the data.  
-      This means that any modifications done to the ETL’ed data on the destination database side are lost when overwriting occurs.  
+      This means that any modifications done to the ETL'ed data on the destination database side are lost when overwriting occurs.  
 
-    * If you need to modify the ETL'ed data in the destination side, you should create a companion document on the destination database instead of modifying the ETL’ed data directly.  
-      The rule is: For ETL’ed data, you can look but not touch...  
+    * If you need to modify the ETL'ed data in the destination side, you should create a companion document on the destination database instead of modifying the ETL'ed data directly.  
+      The rule is: For ETL'ed data, you can look but not touch...  
 
     * On the other hand, Data that is replicated with RavenDB's [External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) does _not_ overwrite existing documents.  
       Conflicts are created and handled according to the destination database policy defined.  

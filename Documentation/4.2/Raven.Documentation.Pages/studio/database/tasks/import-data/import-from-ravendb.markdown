@@ -103,7 +103,7 @@
   [server configurations and ongoing tasks](../../../../studio/database/tasks/import-data/import-from-ravendb#customize-configuration-and-ongoing-tasks) 
   should be imported.  
 
-{NOTE:Importing an item that doesn’t exist}
+{NOTE:Importing an item that doesn't exist}
 If any of the options is set but the source database doesn't contain any items of that type, the type will be skipped.  
 {NOTE/}
 {PANEL/}

@@ -37,7 +37,7 @@ If you wanted to know how much money you generated from orders made from Europea
 
 Bottlenecks appear in the form of the time involved for each query, and the demands made on the server while the database is processing. The bottleneck tightens when you have to perform the same steps every time you want to run the query. 
 
-If you want to know your daily sales figures by region, you have to perform this aggregation every day. If you want it by month, that’s 30 times the amount of data to crunch, likely over a weekend. If the 31st falls on a Tuesday, and the only possible way to dedicate so much resources to this task is to start it late Friday night, your finance team may have to wait until Monday the 6th to get their information. 
+If you want to know your daily sales figures by region, you have to perform this aggregation every day. If you want it by month, that's 30 times the amount of data to crunch, likely over a weekend. If the 31st falls on a Tuesday, and the only possible way to dedicate so much resources to this task is to start it late Friday night, your finance team may have to wait until Monday the 6th to get their information. 
 
 For a relational database, MapReduce queries are not an option.
 
@@ -72,7 +72,7 @@ The flexibility of RavenDB MapReduce gives you a treasure chest of new options:
 
 2. You save the time it took to make the first query every time you make it again.
 
-3. You don’t have to worry about choking off your server to perform aggregations. Resources will not be siphoned off from other areas of your business. Nobody suffers from delayed performance.
+3. You don't have to worry about choking off your server to perform aggregations. Resources will not be siphoned off from other areas of your business. Nobody suffers from delayed performance.
 
 Whether using RavenDB as your primary database, or in conjunction with a legacy relational option, MapReduce queries give your team the information it needs the moment it needs it  -- allowing you to optimize your next big decision. 
 
@@ -87,7 +87,7 @@ Whether using RavenDB as your primary database, or in conjunction with a legacy 
 
 ## Our Credo
 
-At RavenDB, we want to make every step in the process as simple as possible so you can set up and start using the best NoSQL database on the market with ease. We are so confident in proving thorough solutions to all your database challenges that, while we will always provide top level service for all your support needs, we charge a fraction for it compared to our competitors. Your RavenDB database is designed to be a full-on solution that takes many of the arduous tasks involved with installation, security, operations, and repair, and integrates them into the back end so you don’t have to worry about it at all. 
+At RavenDB, we want to make every step in the process as simple as possible so you can set up and start using the best NoSQL database on the market with ease. We are so confident in proving thorough solutions to all your database challenges that, while we will always provide top level service for all your support needs, we charge a fraction for it compared to our competitors. Your RavenDB database is designed to be a full-on solution that takes many of the arduous tasks involved with installation, security, operations, and repair, and integrates them into the back end so you don't have to worry about it at all. 
 
 Where other database companies plow 75% of their revenues into winning new customers, we reinvest the majority of our resources into making the best full-service database to save you time and money on your next application. We take pride in dedicating our energy into living up to our core standard:
 
