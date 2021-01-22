@@ -19,24 +19,34 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
             {
                 Conventions =
                 {
+                    #region customize_json_serializer
                     Serialization = new NewtonsoftJsonSerializationConventions
                     {
-                        #region customize_json_serializer
                         CustomizeJsonSerializer = serializer => throw new CodeOmitted()
-                        #endregion
-                        ,
-                        #region customize_json_deserializer
+                    }
+                    #endregion
+                    /*
+                    #region customize_json_deserializer
+                    Serialization = new NewtonsoftJsonSerializationConventions
+                    {
                         CustomizeJsonDeserializer = serializer => throw new CodeOmitted()
-                        #endregion
-                        ,
-                        #region DeserializeEntityFromBlittable
+                    }
+                    #endregion
+
+                    #region DeserializeEntityFromBlittable
+                    Serialization = new NewtonsoftJsonSerializationConventions
+                    {
                         DeserializeEntityFromBlittable = (type, blittable) => throw new CodeOmitted()
-                        #endregion
-                        ,
-                        #region json_contract_resolver
+                    }
+                    #endregion
+
+                    #region json_contract_resolver
+                    Serialization = new NewtonsoftJsonSerializationConventions
+                    {
                         JsonContractResolver = new CustomJsonContractResolver()
-                        #endregion
-                    },
+                    }
+                    #endregion */
+                    ,
                     #region preserve_doc_props_not_found_on_model
                     PreserveDocumentPropertiesNotFoundOnModel = true
                     #endregion
