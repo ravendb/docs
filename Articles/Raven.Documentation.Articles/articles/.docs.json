@@ -2225,5 +2225,34 @@
         "twitter:description": "Legal Discovery platforms are turning to document oriented databases like RavenDB to prepare case files fast by indexing and searching Microsoft Word documents.",
         "twitter:url": "https://ravendb.net/articles/legal-discovery-platform-turns-to-document-oriented-database-for-fast-case-preparation"
     }
+},
+{
+    "Path": "sneleentaxi-uses-ravendb-nosql-database-to-take-taxi-riders-on-a-joyride.markdown",
+    "Name": "NoSQL Distributed Database as a Game-Changer for a Taxi Booking Platform",
+    "Mappings": [],
+    "Metadata": {
+        "title": "NoSQL Distributed Database | Database for Machine Learning - RavenDB",
+        "likeSection": "yes",
+        "url": "sneleentaxi-uses-ravendb-nosql-database-to-take-taxi-riders-on-a-joyride",
+        "publishedAt": "2021-01-26",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "Taxi booking platform chooses RavenDB NoSQL distributed database for its two-sided machine learning marketplace system.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "Sneleentaxi Uses RavenDB NoSQL database to Take Taxi Riders on a Joyride",
+        "og:description": "Sneleentaxi enables people to find the nearest taxi driver at the right price. They use NoSQL Database RavenDB in a distributed database cluster to make it happen.",
+        "og:url": "https://ravendb.net/articles/sneleentaxi-uses-ravendb-nosql-database-to-take-taxi-riders-on-a-joyride",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/sneleentaxi-uses-ravendb-nosql-database-to-take-taxi-riders-on-a-joyride&fileName=sneleentaxi-uses-ravendb-nosql-database-to-take-taxi-riders-on-a-joyride.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "Sneleentaxi Uses RavenDB NoSQL database to Take Taxi Riders on a Joyride",
+        "twitter:description": "Sneleentaxi enables people to find the nearest taxi driver at the right price. They use NoSQL Database RavenDB in a distributed database cluster to make it happen.",
+        "twitter:url": "https://ravendb.net/articles/sneleentaxi-uses-ravendb-nosql-database-to-take-taxi-riders-on-a-joyride"
+    }
 }
 ]
