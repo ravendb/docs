@@ -9,7 +9,7 @@
 
 StarNet chooses RavenDB NoSQL database to meet the fast-growing gaming industry demands.
 
-<a href="http://www.starnet.co.ba/" target="_blank" rel="nofollow">StarNet</a> specializes in Domain-Driven Design of information systems across all platforms (desktop, web, and mobile).
+StarNet specializes in Domain-Driven Design of information systems across all platforms (desktop, web, and mobile).
 
 Their primary domain is sports betting and RNG casino games. The company's objective is to provide a platform to organize, market, promote, manage, support, and operate all types of betting and other operations of betting exchange, interactive casinos, bingos, lotteries, and other interactive games.
 
