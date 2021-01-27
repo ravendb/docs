@@ -2254,5 +2254,34 @@
         "twitter:description": "Sneleentaxi enables people to find the nearest taxi driver at the right price. They use NoSQL Database RavenDB in a distributed database cluster to make it happen.",
         "twitter:url": "https://ravendb.net/articles/sneleentaxi-uses-ravendb-nosql-database-to-take-taxi-riders-on-a-joyride"
     }
+},
+{
+    "Path": "nosql-database-with-much-more-than-just-an-index.markdown",
+    "Name": "A NoSQL Database With Much More Than Just an Index",
+    "Mappings": [],
+    "Metadata": {
+        "title": "A NoSQL Database With Much More Than Just an Index - RavenDB",
+        "likeSection": "yes",
+        "url": "nosql-database-with-much-more-than-just-an-index",
+        "publishedAt": "2021-01-27",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "RavenDB's new Additional Assemblies feature grants you more flexibility and creativity than ever before.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "A NoSQL Database With Much More Than Just an Index",
+        "og:description": "RavenDB's new Additional Assemblies feature grants you more flexibility and creativity than ever before.",
+        "og:url": "https://ravendb.net/articles/nosql-database-with-much-more-than-just-an-index",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-database-with-much-more-than-just-an-index&fileName=nosql-database-with-much-more-than-just-an-index.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "A NoSQL Database With Much More Than Just an Index",
+        "twitter:description": "RavenDB's new Additional Assemblies feature grants you more flexibility and creativity than ever before.",
+        "twitter:url": "https://ravendb.net/articles/nosql-database-with-much-more-than-just-an-index"
+    }
 }
 ]
