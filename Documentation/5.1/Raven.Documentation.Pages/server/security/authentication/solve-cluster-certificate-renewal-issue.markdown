@@ -1,14 +1,11 @@
 # Let's Encrypt: Solve Certificate Renewal Issue
 
-* If creating or renewing a cluster certificate fails and the 
-  problem relates to [Public Key Pinning Hash](../../../server/security/authentication/certificate-renewal-and-rotation#implicit-trust-by-public-key-pinning-hash), 
-  this article may help.  
+* If you have External Replication or ETL to another cluster, or if you use 
+  your own Let's Encrypt certificates as client certificates, the next certificate 
+  renewal may cause permission issues that need to be handled manually.  
 
-* When you create or renew cluster certificates, and `Let's Encrypt`'s certificate 
-  issuer needs an indication that there is **trust between clusters**, it may require 
-  you to take a few manual steps.  
-  Find in this article [who this is relevant for](../../../server/security/authentication/solve-cluster-certificate-renewal-issue#current-situation) 
-  and [what steps to take](../../../server/security/authentication/solve-cluster-certificate-renewal-issue#solutions).  
+* Find [whether this issue is relevant for you](../../../server/security/authentication/solve-cluster-certificate-renewal-issue#current-situation) 
+  and if so, [how to handle it](../../../server/security/authentication/solve-cluster-certificate-renewal-issue#solutions).  
 
 * **In this page**:  
    * [Errors Relevant To This Issue](../../../server/security/authentication/solve-cluster-certificate-renewal-issue#errors-relevant-to-this-issue)  
@@ -53,8 +50,8 @@ as **Studio alerts** and/or **responses to client requests**.
 * **Original Solution**  
   To solve this problem, we introduced [Implicit Trust](../../../server/security/authentication/certificate-renewal-and-rotation#implicit-trust-by-public-key-pinning-hash) 
   by using the certificate's **Public Key Pinning Hash**.  
-  Now, if the source cluster renews its certificate by using the same private key and 
-  issuer, the new certificate will have the same Public Key Pinning Hash, and the 
+  Now, if the source cluster renews its certificate **by using the same private key and 
+  issuer**, the new certificate will have the same Public Key Pinning Hash, and the 
   destination cluster will be able to trust the new certificate.  
   It will also be registered (implicitly) for future connections.  
 
@@ -76,12 +73,14 @@ take a few manual steps.
 
 This is relevant for you -  
 
-1. If you use RavenDB ETL or perform External Replication between two RavenDB clusters.  
-     * If you use RavenDB Cloud where certificates are automatically renewed.  
-     * If you used our Setup Wizard with Let's Encrypt, and certificates are auto-renewed.  
-     * If you used your own Let's Encrypt certificate, and you renew it yourself with 
-       the same private key.  
-2. If you created your own client certificates using Let's Encrypt, and you renew 
+1. If you use RavenDB ETL or perform External Replication between two 
+   RavenDB clusters.  
+     * If you use RavenDB Cloud where certificates are renewed automatically.  
+     * If you used our Setup Wizard with Let's Encrypt, and certificates are 
+       renewed automatically.  
+     * If you used your own Let's Encrypt **cluster** certificate, and you 
+       renew it yourself with the same private key.  
+2. If you created your own Let's Encrypt **client** certificates, and you renew 
    them using the same private key.  
 
 {PANEL/}
@@ -105,7 +104,7 @@ certificate will renew itself and the issuer will actually change. The advantage
 there is no downtime.  
 
 The disadvantage is that an admin needs to access the machines themselves. They need to edit 
-the settings.json file on all nodes and restart the RavenDB service (one-by-one for no downtime).  
+the settings.json file on all nodes and restart the RavenDB service (node-by-node for no downtime).  
 
 ---
 
@@ -118,8 +117,7 @@ the settings.json file on all nodes and restart the RavenDB service (one-by-one 
        ![Figure 1. Renew Server Certificate](images/renew_server_certificate.png)
      * Export the new cluster certificate:  
        ![Figure 2. Export Cluster Certificate](images/export_cluster_certificates.png)
-     * Copy the exported PFX file to one of the nodes in the destination cluster and upload 
-       it as a client certificate:  
+     * Use the destination cluster's Studio to upload the exported pfx file as a client certificate.  
        ![Figure 3. Upload Client Certificat](images/upload-client-certificate.png)
 
 
@@ -127,10 +125,10 @@ the settings.json file on all nodes and restart the RavenDB service (one-by-one 
    (on your own) and re-register them in the certificate view in the Studio ([Upload client 
    certificate](../../../studio/database/tasks/import-data/import-from-ravendb#step-#1:-prepare-servers-for-the-import-process-(secure-4.x-servers-only))).  
 
-     This solution is easier and doesn't require access to the machines themselves, just an admin 
-     certificate. The disadvantage is a short downtime in the service, because you must renew the 
-     certificate first and only then you may export it and upload to the destination cluster.  
-     This can cause some delay in the ETL or Replication service.  
+This solution is easier and doesn't require access to the machines themselves, just an admin 
+certificate. The disadvantage is a short downtime in the service, because you must renew the 
+certificate first and only then you may export it and upload to the destination cluster.  
+This can cause some delay in the ETL or Replication service.  
 
 {PANEL/}
 
@@ -138,14 +136,15 @@ the settings.json file on all nodes and restart the RavenDB service (one-by-one 
 
 ### Security 
 
-- [Overview](../../../server/security/overview)
-- [Certificate Management](../../../server/security/authentication/certificate-management)
-- [Common Errors and FAQ](../../../server/security/common-errors-and-faq)
+- [Overview](../../../server/security/overview)  
+- [Certificate Management](../../../server/security/authentication/certificate-management)  
+- [Common Errors and FAQ](../../../server/security/common-errors-and-faq)  
+- [Implicit Trust by Public Key Pinning Hash](../../../server/security/authentication/certificate-renewal-and-rotation#implicit-trust-by-public-key-pinning-hash)  
 
 ### Client API
 
-- [Setting up Authentication and Authorization](../../../client-api/setting-up-authentication-and-authorization)
+- [Setting up Authentication and Authorization](../../../client-api/setting-up-authentication-and-authorization)  
 
 ### Installation
 
-- [Secure Setup with a Let's Encrypt Certificate](../../../start/installation/setup-wizard#secure-setup-with-a-let)
+- [Secure Setup with a Let's Encrypt Certificate](../../../start/installation/setup-wizard#secure-setup-with-a-let)  

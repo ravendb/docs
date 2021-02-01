@@ -147,12 +147,13 @@ you can contact support. Make sure to supply the server logs with your ticket. W
 
 If your logs are turned off, open `Manage Server`->`Admin Logs` in the Studio, and keep them open while you click the `Renew` button in the certificate view.
 
-### Creating or Renewing Let's Encrypt certificate fails
+### Let's Encrypt certificate renewal fails
 
-If creating or renewing a cluster certificate fails and the problem relates 
-to [Public Key Pinning Hash](../../server/security/authentication/certificate-renewal-and-rotation#implicit-trust-by-public-key-pinning-hash), 
-try [this article](../../server/security/authentication/solve-cluster-certificate-renewal-issue).  
+If you have External Replication or ETL to another cluster, or if you use 
+your own Let's Encrypt certificates as client certificates, the next certificate 
+renewal may cause permission issues that need to be handled manually.  
 
+Learn how to handle this issue [here](../../server/security/authentication/solve-cluster-certificate-renewal-issue).  
 
 ## Authentication Issues  
 
