@@ -28,5 +28,11 @@
     "Name": "Let's Encrypt Certificates",
     "DiscussionId": "6e5cdd59-d3f8-4b6d-b292-f75525d4bba3",
     "Mappings": []
+  },
+  {
+      "Path": "solve-cluster-certificate-renewal-issue.markdown",
+      "Name": "Solve Certificate Renewal Issue",
+      "DiscussionId": "86ac6882-e202-4781-a1cd-65ad7555226b",
+      "Mappings": []
   }
 ]

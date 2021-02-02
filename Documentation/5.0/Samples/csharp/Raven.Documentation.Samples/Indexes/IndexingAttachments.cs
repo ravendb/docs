@@ -8,7 +8,7 @@ using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.Indexes
 {
-    public class IndexingAttachments
+    public class IndexingAttachments1
     {
         private interface IFoo
         {
