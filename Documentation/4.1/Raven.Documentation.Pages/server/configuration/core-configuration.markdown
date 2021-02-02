@@ -197,7 +197,7 @@ The URLs which the server should contact when requesting certificates from using
 {PANEL:Features.Availability}
 
 This [settings.json](../../server/configuration/configuration-options#json) variable determines whether to run RavenDB with its standard 
-features set, orr add to a set of experimental features.  
+features set, or add to a set of experimental features.  
 Some features, like ones recently released, are considered **experimental**. They are disabled by default, you can enable 
 them by setting `Features.Availability` to `Experimental`.  
 
