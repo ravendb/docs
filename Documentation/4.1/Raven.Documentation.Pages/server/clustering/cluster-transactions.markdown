@@ -1,9 +1,5 @@
 # Cluster: Cluster-Wide Transactions
 
-{SAFE:Experimental}
-This is an experimental feature and might be a subject to change.
-{SAFE/}
-
 Cluster transactions are a way to ensure that certain operations will favor consistency over availability in the CAP theorem.
 
 This page contains:
