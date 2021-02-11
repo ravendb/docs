@@ -1,18 +1,39 @@
 [
     {
         "Path": "cqrs-and-event-sourcing-made-easy-with-ravendb.markdown",
-        "Name": "CQRS and Event Sourcing made easy with RavenDB",
-        "Mappings": []
-    },
-    {
-        "Path": "working-with-view-models.markdown",
-        "Name": "Working with view models in RavenDB",
-        "Mappings": []
+        "Name": "CQRS and Event Sourcing Made Easy with RavenDB",
+        "Mappings": [],
+        "Metadata": {
+            "title": "CQRS and Event Sourcing Made Easy with RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/cqrs-and-event-sourcing-made-easy-with-ravendb",
+            "publishedAt": "2016-05-09",
+            "subcategories": "nosql-database"
+        }
     },
     {
         "Path": "ravendb-python-client-the-transition-to-a-dynamic-language.markdown",
-        "Name": "RavenDB Python client - The transition to a dynamic language",
-        "Mappings": []
+        "Name": "RavenDB Python Client - The Transition to a Dynamic Language",
+        "Mappings": [],
+        "Metadata": {
+            "title": "RavenDB Python Client - The Transition to a Dynamic Language",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/ravendb-python-client-the-transition-to-a-dynamic-language",
+            "publishedAt": "2016-05-25",
+            "subcategories": "nosql-database"
+        }
+    },
+    {
+        "Path": "working-with-view-models.markdown",
+        "Name": "Working with View Models in RavenDB",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Working with View Models in RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/working-with-view-models",
+            "publishedAt": "2016-06-14",
+            "subcategories": "nosql-database"
+        }
     },
     {
         "Path": "choosing-the-best-nosql-database.markdown",
