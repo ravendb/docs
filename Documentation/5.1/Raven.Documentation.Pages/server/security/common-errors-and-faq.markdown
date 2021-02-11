@@ -178,7 +178,7 @@ In case none of the above works, you have an option to bring your own certificat
 The first thing to try is to install the **SERVER** certificate to the OS where your server is running, close **all instances** of the browser and restart it.
 
 If the issue persists, please visit this page which explains the problem:
-[Trusted Issuers List](https://support.microsoft.com/en-us/topic/clients-cannot-make-connections-if-you-require-client-certificates-on-a-web-site-or-if-you-use-ias-in-windows-server-2003-af529d01-a046-4dc0-2cbb-7631e8ddefd1)
+[Trusted Issuers List](https://support.microsoft.com/en-us/topic/failed-tls-connection-between-unified-communications-peers-generates-an-schannel-warning-9079a7df-1756-bf4d-20c7-42981a50f8df)
 
 Follow the instructions for method 3: "Configure Schannel to no longer send the list of trusted root certificate authorities during the TLS/SSL handshake process". Set the following registry entry to false:
 
