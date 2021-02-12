@@ -105,7 +105,7 @@ Add-Content $userArg "$type $name $dataPath $tempPath $journalPath\r\n"
 exit 0
 {CODE-BLOCK/}
 
-We supply this script to RavenDB via the [Storage.OnDirectoryInitialize](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec) configuration option:
+We supply this script to RavenDB via the [Storage.OnDirectoryInitialize.Exec](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec) configuration option:
 
 {CODE-BLOCK:json}
 {
