@@ -112,8 +112,8 @@ We supply this script to RavenDB via the [Storage.OnDirectoryInitialize](../../s
     "Setup.Mode": "None",
     "ServerUrl": "http://127.0.0.1:8080",
     "License.Eula.Accepted": true,
-    "Storage.OnDirectoryInitializeExec" :"powershell",
-    "Storage.OnDirectoryInitializeExecArguments" :"c:\\example\\script.ps1 c:\\example\\outFile.txt"
+    "Storage.OnDirectoryInitialize.Exec" :"powershell",
+    "Storage.OnDirectoryInitialize.Exec.Arguments" :"c:\\example\\script.ps1 c:\\example\\outFile.txt"
 }
 {CODE-BLOCK/}
 
