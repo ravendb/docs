@@ -2304,5 +2304,34 @@
         "twitter:description": "RavenDB's new Additional Assemblies feature grants you more flexibility and creativity than ever before.",
         "twitter:url": "https://ravendb.net/articles/nosql-database-with-much-more-than-just-an-index"
     }
+},
+{
+    "Path": "cronos-sky-use-ravendb-nosql-database-for-remote-working-solutions.markdown",
+    "Name": "Cronos, Sky2, Use RavenDB NoSQL Database to Make Remote Working Comfortable",
+    "Mappings": [],
+    "Metadata": {
+        "title": "NoSQL Database for Remote Working | RavenDB",
+        "likeSection": "yes",
+        "url": "cronos-sky-use-ravendb-nosql-database-for-remote-working-solutions",
+        "publishedAt": "2021-02-23",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "Cronos uses the RavenDB NoSQL Document Database to provide their remote workforce of over 4,000 employees laptops, tables, chairs, and more.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "Cronos, Sky2, Use RavenDB NoSQL Database to Make Remote Working Comfortable",
+        "og:description": "Cronos uses the RavenDB NoSQL Document Database to provide their remote workforce of over 4,000 employees laptops, tables, chairs, and more.",
+        "og:url": "https://ravendb.net/articles/cronos-sky-use-ravendb-nosql-database-for-remote-working-solutions",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/cronos-sky-use-ravendb-nosql-database-for-remote-working-solutions&fileName=cronos-sky-use-ravendb-nosql-database-for-remote-working-solutions.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "Cronos, Sky2, Use RavenDB NoSQL Database to Make Remote Working Comfortable",
+        "twitter:description": "Cronos uses the RavenDB NoSQL Document Database to provide their remote workforce of over 4,000 employees laptops, tables, chairs, and more.",
+        "twitter:url": "https://ravendb.net/articles/cronos-sky-use-ravendb-nosql-database-for-remote-working-solutions"
+    }
 }
 ]
