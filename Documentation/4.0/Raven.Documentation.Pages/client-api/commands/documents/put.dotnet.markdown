@@ -10,7 +10,7 @@
 | ------------- | ------------- | ----- |
 | **id** | string | unique ID under which document will be stored |
 | **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
-| **document** | BlittableJsonReaderObject | The document to store. You may use `session.Advanced.EntityToBlittable.ConvertEntityToBlittable` to convert your entity to a `BlittableJsonReaderObject` |
+| **document** | BlittableJsonReaderObject | The document to store. You may use `EntityToBlittable.ConvertEntityToBlittable` to convert your entity to a `BlittableJsonReaderObject` |
 
 ## Example
 
