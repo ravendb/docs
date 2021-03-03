@@ -114,12 +114,12 @@ An operations interface that exposes the full functionality and allows performin
 {INFO: PatchOperation}
 
 | Constructor|  | |
-|--------|:-----|-------------| 
+|--------|:-----|-------------|
 | **id** | `String` | ID of the document to be patched. |
 | **changeVector** | `String` | [Can be null] Change vector of the document to be patched, used to verify that the document was not changed before the patch reached it. |
 | **patch** | `PatchRequest` | Patch request to be performed on the document. |
-| **patchIfMissing** | `PatchRequest` | [Can be null] Patch request to be performed if no document with the given ID was found. Will run only if no `changeVector` was passed. |   
-| **skipPatchIfChangeVectorMismatch** | `boolean` | If false and `changeVector` has value, and document with that ID and change vector was not found, will throw exception. |   
+| **patchIfMissing** | `PatchRequest` | [Can be null] Patch request to be performed if no document with the given ID was found. Will run only if no `changeVector` was passed. |
+| **skipPatchIfChangeVectorMismatch** | `boolean` | If false and `changeVector` has value, and document with that ID and change vector was not found, will throw exception. |
 
 {INFO/}
 
@@ -127,7 +127,8 @@ An operations interface that exposes the full functionality and allows performin
 
 {PANEL: List of Script Methods}
 
-This is a list of a few of the javascript methods that can be used in patch scripts.  
+This is a list of a few of the javascript methods that can be used in patch scripts. See the 
+more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine#predefined-javascript-functions).  
 
 | Method | Arguments | Description |
 | - | - | - |
