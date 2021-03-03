@@ -92,7 +92,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 
             name = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions<Order>
             {
-                Name = "OrdersProcessingSumbscription"                
+                Name = "OrdersProcessingSubscription"                
             });
 
             #endregion
