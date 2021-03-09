@@ -84,7 +84,7 @@ ln -s ~/RavenDB/Server/RavenData/Databases/Northwind/Indexes /mnt/FastDrive/Data
 
 {PANEL: Automation}
 
-To help you automate the process, we have added the [SStorage.OnDirectoryInitialize.Exec](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec) extension point.
+To help you automate the process, we have added the [Storage.OnDirectoryInitialize.Exec](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec) extension point.
 Whenever RavenDB creates or opens a directory, it will invoke a process of your choice.
 It allows you to create a script with your own logic, defining juction points as needed.
 
