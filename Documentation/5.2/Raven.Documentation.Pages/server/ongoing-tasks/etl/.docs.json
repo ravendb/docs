@@ -16,5 +16,11 @@
     "Name": "SQL ETL",
     "DiscussionId": "7b98f435-e20d-4d1b-bad7-1c777f196179",
     "Mappings": []
+  },
+  {
+    "Path": "olap.markdown",
+    "Name": "OLAP ETL",
+    "DiscussionId": "beaddf3a-184e-4695-ba3d-79b3e3182795",
+    "Mappings": []
   }
 ]
