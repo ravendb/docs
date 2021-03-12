@@ -146,15 +146,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{E701
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "csharp", "csharp", "{297690FE-078D-42F3-8A33-D234A6252CA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Samples", "Documentation\5.1\Samples\csharp\Raven.Documentation.Samples\Raven.Documentation.Samples.csproj", "{2003D834-3452-4FFD-A31F-947A9819BC58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Samples", "Documentation\5.1\Samples\csharp\Raven.Documentation.Samples\Raven.Documentation.Samples.csproj", "{2003D834-3452-4FFD-A31F-947A9819BC58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Pages", "Documentation\5.1\Raven.Documentation.Pages\Raven.Documentation.Pages.csproj", "{D93F5B83-2183-48B3-A688-88F453C5E1AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Pages", "Documentation\5.1\Raven.Documentation.Pages\Raven.Documentation.Pages.csproj", "{D93F5B83-2183-48B3-A688-88F453C5E1AA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.2", "5.2", "{4AAF6E0E-0B02-472A-9726-12AA667AF5C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Pages", "Documentation\5.2\Raven.Documentation.Pages\Raven.Documentation.Pages.csproj", "{37FE2E88-0D07-4862-B8E8-BC965830D6B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Pages", "Documentation\5.2\Raven.Documentation.Pages\Raven.Documentation.Pages.csproj", "{37FE2E88-0D07-4862-B8E8-BC965830D6B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Samples", "Documentation\5.2\Samples\csharp\Raven.Documentation.Samples\Raven.Documentation.Samples.csproj", "{7DC468E6-04D1-4FD3-B00D-CCBA2F4F9B34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Samples", "Documentation\5.2\Samples\csharp\Raven.Documentation.Samples\Raven.Documentation.Samples.csproj", "{7DC468E6-04D1-4FD3-B00D-CCBA2F4F9B34}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{2C08722C-8A57-46DF-BA37-03B5869EED62}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "csharp", "csharp", "{6A9BD12C-587E-418E-80A8-02D8E4FAFB37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -335,7 +339,9 @@ Global
 		{D93F5B83-2183-48B3-A688-88F453C5E1AA} = {028B20BB-5F16-45DB-9E36-47A37CB9469C}
 		{4AAF6E0E-0B02-472A-9726-12AA667AF5C0} = {02197DA7-3859-4919-98A7-4FAFC4D75F2B}
 		{37FE2E88-0D07-4862-B8E8-BC965830D6B4} = {4AAF6E0E-0B02-472A-9726-12AA667AF5C0}
-		{7DC468E6-04D1-4FD3-B00D-CCBA2F4F9B34} = {4AAF6E0E-0B02-472A-9726-12AA667AF5C0}
+		{7DC468E6-04D1-4FD3-B00D-CCBA2F4F9B34} = {6A9BD12C-587E-418E-80A8-02D8E4FAFB37}
+		{2C08722C-8A57-46DF-BA37-03B5869EED62} = {4AAF6E0E-0B02-472A-9726-12AA667AF5C0}
+		{6A9BD12C-587E-418E-80A8-02D8E4FAFB37} = {2C08722C-8A57-46DF-BA37-03B5869EED62}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4542080-0E46-4D6E-80B7-DCBFA1100C43}
