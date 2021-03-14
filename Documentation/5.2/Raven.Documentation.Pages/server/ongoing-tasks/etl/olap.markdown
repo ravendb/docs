@@ -4,7 +4,15 @@
 
 {NOTE: }
 
-* ETL to Amazon S3 bucket* in Parquet format, useful for OLAP
+* The **OLAP ETL TASK** creates an ETL process from a RavenDB database to an S3 bucket, 
+a type of storage available in AWS.  
+
+* The data is stored in the _Parquet_ format, a compact text format analogous to CSV or 
+JSON.  
+
+* This storage setup is useful for OLAP.  
+
+* In this page:  
 
 {NOTE/}
 
@@ -16,19 +24,48 @@ Not applicable to ssas?
 
 ETL to S3, and thence to Athena.
 
-~Possibly others in the future (presto). Probably ORC in the near future~
+### ETL in Batches
 
-Currently only client API, not studio.
+ETL is performed only as batches at regular intervals, rather than being triggered anew each time 
+the database updates. The ETL script must specify the time frame in which the data for each batch 
+was created (or updated). This is because an AWS S3 is divided into folders, and it's necessary 
+to prevent too much data accumulating in one folder because queries scan an entire folder at a 
+time. Time can be set manually in a `TimeSpan` format, or it could be taken from a document's 
+metadata.  
 
-ETL script must specify the time. ETL is performed only as batches at regular intervals, rather than being triggered anew each time the database updates
-(year, month). S3 is divided into folders, and it's necessary to prevent too much data in one folder because it results in costly ?folder? scans. Time can be set manually or it could be metadata:last modified
+### Client API
 
-folder name = customized 'tag' + date-time key
+{CODE add_olap_etl@ClientApi\Operations\AddEtl.cs /}
 
-Connection string -> remote S3 -> local folder
+The folder name consists of a customized 'tag' plus the date-time value.
+
+Connection string can be created for either a remote S3 or a local folder.
 
 `bool` erase (default = `true`)
 
-if a doc has been updated after ETL (even if updated data is not actually loaded) they are distinguished by lastmodified *ticks*
+If a doc has been updated after ETL (even if updated data is not actually loaded) they are distinguished by lastmodified *ticks*
 
 {PANEL/}
+
+## Related Articles
+
+### ETL
+
+- [ETL Basics](../../../server/ongoing-tasks/etl/basics)
+- [SQL ETL Task](../../../server/ongoing-tasks/etl/sql)
+
+### Client API
+
+- [How to Add ETL](../../../client-api/operations/maintenance/etl/add-etl)
+- [How to Update ETL](../../../client-api/operations/maintenance/etl/update-etl)
+- [How to Reset ETL](../../../client-api/operations/maintenance/etl/reset-etl)
+
+### Studio
+
+- [Define RavenDB ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
+
+### Document Extensions
+
+- [Attachments](../../../document-extensions/attachments/what-are-attachments)
+- [Counters](../../../document-extensions/counters/overview)
+- [Time Series](../../../document-extensions/timeseries/overview)

@@ -1,4 +1,4 @@
-# Operations: How to AaaaaaAAAAAAAAAAAAAAAaaaaaadd ETL
+# Operations: How to Add ETL
 
 You can add ETL task by using **AddEtlOperation**.
 
@@ -17,6 +17,10 @@ You can add ETL task by using **AddEtlOperation**.
 ## Example - Add Sql ETL
 
 {CODE add_sql_etl@ClientApi\Operations\AddEtl.cs /}
+
+## Example - Add OLAP ETL
+
+{CODE add_olap_etl@ClientApi\Operations\AddEtl.cs /}
 
 ## Related Articles
 
