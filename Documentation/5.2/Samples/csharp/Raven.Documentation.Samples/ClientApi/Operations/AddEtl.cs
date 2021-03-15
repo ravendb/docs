@@ -2,6 +2,7 @@
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.ETL;
 using Raven.Client.Documents.Operations.ETL.SQL;
+using Raven.Client.Documents.Operations.ETL.OLAP;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations
 {
@@ -99,6 +100,44 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 AddEtlOperationResult result = store.Maintenance.Send(operation);
                 #endregion
             }
+
+            using (var store = new DocumentStore())
+            {
+                #region add_olap_etl
+
+                AddEtlOperation<OlapConnectionString> operation = new AddEtlOperation<OlapConnectionString>(
+                    new OlapEtlConfiguration
+                    {
+                        ConnectionStringName = "olap-connection-string-name",
+                        Name = "Orders ETL",
+                        Transforms =
+                        {
+                            new Transformation
+                            {
+                                Name = "Script #1",
+                                Collections =
+                                {
+                                    "Orders"
+                                },
+                                Script = @"var orderDate = new Date(this.OrderedAt);
+                                           var year = orderDate.getFullYear();
+                                           var month = orderDate.getMonth();
+                                           var key = new Date(year, month);
+
+                                           loadToOrders(key, {
+                                               Company : this.Company,
+                                               ShipVia : this.ShipVia
+                                           })"
+                            }
+                        }
+                    });
+
+                AddEtlOperationResult result = store.Maintenance.Send(operation);
+                #endregion
+            }
+        }
+    }
+}
         }
     }
 }
