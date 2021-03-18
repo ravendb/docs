@@ -2335,5 +2335,34 @@
         "twitter:description": "Cronos uses the RavenDB NoSQL Document Database to provide their remote workforce of over 4,000 employees laptops, tables, chairs, and more.",
         "twitter:url": "https://ravendb.net/articles/cronos-sky-use-ravendb-nosql-database-for-remote-working-solutions"
     }
+},
+{
+    "Path": "nosql-document-oriented-databases-detailed-overview.markdown",
+    "Name": "NoSQL Document-Oriented Databases: A Detailed Overview",
+    "Mappings": [],
+    "Metadata": {
+        "title": "NoSQL Document-Oriented Database | NoSQL Document Store | Document Databases",
+        "likeSection": "yes",
+        "url": "nosql-document-oriented-databases-detailed-overview",
+        "publishedAt": "2021-03-18",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "What are document-oriented databases? Read about the challenges that this semistructured data lets you handle and about the document database pros and cons.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "NoSQL Document-Oriented Databases: A Detailed Overview",
+        "og:description": "What are document-oriented databases? Read about the challenges that this semistructured data lets you handle and about the document database pros and cons.",
+        "og:url": "https://ravendb.net/articles/nosql-document-oriented-databases-detailed-overview",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-document-oriented-databases-detailed-overview&fileName=nosql-document-oriented-databases-detailed-overview.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "NoSQL Document-Oriented Databases: A Detailed Overview",
+        "twitter:description": "What are document-oriented databases? Read about the challenges that this semistructured data lets you handle and about the document database pros and cons.",
+        "twitter:url": "https://ravendb.net/articles/nosql-document-oriented-databases-detailed-overview"
+    }
 }
 ]
