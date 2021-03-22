@@ -21,9 +21,9 @@ This *semistructured* data lets you handle challenges that are harder to get a g
 
 Centred around JSON-like documents, *document stores* make a natural and flexible solution for developers that can work faster with agile software with superior developer productivity, which is why the document data model in [modern NoSQL databases](https://hostingdata.co.uk/nosql-database/) has become a popular alternative to tabular RDBMS.
 
-### XLM and graph databases
+### XML and graph databases
 
-A quick word on these two: XLM is a subclass of document-oriented databases, but streamlined for XML documents. Graphs are a similar thing, but with an additional layer (the *relationship*) which adds a document linkage function for fast traversal. Note that most XML databases are indeed document-orientated.
+A quick word on these two: XML is a subclass of document-oriented databases, but streamlined for XML documents. Graphs are a similar thing, but with an additional layer (the *relationship*) which adds a document linkage function for fast traversal. Note that most XML databases are indeed document-orientated.
 
 ### How document databases differ from relational databases
 
