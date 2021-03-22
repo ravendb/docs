@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* [Spatial Queries](../../../../indexes/querying/spatial) 
+* [Spatial Queries](../../../indexes/querying/spatial) 
   locate documents by spatial data (geographic location).  
 
 * When a spatial query is executed using Studio, a **Spatial Map** view 
@@ -18,10 +18,13 @@
   These regions can be displayed in the spatial map view, in addition to the document results.  
 
 * In this page:  
-  * [Spatial Data in Documents](../../../../studio/database/indexes/querying/spatial-data-in-documents)  
-  * [Running a Dynamic Spatial Query](../../../../studio/database/indexes/querying/spatial-queries-map-view#running-a-dynamic-spatial-query)  
-  * [Spatial Map View](../../../../studio/database/indexes/querying/spatial-queries-map-view#spatial-map-view)  
-  * [Additional Examples](../../../../studio/database/indexes/querying/spatial-queries-map-view#additional-examples)  
+  * [Spatial Data in Documents](../../../studio/database/queries/spatial-queries-map-view#spatial-data-in-documents)  
+  * [Running a Dynamic Spatial Query](../../../studio/database/queries/spatial-queries-map-view#running-a-dynamic-spatial-query)  
+  * [Spatial Map View](../../../studio/database/queries/spatial-queries-map-view#spatial-map-view)  
+  * [Examples](../../../studio/database/queries/spatial-queries-map-view#examples)  
+     * [Circular Region Example](../../../studio/database/queries/spatial-queries-map-view#circular-region-example)  
+     * [Polygonal Region Example](../../../studio/database/queries/spatial-queries-map-view#polygonal-region-example)  
+     * [Mixed Shapes Intersection Example](../../../studio/database/queries/spatial-queries-map-view#mixed-shapes-intersection-example)  
 {NOTE/}
 
 ---
@@ -31,6 +34,7 @@
 
 Spatial Queries locate documents by geographic location, indicated by Latitude and Longitude coordinates.  
 An employee profile, for example, may include and be searched by spatial data.  
+
 ![Figure 1. Spatlal Data](images/spatial-map-view-query-1.png "Figure 1. Spatlal Data")
 
 {INFO: }
@@ -55,7 +59,32 @@ You can name Coordinates' fields freely (not necessarily by the names "Latitude"
 ![Figure 3. Running a Query](images/spatial-map-view-query-3.png "Figure 3. Running a Query")
 
 * **1**. **Query Box**  
-  Type your query in this area.  
+  Type your query in this area.
+{CODE-BLOCK:JSON}
+from Employees
+where spatial.within(
+    spatial.point(Address.Location.Latitude, Address.Location.Longitude),
+    spatial.circle(20,47.623473, -122.3060097, 'miles')
+    )
+{CODE-BLOCK/}
+
+    {INFO: Syntax}
+    A circular region can be defined using two different syntaxes, 
+    **spatial.circle** and **spatial.[wkt](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)**.  
+    
+    {CODE-TABS}
+    {CODE-TAB:csharp:spatial.circle spatial.circle@Studio\Database\Queries\Queries.cs /}
+    {CODE-TAB:csharp:spatial.wkt spatial.wkt@Studio\Database\Queries\Queries.cs /}
+    {CODE-TABS/}
+
+    * `spatial.point` is used in both cases to choose the spatial data fields.  
+      The Latitude field is always chosen first, and the Longitude field second.  
+    * The **search coordinates** are provided in **a different order** for the two syntaxes.  
+      For `spatial.circle`, provide the Longitude first and the Latitude second.  
+      For `spatial.wkt`, provide the Latitude first and the Longitude second.  
+
+    {INFO/}
+
 * **2**. **Play Button**  
   Click this button to execute the query.  
   The above query searches for documents whose Latitude and Longitude are within the specified circle.  
@@ -129,22 +158,43 @@ In the **Spatial Map** view:
 * **4**. **Point Fields**  
   When checked, the documents that contain these fields will be visible as marker points on the map.  
 * **5**. **Regions**  
-  Show or Hide circle/polygon search regions.  
+  Show or Hide circular/polygonal search regions.  
 
 {PANEL/}
 
-{PANEL: Additional Examples}
+{PANEL: Examples}
+
+## Circular Region Example
 
 The following query locates companies in **two separate circular regions**.  
-Each region is given its own color (up to 5 colors) in the spatial map view.  
+
+{INFO: }
+When multiple regions are defined, they are given different colors 
+in the spatial map view.  
+{INFO/}
+
+{CODE-BLOCK:JSON}
+from Companies 
+where 
+spatial.within(
+    spatial.point(Address.Location.Latitude, Address.Location.Longitude),
+    spatial.circle(200, 45.5137863, -122.675375, 'miles')
+    )
+or
+spatial.within(
+    spatial.point(Address.Location.Latitude, Address.Location.Longitude),
+    spatial.circle(200, 37.7774357, -122.418, 'miles')
+    )
+{CODE-BLOCK/}
+
 ![Figure 13. Multiple Regions](images/spatial-map-view-query-13.png "Figure 13. Multiple Regions")
 
----
+## Polygonal Region Example
 
-The following query searches for companies within the boundaries of a **polygon**-shape region.  
+The following query searches for companies within the boundaries of a **polygonal** (polygon-shaped) region.  
 
-* Polygon coordinates must be provided in a [counterclockwise](../../../../indexes/querying/spatial#advanced-search) order.  
-* The first and last coordinates mark the same location to form a closed area.  
+* The polygon's coordinates must be provided in a [counterclockwise](../../../../indexes/querying/spatial#advanced-search) order.  
+* The first and last coordinates must mark the same location to form a closed region.  
 * You can use [tools like this one](https://www.keene.edu/campus/maps/tool/) 
   to draw a polygon on the world map and copy the coordinates to your query.  
 
@@ -163,20 +213,48 @@ spatial.within(
     -118.6527948 32.7114894))'))
 {CODE-BLOCK/}
 
-![Figure 14. Polygon](images/spatial-map-view-query-14.png "Figure 143. Polygon")
+![Figure 14. Polygon](images/spatial-map-view-query-14.png "Figure 14. Polygon")
+
+## Mixed Shapes Intersection Example
+
+This query searches for companies at the intersection of 
+a circular region **and** a polygonal region.  
+Though additional companies are located in both regions, 
+only ones located in both are retrieved.  
+
+{CODE-BLOCK:JSON}
+from Companies 
+where 
+spatial.within(
+    spatial.point(Address.Location.Latitude, Address.Location.Longitude),
+    spatial.wkt('CIRCLE(-119.5 45.5137863 d=400)')
+    )
+and 
+spatial.within(
+    spatial.point(Address.Location.Latitude, Address.Location.Longitude), 
+    spatial.wkt('POLYGON ((
+    -119.7105226 47.1000662,
+    -117.0712682 40.3896178,
+    -110.7439164 34.3929116,
+    -97.9134529 38.0071749,
+    -98.1770925 45.2197803,
+    -119.7105226 47.1000662))'))
+{CODE-BLOCK/}
+
+![Figure 15. Multiple Shapes Intersection](images/spatial-map-view-query-15.png "Figure 15. Multiple Shapes Intersection")
 
 {PANEL/}
 
 ## Related Articles
 
 ### Queries
-- [Querying: Spatial](../../../../indexes/querying/spatial)  
+- [Querying: Spatial](../../../indexes/querying/spatial)  
 
 ### Indexes
-- [Indexing Spatial Data](../../../../indexes/indexing-spatial-data)  
+- [Indexing Spatial Data](../../../indexes/indexing-spatial-data)  
 
 ### Client API
-- [How to Query a Spatial Index](../../../../client-api/session/querying/how-to-query-a-spatial-index)  
+- [How to Query a Spatial Index](../../../client-api/session/querying/how-to-query-a-spatial-index)  
 
 ###Additional Pages
 - [Polyline Mapping Tool](https://www.keene.edu/campus/maps/tool/)
