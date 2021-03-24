@@ -60,7 +60,7 @@ You can name Coordinates' fields freely (not necessarily by the names "Latitude"
 ![Figure 3. Running a Query](images/spatial-map-view-query-3.png "Figure 3. Running a Query")
 
 * **1**. **Query Box**  
-  Type [your query](../../../studio/database/queries/spatial-queries-map-view#circular-region-example) in this area.
+  Type your query in this area.
 {CODE-BLOCK:JSON}
 from Employees
 where spatial.within(
@@ -70,13 +70,13 @@ where spatial.within(
 {CODE-BLOCK/}
 
      {INFO: }
-     Use `spatial.point` to choose the spatial data fields.  
+     Use `spatial.point` to specify the document field names containing the spatial data.  
      The Latitude field is always chosen first, and the Longitude field second.  
      {INFO/}
 
 * **2**. **Play Button**  
   Click this button to execute the query.  
-  The above query searches for documents whose Latitude and Longitude are within the specified circle.  
+  The above query searches for documents whose Latitude and Longitude are within [the specified circle](../../../studio/database/queries/spatial-queries-map-view#circular-region-example).  
 
 ---
 
