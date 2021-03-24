@@ -10,7 +10,8 @@
   displays the search results in graphical form.  
 
     {INFO: }
-    The spatial map view is added only for **dynamic** spatial queries.  
+    The spatial map view is added only for [dynamic](../../../indexes/querying/what-is-rql#dynamic-and-indexed-queries) 
+    spatial queries.  
     It is not added when spatial queries are executed over indexes.  
     {INFO/}
 
@@ -59,7 +60,7 @@ You can name Coordinates' fields freely (not necessarily by the names "Latitude"
 ![Figure 3. Running a Query](images/spatial-map-view-query-3.png "Figure 3. Running a Query")
 
 * **1**. **Query Box**  
-  Type your query in this area.
+  Type [your query](../../../studio/database/queries/spatial-queries-map-view#circular-region-example) in this area.
 {CODE-BLOCK:JSON}
 from Employees
 where spatial.within(
@@ -68,23 +69,6 @@ where spatial.within(
     )
 {CODE-BLOCK/}
 
-    {INFO: Syntax}
-    A circular region can be defined using two different syntaxes, 
-    **spatial.circle** and **spatial.[wkt](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)**.  
-    
-    {CODE-TABS}
-    {CODE-TAB:csharp:spatial.circle spatial.circle@Studio\Database\Queries\Queries.cs /}
-    {CODE-TAB:csharp:spatial.wkt spatial.wkt@Studio\Database\Queries\Queries.cs /}
-    {CODE-TABS/}
-
-    * `spatial.point` is used in both cases to choose the spatial data fields.  
-      The Latitude field is always chosen first, and the Longitude field second.  
-    * The **search coordinates** are provided in **a different order** for the two syntaxes.  
-      For `spatial.circle`, provide the Longitude first and the Latitude second.  
-      For `spatial.wkt`, provide the Latitude first and the Longitude second.  
-
-    {INFO/}
-
 * **2**. **Play Button**  
   Click this button to execute the query.  
   The above query searches for documents whose Latitude and Longitude are within the specified circle.  
@@ -92,9 +76,6 @@ where spatial.within(
 ---
 
 ![Figure 4. Textual Results View](images/spatial-map-view-query-4.png "Figure 4. Textual Results View")
-
-* **1**. **Results**  
-  The **Results** tab lists the results in textual form.  
 
 {PANEL/}
 
@@ -105,15 +86,13 @@ where spatial.within(
 * **1**. **Spatial Map**  
   If there are any resulting documents that match the spatial query, a **Spatial Map** tab is added 
   to the results view.  
-  Click the **Spatial Map** tab to view the resulting documents in their geographical locations on the map.  
+  Click the tab to view the resulting documents in their geographical locations on the map.  
 * **2**. **Expand Results**  
   Click to expand the spatial map.  
 
 ---
 
 ![Figure 6. Zoom and Drag](images/spatial-map-view-query-6.png "Figure 6. Zoom and Drag")
-
-In the **Spatial Map** view:  
 
 * **1**. **Zoom Control**  
   Click **+**/**-** or **roll your mouse wheel** to zoom in and out.  
@@ -168,11 +147,6 @@ In the **Spatial Map** view:
 
 The following query locates companies in **two separate circular regions**.  
 
-{INFO: }
-When multiple regions are defined, they are given different colors 
-in the spatial map view.  
-{INFO/}
-
 {CODE-BLOCK:JSON}
 from Companies 
 where 
@@ -188,6 +162,26 @@ spatial.within(
 {CODE-BLOCK/}
 
 ![Figure 13. Multiple Regions](images/spatial-map-view-query-13.png "Figure 13. Multiple Regions")
+
+{INFO: }
+
+* **Query Syntax**  
+  A circular region can be defined using two different syntaxes, 
+  **spatial.circle** and **spatial.[wkt](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)**.  
+  {CODE-TABS}
+  {CODE-TAB:csharp:spatial.circle spatial.circle@Studio\Database\Queries\Queries.cs /}
+  {CODE-TAB:csharp:spatial.wkt spatial.wkt@Studio\Database\Queries\Queries.cs /}
+  {CODE-TABS/}
+     * `spatial.point` is used in both cases to choose the spatial data fields.  
+       The Latitude field is always chosen first and the Longitude field second.  
+     * The **search coordinates** are provided in **a different order** for the two syntaxes.  
+       For `spatial.circle`, provide the Longitude first and the Latitude second.  
+       For `spatial.wkt`, provide the Latitude first and the Longitude second.  
+
+* **Region Color**  
+  When multiple regions are defined, they are given different colors in the spatial map view.  
+
+{INFO/}
 
 ## Polygonal Region Example
 
@@ -219,8 +213,8 @@ spatial.within(
 
 This query searches for companies at the intersection of 
 a circular region **and** a polygonal region.  
-Though additional companies are located in both regions, 
-only ones located in both are retrieved.  
+Though additional companies are located in each region, 
+only companies located in both regions are retrieved.  
 
 {CODE-BLOCK:JSON}
 from Companies 
