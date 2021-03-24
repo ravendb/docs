@@ -20,5 +20,10 @@
     "Path": "/cluster",
     "Name": "Cluster",
     "Mappings": []
+  },
+  {
+    "Path": "/debug",
+    "Name": "Debug",
+    "Mappings": []
   }
 ]
