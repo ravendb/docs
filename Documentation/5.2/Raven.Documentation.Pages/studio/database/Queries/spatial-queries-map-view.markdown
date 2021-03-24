@@ -69,6 +69,11 @@ where spatial.within(
     )
 {CODE-BLOCK/}
 
+     {INFO: }
+     Use `spatial.point` to choose the spatial data fields.  
+     The Latitude field is always chosen first, and the Longitude field second.  
+     {INFO/}
+
 * **2**. **Play Button**  
   Click this button to execute the query.  
   The above query searches for documents whose Latitude and Longitude are within the specified circle.  
@@ -165,18 +170,16 @@ spatial.within(
 
 {INFO: }
 
-* **Query Syntax**  
+* **Circular Region Syntax**  
   A circular region can be defined using two different syntaxes, 
   **spatial.circle** and **spatial.[wkt](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)**.  
   {CODE-TABS}
   {CODE-TAB:csharp:spatial.circle spatial.circle@Studio\Database\Queries\Queries.cs /}
   {CODE-TAB:csharp:spatial.wkt spatial.wkt@Studio\Database\Queries\Queries.cs /}
   {CODE-TABS/}
-     * `spatial.point` is used in both cases to choose the spatial data fields.  
-       The Latitude field is always chosen first and the Longitude field second.  
-     * The **search coordinates** are provided in **a different order** for the two syntaxes.  
-       For `spatial.circle`, provide the Longitude first and the Latitude second.  
-       For `spatial.wkt`, provide the Latitude first and the Longitude second.  
+  The **search coordinates** are provided in **a different order** for the two syntaxes.  
+  For `spatial.circle`, provide the Longitude first and the Latitude second.  
+  For `spatial.wkt`, provide the Latitude first and the Longitude second.  
 
 * **Region Color**  
   When multiple regions are defined, they are given different colors in the spatial map view.  
@@ -212,7 +215,7 @@ spatial.within(
 ## Mixed Shapes Intersection Example
 
 This query searches for companies at the intersection of 
-a circular region **and** a polygonal region.  
+a **circular region** and a **polygonal region**.  
 Though additional companies are located in each region, 
 only companies located in both regions are retrieved.  
 
