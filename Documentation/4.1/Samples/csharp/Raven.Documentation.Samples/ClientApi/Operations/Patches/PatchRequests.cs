@@ -46,7 +46,10 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
 
             #region patch_non_generic_interface_in_store            
             PatchStatus Send(PatchOperation operation);
-            Task<PatchStatus> SendAsync(PatchOperation operation, SessionInfo sessionInfo = null, CancellationToken token = default(CancellationToken));
+
+            Task<PatchStatus> SendAsync(PatchOperation operation, 
+                                        SessionInfo sessionInfo = null, 
+                                        CancellationToken token = default(CancellationToken));
 
             #endregion
         }

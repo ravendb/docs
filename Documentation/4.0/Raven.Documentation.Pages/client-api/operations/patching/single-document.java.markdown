@@ -1,15 +1,17 @@
 # Patching: How to Perform Single Document Patch Operations
 
 {NOTE: }
-The **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on the server-side and is useful as a performance enhancement or for updating denormalized data in entities.
+The **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on the server side and is useful as a performance enhancement or for updating denormalized data in entities.
 
-The current page deals with patch operations on single documents.
+This page deals with patch operations on single documents.
 
 Patching has three possible interfaces: [Session API](../../../client-api/operations/patching/single-document#session-api), [Session API using defer](../../../client-api/operations/patching/single-document#session-api-using-defer), and [Operations API](../../../client-api/operations/patching/single-document#operations-api).
 
-In this page:  
-[API overview](../../../client-api/operations/patching/single-document#api-overview)  
-[Examples](../../../client-api/operations/patching/single-document#examples)  
+Patching can be done from the client as well as in the studio.  
+
+* In this page:  
+  * [API overview](../../../client-api/operations/patching/single-document#api-overview)  
+  * [Examples](../../../client-api/operations/patching/single-document#examples)  
 {NOTE/}
 
 ## API overview
@@ -72,7 +74,8 @@ The patch request will be sent to server only after the call to `saveChanges`, t
 {PANEL/}
 
 {PANEL:Session API using defer}
-The low level session api for patches uses the `session.advanced().defer` function that allows registering single or several commands.  
+
+The low level session api for patches uses the `session.advanced().defer` function that allows registering one or more commands.  
 One of the possible commands is the `PatchCommandData`, describing single document patch command.  
 The patch request will be sent to server only after the call to `saveChanges`, this way it's possible to perform multiple operations in one request to the server.  
 
@@ -112,14 +115,32 @@ An operations interface that exposes the full functionality and allows performin
 {INFO: PatchOperation}
 
 | Constructor|  | |
-|--------|:-----|-------------| 
+|--------|:-----|-------------|
 | **id** | `String` | ID of the document to be patched. |
 | **changeVector** | `String` | [Can be null] Change vector of the document to be patched, used to verify that the document was not changed before the patch reached it. |
 | **patch** | `PatchRequest` | Patch request to be performed on the document. |
-| **patchIfMissing** | `PatchRequest` | [Can be null] Patch request to be performed if no document with the given ID was found. Will run only if no `changeVector` was passed. |   
-| **skipPatchIfChangeVectorMismatch** | `boolean` | If false and `changeVector` has value, and document with that ID and change vector was not found, will throw exception. |   
+| **patchIfMissing** | `PatchRequest` | [Can be null] Patch request to be performed if no document with the given ID was found. Will run only if no `changeVector` was passed. |
+| **skipPatchIfChangeVectorMismatch** | `boolean` | If false and `changeVector` has value, and document with that ID and change vector was not found, will throw exception. |
 
 {INFO/}
+
+{PANEL/}
+
+{PANEL: List of Script Methods}
+
+This is a list of a few of the javascript methods that can be used in patch scripts. See the 
+more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine#predefined-javascript-functions).  
+
+| Method | Arguments | Description |
+| - | - | - |
+| **load** | `string` or `string[]` | Loads one or more documents into the context of the script by their document IDs |
+| **loadPath** | A document and a path to an ID within that document | Loads a related document by the path to its ID |
+| **del** | Document ID; change vector | Delete the given document by its ID. If you add the expected change vector and the document's current change vector does not match, the document will _not_ be deleted. |
+| **put** | Document ID; document; change vector | Create or overwrite a document with a specified ID and entity. If you try to overwrite an existing document and pass the expected change vector, the put will fail if the specified change vector does not match the document's current change vector. |
+| **cmpxchg** | Key | Load a compare exchange value into the context of the script using its key |
+| **getMetadata** | Document | Returns the document's metadata |
+| **id** | Document | Returns the document's ID |
+| **lastModified** | Document | Returns the `DateTime` of the most recent modification made to the given document |
 
 {PANEL/}
 
