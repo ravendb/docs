@@ -56,6 +56,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
 
         public PatchRequests()
         {
+/*
             using (var store = new DocumentStore())
             using (var session = store.OpenSession())
             {
@@ -505,8 +506,9 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     },
                     patchIfMissing: null));
                 #endregion
+            
             }
-
+*/
             using (var store = new DocumentStore())
             {
                 #region update_value_in_whole_collection
