@@ -1,15 +1,31 @@
 # Indexes: Analyzers
+---
 
-RavenDB uses indexes to facilitate fast queries powered by [**Lucene**](http://lucene.apache.org/), the full-text search engine.  
+{NOTE: }
 
-The indexing of a single document starts from creating Lucene's **Document** according to an index definition. Lucene processes it by breaking it into **fields** and splitting all the text from each **Field** into tokens (**Terms**) in a process called **Tokenization**. Those tokens will be stored in the index, and later will be searched upon.  
-The **Tokenization** process uses an object called an Analyzer underneath.  
+* RavenDB uses indexes to facilitate fast queries powered by [**Lucene**](http://lucene.apache.org/), the full-text search engine.  
 
-The indexing process and its results can be controlled by various field options and Analyzers.  
+* The indexing of a single document starts from creating Lucene's **Document** according to an index definition. Lucene processes it by breaking it into fields and splitting all the text from each field into *tokens* (or *terms*) in a process called *tokenization*. Those tokens will be stored in the index, and later will be searched upon.  
+The tokenization process uses an object called an **analyzer**.  
 
-## Understanding Analyzers
+* The indexing process and its results can be controlled by various field options and Analyzers.  
 
-Lucene offers several out of the box Analyzers, and the new ones can be created easily. Various analyzers differ in the way they split the text stream ("tokenize"), and in the way they process those tokens in post-tokenization.  
+* In this page:  
+  * [Understanding Analyzers](../indexes/using-analyzers#understanding-analyzers)  
+  * [RavenDB's Default Analyzer](../indexes/using-analyzers#ravendb)  
+  * [Full-Text Search](../indexes/using-analyzers#full-text-search)  
+  * [Selecting an Analyzer for a Field](../indexes/using-analyzers#selecting-an-analyzer-for-a-field)  
+  * [Creating Custom Analyzers](../indexes/using-analyzers#creating-custom-analyzers)  
+  * [Manipulating Field Indexing Behavior](../indexes/using-analyzers#manipulating-field-indexing-behavior)  
+  * [Ordering When a Field is Searchable](../indexes/using-analyzers#ordering-when-a-field-is-searchable)  
+
+{NOTE/}
+
+---
+
+{PANEL: Understanding Analyzers}
+
+Lucene offers several Analyzers out of the box, and new ones can be created easily. Various analyzers differ in the way they split the text stream ("tokenize"), and in the way they process those tokens in post-tokenization.  
 
 For example, given this sample text:  
 
@@ -35,7 +51,7 @@ For example, given this sample text:
 
     `[The quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]` 
 
-* **NGramAnalyzer** will tokenize on pre define token lengths, 2-6 chars long, which are defined by `Indexing.Analyzers.NGram.MinGram` and `Indexing.Analyzers.NGram.MaxGram` configuration options:  
+* **NGramAnalyzer** will tokenize on predefined token lengths, 2-6 chars long, which are defined by `Indexing.Analyzers.NGram.MinGram` and `Indexing.Analyzers.NGram.MaxGram` configuration options:  
   
    `[.c]  [.co]  [.com]  [12]  [123]  [1234]  [12343]  [123432]  [23]  [234]  [2343]  [23432]  [32]  [34]  [343]  [3432]  [43]  [432]  [@h]  [@ho]  [@hot]  [@hotm]  [@hotma]  [ai]  [ail]  [ail.]  [ail.c]  [ail.co]  [az]  [azy]  [b@]  [b@h]  [b@ho]  [b@hot]  [b@hotm]  [bo]  [bob]  [bob@]  [bob@h]  [bob@ho]  [br]  [bro]  [brow]  [brown]  [ck]  [co]  [com]  [do]  [dog]  [dogs]  [ed]  [er]  [fo]  [fox]  [gs]  [ho]  [hot]  [hotm]  [hotma]  [hotmai]  [ic]  [ick]  [il]  [il.]  [il.c]  [il.co]  [il.com]  [ju]  [jum]  [jump]  [jumpe]  [jumped]  [l.]  [l.c]  [l.co]  [l.com]  [la]  [laz]  [lazy]  [ma]  [mai]  [mail]  [mail.]  [mail.c]  [mp]  [mpe]  [mped]  [ob]  [ob@]  [ob@h]  [ob@ho]  [ob@hot]  [og]  [ogs]  [om]  [ot]  [otm]  [otma]  [otmai]  [otmail]  [ov]  [ove]  [over]  [ow]  [own]  [ox]  [pe]  [ped]  [qu]  [qui]  [quic]  [quick]  [ro]  [row]  [rown]  [tm]  [tma]  [tmai]  [tmail]  [tmail.]  [ui]  [uic]  [uick]  [um]  [ump]  [umpe]  [umped]  [ve]  [ver]  [wn]  [zy]`  
 
@@ -43,7 +59,9 @@ For example, given this sample text:
 
    `[.co]  [.com]  [123]  [1234]  [234]  [2343]  [343]  [3432]  [432]  [@ho]  [@hot]  [ail]  [ail.]  [azy]  [b@h]  [b@ho]  [bob]  [bob@]  [bro]  [brow]  [com]  [dog]  [dogs]  [fox]  [hot]  [hotm]  [ick]  [il.]  [il.c]  [jum]  [jump]  [l.c]  [l.co]  [laz]  [lazy]  [mai]  [mail]  [mpe]  [mped]  [ob@]  [ob@h]  [ogs]  [otm]  [otma]  [ove]  [over]  [own]  [ped]  [qui]  [quic]  [row]  [rown]  [tma]  [tmai]  [uic]  [uick]  [ump]  [umpe]  [ver]  `  
 
-## RavenDB Default Analyzer
+{PANEL/}
+
+{PANEL: RavenDB's Default Analyzer}
 
 By default, RavenDB uses a custom analyzer called `LowerCaseKeywordAnalyzer` for all indexed content. Its implementation behaves like Lucene's KeywordAnalyzer, but it also performs case normalization by converting all characters to lower case. That is - RavenDB stores the entire term as a single token, in a lower cased form. Given the same sample text above, `LowerCaseKeywordAnalyzer` will produce a single token:  
 
@@ -51,37 +69,105 @@ By default, RavenDB uses a custom analyzer called `LowerCaseKeywordAnalyzer` for
 
 This default analyzer allows you to match exact and complete text values. To perform full-text searches, set a different analyzer.  
 
-## Full-Text Search  
+{PANEL/}
+
+{PANEL: Full-Text Search}
 
 To allow full-text search on the text fields, you can use the analyzers provided out of the box with Lucene. These are available as part of the Lucene library which ships with RavenDB.  
 
 For most cases, Lucene's `StandardAnalyzer` would be your analyzer of choice. As shown above, this analyzer is aware of e-mail and network addresses when tokenizing. It normalizes cases, filters out common English words, and does some basic English stemming as well.  
 
-For languages other than English, or if you need a custom analysis process, you can roll your own `Analyzer`. It is quite simple and may be already available as a contrib package for Lucene. 
+For languages other than English, or if you need a custom analysis process, you can roll your own `Analyzer`. It is quite simple and may already be available as a contrib package for Lucene. 
 There are also `Collation analyzers` available (you can read more about them [here](../indexes/sorting-and-collation#collation)).  
 
-## Selecting an Analyzer for a Field  
+{PANEL/}
 
-To make a document property indexed using a specific Analyzer, all you need to do is to match it with the name of the property:  
+{PANEL: Selecting an Analyzer for a Field}
+
+To index a document field using a specific analyzer, all you need to do is to match it with the name of the field:  
 
 {CODE-TABS}
 {CODE-TAB:csharp:AbstractIndexCreationTask analyzers_1@Indexes\Analyzers.cs /}
 {CODE-TAB:csharp:Operation analyzers_2@Indexes\Analyzers.cs /}
 {CODE-TABS/}
 
-{INFO The analyzer you are referencing to has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the RavenDB working directory (where `Raven.Server` executable is located), and use their fully qualified type name (including the assembly name). /}
+{INFO The analyzer you are referencing has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the RavenDB working directory (where `Raven.Server` executable is located), and use their fully qualified type name (including the assembly name). /}
 
-## Creating Your Own Analyzer
+{PANEL/}
 
-You can create a custom analyzer on your own and deploy it to RavenDB server. To do that pefrom the following steps:  
+{PANEL: Creating Custom Analyzers}
 
-- create a class that inherits from abstract `Lucene.Net.Analysis.Analyzer` (you need to reference `Lucene.Net.dll` supplied with RavenDB Server package),  
-- your DLL needs to be placed next to RavenDB's binaries (note it needs to be compatible with .NET Core 2.0 e.g. .NET Standard 2.0 assembly)  
-- the fully qualified name needs to be specified for an indexing field that is going to be tokenized by the analyzer  
+You can write your own custom analyzers as a `.cs` file. Custom analyzers can either belong to a specific 
+database, or to the server as a whole. Database custom analyzers can only be used by the indexes of that 
+database. Server-wide custom analyzers can be used by the indexes of all databases on the server.  
+
+A database analyzer can have the same name as a server-wide analyzer. In this situation, the indexes of that 
+database will use the database version of the analyzer. So you can think of database analyzers as overriding 
+the server-wide analyzers with the same names.  
+
+There are a few ways to create an analyzer and add it to your server:  
+1. [Through the studio.](../studio/database/settings/custom-analyzers)  
+2. Through the client API.  
+3. By adding it directly to RavenDB's binaries, [see below](../indexes/using-analyzers#adding-an-analyzer-to-the-binaries).  
+
+### Using the Client API
+
+First, create a class that inherits from abstract `Lucene.Net.Analysis.Analyzer` (you need to reference 
+`Lucene.Net.dll`, which is supplied with RavenDB Server package). For example:  
 
 {CODE analyzers_6@Indexes\Analyzers.cs /}
 
-## Manipulating Field Indexing Behavior
+Next, send the analyzer to a specific database using the operation `PutAnalyzersOperation`. Or, to make it 
+a server-wide analyzer, use `PutServerWideOperation`. These operations are very similar in how they work. 
+Both of them take one parameter: either an `AnalyzerDefinition`, or an array of `AnalyzerDefinition`'s.  
+
+{CODE-BLOCK: csharp}
+public class PutAnalyzersOperation
+{
+    private readonly AnalyzerDefinition[] _analyzersToAdd;
+}
+
+public class PutServerWideAnalyzersOperation
+{
+    private readonly AnalyzerDefinition[] _analyzersToAdd;
+}
+{CODE-BLOCK/}
+
+By default, the `PutAnalyzersOperation` will apply to the [default database](../client-api/setting-up-default-database) 
+of the document store you're using. To target a different database, use the `ForDatabase()` method - read more 
+[here](../client-api/operations/how-to/switch-operations-to-a-different-database).  
+
+The `AnalyzerDefinition` object has two properties, `Name` and `Code`:  
+
+{CODE-BLOCK: csharp}
+public class AnalyzerDefinition
+{
+    public string Name { get; set; }
+    public string Code { get; set; }
+}
+{CODE-BLOCK/}
+
+| Parameter | Type | Description |
+| - | - | - |
+| **Name** | `string` | The class name of your custom analyzer as it appears in your code |
+| **Code** | `string` | Compilable csharp code: a class that inherits from `Lucene.Net.Analysis.Analyzer`, the containing namespace, and the necessary `using` statements. |
+
+#### Client API Example
+
+Now let's see how everything fits together.  
+
+{CODE analyzers_7@Indexes\Analyzers.cs /}
+
+### Adding an Analyzer to the Binaries
+
+Another way of adding custom analyzers to RavenDB is to place them next to RavenDB's binaries. Note that it needs to be 
+compatible with .NET Core 2.0 e.g. .NET Standard 2.0 assembly). The fully qualified name needs to be specified for an 
+indexing field that is going to be tokenized by the analyzer. This is the only way to add custom analyzers in RavenDB 
+versions older than 5.2.  
+
+{PANEL/}
+
+{PANEL: Manipulating Field Indexing Behavior}
 
 By default, each indexed field is analyzed using the `LowerCaseKeywordAnalyzer` which indexes a field as a single, lower cased term.  
 
@@ -97,9 +183,13 @@ If you want to disable indexing on a particular field, use the `FieldIndexing.No
 
 {CODE analyzers_5@Indexes\Analyzers.cs /}
 
-## Ordering When Field is Searchable
+{PANEL/}
 
-When field is marked as `Search` sorting must be done using additional field. More [here](../indexes/querying/sorting#ordering-when-a-field-is-searchable).  
+{PANEL: Ordering When a Field is Searchable}
+
+When a field is marked as `Search`, sorting must be done using an additional field. More [here](../indexes/querying/sorting#ordering-when-a-field-is-searchable).  
+
+{PANEL/}
 
 ## Related Articles
 
@@ -108,3 +198,7 @@ When field is marked as `Search` sorting must be done using additional field. Mo
 - [Boosting](../indexes/boosting)
 - [Storing Data in Index](../indexes/storing-data-in-index)
 - [Dynamic Fields](../indexes/using-dynamic-fields)
+
+### Studio
+- [Custom Analyzers](../studio/database/settings/custom-analyzers)  
+- [Create Map Index](../studio/database/indexes/create-map-index)  
