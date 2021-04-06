@@ -1,4 +1,4 @@
-﻿# Indexes Overview
+﻿# Indexes: Overview
 ---
 
 {NOTE: }
@@ -19,8 +19,8 @@
     [Index Definition](../../../studio/database/indexes/indexes-overview#index-definition), 
     [Indexing Process](../../../studio/database/indexes/indexes-overview#indexing-process), 
     [Indexed Data](../../../studio/database/indexes/indexes-overview#indexed-data)  
-  * [Indexes Types](../../../studio/database/indexes/indexes-overview#indexes-types)  
-  * [Fields Configuration Options](../../../studio/database/indexes/indexes-overview#fields-configuration-options)
+  * [Index Types](../../../studio/database/indexes/indexes-overview#index-types)  
+  * [Field Configuration Options](../../../studio/database/indexes/indexes-overview#field-configuration-options)
   * [Modifying Index Definition](../../../studio/database/indexes/indexes-overview#modifying-index-definition)
   * [Indexes in the Cluster](../../../studio/database/indexes/indexes-overview#indexes-in-the-cluster)
   * [Indexing Errors](../../../studio/database/indexes/indexes-overview#indexing-errors)
@@ -43,7 +43,7 @@
 
 * Indexes are not stored in the 'document store' but have their own separate storage.  
 
-* Indexes in RavenDB are split across multiple axes (see more [below](../../../studio/database/indexes/indexes-overview#indexes-types))
+* Indexes in RavenDB are split across multiple axes (see more [below](../../../studio/database/indexes/indexes-overview#index-types))
 
   * Auto Indexes -vs- Static Indexes  
   * Map Indexes -vs- Map-Reduce Indexes  
@@ -190,7 +190,7 @@ See [here](../../../studio/database/indexes/create-map-index) to learn how to se
 * The original index is retained and is fully operable while the new index (with the new definition) is being built.  
   Once the new index is up-to-date the original index is removed in favor of the new one.  
 
-* See example in [Indexes List View - Side by Side](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing).  
+* See example in [Index List View - Side by Side](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing).  
 {PANEL/}
 
 {PANEL: Indexes in the Cluster}
@@ -212,7 +212,7 @@ See [here](../../../studio/database/indexes/create-map-index) to learn how to se
 * An index is only allowed a certain failure rate, above which it is marked in an error state.  
   An index in an error state cannot be queried and will return an immediate error.  
 
-* See more in [Indexes List View - Errors](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
+* See more in [Index List View - Errors](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
 {PANEL/}
 
 ## Related Articles
@@ -223,4 +223,4 @@ See [here](../../../studio/database/indexes/create-map-index) to learn how to se
 - [Indexing Basics](../../../indexes/indexing-basics)
 
 ### Studio
-- [Studio Indexes List View](../../../studio/database/indexes/indexes-list-view)  
+- [Studio Index List View](../../../studio/database/indexes/indexes-list-view)  

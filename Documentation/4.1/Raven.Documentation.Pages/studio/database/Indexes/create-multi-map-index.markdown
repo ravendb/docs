@@ -65,8 +65,8 @@ The `Collection` field indexed in the above example is not mandatory but can be 
 - [Map-Reduce Indexes](../../../indexes/map-reduce-indexes)
 
 ### Studio
-- [Indexes Overview](../../../studio/database/indexes/indexes-overview)
-- [Indexes List View](../../../studio/database/indexes/indexes-list-view)
+- [Indexes: Overview](../../../studio/database/indexes/indexes-overview)
+- [Index List View](../../../studio/database/indexes/indexes-list-view)
 - [Create Map Index](../../../studio/database/indexes/create-map-index)
 - [Create Map-Reduce Index](../../../studio/database/indexes/create-map-reduce-index)
 

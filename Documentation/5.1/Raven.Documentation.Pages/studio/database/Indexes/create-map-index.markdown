@@ -192,8 +192,8 @@
 
 ### Studio
 
-- [Indexes Overview](../../../studio/database/indexes/indexes-overview)
-- [Indexes List View](../../../studio/database/indexes/indexes-list-view)
+- [Indexes: Overview](../../../studio/database/indexes/indexes-overview)
+- [Index List View](../../../studio/database/indexes/indexes-list-view)
 - [Create Multi-Map Index](../../../studio/database/indexes/create-multi-map-index)
 - [Create Map-Reduce Index](../../../studio/database/indexes/create-map-reduce-index)
 

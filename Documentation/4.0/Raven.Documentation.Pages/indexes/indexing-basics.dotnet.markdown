@@ -68,5 +68,5 @@ More detailed information about `Map-Reduce` indexes can be found [here](../inde
 
 ### Studio
 
-- [Indexes Overview](../studio/database/indexes/indexes-overview#indexes-overview)
-- [Studio Indexes List View](../studio/database/indexes/indexes-list-view)
+- [Indexes: Overview](../studio/database/indexes/indexes-overview#indexes-overview)
+- [Studio Index List View](../studio/database/indexes/indexes-list-view)

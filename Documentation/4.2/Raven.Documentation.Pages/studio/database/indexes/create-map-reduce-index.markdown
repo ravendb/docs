@@ -221,8 +221,8 @@ pattern determines which output documents will be included in each reference doc
 - [Map-Reduce Indexes](../../../indexes/map-reduce-indexes)
 
 ### Studio
-- [Indexes Overview](../../../studio/database/indexes/indexes-overview)
-- [Indexes List View](../../../studio/database/indexes/indexes-list-view)
+- [Indexes: Overview](../../../studio/database/indexes/indexes-overview)
+- [Index List View](../../../studio/database/indexes/indexes-list-view)
 - [Create Map Index](../../../studio/database/indexes/create-map-index)
 - [Create Multi-Map Index](../../../studio/database/indexes/create-multi-map-index)
 - [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer)
