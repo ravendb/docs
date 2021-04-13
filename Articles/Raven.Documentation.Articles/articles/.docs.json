@@ -2364,5 +2364,63 @@
         "twitter:description": "What are document-oriented databases? Read about the challenges that this semistructured data lets you handle and about the document database pros and cons.",
         "twitter:url": "https://ravendb.net/articles/nosql-document-oriented-databases-detailed-overview"
     }
+},
+{
+    "Path": "best-database-for-high-availability.markdown",
+    "Name": "Best Database for High Availability",
+    "Mappings": [],
+    "Metadata": {
+        "title": "Best Database for High Availability | High Availability Database | RavenDB",
+        "likeSection": "yes",
+        "url": "best-database-for-high-availability",
+        "publishedAt": "2021-04-12",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "Best database for high availability with maximum survivability that can handle increases in load, running on older hardware and automatically adjust and overcome.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "Best Database for High Availability",
+        "og:description": "Best database for high availability with maximum survivability that can handle increases in load, running on older hardware and automatically adjust and overcome.",
+        "og:url": "https://ravendb.net/articles/best-database-for-high-availability",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/best-database-for-high-availability&fileName=best-database-for-high-availability.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "Best Database for High Availability",
+        "twitter:description": "Best database for high availability with maximum survivability that can handle increases in load, running on older hardware and automatically adjust and overcome.",
+        "twitter:url": "https://ravendb.net/articles/best-database-for-high-availability"
+    }
+},
+{
+    "Path": "filtered-replication.markdown",
+    "Name": "Filtered Replication",
+    "Mappings": [],
+    "Metadata": {
+        "title": "Filtered Replication | NoSQL Database | RavenDB",
+        "likeSection": "yes",
+        "url": "filtered-replication",
+        "publishedAt": "2021-04-13",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "Filtered replication enables running the database in high availability mode, or creating a mesh network of independent, collaborating databases.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "Filtered Replication",
+        "og:description": "Filtered replication enables running the database in high availability mode, or creating a mesh network of independent, collaborating databases.",
+        "og:url": "https://ravendb.net/articles/filtered-replication",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/filtered-replication&fileName=filtered-replication.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "Filtered Replication",
+        "twitter:description": "Filtered replication enables running the database in high availability mode, or creating a mesh network of independent, collaborating databases.",
+        "twitter:url": "https://ravendb.net/articles/filtered-replication"
+    }
 }
 ]
