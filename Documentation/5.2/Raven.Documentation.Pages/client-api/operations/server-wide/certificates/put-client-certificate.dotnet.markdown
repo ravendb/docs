@@ -15,7 +15,7 @@ You can register an existing client certificate using **PutClientCertificateOper
 | ------------- | ------------- | ----- |
 | **name** | string | Name of a certificate |
 | **certificate** | X509Certificate2 | Certificate to register |
-| **permissions** | Dictionary&lt;string, DatabaseAccess&gt; | Dictionary with database to access level mapping |
+| **permissions** | Dictionary&lt;string, DatabaseAccess&gt; | Dictionary mapping databases to access level |
 | **clearance** | SecurityClearance | Access level |
 
 ## Example

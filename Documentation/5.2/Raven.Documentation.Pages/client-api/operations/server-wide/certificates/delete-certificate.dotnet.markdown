@@ -1,6 +1,6 @@
-# Operations: Server: How to delete client certificate?
+# Operations: Server: How to Delete a Client Certificate
 
-You can delete client certificate using **DeleteCertificateOperation**. 
+You can delete a client certificate using the **DeleteCertificateOperation**.  
 
 ## Syntax
 

@@ -82,3 +82,7 @@ A `User` certificate with `read/write` access level can perform all the operatio
 
 - [Overview](../../../server/security/authorization/security-clearance-and-permissions)
 - [Common Errors and FAQ](../../../server/security/common-errors-and-faq)
+
+### Studio
+
+- [Studio: Read-Only Access Level](../../../studio/server/certificates/read-only-access-level)

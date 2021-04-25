@@ -37,14 +37,24 @@ From the point of view of RavenDB, the act of editing a vacation request documen
 The way that the HR system looks at those operations is very different. 
 
 RavenDB expects the applications and systems using it to utilize the security infrastructure it provides to prevent unauthorized access, such as a different
-application trying to access the HR database. However, once access is granted, the access is complete. By design, RavenDB does not have the notion of a read-only
-access to a database.
+application trying to access the HR database. However, once access is granted, the access is complete.  
 
-RavenDB security infrastructure operates at the level of the entire database. If you are granted access to a database, you can access
-any and all documents in that database. There is no way to limit access to particular documents or collections.
+RavenDB security infrastructure operates at the level of the entire database. If you are granted access to a database, you can access 
+any and all documents in that database. There is no way to limit access to particular documents or collections.  
 
 It is common that this is something that you would need, exposing some part of the data or exposing read only access. If you need to provide direct access
 to the database, the way it is usually handled is by generating a separate certificate for that purpose and granting it access to a _different_ database. In that case, set up an ETL process from the source data to the destination.
+
+You can also do this by giving a client certificate a "User" security clearance. With this clearance, 
+you can set a different access level to each database. The three access levels are: Admin, Read/Write, 
+and Read-Only.  
+
+The Read-Only access level allows reading data and performing queries on a particular database, but 
+not write or modify data. Indexes cannot be defined, although [auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) 
+can still be created in response to queries. Clients can still become [subscription workers](../../../client-api/data-subscriptions/what-are-data-subscriptions) 
+to consume data subscriptions. [Ongoing tasks](../../../server/ongoing-tasks/general-info) cannot be 
+defined. No configurations can be changed, and some information about the database and the server are 
+restricted. Learn more about the Read-Only access level [here](../../../studio/server/certificates/read-only-access-level).  
 
 In this manner, you can choose exactly what is exposed, including redacting personal information, hiding details, etc. Because that ETL process is unidirectional, 
 this also protects the source data from modifications made on the new database. Together, ETL and dedicated databases can be used for fine grained access, but that 
@@ -160,3 +170,7 @@ Because client certificates are managed by RavenDB directly and not through any 
 ### Configuration
 
 - [Security Configuration](../../../server/configuration/security-configuration)
+
+### Studio
+
+- [Studio: Read-Only Access Level](../../../studio/server/certificates/read-only-access-level)

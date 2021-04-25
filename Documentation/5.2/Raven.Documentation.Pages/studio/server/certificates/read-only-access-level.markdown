@@ -24,8 +24,8 @@ that make it clear to the user what they can and can't do.
 
 * In this page:  
 
-  * [Create a Client Certificate with Read Only Access](../../../studio/server/certificates/read-only-certificates#create-a-client-certificate-with-read-only-access)
-  * [The Studio in "Read Only" Mode](../../../studio/server/certificates/read-only-certificates#the-studio-in-"read-only"-mode)
+  * [Create a Client Certificate with Read Only Access](../../../studio/server/certificates/read-only-access-level#create-a-client-certificate-with-read-only-access)
+  * [The Studio in "Read Only" Mode](../../../studio/server/certificates/read-only-access-level#the-studio-in-"read-only"-mode)
 
 {NOTE/}
 
@@ -151,4 +151,25 @@ This "viewing" button replaces the "editing" button in other parts of the Studio
 
 {PANEL/}
 
-## Related Articles
+## Related articles
+
+### Start
+
+- [Secure Setup with a Let's Encrypt Certificate](../../../start/installation/setup-wizard#secure-setup-with-a-let)
+- [Secure Setup with Your Own Certificate](../../../start/installation/setup-wizard#secure-setup-with-your-own-certificate)
+
+### Client API
+
+- [Setting up Authentication and Authorization](../../../client-api/setting-up-authentication-and-authorization)
+- [How to create a client certificate](../../../../client-api/operations/server-wide/certificates/create-client-certificate) 
+- [How to delete a certificate](../../../../client-api/operations/server-wide/certificates/delete-certificate)  
+- [How to generate a client certificate](../../../../client-api/operations/server-wide/certificates/create-client-certificate) 
+- [How to put a client certificate](../../../../client-api/operations/server-wide/certificates/put-client-certificate)  
+
+### Server
+
+- [Overview](../../../server/security/authorization/security-clearance-and-permissions)  
+- [Common Errors and FAQ](../../../server/security/common-errors-and-faq)  
+- [Manual Certificate Configuration](../../../server/security/authentication/certificate-configuration)
+
+

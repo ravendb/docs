@@ -90,9 +90,13 @@ Wiring a certificate in the RavenDB Client is described in the [setting up authe
 
 ### Client API
 
-[Setting up Authentication and Authorization](../../../client-api/setting-up-authentication-and-authorization)
+- [Setting up Authentication and Authorization](../../../client-api/setting-up-authentication-and-authorization)
 
 ### Security
 
 - [Overview](../../../server/security/overview)
 - [Certificate Management](../../../server/security/authentication/certificate-management)
+
+### Studio
+
+- [Studio: Read-Only Access Level](../../../studio/server/certificates/read-only-access-level)

@@ -52,6 +52,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             #region cert_1_3
             public enum DatabaseAccess
             {
+                Read,
                 ReadWrite,
                 Admin
             }

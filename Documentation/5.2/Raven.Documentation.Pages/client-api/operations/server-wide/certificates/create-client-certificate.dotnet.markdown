@@ -13,7 +13,7 @@ You can generate a client certificate using **CreateClientCertificateOperation**
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **name** | string | Name of a certificate |
-| **permissions** | Dictionary&lt;string, DatabaseAccess&gt; | Dictionary with database to access level mapping |
+| **permissions** | Dictionary&lt;string, DatabaseAccess&gt; | Dictionary mapping databases to access level |
 | **clearance** | SecurityClearance | Access level |
 | **password** | string | Optional certificate password, default: no password |
 
