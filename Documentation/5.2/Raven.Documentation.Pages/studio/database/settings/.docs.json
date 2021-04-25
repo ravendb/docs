@@ -34,5 +34,11 @@
     "Name": "Custom Analyzers",
     "DiscussionId": "fa539de5-30aa-483a-af05-6574f84d64c9",
     "Mappings": []
-  }
+  },
+    {
+        "Path": "documents-compression.markdown",
+        "Name": "Documents Compression",
+        "DiscussionId": "7eddb51a-7800-42ed-95ca-31fe5da86470",
+        "Mappings": []
+    }
 ]
