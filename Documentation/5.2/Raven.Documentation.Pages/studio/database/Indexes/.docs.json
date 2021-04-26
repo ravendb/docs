@@ -34,5 +34,11 @@
     "Name": "Map-Reduce Visualizer",
     "DiscussionId": "4ac7b114-eeeb-4af5-8317-ca4144ee48e1",
     "Mappings": []
+  },
+  {
+    "Path": "index-history-view.markdown",
+    "Name": "Index History View",
+    "DiscussionId": "2f9588ba-e7d2-4b6e-b8df-a42ab4df1eff",
+    "Mappings": []
   }
 ]
