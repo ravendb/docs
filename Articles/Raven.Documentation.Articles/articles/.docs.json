@@ -2424,6 +2424,35 @@
     }
 },
 {
+    "Path": "health-billing-systems-rely-on-ravendb-for-timely-health-insurance-payments.markdown",
+    "Name": "Health Billing Systems Rely on RavenDB for Timely Health Insurance Payments",
+    "Mappings": [],
+    "Metadata": {
+        "title": "Database for Record Management Systems | Document Database | RavenDB",
+        "likeSection": "yes",
+        "url": "health-billing-systems-rely-on-ravendb-for-timely-health-insurance-payments",
+        "publishedAt": "2021-04-22",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "A database for record management systems that is ACID, available even if connectivity is disrupted, and works with data the same way insurance companies do.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "Health Billing Systems Rely on RavenDB for Timely Health Insurance Payments",
+        "og:description": "A database for record management systems that is ACID, available even if connectivity is disrupted, and works with data the same way insurance companies do.",
+        "og:url": "https://ravendb.net/articles/health-billing-systems-rely-on-ravendb-for-timely-health-insurance-payments",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/health-billing-systems-rely-on-ravendb-for-timely-health-insurance-payments&fileName=health-billing-systems-rely-on-ravendb-for-timely-health-insurance-payments.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "Health Billing Systems Rely on RavenDB for Timely Health Insurance Payments",
+        "twitter:description": "A database for record management systems that is ACID, available even if connectivity is disrupted, and works with data the same way insurance companies do.",
+        "twitter:url": "https://ravendb.net/articles/health-billing-systems-rely-on-ravendb-for-timely-health-insurance-payments"
+    }
+},
+{
     "Path": "hipaa-database-compliance-the-easy-way.markdown",
     "Name": "HIPAA Database Compliance The Easy Way",
     "Mappings": [],
