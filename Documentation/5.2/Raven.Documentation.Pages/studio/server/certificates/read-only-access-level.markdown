@@ -9,12 +9,10 @@ can grant different levels of access for different databases. These access level
 **Read/Write**, and **Read Only**.  
 
 * The Read Only access level only allows you to read data from a database, but not to write data. 
-You cannot update existing documents. You cannot change any configurations. You cannot define 
-[static indexes](../../../indexes/creating-and-deploying#static-indexes). You cannot define 
-[ongoing tasks](../../../server/ongoing-tasks/general-info).  
-
-* Even with Read Only access, the database will still create [auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) 
-in response to the clients' queries.  
+You cannot update existing documents, change any configurations, define [ongoing tasks](../../../server/ongoing-tasks/general-info) 
+or [static indexes](../../../indexes/creating-and-deploying#static-indexes). However, the database 
+will still create [auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) in response 
+to the clients' queries.  
 
 * Clients with Read Only access can still become [subscription workers](../../../client-api/data-subscriptions/what-are-data-subscriptions) 
 to consume data subscriptions.  
@@ -35,15 +33,26 @@ that make it clear to the user what they can and can't do.
 
 ![](images/read-only-certificates-1.png)
 
+{INFO: }
+
+1. This view is found in `Manage Server` > `Certificates`
+
+2. This area lists the databases' names, and the access level for each one:  
+  * **<span style="color:chartreuse">A</span>** - Admin
+  * **<span style="color:orange">R/W</span>** - Read/Write
+  * **<span style="color:lightcoral">R</span>** - Read Only
+
+{INFO/}
+
 {WARNING: }
 
 1. This drop-down menu allows you to either generate a new client certificate, or upload 
-your own. This will open the Generate/Upload Client Certificate dialogue you see on the 
+your own. This will open the Generate/Upload Client Certificate dialog you see on the 
 right.  
 
-2. Choose the certificate's name.  
+2. Enter the certificate's name.  
 
-3. Choose the security clearance. Only the User clearance can have a Read Only access level 
+3. Select the security clearance. Only the User clearance can have a Read Only access level 
 for a given database. The options are:
   * Cluster Administrator
   * Operator
@@ -63,17 +72,6 @@ _at all._
 and database permissions can all be modified.  
 
 {WARNING/}
-
-{INFO: }
-
-1. This view is found in `Manage Server` > `Certificates`
-
-2. This area lists the names of databases in white, and the access levels for each one:  
-  * **<span style="color:chartreuse">A</span>** - Admin
-  * **<span style="color:orange">R/W</span>** - Read/Write
-  * **<span style="color:lightcoral">R</span>** - Read Only
-
-{INFO/}
 
 {PANEL/}
 
@@ -99,12 +97,12 @@ the certificate your browser is using to access the server.
 {INFO: }
 
 When using a certificate with **Security Clearance "User"**, most of the views that pertain 
-to the server (in the menu "Manage Server"), are inaccessible.  
+to the server (in the "Manage Server" menu), are inaccessible.  
 
 Note: this is always true for any certificate with security clearance User - even with 
 the **Admin** and **Read/Write** access levels.  
 
-The views that you can access with clearance User are:  
+The Manage Server views that can be accessed with a User security clearance are:  
 
 * The [Cluster View](../../../studio/server/cluster/cluster-view), where info about the 
 cluster topology can be viewed.  
@@ -135,15 +133,14 @@ modes.
 
 * At the top we see the index in the normal viewing mode ( _not_ Read Only). There are three 
 buttons at the top right:  
-1) Edit - view, edit, and test the code of the index itself.  
-2) Refresh - force the index to start the indexing process so that is up to date with recent 
-changes to the data.  
+1) Edit - view & edit the index definition.  
+2) Reset index - force the index to start re-indexing all of its data.  
 3) Remove - delete the index.  
 
 * At the bottom we see the same index in Read Only mode. In the same spot we now see only one 
 button:  
 4) This is the "viewing" button. It opens the exact same view as the above "editing" 
-button, except you cannot modify the index. Refreshing or deleting the index are not possible 
+button, except you cannot modify the index. Reseting or deleting the index are not possible 
 in Read Only mode.  
 
 This "viewing" button replaces the "editing" button in other parts of the Studio as well.  
@@ -161,15 +158,16 @@ This "viewing" button replaces the "editing" button in other parts of the Studio
 ### Client API
 
 - [Setting up Authentication and Authorization](../../../client-api/setting-up-authentication-and-authorization)
-- [How to create a client certificate](../../../../client-api/operations/server-wide/certificates/create-client-certificate) 
-- [How to delete a certificate](../../../../client-api/operations/server-wide/certificates/delete-certificate)  
-- [How to generate a client certificate](../../../../client-api/operations/server-wide/certificates/create-client-certificate) 
-- [How to put a client certificate](../../../../client-api/operations/server-wide/certificates/put-client-certificate)  
+- [How to create a client certificate](../../../client-api/operations/server-wide/certificates/create-client-certificate) 
+- [How to delete a certificate](../../../client-api/operations/server-wide/certificates/delete-certificate)  
+- [How to generate a client certificate](../../../client-api/operations/server-wide/certificates/create-client-certificate) 
+- [How to put a client certificate](../../../client-api/operations/server-wide/certificates/put-client-certificate)  
 
 ### Server
 
-- [Overview](../../../server/security/authorization/security-clearance-and-permissions)  
+- [Security Clearance and Permissions](../../../server/security/authorization/security-clearance-and-permissions)  
 - [Common Errors and FAQ](../../../server/security/common-errors-and-faq)  
-- [Manual Certificate Configuration](../../../server/security/authentication/certificate-configuration)
+- [Manual Certificate Configuration](../../../server/security/authentication/certificate-configuration)  
+- [Certificate Management](../../../server/security/authentication/certificate-management)  
 
 

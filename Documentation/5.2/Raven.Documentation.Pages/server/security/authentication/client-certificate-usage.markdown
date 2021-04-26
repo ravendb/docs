@@ -1,10 +1,10 @@
 # Authentication: Client Certificate Usage
 
-In previous sections we described how to obtain a server certificate and how to configure RavenDB to use it. In this section we will cover how to use client certificates to connect to a RavenDB server.
+In previous sections we described how to obtain a server certificate and how to configure RavenDB to use it. This section will cover how to use client certificates to connect to a RavenDB server.
 
 ## Obtaining Your First Admin Client Certificate
 
-When RavenDB is running with a server certificate for the first time, there are no client certificates registered in the server yet. The first action an administrator will do is to generate/register an admin client certificate.
+When RavenDB is running with a server certificate for the first time, there are no client certificates registered in the server yet. The first action an administrator will do is generate/register an admin client certificate.
 
 {NOTE This operation is only required when doing a **manual** secured setup. If you are using the automated [Setup Wizard](../../../start/installation/setup-wizard), an admin client certificate will be generated for you as part of the wizard. /}
 

@@ -42,12 +42,16 @@ application trying to access the HR database. However, once access is granted, t
 RavenDB security infrastructure operates at the level of the entire database. If you are granted access to a database, you can access 
 any and all documents in that database. There is no way to limit access to particular documents or collections.  
 
-It is common that this is something that you would need, exposing some part of the data or exposing read only access. If you need to provide direct access
-to the database, the way it is usually handled is by generating a separate certificate for that purpose and granting it access to a _different_ database. In that case, set up an ETL process from the source data to the destination.
+### Partial Database Access
+
+ Exposing some part of the data or exposing read-only access is something that is commonly needed. If you need to provide direct access to a part of the database, the way it is usually handled is by generating a separate certificate for that purpose and granting it access to a _different_ database. In that case, set up an ETL process from the source data to the destination.
 
 You can also do this by giving a client certificate a "User" security clearance. With this clearance, 
-you can set a different access level to each database. The three access levels are: Admin, Read/Write, 
-and Read-Only.  
+you can set a different access level to each database. The three access levels are:  
+
+* Admin  
+* Read/Write  
+* Read-Only  
 
 The Read-Only access level allows reading data and performing queries on a particular database, but 
 not write or modify data. Indexes cannot be defined, although [auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) 
@@ -82,7 +86,8 @@ In the screenshot, we can see an example list of registered certificates. Each i
 
 {PANEL:Generate Client Certificate} 
 
-Using this view, you can generate client certificates directly via RavenDB. Newly generated certificates will be added to the list of registered certificates.
+Using this view, you can generate client certificates directly via RavenDB.  
+Newly generated certificates will be added to the list of registered certificates.  
 
 ![Figure 3. Generate Client Certificate](images/generate.png)
 
@@ -100,7 +105,8 @@ Expiration for client certificates is set to 5 years by default.
 
 {PANEL:Upload an Existing Certificate} 
 
-Using this view you can upload existing client certificates. Uploaded certificates will be added to the list of registered certificates.
+Using this view you can upload existing client certificates.  
+Uploaded certificates will be added to the list of registered certificates.  
 
 ![Figure 4. Upload Existing Certificate](images/upload.png)
 
@@ -130,7 +136,7 @@ Every certificate in the list can be edited. The editable fields are:
 
 Pfx files may contain a single certificate or a collection of certificates.
 
-When uploading a .pfx file with a collection, RavenDB will add all of the certificates to the list of registered certificates as one entry and will allow access to all of the certificates in the collection explicitly by their thumbprint.
+When uploading a `.pfx` file with multiple certificates, RavenDB will add all of the certificates to the list of registered certificates as one entry and will allow access to all these certificates explicitly by their thumbprint.
 
 {PANEL/}
 

@@ -58,9 +58,18 @@ The following operations are allowed for **both** `Operator` and `Cluster Admin`
 
 {PANEL:User}
 
-A `User` client certificate has a list of databases it is allowed to access. In addition, the access level to each database can be either `Database Admin` or `read/write`. A `User` certificate cannot perform any admin operations at the cluster level.
+A client certificate with a `User` security clearance cannot perform any admin operations at the cluster level.  
+Unlike the other clearance levels, a `User` client certificate can grant different access levels to different databases. 
+These access levels are, from highest to lowest:  
 
-The following operations are allowed for `User` certificates with `Database Admin` access level and not allowed for `User` certificates with `read/write` access level:
+* **Admin**  
+* **Read/Write**  
+* **Read Only**  
+If no access level is defined for a particular database, the certificate doesn't grant access to that database at all.  
+
+### `Admin`
+
+The following operations are permitted at the `Admin` access level but not for `Read/Write` or `Read Only`:
 
 - Operations on indexes (put, delete, start, stop, enable and disable)
 - Solve replication conflicts
@@ -70,9 +79,24 @@ The following operations are allowed for `User` certificates with `Database Admi
 - Operations on connection strings (put, get, delete)
 - Put client configuration for the database (Max number of requests per session, Read balance behavior)
 - Get transaction info
-- Perform SQL migration (coming soon)
+- Perform SQL migration
+
+### `Read/Write`
 
 A `User` certificate with `read/write` access level can perform all the operations which are not listed above.  
+
+### `Read Only`
+
+The Read Only access level only allows you to read data from a database, but not to write data. All kinds of 
+queries are permitted. The following operations are **forbidden**:  
+
+- Creating documents or modifying existing documents  
+- Changing any configurations or settings  
+- Defining or altering [ongoing tasks](../../../server/ongoing-tasks/general-info)  
+- Defining [static indexes](../../../indexes/creating-and-deploying#static-indexes) (the database will create 
+[auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) as normal in response to queries)  
+
+Learn more about the Read Only access level [here](../../../studio/server/certificates/read-only-access-level).
 
 {PANEL/}
 

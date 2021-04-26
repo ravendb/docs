@@ -65,8 +65,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             {
                 {
                     #region cert_1_4
-                    // With user role set to Cluster Administrator or Operator the user of this certificate 
-                    // is going to have access to all databases
+                    // With the security clearance set to Cluster Administrator or Operator,
+                    // the user of this certificate will have access to all databases
                     CreateClientCertificateOperation operation = 
                         new CreateClientCertificateOperation(
                             "admin", null, SecurityClearance.Operator);
@@ -78,7 +78,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
 
                 {
                     #region cert_1_5
-                    // when security clearance is ValidUser, you need to specify per database permissions
+                    // When the security clearance is ValidUser, you must specify an access level for each database
                     CreateClientCertificateOperation operation = 
                         new CreateClientCertificateOperation(
                             "user1", new Dictionary<string, DatabaseAccess>
