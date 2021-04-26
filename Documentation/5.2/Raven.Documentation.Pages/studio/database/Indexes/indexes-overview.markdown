@@ -191,6 +191,9 @@ See [here](../../../studio/database/indexes/create-map-index) to learn how to se
   Once the new index is up-to-date the original index is removed in favor of the new one.  
 
 * See example in [Indexes List View - Side by Side](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing).  
+
+* A [history of index revisions](../../../studio/database/indexes/index-history) is kept, 
+  allowing you to revert an index to any of its past revisions.  
 {PANEL/}
 
 {PANEL: Indexes in the Cluster}
@@ -224,4 +227,4 @@ See [here](../../../studio/database/indexes/create-map-index) to learn how to se
 
 ### Studio
 - [Studio Indexes List View](../../../studio/database/indexes/indexes-list-view)  
-- [Index History View](../../../studio/database/indexes/index-history-view)
+- [Index History](../../../studio/database/indexes/index-history)

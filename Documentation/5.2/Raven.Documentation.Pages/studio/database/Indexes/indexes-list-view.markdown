@@ -142,6 +142,9 @@
 * Once the updated version of the index has completed its work, it will automatically replace the old one.  
   You can also force an immediate replacement if needed, by clicking **'Swap Now'** (label **'3'** in above figure).  
 
+* A [history of index revisions](../../../studio/database/indexes/index-history) is kept, 
+  allowing you to revert an index to any of its past revisions.  
+
 {PANEL/}
 
 ## Related Articles
@@ -152,7 +155,7 @@
 - 
 ### Studio
 - [Indexes Overview](../../../studio/database/indexes/indexes-overview#indexes-overview)
-- [Index History View](../../../studio/database/indexes/index-history-view)
+- [Index History](../../../studio/database/indexes/index-history)
 
 
 

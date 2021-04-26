@@ -226,4 +226,4 @@ pattern determines which output documents will be included in each reference doc
 - [Create Map Index](../../../studio/database/indexes/create-map-index)
 - [Create Multi-Map Index](../../../studio/database/indexes/create-multi-map-index)
 - [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer)
-- [Index History View](../../../studio/database/indexes/index-history-view)
+- [Index History](../../../studio/database/indexes/index-history)

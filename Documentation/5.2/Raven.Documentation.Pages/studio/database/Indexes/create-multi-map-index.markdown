@@ -69,5 +69,5 @@ The `Collection` field indexed in the above example is not mandatory but can be 
 - [Indexes List View](../../../studio/database/indexes/indexes-list-view)
 - [Create Map Index](../../../studio/database/indexes/create-map-index)
 - [Create Map-Reduce Index](../../../studio/database/indexes/create-map-reduce-index)
-- [Index History View](../../../studio/database/indexes/index-history-view)
+- [Index History](../../../studio/database/indexes/index-history)
 
