@@ -2422,5 +2422,34 @@
         "twitter:description": "Filtered replication enables running the database in high availability mode, or creating a mesh network of independent, collaborating databases.",
         "twitter:url": "https://ravendb.net/articles/filtered-replication"
     }
+},
+{
+    "Path": "hipaa-database-compliance-the-easy-way.markdown",
+    "Name": "HIPAA Database Compliance The Easy Way",
+    "Mappings": [],
+    "Metadata": {
+        "title": "HIPAA Database | Database HIPAA Compliance | RavenDB",
+        "likeSection": "yes",
+        "url": "hipaa-database-compliance-the-easy-way",
+        "publishedAt": "2021-04-23",
+        "subcategories": "nosql-database, database-security"
+    },
+    "SeoMetaProperties": {
+        "description": "What is HIPAA, what needs to be done in case of a database breach, what are the administrative HIPAA database compliance rules and technical requirements for database HIPAA compliance.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "HIPAA Database Compliance The Easy Way",
+        "og:description": "What is HIPAA, what needs to be done in case of a database breach, what are the administrative HIPAA database compliance rules and technical requirements for database HIPAA compliance.",
+        "og:url": "https://ravendb.net/articles/hipaa-database-compliance-the-easy-way",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/hipaa-database-compliance-the-easy-way&fileName=hipaa-database-compliance-the-easy-way.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "HIPAA Database Compliance The Easy Way",
+        "twitter:description": "What is HIPAA, what needs to be done in case of a database breach, what are the administrative HIPAA database compliance rules and technical requirements for database HIPAA compliance.",
+        "twitter:url": "https://ravendb.net/articles/hipaa-database-compliance-the-easy-way"
+    }
 }
 ]
