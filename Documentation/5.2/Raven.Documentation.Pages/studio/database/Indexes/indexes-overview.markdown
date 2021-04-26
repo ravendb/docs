@@ -16,9 +16,9 @@
 
   * [Indexes - The General Concept](../../../studio/database/indexes/indexes-overview#indexes---the-general-concept)  
   * [Indexes - The Moving Parts](../../../studio/database/indexes/indexes-overview#indexes---the-moving-parts) : 
-    [Index Definition](../../../studio/database/indexes/indexes-overview#index-definition), 
-    [Indexing Process](../../../studio/database/indexes/indexes-overview#indexing-process), 
-    [Indexed Data](../../../studio/database/indexes/indexes-overview#indexed-data)  
+      * [Index Definition](../../../studio/database/indexes/indexes-overview#index-definition)  
+      * [Indexing Process](../../../studio/database/indexes/indexes-overview#indexing-process)  
+      * [Indexed Data](../../../studio/database/indexes/indexes-overview#indexed-data)  
   * [Index Types](../../../studio/database/indexes/indexes-overview#index-types)  
   * [Field Configuration Options](../../../studio/database/indexes/indexes-overview#field-configuration-options)
   * [Modifying Index Definition](../../../studio/database/indexes/indexes-overview#modifying-index-definition)
@@ -30,15 +30,15 @@
 
 {PANEL: Indexes - The General Concept}
 
-* In order to be able to return query results about your documents _without_ scanning the entire dataset each and every time,  
+* In order to be able to return query results about your documents _without_ scanning the entire dataset each and every time, 
   RavenDB uses **Indexes**.  
 
-* Once defined, the index iterates over the documents, and for every field (document property) that is requested to be indexed,  
+* Once defined, the index iterates over the documents, and for every field (document property) that is requested to be indexed, 
   a **map** is built between the terms derived from these fields and the actual documents that contain them.  
 
 * A **query** operating on these fields ends up with a simple search from the queried terms to the list of documents that contain them.  
 
-* After the first **indexing** run, the index will keep that map current _without_ re-processing the entire index data -  
+* After the first **indexing** run, the index will keep that map current _without_ re-processing the entire index data - 
   only update the relevant details when a document update happens in the database.  
 
 * Indexes are not stored in the 'document store' but have their own separate storage.  

@@ -109,7 +109,7 @@ namespace Raven.Documentation.Samples.Indexes
                 #region analyzers_7
                 store.Maintenance.ForDatabase("MyDatabase").Send(new PutAnalyzersOperation(new AnalyzerDefinition
                 {
-                    Name = "MyAnalyzer", // Must be same as the name of the analyzer class
+                    Name = "MyAnalyzer", // Must be same as the analyzer's class name
                     Code = @"
                         using System.IO;
                         using Lucene.Net.Analysis; 

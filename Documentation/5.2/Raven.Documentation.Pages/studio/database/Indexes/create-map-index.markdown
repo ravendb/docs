@@ -119,8 +119,11 @@
 
   * `Indexing` -  This setting determines which [***Analyzer***](../../../indexes/using-analyzers) can be used:  
      * ***Exact*** - The _'Keyword Analyzer'_ is used. The text is not split into tokens, the entire value of the field is treated as one token.  
-     * ***Default*** - The _'LowerCase Keyword Analyzer'_ is used. The text is not split into tokens. The text is converted to lower-case, and                     matches are case insensitive.  
-     * ***Search*** - Select an analyzer to use from the dropdown menu. If you set Indexing to 'Search' and do not select an analyzer, the analyzer               is _'StandardAnalyzer'_ by default.  
+     * ***Default*** - The _'LowerCase Keyword Analyzer'_ is used. The text is not split into tokens. The text is converted to lower-case, and 
+     matches are case insensitive.  
+     * ***Search*** - Select an analyzer to use from the dropdown menu. If you set Indexing to 'Search' and do not select an analyzer, the analyzer 
+     is _'StandardAnalyzer'_ by default. Whenever you create a [custom analyzer](../../../studio/database/settings/custom-analyzers), 
+     it is added to this dropdown menu.  
 
 #### Default Index Field Options:  
 

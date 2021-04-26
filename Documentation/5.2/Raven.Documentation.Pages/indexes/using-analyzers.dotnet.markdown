@@ -6,9 +6,9 @@
 * RavenDB uses indexes to facilitate fast queries powered by [**Lucene**](http://lucene.apache.org/), the full-text search engine.  
 
 * The indexing of a single document starts from creating Lucene's **Document** according to an index definition. Lucene processes it by breaking it into fields and splitting all the text from each field into *tokens* (or *terms*) in a process called *tokenization*. Those tokens will be stored in the index, and later will be searched upon.  
-The tokenization process uses an object called an **analyzer**.  
+The tokenization process uses an object called an **Analyzer**.  
 
-* The indexing process and its results can be controlled by various field options and Analyzers.  
+* The indexing process and its results can be controlled by various field options and by the Analyzers.  
 
 * In this page:  
   * [Understanding Analyzers](../indexes/using-analyzers#understanding-analyzers)  
@@ -25,7 +25,7 @@ The tokenization process uses an object called an **analyzer**.
 
 {PANEL: Understanding Analyzers}
 
-Lucene offers several Analyzers out of the box, and new ones can be created easily. Various analyzers differ in the way they split the text stream ("tokenize"), and in the way they process those tokens in post-tokenization.  
+Lucene offers several Analyzers out of the box, and new ones can be created easily. Various Analyzers differ in the way they split the text stream ("tokenize"), and in the way they process those tokens in post-tokenization.  
 
 For example, given this sample text:  
 
@@ -63,7 +63,7 @@ For example, given this sample text:
 
 {PANEL: RavenDB's Default Analyzer}
 
-By default, RavenDB uses a custom analyzer called `LowerCaseKeywordAnalyzer` for all indexed content. Its implementation behaves like Lucene's KeywordAnalyzer, but it also performs case normalization by converting all characters to lower case. That is - RavenDB stores the entire term as a single token, in a lower cased form. Given the same sample text above, `LowerCaseKeywordAnalyzer` will produce a single token:  
+By default, RavenDB uses a custom analyzer called `LowerCaseKeywordAnalyzer` for all indexed content. Its implementation behaves like Lucene's KeywordAnalyzer, but it also performs case normalization by converting all characters to lower case. That is - RavenDB stores the entire text field as a single token, in a lower cased form. Given the same sample text above, `LowerCaseKeywordAnalyzer` will produce a single token:  
 
 `[the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`  
 
@@ -84,31 +84,37 @@ There are also `Collation analyzers` available (you can read more about them [he
 
 {PANEL: Selecting an Analyzer for a Field}
 
-To index a document field using a specific analyzer, all you need to do is to match it with the name of the field:  
+To index a document field using a specific analyzer, all you need to do is to match it with the field's 
+name:  
 
 {CODE-TABS}
 {CODE-TAB:csharp:AbstractIndexCreationTask analyzers_1@Indexes\Analyzers.cs /}
 {CODE-TAB:csharp:Operation analyzers_2@Indexes\Analyzers.cs /}
 {CODE-TABS/}
 
-{INFO The analyzer you are referencing has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the RavenDB working directory (where `Raven.Server` executable is located), and use their fully qualified type name (including the assembly name). /}
+{INFO: Analyzer Availablity}
+The analyzer you are referencing must be available to the RavenDB server instance. See the different 
+methods of creating custom analyzers [below](../indexes/using-analyzers#creating-custom-analyzers).  
+{INFO/}
 
 {PANEL/}
 
 {PANEL: Creating Custom Analyzers}
 
 You can write your own custom analyzers as a `.cs` file. Custom analyzers can either belong to a specific 
-database, or to the server as a whole. Database custom analyzers can only be used by the indexes of that 
-database. Server-wide custom analyzers can be used by the indexes of all databases on the server.  
+database, or to the server as a whole.:
+
+* **Database Custom Analyzers** - can only be used by the indexes of the database where they are defined.
+* **Server-Wide Custom Analyzers** - can be used by indexes on all databases on all servers in the cluster.
 
 A database analyzer can have the same name as a server-wide analyzer. In this situation, the indexes of that 
 database will use the database version of the analyzer. So you can think of database analyzers as overriding 
 the server-wide analyzers with the same names.  
 
-There are a few ways to create an analyzer and add it to your server:  
-1. [Through the studio.](../studio/database/settings/custom-analyzers)  
-2. Through the client API.  
-3. By adding it directly to RavenDB's binaries, [see below](../indexes/using-analyzers#adding-an-analyzer-to-the-binaries).  
+There are a few ways to create a custom analyzer and add it to your server:  
+1. [Using the Studio](../studio/database/settings/custom-analyzers)  
+2. Using the Client API.  
+3. Adding it directly to RavenDB's binaries, [see below](../indexes/using-analyzers#adding-an-analyzer-to-the-binaries).  
 
 ### Using the Client API
 
@@ -117,7 +123,7 @@ First, create a class that inherits from abstract `Lucene.Net.Analysis.Analyzer`
 
 {CODE analyzers_6@Indexes\Analyzers.cs /}
 
-Next, send the analyzer to a specific database using the operation `PutAnalyzersOperation`. Or, to make it 
+Next, define the analyzer for a specific database using the operation `PutAnalyzersOperation`. Or, to make it 
 a server-wide analyzer, use `PutServerWideOperation`. These operations are very similar in how they work. 
 Both of them take one parameter: either an `AnalyzerDefinition`, or an array of `AnalyzerDefinition`'s.  
 
@@ -161,7 +167,7 @@ Now let's see how everything fits together.
 ### Adding an Analyzer to the Binaries
 
 Another way of adding custom analyzers to RavenDB is to place them next to RavenDB's binaries. Note that it needs to be 
-compatible with .NET Core 2.0 e.g. .NET Standard 2.0 assembly). The fully qualified name needs to be specified for an 
+compatible with .NET Core 2.0 (e.g. .NET Standard 2.0 assembly). The fully qualified name needs to be specified for an 
 indexing field that is going to be tokenized by the analyzer. This is the only way to add custom analyzers in RavenDB 
 versions older than 5.2.  
 
@@ -169,17 +175,27 @@ versions older than 5.2.
 
 {PANEL: Manipulating Field Indexing Behavior}
 
-By default, each indexed field is analyzed using the `LowerCaseKeywordAnalyzer` which indexes a field as a single, lower cased term.  
+By default, each indexed field is analyzed using the '`LowerCaseKeywordAnalyzer`' which indexes a field as a single, lower cased term.  
 
-This behavior can be changed by turning off the field analysis (setting the `FieldIndexing` option for this field to `Exact`). This causes all the properties to be treated as a single token and the matches must be exact (case sensitive), similarly to using the `KeywordAnalyzer` on this field.  
+This behavior can be changed by setting the `FieldIndexing` option for a particular field. The possible values are:  
+
+* `FieldIndexing.Exact`
+* `FieldIndexing.Search`
+* `FieldIndexing.No`
+
+Setting the `FieldIndexing` option for this field to `Exact` turns off the field analysis. This causes all the 
+properties to be treated as a single token and the matches must be exact (case sensitive), similarly to using the 
+'`KeywordAnalyzer`' on this field.  
 
 {CODE analyzers_3@Indexes\Analyzers.cs /}
 
-`FieldIndexing.Search` allows performing full text search operations against the field:  
+`FieldIndexing.Search` allows performing full text search operations against the field using the 'StandardAnalyzer' 
+by default:  
 
 {CODE analyzers_4@Indexes\Analyzers.cs /}
 
-If you want to disable indexing on a particular field, use the `FieldIndexing.No` option. This can be useful when you want to [store](../indexes/storing-data-in-index) field data in the index, but don't want to make it available for querying, however it will available for extraction by projections:  
+If you want to disable indexing on a particular field, use the `FieldIndexing.No` option. This can be useful when you want to [store field data in the index](../indexes/storing-data-in-index), but don't want to make it available for querying. However, it will still be available 
+for extraction by projections:  
 
 {CODE analyzers_5@Indexes\Analyzers.cs /}
 
