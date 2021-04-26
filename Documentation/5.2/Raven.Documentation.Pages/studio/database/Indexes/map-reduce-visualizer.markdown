@@ -42,7 +42,7 @@
 ![Figure 3. Key details](images/map-reduce-visualizer-3.png "Figure-3: Detailed View of the Key Reduced Results")
 
   1. The **total** number of orders documents made that contain the key 'companies/85-A' - **which is 6**  
-     and the **total** orders amount made by company `companies/85-A' - **which is 2,272.75**
+     and the **total** orders amount made by company 'companies/85-A' - **which is 2,272.75**
 
   2. A detailed info of these aggregated values showing per document selected.  
      Note: per each document, the OrdesCount is **'1'**, as each company makes one order.  
@@ -89,4 +89,4 @@
 
 ### Studio
 - [Create Map-Reduce Index](../../../studio/database/indexes/create-map-reduce-index)
-- [Index History View](../../../studio/database/indexes/index-history-view)
+- [Index History](../../../studio/database/indexes/index-history)
