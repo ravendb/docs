@@ -2480,5 +2480,34 @@
         "twitter:description": "What is HIPAA, what needs to be done in case of a database breach, what are the administrative HIPAA database compliance rules and technical requirements for database HIPAA compliance.",
         "twitter:url": "https://ravendb.net/articles/hipaa-database-compliance-the-easy-way"
     }
+},
+{
+    "Path": "data-subscriptions-feature.markdown",
+    "Name": "Data Subscriptions Feature in RavenDB NoSQL Database",
+    "Mappings": [],
+    "Metadata": {
+        "title": "Data Subscriptions Feature in RavenDB NoSQL Database",
+        "likeSection": "yes",
+        "url": "data-subscriptions-feature",
+        "publishedAt": "2021-04-26",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "The data subscriptions allow you to automate the transfer of data from the server to the client, together with other important benefits.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "Data Subscriptions Feature in RavenDB NoSQL Database",
+        "og:description": "The data subscriptions allow you to automate the transfer of data from the server to the client, together with other important benefits.",
+        "og:url": "https://ravendb.net/articles/data-subscriptions-feature",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/data-subscriptions-feature&fileName=data-subscriptions-feature.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "Data Subscriptions Feature in RavenDB NoSQL Database",
+        "twitter:description": "The data subscriptions allow you to automate the transfer of data from the server to the client, together with other important benefits.",
+        "twitter:url": "https://ravendb.net/articles/data-subscriptions-feature"
+    }
 }
 ]
