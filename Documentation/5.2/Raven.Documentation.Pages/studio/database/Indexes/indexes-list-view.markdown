@@ -139,7 +139,7 @@
 * The 'old index' (label **'1'** in above figure) will answer queries and index new documents until  
   the 'new index' (label **'2'** in above figure) is caught up and has indexed everything.  
 
-* Once the updated version of the index has completed its work, it will automatically replace the old one.  
+* Once the 'new index' has completed its work, it will automatically replace the old one.  
   You can also force an immediate replacement if needed, by clicking **'Swap Now'** (label **'3'** in above figure).  
 
 * RavenDB keeps a [history of index revisions](../../../studio/database/indexes/index-history), 

@@ -194,8 +194,10 @@ See [here](../../../studio/database/indexes/create-map-index) to learn how to se
 
 * RavenDB keeps a [history of index revisions](../../../studio/database/indexes/index-history), 
   allowing you to revert an index to any of its past revisions.  
-  To see how many index revisions are kept and change this number, 
-  use the [Database Settings view](../../../studio/database/indexes/index-history#view-and-update-number-of-index-revisions).  
+  The number of index revisions kept can be configured in the 
+  [Server Configuration Options](../../../server/configuration/configuration-options), 
+  or using the [Database Settings view](../../../studio/database/indexes/index-history#view-and-update-number-of-index-revisions) 
+  in the Studio.
 {PANEL/}
 
 {PANEL: Indexes in the Cluster}
