@@ -33,12 +33,12 @@ that come with RavenDB out of the box. It can then be selected when configuring 
 {WARNING: }
 1. Create a new database custom analyzer. Takes you to the analyzer editing view, see [below](../../../studio/database/settings/custom-analyzers#edit-custom-analyzer-view).  
 2. Edit an existing analyzer.  
-3. Go to the Server-Wide Custom Analyzer view, see [below](../../../studio/database/settings/custom-analyzers#server-wide-custom-analyzer-view).  
+3. Go to the Server-Wide Custom Analyzer View, see [below](../../../studio/database/settings/custom-analyzers#server-wide-custom-analyzer-view).  
 {WARNING/}
 
 {INFO: }
-1. Indicates that a database analyzer has the same name as a server-wide custom analyzer.  
-Indexes in this database use the database version of the analyzer.  
+1. Indicates that a database custom analyzer has the same name as a server-wide custom analyzer.  
+The database custom analyzer will be the one used by indexes of this database.  
 {INFO/}
 
 {PANEL/}

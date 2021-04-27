@@ -101,8 +101,7 @@ methods of creating custom analyzers [below](../indexes/using-analyzers#creating
 
 {PANEL: Creating Custom Analyzers}
 
-You can write your own custom analyzers as a `.cs` file. Custom analyzers can either belong to a specific 
-database, or to the server as a whole.:
+You can write your own custom analyzers as a `.cs` file. Custom analyzers can be defined as:
 
 * **Database Custom Analyzers** - can only be used by the indexes of the database where they are defined.
 * **Server-Wide Custom Analyzers** - can be used by indexes on all databases on all servers in the cluster.
@@ -113,8 +112,8 @@ the server-wide analyzers with the same names.
 
 There are a few ways to create a custom analyzer and add it to your server:  
 1. [Using the Studio](../studio/database/settings/custom-analyzers)  
-2. Using the Client API.  
-3. Adding it directly to RavenDB's binaries, [see below](../indexes/using-analyzers#adding-an-analyzer-to-the-binaries).  
+2. Using the Client API  
+3. Adding it directly to RavenDB's binaries, [see below](../indexes/using-analyzers#adding-an-analyzer-to-the-binaries)  
 
 ### Using the Client API
 
@@ -184,8 +183,8 @@ This behavior can be changed by setting the `FieldIndexing` option for a particu
 * `FieldIndexing.No`
 
 Setting the `FieldIndexing` option for this field to `Exact` turns off the field analysis. This causes all the 
-properties to be treated as a single token and the matches must be exact (case sensitive), similarly to using the 
-'`KeywordAnalyzer`' on this field.  
+properties to be treated as a single token and the matches must be exact (case sensitive), similarly to using 
+'`KeywordAnalyzer`' behind the scenes.  
 
 {CODE analyzers_3@Indexes\Analyzers.cs /}
 
