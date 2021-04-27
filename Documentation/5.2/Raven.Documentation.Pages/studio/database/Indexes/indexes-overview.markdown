@@ -192,8 +192,10 @@ See [here](../../../studio/database/indexes/create-map-index) to learn how to se
 
 * See example in [Indexes List View - Side by Side](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing).  
 
-* A [history of index revisions](../../../studio/database/indexes/index-history) is kept, 
+* RavenDB keeps a [history of index revisions](../../../studio/database/indexes/index-history), 
   allowing you to revert an index to any of its past revisions.  
+  To see how many index revisions are kept and change this number, 
+  use the [Database Settings view](../../../studio/database/indexes/index-history#view-and-update-number-of-index-revisions).  
 {PANEL/}
 
 {PANEL: Indexes in the Cluster}
