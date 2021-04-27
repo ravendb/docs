@@ -2509,5 +2509,34 @@
         "twitter:description": "The data subscriptions allow you to automate the transfer of data from the server to the client, together with other important benefits.",
         "twitter:url": "https://ravendb.net/articles/data-subscriptions-feature"
     }
+},
+{
+    "Path": "how-a-database-delivers-performance-under-heavy-load-ravendb.markdown",
+    "Name": "How a Database Delivers Performance Under Heavy Load",
+    "Mappings": [],
+    "Metadata": {
+        "title": "NoSQL Database Scalability | RavenDB",
+        "likeSection": "yes",
+        "url": "how-a-database-delivers-performance-under-heavy-load-ravendb",
+        "publishedAt": "2021-04-27",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "Unprecedented levels of traffic require applications to maintain top performance under heavy load. The database of tomorrow meets these challenges today.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "How a Database Delivers Performance Under Heavy Load | RavenDB",
+        "og:description": "Unprecedented levels of traffic require applications to maintain top performance under heavy load. The database of tomorrow meets these challenges today.",
+        "og:url": "https://ravendb.net/articles/how-a-database-delivers-performance-under-heavy-load-ravendb",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/how-a-database-delivers-performance-under-heavy-load-ravendb&fileName=how-a-database-delivers-performance-under-heavy-load-ravendb.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "How a Database Delivers Performance Under Heavy Load | RavenDB",
+        "twitter:description": "Unprecedented levels of traffic require applications to maintain top performance under heavy load. The database of tomorrow meets these challenges today.",
+        "twitter:url": "https://ravendb.net/articles/how-a-database-delivers-performance-under-heavy-load-ravendb"
+    }
 }
 ]
