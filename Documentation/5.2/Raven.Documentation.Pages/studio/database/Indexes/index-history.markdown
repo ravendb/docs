@@ -3,17 +3,15 @@
 
 {NOTE: }
 
-* You can open an **Index History** dialog for any index, browse the history of 
-  changes made in this index over time, and revert the currently active index to any 
-  of its past revisions.  
+* An index revision is created for any change made to the index definition.  
 
-* When an index is reverted to one of its past revisions, the revision can be loaded 
-  along with its index [field options](../../../studio/database/indexes/create-map-index#index-field-options) 
-  and all other settings.  
-  Alternatively, you can revert only the index's Map and Reduce sections to those of 
-  the selected revision and leave its other settings unchanged.  
+* By default 10 index revisions are kept. This number can be modified using 
+  the Database Settings view or through [configuration](../../../server/configuration/configuration-options).  
 
-* The number of revisions RavenDB keeps for each index can be updated.  
+* The Index History dialog allows you to browse these revisions and revert 
+  the current index definition to any of its past revisions.  
+
+* You can revert only the 'Map and Reduce' methods or the full index definition.  
 
 * In this page:  
   * [Open Index History Dialog](../../../studio/database/indexes/index-history#open-index-history-dialog)  
@@ -42,13 +40,12 @@ To open the index history dialog:
 
 ![Figure 4. History Dialog](images/index-history-04-history-view.png "Figure 4. History Dialog")
 
-1. **Index History View**  
+1. **Index History Dialog**  
 2. **Revisions List**  
    The history of changes made in this index, ordered by revision creation time.  
 3. **Index Definition Preview**  
-   The full definition of the highlighted revision, including not just its Map and 
-   Reduce sections but also *all the field options and other settings* that determine 
-   its behavior.  
+   The full definition of the highlighted index revision, including not just its Map and 
+   Reduce sections but also all settings and field options.  
 
 {PANEL/}
 
@@ -57,16 +54,16 @@ To open the index history dialog:
 ![Figure 5. Index Revision Selection](images/index-history-05-index-revision-selection.png "Figure 5. Index Revision Selection")
 
 1. **Revisions List**  
-   To preview a revision, hover over its name or select it using the arrow keys.  
-2. **Load Index**  
+   To preview a revision, hover over its creation date or select it using the arrow keys.  
+2. **Load Index Revision**  
    Click the Load Index button to load the previewed revision,  
-   or click a revision name to load it without preview.  
+   or click the creation time of any revision in the list to load it without preview.  
 
 ---
 
 ![Figure 6. Load Index](images/index-history-06-load-map-and-reduce-only.png "Figure 6. Load Index")
 
-1. **Load Index**  
+1. **Load Index Revision**  
    Click the Load Index button to load the previewed revision in its entirety, 
    including its [field options](../../../studio/database/indexes/create-map-index#index-field-options) 
    and any additional settings.  
@@ -78,8 +75,8 @@ To open the index history dialog:
 
 {PANEL: View and Update Number of Index Revisions}
 
-To find how many index revisions RavenDB keeps, and optionally 
-change this number, use the *Database Settings* view.  
+The number of index revisions kept by the server can be modified through [configuration](../../../server/configuration/configuration-options),  
+or using the Database Settings view:  
 
 1. Open the **Settings** > **Database Settings** view.  
    ![Figure 7. Open Database Settings View](images/index-history-07-open-database-settings-view.png "Figure 7. Open Database Settings View")
