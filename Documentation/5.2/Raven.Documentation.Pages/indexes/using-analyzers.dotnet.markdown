@@ -183,8 +183,8 @@ This behavior can be changed by setting the `FieldIndexing` option for a particu
 * `FieldIndexing.No`
 
 Setting the `FieldIndexing` option for this field to `Exact` turns off the field analysis. This causes all the 
-properties to be treated as a single token and the matches must be exact (case sensitive), similarly to using 
-'`KeywordAnalyzer`' behind the scenes.  
+properties to be treated as a single token and the matches must be exact (case sensitive), using 
+the `KeywordAnalyzer` behind the scenes.  
 
 {CODE analyzers_3@Indexes\Analyzers.cs /}
 
