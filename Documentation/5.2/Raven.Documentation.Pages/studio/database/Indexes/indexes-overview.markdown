@@ -191,6 +191,12 @@ See [here](../../../studio/database/indexes/create-map-index) to learn how to se
   Once the new index is up-to-date the original index is removed in favor of the new one.  
 
 * See example in [Index List View - Side by Side](../../../studio/database/indexes/indexes-list-view#index-list-view---side-by-side-indexing).  
+* RavenDB keeps a [history of index revisions](../../../studio/database/indexes/index-history), 
+  allowing you to revert an index to any of its past revisions.  
+  The number of index revisions kept can be configured in the 
+  [Server Configuration Options](../../../server/configuration/configuration-options), 
+  or using the [Database Settings view](../../../studio/database/indexes/index-history#view-and-update-number-of-index-revisions) 
+  in the Studio.
 {PANEL/}
 
 {PANEL: Indexes in the Cluster}
@@ -224,3 +230,4 @@ See [here](../../../studio/database/indexes/create-map-index) to learn how to se
 
 ### Studio
 - [Studio Index List View](../../../studio/database/indexes/indexes-list-view)  
+- [Index History](../../../studio/database/indexes/index-history)

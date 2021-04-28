@@ -120,6 +120,16 @@ Number of concurrent stopped batches if running low on memory.
 
 {PANEL/}
 
+{PANEL:Indexing.History.NumberOfRevisions}
+
+Number of index history revisions to keep per index.  
+
+- **Type**: `int`
+- **Default**: `10`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
 {PANEL:Indexing.MapTimeoutInSec}
 
 Number of seconds after which mapping will end even if there is more to map.
