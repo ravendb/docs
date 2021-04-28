@@ -39,7 +39,7 @@ The `Collection` field indexed in the above example is not mandatory but can be 
 
 * So when querying on this Multi-Map index, results will come from **both** Employees collection and Companies collection.  
 
-* [Index field options](../../../studio/database/indexes/create-map-index#index-fields-options), 
+* [Index field options](../../../studio/database/indexes/create-map-index#index-field-options), 
   [Configuration](../../../studio/database/indexes/create-map-index#configuration) & 
   [Additional Sources](../../../studio/database/indexes/create-map-index#additional-sources) 
   can be defined for the Multi-Map index in the same way as done for a [Simple Map Index](../../../studio/database/indexes/create-map-index#create-multi-map-index).  
@@ -55,8 +55,8 @@ The `Collection` field indexed in the above example is not mandatory but can be 
 - [Map-Reduce Indexes](../../../indexes/map-reduce-indexes)
 
 ### Studio
-- [Indexes Overview](../../../studio/database/indexes/indexes-overview)
-- [Indexes List View](../../../studio/database/indexes/indexes-list-view)
+- [Indexes: Overview](../../../studio/database/indexes/indexes-overview)
+- [Index List View](../../../studio/database/indexes/indexes-list-view)
 - [Create Map Index](../../../studio/database/indexes/create-map-index)
 - [Create Map-Reduce Index](../../../studio/database/indexes/create-map-reduce-index)
 

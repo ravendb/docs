@@ -1,4 +1,4 @@
-﻿# Indexes List View
+﻿# Index List View
 ---
 
 {NOTE: }
@@ -8,17 +8,17 @@
 * Actions such as creating a new index, modifying an existing index, setting its desired state, and much more can be performed.  
 
 * In this page:  
-  * [Indexes List View](../../../studio/database/indexes/indexes-list-view#indexes-list-view)  
-  * [Indexes List View - Actions](../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
-  * [Indexes List View - Index Errors](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors)  
-  * [Indexes List View - Side by Side Indexing](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing)
+  * [Index List View](../../../studio/database/indexes/indexes-list-view#index-list-view)  
+  * [Index List View - Actions](../../../studio/database/indexes/indexes-list-view#index-list-view---actions)  
+  * [Index List View - Index Errors](../../../studio/database/indexes/indexes-list-view#index-list-view---errors)  
+  * [Index List View - Side by Side Indexing](../../../studio/database/indexes/indexes-list-view#index-list-view---side-by-side-indexing)
 {NOTE/}
 
 ---
 
-{PANEL: Indexes List View}
+{PANEL: Index List View}
 
-![Figure 1. Indexes List](images/indexes-list-view-1.png "Figure-1: The indexes List View")
+![Figure 1. Index List](images/indexes-list-view-1.png "Figure-1: The Index List View")
 
 **1**. **Index name and type**  
 
@@ -58,11 +58,11 @@
 
    * `Error` - 
       * A malformed indexing-function or missing/corrupted document data will result in an indexing error.  
-        See more [below](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
+        See more [below](../../../studio/database/indexes/indexes-list-view#index-list-view---errors).  
 
    * `Faulty` - 
       * Index will be _'Faulty'_ if its data files are corrupted or if not accessible.  
-        See more [below](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
+        See more [below](../../../studio/database/indexes/indexes-list-view#index-list-view---errors).  
 
 **4**. **Index Status**
 
@@ -70,9 +70,9 @@
    * `Status` - Indicate if the index is up-to-date or if it is [stale](../../../indexes/stale-indexes).  
 {PANEL/}
 
-{PANEL: Indexes List View - Actions}
+{PANEL: Index List View - Actions}
 
-![Figure 2. Indexes Actions](images/indexes-list-view-2.png "Figure-2: Indexes List View - Actions")
+![Figure 2. Indexes Actions](images/indexes-list-view-2.png "Figure-2: Index List View - Actions")
 
 1. **Crate a new index** - See more in [Create New Index](../../../studio/database/indexes/create-map-index).  
 
@@ -87,7 +87,7 @@
 3. **State** - _Disable_ index or set as _Paused_. See states explanation above (under the figure-1).  
    **Priority** - Set the indexing-process thread priority as RavenDB prioritizes requests-processing over [Indexing](../../../server/administration/index-administration#priority) by default.  
    **Mode** - Set modifications behavior:  
-   Unlocked - Changes to the index definitions will be applied. See [Side by Side Indexing](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing)  
+   Unlocked - Changes to the index definitions will be applied. See [Side by Side Indexing](../../../studio/database/indexes/indexes-list-view#index-list-view---side-by-side-indexing)  
    Locked - Index definitions changes will not be applied! No Error will be raised.  
    Locked(Error) - Index definitions changes will not be applied! An error is raised upon trying to modify.  
 
@@ -99,9 +99,9 @@
    Indexes will resume only when selecting this button again (Resume Indexing) or upon a server restart.  
 {PANEL/}
 
-{PANEL: Indexes List View - Errors}
+{PANEL: Index List View - Errors}
 
-![Figure 3. Indexes Errors](images/indexes-list-view-3.png "Figure-3: Indexes List View - Errors")
+![Figure 3. Indexes Errors](images/indexes-list-view-3.png "Figure-3: Index List View - Errors")
 
 **1**. **Errored Index**
 
@@ -127,9 +127,9 @@
 **Note**: The detailed errors list can be found in the **Index Errors** view.  
 {PANEL/}
 
-{PANEL: Indexes List View - Side by Side Indexing}
+{PANEL: Index List View - Side by Side Indexing}
 
-![Figure 4. Indexes side by Side](images/indexes-list-view-4.png "Figure-4: Indexes List View - Side by Side Indexing")
+![Figure 4. Indexes side by Side](images/indexes-list-view-4.png "Figure-4: Index List View - Side by Side Indexing")
 
 * All index updates in RavenDB are done using the **side-by-side strategy**.  
 
@@ -151,7 +151,7 @@
 - [Indexing Basics](../../../indexes/indexing-basics)
 - 
 ### Studio
-- [Indexes Overview](../../../studio/database/indexes/indexes-overview#indexes-overview)
+- [Indexes: Overview](../../../studio/database/indexes/indexes-overview#indexes-overview)
 
 
 

@@ -8,7 +8,7 @@
 * In this page:  
   * [Edit Index View](../../../studio/database/indexes/create-map-index#edit-index-view)  
   * [Index Fields & Terms](../../../studio/database/indexes/create-map-index#index-fields-&-terms)  
-  * [Index Field Options](../../../studio/database/indexes/create-map-index#index-fields-options)  
+  * [Index Field Options](../../../studio/database/indexes/create-map-index#index-field-options)  
   * [Configuration](../../../studio/database/indexes/create-map-index#configuration)  
   * [Additional Sources](../../../studio/database/indexes/create-map-index#additional-sources)  
   * [Spatial Field Options](../../../studio/database/indexes/create-map-index#spatial-field-options)  
@@ -192,8 +192,8 @@
 
 ### Studio
 
-- [Indexes Overview](../../../studio/database/indexes/indexes-overview)
-- [Indexes List View](../../../studio/database/indexes/indexes-list-view)
+- [Indexes: Overview](../../../studio/database/indexes/indexes-overview)
+- [Index List View](../../../studio/database/indexes/indexes-list-view)
 - [Create Multi-Map Index](../../../studio/database/indexes/create-multi-map-index)
 - [Create Map-Reduce Index](../../../studio/database/indexes/create-map-reduce-index)
 

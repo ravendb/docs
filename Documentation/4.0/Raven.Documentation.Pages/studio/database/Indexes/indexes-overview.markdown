@@ -1,4 +1,4 @@
-﻿# Indexes Overview
+﻿# Indexes: Overview
 ---
 
 {NOTE: }
@@ -19,8 +19,8 @@
     [Index Definition](../../../studio/database/indexes/indexes-overview#index-definition), 
     [Indexing Process](../../../studio/database/indexes/indexes-overview#indexing-process), 
     [Indexed Data](../../../studio/database/indexes/indexes-overview#indexed-data)  
-  * [Indexes Types](../../../studio/database/indexes/indexes-overview#indexes-types)  
-  * [Fields Configuration Options](../../../studio/database/indexes/indexes-overview#fields-configuration-options)
+  * [Index Types](../../../studio/database/indexes/indexes-overview#index-types)  
+  * [Field Configuration Options](../../../studio/database/indexes/indexes-overview#field-configuration-options)
   * [Modifying Index Definition](../../../studio/database/indexes/indexes-overview#modifying-index-definition)
   * [Indexes in the Cluster](../../../studio/database/indexes/indexes-overview#indexes-in-the-cluster)
   * [Indexing Errors](../../../studio/database/indexes/indexes-overview#indexing-errors)
@@ -43,7 +43,7 @@
 
 * Indexes are not stored in the 'document store' but have their own separate storage.  
 
-* Indexes in RavenDB are split across multiple axes (see more [below](../../../studio/database/indexes/indexes-overview#indexes-types))
+* Indexes in RavenDB are split across multiple axes (see more [below](../../../studio/database/indexes/indexes-overview#index-types))
 
   * Auto Indexes -vs- Static Indexes  
   * Map Indexes -vs- Map-Reduce Indexes  
@@ -115,7 +115,7 @@
 {NOTE/}
 {PANEL/}
 
-{PANEL: Indexes Types}
+{PANEL: Index Types}
 
 Indexes in RavenDB are split across the following multiple axes:
 
@@ -157,15 +157,15 @@ Indexes in RavenDB are split across the following multiple axes:
 {NOTE/}
 {PANEL/}
 
-{PANEL: Fields Configuration Options}
+{PANEL: Field Configuration Options}
 
 Additional settings can be specified per field in the index-entry definition, configuring how the terms are indexed inside RavenDB.  
 
 * **Full Text Search**  
   The original field data is split and tokenized according to the selected analyzer.      
 
-  * Suggestions - Allow to find similar results to the string in your query. i.e. Martin -> Martine.  
-  * Term Vector - Allow to find similar documents based on shared indexed terms.  
+  * Suggestions - allow finding similar results to the string in your query. i.e. Martin -> Martine.  
+  * Term Vector - allow finding similar documents based on shared indexed terms.  
   * Indexing - Allow options such as searching for individual words inside the indexed terms or exact case-sensitive matches
   * Learn more in: [Analyzers](../../../indexes/using-analyzers#full-text-search)
 
@@ -191,7 +191,7 @@ Additional settings can be specified per field in the index-entry definition, co
 * The original index is retained and is fully operable while the new index (with the new definition) is being built.  
   Once the new index is up-to-date the original index is removed in favor of the new one.  
 
-* See example in [Indexes List View - Side by Side](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing).  
+* See example in [Index List View - Side by Side](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing).  
 {PANEL/}
 
 {PANEL: Indexes in the Cluster}
@@ -213,7 +213,7 @@ Additional settings can be specified per field in the index-entry definition, co
 * An index is only allowed a certain failure rate, above which it is marked in an error state.  
   An index in an error state cannot be queried and will return an immediate error.  
 
-* See more in [Indexes List View - Errors](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
+* See more in [Index List View - Errors](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
 {PANEL/}
 
 ## Related Articles
@@ -224,4 +224,4 @@ Additional settings can be specified per field in the index-entry definition, co
 - [Indexing Basics](../../../indexes/indexing-basics)
 
 ### Studio
-- [Studio Indexes List View](../../../studio/database/indexes/indexes-list-view)  
+- [Studio Index List View](../../../studio/database/indexes/indexes-list-view)  

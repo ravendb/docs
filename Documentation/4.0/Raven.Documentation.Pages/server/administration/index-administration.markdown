@@ -103,7 +103,7 @@ Operation scope: Cluster
 
 ### Indexes
 
-- [Indexes Overview](../../studio/database/indexes/indexes-overview#indexes-overview)
+- [Indexes: Overview](../../studio/database/indexes/indexes-overview#indexes-overview)
 - [What are Indexes](../../indexes/what-are-indexes)
 
 ### Troubleshooting

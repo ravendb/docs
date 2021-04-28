@@ -85,7 +85,7 @@ You can create a custom analyzer on your own and deploy it to RavenDB server. To
 
 By default, each indexed field is analyzed using the `LowerCaseKeywordAnalyzer` which indexes a field as a single, lower cased term.  
 
-This behavior can be changed by turning off the field analysis (setting the `FieldIndexing` option for this field to `Exact`). This causes all the properties to be treated as a single token and the matches must be exact (case sensitive), similarly to using the `KeywordAnalyzer` on this field.  
+This behavior can be changed by turning off the field analysis (setting the `FieldIndexing` option for this field to `Exact`). This causes all the properties to be treated as a single token and the matches must be exact (case sensitive), using the `KeywordAnalyzer` behind the scenes.  
 
 {CODE analyzers_3@Indexes\Analyzers.cs /}
 

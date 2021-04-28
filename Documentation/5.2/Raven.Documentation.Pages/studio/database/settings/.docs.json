@@ -28,5 +28,11 @@
     "Name": "Manage Database Group",
     "DiscussionId": "2b0b0669-1254-4bd2-8936-029b2099e261",
     "Mappings": []
+  },
+  {
+    "Path": "custom-analyzers.markdown",
+    "Name": "Custom Analyzers",
+    "DiscussionId": "fa539de5-30aa-483a-af05-6574f84d64c9",
+    "Mappings": []
   }
 ]
