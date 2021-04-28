@@ -6,37 +6,29 @@
 * Open the Stats View to display chosen statistics of your databases' activities.  
 
 * In this page:  
-  * [Stats View](../../../studio/database/stats/stats-overview#stats-view)  
-  * [Stats Menu](../../../studio/database/stats/stats-overview#stats-menu)  
+  * [Stats Menu](../../../studio/database/stats/stats-view#stats-menu)  
 
 {NOTE/}
-
----
-
-{PANEL: Stats View}
-
-![Stats View](images/stats-view.png "Stats View")
-
-* **Stats**  
-  Click to open the Stats Menu.  
-
-{PANEL/}
 
 {PANEL: Stats Menu}
 
 ![Stats Menu](images/stats-menu.png "Stats Menu")
 
-* **1. Stats**  
-  Click for a summary of a chosen database's statistics.  
-* **2. IO Stats**  
-  Click for a graphical view of a chosen database's I/O activity and statistics.  
-* **3. Storage Report**  
-  Click for a graphical view of a chosen database's structure and for a detailed 
-  view of its various sections.  
-* **4. Running Queries**  
-  Click to monitor the performance of chosen queries.  
-* **5. Ongoing Tasks Stats**  
-  Click for a graphical display of ongoing **Replication**, **ETL**, and **Data Subscription** tasks activities.  
+1. **Stats** > **Stats**  
+   Click for a summary of a chosen database's statistics.  
+
+2. **Stats** > **IO Stats**  
+   Click for a graphical view of a chosen database's I/O activity and statistics.  
+
+3. **Stats** > **Storage Report**  
+   Click for a graphical view of a chosen database's structure and for a detailed 
+   view of its various sections.  
+
+4. **Stats** > **Running Queries**  
+   Click to monitor the performance of chosen queries.  
+
+5. **Stats** > **Ongoing Tasks Stats**  
+   Click for a graphical display of ongoing **Replication**, **ETL**, and **Data Subscription** tasks activities.  
 
 {PANEL/}
 
