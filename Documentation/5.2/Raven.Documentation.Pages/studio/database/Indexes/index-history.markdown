@@ -6,7 +6,8 @@
 * An index revision is created for any change made to the index definition.  
 
 * By default 10 index revisions are kept. This number can be modified using 
-  the Database Settings view or through [configuration](../../../server/configuration/configuration-options).  
+  the [Database Settings view](../../../studio/database/indexes/index-history#view-and-update-number-of-index-revisions) 
+  or through [configuration](../../../server/configuration/configuration-options).  
 
 * The Index History dialog allows you to browse these revisions and revert 
   the current index definition to any of its past revisions.  
