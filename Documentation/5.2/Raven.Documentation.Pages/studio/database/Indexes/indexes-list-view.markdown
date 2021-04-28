@@ -144,6 +144,8 @@
 
 * RavenDB keeps a [history of index revisions](../../../studio/database/indexes/index-history), 
   allowing you to revert an index to any of its past revisions.  
+  The 'old index' definition can still be referenced as RavenDB keeps a history of index revisions, 
+  allowing you to revert an index to any of its past revisions.  
 
 {PANEL/}
 
