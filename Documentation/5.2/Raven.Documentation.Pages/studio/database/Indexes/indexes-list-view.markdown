@@ -142,9 +142,8 @@
 * Once the 'new index' has completed its work, it will automatically replace the old one.  
   You can also force an immediate replacement if needed, by clicking **'Swap Now'** (label **'3'** in above figure).  
 
-* RavenDB keeps a [history of index revisions](../../../studio/database/indexes/index-history), 
-  allowing you to revert an index to any of its past revisions.  
-  The 'old index' definition can still be referenced as RavenDB keeps a history of index revisions, 
+* The 'old index' definition can still be referenced as RavenDB keeps 
+  [history of index revisions](../../../studio/database/indexes/index-history), 
   allowing you to revert an index to any of its past revisions.  
 
 {PANEL/}
