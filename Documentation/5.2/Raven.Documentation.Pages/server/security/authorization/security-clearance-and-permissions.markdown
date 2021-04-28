@@ -59,12 +59,13 @@ The following operations are allowed for **both** `Operator` and `Cluster Admin`
 {PANEL:User}
 
 A client certificate with a `User` security clearance cannot perform any admin operations at the cluster level.  
-Unlike the other clearance levels, a `User` client certificate can grant different access levels to different databases. 
+Unlike the other clearance levels, a `User` client certificate can grant different access levels to different databases.  
 These access levels are, from highest to lowest:  
 
 * **Admin**  
 * **Read/Write**  
 * **Read Only**  
+
 If no access level is defined for a particular database, the certificate doesn't grant access to that database at all.  
 
 ### `Admin`
@@ -83,20 +84,20 @@ The following operations are permitted at the `Admin` access level but not for `
 
 ### `Read/Write`
 
-A `User` certificate with `read/write` access level can perform all the operations which are not listed above.  
+A `User` certificate with a `Read/Write` access level can perform all operations **except** for those listed above in the 'Admin' section.  
 
 ### `Read Only`
 
-The Read Only access level only allows you to read data from a database, but not to write data. All kinds of 
+The `Read Only` access level only allows you to read data from a database, but not to write data. All kinds of 
 queries are permitted. The following operations are **forbidden**:  
 
 - Creating documents or modifying existing documents  
 - Changing any configurations or settings  
-- Defining or altering [ongoing tasks](../../../server/ongoing-tasks/general-info)  
+- Creating or modifying [ongoing tasks](../../../server/ongoing-tasks/general-info)  
 - Defining [static indexes](../../../indexes/creating-and-deploying#static-indexes) (the database will create 
 [auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) as normal in response to queries)  
 
-Learn more about the Read Only access level [here](../../../studio/server/certificates/read-only-access-level).
+Learn more about the `Read Only` access level [here](../../../studio/server/certificates/read-only-access-level).
 
 {PANEL/}
 

@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* A single [client certificate](../../../server/security/authentication/client-certificate-usage) 
+* A [client certificate](../../../server/security/authentication/client-certificate-usage) with a User security clearance 
 can grant different levels of access for different databases. These access levels are **Admin**, 
 **Read/Write**, and **Read Only**.  
 
