@@ -38,10 +38,9 @@ This is an example of a basic OLAP ETL creation operation.
 
 | Property | Type | Description |
 | - | - | - |
-| `RunFrequency` | `TimeSpan` | How often the server will execute the ETL process. This is different from the `TimeSpan` for the partitions |
+| `RunFrequency` | STRING | How often the server will execute the ETL process. This is different from the `TimeSpan` for the partitions |
 | `KeepFilesOnDisk` | `bool` | Whether to keep the data in memory after it has been transformed, or to delete it as soon as the ETL completes |
 | `PartitionFieldName` | `string` | Name of the partition |
-| `MaxNumberOfItemsInRowGroup` | `int?` | The maximum number of items in the row group |
 | `CustomPrefix` | `string` | A custom prefix for the folder name. Default: "_dt" |
 | `OlapTables` | `List<OlapEtlTable>` | List of naming configurations for individual tables. See more details below. |
 

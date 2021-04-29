@@ -22,5 +22,10 @@
         "Name": "Subscription Task",
         "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
         "Mappings": []
+    },
+    {
+        "Path": "olap-etl-task.markdown",
+        "Name": "OLAP ETL Task",
+        "Mappings": []
     }
 ]
