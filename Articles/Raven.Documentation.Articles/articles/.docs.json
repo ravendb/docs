@@ -2163,6 +2163,35 @@
     }
 },
 {
+    "Path": "how-ravendb-keeps-you-ahead-of-the-curve.markdown",
+    "Name": "How RavenDB 5.1 ACID Document Database Keeps You Ahead of the Curve",
+    "Mappings": [],
+    "Metadata": {
+        "title": "ACID Database | ACID Document Database | RavenDB 5.1",
+        "likeSection": "yes",
+        "url": "how-ravendb-keeps-you-ahead-of-the-curve",
+        "publishedAt": "2020-12-01",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "Fine tune your data replication, preserve resources with data compression, manage Big Data and IoT with a Time Series model.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "How RavenDB 5.1 ACID Document Database Keeps You Ahead of the Curve",
+        "og:description": "Fine tune your data replication, preserve resources with data compression, manage Big Data and IoT with a Time Series model.",
+        "og:url": "https://ravendb.net/articles/how-ravendb-keeps-you-ahead-of-the-curve",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/how-ravendb-keeps-you-ahead-of-the-curve&fileName=how-ravendb-keeps-you-ahead-of-the-curve.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "How RavenDB 5.1 ACID Document Database Keeps You Ahead of the Curve",
+        "twitter:description": "Fine tune your data replication, preserve resources with data compression, manage Big Data and IoT with a Time Series model.",
+        "twitter:url": "https://ravendb.net/articles/how-ravendb-keeps-you-ahead-of-the-curve"
+    }
+},
+{
     "Path": "acid-transactions-prove-to-be-the-gift-that-keeps-on-giving.markdown",
     "Name": "ACID Transactions for Shopper ID and Security Authentication",
     "Mappings": [],
