@@ -16,7 +16,7 @@
       * [Closed View](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-rulers-closed-view)  
       * [Expanded View](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-rulers-expanded-view)  
       * [Active and Inactive Display](../../../../studio/database/stats/ongoing-tasks-stats/overview#active-and-inactive-task-view)  
-      * [Connection Indicators](../../../../studio/database/stats/ongoing-tasks-stats/overview#connection-indicators)  
+      * [Connection Event Indicators](../../../../studio/database/stats/ongoing-tasks-stats/overview#connection-event-indicators)  
 
 {NOTE/}
 
@@ -121,17 +121,17 @@ and **Inactive** tasks are shown in different styles.
 
 ---
 
-### Connection Indicators
+### Connection Event Indicators
 
-Connection Indicators signify events related to the initiation, state, or 
-termination of clients' connections with tasks.  
+Connection Event Indicators signify events related to the initiation, state, or 
+termination of clients' connections with subscription tasks.  
 
-* Connection indicators are shown in both the [Closed](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-rulers-closed-view) 
+* Indicators are shown in both the [Closed](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-rulers-closed-view) 
   and the [Expanded](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-rulers-expanded-view) 
   task views.  
-* Hovering over a connection indicator will popup information related to it, if available.  
+* Hovering over a connection event indicator will popup information related to it, if available.  
 
-![Connection Indicators](images/stats-view-connection-indicators.png "Connection Indicators")
+![Connection Event Indicators](images/stats-view-connection-indicators.png "Connection Event Indicators")
 
 
 {PANEL/}

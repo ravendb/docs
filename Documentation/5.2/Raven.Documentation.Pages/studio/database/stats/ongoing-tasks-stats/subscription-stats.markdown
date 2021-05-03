@@ -7,7 +7,7 @@
      * [Subscription Stats](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats#subscription-stats)  
         * [Closed View](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats#closed-view)  
         * [Expanded View](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats#expanded-view)  
-        * [Subscription Stats Connection Indicators](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats#subscription-stats-connection-indicators)  
+        * [Subscription Stats Connection Event Indicators](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats#subscription-stats-connection-event-indicators)  
 
 {NOTE/}
 
@@ -54,30 +54,31 @@
 
 ---
 
-### Subscription Stats Connection Indicators
+### Subscription Stats Connection Event Indicators
 
-* Connection Initiated  
+* **Connection Initiated**  
   ![Connnection Initiated](images/stats-view-connection-initiated.png "Connnection Initiated")  
 
-* Connection Aborted  
+* **Connection Aborted**  
   ![Forcibly-Aborted Connnection](images/stats-view-forcibly-aborted-connection.png "Forcibly-Aborted Connnection")  
   The client has forcibly aborted the connection.  
 
-* Connection Rejected  
+* **Connection Rejected**  
   ![Rejected Connnection](images/stats-view-rejected-connection.png "Rejected Connnection Explained")  
-  A client that uses the `OpenIfFree` [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay) 
+  A client that uses the *OpenIfFree* [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay) 
   has attempted to open a connection to the subscription task and was rejected 
   because the task is already occupied by another client.  
 
-* Pending Connection  
+* **Pending Connection**  
   ![Pending Connnection](images/stats-view-pending-connection.png "Pending Connnection")  
   
-  1. Client **A** connects the subscription task.  
-  2. Client **B**, that uses the `WaitForFree` [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay), 
-     attempts to connects the task and is transited to **Pending** state.  
-  3. Client **A**, having received all the documents is needed, gracefully disconnects 
-     the task.  
-  4. Client **B** connects the task.  
+  1. Client **A** connected the subscription task.  
+  2. Client **B**, using the *WaitForFree* [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay), 
+     has attempted to connect the task.  
+     Discovering that the task is occupied, the client's state changed to **Pending**.  
+  3. Client **A**, having received all the documents is needed, [gracefully disconnected](../../../../client-api/data-subscriptions/consumption/examples#subscription-that-ends-when-no-documents-left) 
+     from the subscription task.  
+  4. Client **B** connected the subscription task.  
 
 {PANEL/}
 
