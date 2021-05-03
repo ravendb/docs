@@ -31,6 +31,12 @@
         "Name": "Queries",
         "Mappings": [],
         "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/stats",
+        "Name": "Stats",
+        "Mappings": []
+
     }
 
 ]
