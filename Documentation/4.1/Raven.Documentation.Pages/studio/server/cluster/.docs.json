@@ -1,0 +1,37 @@
+[
+    {
+        "Path": "cluster-view.markdown",
+        "Name": "Cluster View",
+        "DiscussionId": "2d1d4a75-387e-4e6d-9325-2670ac9c7288",
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "studio/cluster/cluster-view"
+            }
+        ]
+    },
+    {
+        "Path": "add-node-to-cluster.markdown",
+        "Name": "Add Node to Cluster",
+        "DiscussionId": "3b8a45a5-8fe8-43e4-8f26-c531571404cc",
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "studio/cluster/add-node-to-cluster"
+            }
+        ]
+    },
+  {
+    "Path": "cluster-observer.markdown",
+    "Name": "Cluster Observer",
+    "DiscussionId": "43584c05-f2a6-40a9-a6b1-fb7d1fac6ef0",
+    "Mappings": [
+      {
+        "Version": 4.2,
+        "Key": "studio/server/debug/advanced/cluster-observer"
+      }
+    ]
+  }
+]
