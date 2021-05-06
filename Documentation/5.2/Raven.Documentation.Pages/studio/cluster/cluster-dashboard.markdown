@@ -1,4 +1,4 @@
-﻿# Cluster View
+﻿# Cluster Dashboard
 ---
 
 {NOTE: }
