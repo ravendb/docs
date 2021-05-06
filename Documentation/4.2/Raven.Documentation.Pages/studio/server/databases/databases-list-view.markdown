@@ -107,7 +107,13 @@
    Indexing will **not** resume upon a restart to the server.  
 
 3. **Compact database**   
-   Physically compact the database on disk.
+   Physically [compact](../../../client-api/operations/server-wide/compact-database) 
+   the database on disk.
+   {WARNING: }
+   The compacting operation is executed **asynchronously**, 
+   and during this operation **the database will be offline**.
+   {WARNING/}
+
 {PANEL/}
 
 {PANEL: Remote Database}

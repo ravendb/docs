@@ -1,6 +1,13 @@
 # Operations: Server: How to Compact a Database
 
-To compact database, please use **CompactDatabaseOperation**. You can choose what should be compacted: documents and/or listed indexes.
+* Use the CompactDatabaseOperation to compact a database.  
+* You can choose what should be compacted: documents and/or listed indexes.  
+
+{WARNING: }
+The compacting operation is executed **asynchronously**, 
+and during this operation **the database will be offline**.  
+{WARNING/}
+
 
 ## Syntax
 
@@ -37,10 +44,6 @@ To compact database, please use **CompactDatabaseOperation**. You can choose wha
 * To solve this, we can explicitly identify the database we want to compact by providing 
   its name to CompactDatabaseOperation as in the following example.  
   {CODE compact_5@ClientApi\Operations\Server\Compact.cs /}
-
-## Remarks
-
-* The compacting operation is executed **asynchronously**, and during this operation **the database will be offline**.
 
 ## Related Articles
 

@@ -6,7 +6,7 @@
 * Go to **Settings** > **Documents Compression** to configure compression for a 
 particular database.  
 
-* Go to the **Storage Report** to see the contents and size of your database' 
+* Go to **Stats** > **Storage Report** to see the contents and size of your database' 
 storage.  
 
 * In this page:  
@@ -38,11 +38,11 @@ An existing document opened just for reading will **not** be compressed.
 
 {PANEL: Database Storage Report}
 
-Each database has a page **Stats** > **Storage Report** that displays detailed information 
-about the contents of its storage. Go here to see the effects of the compression. Refresh the 
-page to see changes.  
+The database storage report displays detailed information about the database's physical storage.  
+Go to this page (Stats > Storage Report) to see the compression effect. 
+(Refresh the page to see the changes.)  
 
-![RavenDB Storage Report](images/storage-report.png "RavenDB Storage Report")
+![sampleDB Storage Report](images/storage-report.png "sampleDB Storage Report")
 
 1. The size of each rectangle is proportional to its storage size.  
    Click any rectangle to view its subdirectories details.  
