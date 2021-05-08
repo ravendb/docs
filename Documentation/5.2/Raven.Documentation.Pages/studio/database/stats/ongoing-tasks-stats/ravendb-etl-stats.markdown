@@ -3,10 +3,13 @@
 
 {NOTE: }
 
+ETL (Extract, Transform, Load) is a robust automatic process that reads data from 
+a RavenDB database, changes or rearranges it, and stores it in another database.
+Learn more about the RavenDB ETL task [here](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task).  
+
 * In this page:  
-   * [RavenDB ETL Stats](../../../../studio/database/stats/ongoing-tasks-stats/ravendb-etl-stats#ravendb-etl-stats)  
-      * [Closed View](../../../../studio/database/stats/ongoing-tasks-stats/ravendb-etl-stats#closed-view)  
-      * [Expanded View](../../../../studio/database/stats/ongoing-tasks-stats/ravendb-etl-stats#expanded-view)  
+    * [RavenDB ETL Stats Closed View](../../../../studio/database/stats/ongoing-tasks-stats/ravendb-etl-stats#ravendb-etl-stats-closed-view)  
+    * [RavenDB ETL Stats Expanded View](../../../../studio/database/stats/ongoing-tasks-stats/ravendb-etl-stats#ravendb-etl-stats-expanded-view)  
 
 {NOTE/}
 
@@ -14,30 +17,32 @@
 
 {PANEL: RavenDB ETL Stats}
 
-### Closed View
+### RavenDB ETL Stats Closed View
 
 ![RavenDB ETL Stats Closed View](images/stats-view-09-etl-closed-view.png "RavenDB ETL Stats Closed View")
 
 1. **Task Type**  
-   Click arrow or task type to toggle Closed/Expanded View.  
+   Click the arrow or the task type to toggle Closed/Expanded View.  
 2. **Task Name**  
 3. **Transform Script**  
    Click to display the ETL transform script.  
 4. **Task Bar**  
-    * Hover over the bar to display basic information tooltip.  
-    * Click the bar for the expanded task view.  
+    * Hover over the bar to display a tooltip with the task's information.  
+    * Click the bar for the expanded view.  
     * Click and Drag the bar to slide the graph.  
+    * Zoom in & out using the mouse wheel.  
 
 ---
 
-### Expanded View
+### RavenDB ETL Stats Expanded View
 ![RavenDB ETL Stats Expanded View](images/stats-view-10-etl-expanded-view.png "RavenDB ETL Stats Expanded View")
-* **Raven ETL**  
+
+* **RavenDB ETL**  
    * **Total Duration**  
      Overall ETL operation time, including the Extraction, 
      Transformation, and Loading phases.  
    * **Batch Complete Reason**  
-     The reason the operation ended, e.g. 
+     The reason the operation ended, e.g. -  
      "No more items to process", 
      "Stopping the batch because maximum batch size limit was reached", and others.  
    * **Currently Allocated**  
@@ -65,7 +70,7 @@
    * **Duration**  
      The time it took to transfer the documents to their destination.  
    * **Successfully Loaded**  
-     Verification of documents successful transfer to the destination.  
+     Documents transfer verification.  
    * **Last Loaded Etag**  
      Last loaded document's identifier.  
 

@@ -13,10 +13,10 @@
    * [Ongoing Tasks Stats View](../../../../studio/database/stats/ongoing-tasks-stats/overview#ongoing-tasks-stats-view)  
    * [The Timeline Ruler](../../../../studio/database/stats/ongoing-tasks-stats/overview#the-timeline-ruler)  
    * [Task Rulers](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-rulers)  
-      * [Closed View](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-rulers-closed-view)  
-      * [Expanded View](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-rulers-expanded-view)  
-      * [Active and Inactive Display](../../../../studio/database/stats/ongoing-tasks-stats/overview#active-and-inactive-task-view)  
-      * [Connection Event Indicators](../../../../studio/database/stats/ongoing-tasks-stats/overview#connection-event-indicators)  
+      * [Closed View](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-ruler-closed-view)  
+      * [Expanded View](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-ruler-expanded-view)  
+      * [Time Grid](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-rulers-time-grid)  
+      * [Active and Inactive Display](../../../../studio/database/stats/ongoing-tasks-stats/overview#active-and-inactive-display)  
 
 {NOTE/}
 
@@ -24,7 +24,7 @@
 
 {PANEL: Ongoing Tasks Stats View}
 
-![Ongoing Tasks Stats View](images/stats-view-01_1-ongoing-tasks-stats-view.png "Ongoing Tasks Stats View")
+![Ongoing Tasks Stats View](images/stats-view-01-ongoing-tasks-stats-view.png "Ongoing Tasks Stats View")
 
 1. **Ongoing Tasks Stats**  
    Click to open the Ongoing Tasks Stats View.  
@@ -33,30 +33,42 @@
    Select the database whose ongoing tasks you want to monitor.  
    Data for this database's ongoing tasks will be collected and presented in the graph.  
 
----
+3. **Filter**  
+   Filter the displayed tasks by the task's name (Subscription, RavenDB ETL) 
+   or by the target URL (External Replication).  
 
-**Stats Graph**  
-The graph is added to the view once data is collected from at least one of the monitored tasks.  
-![Ongoing Tasks Stats Graph](images/stats-view-01_2-rulers-and-bars.png "Ongoing Tasks Stats Graph")
+4. **Export**  
+   The currently viewed graph data can be exported to a *.json file.  
+
+5. **Import**  
+   Import file to view a previously exported graph data.  
+   No new data is collected & displayed when showing imported data.  
+
+{PANEL/}
+
+{PANEL: Stats Graph}
+
+![Ongoing Tasks Stats Graph](images/stats-view-02-rulers-and-bars.png "Ongoing Tasks Stats Graph")
+
+* The graph is added to the view once data is collected from at least one of the monitored tasks.  
 
 {PANEL/}
 
 {PANEL: The Timeline Ruler}
 
-![The Timeline Ruler](images/stats-view-02-the-timeline-ruler.png "The Timeline Ruler")
-
-* The `Timeline Ruler` allows you to select any timeline segment and explore task activities during this period.  
-* The timeline ruler `Line` depicts a summary of the activity volume for all tasks presented in the graph.  
-
----
-
-![Timeline Ruler Actions](images/stats-view-03-selection-and-clear-buttons.png "Timeline Ruler Actions")
+![The Timeline Ruler](images/stats-view-03-selection-and-clear-buttons.png "The Timeline Ruler")
 
 1. **Selected Time Frame**  
-   Click & drag or resize this frame to select the timeline segment for which the data will be shown in the graph.  
-2. **Clear Selection**  
+   Select any timeline segment to explore the displayed tasks' activities during this time frame.  
+   Click & drag or resize this frame to select different time frames for which the data will be shown in the graph.  
+2. **Timeline Ruler Line**  
+   The timeline ruler `Line` depicts the activity for all tasks presented in the graph.  
+3. **Time Grid Line**  
+   A grid of timestamp-labled vertical time lines provides points of reference by which 
+   timeline segments can be measured.  
+4. **Clear Selection**  
    Click to clear the selected frame.  
-3. **Clear Graph**  
+5. **Clear Graph**  
    Click to clear all the collected data from the graph.  
    {INFO: }
    Recently collected statistics are kept by RavenDB in memory, allowing you to 
@@ -68,48 +80,76 @@ The graph is added to the view once data is collected from at least one of the m
 
 ![Tail Stream End](images/stats-view-04-monitor-tail.png "Tail Stream End")
 
-* 4. **Monitoring (tail -f)**  
+* 5. **Monitoring (tail -f)**  
   When this option is checked, the selected time frame will be continuously reallocated at the end of the data stream.  
 
 {PANEL/}
 
 {PANEL: Task Rulers}
 
-### Task Rulers Closed View
+Each monitored task has its dedicated ruler that displays the task's activities 
+during the time specified by the timeline ruler above.  
 
-![Task Rulers Closed Views](images/stats-view-05-task-rulers-closed-views.png "Task Rulers Closed Views")
+### Task Ruler Closed View
+
+![Task Ruler Closed Views](images/stats-view-05-task-rulers-closed-views.png "Task Ruler Closed Views")
 
 1. **Selected Time Frame**  
 2. **Task Ruler: Closed View**  
-     * A ruler dedicated to each monitored task displays the task's activities during 
-       the time specified by the timeline ruler above.  
      * Information summary is shown in a single bar.  
 3. **Task Bar**  
      * Hover over the bar to popup task information.  
      * Click and drag the bar to slide the graph.  
      * Click the bar for an expanded view that details task events in multiple bars.  
+     * Zoom in & out using the mouse wheel.  
 
 ---
 
-### Task Rulers Expanded View
+### Task Ruler Expanded View
 
-![Task Rulers Expanded Views](images/stats-view-06-task-rulers-expanded-views.png "Task Rulers Expanded Views")
+![Task Ruler Expanded Views](images/stats-view-06-task-rulers-expanded-views.png "Task Ruler Expanded Views")
 
 1. **Selected Time Frame**  
 2. **Task Ruler: Expanded View**  
    Detailed information is shown in multiple bars.  
 3. **Task Bars**  
-4. **Bar Frame**  
-   Bars are split into frames that depict particular statistics related to the task.  
-   Hover over bar frames to popup information related to them, e.g. -  
-    * **Sending Documents** - The amount of time it took to send documents:  
-      ![Sending Documents](images/stats-view-sending-documents.png "Sending Documents")
-    * **Waiting For ACK** - The amount of time the task waited for client Acknowledgement:  
-      ![Waiting For Ack](images/stats-view-waiting-for-ack.png "WWaiting For Ack")
+    * Bars are split into frames that depict particular statistics related to the task.  
+    * Hover over each bar frame to popup related information.  
+      See the dedicated tasks stats articles for task-specific information.  
+    * Click and drag to slide the graph.  
+    * Zoom in & out using the mouse wheel.  
 
 ---
 
-### Active and Inactive Task View
+### Task Rulers Time Grid
+
+A grid of vertical time lines allows you to easily relate task events to their time of occurence.  
+
+{INFO: }
+Note that the [stats graph](../../../../studio/database/stats/ongoing-tasks-stats/overview#stats-graph) 
+displays **two different time grids**.  
+
+* The [Timeline ruler time grid](../../../../studio/database/stats/ongoing-tasks-stats/overview#the-timeline-ruler) 
+  shows time points across the entire timeline ruler line.  
+* The Task rulers time grid, discussed here, shows points of time 
+  **within the selected time frame**.  
+{INFO/}
+
+![Task Rulers Time Grid](images/stats-view-task-rulers-time-grid.png "Task Rulers Time Grid")
+
+1. **Time Grid Line Timestamp**  
+   Time-grid lines are labled with timestamps.  
+2. **Time Grid Line**  
+   Time grid lines are displayed as *vertical dotted lines*.  
+3. **Gap Line**  
+   Gap lines, displayed as *vertical continuous lines*, indicate the renewal 
+   of task activity after a period in which all tasks were idle.  
+    * Hover over the gap line to show a tooltip that details the idle period 
+      start time and duration.  
+
+---
+
+### Active and Inactive Display
 
 **Active** tasks (e.g. a subscription task that a client is currently connected to) 
 and **Inactive** tasks are shown in different styles.  
@@ -118,20 +158,6 @@ and **Inactive** tasks are shown in different styles.
   ![Active Task](images/stats-view-active-task.png "Active Task")
 * An inactive task:  
   ![Inactive Task](images/stats-view-inactive-task.png "Inactive Task")
-
----
-
-### Connection Event Indicators
-
-Connection Event Indicators signify events related to the initiation, state, or 
-termination of clients' connections with subscription tasks.  
-
-* Indicators are shown in both the [Closed](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-rulers-closed-view) 
-  and the [Expanded](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-rulers-expanded-view) 
-  task views.  
-* Hovering over a connection event indicator will popup information related to it, if available.  
-
-![Connection Event Indicators](images/stats-view-connection-indicators.png "Connection Event Indicators")
 
 
 {PANEL/}

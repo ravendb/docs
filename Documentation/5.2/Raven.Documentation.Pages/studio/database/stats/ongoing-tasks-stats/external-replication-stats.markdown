@@ -77,6 +77,7 @@ The data shown in the graph will be either 'Outgoing' or 'Incoming', depending o
      * **Received Last Etag**  
        Last replicated item identifier.  
      * **Network Input Count**  
+       The number of transferred items.  
      * **Documents read count**  
        The number of transferred documents.  
      * **Attachments read count**  
