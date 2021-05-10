@@ -3,14 +3,11 @@
 
 {NOTE: }
 
-Data subscription tasks are ongoing operations in which the cluster sends document batches 
-to a client in an orderly manner, waiting for the consumption of each batch before sending 
-the next.  
-
-Documents transmitted this way may be, for example, orders sent to an accountant client, 
-making an otherwise tedious operation extremely easy to manage.  
-
-Learn more about data subscription tasks [here](../../../../studio/database/tasks/ongoing-tasks/subscription-task).  
+* A Subscription task is an ongoing task in which the server sends documents that match a query defined on 
+  the task to a client.  
+* The server sends the documents in batches in an orderly manner, waiting for the client to acknowledge the 
+  consumption of each batch before sending the next.  
+* Learn more about data subscription tasks [here](../../../../studio/database/tasks/ongoing-tasks/subscription-task).  
 
 * In this page:  
    * [Subscription Stats Closed View](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats#subscription-stats-closed-view)  
@@ -46,16 +43,16 @@ Learn more about data subscription tasks [here](../../../../studio/database/task
 
 * **Client Connection**  
    * **Duration**  
-     Overall correspondence time.  
+     Overall connection time.  
    * **Client URL**  
    * **Strategy**  
      The [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay) used by the client.  
    * **Number of batches acknowledged**  
-     The number of batches whose reception the client confirmed.  
-   * **Batches size**  
-     Size of each transferred batch.  
+     The number of batches whose processing was completed & confirmed by the client.  
+   * **Size of all batches**  
+     The total size of all batches sent in this connection.  
 * **Documents Batch**  
-   * **Batch duration**  
+   * **Total duration**  
      The amount of time it took to deliver this batch.  
    * **Documents sent in batch**  
      The number of documents delivered in this batch.  
@@ -67,7 +64,7 @@ Learn more about data subscription tasks [here](../../../../studio/database/task
      Number of [included](../../../../client-api/data-subscriptions/creation/examples#create-subscription-with-include-statement) 
      documents, counters, and time series  
 * **Sending Documents**  
-  The time it took the server to send documents in this batch.  
+  The time it took the server to send he documents in this batch.  
 * **Waiting for ACK**  
   The time it took the client to acknowledge this batch.  
 
@@ -98,7 +95,7 @@ The client has forcibly aborted the connection.
 
 **Connection Rejected**  
 ![Rejected Connnection](images/stats-view-rejected-connection.png "Rejected Connnection Explained")  
-Subscription tasks handle a single client/connection at a time.  
+A subscription task handles only a single client/connection at a time.  
 A client that uses the *OpenIfFree* [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay) 
 has attempted to open a connection to the subscription task but was rejected 
 because the task is already occupied by another client.  
@@ -111,10 +108,10 @@ because the task is already occupied by another client.
 1. Client **A** connects to the subscription task.  
 2. Client **B**, using the *WaitForFree* [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay), 
    attempts to connect the task.  
-   Discovering that the task is occupied, Client B is now pending, 
-   waiting for Client A to disconnect.  
-   The dotted yellow line shows the pending period for Client B.  
-3. Client A disconnects from subscription task.  
+   Discovering that the task is occupied, Client **B** is now pending, 
+   waiting for Client **A** to disconnect.  
+   The dotted yellow line shows the pending period for Client **B**.  
+3. Client **A** disconnects from the subscription task.  
 4. Client **B** starts a new connection to the subscription task.  
 
 {PANEL/}

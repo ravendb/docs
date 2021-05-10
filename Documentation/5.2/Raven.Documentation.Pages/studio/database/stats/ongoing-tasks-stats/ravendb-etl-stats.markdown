@@ -3,9 +3,9 @@
 
 {NOTE: }
 
-ETL (Extract, Transform, Load) is a robust automatic process that reads data from 
-a RavenDB database, changes or rearranges it, and stores it in another database.
-Learn more about the RavenDB ETL task [here](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task).  
+* RavenDB ETL (Extract, Transform, Load) is a process that reads data from a RavenDB database, 
+  transforms it, and stores it in another RavenDB database.
+* Learn more about the RavenDB ETL task [here](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task).  
 
 * In this page:  
     * [RavenDB ETL Stats Closed View](../../../../studio/database/stats/ongoing-tasks-stats/ravendb-etl-stats#ravendb-etl-stats-closed-view)  
@@ -43,8 +43,9 @@ Learn more about the RavenDB ETL task [here](../../../../studio/database/tasks/o
      Transformation, and Loading phases.  
    * **Batch Complete Reason**  
      The reason the operation ended, e.g. -  
-     "No more items to process", 
-     "Stopping the batch because maximum batch size limit was reached", and others.  
+     "No more items to process",  
+     "Stopping the batch because maximum batch size limit was reached",  
+     and others.  
    * **Currently Allocated**  
      The amount of memory allocated by the server to handle this task.  
    * **Batch Size**  

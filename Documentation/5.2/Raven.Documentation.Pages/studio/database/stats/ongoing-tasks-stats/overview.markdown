@@ -63,9 +63,9 @@
    Click & drag or resize this frame to select different time frames for which the data will be shown in the graph.  
 2. **Timeline Ruler Line**  
    The timeline ruler `Line` depicts the activity for all tasks presented in the graph.  
-3. **Time Grid Line**  
+3. **Timeline Grid**  
    A grid of timestamp-labled vertical time lines provides points of reference by which 
-   timeline segments can be measured.  
+   timeline segments can be measured and selected.  
 4. **Clear Selection**  
    Click to clear the selected frame.  
 5. **Clear Graph**  
@@ -80,7 +80,7 @@
 
 ![Tail Stream End](images/stats-view-04-monitor-tail.png "Tail Stream End")
 
-* 5. **Monitoring (tail -f)**  
+* 6. **Monitoring (tail -f)**  
   When this option is checked, the selected time frame will be continuously reallocated at the end of the data stream.  
 
 {PANEL/}
@@ -100,8 +100,8 @@ during the time specified by the timeline ruler above.
 3. **Task Bar**  
      * Hover over the bar to popup task information.  
      * Click and drag the bar to slide the graph.  
-     * Click the bar for an expanded view that details task events in multiple bars.  
      * Zoom in & out using the mouse wheel.  
+     * Click the bar for an expanded view that details task events in multiple bars.  
 
 ---
 
@@ -137,9 +137,9 @@ displays **two different time grids**.
 
 ![Task Rulers Time Grid](images/stats-view-task-rulers-time-grid.png "Task Rulers Time Grid")
 
-1. **Time Grid Line Timestamp**  
+1. **Grid Line Timestamp**  
    Time-grid lines are labled with timestamps.  
-2. **Time Grid Line**  
+2. **Grid Line**  
    Time grid lines are displayed as *vertical dotted lines*.  
 3. **Gap Line**  
    Gap lines, displayed as *vertical continuous lines*, indicate the renewal 

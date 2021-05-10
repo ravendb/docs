@@ -3,9 +3,9 @@
 
 {NOTE: }
 
-The External Replication Task replicates your database data to another RavenDB database.  
-Learn more about the External Replication Task [here](../../../../studio/database/tasks/ongoing-tasks/external-replication-task).  
-The data shown in the graph will be either 'Outgoing' or 'Incoming', depending on whether the source or the target database is viewed.  
+* The External Replication Task replicates your database data to another RavenDB database.  
+* Learn more about the External Replication Task [here](../../../../studio/database/tasks/ongoing-tasks/external-replication-task).  
+* The data shown in the graph will be either 'Outgoing' or 'Incoming', depending on whether the source or the target database is viewed.  
 
 * In this page:  
    * [External Replication Stats Closed View](../../../../studio/database/stats/ongoing-tasks-stats/external-replication-stats#external-replication-stats-closed-view)  
@@ -24,6 +24,7 @@ The data shown in the graph will be either 'Outgoing' or 'Incoming', depending o
 1. **Task Type**  
    The task type will be either 'Outgoing' or 'Incoming', depending on whether the viewed database is the source or the target database.  
    Click the arrow or the task type to toggle Closed/Expanded View.  
+
 2. **Replication URL**  
     * On the Source database: The server URL & database name to which documents are replicated.  
     * On the Target database: The server URL & database name of the source database.  
