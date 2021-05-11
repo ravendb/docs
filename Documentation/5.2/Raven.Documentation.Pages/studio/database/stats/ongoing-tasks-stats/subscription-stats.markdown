@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* A Subscription task is an ongoing task in which the server sends documents that match a query defined on 
+* A **Subscription Task** is an ongoing task in which the server sends documents that match a query defined on 
   the task to a client.  
 * The server sends the documents in batches in an orderly manner, waiting for the client to acknowledge the 
   consumption of each batch before sending the next.  
@@ -64,7 +64,7 @@
      Number of [included](../../../../client-api/data-subscriptions/creation/examples#create-subscription-with-include-statement) 
      documents, counters, and time series  
 * **Sending Documents**  
-  The time it took the server to send he documents in this batch.  
+  The time it took the server to send the documents in this batch.  
 * **Waiting for ACK**  
   The time it took the client to acknowledge this batch.  
 

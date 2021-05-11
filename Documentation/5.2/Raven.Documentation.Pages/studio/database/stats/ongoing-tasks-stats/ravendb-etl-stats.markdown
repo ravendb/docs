@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* RavenDB ETL (Extract, Transform, Load) is a process that reads data from a RavenDB database, 
+* **RavenDB ETL** (Extract, Transform, Load) is a process that reads data from a RavenDB database, 
   transforms it, and stores it in another RavenDB database.
 * Learn more about the RavenDB ETL task [here](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task).  
 

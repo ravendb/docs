@@ -65,7 +65,7 @@
    The timeline ruler `Line` depicts the activity for all tasks presented in the graph.  
 3. **Timeline Grid**  
    A grid of timestamp-labled vertical time lines provides points of reference by which 
-   timeline segments can be measured and selected.  
+   time frames can be selected.  
 4. **Clear Selection**  
    Click to clear the selected frame.  
 5. **Clear Graph**  

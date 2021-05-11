@@ -3,8 +3,8 @@
 
 {NOTE: }
 
-* The External Replication Task replicates your database data to another RavenDB database.  
-* Learn more about the External Replication Task [here](../../../../studio/database/tasks/ongoing-tasks/external-replication-task).  
+* The **External Replication Task** replicates your database data to another RavenDB database.  
+  Learn more about the External Replication Task [here](../../../../studio/database/tasks/ongoing-tasks/external-replication-task).  
 * The data shown in the graph will be either 'Outgoing' or 'Incoming', depending on whether the source or the target database is viewed.  
 
 * In this page:  
