@@ -2567,5 +2567,34 @@
         "twitter:description": "Unprecedented levels of traffic require applications to maintain top performance under heavy load. The database of tomorrow meets these challenges today.",
         "twitter:url": "https://ravendb.net/articles/how-a-database-delivers-performance-under-heavy-load-ravendb"
     }
+},
+{
+    "Path": "using-nuget-packages-to-power-up-ravendb-indexes.markdown",
+    "Name": "Using NuGet Packages to Power Up RavenDB Indexes",
+    "Mappings": [],
+    "Metadata": {
+        "title": "Using NuGet Packages to Power Up RavenDB Indexes | RavenDB",
+        "likeSection": "yes",
+        "url": "using-nuget-packages-to-power-up-ravendb-indexes",
+        "publishedAt": "2021-05-11",
+        "subcategories": "nosql-database"
+    },
+    "SeoMetaProperties": {
+        "description": "Leverage the power of NuGet packages within RavenDB indexes to offload work like image EXIF indexing or ML.NET analysis.",
+        "og:site_name": "RavenDB",
+        "og:type": "website",
+        "og:title": "Using NuGet Packages to Power Up RavenDB Indexes | RavenDB",
+        "og:description": "Leverage the power of NuGet packages within RavenDB indexes to offload work like image EXIF indexing or ML.NET analysis.",
+        "og:url": "https://ravendb.net/articles/using-nuget-packages-to-power-up-ravendb-indexes",
+        "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/using-nuget-packages-to-power-up-ravendb-indexes&fileName=using-nuget-packages-to-power-up-ravendb-indexes.jpg",
+        "og:image:width": "280",
+        "og:image:height": "280",
+        "twitter:card": "summary_large_image",
+        "twitter:creator": "@RavenDB",
+        "twitter:site": "@RavenDB",
+        "twitter:title": "Using NuGet Packages to Power Up RavenDB Indexes | RavenDB",
+        "twitter:description": "Leverage the power of NuGet packages within RavenDB indexes to offload work like image EXIF indexing or ML.NET analysis.",
+        "twitter:url": "https://ravendb.net/articles/using-nuget-packages-to-power-up-ravendb-indexes"
+    }
 }
 ]
