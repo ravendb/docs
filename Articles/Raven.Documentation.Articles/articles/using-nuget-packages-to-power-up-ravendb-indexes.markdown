@@ -1,6 +1,11 @@
 # Using NuGet Packages to Power Up RavenDB Indexes
-
 <small>by Kamran Ayub</small>
+
+<div class="article-img figure text-center">
+  <img src="images/using-nuget-packages-to-power-up-ravendb-indexes.jpg" alt="Leverage the power of NuGet packages within RavenDB indexes to offload work like image EXIF indexing or ML.NET analysis" class="img-responsive img-thumbnail">
+</div>
+
+{SOCIAL-MEDIA-LIKE/}<br/>
 
 In RavenDB 5.1, you can now use third-party NuGet packages and load binary data (or "attachments") within your indexes without any additional code deployment necessary.
 
@@ -12,7 +17,7 @@ In traditional NoSQL or RDMS databases indexing is usually an afterthought until
 
 In contrast, RavenDB indexes can perform complex operations that combine the benefits of MongoDB’s aggregation pipeline with the power of RDMS-style queries. Since indexes are built in parallel in the background, queries respond in milliseconds even under high load. This makes RavenDB [one of the fastest NoSQL databases on the market](https://ravendb.net/why-ravendb/high-performance).
 
-For a deeper dive, learn [what role indexes play in RavenDB compared to MongoDB and PostgreSQL](nosql-document-database-indexing).
+For a deeper dive, learn [what role indexes play in RavenDB compared to MongoDB and PostgreSQL](https://ravendb.net/articles/nosql-document-database-indexing).
 
 ## Indexing Image EXIF Data Using Attachments
 
@@ -58,24 +63,28 @@ This will be a [Map index](https://ravendb.net/docs/article-page/5.1/csharp/stud
 
 Using the new [Attachment Indexing helpers](https://ravendb.net/docs/article-page/5.1/csharp/document-extensions/attachments/indexing) to load the list of attachments and retrieve the reference to the photo, I’ll select its file name and size to query on:
 
-```c#
-from photo in docs.Photos
-let attachment = LoadAttachment(photo, AttachmentsFor(Photo)[0].Name)
-select new {
-  photo.Title,
-  attachment.Name,
-  attachment.Size
-}
-```
+<pre>
+  <code class="language-csharp">
+  from photo in docs.Photos
+  let attachment = LoadAttachment(photo, AttachmentsFor(Photo)[0].Name)
+  select new {
+    photo.Title,
+    attachment.Name,
+    attachment.Size
+  }
+  </code>
+</pre>
 
 This is madness! Can we just stop for a moment and acknowledge that it’s so cool we can _load the photo while indexing and have full access to it?_
 
 I’ll issue a query and filter by the photo title:
 
-```sql
-from index 'Photos/WithExitAttributes'
-where Title = 'Chateau in France'
-```
+<pre>
+  <code class="language-sql">
+  from index 'Photos/WithExitAttributes'
+  where Title = 'Chateau in France'
+  </code>
+</pre>
 
 The Studio interface can show “raw” index entries which reveal the photo filename and size:
 
@@ -85,7 +94,7 @@ The Studio interface can show “raw” index entries which reveal the photo fil
 
 The query took **0ms** since _indexes are built in the background_ enabling RavenDB to respond to queries instantly.
 
-Now I’ll kick it up a notch. In the index definition, I will add a NuGet package under “Additional Assemblies” for the [MetadataExtractor](https://www.nuget.org/packages/MetadataExtractor/) package which supports reading EXIF metadata:
+Now I’ll kick it up a notch. In the index definition, I will add a NuGet package under “Additional Assemblies” for the <a href="https://www.nuget.org/packages/MetadataExtractor/" target="_blank" rel="nofollow">MetadataExtractor</a> package which supports reading EXIF metadata:
 
 <div class="margin-top-sm margin-bottom-sm">
   <img src="images/using-nuget-packages-to-power-up-ravendb-indexes/image11.png"  class="img-responsive m-0-auto" alt="Studio: add MetadataExtractor Nuget package" />
@@ -96,51 +105,55 @@ I added some usings needed for running the MetadataExtractor. When writing any a
 Now I can reference APIs from the MetadataExtractor namespaces in my index code. The steps roughly are to:
 
 1. Get the attachment data as a `Stream`
-1. Read the image metadata into a “directory structure”
-1. Open the EXIF Sub IFD directory which holds some useful metadata
-1. Get the date the photo was taken
+2. Read the image metadata into a “directory structure”
+3. Open the EXIF Sub IFD directory which holds some useful metadata
+4. Get the date the photo was taken
 
-EXIF metadata is a little intimidating to understand but some [explanations](http://gvsoft.no-ip.org/exif/exif-explanation.html) are available. Different metadata properties are available in different “directories.”
+<p>EXIF metadata is a little intimidating to understand but some <a href="http://gvsoft.no-ip.org/exif/exif-explanation.html" target="_blank" rel="nofollow">explanations</a> are available. Different metadata properties are available in different “directories.”</p>
 
 I’ll walk through the index code step-by-step:
 
-```c#
-from photo in docs.Photos
-let attachment = LoadAttachment(photo, AttachmentsFor(photo)[0].Name)
-let directories = new DynamicArray(
-  ImageMetadataReader.ReadMetadata(attachment.GetContentAsStream()))
-let ifdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault()
-```
+<pre>
+  <code class="language-csharp">
+  from photo in docs.Photos
+  let attachment = LoadAttachment(photo, AttachmentsFor(photo)[0].Name)
+  let directories = new DynamicArray(
+    ImageMetadataReader.ReadMetadata(attachment.GetContentAsStream()))
+  let ifdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault()
+  </code>
+</pre>
 
-The first step is to load the attachment data using `attachment.GetContentAsStream()` which I pass to the [ImageMetadataReader.ReadMetadata](https://github.com/drewnoakes/metadata-extractor-dotnet#usage) static utility. This will return an enumeration of “directories” as MetadataExtractor calls them (it’s a tree structure).
+<p>The first step is to load the attachment data using <code>attachment.GetContentAsStream()</code> which I pass to the <a href="https://github.com/drewnoakes/metadata-extractor-dotnet#usage" target="_blank" rel="nofollow">ImageMetadataReader.ReadMetadata</a> static utility. This will return an enumeration of “directories” as MetadataExtractor calls them (it’s a tree structure).</p>
 
 The `new DynamicArray` expression is a class RavenDB uses that wraps an enumerable so that you can safely perform dynamic LINQ operations. The `OfType<ExifSubIfdDirectory>` LINQ expression retrieves the first metadata directory matching the EXIF Sub IFD directory type.
 
 Next, I get the date the photo was taken as `DateTaken`:
 
-```c#
-from photo in docs.Photos
-let attachment = LoadAttachment(photo, AttachmentsFor(photo)[0].Name)
-let directories = new DynamicArray(
-  ImageMetadataReader.ReadMetadata(attachment.GetContentAsStream()))
-let ifdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault()
+<pre>
+  <code class="language-csharp">
+  from photo in docs.Photos
+  let attachment = LoadAttachment(photo, AttachmentsFor(photo)[0].Name)
+  let directories = new DynamicArray(
+    ImageMetadataReader.ReadMetadata(attachment.GetContentAsStream()))
+  let ifdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault()
 
-let dateTime = DirectoryExtensions.GetDateTime(ifdDirectory, ExifDirectoryBase.TagDateTimeOriginal)
-select new {
-  DateTaken = dateTime,
-  photo.Title,
-  attachment.Name,
-  attachment.Size
-}
-```
+  let dateTime = DirectoryExtensions.GetDateTime(ifdDirectory, ExifDirectoryBase.TagDateTimeOriginal)
+  select new {
+    DateTaken = dateTime,
+    photo.Title,
+    attachment.Name,
+    attachment.Size
+  }
+  </code>
+</pre>
 
 You’ll notice I am using LINQ’s `FirstOrDefault()` method which can return a `null` value for `ifdDirectory`. Indexes in RavenDB are resilient to errors and what happens behind the scenes is some magic that will [add null propagation](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/12-working-with-indexes#error-handling-in-indexing) when accessing any values that could be null. This avoids any `NullReferenceException` issues that could cause indexing to fail. I wish I had a null propagation fairy in my regular .NET code!
 
-I use the `DirectoryExtensions.GetDateTime` static method to retrieve the photo’s “original date” field. Images can [contain a lot of different date-time fields](https://github.com/drewnoakes/metadata-extractor/wiki/SampleOutput) and it is not consistent between file formats. For this photo, the `TagDateTimeOriginal` field holds the timestamp the photo was taken so I am using that.
+<p>I use the <code>DirectoryExtensions.GetDateTime</code> static method to retrieve the photo’s “original date” field. Images can <a href="https://github.com/drewnoakes/metadata-extractor/wiki/SampleOutput" target="_blank" rel="nofollow">contain a lot of different date-time fields</a> and it is not consistent between file formats. For this photo, the <code>TagDateTimeOriginal</code> field holds the timestamp the photo was taken so I am using that.</p>
 
 I can now query photos by date! RavenDB supports date range queries when filtering by a date field so I can use the filter expression:
 
-    where DateTaken between '2015-01-01' and '2015-03-01'
+<pre><code style="background:transparent;">where DateTaken between '2015-01-01' and '2015-03-01`</code></pre>
 
 <div class="margin-top-sm margin-bottom-sm">
   <img src="images/using-nuget-packages-to-power-up-ravendb-indexes/image16.png"  class="img-responsive m-0-auto" alt="Studio: query for a photo between dates" />
@@ -169,12 +182,12 @@ Let’s change gears now and examine how we could leverage some offline machine 
 In a sentiment analysis machine learning program, the rough steps would be to:
 
 1. Obtain a source dataset of values
-1. Train the AI model on the dataset
-1. Use the trained model to perform sentiment analysis against new data
+2. Train the AI model on the dataset
+3. Use the trained model to perform sentiment analysis against new data
 
-Steps 1 and 2 can take a while to perform if the dataset is large as it runs a learning algorithm on it. Step 3 is much faster as it can use the trained model to analyze a limited dataset, like a single product review. It is beyond my ability to explain this in detail but luckily ML.NET has some great documentation to reference [on using trained offline models with TensorFlow](https://docs.microsoft.com/en-us/dotnet/machine-learning/tutorials/text-classification-tf).
+<p>Steps 1 and 2 can take a while to perform if the dataset is large as it runs a learning algorithm on it. Step 3 is much faster as it can use the trained model to analyze a limited dataset, like a single product review. It is beyond my ability to explain this in detail but luckily ML.NET has some great documentation to reference <a href="https://docs.microsoft.com/en-us/dotnet/machine-learning/tutorials/text-classification-tf" target="_blank" rel="nofollow">on using trained offline models with TensorFlow</a>.</p>
 
-I’ll be using the NuGet package [SentimentAnalyzer](https://www.nuget.org/packages/SentimentAnalyzer/) to run an offline analysis with a pre-trained model included within the package. The benefit of this is that we aren’t incurring the cost of training every time the indexing operation runs.
+<p>I’ll be using the NuGet package <a href="https://www.nuget.org/packages/SentimentAnalyzer/" target="_blank" rel="nofollow">SentimentAnalyzer</a> to run an offline analysis with a pre-trained model included within the package. The benefit of this is that we aren’t incurring the cost of training every time the indexing operation runs.</p>
 
 I’ll start by creating two documents representing simple user reviews with positive and negative sentiments:
 
@@ -196,22 +209,26 @@ Now I’ll add a NuGet package with the Additional Sources feature to bring in t
 
 I’ll call `Sentiments.Predict` and pass the review text which returns a `Prediction` boolean where `true` is “positive” and `false` is “negative” sentiment. I’ll select that value out into the `Sentiment` field:
 
-```c#
-from review in docs.Reviews
-select new {
-  review.Body,
-  review.Author,
-  Sentiment = Sentiments.Predict(
-  	review.Body).Prediction ? "Positive" : "Negative"
-}
-```
+<pre>
+  <code class="language-csharp">
+  from review in docs.Reviews
+  select new {
+    review.Body,
+    review.Author,
+    Sentiment = Sentiments.Predict(
+  	  review.Body).Prediction ? "Positive" : "Negative"
+  }
+  </code>
+</pre>
 
 What this enables me to do is query for “positive” or “negative” sounding reviews:
 
-```sql
-from index 'Reviews/BySentiment'
-where Sentiment == 'Positive'
-```
+<pre>
+  <code class="language-sql">
+  from index 'Reviews/BySentiment'
+  where Sentiment == 'Positive'
+  </code>
+</pre>
 
 The query returns the expected positive-sounding review:
 
@@ -235,16 +252,18 @@ I am sure you may be curious to know what performance implication this has on th
 
 This is additional code that is running so it will certainly incur overhead during the indexing process. For this article, I used the Free tier on [RavenDB Cloud](https://cloud.ravendb.net) which is 2 vCPUs and 512MB of RAM. This is TINY when you think about what a production database server might require but I want to show you how fast RavenDB can be given these hardware constraints.
 
-I’ll use [this sample IMDB dataset](https://github.com/nas5w/imdb-data) that has 50,000 movie reviews and create the same kind of sentiment analysis index to compare the indexing performance on a larger sample size.
+<p>I’ll use <a href="https://github.com/nas5w/imdb-data" target="_blank" rel="nofollow">this sample IMDB dataset</a> that has 50,000 movie reviews and create the same kind of sentiment analysis index to compare the indexing performance on a larger sample size.</p>
 
 The first version will _not_ be using any NuGet packages which will be our baseline. The Map operation just returns the text from each review:
 
-```c#
-from review in docs
-select new {
-  review.Text
-}
-```
+<pre>
+  <code class="language-csharp">
+  from review in docs
+  select new {
+    review.Text
+  }
+  </code>
+</pre>
 
 In RavenDB, you can view indexing performance for every index in a [_lot_ of detail](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/12-working-with-indexes#indexing-and-querying-performance). Indexing happens in batches. Think of putting a bunch of documents into a bucket and sending each bucket of documents down the “indexing assembly line.” There’s the time to process each bucket and then the total time to process all the buckets.
 
@@ -258,14 +277,16 @@ Each batch takes about 80ms but you’ll notice in the screenshot that when Rave
 
 Now I’ll use SentimentAnalyzer to calculate the sentiment of each movie review alongside the text:
 
-```c#
-from review in docs
-select new {
-  review.Text,
-  Sentiment = Sentiments.Predict(
-    review.Text).Prediction ? "Positive" : "Negative"
-}
-```
+<pre>
+  <code class="language-csharp">
+  from review in docs
+  select new {
+    review.Text,
+    Sentiment = Sentiments.Predict(
+      review.Text).Prediction ? "Positive" : "Negative"
+  }
+  </code>
+</pre>
 
 This time, it takes a total of 16 seconds to build the index or about 5 times as long. Each batch varies between 500ms to 1s depending on whether it needed to commit to disk:
 
@@ -281,7 +302,7 @@ For example, if I clone a review document to cause the index to update, the LINQ
   <img src="images/using-nuget-packages-to-power-up-ravendb-indexes/image13.png"  class="img-responsive m-0-auto" alt="Studio: indexing rebuild performance" />
 </div>
 
-The _entire rebuild_ took 700ms to run where the bulk of the time was spent writing and merging to disk. This is important to understand because having a lot of CPU power is great (for the analysis speed) but it’s just as important to use fast storage for your RavenDB database when you are looking for the best performance. The Free tier I’m using for this demo is probably using a [low-end HDD](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-volumes) from AWS EC2.
+<p>The <em>entire rebuild</em> took 700ms to run where the bulk of the time was spent writing and merging to disk. This is important to understand because having a lot of CPU power is great (for the analysis speed) but it’s just as important to use fast storage for your RavenDB database when you are looking for the best performance. The Free tier I’m using for this demo is probably using a <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-volumes" target="_blank" rel="nofollow">low-end HDD</a> from AWS EC2.</p>
 
 When it comes to indexing overhead, there’s a trade-off between performance and ease of querying. The major advantage we get is that we run the analysis computation on the database server instead of within our application, letting us trade that longer index build time for faster queries on the client-side.
 
