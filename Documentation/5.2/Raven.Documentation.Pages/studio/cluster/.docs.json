@@ -1,9 +1,7 @@
 [
     {
-        "Path": "cluster-dashboard.markdown",
-        "Name": "Cluster Dashboard",
-        "DiscussionId": "2d1d4a75-387e-4e6d-9325-2670ac9c7288",
-        "Mappings": []
+        "Path": "/cluster-dashboard",
+        "Name": "Cluster Dashboard"
     },
     {
         "Path": "cluster-view.markdown",
