@@ -3,9 +3,9 @@
 
 {NOTE: }
 
-* Rolling Index Deployment is the deployment of indexing gradually, one cluster node at a time, 
+* Rolling Index Deployment is the gradual deployment of indexing, one cluster node at a time, 
   to ensure the cluster's availability and performance.  
-* While a node performs indexing, the cluster may reassign its tasks to other nodes if needed.  
+* While a node performs indexing, the cluster may reassign its tasks to other nodes.  
 
 * In this page:  
   * [](../indexes/using-analyzers#understanding-analyzers)  
@@ -16,21 +16,95 @@
 
 ---
 
-{PANEL: Why Rolling Index Deployment?}
+{PANEL: Why Rolling Index Deployment}
 
-Indexing is meant to improve performance. But heavy-duty indexing may become an obsticle to 
-the cluster's performance and availability, if all its nodes are busy indexing at the same time.  
+Parallel heavy-duty indexing by all cluster nodes may reduce the cluster's performance and availability.  
 
-* On Site, the cost of concurrent indexing in memory and CPU usage may decrease cluster performance.  
-* On the Cloud, concurrent indexing may exhaust all nodes’ credits at the same time and harm cluster 
-  availability.  
+* **On Site**, the cluster's ability to process data and tasks is reduced when multiple nodes dedicate 
+  their resources to indexing.  
+* **On the Cloud**, parallel indexing may exhaust the credits of multiple nodes at the same time, and 
+  degrade the cluster's availability.  
 
-Exempting most cluster nodes from indexing ensures that indexing **will** be performedm, but not 
-on the expense of performance or availability.  
+Deploying indexing one node at a time ensures that indexing will be performed, but not on the expense 
+of overall cluster conduct.  
+
 
 {PANEL/}
 
-{PANEL: }
+{PANEL: How Does It Work}
+
+When **Rolling Index Deployment** is enabled, indexing operations are performed by one node at a time.  
+
+### The Rolling Procedure
+
+1. The cluster assigns indexing to one of its nodes.  
+2. When the assigned node finishes indexing, it informs the cluster leader that indexing is **Done**.  
+   {Warning: }
+   If the assignee's confirmation fails to reach the cluster leader, indexing will be stopped for all nodes 
+   until the cluster recovers or indexing is restarted manually.  
+   This may happen, for example, when the assignee or the cluster leader are disconnected from the cluster 
+   while indexing takes place.  
+   {Warning/}
+3. The cluster leader assigns indexing to the next node.  
+4. And so on, until all nodes finish indexing.  
+
+{INFO: Rolling is performed **Per-Database**.}
+
+* indexing is performed one node at a time for each database.  
+  I.e., if indexes of the "Integration" database need to be updated, they will be updated as described above, one node at a time.  
+* Indexing **can** be performed in parallel for different databases.  
+  Node `A`, for example, may create indexes for the "Integration" database, while node `B` creates indexes for the "Production" database.  
+{INFO/}
+
+* Rolling Index Delopyment can be enabled or disabled for [Auto Indexes]().  
+* Rolling Index Delopyment can be enabled or disabled for [Static Indexes]().  
+
+  {INFO: }
+  Times in which you may consider using concurrent indexing and not rolling index deployment, 
+  include time in which there is minor or no database activity, e.g. in time of backup restore, 
+  when concurrent indexing poses no problem to clients.  
+  {INFO/}
+
+{PANEL/}
+
+{Rolling Index Deployment Settings}
+
+* settings.json option:  
+        Indexing.Static.DeploymentMode
+        Indexing.Auto.DeploymentMode
+
+* API Samples  
+   * Adding an index that uses rolling  
+{CODE:csharp:}
+private class MyRollingIndex : AbstractIndexCreationTask<Order>
+        {
+            public MyRollingIndex()
+            {
+                Map = orders => from order in orders
+                    select new
+                    {
+                        order.Company,
+                    };
+                DeploymentMode = IndexDeploymentMode.Rolling;
+            }
+        }
+{CODE/}
+
+   * Adding an index that uses parallel indexing  
+
+* Studio Configuration]()  
+
+{PANEL/}
+
+
+* Studio --> List of Indexes
+  change an index
+  view deployment
+* Studio --> Database Record -> indexes -> "Rolling:": true
+
+
+
+
 3-parts picture, in each one node inxes and the others don't
 
 When shouldn't it be used
