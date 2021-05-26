@@ -3,14 +3,17 @@
 
 {NOTE: }
 
-* Rolling Index Deployment is the gradual deployment of indexing, one cluster node at a time, 
-  to ensure the cluster's availability and performance.  
-* While a node performs indexing, the cluster may reassign its tasks to other nodes.  
+* When **Rolling Index Deployment** is enabled, databases are indexed by one node at a time.  
+* Indexing operations are assigned to nodes by the cluster.  
+* The cluster assigns a new node with indexing, only when the previous indexing node confirmed 
+  that it finished indexing.  
+* Rolling index deployment prevents parallel heavy-duty indexing by multiple nodes, which may 
+  reduce the cluster's availability and performance.  
 
 * In this page:  
-  * [](../indexes/using-analyzers#understanding-analyzers)  
-  * [](../indexes/using-analyzers#ravendb)  
-  * [](../indexes/using-analyzers#full-text-search)  
+  * [Why Rolling Index Deployment](../indexes/rolling-index-deployment#why-rolling-index-deployment)  
+  * [How Does It Work](../indexes/rolling-index-deployment#how-does-it-work)  
+  * [Set Rolling Index Deployment Mode](../indexes/rolling-index-deployment#set-rolling-index-deployment-mode)  
 
 {NOTE/}
 
@@ -18,107 +21,98 @@
 
 {PANEL: Why Rolling Index Deployment}
 
-Parallel heavy-duty indexing by all cluster nodes may reduce the cluster's performance and availability.  
+When heavy-duty indexing is performed in parallel by all cluster nodes, the cluster's 
+performance and availability may be reduced.  
+The extent of the reduction in cluster conduct depends upon its nodes' resources, 
+the scope of the required indexing, and the number of nodes concurrently indexing.  
 
-* **On Site**, the cluster's ability to process data and tasks is reduced when multiple nodes dedicate 
-  their resources to indexing.  
-* **On the Cloud**, parallel indexing may exhaust the credits of multiple nodes at the same time, and 
-  degrade the cluster's availability.  
+* **On Site**, dedicating much of all nodes' resources to indexing rather than to processing 
+  data and tasks may reduce the cluster's performance.  
+* **On the Cloud**, parallel indexing may exhaust the credits available to multiple nodes 
+  at the same time and degrade the cluster's availability.  
 
-Deploying indexing one node at a time ensures that indexing will be performed, but not on the expense 
-of overall cluster conduct.  
+**Rolling index deployment** ensures that indexes will be created and updated while 
+the cluster remains fully available and performant.  
 
+{INFO: }
+Parallel indexing may be a better option when there is minor or no database activity.  
+{INFO/}
 
 {PANEL/}
 
 {PANEL: How Does It Work}
 
-When **Rolling Index Deployment** is enabled, indexing operations are performed by one node at a time.  
-
 ### The Rolling Procedure
 
+Nodes are assigned with indexing tasks one node at a time.  
+
 1. The cluster assigns indexing to one of its nodes.  
-2. When the assigned node finishes indexing, it informs the cluster leader that indexing is **Done**.  
-   {Warning: }
-   If the assignee's confirmation fails to reach the cluster leader, indexing will be stopped for all nodes 
-   until the cluster recovers or indexing is restarted manually.  
-   This may happen, for example, when the assignee or the cluster leader are disconnected from the cluster 
-   while indexing takes place.  
-   {Warning/}
+2. When the assigned node finishes indexing, it send the cluster leader a confirmation 
+   that indexing is **Done**.  
+   {WARNING: }
+   If confirmation delivery fails, e.g. because the indexing node or the cluster leader node 
+   has been disconnected from the cluster, indexing will pend for all nodes until the cluster 
+   recovers or indexing is initiated manually.  
+   {WARNING/}
 3. The cluster leader assigns indexing to the next node.  
 4. And so on, until all nodes finish indexing.  
 
-{INFO: Rolling is performed **Per-Database**.}
+### Rolling Index Deployment Scope
 
-* indexing is performed one node at a time for each database.  
-  I.e., if indexes of the "Integration" database need to be updated, they will be updated as described above, one node at a time.  
-* Indexing **can** be performed in parallel for different databases.  
-  Node `A`, for example, may create indexes for the "Integration" database, while node `B` creates indexes for the "Production" database.  
+Rolling index deployment is performed **per database**.  
+If the "Integration" database, for example, needs indexing, it may be indexed by 
+node `C`, then by node `A`, and finally by node `B`.  
+
+{INFO: }
+Rolling order is determined by the cluster.  
+(Node `A` is **not** necessarily always the first.)  
 {INFO/}
 
-* Rolling Index Delopyment can be enabled or disabled for [Auto Indexes]().  
-* Rolling Index Delopyment can be enabled or disabled for [Static Indexes]().  
-
-  {INFO: }
-  Times in which you may consider using concurrent indexing and not rolling index deployment, 
-  include time in which there is minor or no database activity, e.g. in time of backup restore, 
-  when concurrent indexing poses no problem to clients.  
-  {INFO/}
+{INFO: }
+Indexing **can** be performed in parallel **for different databases** even 
+when Rolling Index Deployment is enabled.  
+The "Integration" database, for example, can be indexed by node `A`, 
+while the "Production" database is indexed by node `B`.  
+{INFO/}
 
 {PANEL/}
 
-{Rolling Index Deployment Settings}
+{PANEL: Set Rolling Index Deployment Mode}
 
-* settings.json option:  
-        Indexing.Static.DeploymentMode
-        Indexing.Auto.DeploymentMode
+Rolling index deployment can be **enabled** or **disabled** for 
+[Auto](../indexes/creating-and-deploying#auto-indexes) and 
+[Static](../indexes/creating-and-deploying#static-indexes) indexes.  
 
-* API Samples  
-   * Adding an index that uses rolling  
-{CODE:csharp:}
-private class MyRollingIndex : AbstractIndexCreationTask<Order>
-        {
-            public MyRollingIndex()
-            {
-                Map = orders => from order in orders
-                    select new
-                    {
-                        order.Company,
-                    };
-                DeploymentMode = IndexDeploymentMode.Rolling;
-            }
-        }
-{CODE/}
-
-   * Adding an index that uses parallel indexing  
-
-* Studio Configuration]()  
+* **Auto Indexes Deployment Mode**  
+  Enable or Disable auto Indexes rolling deployment using the `Indexing.Auto.DeploymentMode` 
+  [configuration option](../server/configuration/configuration-options#json).  
+  * To **Enable** rolling: "Indexing.Auto.DeploymentMode": "Rolling"  
+  * To **Disable** rolling: "Indexing.Auto.DeploymentMode": "Parallel"  
+* **Static Indexes Deployment Mode**  
+  Enable or Disable static indexes rolling deployment using the `Indexing.Auto.DeploymentMode` 
+  [configuration option](../server/configuration/configuration-options#json).  
+  * To **Enable** rolling: "Indexing.Static.DeploymentMode": "Rolling"
+  * To **Disable** rolling: "Indexing.Static.DeploymentMode": "Parallel"
+* **Override Static Index Deployment Mode Configuration**  
+  To choose a deployment mode for a specific index that will override 
+  the `Indexing.Static.DeploymentMode` configuration option, use 
+  `DeploymentMode` in the index definition.  
+  {CODE-BLOCK:csharp}
+  private class MyRollingIndex : AbstractIndexCreationTask<Order>
+  {
+      public MyRollingIndex()
+      {
+          Map = orders => from order in orders
+          select new
+          {
+              order.Company,
+          };
+          DeploymentMode = IndexDeploymentMode.Rolling;
+      }
+  }
+  {CODE-BLOCK/}
 
 {PANEL/}
-
-
-* Studio --> List of Indexes
-  change an index
-  view deployment
-* Studio --> Database Record -> indexes -> "Rolling:": true
-
-
-
-
-3-parts picture, in each one node inxes and the others don't
-
-When shouldn't it be used
-
-how to configure it
-sample
-
-link to configurations (settings.json)
-
-
-more points:
-the order of rolling is undetermined
-how much indexing is done before the queue is rolled to the next node?
-{PANEL}
 
 ## Related Articles
 
