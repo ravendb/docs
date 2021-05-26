@@ -3,17 +3,22 @@
 
 {NOTE: }
 
-* When **Rolling Index Deployment** is enabled, databases are indexed by one node at a time.  
+* When **Rolling Index Deployment** is enabled, indexing a database is performed by one node at a time.  
+* Rolling index deployment prevents parallel indexing by multiple nodes, to ensure that most cluster resources 
+  would always be available for data and task procession.  
 * Indexing operations are assigned to nodes by the cluster.  
-* The cluster assigns a new node with indexing, only when the previous indexing node confirmed 
-  that it finished indexing.  
-* Rolling index deployment prevents parallel heavy-duty indexing by multiple nodes, which may 
-  reduce the cluster's availability and performance.  
+* The cluster will assign a node with indexing, only when the node it had previously assigned 
+  with indexing confirms that it finished indexing.  
+
 
 * In this page:  
   * [Why Rolling Index Deployment](../indexes/rolling-index-deployment#why-rolling-index-deployment)  
   * [How Does It Work](../indexes/rolling-index-deployment#how-does-it-work)  
-  * [Set Rolling Index Deployment Mode](../indexes/rolling-index-deployment#set-rolling-index-deployment-mode)  
+     * [The Rolling Procedure](../indexes/rolling-index-deployment#the-rolling-procedure)  
+     * [Deployment Scope and Course](../indexes/rolling-index-deployment#deployment-scope-and-course)  
+  * [Setting Indexing Deployment Mode](../indexes/rolling-index-deployment#setting-indexing-deployment-mode)  
+     * [System-Wide Deployment Mode](../indexes/rolling-index-deployment#system-wide-deployment-mode)  
+     * [Deployment Mode in an Index Definition](../indexes/rolling-index-deployment#deployment-mode-in-an-index-definition)  
 
 {NOTE/}
 
@@ -42,61 +47,77 @@ Parallel indexing may be a better option when there is minor or no database acti
 
 {PANEL: How Does It Work}
 
+---
+
 ### The Rolling Procedure
 
-Nodes are assigned with indexing tasks one node at a time.  
+Nodes are assigned with the indexing of each database in a linear order, one node at a time.  
 
 1. The cluster assigns indexing to one of its nodes.  
 2. When the assigned node finishes indexing, it send the cluster leader a confirmation 
-   that indexing is **Done**.  
-   {WARNING: }
-   If confirmation delivery fails, e.g. because the indexing node or the cluster leader node 
-   has been disconnected from the cluster, indexing will pend for all nodes until the cluster 
-   recovers or indexing is initiated manually.  
-   {WARNING/}
+   that indexing is done.  
 3. The cluster leader assigns indexing to the next node.  
-4. And so on, until all nodes finish indexing.  
+   {WARNING: }
+   If the delivery of an **indexing completion confirmation** fails, e.g. because the 
+   sending (indexing) or receiving (cluster leader) node has been forcefully disconnected 
+   from the cluster, **indexing will pend** for all nodes until the cluster recovers or 
+   indexing is initiated manually.  
+   {WARNING/}
 
-### Rolling Index Deployment Scope
+---
 
-Rolling index deployment is performed **per database**.  
-If the "Integration" database, for example, needs indexing, it may be indexed by 
-node `C`, then by node `A`, and finally by node `B`.  
+### Deployment Scope and Course
 
-{INFO: }
-Rolling order is determined by the cluster.  
-(Node `A` is **not** necessarily always the first.)  
-{INFO/}
+* **Rolling Scope**  
+  The cluster maintains an **independent indexing deployment course** for each databases.  
+* **Rolling Order**  
+  Rolling order is determined by the cluster (node `A` **not** necessarily always being the first).  
 
-{INFO: }
-Indexing **can** be performed in parallel **for different databases** even 
-when Rolling Index Deployment is enabled.  
-The "Integration" database, for example, can be indexed by node `A`, 
-while the "Production" database is indexed by node `B`.  
-{INFO/}
+The implication of this design is that different nodes **can** index different databases concurrently.  
+
+* E.g. -  
+   * The indexing deployment course the cluster chose for the **"Integration"** database, is:  
+     indexing by node `B`, then by node `C`, and finally by node `A`.  
+   * The indexing deployment course the cluster chose for the **"Production"** database, is:  
+     indexing by node `C`, then by node `A`, and finally by node `B`.  
+   * Assuming that the cluster has started indexing the two databases at the same time,  
+     node `B` will be indexing "Integration" while node `C` indexes "Production".  
 
 {PANEL/}
 
-{PANEL: Set Rolling Index Deployment Mode}
+{PANEL: Setting Indexing Deployment Mode}
 
-Rolling index deployment can be **enabled** or **disabled** for 
-[Auto](../indexes/creating-and-deploying#auto-indexes) and 
-[Static](../indexes/creating-and-deploying#static-indexes) indexes.  
+---
 
-* **Auto Indexes Deployment Mode**  
-  Enable or Disable auto Indexes rolling deployment using the `Indexing.Auto.DeploymentMode` 
-  [configuration option](../server/configuration/configuration-options#json).  
-  * To **Enable** rolling: "Indexing.Auto.DeploymentMode": "Rolling"  
-  * To **Disable** rolling: "Indexing.Auto.DeploymentMode": "Parallel"  
-* **Static Indexes Deployment Mode**  
-  Enable or Disable static indexes rolling deployment using the `Indexing.Auto.DeploymentMode` 
-  [configuration option](../server/configuration/configuration-options#json).  
-  * To **Enable** rolling: "Indexing.Static.DeploymentMode": "Rolling"
-  * To **Disable** rolling: "Indexing.Static.DeploymentMode": "Parallel"
-* **Override Static Index Deployment Mode Configuration**  
-  To choose a deployment mode for a specific index that will override 
-  the `Indexing.Static.DeploymentMode` configuration option, use 
-  `DeploymentMode` in the index definition.  
+### System-Wide Deployment Mode
+
+ Deployment mode can be chosen system-wide using [configuration options](../server/configuration/configuration-options#json).  
+
+* [auto Indexes](../indexes/creating-and-deploying#auto-indexes) Deployment Mode  
+  Choose a deployment mode for indexes created automatically using the `Indexing.Auto.DeploymentMode` configuration option.  
+  `"Indexing.Auto.DeploymentMode": "Rolling"`  
+  `"Indexing.Auto.DeploymentMode": "Parallel"`  
+
+* [static Indexes](../indexes/creating-and-deploying#static-indexes) Deployment Mode  
+  Choose a deployment mode for static indexes using the `Indexing.Static.DeploymentMode` configuration option.  
+  `"Indexing.Static.DeploymentMode": "Rolling"`  
+  `"Indexing.Static.DeploymentMode": "Parallel"`  
+    
+---
+
+### Deployment Mode in an Index Definition
+
+Enable or disable rolling for a specific index using the index-definition `DeploymentMode` property.  
+Setting this property overrides default and configuration-option settings.  
+  
+  * `DeploymentMode = IndexDeploymentMode.Rolling`  
+  * `DeploymentMode = IndexDeploymentMode.Parallel`  
+  
+    {INFO: }
+    The deployment mode can be chosen for a specific index when, for example, parallel indexing 
+    is preferred in general but rolling is a better option for a particularly "weighty" index.  
+    {INFO/}
+
   {CODE-BLOCK:csharp}
   private class MyRollingIndex : AbstractIndexCreationTask<Order>
   {
@@ -117,11 +138,8 @@ Rolling index deployment can be **enabled** or **disabled** for
 ## Related Articles
 
 ### Indexes
+- [auto Indexes](../indexes/creating-and-deploying#auto-indexes)  
+- [static Indexes](../indexes/creating-and-deploying#static-indexes)  
 
-- [Boosting](../indexes/boosting)
-- [Storing Data in Index](../indexes/storing-data-in-index)
-- [Dynamic Fields](../indexes/using-dynamic-fields)
-
-### Studio
-- [Custom Analyzers](../studio/database/settings/custom-analyzers)  
-- [Create Map Index](../studio/database/indexes/create-map-index)  
+### Server
+- [configuration options](../server/configuration/configuration-options#json)  
