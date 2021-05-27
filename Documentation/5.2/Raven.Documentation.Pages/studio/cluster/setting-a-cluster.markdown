@@ -1,4 +1,4 @@
-﻿# Adding a Node to a Cluster
+﻿# Setting a Cluster
 ---
 
 {NOTE: }
@@ -16,9 +16,9 @@
      * Creating a database on this server  
 
 * In this page:  
-  * [Bootstrap Cluster](../../../studio/server/cluster/add-node-to-cluster#bootstrap-cluster)  
-  * [Add Another Node to the Cluster](../../../studio/server/cluster/add-node-to-cluster#add-another-node-to-the-cluster)  
-  * [A Cluster with 2 nodes](../../../studio/server/cluster/add-node-to-cluster#a-cluster-with-2-nodes)  
+  * [Bootstrap Cluster](../../studio/cluster/setting-a-cluster#bootstrap-cluster)  
+  * [Add Another Node to the Cluster](../../studio/cluster/setting-a-cluster#add-another-node-to-the-cluster)  
+  * [A Cluster with 2 nodes](../../studio/cluster/setting-a-cluster#a-cluster-with-2-nodes)  
 
 {NOTE/}
 
@@ -40,18 +40,14 @@ Note: This option is only available when the server is in the `Passive` state.
 ![Figure 2. Adding a new node](images/cluster-add-node-2.png "Adding a new Node")
 
 1. Enter the server URL of the new node  
-2. Manually select a **Node Tag** for the new node. 
-   The node tage is a unique identifier made up of 1-4 uppercase letters. By default, the tag of the 
-   first node in a cluster is `A`, the second `B`, and so on. After `Z`, the next node will get the 
-   tag `AA`, the next `AB`, and so on.  
-3. Decide whether to add the new node as a `Member` -or- as a `Watcher` (difference explained in [Cluster View](cluster-view))  
-4. Toggle whether to use all available cores on the machine for this node  
-5. Set a maximum number of cores that can be used by this node  
-6. Click _Test connection_ to verify that your cluster can communicate with the server at the specified URL  
+2. Decide whether to add the new node as a `Member` -or- as a `Watcher` (difference explained in [Cluster View](cluster-view))  
+3. Toggle whether to use all available cores on the machine for this node  
+4. Set a maximum number of cores that can be used by this node  
+5. Click _Test connection_ to verify that your cluster can communicate with the server at the specified URL  
 
 When done, click *Save* to add this server as a node to the cluster  
 
-This operation can also be done programatically. Read more [here](../../../server/clustering/cluster-api).
+This operation can also be done programatically. Read more [here](../../server/clustering/cluster-api).
 {PANEL/}
 
 {PANEL: A Cluster with 2 nodes}

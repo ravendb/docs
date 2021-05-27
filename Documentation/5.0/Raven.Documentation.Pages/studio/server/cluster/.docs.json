@@ -20,7 +20,7 @@
         "Mappings": [
             {
                 "Version": 5.2,
-                "Key": "studio/cluster/add-node-to-cluster"
+                "Key": "studio/cluster/setting-a-cluster"
             }
         ]
     }

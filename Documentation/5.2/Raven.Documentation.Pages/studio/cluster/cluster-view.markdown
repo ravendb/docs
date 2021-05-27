@@ -7,7 +7,7 @@
   working to achieve the same goal.  
 
 * Using the Raft consensus protocol, the cluster distributes work among the various nodes, handles failures, recovery, and more.  
-  The cluster Member nodes elect a [Leader](../../../studio/server/cluster/cluster-view#cluster-nodes-types) - a node that manages the cluster state.  
+  The cluster Member nodes elect a [Leader](../../studio/cluster/cluster-view#cluster-nodes-types) - a node that manages the cluster state.  
 
 * This view shows your cluster's current state and structure.  
 
@@ -18,12 +18,12 @@
   * And much more  
 
 * In this page:  
-  * [Cluster View Stats](../../../studio/server/cluster/cluster-view#cluster-view-stats)  
-  * [Cluster View Operations](../../../studio/server/cluster/cluster-view#cluster-view-operations)  
-  * [Reassign Cores](../../../studio/server/cluster/cluster-view#reassign-cores)  
-  * [Cluster Nodes Types](../../../studio/server/cluster/cluster-view#cluster-nodes-types)  
-  * [Cluster Nodes States & Types Flow](../../../studio/server/cluster/cluster-view#cluster-nodes-states-&-types-flow)  
-  * [Cluster-Wide operation -vs- Database Operations](../../../studio/server/cluster/cluster-view#cluster-wide-operation--vs--database-operations)  
+  * [Cluster View Stats](../../studio/cluster/cluster-view#cluster-view-stats)  
+  * [Cluster View Operations](../../studio/cluster/cluster-view#cluster-view-operations)  
+  * [Reassign Cores](../../studio/cluster/cluster-view#reassign-cores)  
+  * [Cluster Nodes Types](../../studio/cluster/cluster-view#cluster-nodes-types)  
+  * [Cluster Nodes States & Types Flow](../../studio/cluster/cluster-view#cluster-nodes-states-&-types-flow)  
+  * [Cluster-Wide operation -vs- Database Operations](../../studio/cluster/cluster-view#cluster-wide-operation--vs--database-operations)  
 {NOTE/}
 
 ---
@@ -61,7 +61,7 @@
 ![Figure 2. Cluster Operations](images/cluster-view-2.png "Cluster Operations")
 
 1. **Add New Node to Cluster**  
-   See [Add node to cluster](add-node-to-cluster)
+   See [Setting a Cluster](../../studio/cluster/setting-a-cluster#add-another-node-to-the-cluster)  
 2. **Demote**  
    Demote a Member to be a Watcher  
 3. **Reassign Cores**  
@@ -90,7 +90,7 @@
 2. Number of available cores on this node's machine  
 {INFO/}
 
-Learn more in [Add Node to Cluster](../../../studio/server/cluster/add-node-to-cluster#add-another-node-to-the-cluster).
+Learn more in [Setting a Cluster](../../studio/cluster/setting-a-cluster#add-another-node-to-the-cluster).
 
 {PANEL/}
 
@@ -129,7 +129,7 @@ Learn more in [Add Node to Cluster](../../../studio/server/cluster/add-node-to-c
 {PANEL}
 
 * **1.** A new server/node will start as **Passive**, meaning it is _not_ part of any cluster yet.  
-         Learn how to add a node to a cluster in: [Adding a Node to a Cluster](../../../studio/server/cluster/add-node-to-cluster).  
+         Learn how to add a node to a cluster in: [Setting a Cluster](../../studio/cluster/setting-a-cluster).  
 
 * **2.** When a node is added to a cluster, it immediately becomes the **Leader** if it is the only node in the cluster.  
 
@@ -177,14 +177,14 @@ Operations in RavenDB are usually divided into cluster-wide operations and inter
   Note: An action is accepted by the entire cluster if a majority of the nodes have approved that action - if a majority of the nodes isn't available, we can't proceed.  
 * i.e.:  
   * Creating/deleting/enabling/disabling a database  
-  * Creating/deleting/modifying/enabling/disabling an [ongoing task](../../../studio/database/tasks/ongoing-tasks/general-info)  
-  * Creating/deleting/modifying an [index](../../../studio/database/indexes/indexes-overview)  
+  * Creating/deleting/modifying/enabling/disabling an [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info)  
+  * Creating/deleting/modifying an [index](../../studio/database/indexes/indexes-overview)  
 
 ###Database Operation
 
 * Database operation can always be done on a node (even in the case of a cluster partition)  
 * Database operation only impacts that particular database  
-* Any such update is automatically replicated to all other nodes in the [Database Group](../../../studio/database/settings/manage-database-group)  
+* Any such update is automatically replicated to all other nodes in the [Database Group](../../studio/database/settings/manage-database-group)  
 * i.e.:  
   * Any Read/Write operation on a database such as:  
   * Create/Delete/Update a document, attachment or revision  

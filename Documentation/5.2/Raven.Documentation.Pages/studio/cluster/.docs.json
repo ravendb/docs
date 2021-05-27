@@ -31,8 +31,8 @@
         ]
     },
     {
-        "Path": "add-node-to-cluster.markdown",
-        "Name": "Add Node to Cluster",
+        "Path": "setting-a-cluster.markdown",
+        "Name": "Setting a Cluster",
         "DiscussionId": "3b8a45a5-8fe8-43e4-8f26-c531571404cc",
         "Mappings": [
             {
