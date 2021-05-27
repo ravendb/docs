@@ -15,7 +15,7 @@
   * [Why Rolling Index Deployment](../indexes/rolling-index-deployment#why-rolling-index-deployment)  
   * [How Does It Work](../indexes/rolling-index-deployment#how-does-it-work)  
      * [The Rolling Procedure](../indexes/rolling-index-deployment#the-rolling-procedure)  
-     * [Deployment Scope and Course](../indexes/rolling-index-deployment#deployment-scope-and-course)  
+     * [Deployment Concurrency and Order](../indexes/rolling-index-deployment#deployment-concurrency-and-order)  
   * [Setting Indexing Deployment Mode](../indexes/rolling-index-deployment#setting-indexing-deployment-mode)  
      * [System-Wide Deployment Mode](../indexes/rolling-index-deployment#system-wide-deployment-mode)  
      * [Deployment Mode in an Index Definition](../indexes/rolling-index-deployment#deployment-mode-in-an-index-definition)  
@@ -54,34 +54,30 @@ Parallel indexing may be a better option when there is minor or no database acti
 Nodes are assigned with the indexing of each database in a linear order, one node at a time.  
 
 1. The cluster assigns indexing to one of its nodes.  
-2. When the assigned node finishes indexing, it send the cluster leader a confirmation 
+2. When the assigned node finishes indexing, it sends a cluster-wide confirmation command
    that indexing is done.  
-3. The cluster leader assigns indexing to the next node.  
+3. The cluster assigns indexing to the next node.  
    {WARNING: }
-   If the delivery of an **indexing completion confirmation** fails, e.g. because the 
-   sending (indexing) or receiving (cluster leader) node has been forcefully disconnected 
-   from the cluster, **indexing will pend** for all nodes until the cluster recovers or 
-   indexing is initiated manually.  
+   If the delivery of an **indexing completion confirmation** fails, **indexing will pend** 
+   for all nodes until the confirmation succeeds or indexing is initiated manually.  
+   Confirmation delivery may fail, for example, due to forceful disconnection of the indexing 
+   node or cluster leader node during indexation.  
    {WARNING/}
 
 ---
 
-### Deployment Scope and Course
+### Deployment Concurrency and Order
 
-* **Rolling Scope**  
-  The cluster maintains an **independent indexing deployment course** for each databases.  
-* **Rolling Order**  
-  Rolling order is determined by the cluster (node `A` **not** necessarily always being the first).  
+* **Deployment Concurrency**  
+   * A node is assigned to index a database, only if no other node currently indexes this database.  
+   * Multiple nodes **can** be assigned to concurrently index **different databases**.  
+     E.g., node `A` can index the "Integration" database, while node `B` indexes the "Production" database.  
 
-The implication of this design is that different nodes **can** index different databases concurrently.  
-
-* E.g. -  
-   * The indexing deployment course the cluster chose for the **"Integration"** database, is:  
-     indexing by node `B`, then by node `C`, and finally by node `A`.  
-   * The indexing deployment course the cluster chose for the **"Production"** database, is:  
-     indexing by node `C`, then by node `A`, and finally by node `B`.  
-   * Assuming that the cluster has started indexing the two databases at the same time,  
-     node `B` will be indexing "Integration" while node `C` indexes "Production".  
+* **Deployment Order**  
+  * Deployment order is determined by the cluster.  
+  * Indexing is deployed in the reverse order of nodes membership in the database group.  
+    Nodes that are currently in [Rehab or Promotable state](../server/clustering/distribution/distributed-database#database-topology) 
+    are given a lower priority.  
 
 {PANEL/}
 
