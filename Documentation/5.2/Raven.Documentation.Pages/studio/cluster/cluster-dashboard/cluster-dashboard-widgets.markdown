@@ -29,7 +29,7 @@ to setting up your cluster, creating a new database, and learning basic RavenDB 
 ![Let's Get Started Widget](images/cluster-dashboard-09-lets-get-started-widget.png "Let's Get Started Widget")
 
 1. **Create New Database**  
-   Click to [create a new database](../../../studio/server/databases/create-new-database/general-flow#2.-database-name).  
+   Click to [create a new database](../../../studio/database/create-new-database/general-flow).  
 2. **Setup Your Cluster**  
    Click to open Studio's [Cluster View](../../../studio/cluster/cluster-view) 
    so you can create and manage your cluster.  
@@ -179,7 +179,7 @@ date and remaining period, and **Support Type**.
 ## Related Articles  
 
 ### Server
-- [create a new database](../../../studio/server/databases/create-new-database/general-flow#2.-database-name)
+- [create a new database](../../../studio/database/create-new-database/general-flow)
 
 ###Studio
 - [Cluster Dashboard - Overview](../../../studio/cluster/cluster-dashboard/cluster-dashboard-overview)  

@@ -24,11 +24,6 @@
         "Mappings": []
     },
     {
-        "Path": "/databases",
-        "Name": "Databases",
-        "Mappings": []
-    },
-    {
         "Path": "/debug",
         "Name": "Debug",
         "Mappings": []

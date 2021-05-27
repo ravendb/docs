@@ -17,11 +17,17 @@
     "DiscussionId": "3a06aae7-5fa5-447a-9433-95b4143d6c53",
     "Mappings": []
   },
-  {
-    "Path": "/databases",
-    "Name": "Databases",
-    "Mappings": []
-  },
+    {
+        "Path": "/databases",
+        "Name": "Databases",
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "studio/database"
+            }
+        ]
+    },
   {
     "Path": "/cluster",
     "Name": "Cluster",
