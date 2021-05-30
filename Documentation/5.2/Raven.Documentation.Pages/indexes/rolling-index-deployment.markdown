@@ -58,8 +58,9 @@ Nodes are assigned with the indexing of each database in a linear order, one nod
    that indexing is done.  
 3. The cluster assigns indexing to the next node.  
    {WARNING: }
-   If the delivery of an **indexing completion confirmation** fails, **indexing will pend** 
-   for all nodes until the confirmation succeeds or indexing is initiated manually.  
+   If the delivery of an **indexing completion confirmation** fails when the current node 
+   finishes indexing, no other node will be able to start indexing until the confirmation 
+   succeeds or indexing is initiated manually.  
    Confirmation delivery may fail, for example, due to forceful disconnection of the indexing 
    node or cluster leader node during indexation.  
    {WARNING/}
