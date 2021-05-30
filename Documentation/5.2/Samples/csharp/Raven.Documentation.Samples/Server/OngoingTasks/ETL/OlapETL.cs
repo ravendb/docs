@@ -43,32 +43,24 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL
                                 {
                                     "Orders"
                                 },
-                                #region script
                                 Script = @"
+                                    #region script
+                                    //Define the object that will be added to the table
                                     var orderData = {
                                         Company : this.Company,
                                         RequireAt : new Date(this.RequireAt),
-                                        ItemsCount: this.Lines.length,
-                                        TotalCost: 0
+                                        ItemCount: this.Lines.length
                                     };
+
+                                    //Create the partition names
                                     var orderDate = new Date(this.OrderedAt);
                                     var year = orderDate.getFullYear();
                                     var month = orderDate.getMonth();
-                                    var key = new Date(year, month);
-                                    for (var i = 0; i < this.Lines.length; i++) {
-                                        var line = this.Lines[i];
-                                        orderData.TotalCost += (line.PricePerUnit * line.Quantity);
-                                        // load to 'sales' table
-                                        loadToSales(key, {
-                                            Qty: line.Quantity,
-                                            Product: line.Product,
-                                            Cost: line.PricePerUnit
-                                        });
-                                    }
-                                    // load to 'orders' table
-                                    loadToOrders(key, orderData);
+
+                                    //Load to the folder: /OrderData/Year=<year>/Month=<month>/
+                                    loadToOrderData(partitionBy(['Year', year], ['Month', month]), orderData);
+                                    #endregion
                                     ";
-                                #endregion
                             }
                         }
                     });

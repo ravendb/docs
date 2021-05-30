@@ -7,8 +7,8 @@
 * The **OLAP ETL task** creates an ETL process from a RavenDB database to an [AWS S3 bucket](https://aws.amazon.com/s3/), 
 a type of storage available on Amazon Web Services.  
 
-* The data is encoded in the [_Parquet_ format](https://parquet.apache.org/documentation/latest/), an 
-alternative to CSV that is much faster to query. Unlike CSV, Parquet groups the data according to its 
+* The data is encoded in the [Apache Parquet format](https://parquet.apache.org/documentation/latest/), 
+an alternative to CSV that is much faster to query. Unlike CSV, Parquet groups the data according to its 
 column (by field) instead of by row (by document).  
 
 * The data can then be queried using [AWS Athena](https://aws.amazon.com/athena/), an SQL query engine 
@@ -30,7 +30,7 @@ All cases use [the `AddEtlOperation`](../../../client-api/operations/maintenance
 OLAP you will need an `OlapEtlConfiguration` which itself needs an `OlapConnectionString`. Their 
 configuration options are listed below.  
 
-This is an example of a basic OLAP ETL creation operation.  
+This is an example of a basic OLAP ETL creation operation:  
 
 {CODE add_olap_etl@ClientApi\Operations\AddEtl.cs /}
 
@@ -38,10 +38,8 @@ This is an example of a basic OLAP ETL creation operation.
 
 | Property | Type | Description |
 | - | - | - |
-| `RunFrequency` | STRING | How often the server will execute the ETL process. This is different from the `TimeSpan` for the partitions |
-| `KeepFilesOnDisk` | `bool` | Whether to keep the data in memory after it has been transformed, or to delete it as soon as the ETL completes |
-| `PartitionFieldName` | `string` | Name of the partition |
-| `CustomPrefix` | `string` | A custom prefix for the folder name. Default: "_dt" |
+| `RunFrequency` | `string` | Takes a [cron expression](https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm) which determines how often the server will execute the ETL process. |
+| `CustomPartitionValue` | `string` | A value that can be used as a partition name in multiple scripts. See [below](). |
 | `OlapTables` | `List<OlapEtlTable>` | List of naming configurations for individual tables. See more details below. |
 
 #### `OlapConnectionString`
@@ -52,6 +50,8 @@ The OLAP connection string can configure S3 storage, local storage, or both.
 | - | - | - |
 | `LocalSettings` | `LocalSettings` | Settings for storing the data locally. |
 | `S3Settings` | `S3Settings` | Information about the S3 bucket and the AWS server in general. |
+
+{NOTE: ETL Destination Settings}
 
 #### `LocalSettings`
 
@@ -71,6 +71,8 @@ The OLAP connection string can configure S3 storage, local storage, or both.
 | `BucketName` | `string` | The name of the S3 bucket that is the destination for this ETL |
 | `CustomServerUrl` | `string` | The custom URL to the S3 bucket, if you have one |
 
+{NOTE/}
+
 #### `OlapEtlTable`
 
 Optional, more detailed naming configuration.  
@@ -88,24 +90,7 @@ The connection string can be created for either a remote S3 or a local folder.
 
 {CODE connection_string@Server\OngoingTasks\ETL\OlapETL.cs /}
 
-{PANEL/}
-
-{PANEL: Transform Script}
-
-Transformation scripts are similar to those in the [RavenDB ETL](../../../server/ongoing-tasks/etl/raven) and [SQL ETL](../../../server/ongoing-tasks/etl/sql) tasks. The 
-major difference has to do with the way S3 storage is partitioned. Records from the same collection 
-are further divided into folders. Querying the data involves scanning the entire folder, so the more 
-the data is divided into smaller folders, the more efficient querying will be. Data is divided into 
-folders according to the time the document was created or when it was last updated. All folders represent 
-an equal interval of time - an hour, a day, a month, etc.  
-
-This interval is determined by the transform script with the `TimeSpan` parameter `key`. `key` also 
-becomes a part of the name of the folder: the name of each folder is an optional custom "tag", plus the key.  
-
-As with other ETL tasks, the method that actually loads the data to its destination is the `loadTo<TableName>()` 
-`loadTo<TableName>()` takes an additional parameter `key` with a `TimeSpan` format.  
-
-{CODE script@Server\OngoingTasks\ETL\OlapETL.cs /}
+#### ETL Run Frequency
 
 Unlike other ETL tasks, OLAP ETL operates only in batches at regular intervals, rather than triggering a 
 new round every time a document updates.  
@@ -113,6 +98,67 @@ If a document has been updated after ETL (even if updated data has not actually 
 distinguished by `_lastmodifiedticks`, the value of the `last-modified` field in a document's 
 metadata, measured in ticks (1/10,000th of a second). This field appears as another column in the S3 
 tables.  
+
+{PANEL/}
+
+{PANEL: Transform Script}
+
+Transformation scripts are similar to those in the RavenDB ETL and SQL ETL tasks - see more about this in 
+[ETL Basics](../../../server/ongoing-tasks/etl/basics#transform). The major difference is the way 
+the data is partitioned at the destination: data extracted from the same collection can be further divided 
+into folders and child folders. Querying the data usually involves scanning the entire folder, so there is 
+an efficiency advantage to using more folders.  
+
+#### The `key` Parameter
+
+As with other ETL tasks, the method that actually loads an entry to its destination is `loadTo<folder name>()`,
+but unlike the other ETL tasks the method takes two parameters: the object itself and an additional key. 
+The key determines one or more layers of child folders that contain the actual destination table.  
+
+{CODE-BLOCK: javascript}
+loadTo<folder name>(key, object)
+{CODE-BLOCK/}
+
+The child folders created by OLAP ETL are a sort of 'virtual column'. This just means that in the address 
+or URL of the folder, the folder name looks like this: `/[virtual column name]=[key]/`. You don't have to 
+set the virtual column name - its default value is `_partition`.  
+
+The actual value that you pass as the `key` loadTo<folder name> is one of two methods:  
+* `partitionBy(key)` - takes one or more child folder names.  
+* `noPartition()` - creates no child folders.  
+
+`partitionBy()` can take the following types of values:  
+* One `string` which serves as partition name.  
+* A pair of `string` which are the virtual column name and partition name. Written like this: `[string, string]`  
+* A list of the two types of values above.  
+
+Here is an example of possible values for `partitionBy()` and the resulting folder names:  
+
+{CODE-BLOCK: javascript}
+loadToMyFolder(
+    partitionBy('one'),
+    object
+)
+//Loads the object to /MyFolder/_partition=one/
+
+loadToMyFolder(
+    partitionBy(['month', 'August']),
+    object
+)
+//Loads the object to /MyFolder/month=August/
+
+loadToMyFolder(
+    partitionBy('byMonth', ['month', 'August'], ['week', 'two'], 'Monday'),
+    object
+)
+//Loads the object to /MyFolder/_partition=byMonth/month=August/week=two/_partition=Monday/
+{CODE-BLOCK/}
+
+#### Script Example
+
+{CODE script@Server\OngoingTasks\ETL\OlapETL.cs /}
+
+!!!$customPartitionValue
 
 {PANEL/}
 
@@ -226,10 +272,4 @@ whole documents). This makes queries more efficient.
 
 ### Studio
 
-- [Define RavenDB ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
-
-### Document Extensions
-
-- [Attachments](../../../document-extensions/attachments/what-are-attachments)
-- [Counters](../../../document-extensions/counters/overview)
-- [Time Series](../../../document-extensions/timeseries/overview)
+- [Define OLAP ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/olap-etl-task)
