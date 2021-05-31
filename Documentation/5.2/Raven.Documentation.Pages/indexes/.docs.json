@@ -171,6 +171,12 @@
     ]
   },
   {
+    "Path": "rolling-index-deployment.markdown",
+    "Name": "Rolling Index Deployment",
+    "DiscussionId": "61af6ada-f53d-4808-a440-ccaa13da12ab",
+    "Mappings": []
+  },
+  {
     "Path": "boosting.markdown",
     "Name": "Boosting",
     "DiscussionId": "091c36b1-719b-459e-bd92-0e810d1fec3d",
