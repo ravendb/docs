@@ -4,15 +4,18 @@
 
 {NOTE: }
 
-* The **OLAP ETL task** creates an ETL process from a RavenDB database to an [AWS S3 bucket](https://aws.amazon.com/s3/), 
-a type of storage available on Amazon Web Services.  
+* The **OLAP ETL task** creates an ETL process from a RavenDB database to a variety of destinations that 
+are especially useful for conducting OLAP. These destinations currently include:  
+  * [Amazon S3](https://aws.amazon.com/s3/)
+  * [Amazon Glacier](https://aws.amazon.com/glacier/)
+  * [Microsoft Azure](https://azure.microsoft.com/)
+  * [Google Cloud Platform](https://cloud.google.com/)
+  * File Transfer Protocol
+  * Local storage
 
 * The data is encoded in the [Apache Parquet format](https://parquet.apache.org/documentation/latest/), 
 an alternative to CSV that is much faster to query. Unlike CSV, Parquet groups the data according to its 
 column (by field) instead of by row (by document).  
-
-* The data can then be queried using [AWS Athena](https://aws.amazon.com/athena/), an SQL query engine 
-that both reads from S3 buckets and outputs to them.  
 
 * In this page:  
   * [Client API](../../../server/ongoing-tasks/etl/olap#client-api)  
@@ -57,9 +60,22 @@ The OLAP connection string can configure S3 storage, local storage, or both.
 
 | Property | Type | Description |
 | - | - | - |
-| `FolderPath` | `string` | Path to local folder. If not empty, backups will be held in this folder and not deleted. Otherwise, backups will be created in the TempDir of a database and deleted after successful upload to S3. |  
+| `FolderPath` | `string` | Path to local folder. If not empty, backups will be held in this folder and not deleted. Otherwise, backups will be created in the TempDir of a database and deleted after successful upload to S3. |
 
-#### `S3Settings`
+#### `FtpSettings`
+
+| Property | Type | Description |
+| - | - | - |
+| `Url` | `string` | The FTP URL |
+| `Port` | `int` | The FTP port |
+| `UserName` | `string` | The username used for authentication |
+| `Password` | `string` | Authentication password |
+| `CertificateFileName` | `string` | The name of your local certificate file |
+| `CertificateAsBase64` | `string` | The certificate in base 64 format |
+
+{NOTE: Amazon Settings}
+
+#### `AmazonSettings`
 
 | Property | Type | Description |
 | - | - | - |
@@ -68,8 +84,31 @@ The OLAP connection string can configure S3 storage, local storage, or both.
 | `AwsSessionToken` | `string` | AWS session token |
 | `AwsRegionName` | `string` | The AWS server region |
 | `RemoteFolderName` | `string` | Name of the S3 partition folder |
+
+#### `S3Settings`
+
+| Property | Type | Description |
+| - | - | - |
 | `BucketName` | `string` | The name of the S3 bucket that is the destination for this ETL |
 | `CustomServerUrl` | `string` | The custom URL to the S3 bucket, if you have one |
+
+#### `GlacierSettings`
+
+| Property | Type | Description |
+| - | - | - |
+| `VaultName` | `string` | The name of your AWS Glacier vault |
+
+{NOTE/}
+
+#### `AzureSettings`
+
+| Property | Type | Description |
+| - | - | - |
+| `StorageContainer` | `string` | Microsoft Azure Storage container name |
+| `AwsSecretKey` | `string` | Path to remote Azure folder |
+| `AccountName` | `string` | The name of your Azure account |
+| `AccountKey` | `string` | Your Azure account key |
+| `SasToken` | `string` | Your SaS token for authentication |
 
 {NOTE/}
 
@@ -95,9 +134,8 @@ The connection string can be created for either a remote S3 or a local folder.
 Unlike other ETL tasks, OLAP ETL operates only in batches at regular intervals, rather than triggering a 
 new round every time a document updates.  
 If a document has been updated after ETL (even if updated data has not actually been loaded) they are 
-distinguished by `_lastmodifiedticks`, the value of the `last-modified` field in a document's 
-metadata, measured in ticks (1/10,000th of a second). This field appears as another column in the S3 
-tables.  
+distinguished by `_lastmodifiedtime`, the value of the `last-modified` field in a document's 
+metadata in unix time. This field appears as another column in the destination tables.  
 
 {PANEL/}
 
@@ -178,7 +216,7 @@ CREATE EXTERNAL TABLE mydatabase.monthly_sales (
     `Qty` int,
     `Product` string,
     `Cost` int,
-    `_lastModifiedTicks` bigint
+    `_lastModifiedTime` bigint
 )
 PARTITIONED BY (`dt` string)
 STORED AS parquet
@@ -235,17 +273,17 @@ limit 20
 
 Querying for most recent version in an append-only table:
 e.g. select everything in the table, and in case we have duplicates (multiple rows with the same id)
-- only take the most recent version (the one with the highest _lastmodifiedticks):
+- only take the most recent version (the one with the highest _lastmodifiedTime):
 {CODE-BLOCK: sql}
 SELECT DISTINCT o.*
 FROM monthly_orders o
 INNER JOIN
    (SELECT _id,
-        MAX(_lastmodifiedticks) AS latest
+        MAX(_lastmodifiedTime) AS latest
    FROM monthly_orders
    GROUP BY  _id) oo
    ON o._id = oo._id
-       AND o._lastmodifiedticks = oo.latest
+       AND o._lastmodifiedTime = oo.latest
 {CODE-BLOCK/}
 
 #### Apache Parquet
