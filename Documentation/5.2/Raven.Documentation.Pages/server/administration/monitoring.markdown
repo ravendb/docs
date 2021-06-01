@@ -31,107 +31,101 @@ The monitoring endpoints output data in JSON format. There are four endpoints:
 
 The following is a list of JSON fields returned by the endpoints:  
 
-| Endpoint suffix | Field Name | Description |
+| Endpoint Suffix | Field Name | Description |
 | - | - | - |
-| `server` | `ServerUrls` | Server URL |
-| `server` | `ServerPublicUrl` | Server Public URL |
-| `server` | `TcpServerUrls` | Server TCP URL |
-| `server` | `PublicTcpServerUrls` | Server Public TCP URL |
-| `server` | `ServerVersion` | Server version |
-| `server` | `ServerFullVersion` | Server full version |
-| `server` | `UpTimeInSec` | Server up-time |
-| `server` | `ServerProcessId` | Server process ID |
-| `server` | `ProcessUsage` | Process CPU usage in % |
-| `server` | `MachineUsage` | Machine CPU usage in % |
-| `server` | `MachineIoWait` | IO wait in % |
-| `server` | `PhysicalMemoryInMb` | PhysicalMemory |
-| `server` | `InstalledMemoryInMb` | InstalledMemory |
-| `server` | `AllocatedMemoryInMb` | Server allocated memory in MB |
-| `server` | `LowMemoryServerity` | Server low memory flag value |
-| `server` | `TotalSwapSizeInMb` | Server total swap size in MB |
-| `server` | `TotalSwapUsageInMb` | Server total swap usage in MB |
-| `server` | `WorkingSetSwapUsageInMb` | Server working set swap usage in MB |
-| `server` | `TotalDirtyInMb` | Dirty Memory that is used by the scratch buffers in MB |
-| `server` | `ConcurrentRequestsCount` | Number of concurrent requests |
-| `server` | `TotalRequests` | Total number of requests since server startup |
-| `server` | `RequestsPerSec` | Number of requests per second (one minute rate) |
-| `server` | `LastRequestTimeInSec` | Server last request time |
-| `server` | `LastAuthorizedNonClusterAdminRequestTimeInSec` | Server last authorized non cluster admin request time |
-| `server` | `Type` | Server license type |
-| `server` | `Expiration` | Server license expiration date |
-| `server` | `ExpirationLeftInSec` | Server license expiration left |
-| `server` | `UtilizedCpuCores` | Server license utilized CPU cores |
-| `server` | `MaxCores` | Server license max CPU cores |
-| `server` | `SystemStoreUsedDataFileSizeInMb` | Server storage used size in MB |
-| `server` | `SystemStoreTotalDataFileSizeInMb` | Server storage total size in MB |
-| `server` | `TotalFreeSpaceInMb` | Remaining server storage disk space in MB |
-| `server` | `RemainingStorageSpacePercentage` | Remaining server storage disk space in % |
-| `server` | `` | Server certificate expiration date |
-| `server` | `ServerCertificateExpirationLeftInSec` | Server certificate expiration left |
-| `server` | `WellKnownAdminCertificates` | List of well known admin certificate thumbprints |
-| `server` | `ProcessorCount` | Number of processor on the machine |
-| `server` | `AssignedProcessorCount` | Number of assigned processors on the machine |
-| `server` | `CurrentNumberOfRunningBackups` | Number of backups currently running |
-| `server` | `MaxNumberOfConcurrentBackups` | Max number of backups that can run concurrently |
-| `server` | `ThreadPoolAvailableWorkerThreads` | Number of available worker threads in the thread pool |
-| `server` | `ThreadPoolAvailableCompletionPortThreads` | Number of available completion port threads in the thread pool |
-| `server` | `TcpActiveConnections` | Number of active TCP connections |
-| `server` | `NodeTag` | Current node tag |
-| `server` | `NodeState` | Current node state |
-| `server` | `CurrentTerm` | Cluster term |
-| `server` | `Index` | Cluster index |
-| `server` | `Id` | Cluster ID |
-| `server` | `TotalCount` | Number of all databases |
-| `server` | `LoadedCount` | Number of loaded databases |
-| `server` | `` | ~Time since oldest backup~ |
-| `databases` | `Name` | Database name |
-| `databases` | `Count` | Number of indexes |
-| `databases` | `StaleCount` | Number of stale indexes |
-| `databases` | `Documents` | Number of documents |
-| `databases` | `Revisions` | Number of revision documents |
-| `databases` | `Attachments` | Number of attachments |
-| `databases` | `UniqueAttachments` | Number of unique attachments |
-| `databases` | `Alerts` | Number of alerts |
-| `databases` | `DatabaseId` | Database ID |
-| `databases` | `UptimeInSec` | Database up-time |
-| `databases` | `Rehabs` | Number of rehabs |
-| `databases` | `PerformanceHints` | Number of performance hints |
-| `databases` | `ErrorsCount` | Number of indexing errors |
-| `databases` | `DocumentsAllocatedDataFileInMb` | Documents storage allocated size in MB |
-| `databases` | `DocumentsUsedDataFileInMb` | Documents storage used size in MB |
-| `databases` | `IndexesAllocatedDataFileInMb` | Index storage allocated size in MB |
-| `databases` | `IndexesUsedDataFileInMb` | Index storage used size in MB |
-| `databases` | `TotalAllocatedStorageFileInMb` | Total storage size in MB |
-| `databases` | `TotalFreeSpaceInMb` | Remaining storage disk space in MB |
-| `databases` | `DocPutsPerSec` | Number of document puts per second (one minute rate) |
-| `databases` | `MapIndexIndexesPerSec` | Number of indexed documents per second for map indexes (one minute rate) |
-| `databases` | `MapReduceIndexMappedPerSec` | Number of maps per second for map-reduce indexes (one minute rate) |
-| `databases` | `MapReduceIndexReducedPerSec` | Number of reduces per second for map-reduce indexes (one minute rate) |
-| `databases` | `RequestsPerSec` | Number of requests per second (one minute rate) |
-| `databases` | `RequestsCount` | Number of requests from database start |
-| `databases` | `RequestAverageDurationInMs` | Average request time in milliseconds |
-| `databases` | `` | ~Number of indexes~ (duplicate) |
-| `databases` | `StaticCount` | Number of static indexes |
-| `databases` | `AutoCount` | Number of auto indexes |
-| `databases` | `IdleCount` | Number of idle indexes |
-| `databases` | `DisabledCount` | Number of disabled indexes |
-| `databases` | `ErroredCount` | Number of error indexes |
-| `indexes` | `IndexName` | Index name |
-| `indexes` | `Priority` | Index priority |
-| `indexes` | `State` | Index state |
-| `indexes` | `Errors` | Number of index errors |
-| `indexes` | `` | Last query time |
-| `indexes` | `TimeSinceLastQueryInSec` | Index indexing time |
-| `indexes` | `` | Time since last query |
-| `indexes` | `TimeSinceLastIndexingInSec` | Time since last indexing |
-| `indexes` | `LockMode` | Index lock mode |
-| `indexes` | `IsInvalid` | Indicates if index is invalid |
-| `indexes` | `Status` | Index status |
-| `indexes` | `MappedPerSec` | Number of maps per second (one minute rate) |
-| `indexes` | `ReducedPerSec` | Number of reduces per second (one minute rate) |
-| `indexes` | `Type` | Index type |
-| `indexes` | `Lagtime` | Indexing Lag Time |
-| `indexes` | `EntriesCount` | Number of entries in the index |
-| `databases` | `TimeSinceLastBackupInSec` | LastBackup |
+| `server` | `config_server_urls` | Server URLs |
+| `server` | `public_server_url` | Server Public URL |
+| `server` | `config_tcp_server_urls` | Server TCP URL |
+| `server` | `config_public_tcp_server_urls` | Server Public TCP URL |
+| `server` | `server_version` | Server version |
+| `server` | `server_full_version` | Server full version |
+| `server` | `uptime_in_sec` | Server up-time |
+| `server` | `server_process_id` | Server process ID |
+| `server` | `cpu_process_usage` | Process CPU usage in % |
+| `server` | `cpu_machine_usage` | Machine CPU usage in % |
+| `server` | `cpu_machine_io_wait` | IO wait in % |
+| `server` | `memory_physical_in_mb` | PhysicalMemory |
+| `server` | `memory_installed_in_mb` | InstalledMemory |
+| `server` | `memory_allocated_in_mb` | Server allocated memory in MB |
+| `server` | `memory_low_memory_severity` | Server low memory flag value |
+| `server` | `memory_total_swap_size_in_mb` | Server total swap size in MB |
+| `server` | `memory_total_swap_usage_in_mb` | Server total swap usage in MB |
+| `server` | `memory_working_set_swap_usage_in_mb` | Server working set swap usage in MB |
+| `server` | `memory_total_dirty_in_mb` | Dirty memory that is used by the scratch buffers in MB |
+| `server` | `network_concurrent_requests_count` | Number of concurrent requests |
+| `server` | `network_total_requests` | Total number of requests since server startup |
+| `server` | `network_requests_per_sec` | Number of requests per second (one minute rate) |
+| `server` | `network_last_request_time_in_sec` | Server last request time |
+| `server` | `network_last_authorized_non_cluster_admin_request_time_in_sec` | Server last authorized non cluster admin request time |
+| `server` | `license_type` | Server license type |
+| `server` | `license_expiration_left_in_sec` | Server license expiration left |
+| `server` | `license_utilized_cpu_cores` | Server license utilized CPU cores |
+| `server` | `license_max_cores` | Server license max CPU cores |
+| `server` | `disk_system_store_used_data_file_size_in_mb` | Server storage used size in MB |
+| `server` | `disk_system_store_total_data_file_size_in_mb` | Server storage total size in MB |
+| `server` | `disk_total_free_space_in_mb` | Remaining server storage disk space in MB |
+| `server` | `disk_remaining_storage_space_percentage` | Remaining server storage disk space in % |
+| `server` | `certificate_server_certificate_expiration_left_in_sec` | Server certificate expiration left |
+| `server` | `certificate_well_known_admin_certificates` | List of well known admin certificate thumbprints |
+| `server` | `cpu_processor_count` | Number of processor on the machine |
+| `server` | `cpu_assigned_processor_count` | Number of assigned processors on the machine |
+| `server` | `backup_current_number_of_running_backups` | Number of backups currently running |
+| `server` | `backup_max_number_of_concurrent_backups` | Max number of backups that can run concurrently |
+| `server` | `cpu_thread_pool_available_worker_threads` | Number of available worker threads in the thread pool |
+| `server` | `cpu_thread_pool_available_completion_port_threads` | Number of available completion port threads in the thread pool |
+| `server` | `network_tcp_active_connections` | Number of active TCP connections |
+| `server` | `node_tag` | Current node tag |
+| `server` | `cluster_node_state` | Current node state |
+| `server` | `cluster_current_term` | Cluster term |
+| `server` | `cluster_index` | Cluster index |
+| `server` | `cluster_id` | Cluster ID |
+| `server` | `databases_total_count` | Number of all databases |
+| `server` | `databases_loaded_count` | Number of loaded databases |
+| `databases` | `database_name` | Database name |
+| `databases` | `indexes_count` | Number of indexes |
+| `databases` | `indexes_stale_count` | Number of stale indexes |
+| `databases` | `counts_documents` | Number of documents |
+| `databases` | `counts_revisions` | Number of revision documents |
+| `databases` | `counts_attachments` | Number of attachments |
+| `databases` | `counts_unique_attachments` | Number of unique attachments |
+| `databases` | `counts_alerts` | Number of alerts |
+| `databases` | `database_id` | Database ID |
+| `databases` | `uptime_in_sec` | Database up-time |
+| `databases` | `counts_rehabs` | Number of rehabs |
+| `databases` | `counts_performance_hints` | Number of performance hints |
+| `databases` | `indexes_errors_count` | Number of indexing errors |
+| `databases` | `indexes_errored_count` | Number of error indexes |
+| `indexes` | `errors` | Number of index errors |
+| `databases` | `storage_documents_allocated_data_file_in_mb` | Documents storage allocated size in MB |
+| `databases` | `storage_documents_used_data_file_in_mb` | Documents storage used size in MB |
+| `databases` | `storage_indexes_allocated_data_file_in_mb` | Index storage allocated size in MB |
+| `databases` | `storage_indexes_used_data_file_in_mb` | Index storage used size in MB |
+| `databases` | `storage_total_allocated_storage_file_in_mb` | Total storage size in MB |
+| `databases` | `disk_total_free_space_in_mb` | Remaining storage disk space in MB |
+| `databases` | `statistics_doc_puts_per_sec` | Number of document puts per second (one minute rate) |
+| `databases` | `statistics_map_index_indexes_per_sec` | Number of indexed documents per second for map indexes (one minute rate) |
+| `databases` | `statistics_map_reduce_index_mapped_per_sec` | Number of maps per second for map-reduce indexes (one minute rate) |
+| `databases` | `statistics_map_reduce_index_reduced_per_sec` | Number of reduces per second for map-reduce indexes (one minute rate) |
+| `databases` | `statistics_requests_per_sec` | Number of requests per second (one minute rate) |
+| `databases` | `statistics_requests_count` | Number of requests from database start |
+| `databases` | `statistics_request_average_duration_in_ms` | Average request time in milliseconds |
+| `databases` | `indexes_static_count` | Number of static indexes |
+| `databases` | `indexes_auto_count` | Number of auto indexes |
+| `databases` | `indexes_idle_count` | Number of idle indexes |
+| `databases` | `indexes_disabled_count` | Number of disabled indexes |
+| `indexes` | `index_name` | Index name |
+| `indexes` | `priority` | Index priority |
+| `indexes` | `state` | Index state |
+| `indexes` | `time_since_last_query_in_sec` | Index indexing time |
+| `indexes` | `time_since_last_indexing_in_sec` | Time since last indexing |
+| `indexes` | `lock_mode` | Index lock mode |
+| `indexes` | `is_invalid` | Indicates if index is invalid |
+| `indexes` | `status` | Index status |
+| `indexes` | `mapped_per_sec` | Number of maps per second (one minute rate) |
+| `indexes` | `reduced_per_sec` | Number of reduces per second (one minute rate) |
+| `indexes` | `type` | Index type |
+| `indexes` | `lagtime` | Indexing Lag Time |
+| `indexes` | `entries_count` | Number of entries in the index |
+| `databases` | `time_since_last_backup_in_sec` | LastBackup |
 
 {PANEL/}
