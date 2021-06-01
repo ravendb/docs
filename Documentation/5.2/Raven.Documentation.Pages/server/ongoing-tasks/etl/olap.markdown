@@ -47,20 +47,26 @@ This is an example of a basic OLAP ETL creation operation:
 
 #### `OlapConnectionString`
 
-The OLAP connection string can configure S3 storage, local storage, or both.  
+The OLAP connection string contains the configurations for each destination of the ETL task.  
 
-| Property | Type | Description |
-| - | - | - |
-| `LocalSettings` | `LocalSettings` | Settings for storing the data locally. |
-| `S3Settings` | `S3Settings` | Information about the S3 bucket and the AWS server in general. |
+| Property | Description |
+| - | - |
+| `LocalSettings` | Settings for storing the data locally. |
+| `S3Settings` | Settings for an AWS S3 bucket. |
+| `GlacierSettings` | Settings for an AWS Glacier. |
+| `AzureSettings` | Settings for Azure. |
+| `GoogleCloudSettings` | Settings for Google Cloud Platform. |
+| `FTPSettings` | Settings for File Transfer Protocol. |
 
 {NOTE: ETL Destination Settings}
+<br/>
+This is the list of different settings objects that the `OlapConnectionString` object can contain.  
 
 #### `LocalSettings`
 
 | Property | Type | Description |
 | - | - | - |
-| `FolderPath` | `string` | Path to local folder. If not empty, backups will be held in this folder and not deleted. Otherwise, backups will be created in the TempDir of a database and deleted after successful upload to S3. |
+| `FolderPath` | `string` | Path to local folder. If this property is not set, the data is saved to the location specified in [the setting `Storage.TempPath`](../../../server/configuration/storage-configuration#storage.temppath). If _that_ setting has no value, the data is instead saved to the location specified in [the setting `CoreConfiguration.DataDirectory`](../../../server/configuration/core-configuration#datadir). |
 
 #### `FtpSettings`
 
@@ -73,9 +79,7 @@ The OLAP connection string can configure S3 storage, local storage, or both.
 | `CertificateFileName` | `string` | The name of your local certificate file |
 | `CertificateAsBase64` | `string` | The certificate in base 64 format |
 
-{NOTE: Amazon Settings}
-
-#### `AmazonSettings`
+#### `S3Settings`
 
 | Property | Type | Description |
 | - | - | - |
@@ -83,22 +87,19 @@ The OLAP connection string can configure S3 storage, local storage, or both.
 | `AwsSecretKey` | `string` | Encryption certificate for the AWS server |
 | `AwsSessionToken` | `string` | AWS session token |
 | `AwsRegionName` | `string` | The AWS server region |
-| `RemoteFolderName` | `string` | Name of the S3 partition folder |
-
-#### `S3Settings`
-
-| Property | Type | Description |
-| - | - | - |
 | `BucketName` | `string` | The name of the S3 bucket that is the destination for this ETL |
 | `CustomServerUrl` | `string` | The custom URL to the S3 bucket, if you have one |
+| `RemoteFolderName` | `string` | Name of the S3 partition folder |
 
 #### `GlacierSettings`
 
 | Property | Type | Description |
 | - | - | - |
+| `AwsAccessKey` | `string` | Main certificate for the AWS server |
+| `AwsSecretKey` | `string` | Encryption certificate for the AWS server |
+| `AwsSessionToken` | `string` | AWS session token |
+| `AwsRegionName` | `string` | The AWS server region |
 | `VaultName` | `string` | The name of your AWS Glacier vault |
-
-{NOTE/}
 
 #### `AzureSettings`
 
@@ -110,6 +111,14 @@ The OLAP connection string can configure S3 storage, local storage, or both.
 | `AccountKey` | `string` | Your Azure account key |
 | `SasToken` | `string` | Your SaS token for authentication |
 
+#### `GoogleCloudSettings`
+
+| Property | Type | Description |
+| - | - | - |
+| `BucketName` | `string` | Google cloud storage bucket name |
+| `RemoteFolderName` | `string` | Path to remote bucket folder |
+| `GoogleCredentialsJson` | `string` | Authentication credentials to your Google Cloud Storage |
+
 {NOTE/}
 
 #### `OlapEtlTable`
@@ -120,21 +129,13 @@ Optional, more detailed naming configuration.
 | - | - | - |
 | `TableName` | `string` | The name of the table. This should usually be the name of the source collection. |
 | `DocumentIdColumn` | `string` | A name for the id column of the table. Default: "_id" |
-| `PartitionColumn` | `string` | A name for the column that indicates which partition a given row is in. Default: "_dt" |
-
-The folder name consists of a customized 'tag' plus the date-time value `key`.
-
-To actually create the ETL task, use the function `AddEtlOperation()` with an `OlapConnectionString`. 
-The connection string can be created for either a remote S3 or a local folder.  
-
-{CODE connection_string@Server\OngoingTasks\ETL\OlapETL.cs /}
 
 #### ETL Run Frequency
 
 Unlike other ETL tasks, OLAP ETL operates only in batches at regular intervals, rather than triggering a 
 new round every time a document updates.  
 If a document has been updated after ETL (even if updated data has not actually been loaded) they are 
-distinguished by `_lastmodifiedtime`, the value of the `last-modified` field in a document's 
+distinguished by `_lastModifiedTime`, the value of the `last-modified` field in a document's 
 metadata in unix time. This field appears as another column in the destination tables.  
 
 {PANEL/}
@@ -142,61 +143,96 @@ metadata in unix time. This field appears as another column in the destination t
 {PANEL: Transform Script}
 
 Transformation scripts are similar to those in the RavenDB ETL and SQL ETL tasks - see more about this in 
-[ETL Basics](../../../server/ongoing-tasks/etl/basics#transform). The major difference is the way 
-the data is partitioned at the destination: data extracted from the same collection can be further divided 
-into folders and child folders. Querying the data usually involves scanning the entire folder, so there is 
-an efficiency advantage to using more folders.  
+[ETL Basics](../../../server/ongoing-tasks/etl/basics#transform). The major difference is that data output 
+by the ETL task can be partitioned into folders and child folders. Querying the data usually involves scanning 
+the entire folder, so there is an advantage in efficiency to dividing the data into more folders.  
 
 #### The `key` Parameter
 
-As with other ETL tasks, the method that actually loads an entry to its destination is `loadTo<folder name>()`,
-but unlike the other ETL tasks the method takes two parameters: the object itself and an additional key. 
-The key determines one or more layers of child folders that contain the actual destination table.  
+As with other ETL tasks, the method that actually loads an entry to its destination is `loadTo<folder name>()`, 
+but unlike the other ETL tasks the method takes two parameters: the entry itself and an additional 'key'.  
 
 {CODE-BLOCK: javascript}
 loadTo<folder name>(key, object)
 {CODE-BLOCK/}
 
-The child folders created by OLAP ETL are a sort of 'virtual column'. This just means that in the address 
-or URL of the folder, the folder name looks like this: `/[virtual column name]=[key]/`. You don't have to 
-set the virtual column name - its default value is `_partition`.  
+The method's name determines the name of the parent folder that the method outputs to. If you want to output 
+data to a folder called "Sales", use the method `loadToSales()`. The parameter key determines the names of 
+one or more layers of child folders that contain the actual destination table.  
 
-The actual value that you pass as the `key` loadTo<folder name> is one of two methods:  
-* `partitionBy(key)` - takes one or more child folder names.  
+The actual value that you pass as the `key` for `loadTo<folder name>()` is one of two methods:  
+
+* `partitionBy()` - creates one or more child folders (one inside the other).  
 * `noPartition()` - creates no child folders.  
 
-`partitionBy()` can take the following types of values:  
-* One `string` which serves as partition name.  
-* A pair of `string` which are the virtual column name and partition name. Written like this: `[string, string]`  
-* A list of the two types of values above.  
+The child folders created by OLAP ETL are considered a sort of 'virtual column' of the destination table. 
+This just means that all child folder names have this format: `[virtual column name]=[partition name]`, 
+i.e. two strings separated by a `=`. You don't have to set the virtual column name - its default value is 
+`_partition`.  
 
-Here is an example of possible values for `partitionBy()` and the resulting folder names:  
+`partitionBy()` can take one or more folder names in the following ways:  
+
+* **`partitionBy(key)`** - takes one `string` value as the partition name, uses the default virtual column 
+name `_partition`.
+* **`partitionBy(['name', key])`** - takes a virtual column name and a partition name as an array of size two.  
+* **`partitonBy(['name1', key1], ['name2', key2])`** - takes multiple arrays of size two, each with a virtual 
+column name and a partition name. Each pair represents a child folder of the preceding pair.  
+
+Here are examples of possible values for `partitionBy()`, and the resulting folder names:  
 
 {CODE-BLOCK: javascript}
 loadToMyFolder(
     partitionBy('one'),
     object
 )
-//Loads the object to /MyFolder/_partition=one/
+//Loads the data to /MyFolder/_partition=one/
 
 loadToMyFolder(
     partitionBy(['month', 'August']),
     object
 )
-//Loads the object to /MyFolder/month=August/
+//Loads the data to /MyFolder/month=August/
 
 loadToMyFolder(
-    partitionBy('byMonth', ['month', 'August'], ['week', 'two'], 'Monday'),
+    partitionBy(['month', 'August'], ['day', '22'], ['hour', '17']),
     object
 )
-//Loads the object to /MyFolder/_partition=byMonth/month=August/week=two/_partition=Monday/
+//Loads the data to /MyFolder/month=August/day=22/hour=17
+
+loadToMyFolder(
+    partitionBy(this.Company),
+    object
+)
+// Loads the data to e.g. /MyFolder/_partition=Apple
+
+loadToMyFolder(
+    partitionBy(['month', new Date(this.OrderedAt).getMonth()]),
+    obj
+)
+//Loads the data to e.g. /MyFolder/month=8
+{CODE-BLOCK/}
+
+#### The Custom Partition Value
+
+The custom partition value is a string value that can be set in the 
+[`OlapEtlConfiguration` object](../../../server/ongoing-tasks/etl/olap#section). This value can be 
+referenced in the transform script as `$customPartitionValue`. This setting gives you another way 
+to distinguish data from different ETL tasks that use the same transform script.  
+
+Suppose you want to create multiple OLAP ETL tasks that all use the same transform script and 
+connection string. All the tasks will output to the same destination folders, but suppose you 
+want to be able to indicate which data came from which task. This custom partition value gives 
+you a simple way to achieve this: all the tasks can run the same script, and each script can 
+output the data to a destination folder with the name determined by that task's custom partition 
+value setting.  
+
+{CODE-BLOCK: javascript}
+partitionBy(['source_ETL_task', $customPartitionValue])
 {CODE-BLOCK/}
 
 #### Script Example
 
 {CODE script@Server\OngoingTasks\ETL\OlapETL.cs /}
-
-!!!$customPartitionValue
 
 {PANEL/}
 
@@ -216,7 +252,7 @@ CREATE EXTERNAL TABLE mydatabase.monthly_sales (
     `Qty` int,
     `Product` string,
     `Cost` int,
-    `_lastModifiedTime` bigint
+    `_lastModifiedTime` int
 )
 PARTITIONED BY (`dt` string)
 STORED AS parquet
@@ -261,29 +297,19 @@ from monthly_sales
 group by _id
 {CODE-BLOCK/}
 
-Same as the above query, but this time we're only taking the top 20 results
-(order by 'cost' from highest to lowest, limit to 20 results):
-{CODE-BLOCK: sql}
-select _id orderId, max(cost) cost
-from monthly_sales
-group by _id
-order by cost desc
-limit 20
-{CODE-BLOCK/}
-
 Querying for most recent version in an append-only table:
 e.g. select everything in the table, and in case we have duplicates (multiple rows with the same id)
-- only take the most recent version (the one with the highest _lastmodifiedTime):
+- only take the most recent version (the one with the highest _lastModifiedTime):
 {CODE-BLOCK: sql}
 SELECT DISTINCT o.*
 FROM monthly_orders o
 INNER JOIN
    (SELECT _id,
-        MAX(_lastmodifiedTime) AS latest
+        MAX(_lastModifiedTime) AS latest
    FROM monthly_orders
    GROUP BY  _id) oo
    ON o._id = oo._id
-       AND o._lastmodifiedTime = oo.latest
+       AND o._lastModifiedTime = oo.latest
 {CODE-BLOCK/}
 
 #### Apache Parquet
