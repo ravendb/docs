@@ -37,17 +37,19 @@ Note: This option is only available when the server is in the `Passive` state.
 ![Figure 1. Click to add a new node](images/cluster-add-node-1.png "Click to add a new node")
 
 <br/>
-![Figure 2. Adding a new node](images/cluster-add-node-2.png "Adding a new Node")
+![Figure 2. Adding a new node](images/cluster-add-node-2_1.png "Adding a new Node")
 
-1. Enter the server URL of the new node  
-2. Decide whether to add the new node as a `Member` -or- as a `Watcher` (difference explained in [Cluster View](cluster-view))  
-3. Toggle whether to use all available cores on the machine for this node  
-4. Set a maximum number of cores that can be used by this node  
-5. Click _Test connection_ to verify that your cluster can communicate with the server at the specified URL  
+1. Enter the server URL of the new node.  
+2. You can optinally type a tag of your choice to identify the new node with.  
+   Use UPPER CASE letters only.  
+3. Decide whether to add the new node as a `Member` -or- as a `Watcher` (difference explained in [Cluster View](cluster-view)).  
+4. Toggle whether to use all available cores on the machine for this node.  
+    * If you toggle _Use available cores_ **off**, set a maximum number of cores that can be used by this node.  
+      ![Maximum number of cores](images/cluster-add-node-2_2.png "Maximum number of cores")
+5. Click _Test connection_ to verify that your cluster can communicate with the server at the specified URL.  
+6. When done, click *Add* to add this server as a node to the cluster.  
 
-When done, click *Save* to add this server as a node to the cluster  
-
-This operation can also be done programatically. Read more [here](../../server/clustering/cluster-api).
+This operation can also be done programatically. Read more [here](../../server/clustering/cluster-api).  
 {PANEL/}
 
 {PANEL: A Cluster with 2 nodes}
