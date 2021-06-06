@@ -52,7 +52,7 @@
    RavenDB usage of CPU & Cores per node.  
 2. **Machine CPU Usage**  
    Machine usage of CPU & Cores per node.  
-3. **Date Displayed**  
+3. **Data Displayed**  
    The CPU widget shows the current CPU usage.  
    Hover over the timeline to display earlier data.  
    
