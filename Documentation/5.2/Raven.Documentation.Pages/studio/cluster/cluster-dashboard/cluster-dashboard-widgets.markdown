@@ -85,7 +85,7 @@
 ![Traffic Widget](images/cluster-dashboard-12_1-traffic-widget.png "Traffic Widget")
 
 1. **Requests/s**  
-   Number of HTTP requests made to the node per Second.  
+   Number of HTTP requests made to the node per second.  
 2. **Writes/s**  
    Number of items (documents, attachments, etc.) written by the node per second.  
 3. **Data Written/s**  
