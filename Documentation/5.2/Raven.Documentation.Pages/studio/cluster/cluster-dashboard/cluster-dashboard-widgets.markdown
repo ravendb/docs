@@ -49,10 +49,11 @@
 ![CPU Widget](images/cluster-dashboard-10-cpu-widget.png "CPU Widget")
 
 1. **RavenDb CPU Usage**  
-   Cores & CPU usage by RavenDB nodes.  
+   RavenDB usage of CPU & Cores per node.  
 2. **Machine CPU Usage**  
-   Cores & CPU usage by nodes' machines.  
-3. The CPU widget shows the current CPU usage.  
+   Machine usage of CPU & Cores per node.  
+3. **Date Displayed**  
+   The CPU widget shows the current CPU usage.  
    Hover over the timeline to display earlier data.  
    
 
@@ -63,17 +64,17 @@
 ![Memory Widget](images/cluster-dashboard-11_1-memory-widget.png "Memory Widget")
 
 1. **RavenDB Memory Usage**  
-   Memory used by RavneDB nodes.  
-2. Click to toggle on/off additional **RavenDB memory usage** statistics.  
-3. **Machine Memory Usage**  
-   Memory used by nodes' machines.  
-4. Click to toggle on/off additional **machines memory usage** statistics.  
+   Memory used by RavneDB.  
+2. **Machine Memory Usage**  
+   Memory used by the nodes' machines.  
+3. Click to toggle on/off additional statistics.  
 
-**Memory Widgwt - Additional Statistics View**  
+**Memory Widget - Additional Statistics View**  
 
 ![Memory Widgwt - Additional Statistics View](images/cluster-dashboard-11_2-memory-widget-details.png "Memory Widgwt - Additional Statistics View")
 
-* The memory widget shows the current memory usage.  
+* **Data Displayed**  
+  The memory widget shows the current memory usage.  
   Hover over the timeline to display earlier data.  
   
 
@@ -84,19 +85,19 @@
 ![Traffic Widget](images/cluster-dashboard-12_1-traffic-widget.png "Traffic Widget")
 
 1. **Requests/s**  
-   Number of HTTP requests of all kinds made to this node per Second.  
+   Number of HTTP requests made to the node per Second.  
 2. **Writes/s**  
-   Number of items (documents, attachments, etc.) written by this node per second.  
-3. Click to toggle on/off additional Writes statistics.  
-4. **Data Written/s**  
-   Amount of data written by this node per second.  
-5. Click to toggle on/off additional Data Written statistics.  
+   Number of items (documents, attachments, etc.) written by the node per second.  
+3. **Data Written/s**  
+   Amount of data written by the node per second.  
+4. Click to toggle on/off additional statistics.  
 
 **Traffic Widget - Additional Statistics View**  
 
 ![Traffic Widget - Additional Statistics View](images/cluster-dashboard-12_2-traffic-widget-details.png "Traffic Widget - Additional Statistics View")
 
-* The traffic widget shows the current traffic usage.  
+* **Data displayed**  
+  The traffic widget shows the current traffic usage.  
   Hover over the timeline to display earlier data.  
 
 {PANEL/}
@@ -108,7 +109,7 @@
 1. **Database Name**  
    The Database column lists all your databases.  
 2. **Node Tag**  
-   Click a node tag to open the node's _Traffic Watch view_, for details about the node's HTTP requests' methods.  
+   Click a node tag to open the node's _Traffic Watch view_ where all HTTP requests made to the node can be viewed.  
 
 {PANEL/}
 
@@ -117,10 +118,11 @@
 ![Indexing Widget](images/cluster-dashboard-14-indexing-widget.png "Indexing Widget")
 
 1. **Map Indexes**  
-   Indexed items (documents, attachments, counters, and time series) per sec.  
+   Indexed items (documents, attachments, counters, and time series) per second.  
 2. **Map-Reduce Indexes**  
-   Mapped Items and Reduced Mapped Entries per sec.  
-3. The indexing widget shows the current indexing volume.  
+   Mapped Items and Reduced Mapped Entries per second.  
+3. **Data displayed**  
+   The indexing widget shows the current indexing volume.  
    Hover over the timeline to display earlier data.  
   
 
@@ -133,7 +135,7 @@
 1. **Database Name**  
    The Database column lists all your databases.  
 2. **Node Tag**  
-   Click a node tag to open the Indexing Performance view for the selected node.  
+   Click a node tag to open the _Indexing Performance view_ for the selected node.  
 
 {PANEL/}
 
@@ -155,8 +157,7 @@
 1. **Database Name**  
    The Database column lists all your databases.  
 2. **Node Tag**  
-   Click a node tag to open the Storage Report view for the selected node 
-   and see its storage occupancy in detail.  
+   Click a node tag to open the _Storage Report view_ for the selected node.  
 
 {PANEL/}
 
@@ -167,7 +168,7 @@
 1. The **License** widget displays your license **Type**, **Expiration** 
    date and remaining period, and **Support Type**.  
 2. **License Details**  
-   Click to open the About view which contains information about your 
+   Click to open the [About view](../../../studio/server/license-management) which contains information about your 
    License and Support plan.  
 
 {PANEL/}

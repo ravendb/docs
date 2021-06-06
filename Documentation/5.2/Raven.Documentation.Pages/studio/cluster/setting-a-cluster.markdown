@@ -40,9 +40,9 @@ Note: This option is only available when the server is in the `Passive` state.
 ![Figure 2. Adding a new node](images/cluster-add-node-2_1.png "Adding a new Node")
 
 1. Enter the server URL of the new node.  
-2. You can optinally type a tag of your choice to identify the new node with.  
-   Use UPPER CASE letters only.  
-3. Decide whether to add the new node as a `Member` -or- as a `Watcher` (difference explained in [Cluster View](cluster-view)).  
+2. You can optionally specify a tag of your choice for the new node. Use UPPER CASE letters only.  
+   If no tag is provided, the server will assign the new node the next available sequential letter.  
+3. Decide whether to add the new node as a `Member` -or- a `Watcher` (difference explained [here](../../studio/cluster/cluster-view#cluster-nodes-types)).  
 4. Toggle whether to use all available cores on the machine for this node.  
     * If you toggle _Use available cores_ **off**, set a maximum number of cores that can be used by this node.  
       ![Maximum number of cores](images/cluster-add-node-2_2.png "Maximum number of cores")
