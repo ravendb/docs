@@ -10,6 +10,7 @@
   * [Index Fields & Terms](../../../studio/database/indexes/create-map-index#index-fields-&-terms)  
   * [Index Field Options](../../../studio/database/indexes/create-map-index#index-field-options)  
   * [Configuration](../../../studio/database/indexes/create-map-index#configuration)  
+  * [Additional Assemblies](../../../studio/database/indexes/create-map-index#additional-assemblies)  
   * [Additional Sources](../../../studio/database/indexes/create-map-index#additional-sources)  
   * [Spatial Field Options](../../../studio/database/indexes/create-map-index#spatial-field-options)  
 {NOTE/}
@@ -20,22 +21,32 @@
 
 ![Figure 1. Edit Index View](images/create-map-index-1.png "Figure-1: Edit Index View")
 
-1. **Index Name** - An index name can be composed of letters, digits, `.`, `/`, `-`, and `_`. The name must be unique in the scope of the database.  
-   * Uniqueness is evaluated in a _case-insensitive_ way - you can't create indexes named both `usersbyname` and `UsersByName`.  
-   * The characters `_` and `/` are treated as equivalent - you can't create indexes named both `users/byname` and `users_byname`.  
-   * If the index name contains the character `.`, it must have some other character on _both sides_ to be valid. `/./` is a valid index name, but 
-   `./`, `/.`, and `/../` are all invalid.  
+1. **Save** - Save index definition.  
+   **Cancel** - Return to Index List View without creating or changing the index definition.  
+   **Clone** - Clone this index (available for an already saved index).  
+   **Index History** - Open the [Index History Dialog](../../../studio/database/indexes/index-history#index-history-dialog).  
 
-2. **Save** - Save index definition  
-   **Clone** - Clone this index (available for an already saved index)  
-   **Delete** - Delete this index (available for an already saved index)  
-
-3. Options avaliable for an already saved index:  
+2. Options avaliable for an already saved index:  
    **Copy C#** - Click to view and copy the C# class that defines the index as set in the Studio.  
    **Query** - Click to go the the Query View and query this index.  
-   **Terms** - Click to see the index terms, see [below](../../../studio/database/indexes/create-map-index#index-entries-&-terms).  
+   **Terms** - Click to see the index terms, see [below](../../../studio/database/indexes/create-map-index#index-fields-&-terms).  
+   **Delete** - Delete this index.  
 
-4. **The Map Function** of the index.  
+3. **Index Name** - An index name can be composed of letters, digits, `.`, `/`, `-`, and `_`. The name must be unique in the scope of the database.  
+    * Uniqueness is evaluated in a _case-insensitive_ way - you can't create indexes named both `usersbyname` and `UsersByName`.  
+    * The characters `_` and `/` are treated as equivalent - you can't create indexes named both `users/byname` and `users_byname`.  
+    * If the index name contains the character `.`, it must have some other character on _both sides_ to be valid. `/./` is a valid index name, but 
+    `./`, `/.`, and `/../` are all invalid.  
+
+4. **Deployment Mode** - CLick to choose the index deployment mode.  
+    * _Server default (parallel - all nodes concurrently)_  
+      Choose to keep the server default deployment mode, running this index by all cluster nodes in parallel.  
+    * _Rolling (one node at a time)_  
+      Choose to run this index by [one cluster node at a time](../../../indexes/rolling-index-deployment).  
+    * Parallel (all nodes concurrently)  
+      Choose to run this index by all cluster nodes in parallel.  
+
+5. **The Map Function** of the index.  
 
   * In the above example, the index will go over documents from the `Products` collection and 
     will only index documents whose `Discontinued` property is _'true'_.  
@@ -74,7 +85,7 @@
 
 ![Figure 3a. Index Field Options](images/create-map-index-3.png "Figure-3a: Index Field Options")
 
-1. **Add a field**  
+1. **Add field**  
    Create indexing options for one document field in the collection this index applies to.  
 
 2. **Add default field options**  
@@ -83,10 +94,7 @@
 3. **Select Field**  
    Select a field from the drop-down. The options for this will override the default options.  
 
-4. **Advanced**  
-   Set advanced indexing options for the selected field.  
-
-5. * `Store` - Setting _'Store'_ will store the value of this field in the index itself.  
+4. * `Store` - Setting _'Store'_ will store the value of this field in the index itself.  
                At query time, if _'Store'_ is set, then the value is fetched directly from the index, instead of from the original document.  
                If the field value is not stored in the index then it will be fetched from the document.  
                Storing data in the index will increase the index size.  
@@ -105,6 +113,9 @@
                       and in [Querying: Suggestions](../../../indexes/querying/suggestions).  
 
   * `Spatial` -  See [below](../../../studio/database/indexes/create-map-index#spatial-field-options)
+
+5. **Advanced**  
+   Set advanced indexing options for the selected field.  
 
 #### Advanced Index Field Options:  
 
@@ -139,9 +150,19 @@
 * Learn more about each option in: [Configuration: Indexing](../../../server/configuration/indexing-configuration).  
 {PANEL/}
 
+{PANEL: Additional Assemblies}
+
+![Figure 5. Additional Assemblies](images/create-map-index-5.png "Figure-5: Additional Assemblies")
+
+* Use the Additional Sources feature to introduce additional classes and methods that can be used in the index definition.  
+  This enables advanced scenarios since complex logic can be performed in the indexing process.  
+
+* In the above example, file _'PeopleUtil.cs'_ was uploaded and method _'CalculatePersonEmail'_ is used to calculate the index entry _'SupplierEmail'_.  
+{PANEL/}
+
 {PANEL: Additional Sources}
 
-![Figure 5. Additional Sources](images/create-map-index-5.png "Figure-5: Additional Sources")
+![Figure 5. Additional Sources](images/create-map-index-6.png "Figure-5: Additional Sources")
 
 * Use the Additional Sources feature to introduce additional classes and methods that can be used in the index definition.  
   This enables advanced scenarios since complex logic can be performed in the indexing process.  
@@ -151,7 +172,7 @@
 
 {PANEL: Spatial Field Options}
 
-![Figure 6. Spatial Field Options](images/create-map-index-6.png "Figure-6: Spatial Field Options")
+![Figure 6. Spatial Field Options](images/create-map-index-7.png "Figure-6: Spatial Field Options")
 
 * **Spatial Field**  
   Spatial searches allow you to search using geographical data.  

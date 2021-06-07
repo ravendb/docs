@@ -12,6 +12,7 @@
   * [Indexes List View - Actions](../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
   * [Indexes List View - Index Errors](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors)  
   * [Indexes List View - Side by Side Indexing](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing)
+  * [Indexes List View - Rolling Deployment](../../../studio/database/indexes/indexes-list-view#indexes-list-view---rolling-deployment)
 {NOTE/}
 
 ---
@@ -22,7 +23,7 @@
 
 **1**. **Index name and type**  
 
-   * `Name` - e.g. In the above example the index name is: 'Cities/Details'.  
+   * `Name` - e.g. In the above example the index name is: 'NamesIndex'.  
    * `Type` - This is the [Index Type](../../../studio/database/indexes/indexes-overview#indexes-types)  
      Can be: Map | Map-Reduce | Auto Map | Auto Map-Reduce  
 
@@ -31,7 +32,7 @@
    * These are the collections that are defined in the Map part of the index-definition.  
    * Data from these collections documents is scanned and indexed.  
    * A simple `Map-index` operates on a single collection while a `Multi-Map index` is defined with more than one collection.  
-   * In the above example - Index _'Cities/Details'_ is a Multi-Map index operating on _'Companies, Employees, Orders, Suppliers'_ collections.  
+   * In the above example - Index _'NamesIndex'_ is a Multi-Map index operating on _'Companies, Employees'_ collections.  
 
 **3**. **Index State**  
 
@@ -66,7 +67,7 @@
 
 **4**. **Index Status**
 
-   * `Entries` - The number of documents that are the result for a basic query on this index. (e.g. _from index 'Cities/Details'_)  
+   * `Entries` - The number of documents that are the result for a basic query on this index. (e.g. _from index 'NamesIndex'_)  
    * `Status` - Indicate if the index is up-to-date or if it is [stale](../../../indexes/stale-indexes).  
 {PANEL/}
 
@@ -145,6 +146,25 @@
 * The 'old index' definition can still be referenced as RavenDB keeps 
   [history of index revisions](../../../studio/database/indexes/index-history), 
   allowing you to revert an index to any of its past revisions.  
+
+{PANEL/}
+
+
+{PANEL: Indexes List View - Rolling Deployment}
+
+![Figure 4. Indexes rolling deployment](images/indexes-list-view-5.png "Figure-4: Indexes List View - Rolling Deployment")
+
+1. **Rolling Deployment**  
+  When an index [set](../../../studio/database/indexes/create-map-index#edit-index-view) 
+  for [Rolling Deployment](../../../indexes/rolling-index-deployment) is created or 
+  modified, cluster nodes progress in running this index is displayed graphically in the Indexes 
+  List View.  
+2. **Indexing Done**  
+   Nodes `A` and `B` have finished running the 'Companies/StockPrices/TradeVolumeByMonth' index.  
+   The indexing duration and end time are displayed.  
+3. **Indexing in Progress**  
+   Node `C` is currently running 'Companies/StockPrices/TradeVolumeByMonth'.  
+   The operation is expected to end in less than a minute.  
 
 {PANEL/}
 
