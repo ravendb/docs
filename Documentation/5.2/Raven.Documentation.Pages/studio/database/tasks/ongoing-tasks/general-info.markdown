@@ -21,6 +21,9 @@
   * [SQL ETL](../../../../server/ongoing-tasks/etl/sql)  
       * Write the database data to a relational database  
       * Data can be mutated with transformation scripts  
+  * [OLAP ETL](../../../../server/ongoing-tasks/etl/olap)  
+      * Convert database data to the _Parquet_ file format for the purpose of OLAP  
+      * Data can be mutated with transformation scripts  
   * [Backup](../../../../studio/database/tasks/backup-task)  
       * Schedule a backup or a snapshot of the database at a specified point in time  
   * [Subscription](../../../../client-api/data-subscriptions/what-are-data-subscriptions)  
@@ -78,8 +81,9 @@
   3. adding a [Replication Sink](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task) task
   4. adding a [RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) task  
   5. adding an SQL ETL task  
+  6. adding an [OLAP ETL](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task) task  
   7. adding a [Backup](../../../../studio/database/tasks/backup-task) task  
-  7. adding a Subscription task  
+  8. adding a Subscription task  
 
 * Once the task is defined and saved, it will be written to the [Database Record](../../../../studio/database/settings/database-record)  
 
