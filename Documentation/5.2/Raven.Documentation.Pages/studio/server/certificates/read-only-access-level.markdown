@@ -104,7 +104,7 @@ the **Admin** and **Read/Write** access levels.
 
 The Manage Server views that can be accessed with a User security clearance are:  
 
-* The [Cluster View](../../../studio/server/cluster/cluster-view), where info about the 
+* The [Cluster View](../../../studio/cluster/cluster-view), where info about the 
 cluster topology can be viewed.  
 * The Running Queries view, a live display of queries the server is currently processing.  
 
