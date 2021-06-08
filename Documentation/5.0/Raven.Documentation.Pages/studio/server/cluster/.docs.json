@@ -1,14 +1,27 @@
 [
-  {
-    "Path": "cluster-view.markdown",
-    "Name": "Cluster View",
-    "DiscussionId": "2d1d4a75-387e-4e6d-9325-2670ac9c7288",
-    "Mappings": []
-  },
-  {
-    "Path": "add-node-to-cluster.markdown",
-    "Name": "Add Node to Cluster",
-    "DiscussionId": "3b8a45a5-8fe8-43e4-8f26-c531571404cc",
-    "Mappings": []
-  }
+    {
+        "Path": "cluster-view.markdown",
+        "Name": "Cluster View",
+        "DiscussionId": "2d1d4a75-387e-4e6d-9325-2670ac9c7288",
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "studio/cluster/cluster-view"
+            }
+        ]
+
+    },
+    {
+        "Path": "add-node-to-cluster.markdown",
+        "Name": "Add Node to Cluster",
+        "DiscussionId": "3b8a45a5-8fe8-43e4-8f26-c531571404cc",
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "studio/cluster/setting-a-cluster"
+            }
+        ]
+    }
 ]

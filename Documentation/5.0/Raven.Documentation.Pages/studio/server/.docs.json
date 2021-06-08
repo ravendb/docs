@@ -26,7 +26,13 @@
     {
         "Path": "/databases",
         "Name": "Databases",
-        "Mappings": []
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "studio/database"
+            }
+        ]
     },
     {
         "Path": "/cluster",
