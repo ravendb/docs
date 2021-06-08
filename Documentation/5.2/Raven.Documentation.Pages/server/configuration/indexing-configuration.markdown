@@ -274,3 +274,33 @@ Smallest n-gram to generate when NGram analyzer is used.
 - **Scope**: Server-wide or per database
 
 {PANEL/}
+
+{PANEL:Indexing.Analyzers.Default}
+
+Default analyzer that will be used for fields.
+
+- **Type**: `string`
+- **Default**: `Constants.Documents.Indexing.Analyzers.Default`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL:Indexing.Analyzers.Exact.Default}
+
+Default analyzer that will be used for exact fields.
+
+- **Type**: `string`
+- **Default**: `Constants.Documents.Indexing.Analyzers.DefaultExact`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL:Indexing.Analyzers.Search.Default}
+
+Default analyzer that will be used for search fields.
+
+- **Type**: `string`
+- **Default**: `Constants.Documents.Indexing.Analyzers.DefaultSearch`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}

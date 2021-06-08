@@ -21,6 +21,7 @@ that come with RavenDB out of the box. It can then be selected when configuring 
   * [Database Custom Analyzer View](../../../studio/database/settings/custom-analyzers#database-custom-analyzer-view)  
   * [Server-Wide Custom Analyzer View](../../../studio/database/settings/custom-analyzers#server-wide-custom-analyzer-view)  
   * [Edit Custom Analyzer View](../../../studio/database/settings/custom-analyzers#edit-custom-analyzer-view)  
+  * [Change the Default Analyzers](../../../studio/database/settings/custom-analyzers#change-the-default-analyzers)
 
 {NOTE/}
 
@@ -66,6 +67,40 @@ in your code. This cannot be changed afterwards.
 [Indexes: Analyzers](../../../indexes/using-analyzers#creating-custom-analyzers).  
 3. Load an existing analyzer `*.cs`.  
 4. Save your analyzer.  
+{WARNING/}
+
+{PANEL/}
+
+{PANEL: Change the Default Analyzers}
+
+RavenDB has three default analyzers that it uses to index text when no other analyzer was specified:  
+
+* **Default Analyzer** - `LowerCaseKeywordAnalyzer`  
+* **Default Exact Analyzer** - `KeywordAnalyzer`  
+* **Default Search Analyzer** - `StandardAnalyzer`  
+
+Read more [here](../../../indexes/using-analyzers#ravendb).
+
+![Figure 4. Database Settings View](images/custom-analyzer-4.png "Figure 4. Database Settings View")
+
+{WARNING: }
+1. Navigate to `Settings > Database Settings`.  
+2. Click on **Edit** to modify the settings.  
+{WARNING/}
+
+{INFO: }
+Here you can see the current values of the default analyzers:  
+1. Default Analyzer  
+2. Default Exact Analyzer  
+3. Default Search Analyzer  
+{INFO/}
+
+![Figure 3. Edit Custom Analyzer View](images/custom-analyzer-5.png "Figure 3. Edit Custom Analyzer View")
+
+{WARNING: }
+1. Select **Indexing**.  
+2. Click on **Override** to replace the default value.  
+3. Click on **Save** to modify the settings.  
 {WARNING/}
 
 {PANEL/}
