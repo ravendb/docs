@@ -154,15 +154,34 @@
 
 ![Figure 5. Additional Assemblies](images/create-map-index-5.png "Figure-5: Additional Assemblies")
 
-* Use the Additional Sources feature to introduce additional classes and methods that can be used in the index definition.  
-  This enables advanced scenarios since complex logic can be performed in the indexing process.  
+Use the [Additional Assemblies](../../../indexes/additional-assemblies) 
+feature to enhance Index capabilities with classes and methods taken from whole libraries.  
 
-* In the above example, file _'PeopleUtil.cs'_ was uploaded and method _'CalculatePersonEmail'_ is used to calculate the index entry _'SupplierEmail'_.  
+1. **Add Assembly**  
+   Add an additional assembly for your index usage.  
+    * The number of assemblies you can add is unlimited.  
+    * You can add assemblies from multiple sources, e.g. a Nuget package and a Runtine library.  
+
+2. **Syntax**  
+   See syntax samples.  
+
+3. **Assembly Source**  
+   Additional assemblies can be added from -  
+    * Nuget packages  
+    * Runtime libraries  
+    * Local files  
+
+4. **Assembly Name**  
+   Type the assembly name.  
+
+5. **Usings**  
+   Type the name of a namespace you want to use within the assembly, and click **Add Namespace** to add itto the list.  
+
 {PANEL/}
 
 {PANEL: Additional Sources}
 
-![Figure 5. Additional Sources](images/create-map-index-6.png "Figure-5: Additional Sources")
+![Figure 6. Additional Sources](images/create-map-index-6.png "Figure-6: Additional Sources")
 
 * Use the Additional Sources feature to introduce additional classes and methods that can be used in the index definition.  
   This enables advanced scenarios since complex logic can be performed in the indexing process.  
@@ -172,7 +191,7 @@
 
 {PANEL: Spatial Field Options}
 
-![Figure 6. Spatial Field Options](images/create-map-index-7.png "Figure-6: Spatial Field Options")
+![Figure 7. Spatial Field Options](images/create-map-index-7.png "Figure-7: Spatial Field Options")
 
 * **Spatial Field**  
   Spatial searches allow you to search using geographical data.  
