@@ -863,7 +863,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     // Use BulkInsert to append 100 time-series entries
                     using (BulkInsertOperation bulkInsert = store.BulkInsert())
                     {
-                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRate"))
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRates"))
                         {
                             for (int minute = 0; minute < 100; minute++)
                             {
@@ -1379,7 +1379,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     var end = baseline.AddHours(1);
 
                     IRawDocumentQuery<User> query = session.Advanced.RawQuery<User>
-                              ("from Users include timeseries('HeartRate', $start, $end)")
+                              ("from Users include timeseries('HeartRates', $start, $end)")
                         .AddParameter("start", start)
                         .AddParameter("end", end);
 
@@ -1388,7 +1388,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                             from Users as u where Age < 30
                             select timeseries(
-                                from HeartRate between 
+                                from HeartRates between 
                                     '2020-05-27T00:00:00.0000000Z' 
                                         and '2020-06-23T00:00:00.0000000Z'
                                 group by '7 days'
@@ -1505,7 +1505,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     #endregion
                 }
 
-                // Raw Query - HeartRate using "where Tag in"
+                // Raw Query - HeartRates using "where Tag in"
                 using (var session = store.OpenSession())
                 {
                     var baseline = new DateTime(2020, 5, 17);
@@ -1518,7 +1518,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                             from Users as u where Age < 30
                             select timeseries(
-                                from HeartRate between 
+                                from HeartRates between 
                                     '2020-05-17T00:00:00.0000000Z' 
                                     and '2020-05-23T00:00:00.0000000Z'
                                     where Tag in ('watches/Letsfit', 'watches/Willful', 'watches/Lintelek')
@@ -1531,7 +1531,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 }
 
 
-                // Raw Query - HeartRate using "where Tag =="
+                // Raw Query - HeartRates using "where Tag =="
                 using (var session = store.OpenSession())
                 {
                     var baseline = new DateTime(2020, 5, 17);
@@ -1544,7 +1544,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                             from Users as u where Age < 30
                             select timeseries(
-                                from HeartRate between 
+                                from HeartRates between 
                                     '2020-05-17T00:00:00.0000000Z' 
                                     and '2020-05-23T00:00:00.0000000Z'
                                     where Tag == 'watches/fitbit'
@@ -1573,7 +1573,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                             from Companies as c
                                 where c.Address.Country = 'USA'
                                 select timeseries ( 
-                                    from StockPrice 
+                                    from StockPrices 
                                     where Values[4] > 500000
                                         group by '7 day'
                                         select max(), min()
@@ -1615,7 +1615,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     IRawDocumentQuery<TimeSeriesAggregationResult> aggregatedRawQuery =
                         session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                             declare timeseries SP(c) {
-                                from c.StockPrice
+                                from c.StockPrices
                                 where Values[4] > 500000
                                 group by '7 day'
                                 select max(), min()
@@ -1682,14 +1682,14 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     // Raw query with no aggregation - Declare syntax
                     IRawDocumentQuery<TimeSeriesRawResult> nonAggregatedRawQuery =
                         session.Advanced.RawQuery<TimeSeriesRawResult>(@"
-                            declare timeseries getHeartRate(user) 
+                            declare timeseries getHeartRates(user) 
                             {
-                                from user.HeartRate 
+                                from user.HeartRates 
                                     between $start and $end
                                     offset '02:00'
                             }
                             from Users as u where Age < 30
-                            select getHeartRate(u)
+                            select getHeartRates(u)
                             ")
                         .AddParameter("start", baseline)
                         .AddParameter("end", baseline.AddHours(24));
@@ -1710,7 +1710,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesRawResult>(@"
                             from Users as u where Age < 30                            
                             select timeseries (
-                                from HeartRate 
+                                from HeartRates 
                                     between $start and $end
                                     offset '02:00'
                             )")
@@ -1733,7 +1733,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesAggregationResult>(@"
                             from Users as u
                             select timeseries(
-                                from HeartRate 
+                                from HeartRates 
                                     between $start and $end
                                 group by '1 days'
                                 select min(), max())
@@ -1801,7 +1801,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesRawResult>(@"
                             from Users as u where Age < 30                            
                             select timeseries (
-                                from HeartRate
+                                from HeartRates
                             )");
 
                     var nonAggregatedRawQueryResult = nonAggregatedRawQuery.ToList();
@@ -1877,7 +1877,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                             // Choose profiles of US companies
                             .Where(c => c.Address.Country == "USA")
 
-                            .Select(q => RavenQuery.TimeSeries(q, "StockPrice")
+                            .Select(q => RavenQuery.TimeSeries(q, "StockPrices")
 
                             .LoadByTag<Employee>()
                             .Where((ts, src) => src.Address.Country == "USA")
@@ -1899,7 +1899,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesRawResult>(@"
                             from Companies as c where c.Address.Country = 'USA'
                             select timeseries(
-                                from StockPrice
+                                from StockPrices
                                    load Tag as emp
                                    where emp.Title == 'Sales Representative'
                             )");
@@ -1919,7 +1919,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                             // Choose user profiles of users under the age of 30
                             .Where(c => c.Address.Country == "USA")
-                            .Select(q => RavenQuery.TimeSeries(q, "StockPrice")
+                            .Select(q => RavenQuery.TimeSeries(q, "StockPrices")
 
                             .LoadByTag<Employee>()
                             .Where((ts, src) => src.Title == "Sales Representative")
@@ -2063,7 +2063,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         session.Advanced.RawQuery<TimeSeriesRawResult>(@"
                             declare timeseries ts(jogger) 
                             {
-                                from jogger.HeartRate 
+                                from jogger.HeartRates 
                                     between $start and $end
                             }
                             from Users as jog where Age < 30

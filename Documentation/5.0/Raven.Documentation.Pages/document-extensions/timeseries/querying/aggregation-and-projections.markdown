@@ -28,6 +28,7 @@
 
 * In this page:  
   * [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections#aggregation-and-projections)  
+  * [Query Examples](../../../document-extensions/timeseries/querying/aggregation-and-projections#query-examples)  
   * [Client Usage Samples](../../../document-extensions/timeseries/querying/aggregation-and-projections#client-usage-samples)  
 
 {NOTE/}
@@ -65,6 +66,10 @@ project entries by a chosen criteria.
 * **Count()** - overall number of values in series entries  
 
 {INFO/}
+
+{PANEL/}
+
+{PANEL: Query Examples}
 
 * In this sample, we group entries of users' HeartRates time series 
   and project the lowest and highest values of each group.  
