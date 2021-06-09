@@ -152,36 +152,95 @@
 
 {PANEL: Additional Assemblies}
 
-![Figure 5. Additional Assemblies](images/create-map-index-5.png "Figure-5: Additional Assemblies")
+![Figure 5. Additional Assemblies - Runtime Library](images/create-map-index-5.png "Figure-5: Additional Assemblies - Runtime Library")
 
 Use the [Additional Assemblies](../../../indexes/additional-assemblies) 
-feature to enhance Index capabilities with classes and methods taken from whole libraries.  
+feature to enhance Index capabilities with classes and methods taken from libraries.  
+In the above example, `Path.GetFileName` can be used by the index map method because the 
+runtime library it is taken from, `System.Io`, is added to the index as an additional assembly.  
 
 1. **Add Assembly**  
    Add an additional assembly for your index usage.  
     * The number of assemblies you can add is unlimited.  
-    * You can add assemblies from multiple sources, e.g. a Nuget package and a Runtine library.  
+    * The index can use libraries from multiple sources, 
+      e.g. a [Nuget package](https://ravendb.net/articles/using-nuget-packages-to-power-up-ravendb-indexes) 
+      and a Runtine library.  
 
 2. **Syntax**  
    See syntax samples.  
 
 3. **Assembly Source**  
-   Additional assemblies can be added from -  
-    * Nuget packages  
-    * Runtime libraries  
-    * Local files  
+   Choose assembly source.  
+   In this example, the assembly is a runtime library.  
+   Added assemblies can be -  
+    * _Server Runtime_ - a runtime library.  
+    * _Path_ - a library file placed on the local disk.  
+    * _Nuget_ - a Nuget package.  
 
 4. **Assembly Name**  
-   Type the assembly name.  
+   The name of the runtime library you want to use.  
 
 5. **Usings**  
-   Type the name of a namespace you want to use within the assembly, and click **Add Namespace** to add itto the list.  
+   Optionally, choose a namespace within the assembly.  
+   
+6. **Add Namespace**  
+   To use a namespace, add it to the namespaces list using this button.  
+
+7. **Namespaces list**  
+   A list of added namespaces.  
+
+8. **Remove**  
+   Click to remove this assembly.  
+
+---
+
+![Figure 6. Nugat Package and Local Library](images/create-map-index-6_1.png "Figure-6: Nugat Package and Local Library")
+
+1. **Assembly Source**  
+   In this case, _Nuget_ was chosen so the index can use classes and methods taken from a Nuget package.  
+
+2. **Package Name**  
+   Nuget package name.  
+
+3. **Package version**  
+   Nuget package version.  
+
+4. **Default Package Source URL**  
+    * Toggle ON to use the package default URL.  
+    * Toggle OFF to provide the URL yourself.  
+      ![Provide Nuget Package URL](images/create-map-index-6_2.png "Provide Nuget Package URL")
+      
+
+5. **Usings**  
+   Optionally, choose a namespace within the Nuget package.  
+   
+6. **Add Namespace**  
+   To use a namespace, add it to the namespaces list using this button.  
+
+7. **Remove**  
+   Click to remove this assembly.  
+
+1. **Assembly Source**  
+   In this case, _Path_ was chosen so the index can use classes and methods taken from a local library.  
+
+9. **Assembly Path**  
+   Provide a path to the local library file.  
+
+10. **Usings**  
+   Optionally, choose a namespace within the local library.  
+   
+11. **Add Namespace**  
+   To use a namespace, add it to the namespaces list using this button.  
+
+12. **Remove**  
+   Click to remove this assembly.  
+
 
 {PANEL/}
 
 {PANEL: Additional Sources}
 
-![Figure 6. Additional Sources](images/create-map-index-6.png "Figure-6: Additional Sources")
+![Figure 7. Additional Sources](images/create-map-index-7.png "Figure-7: Additional Sources")
 
 * Use the Additional Sources feature to introduce additional classes and methods that can be used in the index definition.  
   This enables advanced scenarios since complex logic can be performed in the indexing process.  
@@ -191,7 +250,7 @@ feature to enhance Index capabilities with classes and methods taken from whole 
 
 {PANEL: Spatial Field Options}
 
-![Figure 7. Spatial Field Options](images/create-map-index-7.png "Figure-7: Spatial Field Options")
+![Figure 8. Spatial Field Options](images/create-map-index-8.png "Figure-8: Spatial Field Options")
 
 * **Spatial Field**  
   Spatial searches allow you to search using geographical data.  
