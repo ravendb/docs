@@ -89,7 +89,7 @@ This is the list of different settings objects that the `OlapConnectionString` o
 | `AwsRegionName` | `string` | The AWS server region |
 | `BucketName` | `string` | The name of the S3 bucket that is the destination for this ETL |
 | `CustomServerUrl` | `string` | The custom URL to the S3 bucket, if you have one |
-| `RemoteFolderName` | `string` | Name of the S3 partition folder |
+| `RemoteFolderName` | `string` | Name of the destination folder within the S3 bucket |
 
 #### `GlacierSettings`
 
@@ -100,6 +100,7 @@ This is the list of different settings objects that the `OlapConnectionString` o
 | `AwsSessionToken` | `string` | AWS session token |
 | `AwsRegionName` | `string` | The AWS server region |
 | `VaultName` | `string` | The name of your AWS Glacier vault |
+| `RemoteFolderName` | `string` | Name of the destination folder within the Glacier |
 
 #### `AzureSettings`
 
@@ -144,13 +145,14 @@ metadata in unix time. This field appears as another column in the destination t
 
 Transformation scripts are similar to those in the RavenDB ETL and SQL ETL tasks - see more about this in 
 [ETL Basics](../../../server/ongoing-tasks/etl/basics#transform). The major difference is that data output 
-by the ETL task can be partitioned into folders and child folders. Querying the data usually involves scanning 
+by the ETL task can be divided into folders and child folders called _partitions_. Querying the data usually involves scanning 
 the entire folder, so there is an advantage in efficiency to dividing the data into more folders.  
 
 #### The `key` Parameter
 
 As with other ETL tasks, the method that actually loads an entry to its destination is `loadTo<folder name>()`, 
-but unlike the other ETL tasks the method takes two parameters: the entry itself and an additional 'key'.  
+but unlike the other ETL tasks the method takes two parameters: the entry itself, and an additional 'key'. 
+This `key` determines how many partitions there are and what their names are.  
 
 {CODE-BLOCK: javascript}
 loadTo<folder name>(key, object)
@@ -166,17 +168,16 @@ The actual value that you pass as the `key` for `loadTo<folder name>()` is one o
 * `noPartition()` - creates no child folders.  
 
 The child folders created by OLAP ETL are considered a sort of 'virtual column' of the destination table. 
-This just means that all child folder names have this format: `[virtual column name]=[partition name]`, 
-i.e. two strings separated by a `=`. You don't have to set the virtual column name - its default value is 
-`_partition`.  
+This just means that all child folder names have this format: `[virtual column name]=[partition value]`, 
+i.e. two strings separated by a `=`. The default virtual column name is `_partition`.  
 
 `partitionBy()` can take one or more folder names in the following ways:  
 
-* **`partitionBy(key)`** - takes one `string` value as the partition name, uses the default virtual column 
-name `_partition`.
-* **`partitionBy(['name', key])`** - takes a virtual column name and a partition name as an array of size two.  
-* **`partitonBy(['name1', key1], ['name2', key2])`** - takes multiple arrays of size two, each with a virtual 
-column name and a partition name. Each pair represents a child folder of the preceding pair.  
+* **`partitionBy(key)`** - takes a partition value and uses the default virtual column 
+name `_partition`. The partition value can be a string, number, date, etc.
+* **`partitionBy(['name', key])`** - takes a virtual column name and a partition value as an array of size two.  
+* **`partitonBy(['name1', key1], ['name2', key2], ... )`** - takes multiple arrays of size two, each with a virtual 
+column name and a partition value. Each pair represents a child folder of the preceding pair.  
 
 Here are examples of possible values for `partitionBy()`, and the resulting folder names:  
 
@@ -229,6 +230,9 @@ value setting.
 {CODE-BLOCK: javascript}
 partitionBy(['source_ETL_task', $customPartitionValue])
 {CODE-BLOCK/}
+
+In the case of multiple partitions, the custom partition value can be used more than once, and it 
+can appear anywhere in the folder structure.  
 
 #### Script Example
 
