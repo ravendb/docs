@@ -257,7 +257,7 @@ Maximum number of documents to be processed by the index per indexing batch.
 
 {PANEL:Indexing.MaxGram}
 
-Largest n-gram to generate when NGram analyzer is used.
+Largest n-gram to generate when [NGram analyzer](../../indexes/using-analyzers) is used.
 
 - **Type**: `int`
 - **Default**: `6`
@@ -267,7 +267,7 @@ Largest n-gram to generate when NGram analyzer is used.
 
 {PANEL:Indexing.MinGram}
 
-Smallest n-gram to generate when NGram analyzer is used.
+Smallest n-gram to generate when [NGram analyzer](../../indexes/using-analyzers) is used.
 
 - **Type**: `int`
 - **Default**: `2`
@@ -277,30 +277,30 @@ Smallest n-gram to generate when NGram analyzer is used.
 
 {PANEL:Indexing.Analyzers.Default}
 
-Default analyzer that will be used for fields.
+[Default analyzer](../../indexes/using-analyzers#ravendb) that will be used for fields.
 
 - **Type**: `string`
-- **Default**: `Constants.Documents.Indexing.Analyzers.Default`
+- **Default**: `LowerCaseKeywordAnalyzer`
 - **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
 {PANEL:Indexing.Analyzers.Exact.Default}
 
-Default analyzer that will be used for exact fields.
+[Default analyzer](../../indexes/using-analyzers#ravendb) that will be used for exact fields.
 
 - **Type**: `string`
-- **Default**: `Constants.Documents.Indexing.Analyzers.DefaultExact`
+- **Default**: `KeywordAnalyzer`
 - **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
 {PANEL:Indexing.Analyzers.Search.Default}
 
-Default analyzer that will be used for search fields.
+[Default analyzer](../../indexes/using-analyzers#ravendb) that will be used for search fields.
 
 - **Type**: `string`
-- **Default**: `Constants.Documents.Indexing.Analyzers.DefaultSearch`
+- **Default**: `RavenStandardAnalyzer`
 - **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}

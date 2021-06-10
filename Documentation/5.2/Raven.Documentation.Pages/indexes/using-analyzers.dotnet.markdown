@@ -69,7 +69,7 @@ RavenDB has three default analyzers that it uses to index text when no other ana
 * **Default Exact Analyzer** - `KeywordAnalyzer`  
 * **Default Search Analyzer** - `RavenStandardAnalyzer`  
 
-You can choose other analyzers to serve as your default analyzers by modifying the [indexing configuration](../server/configuration/indexing-configuration##indexing.analyzers.default).  
+You can choose other analyzers to serve as your default analyzers by modifying the [indexing configuration](../server/configuration/indexing-configuration#indexing.analyzers.default).  
 
 **Default Analyzer**
 
