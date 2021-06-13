@@ -26,6 +26,7 @@ see [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap).
       * [OLAP Connection String](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#olap-connection-string)
       * [OLAP ETL Destinations](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#olap-etl-destinations)
       * [Transform Script](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#transform-script)
+      * [Override ID column](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#override-id-column)
 
 {NOTE/}
 
@@ -58,7 +59,7 @@ To begin creating your OLAP ETL task:
 
 1. The name of this ETL task (optional).  
 2. Choose which of the cluster nodes will run this task (optional).  
-3. Set a custom partition value which can be referenced in the transform script. See next section.  
+3. Set a custom partition value which can be referenced in the transform script. [See below](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#custom-partition-value).  
 
 {WARNING/}
 <br/>
@@ -66,11 +67,14 @@ To begin creating your OLAP ETL task:
 
 !["Custom partition value"](images/olap-etl-7.png "Custom partition value")
 
-The custom partition value can be referenced in the transform script as 
-`$customPartitionValue`. This setting gives you another way to distinguish 
-data from different ETL tasks that use the same transform script.  
-
-Learn more in [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap#the-custom-partition-value).  
+* A custom partition can be defined to differentiate parquet file locations when 
+using the same connection string and transform script in multiple OLAP ETL tasks.  
+* The custom partition **name** is defined inside the transformation script.  
+* The custom partition **value** is defined in the input box above.  
+* The custom partition value can be referenced in the transform script as 
+`$customPartitionValue`.  
+* A parquet file path with custom partition will have the following format: `{RemoteFolderName}/{CollectionName}/{customPartitionName=$customPartitionValue}`  
+* Learn more in [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap#the-custom-partition-value).  
 <br/>
 ### Run Frequency
 
@@ -85,8 +89,9 @@ Learn more in [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/ola
 
 ![](images/olap-etl-4.png)
 
-If you chose to create a new connection string for this OLAP task, you can input 
-its name and the destination here. Multiple destinations can be defined.  
+* Select an existing connection string from the available dropdown or create a new one.  
+* If you choose to create a new connection string you can enter its name and destination here.  
+* Multiple destinations can be defined.  
 <br/>
 ### OLAP ETL Destinations
 
@@ -96,6 +101,16 @@ Select one or more destinations from this list. Clicking each toggle reveals fur
 fields and configuration options for each destination.  
 <br/>
 ### Transform Script
+
+!["List of transform scripts"](images/olap-etl-9.png "List of transform scripts")
+
+{WARNING: }
+
+1. List of existing transform scripts.  
+2. Add a new transform script.  
+2. Edit an existing transform script.  
+
+{WARNING/}
 
 !["Transform script"](images/olap-etl-6.png "Transform script")
 
@@ -109,6 +124,35 @@ is always in the format: "Script #[order of script creation]".
 5. If this option is checked, the script will operate on all existing documents in the 
 specified collections the first time the task runs. When the option is unchecked, the 
 script operates only on new documents.  
+
+{WARNING/}
+
+{INFO: }
+
+Every parquet table that is created by a transform script includes two columns that 
+aren't specified in the script:  
+
+* `_id`: contains the document ID. Its default name is `_id`, but this name can be 
+overriden in the task definition - see more [below](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#override-id-column).  
+* `_lastModifiedTime`: the value of the `last-modified` field in a document's 
+metadata. Represented in unix time.  
+
+{INFO/}
+<br/>
+### Override ID Column
+
+!["Override ID column"](images/olap-etl-8.png "Override ID column")
+
+These settings allow you to specify a different column name for the document ID column 
+in a parquet file. The default ID column name is `_id`.  
+
+{WARNING: }
+
+1. Add a new setting.  
+2. Select the name of the parquet table for which you want to override the ID column.  
+3. Select the name for the table's ID column.  
+4. Save the setting.  
+5. Edit an existing setting.  
 
 {WARNING/}
 

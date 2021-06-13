@@ -20,15 +20,15 @@
       * Data can be filtered and modified with transformation scripts  
   * [SQL ETL](../../../../server/ongoing-tasks/etl/sql)  
       * Write the database data to a relational database  
-      * Data can be mutated with transformation scripts  
+      * Data can be filtered and modified with transformation scripts  
   * [OLAP ETL](../../../../server/ongoing-tasks/etl/olap)  
       * Convert database data to the _Parquet_ file format for the purpose of OLAP  
-      * Data can be mutated with transformation scripts  
+      * Data can be filtered and modified with transformation scripts  
   * [Backup](../../../../studio/database/tasks/backup-task)  
       * Schedule a backup or a snapshot of the database at a specified point in time  
   * [Subscription](../../../../client-api/data-subscriptions/what-are-data-subscriptions)  
       * Sending batches of documents that match a pre-defined query for processing on a client  
-      * Data can be mutated with transformation scripts  
+      * Data can be filtered and modified with transformation scripts  
 
 * In this page:  
   * [Ongoing Tasks - View](../../../../studio/database/tasks/ongoing-tasks/general-info#ongoing-tasks---view)  
@@ -76,14 +76,14 @@
 ![Figure 3. Ongoing Tasks New Task](images/general-info-003.png "Add Ongoing Task")
 
 * Select the preferred task to add  
-  1. adding an [Extrenal Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) task  
+  1. adding an [External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) task  
   2. adding a [Replication Hub](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task) task
   3. adding a [Replication Sink](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task) task
   4. adding a [RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) task  
   5. adding an SQL ETL task  
   6. adding an [OLAP ETL](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task) task  
   7. adding a [Backup](../../../../studio/database/tasks/backup-task) task  
-  8. adding a Subscription task  
+  8. adding a [Subscription](../../../../studio/database/tasks/ongoing-tasks/subscription-task) task  
 
 * Once the task is defined and saved, it will be written to the [Database Record](../../../../studio/database/settings/database-record)  
 
