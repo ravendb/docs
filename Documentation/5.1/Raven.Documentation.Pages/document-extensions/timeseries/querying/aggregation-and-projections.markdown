@@ -149,8 +149,10 @@ select c.Name, SP(c)
       and the results include only the all-time highest and lowest Open, 
       Close, High, Low and Volume values.  
 
-* In the next two examples we group time series data by the entry tags in addition 
-  to the time unit aggregation.  
+In the next two examples we group time series data by the entry tags in addition 
+to the time unit aggregation.  
+Tags can contain document IDs of documents in the database. If a tag is such a 
+document ID, you can aggregate according to properties of that document.  
 
 * In this query we group stock prices by 1 month and then by the tags of the 
 entries within each month.  
