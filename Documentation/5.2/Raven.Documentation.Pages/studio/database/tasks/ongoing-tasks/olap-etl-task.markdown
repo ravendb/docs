@@ -53,7 +53,7 @@ To begin creating your OLAP ETL task:
 
 {PANEL: Define an OLAP ETL Task}
 
-!["New OLAP ETL task"](images/olap-etl-3_1.png "New OLAP ETL task view")
+!["New OLAP ETL task"](images/olap-etl-3.png "New OLAP ETL task view")
 
 {WARNING: }
 
@@ -65,7 +65,7 @@ To begin creating your OLAP ETL task:
 <br/>
 ### Custom Partition Value
 
-!["Custom partition value"](images/olap-etl-7.png "Custom partition value")
+!["Custom partition value"](images/olap-etl-4.png "Custom partition value")
 
 * A custom partition can be defined to differentiate parquet file locations when 
 using the same connection string in multiple OLAP ETL tasks.  
@@ -79,7 +79,7 @@ using the same connection string in multiple OLAP ETL tasks.
 <br/>
 ### Run Frequency
 
-!["Task run frequency"](images/olap-etl-3.png "Task run frequency")
+!["Task run frequency"](images/olap-etl-5.png "Task run frequency")
 
 * Select the exact timing and frequency at which this task should run from the dropdown menu.  
 * The maximum frequency is once every minute.  
@@ -88,7 +88,7 @@ using the same connection string in multiple OLAP ETL tasks.
 <br/>
 ### OLAP Connection String
 
-![](images/olap-etl-4.png)
+![](images/olap-etl-6.png)
 
 * Select an existing connection string from the available dropdown or create a new one.  
 * If you choose to create a new connection string you can enter its name and destination here.  
@@ -96,14 +96,14 @@ using the same connection string in multiple OLAP ETL tasks.
 <br/>
 ### OLAP ETL Destinations
 
-!["OLAP ETL destinations"](images/olap-etl-3_2.png "OLAP ETL destinations")
+!["OLAP ETL destinations"](images/olap-etl-7.png "OLAP ETL destinations")
 
 Select one or more destinations from this list. Clicking each toggle reveals further 
 fields and configuration options for each destination.  
 <br/>
 ### Transform Script
 
-!["List of transform scripts"](images/olap-etl-9.png "List of transform scripts")
+!["List of transform scripts"](images/olap-etl-8.png "List of transform scripts")
 
 {WARNING: }
 
@@ -113,7 +113,7 @@ fields and configuration options for each destination.
 
 {WARNING/}
 
-!["Transform script"](images/olap-etl-6.png "Transform script")
+!["Transform script"](images/olap-etl-9.png "Transform script")
 
 {WARNING: }
 
@@ -144,7 +144,7 @@ aren't specified in the script:
 <br/>
 ### Override ID Column
 
-!["Override ID column"](images/olap-etl-8.png "Override ID column")
+!["Override ID column"](images/olap-etl-10.png "Override ID column")
 
 These settings allow you to specify a different column name for the document ID column 
 in a parquet file. The default ID column name is `_id`.  
