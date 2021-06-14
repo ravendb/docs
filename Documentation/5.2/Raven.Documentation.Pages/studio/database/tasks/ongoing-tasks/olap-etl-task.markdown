@@ -68,12 +68,13 @@ To begin creating your OLAP ETL task:
 !["Custom partition value"](images/olap-etl-7.png "Custom partition value")
 
 * A custom partition can be defined to differentiate parquet file locations when 
-using the same connection string and transform script in multiple OLAP ETL tasks.  
+using the same connection string in multiple OLAP ETL tasks.  
 * The custom partition **name** is defined inside the transformation script.  
 * The custom partition **value** is defined in the input box above.  
-* The custom partition value can be referenced in the transform script as 
+* The custom partition value is referenced in the transform script as 
 `$customPartitionValue`.  
-* A parquet file path with custom partition will have the following format: `{RemoteFolderName}/{CollectionName}/{customPartitionName=$customPartitionValue}`  
+* A parquet file path with custom partition will have the following format:  
+  `{RemoteFolderName}/{CollectionName}/{customPartitionName=$customPartitionValue}`  
 * Learn more in [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap#the-custom-partition-value).  
 <br/>
 ### Run Frequency
@@ -132,10 +133,12 @@ script operates only on new documents.
 Every parquet table that is created by a transform script includes two columns that 
 aren't specified in the script:  
 
-* `_id`: contains the document ID. Its default name is `_id`, but this name can be 
-overriden in the task definition - see more [below](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#override-id-column).  
-* `_lastModifiedTime`: the value of the `last-modified` field in a document's 
-metadata. Represented in unix time.  
+* `_id`  
+  Contains the source document ID. The default name used for this column is `_id`.  
+  You can override this name in the task definition - see more 
+  [below](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#override-id-column).  
+* `_lastModifiedTime`  
+  The value of the `last-modified` field in a document's metadata. Represented in unix time.  
 
 {INFO/}
 <br/>
@@ -151,8 +154,8 @@ in a parquet file. The default ID column name is `_id`.
 1. Add a new setting.  
 2. Select the name of the parquet table for which you want to override the ID column.  
 3. Select the name for the table's ID column.  
-4. Save the setting.  
-5. Edit an existing setting.  
+4. Click to add this setting.  
+5. Click to edit this setting.  
 
 {WARNING/}
 
