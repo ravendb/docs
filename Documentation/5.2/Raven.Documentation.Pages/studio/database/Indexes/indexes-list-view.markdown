@@ -25,31 +25,31 @@
 
    * `Name` - e.g. In the above example the index name is: 'NamesIndex'.  
    * `Type` - This is the [Index Type](../../../studio/database/indexes/indexes-overview#indexes-types)  
-     Can be: Map | Map-Reduce | Auto Map | Auto Map-Reduce  
+     Can be: Map | Map-Reduce | Auto Map | Auto Map-Reduce | JavaScript Map | JavaScript Map-Reduce  
 
 **2**. **Collections**  
 
    * These are the collections that are defined in the Map part of the index-definition.  
-   * Data from these collections documents is scanned and indexed.  
+   * Data from these collections is scanned and indexed.  
    * A simple `Map-index` operates on a single collection while a `Multi-Map index` is defined with more than one collection.  
    * In the above example - Index _'NamesIndex'_ is a Multi-Map index operating on _'Companies, Employees'_ collections.  
 
 **3**. **Index State**  
 
-   * `Normal` - 
+   * `Normal` -  
       * Index is active, any new data is indexed.  
 
-   * `Paused` - 
+   * `Paused` -  
       * New data is not being indexed.  
         Queries will be stale as new data is not indexed.  
       * Indexing process will resume upon setting _'Resume'_ or when the server is _restarted_.  
 
-   * `Disabled` - 
+   * `Disabled` -  
       * New data is not being indexed.  
         Queries will be stale as new data is not indexed.  
       * Indexing process will _not_ automatically resume upon a server restart but only when setting _'Enable'_.  
 
-   * `Idle` - 
+   * `Idle` -  
       * An auto-index becomes idle when the time difference between its last-query-time and
         the most recent time the database was queried on (with any other index) is greater than a configurable threshold (30 min by default).  
         This is done in order to avoid marking indexes as idle for databases that were offline for a long period of time -  
@@ -57,15 +57,19 @@
       * The auto-index will resume its work and go back to the _'Normal'_ state upon a new query or when resetting the index.  
         If not resumed, the idle auto-index will be deleted by the server after a configurable time period (72 hrs default).  
 
-   * `Error` - 
+   * `Error` -  
       * A malformed indexing-function or missing/corrupted document data will result in an indexing error.  
         See more [below](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
 
-   * `Faulty` - 
+   * `Faulty` -  
       * Index will be _'Faulty'_ if its data files are corrupted or if not accessible.  
         See more [below](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
 
-**4**. **Index Status**
+**4**. **Index Source**  
+
+   * Can be: Documents | Counters | TimeSeries  
+
+**5**. **Index Status**
 
    * `Entries` - The number of documents that are the result for a basic query on this index. (e.g. _from index 'NamesIndex'_)  
    * `Status` - Indicate if the index is up-to-date or if it is [stale](../../../indexes/stale-indexes).  
