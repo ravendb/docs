@@ -34,8 +34,9 @@ See [here](../../../document-extensions/timeseries/querying/aggregation-and-proj
 to learn about aggregation in queries.  
 
 Next, use:  
-* For RQL queries: `interpolation()`
-* For LINQ queries: the `Interpolation` option in `TimeSeriesAggregationOptions`. 
+
+* For RQL queries: `interpolation()`  
+* For LINQ queries: the `Interpolation` option in `TimeSeriesAggregationOptions`.  
 
 The two interpolation modes are:  
 

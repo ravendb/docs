@@ -28,6 +28,7 @@
 
 * In this page:  
   * [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections#aggregation-and-projection)  
+  * [The LINQ GroupBy Method](../../../document-extensions/timeseries/querying/aggregation-and-projections#the-linq-groupby-method)
   * [Query Examples](../../../document-extensions/timeseries/querying/aggregation-and-projections#query-examples)  
   * [Client Usage Examples](../../../document-extensions/timeseries/querying/aggregation-and-projections#client-usage-examples)  
 
@@ -75,12 +76,29 @@ the first and last entries.
 
 {PANEL/}
 
+{PANEL: The LINQ GroupBy Method}
+
+In LINQ, aggregations are performed using the `GroupBy()` method. It takes 
+the time period over which to aggregate, either in the form of a `string`, or 
+as an `Action<ITimePeriodBuilder>`.  
+
+{CODE GroupBy@DocumentExtensions\TimeSeries\Querying\AggregationAndProjections.cs /}
+
+The `ITimePeriodBuilder` class just contains one property for each of the time 
+period units from milliseconds to years.  
+
+{CODE Builder@DocumentExtensions\TimeSeries\Querying\AggregationAndProjections.cs /}
+
+See examples [below](../../../document-extensions/timeseries/querying/aggregation-and-projections#function-evaluation).  
+
+{PANEL/}
+
 {PANEL: Query Examples}
 
 * In this example, we group entries of users' HeartRates time series 
   and project the lowest and highest values of each group.  
   Each HeartRates entry holds a single value.
-    {CODE-BLOCK: JSON}
+    {CODE-BLOCK: sql}
 from Employees as e
 select timeseries(
     from HeartRates
@@ -103,7 +121,7 @@ select timeseries(
   Values[2] - **High** - highest stock price during trade time  
   Values[3] - **Low** - lowest stock price during trade time  
   Values[4] - **Volume** - overall trade volume  
-    {CODE-BLOCK: JSON}
+    {CODE-BLOCK: sql}
 declare timeseries SP(c) 
 {
     from c.StockPrices 
@@ -133,7 +151,7 @@ select c.Name, SP(c)
 * This example is similar to the one above it, except that time series 
   entries are **not aggregated**, so the highest and lowest values are 
   collected not from each group but from the entire result-set.  
-  {CODE-BLOCK: JSON}
+  {CODE-BLOCK: sql}
 declare timeseries SP(c) 
 {
     from c.StockPrices 
@@ -222,6 +240,17 @@ or `select` in a raw RQL query.
     {CODE-TAB:csharp:Raw-RQL-Declare-Syntax ts_region_Raw-RQL-Declare-Syntax-aggregation-and-projections-StockPrice@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
     {CODE-TABS/}
 
+### `GroupBy()` Function Evaluation
+
+Starting in version 5.2, the LINQ method `GroupBy()` can take a switch statement 
+or a method as an argument. The statement or method's return value must be an `Action<ITimePeriodBuilder>`.  
+
+* In this example, we pass `GroupBy()` a switch statement.  
+{CODE GroupBy_Switch@DocumentExtensions\TimeSeries\Querying\AggregationAndProjections.cs /}
+
+* In this example, we pass `GroupBy()` the method `groupingFunction()` 
+{CODE GroupBy_Function@DocumentExtensions\TimeSeries\Querying\AggregationAndProjections.cs /}
+
 {PANEL/}
 
 ## Related articles
@@ -243,5 +272,5 @@ or `select` in a raw RQL query.
 **Policies**  
 [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)  
 
-**Querying**
+**Querying**  
 [Querying: Projections](../../../indexes/querying/projections)  
