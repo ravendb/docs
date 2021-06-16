@@ -8,8 +8,7 @@
   Queries can easily create powerful statistics by aggregating time series entries 
   into groups by chosen time frames like an hour or a week, and retrieving 
   values from each group by criteria like `Min` for the lowest value, 
-  `Count` for the number of values in the group, etc. Time series data can also 
-  be aggregated using the entry [tags](../../../document-extensions/timeseries/overview#tags).  
+  `Count` for the number of values in the group, etc.  
   
 * **Projection** by criteria  
   Queries can explicitly select the criteria by which values would be retrieved 
@@ -29,6 +28,7 @@
 
 * In this page:  
   * [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections#aggregation-and-projection)  
+  * [Query Examples](../../../document-extensions/timeseries/querying/aggregation-and-projections#query-examples)  
   * [Client Usage Examples](../../../document-extensions/timeseries/querying/aggregation-and-projections#client-usage-examples)  
 
 {NOTE/}
@@ -39,8 +39,8 @@
 
 In an RQL query, use the `group by` expression to aggregate 
 time series (or ranges of time series entries) in groups by 
-a chosen resolution or by the entry tag. Use the `select` 
-keyword to choose and project entries by a chosen criterion.  
+a chosen resolution. Use the `select` keyword to choose and 
+project entries by a chosen criterion.  
 
 {INFO: You can aggregate entries by these time units:}  
 
@@ -52,8 +52,8 @@ keyword to choose and project entries by a chosen criterion.
 * **Quarters**  
 * **Years**  
 
-* Entries can also be aggregated by their **tag**.
-
+After aggregating by time units, You can also perform a 
+_secondary_ aggregation by the [time series `tag`](../../../document-extensions/timeseries/overview#tags).
 {INFO/}
 
 {INFO: You can `select` values for projection by these criteria:}
@@ -73,30 +73,30 @@ the first and last entries.
 
 {INFO/}
 
-* In this example, we group entries of users' HeartRate time series 
+{PANEL/}
+
+{PANEL: Query Examples}
+
+* In this example, we group entries of users' HeartRates time series 
   and project the lowest and highest values of each group.  
-  Each HeartRate entry holds a single value.
+  Each HeartRates entry holds a single value.
     {CODE-BLOCK: JSON}
 from Employees as e
-where e.Birthday > '1960-01-01'
 select timeseries(
-    from HeartRate between 
-        '2020-05-17T00:00:00.0000000Z' 
-        and '2020-05-23T00:00:00.0000000Z'
-            where Tag == 'watches/fitbit'
-    group by '1 days'
+    from HeartRates
+    group by '1 day'
     select min(), max()
 )
     {CODE-BLOCK/}
-   * **group by '1 days'**  
-     We group each user's HeartRate time series entries in consecutive 1-day groups.  
+   * **group by '1 day'**  
+     We group each user's HeartRates time series entries in consecutive 1-day groups.  
    * **select min(), max()**  
-     We select the lowest and highest values of each group and project them to the client.  
+     We project the lowest and highest values of each group.  
 
-* In this example, we group entries of companies' StockPrice time series 
+* In this example, we group entries of companies' StockPrices time series 
   in consecutive 7-day groups and project the highest and lowest values 
   of each group.  
-  Each StockPrice entry holds five values, the query returns the `Max` 
+  Each StockPrices entry holds five values, the query returns the `Max` 
   and `Min` values of each:  
   Values[0] - **Open** - stock price when the trade opens  
   Values[1] - **Close** - stock price when the trade ends  
@@ -108,7 +108,7 @@ declare timeseries SP(c)
 {
     from c.StockPrices 
     where Values[4] > 500000
-        group by '7 day'
+        group by '7 days'
         select max(), min()
 }
 from Companies as c
@@ -117,7 +117,7 @@ select c.Name, SP(c)
     {CODE-BLOCK/}
    * **where Values[4] > 500000**  
      Query stock price behavior when the trade volume is high.  
-   * **group by '7 day'**  
+   * **group by '7 days'**  
      Group each company's StockPrice entries in consecutive 7-day groups.  
    * **select max(), min()**  
      Select the highest (`Max`) and lowest (`Min`) 
@@ -149,30 +149,54 @@ select c.Name, SP(c)
       and the results include only the all-time highest and lowest Open, 
       Close, High, Low and Volume values.  
 
-* In these two example we group time series data by the entry tags. In 
-  the first query we simply use `group by tag` and also filter the results based 
-  on the tag value. In the second, we access the tag   using `load` and then filter:  
-  {CODE-BLOCK: sql}
-from Employees as e
-select timeseries(
-    from HeartRates
-    where Tag == 'watches/fitbit' or Tag == 'Heartrate_Monitor'
-    group by tag
-    select min(), max()
-)
-  {CODE-BLOCK/}
-  {CODE-BLOCK: sql}
-from Employees as e
-select timeseries(
-    from HeartRates
-    load Tag as monitor
-    where monitor == 'watches/fitbit' or monitor == 'Heartrate_Monitor'
-    group by tag
-    select min(), max()
-)
-  {CODE-BLOCK/}
+In the next two examples we group time series data by the entry tags in addition 
+to the time unit aggregation.  
+Tags can contain document IDs of documents in the database. If a tag is such a 
+document ID, you can aggregate according to properties of that document.  
 
-* Finally, in this example we group by time series in a LINQ query: 
+* In this query we group stock prices by 1 month and then by the tags of the 
+entries within each month.  
+  {CODE-BLOCK: sql}
+from Companies 
+select timeseries(
+    from StockPrices
+    group by '1 month', tag
+    select min(), max()
+)
+  {CODE-BLOCK/}
+    * **group by '1 month', tag**  
+      We group each company's StockPrices time series entries by their month, and within 
+      each month we group by tag.  
+    * **select min(), max()**  
+      We project the lowest and highest values of each group.  
+
+* In this query, we first access the entry tags using `load` into a variable called 
+  `employee`. Because the tags in the StockPrices time series are the document IDs of 
+  actual [employee entries](../../../start/about-examples#northwind-classes), we can 
+  access the properties of the documents and filter according to their values. Then 
+  we group the results by 1 month, and finally we group by the tags:  
+  {CODE-BLOCK: sql}
+from Companies as c
+select timeseries(
+    from StockPrices
+    load Tag as employee
+    where employee.Title == 'Sales Representative'
+    group by '1 month', tag
+    select min(), max()
+)
+  {CODE-BLOCK/}
+    * **load Tag as employee**
+      The tags contain document IDs. This command loads the referenced documents 
+      into `employee`.  
+    * **where employee.Title == 'Sales Representative'**
+      Filter the time series data according to the employee documents' `Title` field.  
+    * **group by '1 month', tag**  
+      We group each company's StockPrices time series entries by their month, and within 
+      each month we group by tag.  
+    * **select min(), max()**  
+      We project the lowest and highest values of each group.  
+
+* In this example we perform a LINQ query and group by 1 hour and by tag: 
   {CODE LINQ_GroupBy_Tag@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 {PANEL/}
@@ -220,3 +244,6 @@ or `select` in a raw RQL query.
 
 **Policies**  
 [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)  
+
+**Querying**
+[Querying: Projections](../../../indexes/querying/projections)  
