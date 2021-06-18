@@ -12,7 +12,7 @@ The tokenization process uses an object called an **Analyzer**.
 
 * In this page:  
   * [Understanding Analyzers](../indexes/using-analyzers#understanding-analyzers)  
-  * [RavenDB's Default Analyzer](../indexes/using-analyzers#ravendb)  
+  * [RavenDB's Default Analyzers](../indexes/using-analyzers#ravendb)  
   * [Full-Text Search](../indexes/using-analyzers#full-text-search)  
   * [Selecting an Analyzer for a Field](../indexes/using-analyzers#selecting-an-analyzer-for-a-field)  
   * [Creating Custom Analyzers](../indexes/using-analyzers#creating-custom-analyzers)  
@@ -61,13 +61,36 @@ For example, given this sample text:
 
 {PANEL/}
 
-{PANEL: RavenDB's Default Analyzer}
+{PANEL: RavenDB's Default Analyzers}
 
-By default, RavenDB uses a custom analyzer called `LowerCaseKeywordAnalyzer` for all indexed content. Its implementation behaves like Lucene's KeywordAnalyzer, but it also performs case normalization by converting all characters to lower case. That is - RavenDB stores the entire text field as a single token, in a lower cased form. Given the same sample text above, `LowerCaseKeywordAnalyzer` will produce a single token:  
+RavenDB has three default analyzers that it uses to index text when no other analyzer was specified:  
+
+* **Default Analyzer** - `LowerCaseKeywordAnalyzer`  
+* **Default Exact Analyzer** - `KeywordAnalyzer`  
+* **Default Search Analyzer** - `RavenStandardAnalyzer`  
+
+You can choose other analyzers to serve as your default analyzers by modifying the [indexing configuration](../server/configuration/indexing-configuration#indexing.analyzers.default).  
+
+**Default Analyzer**
+
+For regular text fields, RavenDB uses a custom analyzer called `LowerCaseKeywordAnalyzer`. Its implementation 
+behaves like Lucene's `KeywordAnalyzer`, but it also performs case normalization by converting all characters 
+to lower case. That is - RavenDB stores the entire text field as a single token, in a lower cased form. Given 
+the same sample text above, `LowerCaseKeywordAnalyzer` will produce a single token:  
 
 `[the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`  
 
-This default analyzer allows you to match exact and complete text values. To perform full-text searches, set a different analyzer.  
+**Default Exact Analyzer**
+
+For 'exact case' text fields, RavenDB uses Lucene's `KeywordAnalyzer`, which treats the entire text field as one 
+token and does not change the case of the original text. To make an index store text with the exact case, see the 
+section on changing field indexing behavior [below](../indexes/using-analyzers#manipulating-field-indexing-behavior).  
+
+**Default Search Analyzer**
+
+For full-text search text fields, RavenDB uses `RavenStandardAnalyzer`, which is just an optimized version of 
+Lucene's `StandardAnalyzer`. To make an index that allows full-text search, see the section on changing field 
+indexing behavior [below](../indexes/using-analyzers#manipulating-field-indexing-behavior).  
 
 {PANEL/}
 
@@ -92,7 +115,7 @@ name:
 {CODE-TAB:csharp:Operation analyzers_2@Indexes\Analyzers.cs /}
 {CODE-TABS/}
 
-{INFO: Analyzer Availablity}
+{INFO: Analyzer Availability}
 The analyzer you are referencing must be available to the RavenDB server instance. See the different 
 methods of creating custom analyzers [below](../indexes/using-analyzers#creating-custom-analyzers).  
 {INFO/}
