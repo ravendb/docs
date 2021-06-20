@@ -11,7 +11,8 @@
 * Multi-Map indexes require that all the Map functions defined have the _same_ output structure.  
 
 * In this page:  
-  * [Creating Multi-Map index](../../../studio/database/indexes/create-map-index#edit-index-view)  
+  * [Creating Multi-Map index](../../../studio/database/indexes/create-multi-map-index#creating-multi-map-index)  
+  * [Add another Map Function](../../../studio/database/indexes/create-multi-map-index#add-another-map-function)  
 {NOTE/}
 
 ---
@@ -35,10 +36,15 @@
 
 The `Collection` field indexed in the above example is not mandatory but can be useful upon querying.
 {NOTE/}
-<br/>
 
-**Add another Map Function:**  
+{PANEL/}
+
+{PANEL: Add Another Map Function}
+
 ![Figure 2. Add Another Map Function](images/create-multi-map-index-2.png)  
+
+Index field options, Configuration, Additional Assemblies & Sources can be defined for 
+the Multi-Map index in the same way as done for a Simple Map Index.  
 
 {NOTE: }
 

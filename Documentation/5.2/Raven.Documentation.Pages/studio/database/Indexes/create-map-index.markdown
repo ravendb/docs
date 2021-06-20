@@ -3,7 +3,8 @@
 
 {NOTE: }
 
-* A **Map index** consists of one or more LINQ-based mapping functions that indicate how to index selected document fields.  
+* A **Map index** consists of one or more LINQ-based or JavaScript mapping functions 
+  that indicate how to index selected document fields.  
 
 * In this page:  
   * [Edit Index View](../../../studio/database/indexes/create-map-index#edit-index-view)  
@@ -38,13 +39,15 @@
     * If the index name contains the character `.`, it must have some other character on _both sides_ to be valid. `/./` is a valid index name, but 
     `./`, `/.`, and `/../` are all invalid.  
 
-4. **Deployment Mode** - CLick to choose the index deployment mode.  
-    * _Server default (parallel - all nodes concurrently)_  
-      Choose to keep the server default deployment mode, running this index by all cluster nodes in parallel.  
+4. **Deployment Mode** - Select the index deployment mode.  
+    * _Database default (parallel - all nodes concurrently)_  
+      With this option, the deployment mode will be the 
+      [Default Mode](../../../indexes/rolling-index-deployment#system-wide-deployment-mode) defined on the database.  
     * _Rolling (one node at a time)_  
-      Choose to run this index by [one cluster node at a time](../../../indexes/rolling-index-deployment).  
+      The index will be deployed on the cluster nodes in a linear order, one node at a time.  
     * Parallel (all nodes concurrently)  
       Choose to run this index by all cluster nodes in parallel.  
+    * Read more about deployment modes [here](../../../indexes/rolling-index-deployment).  
 
 5. **The Map Function** of the index.  
 
@@ -78,7 +81,7 @@
 2. **Terms**  
    The terms are listed under each field.  
    The terms are created from the value of the field that was requested to be indexed 
-   according to the specified [Field Options](../../../studio/database/indexes/create-map-index#fields-(index-entries)-options).  
+   according to the specified [Field Options](../../../studio/database/indexes/create-map-index#index-field-options).  
 {PANEL/}
 
 {PANEL: Index Field Options}
@@ -152,49 +155,57 @@
 
 {PANEL: Additional Assemblies}
 
-![Figure 5. Additional Assemblies - Runtime Library](images/create-map-index-5.png "Figure-5: Additional Assemblies - Runtime Library")
+![Figure 5. Additional Assemblies](images/create-map-index-5.png "Figure-5: Additional Assemblies")
 
 Use the [Additional Assemblies](../../../indexes/additional-assemblies) 
 feature to enhance Index capabilities with classes and methods taken from libraries.  
 In the above example, `Path.GetFileName` can be used by the index map method because the 
-runtime library it is taken from, `System.Io`, is added to the index as an additional assembly.  
+runtime library `System.Io` is added as an additional assembly.  
 
 1. **Add Assembly**  
-   Add an additional assembly for your index usage.  
-    * The number of assemblies you can add is unlimited.  
-    * The index can use libraries from multiple sources, 
-      e.g. a [Nuget package](https://ravendb.net/articles/using-nuget-packages-to-power-up-ravendb-indexes) 
-      and a Runtine library.  
+   Click to add an assembly source for your index usage.  
 
 2. **Syntax**  
    See syntax samples.  
 
 3. **Assembly Source**  
-   Choose assembly source.  
-   In this example, the assembly is a runtime library.  
+   Select an assembly source of the type you want to use.  
    Added assemblies can be -  
     * _Server Runtime_ - a runtime library.  
-    * _Path_ - a library file placed on the local disk.  
+    * _Path_ - The path to a library file on your local disk.  
     * _Nuget_ - a Nuget package.  
 
-4. **Assembly Name**  
+4. **Remove Assembly**  
+   Click to remove the assembly.  
+
+---
+
+![Figure 6. Runtime Library](images/create-map-index-6.png "Figure-6: Runtime Library")
+
+1. **Assembly Source**  
+   In this example, the assembly is a runtime library.  
+
+2. **Assembly Name**  
    The name of the runtime library you want to use.  
 
-5. **Usings**  
+3. **Usings**  
    Optionally, choose a namespace within the assembly.  
    
-6. **Add Namespace**  
-   To use a namespace, add it to the namespaces list using this button.  
+4. **Add Namespace**  
+   To use a namespace in your method, add it to the namespaces list using this button.  
 
-7. **Namespaces list**  
-   A list of added namespaces.  
+5. **Namespaces list**  
+   The list of added namespaces.  
 
-8. **Remove**  
+6. **Remove Namespace**  
+   Click to remove this namespace from the list.  
+
+7. **Remove Assembly**  
    Click to remove this assembly.  
 
 ---
 
-![Figure 6. Nugat Package and Local Library](images/create-map-index-6_1.png "Figure-6: Nugat Package and Local Library")
+![Figure 7. Nugat Package](images/create-map-index-7_1.png "Figure-7: Nugat Package")
 
 1. **Assembly Source**  
    In this case, _Nuget_ was chosen so the index can use classes and methods taken from a Nuget package.  
@@ -208,49 +219,62 @@ runtime library it is taken from, `System.Io`, is added to the index as an addit
 4. **Default Package Source URL**  
     * Toggle ON to use the package default URL.  
     * Toggle OFF to provide the URL yourself.  
-      ![Provide Nuget Package URL](images/create-map-index-6_2.png "Provide Nuget Package URL")
-      
+      ![Provide Nuget Package URL](images/create-map-index-7_2.png "Provide Nuget Package URL")
 
 5. **Usings**  
    Optionally, choose a namespace within the Nuget package.  
    
 6. **Add Namespace**  
-   To use a namespace, add it to the namespaces list using this button.  
+   To use a namespace in your method, add it to the namespaces list using this button.  
 
-7. **Remove**  
+7. **Remove Assembly**  
    Click to remove this assembly.  
+
+---
+
+![Figure 8. Local Library](images/create-map-index-8.png "Figure-8: Local Library")
 
 1. **Assembly Source**  
    In this case, _Path_ was chosen so the index can use classes and methods taken from a local library.  
 
-9. **Assembly Path**  
+2. **Assembly Path**  
    Provide a path to the local library file.  
 
-10. **Usings**  
+3. **Usings**  
    Optionally, choose a namespace within the local library.  
    
-11. **Add Namespace**  
+4. **Add Namespace**  
    To use a namespace, add it to the namespaces list using this button.  
 
-12. **Remove**  
+5. **Remove Assembly**  
    Click to remove this assembly.  
-
 
 {PANEL/}
 
 {PANEL: Additional Sources}
 
-![Figure 7. Additional Sources](images/create-map-index-7.png "Figure-7: Additional Sources")
+![Figure 9. Additional Sources](images/create-map-index-9.png "Figure-9: Additional Sources")
 
-* Use the Additional Sources feature to introduce additional classes and methods that can be used in the index definition.  
-  This enables advanced scenarios since complex logic can be performed in the indexing process.  
+You can extend the logic of the Map & Map-Reduce methods by referencing classes and methods 
+from additional source files. This enables advanced scenarios since complex logic can be performed 
+during the indexing process.  
 
-* In the above example, file _'PeopleUtil.cs'_ was uploaded and method _'CalculatePersonEmail'_ is used to calculate the index entry _'SupplierEmail'_.  
+In the above example, file _'PeopleUtil.cs'_ was uploaded and method _'CalculatePersonEmail'_ is 
+used to calculate the index entry _'SupplierEmail'_.  
+
+1. **Upload Source File**  
+   Upload a file from the file system, that contains classes and methods you want to use.  
+2. **Uploaded File**  
+   A file that's been uploaded, whose contents can be used by your code.  
+3. **Source Code**  
+   Read-only view of the uploaded file's source code.  
+   
+
 {PANEL/}
 
 {PANEL: Spatial Field Options}
 
-![Figure 8. Spatial Field Options](images/create-map-index-8.png "Figure-8: Spatial Field Options")
+![Figure 10. Spatial Field Options](images/create-map-index-10.png "Figure-10: Spatial Field Options")
 
 * **Spatial Field**  
   Spatial searches allow you to search using geographical data.  

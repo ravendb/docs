@@ -156,19 +156,22 @@
 
 {PANEL: Indexes List View - Rolling Deployment}
 
-![Figure 4. Indexes rolling deployment](images/indexes-list-view-5.png "Figure-4: Indexes List View - Rolling Deployment")
+![Figure 5. Indexes rolling deployment](images/indexes-list-view-5.png "Figure-5: Indexes List View - Rolling Deployment")
 
 1. **Rolling Deployment**  
-  When an index [set](../../../studio/database/indexes/create-map-index#edit-index-view) 
-  for [Rolling Deployment](../../../indexes/rolling-index-deployment) is created or 
-  modified, cluster nodes progress in running this index is displayed graphically in the Indexes 
-  List View.  
-2. **Indexing Done**  
-   Nodes `A` and `B` have finished running the 'Companies/StockPrices/TradeVolumeByMonth' index.  
-   The indexing duration and end time are displayed.  
+  When an index that is [defined](../../../studio/database/indexes/create-map-index#edit-index-view) 
+  with [Rolling Deployment](../../../indexes/rolling-index-deployment) is created or modified, the 
+  indexing process progress is displayed per node.  
+2. **Force Parallel**  
+   Force parallel indexing for an index defined with Rolling Deployment.  
 3. **Indexing in Progress**  
-   Node `C` is currently running 'Companies/StockPrices/TradeVolumeByMonth'.  
-   The operation is expected to end in less than a minute.  
+   Node `A` is currently running the 'TradeVolumeByMonth' index.  
+   The indexing progress and a remaining time estimation are displayed.  
+   Read [Here](../../../indexes/rolling-index-deployment#the-rolling-procedure) about the rolling procedure.  
+4. **Indexing Done**  
+   Nodes `B` and `C` are waiting for their turn to run the 'TradeVolumeByMonth' index.  
+   Read [here](../../../indexes/rolling-index-deployment#deployment-concurrency-and-order) about the order of deployment.  
+
 
 {PANEL/}
 
