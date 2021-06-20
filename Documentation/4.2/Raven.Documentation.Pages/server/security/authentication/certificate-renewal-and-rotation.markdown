@@ -36,12 +36,15 @@ During the process you will receive alerts in the studio and in the logs indicat
 
 ## Replace the Cluster Certificate Using Powershell
 
-Here is a little example of using the REST API directly with powershell to replace the cluster certificate:
+Here is a little example of using the REST API directly with powershell to replace the cluster certificate:  
+
+Note the optional password parameter indicated in the second line as `<password>`. If the certificate you are replacing 
+has no password, leave the parameter blank.  
 
 {CODE-BLOCK:powershell}
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-$clientCert = Get-PfxCertificate -FilePath C:\path\to\client\cert\admin.client.certificate.raven.pfx
+$clientCert = Get-PfxCertificate -FilePath C:\path\to\client\cert\admin.client.certificate.raven.pfx <password>
 
 $newCert = get-content 'C:\path\to\server\cert\new.certificate.pfx' -Encoding Byte
 
