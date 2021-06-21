@@ -58,7 +58,6 @@ You can use the keywords `first` and `last` to specify a range of entries at the
 beginning or end of the time series. The range is specified using a whole 
 number of one of these units:  
 
-* **Milliseconds**  
 * **Seconds**  
 * **Minutes**  
 * **Hours**  

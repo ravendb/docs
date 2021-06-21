@@ -44,6 +44,7 @@ project entries by a chosen criterion.
 
 {INFO: You can aggregate entries by these time units:}  
 
+* **Milliseconds**  
 * **Seconds**  
 * **Minutes**  
 * **Hours**  
