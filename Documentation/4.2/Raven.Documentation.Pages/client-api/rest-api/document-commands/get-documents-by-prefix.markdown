@@ -96,7 +96,7 @@ curl -X GET "<server URL>/databases/<database name>/docs?
             &startAfter=<document ID>
             &start=<integer>
             &pageSize=<integer>
-            &metadata=<boolean>"
+            &metadataOnly=<boolean>"
 --header "If-None-Match: <hash>"
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
