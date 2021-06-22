@@ -163,11 +163,12 @@
   with [Rolling Deployment](../../../indexes/rolling-index-deployment) is created or modified, the 
   indexing process progress is displayed per node.  
 2. **Force Parallel**  
-   Force parallel indexing for an index defined with Rolling Deployment.  
+   Click to force parallel indexing deployment for the current node.  
+   The other nodes will continue deployment with the rolling mode.  
 3. **Indexing in Progress**  
    Node `A` is currently running the 'TradeVolumeByMonth' index.  
-   The indexing progress and a remaining time estimation are displayed.  
-   Read [Here](../../../indexes/rolling-index-deployment#the-rolling-procedure) about the rolling procedure.  
+   The indexing progress and the estimated time left are displayed.  
+   Read [here](../../../indexes/rolling-index-deployment#the-rolling-procedure) about the rolling procedure.  
 4. **Indexing Done**  
    Nodes `B` and `C` are waiting for their turn to run the 'TradeVolumeByMonth' index.  
    Read [here](../../../indexes/rolling-index-deployment#deployment-concurrency-and-order) about the order of deployment.  

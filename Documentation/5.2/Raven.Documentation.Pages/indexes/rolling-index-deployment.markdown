@@ -18,6 +18,7 @@
      * [Deployment Concurrency and Order](../indexes/rolling-index-deployment#deployment-concurrency-and-order)  
   * [Setting Indexing Deployment Mode](../indexes/rolling-index-deployment#setting-indexing-deployment-mode)  
      * [System-Wide Deployment Mode](../indexes/rolling-index-deployment#system-wide-deployment-mode)  
+     * [Database Deployment Mode](../indexes/rolling-index-deployment#database-deployment-mode)  
      * [Deployment Mode in an Index Definition](../indexes/rolling-index-deployment#deployment-mode-in-an-index-definition)  
 
 {NOTE/}
@@ -101,11 +102,42 @@ Nodes are assigned with the indexing of each database in a linear order, one nod
   `"Indexing.Static.DeploymentMode": "Parallel"`  
     
 ---
+### Database Deployment Mode
+
+Enable or disable rolling for a specific database using database configuration keys.  
+Setting these properties overrides [system-wide](../indexes/rolling-index-deployment#system-wide-deployment-mode) 
+default and configuration-option settings.  
+ 
+* From Studio:  
+
+    ![Database Configuration Keys](images/rolling-index-deployment-01.png "Database Configuration Keys")
+
+      1. Open **Settings** > **Database Settings** view.  
+      2. **Filter Keys** - Enter a search string to locate the configuration keys.  
+      3. **Edit** - Click to edit values (see next image for details).  
+      4. **Configuration Keys** -  
+         Edit `Indexing.Auto.DeploymentMode` to override database Auto Indexing deployment mode.  
+         Edit `Indexing.Static.DeploymentMode` to override database Static Indexes deployment mode.  
+      5. **Effective Value** - Current configuration.  
+      6. **Origin** - Origin of the current configuration.  
+         Can be - Default | Database  
+         **Note**: An edited configuration key value will become effective only after the database is reloaded.  
+
+    ![Edit Values](images/rolling-index-deployment-02.png "Edit Values")
+
+      1. **Override** - Toggle to Edit Value.  
+      2. **Edit Value** - Choose Parallel or Rolling indexing deployment mode.  
+      3. **Set Default** - Optionally set the new value as the database default deployment mode.  
+      4. **Save** - Apply changes.  
+    
+---
 
 ### Deployment Mode in an Index Definition
 
 Enable or disable rolling for a specific index using the index-definition `DeploymentMode` property.  
-Setting this property overrides default and configuration-option settings.  
+Setting this property overrides [system-wide](../indexes/rolling-index-deployment#system-wide-deployment-mode) 
+and [database](../indexes/rolling-index-deployment#database-deployment-mode) 
+default and configuration-option settings.  
   
   * `DeploymentMode = IndexDeploymentMode.Rolling`  
   * `DeploymentMode = IndexDeploymentMode.Parallel`  

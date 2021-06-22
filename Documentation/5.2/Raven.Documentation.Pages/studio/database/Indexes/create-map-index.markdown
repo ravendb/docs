@@ -4,7 +4,7 @@
 {NOTE: }
 
 * A **Map index** consists of one or more LINQ-based or JavaScript mapping functions 
-  that indicate how to index selected document fields.  
+  that indicate how to index selected document fields, counters, and time series data.  
 
 * In this page:  
   * [Edit Index View](../../../studio/database/indexes/create-map-index#edit-index-view)  
@@ -46,7 +46,7 @@
     * _Rolling (one node at a time)_  
       The index will be deployed on the cluster nodes in a linear order, one node at a time.  
     * Parallel (all nodes concurrently)  
-      Choose to run this index by all cluster nodes in parallel.  
+      The index will be deployed on all cluster nodes in parallel.  
     * Read more about deployment modes [here](../../../indexes/rolling-index-deployment).  
 
 5. **The Map Function** of the index.  
@@ -122,7 +122,7 @@
 
 #### Advanced Index Field Options:  
 
-![Figure 3c. Advanced Index Field Options](images/create-map-index-advanced.png "Figure-3c: Advanced Index Field Options")
+![Figure 3b. Advanced Index Field Options](images/create-map-index-advanced.png "Figure-3b: Advanced Index Field Options")
 
   *  `Term Vector` -  Term Vectors are used in RavenDB's query feature [More Like This](../../../indexes/querying/morelikethis), 
                       which suggests documents that are similar to a selected document, based on shared indexed terms. i.e. suggest similar catalogs.  
@@ -141,7 +141,7 @@
 
 #### Default Index Field Options:  
 
-![Figure 3b. Default Index Field Options](images/create-map-index-default.png "Figure-3b: Default Index Field Options")
+![Figure 3c. Default Index Field Options](images/create-map-index-default.png "Figure-3c: Default Index Field Options")
 
 {PANEL/}
 
@@ -160,7 +160,7 @@
 Use the [Additional Assemblies](../../../indexes/additional-assemblies) 
 feature to enhance Index capabilities with classes and methods taken from libraries.  
 In the above example, `Path.GetFileName` can be used by the index map method because the 
-runtime library `System.Io` is added as an additional assembly.  
+runtime library `System.IO` is added as an additional assembly.  
 
 1. **Add Assembly**  
    Click to add an assembly source for your index usage.  
@@ -169,7 +169,7 @@ runtime library `System.Io` is added as an additional assembly.
    See syntax samples.  
 
 3. **Assembly Source**  
-   Select an assembly source of the type you want to use.  
+   Select the assembly source type.  
    Added assemblies can be -  
     * _Server Runtime_ - a runtime library.  
     * _Path_ - The path to a library file on your local disk.  
@@ -180,7 +180,9 @@ runtime library `System.Io` is added as an additional assembly.
 
 ---
 
-![Figure 6. Runtime Library](images/create-map-index-6.png "Figure-6: Runtime Library")
+**Server Runtime Library**  
+
+![Figure 6. Server Runtime Library](images/create-map-index-6.png "Figure-6: Server Runtime Library")
 
 1. **Assembly Source**  
    In this example, the assembly is a runtime library.  
@@ -192,10 +194,10 @@ runtime library `System.Io` is added as an additional assembly.
    Optionally, choose a namespace within the assembly.  
    
 4. **Add Namespace**  
-   To use a namespace in your method, add it to the namespaces list using this button.  
+   Click to add the namespace to the list of `Usings`.  
 
 5. **Namespaces list**  
-   The list of added namespaces.  
+   The list of namespaces used.  
 
 6. **Remove Namespace**  
    Click to remove this namespace from the list.  
@@ -204,6 +206,8 @@ runtime library `System.Io` is added as an additional assembly.
    Click to remove this assembly.  
 
 ---
+
+**Nuget Package**  
 
 ![Figure 7. Nugat Package](images/create-map-index-7_1.png "Figure-7: Nugat Package")
 
@@ -225,14 +229,16 @@ runtime library `System.Io` is added as an additional assembly.
    Optionally, choose a namespace within the Nuget package.  
    
 6. **Add Namespace**  
-   To use a namespace in your method, add it to the namespaces list using this button.  
+   Click to add the namespace to the list of `Usings`.  
 
 7. **Remove Assembly**  
    Click to remove this assembly.  
 
 ---
 
-![Figure 8. Local Library](images/create-map-index-8.png "Figure-8: Local Library")
+**Local Library Path**  
+
+![Figure 8. Local Library Path](images/create-map-index-8.png "Figure-8: Local Library Path")
 
 1. **Assembly Source**  
    In this case, _Path_ was chosen so the index can use classes and methods taken from a local library.  
@@ -244,7 +250,7 @@ runtime library `System.Io` is added as an additional assembly.
    Optionally, choose a namespace within the local library.  
    
 4. **Add Namespace**  
-   To use a namespace, add it to the namespaces list using this button.  
+   Click to add the namespace to the list of `Usings`.  
 
 5. **Remove Assembly**  
    Click to remove this assembly.  
@@ -263,9 +269,9 @@ In the above example, file _'PeopleUtil.cs'_ was uploaded and method _'Calculate
 used to calculate the index entry _'SupplierEmail'_.  
 
 1. **Upload Source File**  
-   Upload a file from the file system, that contains classes and methods you want to use.  
+   Click to upload a file from the file system that contains classes and methods you want to use.  
 2. **Uploaded File**  
-   A file that's been uploaded, whose contents can be used by your code.  
+   The file that has been uploaded whose contents can be used within the index methods.  
 3. **Source Code**  
    Read-only view of the uploaded file's source code.  
    
