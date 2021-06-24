@@ -93,12 +93,12 @@ Nodes are assigned with the indexing of each database in a linear order, one nod
  Setting the server-wide configuration option will apply to all databases on all nodes.  
 
 * [Auto Indexes](../indexes/creating-and-deploying#auto-indexes) Deployment Mode  
-  Select a deployment mode for indexes created automatically using the `Indexing.Auto.DeploymentMode` configuration option.  
+  Set a deployment mode for indexes created automatically using the `Indexing.Auto.DeploymentMode` configuration option.  
   `"Indexing.Auto.DeploymentMode": "Rolling"`  
   `"Indexing.Auto.DeploymentMode": "Parallel"`  
 
 * [Static Indexes](../indexes/creating-and-deploying#static-indexes) Deployment Mode  
-  Select a deployment mode for static indexes using the `Indexing.Static.DeploymentMode` configuration option.  
+  Set a deployment mode for static indexes using the `Indexing.Static.DeploymentMode` configuration option.  
   `"Indexing.Static.DeploymentMode": "Rolling"`  
   `"Indexing.Static.DeploymentMode": "Parallel"`  
     
