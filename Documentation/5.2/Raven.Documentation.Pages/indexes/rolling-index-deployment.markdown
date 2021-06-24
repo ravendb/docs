@@ -93,12 +93,12 @@ Nodes are assigned with the indexing of each database in a linear order, one nod
  Setting the server-wide configuration option will apply to all databases on all nodes.  
 
 * [Auto Indexes](../indexes/creating-and-deploying#auto-indexes) Deployment Mode  
-  Choose a deployment mode for indexes created automatically using the `Indexing.Auto.DeploymentMode` configuration option.  
+  Select a deployment mode for indexes created automatically using the `Indexing.Auto.DeploymentMode` configuration option.  
   `"Indexing.Auto.DeploymentMode": "Rolling"`  
   `"Indexing.Auto.DeploymentMode": "Parallel"`  
 
 * [Static Indexes](../indexes/creating-and-deploying#static-indexes) Deployment Mode  
-  Choose a deployment mode for static indexes using the `Indexing.Static.DeploymentMode` configuration option.  
+  Select a deployment mode for static indexes using the `Indexing.Static.DeploymentMode` configuration option.  
   `"Indexing.Static.DeploymentMode": "Rolling"`  
   `"Indexing.Static.DeploymentMode": "Parallel"`  
     
@@ -126,7 +126,7 @@ Setting these properties overrides the
     ![Edit Values](images/rolling-index-deployment-02.png "Edit Values")
 
       1. **Override** - Toggle to override the server-wide configuation.  
-      2. **Edit Value** - Choose Parallel or Rolling indexing deployment mode.  
+      2. **Edit Value** - Select Parallel or Rolling indexing deployment mode.  
       3. **Set Default** - Click 'Set Default' to select the server-wide default value.  
       4. **Save** - Apply changes.  
          {WARNING: }
