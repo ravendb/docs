@@ -91,12 +91,12 @@ Nodes are assigned with the indexing of each database in a linear order, one nod
 
  Deployment mode can be chosen system-wide using [configuration options](../server/configuration/configuration-options#json).  
 
-* [auto Indexes](../indexes/creating-and-deploying#auto-indexes) Deployment Mode  
+* [Auto Indexes](../indexes/creating-and-deploying#auto-indexes) Deployment Mode  
   Choose a deployment mode for indexes created automatically using the `Indexing.Auto.DeploymentMode` configuration option.  
   `"Indexing.Auto.DeploymentMode": "Rolling"`  
   `"Indexing.Auto.DeploymentMode": "Parallel"`  
 
-* [static Indexes](../indexes/creating-and-deploying#static-indexes) Deployment Mode  
+* [Static Indexes](../indexes/creating-and-deploying#static-indexes) Deployment Mode  
   Choose a deployment mode for static indexes using the `Indexing.Static.DeploymentMode` configuration option.  
   `"Indexing.Static.DeploymentMode": "Rolling"`  
   `"Indexing.Static.DeploymentMode": "Parallel"`  
@@ -105,8 +105,8 @@ Nodes are assigned with the indexing of each database in a linear order, one nod
 ### Database Deployment Mode
 
 Enable or disable rolling for a specific database using database configuration keys.  
-Setting these properties overrides [system-wide](../indexes/rolling-index-deployment#system-wide-deployment-mode) 
-default and configuration-option settings.  
+Setting these properties overrides the 
+[System-Wide](../indexes/rolling-index-deployment#system-wide-deployment-mode) default.  
  
 * From Studio:  
 
@@ -116,19 +116,21 @@ default and configuration-option settings.
       2. **Filter Keys** - Enter a search string to locate the configuration keys.  
       3. **Edit** - Click to edit values (see next image for details).  
       4. **Configuration Keys** -  
-         Edit `Indexing.Auto.DeploymentMode` to override database Auto Indexing deployment mode.  
-         Edit `Indexing.Static.DeploymentMode` to override database Static Indexes deployment mode.  
-      5. **Effective Value** - Current configuration.  
-      6. **Origin** - Origin of the current configuration.  
+         `Indexing.Auto.DeploymentMode` - Deployment mode configuration key for Auto Indexes.  
+         `Indexing.Static.DeploymentMode` - Deployment mode configuration key for Static Indexes.  
+      5. **Effective Value** - The current configuration.  
+      6. **Origin** - The origin of the current configuration.  
          Can be - Default | Database  
-         **Note**: An edited configuration key value will become effective only after the database is reloaded.  
 
     ![Edit Values](images/rolling-index-deployment-02.png "Edit Values")
 
-      1. **Override** - Toggle to Edit Value.  
+      1. **Override** - Toggle to override the server-wide configuation.  
       2. **Edit Value** - Choose Parallel or Rolling indexing deployment mode.  
-      3. **Set Default** - Optionally set the new value as the database default deployment mode.  
+      3. **Set Default** - Click 'Set Default' to select the server-wide default value.  
       4. **Save** - Apply changes.  
+         {WARNING: }
+         An edited configuration key value will become effective only after the database is reloaded.  
+         {WARNING/}
     
 ---
 
@@ -136,14 +138,13 @@ default and configuration-option settings.
 
 Enable or disable rolling for a specific index using the index-definition `DeploymentMode` property.  
 Setting this property overrides [system-wide](../indexes/rolling-index-deployment#system-wide-deployment-mode) 
-and [database](../indexes/rolling-index-deployment#database-deployment-mode) 
-default and configuration-option settings.  
+and [database](../indexes/rolling-index-deployment#database-deployment-mode) settings configuration.  
   
   * `DeploymentMode = IndexDeploymentMode.Rolling`  
   * `DeploymentMode = IndexDeploymentMode.Parallel`  
   
     {INFO: }
-    The deployment mode can be chosen for a specific index when, for example, parallel indexing 
+    The deployment mode can be set for a specific index when, for example, parallel indexing 
     is preferred in general but rolling is a better option for a particularly "weighty" index.  
     {INFO/}
 
