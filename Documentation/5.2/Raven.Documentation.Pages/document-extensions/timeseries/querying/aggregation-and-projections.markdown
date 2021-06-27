@@ -243,7 +243,7 @@ or `select` in a raw RQL query.
 ### `GroupBy()` Function Evaluation
 
 Starting in version 5.2, the LINQ method `GroupBy()` can take a switch statement 
-or a method as an argument. The statement or method's return value must be an `Action<ITimePeriodBuilder>`.  
+or a method as an argument.  
 
 * In this example, we pass `GroupBy()` a switch statement.  
 {CODE GroupBy_Switch@DocumentExtensions\TimeSeries\Querying\AggregationAndProjections.cs /}

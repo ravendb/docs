@@ -1,27 +1,10 @@
 ﻿using System;
 using System.Linq;
 using Raven.Client.Documents;
-using Xunit;
-using Xunit.Abstractions;
-using System.Collections.Generic;
-using Raven.Client.Documents.Operations.TimeSeries;
-using Raven.Client.Documents.Commands.Batches;
-using PatchRequest = Raven.Client.Documents.Operations.PatchRequest;
-using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Queries;
-using Raven.Client;
-using System.Threading.Tasks;
-using Raven.Client.Documents.Session.TimeSeries;
-using Raven.Client.Documents.Session;
 using Raven.Client.Documents.Linq;
-using static Raven.Client.Documents.BulkInsert.BulkInsertOperation;
-using Raven.Client.Documents.BulkInsert;
 using Raven.Client.Documents.Queries.TimeSeries;
-using Raven.Client.Documents.Indexes.TimeSeries;
-using Raven.Client.Documents.Operations.Indexes;
-using Raven.Client.ServerWide.Operations;
-using Raven.Client.ServerWide;
-using Raven.Client.Documents.Queries.TimeSeries;
+using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Querying
 {
@@ -33,7 +16,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Querying
             {
                 using (var session = store.OpenSession())
                 {
-                    var input = GroupingInterval.Month;
+                    var input = "month";
 
                     #region GroupBy_Switch
                     var groupingAction = input switch //input is a string that represents some client input
@@ -51,16 +34,18 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Querying
                                 Min = g.Min(),
                                 Max = g.Max()
                             })
-                            .ToList();
+                            .ToList());
                     #endregion
                 }
 
                 using (var session = store.OpenSession())
                 {
+                    var input = "month";
+                    /*
                     #region GroupBy_Function
                     var stocks = session.Query<Company>()
                         .Select(c => RavenQuery.TimeSeries(c, "StockPrices")
-                            .GroupBy(g => Function(g, input)) // input is a string that represents some client input
+                            .GroupBy(g => GroupingFunction(g, input)) // input is a string that represents some client input
                             .Select(g => new
                             {
                                 Min = g.Min(),
@@ -68,36 +53,38 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Querying
                             })
                             .ToList());
 
-                    private static ITimeSeriesAggregationOperations groupingFunction(ITimePeriodBuilder builder, string input)
+                    private static ITimeSeriesAggregationOperations GroupingFunction(ITimePeriodBuilder builder, string input)
                     {
                         if (input == "year")
                         {
-                            return builder.Years(1)
+                            return builder.Years(1);
                         }
                         else if (input == "month")
                         {
-                            return builder.Months(1)
+                            return builder.Months(1);
                         }
                         else
                         {
-                            return builder.Days(1)
+                            return builder.Days(1);
                         }
                     }
                     #endregion
+                    */
                 }
             }
         }
-
     }
 
     public interface Foo
     {
         #region GroupBy
-        ITimeSeriesAggregationQueryable<T> GroupBy(string s);
+        ITimeSeriesAggregationQueryable GroupBy(string s);
 
-        ITimeSeriesAggregationQueryable<T> GroupBy(Action<ITimePeriodBuilder> timePeriod);
+        ITimeSeriesAggregationQueryable GroupBy(Action<ITimePeriodBuilder> timePeriod);
         #endregion
     }
+
+
 
     /*
     #region Builder
