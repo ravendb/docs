@@ -3,8 +3,8 @@
 
 {NOTE: }
 
-* **Map-Reduce indexes** allow you to perform complex ***data aggregation*** that can be queried on with very little cost,  
-  regardless of the data size.  
+* **Map-Reduce indexes** allow you to perform complex ***data aggregation*** that can be queried 
+  on with very little cost, regardless of the data size.  
 
 * The aggregation is done during the indexing phase, _not_ at query time.  
 
@@ -151,7 +151,7 @@ the document IDs of output documents.
 ![Figure 5. Save Map-Reduce Results into a Collection](images/create-map-reduce-index-5.png "Save Map-Reduce Results into a Collection")
 
 1. Specify the name of the collection you want the output documents to be saved in.  
-   Note: the collection specified must be _empty_.  
+   Note: the collection specified must be empty (contain no documents).  
 
 2. Specify a pattern for the reference document IDs. By including reduce function fields, this 
 pattern determines which output documents will be included in each reference document.  

@@ -12,6 +12,7 @@
   * [Indexes List View - Actions](../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
   * [Indexes List View - Index Errors](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors)  
   * [Indexes List View - Side by Side Indexing](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing)
+  * [Indexes List View - Rolling Deployment](../../../studio/database/indexes/indexes-list-view#indexes-list-view---rolling-deployment)
 {NOTE/}
 
 ---
@@ -22,33 +23,33 @@
 
 **1**. **Index name and type**  
 
-   * `Name` - e.g. In the above example the index name is: 'Cities/Details'.  
+   * `Name` - e.g. In the above example the index name is: 'NamesIndex'.  
    * `Type` - This is the [Index Type](../../../studio/database/indexes/indexes-overview#indexes-types)  
-     Can be: Map | Map-Reduce | Auto Map | Auto Map-Reduce  
+     Can be: Map | Map-Reduce | Auto Map | Auto Map-Reduce | JavaScript Map | JavaScript Map-Reduce  
 
 **2**. **Collections**  
 
    * These are the collections that are defined in the Map part of the index-definition.  
-   * Data from these collections documents is scanned and indexed.  
+   * Data from these collections is scanned and indexed.  
    * A simple `Map-index` operates on a single collection while a `Multi-Map index` is defined with more than one collection.  
-   * In the above example - Index _'Cities/Details'_ is a Multi-Map index operating on _'Companies, Employees, Orders, Suppliers'_ collections.  
+   * In the above example - Index _'NamesIndex'_ is a Multi-Map index operating on _'Companies, Employees'_ collections.  
 
 **3**. **Index State**  
 
-   * `Normal` - 
+   * `Normal` -  
       * Index is active, any new data is indexed.  
 
-   * `Paused` - 
+   * `Paused` -  
       * New data is not being indexed.  
         Queries will be stale as new data is not indexed.  
       * Indexing process will resume upon setting _'Resume'_ or when the server is _restarted_.  
 
-   * `Disabled` - 
+   * `Disabled` -  
       * New data is not being indexed.  
         Queries will be stale as new data is not indexed.  
       * Indexing process will _not_ automatically resume upon a server restart but only when setting _'Enable'_.  
 
-   * `Idle` - 
+   * `Idle` -  
       * An auto-index becomes idle when the time difference between its last-query-time and
         the most recent time the database was queried on (with any other index) is greater than a configurable threshold (30 min by default).  
         This is done in order to avoid marking indexes as idle for databases that were offline for a long period of time -  
@@ -56,17 +57,21 @@
       * The auto-index will resume its work and go back to the _'Normal'_ state upon a new query or when resetting the index.  
         If not resumed, the idle auto-index will be deleted by the server after a configurable time period (72 hrs default).  
 
-   * `Error` - 
+   * `Error` -  
       * A malformed indexing-function or missing/corrupted document data will result in an indexing error.  
         See more [below](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
 
-   * `Faulty` - 
+   * `Faulty` -  
       * Index will be _'Faulty'_ if its data files are corrupted or if not accessible.  
         See more [below](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
 
-**4**. **Index Status**
+**4**. **Index Source**  
 
-   * `Entries` - The number of documents that are the result for a basic query on this index. (e.g. _from index 'Cities/Details'_)  
+   * Can be: Documents | Counters | TimeSeries  
+
+**5**. **Index Status**
+
+   * `Entries` - The number of documents that are the result for a basic query on this index. (e.g. _from index 'NamesIndex'_)  
    * `Status` - Indicate if the index is up-to-date or if it is [stale](../../../indexes/stale-indexes).  
 {PANEL/}
 
@@ -145,6 +150,29 @@
 * The 'old index' definition can still be referenced as RavenDB keeps 
   [history of index revisions](../../../studio/database/indexes/index-history), 
   allowing you to revert an index to any of its past revisions.  
+
+{PANEL/}
+
+
+{PANEL: Indexes List View - Rolling Deployment}
+
+![Figure 5. Indexes rolling deployment](images/indexes-list-view-5.png "Figure-5: Indexes List View - Rolling Deployment")
+
+1. **Rolling Deployment**  
+  When an index that is [defined](../../../studio/database/indexes/create-map-index#edit-index-view) 
+  with [Rolling Deployment](../../../indexes/rolling-index-deployment) is created or modified, the 
+  indexing process progress is displayed per node.  
+2. **Force Parallel**  
+   Click to force parallel indexing deployment for the current node.  
+   The other nodes will continue deployment with the rolling mode.  
+3. **Indexing in Progress**  
+   Node `A` is currently running the 'TradeVolumeByMonth' index.  
+   The indexing progress and the estimated time left are displayed.  
+   Read [here](../../../indexes/rolling-index-deployment#the-rolling-procedure) about the rolling procedure.  
+4. **Indexing Done**  
+   Nodes `B` and `C` are waiting for their turn to run the 'TradeVolumeByMonth' index.  
+   Read [here](../../../indexes/rolling-index-deployment#deployment-concurrency-and-order) about the order of deployment.  
+
 
 {PANEL/}
 

@@ -17,7 +17,8 @@
      * [The Rolling Procedure](../indexes/rolling-index-deployment#the-rolling-procedure)  
      * [Deployment Concurrency and Order](../indexes/rolling-index-deployment#deployment-concurrency-and-order)  
   * [Setting Indexing Deployment Mode](../indexes/rolling-index-deployment#setting-indexing-deployment-mode)  
-     * [System-Wide Deployment Mode](../indexes/rolling-index-deployment#system-wide-deployment-mode)  
+     * [Server-Wide Deployment Mode](../indexes/rolling-index-deployment#server-wide-deployment-mode)  
+     * [Database Deployment Mode](../indexes/rolling-index-deployment#database-deployment-mode)  
      * [Deployment Mode in an Index Definition](../indexes/rolling-index-deployment#deployment-mode-in-an-index-definition)  
 
 {NOTE/}
@@ -86,32 +87,65 @@ Nodes are assigned with the indexing of each database in a linear order, one nod
 
 ---
 
-### System-Wide Deployment Mode
+### Server-Wide Deployment Mode
 
- Deployment mode can be chosen system-wide using [configuration options](../server/configuration/configuration-options#json).  
+ Deployment mode can be set server-wide using [configuration options](../server/configuration/configuration-options#json).  
+ Setting the server-wide configuration option will apply to all databases on all nodes.  
 
-* [auto Indexes](../indexes/creating-and-deploying#auto-indexes) Deployment Mode  
-  Choose a deployment mode for indexes created automatically using the `Indexing.Auto.DeploymentMode` configuration option.  
+* [Auto Indexes](../indexes/creating-and-deploying#auto-indexes) Deployment Mode  
+  Set a deployment mode for indexes created automatically using the `Indexing.Auto.DeploymentMode` configuration option.  
   `"Indexing.Auto.DeploymentMode": "Rolling"`  
   `"Indexing.Auto.DeploymentMode": "Parallel"`  
 
-* [static Indexes](../indexes/creating-and-deploying#static-indexes) Deployment Mode  
-  Choose a deployment mode for static indexes using the `Indexing.Static.DeploymentMode` configuration option.  
+* [Static Indexes](../indexes/creating-and-deploying#static-indexes) Deployment Mode  
+  Set a deployment mode for static indexes using the `Indexing.Static.DeploymentMode` configuration option.  
   `"Indexing.Static.DeploymentMode": "Rolling"`  
   `"Indexing.Static.DeploymentMode": "Parallel"`  
+    
+---
+### Database Deployment Mode
+
+Enable or disable rolling for a specific database using database configuration keys.  
+Setting these properties overrides the 
+[Server-Wide](../indexes/rolling-index-deployment#server-wide-deployment-mode) default.  
+ 
+* From Studio:  
+
+    ![Database Configuration Keys](images/rolling-index-deployment-01.png "Database Configuration Keys")
+
+      1. Open **Settings** > **Database Settings** view.  
+      2. **Filter Keys** - Enter a search string to locate the configuration keys.  
+      3. **Edit** - Click to edit values (see next image for details).  
+      4. **Configuration Keys** -  
+         `Indexing.Auto.DeploymentMode` - Deployment mode configuration key for Auto Indexes.  
+         `Indexing.Static.DeploymentMode` - Deployment mode configuration key for Static Indexes.  
+      5. **Effective Value** - The current configuration.  
+      6. **Origin** - The origin of the current configuration.  
+         Can be - Default | Database  
+
+    ![Edit Values](images/rolling-index-deployment-02.png "Edit Values")
+
+      1. **Override** - Toggle to override the server-wide configuation.  
+      2. **Edit Value** - Select Parallel or Rolling indexing deployment mode.  
+      3. **Set Default** - Click 'Set Default' to select the server-wide default value.  
+      4. **Save** - Apply changes.  
+         {WARNING: }
+         An edited configuration key value will become effective only after the database is reloaded.  
+         {WARNING/}
     
 ---
 
 ### Deployment Mode in an Index Definition
 
 Enable or disable rolling for a specific index using the index-definition `DeploymentMode` property.  
-Setting this property overrides default and configuration-option settings.  
+Setting this property overrides [server-wide](../indexes/rolling-index-deployment#server-wide-deployment-mode) 
+and [database](../indexes/rolling-index-deployment#database-deployment-mode) settings configuration.  
   
   * `DeploymentMode = IndexDeploymentMode.Rolling`  
   * `DeploymentMode = IndexDeploymentMode.Parallel`  
   
     {INFO: }
-    The deployment mode can be chosen for a specific index when, for example, parallel indexing 
+    The deployment mode can be set for a specific index when, for example, parallel indexing 
     is preferred in general but rolling is a better option for a particularly "weighty" index.  
     {INFO/}
 

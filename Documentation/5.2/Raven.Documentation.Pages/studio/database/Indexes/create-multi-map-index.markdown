@@ -11,14 +11,14 @@
 * Multi-Map indexes require that all the Map functions defined have the _same_ output structure.  
 
 * In this page:  
-  * [Creating Multi-Map index](../../../studio/database/indexes/create-map-index#edit-index-view)  
+  * [Define a Map Function](../../../studio/database/indexes/create-multi-map-index#define-a-map-function)  
+  * [Add another Map Function](../../../studio/database/indexes/create-multi-map-index#add-another-map-function)  
 {NOTE/}
 
 ---
 
-{PANEL: Creating Multi-Map index}
+{PANEL: Define a Map Function}
 
-**Define a Map Function:**  
 ![Figure 1. Initial Map Function](images/create-multi-map-index-1.png)  
 
 1. **Index Name** - An index name can be composed of letters, digits, `.`, `/`, `-`, and `_`. The name must be unique in the scope of the database.  
@@ -35,9 +35,11 @@
 
 The `Collection` field indexed in the above example is not mandatory but can be useful upon querying.
 {NOTE/}
-<br/>
 
-**Add another Map Function:**  
+{PANEL/}
+
+{PANEL: Add Another Map Function}
+
 ![Figure 2. Add Another Map Function](images/create-multi-map-index-2.png)  
 
 {NOTE: }
@@ -49,9 +51,10 @@ The `Collection` field indexed in the above example is not mandatory but can be 
 
 * So when querying on this Multi-Map index, results will come from **both** Employees collection and Companies collection.  
 
-* [Index field options](../../../studio/database/indexes/create-map-index#index-fields-options), 
-  [Configuration](../../../studio/database/indexes/create-map-index#configuration) & 
-  [Additional Sources](../../../studio/database/indexes/create-map-index#additional-sources) 
+* [Index field options](../../../studio/database/indexes/create-map-index#index-field-options), 
+  [Configuration](../../../studio/database/indexes/create-map-index#configuration), 
+  [Assitional Assemblies](../../../studio/database/indexes/create-map-index#additional-assemblies) 
+  & [Additional Sources](../../../studio/database/indexes/create-map-index#additional-sources) 
   can be defined for the Multi-Map index in the same way as done for a [Simple Map Index](../../../studio/database/indexes/create-map-index#create-multi-map-index).  
 {NOTE/}
 {PANEL/}
