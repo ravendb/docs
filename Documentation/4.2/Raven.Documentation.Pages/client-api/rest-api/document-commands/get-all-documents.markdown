@@ -98,7 +98,7 @@ This is the general format of a cURL request that uses all query string paramete
 curl -X GET "<server URL>/databases/<database name>/docs?
             &start=<integer>
             &pageSize=<integer>
-            &metadata=<boolean>"
+            &metadataOnly=<boolean>"
 --header "If-None-Match: <hash>"
 {CODE-BLOCK/}
 Linebreaks are added for clarity.  
@@ -181,7 +181,7 @@ Skip first 1,057 documents, and retrieve the rest (our version of Northwind cont
 cURL request:  
 
 {CODE-BLOCK: bash}
-curl -X GET "http://live-test.ravendb.net/databases/Example/docs?start=1056"
+curl -X GET "http://live-test.ravendb.net/databases/Example/docs?start=1057"
 {CODE-BLOCK/}
 
 Response:  

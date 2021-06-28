@@ -99,7 +99,7 @@ This is the general format of a cURL request that uses all query string paramete
 
 {CODE-BLOCK: batch}
 curl -X POST "<server URL>/databases/<database name>/queries?
-            metadata=<boolean>
+            metadataOnly=<boolean>
             &includeServerSideQuery=<boolean>
             &debug=<debug>"
 --header "If-None-Match: <long>"
