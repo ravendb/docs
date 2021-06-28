@@ -136,24 +136,29 @@ To load multiple entities that contain a common prefix, use the `LoadStartingWit
 
 Entities can be streamed from the server using one of the following `Stream` methods from the `Advanced` session operations.
 
+Streaming query results does not support the [`include` feature](../../../client-api/how-to/handle-document-relationships#includes). 
+Learn more in [How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results).  
+
+{INFO Entities loaded using `Stream` will be transient (not attached to session). /}
+
 {CODE-TABS}
 {CODE-TAB:csharp:Sync loading_entities_5_0@ClientApi\Session\LoadingEntities.cs /}
 {CODE-TAB:csharp:Async loading_entities_5_0_async@ClientApi\Session\LoadingEntities.cs /}
 {CODE-TABS/}
 
-| Parameters | | |
+| Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **startsWith** | string | prefix for which documents should be streamed |
-| **matches** | string | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
-| **start** | int | number of documents that should be skipped  |
-| **pageSize** | int | maximum number of documents that will be retrieved |
-| **skipAfter** | string | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
-| streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+| **startsWith** | `string` | prefix for which documents should be streamed |
+| **matches** | `string` | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
+| **start** | `int` | number of documents that should be skipped  |
+| **pageSize** | `int` | maximum number of documents that will be retrieved |
+| **skipAfter** | `string` | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
+| **StreamQueryStats** | `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
-| Return Value | |
+| Return Type | Description |
 | ------------- | ----- |
-| IEnumerator<[StreamResult](../../glossary/stream-result)> | Enumerator with entities. |
-| streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+| `IEnumerator<`[StreamResult](../../glossary/stream-result)`>` | Enumerator with entities. |
+| `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 
 ### Example I
@@ -173,10 +178,6 @@ Fetch documents for a ID prefix directly into a stream:
 {CODE-TAB:csharp:Sync loading_entities_5_2@ClientApi\Session\LoadingEntities.cs /}
 {CODE-TAB:csharp:Async loading_entities_5_2_async@ClientApi\Session\LoadingEntities.cs /}
 {CODE-TABS/}
-
-### Remarks
-
-{INFO Entities loaded using `Stream` will be transient (not attached to session). /}
 
 {PANEL/}
 

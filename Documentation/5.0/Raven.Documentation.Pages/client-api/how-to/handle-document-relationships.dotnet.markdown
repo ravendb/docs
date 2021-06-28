@@ -85,6 +85,9 @@ include CustomerId,counters(o,'OrderUpdateCount')
 This works because RavenDB has two channels through which it can return information in response to a load request. The first is the Results channel, through which the root object retrieved by the `Load()` method call is returned. The second is the Includes channel, through which any included documents are sent back to the client. Client side, those included documents are not returned from the `Load()` method call, but they are added to the session unit of work, and subsequent requests to load them are served directly from the session cache, without requiring any additional queries to the server.
 
 {NOTE Embedded and builder variants of Include clause are essentially syntax sugar and are equivalent at the server side. /}
+
+{INFO Streaming query results does not support the includes feature. Learn more in 
+[How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results). /}
  
 ### One to Many Includes
 

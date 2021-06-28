@@ -139,6 +139,54 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     }
                     #endregion
                 }
+
+                using (var session = store.OpenSession())
+                {
+                    #region includes
+                    IRawDocumentQuery<MyProjection> query = session
+                        .Advanced
+                        .RawQuery<MyProjection>(@"from Orders as o 
+                                                where o.ShipTo.City = 'London'
+                                                load o.Company as c, o.Employee as e
+                                                select {
+                                                    order: o,
+                                                    company: c,
+                                                    employee: e
+                                                }");
+
+
+                    IEnumerator<StreamResult<MyProjection>> results = session.Advanced.Stream(query);
+
+                    while (results.MoveNext())
+                    {
+                        StreamResult<MyProjection> projection = results.Current;
+                    }
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region includes_async
+                    IAsyncRawDocumentQuery<MyProjection> query = asyncSession
+                        .Advanced
+                        .AsyncRawQuery<MyProjection>(@"from Orders as o 
+                                                       where o.ShipTo.City = 'London'
+                                                       load o.Company as c, o.Employee as e
+                                                       select {
+                                                           order: o,
+                                                           company: c,
+                                                           employee: e
+                                                       }");
+
+
+                    IAsyncEnumerator<StreamResult<MyProjection>> results = await asyncSession.Advanced.StreamAsync(query);
+
+                    while (await results.MoveNextAsync())
+                    {
+                        StreamResult<MyProjection> projection = results.Current;
+                    }
+                    #endregion
+                }
             }
         }
     }
@@ -154,4 +202,13 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                                };
         }
     }
+
+    #region class
+    public class MyProjection
+    {
+        public Order order { get; set; }
+        public Employee employee { get; set; }
+        public Company company { get; set; }
+    }
+    #endregion
 }
