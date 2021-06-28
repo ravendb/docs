@@ -70,7 +70,7 @@ for(var i = 1; i < docs.length; i++)
 	{
 		var item = currentOrder.Lines[j];
 		var match = final.Lines
-			             .find(i => i.ProductId == item.ProductId);
+			             .find(i => i.Product == item.Product);
 		if(!match)
 		{
 			// not in Order, add
