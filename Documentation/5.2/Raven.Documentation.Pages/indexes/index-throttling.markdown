@@ -67,9 +67,9 @@ In special cases, throttled indexes' batches are processed without delay.
 ### Server-Wide Index Throttling
 
  Index Throttling can be set server-wide using a designated [configuration option](../server/configuration/configuration-options#json).  
- Setting the server-wide configuration option will apply to all databases on all nodes.  
+ Setting the server-wide configuration option will apply to all databases on a given node.  
 
-* Set the index throttling time interval in Milliseconds using the `Indexing.Throttling.TimeIntervalInMs` configuration option.  
+* Set the index throttling time interval in Milliseconds using the `Indexing.Throttling.TimeIntervalInMs` configuration option, e.g.:  
   `"Indexing.Throttling.TimeIntervalInMs": "5000"`  
 
 ---
@@ -80,7 +80,7 @@ Enable or disable index throttling for a specific database using the designated 
 Setting this property overrides the 
 [Server-Wide](../indexes/index-throttling#server-wide-index-throttling) default.  
  
-* From Studio:  
+* **From Studio**:  
 
     ![Database Configuration Keys](images/index-throttling-02.png "Database Configuration Keys")
 
@@ -107,11 +107,13 @@ Setting this property overrides the
 
 ### Index Throttling in an Index Definition
 
-Set throttling for a specific index using the `Indexing.ThrottlingTimeInterval` property.  
-Setting this property overrides [server-wide](../indexes/index-throttling#server-wide-index-throttling) 
+Setting throttling in an index definition overrides [server-wide](../indexes/index-throttling#server-wide-index-throttling) 
 and [database](../indexes/index-throttling#index-throttling-per-database) settings configuration.  
-  
-{CODE-BLOCK:csharp}
+
+
+* **From Code**:  
+  Set throttling for a specific index using the `Indexing.ThrottlingTimeInterval` property.  
+  {CODE-BLOCK:csharp}
 var index = new Orders_ByOrder
 {
     Configuration =
@@ -120,21 +122,31 @@ var index = new Orders_ByOrder
     }
 };
 await index.ExecuteAsync(store);
-{CODE-BLOCK/}
-
-The batch size can be left for RavenDB to decide, or you can set it yourself using 
-the [MapBatchSize](../server/configuration/indexing-configuration#indexing.mapbatchsize) property.  
-{CODE-BLOCK:csharp}
+  {CODE-BLOCK/}
+  The batch size can be left for RavenDB to decide, or you can set it yourself using 
+  the [MapBatchSize](../server/configuration/indexing-configuration#indexing.mapbatchsize) property.  
+  {CODE-BLOCK:csharp}
 [RavenConfiguration.GetKey(x => x.Indexing.MapBatchSize)] = "500"
-{CODE-BLOCK/}
+  {CODE-BLOCK/}
+
+* **From Studio**:  
+  Use the [Configuration tab](../studio/database/indexes/create-map-index#configuration) of an index definition 
+  to set the index's `Indexing.Throttling.TimeIntervalInMs` configuration key value in Milliseconds.  
+  ![Configuration Key](images/index-throttling-04.png "Configuration Key")
+      1. ****Configuration Tab**** - Open to set index configuration keys.  
+      2. **Add Customized Indexing Configuration** - Click to add a configuration key.  
+      3. **Indexing Configuration Key** -  
+         Type `Indexing.Throttling.TimeIntervalInMs` or select this key from the droplist to set index throttling.  
+      4. **Value** - Type the throttling time interval in Milliseconds.  
+
 
 {PANEL/}
 
 ## Related Articles
 
 ### Indexes
-- [auto Indexes](../indexes/creating-and-deploying#auto-indexes)  
-- [static Indexes](../indexes/creating-and-deploying#static-indexes)  
+- [Auto Indexes](../indexes/creating-and-deploying#auto-indexes)  
+- [Static Indexes](../indexes/creating-and-deploying#static-indexes)  
 
 ### Server
-- [configuration options](../server/configuration/configuration-options#json)  
+- [Configuration Options](../server/configuration/configuration-options#json)  
