@@ -56,20 +56,21 @@
 
 ![Figure 2. Actions](images/documents-and-collections-2.png "Actions")
 
-* 1  
+1.  
   * **New Document**: Create a new document (in a new collection -or- in the current collection)  
   * **Delete**: Delete selected documents  
   * **Copy**: Copy documents or just document IDs of selected documents  
 
-* 2  
+2.  
   *  **Query**: Navigates to query current collection view  
-  *  **Export CSV**: Export the collection data into a CSV file (visible columns only -or- all documents columns)  
+  *  **Export as CSV**: Export the collection data into a CSV file (visible columns only -or- all documents columns)  
   *  **Display**: Customize which columns to view. A custom column can be added  
 
-* 3  
+3.  
   * **Patch**: Patch documents in a collection or in an index.  
   * **Query**: Query documents in a collection or in an index.  
-  * **Conflicts**: View and resolve conflicting documents. See [Conflicts](../../../studio/database/documents/conflicts-view)  
+  * **Conflicts**: View and resolve conflicting documents. See [Conflicts](../../../studio/database/documents/conflicts-view).  
+  * **Compare Exchange**: View compare exchange values for this database. See [Compare Exchange](../../../client-api/operations/compare-exchange/overview).  
 {PANEL/}
 
 {PANEL}  
