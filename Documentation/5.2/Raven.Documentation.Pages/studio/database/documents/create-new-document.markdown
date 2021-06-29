@@ -28,11 +28,11 @@
 {PANEL: Create New Document}
 
 * From the _Documents View_ click `New Document`.  
-<br/>
+
 ![Figure 1. Create New Document](images/create-new-document-1.png "Create New Document")
 
 * Edit the new document  
-<br/>
+
 ![Figure 2. Edit the New Document](images/create-new-document-2.png "Edit the New Document")
 
 * 1 - **Enter document ID** - see the [examples](../../../studio/database/documents/create-new-document#document-id-types---examples) below  
@@ -104,4 +104,4 @@
 - [Document Identifier Generation](../../../server/kb/document-identifier-generation)
 
 ### Studio
-- [Artificail Documents](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))
+- [Artificial Documents](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))
