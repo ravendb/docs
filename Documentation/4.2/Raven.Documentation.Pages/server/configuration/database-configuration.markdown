@@ -56,7 +56,7 @@ If an operation exceeds the specified time, an *OperationCanceledException* will
 The time in seconds to wait for a database to start loading when under load.
 
 - **Type**: `int`
-- **Default**: `10`
+- **Default**: `60`
 - **Scope**: Server-wide or per database
 
 Set how much time has to wait for the database to become available when too much different resources get loaded at the same time
@@ -92,5 +92,21 @@ After this time, and idle database will be unloaded from memory. Use lower time 
 - **Type**: `int`
 - **Default**: `60`
 - **Scope**: Server-wide or per database
+
+{PANEL/}
+
+{PANEL:Databases.PulseReadTransactionLimitInMb}
+
+Number of megabytes occupied by encryption buffers (if database is encrypted) or mapped 32 bites buffers (when running on 32 bits) 
+after which a read transaction will be renewed to reduce memory usage during long running operations like backups or streaming.  
+
+- **Type**: `int`
+- **Default**: The default value is determined by the amount of RAM on your machine:  
+    * 32 bit platforms: `16 MB`  
+    * Less than 4 GB RAM: `32 MB`  
+    * Less than 16 GB RAM: `64 MB`  
+    * Less than 64 GB RAM: `128 MB`  
+    * More than 64 GB RAM: `256 MB`  
+- **Scope**: Server-wide or per database  
 
 {PANEL/}
