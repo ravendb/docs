@@ -49,7 +49,7 @@
 3.  **Documents**:  
   *  The list of documents within the selected collection  
   *  Each **column** corresponds to a _property_ in the document JSON  
-  *  Documents are ordered by the time they were last modified  
+  *  Documents are ordered by the time they were last modified, from newest to oldest  
 {PANEL/}
 
 {PANEL}  
