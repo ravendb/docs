@@ -90,7 +90,7 @@ Nodes are assigned with the indexing of each database in a linear order, one nod
 ### Server-Wide Deployment Mode
 
  Deployment mode can be set server-wide using [configuration options](../server/configuration/configuration-options#json).  
- Setting the server-wide configuration option will apply to all databases on all nodes.  
+ Setting the server-wide configuration option will apply to all databases on a given node.  
 
 * [Auto Indexes](../indexes/creating-and-deploying#auto-indexes) Deployment Mode  
   Set a deployment mode for indexes created automatically using the `Indexing.Auto.DeploymentMode` configuration option.  
@@ -169,8 +169,8 @@ and [database](../indexes/rolling-index-deployment#database-deployment-mode) set
 ## Related Articles
 
 ### Indexes
-- [auto Indexes](../indexes/creating-and-deploying#auto-indexes)  
-- [static Indexes](../indexes/creating-and-deploying#static-indexes)  
+- [Auto Indexes](../indexes/creating-and-deploying#auto-indexes)  
+- [Static Indexes](../indexes/creating-and-deploying#static-indexes)  
 
 ### Server
-- [configuration options](../server/configuration/configuration-options#json)  
+- [Configuration Options](../server/configuration/configuration-options#json)  
