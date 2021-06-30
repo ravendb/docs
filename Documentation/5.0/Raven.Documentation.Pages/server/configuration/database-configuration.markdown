@@ -51,13 +51,26 @@ If an operation exceeds the specified time, an *OperationCanceledException* will
 
 {PANEL/}
 
+{PANEL:Databases.Compression.CompressRevisionsDefault}
+
+Whether revision compression should be on by default or not on newly created databases.  
+
+- **Type**: `bool`  
+- **Default**: `true`  
+- **Scope**: Server-wide only  
+
+Determines whether (revisions)[../../server/extensions/revisions] should be compressed.  
+Applies to all databases created on this server.  
+
+{PANEL/}
+
 {PANEL:Databases.ConcurrentLoadTimeoutInSec}
 
 The time in seconds to wait for a database to start loading when under load.
 
 - **Type**: `int`
 - **Default**: `60`
-- **Scope**: Server-wide or per database
+- **Scope**: Server-wide only
 
 Set how much time has to wait for the database to become available when too much different resources get loaded at the same time
 
@@ -69,7 +82,7 @@ Specifies the maximum amount of databases that can be loaded simultaneously.
 
 - **Type**: `int`
 - **Default**: `8`
-- **Scope**: Server-wide or per database
+- **Scope**: Server-wide only
 
 {PANEL/}
 
@@ -79,7 +92,7 @@ Set time in seconds for max idle time for database.
 
 - **Type**: `int`
 - **Default**: `900`
-- **Scope**: Server-wide or per database
+- **Scope**: Server-wide only
 
 After this time, and idle database will be unloaded from memory. Use lower time period if memory resource limited
 
@@ -91,7 +104,7 @@ After this time, and idle database will be unloaded from memory. Use lower time 
 
 - **Type**: `int`
 - **Default**: `60`
-- **Scope**: Server-wide or per database
+- **Scope**: Server-wide only
 
 {PANEL/}
 
