@@ -12,10 +12,10 @@ To restore a database from its backup, use **RestoreBackupOperation**.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **databaseName** | string | Database name to create during the restore operation |
-| **lastFileNameToRestore** | string | Used for partial restore |
-| **dataDirectory** | string | Optional: Database data directory |
-| **encryptionKey** | string | Encryption key used for restore |
+| **databaseName** | String | Database name to create during the restore operation |
+| **lastFileNameToRestore** | String | Used for partial restore |
+| **dataDirectory** | String | Optional: Database data directory |
+| **encryptionKey** | String | Encryption key used for restore |
 | **disableOngoingTasks** | boolean | Disable on doing tasks |
 | **skipIndexes** | boolean | Skip the indexes|
 

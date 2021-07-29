@@ -10,7 +10,7 @@ With this feature, you can search for documents using fields which are created o
 
 {CODE:java dynamic_fields_1@Indexes\DynamicFields.java /}
 
-Properties such as color or size are added only to some products, while other ones can have the weight and volume defined. Since `Attribute` has string fields, they can specify very different properties of products.
+Properties such as color or size are added only to some products, while other ones can have the weight and volume defined. Since `Attribute` has String fields, they can specify very different properties of products.
 In order to query on fields which aren't known at index creation time, we introduced the ability to create them dynamically during indexing.
 
 The following index can be created in order to index each attribute value under its name as a separate field:
@@ -25,7 +25,7 @@ The index can have more fields defined, just like in any other ordinary index.
 
 ## Syntax
 
-{CODE syntax@Indexes\DynamicFields.cs /}
+{CODE:java syntax@Indexes\DynamicFields.java /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |

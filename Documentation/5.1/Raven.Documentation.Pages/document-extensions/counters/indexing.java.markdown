@@ -38,14 +38,14 @@ Examples of indexes using the method:
 
 ### `CounterNamesFor`
 
-While indexes inheriting from `AbstractIndexCreationTask` cannot index counter _values_, the `CounterNamesFor` 
+While indexes inheriting from `AbstractIndexCreationTask` cannot index counter _values_, the `counterNamesFor()` 
 method is available which returns the names of all counters for a specified document:  
 
 {CODE-TABS}
 {CODE-TAB:java:CounterNamesFor syntax@Indexes\IndexingCounters.java /}
 {CODE-TABS/}
 
-Example of index using `CounterNamesFor`:  
+Example of index using `counterNamesFor()`:  
 
 {CODE-TABS}
 {CODE-TAB:java:Index index@Indexes\IndexingCounters.java /}

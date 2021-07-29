@@ -6,7 +6,7 @@ Smuggler gives you the ability to export or import data from or to a database us
 
 By default, the `IDocumentStore.smuggler` works on the default document store database from the `IDocumentStore.database` property. 
 
-In order to switch it to a different database use the `.ForDatabase` method.
+In order to switch it to a different database use the `.forDatabase` method.
 
 {CODE:java for_database@ClientApi\Smuggler\WhatIsSmuggler.java /}
 
@@ -22,7 +22,7 @@ In order to switch it to a different database use the `.ForDatabase` method.
 | ------------- | ------------- | ----- |
 | **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../client-api/smuggler/what-is-smuggler#databasesmugglerexportoptions). |
 | **toDatabase** | `DatabaseSmuggler` | `DatabaseSmuggler` instance used as a destination |
-| **toFile** | `string` | Path to a file where exported data will be written |
+| **toFile** | `String` | Path to a file where exported data will be written |
 
 | Return Value | | 
 | ------------- | ----- |
@@ -32,12 +32,12 @@ In order to switch it to a different database use the `.ForDatabase` method.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **Collections** | `List<string>` | List of specific collections to export. If empty, then all collections will be exported. Default: `empty` |
+| **Collections** | `List<String>` | List of specific collections to export. If empty, then all collections will be exported. Default: `empty` |
 | **OperateOnTypes** | `DatabaseItemType` | Indicates what should be exported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `Identities`, `CompareExchange`, `Subscriptions` |
 | **OperateOnDatabaseRecordTypes** | `DatabaseRecordItemType` | Indicates what should be exported from database record. Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications` |
-| **IncludeExpired** | `bool` | Should expired documents be included in the export. Default: `true` |
-| **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. Default: `false` |
-| **TransformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
+| **IncludeExpired** | `boolean` | Should expired documents be included in the export. Default: `true` |
+| **RemoveAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
+| **TransformScript** | `String` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
 | **MaxStepsForTransformScript** | `int` | Maximum number of steps that transform script can process before failing. Default: 10000 |
 
 ### Example
@@ -56,7 +56,7 @@ In order to switch it to a different database use the `.ForDatabase` method.
 | ------------- | ------------- | ----- |
 | **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../client-api/smuggler/what-is-smuggler#databasesmugglerimportoptions). |
 | **stream** | `Stream` | Stream with data to import |
-| **fromFile** | `string` | Path to a file from which data will be imported |
+| **fromFile** | `String` | Path to a file from which data will be imported |
 
 | Return Value | | 
 | ------------- | ----- |
@@ -66,12 +66,12 @@ In order to switch it to a different database use the `.ForDatabase` method.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **Collections** | `List<string>` | List specific of collections to import. If empty then all collections will be imported. Default: `empty` |
+| **Collections** | `List<String>` | List specific of collections to import. If empty then all collections will be imported. Default: `empty` |
 | **OperateOnTypes** | `DatabaseItemType` | Indicates what should be imported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `Identities`, `CompareExchange`, `Subscriptions` |
 | **OperateOnDatabaseRecordTypes** | `DatabaseRecordItemType` | Indicates what should be exported from database record. Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications` |
-| **IncludeExpired** | `bool` | Should expired documents be imported. Default: `true` |
-| **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. Default: `false` |
-| **TransformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
+| **IncludeExpired** | `boolean` | Should expired documents be imported. Default: `true` |
+| **RemoveAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
+| **TransformScript** | `String` | JavaScript-based script applied to every imported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
 | **MaxStepsForTransformScript** | `int` | Maximum number of steps that transform script can process before failing. Default: 10000 |
 
 ### Example

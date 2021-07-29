@@ -76,4 +76,12 @@ public class DynamicFields {
             }
         }
     }
+
+    //region syntax
+    object CreateField(string name, object value);
+
+    object CreateField(string name, object value, bool stored, bool analyzed);
+
+    object CreateField(string name, object value, CreateFieldOptions options);
+    //endregion
 }
