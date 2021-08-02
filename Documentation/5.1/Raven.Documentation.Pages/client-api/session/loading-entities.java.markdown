@@ -113,12 +113,12 @@ Entities can be streamed from the server using one of the following `stream` met
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
 | **skipAfter** | String | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
-| Reference streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+| **streamQueryStats** | StreamQueryStatistics | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 | Return Value | |
 | ------------- | ----- |
 | CloseableIterator<StreamResult<T>> | Iterator with entities. |
-| streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+| streamQueryStats | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 
 ### Example I

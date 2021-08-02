@@ -2,7 +2,7 @@
 
 The `AttachmentsFor` method returns a list of 
 [attachments](../document-extensions/attachments/what-are-attachments) 
-in a given document as well as basic information like `Name` or `Size` 
+in a given document as well as basic information like `name` or `size` 
 about each of them.
 
 {CODE-TABS}

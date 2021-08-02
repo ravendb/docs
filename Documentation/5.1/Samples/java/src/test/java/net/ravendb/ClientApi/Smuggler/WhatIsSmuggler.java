@@ -18,21 +18,14 @@ public class SmugglerSample {
             DatabaseSmuggler toDatabase;
             String fromFile;
 
-
-
-
             try (IDocumentSession session = store.openSession()) {
                 /*
                 Employee employee1 = session.load(Employee.class, "employees/1-A");
                 Employee employee2 = session.load(Employee.class, "employees/1-A");
-
                 // because NoTracking is set to 'true'
                 // each load will create a new Employee instance
                 Assert.assertNotSame(employee1, employee2);
-
                  */
-
-
                 //region for_database
                 DatabaseSmuggler northwindSmuggler = store.smuggler().forDatabase("Northwind");
                 //endregion
@@ -52,19 +45,13 @@ public class SmugglerSample {
                 Operation exportOperation = store.smuggler().exportAsync(exportOptions,"C:\\ravendb-exports\\Northwind.ravendbdump");
                 //endregion
 
-
-
                 //region import_syntax
                 public Operation importAsync(DatabaseSmugglerImportOptions options, String fromFile);
                 public Operation importAsync(DatabaseSmugglerImportOptions options, InputStream stream);
                 //endregion
 
-
-
-
                 //region import_example
                 Operation importOperation =  store.smuggler().importAsync(importOptions,"C:\\ravendb-exports\\Northwind.ravendbdump");
-
                 //endregion
 
 
