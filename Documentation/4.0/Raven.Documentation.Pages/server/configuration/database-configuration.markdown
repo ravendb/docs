@@ -85,7 +85,7 @@ After this time, and idle database will be unloaded from memory. Use lower time 
 
 {PANEL/}
 
-{PANEL:Databases.FrequencyToCheckForIdleDatabasesInSec}
+{PANEL:Databases.FrequencyToCheckForIdleInSec}
 
  The time in seconds to check for an idle tenant database.
 

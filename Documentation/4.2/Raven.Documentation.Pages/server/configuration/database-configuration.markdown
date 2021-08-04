@@ -85,7 +85,7 @@ After this time, and idle database will be unloaded from memory. Use lower time 
 
 {PANEL/}
 
-{PANEL:Databases.FrequencyToCheckForIdleDatabasesInSec}
+{PANEL:Databases.FrequencyToCheckForIdleInSec}
 
  The time in seconds to check for an idle tenant database.
 
@@ -102,8 +102,8 @@ after which a read transaction will be renewed to reduce memory usage during lon
 
 - **Type**: `int`
 - **Default**: The default value is determined by the amount of RAM on your machine:  
-    * 32 bit platforms: `16 MB`  
-    * Less than 4 GB RAM: `32 MB`  
+    * 32 bit platform, less than or equal to 1 GB RAM: `16 MB`  
+    * Less than or equal to 4 GB RAM: `32 MB`  
     * Less than 16 GB RAM: `64 MB`  
     * Less than 64 GB RAM: `128 MB`  
     * More than 64 GB RAM: `256 MB`  
