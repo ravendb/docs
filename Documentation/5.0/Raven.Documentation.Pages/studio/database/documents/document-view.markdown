@@ -19,14 +19,9 @@
 ![Figure 1. Document View](images/document-view-1.png "Document: 'Suppliers/1-A' in the 'Suppliers' Collection")
 
 1. **Document identifier (ID)**  
-
    * For a detailed explanation about the possible identifiers, see [Create New Document](../../../studio/database/documents/create-new-document)  
 
-2. **Raw Document Output**
-
-   * Clicking this icon will show the _raw document output_ that is received from the server in native JSON format.  
-
-3. **Document properties**  
+2. **Document properties**  
 
    * **Change-Vector**  
 
@@ -40,7 +35,7 @@
    * **Modified** - The last time the document was modified by any client, or by the Studio  
    * **Size** - The Document size (including attachments)  
 
-4. **Document content** - The document properties and values in JSON format  
+3. **Document content** - The document properties and values in JSON format  
    * a. **Nested Data**  
         * Another JSON object can be nested in a property value  
 
@@ -59,7 +54,7 @@
            * ***@flags*** - i.e. if a document has attachments, revisions, etc.  
            * ***Custom metadata*** properties - any metadata properties generated in code by a client  
 
-5. **Related Document**  
+4. **Related Document**  
    * List of related documents - those are the documents that are _referenced_ inside the document. (see 3b above)
    * Click to open each  
 {PANEL/}

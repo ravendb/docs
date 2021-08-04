@@ -70,7 +70,7 @@
   * **Patch**: Patch documents in a collection or in an index.  
   * **Query**: Query documents in a collection or in an index.  
   * **Conflicts**: View and resolve conflicting documents. See [Conflicts](../../../studio/database/documents/conflicts-view).  
-  * **Compare Exchange**: View compare exchange values for this database. See [Compare Exchange](../../../client-api/operations/compare-exchange/overview).  
+  * **Compare Exchange**: Manage compare exchange values for this database. See [Compare Exchange](../../../client-api/operations/compare-exchange/overview).  
 {PANEL/}
 
 {PANEL}  

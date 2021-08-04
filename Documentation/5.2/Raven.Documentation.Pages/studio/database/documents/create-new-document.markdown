@@ -75,7 +75,7 @@
 
 {PANEL: Create New Document from Clone}
 
-  * A new document can be created by cloning (creating a copy without attachments) from an opened [document view](../../../studio/database/documents/document-view)  
+  * A new document can be created by cloning from an opened [document view](../../../studio/database/documents/document-view)  
   * The clone can be saved with a new ID  
 {PANEL/}
 

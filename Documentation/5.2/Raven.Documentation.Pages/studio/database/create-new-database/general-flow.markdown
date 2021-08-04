@@ -79,7 +79,7 @@ From the database list view, click the **'New database'** button.
       The database's data will be stored at the specified location.  
    * **Write a relative path**  
      (e.g. `MyWork/MyDatabaseFolder`)  
-     The database's data will be stored at the specified location inside your server's data directory.  
+     The database's data will be stored at the specified location inside your server's **data directory** (see info below).  
    * **Leave field empty**  
      The database's data will be stored in the `Databases` directory inside your server's data directory.  
 
