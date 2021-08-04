@@ -25,7 +25,7 @@
 ![Figure 1. Create New Database - Button](images/new-database-general-1.png "Create New Database Button")
 
 {NOTE: }
-From the databases list view, click the **'New database'** button.  
+From the database list view, click the **'New database'** button.  
 {NOTE/}
 {PANEL/}
 
@@ -72,23 +72,36 @@ From the databases list view, click the **'New database'** button.
 
 {NOTE: }
 
-* Set the directory path for database data.  
+1. Set the directory path for the new database's data.  
+   You can use any of the following options:  
+   * **Write a full path**  
+     (e.g. Windows: `C:/MyWork/MyDatabaseFolder`, Linux: `/etc/MyWork/MyDatabaseFolder` )  
+      The database's data will be stored at the specified location.  
+   * **Write a relative path**  
+     (e.g. `MyWork/MyDatabaseFolder`)  
+     The database's data will be stored at the specified location inside your server's data directory.  
+   * **Leave field empty**  
+     The database's data will be stored in the `Databases` directory inside your server's data directory.  
 
-* You can use any of the following options:  
-  * **Full path** (e.g. Windows: _C:/MyWork/MyDatabaseFolder_, Linux: _/etc/MyWork/MyDatabaseFolder_ )  
-    The database will be created in this physical location  
-  * **Relative path** (e.g. _MyWork/MyDatabaseFolder_)  
-    The database will be created under the `DataDir` folder  
-  * **Leave field empty**  
-    The Database will be created in `Databases` directory under the `DataDir` folder  
+2. Information about the path you have chosen for your database's data.  
+   * **Node Tag**: your server's cluster node tag - this indicates which server you're creating the new 
+   database on.  
+   * **Path**: your database data's full path.  
+   * **Free Disk Space**: the amount of available space on the local disk.  
 
-* Note:  
+{INFO: The Data Directory}
 
-  * The `DataDir` folder can be set in the [settings.json](../../../server/configuration/configuration-options#json) configuration file (e.g. "DataDir": "RavenData").  
-  * If `DataDir` is Not specified in the configuration file, then the database will be created under the RavenDB binaries folder  
-    (where the RavenDB dlls are located).  
-  * A path can't start with:  $home, '~' or 'appdrive:'
+* By default, the server's data directory is at `Server/RavenData`. This contains a `Databases` directory, 
+which contains the data of the different databases on the server.  
+  (e.g. `Server/RavenData/Databases/MyDatabaseFolder`).  
+  Learn more at [Storage: Directory Structure](../../../server/storage/directory-structure).  
+* The location of the server's data directory can be set in the [`DataDir` configuration option](../../../server/configuration/core-configuration#datadir).  
+* A path can't start with: `$home`, `~`, or `appdrive:`.  
+
+{INFO/}
+
 {NOTE/}
+
 {PANEL/}
 
 {PANEL: 5. Create}
