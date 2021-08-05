@@ -72,7 +72,7 @@
      * The document _content_ is deleted and will not be available again
      * The document itself is marked as a _Tombstone_ , so that the delete action can be replicated to the other database instances  
    * **Clone** document - Create a clone of the current document  
-     * A copy of the document without attachments is created  
+     * A copy of the document is created  
      * It can be saved with a new ID  
 
 2. **Copy** to clipboard  
@@ -81,9 +81,13 @@
 
 3. **Format** content
    * Format - Adjust the document JSON format  
-   * Toggle collapse - Toggle nested complex properties in the document  
+   * Collapse/Expand Document - Toggle nested complex properties in the document  
    * Toggle new lines - Toggle between showing the character '/n', or the actual new lines  
 
-4. **Attachments**  
-   * Add any type of file as an attachment to the document  
+4. **Document Extensions**  
+   * Add **Document Extensions** to the document, including 
+     [Attachments](../../../document-extensions/attachments/what-are-attachments), 
+     [Counters](../../../document-extensions/counters/overview), 
+     [Time Series](../../../document-extensions/timeseries/overview) 
+     and [Revisions](../../../server/extensions/revisions).  
 {PANEL/}
