@@ -81,7 +81,8 @@ A new document can be created by cloning an [existing document](../../../studio/
 
 * Click the 'Clone' button to create a clone from the current document.  
 * The original document's attachments, counters & time-series items are copied into the clone.  
-* Modify the cloned document as needed and save it as a new document.  
+* Modify the cloned document as needed and click Save.
+  The cloned document will be saved as a new document with a new ID.
 
 {PANEL/}
 
