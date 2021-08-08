@@ -87,7 +87,7 @@
 4. **Document Extensions**  
    * Add **Document Extensions** to the document, including 
      [Attachments](../../../document-extensions/attachments/what-are-attachments), 
-     [Counters](../../../document-extensions/counters/overview), 
-     [Time Series](../../../document-extensions/timeseries/overview) 
+     [Counters](../../../studio/database/document-extensions/counters), 
+     [Time Series](../../../studio/database/document-extensions/time-series) 
      and [Revisions](../../../server/extensions/revisions).  
 {PANEL/}

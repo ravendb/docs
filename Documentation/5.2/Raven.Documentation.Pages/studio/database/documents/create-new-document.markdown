@@ -77,11 +77,10 @@
 
 ![Figure 5. Create New Document from Clone](images/create-new-document-5.png "Create New Document from Clone")
 
-A new document can be created by cloning from an opened [document view](../../../studio/database/documents/document-view) 
-and saved with a new ID.  
+A new document can be created by cloning an [existing document](../../../studio/database/documents/document-view).  
 
 * Click the 'Clone' button to create a clone from the current document.  
-* The original document attachments, counters & time-series items are copied into the clone.  
+* The original document's attachments, counters & time-series items are copied into the clone.  
 * Modify the cloned document as needed and save it as a new document.  
 
 {PANEL/}
