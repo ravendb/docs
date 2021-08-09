@@ -21,7 +21,10 @@
 1. **Document identifier (ID)**  
    * For a detailed explanation about the possible identifiers, see [Create New Document](../../../studio/database/documents/create-new-document)  
 
-2. **Document properties**  
+2. **Raw Document Output**
+   * Clicking this icon will show the _raw document output_ that is received from the server in native JSON format.  
+
+3. **Document properties**  
 
    * **Change-Vector**  
 
@@ -35,7 +38,7 @@
    * **Modified** - The last time the document was modified by any client, or by the Studio  
    * **Size** - The Document size (including attachments)  
 
-3. **Document content** - The document properties and values in JSON format  
+4. **Document content** - The document properties and values in JSON format  
    * a. **Nested Data**  
         * Another JSON object can be nested in a property value  
 
@@ -54,7 +57,7 @@
            * ***@flags*** - i.e. if a document has attachments, revisions, etc.  
            * ***Custom metadata*** properties - any metadata properties generated in code by a client  
 
-4. **Related Document**  
+5. **Related Document**  
    * List of related documents - those are the documents that are _referenced_ inside the document. (see 3b above)
    * Click to open each  
 {PANEL/}
@@ -69,7 +72,7 @@
      * The document _content_ is deleted and will not be available again
      * The document itself is marked as a _Tombstone_ , so that the delete action can be replicated to the other database instances  
    * **Clone** document - Create a clone of the current document  
-     * A copy of the document without attachments is created  
+     * A copy of the document is created  
      * It can be saved with a new ID  
 
 2. **Copy** to clipboard  
@@ -78,9 +81,13 @@
 
 3. **Format** content
    * Format - Adjust the document JSON format  
-   * Collapse document - Toggle nested complex properties in the document  
+   * Collapse/Expand Document - Toggle nested complex properties in the document  
    * Toggle new lines - Toggle between showing the character '/n', or the actual new lines  
 
-4. **Attachments**  
-   * Add any type of file as an attachment to the document  
+4. **Document Extensions**  
+   * Add **Document Extensions** to the document, including 
+     [Attachments](../../../document-extensions/attachments/what-are-attachments), 
+     [Counters](../../../studio/database/document-extensions/counters), 
+     [Time Series](../../../studio/database/document-extensions/time-series) 
+     and [Revisions](../../../server/extensions/revisions).  
 {PANEL/}
