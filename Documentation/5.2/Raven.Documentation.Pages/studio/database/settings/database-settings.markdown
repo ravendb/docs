@@ -4,10 +4,10 @@
 
 {NOTE: }
 
-* The Database Settings View lists all the database and server configuration keys & values.  
+* The **Database Settings View** lists all the database and server configuration keys & values.  
 
-* Only the database scope configuration keys can be edited from this view.  
-  Configuration keys that relate only to the server scope are edited in the 
+* Only the **database scope** configuration keys can be edited from this view.  
+  Configuration keys that relate only to the **server scope** are edited in the 
   [`settings.json` file](../../../server/configuration/configuration-options#json) 
   and can only be viewed here.  
 
@@ -35,22 +35,22 @@ Do not modify the database settings unless you are an expert and know what you'r
 1. Navigate to **Settings > Database Settings**.  
 2. Type a keyword here to filter the configuration keys.  
 3. Click on **Edit** to access the database setting editing view. [See next section](../../../studio/database/settings/database-settings#edit-database-settings).  
-4. This column lists the Configuration Keys.  
-    * A 'yellow' entry is a key whose default value was customized by the user.  
+4. This column lists the **Configuration Keys**.  
+    * A 'yellow' entry is a key whose value was customized by the user.  
     * A 'green' entry is a key holding a default value that was not modified.  
-5. This column shows the Effective Value for each key.  
+5. This column shows the **Effective Value** for each key.  
    It is the current value of the key - either the default value or a customized value if modified by the user.  
-6. This column indicates the value's Origin:  
-    * Default - This is the default value, no customized value was set.  
-    * Server - Value is configured in the settings.json file (customized by the user), overriding the default settings.  
-    * Database - Value is configured in the database record (customized by the user), overriding the server & default settings.  
+6. This column indicates the value's **Origin**:  
+    * **Default** - This is the default value, no customized value was set.  
+    * **Server** - Value is configured in the settings.json file (customized by the user), overriding the default settings.  
+    * **Database** - Value is configured in the database record (customized by the user), overriding the server & default settings.  
 
 {PANEL/}
 
 {PANEL: Edit Database Settings }
 
-* Only the database scope configuration keys can be edited from this view.  
-  Configuration keys that relate only to the server scope are edited in the 
+* Only the **database scope** configuration keys can be edited from this view.  
+  Configuration keys that relate only to the **server scope** are edited in the 
   [`settings.json` file](../../../server/configuration/configuration-options#json) 
   and can only be viewed here.  
 
@@ -62,10 +62,10 @@ Do not modify the database settings unless you are an expert and know what you'r
 ![Figure 2: Edit Database Settings](images/database-settings-2.png "Figure 2: Edit Database Settings")
 
 1. Type a keyword here to filter the configuration keys.  
-2. For easier navigation, the configuration keys are divided into Categories 
+2. For easier navigation, the configuration keys are divided into **Categories** 
    according to the related RavenDB feature.  
-3. This column lists the Configuration Keys in the selected Category.  
-4. This column lists the current Value set for the key.  
+3. This column lists the **Configuration Keys** in the selected Category.  
+4. This column lists the current **Value** set for the key.  
 5. The lock icon indicates that this key is server scoped and can not be modified here.  
    It can be edited only from the [`settings.json` file](../../../server/configuration/configuration-options#json) 
    located in your RavenDB executable folder.  
@@ -86,9 +86,9 @@ Do not modify the database settings unless you are an expert and know what you'r
 After editing the configuration keys and saving your changes, the main database settings 
 view slightly changes.  
 
-1. The **Effective Value** column now becomes Effective Value in Use.  
+1. The Effective Value column now becomes **Effective Value in Use**.  
    It is the key value that is currently being used (not the new customized value).  
-2. The **Origin** column is replaced with the Pending Value column.  
+2. The Origin column is replaced with the **Pending Value** column.  
    This shows your new customized value.  
    This pending value will be applied and replace the Effective Value once the database is reloaded.  
 
@@ -101,7 +101,7 @@ There are two ways to reload a database:
 1. Restart RavenDB on all nodes.  
    The database settings configuration will become effective for each node that is restarted.
 
-2. Disable and then re-enable the database from the [Databases List View](../../../studio/database/databases-list-view) in the Studio.  
+2. Disable and then re-enable the database from the [Database List View](../../../studio/database/databases-list-view) in the Studio.  
    This will reload the database on all the cluster nodes immediately.
 
 ![Figure 4: How to Reload the Database](images/database-settings-4.png "Figure 3: How to Reload the Database")
