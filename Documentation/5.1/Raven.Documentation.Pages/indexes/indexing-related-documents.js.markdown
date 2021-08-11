@@ -9,30 +9,28 @@ Let's consider a simple `Product - Category` scenario where you want to look for
 Without this feature, you would have to create a fairly complex multiple map-reduce index. This is why the `LoadDocument` function was introduced.
 
 {CODE-TABS}
-{CODE-TAB:csharp:AbstractIndexCreationTask indexing_related_documents_2@Indexes\IndexingRelatedDocuments.cs /}
-{CODE-TAB:csharp:Operation indexing_related_documents_3@Indexes\IndexingRelatedDocuments.cs /}
-{CODE-TAB:csharp:JavaScript indexing_related_documents_2@Indexes\JavaScript.cs /}
+{CODE-TAB:nodejs:AbstractIndexCreationTask indexing_related_documents_2@indexes\indexingRelatedDocuments.js /}
+{CODE-TAB:nodejs:Operation indexing_related_documents_3@indexes\indexingRelatedDocuments.js /}
 {CODE-TABS/}
 
-Now we will be able to search for products using the `CategoryName` as a parameter:
+Now we will be able to search for products using the `categoryName` as a parameter:
 
-{CODE indexing_related_documents_7@Indexes\IndexingRelatedDocuments.cs /}
+{CODE:nodejs indexing_related_documents_7@indexes\indexingRelatedDocuments.js /}
 
 ## Example II
 
 Our next scenario will show us how indexing of more complex relationships is also trivial. Let's consider the following case:
 
-{CODE indexing_related_documents_4@Indexes\IndexingRelatedDocuments.cs /}
+{CODE:nodejs indexing_related_documents_4@indexes\indexingRelatedDocuments.js /}
 
 To create an index with `Author Name` and list of `Book Names`, we need do the following:
 
 {CODE-TABS}
-{CODE-TAB:csharp:AbstractIndexCreationTask indexing_related_documents_5@Indexes\IndexingRelatedDocuments.cs /}
-{CODE-TAB:csharp:Operation indexing_related_documents_6@Indexes\IndexingRelatedDocuments.cs /}
-{CODE-TAB:csharp:JavaScript indexing_related_documents_5@Indexes\JavaScript.cs /}
+{CODE-TAB:nodejs:AbstractIndexCreationTask indexing_related_documents_5@indexes\indexingRelatedDocuments.js /}
+{CODE-TAB:nodejs:Operation indexing_related_documents_6@indexes\indexingRelatedDocuments.js /}
 {CODE-TABS/}
 
-{CODE indexing_related_documents_8@Indexes\IndexingRelatedDocuments.cs /}
+{CODE:nodejs indexing_related_documents_8@indexes\indexingRelatedDocuments.js /}
 
 ## Remarks
 
