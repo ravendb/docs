@@ -2,24 +2,20 @@
 
 One of the greatest advantages of a document database is that we have very few limits on how we structure our data. One very common scenario is the usage of hierarchical data structures. The most trivial of them is the comment thread:
 
-{CODE indexes_1@Indexes\IndexingHierarchicalData.cs /}
+{CODE:nodejs indexes_1@indexes\indexingHierarchicalData.js /}
 
 While it is very easy to work with such a structure in all respects, it does bring up an interesting question, namely how can we search for all blog posts that were commented by specified author?
 
 The answer to that is that RavenDB contains built-in support for indexing hierarchies, and you can take advantage of the `Recurse` method to define an index using the following syntax:
 
 {CODE-TABS}
-{CODE-TAB:csharp:AbstractIndexCreationTask indexes_2@Indexes\IndexingHierarchicalData.cs /}
-{CODE-TAB:csharp:Operation indexes_3@Indexes\IndexingHierarchicalData.cs /}
-{CODE-TAB:csharp:JavaScript indexes_3@Indexes\JavaScript.cs /}
+{CODE-TAB:nodejs:AbstractIndexCreationTask indexes_2@indexes\indexingHierarchicalData.js /}
+{CODE-TAB:nodejs:Operation indexes_3@indexes\indexingHierarchicalData.js /}
 {CODE-TABS/}
 
 This will index all the comments in the thread, regardless of their location in the hierarchy.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Query indexes_4@Indexes\IndexingHierarchicalData.cs /}
-{CODE-TAB:csharp:DocumentQuery indexes_5@Indexes\IndexingHierarchicalData.cs /}
-{CODE-TABS/}
+{CODE:nodejs indexes_4@indexes\indexingHierarchicalData.js /}
 
 ## Related articles
 
