@@ -44,20 +44,21 @@ let urls, database, authOptions;
         name: "Script#1",
         collections: "Orders",
         Script = "var orderData = {Id: id(this), OrderLinesCount: this.Lines.length, TotalCost: 0};
-            for (var i = 0; i < this.Lines.length; i++) {
-                var line = this.Lines[i];
-                orderData.TotalCost += line.PricePerUnit;
-                // Load to SQL table 'OrderLines'
-                loadToOrderLines({
-                    OrderId: id(this),
-                    Qty: line.Quantity,
-                    Product: line.Product,
-                    Cost: line.PricePerUnit
-                });
-            }
+                    for (var i = 0; i < this.Lines.length; i++) {
+                        var line = this.Lines[i];
+                        orderData.TotalCost += line.PricePerUnit;
+                        // Load to SQL table 'OrderLines'
+                        loadToOrderLines({
+                            OrderId: id(this),
+                            Qty: line.Quantity,
+                            Product: line.Product,
+                            Cost: line.PricePerUnit
+                        });
+                    }
             orderData.TotalCost = Math.round(orderData.TotalCost * 100) / 100;
             loadToOrders(orderData)"
     }
+//endregion
 //end of transformation
 
     const table1 = {
