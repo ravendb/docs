@@ -30,7 +30,7 @@ public class SmugglerSample {
                 DatabaseSmuggler northwindSmuggler = store.smuggler().forDatabase("Northwind");
                 //endregion
 
-                DatabaseSmugglerExportOptions  smugglerExportOptions =null;
+                DatabaseSmugglerExportOptions smugglerExportOptions =null;
                 exportOptions=null;
                 importOptions=null;
 
@@ -42,7 +42,7 @@ public class SmugglerSample {
                 //endregion
                 //region export_example
                 // export only Indexes and Documents to a given file
-                Operation exportOperation = store.smuggler().exportAsync(exportOptions,"C:\\ravendb-exports\\Northwind.ravendbdump");
+                Operation exportOperation = store.smuggler().exportAsync(exportOptions, "C:\\ravendb-exports\\Northwind.ravendbdump");
                 //endregion
 
                 //region import_syntax
@@ -51,7 +51,7 @@ public class SmugglerSample {
                 //endregion
 
                 //region import_example
-                Operation importOperation =  store.smuggler().importAsync(importOptions,"C:\\ravendb-exports\\Northwind.ravendbdump");
+                Operation importOperation = store.smuggler().importAsync(importOptions, "C:\\ravendb-exports\\Northwind.ravendbdump");
                 //endregion
 
 
