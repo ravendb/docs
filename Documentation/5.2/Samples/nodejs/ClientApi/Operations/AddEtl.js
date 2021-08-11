@@ -17,7 +17,6 @@ let urls, database, authOptions;
 
 
     //region add_raven_etl
-
     const etlConfiguration = Object.assign(new RavenEtlConfiguration(), {
         connectionStringName: "raven-connection-string-name",
         disabled: false,
@@ -43,21 +42,21 @@ let urls, database, authOptions;
     //region add_sql_etl
     const transformation = {
         name: "Script#1",
-        collections?: "Orders",
-        Script= "var orderData = {Id: id(this), OrderLinesCount: this.Lines.length, TotalCost: 0};
-        for (var i = 0; i< this.Lines.length; i++) {
-        var line = this.Lines[i];
-        orderData.TotalCost += line.PricePerUnit;
-        // Load to SQL table 'OrderLines'
-        loadToOrderLines({
-            OrderId: id(this),
-            Qty: line.Quantity,
-            Product: line.Product,
-            Cost: line.PricePerUnit
-        });
-    }
-    orderData.TotalCost = Math.round(orderData.TotalCost * 100) / 100;
-    loadToOrders(orderData)"
+        collections: "Orders",
+        Script = "var orderData = {Id: id(this), OrderLinesCount: this.Lines.length, TotalCost: 0};
+            for (var i = 0; i < this.Lines.length; i++) {
+                var line = this.Lines[i];
+                orderData.TotalCost += line.PricePerUnit;
+                // Load to SQL table 'OrderLines'
+                loadToOrderLines({
+                    OrderId: id(this),
+                    Qty: line.Quantity,
+                    Product: line.Product,
+                    Cost: line.PricePerUnit
+                });
+            }
+            orderData.TotalCost = Math.round(orderData.TotalCost * 100) / 100;
+            loadToOrders(orderData)"
     }
 //end of transformation
 

@@ -71,8 +71,8 @@ let urls, database, authOptions;
      public DeleteCertificateOperation(thumbprint: string)
 //endregion
 
-//region delete_cert_2
-    let thumbprint = "a909502dd82ae41433e6f83886b00d4277a32a7b";
+    //region delete_cert_2
+    const thumbprint = "a909502dd82ae41433e6f83886b00d4277a32a7b";
     await store.maintenance.server.send(new DeleteCertificateOperation(thumbprint));
 //endregion
 
