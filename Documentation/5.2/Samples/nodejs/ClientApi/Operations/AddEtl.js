@@ -11,12 +11,10 @@ let urls, database, authOptions;
     const session = store.openSession();
 
     //region add_etl_operation
-    public constructor(configuration: EtlConfiguration < T >);
+    public AddEtlOperation(configuration: EtlConfiguration<T>);
     //endregion
 
-    
-   
-    
+
 
     //region add_raven_etl
 
@@ -29,7 +27,7 @@ let urls, database, authOptions;
     const transformation: Transformation = {
         name: "Script #1",
         collections?: "Employees",
-        Script= "loadToEmployees ({ Name: this.FirstName + ' ' + this.LastName,Title: this.Title}); "
+        Script= "loadToEmployees ({ Name: this.FirstName + ' ' + this.LastName, Title: this.Title}); "
     };
 
     etlConfiguration.transforms = [transformation];
@@ -44,10 +42,10 @@ let urls, database, authOptions;
 
     //region add_sql_etl
     const transformation = {
-        name: "Script #1",
+        name: "Script#1",
         collections?: "Orders",
-        Script= "var orderData = {Id: id(this),OrderLinesCount: this.Lines.length,TotalCost: 0};
-        for(var i = 0; i< this.Lines.length; i++) {
+        Script= "var orderData = {Id: id(this), OrderLinesCount: this.Lines.length, TotalCost: 0};
+        for (var i = 0; i< this.Lines.length; i++) {
         var line = this.Lines[i];
         orderData.TotalCost += line.PricePerUnit;
         // Load to SQL table 'OrderLines'
@@ -61,20 +59,19 @@ let urls, database, authOptions;
     orderData.TotalCost = Math.round(orderData.TotalCost * 100) / 100;
     loadToOrders(orderData)"
     }
-as Transformation;
 //end of transformation
 
     const table1 = {
         documentIdColumn: "Id",
         insertOnlyMode: false,
         tableName: "Orders"
-} as SqlEtlTable;
+    }
 
     const table2 = {
         documentIdColumn: "OrderId",
         insertOnlyMode: false,
         tableName: "OrderLines"
-} as SqlEtlTable;
+    }
 
     const etlConfiguration = Object.assign(new SqlEtlConfiguration(), {
         connectionStringName: "sql-connection-string-name",
@@ -82,7 +79,7 @@ as Transformation;
         name: "Orders to SQL",
         transforms: [transformation],
         sqlTables: [table1, table2]
-    } as Partial<SqlEtlConfiguration>);
+    }
 
     const operation = new AddEtlOperation(etlConfiguration);
     const etlResult = await store.maintenance.send(operation);

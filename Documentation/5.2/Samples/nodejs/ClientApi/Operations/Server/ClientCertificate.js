@@ -11,10 +11,10 @@ let urls, database, authOptions;
 
     //region cert_1_1
      public CreateClientCertificateOperation(
-         name:string,
-         permissions:Record<string,DatabaseAccess>,
-         clearance:SecurityClearance,
-         password?:string)
+         name: string,
+         permissions: Record<string,DatabaseAccess>,
+         clearance: SecurityClearance,
+         password?: string)
     //endregion
 
     //region cert_1_2
@@ -35,7 +35,7 @@ let urls, database, authOptions;
 //region cert_1_4
 // With user role set to Cluster Administrator or Operator the user of this certificate 
 // is going to have access to all databases
-    const clientCertificateOperation   = await store.maintenance.server.send(
+    const clientCertificateOperation = await store.maintenance.server.send(
         new CreateClientCertificateOperation("admin", {}, "Operator"));
     const certificateRawData = clientCertificateOperation.rawData;
 
@@ -56,10 +56,10 @@ let urls, database, authOptions;
 
 //region cert_put_1
     public PutClientCertificateOperation(
-        name:string,
-        certificate:string,
-        permissions:Record<string,DatabaseAccess>,
-        clearance:SecurityClearance)
+        name: string,
+        certificate: string,
+        permissions: Record<string,DatabaseAccess>,
+        clearance: SecurityClearance)
 //endregion
 
 //region cert_put_2
@@ -68,7 +68,7 @@ let urls, database, authOptions;
 //endregion
 
 //region delete_cert_1
-     public DeleteCertificateOperation(thumbprint:string)
+     public DeleteCertificateOperation(thumbprint: string)
 //endregion
 
 //region delete_cert_2
