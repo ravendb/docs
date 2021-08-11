@@ -4,15 +4,15 @@ Entities passed to an index can be converted to JSON using `AsJson` method. Ther
 
 ## AsJson - Converting to JSON
 
-{CODE indexes_1@Indexes/Metadata.cs /}
+{CODE:nodejs indexes_1@indexes/metadata.js /}
 
-{CODE indexes_2@Indexes/Metadata.cs /}
+{CODE:nodejs indexes_2@indexes/metadata.js /}
 
 ## MetadataFor - Accessing Metadata
 
-{CODE indexes_3@Indexes/Metadata.cs /}
+{CODE:nodejs indexes_3@indexes/metadata.js /}
 
-{CODE indexes_4@Indexes/Metadata.cs /}
+{CODE:nodejs indexes_4@indexes/metadata.js /}
 
 ## Related articles
 
