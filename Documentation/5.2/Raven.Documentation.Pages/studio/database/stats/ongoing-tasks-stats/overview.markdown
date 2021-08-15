@@ -6,6 +6,7 @@
 * The **Ongoing Tasks Stats** view monitors the following ongoing tasks:  
    * External Replication  
    * RavenDB ETL  
+   * SQL ETL  
    * Subscription  
 * Tasks activities are graphically displayed for selected time frames.  
 
@@ -34,7 +35,7 @@
    Data for this database's ongoing tasks will be collected and presented in the graph.  
 
 3. **Filter**  
-   Filter the displayed tasks by the task's name (Subscription, RavenDB ETL) 
+   Filter the displayed tasks by the task's name (Subscription, RavenDB ETL, SQL ETL) 
    or by the target URL (External Replication).  
 
 4. **Export**  
@@ -169,6 +170,7 @@ and **Inactive** tasks are shown in different styles.
 [Ongoing Tasks - General Info](../../../../studio/database/tasks/ongoing-tasks/general-info)  
 [RavenDB ETL Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)  
 [External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task)  
+
 ### Client API  
 [Data Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions)  
 [Consuming Data Subscription](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)  
