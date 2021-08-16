@@ -7,6 +7,7 @@
    * External Replication  
    * RavenDB ETL  
    * SQL ETL  
+   * OLAP ETL
    * Subscription  
 * Tasks activities are graphically displayed for selected time frames.  
 
@@ -35,7 +36,7 @@
    Data for this database's ongoing tasks will be collected and presented in the graph.  
 
 3. **Filter**  
-   Filter the displayed tasks by the task's name (Subscription, RavenDB ETL, SQL ETL) 
+   Filter the displayed tasks by the task's name (Subscription, RavenDB ETL, SQL ETL, OLAP ETL) 
    or by the target URL (External Replication).  
 
 4. **Export**  
@@ -168,8 +169,9 @@ and **Inactive** tasks are shown in different styles.
 
 ### Studio  
 [Ongoing Tasks - General Info](../../../../studio/database/tasks/ongoing-tasks/general-info)  
-[RavenDB ETL Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)  
 [External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task)  
+[RavenDB ETL Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)  
+[OLAP ETL Task](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task)  
 
 ### Client API  
 [Data Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions)  
@@ -178,3 +180,4 @@ and **Inactive** tasks are shown in different styles.
 ### Server  
 [Ongoing Tasks: ETL Basics](../../../../server/ongoing-tasks/etl/basics#ongoing-tasks-etl-basics)  
 [Ongoing Tasks: External Replication](../../../../server/ongoing-tasks/external-replication)  
+[Ongoing Tasks: OLAP ETL Task](../../../../server/ongoing-tasks/etl/olap)  
