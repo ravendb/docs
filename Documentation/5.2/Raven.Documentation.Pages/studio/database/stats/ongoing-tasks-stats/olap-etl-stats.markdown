@@ -4,8 +4,8 @@
 {NOTE: }
 
 * **OLAP ETL** is a process that reads data from a RavenDB database, 
-  transforms it, and stores it locally or remotely in a format that 
-  OLAP (OnLine Analytical Processing) can be performed upon.  
+  transforms it, and stores it in a parquet format, ready for OnLine 
+  Analytical Processing (OLAP).  
 * Learn more about the OLAP ETL task [here](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task).  
 
 * In this page:  
@@ -36,7 +36,8 @@
 ---
 
 ### OLAP ETL Stats Expanded View
-![OLAP ETL Stats Expanded View](images/stats-view-16-olap-etl-extracted-view.png "OLAP ETL Stats Expanded View")
+
+![OLAP ETL Stats Expanded View (1)](images/stats-view-16-olap-etl-extracted-view_1.png "OLAP ETL Stats Expanded View (1)")
 
 * **OLAP ETL**  
    * **Total Duration**  
@@ -76,45 +77,38 @@
    * **Last Loaded Etag**  
      Last loaded document's identifier.  
 
+![OLAP ETL Stats Expanded View (2)](images/stats-view-16-olap-etl-extracted-view_2.png "OLAP ETL Stats Expanded View (2)")
+
 * **Load/Local**  
    * **Duration**  
-     The time it took to store **all documents** on the local storage.  
+     The time it took to store all documents on the **local storage**.  
        {NOTE: }
        The documents are stored locally before they are transferred to a remote destination.
        {NOTE/}
 
-* **Load/Upload**  
-   * **Duration**  
-     The time it took to upload **all documents** to the remote destination.  
-       {NOTE: }
-       If the destination is the local storage, the **Load/Upload** bar will not be displayed.
-       {NOTE/}
-
 * **Load/Local/X**  
    * **Duration**  
-     The time it took to store **each document** on the local storage.  
+     The time it took to store document X on the local storage.  
+
+* **Load/Upload**  
+   * **Duration**  
+     The time it took to upload all documents to the **remote destination**.  
        {NOTE: }
-       The document is stored locally before it is transferred to the remote destination.
-       {NOTE/}  
+       The Load/Upload bars will not be displayed if the destination is set to local storage only.  
+       {NOTE/}
 
 * **Load/Upload/X**  
    * **Duration**  
-     The time it took to upload **each document** to the remote destination.  
-       {NOTE: }
-       If the destination is the local storage, the **Load/Upload/X** bar will not be displayed.
-       {NOTE/}
+     The time it took to upload document X to the remote destination.  
 
-   * **File Name** on the remote destination, constructed of -  
-      * The transfer Date and Time  
-      * The document Database Name  
-      * The OLAP ETL Task Name  
-      * The ETL Script Name  
-   * **Upload Properties**, including -  
+   * **Parquet File Name** on the remote destination, constructed of -  
+      * The upload date and time  
+      * The document database name  
+      * The OLAP ETL task name  
+      * The ETL script name  
+   * **File Upload Properties**, including -  
       * Destination Type  
         Can be Amazon S3, Amazon Glacier, Microdoft Azure, Google Cloud Platform, or FTP.  
-        {NOTE: }
-        If the destination is the local storage, the **Upload Properties** will not be displayed.
-        {NOTE/}
       * Upload State  
       * Upload Type  
       * File Size  
