@@ -4,8 +4,8 @@
 {NOTE: }
 
 * **OLAP ETL** is a process that reads data from a RavenDB database, 
-  transforms it, and stores it in a parquet format, ready for OnLine 
-  Analytical Processing (OLAP).  
+  transforms it, and stores it in a parquet format, ready for **OnLine 
+  Analytical Processing** (OLAP).  
 * Learn more about the OLAP ETL task [here](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task).  
 
 * In this page:  
@@ -102,13 +102,16 @@
      The time it took to upload document X to the remote destination.  
 
    * **Parquet File Name** on the remote destination, constructed of -  
-      * The upload date and time  
-      * The document database name  
-      * The OLAP ETL task name  
-      * The ETL script name  
+      * Upload date and time  
+      * Document database name  
+      * OLAP ETL task name  
+      * ETL script name  
    * **File Upload Properties**, including -  
       * Destination Type  
         Can be Amazon S3, Amazon Glacier, Microdoft Azure, Google Cloud Platform, or FTP.  
+        {NOTE: }
+        If multiple destinations were used (e.g. Azure and S3), all destinations will be listed.  
+        {NOTE/}
       * Upload State  
       * Upload Type  
       * File Size  
