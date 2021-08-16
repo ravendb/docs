@@ -109,13 +109,14 @@
    * **File Upload Properties**, including -  
       * Destination Type  
         Can be Amazon S3, Amazon Glacier, Microdoft Azure, Google Cloud Platform, or FTP.  
-        {NOTE: }
-        If multiple destinations were used (e.g. Azure and S3), all destinations will be listed.  
-        {NOTE/}
       * Upload State  
       * Upload Type  
       * File Size  
       * Upload Speed  
+
+        {NOTE: }
+        If multiple destinations were used (e.g. Azure and S3), all destinations will be listed.  
+        {NOTE/}
        
 
 
