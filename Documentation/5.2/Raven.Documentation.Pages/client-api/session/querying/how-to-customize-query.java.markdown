@@ -22,11 +22,11 @@ The following query customization options are available in the `IDocumentQueryCu
 
 Allows you to modify the index query just before it's executed.
 
-{CODE customize_1_0@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_1_0@ClientApi\Session\Querying\HowToCustomize.java /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **action** | Action<[IndexQuery](../../../glossary/index-query)> | Action that will modify IndexQuery. |
+| **action** | Consumer<IndexQuery> | Action that will modify IndexQuery. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -34,7 +34,7 @@ Allows you to modify the index query just before it's executed.
 
 ### Example
 
-{CODE customize_1_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_1_1@ClientApi\Session\Querying\HowToCustomize.java /}
 
 {PANEL/}
 
@@ -42,11 +42,11 @@ Allows you to modify the index query just before it's executed.
 
 Allows you to retrieve a raw query result after it's executed.
 
-{CODE customize_1_0_0@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_1_0_0@ClientApi\Session\Querying\HowToCustomize.java /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **action** | Action<[QueryResult](../../../glossary/query-result)> | Action that has the query result. |
+| **action** | Consumer<QueryResult> | Action that has the query result. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -54,19 +54,19 @@ Allows you to retrieve a raw query result after it's executed.
 
 ### Example
 
-{CODE customize_1_1_0@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_1_1_0@ClientApi\Session\Querying\HowToCustomize.java /}
 
 {PANEL/}
 
 {PANEL:AfterStreamExecuted}
 
-Allows you to retrieve a raw (blittable) result of the streaming query.
+Allows you to retrieve a raw result of the streaming query.
 
-{CODE customize_1_0_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_1_0_1@ClientApi\Session\Querying\HowToCustomize.java /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **action** | Action<[BlittableJsonReaderObject](../../../glossary/blittable-json-reader-object)> | Action that has the single query result. |
+| **action** | Consumer<ObjectNode> | Action that has the single query result. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -74,15 +74,15 @@ Allows you to retrieve a raw (blittable) result of the streaming query.
 
 ### Example
 
-{CODE customize_1_1_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_1_1_1@ClientApi\Session\Querying\HowToCustomize.java /}
 
 {PANEL/}
 
 {PANEL:NoCaching}
 
-By default, queries are cached. To disable query caching use the `NoCaching` customization.
+By default, queries are cached. To disable query caching use the `noCaching` customization.
 
-{CODE customize_2_0@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_2_0@ClientApi\Session\Querying\HowToCustomize.java /}
 
 | Return Value | |
 | ------------- | ----- |
@@ -90,15 +90,15 @@ By default, queries are cached. To disable query caching use the `NoCaching` cus
 
 ### Example
 
-{CODE customize_2_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_2_1@ClientApi\Session\Querying\HowToCustomize.java /}
 
 {PANEL/}
 
 {PANEL:NoTracking}
 
-To disable entity tracking by `Session` use `NoTracking`. Usage of this option will prevent holding the query results in memory.
+To disable entity tracking by `session` use `noTracking`. Usage of this option will prevent holding the query results in memory.
 
-{CODE customize_3_0@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_3_0@ClientApi\Session\Querying\HowToCustomize.java /}
 
 | Return Value | |
 | ------------- | ----- |
@@ -106,7 +106,7 @@ To disable entity tracking by `Session` use `NoTracking`. Usage of this option w
 
 ### Example
 
-{CODE customize_3_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_3_1@ClientApi\Session\Querying\HowToCustomize.java /}
 
 {PANEL/}
 
@@ -119,7 +119,7 @@ themselves.
 This behavior can be configured using the `Projection` option, which takes a 
 `ProjectionBehavior`:  
 
-{CODE projectionbehavior@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java projectionbehavior@ClientApi\Session\Querying\HowToCustomize.java /}
 
 * `Default` - query will be satisfied with indexed data when possible, and directly 
 from the document when it is not.  
@@ -134,23 +134,19 @@ document does not contain the requested data, an exception is thrown.
 
 ### Example
 
-{CODE-TABS}
-{CODE-TAB:csharp:Query projectionbehavior_query@ClientApi\Session\Querying\HowToCustomize.cs /}
-{CODE-TAB:csharp:RawQuery projectionbehavior_rawquery@ClientApi\Session\Querying\HowToCustomize.cs /}
-{CODE-TAB:csharp:DocumentQuery projectionbehavior_docquery@ClientApi\Session\Querying\HowToCustomize.cs /}
-{CODE-TABS/}
+{CODE:java projectionbehavior_query@ClientApi\Session\Querying\HowToCustomize.java /}
 
 {PANEL/}
 
 {PANEL:RandomOrdering}
 
-To order results randomly, use the `RandomOrdering` method.
+To order results randomly, use the `randomOrdering` method.
 
-{CODE customize_4_0@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_4_0@ClientApi\Session\Querying\HowToCustomize.java /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **seed** | string | Seed used for ordering. Useful when repeatable random queries are needed. |
+| **seed** | String | Seed used for ordering. Useful when repeatable random queries are needed. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -158,7 +154,7 @@ To order results randomly, use the `RandomOrdering` method.
 
 ### Example
 
-{CODE customize_4_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_4_1@ClientApi\Session\Querying\HowToCustomize.java /}
 
 {PANEL/}
 
@@ -176,11 +172,11 @@ If the last Etag processed by the index is greater than the cutoff then the resu
 {NOTE/}
 
 
-{CODE customize_8_0@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_8_0@ClientApi\Session\Querying\HowToCustomize.java /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **waitTimeout** | TimeSpan? | Time to wait for an index to return non-stale results. The default is 15 seconds. |
+| **waitTimeout** | Duration | Time to wait for an index to return non-stale results. The default is 15 seconds. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -188,7 +184,7 @@ If the last Etag processed by the index is greater than the cutoff then the resu
 
 ### Example
 
-{CODE customize_8_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_8_1@ClientApi\Session\Querying\HowToCustomize.java /}
 
 {PANEL/}
 
