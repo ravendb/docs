@@ -106,7 +106,7 @@
       * Document database name  
       * OLAP ETL task name  
       * ETL script name  
-   * **File Upload Properties Per Destintion Type**, including -  
+   * **File Upload Properties per Destintion Type**, including -  
       * Upload State  
       * Upload Type  
       * File Size  
