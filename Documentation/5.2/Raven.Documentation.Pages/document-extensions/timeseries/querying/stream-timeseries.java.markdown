@@ -20,36 +20,33 @@
 
 ### Stream a time series directly:  
 
-Get a time series (e.g. [using `TimeSeriesFor.Get`](../../../document-extensions/timeseries/client-api/session/get/get-entries)), 
-and call `Stream()`/`StreamAsync()`.  
+Get a time series (using `timeSeriesFor().get()`, and call `Stream()`).  
 
-{CODE-BLOCK: csharp}
-IEnumerator<T> Stream(DateTime? from = null, DateTime? to = null, TimeSpan? offset = null);
-
-Task<IAsyncEnumerator<T>> StreamAsync(DateTime? from = null, DateTime? to = null, TimeSpan? offset = null);
+{CODE-BLOCK: java}
+<T> CloseableIterator<StreamResult<T>> stream(Date from = null, Date to = null, TimeSpan offset = null);
 {CODE-BLOCK/}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **from** | `DateTime?` | Start the stream from a certain time. If null, stream starts from the beginning of the time series. |
-| **to** | `DateTime?` | Stop the stream at a certain time. If null, stream stops at the end of the time series. |
-| **offset** | `TimeSpan?` | Change the timestamp of the streamed time series entries by adding this amount of time. |
+| **from** | `Date` | Start the stream from a certain time. If null, stream starts from the beginning of the time series. |
+| **to** | `Date` | Stop the stream at a certain time. If null, stream stops at the end of the time series. |
+| **offset** | `TimeSpan` | Change the timestamp of the streamed time series entries by adding this amount of time. |
 
 ### Stream results of time series queries:  
 
 This syntax is the same as the syntax for streaming query results in general, 
 found [here](../../../client-api/session/querying/how-to-stream-query-results).  
 
-{CODE stream_methods@DocumentExtensions/TimeSeries/StreamTimeSeries.cs /}
+{CODE:java stream_methods@DocumentExtensions/TimeSeries/StreamTimeSeries.java /}
 
-| Parameters | Type | Description |
-| - | - | - |
-| **query** | [IQueryable](../../../client-api/session/querying/how-to-query#session.query), [IDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery) | Query to stream results for. |
-| **streamQueryStats** | `out` [StreamQueryStatistics](../../../glossary/stream-query-statistics) | Information about performed query. |
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | [IDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery) | Query to stream results for. |
+| `Reference` **streamQueryStats** | StreamQueryStatistics | Information about performed query. |
 
-| Return Value | Description |
-| - | - |
-| IEnumerator<[StreamResult](../../../glossary/stream-result)> | Enumerator with entities. |
+| Return Value | |
+| ------------- | ----- |
+| CloseableIterator<StreamResult> | Iterator with entities. |
 
 {PANEL/}
 
@@ -57,21 +54,16 @@ found [here](../../../client-api/session/querying/how-to-stream-query-results).
 
 ### Example I
 
-Using `TimeSeriesFor`:
+Using `timeSeriesFor`:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync direct@DocumentExtensions/TimeSeries/StreamTimeSeries.cs /}
-{CODE-TAB:csharp:Async direct_async@DocumentExtensions/TimeSeries/StreamTimeSeries.cs /}
-{CODE-TABS/}
+{CODE:java direct@DocumentExtensions/TimeSeries/StreamTimeSeries.java /}
 
 ### Example II
 
-Using a `RawQuery`:
+Using a `rawQuery`:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync query@DocumentExtensions/TimeSeries/StreamTimeSeries.cs /}
-{CODE-TAB:csharp:Async query_async@DocumentExtensions/TimeSeries/StreamTimeSeries.cs /}
-{CODE-TABS/}
+{CODE:java query@DocumentExtensions/TimeSeries/StreamTimeSeries.java /}
+
 {PANEL/}
 
 ## Related articles
