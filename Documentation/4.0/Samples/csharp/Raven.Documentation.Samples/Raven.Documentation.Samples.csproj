@@ -3,7 +3,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NodaTime" Version="2.4.7" />
+    <PackageReference Include="NodaTime" Version="3.0.5" />
 	<PackageReference Include="RavenDB.Client" Version="4.0.11" />
     <PackageReference Include="RavenDB.TestDriver" Version="4.0.11" />
     <PackageReference Include="System.Reactive.Core" Version="4.3.2" />

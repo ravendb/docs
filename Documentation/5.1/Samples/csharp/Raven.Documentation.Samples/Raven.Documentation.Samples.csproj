@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NodaTime" Version="3.0.0" />
-    <PackageReference Include="RavenDB.Client" Version="5.1.5" />
-    <PackageReference Include="RavenDB.Embedded" Version="5.1.0-nightly-20200929-0713" />
-    <PackageReference Include="RavenDB.TestDriver" Version="5.1.0-nightly-20200929-0713" />
+    <PackageReference Include="NodaTime" Version="3.0.5" />
+    <PackageReference Include="RavenDB.Client" Version="5.1.10" />
+    <PackageReference Include="RavenDB.Embedded" Version="5.1.10" />
+    <PackageReference Include="RavenDB.TestDriver" Version="5.1.10" />
     <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
 

@@ -11,7 +11,7 @@ using Xunit;
 namespace RavenTestSample
 {
 	#region RavenTestSample1
-	class RavenTestSample : RavenTestBase
+	public class RavenTestSample : RavenTestBase
 	{
 		[Fact]
 		public void ThisIsMyTest()
