@@ -6,21 +6,24 @@ To restore a database from its backup, use **RestoreBackupOperation**.
 
 ## Syntax
 
-{CODE:csharp restore_1@ClientApi\Operations\Server\Restore.cs /}
+{CODE:nodejs restore_1@client-api\operations\server\Restore.js /}
 
-{CODE:csharp restore_2@ClientApi\Operations\Server\Restore.cs /}
+{CODE:nodejs restore_2@client-api\operations\server\Restore.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **DatabaseName** | string | Database name to create during the restore operation |
-| **BackupLocation** | string | Directory containing backup files |
-| **LastFileNameToRestore** | string | Used for partial restore |
-| **DataDirectory** | string | Optional: Database data directory |
-| **EncryptionKey** | string | Encryption key used for restore |
+| **databaseName** | string | Database name to create during the restore operation |
+| **lastFileNameToRestore** | string | Used for partial restore |
+| **dataDirectory** | string | Optional: Database data directory |
+| **encryptionKey** | string | Encryption key used for restore |
+| **disableOngoingTasks** | boolean | true/false to disable/enable Ongoing Tasks|
+| **skipIndexes** | boolean | true/false to disable/enable indexes import|
+| **type** | RestoreType | Encryption key used for restore |
+| **backupEncryptionSettings** | BackupEncryptionSettings | Backup encryption settings |
 
 ##Example
 
-{CODE:csharp restore_3@ClientApi\Operations\Server\Restore.cs /}
+{CODE:nodejs restore_3@client-api\operations\server\Restore.js /}
 
 ## Related Articles
 
