@@ -39,9 +39,9 @@ The index can have more fields defined, just like in any other ordinary index.
 
 | CreateFieldOptions | | |
 | ------------- | ------------- | ----- |
-| **Storage** | `FieldStorage?` | More information about storing data in index can be found [here](../indexes/storing-data-in-index). |
-| **Indexing** | `FieldIndexing?` | More information about analyzers in index can be found [here](../indexes/using-analyzers). |
-| **TermVector** | `FieldTermVector?` | More information about term vectors in index can be found [here](../indexes/using-term-vectors). |
+| **Storage** | `FieldStorage` | More information about storing data in index can be found [here](../indexes/storing-data-in-index). |
+| **Indexing** | `FieldIndexing` | More information about analyzers in index can be found [here](../indexes/using-analyzers). |
+| **TermVector** | `FieldTermVector` | More information about term vectors in index can be found [here](../indexes/using-term-vectors). |
 
 ## Example
 

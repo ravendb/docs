@@ -30,9 +30,9 @@ public class SmugglerSample {
                 DatabaseSmuggler northwindSmuggler = store.smuggler().forDatabase("Northwind");
                 //endregion
 
-                DatabaseSmugglerExportOptions smugglerExportOptions =null;
-                exportOptions=null;
-                importOptions=null;
+                DatabaseSmugglerExportOptions smugglerExportOptions = null;
+                exportOptions = null;
+                importOptions = null;
 
                 //region export_syntax
                 //export

@@ -1,6 +1,6 @@
 ﻿# What is Smuggler
 
-Smuggler gives you the ability to export or import data from or to a database using JSON format. It is exposed via the `DocumentStore.Smuggler` property.
+Smuggler gives you the ability to export or import data from or to a database using JSON format. It is exposed via the `DocumentStore.smuggler()`.
 
 {PANEL:ForDatabase}
 
