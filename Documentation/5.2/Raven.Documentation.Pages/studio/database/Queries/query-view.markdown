@@ -104,15 +104,15 @@
 
 {NOTE: }
 
-* Retrieved [Time Series](../../../document-extensions/timeseries/overview) data enhances 
-  the results view with specialized columns and a graphical view.  
-  Learn more about it [here](../../../studio/database/document-extensions/time-series#querying-time-series).  
-* [Spatial Queries](../../../studio/database/queries/spatial-queries-map-view) enhance the 
-  results view with a graphical tab that [displays geographical locations](../../../studio/database/queries/spatial-queries-map-view#spatial-map-view) 
+Some RavenDB features enhance the results view.  
+
+* [Time Series](../../../document-extensions/timeseries/overview) query results include additional columns and 
+  a graphical view. Learn more about it [here](../../../studio/database/document-extensions/time-series#querying-time-series).  
+* [Spatial Queries](../../../studio/database/queries/spatial-queries-map-view) results include a graphical tab 
+  that [displays geographical locations](../../../studio/database/queries/spatial-queries-map-view#spatial-map-view) 
   on the world map.  
-* [Graph Queries](../../../indexes/querying/graph/graph-queries-overview) also present 
-  query results [graphically](../../../indexes/querying/graph/graph-queries-overview#creating-graph-queries) 
-  using a specialized tab.  
+* [Graph Queries](../../../indexes/querying/graph/graph-queries-overview) also present query results 
+  [graphically](../../../indexes/querying/graph/graph-queries-overview#creating-graph-queries) in an additional tab.  
 
 {NOTE/}
 
