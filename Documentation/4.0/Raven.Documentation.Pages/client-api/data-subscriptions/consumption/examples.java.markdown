@@ -11,8 +11,8 @@ In this page:
 [Subscription that ends when no documents left](../../../client-api/data-subscriptions/consumption/examples#subscription-that-ends-when-no-documents-left)  
 [Worker that processes dynamic objects](../../../client-api/data-subscriptions/consumption/examples#worker-that-processes-dynamic-objects)  
 [Subscription that works with lowest level API](../../../client-api/data-subscriptions/consumption/examples#subscription-that-works-with-lowest-level-api)  
-[Two subscription workers that are waiting for each other](../../../client-api/data-subscriptions/consumption/examples#two-subscription-workers-that-are-waiting-for-each-other)  
-
+[Subscription workers with failover on other nodes](../../../client-api/data-subscriptions/consumption/examples#subscription-with-failover-on-other-nodes)  
+[Subscription workers with a primary and secondary node](../../../client-api/data-subscriptions/consumption/examples#subscription-workers-with-a-primary-and-secondary-node)
 {NOTE/}
 
 ---
@@ -52,13 +52,21 @@ Here we create a worker that processes received data as ObjectNode objects.
 {PANEL/}
 
 
-{PANEL:Two subscription workers that are waiting for each other}
+{PANEL:Subscription workers with failover on other nodes}
+
+In this configuration, any available node will create a worker. If that worker fails, another available node will take over.
+
+{CODE waitforfree@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
+{PANEL/}
+
+{PANEL:Subscription workers with a primary and secondary node}
 
 Here we create two workers:  
-* The main worker with the `TAKE_OVER` strategy that will take over the other one and will take the lead  
-* The secondary worker that will wait for the first one fail (due to machine failure etc.)
+* The primary worker with the `TakeOver` strategy will take the lead over the secondary worker
+* The secondary worker will takeover if the primary fails (due to machine failure etc.)
 
-The main worker:
+The primary worker:
 
 {CODE:java waiting_subscription_1@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 

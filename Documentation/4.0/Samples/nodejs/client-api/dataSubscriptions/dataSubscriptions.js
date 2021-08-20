@@ -434,22 +434,43 @@ const session = store.openSession();
 
     class Order {}
 
+    async function waitForFreeSubscription() {
+        //region waitforfree
+        const options = {
+            subscriptionName,
+            strategy: "WaitForFree",
+            documentType: Order
+        };
+
+        const worker = store.subscriptions.getSubscriptionWorker(options);
+
+        worker.on("batch", (batch, callback) => {
+            // your logic
+            callback();
+        });
+
+        worker.on("error", err => {
+            // retry
+        });
+        //endregion
+    }
+
     async function twoSubscription1() {
         //region waiting_subscription_1
-        const options1 = {
+        const primaryWorkerOptions = {
             subscriptionName,
             strategy: "TakeOver",
             documentType: Order
         };
 
-        const worker1 = store.subscriptions.getSubscriptionWorker(options1);
+        const primaryWorker = store.subscriptions.getSubscriptionWorker(primaryWorkerOptions);
 
-        worker1.on("batch", (batch, callback) => {
+        primaryWorker.on("batch", (batch, callback) => {
             // your logic
             callback();
         });
 
-        worker1.on("error", err => {
+        primaryWorker.on("error", err => {
             // retry
         });
         //endregion
@@ -457,20 +478,20 @@ const session = store.openSession();
     
     async function twoSubscription2() {
         //region waiting_subscription_2
-        const options2 = {
+        const secondaryWorkerOptions = {
             subscriptionName,
             strategy: "WaitForFree",
             documentType: Order
         };
 
-        const worker2 = store.subscriptions.getSubscriptionWorker(options2);
+        const secondaryWorker = store.subscriptions.getSubscriptionWorker(secondaryWorkerOptions);
 
-        worker2.on("batch", (batch, callback) => {
+        secondaryWorker.on("batch", (batch, callback) => {
             // your logic
             callback();
         });
 
-        worker2.on("error", err => {
+        secondaryWorker.on("error", err => {
             // retry
         });
         //endregion

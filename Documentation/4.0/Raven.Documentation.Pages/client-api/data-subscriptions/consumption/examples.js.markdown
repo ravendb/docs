@@ -11,8 +11,8 @@ In this page:
 [Subscription that ends when no documents left](../../../client-api/data-subscriptions/consumption/examples#subscription-that-ends-when-no-documents-left)  
 [Worker that processes dynamic objects](../../../client-api/data-subscriptions/consumption/examples#worker-that-processes-dynamic-objects)  
 [Subscription that works with lowest level API](../../../client-api/data-subscriptions/consumption/examples#subscription-that-works-with-lowest-level-api)  
-[Two subscription workers that are waiting for each other](../../../client-api/data-subscriptions/consumption/examples#two-subscription-workers-that-are-waiting-for-each-other)  
-
+[Subscription workers with failover on other nodes](../../../client-api/data-subscriptions/consumption/examples#subscription-with-failover-on-other-nodes)  
+[Subscription workers with a primary and secondary node](../../../client-api/data-subscriptions/consumption/examples#subscription-workers-with-a-primary-and-secondary-node)
 {NOTE/}
 
 ---
@@ -44,15 +44,21 @@ This is useful for an ad-hoc single use processing that the user wants to be sur
 {PANEL/}
 
 
-{PANEL:Two subscription workers that are waiting for each other}
+{PANEL:Subscription workers with failover on other nodes}
 
-Here we create two workers:
+In this configuration, any available node will create a worker. If that worker fails, another available node will take over.
 
-* The main worker with the `TakeOver` strategy that will take over the other one and will take the lead  
+{CODE waitforfree@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
-* The secondary worker that will wait for the first one fail (due to machine failure etc.)
+{PANEL/}
 
-The main worker:
+{PANEL:Subscription workers with a primary and secondary node}
+
+Here we create two workers:  
+* The primary worker with the `TakeOver` strategy will take the lead over the secondary worker
+* The secondary worker will takeover if the primary fails (due to machine failure etc.)
+
+The primary worker:
 
 {CODE:nodejs waiting_subscription_1@client-api\dataSubscriptions\dataSubscriptions.js /}
 

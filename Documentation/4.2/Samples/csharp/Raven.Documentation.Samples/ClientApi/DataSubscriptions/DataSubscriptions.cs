@@ -760,11 +760,20 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             }
         }
 
+        public async Task WaitForFreeSubscription(DocumentStore store, string subscriptionName)
+        {
+            #region waitforfree
+            var worker = store.Subscriptions.GetSubscriptionWorker<Order>(new SubscriptionWorkerOptions(subscriptionName)
+            {
+                Strategy = SubscriptionOpeningStrategy.WaitForFree
+            });
+            #endregion
+        }
 
         public async Task TwoSubscriptions(DocumentStore store, string subscriptionName)
         {
             #region waiting_subscription_1
-            var worker = store.Subscriptions.GetSubscriptionWorker<Order>(new SubscriptionWorkerOptions(subscriptionName)
+            var primaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(new SubscriptionWorkerOptions(subscriptionName)
             {
                 Strategy = SubscriptionOpeningStrategy.TakeOver
             });
@@ -773,7 +782,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             {
                 try
                 {
-                    await worker.Run(x =>
+                    await primaryWorker.Run(x =>
                     {
                         // your logic
                     });
@@ -786,7 +795,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             #endregion
 
             #region waiting_subscription_2
-            var worker2 = store.Subscriptions.GetSubscriptionWorker<Order>(new SubscriptionWorkerOptions(subscriptionName)
+            var secondaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(new SubscriptionWorkerOptions(subscriptionName)
             {
                 Strategy = SubscriptionOpeningStrategy.WaitForFree
             });
@@ -795,7 +804,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             {
                 try
                 {
-                    await worker.Run(x =>
+                    await secondaryWorker.Run(x =>
                     {
                         // your logic
                     });

@@ -80,12 +80,13 @@ This relationship and interoperation is configured by the `SubscriptionConnectio
 The strategy field is an enum, having the following values:  
 
 * `OPEN_IF_FREE` (default) - the server will allow the worker to connect only if there isn't any other currently connected workers.  
-  If there is a existing connection, the incoming worker will throw a SubscriptionInUseException.  
+  If there is a existing connection, the incoming worker will throw a `SubscriptionInUseException`.  
 * `WAIT_FOR_FREE` - If the client currently cannot open the subscription because it is used by another client, it will wait for the previous client to disconnect and only then will connect.  
-  This is useful in client failover scenarios where there is one active client and another one already waiting to take its place.  
+  This is useful in implementing client failover where there is always one active client and other clients are waiting to take its place.  
 * `TAKE_OVER` - the server will allow an incoming connection to overthrow an existing one. It will behave according to the existing connection strategy:
-  * The existing connection has a strategy that is not `TAKE_OVER`. In this case, the incoming connection will take over it causing the existing connection to throw a SubscriptionInUseException exception.  
-  * The existing connection has a strategy that is `TAKE_OVER`. In this case, the incoming connection will throw a SubscriptionInUseException exception.  
+  * The existing connection has a strategy that is not `TAKE_OVER`. In this case, the incoming connection will take over it causing the existing connection to throw a `SubscriptionInUseException` exception.  
+  * The existing connection has a strategy that is `TAKE_OVER`. In this case, the incoming connection will throw a `SubscriptionInUseException` exception.  
+  This is useful in scenarios where you want to assign a primary processing node e.g. because it's a more powerful node or it's closer to another resource.
 {PANEL/}
 
 ## Related Articles
