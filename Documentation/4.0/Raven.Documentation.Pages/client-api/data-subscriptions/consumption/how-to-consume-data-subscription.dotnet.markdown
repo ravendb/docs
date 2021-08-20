@@ -79,7 +79,7 @@ Nevertheless, there are scenarios where it is required to interact between an ex
 This relationship and interoperation is configured by the `SubscriptionConnectionOptions` `Strategy` field.  
 The strategy field is an enum, having the following values:  
 
-* `OpenIfFree` - the server will allow the worker to connect only if there isn't any other currently connected workers.  
+* `OpenIfFree` (default) - the server will allow the worker to connect only if there isn't any other currently connected workers.  
   If there is a existing connection, the incoming worker will throw a SubscriptionInUseException.  
 * `WaitForFree` - If the client currently cannot open the subscription because it is used by another client, it will wait for the previous client to disconnect and only then will connect.  
   This is useful in client failover scenarios where there is one active client and another one already waiting to take its place.  
