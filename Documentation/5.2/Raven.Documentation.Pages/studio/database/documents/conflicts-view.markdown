@@ -1,4 +1,4 @@
-﻿# Conflicts View
+﻿# Documents: Conflicts View
 ---
 
 {NOTE: }
