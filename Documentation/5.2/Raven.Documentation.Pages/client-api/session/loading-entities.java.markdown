@@ -27,7 +27,7 @@ The most basic way to load a single entity is to use one of the `load` methods.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **id** | String | Identifier of a document that will be loaded. |
+| **id** | `String` | Identifier of a document that will be loaded. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -44,7 +44,7 @@ The most basic way to load a single entity is to use one of the `load` methods.
 {PANEL:Load with Includes}
 
 When there is a 'relationship' between documents, those documents can be loaded in a 
-single request call using the `Include + Load` methods. Learn more in 
+single request call using the `include + load` methods. Learn more in 
 [How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships).  
 See also [including counters](../../document-extensions/counters/counters-and-other-features#including-counters) 
 and [including time series](../../document-extensions/timeseries/client-api/session/include/overview).
@@ -53,12 +53,12 @@ and [including time series](../../document-extensions/timeseries/client-api/sess
 
 | Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **path** | `string` or Expression | Path in documents in which the server should look for 'referenced' documents. |
-| **ids ** | `string` | Ids to load. |
+| **path** | `String` | Path in documents in which the server should look for 'referenced' documents. |
+| **ids** | `String` | Ids to load. |
 
 | Return Type | Description |
 | ------------- | ----- |
-| `ILoaderWithInclude` | The `Include` method by itself does not materialize any requests but returns loader containing methods such as `Load`. |
+| `ILoaderWithInclude` | The `include` method by itself does not materialize any requests but returns loader containing methods such as `load`. |
 
 ### Example I
 
@@ -134,12 +134,12 @@ The method is accessible from the `session.advanced()` operations.
 | Parameter | Type | Description |
 | ------------- | ------------- | ----- |
 | **clazz** | `Class<T>` | The class of a document to be loaded. |
-| **id** | `string` | The identifier of a document to be loaded. |
-| **changeVector** | `string` | The change vector you want to compare with the server-side change vector. If the change vectors match, the document is not loaded. |
+| **id** | `String` | The identifier of a document to be loaded. |
+| **changeVector** | `String` | The change vector you want to compare with the server-side change vector. If the change vectors match, the document is not loaded. |
 
 | Return Type | Description |
 | ------------- | ----- |
-| ConditionalLoadResult<T>`(Class<T>, string ChangeVector)` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector.<br/>If the change vectors match, the method returns `default` as the entity, and the current change vector.<br/>If the specified document, the method returns only `default` without a change vector. |
+| ConditionalLoadResult<T>`(Class<T>, String ChangeVector)` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector.<br/>If the change vectors match, the method returns `default` as the entity, and the current change vector.<br/>If the specified document, the method returns only `default` without a change vector. |
 
 ### Example
 
@@ -153,14 +153,14 @@ Entities can be streamed from the server using one of the following `stream` met
 
 {CODE:java loading_entities_5_0@ClientApi\Session\LoadingEntities.java /}
 
-| Parameters | | |
+| Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **startsWith** | String | prefix for which documents should be streamed |
-| **matches** | String | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
-| **start** | int | number of documents that should be skipped  |
-| **pageSize** | int | maximum number of documents that will be retrieved |
-| **skipAfter** | String | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
-| Reference streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+| **startsWith** | `String` | prefix for which documents should be streamed |
+| **matches** | `String` | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
+| **start** | `int` | number of documents that should be skipped  |
+| **pageSize** | `int` | maximum number of documents that will be retrieved |
+| **skipAfter** | `String` | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
+| **streamQueryStats** | `Reference streamQueryStats (out parameter)` | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -194,7 +194,7 @@ To check if an entity is attached to a session, e.g. it has been loaded previous
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **id** | String | Entity ID for which the check should be performed. |
+| **id** | `String` | Entity ID for which the check should be performed. |
 
 | Return Value | |
 | ------------- | ----- |
