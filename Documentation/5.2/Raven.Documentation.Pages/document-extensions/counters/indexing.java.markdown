@@ -21,22 +21,19 @@ that inherits from `AbstractCountersIndexCreationTask` or `AbstractJavaScriptCou
 {PANEL:Syntax}
 
 In order to index counter values, create an index that inherits from `AbstractCountersIndexCreationTask`. 
-Next, choose one of these two methods which take the index expression:  
+Next, use these method which take the index expression:  
 
-{CODE-BLOCK:csharp }
-protected void AddMapForAll(Expression<Func<IEnumerable<CounterEntry>, IEnumerable>> map)
-
-protected void AddMap(string counter, Expression<Func<IEnumerable<CounterEntry>, IEnumerable>> map)
+{CODE-BLOCK:java }
+ protected void addMap(String map)
 {CODE-BLOCK/}
 
-`AddMapForAll` indexes all the counters in the indexed documents. `AddMap` only indexes the counters with 
+`AddMap` only indexes the counters with 
 the specified name.  
 
 Examples of indexes using each method:  
 
 {CODE-TABS}
-{CODE-TAB:csharp:AddMap index_1@Indexes\IndexingCounters.cs /}
-{CODE-TAB:csharp:AddMapForAll index_2@Indexes\IndexingCounters.cs /}
+{CODE-TAB:java:AddMap index_1@Indexes\IndexingCounters.java /}
 {CODE-TABS/}  
 <br/>
 
@@ -48,22 +45,59 @@ Creating an index inheriting from `AbstractJavaScriptCountersIndexCreationTask` 
 you to write your map and reduce functions in JavaScript.  
 Learn more about JavaScript indexes [here](../../indexes/javascript-indexes).  
 
-{CODE-BLOCK: csharp}
-public class AbstractJavaScriptCountersIndexCreationTask : AbstractCountersIndexCreationTask
+{CODE-BLOCK: java}
+public class AbstractJavaScriptCountersIndexCreationTask extends AbstractIndexCreationTaskBase<CountersIndexDefinition> 
 {
-    public HashSet<string> Maps;
-    protected string Reduce;
+    private final CountersIndexDefinition _definition = new CountersIndexDefinition();
+
+    public Set<String> getMaps() {
+        return _definition.getMaps();
+    }
+
+    public void setMaps(Set<String> maps) {
+        _definition.setMaps(maps);
+    }
+
+    public Map<String, IndexFieldOptions> getFields() {
+        return _definition.getFields();
+    }
+
+    public void setFields(Map<String, IndexFieldOptions> fields) {
+        _definition.setFields(fields);
+    }
+
+    protected String getReduce() {
+        return _definition.getReduce();
+    }
+
+    protected void setReduce(String reduce) {
+        _definition.setReduce(reduce);
+    }
+
+    @Override
+    public boolean isMapReduce() {
+        return getReduce() != null;
+    }
+
+    /**
+     * @return If not null than each reduce result will be created as a document in the specified collection name.
+     */
+    protected String getOutputReduceToCollection() {
+        return _definition.getOutputReduceToCollection();
+    }
 }
+
+
 {CODE-BLOCK/}
 
 | Property | Type | Description |
 | - | - | - |
-| **Maps** | `HashSet<string>` | The set of javascript map functions |
-| **Reduce** | `string` | The javascript reduce function |
+| **Maps** | `Set<String>` | The set of javascript map functions |
+| **Reduce** | `String` | The javascript reduce function |
 
 Example:  
 
-{CODE:csharp index_3@DocumentExtensions\Counters\IndexingCounters.cs /}
+{CODE:java index_3@DocumentExtensions\Counters\IndexingCounters.java /}
 
 ---
 
@@ -72,21 +106,17 @@ Example:
 While indexes inheriting from `AbstractIndexCreationTask` cannot index counter _values_, the `CounterNamesFor` 
 method is available which returns the names of all counters for a specified document:  
 
-{CODE:csharp syntax@Indexes\IndexingCounters.cs /}
+{CODE:java syntax@Indexes\IndexingCounters.java /}
 
 Example of index using `CounterNamesFor`:  
 
-{CODE:csharp index_0@Indexes\IndexingCounters.cs /}
+{CODE:java index_0@Indexes\IndexingCounters.java /}
 
 {PANEL/}
 
 {PANEL: Querying the Index}  
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync query1@Indexes\IndexingCounters.cs /}
-{CODE-TAB:csharp:Async query2@Indexes\IndexingCounters.cs /}
-{CODE-TAB:csharp:DocumentQuery query3@Indexes\IndexingCounters.cs /}
-{CODE-TABS/}
+{CODE:java query1@Indexes\IndexingCounters.java /}
 
 {PANEL/}
 
