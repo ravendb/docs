@@ -8,21 +8,26 @@ The event is invoked when a particular action is executed on an entity or queryi
 Subscribing an event can be done in the `DocumentStore` object, which will be valid for all future sessions or subscribing in an already opened session with `session.advanced()` which will overwrite the existing event for the current session. 
 {INFO/}
 
-{PANEL:OnBeforeStore}
+{PANEL:beforeStoreListener}
 
 This event is invoked as a part of `saveChanges` but before it is actually sent to the server.  
 It should be defined with this signature:  
 
 {CODE-BLOCK: java}
-private void onBeforeStoreEvent(object sender, BeforeStoreEventArgs args);
+public void addBeforeStoreListener(EventHandler<BeforeStoreEventArgs> handler);
+
+public void removeBeforeStoreListener(EventHandler<BeforeStoreEventArgs> handler);
 {CODE-BLOCK/}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **sender** | `DocumentSession` | The session on which `saveChanges()` has been called, triggering this event |
-| **args** | `BeforeStoreEventArgs` | `args` contains the session on which `saveChanges()` has been called, the ID of the document being Stored, the document's metadata, and the document itself. |
+| **handler** | `EventHandler<BeforeStoreEventArgs>` | handle this event |
 
 The class `BeforeStoreEventArgs`:  
+
+{CODE-BLOCK: java}
+public BeforeStoreEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity)
+{CODE-BLOCK/}
 
 {CODE-BLOCK: java}
 public class BeforeStoreEventArgs
@@ -31,7 +36,31 @@ public class BeforeStoreEventArgs
     private final InMemoryDocumentSessionOperations session;
     private final String documentId;
     private final Object entity;
-}
+
+
+    public InMemoryDocumentSessionOperations getSession() {
+        return session;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public Object getEntity() {
+        return entity;
+    }
+
+    public boolean isMetadataAccessed() {
+        return _documentMetadata != null;
+    }
+
+    public IMetadataDictionary getDocumentMetadata() {
+        if (_documentMetadata == null) {
+            _documentMetadata = session.getMetadataFor(entity);
+        }
+
+        return _documentMetadata;
+    }
 {CODE-BLOCK/}
 
 ### Example
@@ -46,32 +75,56 @@ After we subscribe to the event, every stored entity will invoke the method.
 
 {PANEL/}
 
-{PANEL:OnBeforeDelete}
+{PANEL:beforeDeleteListener}
 
 This event is invoked by `delete(id)` or `delete(entity)`. It is only executed when `saveChanges()` 
 is called, but before the commands are actually sent to the server.  
 It should be defined with this signature:  
 
 {CODE-BLOCK: java}
-private void onBeforeDeleteEvent(object sender, BeforeDeleteEventArgs args);
+public void addBeforeDeleteListener(EventHandler<BeforeDeleteEventArgs> handler);
+
+public void removeBeforeDeleteListener(EventHandler<BeforeDeleteEventArgs> handler);
 {CODE-BLOCK/}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **sender** | `DocumentSession` | The session on which `saveChanges()` has been called, triggering this event |
-| **args** | `BeforeDeleteEventArgs` | `args` contains the session on which `saveChanges()` has been called, the ID of the document being deleted, the document's metadata, and the document itself. |
+| **handler** | `EventHandler<BeforeDeleteEventArgs>` | handle this event |
 
 The class `BeforeDeleteEventArgs`:  
 
 {CODE-BLOCK: java}
+ public BeforeDeleteEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity)
+{CODE-BLOCK/}
+
+{CODE-BLOCK: java}
 public class BeforeDeleteEventArgs
 {
-    public InMemoryDocumentSessionOperations Session;
-    public string DocumentId;
-    public object Entity;
-    public IMetadataDictionary DocumentMetadata;
-    internal bool MetadataAccessed;
-}
+    private IMetadataDictionary _documentMetadata;
+    private final InMemoryDocumentSessionOperations session;
+    private final String documentId;
+    private final Object entity;
+
+    public InMemoryDocumentSessionOperations getSession() {
+        return session;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public Object getEntity() {
+        return entity;
+    }
+
+    public IMetadataDictionary getDocumentMetadata() {
+        if (_documentMetadata == null) {
+            _documentMetadata = session.getMetadataFor(entity);
+        }
+
+        return _documentMetadata;
+    }
+
 {CODE-BLOCK/}
 
 ### Example
@@ -86,30 +139,60 @@ and subscribe it to the session:
 
 {PANEL/}
 
-{PANEL:OnAfterSaveChanges}
+{PANEL:afterSaveChangesListener}
 
 This event is invoked after the `saveChanges` is returned.  
 It should be defined with this signature:  
 
 {CODE-BLOCK: java}
-private void OnAfterSaveChangesEvent(object sender, AfterSaveChangesEventArgs args);
+public void addAfterSaveChangesListener(EventHandler<AfterSaveChangesEventArgs> handler);
+
+public void removeAfterSaveChangesListener(EventHandler<AfterSaveChangesEventArgs> handler);
 {CODE-BLOCK/}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **sender** | `DocumentSession` | The session on which `saveChanges()` has been called, triggering this event |
-| **args** | `AfterSaveChangesEventArgs` | `args` contains the session on which `saveChanges()` has been called, the ID of the document being deleted, and the document itself. |
+| **handler** | `EventHandler<AfterSaveChangesEventArgs>` | handle this event |
+
 
 The class `AfterSaveChangesEventArgs`:
 
 {CODE-BLOCK: java}
 public class AfterSaveChangesEventArgs
 {
-     private IMetadataDictionary _documentMetadata;
+    private IMetadataDictionary _documentMetadata;
     private final InMemoryDocumentSessionOperations session;
     private final String documentId;
     private final Object entity;
+
+    public AfterSaveChangesEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity) {
+        this.session = session;
+        this.documentId = documentId;
+        this.entity = entity;
+    }
+
+    public InMemoryDocumentSessionOperations getSession() {
+        return session;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public Object getEntity() {
+        return entity;
+    }
+
+    public IMetadataDictionary getDocumentMetadata() {
+        if (_documentMetadata == null) {
+            _documentMetadata = session.getMetadataFor(entity);
+        }
+
+        return _documentMetadata;
+    }
 }
+
+
 {CODE-BLOCK/}
 
 ### Example
@@ -120,19 +203,20 @@ If we want to log each entity that was saved, we can create a method as follows:
 
 {PANEL/}
 
-{PANEL:OnBeforeQuery}
+{PANEL:beforeQueryListener}
 
 This event is invoked just before the query is sent to the server. 
 It should be defined with this signature:  
 
 {CODE-BLOCK: java}
-private void OnBeforeQueryEvent(object sender, BeforeQueryEventArgs args);
+public void addBeforeQueryListener(EventHandler<BeforeQueryEventArgs> handler);
+
+public void removeBeforeQueryListener(EventHandler<BeforeQueryEventArgs> handler);
 {CODE-BLOCK/}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **sender** | `DocumentSession` | The session on which `saveChanges()` has been called, triggering this event |
-| **args** | `BeforeQueryEventArgs` | `args` contains the session on which `saveChanges()` has been called, and the query's [query customizations](../../../client-api/session/querying/how-to-customize-query). |
+| **handler** | `EventHandler<BeforeQueryEventArgs>` | handle this event |
 
 The class `BeforeQueryEventArgs`:  
 
@@ -141,6 +225,14 @@ public class BeforeQueryEventArgs
 {
     private final InMemoryDocumentSessionOperations session;
     private final IDocumentQueryCustomization queryCustomization;
+
+    public InMemoryDocumentSessionOperations getSession() {
+        return session;
+    }
+
+    public IDocumentQueryCustomization getQueryCustomization() {
+        return queryCustomization;
+    }
 {CODE-BLOCK/}
 
 ### Example I
@@ -157,19 +249,20 @@ If you want each query to [wait for non-stale results](../../../indexes/stale-in
 
 {PANEL/}
 
-{PANEL:OnBeforeConversionToDocument}
+{PANEL:beforeConversionToDocumentListener}
 
 This event is invoked before conversion of an entity to blittable JSON document. E.g. it's called when sending a document to a server.  
 It should be defined with this signature:  
 
 {CODE-BLOCK: java}
-private void onBeforeConversionToDocumentEvent(object sender, BeforeConversionToDocumentEventArgs args);
+public void addBeforeConversionToDocumentListener(EventHandler<BeforeConversionToDocumentEventArgs> handler);
+
+public void removeBeforeConversionToDocumentListener(EventHandler<BeforeConversionToDocumentEventArgs> handler);
 {CODE-BLOCK/}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **sender** | `DocumentSession` | The session on which `saveChanges()` has been called, triggering this event |
-| **args** | `BeforeConversionToDocumentEventArgs` | `args` contains the session on which `saveChanges()` has been called, the ID of the document being ConversionToDocumentd, and the document itself. |
+| **handler** | `EventHandler<BeforeConversionToDocumentEventArgs>` | handle this event |
 
 The class `BeforeConversionToDocumentEventArgs`:  
 
@@ -179,6 +272,24 @@ public class BeforeConversionToDocumentEventArgs
     private String _id;
     private Object _entity;
     private InMemoryDocumentSessionOperations _session;
+
+    public BeforeConversionToDocumentEventArgs(InMemoryDocumentSessionOperations session, String id, Object entity) {
+        _session = session;
+        _id = id;
+        _entity = entity;
+    }
+
+    public String getId() {
+        return _id;
+    }
+
+    public Object getEntity() {
+        return _entity;
+    }
+
+    public InMemoryDocumentSessionOperations getSession() {
+        return _session;
+    }
 }
 {CODE-BLOCK/}
 
@@ -188,19 +299,20 @@ public class BeforeConversionToDocumentEventArgs
 
 {PANEL/}
 
-{PANEL:OnAfterConversionToDocument}
+{PANEL:afterConversionToDocumentListener}
 
 This event is invoked after conversion of an entity to blittable JSON document.  
 It should be defined with this signature:  
 
 {CODE-BLOCK: java}
-private void OnAfterConversionToDocumentEvent(object sender, AfterConversionToDocumentEventArgs args);
+public void addAfterConversionToDocumentListener(EventHandler<AfterConversionToDocumentEventArgs> handler);
+
+public void removeAfterConversionToDocumentListener(EventHandler<AfterConversionToDocumentEventArgs> handler);
 {CODE-BLOCK/}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **sender** | `DocumentSession` | The session on which `saveChanges()` has been called, triggering this event |
-| **args** | `AfterConversionToDocumentEventArgs` | `args` contains the session on which `saveChanges()` has been called, the ID of the document being ConversionToDocumentd, and the document itself. |
+| **handler** | `EventHandler<AfterConversionToDocumentEventArgs>` | handle this event |
 
 The class `AfterConversionToDocumentEventArgs`:  
 
@@ -211,6 +323,29 @@ public class AfterConversionToDocumentEventArgs
     private Object _entity;
     private Reference<ObjectNode> _document;
     private InMemoryDocumentSessionOperations _session;
+
+    public AfterConversionToDocumentEventArgs(InMemoryDocumentSessionOperations session, String id, Object entity, Reference<ObjectNode> document) {
+        _session = session;
+        _id = id;
+        _entity = entity;
+        _document = document;
+    }
+
+    public String getId() {
+        return _id;
+    }
+
+    public Object getEntity() {
+        return _entity;
+    }
+
+    public Reference<ObjectNode> getDocument() {
+        return _document;
+    }
+
+    public InMemoryDocumentSessionOperations getSession() {
+        return _session;
+    }
 }
 {CODE-BLOCK/}
 
@@ -220,20 +355,91 @@ public class AfterConversionToDocumentEventArgs
 
 {PANEL/}
 
-{PANEL:OnBeforeConversionToEntity}
+{PANEL:beforeConversionToEntityListener}
 
 This event is invoked before conversion of a JSON document to an entity. E.g. it's called when loading a document.  
 
 It takes the argument `BeforeConversionToEntityEventArgs`, that consists of a JSON document, its ID and type, and the session instance.  
 
-{CODE:Java on_before_conversion_to_entity@ClientApi\Session\Events.java /}
+{CODE-BLOCK: java}
+public void addBeforeConversionToEntityListener(EventHandler<BeforeConversionToEntityEventArgs> handler);
 
+public void removeBeforeConversionToEntityListener(EventHandler<BeforeConversionToEntityEventArgs> handler);
+{CODE-BLOCK/}
+
+| Parameters | Type | Description |
+| - | - | - |
+| **handler** | `EventHandler<BeforeConversionToEntityEventArgs>` | handle this event |
+
+{CODE-BLOCK: java}
+public class BeforeConversionToEntityEventArgs{
+
+    private String _id;
+    private Class _type;
+    private Reference<ObjectNode> _document;
+    private InMemoryDocumentSessionOperations _session;
+
+    public String getId() {
+        return _id;
+    }
+
+    public Class getType() {
+        return _type;
+    }
+
+    public Reference<ObjectNode> getDocument() {
+        return _document;
+    }
+
+    public InMemoryDocumentSessionOperations getSession() {
+        return _session;
+    }
+}
+{CODE-BLOCK/}
+
+{CODE:Java on_before_conversion_to_entity@ClientApi\Session\Events.java /}
 
 {PANEL/}
 
-{PANEL:OnAfterConversionToEntity}
+{PANEL:afterConversionToEntityListener}
 
 This event is invoked after conversion of a JSON document to an entity. It takes the argument `AfterConversionToEntityEventArgs`, that consists of a JSON document, its ID, the session instance and a converted entity.  
+
+{CODE-BLOCK: java}
+public void addAfterConversionToEntityListener(EventHandler<AfterConversionToEntityEventArgs> handler);
+
+public void removeAfterConversionToEntityListener(EventHandler<AfterConversionToEntityEventArgs> handler);
+{CODE-BLOCK/}
+
+| Parameters | Type | Description |
+| - | - | - |
+| **handler** | `EventHandler<AfterConversionToEntityEventArgs>` | handle this event |
+
+{CODE-BLOCK: java}
+public class AfterConversionToEntityEventArgs {
+
+    private String _id;
+    private ObjectNode _document;
+    private Object _entity;
+    private InMemoryDocumentSessionOperations _session;
+
+    public String getId() {
+        return _id;
+    }
+
+    public ObjectNode getDocument() {
+        return _document;
+    }
+
+    public Object getEntity() {
+        return _entity;
+    }
+
+    public InMemoryDocumentSessionOperations getSession() {
+        return _session;
+    }
+}
+{CODE-BLOCK/}
 
 {CODE:Java on_after_conversion_to_entity@ClientApi\Session\Events.java /}
 

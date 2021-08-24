@@ -1,5 +1,3 @@
-package net.ravendb.ClientApi.Session.Querying;
-
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
@@ -100,7 +98,7 @@ public class HowToCustomize {
 
             try (IDocumentSession session = store.openSession()) {
                 //region customize_1_1_1
-                Reference<Long> totalStreamedResultsSize = new Reference<>(0L);
+                Reference<Long> totalStreamedResultsSize = new Reference<Long>(0L);
 
                 session.query(Employee.class)
                     .addAfterStreamExecutedListener(result -> {
@@ -160,10 +158,9 @@ public class HowToCustomize {
                 //region projectionbehavior_query
                 session.advanced().addBeforeQueryListener((sender, event) -> event.getQueryCustomization().projection(DEFAULT));
 
-                List<Employee> results = session.query(myClass.Employee.class).
+                List<Employee> results = session.query(myClass.Employee.class)
                     .selectFields(myClass.Employee.class,"name")
                     .toList();
-
                 //endregion
 
                 session.saveChanges();

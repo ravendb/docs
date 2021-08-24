@@ -1,8 +1,8 @@
-package net.ravendb.ClientApi.Session;
-
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
 import net.ravendb.client.documents.session.*;
+import net.ravendb.client.primitives.Reference;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.time.Duration;
@@ -12,6 +12,10 @@ import java.util.logging.Logger;
 public class Events {
 
     private static final Logger log = null;
+
+    private static class Item {
+
+    }
 
     private static class Product {
         private int unitsInStock;
@@ -44,10 +48,10 @@ public class Events {
     }
 
     //region on_before_store_event
-    private void onBeforeStoreEvent(Object sender, BeforeStoreEventArgs args) {
+    private void onBeforeStoreEvent(BeforeStoreEventArgs args) {
         if (args.getEntity() instanceof Product) {
             Product product = (Product) args.getEntity();
-            if (product.unitsInStock == 0) {
+            if (product.getUnitsInStock() == 0) {
                 product.setDiscontinued(true);
             }
         }
@@ -55,26 +59,26 @@ public class Events {
     //endregion
 
     //region on_before_delete_event
-    private void onBeforeDeleteEvent(Object sender, BeforeDeleteEventArgs args) {
+    private void onBeforeDeleteEvent(BeforeDeleteEventArgs args) {
         throw new NotImplementedException("Sample");
     }
     //endregion
 
     //region on_before_query_execute_event
-    private void onBeforeQueryEvent(Object sender, BeforeQueryEventArgs args) {
+    private void onBeforeQueryEvent(BeforeQueryEventArgs args) {
         args.getQueryCustomization().noCaching();
     }
     //endregion
 
     private class Foo {
         //region on_before_query_execute_event_2
-        private void onBeforeQueryEvent(Object sender, BeforeQueryEventArgs args) {
+        private void onBeforeQueryEvent(BeforeQueryEventArgs args) {
             args.getQueryCustomization().waitForNonStaleResults(Duration.ofSeconds(30));
         }
         //endregion
     }
     //region on_after_save_changes_event
-    private void onAfterSaveChangesEvent(Object sender, AfterSaveChangesEventArgs args) {
+    private void onAfterSaveChangesEvent(AfterSaveChangesEventArgs args) {
         if (log.isLoggable(Level.INFO)) {
             log.info("Document " + args.getDocumentId() + " was saved");
         }
@@ -82,48 +86,46 @@ public class Events {
     //endregion
 
     //region on_before_conversion_to_document
-    private void OnBeforeConversionToDocument(object sender, BeforeConversionToDocumentEventArgs args)
+    private void OnBeforeConversionToDocument(BeforeConversionToDocumentEventArgs args)
     {
-        if (args.Entity is Item item)
-        item.Before = true;
+        if (args.getEntity() instanceof Item) {
+            Item item = (Item) args.getEntity();
+            item.setBefore(true);
+        }
     }
     //endregion
 
     //region on_after_conversion_to_document
     private void OnAfterConversionToDocument(object sender, AfterConversionToDocumentEventArgs args)
     {
-        if (args.Entity is Item item)
+        if (args.getEntity() instanceof Item)
         {
-            if (args.Document.Modifications == null)
-                args.Document.Modifications = new DynamicJsonValue();
-
-            args.Document.Modifications["After"] = true;
-            args.Document = args.Session.Context.ReadObject(args.Document, args.Id);
-
-            item.After = true;
+            Item item = (Item) args.getEntity();
+            item.setAfter = true;
         }
     }
     //endregion
 
     //region on_before_conversion_to_entity
-    private void OnBeforeConversionToEntity(object sender, BeforeConversionToEntityEventArgs args)
+    private void OnBeforeConversionToEntity(BeforeConversionToEntityEventArgs args)
     {
-        Reference<ObjectNode> document = args.Document;
-        if (document.Modifications == null)
-            document.Modifications = new DynamicJsonValue();
-
-        document.Modifications["Before"] = true;
-        args.Document = args.Session.Context.ReadObject(document, args.Id);
+        if (args.getId() == "item/1-A")
+        {
+            if (log.isLoggable(Level.INFO)) {
+                log.info("Document " + args.getId() + " has found");
+            }
+        }
     }
     //endregion
 
     //region on_after_conversion_to_entity
-    private void OnAfterConversionToEntity(object sender, AfterConversionToEntityEventArgs args)
+    private void OnAfterConversionToEntity(AfterConversionToEntityEventArgs args)
     {
-        if (args.Entity is Item item)
-        item.After = true;
+        if (args.getEntity() instanceof Item) {
+            item.setAfter = true;
+        }
     }
-    //end region
+    //endregion
 
 
 
