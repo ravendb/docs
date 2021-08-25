@@ -78,9 +78,7 @@ public class HowToCustomize {
                         // set 'pageSize' to 10
                         q -> q.setPageSize(10)));
 
-                session
-                    .query(Employee.class)
-                    .toList();
+                session.query(Employee.class).toList();
                 //endregion
             }
 

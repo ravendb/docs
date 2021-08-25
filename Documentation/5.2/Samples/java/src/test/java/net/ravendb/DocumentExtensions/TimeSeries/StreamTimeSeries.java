@@ -30,7 +30,7 @@ public class StreamTimeSeries {
             try (IDocumentSession session = store.openSession()) {
 
                 //region direct
-                ISessionDocumentTimeSeries timeseries = session.timeSeriesFor("HeartRate","user/1-A" );
+                ISessionDocumentTimeSeries timeseries = session.timeSeriesFor("HeartRate","user/1-A");
                 List<TimeSeriesEntry> results = Arrays.asList(timeseries.get());
                 //endregion
 

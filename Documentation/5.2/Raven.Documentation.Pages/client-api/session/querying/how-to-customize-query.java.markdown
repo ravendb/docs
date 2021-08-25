@@ -116,7 +116,7 @@ By default, queries are satisfied with the values stored in the index. If the in
 doesn't contain the requested values, they are retrieved from the documents 
 themselves.  
 
-This behavior can be configured using the `Projection` option, which takes a 
+This behavior can be configured using the `projection` option, which takes a 
 `ProjectionBehavior`:  
 
 {CODE:java projectionbehavior@ClientApi\Session\Querying\HowToCustomize.java /}
@@ -160,7 +160,7 @@ To order results randomly, use the `randomOrdering` method.
 
 {PANEL:WaitForNonStaleResults}
 
-Queries can be 'instructed' to wait for non-stale results for a specified amount of time using the `WaitForNonStaleResults` method. If the query won't be able to return 
+Queries can be 'instructed' to wait for non-stale results for a specified amount of time using the `waitForNonStaleResults` method. If the query won't be able to return 
 non-stale results within the specified (or default) timeout, then a `TimeoutException` is thrown.
 
 {NOTE: Cutoff Point}

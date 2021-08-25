@@ -124,7 +124,7 @@ public class BeforeDeleteEventArgs
 
         return _documentMetadata;
     }
-
+}
 {CODE-BLOCK/}
 
 ### Example
@@ -233,6 +233,7 @@ public class BeforeQueryEventArgs
     public IDocumentQueryCustomization getQueryCustomization() {
         return queryCustomization;
     }
+}
 {CODE-BLOCK/}
 
 ### Example I
