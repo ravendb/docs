@@ -4,7 +4,7 @@
 {NOTE: }
 
 * Use the **Query View** to run [RQL](../../../indexes/querying/what-is-rql) queries and view their results.  
-* Queries can be run either on a Collection or on an existing Static-Index.  
+* Queries can be executed either on a Collection or on an existing Static-Index.  
 * A query on a collection with some filtering condition will create an Auto-Index (Dynamic Query).  
   See [Index Types](../../../studio/database/indexes/indexes-overview#index-types) for details.  
 * Query results can be saved/exported to a CSV file.  
@@ -77,8 +77,10 @@
     * Number of results  
     * Results status  
     * Query duration  
-    * The index or collection used by this query  
-    * ETag  
+    * The index used by this query.  
+      May be an index that was explicitly called by the query, 
+      or an index that RavenDB created internally [for collection queries](../../../client-api/faq/what-is-a-collection#collection-usages).  
+    * An ETag for the used index, indicating which documents were indexed, deleted, etc.  
 5. **Export Results as CSV File**  
     * Click to store **all query results columns** in a CSV file.  
     * Click the drop-down menu and select "Export visible columns only" 
@@ -96,7 +98,7 @@
 
 To modify the result columns, open the Display drop-down dialog from the [Query Results](../../../studio/database/queries/query-view#query-results) view.  
 
-![Display Dialog](images/query-view-modify-display-dialog.png "Display Dialog")
+![Display Dialog](images/query-view-display-dialog.png "Display Dialog")
 
 1. **Results Column**  
 2. **Custom Results Column**  
@@ -104,7 +106,7 @@ To modify the result columns, open the Display drop-down dialog from the [Query 
 
 ---
 
-![Display Dialog - Actions](images/query-view-modify-display-dialog-actions.png "Display Dialog - Actions")
+![Display Dialog - Actions](images/query-view-display-dialog-actions.png "Display Dialog - Actions")
 
 {INFO: }
 Changes made in the Display dialog will take effect only when the **Apply** button is clicked.  
