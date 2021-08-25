@@ -3,12 +3,16 @@
 
 {NOTE: }
 
-* Use the **Query View** to run RQL queries, view and store their results.  
-* Read more about RQL (Raven Query Language) [here](../../../indexes/querying/what-is-rql).  
+* Use the **Query View** to run [RQL](../../../indexes/querying/what-is-rql) queries and view their results.  
+* Queries can be run either on a Collection or on an existing Static-Index.  
+* A query on a collection with some filtering condition will create an Auto-Index (Dynamic Query).  
+  See [Index Types](../../../studio/database/indexes/indexes-overview#index-types) for details.  
+* Query results can be saved/exported to a CSV file.  
 
 * In this page:  
   * [Query View](../../../studio/database/queries/query-view#query-view)  
   * [Query Results](../../../studio/database/queries/query-view#query-results)  
+      * [Modify Result Columns](../../../studio/database/queries/query-view#modify-result-columns)  
       * [Result Columns](../../../studio/database/queries/query-view#result-columns)  
 
 {NOTE/}
@@ -17,35 +21,38 @@
 
 {PANEL: Query View}
 
-![Figure 1. Query View](images/query-view-query-1.png "Figure 1. Query View")
+![Query View](images/query-view.png "Query View")
 
 1. **Query View**  
    Click to open the query view.  
 2. **Database**  
-   Click to choose the database you want to query.  
+   Click to select the database you want to query.  
 3. **Syntax Samples**  
    Click to display [RQL](../../../indexes/querying/basics) syntax samples.  
-4. **Save Query**  
-   Click to save the query currently displayed in the query box.  
+4. **Query Box**  
+   Enter your RQL query in the query box.  
+5. **Save Query**  
+   Click to save the currently displayed query in the local browser storage.  
    ![Save Query](images/query-view-save-query.png "Save Query")  
    Enter a name, and click the **Save** button again to save the query.  
-5. **Load Query**  
+6. **Load Query**  
    Click to load a stored query.  
+   Recent (unsaved) queries will also be listed here.  
    ![Load Query](images/query-view-load-query.png "Load Query")  
    Hover over a query name to display its preview.  
    Click a query name or the preview **Load** button to load the query.  
-6. **Query Settings**  
+7. **Query Settings**  
    Click to set query settings.  
    ![Query Settings](images/query-view-settings.png "Query Settings")  
-    a. Toggle to enable or disable query caching.  
-    b. Toggle to show the full results or just stored index fields.  
+    a. Toggle to enable or disable caching of query results.  
+    b. Toggle to show the query results or only the stored index fields.  
+       (Relevant only when querying an index)  
     c. Toggle to display **raw index entries** or **matching documents** in the query results.  
-7. **Query Box**  
-   Enter your RQL query in the query box.  
+       (Relevant only when querying an index)  
 8. **Run Query**  
-   Click to run your query.  
+   Click to run the query.  
 9. **Query Results**  
-   The results box displays selected columns of results retrieved by your query (see [below](../../../studio/database/queries/query-view#query-results)).  
+   The results area displays selected columns of results retrieved by your query (see [below](../../../studio/database/queries/query-view#query-results)).  
 
 {PANEL/}
 
@@ -53,40 +60,86 @@
 
 {PANEL: Query Results}
 
-![Figure 2. Query Results](images/query-view-query-2.png "Figure 2. Query Results")
+![Query Results](images/query-view-query-results.png "Query Results")
 
-1. **Index Used**  
-   The index used by this query.  
+1. **Index or Collection Used**  
+   The index or the collection that was used in this query.  
 2. **Results Retrieval Time**  
    The time it took to retrieve the results.  
    {NOTE: }
-   [Include Query Timings](../../../client-api/session/querying/debugging/query-timings) 
-   to display additional timing details.  
+   Add **include timings()** to your RQL to display additional timing details in the results.  
+   Learn more in [Include Query Timings](../../../client-api/session/querying/debugging/query-timings).  
    {NOTE/}
 3. **Delete Documents**  
-   Click to delete the documents found by the query.  
+   Click to delete all documents that match the query.  
 4. **Statistics**  
-   Click to view query atatistics, including -  
+   Click to view query statistics, including -  
     * Number of results  
     * Results status  
     * Query duration  
-    * The index used by this query  
+    * The index or collection used by this query  
     * ETag  
 5. **Export Results as CSV File**  
-    * Click to store **all data** to a CSV file.  
-    * Click the drop down menu and choose "Export visible columns only" 
-      to store in a CSV file only the result columns that are currently displayed.  
+    * Click to store **all query results columns** in a CSV file.  
+    * Click the drop-down menu and select "Export visible columns only" 
+      to store **only the columns that are currently displayed**.  
       ![Store Selected Columns In CSV](images/query-view-export-selected-columns-to-csv.png "Store Selected Columns In CSV")
 6. **Display**  
-   Click to choose which columns would be displayed in the results box.  
+   Click to open the [display drop-down dialog](../../../studio/database/queries/query-view#modify-result-columns) 
+   where you can select which columns to display and add custom columns.  
 7. **Toggle Expanded/Collapsed View**  
-   Click to expand a larger results view or collapse it to its original size.  
+   Click to expand or collapse the results view.  
+
+---
+
+### Modify Result Columns
+
+To modify the result columns, open the Display drop-down dialog from the [Query Results](../../../studio/database/queries/query-view#query-results) view.  
+
+![Display Dialog](images/query-view-modify-display-dialog.png "Display Dialog")
+
+1. **Results Column**  
+2. **Custom Results Column**  
+   Custom result columns can be added, edited and removed (see **Add a Custom Column** below).  
+
+---
+
+![Display Dialog - Actions](images/query-view-modify-display-dialog-actions.png "Display Dialog - Actions")
+
+{INFO: }
+Changes made in the Display dialog will take effect only when the **Apply** button is clicked.  
+{INFO/}
+
+1. **Display/Hide all columns**  
+   Check or uncheck to display or hide all columns.  
+2. **Display/Hide column**  
+   Check or uncheck to display or hide this column.  
+3. **Relocate Column**  
+   Click and drag to relocate the column.  
+4. **Edit Custom Column**  
+   Click to edit the custom column's **field** and **alias** (see **Add Custom Column** below).  
+5. **Remove Custom Column**  
+   Click to remove the custom column.  
+6. . **Add Custom Column**  
+   ![Add Custom Column](images/query-view-add-custom-column.png "Add Custom Column")  
+    * a. Identify a results field that will be displayed in the custom column.  
+      E.g. `this.Address.Country`  
+    * b. Give the custom column an alias that will be displayed as the column's title.  
+      E.g. `Country`  
+    * c. Click to add the new column and close the custom column dialog.  
+    * d. Click to close the custom column dialog without adding the new column.  
+7. **Reset to default**  
+   Revert result columns to their original state (determined by the query).  
+8. **Close**  
+   Close the Display dialog without applying your changes.  
+9. **Apply**  
+   Apply your changes and close the Display dialog.  
 
 ---
 
 ### Result Columns
 
-![Figure 3. Result Columns](images/query-view-query-3.png "Figure 3. Result Columns")
+![Result Columns](images/query-view-result-columns.png "Result Columns")
 
 1. **Preview**  
    Click for a preview of the retrieved item.  
@@ -98,23 +151,24 @@
 3. **Multiple Records Result**  
    Hover over the brackets to display the retrieved records and optionally copy them to the clipboard.  
     ![Multiple Records Result](images/query-view-multiple-records-result.png "Multiple Records Result")  
-4. **Text String Result**  
+4. **Text Result**  
    Hover over the text to display and optionally copy it to the clipboard.  
     ![Text String Result](images/query-view-text-string-result.png "Text String Result")  
 
-{NOTE: }
+{PANEL/}
 
-Some RavenDB features enhance the results view.  
+{PANEL: Additional Query Options}
 
-* [Time Series](../../../document-extensions/timeseries/overview) query results include additional columns and 
-  a graphical view. Learn more about it [here](../../../studio/database/document-extensions/time-series#querying-time-series).  
-* [Spatial Queries](../../../studio/database/queries/spatial-queries-map-view) results include a graphical tab 
-  that [displays geographical locations](../../../studio/database/queries/spatial-queries-map-view#spatial-map-view) 
+Some RavenDB features enhance the queries options.  
+
+* [Time Series Query](../../../document-extensions/timeseries/overview) results provide insight 
+  into your time-series data, including a graph view over time.  
+  Learn more about it [here](../../../studio/database/document-extensions/time-series#querying-time-series).  
+* [Spatial Query](../../../studio/database/queries/spatial-queries-map-view) results include 
+  a Spatial Map Tab that [displays geographical locations](../../../studio/database/queries/spatial-queries-map-view#spatial-map-view) 
   on the world map.  
-* [Graph Queries](../../../indexes/querying/graph/graph-queries-overview) also present query results 
+* [Graph Query](../../../indexes/querying/graph/graph-queries-overview) also present query results 
   [graphically](../../../indexes/querying/graph/graph-queries-overview#creating-graph-queries) in an additional tab.  
-
-{NOTE/}
 
 {PANEL/}
 
