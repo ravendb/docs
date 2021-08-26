@@ -5,15 +5,19 @@
 
 * Use the **Query View** to run [RQL](../../../indexes/querying/what-is-rql) queries and view their results.  
 * Queries can be executed either on a Collection or on an existing Static-Index.  
-* A query on a collection with some filtering condition will create an Auto-Index (Dynamic Query).  
+* A query on a collection with some filtering condition will create an **Auto-Index** (Dynamic Query).  
   See [Index Types](../../../studio/database/indexes/indexes-overview#index-types) for details.  
 * Query results can be saved/exported to a CSV file.  
+* RavenDB always uses an index to fetch the query results.  
+  When a query is executed over a **Collection** (without any filtering condition), 
+  RavenDB uses an **internal index** that is kept in its internal storage.  
 
 * In this page:  
   * [Query View](../../../studio/database/queries/query-view#query-view)  
   * [Query Results](../../../studio/database/queries/query-view#query-results)  
-      * [Modify Result Columns](../../../studio/database/queries/query-view#modify-result-columns)  
+      * [Select Visible Columns](../../../studio/database/queries/query-view#select-visible-columns)  
       * [Result Columns](../../../studio/database/queries/query-view#result-columns)  
+  * [Additional Query Options](../../../studio/database/queries/query-view#additional-query-options)  
 
 {NOTE/}
 
@@ -67,7 +71,7 @@
 2. **Results Retrieval Time**  
    The time it took to retrieve the results.  
    {NOTE: }
-   Add **include timings()** to your RQL to display additional timing details in the results.  
+   Add `include timings()` to your RQL to display additional timing details in the results.  
    Learn more in [Include Query Timings](../../../client-api/session/querying/debugging/query-timings).  
    {NOTE/}
 3. **Delete Documents**  
@@ -78,32 +82,33 @@
     * Results status  
     * Query duration  
     * The index used by this query.  
-      May be an index that was explicitly called by the query, 
-      or an index that RavenDB created internally [for collection queries](../../../client-api/faq/what-is-a-collection#collection-usages).  
-    * An ETag for the used index, indicating which documents were indexed, deleted, etc.  
+      Either the index that was explicitly used by the query, or the internal RavenDB index that is 
+      used [for collection queries](../../../client-api/faq/what-is-a-collection#collection-usages).  
+    * An ETag representing the current state of the index used by the query.  
+      (The ETag value changes with every change made to the documents)  
 5. **Export Results as CSV File**  
     * Click to store **all query results columns** in a CSV file.  
       ![Export to CSV File](images/query-view-export-to-csv-file.png "Export to CSV File")
-    * Click the drop-down menu arrow and select "Export visible columns only" 
+    * Click the drop-down and select "Export visible columns only" 
       to store **only the columns that are currently displayed**.  
       ![Export Visible Columns Only](images/query-view-export-visible-columns-only.png "Export Visible Columns Only")
 6. **Display**  
-   Click to open the [display drop-down dialog](../../../studio/database/queries/query-view#modify-result-columns) 
-   where you can select which columns to display and add custom columns.  
+   Click to open the [display drop-down dialog](../../../studio/database/queries/query-view#select-visible-columns) 
+   where you can select which columns to display and add **custom columns**.  
 7. **Toggle Expanded/Collapsed View**  
    Click to expand or collapse the results view.  
 
 ---
 
-### Modify Result Columns
+### Select Visible Columns
 
-To modify the result columns, open the Display drop-down dialog from the [Query Results](../../../studio/database/queries/query-view#query-results) view.  
+To modify the displayed result columns, open the Display drop-down dialog from the [Query Results](../../../studio/database/queries/query-view#query-results) view.  
+Custom result columns can be added, edited and removed (see **Add a Custom Column** below).  
 
 ![Display Dialog](images/query-view-display-dialog.png "Display Dialog")
 
 1. **Results Column**  
 2. **Custom Results Column**  
-   Custom result columns can be added, edited and removed (see **Add a Custom Column** below).  
 
 ---
 
@@ -132,7 +137,7 @@ Changes made in the Display dialog will take effect only when the **Apply** butt
     * c. Click to add the new column and close the custom column dialog.  
     * d. Click to close the custom column dialog without adding the new column.  
 7. **Reset to default**  
-   Revert result columns to their original state (determined by the query).  
+   Reset result columns to their original state (determined by the query).  
 8. **Close**  
    Close the Display dialog without applying your changes.  
 9. **Apply**  
@@ -172,6 +177,7 @@ Some RavenDB features enhance the queries options.
   on the world map.  
 * [Graph Query](../../../indexes/querying/graph/graph-queries-overview) also present query results 
   [graphically](../../../indexes/querying/graph/graph-queries-overview#creating-graph-queries) in an additional tab.  
+* [Counter Query](../../../document-extensions/counters/counters-and-other-features#counters-and-queries) can be used to get counters data.  
 
 {PANEL/}
 
