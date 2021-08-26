@@ -44,10 +44,10 @@
 7. **Query Settings**  
    Click to set query settings.  
    ![Query Settings](images/query-view-settings.png "Query Settings")  
-    a. Toggle to enable or disable caching of query results.  
-    b. Toggle to show the query results or only the stored index fields.  
+     * a. Toggle to enable or disable caching of query results.  
+     * b. Toggle to show the query results or only the stored index fields.  
        (Relevant only when querying an index)  
-    c. Toggle to display **raw index entries** or **matching documents** in the query results.  
+     * c. Toggle to display **raw index entries** or **matching documents** in the query results.  
        (Relevant only when querying an index)  
 8. **Run Query**  
    Click to run the query.  
@@ -83,9 +83,10 @@
     * An ETag for the used index, indicating which documents were indexed, deleted, etc.  
 5. **Export Results as CSV File**  
     * Click to store **all query results columns** in a CSV file.  
-    * Click the drop-down menu and select "Export visible columns only" 
+      ![Export to CSV File](images/query-view-export-to-csv-file.png "Export to CSV File")
+    * Click the drop-down menu arrow and select "Export visible columns only" 
       to store **only the columns that are currently displayed**.  
-      ![Store Selected Columns In CSV](images/query-view-export-selected-columns-to-csv.png "Store Selected Columns In CSV")
+      ![Export Visible Columns Only](images/query-view-export-visible-columns-only.png "Export Visible Columns Only")
 6. **Display**  
    Click to open the [display drop-down dialog](../../../studio/database/queries/query-view#modify-result-columns) 
    where you can select which columns to display and add custom columns.  
