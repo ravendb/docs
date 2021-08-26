@@ -4,7 +4,7 @@
 {NOTE: }
 
 Time series are sets of numeric data associated with timestamps and ordered by time. The studio interface 
-allows you to edit, query and index time series data, as well as view it as list of entries or as a graph.  
+allows you to edit, query and index time series data, as well as view it as a list of entries or as a graph.  
 
 * In this page:
   * [Document View](../../../studio/database/document-extensions/time-series#document-view)
@@ -127,12 +127,12 @@ To specify a range of time series entries:
 1. **Start Date**  
    Check **Use minimum** to use the first entry's timestamp as the start of the range,  
 2. **End Date**  
-   Check **Use maximum** to use the last entry's time stamp as the end of the range.  
+   Check **Use maximum** to use the last entry's timestamp as the end of the range.  
 
 ---
 
 * For either option, you can click the input bar and specify some other date in the 
-  date & time dialog shown bellow.  
+  date & time dialog shown below.  
 
 {WARNING/}
 
