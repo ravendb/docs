@@ -59,7 +59,7 @@
          applies the patch only after the index used by the patch has become 
          non-stale.  
          If the index remains stale for the duration of the set timeout, 
-         the operation is cancelled and an exception is thrown.  
+         the operation is canceled and an exception is thrown.  
          ![Patch Timeout](images/patch-view-timeout.png "Patch Timeout")  
     * c. **Limit Number of Operations**  
          Toggle this option ON to set the max number of patch operations per second.  
