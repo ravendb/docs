@@ -3,8 +3,9 @@
 
 {NOTE: }
 
-Time series are sets of numeric data associated with timestamps and ordered by time. The studio interface 
-allows you to edit, query and index time series data, as well as view it as a list of entries or as a graph.  
+* Time series are sets of numeric data, associated with timestamps and ordered by time.  
+* The studio interface allows you to edit, query and index time series data, as well as 
+  view it as a list of entries or as a graph.  
 
 * In this page:
   * [Document View](../../../studio/database/document-extensions/time-series#document-view)
@@ -71,22 +72,22 @@ allows you to edit, query and index time series data, as well as view it as a li
 A time series is created upon the creation of its first entry (and deleted 
 once all entries have been deleted).  
 
-To create a time series' first entry:
+Click the **Add Time Series** button from the 
+[Document View](../../../studio/database/document-extensions/time-series#document-view) 
+to create the time series' first entry.  
 
 ![Add Time Series](images/time-series/new-time-series.png "Add Time Series")
-
-* Click the **Add Time Series** button from the [Document View](../../../studio/database/document-extensions/time-series#document-view).  
 
 ---
 
 ![Add Time Series Entry](images/time-series/new-entry.png "Add Time Series Entry")
 
-{WARNING: Actions}
+{WARNING: }
 
 1. Enter time series' name.  
 2. Select a [timestamp](../../../document-extensions/timeseries/overview#timestamps) for the new entry.  
 3. Create an optional [tag](../../../document-extensions/timeseries/overview#tags).  
-4. Add one or more numerical [values](../../../document-extensions/timeseries/overview#values).  
+4. Add one or more numerical [values](../../../document-extensions/timeseries/overview#values) (up to 32 values).  
    ![Named Values](images/time-series/named-values.png "Named Values")
    Time series entry values can be given meaningful names rather than labels like Value #0 and Value #1.  
    To set entry values' names, use Studio's **Settings > Time Series** view.  
@@ -97,11 +98,11 @@ To create a time series' first entry:
 
 #### Editing an Entry
 
-To edit a time series' entry:
+Click the **Edit Item** button from the 
+[Time Series View](../../../studio/database/document-extensions/time-series#time-series-view) 
+to edit a time series' entry.  
 
 ![Edit Time Series](images/time-series/edit-time-series.png "Edit Time Series")
-
-* Click the edit button from the [Time Series View](../../../studio/database/document-extensions/time-series#time-series-view).  
 
 ---
 
@@ -111,8 +112,8 @@ To edit a time series' entry:
 
 1. Edit the optional tag.  
 2. Edit a numerical value.  
-3. Add an additional value (up to 32 values).  
-4. Delete value.  
+3. Delete value.  
+4. Add an additional value (up to 32 values).  
 
 {WARNING/}
 
@@ -120,11 +121,11 @@ To edit a time series' entry:
 
 #### Deleting a Range of Entries
 
-To delete a range of time series entries:
+Click the **Delete Range** button from the 
+[Time Series View](../../../studio/database/document-extensions/time-series#time-series-view) 
+to delete a range of time series entries.  
 
 ![Delete Range Button](images/time-series/delete-range-button.png "Delete Range Button")
-
-* Click the Delete Range button from the [Time Series View](../../../studio/database/document-extensions/time-series#time-series-view).  
 
 ---
 
@@ -200,8 +201,8 @@ To specify a range of time series entries:
 
 1. A graph of time series results in a selected time frame.  
 2. A graph showing all the time series results over time.  
-   Drag or resize the selected time frame to view the corresponding results.  
-3. A legend of time series entries' values.  
+3. The selected time frame.  
+4. A legend of time series entries' values.  
    The entry values names are set in Studio's **Settings > Time Series** view.  
 
 {INFO/}
