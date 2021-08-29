@@ -27,7 +27,7 @@ allows you to edit, query and index time series data, as well as view it as a li
 
 1. To view a document's time series, open its [document view](../../../studio/database/documents/document-view) 
    and click the time series tab on the right.  
-2. Click to create a new time series, see more below.  
+2. Click to create a new time series, [see more below](../../../studio/database/document-extensions/time-series#create-new-time-series-by-creating-the-first-entry).  
 3. Click to view and modify time series data.  
 
 {WARNING/}
@@ -49,7 +49,7 @@ allows you to edit, query and index time series data, as well as view it as a li
 
 {WARNING: Actions}
 
-1. Add a new entry to this time series (StockPrices) or click the dropdown to create a new time series.  
+1. Click to add a new entry to this time series (StockPrices), or click the dropdown to create a [new time series](../../../studio/database/document-extensions/time-series#create-new-time-series-by-creating-the-first-entry).  
 2. Delete all entries from a specified time range.  
 3. Edit entry.
 
@@ -73,37 +73,39 @@ once all entries have been deleted).
 
 To create a time series' first entry:
 
-* Open the [Document View](../../../studio/database/document-extensions/time-series#document-view) 
-  of the document you want to attach the time series to.  
-* Click the **Add Time Series** button.  
+![Add Time Series](images/time-series/new-time-series.png "Add Time Series")
 
-![New Time Series Entry](images/time-series/new-entry.png "New Time Series Entry")
+* Click the **Add Time Series** button from the [Document View](../../../studio/database/document-extensions/time-series#document-view).  
+
+---
+
+![Add Time Series Entry](images/time-series/new-entry.png "Add Time Series Entry")
 
 {WARNING: Actions}
 
-1. Select a [timestamp](../../../document-extensions/timeseries/overview#timestamps) for the new entry.  
-2. Create an optional [tag](../../../document-extensions/timeseries/overview#tags).  
-3. Add one or more numerical [values](../../../document-extensions/timeseries/overview#values).  
+1. Enter time series' name.  
+2. Select a [timestamp](../../../document-extensions/timeseries/overview#timestamps) for the new entry.  
+3. Create an optional [tag](../../../document-extensions/timeseries/overview#tags).  
+4. Add one or more numerical [values](../../../document-extensions/timeseries/overview#values).  
    ![Named Values](images/time-series/named-values.png "Named Values")
-   Time series entry values can be named.  
-   In the entry above, the first value was named "BPM1", and the second "BPM2".  
-   To set the names given to entry values, use Studio's **Settings > Time Series** view.  
+   Time series entry values can be given meaningful names rather than labels like Value #0 and Value #1.  
+   To set entry values' names, use Studio's **Settings > Time Series** view.  
 
 {WARNING/}
-
-{INFO: Info}
-
-1. Time series' document ID  
-   The document containing this time series.  
-2. Time series' name  
-
-{INFO/}
 
 ---
 
 #### Editing an Entry
 
-![Edit Time Series Entry](images/time-series/time-series-entry.png "Edit Time Series Entry")
+To edit a time series' entry:
+
+![Edit Time Series](images/time-series/edit-time-series.png "Edit Time Series")
+
+* Click the edit button from the [Time Series View](../../../studio/database/document-extensions/time-series#time-series-view).  
+
+---
+
+![Edit Time Series Entry](images/time-series/edit-time-series-entry.png "Edit Time Series Entry")
 
 {WARNING: }
 
@@ -117,6 +119,14 @@ To create a time series' first entry:
 ---
 
 #### Deleting a Range of Entries
+
+To delete a range of time series entries:
+
+![Delete Range Button](images/time-series/delete-range-button.png "Delete Range Button")
+
+* Click the Delete Range button from the [Time Series View](../../../studio/database/document-extensions/time-series#time-series-view).  
+
+---
 
 ![Delete Range](images/time-series/delete-range.png "Delete Range")
 
@@ -146,19 +156,22 @@ To specify a range of time series entries:
 
 {WARNING: Actions}
 
-1. Click to run the query.  
+1. Enter your RQL query in the query box.  
+   Depicted here is a query to get all the **StockPrices** time series values from documents in the Companies collection.  
+   Learn more about time series queries [here](../../../document-extensions/timeseries/querying/overview-and-syntax).  
+
+2. Click to run the query.  
 
 {WARNING/}
 
 {INFO: Info}
 
-1. A query to get all the **StockPrices** time series values from documents in the Companies collection.  
-   Learn more about time series queries [here](../../../document-extensions/timeseries/querying/overview-and-syntax).  
-2. Query Results - A list of time series that satisfy the query, with:  
+1. Query Results - A list of time series that satisfy the query, with:  
     * The ID of the associated document.  
     * Number of entries and time range.  
 
 {INFO/}  
+
 
 ---
 
@@ -169,10 +182,10 @@ To specify a range of time series entries:
 1. Click to open a tab with the time series query results shown in a table.  
    ![Time Series Query Results Table](images/time-series/query-results-table.png "Time Series Query Results Table")
 2. Click to open a tab with the time series query results shown in a graph (see below).  
-3. Multiple selection checkbox  
+3. Multiple documents selection  
    ![Multiple Selection](images/time-series/multiple-selection.png "Multiple Selection")
-    * a. Check to select the time series you want to plot.  
-    * b. Click to view the selected time series' results in a unified graph.  
+    * a. Select multiple documents to plot their time series.  
+    * b. Click to view the selected documents' time series results in a unified graph.  
       ![Unified Graph](images/time-series/unified-graph.png "Unified Graph")
 
 {WARNING/}
@@ -182,14 +195,6 @@ To specify a range of time series entries:
 #### Results in Graph View
 
 ![Time series results in a graph](images/time-series/time-series-graph-info.png "Time series results in a graph")
-
-{WARNING: Actions}
-
-1. Click to go back to the query results tab.  
-2. Click to view time series values' results in a graph.  
-3. Click to view time series values' results in a table.  
-
-{WARNING/}  
 
 {INFO: Info}
 
@@ -201,13 +206,21 @@ To specify a range of time series entries:
 
 {INFO/}
 
+{WARNING: Actions}
+
+1. Click to go back to the query results tab.  
+2. Click to view time series values' results in a graph.  
+3. Click to view time series values' results in a table.  
+
+{WARNING/}  
+
 ---
 
 ![Time series results in a graph - Actions](images/time-series/time-series-graph-actions.png "Time series results in a graph - Actions")
 
 {WARNING: }
 
-1. Drag or resize the time range selection frame to change the selection.  
+1. Drag or resize the selected time frame to view the corresponding results.  
 2. Hover your mouse over the graph to view the data of one particular entry.  
 3. Toggle viewing points or a continuous line.  
 4. Check/Uncheck to plot or hide time series entries' values on the graph.  

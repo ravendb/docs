@@ -4,13 +4,13 @@
 {NOTE: }
 
 * Use the **Query View** to run [RQL](../../../indexes/querying/what-is-rql) queries and view their results.  
-* Queries can be executed either on a Collection or on an existing Static-Index.  
+* Queries can be executed either on a **Collection** or on an existing **Static-Index**.  
+* RavenDB always uses an index to fetch the query results.  
+  When a query is executed over a Collection (without any filtering condition), 
+  RavenDB uses an internal index that is kept in its internal storage.  
 * A query on a collection with some filtering condition will create an **Auto-Index** (Dynamic Query).  
   See [Index Types](../../../studio/database/indexes/indexes-overview#index-types) for details.  
 * Query results can be saved/exported to a CSV file.  
-* RavenDB always uses an index to fetch the query results.  
-  When a query is executed over a **Collection** (without any filtering condition), 
-  RavenDB uses an **internal index** that is kept in its internal storage.  
 
 * In this page:  
   * [Query View](../../../studio/database/queries/query-view#query-view)  
@@ -44,7 +44,7 @@
    Recent (unsaved) queries will also be listed here.  
    ![Load Query](images/query-view-load-query.png "Load Query")  
    Hover over a query name to display its preview.  
-   Click a query name or the preview **Load** button to load the query.  
+   Click the query name or the preview **Load** button to load the query.  
 7. **Query Settings**  
    Click to set query settings.  
    ![Query Settings](images/query-view-settings.png "Query Settings")  
@@ -66,7 +66,7 @@
 
 ![Query Results](images/query-view-query-results.png "Query Results")
 
-1. **Index Used**  
+1. **Index or Collection Used**  
    Either the index that was explicitly used by the query, or the internal RavenDB index that is 
    used [for collection queries](../../../client-api/faq/what-is-a-collection#collection-usages).  
 2. **Results Retrieval Time**  
@@ -94,7 +94,7 @@
       to store **only the columns that are currently displayed**.  
       ![Export Visible Columns Only](images/query-view-export-visible-columns-only.png "Export Visible Columns Only")
 6. **Display**  
-   Click to open the [display drop-down dialog](../../../studio/database/queries/query-view#select-visible-columns) 
+   Click to open the Display drop-down dialog (see `Select Visible Columns` below), 
    where you can select which columns to display and add **custom columns**.  
 7. **Toggle Expanded/Collapsed View**  
    Click to expand or collapse the results view.  
@@ -108,8 +108,8 @@ Custom result columns can be added, edited and removed (see **Add a Custom Colum
 
 ![Display Dialog](images/query-view-display-dialog.png "Display Dialog")
 
-1. **Results Column**  
-2. **Custom Results Column**  
+1. **A query results column**
+2. **A custom results column**
 
 ---
 
