@@ -112,15 +112,16 @@ Click **Test** to open the patch test dialog.
    Click 'Test' to apply the patch to the selected document.  
    A copy of the document will be patched, leaving the original document unchanged.  
    A preview of the document after the patch will show in the 'After' area on the right.  
-3. **Done**  
-   Click 'Done' to close the test view and return to the patch view.  
-4. **Before**  
+3. **Before**  
    Browse the document before the patch has been applied to it.  
    Click Shift+F11 to expand or collapse an enlarged view of the document.  
-5. **After**  
+4. **After**  
    Browse the document After the patch has been applied to it.  
    See line 198 in the "After" view depicted above for an example of a text modified by the patch.  
    Click Shift+F11 to expand or collapse an enlarged view of the document.  
+5. **Done**  
+   Click 'Done' to close the test view and return to the patch view.  
+
 
 {PANEL/}
 
