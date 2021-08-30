@@ -58,7 +58,7 @@ let urls, database, authOptions;
     public PutClientCertificateOperation(
         name: string,
         certificate: string,
-        permissions: Record<string,DatabaseAccess>,
+        permissions: Record<string, DatabaseAccess>,
         clearance: SecurityClearance)
 //endregion
 
