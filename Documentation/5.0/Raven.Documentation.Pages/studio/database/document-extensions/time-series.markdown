@@ -193,7 +193,7 @@ To specify a range of time series entries:
 
 ---
 
-#### Results in Graph View
+### Results in Graph View
 
 ![Time series results in a graph](images/time-series/time-series-graph-info.png "Time series results in a graph")
 
