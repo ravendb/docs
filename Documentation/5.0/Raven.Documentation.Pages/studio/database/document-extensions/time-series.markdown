@@ -67,14 +67,14 @@
 
 ---
 
-#### Create new Time Series (by Creating the First Entry)
+### Create new Time Series (by Creating the First Entry)
 
-A time series is created upon the creation of its first entry (and deleted 
-once all entries have been deleted).  
+* A time series is created upon the creation of its first entry (and deleted 
+  once all entries have been deleted).  
 
-Click the **Add Time Series** button from the 
-[Document View](../../../studio/database/document-extensions/time-series#document-view) 
-to create the time series' first entry.  
+* Click the **Add Time Series** button from the 
+  [Document View](../../../studio/database/document-extensions/time-series#document-view) 
+  to create the time series' first entry.  
 
 ![Add Time Series](images/time-series/new-time-series.png "Add Time Series")
 
@@ -96,11 +96,11 @@ to create the time series' first entry.
 
 ---
 
-#### Editing an Entry
+### Editing an Entry
 
-Click the **Edit Item** button from the 
-[Time Series View](../../../studio/database/document-extensions/time-series#time-series-view) 
-to edit a time series' entry.  
+* Click the **Edit Item** button from the 
+  [Time Series View](../../../studio/database/document-extensions/time-series#time-series-view) 
+  to edit a time series' entry.  
 
 ![Edit Time Series](images/time-series/edit-time-series.png "Edit Time Series")
 
@@ -119,11 +119,11 @@ to edit a time series' entry.
 
 ---
 
-#### Deleting a Range of Entries
+### Deleting a Range of Entries
 
-Click the **Delete Range** button from the 
-[Time Series View](../../../studio/database/document-extensions/time-series#time-series-view) 
-to delete a range of time series entries.  
+* Click the **Delete Range** button from the 
+  [Time Series View](../../../studio/database/document-extensions/time-series#time-series-view) 
+  to delete a range of time series entries.  
 
 ![Delete Range Button](images/time-series/delete-range-button.png "Delete Range Button")
 
@@ -197,7 +197,7 @@ To specify a range of time series entries:
 
 ![Time series results in a graph](images/time-series/time-series-graph-info.png "Time series results in a graph")
 
-{INFO: Info}
+{INFO: }
 
 1. A graph of time series results in a selected time frame.  
 2. A graph showing all the time series results over time.  
@@ -207,24 +207,18 @@ To specify a range of time series entries:
 
 {INFO/}
 
-{WARNING: Actions}
-
-1. Click to go back to the query results tab.  
-2. Click to view time series values' results in a graph.  
-3. Click to view time series values' results in a table.  
-
-{WARNING/}  
-
 ---
 
 ![Time series results in a graph - Actions](images/time-series/time-series-graph-actions.png "Time series results in a graph - Actions")
 
 {WARNING: }
 
-1. Drag or resize the selected time frame to view the corresponding results.  
-2. Hover your mouse over the graph to view the data of one particular entry.  
-3. Toggle viewing points or a continuous line.  
-4. Check/Uncheck to plot or hide time series entries' values on the graph.  
+1. Click to go back to the query results tab.  
+2. Display tabs with graph or table results.  
+3. Drag or resize the selected time frame to view the corresponding results.  
+4. Hover your mouse over the graph to view the data of one particular entry.  
+5. Toggle viewing points or a continuous line.  
+6. Check/Uncheck to plot or hide time series entries' values on the graph.  
 
 {WARNING/}  
 

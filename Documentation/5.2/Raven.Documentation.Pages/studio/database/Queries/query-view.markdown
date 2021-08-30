@@ -66,9 +66,8 @@
 
 ![Query Results](images/query-view-query-results.png "Query Results")
 
-1. **The index or the collection that was used by the query**  
-   Either the index that was explicitly used by the query, or the internal RavenDB index that is 
-   used [for collection queries](../../../client-api/faq/what-is-a-collection#collection-usages).  
+1. **Index or Collection Used**  
+   The index or the collection that was used by the query.  
 2. **Results Retrieval Time**  
    The time it took to retrieve the results.  
    {NOTE: }
