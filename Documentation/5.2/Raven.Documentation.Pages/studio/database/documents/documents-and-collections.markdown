@@ -1,4 +1,4 @@
-﻿# Documents and Collections
+﻿# Documents: Documents and Collections
 ---
 
 {NOTE: Documents}

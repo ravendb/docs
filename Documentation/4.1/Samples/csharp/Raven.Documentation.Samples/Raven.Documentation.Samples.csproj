@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NodaTime" Version="3.0.5" />
+    <PackageReference Include="NodaTime" Version="2.4.7" />
     <PackageReference Include="RavenDB.Client" Version="4.1.10" />
     <PackageReference Include="RavenDB.Embedded" Version="4.1.10" />
     <PackageReference Include="RavenDB.TestDriver" Version="4.1.10" />
