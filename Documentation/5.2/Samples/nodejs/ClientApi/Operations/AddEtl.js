@@ -26,7 +26,7 @@ let urls, database, authOptions;
     const transformation: Transformation = {
         name: "Script #1",
         collections?: "Employees",
-        Script= "loadToEmployees ({ Name: this.FirstName + ' ' + this.LastName, Title: this.Title}); "
+        Script: "loadToEmployees({Name: this.FirstName + ' ' + this.LastName, Title: this.Title});"
     };
 
     etlConfiguration.transforms = [transformation];
@@ -43,34 +43,37 @@ let urls, database, authOptions;
     const transformation = {
         name: "Script#1",
         collections: "Orders",
-        Script = "var orderData = {Id: id(this), OrderLinesCount: this.Lines.length, TotalCost: 0};
-                    for (var i = 0; i < this.Lines.length; i++) {
-                        var line = this.Lines[i];
-                        orderData.TotalCost += line.PricePerUnit;
-                        // Load to SQL table 'OrderLines'
-                        loadToOrderLines({
-                            OrderId: id(this),
-                            Qty: line.Quantity,
-                            Product: line.Product,
-                            Cost: line.PricePerUnit
-                        });
-                    }
-            orderData.TotalCost = Math.round(orderData.TotalCost * 100) / 100;
-            loadToOrders(orderData)"
+        Script: "var orderData = {
+                      Id: id(this),
+                      OrderLinesCount: this.Lines.length,
+                      TotalCost: 0
+                 };
+                 for(var i = 0; i< this.Lines.length; i++){
+                    var line = this.Lines[i];
+                    orderData.TotalCost += line.PricePerUnit;
+
+                     // Load to SQL table 'OrderLines'
+                    loadToOrderLines({
+                        OrderId: id(this),
+                        Qty: line.Quantity,
+                        Product: line.Product,
+                        Cost: line.PricePerUnit
+                    });
+                   }
+                   orderData.TotalCost = Math.round(orderData.TotalCost * 100) / 100;
+                   loadToOrders(orderData)"
     }
-//endregion
-//end of transformation
 
     const table1 = {
-        documentIdColumn: "Id",
-        insertOnlyMode: false,
-        tableName: "Orders"
+        documentIdColumn: string  = "Id",
+        insertOnlyMode: boolean = false,
+        tableName: string = "Orders"
     }
 
     const table2 = {
-        documentIdColumn: "OrderId",
-        insertOnlyMode: false,
-        tableName: "OrderLines"
+        documentIdColumn: string  = "OrderId",
+        insertOnlyMode: boolean = false,
+        tableName: string  = "OrderLines"
     }
 
     const etlConfiguration = Object.assign(new SqlEtlConfiguration(), {

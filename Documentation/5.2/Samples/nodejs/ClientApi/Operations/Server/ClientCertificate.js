@@ -12,7 +12,7 @@ let urls, database, authOptions;
     //region cert_1_1
      public CreateClientCertificateOperation(
          name: string,
-         permissions: Record<string,DatabaseAccess>,
+         permissions: Record<string, DatabaseAccess>,
          clearance: SecurityClearance,
          password?: string)
     //endregion
