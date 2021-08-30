@@ -5,7 +5,7 @@
 {NOTE: }
 
 You can include time series data while running a raw RQL query 
-via `session.Advanced.RawQuery`.  
+via [session.Advanced.RawQuery](../../../../../client-api/session/querying/how-to-query#session.advanced.rawquery).  
 
 * [Include Time Series Data with `Advanced.RawQuery`](../../../../../document-extensions/timeseries/client-api/session/include/with-raw-queries#include-time-series-data-with-advanced.rawquery)  
    * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-raw-queries#syntax)  
