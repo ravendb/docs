@@ -37,30 +37,8 @@ public class BeforeStoreEventArgs
     private final String documentId;
     private final Object entity;
 
-
-    public InMemoryDocumentSessionOperations getSession() {
-        return session;
-    }
-
-    public String getDocumentId() {
-        return documentId;
-    }
-
-    public Object getEntity() {
-        return entity;
-    }
-
-    public boolean isMetadataAccessed() {
-        return _documentMetadata != null;
-    }
-
-    public IMetadataDictionary getDocumentMetadata() {
-        if (_documentMetadata == null) {
-            _documentMetadata = session.getMetadataFor(entity);
-        }
-
-        return _documentMetadata;
-    }
+    //getters and setters (omitted for brevity)
+}
 {CODE-BLOCK/}
 
 ### Example
@@ -105,25 +83,7 @@ public class BeforeDeleteEventArgs
     private final String documentId;
     private final Object entity;
 
-    public InMemoryDocumentSessionOperations getSession() {
-        return session;
-    }
-
-    public String getDocumentId() {
-        return documentId;
-    }
-
-    public Object getEntity() {
-        return entity;
-    }
-
-    public IMetadataDictionary getDocumentMetadata() {
-        if (_documentMetadata == null) {
-            _documentMetadata = session.getMetadataFor(entity);
-        }
-
-        return _documentMetadata;
-    }
+    //getters and setters (omitted for brevity)
 }
 {CODE-BLOCK/}
 
@@ -157,6 +117,11 @@ public void removeAfterSaveChangesListener(EventHandler<AfterSaveChangesEventArg
 
 The class `AfterSaveChangesEventArgs`:
 
+
+{CODE-BLOCK: java}
+public AfterSaveChangesEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity)
+{CODE-BLOCK/}
+
 {CODE-BLOCK: java}
 public class AfterSaveChangesEventArgs
 {
@@ -165,31 +130,7 @@ public class AfterSaveChangesEventArgs
     private final String documentId;
     private final Object entity;
 
-    public AfterSaveChangesEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity) {
-        this.session = session;
-        this.documentId = documentId;
-        this.entity = entity;
-    }
-
-    public InMemoryDocumentSessionOperations getSession() {
-        return session;
-    }
-
-    public String getDocumentId() {
-        return documentId;
-    }
-
-    public Object getEntity() {
-        return entity;
-    }
-
-    public IMetadataDictionary getDocumentMetadata() {
-        if (_documentMetadata == null) {
-            _documentMetadata = session.getMetadataFor(entity);
-        }
-
-        return _documentMetadata;
-    }
+    //getters and setters (omitted for brevity)
 }
 
 
@@ -226,13 +167,7 @@ public class BeforeQueryEventArgs
     private final InMemoryDocumentSessionOperations session;
     private final IDocumentQueryCustomization queryCustomization;
 
-    public InMemoryDocumentSessionOperations getSession() {
-        return session;
-    }
-
-    public IDocumentQueryCustomization getQueryCustomization() {
-        return queryCustomization;
-    }
+    //getters (omitted for brevity)
 }
 {CODE-BLOCK/}
 
@@ -268,29 +203,18 @@ public void removeBeforeConversionToDocumentListener(EventHandler<BeforeConversi
 The class `BeforeConversionToDocumentEventArgs`:  
 
 {CODE-BLOCK: java}
+public BeforeConversionToDocumentEventArgs(InMemoryDocumentSessionOperations session, String id, Object entity)
+{CODE-BLOCK/}
+
+
+{CODE-BLOCK: java}
 public class BeforeConversionToDocumentEventArgs
 {
     private String _id;
     private Object _entity;
     private InMemoryDocumentSessionOperations _session;
 
-    public BeforeConversionToDocumentEventArgs(InMemoryDocumentSessionOperations session, String id, Object entity) {
-        _session = session;
-        _id = id;
-        _entity = entity;
-    }
-
-    public String getId() {
-        return _id;
-    }
-
-    public Object getEntity() {
-        return _entity;
-    }
-
-    public InMemoryDocumentSessionOperations getSession() {
-        return _session;
-    }
+    //getters (omitted for brevity)
 }
 {CODE-BLOCK/}
 
@@ -318,6 +242,10 @@ public void removeAfterConversionToDocumentListener(EventHandler<AfterConversion
 The class `AfterConversionToDocumentEventArgs`:  
 
 {CODE-BLOCK: java}
+public AfterConversionToDocumentEventArgs(InMemoryDocumentSessionOperations session, String id, Object entity, Reference<ObjectNode> document)
+{CODE-BLOCK/}
+
+{CODE-BLOCK: java}
 public class AfterConversionToDocumentEventArgs
 {
     private String _id;
@@ -325,28 +253,7 @@ public class AfterConversionToDocumentEventArgs
     private Reference<ObjectNode> _document;
     private InMemoryDocumentSessionOperations _session;
 
-    public AfterConversionToDocumentEventArgs(InMemoryDocumentSessionOperations session, String id, Object entity, Reference<ObjectNode> document) {
-        _session = session;
-        _id = id;
-        _entity = entity;
-        _document = document;
-    }
-
-    public String getId() {
-        return _id;
-    }
-
-    public Object getEntity() {
-        return _entity;
-    }
-
-    public Reference<ObjectNode> getDocument() {
-        return _document;
-    }
-
-    public InMemoryDocumentSessionOperations getSession() {
-        return _session;
-    }
+    //getters (omitted for brevity)
 }
 {CODE-BLOCK/}
 
@@ -372,6 +279,7 @@ public void removeBeforeConversionToEntityListener(EventHandler<BeforeConversion
 | - | - | - |
 | **handler** | `EventHandler<BeforeConversionToEntityEventArgs>` | handle this event |
 
+
 {CODE-BLOCK: java}
 public class BeforeConversionToEntityEventArgs{
 
@@ -380,21 +288,7 @@ public class BeforeConversionToEntityEventArgs{
     private Reference<ObjectNode> _document;
     private InMemoryDocumentSessionOperations _session;
 
-    public String getId() {
-        return _id;
-    }
-
-    public Class getType() {
-        return _type;
-    }
-
-    public Reference<ObjectNode> getDocument() {
-        return _document;
-    }
-
-    public InMemoryDocumentSessionOperations getSession() {
-        return _session;
-    }
+    //getters (omitted for brevity)
 }
 {CODE-BLOCK/}
 
@@ -424,21 +318,7 @@ public class AfterConversionToEntityEventArgs {
     private Object _entity;
     private InMemoryDocumentSessionOperations _session;
 
-    public String getId() {
-        return _id;
-    }
-
-    public ObjectNode getDocument() {
-        return _document;
-    }
-
-    public Object getEntity() {
-        return _entity;
-    }
-
-    public InMemoryDocumentSessionOperations getSession() {
-        return _session;
-    }
+    //getters (omitted for brevity)
 }
 {CODE-BLOCK/}
 

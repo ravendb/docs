@@ -23,7 +23,7 @@
 Get a time series (using `timeSeriesFor().get()`, and call `Stream()`).  
 
 {CODE-BLOCK: java}
-<T> CloseableIterator<StreamResult<T>> stream(Date from = null, Date to = null, TimeSpan offset = null);
+<T> CloseableIterator<StreamResult<T>> stream(Date from, Date to, TimeSpan offset);
 {CODE-BLOCK/}
 
 | Parameters | Type | Description |
