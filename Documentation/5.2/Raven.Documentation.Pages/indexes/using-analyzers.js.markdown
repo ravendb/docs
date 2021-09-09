@@ -111,8 +111,8 @@ To index a document field using a specific analyzer, all you need to do is to ma
 name:  
 
 {CODE-TABS}
-{CODE-TAB:csharp:AbstractIndexCreationTask analyzers_1@Indexes\Analyzers.cs /}
-{CODE-TAB:csharp:Operation analyzers_2@Indexes\Analyzers.cs /}
+{CODE-TAB:nodejs:AbstractIndexCreationTask analyzers_1@Indexes\analyzers.js /}
+{CODE-TAB:nodejs:Operation analyzers_2@Indexes\analyzers.js /}
 {CODE-TABS/}
 
 {INFO: Analyzer Availability}
@@ -124,7 +124,7 @@ methods of creating custom analyzers [below](../indexes/using-analyzers#creating
 
 {PANEL: Creating Custom Analyzers}
 
-You can write your own custom analyzers as a `.cs` file. Custom analyzers can be defined as:
+You can write your own custom analyzers as a file. Custom analyzers can be defined as:
 
 * **Database Custom Analyzers** - can only be used by the indexes of the database where they are defined.
 * **Server-Wide Custom Analyzers** - can be used by indexes on all databases on all servers in the cluster.
@@ -209,17 +209,17 @@ Setting the `FieldIndexing` option for this field to `Exact` turns off the field
 properties to be treated as a single token and the matches must be exact (case sensitive), using 
 the `KeywordAnalyzer` behind the scenes.  
 
-{CODE analyzers_3@Indexes\Analyzers.cs /}
+{CODE:nodejs analyzers_3@Indexes\analyzers.js /}
 
 `FieldIndexing.Search` allows performing full text search operations against the field using the 'StandardAnalyzer' 
 by default:  
 
-{CODE analyzers_4@Indexes\Analyzers.cs /}
+{CODE:nodejs analyzers_4@Indexes\analyzers.js /}
 
 If you want to disable indexing on a particular field, use the `FieldIndexing.No` option. This can be useful when you want to [store field data in the index](../indexes/storing-data-in-index), but don't want to make it available for querying. However, it will still be available 
 for extraction by projections:  
 
-{CODE analyzers_5@Indexes\Analyzers.cs /}
+{CODE:nodejs analyzers_5@Indexes\analyzers.js /}
 
 {PANEL/}
 
