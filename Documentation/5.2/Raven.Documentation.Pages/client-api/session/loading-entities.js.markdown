@@ -1,148 +1,113 @@
 # Session: Loading Entities
----
 
-{NOTE: }
-
-There are several methods with many overloads that allow users to download documents 
-from the database and convert them to entities. This article will cover the following 
-methods:  
+There are various methods with many overloads that allow users to download documents from a database and convert them to entities. This article will cover the following methods:
 
 - [Load](../../client-api/session/loading-entities#load)
 - [Load with Includes](../../client-api/session/loading-entities#load-with-includes)
 - [Load - multiple entities](../../client-api/session/loading-entities#load---multiple-entities)
 - [LoadStartingWith](../../client-api/session/loading-entities#loadstartingwith)
 - [ConditionalLoad](../../client-api/session/loading-entities#conditionalload)
-- [Stream](../../client-api/session/loading-entities#stream)
 - [IsLoaded](../../client-api/session/loading-entities#isloaded)
-
-{NOTE/}
-
----
+- [Stream](../../client-api/session/loading-entities#stream)
 
 {PANEL:Load}
 
-The most basic way to load a single entity is to use one of the `Load` methods.
+The most basic way to load a single entity is to use session's `load()` method.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_1_0@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_1_0_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/} 
+{CODE:nodejs loading_entities_1_0@ClientApi\Session\loadingEntities.js /}
 
-| Parameter | Type | Description |
+| Parameters | | |
 | ------------- | ------------- | ----- |
-| **id** | `string` | Identifier of a document that will be loaded. |
+| **id** | string | Identifier of a document that will be loaded. |
+| **documentType** | function | A class constructor used for reviving the results' entities |
+| **callback** | function | error-first callback, returns loaded document |
 
-| Return Type | Description |
+| Return Value | |
 | ------------- | ----- |
-| `TResult` | Instance of `TResult` or `null` if a document with a given ID does not exist. |
+| `Promise<object>` | A `Promise` returning `object` or `null` if a document with a given ID does not exist. |
 
 ### Example
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_1_1@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_1_1_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/} 
+{CODE:nodejs loading_entities_1_1@ClientApi\Session\loadingEntities.js /}
 
-{NOTE From RavenDB version 4.x onwards, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported. /}
+{NOTE In 4.x RavenDB, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported. /}
 
 {PANEL/}
 
 {PANEL:Load with Includes}
 
-When there is a 'relationship' between documents, those documents can be loaded in a 
-single request call using the `Include + Load` methods. Learn more in 
-[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships).  
-See also [including counters](../../document-extensions/counters/counters-and-other-features#including-counters) 
-and [including time series](../../document-extensions/timeseries/client-api/session/include/overview).
+When there is a *relationship* between documents, those documents can be loaded in a single request call using the `include()` and `load()` methods.
 
-{CODE loading_entities_2_0@ClientApi\Session\LoadingEntities.cs /}
+{CODE:nodejs loading_entities_2_0@ClientApi\Session\loadingEntities.js /}
 
-| Parameter | Type | Description |
+| Parameters | | |
 | ------------- | ------------- | ----- |
-| **path** | `string` or Expression | Path in documents in which the server should look for 'referenced' documents. |
+| **path** | string | Field path in documents in which the server should look for 'referenced' documents. |
 
-| Return Type | Description |
+| Return Value | |
 | ------------- | ----- |
-| `ILoaderWithInclude` | The `Include` method by itself does not materialize any requests but returns loader containing methods such as `Load`. |
+| `object{load()}` | The `include()` method by itself does not materialize any requests but returns loader containing methods such as `load()`. |
 
 ### Example I
 
 We can use this code to also load an employee which made the order.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_2_1@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_2_1_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/} 
-
-### Example II
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_2_2@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_2_2_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/} 
+{CODE:nodejs loading_entities_2_1@ClientApi\Session\loadingEntities.js /}
 
 {PANEL/}
 
 {PANEL:Load - multiple entities}
 
-To load multiple entities at once, use one of the following `Load` overloads.
+To load multiple entities at once, use one of the following ways to call `load()`.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_3_0@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_3_0_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/} 
+{CODE:nodejs loading_entities_3_0@ClientApi\Session\loadingEntities.js /}
 
-| Parameter | Type | Description |
+| Parameters | | |
 | ------------- | ------------- | ----- |
-| **ids** | `IEnumerable<string>` | Multiple document identifiers to load |
+| **idsArray** | string[] | Multiple document identifiers to load |
+| **documentType** | function | A class constructor used for reviving the results' entities |
+| **options** | string | Options with the following properties |
+| &nbsp;&nbsp;*documentType* | function | A class construcor used for reviving the results' entities |
+| &nbsp;&nbsp;*includes* | string[] | Field paths in documents in which the server should look for 'referenced' documents. |
+| **callback** | function | error-first callback, returns an object mapping document identifiers to `object` or `null` if a document with given ID doesn't exist (see Return Value below) |
 
-| Return Type | Description |
+| Return Value | |
 | ------------- | ----- |
-| `Dictionary<string, TResult>` | Instance of Dictionary which maps document identifiers to `TResult` or `null` if a document with given ID doesn't exist. |
+| `Promise<{ [id]: object }>` | A `Promise` resolving to an object mapping document identifiers to `object` or `null` if a document with given ID doesn't exist |
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_3_1@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_3_1_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/} 
+{CODE:nodejs loading_entities_3_1@ClientApi\Session\loadingEntities.js /}
 
 {PANEL/}
 
 {PANEL:LoadStartingWith}
 
-To load multiple entities that contain a common prefix, use the `LoadStartingWith` method from the `Advanced` session operations.
+To load multiple entities that contain a common prefix, use the `loadStartingWith()` method from the `advanced` session operations.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_4_0@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_4_0_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/}
+{CODE:nodejs loading_entities_4_0@ClientApi\Session\loadingEntities.js /}
 
-| Parameter | Type | Description |
+| Parameters | | |
 | ------------- | ------------- | ----- |
-| **idPrefix** | `string` |  prefix for which the documents should be returned  |
-| **matches** | `string` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
-| **start** | `int` | number of documents that should be skipped  |
-| **pageSize** | `int` | maximum number of documents that will be retrieved |
-| **exclude** | `string` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
-| **skipAfter** | `string` | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
+| **idPrefix** | string | prefix for which the documents should be returned  |
+| **options** | string | Options with the following properties |
+| &nbsp;&nbsp;*matches* | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
+| &nbsp;&nbsp;*start* | number | number of documents that should be skipped  |
+| &nbsp;&nbsp;*pageSize* | number | maximum number of documents that will be retrieved |
+| &nbsp;&nbsp;*exclude* | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| &nbsp;&nbsp;*skipAfter* | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
+| &nbsp;&nbsp;*documentType* | function | A class constructor used for reviving the results' entities |
+| **callback** | function | error-first callback, returns an array of entities matching given parameters (see Return Value below) |
 
-| Return Type | Description |
+| Return Value | |
 | ------------- | ----- |
-| `TResult[]` | Array of entities matching given parameters. |
-| `Stream` | Output entities matching given parameters as a stream. |
+| `Promise<object[]>` | A `Promise` resolving to an array of entities matching given parameters |
 
 ### Example I
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_4_1@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_4_1_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/}
+{CODE:nodejs loading_entities_4_1@ClientApi\Session\loadingEntities.js /}
 
 ### Example II
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_4_2@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_4_2_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/}
+{CODE:nodejs loading_entities_4_2@ClientApi\Session\loadingEntities.js /}
 
 {PANEL/}
 
@@ -158,12 +123,9 @@ In other words, this method can be used to check whether a document has been mod
 since the last time its change vector was recorded, so that the cost of loading it 
 can be saved if it has not been modified.  
 
-The method is accessible from the `session.Advanced` operations.  
+The method is accessible from the `session.advanced` operations.  
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_7_0@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_7_0_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/} 
+{CODE:nodejs loading_entities_7_0@ClientApi\Session\loadingEntities.js /}
 
 | Parameter | Type | Description |
 | ------------- | ------------- | ----- |
@@ -172,88 +134,87 @@ The method is accessible from the `session.Advanced` operations.
 
 | Return Type | Description |
 | ------------- | ----- |
-| ValueTuple `(T Entity, string ChangeVector)` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector.<br/>If the change vectors match, the method returns `default` as the entity, and the current change vector.<br/>If the specified document, the method returns only `default` without a change vector. |
+| ValueTuple `(object, changeVector)` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector.<br/>If the change vectors match, the method returns `default` as the entity, and the current change vector.<br/>If the specified document, the method returns only `default` without a change vector. |
 
 ### Example
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_7_1@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_7_1_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/} 
+{CODE:nodejs loading_entities_7_1@ClientApi\Session\loadingEntities.js /}
 
 {PANEL/}
 
 {PANEL:Stream}
 
-Entities can be streamed from the server using one of the following `Stream` methods from the `Advanced` session operations.
+Entities can be streamed from the server using the `stream()` method from the `advanced` session operations.
 
-Streaming query results does not support the [`include` feature](../../../client-api/how-to/handle-document-relationships#includes). 
-Learn more in [How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results).  
+{CODE:nodejs loading_entities_5_0@ClientApi\Session\loadingEntities.js /}
 
-{INFO Entities loaded using `Stream` will be transient (not attached to session). /}
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_5_0@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_5_0_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/}
-
-| Parameter | Type | Description |
+| Parameters | | |
 | ------------- | ------------- | ----- |
-| **startsWith** | `string` | prefix for which documents should be streamed |
-| **matches** | `string` | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
-| **start** | `int` | number of documents that should be skipped  |
-| **pageSize** | `int` | maximum number of documents that will be retrieved |
-| **skipAfter** | `string` | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
-| **StreamQueryStats** | `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+| **idPrefix** | string | prefix for which the documents should be returned  |
+| **query** | query object | a query obtained from a call to `session.query()` or `session.advanced.rawQuery()` |
+| **options** | string | Options with the following properties |
+| &nbsp;&nbsp;*startsWith* | string | prefix for which documents should be streamed |
+| &nbsp;&nbsp;*matches* | string | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
+| &nbsp;&nbsp;*start* | number | number of documents that should be skipped  |
+| &nbsp;&nbsp;*pageSize* | number | maximum number of documents that will be retrieved |
+| &nbsp;&nbsp;*skipAfter* | string | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
+| &nbsp;&nbsp;*documentType* | function | A class constructor used for reviving the results' entities |
+| **statsCallback** | function | callback returning information about the streaming query (amount of results, which index was queried, etc.) |
+| **callback** | function | returns a readable stream with query results (same as Return Value result below) |
 
-| Return Type | Description |
+| Return Value | |
 | ------------- | ----- |
-| `IEnumerator<`[StreamResult](../../glossary/stream-result)`>` | Enumerator with entities. |
-| `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+| `Promise<Readable>` | A `Promise` resolving to readable stream with query results |
 
 
 ### Example I
 
 Stream documents for a ID prefix:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_5_1@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_5_1_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/}
+{CODE:nodejs loading_entities_5_1@ClientApi\Session\loadingEntities.js /}
 
-## Example 2
+### Example 2
 
-Fetch documents for a ID prefix directly into a stream:
+Fetch documents for a ID prefix directly into a writable stream:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_5_2@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_5_2_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/}
+{CODE:nodejs loading_entities_5_2@ClientApi\Session\loadingEntities.js /}
+
+{INFO Entities loaded using `stream()` will be transient (not attached to session). /}
 
 {PANEL/}
 
 {PANEL:IsLoaded}
 
-To check if an entity is attached to a session, e.g. it has been loaded previously, use the `IsLoaded` method from the `Advanced` session operations.
+To check if an entity is attached to a session, e.g. it has been loaded previously, use the `isLoaded()` method from the `advanced` session operations.
 
-{CODE loading_entities_6_0@ClientApi\Session\LoadingEntities.cs /}
+{CODE:nodejs loading_entities_6_0@ClientApi\Session\loadingEntities.js /}
 
-| Parameter | Type | Description |
+| Parameters | | |
 | ------------- | ------------- | ----- |
-| **id** | `string` | Entity ID for which the check should be performed. |
+| **id** | string | Entity ID for which the check should be performed. |
 
-| Return Type | Description |
+| Return Value | |
 | ------------- | ----- |
-| `bool` | Indicates if an entity with a given ID is loaded. |
+| boolean | Indicates if an entity with a given ID is loaded. |
 
 ### Example
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_6_1@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_6_1_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/}
+{CODE:nodejs loading_entities_6_1@ClientApi\Session\loadingEntities.js /}
 
 {PANEL/}
+
+### On entities loading, JS classes and the&nbsp;*documentType*&nbsp;parameter
+
+Type information about the entity and its contents is by default stored in the document metadata. Based on that its types are revived when loaded from the server.
+
+{INFO: Entity type registration }
+In order to avoid passing **documentType** argument every time, you can register the type in the document conventions using the `registerEntityType()` method before calling DocumentStore's `initialize()` like so:
+
+{CODE:nodejs query_1_8@ClientApi\Session\Querying\howToQuery.js /}
+
+{INFO/}
+
+If you fail to do so, entities (and all subobjects) loaded from the server are going to be plain object literals and not instances of the original type they were stored with.
 
 ## Related Articles
 
