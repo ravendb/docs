@@ -1,5 +1,5 @@
-import com.google.common.collect.Sets;
 import net.ravendb.client.documents.indexes.AbstractJavaScriptIndexCreationTask;
+import net.ravendb.client.documents.session.IRawDocumentQuery;
 
 import java.util.HashSet;
 import java.util.List;
@@ -14,12 +14,12 @@ public class IndexingCompareExchange {
     private class Compare_Exchange_JS_Index extends AbstractJavaScriptIndexCreationTask{
         public Compare_Exchange_JS_Index()
         {
-            setMaps(Sets.newHashSet(
+            setMaps(Collections.singleton(
                     "map('HotelRooms', function (room) {"+
                             "var guests = cmpxchg(room.RoomID);"+
                             "return {"+
-                            "RoomID: room.RoomID,"+
-                            "Guests: guests"+
+                                "RoomID: room.RoomID,"+
+                                "Guests: guests"+
                             "});"
                     )
             );
@@ -28,9 +28,10 @@ public class IndexingCompareExchange {
     //endregion
 
     //region query_0
-    List<Hotelroom> VIPRooms=session.advanced().rawQuery(Hotelroom.class,
-            "from Hotelrooms as room"+
-            "where room.Guests == cmpxchg('VIP')");
+    IRawDocumentQuery<Hotelroom> VIPRooms = session.advanced().rawQuery(Hotelroom.class,
+        "from Hotelrooms as room"+
+        "where room.Guests == cmpxchg('VIP')");
+
     //endregion
 }
 
