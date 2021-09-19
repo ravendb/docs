@@ -20,17 +20,16 @@
 
 ### Stream a time series directly:  
 
-Get a time series (using `timeSeriesFor().get()`, and call `Stream()`).  
+Get a time series (using `timeSeriesFor().get()`, and call `stream()`).  
 
 {CODE-BLOCK: java}
-<T> CloseableIterator<StreamResult<T>> stream(Date from, Date to, TimeSpan offset);
+<T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query);
 {CODE-BLOCK/}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **from** | `Date` | Start the stream from a certain time. If null, stream starts from the beginning of the time series. |
-| **to** | `Date` | Stop the stream at a certain time. If null, stream stops at the end of the time series. |
-| **offset** | `TimeSpan` | Change the timestamp of the streamed time series entries by adding this amount of time. |
+| **query** | `IRawDocumentQuery<T>` | Raw data |
+
 
 ### Stream results of time series queries:  
 
@@ -52,13 +51,16 @@ found [here](../../../client-api/session/querying/how-to-stream-query-results).
 
 {PANEL: Examples}
 
+[comment]: <
 ### Example I
 
 Using `timeSeriesFor`:
 
 {CODE:java direct@DocumentExtensions/TimeSeries/StreamTimeSeries.java /}
 
-### Example II
+> (There isn't get to stream, a sample couldn't exists like that)
+
+### Example 
 
 Using a `rawQuery`:
 

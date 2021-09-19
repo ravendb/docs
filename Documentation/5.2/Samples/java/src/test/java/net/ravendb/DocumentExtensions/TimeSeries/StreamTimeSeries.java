@@ -7,14 +7,13 @@ import net.ravendb.client.documents.session.*;
 import net.ravendb.client.documents.session.timeSeries.TimeSeriesEntry;
 import net.ravendb.client.primitives.Reference;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class StreamTimeSeries {
 
     //region stream_methods
-    <T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query);
-
     <T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
 
     <T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query);
@@ -30,8 +29,7 @@ public class StreamTimeSeries {
             try (IDocumentSession session = store.openSession()) {
 
                 //region direct
-                ISessionDocumentTimeSeries timeseries = session.timeSeriesFor("HeartRate","user/1-A");
-                List<TimeSeriesEntry> results = Arrays.asList(timeseries.get());
+                ISessionDocumentTimeSeries timeseries = session.timeSeriesFor("HeartRate", "user/1-A");
                 //endregion
 
 
@@ -39,13 +37,13 @@ public class StreamTimeSeries {
             try (IDocumentSession session = store.openSession()) {
             //region query
             IRawDocumentQuery<Employee> query = session.advanced()
-                    .rawQuery(Employee.class, "from Users select timeseries (from HeartRate)");
+                    .rawQuery(Employee.class, "" +
+                        "from Users " +
+                        "select timeseries (" +
+                            "from HeartRate" +
+                        "");
 
             CloseableIterator<StreamResult<Employee>> results = session.advanced().stream(query);
-
-            while (results.hasNext()) {
-                StreamResult<Employee> employee = results.next();
-            }
             //endregion
             }
         }
