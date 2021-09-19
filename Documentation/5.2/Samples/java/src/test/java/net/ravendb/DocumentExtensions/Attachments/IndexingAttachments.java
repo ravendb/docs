@@ -9,6 +9,9 @@ import net.ravendb.client.documents.indexes.AbstractJavaScriptIndexCreationTask;
 import net.ravendb.client.documents.operations.attachments.AttachmentName;
 import net.ravendb.client.documents.session.IDocumentSession;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class IndexingAttachments {
@@ -85,9 +88,9 @@ public class IndexingAttachments {
     private class Companies_With_Attachments_JavaScript  extends AbstractJavaScriptIndexCreationTask {
         public Companies_With_Attachments_JavaScript()
         {
-            setMaps(Sets.newHashSet(
+            setMaps(Collections.singleton(
                 "map('Companies', function (company) {"+
-                    "var attachment  = loadAttachment(company, company.ExternalId);"+
+                    "var attachment  = LoadAttachment(company, company.ExternalId);"+
                     "return {"+
                     "CompanyName: company.Name,"+
                     "AttachmentName: attachment.Name,"+
@@ -108,7 +111,7 @@ public class IndexingAttachments {
         {
             setMaps(Sets.newHashSet(
         "map('Companies', function (company) {"+
-                    "var attachments = loadAttachments(company);"
+                    "var attachments = LoadAttachments(company);"
                     "return attachments.map(attachment => ({"
                         "AttachmentName: attachment.Name,"
                         "AttachmentContent: attachment.getContentAsString('utf8')"
@@ -128,8 +131,9 @@ public class IndexingAttachments {
             try (IDocumentSession session = store.openSession()) {
                 //region query1
                 //return all employees that have an attachment called "cv.pdf"
-                List<Employee> employees = session.query(Employee.class, Employees_ByAttachmentNames.class)
-                    .containsAny("attachmentNames", Lists.newArrayList("cv.pdf"))
+                List<Employee> employees = session.query(Employees_ByAttachmentNames.class, Employees_ByAttachmentNames.getResult)
+                    .containsAny("attachmentNames",Arrays.asList("employees_cv.pdf"))
+                    .selectFields(Company.class, "cv.pdf")
                     .toList();
                 //endregion
             }

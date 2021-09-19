@@ -40,7 +40,7 @@ The `AttachmentsFor` method is available in `AbstractIndexCreationTask`.
 | Parameter | Type | Description |
 | - | - | - |
 | **doc** | A server-side document, an entity | The document whose attachments you want to load |
-| **name** | `string` | The name of the attachment you want to load |
+| **name** | `String` | The name of the attachment you want to load |
 
 {PANEL/}
 
