@@ -86,7 +86,7 @@ public class Events {
     //endregion
 
     //region on_before_conversion_to_document
-    private void OnBeforeConversionToDocument(BeforeConversionToDocumentEventArgs args)
+    private void onBeforeConversionToDocument(BeforeConversionToDocumentEventArgs args)
     {
         if (args.getEntity() instanceof Item) {
             Item item = (Item) args.getEntity();
@@ -96,7 +96,7 @@ public class Events {
     //endregion
 
     //region on_after_conversion_to_document
-    private void OnAfterConversionToDocument(object sender, AfterConversionToDocumentEventArgs args)
+    private void onAfterConversionToDocument(object sender, AfterConversionToDocumentEventArgs args)
     {
         if (args.getEntity() instanceof Item)
         {
@@ -107,7 +107,7 @@ public class Events {
     //endregion
 
     //region on_before_conversion_to_entity
-    private void OnBeforeConversionToEntity(BeforeConversionToEntityEventArgs args)
+    private void onBeforeConversionToEntity(BeforeConversionToEntityEventArgs args)
     {
         if (args.getId() == "item/1-A")
         {
@@ -119,7 +119,7 @@ public class Events {
     //endregion
 
     //region on_after_conversion_to_entity
-    private void OnAfterConversionToEntity(AfterConversionToEntityEventArgs args)
+    private void onAfterConversionToEntity(AfterConversionToEntityEventArgs args)
     {
         if (args.getEntity() instanceof Item) {
             item.setAfter = true;
