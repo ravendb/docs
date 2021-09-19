@@ -27,13 +27,13 @@ Next, use these method which take the index expression:
  protected void addMap(String map)
 {CODE-BLOCK/}
 
-`AddMap` only indexes the counters with 
+`addMap` only indexes the counters with 
 the specified name.  
 
 Examples of indexes using each method:  
 
 {CODE-TABS}
-{CODE-TAB:java:AddMap index_1@Indexes\IndexingCounters.java /}
+{CODE-TAB:java:addMap index_1@Indexes\IndexingCounters.java /}
 {CODE-TABS/}  
 <br/>
 
@@ -103,12 +103,12 @@ Example:
 
 ### `CounterNamesFor`
 
-While indexes inheriting from `AbstractIndexCreationTask` cannot index counter _values_, the `CounterNamesFor` 
+While indexes inheriting from `AbstractIndexCreationTask` cannot index counter _values_, the `counterNamesFor` 
 method is available which returns the names of all counters for a specified document:  
 
 {CODE:java syntax@Indexes\IndexingCounters.java /}
 
-Example of index using `CounterNamesFor`:  
+Example of index using `counterNamesFor`:  
 
 {CODE:java index_0@Indexes\IndexingCounters.java /}
 

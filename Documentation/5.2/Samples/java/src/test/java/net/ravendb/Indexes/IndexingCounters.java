@@ -7,12 +7,13 @@ import net.ravendb.client.documents.indexes.AbstractIndexCreationTask;
 import net.ravendb.client.documents.session.IDocumentSession;
 import net.ravendb.northwind.Company;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class IndexingCounters {
     private interface IFoo {
         //region syntax
-        List<String> CounterNamesFor(Object doc);
+        List<String> counterNamesFor(Object doc);
         //endregion
     }
 
@@ -20,7 +21,7 @@ public class IndexingCounters {
     public static class Companies_ByCounterNames extends AbstractIndexCreationTask {
         public Companies_ByCounterNames() {
             map = "from e in docs.Employees\n" +
-                "let counterNames = CounterNamesFor(e)\n" +
+                "let counterNames = counterNamesFor(e)\n" +
                 "select new\n" +
                 "{\n" +
                 "   counterNames = counterNames.ToArray()\n" +
@@ -34,9 +35,10 @@ public class IndexingCounters {
             try (IDocumentSession session = store.openSession()) {
                 //region query1
                 // return all companies that have 'Likes' counter
-                List<Company> companies = session
-                    .query(Company.class, Companies_ByCounterNames.class)
-                    .containsAny("counterNames", Lists.newArrayList("Likes"))
+                List<myClass.Company> companies = session
+                    .query(myClass.Company.class, myClass.Companies_ByCounterNames.class)
+                    .containsAny("counterNames",  Arrays.asList("companies_likes"))
+                    .selectFields(myClass.Company.class, "likes")
                     .toList();
                 //endregion
             }
