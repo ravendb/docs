@@ -184,11 +184,11 @@ public class LoadingEntities {
             }
 
             User user;
-            string changeVector;
+            String changeVector;
             //region loading_entities_7_1
             try (IDocumentSession session = store.openSession()) {
 
-                string changeVector;
+                String changeVector;
                 User user = new User("Bob");
 
                 session.store(User, "users/1");
@@ -203,8 +203,8 @@ public class LoadingEntities {
                     // The given change vector matches
                     // the server-side change vector
                     // Does not load the document
-                    ConditionalLoadResult<T> result1 = session.advanced()
-                     .conditionalLoad(User.class,"users/1", changeVector);
+                    ConditionalLoadResult<User> result1 = session.advanced()
+                     .conditionalLoad(User.class, "users/1", changeVector);
 
                     // Modify the document
                     user.setName = "Bob Smith";
@@ -213,7 +213,7 @@ public class LoadingEntities {
 
                     // Change vectors do not match
                     // Loads the document
-                    ConditionalLoadResult<T> result2 = session.advanced().conditionalLoad(
+                    ConditionalLoadResult<User> result2 = session.advanced().conditionalLoad(
                         User.class, "users/1", changeVector);
                     }
 
