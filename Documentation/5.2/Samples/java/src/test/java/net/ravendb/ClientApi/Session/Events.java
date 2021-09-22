@@ -80,7 +80,7 @@ public class Events {
     //region on_after_save_changes_event
     private void onAfterSaveChangesEvent(AfterSaveChangesEventArgs args) {
         if (log.isLoggable(Level.INFO)) {
-            log.info("Document" + args.getDocumentId() + "was saved");
+            log.info("Document" + args.getDocumentId() + " was saved");
         }
     }
     //endregion
@@ -96,7 +96,7 @@ public class Events {
     //endregion
 
     //region on_after_conversion_to_document
-    private void onAfterConversionToDocument(object sender, AfterConversionToDocumentEventArgs args)
+    private void onAfterConversionToDocument(Object sender, AfterConversionToDocumentEventArgs args)
     {
         if (args.getEntity() instanceof Item)
         {
@@ -112,7 +112,7 @@ public class Events {
         if (args.getId() == "item/1-A")
         {
             if (log.isLoggable(Level.INFO)) {
-                log.info("Document" + args.getId() + "has found");
+                log.info("Document" + args.getId() + " has found");
             }
         }
     }
