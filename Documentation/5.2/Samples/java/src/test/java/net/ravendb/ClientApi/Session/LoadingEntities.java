@@ -1,3 +1,5 @@
+package net.ravendb.ClientApi.Session;
+
 import net.ravendb.client.documents.CloseableIterator;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
@@ -11,11 +13,13 @@ import java.util.Collection;
 import java.util.Map;
 
 public class LoadingEntities {
+
     private interface IFoo {
         //region loading_entities_1_0
         <T> T load(Class<T> clazz, String id);
         //endregion
-
+    }
+    private interface IFoo2 {
         //region loading_entities_2_0
         ILoaderWithInclude include(String path);
 
@@ -25,7 +29,8 @@ public class LoadingEntities {
 
         <TResult> TResult load(Class<TResult> clazz, String id);
         //endregion
-
+    }
+        private interface IFoo3 {
         //region loading_entities_3_0
         <TResult> Map<String, TResult> load(Class<TResult> clazz, String... ids);
 
@@ -74,7 +79,16 @@ public class LoadingEntities {
         <T> ConditionalLoadResult<T> conditionalLoad(Class<T> clazz, String id, String changeVector);
         //endregion
     }
+    private static class User {
+        String name;
 
+        public User(String name) {
+            this.name=name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
     private static class Employee {
 
     }
@@ -111,9 +125,6 @@ public class LoadingEntities {
 
                 Supplier supplier = session.load(Supplier.class, product.getSupplier()); // this will not make server call
                 //endregion
-                Product product1 = session.load();
-
-
             }
 
             try (IDocumentSession session = store.openSession()) {
@@ -183,20 +194,20 @@ public class LoadingEntities {
                 //endregion
             }
 
-            User user;
-            String changeVector;
+
             //region loading_entities_7_1
             try (IDocumentSession session = store.openSession()) {
 
                 String changeVector;
                 User user = new User("Bob");
 
-                session.store(User, "users/1");
+                session.store(User.class, "users/1");
                 session.saveChanges();
 
                 changeVector = session.advanced().getChangeVectorFor(user);
             }
-
+            User user = new User("Bob");
+            String changeVector="a";
             try (IDocumentSession session = store.openSession()) {
                 // New session which does not track our User entity
 
@@ -207,7 +218,7 @@ public class LoadingEntities {
                      .conditionalLoad(User.class, "users/1", changeVector);
 
                     // Modify the document
-                    user.setName = "Bob Smith";
+                    user.setName("Bob Smith");
                     session.store(user);
                     session.saveChanges();
 
@@ -221,4 +232,3 @@ public class LoadingEntities {
             }
         }
     }
-}
