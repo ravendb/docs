@@ -71,7 +71,7 @@ public class LoadingEntities {
         //endregion
 
         //region loading_entities_7_0
-        <T> ConditionalLoadResult<T> conditionalLoad(Class<T> clazz, String id, String changeVector)
+        <T> ConditionalLoadResult<T> conditionalLoad(Class<T> clazz, String id, String changeVector);
         //endregion
     }
 
@@ -111,7 +111,7 @@ public class LoadingEntities {
 
                 Supplier supplier = session.load(Supplier.class, product.getSupplier()); // this will not make server call
                 //endregion
-                Product product1 = session.load()
+                Product product1 = session.load();
 
 
             }
@@ -194,7 +194,7 @@ public class LoadingEntities {
                 session.store(User, "users/1");
                 session.saveChanges();
 
-                changeVector = session.advanced().getChangeVectorFor(User user);
+                changeVector = session.advanced().getChangeVectorFor(user);
             }
 
             try (IDocumentSession session = store.openSession()) {
