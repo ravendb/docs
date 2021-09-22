@@ -1,3 +1,5 @@
+package net.ravendb.ClientApi.Session.Querying;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
@@ -153,14 +155,15 @@ public class HowToCustomize {
             }
 
             try (IDocumentSession session = store.openSession()) {
+                /*
                 //region projectionbehavior_query
                 session.advanced().addBeforeQueryListener((sender, event) -> event.getQueryCustomization().projection(DEFAULT));
 
-                List<Employee> results = session.query(myClass.Employee.class)
-                    .selectFields(myClass.Employee.class,"name")
+                List<Employee> results = session.query(Employee.class)
+                    .selectFields(Employee.class,"name")
                     .toList();
                 //endregion
-
+                */
                 session.saveChanges();
             }
 

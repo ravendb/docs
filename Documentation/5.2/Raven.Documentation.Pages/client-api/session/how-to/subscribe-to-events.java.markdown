@@ -26,7 +26,7 @@ public void removeBeforeStoreListener(EventHandler<BeforeStoreEventArgs> handler
 The class `BeforeStoreEventArgs`:  
 
 {CODE-BLOCK: java}
-public BeforeStoreEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity)
+public BeforeStoreEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity);
 {CODE-BLOCK/}
 
 {CODE-BLOCK: java}
@@ -72,7 +72,7 @@ public void removeBeforeDeleteListener(EventHandler<BeforeDeleteEventArgs> handl
 The class `BeforeDeleteEventArgs`:  
 
 {CODE-BLOCK: java}
- public BeforeDeleteEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity)
+ public BeforeDeleteEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity);
 {CODE-BLOCK/}
 
 {CODE-BLOCK: java}
@@ -119,7 +119,7 @@ The class `AfterSaveChangesEventArgs`:
 
 
 {CODE-BLOCK: java}
-public AfterSaveChangesEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity)
+public AfterSaveChangesEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity);
 {CODE-BLOCK/}
 
 {CODE-BLOCK: java}
@@ -203,7 +203,7 @@ public void removeBeforeConversionToDocumentListener(EventHandler<BeforeConversi
 The class `BeforeConversionToDocumentEventArgs`:  
 
 {CODE-BLOCK: java}
-public BeforeConversionToDocumentEventArgs(InMemoryDocumentSessionOperations session, String id, Object entity)
+public BeforeConversionToDocumentEventArgs(InMemoryDocumentSessionOperations session, String id, Object entity);
 {CODE-BLOCK/}
 
 
@@ -242,7 +242,7 @@ public void removeAfterConversionToDocumentListener(EventHandler<AfterConversion
 The class `AfterConversionToDocumentEventArgs`:  
 
 {CODE-BLOCK: java}
-public AfterConversionToDocumentEventArgs(InMemoryDocumentSessionOperations session, String id, Object entity, Reference<ObjectNode> document)
+public AfterConversionToDocumentEventArgs(InMemoryDocumentSessionOperations session, String id, Object entity, Reference<ObjectNode> document);
 {CODE-BLOCK/}
 
 {CODE-BLOCK: java}

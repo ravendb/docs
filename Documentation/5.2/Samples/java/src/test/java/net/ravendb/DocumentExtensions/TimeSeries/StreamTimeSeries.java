@@ -1,3 +1,5 @@
+package net.ravendb.DocumentExtensions.TimeSeries;
+
 import net.ravendb.client.documents.CloseableIterator;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
@@ -11,15 +13,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
+
 public class StreamTimeSeries {
+    private interface IFoo {
+        //region stream_methods
+        <T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
 
-    //region stream_methods
-    <T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+        <T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query);
 
-    <T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query);
+        <T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+        //endregion
+    }
+    class Employee{
 
-    <T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
-    //endregion
+    }
 
     public static void main(String args[]){
         try (IDocumentStore store = new DocumentStore( new String[]{ "http://localhost:8080" }, "Northwind")) {
@@ -48,7 +56,6 @@ public class StreamTimeSeries {
             }
         }
     }
-
 }
 
 

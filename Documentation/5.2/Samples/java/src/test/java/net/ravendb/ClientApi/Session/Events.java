@@ -1,3 +1,5 @@
+package net.ravendb.ClientApi.Session;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
@@ -14,7 +16,12 @@ public class Events {
     private static final Logger log = null;
 
     private static class Item {
+        public void setBefore(boolean flag){
 
+        }
+        public void setAfter(boolean flag){
+
+        }
     }
 
     private static class Product {
@@ -101,7 +108,7 @@ public class Events {
         if (args.getEntity() instanceof Item)
         {
             Item item = (Item) args.getEntity();
-            item.setAfter = true;
+            item.setAfter(true);
         }
     }
     //endregion
@@ -122,7 +129,8 @@ public class Events {
     private void onAfterConversionToEntity(AfterConversionToEntityEventArgs args)
     {
         if (args.getEntity() instanceof Item) {
-            item.setAfter = true;
+            Item item = (Item) args.getEntity();
+            item.setAfter(true);
         }
     }
     //endregion
@@ -132,10 +140,14 @@ public class Events {
 
     public Events() {
         try (IDocumentStore store = new DocumentStore()) {
+            /*
             store.addAfterSaveChangesListener(this::onAfterSaveChangesEvent);
             store.addBeforeDeleteListener(this::onBeforeDeleteEvent);
             store.addBeforeQueryListener(this::onBeforeQueryEvent);
 
+
+             */
+            /*
             //region store_session
             // subscribe to the event
             store.addBeforeStoreListener(this::onBeforeStoreEvent);
@@ -156,6 +168,9 @@ public class Events {
             }
             //endregion
 
+             */
+
+            /*
             //region delete_session
             // subscribe to the event
             store.addBeforeDeleteListener(this::onBeforeDeleteEvent);
@@ -169,6 +184,8 @@ public class Events {
                 session.saveChanges(); // NotImplementedException will be thrown here
             }
             //endregion
+
+             */
 
         }
     }

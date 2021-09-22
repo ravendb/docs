@@ -1,4 +1,4 @@
-package net.ravendb.Indexes;
+package net.ravendb.DocumentExtensions.Attachments;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -9,6 +9,7 @@ import net.ravendb.client.documents.indexes.AbstractJavaScriptIndexCreationTask;
 import net.ravendb.client.documents.operations.attachments.AttachmentName;
 import net.ravendb.client.documents.session.IDocumentSession;
 
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,14 +18,18 @@ import java.util.List;
 public class IndexingAttachments {
 
     private interface IFoo {
+        /*
         //region syntax
-        List<AttachmentName> AttachmentsFor(Object doc);
+        IEnumerable<AttachmentName> AttachmentsFor(object doc);
         //endregion
+        */
 
+        /*
         //region syntax_2
         LoadAttachment(doc, name);
         LoadAttachments(doc);
         //endregion
+         */
     }
 
     public static class Foo {
@@ -78,9 +83,10 @@ public class IndexingAttachments {
                 "let attachments = AttachmentsFor(e)\n" +
                 "select new\n" +
                 "{\n" +
-                "   attachmentNames = attachments.Select(x => x.Name).ToArray()\n" +
+                "   attachmentNames = attachments.Select(x => x.Name).ToArray() \n" +
                 "}";
         }
+
     }
     //endregion
 
@@ -89,15 +95,15 @@ public class IndexingAttachments {
         public Companies_With_Attachments_JavaScript()
         {
             setMaps(Collections.singleton(
-                "map('Companies', function (company) {"+
-                    "var attachment  = LoadAttachment(company, company.ExternalId);"+
-                    "return {"+
-                    "CompanyName: company.Name,"+
-                    "AttachmentName: attachment.Name,"+
-                    "AttachmentContentType: attachment.ContentType,"+
-                    "AttachmentHash: attachment.Hash,"+
-                    "AttachmentSize: attachment.Size,"+
-                    "AttachmentContent: attachment.getContentAsString('utf8')"+
+                "map('Companies', function (company) {" +
+                    "   var attachment = LoadAttachment(company, company.ExternalId);"+
+                    "   return { \n" +
+                    "       CompanyName: company.Name, \n" +
+                    "       AttachmentName: attachment.Name, \n" +
+                    "       AttachmentContentType: attachment.ContentType, \n" +
+                    "       AttachmentHash: attachment.Hash, \n" +
+                    "       AttachmentSize: attachment.Size, \n" +
+                    "       AttachmentContent: attachment.getContentAsString('utf8')" +
                     "});"
                 )
             );
@@ -109,13 +115,13 @@ public class IndexingAttachments {
     private class Companies_With_All_Attachments_JS   extends AbstractJavaScriptIndexCreationTask {
         public Companies_With_All_Attachments_JS()
         {
-            setMaps(Sets.newHashSet(
-        "map('Companies', function (company) {"+
-                    "var attachments = LoadAttachments(company);"
-                    "return attachments.map(attachment => ({"
-                        "AttachmentName: attachment.Name,"
-                        "AttachmentContent: attachment.getContentAsString('utf8')"
-                    "}));"+
+            setMaps(Collections.singleton(
+                "map('Companies', function (company) { \n"+
+                    "var attachments = LoadAttachments(company); \n"+
+                    "return attachments.map(attachment => ({ \n"+
+                        "AttachmentName: attachment.Name, \n"+
+                        "AttachmentContent: attachment.getContentAsString('utf8') \n"+
+                    "})); \n"+
                 "})"
                 )
             );
@@ -129,14 +135,24 @@ public class IndexingAttachments {
         try (IDocumentStore store = new DocumentStore()) {
 
             try (IDocumentSession session = store.openSession()) {
+                /*
                 //region query1
                 //return all employees that have an attachment called "cv.pdf"
-                List<Employee> employees = session.query(Employees_ByAttachmentNames.class, Employees_ByAttachmentNames.getResult)
-                    .containsAny("attachmentNames",Arrays.asList("employees_cv.pdf"))
+                List<Employee> employees = session.query(Employees_ByAttachmentNames.class, Employees_ByAttachmentNames.getResult())
+                    .containsAny("attachmentNames", Arrays.asList("employees_cv.pdf"))
                     .selectFields(Company.class, "cv.pdf")
                     .toList();
                 //endregion
+                 */
             }
         }
     }
+
+    class Employee{
+
+    }
+    class Company{
+
+    }
+
 }

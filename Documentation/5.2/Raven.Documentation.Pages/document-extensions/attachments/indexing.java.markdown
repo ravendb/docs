@@ -21,7 +21,7 @@
 ### Using AttachmentsFor()
 
 The `AttachmentsFor` method returns information about each attachment that extends 
-a specified document, including their names, sizes, and content type.  
+a specified document, including their names, sizes, and content type. write index definition as string.
 
 {CODE-TABS}
 {CODE-TAB:java:Method syntax@DocumentExtensions\Attachments\IndexingAttachments.java /}

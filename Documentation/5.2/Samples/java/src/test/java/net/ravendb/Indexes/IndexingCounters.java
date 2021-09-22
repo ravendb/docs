@@ -4,10 +4,13 @@ import com.google.common.collect.Lists;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
 import net.ravendb.client.documents.indexes.AbstractIndexCreationTask;
+import net.ravendb.client.documents.indexes.counters.AbstractCountersIndexCreationTask;
+import net.ravendb.client.documents.indexes.counters.AbstractJavaScriptCountersIndexCreationTask;
 import net.ravendb.client.documents.session.IDocumentSession;
-import net.ravendb.northwind.Company;
+
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class IndexingCounters {
@@ -35,10 +38,10 @@ public class IndexingCounters {
             try (IDocumentSession session = store.openSession()) {
                 //region query1
                 // return all companies that have 'Likes' counter
-                List<myClass.Company> companies = session
-                    .query(myClass.Company.class, myClass.Companies_ByCounterNames.class)
+                List<Company> companies = session
+                    .query(Company.class, Companies_ByCounterNames.class)
                     .containsAny("counterNames",  Arrays.asList("companies_likes"))
-                    .selectFields(myClass.Company.class, "likes")
+                    .selectFields(Company.class, "likes")
                     .toList();
                 //endregion
             }
@@ -49,10 +52,7 @@ public class IndexingCounters {
     protected void addMap(String map)
     //endregion
     {
-        if (map == null) {
-            throw new IllegalArgumentException("Map cannot be null");
-        }
-        maps.add(map);
+
     }
 
     //region index_1
@@ -81,5 +81,7 @@ public class IndexingCounters {
     }
     //endregion
 
+    class Company{
 
+    }
 }
