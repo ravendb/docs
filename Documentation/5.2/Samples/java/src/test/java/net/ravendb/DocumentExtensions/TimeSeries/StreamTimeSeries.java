@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 
 
-
 public class StreamTimeSeries {
     private interface IFoo {
         //region stream_methods
@@ -25,34 +24,33 @@ public class StreamTimeSeries {
         <T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
         //endregion
     }
-    class Employee{
+
+    class Employee {
 
     }
 
-    public static void main(String args[]){
-        try (IDocumentStore store = new DocumentStore( new String[]{ "http://localhost:8080" }, "Northwind")) {
+    public static void main(String args[]) {
+        try (IDocumentStore store = new DocumentStore(new String[]{"http://localhost:8080"}, "Northwind")) {
             store.initialize();
-
 
             try (IDocumentSession session = store.openSession()) {
 
                 //region direct
                 ISessionDocumentTimeSeries timeseries = session.timeSeriesFor("HeartRate", "user/1-A");
                 //endregion
-
-
             }
             try (IDocumentSession session = store.openSession()) {
-            //region query
-            IRawDocumentQuery<Employee> query = session.advanced()
-                    .rawQuery(Employee.class, "" +
-                        "from Users " +
-                        "select timeseries (" +
-                            "from HeartRate" +
-                        "");
+                //region query
+                IRawDocumentQuery<Employee> query = session.advanced()
+                    .rawQuery(Employee.class,
+                        "from Users\n" +
+                        "select timeseries (\n" +
+                        "    from HeartRate\n"+
+                        ")"
+                    );
 
-            CloseableIterator<StreamResult<Employee>> results = session.advanced().stream(query);
-            //endregion
+                CloseableIterator<StreamResult<Employee>> results = session.advanced().stream(query);
+                //endregion
             }
         }
     }
