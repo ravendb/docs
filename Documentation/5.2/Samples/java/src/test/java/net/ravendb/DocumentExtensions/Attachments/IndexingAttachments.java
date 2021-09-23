@@ -18,11 +18,11 @@ import java.util.List;
 public class IndexingAttachments {
 
     private interface IFoo {
-
+        /*
         //region syntax
-        List<AttachmentName> AttachmentsFor(Object doc);
+        IEnumerable<AttachmentName> AttachmentsFor(object doc);
         //endregion
-
+        */
 
         /*
         //region syntax_2
@@ -38,7 +38,7 @@ public class IndexingAttachments {
         private String hash;
         private String contentType;
         private long size;
-
+        //endregion
         public String getName() {
             return name;
         }
@@ -70,10 +70,7 @@ public class IndexingAttachments {
         public void setSize(long size) {
             this.size = size;
         }
-
-        //endregion
     }
-
 
 
     //region AttFor_index_JS
@@ -81,61 +78,55 @@ public class IndexingAttachments {
         public Employees_ByAttachmentNames() {
             map = "from e in docs.Employees\n" +
                 "let attachments = AttachmentsFor(e)\n" +
-                "select new\n" +
-                "{\n" +
-                "   attachmentNames = attachments.Select(x => x.Name).ToArray() \n" +
+                "select new {\n" +
+                "   attachmentNames = attachments.Select(x => x.Name).ToArray()\n" +
                 "}";
         }
-
     }
     //endregion
 
     //region LoadAtt_index_JS
-    private class Companies_With_Attachments_JavaScript  extends AbstractJavaScriptIndexCreationTask {
-        public Companies_With_Attachments_JavaScript()
-        {
+    private class Companies_With_Attachments_JavaScript extends AbstractJavaScriptIndexCreationTask {
+        public Companies_With_Attachments_JavaScript() {
             setMaps(Collections.singleton(
-                "map('Companies', function (company) {" +
-                    "   var attachment = LoadAttachment(company, company.ExternalId);"+
-                    "   return { \n" +
-                    "       CompanyName: company.Name, \n" +
-                    "       AttachmentName: attachment.Name, \n" +
-                    "       AttachmentContentType: attachment.ContentType, \n" +
-                    "       AttachmentHash: attachment.Hash, \n" +
-                    "       AttachmentSize: attachment.Size, \n" +
-                    "       AttachmentContent: attachment.getContentAsString('utf8')" +
+                "map('Companies', function (company) {\n" +
+                    "   var attachment = LoadAttachment(company, company.ExternalId);\n" +
+                    "   return {\n" +
+                    "       CompanyName: company.Name,\n" +
+                    "       AttachmentName: attachment.Name,\n" +
+                    "       AttachmentContentType: attachment.ContentType,\n" +
+                    "       AttachmentHash: attachment.Hash,\n" +
+                    "       AttachmentSize: attachment.Size,\n" +
+                    "       AttachmentContent: attachment.getContentAsString('utf8')\n" +
+                    "   }\n"+
                     "});"
                 )
             );
-        };
+        }
     }
     //endregion
 
     //region LoadAtts_index_JS
-    private class Companies_With_All_Attachments_JS   extends AbstractJavaScriptIndexCreationTask {
-        public Companies_With_All_Attachments_JS()
-        {
+    private class Companies_With_All_Attachments_JS extends AbstractJavaScriptIndexCreationTask {
+        public Companies_With_All_Attachments_JS() {
             setMaps(Collections.singleton(
-                "map('Companies', function (company) { \n"+
-                    "var attachments = LoadAttachments(company); \n"+
-                    "return attachments.map(attachment => ({ \n"+
-                        "AttachmentName: attachment.Name, \n"+
-                        "AttachmentContent: attachment.getContentAsString('utf8') \n"+
-                    "})); \n"+
+                "map('Companies', function (company) {\n" +
+                "    var attachments = LoadAttachments(company);\n" +
+                "    return attachments.map(attachment => ({\n" +
+                "        AttachmentName: attachment.Name,\n" +
+                "        AttachmentContent: attachment.getContentAsString('utf8')\n" +
+                "     }));\n" +
                 "})"
                 )
             );
-        };
+        }
     }
     //endregion
 
 
-
     public void sample() {
         try (IDocumentStore store = new DocumentStore()) {
-
             try (IDocumentSession session = store.openSession()) {
-
                 //region query1
                 //return all employees that have an attachment called "cv.pdf"
                 List<Employee> employees = session.query(Employees_ByAttachmentNames.class)
@@ -143,15 +134,14 @@ public class IndexingAttachments {
                     .selectFields(Company.class, "cv.pdf").ofType(Employee.class)
                     .toList();
                 //endregion
-
             }
         }
     }
 
-    class Employee{
+    class Employee {
 
     }
-    class Company{
+    class Company {
 
     }
 
