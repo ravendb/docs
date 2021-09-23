@@ -19,6 +19,7 @@ public class LoadingEntities {
         <T> T load(Class<T> clazz, String id);
         //endregion
     }
+
     private interface IFoo2 {
         //region loading_entities_2_0
         ILoaderWithInclude include(String path);
@@ -30,7 +31,8 @@ public class LoadingEntities {
         <TResult> TResult load(Class<TResult> clazz, String id);
         //endregion
     }
-        private interface IFoo3 {
+
+    private interface IFoo3 {
         //region loading_entities_3_0
         <TResult> Map<String, TResult> load(Class<TResult> clazz, String... ids);
 
@@ -79,22 +81,27 @@ public class LoadingEntities {
         <T> ConditionalLoadResult<T> conditionalLoad(Class<T> clazz, String id, String changeVector);
         //endregion
     }
+
     private static class User {
         String name;
 
         public User(String name) {
-            this.name=name;
+            this.name = name;
         }
+
         public void setName(String name) {
             this.name = name;
         }
     }
+
     private static class Employee {
 
     }
+
     private static class Supplier {
 
     }
+
     private static class Product {
         private String supplier;
 
@@ -206,29 +213,30 @@ public class LoadingEntities {
 
                 changeVector = session.advanced().getChangeVectorFor(user);
             }
+
             User user = new User("Bob");
-            String changeVector="a";
+            String changeVector = "a";
+
             try (IDocumentSession session = store.openSession()) {
                 // New session which does not track our User entity
 
-                    // The given change vector matches
-                    // the server-side change vector
-                    // Does not load the document
-                    ConditionalLoadResult<User> result1 = session.advanced()
-                     .conditionalLoad(User.class, "users/1", changeVector);
+                // The given change vector matches
+                // the server-side change vector
+                // Does not load the document
+                ConditionalLoadResult<User> result1 = session.advanced()
+                    .conditionalLoad(User.class, "users/1", changeVector);
 
-                    // Modify the document
-                    user.setName("Bob Smith");
-                    session.store(user);
-                    session.saveChanges();
+                // Modify the document
+                user.setName("Bob Smith");
+                session.store(user);
+                session.saveChanges();
 
-                    // Change vectors do not match
-                    // Loads the document
-                    ConditionalLoadResult<User> result2 = session.advanced().conditionalLoad(
-                        User.class, "users/1", changeVector);
-                    }
-
-                //endregion
+                // Change vectors do not match
+                // Loads the document
+                ConditionalLoadResult<User> result2 = session.advanced()
+                    .conditionalLoad(User.class, "users/1", changeVector);
             }
+            //endregion
         }
     }
+}
