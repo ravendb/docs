@@ -55,7 +55,7 @@ public class Events {
     }
 
     //region on_before_store_event
-    private void onBeforeStoreEvent(BeforeStoreEventArgs args) {
+    private void onBeforeStoreEvent(Object sender, BeforeStoreEventArgs args) {
         if (args.getEntity() instanceof Product) {
             Product product = (Product) args.getEntity();
             if (product.getUnitsInStock() == 0) {
@@ -66,13 +66,13 @@ public class Events {
     //endregion
 
     //region on_before_delete_event
-    private void onBeforeDeleteEvent(BeforeDeleteEventArgs args) {
+    private void onBeforeDeleteEvent(Object sender, BeforeDeleteEventArgs args) {
         throw new NotImplementedException("Sample");
     }
     //endregion
 
     //region on_before_query_execute_event
-    private void onBeforeQueryEvent(BeforeQueryEventArgs args) {
+    private void onBeforeQueryEvent(Object sender, BeforeQueryEventArgs args) {
         args.getQueryCustomization().noCaching();
     }
     //endregion
@@ -85,16 +85,15 @@ public class Events {
         //endregion
     }
     //region on_after_save_changes_event
-    private void onAfterSaveChangesEvent(AfterSaveChangesEventArgs args) {
+    private void onAfterSaveChangesEvent(Object sender, AfterSaveChangesEventArgs args) {
         if (log.isLoggable(Level.INFO)) {
-            log.info("Document" + args.getDocumentId() + " was saved");
+            log.info("Document " + args.getDocumentId() + " was saved");
         }
     }
     //endregion
 
     //region on_before_conversion_to_document
-    private void onBeforeConversionToDocument(BeforeConversionToDocumentEventArgs args)
-    {
+    private void onBeforeConversionToDocument(Object sender, BeforeConversionToDocumentEventArgs args) {
         if (args.getEntity() instanceof Item) {
             Item item = (Item) args.getEntity();
             item.setBefore(true);
@@ -103,8 +102,7 @@ public class Events {
     //endregion
 
     //region on_after_conversion_to_document
-    private void onAfterConversionToDocument(Object sender, AfterConversionToDocumentEventArgs args)
-    {
+    private void onAfterConversionToDocument(Object sender, AfterConversionToDocumentEventArgs args) {
         if (args.getEntity() instanceof Item)
         {
             Item item = (Item) args.getEntity();
@@ -114,20 +112,18 @@ public class Events {
     //endregion
 
     //region on_before_conversion_to_entity
-    private void onBeforeConversionToEntity(BeforeConversionToEntityEventArgs args)
-    {
+    private void onBeforeConversionToEntity(Object sender, BeforeConversionToEntityEventArgs args) {
         if (args.getId() == "item/1-A")
         {
             if (log.isLoggable(Level.INFO)) {
-                log.info("Document" + args.getId() + " has found");
+                log.info("Document " + args.getId() + " has found");
             }
         }
     }
     //endregion
 
     //region on_after_conversion_to_entity
-    private void onAfterConversionToEntity(AfterConversionToEntityEventArgs args)
-    {
+    private void onAfterConversionToEntity(Object sender, AfterConversionToEntityEventArgs args) {
         if (args.getEntity() instanceof Item) {
             Item item = (Item) args.getEntity();
             item.setAfter(true);
@@ -136,18 +132,13 @@ public class Events {
     //endregion
 
 
-
-
     public Events() {
         try (IDocumentStore store = new DocumentStore()) {
-            /*
+
             store.addAfterSaveChangesListener(this::onAfterSaveChangesEvent);
             store.addBeforeDeleteListener(this::onBeforeDeleteEvent);
             store.addBeforeQueryListener(this::onBeforeQueryEvent);
 
-
-             */
-            /*
             //region store_session
             // subscribe to the event
             store.addBeforeStoreListener(this::onBeforeStoreEvent);
@@ -168,9 +159,6 @@ public class Events {
             }
             //endregion
 
-             */
-
-            /*
             //region delete_session
             // subscribe to the event
             store.addBeforeDeleteListener(this::onBeforeDeleteEvent);
@@ -180,12 +168,9 @@ public class Events {
                 Product product = session.load(Product.class, "products/1-A");
 
                 session.delete(product);
-
                 session.saveChanges(); // NotImplementedException will be thrown here
             }
             //endregion
-
-             */
 
         }
     }

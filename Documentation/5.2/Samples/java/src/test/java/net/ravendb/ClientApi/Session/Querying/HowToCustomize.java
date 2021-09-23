@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
 import net.ravendb.client.documents.queries.IndexQuery;
+import net.ravendb.client.documents.queries.ProjectionBehavior;
 import net.ravendb.client.documents.queries.QueryResult;
 import net.ravendb.client.documents.session.IDocumentQuery;
 import net.ravendb.client.documents.session.IDocumentQueryCustomization;
@@ -155,15 +156,16 @@ public class HowToCustomize {
             }
 
             try (IDocumentSession session = store.openSession()) {
-                /*
+
                 //region projectionbehavior_query
-                session.advanced().addBeforeQueryListener((sender, event) -> event.getQueryCustomization().projection(DEFAULT));
+                session.advanced().addBeforeQueryListener((sender, event)
+                    -> event.getQueryCustomization().projection(ProjectionBehavior.DEFAULT));
 
                 List<Employee> results = session.query(Employee.class)
                     .selectFields(Employee.class,"name")
                     .toList();
                 //endregion
-                */
+
                 session.saveChanges();
             }
 
