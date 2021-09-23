@@ -18,16 +18,16 @@ import java.util.List;
 public class IndexingAttachments {
 
     private interface IFoo {
-        /*
+
         //region syntax
-        IEnumerable<AttachmentName> AttachmentsFor(object doc);
+        List<AttachmentName> AttachmentsFor(Object doc);
         //endregion
-        */
+
 
         /*
         //region syntax_2
-        LoadAttachment(doc, name);
-        LoadAttachments(doc);
+        public IAttachmentObject LoadAttachment(object doc, string name);
+        public IEnumerable<IAttachmentObject> LoadAttachments(object doc);
         //endregion
          */
     }
@@ -135,15 +135,15 @@ public class IndexingAttachments {
         try (IDocumentStore store = new DocumentStore()) {
 
             try (IDocumentSession session = store.openSession()) {
-                /*
+
                 //region query1
                 //return all employees that have an attachment called "cv.pdf"
-                List<Employee> employees = session.query(Employees_ByAttachmentNames.class, Employees_ByAttachmentNames.getResult())
+                List<Employee> employees = session.query(Employees_ByAttachmentNames.class)
                     .containsAny("attachmentNames", Arrays.asList("employees_cv.pdf"))
-                    .selectFields(Company.class, "cv.pdf")
+                    .selectFields(Company.class, "cv.pdf").ofType(Employee.class)
                     .toList();
                 //endregion
-                 */
+
             }
         }
     }
