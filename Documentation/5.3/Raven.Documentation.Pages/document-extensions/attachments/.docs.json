@@ -1,0 +1,114 @@
+[
+  {
+    "Path": "what-are-attachments.markdown",
+    "Name": "What are Attachments",
+    "DiscussionId": "262e0347-d051-4557-b05d-664907ea4768",
+    "Mappings": [
+      {
+        "Version": 4.2,
+        "Key": "client-api/session/attachments/what-are-attachments"
+      },
+      {
+        "Version": 4.1,
+        "Key": "client-api/session/attachments/what-are-attachments"
+      },
+      {
+        "Version": 4.0,
+        "Key": "client-api/session/attachments/what-are-attachments"
+      }
+    ]
+  },
+  {
+    "Path": "storing.markdown",
+    "Name": "Storing",
+    "DiscussionId": "97f38576-78a9-4406-907b-f4be2f8b66ca",
+    "Mappings": [
+      {
+        "Version": 4.2,
+        "Key": "client-api/session/attachments/storing"
+      },
+      {
+        "Version": 4.1,
+        "Key": "client-api/session/attachments/storing"
+      },
+      {
+        "Version": 4.0,
+        "Key": "client-api/session/attachments/storing"
+      }
+    ]
+  },
+  {
+    "Path": "loading.markdown",
+    "Name": "Loading",
+    "DiscussionId": "ec590f47-f7ff-4baf-b94e-d46e4f99340d",
+    "Mappings": [
+      {
+        "Version": 4.2,
+        "Key": "client-api/session/attachments/loading"
+      },
+      {
+        "Version": 4.1,
+        "Key": "client-api/session/attachments/loading"
+      },
+      {
+        "Version": 4.0,
+        "Key": "client-api/session/attachments/loading"
+      }
+    ]
+  },
+  {
+    "Path": "deleting.markdown",
+    "Name": "Deleting",
+    "DiscussionId": "55c0445c-f0c8-48e0-a99c-45050824a33d",
+    "Mappings": [
+      {
+        "Version": 4.2,
+        "Key": "client-api/session/attachments/deleting"
+      },
+      {
+        "Version": 4.1,
+        "Key": "client-api/session/attachments/deleting"
+      },
+      {
+        "Version": 4.0,
+        "Key": "client-api/session/attachments/deleting"
+      }
+    ]
+  },
+  {
+    "Path": "copying-moving-renaming.markdown",
+    "Name": "Copying, Moving & Renaming",
+    "DiscussionId": "b47d9cc7-799d-42d2-a346-90c778753eeb",
+    "Mappings": [
+      {
+        "Version": 4.2,
+        "Key": "client-api/session/attachments/copying-moving-renaming"
+      },
+      {
+        "Version": 4.1,
+        "Key": "client-api/session/attachments/copying-moving-renaming"
+      }
+    ]
+  },
+  {
+    "Path": "indexing.markdown",
+    "Name": "Indexing",
+    "DiscussionId": "fccf698d-a9cc-4f7f-a4ea-f6fdc1836c24",
+    "Mappings": [
+      {
+        "Version": 4.2,
+        "Key": "indexes/indexing-attachments"
+      },
+      {
+        "Version": 4.1,
+        "Key": "indexes/indexing-attachments"
+      }
+    ]
+  },
+  {
+    "Path": "bulk-insert.markdown",
+    "Name": "Bulk Insert",
+    "DiscussionId": "133d2139-bfe4-46bd-81d7-60d798cf1001",
+    "Mappings": []
+  }
+]
