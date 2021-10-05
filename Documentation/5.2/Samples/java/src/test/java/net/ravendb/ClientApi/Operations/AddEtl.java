@@ -3,6 +3,8 @@ package net.ravendb.ClientApi.Operations;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
 import net.ravendb.client.documents.operations.etl.*;
+import net.ravendb.client.documents.operations.etl.olap.OlapConnectionString;
+import net.ravendb.client.documents.operations.etl.olap.OlapEtlConfiguration;
 import net.ravendb.client.documents.operations.etl.sql.SqlConnectionString;
 import net.ravendb.client.documents.operations.etl.sql.SqlEtlConfiguration;
 import net.ravendb.client.documents.operations.etl.sql.SqlEtlTable;
@@ -87,5 +89,34 @@ public class AddEtl {
             AddEtlOperationResult result = store.maintenance().send(operation);
             //endregion
         }
+
+        try (IDocumentStore store = new DocumentStore()) {
+            //region add_olap_etl
+            OlapEtlConfiguration configuration = new OlapEtlConfiguration();
+
+            configuration.setName("Orders ETL");
+            configuration.setConnectionStringName("olap-connection-string-name");
+
+            Transformation transformation = new Transformation();
+            transformation.setName("Script #1");
+            transformation.setCollections(Arrays.asList("Orders"));
+            transformation.setScript("var orderDate = new Date(this.OrderedAt);\n"+
+                "var year = orderDate.getFullYear();\n"+
+                "var month = orderDate.getMonth();\n"+
+                "var key = new Date(year, month);\n"+
+                "loadToOrders(key, {\n"+
+                "    Company : this.Company,\n"+
+                "    ShipVia : this.ShipVia\n"+
+                "})"
+            );
+
+            configuration.setTransforms(Arrays.asList(transformation));
+
+            AddEtlOperation<OlapConnectionString> operation = new AddEtlOperation<OlapConnectionString>(configuration);
+
+            AddEtlOperationResult result = store.maintenance().send(operation);
+            //endregion
+        }
+
     }
 }

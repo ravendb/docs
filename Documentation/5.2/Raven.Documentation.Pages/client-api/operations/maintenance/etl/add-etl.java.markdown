@@ -18,6 +18,10 @@ You can add ETL task by using **AddEtlOperation**.
 
 {CODE:java add_sql_etl@ClientApi\Operations\AddEtl.java /}
 
+## Example - Add OLAP ETL
+
+{CODE:java add_olap_etl@ClientApi\Operations\AddEtl.java /}
+
 ## Related Articles
 
 ### ETL
