@@ -58,7 +58,7 @@ class Supplier {
 
 }
 class Product {
-    constructor({ supplier }) {
+    constructor(supplier) {
         this.supplier = supplier;
     }
 }
@@ -157,7 +157,7 @@ async function examples() {
 }
 
     //region loading_entities_7_0
-    (object, changeVector)ConditionalLoad<object>(id, changeVector);
+    (object, changeVector)conditionalLoad<object>(id, changeVector);
     //endregion
 
     //region loading_entities_7_1
@@ -165,15 +165,15 @@ async function examples() {
     session.store(user, "users/1");
     session.SaveChanges();
 
-    const changeVector = session.Advanced.GetChangeVectorFor(user);
+    const changeVector = session.advanced.getChangeVectorFor(user);
 
     // New session which does not track our User entity
     // The given change vector matches 
     // the server-side change vector
     // Does not load the document
     var session = store.openSession();
-    var result1 = session.Advanced
-        .ConditionalLoad<User>("users/1", changeVector);
+    var result1 = session.advanced
+        .conditionalLoad<User>("users/1", changeVector);
 
     // Modify the document
     user.name = "Bob Smith";
@@ -182,7 +182,8 @@ async function examples() {
 
     // Change vectors do not match
     // Loads the document
-    var result2 = session.Advanced
-        .ConditionalLoad < User > ("users/1", changeVector);
+    var result2 = session.advanced
+        .conditionalLoad<User>("users/1", changeVector);
     //endregion
+
 
