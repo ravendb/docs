@@ -113,7 +113,7 @@ To load multiple entities that contain a common prefix, use the `loadStartingWit
 
 {PANEL: ConditionalLoad}
 
-The `ConditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector). 
+The `conditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector). 
 If the entity is tracked by the session, this method returns the entity. If the entity 
 is not tracked, it checks if the provided change vector matches the document's 
 current change vector on the server side. If they match, the entity is not loaded. 
