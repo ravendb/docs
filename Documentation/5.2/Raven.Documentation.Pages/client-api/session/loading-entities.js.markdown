@@ -67,8 +67,8 @@ To load multiple entities at once, use one of the following ways to call `load()
 | **idsArray** | string[] | Multiple document identifiers to load |
 | **documentType** | function | A class constructor used for reviving the results' entities |
 | **options** | string | Options with the following properties |
-| &nbsp;&nbsp;*documentType* | function | A class construcor used for reviving the results' entities |
-| &nbsp;&nbsp;*includes* | string[] | Field paths in documents in which the server should look for 'referenced' documents. |
+| **documentType** | function | A class construcor used for reviving the results' entities |
+| **includes** | string[] | Field paths in documents in which the server should look for 'referenced' documents. |
 | **callback** | function | error-first callback, returns an object mapping document identifiers to `object` or `null` if a document with given ID doesn't exist (see Return Value below) |
 
 | Return Value | |
@@ -89,12 +89,12 @@ To load multiple entities that contain a common prefix, use the `loadStartingWit
 | ------------- | ------------- | ----- |
 | **idPrefix** | string | prefix for which the documents should be returned  |
 | **options** | string | Options with the following properties |
-| &nbsp;&nbsp;*matches* | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
-| &nbsp;&nbsp;*start* | number | number of documents that should be skipped  |
-| &nbsp;&nbsp;*pageSize* | number | maximum number of documents that will be retrieved |
-| &nbsp;&nbsp;*exclude* | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
-| &nbsp;&nbsp;*skipAfter* | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
-| &nbsp;&nbsp;*documentType* | function | A class constructor used for reviving the results' entities |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | number | number of documents that should be skipped  |
+| **pageSize** | number | maximum number of documents that will be retrieved |
+| **exclude** | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **skipAfter** | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
+| **documentType** | function | A class constructor used for reviving the results' entities |
 | **callback** | function | error-first callback, returns an array of entities matching given parameters (see Return Value below) |
 
 | Return Value | |
@@ -153,12 +153,12 @@ Entities can be streamed from the server using the `stream()` method from the `a
 | **idPrefix** | string | prefix for which the documents should be returned  |
 | **query** | query object | a query obtained from a call to `session.query()` or `session.advanced.rawQuery()` |
 | **options** | string | Options with the following properties |
-| &nbsp;&nbsp;*startsWith* | string | prefix for which documents should be streamed |
-| &nbsp;&nbsp;*matches* | string | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
-| &nbsp;&nbsp;*start* | number | number of documents that should be skipped  |
-| &nbsp;&nbsp;*pageSize* | number | maximum number of documents that will be retrieved |
-| &nbsp;&nbsp;*skipAfter* | string | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
-| &nbsp;&nbsp;*documentType* | function | A class constructor used for reviving the results' entities |
+| **startsWith** | string | prefix for which documents should be streamed |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
+| **start** | number | number of documents that should be skipped  |
+| **pageSize** | number | maximum number of documents that will be retrieved |
+| **skipAfter** | string | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
+| **documentType** | function | A class constructor used for reviving the results' entities |
 | **statsCallback** | function | callback returning information about the streaming query (amount of results, which index was queried, etc.) |
 | **callback** | function | returns a readable stream with query results (same as Return Value result below) |
 
