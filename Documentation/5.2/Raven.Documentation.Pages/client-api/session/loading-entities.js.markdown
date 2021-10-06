@@ -203,7 +203,7 @@ To check if an entity is attached to a session, e.g. it has been loaded previous
 
 {PANEL/}
 
-### On entities loading, JS classes and the&nbsp;*documentType*&nbsp;parameter
+### On entities loading, JS classes and the **documentType** parameter
 
 Type information about the entity and its contents is by default stored in the document metadata. Based on that its types are revived when loaded from the server.
 
