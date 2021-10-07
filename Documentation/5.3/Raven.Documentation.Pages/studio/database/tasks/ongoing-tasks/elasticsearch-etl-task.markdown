@@ -1,0 +1,173 @@
+﻿# Elasticsearch ETL Task
+
+---
+
+{NOTE: }
+
+* An **Elasticsearch ETL task** is an ongoing process that -  
+    * Extracts chosen data from the database,  
+    * Transforms the data using a user-defined script,  
+    * and Loads the data to a destination Elasticsearch database.  
+* This page explains how to create an Elasticsearch ETL task using Studio.  
+
+* In this page:  
+  * [Navigate to the Elasticsearch ETL View](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#navigate-to-the-olap-etl-view)
+  * [Define an OLAP ETL Task](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#define-an-olap-etl-task)
+      * [Custom Partition Value](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#custom-partition-value)
+      * [Run Frequency](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#run-frequency)
+      * [OLAP Connection String](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#olap-connection-string)
+      * [OLAP ETL Destinations](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#olap-etl-destinations)
+      * [Transform Script](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#transform-script)
+      * [Override ID column](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#override-id-column)
+
+{NOTE/}
+
+---
+
+{PANEL: Create an Elasticsearch ETL Task}
+
+To begin creating your Elasticsearch ETL task:  
+
+!["Ongoing tasks view"](images/ongoing-tasks-view.png "Ongoing tasks view")
+
+!["Task selection view"](images/elasticsearch-etl-task-selection-view.png "Task selection view")
+
+{PANEL/}
+
+{PANEL: Configure Elasticsearch ETL Task}
+
+!["Define Elasticsearch ETL task"](images/elasticsearch-etl-define-task.png "Define Elasticsearch ETL task")
+
+1. **Task Name** (Optional)  
+   * Choose a name for your task  
+   * If no name is provided, the cluster will create a name based on the defined connection string (e,g, *ElasticSearch ETL to ElasticConStr*).  
+
+2. **Task State**  
+   The task state can be -  
+   Enabled - The task is running in the background, performing its work as defined in this view.  
+   Disabled - The task is not running.  
+
+3. **Responsible Node** (Optional)  
+  * Select a preferred mentor node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be responsible for this task.  
+  * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)).  
+
+4. **Connection String**  
+   * The connection string defines the destination database and its database group server nodes URLs  
+   * If you already created connection strings, you can select one from the list.  
+   * You can create a new connection string.  
+     !["Create Connection String"](images/elasticsearch-connection-string.png "Create Connection String")  
+     a. **Name** - The connection string name  
+     b. **Nodes URLs** - The Elasticsearch destination/s URL/s  
+     c. **Authentication** - The authentication method used by the Elasticsearch destination node/s.  
+   * Available authentication methods:  
+     !["Authentication Methods"](images/elasticsearch-connection-string-authentication.png "Authentication Methods")  
+
+### Custom Partition Value
+
+!["Custom partition value"](images/olap-etl-2.png "Custom partition value")
+
+* A custom partition can be defined to differentiate parquet file locations when 
+using the same connection string in multiple OLAP ETL tasks.  
+* The custom partition **name** is defined inside the transformation script.  
+* The custom partition **value** is defined in the input box above.  
+* The custom partition value is referenced in the transform script as 
+`$customPartitionValue`.  
+* A parquet file path with custom partition will have the following format:  
+  `{RemoteFolderName}/{CollectionName}/{customPartitionName=$customPartitionValue}`  
+* Learn more in [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap#the-custom-partition-value).  
+<br/>
+### Run Frequency
+
+!["Task run frequency"](images/olap-etl-3.png "Task run frequency")
+
+* Select the exact timing and frequency at which this task should run from the dropdown menu.  
+* The maximum frequency is once every minute.  
+* Select 'custom' from the dropdown menu to schedule the task using your own customized 
+[cron expression](https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm).  
+<br/>
+### OLAP Connection String
+
+!["OLAP connection string"](images/olap-etl-4.png "OLAP connection string")
+
+* Select an existing connection string from the available dropdown or create a new one.  
+* If you choose to create a new connection string you can enter its name and destination here.  
+* Multiple destinations can be defined.  
+<br/>
+### OLAP ETL Destinations
+
+!["OLAP ETL destinations"](images/olap-etl-5.png "OLAP ETL destinations")
+
+Select one or more destinations from this list. Clicking each toggle reveals further 
+fields and configuration options for each destination.  
+<br/>
+### Transform Script
+
+!["List of transform scripts"](images/olap-etl-6.png "List of transform scripts")
+
+{WARNING: }
+
+1. List of existing transform scripts.  
+2. Add a new transform script.  
+2. Edit an existing transform script.  
+
+{WARNING/}
+
+!["Transform script"](images/olap-etl-7.png "Transform script")
+
+{WARNING: }
+
+1. The script name is generated once the 'Add' button is clicked. The name of a script 
+is always in the format: "Script #[order of script creation]".  
+2. The transform script. Learn more about these scripts [here](../../../../server/ongoing-tasks/etl/raven#transformation-script-options).  
+3. Select a collection (or enter a new collection name) on which this script will operate.  
+4. The selected collection names on which the script operates.  
+5. If this option is checked, the script will operate on all existing documents in the 
+specified collections the first time the task runs. When the option is unchecked, the 
+script operates only on new documents.  
+
+{WARNING/}
+
+{INFO: }
+
+Every parquet table that is created by a transform script includes two columns that 
+aren't specified in the script:  
+
+* `_id`  
+  Contains the source document ID. The default name used for this column is `_id`.  
+  You can override this name in the task definition - see more 
+  [below](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#override-id-column).  
+* `_lastModifiedTime`  
+  The value of the `last-modified` field in a document's metadata. Represented in unix time.  
+
+{INFO/}
+<br/>
+### Override ID Column
+
+!["Override ID column"](images/olap-etl-8.png "Override ID column")
+
+These settings allow you to specify a different column name for the document ID column 
+in a parquet file. The default ID column name is `_id`.  
+
+{WARNING: }
+
+1. Add a new setting.  
+2. Select the name of the parquet table for which you want to override the ID column.  
+3. Select the name for the table's ID column.  
+4. Click to add this setting.  
+5. Click to edit this setting.  
+
+{WARNING/}
+
+{PANEL/}
+
+## Related Articles
+
+### Server
+
+- [ETL Basics](../../../../server/ongoing-tasks/etl/raven)  
+- [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap)  
+
+### Client API
+
+- [Add a Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string)  
+- [Get a Connection String](../../../../client-api/operations/maintenance/connection-strings/get-connection-string)  

@@ -8,7 +8,7 @@ using Raven.Client.Documents.Commands;
 using Raven.Client.Documents.Queries.TimeSeries;
 using Raven.Client.Documents.Session;
 using Raven.Client.Documents.Session.TimeSeries;
-using Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Indexing;
+//using Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Indexing;
 
 namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
 {
