@@ -5,21 +5,24 @@
 {NOTE: }
 
 * An **Elasticsearch ETL task** is an ongoing process that -  
-    * Extracts chosen data from the database,  
-    * Transforms the data using a user-defined script,  
-    * and Loads the data to a destination Elasticsearch database.  
+    * **Extracts** chosen data from the database,  
+    * **Transforms** the data using a user-defined script,  
+    * and **Loads** the data to a destination Elasticsearch database.  
+* Data is loaded to the Elasticsearch destination in a **single bulk operation**.  
+* By default, an existing document is deleted before a new one replaces it.  
+  This behavior can be changed in the task settings, to write without 
+  deleting documents first.  
 * This page explains how to create an Elasticsearch ETL task using Studio.  
 
 * In this page:  
-  * [Navigate to the Elasticsearch ETL View](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#navigate-to-the-olap-etl-view)
-  * [Define an OLAP ETL Task](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#define-an-olap-etl-task)
-      * [Custom Partition Value](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#custom-partition-value)
-      * [Run Frequency](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#run-frequency)
-      * [OLAP Connection String](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#olap-connection-string)
-      * [OLAP ETL Destinations](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#olap-etl-destinations)
-      * [Transform Script](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#transform-script)
-      * [Override ID column](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#override-id-column)
-
+  * [Create an Elasticsearch ETL Task](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#create-an-elasticsearch-etl-task)  
+  * [Define the Elasticsearch ETL Task](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#define-the-elasticsearch-etl-task)  
+     * [ETL Task Properties](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#etl-task-properties)  
+     * [Elasticsearch Indexes](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes)  
+     * [Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#transformation-script)  
+     * [Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#edit-transformation-script)  
+     * [Test Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#test-transformation-script)  
+     * [Test Results](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#test-results)  
 {NOTE/}
 
 ---
@@ -34,7 +37,11 @@ To begin creating your Elasticsearch ETL task:
 
 {PANEL/}
 
-{PANEL: Configure Elasticsearch ETL Task}
+{PANEL: Define the Elasticsearch ETL Task}
+
+---
+
+### ETL Task Properties
 
 !["Define Elasticsearch ETL task"](images/elasticsearch-etl-define-task.png "Define Elasticsearch ETL task")
 
@@ -52,9 +59,9 @@ To begin creating your Elasticsearch ETL task:
   * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)).  
 
 4. **Connection String**  
-   * The connection string defines the destination database and its database group server nodes URLs  
+   * The connection string defines the destination database and its database group server nodes URLs.  
    * If you already created connection strings, you can select one from the list.  
-   * You can create a new connection string.  
+   * You can create a new connection string:  
      !["Create Connection String"](images/elasticsearch-connection-string.png "Create Connection String")  
      a. **Name** - The connection string name  
      b. **Nodes URLs** - The Elasticsearch destination/s URL/s  
@@ -62,101 +69,122 @@ To begin creating your Elasticsearch ETL task:
    * Available authentication methods:  
      !["Authentication Methods"](images/elasticsearch-connection-string-authentication.png "Authentication Methods")  
 
-### Custom Partition Value
+---
 
-!["Custom partition value"](images/olap-etl-2.png "Custom partition value")
+### Elasticsearch Indexes
 
-* A custom partition can be defined to differentiate parquet file locations when 
-using the same connection string in multiple OLAP ETL tasks.  
-* The custom partition **name** is defined inside the transformation script.  
-* The custom partition **value** is defined in the input box above.  
-* The custom partition value is referenced in the transform script as 
-`$customPartitionValue`.  
-* A parquet file path with custom partition will have the following format:  
-  `{RemoteFolderName}/{CollectionName}/{customPartitionName=$customPartitionValue}`  
-* Learn more in [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap#the-custom-partition-value).  
-<br/>
-### Run Frequency
+Add to the Elasticsearch Indexes list all the indexes that your transform script transfers data to.  
 
-!["Task run frequency"](images/olap-etl-3.png "Task run frequency")
+!["Add New Index"](images/elasticsearch-indexes-list.png "Add New Index")
 
-* Select the exact timing and frequency at which this task should run from the dropdown menu.  
-* The maximum frequency is once every minute.  
-* Select 'custom' from the dropdown menu to schedule the task using your own customized 
-[cron expression](https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm).  
-<br/>
-### OLAP Connection String
+1. **List of Elasticsearch Indexes**  
 
-!["OLAP connection string"](images/olap-etl-4.png "OLAP connection string")
+2. **Add Index** (Optional)  
+  * Click to add an index to the list.  
 
-* Select an existing connection string from the available dropdown or create a new one.  
-* If you choose to create a new connection string you can enter its name and destination here.  
-* Multiple destinations can be defined.  
-<br/>
-### OLAP ETL Destinations
+3. **Index Name**  
+  * The Elasticsearch index to which the transform script uploads an object.  
+    E.g., if the transform script uses `loadToOrders(orderData)` to pass an object 
+    to the `orders` index, provide "orders" here as an index name.  
+  * The index name must be all **lower case**.  
 
-!["OLAP ETL destinations"](images/olap-etl-5.png "OLAP ETL destinations")
+4. **ID Property**  
+  * The ID of the object you want to upload to the Elasticsearch index.  
+    E.g., if the transform script uses `Id: id(this)` to define an object, 
+    you can provide "Id" here to pass this object to the index.  
 
-Select one or more destinations from this list. Clicking each toggle reveals further 
-fields and configuration options for each destination.  
-<br/>
-### Transform Script
+5. **Insert Only**  
+  By default, the transform script deletes documents before replacing them with new ones.  
+   * Enable this option to insert new documents without deleting existing ones.  
 
-!["List of transform scripts"](images/olap-etl-6.png "List of transform scripts")
+6. **Add** this index to the list.  
 
-{WARNING: }
+7. **Cancel** the operation without adding the index to the list.  
 
-1. List of existing transform scripts.  
-2. Add a new transform script.  
-2. Edit an existing transform script.  
+8. **Existing Index**  
+     a. **Index Name**  
+     b. **ID Property**  
+     c. **Edit Index** - Click to edit index properties.  
+     d. **Remove Index** - Click to remove this index from the list.  
 
-{WARNING/}
+---
 
-!["Transform script"](images/olap-etl-7.png "Transform script")
+### Transformation Script
 
-{WARNING: }
+!["List of transformation Scripts"](images/elasticsearch-transformation-scripts-list.png "List of transformation Scripts")
 
-1. The script name is generated once the 'Add' button is clicked. The name of a script 
-is always in the format: "Script #[order of script creation]".  
-2. The transform script. Learn more about these scripts [here](../../../../server/ongoing-tasks/etl/raven#transformation-script-options).  
-3. Select a collection (or enter a new collection name) on which this script will operate.  
-4. The selected collection names on which the script operates.  
-5. If this option is checked, the script will operate on all existing documents in the 
-specified collections the first time the task runs. When the option is unchecked, the 
-script operates only on new documents.  
+1. **Transform Scripts**  
+  List of existing transformation scripts.  
 
-{WARNING/}
+2. **Add Transformation Script**  
+   Click to add a new transformation script to the list.  
 
-{INFO: }
+3. **Existing Script**  
+     a. **Edit** - Click to edit the script.  
+     b. **Remove** - Click to remove the script from the list.  
 
-Every parquet table that is created by a transform script includes two columns that 
-aren't specified in the script:  
+---
 
-* `_id`  
-  Contains the source document ID. The default name used for this column is `_id`.  
-  You can override this name in the task definition - see more 
-  [below](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#override-id-column).  
-* `_lastModifiedTime`  
-  The value of the `last-modified` field in a document's metadata. Represented in unix time.  
+### Edit Transformation Script
 
-{INFO/}
-<br/>
-### Override ID Column
+!["Edit Transformation Script"](images/elasticsearch-edit-transformation-script.png "Edit Transformation Script")
 
-!["Override ID column"](images/olap-etl-8.png "Override ID column")
+1. **Script Name** (Optional)  
+   The script is named automatically.  
+   Optionally, give it a name of your choice.  
 
-These settings allow you to specify a different column name for the document ID column 
-in a parquet file. The default ID column name is `_id`.  
+2. **Script**  
+   *  Add or edit the transformation script.  
+   *  Add all the indexes your script uses to the [indexes list](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes).  
 
-{WARNING: }
+3. **Syntax**
+   Click for a transformation script Syntax Sample.  
 
-1. Add a new setting.  
-2. Select the name of the parquet table for which you want to override the ID column.  
-3. Select the name for the table's ID column.  
-4. Click to add this setting.  
-5. Click to edit this setting.  
+4. **Collection**  
+   Type or select the name of the collection your script is using.  
 
-{WARNING/}
+5. **Apply script to documents from beginning of time (Reset)**  
+    * When this option is enabled, the script will operate on all existing documents in the 
+      specified collections the first time the task runs.  
+    * When this option is disabled, the script operates only on new and modified documents.  
+
+6. **Update**  
+   Click to update the task with your changes.  
+
+7. **Cancel**  
+   Click to cancel your changes.  
+
+8. **Test Script**  
+    * Click to **test** the transformation script before actually using it to transfer documents (see below).  
+
+---
+
+### Test Transformation Script
+
+!["Transform script"](images/elasticsearch-test-script-view.png "Transform script")  
+
+1. **Document ID**  
+   Type or select the ID of the document you want to test the script with.  
+2. **Test**  
+   Click to run the test.  
+   The test will **not** actually transfer the document.  
+3. **Close Test Area**  
+   Close this view.  
+
+---
+
+### Test Results
+
+The test view displays a **Preview** of the tested document and the **Test Results** in separate tabs.  
+
+* **Preview Tab**:  
+  !["Test Results Preview Tab"](images/elasticsearch-test-results-preview-tab.png "Test Results Preview Tab")  
+* **Test Results Tab** -  
+  !["Test Results Tab"](images/elasticsearch-test-results-1.png "Test Results Tab")  
+* Here is the same test, this time with the [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) option enabled 
+  to prevent the script from deleting documents before inserting new documents.  
+  Note the absence of [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) statements in the transformed object.  
+  !["Test Results with Insert Only Enabled"](images/elasticsearch-test-results-2.png "Test Results with Insert Only Enabled")  
 
 {PANEL/}
 
