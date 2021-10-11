@@ -7,7 +7,7 @@
 * An **Elasticsearch ETL task** is an ongoing process that -  
     * **Extracts** chosen data from the database,  
     * **Transforms** the data using a user-defined script,  
-    * and **Loads** the data to a destination Elasticsearch database.  
+    * and **Loads** the data to a destination Elasticsearch index.  
 * Data is loaded to the Elasticsearch destination in a **single bulk operation**.  
 * By default, an existing document is deleted before a new one replaces it.  
   This behavior can be changed in the task settings, to write without 
@@ -15,7 +15,7 @@
 * This page explains how to create an Elasticsearch ETL task using Studio.  
 
 * In this page:  
-  * [Create an Elasticsearch ETL Task](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#create-an-elasticsearch-etl-task)  
+  * [Navigate to the Elasticsearch ETL Task View](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#navigate-to-the-elasticsearch-etl-task-view)  
   * [Define the Elasticsearch ETL Task](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#define-the-elasticsearch-etl-task)  
      * [ETL Task Properties](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#etl-task-properties)  
      * [Elasticsearch Indexes](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes)  
@@ -27,7 +27,7 @@
 
 ---
 
-{PANEL: Create an Elasticsearch ETL Task}
+{PANEL: Navigate to the Elasticsearch ETL Task View}
 
 To begin creating your Elasticsearch ETL task:  
 
@@ -51,15 +51,15 @@ To begin creating your Elasticsearch ETL task:
 
 2. **Task State**  
    The task state can be -  
-   Enabled - The task is running in the background, performing its work as defined in this view.  
-   Disabled - The task is not running.  
+   Enabled - The task runs in the background, transforming and sending documents as defined in this view.  
+   Disabled - The task does not transform and send documents.  
 
 3. **Responsible Node** (Optional)  
   * Select a preferred mentor node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be responsible for this task.  
   * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)).  
 
 4. **Connection String**  
-   * The connection string defines the destination database and its database group server nodes URLs.  
+   * The connection string defines the destination index URLs.  
    * If you already created connection strings, you can select one from the list.  
    * You can create a new connection string:  
      !["Create Connection String"](images/elasticsearch-connection-string.png "Create Connection String")  
@@ -73,7 +73,7 @@ To begin creating your Elasticsearch ETL task:
 
 ### Elasticsearch Indexes
 
-Add to the Elasticsearch Indexes list all the indexes that your transform script transfers data to.  
+Add to the Elasticsearch Indexes list all the indexes that your transformation script loads data to.  
 
 !["Add New Index"](images/elasticsearch-indexes-list.png "Add New Index")
 
@@ -83,18 +83,18 @@ Add to the Elasticsearch Indexes list all the indexes that your transform script
   * Click to add an index to the list.  
 
 3. **Index Name**  
-  * The Elasticsearch index to which the transform script uploads an object.  
-    E.g., if the transform script uses `loadToOrders(orderData)` to pass an object 
+  * The Elasticsearch index to which the transformation script loads an object.  
+    E.g., if the transformation script uses `loadToOrders(orderData)` to pass an object 
     to the `orders` index, provide "orders" here as an index name.  
   * The index name must be all **lower case**.  
 
 4. **ID Property**  
   * The ID of the object you want to upload to the Elasticsearch index.  
-    E.g., if the transform script uses `Id: id(this)` to define an object, 
+    E.g., if the transformation script uses `Id: id(this)` to define an object, 
     you can provide "Id" here to pass this object to the index.  
 
 5. **Insert Only**  
-  By default, the transform script deletes documents before replacing them with new ones.  
+  By default, the transformation script deletes documents before replacing them with new ones.  
    * Enable this option to insert new documents without deleting existing ones.  
 
 6. **Add** this index to the list.  
@@ -145,7 +145,7 @@ Add to the Elasticsearch Indexes list all the indexes that your transform script
 
 5. **Apply script to documents from beginning of time (Reset)**  
     * When this option is enabled, the script will operate on all existing documents in the 
-      specified collections the first time the task runs.  
+      specified collection the first time the task runs.  
     * When this option is disabled, the script operates only on new and modified documents.  
 
 6. **Update**  
@@ -161,7 +161,7 @@ Add to the Elasticsearch Indexes list all the indexes that your transform script
 
 ### Test Transformation Script
 
-!["Transform script"](images/elasticsearch-test-script-view.png "Transform script")  
+!["Transformation script"](images/elasticsearch-test-script-view.png "Transformation script")  
 
 1. **Document ID**  
    Type or select the ID of the document you want to test the script with.  
