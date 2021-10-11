@@ -2,7 +2,7 @@
 
 You can generate a client certificate using **CreateClientCertificateOperation**. 
 
-## Syntax
+## Usage
 
 {CODE:nodejs cert_1_1@ClientApi\Operations\Server\ClientCertificate.js /}
 

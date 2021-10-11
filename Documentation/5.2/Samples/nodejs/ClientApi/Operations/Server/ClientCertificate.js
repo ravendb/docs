@@ -1,4 +1,4 @@
-import { DocumentStore } from 'ravendb';
+import {CreateClientCertificateOperation, DocumentStore} from 'ravendb';
 import { EtlConfiguration } from 'ravendb';
 import { SecurityClearance } from 'ravendb';
 let urls, database, authOptions;
@@ -10,11 +10,8 @@ let urls, database, authOptions;
     //const session = store.openSession();
 
     //region cert_1_1
-     public CreateClientCertificateOperation(
-         name: string,
-         permissions: Record<string, DatabaseAccess>,
-         clearance: SecurityClearance,
-         password?: string)
+    const cert1 = await store.maintenance.server.send(
+        new CreateClientCertificateOperation([name],[permissions],[clearance],[password]));
     //endregion
 
     //region cert_1_2
@@ -32,17 +29,16 @@ let urls, database, authOptions;
         | "Admin";
     //endregion
 
-//region cert_1_4
-// With user role set to Cluster Administrator or Operator the user of this certificate 
-// is going to have access to all databases
+    //region cert_1_4
+    // With user role set to Cluster Administrator or Operator the user of this certificate
+    // is going to have access to all databases
     const clientCertificateOperation = await store.maintenance.server.send(
         new CreateClientCertificateOperation("admin", {}, "Operator"));
     const certificateRawData = clientCertificateOperation.rawData;
-
-//endregion
+    //endregion
 
     //region cert_1_5
-// when security clearance is ValidUser, you need to specify per database permissions
+    // when security clearance is ValidUser, you need to specify per database permissions
 
     const clearance = {
         [store.database]: "ReadWrite"
@@ -52,27 +48,27 @@ let urls, database, authOptions;
         new CreateClientCertificateOperation("user1", clearance, "ValidUser", "myPassword"));
     const certificateRawData = clientCertificateOperation.rawData;
 
-//endregion
+    //endregion
 
-//region cert_put_1
+    //region cert_put_1
     public PutClientCertificateOperation(
         name: string,
         certificate: string,
         permissions: Record<string, DatabaseAccess>,
         clearance: SecurityClearance)
-//endregion
+    //endregion
 
-//region cert_put_2
+    //region cert_put_2
     const putOperation = new PutClientCertificateOperation("cert1", publicKey, {}, "ClusterAdmin");
     await store.maintenance.server.send(putOperation);
-//endregion
+    //endregion
 
-//region delete_cert_1
+    //region delete_cert_1
      public DeleteCertificateOperation(thumbprint: string)
-//endregion
+    //endregion
 
     //region delete_cert_2
     const thumbprint = "a909502dd82ae41433e6f83886b00d4277a32a7b";
     await store.maintenance.server.send(new DeleteCertificateOperation(thumbprint));
-//endregion
+    //endregion
 
