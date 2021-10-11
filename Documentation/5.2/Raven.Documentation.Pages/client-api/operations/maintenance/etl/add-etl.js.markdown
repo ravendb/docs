@@ -2,9 +2,9 @@
 
 You can add ETL task by using **AddEtlOperation**.
 
-## Syntax
+## Usage
 
-{CODE:nodejs add_etl_operation@ClientApi\Operations\addEtl.ts  /}
+{CODE:nodejs add_etl_operation@ClientApi\Operations\addEtl.js  /}
 
 | Parameters | | |
 | ------------- | ----- | ---- |
@@ -12,15 +12,15 @@ You can add ETL task by using **AddEtlOperation**.
 
 ## Example - Add Raven ETL
 
-{CODE:nodejs add_raven_etl@ClientApi\Operations\addEtl.ts  /}
+{CODE:nodejs add_raven_etl@ClientApi\Operations\addEtl.js  /}
 
 ## Example - Add Sql ETL
 
-{CODE:nodejs add_sql_etl@ClientApi\Operations\addEtl.ts  /}
+{CODE:nodejs add_sql_etl@ClientApi\Operations\addEtl.js  /}
 
 ## Example - Add OLAP ETL
 
-{CODE:nodejs add_olap_etl@ClientApi\Operations\addEtl.ts  /}
+{CODE:nodejs add_olap_etl@ClientApi\Operations\addEtl.js  /}
 
 ## Related Articles
 

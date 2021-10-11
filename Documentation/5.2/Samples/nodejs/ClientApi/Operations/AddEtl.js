@@ -1,90 +1,90 @@
 
-import { DocumentStore } from 'ravendb';
+import {
+    AddEtlOperation,
+    DocumentStore,
+    RavenEtlConfiguration,
+    SqlEtlConfiguration,
+    SqlEtlTable,
+    Transformation
+} from 'ravendb';
 import { EtlConfiguration } from 'ravendb';
 
-let urls, database, authOptions;
+    let urls, database, authOptions;
+
+    class T {
+    }
 
 {
     //document_store_creation
     const store = new DocumentStore(["http://localhost:8080"], "Northwind2");
     store.initialize();
     const session = store.openSession();
+    let configuration;
+    let etlConfiguration;
+
 
     //region add_etl_operation
-    public AddEtlOperation(configuration: EtlConfiguration<T>);
+    const operation = new AddEtlOperation(etlConfiguration);
     //endregion
-
 
 
     //region add_raven_etl
-    const etlConfiguration = Object.assign(new RavenEtlConfiguration(), {
+    const etlConfigurationRvn = Object.assign(new RavenEtlConfiguration(), {
         connectionStringName: "raven-connection-string-name",
         disabled: false,
-        name: "Employees ETL"
+        name: "etlRvn"
     } as Partial<RavenEtlConfiguration>);
 
-    const transformation: Transformation = {
-        name: "Script #1",
-        collections?: "Employees",
-        Script: "loadToEmployees({Name: this.FirstName + ' ' + this.LastName, Title: this.Title});"
+    const transformationRvn = {
+        applyToAllDocuments: true,
+        name: "Script #1"
     };
 
-    etlConfiguration.transforms = [transformation];
+    etlConfigurationRvn.transforms = [transformationRvn];
 
-    const operation = new AddEtlOperation(etlConfiguration);
-
-    const etlResult = await store.maintenance.send(operation);
-
+    const operationRvn = new AddEtlOperation(etlConfigurationRvn);
+    const etlResultRvn = await store.maintenance.send(operationRvn);
     //endregion
-
 
 
     //region add_sql_etl
-    const transformation = {
-        name: "Script#1",
-        collections: "Orders",
-        Script: "var orderData = {
-                      Id: id(this),
-                      OrderLinesCount: this.Lines.length,
-                      TotalCost: 0
-                 };
-                 for(var i = 0; i< this.Lines.length; i++){
-                    var line = this.Lines[i];
-                    orderData.TotalCost += line.PricePerUnit;
-
-                     // Load to SQL table 'OrderLines'
-                    loadToOrderLines({
-                        OrderId: id(this),
-                        Qty: line.Quantity,
-                        Product: line.Product,
-                        Cost: line.PricePerUnit
-                    });
-                   }
-                   orderData.TotalCost = Math.round(orderData.TotalCost * 100) / 100;
-                   loadToOrders(orderData)"
+    const transformation: Transformation = {
+        applyToAllDocuments: true,
+        name: "Script #1"
     }
 
-    const table1 = {
-        documentIdColumn: string  = "Id",
-        insertOnlyMode: boolean = false,
-        tableName: string = "Orders"
+    const table1: SqlEtlTable = {
+        documentIdColumn: "Id",
+        insertOnlyMode: false,
+        tableName: "Users"
     }
 
-    const table2 = {
-        documentIdColumn: string  = "OrderId",
-        insertOnlyMode: boolean = false,
-        tableName: string  = "OrderLines"
-    }
-
-    const etlConfiguration = Object.assign(new SqlEtlConfiguration(), {
+    const etlConfigurationSql = Object.assign(new SqlEtlConfiguration(), {
         connectionStringName: "sql-connection-string-name",
         disabled: false,
-        name: "Orders to SQL",
+        name: "etlSql",
         transforms: [transformation],
-        sqlTables: [table1, table2]
+        sqlTables: [table1]
+    } as Partial<SqlEtlConfiguration>);
+
+    const operationSql = new AddEtlOperation(etlConfigurationSql);
+    const etlResult = await store.maintenance.send(operationSql);
+    //endregion
+
+    //region add_olap_etl
+    const transformationOlap: Transformation = {
+        applyToAllDocuments: true,
+        name: "Script #1"
     }
 
-    const operation = new AddEtlOperation(etlConfiguration);
-    const etlResult = await store.maintenance.send(operation);
+    const etlConfigurationOlap = Object.assign(new OlapEtlConfiguration(), {
+        connectionStringName: "olap-connection-string-name",
+        disabled: false,
+        name: "etlOlap",
+        transforms: [transformationOlap],
+    } as Partial<OlapEtlConfiguration>);
 
+    const operationOlap = new AddEtlOperation(etlConfigurationOlap);
+    const etlResultOlap = await store.maintenance.send(operation);
     //endregion
+}
