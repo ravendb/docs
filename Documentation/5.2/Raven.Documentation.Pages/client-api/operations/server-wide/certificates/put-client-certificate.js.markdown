@@ -2,7 +2,7 @@
 
 You can register an existing client certificate using **PutClientCertificateOperation**. 
 
-## Syntax
+## Usage
 
 {CODE:nodejs cert_put_1@ClientApi\Operations\Server\ClientCertificate.js /}
 

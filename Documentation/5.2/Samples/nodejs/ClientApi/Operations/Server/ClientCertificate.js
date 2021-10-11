@@ -51,11 +51,7 @@ let urls, database, authOptions;
     //endregion
 
     //region cert_put_1
-    public PutClientCertificateOperation(
-        name: string,
-        certificate: string,
-        permissions: Record<string, DatabaseAccess>,
-        clearance: SecurityClearance)
+    const putOperation = new PutClientCertificateOperation([name], [certificate], [permissions], [clearance]);
     //endregion
 
     //region cert_put_2
@@ -64,7 +60,7 @@ let urls, database, authOptions;
     //endregion
 
     //region delete_cert_1
-     public DeleteCertificateOperation(thumbprint: string)
+    await store.maintenance.server.send(new DeleteCertificateOperation([thumbprint]));
     //endregion
 
     //region delete_cert_2

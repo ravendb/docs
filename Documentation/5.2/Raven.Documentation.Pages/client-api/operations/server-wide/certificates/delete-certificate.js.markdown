@@ -2,7 +2,7 @@
 
 You can delete a client certificate using the **DeleteCertificateOperation**.  
 
-## Syntax
+## Usage
 
 {CODE:nodejs delete_cert_1@ClientApi\Operations\Server\ClientCertificate.js /}
 
