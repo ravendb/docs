@@ -7,7 +7,7 @@
 * An **Elasticsearch ETL task** is an ongoing process that -  
     * **Extracts** chosen data from the database,  
     * **Transforms** the data using a user-defined script,  
-    * and **Loads** the data to a destination Elasticsearch index.  
+    * and **Loads** the data to a destination [Elasticsearch Index](https://www.elastic.co/blog/what-is-an-elasticsearch-index).  
 * Data is loaded to the Elasticsearch destination in a **single bulk operation**.  
 * By default, an existing document is deleted before a new one replaces it.  
   This behavior can be changed in the task settings, to write without 
