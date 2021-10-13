@@ -22,7 +22,7 @@ Query is an `EventEmitter`. It emits few events allowing you to customize its be
 
 Allows you to modify the index query just before it's executed.
 
-{CODE:nodejs customize_1_0@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs customize_1_0@ClientApi\Session\Querying\howToCustomize.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -34,7 +34,7 @@ Allows you to modify the index query just before it's executed.
 
 ### Example
 
-{CODE:nodejs customize_1_1@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs customize_1_1@ClientApi\Session\Querying\howToCustomize.js /}
 
 {PANEL/}
 
@@ -42,7 +42,7 @@ Allows you to modify the index query just before it's executed.
 
 Allows you to retrieve a raw query result after it's executed.
 
-{CODE:nodejs customize_1_0_0@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs customize_1_0_0@ClientApi\Session\Querying\howToCustomize.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -54,7 +54,7 @@ Allows you to retrieve a raw query result after it's executed.
 
 ### Example
 
-{CODE:nodejs customize_1_1_0@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs customize_1_1_0@ClientApi\Session\Querying\howToCustomize.js /}
 
 {PANEL/}
 
@@ -62,7 +62,7 @@ Allows you to retrieve a raw query result after it's executed.
 
 Allows you to retrieve a raw result of the streaming query.
 
-{CODE:nodejs customize_1_0_1@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs customize_1_0_1@ClientApi\Session\Querying\howToCustomize.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -74,7 +74,7 @@ Allows you to retrieve a raw result of the streaming query.
 
 ### Example
 
-{CODE:nodejs customize_1_1_1@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs customize_1_1_1@ClientApi\Session\Querying\howToCustomize.js /}
 
 {PANEL/}
 
@@ -82,7 +82,7 @@ Allows you to retrieve a raw result of the streaming query.
 
 By default, queries are cached. To disable query caching use the `noCaching()` customization.
 
-{CODE:nodejs customize_2_0@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs customize_2_0@ClientApi\Session\Querying\howToCustomize.js /}
 
 | Return Value | |
 | ------------- | ----- |
@@ -90,7 +90,7 @@ By default, queries are cached. To disable query caching use the `noCaching()` c
 
 ### Example
 
-{CODE:nodejs customize_2_1@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs customize_2_1@ClientApi\Session\Querying\howToCustomize.js /}
 
 {PANEL/}
 
@@ -98,7 +98,7 @@ By default, queries are cached. To disable query caching use the `noCaching()` c
 
 To disable entity tracking by `session` use `noTracking()`. Usage of this option will prevent holding the query results in memory.
 
-{CODE:nodejs customize_3_0@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs customize_3_0@ClientApi\Session\Querying\howToCustomize.js /}
 
 | Return Value | |
 | ------------- | ----- |
@@ -106,7 +106,7 @@ To disable entity tracking by `session` use `noTracking()`. Usage of this option
 
 ### Example
 
-{CODE:nodejs customize_3_1@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs customize_3_1@ClientApi\Session\Querying\howToCustomize.js /}
 {PANEL/}
 
 {PANEL: ProjectionBehavior}
@@ -115,10 +115,10 @@ By default, queries are satisfied with the values stored in the index. If the in
 doesn't contain the requested values, they are retrieved from the documents 
 themselves.  
 
-This behavior can be configured using the `Projection` option, which takes a 
-`ProjectionBehavior`:  
+This behavior can be configured using the `projection` option, which takes a 
+`projectionBehavior`:  
 
-{CODE:nodejs projectionbehavior@ClientApi\Session\Querying\HowToCustomize.ts /}
+{CODE:nodejs projectionbehavior@ClientApi\Session\Querying\HowToCustomize.js /}
 
 * `Default` - query will be satisfied with indexed data when possible, and directly 
 from the document when it is not.  
@@ -133,7 +133,7 @@ document does not contain the requested data, an exception is thrown.
 
 ### Example
 
-{CODE:nodejs projectionbehavior_query@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs projectionbehavior_query@ClientApi\Session\Querying\howToCustomize.js /}
 
 {PANEL/}
 
@@ -141,7 +141,7 @@ document does not contain the requested data, an exception is thrown.
 
 To order results randomly, use the `randomOrdering()` method.
 
-{CODE:nodejs customize_4_0@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs customize_4_0@ClientApi\Session\Querying\howToCustomize.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -153,7 +153,7 @@ To order results randomly, use the `randomOrdering()` method.
 
 ### Example
 
-{CODE:nodejs customize_4_1@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs customize_4_1@ClientApi\Session\Querying\howToCustomize.js /}
 
 {PANEL/}
 
@@ -171,7 +171,7 @@ If the last Etag processed by the index is greater than the cutoff then the resu
 {NOTE/}
 
 
-{CODE:nodejs customize_8_0@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs customize_8_0@ClientApi\Session\Querying\howToCustomize.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -183,7 +183,7 @@ If the last Etag processed by the index is greater than the cutoff then the resu
 
 ### Example
 
-{CODE:nodejs customize_8_1@ClientApi\Session\Querying\howToCustomize.ts /}
+{CODE:nodejs customize_8_1@ClientApi\Session\Querying\howToCustomize.js /}
 
 {PANEL/}
 
