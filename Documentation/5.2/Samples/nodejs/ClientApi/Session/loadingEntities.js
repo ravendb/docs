@@ -157,13 +157,13 @@ async function examples() {
 }
 
     //region loading_entities_7_0
-    (object, changeVector)conditionalLoad<object>(id, changeVector);
+    (object, changeVector) conditionalLoad<object>(id, changeVector);
     //endregion
 
     //region loading_entities_7_1
     var session = store.openSession();
     session.store(user, "users/1");
-    session.SaveChanges();
+    session.saveChanges();
 
     const changeVector = session.advanced.getChangeVectorFor(user);
 
