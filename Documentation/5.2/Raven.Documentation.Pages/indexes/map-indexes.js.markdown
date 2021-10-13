@@ -2,7 +2,7 @@
 
 `Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. They indicate which documents can be searched by which fields. 
 
-These **mapping functions** are **LINQ-based functions** or  **JavaScript function** (when using JavaScript indexes)  and can be considered the **core** of indexes.
+These **mapping functions** are **LINQ-based functions** and can be considered the **core** of indexes.
 
 ## What Can be Indexed
 
@@ -23,36 +23,20 @@ Let's create an index that will help us search for `Employees` by their `FirstNa
 
 - First, let's create an index called `Employees/ByFirstAndLastName`
 
-{CODE-TABS}
-{CODE-TAB:csharp:LINQ-syntax indexes_1@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_1@Indexes/JavaScript.cs /}
-{CODE-TABS/}
+{CODE:nodejs indexes_1@indexes/map.js /}
 
-You might notice that we're passing `Employee` as a generic parameter to `AbstractIndexCreationTask`. This gives our indexing function a strongly-typed syntax. If you are not familiar with `AbstractIndexCreationTask`, you can read [this](../indexes/creating-and-deploying) article before proceeding.
+- The next step is to create the indexing function itself. This is done by setting the `map` field with mapping function in the **constructor**.
 
-- The next step is to create the indexing function itself. This is done by setting the `Map` property with our function in a **parameterless constructor**.
-
-{CODE-TABS}
-{CODE-TAB:csharp:Query-syntax indexes_2@Indexes/Map.cs /}
-{CODE-TAB:csharp:Method-syntax indexes_3@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_2@Indexes/JavaScript.cs /}
-{CODE-TABS/}
+{CODE:nodejs indexes_2@indexes/map.js /}
 
 - The final step is to [deploy it](../indexes/creating-and-deploying) to the server and issue a query using the session [Query](../client-api/session/querying/how-to-query) method:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_4@Indexes/Map.cs /}
+{CODE-TAB:nodejs:Query indexes_4@indexes/map.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastName'
 where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-Our final index looks like:
-
-{CODE-TABS}
-{CODE-TAB:csharp:LINQ-syntax indexes_6@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_6@Indexes/JavaScript.cs /}
 {CODE-TABS/}
 
 {INFO:Field Types}
@@ -61,47 +45,25 @@ Please note that indexing capabilities are detected automatically from the retur
 
 For example, if our `Employee` will have a property called `Age` that is an `integer` then the following indexing function...
 
-{CODE-TABS}
-{CODE-TAB-BLOCK:csharp:LINQ-syntax}
+{CODE-BLOCK:csharp}
 from employee in docs.Employees
 select new
 {
 	Age = employee.Age
 }
-{CODE-TAB-BLOCK/}
-{CODE-TAB-BLOCK:csharp:JavaScript-syntax}
-map('Employees', function(employee)
-{
-    return {
-        Age : employee.Age
-    };
-})
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
+{CODE-BLOCK/}
 
-
-
-...grant us the capability to issue numeric queries (**return all the Employees that Age is more than 30**). 
+...grant us the capability to issue numeric queries (**return all the Employees that `Age` is more than 30**). 
 
 Changing the `Age` type to a `string` will take that capability away from you. The easiest example would be to issue `.ToString()` on the `Age` field...
 
-{CODE-TABS}
-{CODE-TAB-BLOCK:csharp:LINQ-syntax}
+{CODE-BLOCK:csharp}
 from employee in docs.Employees
 select new
 {
 	Age = employee.Age.ToString()
 }
-{CODE-TAB-BLOCK/}
-{CODE-TAB-BLOCK:csharp:JavaScript-syntax}
-map('Employees', function(employee)
-{
-    return {
-        Age : employee.Age.toString()
-    };
-})
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
+{CODE-BLOCK/}
 
 {INFO/}
 
@@ -113,8 +75,8 @@ You will probably notice that in the `Studio`, this function is a bit different 
 from employee in docs.Employees
 select new
 {
-	FirstName = employee.FirstName,
-	LastName = employee.LastName
+	FirstName = employee.firstName,
+	LastName = employee.lastName
 }
 {CODE-BLOCK/}
 
@@ -128,14 +90,10 @@ Since each index contains a LINQ function, you can combine multiple fields into 
 
 ### Example I
 
-{CODE-TABS}
-{CODE-TAB:csharp:Query-syntax indexes_7@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_7@Indexes/JavaScript.cs /}
-{CODE-TABS/}
+{CODE:nodejs indexes_7@indexes/map.js /}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_8@Indexes/Map.cs /}
-{CODE-TAB:csharp:DocumentQuery indexes_9@Indexes/Map.cs /}
+{CODE-TAB:nodejs:Query indexes_8@indexes/map.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFullName'
 where FullName = 'Robert King'
@@ -152,14 +110,10 @@ You can read more about analyzers and `Full Text Search` [here](../indexes/using
 
 {INFO/}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Query-syntax indexes_1_6@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_1_6@Indexes/JavaScript.cs /}
-{CODE-TABS/}
+{CODE:nodejs indexes_1_6@indexes/map.js /}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_1_7@Indexes/Map.cs /}
-{CODE-TAB:csharp:DocumentQuery indexes_1_8@Indexes/Map.cs /}
+{CODE-TAB:nodejs:Query indexes_1_7@indexes/map.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/Query'
 where search(Query, 'John Doe')
@@ -170,14 +124,10 @@ where search(Query, 'John Doe')
 
 Imagine that you would like to return all employees that were born in a specific year. You can do it by indexing `Birthday` from `Employee` in the following way:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Query-syntax indexes_1_2@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_1_2@Indexes/JavaScript.cs /}
-{CODE-TABS/}
+{CODE:nodejs indexes_1_2@indexes/map.js /}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_5_1@Indexes/Map.cs /}
-{CODE-TAB:csharp:DocumentQuery indexes_5_2@Indexes/Map.cs /}
+{CODE-TAB:nodejs:Query indexes_5_1@indexes/map.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByBirthday '
 where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
@@ -186,14 +136,10 @@ where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
 
 RavenDB gives you the ability to extract field data and to index by it. A different way to achieve our goal will look as follows:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Query-syntax indexes_1_0@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_1_0@Indexes/JavaScript.cs /}
-{CODE-TABS/}
+{CODE:nodejs indexes_1_0@indexes/map.js /}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_6_1@Indexes/Map.cs /}
-{CODE-TAB:csharp:DocumentQuery indexes_6_2@Indexes/Map.cs /}
+{CODE-TAB:nodejs:Query indexes_6_1@indexes/map.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByYearOfBirth'
 where YearOfBirth = 1963
@@ -204,14 +150,10 @@ where YearOfBirth = 1963
 
 If your document contains nested data, e.g. `Employee` contains `Address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `Country`:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Query-syntax indexes_1_4@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_1_4@Indexes/JavaScript.cs /}
-{CODE-TABS/}
+{CODE:nodejs indexes_1_4@indexes/map.js /}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_7_1@Indexes/Map.cs /}
-{CODE-TAB:csharp:DocumentQuery indexes_7_2@Indexes/Map.cs /}
+{CODE-TAB:nodejs:Query indexes_7_1@indexes/map.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByCountry'
 where Country = 'USA'
@@ -232,6 +174,7 @@ configuration option.
 
 The option [Indexing.IndexMissingFieldsAsNull](../server/configuration/indexing-configuration#indexing.indexmissingfieldsasnull) 
 determines whether missing fields in documents are indexed with the value `null`, or not indexed at all.  
+
 
 ## Related Articles
 
