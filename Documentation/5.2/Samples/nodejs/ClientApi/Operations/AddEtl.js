@@ -33,7 +33,7 @@ import { EtlConfiguration } from 'ravendb';
         connectionStringName: "raven-connection-string-name",
         disabled: false,
         name: "etlRvn"
-    } as Partial<RavenEtlConfiguration>);
+    });
 
     const transformationRvn = {
         applyToAllDocuments: true,
@@ -48,16 +48,16 @@ import { EtlConfiguration } from 'ravendb';
 
 
     //region add_sql_etl
-    const transformation: Transformation = {
+    const transformation = {
         applyToAllDocuments: true,
         name: "Script #1"
-    }
+    };
 
-    const table1: SqlEtlTable = {
+    const table1 = {
         documentIdColumn: "Id",
         insertOnlyMode: false,
         tableName: "Users"
-    }
+    };
 
     const etlConfigurationSql = Object.assign(new SqlEtlConfiguration(), {
         connectionStringName: "sql-connection-string-name",
@@ -65,24 +65,24 @@ import { EtlConfiguration } from 'ravendb';
         name: "etlSql",
         transforms: [transformation],
         sqlTables: [table1]
-    } as Partial<SqlEtlConfiguration>);
+    });
 
     const operationSql = new AddEtlOperation(etlConfigurationSql);
     const etlResult = await store.maintenance.send(operationSql);
     //endregion
 
     //region add_olap_etl
-    const transformationOlap: Transformation = {
+    const transformationOlap = {
         applyToAllDocuments: true,
         name: "Script #1"
-    }
+    };
 
     const etlConfigurationOlap = Object.assign(new OlapEtlConfiguration(), {
         connectionStringName: "olap-connection-string-name",
         disabled: false,
         name: "etlOlap",
         transforms: [transformationOlap],
-    } as Partial<OlapEtlConfiguration>);
+    });
 
     const operationOlap = new AddEtlOperation(etlConfigurationOlap);
     const etlResultOlap = await store.maintenance.send(operation);
