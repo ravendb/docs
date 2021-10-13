@@ -36,7 +36,6 @@ to learn about aggregation in queries.
 Next, use:  
 
 * For RQL queries: `interpolation()`  
-* For LINQ queries: the `Interpolation` option in `TimeSeriesAggregationOptions`.  
 
 The two interpolation modes are:  
 
@@ -56,10 +55,7 @@ one data point for each pair of values found on *both* sides of the gap.
 
 {PANEL: Examples}
 
-{CODE-TABS}
-{CODE-TAB:csharp:RQL RQL_Query@DocumentExtensions\TimeSeries\Querying\GapFilling.cs /}
-{CODE-TAB:csharp:LINQ LINQ_Query@DocumentExtensions\TimeSeries\Querying\GapFilling.cs /}
-{CODE-TABS/}
+{CODE:nodejs rql_query@documentExtensions\timeSeries\querying\gapFilling.js /}
 
 {PANEL/}
 
