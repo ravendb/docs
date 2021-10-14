@@ -5,14 +5,22 @@
 {NOTE: }
 
 * An **Elasticsearch ETL task** is an ongoing process that -  
-    * **Extracts** chosen data from the database,  
-    * **Transforms** the data using a user-defined script,  
-    * and **Loads** the data to a destination [Elasticsearch Index](https://www.elastic.co/blog/what-is-an-elasticsearch-index).  
-* Data is loaded to the Elasticsearch destination in a **single bulk operation**.  
-* By default, an existing document is deleted before a new one replaces it.  
-  This behavior can be changed in the task settings, to write without 
-  deleting documents first.  
+    * **Extracts** chosen documents from the database,  
+    * **Transforms** the documents using a user-defined script,  
+    * and **Loads** the documents to a destination [Elasticsearch Index](https://www.elastic.co/blog/what-is-an-elasticsearch-index).  
+* An Elasticsearch ETL task transfers **documents only**.  
+  Document extensions like attachments, counters, or time series, will not be transferred.  
+* The task sends the Elasticsearch index -  
+   * a [_refresh](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html) 
+     comnmand to ensure that the index is in sync with its current documents inventory.  
+   * an optional [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) 
+     command, to delete existing document versions from the target index before appending documents to it.  
+     (To prevent the task from sending `_delete_by_query` commands, enable [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
+     in the task settings.)  
+   * a [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) 
+     command to append the documents to the index.  
 * This page explains how to create an Elasticsearch ETL task using Studio.  
+  Learn more about this process [here](../../../../server/ongoing-tasks/etl/elasticsearch).  
 
 * In this page:  
   * [Navigate to the Elasticsearch ETL Task View](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#navigate-to-the-elasticsearch-etl-task-view)  
@@ -94,8 +102,9 @@ Add to the Elasticsearch Indexes list all the indexes that your transformation s
     you can provide "Id" here to pass this object to the index.  
 
 5. **Insert Only**  
-  By default, the transformation script deletes documents before replacing them with new ones.  
-   * Enable this option to insert new documents without deleting existing ones.  
+   * By default, the transformation script sends the index `_delete_by_query` commands to delete existing documents before replacing them with new ones.  
+   * Enabling `Insert Only` prevents the task from sending `_delete_by_query` commands.  
+   * Be aware that enabling this option would create a new copy of a document on the index each time the document is modified in RavenDB.  
 
 6. **Add** this index to the list.  
 
@@ -141,12 +150,16 @@ Add to the Elasticsearch Indexes list all the indexes that your transformation s
    Click for a transformation script Syntax Sample.  
 
 4. **Collection**  
-   Type or select the name of the collection your script is using.  
+   Type or select the names of the collections your script is using.  
 
 5. **Apply script to documents from beginning of time (Reset)**  
-    * When this option is enabled, the script will operate on all existing documents in the 
-      specified collection the first time the task runs.  
-    * When this option is disabled, the script operates only on new and modified documents.  
+    * When this option is **enabled**, the script will be executed over **all existing documents in the 
+      specified collections** the first time the task runs.  
+    * When this option is **disabled**, the script will be executed **only over new and modified documents**.  
+    * If [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) is **enabled**,  
+      RavenDB documents will be appended to the index **without deleting documents from the index first**.  
+    * If [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) is **disabled**,
+      documents will be **deleted from the index first**, and then appended to it from RavenDB.  
 
 6. **Update**  
    Click to update the task with your changes.  
@@ -167,7 +180,7 @@ Add to the Elasticsearch Indexes list all the indexes that your transformation s
    Type or select the ID of the document you want to test the script with.  
 2. **Test**  
    Click to run the test.  
-   The test will **not** actually transfer the document.  
+   The test will display the commands that would be sent to the Elasticsearch index, **without** actually sending them to the index.  
 3. **Close Test Area**  
    Close this view.  
 
@@ -175,16 +188,28 @@ Add to the Elasticsearch Indexes list all the indexes that your transformation s
 
 ### Test Results
 
-The test view displays a **Preview** of the tested document and the **Test Results** in separate tabs.  
+The test results view displays a **preview** of the tested document, and the **commands** the task would send the Elasticsearch index.  
 
-* **Preview Tab**:  
-  !["Test Results Preview Tab"](images/elasticsearch-test-results-preview-tab.png "Test Results Preview Tab")  
-* **Test Results Tab** -  
-  !["Test Results Tab"](images/elasticsearch-test-results-1.png "Test Results Tab")  
-* Here is the same test, this time with the [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) option enabled 
-  to prevent the script from deleting documents before inserting new documents.  
-  Note the absence of [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) statements in the transformed object.  
-  !["Test Results with Insert Only Enabled"](images/elasticsearch-test-results-2.png "Test Results with Insert Only Enabled")  
+---
+
+* **Document Preview Tab**  
+  !["Document Preview Tab"](images/elasticsearch-test-results-preview-tab.png "Document Preview Tab")  
+
+---
+
+* **Test Results Tab**  
+!["Test Results Tab"](images/elasticsearch-test-results.png "Test Results Tab")  
+
+    1. **Test Results Tab**  
+       Displays the commands that the task would send the Elsticsearch index.  
+    2. **Elasticsearch Index**  
+       The index the commands and data are sent to.  
+    3. [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) Segment  
+       With a list of IDs by which the index would locate and remove existing documents.  
+       Deleting existing document versions is **optional**, enable [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
+       to prevent the task from sending `_delete_by_query` commands.  
+    4. [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) Segment  
+       With a list of document objects, each with data extracted from RavenDB and an ID the index can store it by.  
 
 {PANEL/}
 
