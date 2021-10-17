@@ -1,4 +1,4 @@
-# Indexes: Indexing Counters
+# indexes: Indexing Counters
 ---
 
 {NOTE: }
@@ -9,7 +9,7 @@ that inherits from `AbstractCountersIndexCreationTask` or `AbstractJavaScriptCou
 * Auto-indexes for counters are not available at this time.  
 
 * In this page:  
-  * [Syntax](../../document-extensions/counters/indexing#syntax)  
+  * [Usage](../../document-extensions/counters/indexing#usage)  
   * [AbstractJavaScriptCountersIndexCreationTask](../../document-extensions/counters/indexing#section)  
   * [CounterNamesFor](../../document-extensions/counters/indexing#section-1)  
   * [Querying the Index](../../document-extensions/counters/indexing#querying-the-index)  
@@ -18,25 +18,25 @@ that inherits from `AbstractCountersIndexCreationTask` or `AbstractJavaScriptCou
 
 ---
 
-{PANEL:Syntax}
+{PANEL:Usage}
 
 In order to index counter values, create an index that inherits from `AbstractCountersIndexCreationTask`. 
 Next, choose one of these two methods which take the index expression:  
 
-{CODE-BLOCK:csharp }
-protected void AddMapForAll(Expression<Func<IEnumerable<CounterEntry>, IEnumerable>> map)
+{CODE-BLOCK:javascript }
+this.maps = new Set(["map"]);
 
-protected void AddMap(string counter, Expression<Func<IEnumerable<CounterEntry>, IEnumerable>> map)
+this.map("map");
 {CODE-BLOCK/}
 
-`AddMapForAll` indexes all the counters in the indexed documents. `AddMap` only indexes the counters with 
+`maps` indexes all the counters in the indexed documents. `addMap` only indexes the counters with 
 the specified name.  
 
 Examples of indexes using each method:  
 
 {CODE-TABS}
-{CODE-TAB:csharp:AddMap index_1@Indexes\IndexingCounters.cs /}
-{CODE-TAB:csharp:AddMapForAll index_2@Indexes\IndexingCounters.cs /}
+{CODE-TAB:nodejs:map index_1@documentExtensions\counters\indexingCounters.js /}
+{CODE-TAB:nodejs:maps index_2@documentExtensions\counters\indexingCounters.js /}
 {CODE-TABS/}  
 <br/>
 
@@ -48,13 +48,7 @@ Creating an index inheriting from `AbstractJavaScriptCountersIndexCreationTask` 
 you to write your map and reduce functions in JavaScript.  
 Learn more about JavaScript indexes [here](../../indexes/javascript-indexes).  
 
-{CODE-BLOCK: csharp}
-public class AbstractJavaScriptCountersIndexCreationTask : AbstractCountersIndexCreationTask
-{
-    public HashSet<string> Maps;
-    protected string Reduce;
-}
-{CODE-BLOCK/}
+{CODE:nodejs javaScriptIndexCreationTask@documentExtensions\counters\indexingCounters.js /}
 
 | Property | Type | Description |
 | - | - | - |
@@ -63,39 +57,37 @@ public class AbstractJavaScriptCountersIndexCreationTask : AbstractCountersIndex
 
 Example:  
 
-{CODE:csharp index_3@DocumentExtensions\Counters\IndexingCounters.cs /}
+{CODE:nodejs index_3@documentExtensions\counters\indexingCounters.js /}
 
 ---
 
 ### `CounterNamesFor`
 
-While indexes inheriting from `AbstractIndexCreationTask` cannot index counter _values_, the `CounterNamesFor` 
+While indexes inheriting from `AbstractIndexCreationTask` cannot index counter _values_, the `counterNamesFor()` 
 method is available which returns the names of all counters for a specified document:  
 
-{CODE:csharp syntax@Indexes\IndexingCounters.cs /}
+{CODE:nodejs syntax@documentExtensions\counters\indexingCounters.js /}
 
 Example of index using `CounterNamesFor`:  
 
-{CODE:csharp index_0@Indexes\IndexingCounters.cs /}
+{CODE:nodejs index_0@documentExtensions\counters\indexingCounters.js /}
 
 {PANEL/}
 
 {PANEL: Querying the Index}  
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync query1@Indexes\IndexingCounters.cs /}
-{CODE-TAB:csharp:Async query2@Indexes\IndexingCounters.cs /}
-{CODE-TAB:csharp:DocumentQuery query3@Indexes\IndexingCounters.cs /}
-{CODE-TABS/}
+{CODE-TAB:nodejs:Query query1@documentExtensions\counters\indexingCounters.js /}
+{CODE-TABS/}  
 
 {PANEL/}
 
 ## Related Articles  
 
-### Indexes  
+### indexes  
 - [Indexing Related Documents](../../indexes/indexing-related-documents)  
-- [Map-Reduce Indexes](../../indexes/map-reduce-indexes)  
-- [Creating and Deploying Indexes](../../indexes/creating-and-deploying)  
+- [Map-Reduce indexes](../../indexes/map-reduce-indexes)  
+- [Creating and Deploying indexes](../../indexes/creating-and-deploying)  
 
 ### Document Extensions  
 - [Counters: Overview](../../document-extensions/counters/overview)  
