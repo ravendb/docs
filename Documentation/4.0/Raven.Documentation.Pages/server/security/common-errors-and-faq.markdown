@@ -4,7 +4,6 @@ In this section, we review some of the common security configuration errors and 
 
 [Setup Wizard Issues](../../server/security/common-errors-and-faq#setup-wizard-issues)  
 [Authentication Issues](../../server/security/common-errors-and-faq#authentication-issues)  
-[Authorization Issues](../../server/security/common-errors-and-faq#authorization-issues)  
 [Encryption Issues](../../server/security/common-errors-and-faq#encryption-issues)  
 
 ## Setup Wizard Issues  
@@ -293,9 +292,6 @@ Use either the [generateClientCert](../../server/administration/cli#generateclie
 Another way to gain access for an existing certificate is to add the [Security.WellKnownCertificates.Admin](../../server/configuration/security-configuration#security.wellknowncertificates.admin) configuration to `settings.json` with your existing certificate's thumbprint.
 In this case, a server restart is required.
 
-## Authorization Issues  
-
-Under construction
 
 ## Encryption Issues  
 
