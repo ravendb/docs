@@ -49,7 +49,7 @@ Create queries **using code**, or send the server **raw queries** for execution.
 * Use [Session.Query](../../client-api/session/querying/how-to-query#session.query) to code queries yourself.  
    * **Returned Counter Value**: **Accumulated**  
      A Counter's value is returned as a single sum, with no specification of the Counter's value on each node.
-     {CODE counters_region_query@DocumentExtensions\Counters\counters.cs /}
+     {CODE:nodejs counters_region_query@documentExtensions\counters\counters.js /}
 
 * Use [RawQuery](../../client-api/session/querying/how-to-query#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
    * You can use the `counter` method.  
@@ -64,8 +64,8 @@ Create queries **using code**, or send the server **raw queries** for execution.
         
     `counter` and `counterRaw` samples:  
     {CODE-TABS}
-    {CODE-TAB:csharp:counter counters_region_rawqueries_counter@DocumentExtensions\Counters\counters.cs /}
-    {CODE-TAB:csharp:counterRaw counters_region_rawqueries_counterRaw@DocumentExtensions\Counters\counters.cs /}
+    {CODE-TAB:nodejs:counter counters_region_rawqueries_counter@documentExtensions\counters\counters.js /}
+    {CODE-TAB:nodejs:counterRaw counters_region_rawqueries_counterRaw@documentExtensions\counters\counters.js /}
     {CODE-TABS/}
 
 ---
@@ -93,7 +93,7 @@ database items from an existing file into the database.
 * **Transferred Counter Value**: **Distributed**  
   Smuggler transfers the entire series of values that the different nodes maintain for a Counter.  
 * To make Smuggler handle Counters, include `DatabaseItemType.Counters` in `OperateOnTypes`'s list of entities to import or export.  
-  {CODE smuggler_options@DocumentExtensions\Counters\counters.cs /}
+  {CODE:nodejs smuggler_options@documentExtensions\counters\counters.js /}
 
 ---
 
@@ -191,8 +191,8 @@ so it can be immediately retrieved when needed with no additional remote calls.
 
     `IncludeCounter` and `IncludeCounters` usage samples:  
     {CODE-TABS}
-    {CODE-TAB:csharp:IncludeCounter counters_region_load_include1@DocumentExtensions\Counters\counters.cs /}
-    {CODE-TAB:csharp:IncludeCounters counters_region_load_include2@DocumentExtensions\Counters\counters.cs /}
+    {CODE-TAB:nodejs:IncludeCounter counters_region_load_include1@documentExtensions\counters\counters.js /}
+    {CODE-TAB:nodejs:IncludeCounters counters_region_load_include2@documentExtensions\counters\counters.js /}
     {CODE-TABS/}
 
 * **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query#session--querying--how-to-query)**:  
@@ -201,8 +201,8 @@ so it can be immediately retrieved when needed with no additional remote calls.
 
     `IncludeCounter` and `IncludeCounters` usage samples:  
     {CODE-TABS}
-    {CODE-TAB:csharp:IncludeCounter counters_region_query_include_single_Counter@DocumentExtensions\Counters\counters.cs /}
-    {CODE-TAB:csharp:IncludeCounters counters_region_query_include_multiple_Counters@DocumentExtensions\Counters\counters.cs /}
+    {CODE-TAB:nodejs:IncludeCounter counters_region_query_include_single_Counter@documentExtensions\counters\counters.js /}
+    {CODE-TAB:nodejs:IncludeCounters counters_region_query_include_multiple_Counters@documentExtensions\counters\counters.js /}
     {CODE-TABS/}
 
 ---
@@ -211,17 +211,17 @@ so it can be immediately retrieved when needed with no additional remote calls.
 `store.BulkInsert` is RavenDB's high-performance data insertion operation.  
 Use its `CountersFor` interface's `Increment` method to add or update counters with great speed.  
 
-* Syntax  
+* Usage  
 
-   * `CountersFor`
-       {CODE CountersFor-definition@DocumentExtensions\Counters\BulkInsert.cs /}
+   * `countersFor`
+       {CODE:nodejs CountersFor-definition@documentExtensions\counters\counters.js /}
 
         | Parameters | Type | Description |
         |:-------------|:-------------|:-------------|
         | `id` | `string` | Document ID |
 
-   *   `Increment`
-          {CODE Increment-definition@DocumentExtensions\Counters\BulkInsert.cs /}
+   *   `increment`
+          {CODE:nodejs Increment-definition@documentExtensions\counters\counters.js /}
 
            | Parameters | Type | Description |
            |:-------------|:-------------|:-------------|
@@ -237,7 +237,7 @@ Use its `CountersFor` interface's `Increment` method to add or update counters w
 
 * Usage Sample  
   In this sample, we attach a counter to all User documents.
-   {CODE bulk-insert-counters@DocumentExtensions\Counters\BulkInsert.cs /}  
+   {CODE:nodejs bulk-insert-counters@documentExtensions\counters\counters.js /}  
 
 
 {PANEL/}
