@@ -1,22 +1,20 @@
 # Session: Querying: How to Project Query Results
 
 Instead of pulling full documents in query results you can just grab some pieces of data from documents. You can also transform the projected
-results. The projections are defined in LINQ with the usage of:
+results. The projections are defined with the usage of:
 
-- [Select](../../../client-api/session/querying/how-to-project-query-results#select)  
-- [SelectFields](../../../client-api/session/querying/how-to-project-query-results#selectfields)  
-- [ProjectInto](../../../client-api/session/querying/how-to-project-query-results#projectinto)  
-- [OfType (As)](../../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection)  
+- [selectFields()](../../../client-api/session/querying/how-to-project-query-results#selectfields())
+- [projectInto](../../../client-api/session/querying/how-to-project-query-results#projectinto)  
+- [ofType()](../../../client-api/session/querying/how-to-project-query-results#oftype)
 
-{PANEL:Select}
+{PANEL:SelectFields()}
 
-The most common way to perform a query with projection is to use the `Select` method. You can specify what fields from a document you want to retrieve and even provide complex expression.
+The most common way to perform a query with projection is to use the `selectFields()` method, which let's you specify what fields from a document you want to retrieve.
 
 ### Example I - Projecting Individual Fields of the Document
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_1@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_1_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:nodejs:Node.js projections_1@ClientApi\Session\Querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Companies
 select Name, Address.City as City, Address.Country as Country
@@ -26,8 +24,7 @@ select Name, Address.City as City, Address.Country as Country
 ### Example II - Projecting Arrays and Objects
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_2@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_2_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:nodejs:Node.js projections_2@ClientApi\Session\Querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders
 select ShipTo, Lines[].ProductName as Products
@@ -37,21 +34,19 @@ select ShipTo, Lines[].ProductName as Products
 ### Example III - Projection with Expression
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_3@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_3_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:nodejs:Node.js projections_3@ClientApi\Session\Querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Employees as e
 select {
-    FullName : e.FirstName + " " + e.LastName
+    fullName : e.FirstName + " " + e.LastName
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IV - Projection with `let`
+### Example IV - Projection with `declared function`
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_12@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_12_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:nodejs:Node.js projections_12@ClientApi\Session\Querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 declare function output(e) {
 	var format = function(p){ return p.FirstName + " " + p.LastName; };
@@ -64,8 +59,7 @@ from Employees as e select output(e)
 ### Example V - Projection with Calculation
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_4@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_4_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:nodejs:Node.js projections_4@ClientApi\Session\Querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders as o
 select {
@@ -78,8 +72,7 @@ select {
 ### Example VI - Projection Using a Loaded Document
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_5@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_5_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:nodejs:Node.js projections_5@ClientApi\Session\Querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders as o
 load o.Company as c
@@ -93,8 +86,7 @@ select {
 ### Example VII - Projection with Dates
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_6@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_6_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:nodejs:Node.js projections_6@ClientApi\Session\Querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Employees as e 
 select { 
@@ -108,8 +100,7 @@ select {
 ### Example VIII - Projection with Raw JavaScript Code
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_7@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_7_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:nodejs:Node.js projections_7@ClientApi\Session\Querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Employees as e 
 select {
@@ -122,8 +113,7 @@ select {
 ### Example IX - Projection with Metadata
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_13@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_13_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:nodejs:Node.js projections_13@ClientApi\Session\Querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Employees as e 
 select {
@@ -133,101 +123,52 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{PANEL/}
-
-{PANEL:SelectFields}
-
-The `SelectFields` method can only be used with the [Document Query](../../../client-api/session/querying/document-query/what-is-document-query). 
-It has two overloads:
-
-{CODE-BLOCK: csharp}
-// 1) By array of fields
-IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
-// 2) By projection type
-IDocumentQuery<TProjection> SelectFields<TProjection>();
-{CODE-BLOCK/}
-
-1) The fields of the projection are specified as a `string` array of field names. It also takes the type of the projection as 
-a generic parameter.  
+### Example X
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync selectFields@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async selectFields_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Index projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Class projections_9_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Companies/ByContact'
-select Name, Phone
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-2) The projection is defined by simply passing the projection type as the generic parameter.  
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync selectFields_2@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async selectFields_2_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Index projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Class projections_9_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Companies/ByContact'
-select Name, Phone
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-#### Projection Behavior
-
-The `SelectFields` methods can also take a `ProjectionBehavior` parameter, which 
-determines whether the query should retrieve indexed data or directly retrieve 
-document data, and what to do when the data can't be retrieved. Learn more 
-[here](../../../client-api/session/querying/how-to-customize-query#projectionbehavior).  
-
-{CODE-BLOCK: csharp}
-IDocumentQuery<TProjection> SelectFields<TProjection>(ProjectionBehavior projectionBehavior,
-                                                      params string[] fields);
-
-IDocumentQuery<TProjection> SelectFields<TProjection>(ProjectionBehavior projectionBehavior);
-{CODE-BLOCK/}
-
-{PANEL/}
-
-{PANEL:ProjectInto}
-
-This extension method retrieves all public fields and properties of the type given in generic and uses them to perform projection to the requested type.
-You can use this method instead of using `Select` together with all fields of the projection class.
-
-### Example
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync projections_8@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_8_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:nodejs:Node.js projections_8@ClientApi\Session\Querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Companies/ByContact' 
 select Name, Phone
 {CODE-TAB-BLOCK/}
-{CODE-TAB:csharp:Index projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Class projections_9_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:nodejs:Index projections_9_0@ClientApi\Session\Querying\howToProjectQueryResults.js /}
 
 {CODE-TABS/}
 
 {PANEL/}
 
-{PANEL:OfType (As) - simple projection}
+{PANEL:projectInto}
 
-`OfType` or `As` is a client-side projection. The easiest explanation of how it works is to take the results that the server returns and map them to given type. This may become useful when querying an index that contains fields that are not available in mapped type.
+This extension method retrieves all public fields and properties of the type given in generic and uses them to perform projection to the requested type.
+
+You can use this method instead of using selectFields` together with all fields of the projection class.
 
 ### Example
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_10@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_10_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Index projections_11@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:nodejs:Query projections_10@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index index_10@indexes\querying\projections.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Companies/ByContact' 
+select Name, Phone
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+{PANEL/}
+
+{PANEL:OfType}
+
+`ofType()` is a client-side projection - in JS it only sets the type of the result entries. The easiest explanation of how it works is to take the results that the server returns and assign them to instance of the type indicated by the parameter.
+
+### Example
+
+{CODE:nodejs projections_10@ClientApi\Session\Querying\howToProjectQueryResults.js /}
 
 {PANEL/}
 
 {NOTE Projected entities (even named types) are not tracked by the session. /}
 
-{NOTE If the projected fields are stored inside the index itself (`FieldStorage.Yes` in the index definition), then the query results will be created directly from there instead of retrieving documents in order to project. /}
+{NOTE If the projected fields are stored inside the index itself (`"Yes"` in the index definition), then the query results will be created directly from there instead of retrieving documents in order to project. /}
 
 ## Related Articles
 
@@ -243,4 +184,4 @@ select Name, Phone
 
 ### Server
 
-- [JavaScript Engine](../../../server/kb/javascript-engine)  
+- [JavaScript Engine](../../../server/kb/javascript-engine)

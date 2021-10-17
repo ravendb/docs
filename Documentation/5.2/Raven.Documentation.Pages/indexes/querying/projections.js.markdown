@@ -2,9 +2,9 @@
 
 There are couple of ways to perform projections in RavenDB:
 
-- projections using [SelectFields](../../indexes/querying/projections#selectfields)
-- using [ProjectInto](../../indexes/querying/projections#projectinto)
-- using [OfType](../../indexes/querying/projections#oftype)
+- projections using [selectFields](../../indexes/querying/projections#selectfields)
+- using [projectInto](../../indexes/querying/projections#projectinto)
+- using [ofType](../../indexes/querying/projections#oftype)
 
 ## What are Projections and When to Use Them
 
@@ -33,7 +33,7 @@ Another consideration to take into account is the cost of running the projection
 
 If a projection function only requires fields that are stored, then the document will not be loaded from storage and all data will come from the index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../indexes/storing-data-in-index).
 
-{PANEL:SelectFields}
+{PANEL:selectFields}
 The most basic projection can be done using `selectFields()` method:
 
 ### Example I - Projecting Individual Fields of the Document
@@ -178,7 +178,7 @@ select {
 
 {PANEL/}
 
-{PANEL:ProjectInto}
+{PANEL:projectInto}
 
 This extension method retrieves all public fields and properties of the type given in generic and uses them to perform projection to the requested type.
 
@@ -197,7 +197,7 @@ select Name, Phone
 
 {PANEL/}
 
-{PANEL:OfType}
+{PANEL:ofType}
 
 `ofType()` is a client-side projection. You can read more about it [here](../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection).
 
