@@ -2,10 +2,9 @@
 
 There are couple of ways to perform projections in RavenDB:
 
-- projections using [Select](../../indexes/querying/projections#select)
-- using [SelectFields](../../indexes/querying/projections#selectfields)
+- projections using [SelectFields](../../indexes/querying/projections#selectfields)
 - using [ProjectInto](../../indexes/querying/projections#projectinto)
-- using [OfType (As)](../../indexes/querying/projections#oftype-(as))
+- using [OfType](../../indexes/querying/projections#oftype)
 
 ## What are Projections and When to Use Them
 
@@ -17,7 +16,7 @@ The savings can be very significant if we need to show just a bit of information
 
 A good example in the sample data set would be the order document. If we ask for all the Orders where Company is "companies/65-A", the size of the result that we get back from the server is 19KB.
 
-However, if we perform the same query and ask to get back only the Employee and OrderedAt fields, the size of the result is only 5KB.  
+However, if we perform the same query and ask to get back only the `Employee` and `OrderedAt` fields, the size of the result is only 5KB.  
 
 Aside from allowing you to pick only a portion of the data, projection functions give you the ability to rename some fields, load external documents, and perform transformations on the results. 
 
@@ -34,14 +33,14 @@ Another consideration to take into account is the cost of running the projection
 
 If a projection function only requires fields that are stored, then the document will not be loaded from storage and all data will come from the index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../indexes/storing-data-in-index).
 
-{PANEL:Select}
-The most basic projection can be done using LINQ `Select` method:
+{PANEL:SelectFields}
+The most basic projection can be done using `selectFields()` method:
 
 ### Example I - Projecting Individual Fields of the Document
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_1@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
+{CODE-TAB:nodejs:Query projections_1@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index indexes_1@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastName'
 select FirstName, LastName
@@ -55,8 +54,8 @@ This will issue a query to a database, requesting only `FirstName` and `LastName
 If we create an index that stores `FirstName` and `LastName` and it requests only those fields in query, then **the data will come from the index directly**.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_1_stored@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_1_stored@Indexes\Querying\Projections.cs /}
+{CODE-TAB:nodejs:Query projections_1_stored@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index indexes_1_stored@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastNameWithStoredFields'
 select FirstName, LastName
@@ -66,8 +65,8 @@ select FirstName, LastName
 ### Example III - Projecting Arrays and Objects
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_2@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_3@Indexes\Querying\Projections.cs /}
+{CODE-TAB:nodejs:Query projections_2@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index indexes_3@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Orders/ByShipToAndLines' as o
 select 
@@ -81,8 +80,8 @@ select
 ### Example IV - Projection with Expression
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_3@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
+{CODE-TAB:nodejs:Query projections_3@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index indexes_1@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastName' as e
 select 
@@ -92,10 +91,10 @@ select
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example V - Projection with `let`
+### Example V - Projection with `declared function`
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_4@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
+{CODE-TAB:nodejs:Query projections_4@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index indexes_1@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 declare function output(e) {
 	var format = function(p){ return p.FirstName + " " + p.LastName; };
@@ -108,8 +107,8 @@ from index 'Employees/ByFirstAndLastName' as e select output(e)
 ### Example VI - Projection with Calculation
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_9@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_3@Indexes\Querying\Projections.cs /}
+{CODE-TAB:nodejs:Query projections_9@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index indexes_3@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Orders/ByShipToAndLines' as o
 select {
@@ -119,30 +118,11 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VII - Projection With a Count() Predicate
+### Example VII - Projection Using a Loaded Document
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_count_in_projection@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Index indexes_4@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from Orders as o 
-load o.Company as c 
-select 
-{ 
-    CompanyName : c.Name, 
-    ShippedAt : o.ShippedAt, 
-    TotalProducts : o.Lines.length, 
-    TotalDiscountedProducts : o.Lines.filter(x => x.Discount > 0 ).length 
-}
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-
-### Example VIII - Projection Using a Loaded Document
-
-{CODE-TABS}
-{CODE-TAB:csharp:Query projections_5@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_4@Indexes\Querying\Projections.cs /}
+{CODE-TAB:nodejs:Query projections_5@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index indexes_4@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Orders/ByShippedAtAndCompany' as o
 load o.Company as c
@@ -153,11 +133,11 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IX - Projection with Dates
+### Example VIII - Projection with Dates
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_6@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_2@Indexes\Querying\Projections.cs /}
+{CODE-TAB:nodejs:Query projections_6@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index indexes_2@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstNameAndBirthday' as e 
 select { 
@@ -168,11 +148,11 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example X - Projection with Raw JavaScript Code
+### Example IX - Projection with Raw JavaScript Code
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_7@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_2@Indexes\Querying\Projections.cs /}
+{CODE-TAB:nodejs:Query projections_7@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index indexes_2@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstNameAndBirthday' as e 
 select {
@@ -182,11 +162,11 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example XI - Projection with Metadata
+### Example X - Projection with Metadata
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_8@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
+{CODE-TAB:nodejs:Query projections_8@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index indexes_1@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastName' as e 
 select {
@@ -198,88 +178,33 @@ select {
 
 {PANEL/}
 
-{PANEL:SelectFields}
-
-The `SelectFields` method can only be used with the [Document Query](../../client-api/session/querying/document-query/what-is-document-query). 
-It has two overloads:
-
-{CODE-BLOCK: csharp}
-// 1) By array of fields
-IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
-// 2) By projection type
-IDocumentQuery<TProjection> SelectFields<TProjection>();
-{CODE-BLOCK/}
-
-1) The fields of the projection are specified as a `string` array of field names. It also takes the type of the projection as 
-a generic parameter.  
-
-{CODE-TABS}
-{CODE-TAB:csharp:Query selectFields_1@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index index_10@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Class projections_10_class@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Companies/ByContact'
-select Name, Phone
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-2) The projection is defined by simply passing the projection type as the generic parameter.  
-
-{CODE-TABS}
-{CODE-TAB:csharp:Query selectFields_2@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index index_10@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Class projections_10_class@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Companies/ByContact'
-select Name, Phone
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-#### Projection Behavior
-
-The `SelectFields` methods can also take a `ProjectionBehavior` parameter, which 
-determines whether the query should retrieve indexed data or directly retrieve 
-document data, and what to do when the data can't be retrieved. Learn more 
-[here](../../client-api/session/querying/how-to-customize-query#projectionbehavior).  
-
-{CODE-BLOCK: csharp}
-IDocumentQuery<TProjection> SelectFields<TProjection>(ProjectionBehavior projectionBehavior,
-                                                      params string[] fields);
-
-IDocumentQuery<TProjection> SelectFields<TProjection>(ProjectionBehavior projectionBehavior);
-{CODE-BLOCK/}
-
-{PANEL/}
-
 {PANEL:ProjectInto}
 
 This extension method retrieves all public fields and properties of the type given in generic and uses them to perform projection to the requested type.
 
-You can use this method instead of using `Select` together with all fields of the projection class.
+You can use this method instead of using selectFields` together with all fields of the projection class.
 
 ### Example
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_10@Indexes\Querying\Projections.cs /}
+{CODE-TAB:nodejs:Query projections_10@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index index_10@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Companies/ByContact' 
 select Name, Phone
 {CODE-TAB-BLOCK/}
-{CODE-TAB:csharp:Index index_10@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Class projections_10_class@Indexes\Querying\Projections.cs /}
-
 {CODE-TABS/}
 
 {PANEL/}
 
-{PANEL:OfType (As)}
+{PANEL:OfType}
 
-`OfType` or `As` is a client-side projection. You can read more about it [here](../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection).
+`ofType()` is a client-side projection. You can read more about it [here](../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection).
 
 {PANEL/}
 
 ## Projections and the Session
-Because you are working with projections and not directly with documents, they are _not_ tracked by the session. Modifications to a projection will not modify the document when SaveChanges is called.
+Because you are working with projections and not directly with documents, they are _not_ tracked by the session. Modifications to a projection will not modify the document when `saveChanges()` is called.
 
 ## Related Articles
 
