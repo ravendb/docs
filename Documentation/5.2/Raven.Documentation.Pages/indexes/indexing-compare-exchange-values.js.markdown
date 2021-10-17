@@ -18,39 +18,32 @@ as when documents are modified in the indexed collection(s).
 
 ---
 
-{PANEL: Syntax}
+{PANEL: Usage}
 
 When creating an index using `AbstractIndexCreationTask`, use the method 
-`LoadCompareExchangeValue()` to load a compare exchange value by its key.  
+`loadCompareExchangeValue()` to load a compare exchange value by its key.  
 
-{CODE:csharp methods@Indexes/IndexingCompareExchange.cs /}
+{CODE:nodejs methods@indexes/indexingCompareExchange.js /}
 
 For javascript indexes, use the method `cmpxchg(<key>)`.
 
 | Parameter | Type | Description |
 | - | - | - |
 | **key** | `string` | The key of a particular compare exchange value. |
-| **keys** | `IEnumerable<string>` | The keys of multiple compare exchange values. |
+| **keys** | `collection<string>` | The keys of multiple compare exchange values. |
 <br/>
 ### Examples
 
 These indexes map the rooms in a hotel, as well as compare exchange values 
 representing the guests in those rooms.  
 
-{CODE-TABS}
-{CODE-TAB:csharp:LINQ-syntax index_0@Indexes/IndexingCompareExchange.cs /}
-{CODE-TAB:csharp:JavaScript-syntax index_1@Indexes/IndexingCompareExchange.cs /}
-{CODE-TABS/}
+{CODE:nodejs index_1@indexes/indexingCompareExchange.js /}
 
 {PANEL/}
 
 {PANEL: Querying the Index}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync query_0@Indexes/IndexingCompareExchange.cs /}
-{CODE-TAB:csharp:Async query_1@Indexes/IndexingCompareExchange.cs /}
-{CODE-TAB:csharp:RawQuery query_2@Indexes/IndexingCompareExchange.cs /}
-{CODE-TABS/}
+{CODE:nodejs query_2@indexes/indexingCompareExchange.js /}
 
 {PANEL/}
 
