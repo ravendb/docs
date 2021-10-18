@@ -10,24 +10,15 @@
     * and **Loads** the documents to an Elasticsearch destination.  
 * An Elasticsearch ETL task transfers **documents only**.  
   Document extensions like attachments, counters, or time series, will not be transferred.  
-* The task sends Elasticsearch -  
-   * a [_refresh](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html) 
-     comnmand, to ensure that Elasticsearch updates the index it uses for our documents before we delete and append documents to it.  
-   * an optional [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) 
-     command, to delete existing document versions from Elasticsearch before appending documents to it.  
-     (To prevent the task from sending `_delete_by_query` commands, enable [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
-     in the task settings.)  
-   * a [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) 
-     command to append the documents to Elasticsearch.  
 * This page explains how to create an Elasticsearch ETL task using Studio.  
   Learn more about this process [here](../../../../server/ongoing-tasks/etl/elasticsearch).  
 
 * In this page:  
   * [Navigate to the Elasticsearch ETL Task View](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#navigate-to-the-elasticsearch-etl-task-view)  
   * [Define the Elasticsearch ETL Task](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#define-the-elasticsearch-etl-task)  
-     * [ETL Task Properties](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#etl-task-properties)  
-     * [Elasticsearch Indexes](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes)  
-     * [Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#transformation-script)  
+  * [Elasticsearch Indexes](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes)  
+  * [Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#transformation-script)  
+     * [Add Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#add-transformation-script)  
      * [Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#edit-transformation-script)  
      * [Test Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#test-transformation-script)  
      * [Test Results](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#test-results)  
@@ -46,10 +37,6 @@ To begin creating your Elasticsearch ETL task:
 {PANEL/}
 
 {PANEL: Define the Elasticsearch ETL Task}
-
----
-
-### ETL Task Properties
 
 !["Define Elasticsearch ETL task"](images/elasticsearch-etl-define-task.png "Define Elasticsearch ETL task")
 
@@ -77,9 +64,9 @@ To begin creating your Elasticsearch ETL task:
    * Available authentication methods:  
      !["Authentication Methods"](images/elasticsearch-connection-string-authentication.png "Authentication Methods")  
 
----
+{PANEL/}
 
-### Elasticsearch Indexes
+{PANEL: Elasticsearch Indexes}
 
 Elasticsearch uses [Indexes](https://www.elastic.co/blog/what-is-an-elasticsearch-index) to store, access, and delete documents.  
 Use the ETL task's *Elasticsearch Indexes** settings to choose the indexes the would use.  
@@ -132,9 +119,21 @@ Use the ETL task's *Elasticsearch Indexes** settings to choose the indexes the w
 5. **Remove Index**  
    Click to remove this index from the list.  
 
----
+{PANEL/}
 
-### Transformation Script
+{PANEL: Transformation Script}
+
+* A transformation script sends Elasticsearch -  
+   * a [_refresh](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html) 
+     comnmand, to ensure that the index Elasticsearch uses with RavenDB documents is updated.  
+   * an optional [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) 
+     command, to delete existing document versions before appending new ones.  
+     You can [omit](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
+     _delete_by_query commands from the script using the task's **Insert Only** option.  
+   * a [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) 
+     command to append RavenDB documents to Elasticsearch.  
+
+### Add Transformation Script
 
 !["List of transformation Scripts"](images/elasticsearch-transformation-scripts-list.png "List of transformation Scripts")
 

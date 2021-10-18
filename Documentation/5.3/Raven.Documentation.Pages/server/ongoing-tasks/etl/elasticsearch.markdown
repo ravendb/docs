@@ -4,11 +4,20 @@
 
 {NOTE: }
 
-* The **Elasticsearch ETL task** creates an ETL process from a RavenDB database to an [Elasticsearch Index](https://www.elastic.co/blog/what-is-an-elasticsearch-index).  
+* An **Elasticsearch ETL task** creates an [ETL](../../../server/ongoing-tasks/etl/basics) 
+  process that transfers documents from a RavenDB database to an Elasticsearch destination.  
 
-* The data is encoded in the [Apache Parquet format](https://parquet.apache.org/documentation/latest/), 
-an alternative to CSV that is much faster to query. Unlike CSV, Parquet groups the data according to its 
-column (by field) instead of by row (by document).  
+* You can [define an Elasticsearch ETL task](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
+  using Studio.  
+
+* The task sends Elasticsearch -  
+   * a [_refresh](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html) 
+     comnmand, to ensure that the index Elasticsearch uses with RavenDB documents is updated.  
+   * an [optional](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
+     [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) 
+     command, to delete existing document versions before appending new ones.  
+   * a [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) 
+     command to append RavenDB documents to Elasticsearch.  
 
 * In this page:  
   * [Client API](../../../server/ongoing-tasks/etl/olap#client-api)  
