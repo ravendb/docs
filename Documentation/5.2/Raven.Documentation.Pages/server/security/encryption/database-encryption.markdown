@@ -4,7 +4,7 @@ In RavenDB you can create encrypted databases. Each encrypted database will have
 
 ## Creating An Encrypted Database Using The Studio
 
-When [creating an encrypted database using the Studio](../../../studio/server/databases/create-new-database/encrypted), you will receive a secret key which will 
+When [creating an encrypted database using the Studio](../../../studio/database/create-new-database/encrypted), you will receive a secret key which will 
 allow you to recover the encrypted data in case of a disaster, and when restoring from backup. During normal operations there is no need to supply the secret key to RavenDB.  
 See [Secret Key Management](../../../server/security/encryption/secret-key-management) for more information.  
 

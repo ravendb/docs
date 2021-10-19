@@ -27,9 +27,11 @@
 2. **QR Code**
    * The QR code representing the key  
 
-3. **Note**
+{WARNING: WARNING}
+
    * You will not have access to the database if the key is lost.  
    * Download, print, or copy and save the key in a safe place. It will NOT be available again!  
+{WARNING/}
 
 {PANEL/}
 
