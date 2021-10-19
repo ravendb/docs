@@ -4,7 +4,6 @@ In this section, we review some of the common security configuration errors and 
 
 [Setup Wizard Issues](../../server/security/common-errors-and-faq#setup-wizard-issues)  
 [Authentication Issues](../../server/security/common-errors-and-faq#authentication-issues)  
-[Authorization Issues](../../server/security/common-errors-and-faq#authorization-issues)  
 [Encryption Issues](../../server/security/common-errors-and-faq#encryption-issues)  
 
 ## Setup Wizard Issues  
@@ -326,9 +325,6 @@ for automatically persisting the certificate to the whole cluster. If you have y
 you still need to place empty scripts in the `Security.Certificate.Renew.Exec` and `Security.Certificate.Change.Exec` paths or an exception will be 
 thrown.  
 
-## Authorization Issues  
-
-Under construction
 
 ## Encryption Issues  
 
