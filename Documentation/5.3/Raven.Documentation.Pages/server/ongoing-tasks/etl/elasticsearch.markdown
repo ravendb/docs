@@ -4,11 +4,11 @@
 
 {NOTE: }
 
-* An **Elasticsearch ETL task** creates an [ETL](../../../server/ongoing-tasks/etl/basics) 
-  process that transfers documents from a RavenDB database to an Elasticsearch destination.  
+* An Elasticsearch [ETL](../../../server/ongoing-tasks/etl/basics) task **Extracts** chosen documents from RavenDB, 
+  **Transforms** them by a user defined transformation script, and **Loads** the documents to Elasticsearch.  
 
-* You can [define an Elasticsearch ETL task](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
-  using Studio.  
+* You can define an Elasticsearch ETL task using [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
+  or your [client](../../../client-api/operations/maintenance/etl/add-etl#example---add-elasticsearch-etl-task).  
 
 * The task sends Elasticsearch -  
    * a [_refresh](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html) 
@@ -16,11 +16,15 @@
    * an [optional](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
      [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) 
      command, to delete existing document versions before appending new ones.  
-   * a [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) 
-     command to append RavenDB documents to Elasticsearch.  
+   * a [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) command 
+     to append the transformed documents to the Elasticsearch destination.  
+     
+* XXXsupported versions: reebXXX
 
 * In this page:  
-  * [Client API](../../../server/ongoing-tasks/etl/olap#client-api)  
+  * [Client API](../../../server/ongoing-tasks/etl/elasticsearch#client-api)  
+     * [Add an Elasticsearch Connection String](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-connection-string)  
+     * [Add an Elasticsearch ETL Task](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)  
   * [Transform Script](../../../server/ongoing-tasks/etl/olap#transform-script)  
   * [Athena Examples](../../../server/ongoing-tasks/etl/olap#athena-examples)  
 
@@ -30,123 +34,99 @@
 
 {PANEL: Client API}
 
-Creating an OLAP ETL task through the client is very similar to creating a RavenDB or SQL ETL task. 
-All cases use [the `AddEtlOperation`](../../../client-api/operations/maintenance/etl/add-etl). For 
-OLAP you will need an `OlapEtlConfiguration` which itself needs an `OlapConnectionString`. Their 
-configuration options are listed below.  
+Creating an Elasticsearch ETL task through the client is very similar to the creation of 
+RavenDB, SQL, and OLAP ETL tasks. First we need to prepare a **Connection String** (see below) 
+to an Elasticsearch destination, and then we need to 
+[add the task](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task).  
 
-This is an example of a basic OLAP ETL creation operation:  
+## Add an Elasticsearch Connection String
 
-{CODE add_olap_etl@ClientApi\Operations\AddEtl.cs /}
+Create a connection string to an Elasticsearch destination as shown below, or use an existing connection string.  
+An Elasticsearch connection string determines not only the destination's URL, but also the authentication method 
+the client would use to connect it.  
+{CODE create-connection-string@ClientApi\Operations\AddEtl.cs /}
+{NOTE: Connection String Properties}
+* `ElasticSearchConnectionString` (the configuration for each ETL task destination) =  
 
-#### `OlapEtlConfiguration`
+    | Property | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `Name` | `string` | Connection string Name |
+    | `Nodes` | `string[]` | The RavenDB Document property by which transferred documents are stored in Elasticsearch. |
+    | `Authentication` | `Authentication` | Optional authentication method selection, if required. Can be: <br> **ApiKey** (type: `ApiKeyAuthentication`), <br> **Basic** (type: `BasicAuthentication`), <br> **Certificate** (type: `CertificateAuthentication`). |
 
-| Property | Type | Description |
-| - | - | - |
-| `RunFrequency` | `string` | Takes a [cron expression](https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm) which determines how often the server will execute the ETL process. |
-| `CustomPartitionValue` | `string` | A value that can be used as a partition name in multiple scripts. See [below](). |
-| `OlapTables` | `List<OlapEtlTable>` | List of naming configurations for individual tables. See more details below. |
+* `BasicAuthentication` (to authenticate transfers by **user name** and **password**)  
 
-#### `OlapConnectionString`
+      | Property | Type |
+      |:-------------|:-------------|
+      | `Username` | `string` |
+      | `Password` | `string` |
 
-The OLAP connection string contains the configurations for each destination of the ETL task.  
+* `ApiKeyAuthentication` (to authenticate transfers by an **API key**)  
 
-| Property | Description |
-| - | - |
-| `LocalSettings` | Settings for storing the data locally. |
-| `S3Settings` | Settings for an AWS S3 bucket. |
-| `GlacierSettings` | Settings for an AWS Glacier. |
-| `AzureSettings` | Settings for Azure. |
-| `GoogleCloudSettings` | Settings for Google Cloud Platform. |
-| `FTPSettings` | Settings for File Transfer Protocol. |
+    | Property | Type |
+    |:-------------|:-------------|
+    | `ApiKeyId` | `string` |
+    | `ApiKey` | `string` |
 
-{NOTE: ETL Destination Settings}
-<br/>
-This is the list of different settings objects that the `OlapConnectionString` object can contain.  
+* `CertificateAuthentication` (to authenticate transfers by **certificate**)  
 
-#### `LocalSettings`
-
-| Property | Type | Description |
-| - | - | - |
-| `FolderPath` | `string` | Path to local folder. If this property is not set, the data is saved to the location specified in [the setting `Storage.TempPath`](../../../server/configuration/storage-configuration#storage.temppath). If _that_ setting has no value, the data is instead saved to the location specified in [the setting `CoreConfiguration.DataDirectory`](../../../server/configuration/core-configuration#datadir). |
-
-#### `FtpSettings`
-
-| Property | Type | Description |
-| - | - | - |
-| `Url` | `string` | The FTP URL |
-| `Port` | `int` | The FTP port |
-| `UserName` | `string` | The username used for authentication |
-| `Password` | `string` | Authentication password |
-| `CertificateFileName` | `string` | The name of your local certificate file |
-| `CertificateAsBase64` | `string` | The certificate in base 64 format |
-
-#### `S3Settings`
-
-| Property | Type | Description |
-| - | - | - |
-| `AwsAccessKey` | `string` | Main certificate for the AWS server |
-| `AwsSecretKey` | `string` | Encryption certificate for the AWS server |
-| `AwsSessionToken` | `string` | AWS session token |
-| `AwsRegionName` | `string` | The AWS server region |
-| `BucketName` | `string` | The name of the S3 bucket that is the destination for this ETL |
-| `CustomServerUrl` | `string` | The custom URL to the S3 bucket, if you have one |
-| `RemoteFolderName` | `string` | Name of the destination folder within the S3 bucket |
-
-#### `GlacierSettings`
-
-| Property | Type | Description |
-| - | - | - |
-| `AwsAccessKey` | `string` | Main certificate for the AWS server |
-| `AwsSecretKey` | `string` | Encryption certificate for the AWS server |
-| `AwsSessionToken` | `string` | AWS session token |
-| `AwsRegionName` | `string` | The AWS server region |
-| `VaultName` | `string` | The name of your AWS Glacier vault |
-| `RemoteFolderName` | `string` | Name of the destination folder within the Glacier |
-
-#### `AzureSettings`
-
-| Property | Type | Description |
-| - | - | - |
-| `StorageContainer` | `string` | Microsoft Azure Storage container name |
-| `RemoteFolderName ` | `string` | Path to remote Azure folder |
-| `AccountName` | `string` | The name of your Azure account |
-| `AccountKey` | `string` | Your Azure account key |
-| `SasToken` | `string` | Your SaS token for authentication |
-
-#### `GoogleCloudSettings`
-
-| Property | Type | Description |
-| - | - | - |
-| `BucketName` | `string` | Google cloud storage bucket name |
-| `RemoteFolderName` | `string` | Path to remote bucket folder |
-| `GoogleCredentialsJson` | `string` | Authentication credentials to your Google Cloud Storage |
+    | Property | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `CertificatesBase64` | `string[]` | A valid certificate string |
 
 {NOTE/}
 
-#### `OlapEtlTable`
+## Add an Elasticsearch ETL Task  
 
-Optional, more detailed naming configuration.  
+Use the [AddEtlOperation](../../../client-api/operations/maintenance/etl/add-etl) API method to add 
+an Elasticsearch ETL task, passing it an [ElasticSearchEtlConfiguration](../../../server/ongoing-tasks/etl/elasticsearch#section) 
+instance with the task's settings and transformation script as shown below.  
+{CODE add_elasticsearch_etl@ClientApi\Operations\AddEtl.cs /}
+{NOTE: Task Properties}
 
-| Property | Type | Description |
-| - | - | - |
-| `TableName` | `string` | The name of the table. This should usually be the name of the source collection. |
-| `DocumentIdColumn` | `string` | A name for the id column of the table. Default: "_id" |
+* `ElasticSearchEtlConfiguration`  
 
-#### ETL Run Frequency
+    | Property | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `ConnectionStringName` | `string` | The name of the connection string used by this task |
+    | `Name` | `string` | ETL Task Name |
+    | `ElasticIndexes` | `List<ElasticSearchIndex>` | A list of Elasticsearch indexes (see below) |
+    | `Transforms ` | `List<Transformation>` | A list of transformation scripts |
 
-Unlike other ETL tasks, OLAP ETL operates only in batches at regular intervals, rather than triggering a 
-new round every time a document updates.  
-If a document has been updated after ETL (even if updated data has not actually been loaded) they are 
-distinguished by `_lastModifiedTime`, the value of the `last-modified` field in a document's 
-metadata in unix time. This field appears as another column in the destination tables.  
+* `ElasticSearchIndex` (a list of indexes used by the task) -  
+
+    | Property | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `IndexName` | `string` | Elasticsearch Index name |
+    | `IndexIdProperty` | `string` | The RavenDB Document property by which transferred documents are stored in Elasticsearch. |
+    | `InsertOnlyMode` | `bool` | `true` - Do not delete existing documents before appending new ones. <br>  `false` - Delete existing document versions before appending documents.|
+
+{NOTE/}
 
 {PANEL/}
 
 {PANEL: Transform Script}
 
-Transformation scripts are similar to those in the RavenDB ETL and SQL ETL tasks - see more about this in 
-[ETL Basics](../../../server/ongoing-tasks/etl/basics#transform). The major difference is that data output 
+Transformation scripts are similar to those in the RavenDB ETL and SQL ETL tasks, 
+learn about them [here](../../../server/ongoing-tasks/etl/basics#transform).  
+
+* As in other ETL tasks, an Elasticsearch transformation script passes data to Elasticsearch 
+  using a [loadTo\\<Target\\>(obj)](../../../../server/ongoing-tasks/etl/basics#transform) command.  
+    * `Target` is the name of the Elasticsearch index to which the data is transferred.  
+      Make sure that the indexes you use are defined in the  
+    * `obj` is the object to be passed to Elasticsearch.  
+
+
+
+
+* The value Make sure that the IndexIdProperty of every index defined, 
+  matches a RavenDB document property name that is passed to Elasticsearch 
+  in the transformation script.  
+  Documents will be stored on the Elasticsearch destination using this 
+  property as an ID, and then deleted and modified by it.  
+  
+  
+  indexes defined in any index you define using `y ID The major difference is that data output 
 by the ETL task can be divided into folders and child folders called _partitions_. Querying the data usually involves scanning 
 the entire folder, so there is an advantage in efficiency to dividing the data into more folders.  
 

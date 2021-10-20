@@ -136,6 +136,70 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 #endregion
                 */
             }
+
+            using (var store = GetDocumentStore())
+            {
+                /*
+                #region create-connection-string
+                // Create a Connection String to Elasticsearch
+                var elasticSearchConnectionString = new ElasticSearchConnectionString
+                {
+                    Name = "ElasticConStr", // Connection String Name
+                    Nodes = new[] { "http://localhost:9200" }, // Elasticsearch Nodes URLs
+                    Authentication = new Raven.Client.Documents.Operations.ETL.ElasticSearch.Authentication // Authentication Method
+                    { 
+                        Basic = new BasicAuthentication
+                        {
+                            Username = "John",
+                            Password = "32n4j5kp8"
+                        }
+                    }
+                };
+
+                store.Maintenance.Send(new PutConnectionStringOperation<ElasticSearchConnectionString>(elasticSearchConnectionString));
+                #endregion
+
+                #region add_elasticsearch_etl
+                // Create an Elasticsearch ETL task
+                AddEtlOperation<ElasticSearchConnectionString> operation = new AddEtlOperation<ElasticSearchConnectionString>(
+                new ElasticSearchEtlConfiguration()
+                {
+                    ConnectionStringName = elasticSearchConnectionString.Name, // Connection String name
+                    Name = "ElasticsearchEtlTask", // ETL Task name
+                        
+                    ElasticIndexes =
+                    {
+                        // Define Elasticsearch Indexes
+                        new ElasticSearchIndex { IndexName = "orders", // Elasticsearch Index name
+                                                 IndexIdProperty = "DocId", // Elasticsearch identifier for transferred RavenDB documents 
+                                                                            // (make sure a property with this name is defined in the transform script)
+                                                 InsertOnlyMode = false }, // If true, don't send _delete_by_query before appending docs
+                        new ElasticSearchIndex { IndexName = "lines", 
+                                                 IndexIdProperty = "OrderLinesCount", 
+                                                 InsertOnlyMode = true 
+                                               }
+                    },
+                    Transforms =
+                    {   // Transformation script properties
+                        new Transformation()
+                        {
+                            Collections = { "Orders" }, // RavenDB collections that the script uses
+                            Script = @"var orderData = {
+                                       DocId: id(this),
+                                       OrderLinesCount: this.Lines.length,
+                                       TotalCost: 0
+                                       };
+
+                                       loadToOrders(orderData);", // Transformation script Contents
+                            Name = "TransformIDsAndLinesCount" // Transformation script Name
+                        }
+                    }
+                });
+
+                store.Maintenance.Send(operation);
+                #endregion
+                */
+            }
         }
     }
 }

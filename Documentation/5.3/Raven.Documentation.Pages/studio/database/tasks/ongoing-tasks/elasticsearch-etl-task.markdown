@@ -78,7 +78,7 @@ Use the ETL task's *Elasticsearch Indexes** settings to choose the indexes the w
 
 2. **Index Name**  
    Provide an Elasticsearch Index name, as defined by the transformation script 
-   [loadTo<Target>(obj)](../../../../server/ongoing-tasks/etl/basics#transform) command (where `Target` is the index name 
+   [loadTo\\<Target\\>(obj)](../../../../server/ongoing-tasks/etl/basics#transform) command (where `Target` is the index name 
    and `obj` is the object to be passed to Elasticsearch).  
     * **Elasticsearch** is **case-sensitive**, requiring you to provide an **all lower case** index name (e.g. `orders`).  
     * The transformation script is **not** case sensitive, allowing you to use either `loadToOrders` or `loadToorders` as target.  
@@ -244,5 +244,8 @@ The test results view displays a **preview** of the tested document, and the **c
 
 ### Client API
 
-- [Add a Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string)  
-- [Get a Connection String](../../../../client-api/operations/maintenance/connection-strings/get-connection-string)  
+- [How to Add a Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string)  
+- [How to Get a Connection String](../../../../client-api/operations/maintenance/connection-strings/get-connection-string)  
+- [How to Add an ETL Task](../../../../client-api/operations/maintenance/etl/add-etl)
+- [How to Update an ETL Task](../../../../client-api/operations/maintenance/etl/update-etl)
+- [How to Reset an ETL Task](../../../../client-api/operations/maintenance/etl/reset-etl)
