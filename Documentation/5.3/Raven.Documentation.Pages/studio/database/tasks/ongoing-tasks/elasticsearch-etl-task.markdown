@@ -236,6 +236,7 @@ The test results view displays a **preview** of the tested document, and the **c
 - [Ongoing Tasks: RavenDB ETL](../../../../server/ongoing-tasks/etl/raven)  
 - [Ongoing Tasks: SQL ETL](../../../../server/ongoing-tasks/etl/sql)  
 - [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap)  
+- [Ongoing Tasks: Elasticsearch ETL](../../../../server/ongoing-tasks/etl/elasticsearch)  
 
 ### Studio
 

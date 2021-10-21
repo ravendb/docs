@@ -24,10 +24,10 @@ You can add ETL task by using **AddEtlOperation**.
 
 ## Example - Add Elasticsearch ETL Task
 
-* **Add Elasticsearch Connection String**  
+* **Add an [Elasticsearch Connection String](../../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-connection-string)**  
   {CODE create-connection-string@ClientApi\Operations\AddEtl.cs /}
 
-* **Add Elasticsearch ETL Task**  
+* **Add an [Elasticsearch ETL Task](../../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)**  
   {CODE add_elasticsearch_etl@ClientApi\Operations\AddEtl.cs /}
 
 ## Related Articles
