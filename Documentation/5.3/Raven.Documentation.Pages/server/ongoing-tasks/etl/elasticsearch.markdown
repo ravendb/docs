@@ -17,6 +17,7 @@
   * [Data Delivery](../../../server/ongoing-tasks/etl/elasticsearch#data-delivery)  
      * [What is Transferred](../../../server/ongoing-tasks/etl/elasticsearch#what-is-transferred)  
      * [Transactions](../../../server/ongoing-tasks/etl/elasticsearch#transactions)  
+     * [Document Identifiers](../../../server/ongoing-tasks/etl/elasticsearch#document-identifiers)  
      * [Insert Only Mode](../../../server/ongoing-tasks/etl/elasticsearch#insert-only-mode)  
   * [Client API](../../../server/ongoing-tasks/etl/elasticsearch#client-api)  
      * [Add an Elasticsearch ETL Task](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)  
@@ -107,23 +108,42 @@ The task delivers the data to the Elasticsearch destination in two or three call
    documents that are actually stored on the destination.  
 2. an optional [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) 
    command, to delete existing versions of RavenDB documents from Elasticsearch before appending new ones.  
+   {CODE-BLOCK: JavaScript}
+   POST orders/_delete_by_query
+{"query":{"terms":{"Id":["orders/1-a"]}}}
+     {CODE-BLOCK/}
 3. [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) command, 
    to append RavenDB documents to the Elasticsearch destination.  
+   {CODE-BLOCK: JavaScript}
+   POST orders/_bulk
+{"index":{"_id":null}}
+{"OrderLinesCount":3,"TotalCost":0,"Id":"orders/1-a"}
+     {CODE-BLOCK/}
 
 ---
 
-### Document Identifiers on Elasticsearch
+### Document Identifiers
 
 * When Elasticsearch stores RavenDB documents, it provides each of them 
   with an automatically-generated iD.  
-* RavenDB recognizes documents it transferred to Elasticsearch **not** 
-  by the IDs Elasticsearch gave them, but by one of their properties.  
-* The property RavenDB recognizes documents by, is provided to the 
-  task as a part of the index definition (`IndexIdProperty` through 
-  code, "Index ID property" via Studio).  
-* The identifier must be one of the properties defined by the transformation 
-  script and passed on to Elasticsearch.  
-* RavenDB can then use document identifiers to delete and modify documents.  
+* RavenDB needs to delete and replace documents, but it cannot do this 
+  using Elasticsearch's arbitrary generated IDs.  
+  Instead, it uses one of the document's properties as ID.  
+* You need to decide which document property RavenDB would use as a document identifier.  
+  To define it:  
+   * Set `IndexIdProperty` through code (see [code sample](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)).  
+   * Or set the [Document ID Property Name](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) field via Studio.  
+* The identifier must be a property that the transformation script passes to Elasticsearch.  
+  E.g., of the following script, you can use **DocId** as identifier.  
+  {CODE-BLOCK: JavaScript}
+  var orderData = {
+                 DocId: id(this),
+                 OrderLinesCount: this.Lines.length,
+                 TotalCost: 0
+                  };
+
+loadToOrders(orderData);
+  {CODE-BLOCK/}
 
 ---
 
