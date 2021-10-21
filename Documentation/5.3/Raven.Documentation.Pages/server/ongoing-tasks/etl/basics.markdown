@@ -90,6 +90,9 @@ This stage transforms and filters the extracted documents according to a provide
 Any transformation can be done so that only relevant data is shared.  
 The script is written in JavaScript and its input is a document.  
 
+A task can be provided with multiple transformation scripts.  
+Different scripts run in separate processes, allowing multiple scripts to run in parallel.  
+
 In addition to the ECMAScript 5.1 API, RavenDB introduces the following functions and members:  
 
 | ------ | ------ | ------ |

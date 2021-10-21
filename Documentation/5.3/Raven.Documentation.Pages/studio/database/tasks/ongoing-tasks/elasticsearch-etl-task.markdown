@@ -5,7 +5,7 @@
 {NOTE: }
 
 * An **Elasticsearch ETL task** is an ongoing process that -  
-    * **Extracts** chosen documents from the database,  
+    * **Extracts** selected documents from the database,  
     * **Transforms** the documents using a user-defined script,  
     * and **Loads** the documents to an Elasticsearch destination.  
 * An Elasticsearch ETL task transfers **documents only**.  
@@ -57,19 +57,22 @@ To begin creating your Elasticsearch ETL task:
    * The connection string defines the destination Elasticsearch URLs.  
    * If you already created connection strings, you can select one from the list.  
    * You can create a new connection string:  
-     !["Create Connection String"](images/elasticsearch-connection-string.png "Create Connection String")  
+
+     !["Create Connection String"](images/elasticsearch-connection-string.png "Create Connection String")
+     
      a. **Name** - The connection string name  
      b. **Nodes URLs** - The Elasticsearch destination/s URL/s  
      c. **Authentication** - The authentication method used by the Elasticsearch destination node/s.  
    * Available authentication methods:  
-     !["Authentication Methods"](images/elasticsearch-connection-string-authentication.png "Authentication Methods")  
+
+     !["Authentication Methods"](images/elasticsearch-connection-string-authentication.png "Authentication Methods")
 
 {PANEL/}
 
 {PANEL: Elasticsearch Indexes}
 
 Elasticsearch uses [Indexes](https://www.elastic.co/blog/what-is-an-elasticsearch-index) to store, access, and delete documents.  
-Use the ETL task's *Elasticsearch Indexes** settings to choose the indexes the would use.  
+Use the task **Elasticsearch Indexes** settings to choose the indexes the task will access.  
 
 !["Define Elasticsearch Index"](images/elasticsearch-indexes-define-index.png "Define Elasticsearch Index")
 
@@ -80,15 +83,15 @@ Use the ETL task's *Elasticsearch Indexes** settings to choose the indexes the w
    Provide an Elasticsearch Index name, as defined by the transformation script 
    [loadTo\\<Target\\>(obj)](../../../../server/ongoing-tasks/etl/basics#transform) command (where `Target` is the index name 
    and `obj` is the object to be passed to Elasticsearch).  
-    * **Elasticsearch** is **case-sensitive**, requiring you to provide an **all lower case** index name (e.g. `orders`).  
-    * The transformation script is **not** case sensitive, allowing you to use either `loadToOrders` or `loadToorders` as target.  
-    * E.g., a transformation script's `loadToOrders(orderData)` command requires you to define an Elasticsearch `orders` Index.  
+   **E.g.**, a transformation script's `loadToOrders(orderData)` command requires you to define an Elasticsearch `orders` Index.  
+    * **Elasticsearch** requires an **all lower case** index name (e.g. `orders`).  
+    * **The transformation script** allows both lower and higher-case characters (e.g. both `loadToOrders` and `loadToorders` are permitted).  
 
 3. **Document ID Property Name**  
    Provide the name of a property passed by the transformation script to Elasticsearch, as an ID.  
    Elasticsearch will store your documents by this ID, and you will be able to delete and modify them by it.  
-    * E.g., if one of the properties of the object passed by your a transformation script to Elasticsearch is "DocID", 
-      you can use DocID as the index's ID Property.  
+   **E.g.**, if one of the properties of the object passed by your transformation script to Elasticsearch is "DocID", 
+   you can use DocID as the index's ID Property.  
 
 4. **Insert Only**  
    By default, the ETL task appends a new document only after deleting its existing version using `_delete_by_query`.  
@@ -109,7 +112,7 @@ Use the ETL task's *Elasticsearch Indexes** settings to choose the indexes the w
 !["Indexes List"](images/elasticsearch-indexes-list.png "Indexes List")
 
 1. **Defined Index**  
-   An Elasticsearch index that has already been added.  
+   An Elasticsearch index that has been added.  
 2. **Index**  
    Elasticsearch index name.  
 3. **Document ID Property**  
@@ -124,8 +127,6 @@ Use the ETL task's *Elasticsearch Indexes** settings to choose the indexes the w
 {PANEL: Transformation Script}
 
 * A transformation script sends Elasticsearch -  
-   * a [_refresh](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html) 
-     comnmand, to ensure that the index Elasticsearch uses with RavenDB documents is updated.  
    * an optional [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) 
      command, to delete existing document versions before appending new ones.  
      You can [omit](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
@@ -189,7 +190,7 @@ Use the ETL task's *Elasticsearch Indexes** settings to choose the indexes the w
 
 ### Test Transformation Script
 
-!["Transformation script"](images/elasticsearch-test-script-view.png "Transformation script")  
+!["Transformation script"](images/elasticsearch-test-script-view.png "Transformation script")
 
 1. **Document ID**  
    Type or select the ID of the document you want to test the script with.  
@@ -208,23 +209,25 @@ The test results view displays a **preview** of the tested document, and the **c
 ---
 
 * **Document Preview Tab**  
-  !["Document Preview Tab"](images/elasticsearch-test-results-preview-tab.png "Document Preview Tab")  
+
+  !["Document Preview Tab"](images/elasticsearch-test-results-preview-tab.png "Document Preview Tab")
 
 ---
 
 * **Test Results Tab**  
-!["Test Results Tab"](images/elasticsearch-test-results.png "Test Results Tab")  
 
-    1. **Test Results Tab**  
-       Displays the commands that the task would send Elsticsearch.  
-    2. **Elasticsearch Index**  
-       The index the commands and data are sent to.  
-    3. [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) Segment  
-       With a list of IDs by which Elasticsearch would locate and remove existing documents.  
-       Deleting existing document versions is **optional**, enable [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
-       to prevent the task from sending `_delete_by_query` commands.  
-    4. [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) Segment  
-       With a list of document objects, each with data extracted from RavenDB and an ID that Elasticsearch stores it by.  
+  !["Test Results Tab"](images/elasticsearch-test-results.png "Test Results Tab")
+
+   1. **Test Results Tab**  
+      Displays the commands that the task would send Elsticsearch.  
+   2. **Elasticsearch Index**  
+      The index the commands and data are sent to.  
+   3. [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) Segment  
+      With a list of IDs by which Elasticsearch would locate and remove existing documents.  
+      Deleting existing document versions is **optional**, enable [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
+      to prevent the task from sending `_delete_by_query` commands.  
+   4. [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) Segment  
+      With a list of document objects, each with data extracted from RavenDB and an ID that Elasticsearch stores it by.  
 
 {PANEL/}
 

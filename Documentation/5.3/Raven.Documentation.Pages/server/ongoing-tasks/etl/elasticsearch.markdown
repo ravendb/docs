@@ -5,7 +5,7 @@
 {NOTE: }
 
 * An Elasticsearch [ETL](../../../server/ongoing-tasks/etl/basics) task _Extracts_ chosen documents 
-  from RavenDB, _Transforms_ them by a user defined transformation script, and _Loads_ the documents 
+  from RavenDB, _Transforms_ them by a user-defined transformation script, and _Loads_ the documents 
   to an Elasticsearch destination.  
 
 * You can define an Elasticsearch ETL task using [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
@@ -30,7 +30,7 @@
 
 {PANEL: Elasticsearch ETL}
 
-* The main phases in crteating an Elasticsearch ETL task are -  
+* The main phases in creating an Elasticsearch ETL task are -  
    * Defining a [connection string](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-connection-string) 
      with URLs to Elasticsearch destinations.  
      While defining a connection string, you can also define the 
@@ -40,13 +40,13 @@
      and the task is required to define the indexes it will access Elasticsearch with.  
      {NOTE: }
       Our task defines Elasticsearch indexes by the index name, and by  
-      an identifier that is common to the transferred documents (e.g. 
-      the documents ID) by which RavenDB will later on be able to locate 
-      these documents.  
+      an identifier common to the transferred documents (e.g. 
+      the documents ID) that RavenDB will be able to locate the 
+      documents by.  
      {NOTE/}
    * **Defining Transformation Scripts**.  
      A transformation script is the "heart" of an ETL task, 
-     determining which documents would be transferred, where to 
+     determining which documents would be transferred, where to, 
      and in what form.  
 
 * For a thorough step-by-step explanation:  
@@ -72,9 +72,9 @@
    * `Target` is the name of the Elasticsearch index to which the data is transferred.  
       * In your task settings, define Elasticsearch Index names using **lower-case characters**.  
         E.g. **orders**  
-      * In your transformation script however, you can define `Target` using higher and lower case 
-        characters, as you prefer. (the task will transform the index name to lower-case caharacters 
-        while connecting Elasticsearch).  
+      * In your transformation script, however, you can define `Target` using higher and lower case 
+        characters, as you prefer. (the task will transform the index name to lower-case characters 
+        while connecting Elasticsearch.)  
         E.g. use either **loadToOrders** or **loadToorders**.  
    * `obj` is an object defined by the script, that will be loaded to Elasticsearch.  
      E.g. `orderData` in the following script:  
@@ -101,23 +101,20 @@ Document extensions like attachments, counters, or time series, will not be tran
 
 ### Transactions
 
-The task delivers the data to the Elasticsearch destination in two or three calls per index.  
+The task delivers the data to the Elasticsearch destination in one or two calls per index.  
 
-1. [_refresh](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html) 
-   comnmand, that triggers Elasticsearch to synchronize the index that the ETL task uses with the 
-   documents that are actually stored on the destination.  
-2. an optional [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) 
+1. an optional [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) 
    command, to delete existing versions of RavenDB documents from Elasticsearch before appending new ones.  
    {CODE-BLOCK: JavaScript}
-   POST orders/_delete_by_query
-{"query":{"terms":{"Id":["orders/1-a"]}}}
+   POST orders/_delete_by_query?refresh=true
+{"query":{"terms":{"DocID":["orders/1-a"]}}}
      {CODE-BLOCK/}
-3. [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) command, 
+2. [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) command, 
    to append RavenDB documents to the Elasticsearch destination.  
    {CODE-BLOCK: JavaScript}
-   POST orders/_bulk
+   POST orders/_bulk?refresh=wait_for
 {"index":{"_id":null}}
-{"OrderLinesCount":3,"TotalCost":0,"Id":"orders/1-a"}
+{"OrderLinesCount":3,"TotalCost":0,"DocID":"orders/1-a"}
      {CODE-BLOCK/}
 
 ---
@@ -126,7 +123,7 @@ The task delivers the data to the Elasticsearch destination in two or three call
 
 * When Elasticsearch stores RavenDB documents, it provides each of them 
   with an automatically-generated iD.  
-* RavenDB needs to delete and replace documents, but it cannot do this 
+* RavenDB needs to delete and replace documents, but cannot do it 
   using Elasticsearch's arbitrary generated IDs.  
   Instead, it uses one of the document's properties as ID.  
 * You need to decide which document property RavenDB would use as a document identifier.  
@@ -134,7 +131,7 @@ The task delivers the data to the Elasticsearch destination in two or three call
    * Set `IndexIdProperty` through code (see [code sample](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)).  
    * Or set the [Document ID Property Name](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) field via Studio.  
 * The identifier must be a property that the transformation script passes to Elasticsearch.  
-  E.g., of the following script, you can use **DocId** as identifier.  
+  E.g., the **DocId** property that is created by the script below can be used as an identifier.  
   {CODE-BLOCK: JavaScript}
   var orderData = {
                  DocId: id(this),
@@ -153,12 +150,12 @@ You can enable the task's **Insert Only** mode using [code](../../../server/ongo
 or via [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes), 
 to **omit** _delete_by_query commands and so refrain from deleting documents before the transfer.  
 {NOTE: }
- Enabling Insert Only can boost the task's performance when deleting documents before transfers is not needed.  
+ Enabling **Insert Only** can boost the task's performance when there is no need to delete documents before loading them.  
 {NOTE/}
 {WARNING: }
  Be aware that enabling Insert Only mode will append documents to Elasticsearch whenever they 
  are modified on RavenDB, without removing existing documents. If document versions that are not 
- needed accumulate and storage space is a concern, keep Insert Only disables.  
+ needed accumulate and storage space is a concern, keep Insert Only disabled.  
 {WARNING/}
 
 {PANEL/}
@@ -196,7 +193,7 @@ to **omit** _delete_by_query commands and so refrain from deleting documents bef
     | Property | Type | Description |
     |:-------------|:-------------|:-------------|
     | **IndexName** | `string` | Elasticsearch Index name. <br> Name indexes **using lower-case characters only**, e.g. `orders`. |
-    | **IndexIdProperty** | `string` | Documents identifier for RavenDB usage, <br> that is stored on Elasticsearch as a document property.<br> RavenDB delets, stores and modifies documents by it. <br> Must be a property that the script defined and passed Elasticsearch. <br> e.g. **DocID** where the script defines **DocId: id(this)**. |
+    | **IndexIdProperty** | `string` | Documents identifier for RavenDB usage, <br> that is stored on Elasticsearch as a document property.<br> RavenDB deletes, stores, and modifies documents by it. <br> Must be a property that the script defined and passed Elasticsearch. <br> e.g. **DocID** where the script defines **DocId: id(this)**. |
     | **InsertOnlyMode** | `bool` | `true` - Do not delete existing documents before appending new ones. <br>  `false` - Delete existing document versions before appending documents.|
 
 {NOTE/}
@@ -206,7 +203,7 @@ to **omit** _delete_by_query commands and so refrain from deleting documents bef
 ### Add an Elasticsearch Connection String
 
 * An Elasticsearch connection string includes a list of **Elasticsearch destinations URLs**, 
-  and determines the **Authentication Method** the client needs to access theem.  
+  and determines the **Authentication Method** the client needs to access them.  
    * Omit the Authentication property if the Elasticsearch destination requires no authentication.  
    * Add a connection string as shown below.  
 
