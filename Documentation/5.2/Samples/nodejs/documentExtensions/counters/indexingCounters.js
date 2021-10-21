@@ -32,15 +32,17 @@ const session = store.openSession();
 }
 
 {
+    //TODO - Didn't understand how to do it
     //region javaScriptIndexCreationTask
-    class MyMultiMapCounterIndex  extends AbstractCountersIndexCreationTask{
+    class MyMultiMapCounterIndex extends AbstractCountersIndexCreationTask{
          constructor() {
             super();
-            //Didn't understand how to do it
+
         }
     }
     //endregion
 
+    //TODO - Didn't understand how to do it
     //region index_3
     //Didn't understand how to do the sample to MyMultiMapCounterIndex
     //endregion
@@ -52,7 +54,7 @@ const session = store.openSession();
     //endregion
     
     //region index_0
-    class Companies_ByCounterNames   extends AbstractCountersIndexCreationTask{
+    class Companies_ByCounterNames extends AbstractCountersIndexCreationTask{
          constructor() {
             super();
              this.map = "from e in docs.Employees\n" +

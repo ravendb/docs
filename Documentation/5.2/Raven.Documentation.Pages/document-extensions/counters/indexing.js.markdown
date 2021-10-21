@@ -36,8 +36,14 @@ Examples of indexes using each method:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:map index_1@documentExtensions\counters\indexingCounters.js /}
+{CODE-TABS/}  
+
+<!---TODO: uncomment and delete the code Tabs up after src 5.2 is out
+{CODE-TABS}
+{CODE-TAB:nodejs:map index_1@documentExtensions\counters\indexingCounters.js /}
 {CODE-TAB:nodejs:maps index_2@documentExtensions\counters\indexingCounters.js /}
 {CODE-TABS/}  
+---->
 <br/>
 
 ---
@@ -47,7 +53,7 @@ Examples of indexes using each method:
 Creating an index inheriting from `AbstractJavaScriptCountersIndexCreationTask` allows 
 you to write your map and reduce functions in JavaScript.  
 Learn more about JavaScript indexes [here](../../indexes/javascript-indexes).  
-
+<!--- TODO: uncomment after src 5.2 is out
 {CODE:nodejs javaScriptIndexCreationTask@documentExtensions\counters\indexingCounters.js /}
 
 | Property | Type | Description |
@@ -55,9 +61,11 @@ Learn more about JavaScript indexes [here](../../indexes/javascript-indexes).
 | **Maps** | `HashSet<string>` | The set of javascript map functions |
 | **Reduce** | `string` | The javascript reduce function |
 
+
 Example:  
 
 {CODE:nodejs index_3@documentExtensions\counters\indexingCounters.js /}
+---->
 
 ---
 

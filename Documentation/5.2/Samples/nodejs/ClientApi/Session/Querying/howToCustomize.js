@@ -138,7 +138,7 @@ async function customizeExamples() {
         //endregion
     }
     {
-        //have to wait till 5.2 releaes to check that
+        //TODO - have to wait till 5.2 release to check that
         //region projectionbehavior_query
         await  session.advanced.on("beforeQuery",
             event => event.queryCustomization.projection("FromDocument"));
@@ -146,9 +146,5 @@ async function customizeExamples() {
 
         //endregion
     }
-
-
-
-
 
 }

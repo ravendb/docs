@@ -131,10 +131,12 @@ when it is not, the field is skipped.
 * `FromDocumentOrThrow` - query will be satisfied with document data. If the 
 document does not contain the requested data, an exception is thrown.  
 
-### Example
+<!--- 
+TODO: (region projectionbehavior_query in howToCustomize.js)
+### Example 
 
-{CODE:nodejs projectionbehavior_query@ClientApi\Session\Querying\howToCustomize.js /}
-
+{CODE:nodejs projectionbehavior_query@ClientApi\Session\Querying\howToCustomize.js /} 
+---->
 {PANEL/}
 
 {PANEL:RandomOrdering}

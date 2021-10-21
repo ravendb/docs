@@ -33,7 +33,7 @@ class Employees_ByFullName extends AbstractIndexCreationTask {
         super();
 
         this.map = `docs.Employees.Select(employee => new {     
-            FullName = (employee.FirstName + " ") + employee.LastName 
+            FullName = employee.FirstName + " " + employee.LastName 
         })`;
     }
 }
