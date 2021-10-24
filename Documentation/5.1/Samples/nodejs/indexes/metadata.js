@@ -6,15 +6,16 @@ import {
 const store = new DocumentStore();
 
 class Product { }
+class DateTime{}
 
 //region indexes_1
 class Products_AllProperties extends AbstractIndexCreationTask {
 
     constructor() {
         super();
-        this.map = "docs.Products.Select(product => new { " +
+        this.map = "docs.Products.Select(product => new {\n" +
             // convert product to JSON and select all properties from it
-            "    Query = this.AsJson(product).Select(x => x.Value) " +
+            "    Query = this.AsJson(product).Select(x => x.Value)\n" +
             "})";
 
         // mark 'query' field as analyzed which enables full text search operations
@@ -27,11 +28,11 @@ class Products_AllProperties extends AbstractIndexCreationTask {
 class Products_WithMetadata extends AbstractIndexCreationTask {
     constructor() {
         super();
-        this.map = "docs.Products.Select(product => new { " +
-            "    Product = product, " +
-            "    Metadata = this.MetadataFor(product) " +
-            "}).Select(this0 => new { " +
-            "    LastModified = this0.Metadata.Value<DateTime>(\"Last-Modified\") " +
+        this.map = "docs.Products.Select(product => new {\n" +
+            "    Product = product,\n" +
+            "    Metadata = this.MetadataFor(product)\n" +
+            "}).Select(this0 => new {\n" +
+            "       LastModified = this.Metadata.Value<DateTime>(\'Last-Modified'\)\n"+
             "})";
     }
 }
