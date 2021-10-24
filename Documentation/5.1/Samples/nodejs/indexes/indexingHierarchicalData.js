@@ -9,7 +9,6 @@ const store = new DocumentStore();
 
 //region indexes_1
 class BlogPost {
-    
     constructor(title, author, text, comments) {
         this.title = title;
         this.author = author;
