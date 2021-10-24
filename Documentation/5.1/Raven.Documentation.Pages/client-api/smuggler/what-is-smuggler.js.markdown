@@ -14,7 +14,7 @@ In order to switch it to a different database use the `.forDatabase` method.
 
 {PANEL:Export}
 
-### Syntax
+### Usage
 
 {CODE:nodejs export_syntax@client-api\smuggler\WhatIsSmuggler.js /}
 
@@ -51,7 +51,7 @@ In order to switch it to a different database use the `.forDatabase` method.
 
 {PANEL:Import}
 
-### Syntax
+### Usage
 
 {CODE:nodejs import_syntax@client-api\smuggler\WhatIsSmuggler.js /}
 

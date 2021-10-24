@@ -26,6 +26,8 @@ store.initialize();
     //const session = store.openSession();
 
 const store1 = new DatabaseSmuggler();
+let toDatabase, toFile, fromFile, stream;
+
 
 //region for_database
 const northwindSmuggler = store
@@ -34,25 +36,29 @@ const northwindSmuggler = store
 //endregion
 
 //region export_syntax
- public async export (options: DatabaseSmugglerExportOptions, toDatabase: DatabaseSmuggler): Promise<OperationCompletionAwaiter>;
- public async export (options: DatabaseSmugglerExportOptions, toFile: string): Promise<OperationCompletionAwaiter>;
+const operation = await store.smuggler.export(options, toDatabase);
+
+const operation = await store.smuggler.export(options, toFile);
 //endregion
 
 //region export_example
-const options = new DatabaseSmugglerExportOptions(operateOnTypes: DatabaseItemType.Indexes);
+const options = new DatabaseSmugglerExportOptions();
+options.operateOnTypes = ["Documents"];
 const operation = await store
-    .smugglers
-    .export(options, "C:\ravendb-exports\Northwind.ravendbdump");
+    .smuggler
+    .export(options, "C:\\ravendb-exports\\Northwind.ravendbdump");
 await operation.waitForCompletion();
 //endregion
 
 //region import_syntax
-public async import(options: DatabaseSmugglerImportOptions, fromFile: string): Promise < OperationCompletionAwaiter >;
-public async import(options: DatabaseSmugglerImportOptions, stream: NodeJS.ReadableStream): Promise < OperationCompletionAwaiter >;
+const operation = await store.smuggler.import(options, fromFile);
+
+const operation = await store.smuggler.import(options, stream);
 //endregion 
 
 //region import_example
-const options = new DatabaseSmugglerImportOptions(operateOnTypes: DatabaseItemType.Documents)
-const operation = await dstStore.smuggler.import(options, "C:\ravendb-exports\Northwind.ravendbdump");
+const options = new DatabaseSmugglerImportOptions();
+options.operateOnTypes = ["Documents"];
+const operation = await store.smuggler.import(options, "C:\\ravendb-exports\\Northwind.ravendbdump");
 await operation.waitForCompletion();
 //endregion
