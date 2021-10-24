@@ -135,10 +135,10 @@ class Product {}
     const bulkInsert = store.bulkInsert();
     for (var user = 0; user < result.Count; user++)
     {
-        let userId = result[user].Id;
+        let userId = result[user].id;
 
         // Choose document
-        let countersFor = bulkInsert.CountersFor(userId);
+        let countersFor = bulkInsert.countersFor(userId);
 
         // Add or Increment a counter
         await bulkInsert.countersFor(userId).increment("downloaded", 100);
