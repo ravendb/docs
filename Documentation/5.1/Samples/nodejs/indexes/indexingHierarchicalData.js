@@ -30,8 +30,8 @@ class BlogPostComment {
 class BlogPosts_ByCommentAuthor extends AbstractIndexCreationTask {
     constructor() {
         super();
-        this.map = "docs.BlogPosts.Select(post => new { " +
-            "    authors = this.Recurse(post, x => x.comments).Select(x0 => x0.author) " +
+        this.map = "docs.BlogPosts.Select(post => new {\n" +
+            "    authors = this.Recurse(post, x => x.comments).Select(x0 => x0.author)\n" +
             "})";
     }
 }
