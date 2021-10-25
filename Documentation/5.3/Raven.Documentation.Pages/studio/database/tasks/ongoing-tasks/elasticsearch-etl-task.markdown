@@ -165,8 +165,11 @@ Use the task **Elasticsearch Indexes** settings to choose the indexes the task w
 3. **Syntax**
    Click for a transformation script Syntax Sample.  
 
-4. **Collection**  
-   Type or select the names of the collections your script is using.  
+4. **Collections**  
+    * **Select (or enter) a collection**  
+      Type or select the names of the collections your script is using.  
+    * **Collections Selected**  
+      A list of collections that were already selected.  
 
 5. **Apply script to documents from beginning of time (Reset)**  
     * When this option is **enabled**, the script will be executed over **all existing documents in the 
@@ -177,14 +180,14 @@ Use the task **Elasticsearch Indexes** settings to choose the indexes the task w
     * If [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) is **disabled**,
       documents will be **deleted from Elasticsearch first**, and then appended to it from RavenDB.  
 
-6. **Update**  
-   Click to update the task with your changes.  
+6. **Add/Update**  
+   Click to add a new script or update the task with changes made in an existing script.  
 
 7. **Cancel**  
    Click to cancel your changes.  
 
 8. **Test Script**  
-    * Click to **test** the transformation script before actually using it to transfer documents (see below).  
+   Click to **test** the transformation script (read more about this option below).  
 
 ---
 

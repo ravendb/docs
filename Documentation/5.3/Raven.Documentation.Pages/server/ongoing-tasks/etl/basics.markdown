@@ -82,7 +82,7 @@ The possible options are:
 
 * Documents from a single collection  
 * Documents from multiple collections  
-* All documents (RavenDB ETL only)  
+* All documents (RavenDB ETL & OLAP ETL only)  
 
 ### Transform
 
@@ -103,7 +103,7 @@ In addition to the ECMAScript 5.1 API, RavenDB introduces the following function
 Specific ETL functions:  
 
 | ------ |:------:| ------ |
-| `loadTo<Target>(obj)` | function | Load an object to a specified `<Target>`.<br/>The target must be either a collection name (RavenDB ETL) or a table name (SQL ETL).<br/>**An object will be sent to the destination only if the `loadTo` method was called**.|
+| `loadTo<Target>(obj)` | function | Load an object to a specified `<Target>`.<br/>The target can be a Collection name (RavenDB ETL), a Table name (SQL ETL), a Folder name (OLAP ETL), or an Index name (Elasticsearch ETL).<br/>**An object will be sent to the destination only if the `loadTo` method was called**.|
 | Attachments: |||
 | `loadAttachment(name)` | function | Load an attachment of the current document |
 | `hasAttachment(name)` | function | Check if an attachment with a given name exists for the current document |
@@ -189,6 +189,8 @@ Details and examples for type specific ETL scripts can be found in the following
 
 * [RavenDB ETL](../../../server/ongoing-tasks/etl/raven)  
 * [SQL ETL](../../../server/ongoing-tasks/etl/sql)  
+- [OLAP ETL](../../../server/ongoing-tasks/etl/olap)
+- [Elasticsearch ETL](../../../server/ongoing-tasks/etl/elasticsearch)
 {NOTE/}
 
 ## Related Articles
@@ -197,6 +199,8 @@ Details and examples for type specific ETL scripts can be found in the following
 
 - [RavenDB ETL Task](../../../server/ongoing-tasks/etl/raven)
 - [SQL ETL Task](../../../server/ongoing-tasks/etl/sql)
+- [OLAP ETL Task](../../../server/ongoing-tasks/etl/olap)
+- [Elasticsearch ETL Task](../../../server/ongoing-tasks/etl/elasticsearch)
 
 ### Studio
 

@@ -4,11 +4,10 @@
 
 {NOTE: }
 
-* An Elasticsearch [ETL](../../../server/ongoing-tasks/etl/basics) task _Extracts_ chosen documents 
-  from RavenDB, _Transforms_ them by a user-defined transformation script, and _Loads_ the documents 
-  to an Elasticsearch destination.  
+* An **Elasticsearch** [ETL](../../../server/ongoing-tasks/etl/basics) task creates an ETL process 
+  from selected collections in a RavenDB database to Elasticsearch destinations.
 
-* You can define an Elasticsearch ETL task using [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
+* You can define an Elasticsearch ETL task using [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task) 
   or your [client](../../../client-api/operations/maintenance/etl/add-etl#example---add-elasticsearch-etl-task).  
 
 * In this page:  
@@ -30,24 +29,19 @@
 
 {PANEL: Elasticsearch ETL}
 
-* The main phases in creating an Elasticsearch ETL task are -  
-   * Defining a [connection string](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-connection-string) 
-     with URLs to Elasticsearch destinations.  
-     While defining a connection string, you can also define the 
-     authentication method your task would use with Elasticsearch.  
-   * **Defining Elasticsearch Indexes** that your task will use.  
-     Indexes are used by Elasticsearch to store and locate documents, 
-     and the task is required to define the indexes it will access Elasticsearch with.  
-     {NOTE: }
-      Our task defines Elasticsearch indexes by the index name, and by  
-      an identifier common to the transferred documents (e.g. 
-      the documents ID) that RavenDB will be able to locate the 
-      documents by.  
-     {NOTE/}
-   * **Defining Transformation Scripts**.  
-     A transformation script is the "heart" of an ETL task, 
-     determining which documents would be transferred, where to, 
-     and in what form.  
+* The following steps are required when creating an Elasticsearch ETL task:  
+   * Define a [connection string](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-connection-string) which includes:  
+      * URLs to Elasticsearch nodes.  
+      * Authentication method required by the Elasticsearch nodes.  
+   * **Define the Elasticsearch Indexes**  
+      * Indexes are used by Elasticsearch to store and locate documents.  
+      * The ETL task will insert new documents to the specified Elasticsearch destinations.  
+      * If not otherwise specified, existing Elasticsearch documents will be removed before adding new documents.  
+      * A document identifier field property ([see below]()) is also defined per index and used by the delete command 
+        to locate the matching documents.  
+   * **Define Transformation Scripts**.  
+     The transformation script determines which RavenDB documents will be transferred, 
+     to which Elasticsearch Indexes, and in what form.  
 
 * For a thorough step-by-step explanation:  
    * Learn [here](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task) 
@@ -67,7 +61,7 @@
   _Transform_ the retrieved data, and _Load_ it to the Elasticsearch destination.  
   Learn about ETL transformation scripts [here](../../../server/ongoing-tasks/etl/basics#transform).  
 
-* The script **Loads** data to the Elasticsearch destination using a 
+* The script **Loads** data to the Elasticsearch destination using the 
   [loadTo\\<Target\\>(obj)](../../../server/ongoing-tasks/etl/basics#transform) command.  
    * `Target` is the name of the Elasticsearch index to which the data is transferred.  
       * In your task settings, define Elasticsearch Index names using **lower-case characters**.  
