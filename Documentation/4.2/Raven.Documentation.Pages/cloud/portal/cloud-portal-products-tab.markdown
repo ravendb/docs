@@ -31,16 +31,16 @@ The New Product wizard will open, and walk you through four simple stages:
 
 ####1. New Product: Plan
 Use the Plan page to choose your product's **cloud provider**, **region** and **tier**.  
-!["Products Tab Plan"](images\portal-products-tab-plan-001.png "Products Tab Plan")  
+!["Plan Provider Region & Tier"](images\provider-region-tier-selection.png "Plan Provider Region & Tier")  
   
 
   - **Cloud Provider**  
-   Choose your cloud host. It can currently be one of two providers: **Amazon AWS** and **Microsoft Azure**.  
+   Choose your cloud host. It can currently be one of three providers: **Amazon AWS**, **Microsoft Azure**, and **Google Cloud Platform**.  
 
 - **Region**  
   Select where your equipment would be physically located.  
   {NOTE: }
-   You can currently locate **Free** Instances only in the **US East (N. Virginia) - us-east-1** region.  
+   You can currently locate **Free** Instances only in **Amazon AWS - US East (N. Virginia) - us-east-1** region.  
   {NOTE/}
   
 - **Tier**  
