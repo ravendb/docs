@@ -41,10 +41,18 @@ A series of JSON objects, each containing a patch operation and a document ID,
 is sent to the server, that performs the requested changes with no further 
 involvement of the client.  
 
+All JSON objects are included in a single ASP `JsonPatchDocument`.  
+
 JSON patches include no RQL or c# code. They may be preferred by users in spite 
-of the limited set of operations they offer, when, for example, the client that 
-applies them maintains a common communications interface with multiple systems, 
-of which RavenDB is one.  
+of the limited set of operations they offer, when, for example -  
+
+* The client that applies the patches communicates with multiple databases (one 
+  of them being RavenDB) and prefers to broadcast the same patching syntax to them 
+  all.  
+* Implementing automated processes may also be easier with JSON patches than 
+  using RQL and c# code.  
+
+
 
 {PANEL/}
 
@@ -56,6 +64,7 @@ To run JSON patches -
   to make its [JsonPatchDocument Class](http://docs.microsoft.com/en-us/dotnet/api/Microsoft.aspnetcore.jsonpatch.jsonpatchdocument?view=aspnetcore=5.0) 
   available for your client.  
 * Use the `Microsoft.AspNetCore.JsonPatch` namespace from your code.  
+  E.g. `using Microsoft.AspNetCore.JsonPatch;`  
 * Create a `JsonPatchDocument` instance and append your patches to it.  
 * Pass your Json Patch Document to RavenDB's `JsonPatchOperation` operation to run the patches.  
     * `JsonPatchOperation` Parameters  
@@ -86,7 +95,7 @@ Add a document property using the `Add` patching operation.
 
     {CODE-BLOCK: JavaScript}
     var patchesDocument = new JsonPatchDocument();
-patchesDocument.Add("/PropertyName", "NewValue");
+patchesDocument.Add("/PropertyName", "Contents");
 store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
     {CODE-BLOCK/}
 
@@ -123,11 +132,20 @@ Replace the contents of a document property using the `Replace` patching operati
     | path | `string` | Path to the property whose contents we want to replace |
     | value | `object` | New contents |
 
-* **Code Sample**  
+* **Code Sample - Replace Document Property Contents**  
 
     {CODE-BLOCK: JavaScript}
     var patchesDocument = new JsonPatchDocument();
-patchesDocument.Replace("/PropertyName", "NewValue");
+patchesDocument.Replace("/PropertyName", "NewContents");
+store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
+    {CODE-BLOCK/}
+
+* **Code Sample - Replace Array Member Contents**  
+
+    {CODE-BLOCK: JavaScript}
+    var patchesDocument = new JsonPatchDocument();
+// Replace the contents of an array member with a new value (100)
+patchesDocument.Replace("/ArrayName/12", 100);
 store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
     {CODE-BLOCK/}
 
@@ -135,7 +153,7 @@ store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
 
 ### Copy Document Property Contents to Another Property  
 
-Copy the contents of one document property to another using the `Replace` patching operation.  
+Copy the contents of one document property to another using the `Copy` patching operation.  
 
 * **Method Parameters**  
 
@@ -148,7 +166,7 @@ Copy the contents of one document property to another using the `Replace` patchi
 
     {CODE-BLOCK: JavaScript}
     var patchesDocument = new JsonPatchDocument();
-patchesDocument.Copy("/PropertyName1", "PropertyName2"); // Copy PropertyName1 contents to PropertyName2
+patchesDocument.Copy("/PropertyName1", "/PropertyName2"); // Copy PropertyName1 contents to PropertyName2
 store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
     {CODE-BLOCK/}
 
@@ -169,7 +187,7 @@ Move the contents of one document property to another using the `Move` patching 
 
     {CODE-BLOCK: JavaScript}
     var patchesDocument = new JsonPatchDocument();
-patchesDocument.Move("/PropertyName1", "PropertyName2"); // Move PropertyName1 contents to PropertyName2
+patchesDocument.Move("/PropertyName1", "/PropertyName2"); // Move PropertyName1 contents to PropertyName2
 store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
     {CODE-BLOCK/}
 
@@ -178,7 +196,8 @@ store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
 ### Test Patching Operation
 
 Verify patching using the `Test` patching operation.  
-If the test fails, all patching operations included in the patches document will be revoked.  
+If the test fails, all patching operations included in the patches document will be revoked 
+and a `RavenException` exception will be thrown.  
 
 * **Method Parameters**  
 
@@ -194,7 +213,14 @@ If the test fails, all patching operations included in the patches document will
     var patchesDocument = new JsonPatchDocument();
 patchesDocument.Test("/PropertyName", "Value"); // Compare property contents with the value 
                                                 // Revoke all patch operations if the test fails 
-store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
+try
+{
+    store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
+}
+catch (RavenException e)
+{
+ // handle the exception
+}
     {CODE-BLOCK/}
 
 {PANEL/}
