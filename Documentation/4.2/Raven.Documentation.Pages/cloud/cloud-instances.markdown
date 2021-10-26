@@ -40,6 +40,10 @@ to create a **free**-tier instance.
   If your free instance is using more resources than the provided credit, you'll need to pay for these resources or stop your instance. 
   {NOTE/}
 
+    {NOTE: }
+   You can currently locate **Free** Instances only in **Amazon AWS - US East (N. Virginia) - us-east-1** region.  
+  {NOTE/}
+
 * The free instance is limited to the [community](https://ravendb.net/buy) subset of features.  
 
 * If you don't use your free instance for over 30 days, it will be terminated.  

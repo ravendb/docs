@@ -34,16 +34,16 @@ Use the Plan page to choose your product's **cloud provider**, **region** and **
 !["Plan Provider Region & Tier"](images\provider-region-tier-selection.png "Plan Provider Region & Tier")  
   
 
-  - **Cloud Provider**  
+1.  **Cloud Provider**  
    Choose your cloud host. It can currently be one of three providers: **Amazon AWS**, **Microsoft Azure**, and **Google Cloud Platform**.  
 
-- **Region**  
+2.  **Region**  
   Select where your equipment would be physically located.  
   {NOTE: }
    You can currently locate **Free** Instances only in **Amazon AWS - US East (N. Virginia) - us-east-1** region.  
   {NOTE/}
   
-- **Tier**  
+3.  **Tier**  
   You can raise a [Free node](../../cloud/cloud-instances#a-free-cloud-node), 
   a [Development node](../../cloud/cloud-instances#a-development-cloud-server) or a 
   [Production cluster](../../cloud/cloud-instances#a-production-cloud-cluster).  
