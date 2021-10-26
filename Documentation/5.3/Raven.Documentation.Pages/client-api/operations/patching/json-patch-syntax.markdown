@@ -33,26 +33,26 @@
 
 {PANEL: JSON Patches }
 
-Similar to other forms of patching, JSON Patches can be used by a client to 
-swiftly change any number of documents without loading and editing the documents 
-locally first.  
+* Similar to other forms of patching, JSON Patches can be used by a client to 
+  swiftly change any number of documents without loading and editing the documents 
+  locally first.  
 
-A series of JSON objects, each containing a patch operation and a document ID, 
-is sent to the server, that performs the requested changes with no further 
-involvement of the client.  
+* A series of JSON objects, each containing a patch operation and a document ID, 
+  are added to an ASP `JsonPatchDocument` object that is sent to the server for 
+  execution.  
 
-All JSON objects are included in a single ASP `JsonPatchDocument`.  
+---
 
-JSON patches include no RQL or c# code. They may be preferred by users in spite 
-of the limited set of operations they offer, when, for example -  
+### When are JSON Patches Used?
 
-* The client that applies the patches communicates with multiple databases (one 
-  of them being RavenDB) and prefers to broadcast the same patching syntax to them 
-  all.  
-* Implementing automated processes may also be easier with JSON patches than 
-  using RQL and c# code.  
+JSON Patches include no RQL or c# code, and offer a limited set of operations 
+in relation to other patching methods.  
+Users may still prefer them over other methods when, for example -  
 
-
+   * A client of multiple databases of different brands prefers broadcasting patches 
+     with a common syntax to all databases.  
+   * It is easier or safer for an automated patching process to send patches 
+     without RQL or c# code.  
 
 {PANEL/}
 
@@ -80,9 +80,9 @@ To run JSON patches -
 
 {PANEL: Patch Operations}
 
-### Add Document Property  
+### Add Operation
 
-Add a document property using the `Add` patching operation.  
+Use the `Add` operation to add a document property or an array element.  
 
 * **Method Parameters**  
 
@@ -91,19 +91,25 @@ Add a document property using the `Add` patching operation.
     | path | `string` | Path to the property we want to add |
     | value | `object` | Property value |
 
-* **Code Sample**  
-
-    {CODE-BLOCK: JavaScript}
-    var patchesDocument = new JsonPatchDocument();
+* **Code Samples**  
+   * **Add a document property**  
+      {CODE-BLOCK: JavaScript}
+var patchesDocument = new JsonPatchDocument();
 patchesDocument.Add("/PropertyName", "Contents");
 store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
-    {CODE-BLOCK/}
+{CODE-BLOCK/}
+   * **Add an array element**  
+      {CODE-BLOCK: JavaScript}
+var patchesDocument = new JsonPatchDocument();
+patchesDocument.Add("/ArrayName/12", "Contents");
+store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
+{CODE-BLOCK/}
 
 ---
 
 ### Remove Document Property  
 
-Remove a document property using the `Remove` patching operation.  
+Use the `Remove` operation to remove a document property or an array element.  
 
 * **Method Parameters**  
 
@@ -111,19 +117,26 @@ Remove a document property using the `Remove` patching operation.
     |:-------------|:-------------|:-------------|
     | path | `string` | Path to the property we want to remove |
 
-* **Code Sample**  
-
-    {CODE-BLOCK: JavaScript}
-    var patchesDocument = new JsonPatchDocument();
+* **Code Samples**  
+   * **Remove a document property**  
+      {CODE-BLOCK: JavaScript}
+var patchesDocument = new JsonPatchDocument();
 patchesDocument.Remove("/PropertyName");
 store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
-    {CODE-BLOCK/}
+{CODE-BLOCK/}
+
+   * **Remove an array element**  
+      {CODE-BLOCK: JavaScript}
+var patchesDocument = new JsonPatchDocument();
+patchesDocument.Remove("/ArrayName/12");
+store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
+{CODE-BLOCK/}
 
 ---
 
 ### Replace Document Property Contents  
 
-Replace the contents of a document property using the `Replace` patching operation.  
+Use the `Replace` operation to replace the contents of a document property or an array element
 
 * **Method Parameters**  
 
@@ -132,28 +145,27 @@ Replace the contents of a document property using the `Replace` patching operati
     | path | `string` | Path to the property whose contents we want to replace |
     | value | `object` | New contents |
 
-* **Code Sample - Replace Document Property Contents**  
-
-    {CODE-BLOCK: JavaScript}
-    var patchesDocument = new JsonPatchDocument();
+* **Code Samples**  
+   * **Replace a document property**  
+      {CODE-BLOCK: JavaScript}
+var patchesDocument = new JsonPatchDocument();
+// Replace document property contents with a new value (100)
 patchesDocument.Replace("/PropertyName", "NewContents");
 store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
-    {CODE-BLOCK/}
-
-* **Code Sample - Replace Array Member Contents**  
-
-    {CODE-BLOCK: JavaScript}
-    var patchesDocument = new JsonPatchDocument();
-// Replace the contents of an array member with a new value (100)
+{CODE-BLOCK/}
+   * **Replace an array element**  
+      {CODE-BLOCK: JavaScript}
+var patchesDocument = new JsonPatchDocument();
+// Replace array element contents with a new value (100)
 patchesDocument.Replace("/ArrayName/12", 100);
 store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
-    {CODE-BLOCK/}
+{CODE-BLOCK/}
 
 ---
 
 ### Copy Document Property Contents to Another Property  
 
-Copy the contents of one document property to another using the `Copy` patching operation.  
+Use the `Copy` operation to copy the contents of one document property array element to another
 
 * **Method Parameters**  
 
@@ -162,19 +174,27 @@ Copy the contents of one document property to another using the `Copy` patching 
     | from | `string` | Path to the property we want to copy |
     | path| `string` | Path to the property we want to copy to |
 
-* **Code Sample**  
-
-    {CODE-BLOCK: JavaScript}
-    var patchesDocument = new JsonPatchDocument();
-patchesDocument.Copy("/PropertyName1", "/PropertyName2"); // Copy PropertyName1 contents to PropertyName2
+* **Code Samples**  
+   * **Copy document property contents**  
+      {CODE-BLOCK: JavaScript}
+var patchesDocument = new JsonPatchDocument();
+// Copy document property contents to another document property
+patchesDocument.Copy("/PropertyName1", "/PropertyName2"); 
 store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
-    {CODE-BLOCK/}
+{CODE-BLOCK/}
+   * **Copy array element contents**  
+      {CODE-BLOCK: JavaScript}
+var patchesDocument = new JsonPatchDocument();
+// Copy array element contents to another array element
+patchesDocument.Copy("/ArrayName/1", "/ArrayName/2"); 
+store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
+{CODE-BLOCK/}
 
 ---
 
 ### Move Document Property Contents to Another Property  
 
-Move the contents of one document property to another using the `Move` patching operation.  
+Use the `Move` operation to move the contents of one document property or array element to another  
 
 * **Method Parameters**  
 
@@ -183,19 +203,27 @@ Move the contents of one document property to another using the `Move` patching 
     | from | `string` | Path to the property whose contents we want to move |
     | path| `string` | Path to the property we want to move the contents to |
 
-* **Code Sample**  
-
-    {CODE-BLOCK: JavaScript}
-    var patchesDocument = new JsonPatchDocument();
-patchesDocument.Move("/PropertyName1", "/PropertyName2"); // Move PropertyName1 contents to PropertyName2
+* **Code Samples**  
+   * **Move document property contents**  
+      {CODE-BLOCK: JavaScript}
+var patchesDocument = new JsonPatchDocument();
+// Move document property contents to another document property
+patchesDocument.Move("/PropertyName1", "/PropertyName2"); 
 store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
-    {CODE-BLOCK/}
+{CODE-BLOCK/}
+   * **Move array element contents**  
+      {CODE-BLOCK: JavaScript}
+var patchesDocument = new JsonPatchDocument();
+// Move array element contents to another array element
+patchesDocument.Move("/ArrayName/1", "/ArrayName/2"); 
+store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
+{CODE-BLOCK/}
 
 ---
 
 ### Test Patching Operation
 
-Verify patching using the `Test` patching operation.  
+Use the `Test` operation to verify patching operations.  
 If the test fails, all patching operations included in the patches document will be revoked 
 and a `RavenException` exception will be thrown.  
 
