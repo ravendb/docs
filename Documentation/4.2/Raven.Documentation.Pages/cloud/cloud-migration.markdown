@@ -9,7 +9,7 @@ cloud servers and between [different RavenDB versions](../migration/client-api/i
 * In this page  
   * [Import From Live RavenDB instance](cloud-migration#import-from-live-ravendb-instance)  
   * [Import From File](cloud-migration#import-from-file)  
-  * [If Files Deleted From Source Database Appear In Destination Database After Live-Import](cloud-migration#if-files-that-were-deleted-from-source-database-appear-in-the-destination-database)  
+  * [Why Documents Recently Deleted in Source Appear in Destination](cloud-migration#documents-recently-deleted)  
 
 {NOTE/}
 
@@ -78,15 +78,15 @@ Select the file and click **Import Database**.
 
 {PANEL/}
 
-##If Files That Were Deleted from Source Database Appear in the Destination Database
-If you've deleted files from the source database in the last few minutes before live-importing, 
-the deleted files will still appear in the destination database. 
-This is because after deleting a file, a [tombstone](../glossary/tombstone) is left behind as a signal for backups and 
+##Documents Recently Deleted
+If you've deleted documents from the source database in the last few minutes before live-importing, 
+the deleted documents will still appear in the destination database. 
+This is because after deleting a document, a [tombstone](../glossary/tombstone) is left behind as a signal for backups and 
 various behind-the-scene processes. Once all of these processes have been completed, 
 the tombstones are cleaned (every 5 minutes by default) and performing another live-import will show that 
-the files have been deleted.  
+the documents have been deleted.  
   
-You can configure the [tombstone cleaner time intervals](../server/configuration/tombstone-configuration). 
+You can configure the [tombstone cleaner time intervals](../server/configuration/tombstone-configuration).  
 
 ##Related Articles
 
