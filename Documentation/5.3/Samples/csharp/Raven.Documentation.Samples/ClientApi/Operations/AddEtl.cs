@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Operations.ConnectionStrings;
 using Raven.Client.Documents.Operations.ETL;
+using Raven.Client.Documents.Operations.ETL.ElasticSearch;
+using Raven.Client.Documents.Operations.ETL.OLAP;
 using Raven.Client.Documents.Operations.ETL.SQL;
 //using Raven.Client.Documents.Operations.ETL.OLAP;
 
@@ -103,7 +106,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
             using (var store = new DocumentStore())
             {
-                /*
                 #region add_olap_etl
                 AddEtlOperation<OlapConnectionString> operation = new AddEtlOperation<OlapConnectionString>(
                     new OlapEtlConfiguration
@@ -134,19 +136,20 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
                 AddEtlOperationResult result = store.Maintenance.Send(operation);
                 #endregion
-                */
             }
 
-            using (var store = GetDocumentStore())
+            using (var store = new DocumentStore())
             {
-                /*
                 #region create-connection-string
                 // Create a Connection String to Elasticsearch
                 var elasticSearchConnectionString = new ElasticSearchConnectionString
                 {
-                    Name = "ElasticConStr", // Connection String Name
-                    Nodes = new[] { "http://localhost:9200" }, // Elasticsearch Nodes URLs
-                    Authentication = new Raven.Client.Documents.Operations.ETL.ElasticSearch.Authentication // Authentication Method
+                    // Connection String Name
+                    Name = "ElasticConStr", 
+                    // Elasticsearch Nodes URLs
+                    Nodes = new[] { "http://localhost:9200" }, 
+                    // Authentication Method
+                    Authentication = new Raven.Client.Documents.Operations.ETL.ElasticSearch.Authentication 
                     { 
                         Basic = new BasicAuthentication
                         {
@@ -170,17 +173,20 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     ElasticIndexes =
                     {
                         // Define Elasticsearch Indexes
-                        new ElasticSearchIndex { IndexName = "orders", // Elasticsearch Index name
-                                                 IndexIdProperty = "DocId", // Elasticsearch identifier for transferred RavenDB documents 
-                                                                            // (make sure a property with this name is defined in the transform script)
-                                                 InsertOnlyMode = false }, // If true, don't send _delete_by_query before appending docs
-                        new ElasticSearchIndex { IndexName = "lines", 
-                                                 IndexIdProperty = "OrderLinesCount", 
+                        new ElasticSearchIndex { // Elasticsearch Index name
+                                                 IndexName = "orders", 
+                                                 // Elasticsearch identifier for transferred RavenDB documents 
+                                                 // (make sure a property with this name is defined in the transform script)
+                                                 DocumentIdProperty = "DocId", 
+                                                 // If true, don't send _delete_by_query before appending docs
+                                                 InsertOnlyMode = false }, 
+                        new ElasticSearchIndex { IndexName = "lines",
+                                                 DocumentIdProperty = "OrderLinesCount", 
                                                  InsertOnlyMode = true 
                                                }
                     },
                     Transforms =
-                    {   // Transformation script properties
+                    {   // Transformation script configuration
                         new Transformation()
                         {
                             Collections = { "Orders" }, // RavenDB collections that the script uses
@@ -190,7 +196,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                                        TotalCost: 0
                                        };
 
-                                       loadToOrders(orderData);", // Transformation script Contents
+                                       loadToOrders(orderData);", 
                             Name = "TransformIDsAndLinesCount" // Transformation script Name
                         }
                     }
@@ -198,7 +204,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
                 store.Maintenance.Send(operation);
                 #endregion
-                */
             }
         }
     }

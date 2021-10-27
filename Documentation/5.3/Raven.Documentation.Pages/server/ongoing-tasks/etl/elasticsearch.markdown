@@ -18,6 +18,7 @@
      * [Transactions](../../../server/ongoing-tasks/etl/elasticsearch#transactions)  
      * [Document Identifiers](../../../server/ongoing-tasks/etl/elasticsearch#document-identifiers)  
      * [Insert Only Mode](../../../server/ongoing-tasks/etl/elasticsearch#insert-only-mode)  
+  * [Elasticsearch Index Definition](../../../server/ongoing-tasks/etl/elasticsearch#elasticsearch-index-definition)  
   * [Client API](../../../server/ongoing-tasks/etl/elasticsearch#client-api)  
      * [Add an Elasticsearch ETL Task](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)  
      * [Add an Elasticsearch Connection String](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-connection-string)  
@@ -37,8 +38,8 @@
       * Indexes are used by Elasticsearch to store and locate documents.  
       * The ETL task will insert new documents to the specified Elasticsearch destinations.  
       * If not otherwise specified, existing Elasticsearch documents will be removed before adding new documents.  
-      * A document identifier field property ([see below]()) is also defined per index and used by the delete command 
-        to locate the matching documents.  
+      * A [document identifier](../../../server/ongoing-tasks/etl/elasticsearch#document-identifiers) 
+        field property is defined per index, and used by the delete command to locate the matching documents.  
    * **Define Transformation Scripts**.  
      The transformation script determines which RavenDB documents will be transferred, 
      to which Elasticsearch Indexes, and in what form.  
@@ -118,12 +119,13 @@ The task delivers the data to the Elasticsearch destination in one or two calls 
 * When Elasticsearch stores RavenDB documents, it provides each of them 
   with an automatically-generated iD.  
 * RavenDB needs to delete and replace documents, but cannot do it 
-  using Elasticsearch's arbitrary generated IDs.  
+  using Elasticsearch's arbitrarily generated IDs.  
   Instead, it uses one of the document's properties as ID.  
 * You need to decide which document property RavenDB would use as a document identifier.  
   To define it:  
-   * Set `IndexIdProperty` through code (see [code sample](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)).  
-   * Or set the [Document ID Property Name](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) field via Studio.  
+   * Set `DocumentIdProperty` through code (see [code sample](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)).  
+   * Or set the [Document ID Property Name](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) field 
+     via Studio.  
 * The identifier must be a property that the transformation script passes to Elasticsearch.  
   E.g., the **DocId** property that is created by the script below can be used as an identifier.  
   {CODE-BLOCK: JavaScript}
@@ -150,6 +152,37 @@ to **omit** _delete_by_query commands and so refrain from deleting documents bef
  Be aware that enabling Insert Only mode will append documents to Elasticsearch whenever they 
  are modified on RavenDB, without removing existing documents. If document versions that are not 
  needed accumulate and storage space is a concern, keep Insert Only disabled.  
+{WARNING/}
+
+{PANEL/}
+
+{PANEL: Elasticsearch Index Definition}
+
+* When the Elasticsearch ETL task runs for the very first time, it will create any Elsasticsearch index defined in 
+  the task that dosn't exist yet.  
+
+* When creating the index, the document property that will hold the RavenDB document ID will be defined as a non-analyzed field, 
+  with type [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/7.15/keyword.html) to avoid having full-text-search 
+  on it.  
+  This way the RavenDB document identifiers won't be analyzed and the task will be able to `_delete_by_query` using exact match on those IDs.  
+  I.e.  
+  {CODE-BLOCK: JavaScript}
+  PUT /newIndexName
+{
+  "mappings": {
+      "properties": {
+          "DocId": {   // the DocumentIdProperty
+              "type": "keyword"
+          }
+      }
+   }
+}
+  {CODE-BLOCK/}
+
+{WARNING: }
+If you choose to create the Elasticsearch Index on your own (before running the 
+Elasticsearch ETL task), you must define the `DocumentIdProperty` **type** property 
+as **"keyword"** in your index definition.  
 {WARNING/}
 
 {PANEL/}
@@ -187,7 +220,7 @@ to **omit** _delete_by_query commands and so refrain from deleting documents bef
     | Property | Type | Description |
     |:-------------|:-------------|:-------------|
     | **IndexName** | `string` | Elasticsearch Index name. <br> Name indexes **using lower-case characters only**, e.g. `orders`. |
-    | **IndexIdProperty** | `string` | Documents identifier for RavenDB usage, <br> that is stored on Elasticsearch as a document property.<br> RavenDB deletes, stores, and modifies documents by it. <br> Must be a property that the script defined and passed Elasticsearch. <br> e.g. **DocID** where the script defines **DocId: id(this)**. |
+    | **DocumentIdProperty** | `string` | The [document ID property](../../../server/ongoing-tasks/etl/elasticsearch#document-identifiers) defined on the transferred document object inside the transformation script. |
     | **InsertOnlyMode** | `bool` | `true` - Do not delete existing documents before appending new ones. <br>  `false` - Delete existing document versions before appending documents.|
 
 {NOTE/}
@@ -265,4 +298,5 @@ RavenDB supports **Elasticsearch Server version 7 and up**.
 
 ### Studio
 
+- [Define Elasticsearch ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task)
 - [Define OLAP ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/olap-etl-task)
