@@ -47,14 +47,14 @@
 
 ### When are JSON Patches Used?
 
-JSON Patches include no RQL or c# code, and offer a limited set of operations 
+JSON Patches include no RQL or C# code, and offer a limited set of operations 
 in relation to other patching methods.  
 Users may still prefer them over other methods when, for example -  
 
    * A client of multiple databases of different brands prefers broadcasting patches 
      with a common syntax to all databases.  
-   * It is easier or safer for an automated patching process to send patches 
-     without RQL or c# code.  
+   * It is easier for an automated process that builds and applies patches, 
+     to send JSON patches.  
 
 {PANEL/}
 
@@ -62,9 +62,6 @@ Users may still prefer them over other methods when, for example -
 
 To run JSON patches -  
 
-* Install the ASP `Install-Package Microsoft.AspNetCore.JsonPatch` package
-  to make its [JsonPatchDocument Class](http://docs.microsoft.com/en-us/dotnet/api/Microsoft.aspnetcore.jsonpatch.jsonpatchdocument?view=aspnetcore=5.0) 
-  available for your client.  
 * Use the `Microsoft.AspNetCore.JsonPatch` namespace from your code.  
   E.g. `using Microsoft.AspNetCore.JsonPatch;`  
 * Create a `JsonPatchDocument` instance and append your patches to it.  
@@ -94,11 +91,7 @@ Use the `Add` operation to add a document property or an array element.
     | value | `object` | Property value |
 
 * **Code Sample - Add a document property**  
-  {CODE-BLOCK: JavaScript}
-var patchesDocument = new JsonPatchDocument();
-patchesDocument.Add("/PropertyName", "Contents");
-store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
-{CODE-BLOCK/}
+  {CODE json_patch_Add_operation@ClientApi\Operations\Patches\JsonPatchSyntax.cs /}
 
 ---
 
@@ -113,11 +106,7 @@ Use the `Remove` operation to remove a document property or an array element.
     | path | `string` | Path to the property we want to remove |
 
 * **Code Sample - Remove a document property**  
-  {CODE-BLOCK: JavaScript}
-var patchesDocument = new JsonPatchDocument();
-patchesDocument.Remove("/PropertyName");
-store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
-{CODE-BLOCK/}
+  {CODE json_patch_Remove_operation@ClientApi\Operations\Patches\JsonPatchSyntax.cs /}
 
 ---
 
@@ -133,12 +122,7 @@ Use the `Replace` operation to replace the contents of a document property or an
     | value | `object` | New contents |
 
 * **Code Sample - Replace a document property**  
-  {CODE-BLOCK: JavaScript}
-var patchesDocument = new JsonPatchDocument();
-// Replace document property contents with a new value (100)
-patchesDocument.Replace("/PropertyName", "NewContents");
-store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
-{CODE-BLOCK/}
+  {CODE json_patch_Replace_operation@ClientApi\Operations\Patches\JsonPatchSyntax.cs /}
 
 ---
 
@@ -154,12 +138,7 @@ Use the `Copy` operation to copy the contents of one document property array ele
     | path| `string` | Path to the property we want to copy to |
 
 * **Code Sample - Copy document property contents**  
-  {CODE-BLOCK: JavaScript}
-var patchesDocument = new JsonPatchDocument();
-// Copy document property contents to another document property
-patchesDocument.Copy("/PropertyName1", "/PropertyName2"); 
-store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
-{CODE-BLOCK/}
+  {CODE json_patch_Copy_operation@ClientApi\Operations\Patches\JsonPatchSyntax.cs /}
 
 ---
 
@@ -175,12 +154,7 @@ Use the `Move` operation to move the contents of one document property or array 
     | path| `string` | Path to the property we want to move the contents to |
 
 * **Code Sample - Move document property contents**  
-  {CODE-BLOCK: JavaScript}
-var patchesDocument = new JsonPatchDocument();
-// Move document property contents to another document property
-patchesDocument.Move("/PropertyName1", "/PropertyName2"); 
-store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
-{CODE-BLOCK/}
+  {CODE json_patch_Move_operation@ClientApi\Operations\Patches\JsonPatchSyntax.cs /}
 
 ---
 
@@ -200,19 +174,7 @@ and a `RavenException` exception will be thrown.
 
 * **Code Sample - Test Patching**  
 
-    {CODE-BLOCK: JavaScript}
-    var patchesDocument = new JsonPatchDocument();
-patchesDocument.Test("/PropertyName", "Value"); // Compare property contents with the value 
-                                                // Revoke all patch operations if the test fails 
-try
-{
-    store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
-}
-catch (RavenException e)
-{
- // handle the exception
-}
-    {CODE-BLOCK/}
+  {CODE json_patch_Test_operation@ClientApi\Operations\Patches\JsonPatchSyntax.cs /}
 
 {PANEL/}
 
@@ -222,12 +184,7 @@ The samples given above remain simple, showing how to manipulate document proper
 Note that JSON Patches have additional options, like the manipulation of array or list elements:  
 
 * **Add an array element**  
-      {CODE-BLOCK: JavaScript}
-var patchesDocument = new JsonPatchDocument();
-// Use the path parameter to add an array element
-patchesDocument.Add("/ArrayName/12", "Contents");
-store.Operations.Send(new JsonPatchOperation(documentId, patchesDocument));
-{CODE-BLOCK/}
+  {CODE json_patch_Add_array_element@ClientApi\Operations\Patches\JsonPatchSyntax.cs /}
 
 You can learn more about additional JSON patching options in the [JSON Patch RFC](https://datatracker.ietf.org/doc/html/rfc6902), 
 among other resources.  
