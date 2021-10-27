@@ -71,11 +71,11 @@ namespace Raven.Documentation.Samples.ClientApi.Smuggler
                 #endregion
 
                 #region import_example
-                // export only Documents from a given file
+                // import only Documents from a given file
                 var importOperation = await store
                     .Smuggler
-                    .ExportAsync(
-                        new DatabaseSmugglerExportOptions
+                    .ImportAsync(
+                        new DatabaseSmugglerImportOptions
                         {
                             OperateOnTypes = DatabaseItemType.Documents
                         },
