@@ -195,7 +195,9 @@ StreamDocs using the SimpleTransformer defined above and one supplied parameter:
 
 {PANEL:IsLoaded}
 
-To check if entity is attached to session, e.g. it has been loaded previously, use the `IsLoaded` method from `Advanced` session operations.
+To check if an entity is attached to a session, e.g. it has been loaded previously, use the `IsLoaded` method from the `Advanced` session operations.  
+  
+If you try to load a document that does not exist with the `Load` method, `IsLoaded` will return `true` because that document load has already been attempted.  
 
 {CODE loading_entities_6_0@ClientApi\Session\LoadingEntities.cs /}
 
