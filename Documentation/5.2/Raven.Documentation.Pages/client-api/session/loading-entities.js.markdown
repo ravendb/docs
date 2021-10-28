@@ -185,9 +185,9 @@ Fetch documents for a ID prefix directly into a writable stream:
 
 {PANEL:IsLoaded}
 
-To check if an entity is attached to a session, e.g. it has been loaded previously, use the `IsLoaded` method from the `Advanced` session operations.  
+To check if an entity is attached to a session, e.g. it has been loaded previously, use the `isLoaded` method from the `advanced` session operations.  
   
-If you try to load a document that does not exist with the `Load` method, `IsLoaded` will return `true` because that document load has already been attempted.  
+If you try to load a document that does not exist with the `load` method, `isLoaded` will return `true` because that document load has already been attempted.  
 
 {CODE:nodejs loading_entities_6_0@ClientApi\Session\loadingEntities.js /}
 
