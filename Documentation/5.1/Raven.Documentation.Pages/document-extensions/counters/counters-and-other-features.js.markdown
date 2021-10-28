@@ -185,31 +185,31 @@ An included Counter is retrieved in the same request as its owner-document and i
 so it can be immediately retrieved when needed with no additional remote calls.
 
 
-* **Including Counters when using [Session.Load](../../client-api/session/loading-entities#session--loading-entities)**:  
-    * Include a single Counter using `IncludeCounter`.  
-    * Include multiple Counters using `IncludeCounters`.  
+* **Including Counters when using [Session.load](../../client-api/session/loading-entities#session--loading-entities)**:  
+    * Include a single Counter using `includeCounter`.  
+    * Include multiple Counters using `includeCounters`.  
 
-    `IncludeCounter` and `IncludeCounters` usage samples:  
+    `includeCounter` and `includeCounters` usage samples:  
     {CODE-TABS}
-    {CODE-TAB:nodejs:IncludeCounter counters_region_load_include1@documentExtensions\counters\counters.js /}
-    {CODE-TAB:nodejs:IncludeCounters counters_region_load_include2@documentExtensions\counters\counters.js /}
+    {CODE-TAB:nodejs:includeCounter counters_region_load_include1@documentExtensions\counters\counters.js /}
+    {CODE-TAB:nodejs:includeCounters counters_region_load_include2@documentExtensions\counters\counters.js /}
     {CODE-TABS/}
 
-* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query#session--querying--how-to-query)**:  
-    * Include a single Counter using `IncludeCounter`.  
-    * Include multiple Counters using `IncludeCounters`.  
+* **Including Counters when using [Session.query](../../client-api/session/querying/how-to-query#session--querying--how-to-query)**:  
+    * Include a single Counter using `includeCounter`.  
+    * Include multiple Counters using `includeCounters`.  
 
-    `IncludeCounter` and `IncludeCounters` usage samples:  
+    `includeCounter` and `includeCounters` usage samples:  
     {CODE-TABS}
-    {CODE-TAB:nodejs:IncludeCounter counters_region_query_include_single_Counter@documentExtensions\counters\counters.js /}
-    {CODE-TAB:nodejs:IncludeCounters counters_region_query_include_multiple_Counters@documentExtensions\counters\counters.js /}
+    {CODE-TAB:nodejs:includeCounter counters_region_query_include_single_Counter@documentExtensions\counters\counters.js /}
+    {CODE-TAB:nodejs:includeCounters counters_region_query_include_multiple_Counters@documentExtensions\counters\counters.js /}
     {CODE-TABS/}
 
 ---
 
 ###Counters Bulk-Insert  
-`store.BulkInsert` is RavenDB's high-performance data insertion operation.  
-Use its `CountersFor` interface's `Increment` method to add or update counters with great speed.  
+`store.bulkInsert` is RavenDB's high-performance data insertion operation.  
+Use its `countersFor` interface's `increment` method to add or update counters with great speed.  
 
 * Usage  
 
@@ -230,9 +230,9 @@ Use its `CountersFor` interface's `Increment` method to add or update counters w
 
 * Usage Flow  
 
-   * Create a `store.BulkInsert` instance.  
-   * Pass the instance's `CountersFor` interface, the document ID  
-   * Call `Increment` as many times as you like. Pass it -  
+   * Create a `store.bulkInsert` instance.  
+   * Pass the instance's `countersFor` interface, the document ID  
+   * Call `increment` as many times as you like. Pass it -  
      The Counter Name and Value (delta to be added).
 
 * Usage Sample  
