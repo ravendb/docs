@@ -107,7 +107,7 @@ This is the list of different settings objects that the `OlapConnectionString` o
 | Property | Type | Description |
 | - | - | - |
 | `StorageContainer` | `string` | Microsoft Azure Storage container name |
-| `AwsSecretKey` | `string` | Path to remote Azure folder |
+| `RemoteFolderName ` | `string` | Path to remote Azure folder |
 | `AccountName` | `string` | The name of your Azure account |
 | `AccountKey` | `string` | Your Azure account key |
 | `SasToken` | `string` | Your SaS token for authentication |

@@ -1,6 +1,6 @@
 ﻿#Ongoing Tasks: SQL ETL
 
-SQL ETL is a task that creates [ETL](../../../server/ongoing-tasks/etl/basics) process for a given database where a destination is a relational database.
+**SQL ETL** is a task that creates [ETL](../../../server/ongoing-tasks/etl/basics) process for a given database where a destination is a relational database.
 
 It can be defined using the Studio by creating `SQL ETL` task in `Settings -> Manage Ongoing Tasks`.
 
