@@ -71,7 +71,7 @@ from 'Product/Sales'
 
 In addition to storing the aggregation results in the index, the map-reduce index can also output 
 those reduce results as documents to a specified collection. In order to create these documents, 
-called _"artificial",_ you need to define the target collection using the `OutputReduceToCollection` 
+called _"artificial",_ you need to define the target collection using the `outputReduceToCollection` 
 property in the index definition.  
 
 Writing map-reduce outputs into documents allows you to define additional indexes on top of them 
@@ -135,7 +135,7 @@ The map-reduce output documents are configured with these properties of
 | Parameters | Type | Description |
 | - | - | - |
 | **outputReduceToCollection** | `string` | Collection name for the output documents. |
-| **patternReferencesCollectionName** | `string` | Optional collection name for the reference documents - by default it is `<OutputReduceToCollection>/References`. |
+| **patternReferencesCollectionName** | `string` | Optional collection name for the reference documents - by default it is `<outputReduceToCollection>/References`. |
 | **patternForOutputReduceToCollectionReferences** | `string` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../indexes/creating-and-deploying#using-maintenance-operations) or [AbstractIndexCreationTask](../indexes/creating-and-deploying#using-abstractindexcreationtask). |
 
 ### Examples
