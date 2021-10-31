@@ -31,9 +31,9 @@ class Products_WithMetadata extends AbstractIndexCreationTask {
         this.map = "docs.Products.Select(product => new {\n" +
             "    Product = product,\n" +
             "    Metadata = this.MetadataFor(product)\n" +
-            "}).Select(this0 => new {\n" +
-            "       LastModified = this.Metadata.Value<DateTime>(\'Last-Modified'\)\n"+
-            "})";
+            "}).Select(this_0 => new {\n" +
+            "       LastModified = this_0.Metadata.Value<DateTime>(\'Last-Modified'\)\n"+
+            "   })";
     }
 }
 //endregion
