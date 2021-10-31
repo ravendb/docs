@@ -8,11 +8,11 @@ const store = new DocumentStore();
 {
     //region counters_region_query
     const session = store.openSession();
-    const  query= session.query({ collection: "Products" })
+    const query = session.query({ collection: "Products" })
         .selectFields("ProductLikes");
     const queryResults = query.all();
 
-    for (let counterValue  in queryResults) {
+    for (let counterValue in queryResults) {
         console.log("ProductLikes: " + counterValue);
     }
     //endregion
@@ -91,7 +91,7 @@ class Product {}
 
 {
     //region counters_region_load_include2
-    const productPage = session.Load<Product>("orders/1-A", includeBuilder =>
+    const productPage = session.load("orders/1-A", includeBuilder =>
         includeBuilder.includeDocuments("products/1-C")
             .includeCounters("ProductLikes", "ProductDislikes" )
     );
@@ -110,7 +110,7 @@ class Product {}
     //region counters_region_query_include_multiple_Counters
     const query = session.query({ collection: "Product" })
         .include(includeBuilder =>
-            includeBuilder.includeCounters(  "ProductLikes", "ProductDownloads" ));
+            includeBuilder.includeCounters("ProductLikes", "ProductDownloads"));
     //endregion
 }
 
@@ -129,11 +129,11 @@ class Product {}
 {
     //region bulk-insert-counters
     const query = session.query({collection:"User"})
-        .whereBetween("Age",0,30)
-    const result =query.all();
+        .whereBetween("Age", 0, 30)
+    const result = query.all();
 
     const bulkInsert = store.bulkInsert();
-    for (var user = 0; user < result.Count; user++)
+    for (let user = 0; user < result.count(); user++)
     {
         let userId = result[user].id;
 
