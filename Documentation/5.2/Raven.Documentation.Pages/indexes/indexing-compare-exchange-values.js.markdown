@@ -16,10 +16,10 @@ as when documents are modified in the indexed collection(s).
 
 {NOTE/}
 
----tgit c
+---
 
 {PANEL: Syntax}
-For javascript indexes, use the method `cmpxchg(<key>)`.
+For javascript indexes, use the method `Cmpxchg(<key>)`.
 
 | Parameter | Type | Description |
 | - | - | - |

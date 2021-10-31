@@ -68,8 +68,6 @@ If you want each query to [wait for non-stale results](../../../indexes/stale-in
 
 {PANEL/}
 
-<!--- Here I add ---->
-
 {PANEL:"beforeConversionToDocument" event}
 
 This event is invoked before conversion of an entity to blittable JSON document. E.g. it's called when sending a document to a server.  
