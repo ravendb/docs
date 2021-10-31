@@ -104,7 +104,7 @@ async function examples() {
 
     {
     //region on_before_conversion_to_document
-        store.addSessionListener("beforeConversionToDocument", (event: BeforeConversionToDocumentEventArgs) => {
+        store.addSessionListener("beforeConversionToDocument", (event) => {
             if (event.entity instanceof Item) {
                 const item = event.entity;
                 item.before = true;
@@ -114,7 +114,7 @@ async function examples() {
     }
     {
     //region on_after_conversion_to_document
-        store.addSessionListener("afterConversionToDocument", (event: AfterConversionToDocumentEventArgs) => {
+        store.addSessionListener("afterConversionToDocument", (event) => {
             if (event.entity instanceof Item) {
                 const item = event.entity;
                 const document = ObjectUtil.clone(event.document.value);
@@ -129,9 +129,8 @@ async function examples() {
     }
     {
     //region on_before_conversion_to_entity
-        store.addSessionListener("beforeConversionToEntity", (event: BeforeConversionToEntityEventArgs) => {
-            const document = ObjectUtil.clone(event.document) as Item;
-
+        store.addSessionListener("beforeConversionToEntity", (event) => {
+            const document = ObjectUtil.clone(event.document);
             document.before = true;
             event.document = document;
         });
@@ -139,9 +138,9 @@ async function examples() {
     }
     {
     //region on_after_conversion_to_entity
-        store.addSessionListener("afterConversionToEntity", (event: AfterConversionToEntityEventArgs) => {
+        store.addSessionListener("afterConversionToEntity", (event) => {
             if (event.entity instanceof Item) {
-                const item = event.entity as Item;
+                const item = event.entity;
                 item.after = true;
             }
         });
