@@ -29,8 +29,8 @@ You might notice that we're passing `Employee` as a generic parameter to `Abstra
 - The next step is to create the indexing function itself. This is done by setting the `Map` property with our function in a **parameterless constructor**.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query-syntax indexes_2@Indexes/Map.cs /}
-{CODE-TAB:csharp:Method-syntax indexes_3@Indexes/Map.cs /}
+{CODE-TAB:csharp:LINQ-Query-syntax indexes_2@Indexes/Map.cs /}
+{CODE-TAB:csharp:LINQ-Method-syntax indexes_3@Indexes/Map.cs /}
 {CODE-TABS/}
 
 - The final step is to [deploy it](../indexes/creating-and-deploying) to the server and issue a query using the session [Query](../client-api/session/querying/how-to-query) method:
@@ -97,11 +97,12 @@ The part you should pay attention to is `docs.Employees`. This syntax indicates 
 Since each index contains a LINQ function, you can combine multiple fields into one.
 
 ### Example I
-
+Index definition with LINQ-syntax:  
 {CODE indexes_7@Indexes/Map.cs /}
-
+  
+Query the index:  
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_8@Indexes/Map.cs /}
+{CODE-TAB:csharp:LINQ-syntax indexes_8@Indexes/Map.cs /}
 {CODE-TAB:csharp:DocumentQuery indexes_9@Indexes/Map.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFullName'
@@ -119,8 +120,10 @@ You can read more about analyzers and `Full Text Search` [here](../indexes/using
 
 {INFO/}
 
+Index definition:  
 {CODE indexes_1_6@Indexes/Map.cs /}
 
+Query the index:  
 {CODE-TABS}
 {CODE-TAB:csharp:Query indexes_1_7@Indexes/Map.cs /}
 {CODE-TAB:csharp:DocumentQuery indexes_1_8@Indexes/Map.cs /}
@@ -132,10 +135,12 @@ where search(Query, 'John Doe')
 
 ## Indexing Partial Field Data
 
-Imagine that you would like to return all employees that were born in a specific year. You can do it by indexing `Birthday` from `Employee` in the following way:
+Imagine that you would like to return all employees that were born in a specific year. You can do it by indexing `Birthday` from `Employee` in the following way:  
 
+Index definition:  
 {CODE indexes_1_2@Indexes/Map.cs /}
-
+  
+Query the index:  
 {CODE-TABS}
 {CODE-TAB:csharp:Query indexes_5_1@Indexes/Map.cs /}
 {CODE-TAB:csharp:DocumentQuery indexes_5_2@Indexes/Map.cs /}
@@ -145,10 +150,12 @@ where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-RavenDB gives you the ability to extract field data and to index by it. A different way to achieve our goal will look as follows:
+RavenDB gives you the ability **to extract field data and to index by it**. A different way to achieve our goal will look as follows:  
 
+Index definition:  
 {CODE indexes_1_0@Indexes/Map.cs /}
-
+  
+Query the index:  
 {CODE-TABS}
 {CODE-TAB:csharp:Query indexes_6_1@Indexes/Map.cs /}
 {CODE-TAB:csharp:DocumentQuery indexes_6_2@Indexes/Map.cs /}
@@ -160,10 +167,12 @@ where YearOfBirth = 1963
 
 ## Indexing Nested Data
 
-If your document contains nested data, e.g. `Employee` contains `Address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `Country`:
+If your document contains nested data, e.g. `Employee` contains `Address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `Country`:  
 
+Index definition:  
 {CODE indexes_1_4@Indexes/Map.cs /}
 
+Query the index:  
 {CODE-TABS}
 {CODE-TAB:csharp:Query indexes_7_1@Indexes/Map.cs /}
 {CODE-TAB:csharp:DocumentQuery indexes_7_2@Indexes/Map.cs /}
