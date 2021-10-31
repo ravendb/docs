@@ -26,32 +26,6 @@ const session = store.openSession();
 }
 
 {
-    //region index_2
-    //Didn't understand how to do the addMapsForAll
-    //endregion
-}
-
-{
-    //TODO - Didn't understand how to do it
-    //region javaScriptIndexCreationTask
-    class MyMultiMapCounterIndex extends AbstractCountersIndexCreationTask{
-         constructor() {
-            super();
-
-        }
-    }
-    //endregion
-
-    //TODO - Didn't understand how to do it
-    //region index_3
-    //Didn't understand how to do the sample to MyMultiMapCounterIndex
-    //endregion
-}
-
-{
-    //region syntax
-    let counterNames = counterNamesFor(employee);
-    //endregion
     
     //region index_0
     class Companies_ByCounterNames extends AbstractCountersIndexCreationTask{
@@ -69,7 +43,8 @@ const session = store.openSession();
     //region query1
     const companies = session
         .query({index: "Companies_ByCounterNames"})
-        .containsAny("counterNames", Lists.newArrayList("Likes"))
+        .containsAny("counterNames", ["Likes"])
+    let results = await companies.all();
     //endregion
 }
 
