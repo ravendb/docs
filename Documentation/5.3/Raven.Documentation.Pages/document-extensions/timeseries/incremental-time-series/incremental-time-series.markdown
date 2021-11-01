@@ -1,4 +1,4 @@
-﻿# Querying: Aggregating and Projecting Time Series
+﻿# Time Series: Incremental Time Series
 
 ---
 
