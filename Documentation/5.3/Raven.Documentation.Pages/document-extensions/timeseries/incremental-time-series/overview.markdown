@@ -1,39 +1,22 @@
-﻿# Document Extensions: Time Series Overview
+﻿# Incremental Time Series: Overview
 
 ---
 
 {NOTE: }
 
-* An **Incremental Time Series** is a [time series](../../../document-extensions/timeseries/overview) 
-  whose values can be increased and decreased, behaving much like [counters](../../../document-extensions/counters/overview) 
+* **Incremental Time Series** are [time series](../../../document-extensions/timeseries/overview) 
+  whose values are designated to function as counters, resembling [Counters](../../../document-extensions/counters/overview) 
   embedded in time series entries.  
+  
+* Distributed clients and nodes can increase and decrease incremental time series 
+  values concurrently; the modifications are merged by the cluster without conflict.  
 
-* Multiple clients and cluster nodes can simultaneously modify the same time series entries 
-  without conflict.  
-
-* Multiple modifications to an entry value are accumulated by the cluster 
-  to combine a unified value.  
-  A user can retrieve both the unified value of a time series entry, and 
-  the values that combine it.  
-
-* Incremental Time series can be managed using [API methods](../../document-extensions/timeseries/client-api/overview) 
-  and the [Studio](../../studio/database/document-extensions/time-series).  
+* Incremental Time series can be created and managed using dedicated [API methods](../../../document-extensions/timeseries/incremental-time-series/client-api) 
+  and via [Studio](../../../studio/database/document-extensions/time-series#incremental-time-series).  
 
 * In this page:  
   * [Why Use Incremental Time Series?](../../document-extensions/timeseries/overview#overview)  
   * [Incremental Time Series Entries]()
-
-* In this page:  
-  * [Overview](../../document-extensions/timeseries/overview#overview)  
-     * [RavenDB's Incremental Time Series Implementation](../../document-extensions/timeseries/overview#ravendbs-time-series-implementation)  
-     * [Distributed Incremental Time Series](../../document-extensions/timeseries/overview#distributed-time-series)  
-     * [Time Series Features](../../document-extensions/timeseries/overview#time-series-features)  
-  * [Time Series Data](../../document-extensions/timeseries/overview#time-series-data)  
-  * [Time Series Segments](../../document-extensions/timeseries/overview#time-series-segments)  
-  * [Time Series Entries](../../document-extensions/timeseries/overview#time-series-entries)  
-      * [Timestamps](../../document-extensions/timeseries/overview#timestamps)  
-      * [Values](../../document-extensions/timeseries/overview#values)  
-      * [Names](../../document-extensions/timeseries/overview#tags)  
 
 {NOTE/}
 
@@ -41,8 +24,36 @@
 
 {PANEL: Preview}
 
----
+### Why Use Incremental Time Series?
 
+* **A Time Series That Counts**  
+  Many scenarios require us to continuously update a counter, and yet keep track of 
+  the changes made in its value over time for future reference.  
+  [Counters](../../../document-extensions/counters/overview) let us count, but not keep track of changes.  
+  [Time series](../../../document-extensions/timeseries/overview) let us record changes over time, 
+  but are not designated for counting.  
+  **Incremental time series** allow us to easily achieve both goals, permitting clients to use 
+  entry values as counters and store value modifications in an evolving time series.  
+  <br>
+   Use case:  
+   A web page admin can store the ongoing number of downloads made by visitors, in an 
+   incremental time series. The time series can then be queried for hourly or daily changes 
+   in the number of downloads over the last week, and the results can be plotted in a graph  
+
+* **Parallel Modification**  
+  An incremental time series entry can be modified by multiple clients and cluster nodes without 
+  conflict. Within the entry, the value that arrives from each node is stored under the node's ID.  
+  When users retrieve values from a time series entry, they are permitted to retrieve both the 
+  entry's "Current Value", accumulated from all node values, and the value stored by each node.  
+  <br>
+  Use case:  
+  A real-life scenario that makes good use of this feature is a bunch of traffic cameras 
+  installed in different directions of a large road intersection, counting passing cars.  
+  The cameras are connected to different cluster nodes, that transmit their modifications 
+  simultaneously to the same entries.  
+  An admin can then utilize both the accumulated values, counting all cars passing through 
+  the junction in any given moment, and each camera's data flow for a more detailed look.  
+ 
 ### Time Series -vs- Incremental Time Series
 
 Incremental time series are basically time series, and their principles 
@@ -57,34 +68,6 @@ and in most part identical. Notice, however, a few significant changes.
   tag functionality (e.g. referencing a document) is unavailable.  
 
 ---
-
-### Why Use Incremental Time Series?
-
-* **A Time Series That Counts**  
-  Many scenarios require us to both continuously update a counter **and** keep track of 
-  the changes made in its value over time for future reference.  
-  [Counters](../../../document-extensions/counters/overview) let us count, but not keep track of changes.  
-  [Time series](../../../document-extensions/timeseries/overview) let us record changes over time, 
-  but they are not designated for counting.  
-  Incremental time series allows us to easily achieve both goals, by permitting clients to use 
-  their values as counters **and** storing the values in an evolving time series.  
-
-  An incremental time series can be used, for example, to store the number of downloads made 
-  from a web page. The time series can then be queried for hourly changes in the number of 
-  downloads over the last week, and the results can be plotted in a graph  
-
-* **Parallel Counting**  
-  Incremental time series also permit clients to increase or decrease values (a.k.a. "counters") 
-  of the same time series entry, at the same time, with no conflicts  
-  Multiple values collected from clients at the same time are accumulated, and a user can retrieve 
-  both the accumulated value and the multiple values that combine it.  
-
-  A real-life scenario that makes good use of this feature is a bunch of traffic cameras 
-  installed in different directions of a large road intersection, counting passing cars.  
-  All cameras transmit their findings to the same time series, simultaneously updating 
-  the same entries.  
-  An admin can then utilize both the unified values, counting all cars passing through 
-  the junction in any given moment, and each camera's data flow for a more detailed look.  
 
 {PANEL/}
 
@@ -102,12 +85,6 @@ and in most part identical. Notice, however, a few significant changes.
 
 
 {PANEL: Overview}
-
-#### Distributed Time Series
-
-Distributed clients and nodes can modify time series concurrently; the 
-modifications are merged by the cluster [without conflict](../../document-extensions/timeseries/design#no-conflicts).  
-
 
 * **Time Series Querying and Aggregation**  
       

@@ -321,18 +321,17 @@ To specify a range of time series entries:
 {WARNING: }
 
 1. **Show values per node**  
-    * Enable to show the values sent by each cluster node (see below)  
-      Disable to show a unified value, accumulated from the values sent by all nodes  
-    * The option is disabled here, to show only the accumulated value gathered from all cluster nodes.  
+    * **Disable** to show only the entry's Current Values.  
 2. **Values**  
     * **Current Value**  
-      The accumulated sum of the values sent by all nodes.  
+      The accumulation of all the numbers that cluster nodes have increased *Value #0** by.  
     * **Increment By**  
-      Enter a positive number to increase the value, or a negative number to decrease it.  
-      A number you enter here changes the sum collected from your Studio's cluster node.  
+      Enter a positive number to increase Value #0, or a negative number to decrease it.  
+      The value will be modified only when you click the **Save** button.  
 3. **Add Value**  
    Add an additional value (up to 32 values).  
-   Values you add here change the sum collected from your Studio's cluster node.  
+4. **Save**  
+   Click to save your changes.  
 
 {WARNING/}
 
@@ -343,22 +342,34 @@ To specify a range of time series entries:
 {WARNING: }
 
 1. **Show values per node**  
-    * Enable to show the values sent by each cluster node (see below)  
-      Disable to show a unified value, accumulated from the values sent by all nodes  
-    * The option is enabled here, to show the values sent by all cluster nodes.  
+    * **Enable** to show the current value **and** the number each node increases it by.  
 2. **Values**  
     * **Current Value**  
-      The accumulated sum of the values sent by all nodes.  
+      The accumulation of all the numbers that cluster nodes have increased *Value #0** by.  
     * **Increment By**  
-      Enter a positive number to increase the value, or a negative number to decrease it.  
-      A number you enter here changes the sum collected from your Studio's cluster node.  
+      Enter a positive number to increase Value #0, or a negative number to decrease it.  
+      ![Node Value](images/time-series/edit-entry-value_increment-by.png "Node Value")
+      The value will be modified only when you click the **Save** button.  
+       {NOTE: }
+        The Studio you are running is a cluster node client, like any other.  
+        When you increase an entry value using Studio, you'll see the modification -  
+
+         * In the number the node your Studio manages increases **Value #0** by:  
+           ![Node Value](images/time-series/edit-entry-value_node-value.png "Node Value")
+         * In the accumulated Current Value:  
+           ![Unified Value](images/time-series/edit-entry-value_unified-value.png "Unified Value")
+
+        {NOTE/}
     * **Node A**  
       **Node B**  
       **Node C**  
-      The value sent by each node.  
+      The number each node increases **Value #0** by.  
+      The number shown for each node is in itself an accumulation of all the numbers this node's clients have increased this value by.  
 3. **Add Value**  
    Add an additional value (up to 32 values).  
    Values you add here change the sum collected from your Studio's cluster node.  
+4. **Save**  
+   Click to save your changes.  
 
 {WARNING/}
 
@@ -367,7 +378,9 @@ To specify a range of time series entries:
 
 ## Related articles
 
-**Document Extensins**:  
+**Document Extensions**:  
+[Incremental Time Series: Overview](../../../document-extensions/timeseries/incremental-time-series/overview)  
+[Incremental Time Series: Client API](../../../document-extensions/timeseries/incremental-time-series/client-api)  
 [Time Series Overview](../../../document-extensions/timeseries/overview)  
 [Time Series Queries](../../../document-extensions/timeseries/querying/overview-and-syntax)  
 

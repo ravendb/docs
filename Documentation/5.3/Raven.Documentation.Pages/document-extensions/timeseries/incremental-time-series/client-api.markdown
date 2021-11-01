@@ -1,4 +1,4 @@
-﻿# Time Series: Incremental Time Series
+﻿# Incremental Time Series: Client API
 
 ---
 

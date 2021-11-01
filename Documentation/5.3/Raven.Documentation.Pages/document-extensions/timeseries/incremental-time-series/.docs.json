@@ -6,8 +6,8 @@
         "Mappings": []
     },
     {
-        "Path": "incremental-time-series.markdown",
-        "Name": "Incremental Time Series",
+        "Path": "client-api.markdown",
+        "Name": "Client API",
         "DiscussionId": "f23052eb-3c53-4984-a2cd-03a0ff9835d3",
         "Mappings": []
     }
