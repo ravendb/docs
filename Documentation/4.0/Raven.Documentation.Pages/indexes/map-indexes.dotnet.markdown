@@ -97,12 +97,12 @@ The part you should pay attention to is `docs.Employees`. This syntax indicates 
 Since each index contains a LINQ function, you can combine multiple fields into one.
 
 ### Example I
-Index definition with LINQ-syntax:  
+Index definition:  
 {CODE indexes_7@Indexes/Map.cs /}
   
 Query the index:  
 {CODE-TABS}
-{CODE-TAB:csharp:LINQ-syntax indexes_8@Indexes/Map.cs /}
+{CODE-TAB:csharp:Query indexes_8@Indexes/Map.cs /}
 {CODE-TAB:csharp:DocumentQuery indexes_9@Indexes/Map.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFullName'

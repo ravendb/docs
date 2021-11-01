@@ -23,14 +23,14 @@ Let's create an index that will help us search for `Employees` by their `FirstNa
 - First, let's create an index called `Employees/ByFirstAndLastName`
 
 {CODE-TABS}
-{CODE-TAB:java:LINQ indexes_1@Indexes/Map.java /}
+{CODE-TAB:java:LINQ-syntax indexes_1@Indexes/Map.java /}
 {CODE-TAB:java:JavaScipt-syntax javaScriptindexes_1@Indexes/JavaScript.java /}
 {CODE-TABS/}
 
 - The next step is to create the indexing function itself. This is done by setting the `map` field with mapping function in a **parameterless constructor**.
 
 {CODE-TABS}
-{CODE-TAB:java:LINQ indexes_2@Indexes/Map.java /}
+{CODE-TAB:java:LINQ-syntax indexes_2@Indexes/Map.java /}
 {CODE-TAB:java:JavaScript-syntax javaScriptindexes_2@Indexes/JavaScript.java /}
 {CODE-TABS/}
 
@@ -115,9 +115,9 @@ Since each index contains a LINQ function, you can combine multiple fields into 
 
 ### Example I
 
-Define the index:  
+Index definition:  
 {CODE-TABS}
-{CODE-TAB:java:LINQ indexes_7@Indexes/Map.java /}
+{CODE-TAB:java:LINQ-syntax indexes_7@Indexes/Map.java /}
 {CODE-TAB:java:JavaScript-syntax javaScriptindexes_7@Indexes/JavaScript.java /}
 {CODE-TABS/}
 
@@ -140,7 +140,7 @@ You can read more about analyzers and `Full Text Search` [here](../indexes/using
 
 {INFO/}
 
-Define the index:  
+Index definition:  
 {CODE-TABS}
 {CODE-TAB:java:LINQ-syntax indexes_1_6@Indexes/Map.java /}
 {CODE-TAB:java:JavaScript-syntax javaScriptindexes_1_6@Indexes/JavaScript.java /}
@@ -176,7 +176,7 @@ where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
 
 RavenDB gives you the ability **to extract field data and to index by it**. A different way to achieve our goal will look as follows:  
 
-Index defintion
+Index defintion:
 {CODE-TABS}
 {CODE-TAB:java:LINQ-syntax indexes_1_0@Indexes/Map.java /}
 {CODE-TAB:java:JavaScript-syntax javaScriptindexes_1_0@Indexes/JavaScript.java /}
