@@ -21,6 +21,7 @@ using Raven.Client.Documents.Indexes.TimeSeries;
 using Raven.Client.Documents.Operations.Indexes;
 using Raven.Client.ServerWide.Operations;
 using Raven.Client.ServerWide;
+using Raven.Client.Documents.Session.Loaders;
 
 namespace Documentation.Samples.DocumentExtensions.TimeSeries
 {
@@ -30,6 +31,84 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
         {
         }
 
+        public void CreateIncrementalTimeSeries()
+        {
+            using (var store = new DocumentStore())
+            {
+                var baseline = DateTime.Today;
+
+                using (var session = store.OpenSession())
+                {
+                    session.Store(new User { Name = "webstore" }, "companies/webstore");
+                    var ts = session.IncrementalTimeSeriesFor("companies/webstore", "INC:Downloads");
+                    ts.Increment(baseline, new double[] { 1, 0 });
+                    session.SaveChanges();
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region incremental_create-incremental-time-series
+                    var ts = session.IncrementalTimeSeriesFor("companies/webstore", "INC:Downloads");
+                    ts.Increment(baseline.AddMinutes(1), new double[] { 10, -10, 0, 0 });
+                    session.SaveChanges();
+                    #endregion
+                }
+
+                // Get time series HeartRates' time points data
+                using (var session = store.OpenSession())
+                {
+
+                    #region incremental_get-time-series
+                    // Get all time series entries
+                    TimeSeriesEntry[] val = session.IncrementalTimeSeriesFor("companies/webstore", "INC:Downloads")
+                    .Get(DateTime.MinValue, DateTime.MaxValue);
+                    #endregion
+
+                }
+
+                #region incremental_delete-single-entry
+                // Delete a single entry
+                using (var session = store.OpenSession())
+                {
+                    session.IncrementalTimeSeriesFor<Downloads>("companies/webstore")
+                        .Delete(baseline.AddMinutes(1));
+
+                    session.SaveChanges();
+                }
+                #endregion
+
+                #region incremental_delete-entries-range
+                // Delete a range of entries from the time series
+                using (var session = store.OpenSession())
+                {
+                    session.IncrementalTimeSeriesFor("companies/webstore", "INC:Downloads")
+                        .Delete(baseline.AddDays(0), baseline.AddDays(9));
+
+                    session.SaveChanges();
+                }
+                #endregion
+
+                #region incremental_GetTimeSeriesOperation
+                var pageSize = 100;
+                var values = store.Operations
+                                  .Send(new GetTimeSeriesOperation("users/ayende",
+                                   "INC:Downloads", start: 0, pageSize: pageSize / 2, 
+                                   returnFullResults: true));
+
+                // we get 50 unique entries but we read 100 entries from the segment
+                // so next call we should start from position 101: numberOfUniqueEntries + skippedResults 
+                var nextStart = values.Entries.Length + values.SkippedResults;
+
+                values = store.Operations
+                                  .Send(new GetTimeSeriesOperation("users/ayende",
+                                   "INC:Downloads", start: (int)nextStart,
+                                   pageSize: pageSize / 2, returnFullResults: true));
+                #endregion
+
+            }
+        }
+        
+        
         public DocumentStore getDocumentStore()
         {
             DocumentStore store = new DocumentStore
@@ -2000,17 +2079,6 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     #endregion
                 }
 
-                using (var session = store.OpenSession())
-                {
-                    #region TS_DocQuery_4
-                    var query = session.Advanced.DocumentQuery<User>()
-                        .SelectTimeSeries(builder => builder
-                            .From("Heartrate")
-                            .LoadByTag<Monitor>()
-                            .Where((entry, monitor) => entry.Value <= monitor.Accuracy)
-                            .ToList());
-                    #endregion
-                }
             }
         }
 
@@ -2486,132 +2554,6 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
         }
 
 
-        // Query an index
-        [Fact]
-        public async Task IndexQuery()
-        {
-            using (var store = getDocumentStore())
-            {
-                // Create a document
-                using (var session = store.OpenSession())
-                {
-                    var employee1 = new Employee
-                    {
-                        FirstName = "John"
-                    };
-                    session.Store(employee1);
-
-                    var employee2 = new Employee
-                    {
-                        FirstName = "Mia"
-                    };
-                    session.Store(employee2);
-
-                    var employee3 = new Employee
-                    {
-                        FirstName = "Emil"
-                    };
-                    session.Store(employee3);
-
-                    session.SaveChanges();
-                }
-
-                // get employees Id list
-                List<string> employeesIdList;
-                using (var session = store.OpenSession())
-                {
-                    employeesIdList = session
-                        .Query<Employee>()
-                        .Select(e => e.Id)
-                        .ToList();
-                }
-
-                // Append each employee a week (168 hours) of random HeartRate values 
-                var baseTime = new DateTime(2020, 5, 17);
-                Random randomValues = new Random();
-                using (var session = store.OpenSession())
-                {
-                    for (var emp = 0; emp < employeesIdList.Count; emp++)
-                    {
-                        for (var tse = 0; tse < 168; tse++)
-                        {
-                            session.TimeSeriesFor(employeesIdList[emp], "HeartRates")
-                            .Append(baseTime.AddHours(tse),
-                                    (68 + Math.Round(19 * randomValues.NextDouble())),
-                                    "watches/fitbit");
-                        }
-                    }
-                    session.SaveChanges();
-                }
-
-                store.Maintenance.Send(new StopIndexingOperation());
-
-                var timeSeriesIndex = new SimpleIndex();
-                var indexDefinition = timeSeriesIndex.CreateIndexDefinition();
-
-                timeSeriesIndex.Execute(store);
-
-                store.Maintenance.Send(new StartIndexingOperation());
-
-                //WaitForIndexing(store);
-
-                #region ts_region_Index-TS-Queries-1-session-Query
-                // Query time-series index using session.Query
-                using (var session = store.OpenSession())
-                {
-                    List<SimpleIndex.Result> results =
-                        session.Query<SimpleIndex.Result, SimpleIndex>()
-                        .ToList();
-                }
-                #endregion
-
-                #region ts_region_Index-TS-Queries-2-session-Query-with-Linq
-                // Enhance the query using LINQ expressions
-                var chosenDate = new DateTime(2020, 5, 20);
-                using (var session = store.OpenSession())
-                {
-                    List<SimpleIndex.Result> results =
-                        session.Query<SimpleIndex.Result, SimpleIndex>()
-                        .Where(w => w.Date < chosenDate)
-                        .OrderBy(o => o.HeartBeat)
-                        .ToList();
-                }
-                #endregion
-
-                #region ts_region_Index-TS-Queries-3-DocumentQuery
-                // Query time-series index using DocumentQuery
-                using (var session = store.OpenSession())
-                {
-                    List<SimpleIndex.Result> results =
-                        session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
-                        .ToList();
-                }
-                #endregion
-
-                #region ts_region_Index-TS-Queries-4-DocumentQuery-with-Linq
-                // Query time-series index using DocumentQuery with Linq-like expressions
-                using (var session = store.OpenSession())
-                {
-                    List<SimpleIndex.Result> results =
-                        session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
-                        .WhereEquals("Tag", "watches/fitbit")
-                        .ToList();
-                }
-                #endregion
-
-                #region ts_region_Index-TS-Queries-5-session-Query-Async
-                // Time-series async index query using session.Query
-                using (var session = store.OpenAsyncSession())
-                {
-                    List<SimpleIndex.Result> results =
-                        await session.Query<SimpleIndex.Result, SimpleIndex>()
-                        .ToListAsync();
-                }
-                #endregion
-
-
-            }
-        }
 
         #region ts_region_Index-TS-Queries-6-Index-Definition-And-Results-Class
         public class SimpleIndex : AbstractTimeSeriesIndexCreationTask<Employee>
@@ -2646,6 +2588,11 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
         private struct HeartRate
         {
             [TimeSeriesValue(0)] public double HeartRateMeasure;
+        }
+
+        private struct Downloads
+        {
+            [TimeSeriesValue(0)] public double DownloadsCount;
         }
 
         #region Custom-Data-Type-1
@@ -2724,229 +2671,59 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
     public class SampleTimeSeriesDefinitions
     {
-        #region RavenQuery-TimeSeries-Definition-With-Range
-        public static ITimeSeriesQueryable TimeSeries(object documentInstance,
-            string name, DateTime from, DateTime to)
-        #endregion
-        {
-            throw new NotSupportedException("This method is here for strongly type support of server side call during Linq queries and should never be directly called");
-        }
-
-        #region RavenQuery-TimeSeries-Definition-Without-Range
-        public static ITimeSeriesQueryable TimeSeries(object documentInstance,
-            string name)
-        #endregion
-        {
-            throw new NotSupportedException("This method is here for strongly type support of server side call during Linq queries and should never be directly called");
-        }
-
-        #region TimeSeriesEntry-Definition
-        public class TimeSeriesEntry
-        {
-            public DateTime Timestamp { get; set; }
-            public double[] Values { get; set; }
-            public string Tag { get; set; }
-            public bool IsRollup { get; set; }
-
-            public double Value;
-
-            //..
-        }
-        #endregion
-
         private interface Foo
         {
-            #region TimeSeriesFor-Append-definition-double
-            // Append an entry with a single value (double)
-            void Append(DateTime timestamp, double value, string tag = null);
+            #region incremental_declaration_increment-values-array-at-provided-timestamp
+            // Increment a time series entry's array of values at the provided timestamp
+            void Increment(DateTime timestamp, IEnumerable<double> values);
             #endregion
 
-            #region TimeSeriesFor-Append-definition-inum
-            // Append an entry with multiple values (IEnumerable)
-            void Append(DateTime timestamp, IEnumerable<double> values, string tag = null);
+            #region incremental_declaration_increment-values-array-at-current-time
+            // Increment a time series entry's array of values at the current time
+            void Increment(IEnumerable<double> values);
             #endregion
 
-            #region TimeSeriesFor-Delete-definition-single-timepoint
-            // Delete a single time-series entry
+            #region incremental_declaration_increment-value-at-provided-timestamp
+            // Increment an entry value at the provided timestamp
+            void Increment(DateTime timestamp, double value);
+            #endregion
+
+            #region incremental_declaration_increment-value-at-current-time
+            // Increment an entry value at the current time
+            void Increment(double value);
+            #endregion
+
+            #region incremental_declaration_session-get-time-series
+            // Return time series values for the provided range
+            TimeSeriesEntry[] Get(DateTime? from = null, DateTime? to = null, int start = 0, int pageSize = int.MaxValue);
+            #endregion
+
+            #region incremental_delete-values-range-or-all-values
+            // Delete incremental time series values range from .. to,
+            // or, if values are omitted, delete the whole series.
+            void Delete(DateTime? from = null, DateTime? to = null);
+            #endregion
+
+            #region incremental_delete-value-at-timestamp
+            // Delete the entry value at the specified time stamp
             void Delete(DateTime at);
             #endregion
 
-            #region TimeSeriesFor-Delete-definition-range-of-timepoints
-            // Delete a range of time-series entries
-            void Delete(DateTime from, DateTime to);
-            #endregion
-
-            #region TimeSeriesFor-Get-definition
-            TimeSeriesEntry[] Get(DateTime? from = null, DateTime? to = null,
-                int start = 0, int pageSize = int.MaxValue);
-            #endregion
-
-            private interface ISessionDocumentTypedTimeSeries<TValues> : ISessionDocumentTypedAppendTimeSeriesBase<TValues>, ISessionDocumentDeleteTimeSeriesBase where TValues : new()
-            {
-                #region TimeSeriesFor-Get-Named-Values
-                //The stongly-typed API is used, to address time series values by name.
-                TimeSeriesEntry<TValues>[] Get(DateTime? from = null, DateTime? to = null,
-                int start = 0, int pageSize = int.MaxValue);
-                #endregion
-            }
-
-            internal interface IIncludeBuilder<T>
-            {
-            }
-            #region Load-definition
-            T Load<T>(string id, Action<IIncludeBuilder<T>> includes);
-            #endregion
-
-            public interface ITimeSeriesIncludeBuilder<T, out TBuilder>
-            {
-                #region IncludeTimeSeries-definition
-                TBuilder IncludeTimeSeries(string name, DateTime? from = null, DateTime? to = null);
-                #endregion
-            }
-
-            #region RawQuery-definition
-            IRawDocumentQuery<T> RawQuery<T>(string query);
-            #endregion
-
-            private class PatchCommandData
-            {
-                #region PatchCommandData-definition
-                public PatchCommandData(string id, string changeVector,
-                    PatchRequest patch, PatchRequest patchIfMissing)
-                #endregion
-                { }
-            }
-
-            #region PatchRequest-definition
-            private class PatchRequest
-            {
-                // Patching script
-                public string Script { get; set; }
-                // Values that can be used by the patching script
-                public Dictionary<string, object> Values { get; set; }
-                //...
-            }
-            #endregion
-
-            private class TimeSeriesBatchOperation
-            {
-                #region TimeSeriesBatchOperation-definition
-                public TimeSeriesBatchOperation(string documentId, TimeSeriesOperation operation)
-                #endregion
-                { }
-            }
-
             public class GetTimeSeriesOperation
             {
-                #region GetTimeSeriesOperation-Definition
-                public GetTimeSeriesOperation(string docId, string timeseries, DateTime? @from = null,
-                    DateTime? to = null, int start = 0, int pageSize = int.MaxValue)
-                #endregion
-                { }
-            }
-
-            #region TimeSeriesRangeResult-class
-            public class TimeSeriesRangeResult
-            {
-                public DateTime From, To;
-                public TimeSeriesEntry[] Entries;
-                public long? TotalResults;
-
-                //..
-            }
-            #endregion
-
-            public class GetMultipleTimeSeriesOperation
-            {
-                #region GetMultipleTimeSeriesOperation-Definition
-                public GetMultipleTimeSeriesOperation(string docId,
-                    IEnumerable<TimeSeriesRange> ranges, int start = 0, int pageSize = int.MaxValue)
-                #endregion
-                { }
-            }
-
-            #region TimeSeriesRange-class
-            public class TimeSeriesRange
-            {
-                public string Name;
-                public DateTime From, To;
-            }
-            #endregion
-
-            #region TimeSeriesDetails-class
-            public class TimeSeriesDetails
-            {
-                public string Id { get; set; }
-                public Dictionary<string, List<TimeSeriesRangeResult>> Values { get; set; }
-            }
-            #endregion
-
-            private class PatchOperation
-            {
-                #region PatchOperation-Definition
-                public PatchOperation(string id, string changeVector,
-                    PatchRequest patch, PatchRequest patchIfMissing = null,
-                        bool skipPatchIfChangeVectorMismatch = false)
-                #endregion
-                { }
-            }
-
-            private class PatchByQueryOperation
-            {
-                #region PatchByQueryOperation-Definition
-                public PatchByQueryOperation(IndexQuery queryToUpdate,
-                    QueryOperationOptions options = null)
-                #endregion
-                { }
-            }
-
-            private class TimeSeriesBulkInsert
-            {
-                #region Append-Operation-Definition-1
-                // Each appended entry has a single value.
-                public void Append(DateTime timestamp, double value, string tag = null)
-                #endregion
-                { }
-
-                #region Append-Operation-Definition-2
-                // Each appended entry has multiple values.
-                public void Append(DateTime timestamp,
-                    ICollection<double> values, string tag = null)
+                #region incremental_declaration_GetTimeSeriesOperation
+                public GetTimeSeriesOperation(
+                    string docId, string timeseries, DateTime? @from = null,
+                    DateTime? to = null, int start = 0, int pageSize = int.MaxValue, 
+                    bool returnFullResults = false)
                 #endregion
                 { }
             }
 
 
-            private class TimeSeriesOperations
-            {
-                #region Register-Definition-1
-                public void Register<TCollection, TTimeSeriesEntry>(string name = null)
-                #endregion
-                { }
-                #region Register-Definition-2
-                public void Register<TCollection>(string name, string[] valueNames)
-                #endregion
-                { }
-                #region Register-Definition-3
-                public void Register(string collection, string name, string[] valueNames)
-                #endregion
-                { }
-            }
-
-            #region Query-definition
-            IRavenQueryable<T> Query<T>(string indexName = null,
-                    string collectionName = null, bool isMapReduce = false);
-            #endregion
         }
     }
 
-    //Watch class for TS Document Query documentation
-    #region TS_DocQuery_class
-    public class Monitor
-    {
-        public double Accuracy { get; set; }
-    }
-    #endregion
 }
 
 

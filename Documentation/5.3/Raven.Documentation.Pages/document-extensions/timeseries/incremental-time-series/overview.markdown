@@ -1,5 +1,13 @@
 ﻿# Incremental Time Series: Overview
 
+add: naming convention ("inc:")
+add: incremental time series and rollups - handling them as ordinary time series after rollup
+add: a negative value will decrease the value.
+
+session get - behaves like normal time series get, reference there
+session delete - behaves like normal time series get, reference there
+
+
 ---
 
 {NOTE: }
