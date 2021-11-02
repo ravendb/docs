@@ -66,16 +66,16 @@ the values stored in entries by each node.
 * Call `store.Operations.Send` to execute the operation.  
 * Entries are returned into a `dictionary of `TimeSeriesRangeResult` classes.  
 * Calculate where the next `Get` operation needs to start.  
-   {NOTE: }
-     * A `SkippedResults` value is returned by the `Get` operation, with the number 
-       of entries that have actually been read.  
-     * This is because each fetched node value is considered an entry, and the 
-       number of node values within each entry is unknown when you start the operation.  
-       Each entry may contain two node values for example, that are considered entries 
-       by the operation.  
-     * The place to begin your next `Get` operation, is:  
-       the **length of unique entries** returned by the operation + the **`SkippedResults` value**.  
+   {NOTE: To calculate where the next page should start:}
+     * The value you set in `pageSize`, counts the first value of each entry.  
+       But each entry may have additional per-node values.  
+       The per-node values are counted by the `Get` operation, and returned in a `SkippedResults` value.  
+     * To find where the next page starts, add:  
+        * `start` (your current starting point)  
+        * `pageSize`  
+        * `SkippedResults`  
    {NOTE/}
+* Run the next `Get` operation with your calculation result as its `start` entry.  
 
 ---
 
