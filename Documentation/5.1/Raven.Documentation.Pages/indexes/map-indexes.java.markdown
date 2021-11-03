@@ -9,7 +9,7 @@ These **mapping functions** are **LINQ-based functions** or  **JavaScript functi
 You can:
 
 - [index single fields](../indexes/map-indexes#indexing-single-fields)
-- [combined multiple fields](../indexes/map-indexes#combining-multiple-fields-together) together
+- [combine multiple fields together](../indexes/map-indexes#combining-multiple-fields-together) 
 - [index partial field data](../indexes/map-indexes#indexing-partial-field-data)
 - [index nested data](../indexes/map-indexes#indexing-nested-data)
 - [index fields from related documents](../indexes/indexing-related-documents)
@@ -23,14 +23,14 @@ Let's create an index that will help us search for `Employees` by their `FirstNa
 - First, let's create an index called `Employees/ByFirstAndLastName`
 
 {CODE-TABS}
-{CODE-TAB:java:LINQ indexes_1@Indexes/Map.java /}
+{CODE-TAB:java:LINQ-syntax indexes_1@Indexes/Map.java /}
 {CODE-TAB:java:JavaScipt-syntax javaScriptindexes_1@Indexes/JavaScript.java /}
 {CODE-TABS/}
 
 - The next step is to create the indexing function itself. This is done by setting the `map` field with mapping function in a **parameterless constructor**.
 
 {CODE-TABS}
-{CODE-TAB:java indexes_2@Indexes/Map.java /}
+{CODE-TAB:java:LINQ-syntax indexes_2@Indexes/Map.java /}
 {CODE-TAB:java:JavaScript-syntax javaScriptindexes_2@Indexes/JavaScript.java /}
 {CODE-TABS/}
 
@@ -115,11 +115,13 @@ Since each index contains a LINQ function, you can combine multiple fields into 
 
 ### Example I
 
+Index definition:  
 {CODE-TABS}
-{CODE-TAB:java indexes_7@Indexes/Map.java /}
+{CODE-TAB:java:LINQ-syntax indexes_7@Indexes/Map.java /}
 {CODE-TAB:java:JavaScript-syntax javaScriptindexes_7@Indexes/JavaScript.java /}
 {CODE-TABS/}
 
+Query the index:  
 {CODE-TABS}
 {CODE-TAB:java:Query indexes_8@Indexes/Map.java /}
 {CODE-TAB-BLOCK:sql:RQL}
@@ -138,11 +140,13 @@ You can read more about analyzers and `Full Text Search` [here](../indexes/using
 
 {INFO/}
 
+Index definition:  
 {CODE-TABS}
-{CODE-TAB:java:Query-syntax indexes_1_6@Indexes/Map.java /}
+{CODE-TAB:java:LINQ-syntax indexes_1_6@Indexes/Map.java /}
 {CODE-TAB:java:JavaScript-syntax javaScriptindexes_1_6@Indexes/JavaScript.java /}
 {CODE-TABS/}
 
+Query the index:  
 {CODE-TABS}
 {CODE-TAB:java:Query indexes_1_7@Indexes/Map.java /}
 {CODE-TAB-BLOCK:sql:RQL}
@@ -153,13 +157,15 @@ where search(Query, 'John Doe')
 
 ## Indexing Partial Field Data
 
-Imagine that you would like to return all employees that were born in a specific year. You can do it by indexing `birthday` from `Employee` in the following way:
+Imagine that you would like to return all employees that were born in a specific year. You can do it by indexing `birthday` from `Employee` in the following way:  
 
+Index definition:  
 {CODE-TABS}
 {CODE-TAB:java:Query-syntax indexes_1_2@Indexes/Map.java /}
 {CODE-TAB:java:JavaScript-syntax javaScriptindexes_1_2@Indexes/JavaScript.java /}
 {CODE-TABS/}
 
+Query the index:  
 {CODE-TABS}
 {CODE-TAB:java:Query indexes_5_1@Indexes/Map.java /}
 {CODE-TAB-BLOCK:sql:RQL}
@@ -168,13 +174,15 @@ where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-RavenDB gives you the ability to extract field data and to index by it. A different way to achieve our goal will look as follows:
+RavenDB gives you the ability **to extract field data and to index by it**. A different way to achieve our goal will look as follows:  
 
+Index defintion:
 {CODE-TABS}
-{CODE-TAB:java:Query-syntax indexes_1_0@Indexes/Map.java /}
+{CODE-TAB:java:LINQ-syntax indexes_1_0@Indexes/Map.java /}
 {CODE-TAB:java:JavaScript-syntax javaScriptindexes_1_0@Indexes/JavaScript.java /}
 {CODE-TABS/}
 
+Query the index:  
 {CODE-TABS}
 {CODE-TAB:java:Query indexes_6_1@Indexes/Map.java /}
 {CODE-TAB-BLOCK:sql:RQL}
@@ -185,13 +193,15 @@ where YearOfBirth = 1963
 
 ## Indexing Nested Data
 
-If your document contains nested data, e.g. `Employee` contains `Address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `Country`:
+If your document contains nested data, e.g. `Employee` contains `Address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `Country`:  
 
+Index definition:  
 {CODE-TABS}
-{CODE-TAB:java:Query-syntax indexes_1_4@Indexes/Map.java /}
+{CODE-TAB:java:LINQ-syntax indexes_1_4@Indexes/Map.java /}
 {CODE-TAB:java:JavaScript-syntax javaScriptindexes_1_4@Indexes/JavaScript.java /}
 {CODE-TABS/}
 
+Query the index:  
 {CODE-TABS}
 {CODE-TAB:java:Query indexes_7_1@Indexes/Map.java /}
 {CODE-TAB-BLOCK:sql:RQL}
