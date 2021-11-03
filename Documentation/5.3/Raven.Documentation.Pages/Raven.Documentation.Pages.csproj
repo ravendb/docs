@@ -8,4 +8,8 @@
     <PackageReference Include="RavenDB.Client" Version="5.2.4-nightly-20210930-0301" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="start\What%27s New\" />
+  </ItemGroup>
+
 </Project>
