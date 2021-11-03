@@ -35,6 +35,11 @@
         "Mappings": []
     },
     {
+        "Path": "/integrations",
+        "Name": "Integrations",
+        "Mappings": []
+    },
+    {
         "Path": "/glossary",
         "Name": "Glossary",
         "Mappings": []
