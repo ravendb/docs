@@ -21,7 +21,7 @@ const store = new DocumentStore();
 const session = store.openSession();
 
 //region loading_entities_1_0
-session.load(id, [documentType], [callback]);
+session.load(id, [documentType]);
 //endregion
 
 //region loading_entities_2_0
@@ -29,22 +29,22 @@ session.include(path);
 //endregion
 
 //region loading_entities_3_0
-session.load(idsArray, [documentType], [callback]); 
-session.load(idsArray, [options], [callback]);
+session.load(idsArray, [documentType]);
+session.load(idsArray, [options]);
 //endregion
 
 //region loading_entities_4_0
-session.advanced.loadStartingWith(idPrefix, [options], [callback]);
+session.advanced.loadStartingWith(idPrefix, [options]);
 
-session.advanced.loadStartingWithIntoStream(idPrefix, output, [options], [callback]);
+session.advanced.loadStartingWithIntoStream(idPrefix, output, [options]);
 //endregion
 
 //region loading_entities_5_0
 // stream query results
-session.stream(query, [statsCallback], [callback]);          
+session.stream(query, [statsCallback]);
 
 // stream documents with ID starting with
-session.stream(idPrefix, [options], [callback]);          
+session.stream(idPrefix, [options]);
 //endregion
 
 //region loading_entities_6_0
