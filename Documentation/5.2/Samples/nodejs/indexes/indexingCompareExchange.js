@@ -26,10 +26,13 @@ const session = store.openSession();
         constructor() {
             super();
 
-            this.map = `docs.HotelRooms.Select(room => new { 
-                             RoomID = room.RoomID,     
-                             Guests = cmpxchg(room.RoomID)
-                 })`;
+            this.map = "map('HotelRooms', function (room) {\n" +
+                "    var guests = cmpxchg(room.RoomID);\n" +
+                "    return {\n" +
+                "       RoomID: room.RoomID,\n" +
+                "       Guests: guests\n" +
+                "    };\n" +
+                "})"
         }
     }
     //endregion
@@ -37,7 +40,7 @@ const session = store.openSession();
 
 {
     //region query_2
-    const VIPRooms = await session
+    const VIPRooms = session
         .advanced.rawQuery<HotelRoom>(
         "   from Hotelrooms as room\n"+
         "   where room.Guests == cmpxchg('VIP')"
