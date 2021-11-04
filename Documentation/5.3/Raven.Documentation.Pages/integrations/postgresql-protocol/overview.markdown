@@ -1,4 +1,4 @@
-﻿# PostgreSQL Clients: Overview
+﻿# PostgreSQL Protocol: Overview
 
 * RavenDB implements the PostgreSQL protocol, allowing applications and libraries that 
   use PostgreSQL, e.g. [Power BI](../../integrations/postgresql-protocol/power-bi), to 

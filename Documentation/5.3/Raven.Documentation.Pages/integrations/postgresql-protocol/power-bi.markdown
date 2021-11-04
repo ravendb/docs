@@ -1,4 +1,4 @@
-﻿# PostgreSQL Clients: Power BI
+﻿# PostgreSQL Protocol: Power BI
 
 * The [Power BI](https://en.wikipedia.org/wiki/Microsoft_Power_BI) Desktop and 
   Online services Can use RavenDB as a PostgreSQL server and retrieve data from it.  
