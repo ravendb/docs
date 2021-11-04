@@ -6,7 +6,7 @@
 {NOTE: }
 
 * The **Integrations view** allows you to define credentials, that clients 
-  of [S/W packages bundled with RavenDB](../../../integrations/postgresql-clients/overview) 
+  of [software packages bundled with RavenDB](../../../integrations/postgresql-protocol/overview) 
   will be required to provide in order to access RavenDB.  
 
 * Providing the credentials will only be required of clients, if RavenDB 
@@ -58,5 +58,5 @@
 
 ### Integrations
 
-- [PostgreSQL Clients - Overview](../../../integrations/postgresql-clients/overview)  
-- [PostgreSQL Clients - Power BI](../../../integrations/postgresql-clients/power-bi)  
+- [PostgreSQL Protocol - Overview](../../../integrations/postgresql-protocol/overview)  
+- [PostgreSQL Protocol - Power BI](../../../integrations/postgresql-protocol/power-bi)  

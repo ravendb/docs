@@ -1,11 +1,11 @@
 ﻿# PostgreSQL Clients: Overview
 
-* RavenDB integrates a PostgreSQL connector, allowing PostgreSQL clients like 
-  [Power BI](../../integrations/postgresql-clients/power-bi) to retrieve data 
-  from the database.  
+* RavenDB implements the PostgreSQL protocol, allowing applications and libraries that 
+  use PostgreSQL, e.g. [Power BI](../../integrations/postgresql-protocol/power-bi), to 
+  retrieve data from the database.  
 
 * To use RavenDB as a PostgreSQL server you need -  
-   * a [license](../../studio/server/license-management) that enables PostgreSQL.  
+   * a [license](../../studio/server/license-management) that enables the PostgreSQL Protocol.  
    * To explicitly enable PostgreSQL in your [settings](../../server/configuration/configuration-options).  
 
 * [Installing](../../start/installation/setup-wizard) RavenDB as 
@@ -17,11 +17,11 @@
 {NOTE: }
 
 * In this page:  
-  * [Enabling PostgreSQL, and Additional Settings](../../integrations/postgresql-clients/overview#enabling-postgresql,-and-additional-settings)  
-     * [License](../../integrations/postgresql-clients/overview#license)  
-     * [Settings](../../integrations/postgresql-clients/overview#settings)  
-     * [PostgreSQL Port](../../integrations/postgresql-clients/overview#postgresql-port)  
-  * [Security](../../integrations/postgresql-clients/overview#security)  
+  * [Enabling PostgreSQL, and Additional Settings](../../integrations/postgresql-protocol/overview#enabling-postgresql,-and-additional-settings)  
+     * [License](../../integrations/postgresql-protocol/overview#license)  
+     * [Settings](../../integrations/postgresql-protocol/overview#settings)  
+     * [PostgreSQL Port](../../integrations/postgresql-protocol/overview#postgresql-port)  
+  * [Security](../../integrations/postgresql-protocol/overview#security)  
 {NOTE/}
 
 ---
@@ -42,26 +42,41 @@
 ### Settings
 
 * PostgreSQL must be explicitly enabled in your [settings](../../server/configuration/configuration-options#json).  
-* Add this line to your server's `settings.json` file to enable PostgreSQL:  
-  **`"Integrations.PostgreSQL.Enabled": true`**
+  Add this line to your server's `settings.json` file to enable the PostgreSQL protocol:  
+  {CODE-BLOCK:json}
+"Integrations.PostgreSQL.Enabled": true
+  {CODE-BLOCK/}
+* If your license enables **PostgreSQL Protocol Support** but not 
+  **Power BI Support**, enable RavenDB's [Experimental Features](../../server/configuration/core-configuration#features.availability) 
+  by adding this line to your server's `settings.json` file:  
+  {CODE-BLOCK:json}
+"Features.Availability": "Experimental"
+  {CODE-BLOCK/}  
+  If your license allows both features, you do **not** need to enable Experimental Features.  
 
 ---
 
 ### PostgreSQL Port
 
-* To connect RavenDB, youur lients need not only its URL but also its PostgreSQL **Port** number.  
+* To connect RavenDB, your clients need not only its URL but also its PostgreSQL **Port** number.  
   By default, the port number is *5433*.  
 * To use another port, add the following line to your settings.json file, with a port number 
   of your choice:  
-  **`"Integrations.PostgreSQL.Port": 5433`**
+  {CODE-BLOCK:json}
+"Integrations.PostgreSQL.Port": 5433
+     {CODE-BLOCK/}
 
 {PANEL/}
 
 {PANEL: Security}
 
 Allowing just any client to connect your database (via PostgreSQL or otherwise) 
-without authentication is risky, and should in general be avoided. To allow access 
-only for authorized clients -  
+without authentication is risky, and should in general be avoided.  
+{WARNING: }
+If RavenDB is not set as a secure server, it will require no authentication over the PostgreSQL protocol.  
+{WARNING/}
+
+To allow access only for authorized clients -  
 
 * Set RavenDB as a [Secure Server](../../server/security/overview).  
   This will allow RavenDB to authenticate PostgreSQL clients, in addition 
@@ -75,7 +90,7 @@ only for authorized clients -
 ## Related articles
 
 **Integrations**  
-[Integrations: Power BI](../../integrations/postgresql-clients/power-bi)  
+[Integrations: Power BI](../../integrations/postgresql-protocol/power-bi)  
 
 **Studio**  
 [Studio: Integrations and Credentials](../../studio/database/settings/integrations)  
