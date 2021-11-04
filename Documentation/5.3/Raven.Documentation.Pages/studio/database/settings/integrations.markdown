@@ -5,7 +5,7 @@
 
 {NOTE: }
 
-* The **Integrations view** allows you to define credentials, that clients 
+* The **Integrations View** allows you to define credentials, that clients 
   of [software packages bundled with RavenDB](../../../integrations/postgresql-protocol/overview) 
   will be required to provide in order to access RavenDB.  
 
