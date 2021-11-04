@@ -1,4 +1,9 @@
-import { AbstractIndexCreationTask, DocumentStore, IndexDefinition, PutIndexesOperation } from "ravendb";
+import {
+    AbstractJavaScriptIndexCreationTask,
+    DocumentStore,
+    IndexDefinition,
+    PutIndexesOperation
+} from "ravendb";
 
 const store = new DocumentStore();
 const session = store.openSession();
@@ -23,7 +28,7 @@ class Author {
 //endregion
 
 //region indexing_related_documents_2
-class Products_ByCategoryName extends AbstractIndexCreationTask {
+class Products_ByCategoryName extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
 
@@ -35,7 +40,7 @@ class Products_ByCategoryName extends AbstractIndexCreationTask {
 //endregion
 
 //region indexing_related_documents_5
-class Authors_ByNameAndBooks extends AbstractIndexCreationTask {
+class Authors_ByNameAndBooks extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
 
@@ -56,7 +61,7 @@ async function example() {
         indexDefinition.maps = new Set([
             `from product in products    
              select new {        
-                 CategoryName = LoadDocument(product.Category, ""Categories"").name    
+                 CategoryName = LoadDocument(product.Category, "Categories").name    
             }`]);
 
         await store.maintenance.send(new PutIndexesOperation(indexDefinition));
@@ -83,7 +88,7 @@ async function example() {
              select new 
              {          
                  name = author.name,          
-                 books = author.bookIds.Select(x => LoadDocument(x, ""Books"").id)      
+                 books = author.bookIds.Select(x => LoadDocument(x, "Books").id)      
              }`
         ]);
 
