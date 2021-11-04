@@ -71,6 +71,9 @@ namespace Raven.Documentation.Parser.Data
         [Prefix("migration")]
         Migration,
 
+        [Prefix("integrations")]
+        Integrations,
+
         [Prefix("cloud")]
         Cloud,
 
