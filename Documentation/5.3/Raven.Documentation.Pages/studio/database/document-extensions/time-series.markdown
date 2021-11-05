@@ -3,7 +3,8 @@
 
 {NOTE: }
 
-* **Time series** are sets of numeric data, associated with timestamps and ordered by time.  
+* **Time series** are sets of numeric data items, associated with timestamps and ordered 
+  by time.  
 * The studio interface allows you to edit, query and index time series data, as well as 
   view it as a list of entries or as a graph.  
 * An **Incremental Time Series** is a special type of time series that allows you to 
@@ -37,8 +38,7 @@
 1. To view a document's time series, open its [document view](../../../studio/database/documents/document-view) 
    and click the time series tab on the right.  
 2. Click 'Add Time Series' to create a new time series [see more below](../../../studio/database/document-extensions/time-series#create-new-time-series-by-creating-its-first-entry).  
-3. Hover to view comments when available.  
-4. Click to view and modify time series data.  
+3. Click to view and modify time series data.  
 
 {WARNING/}
 
