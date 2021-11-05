@@ -61,14 +61,15 @@
 
 {PANEL: Usage Flow}
 
-* Open a session.  
-* Create an instance of `IncrementalTimeSeriesFor`.  
-    * Either pass `IncrementalTimeSeriesFor` an explicit document ID,  
+* Open a session  
+* Create an instance of `IncrementalTimeSeriesFor` and pass it:  
+    * An explicit document ID,  
       -or-  
-      Pass it an [entity tracked by the session](../../../../../client-api/session/loading-entities), 
+      An [entity tracked by the session](../../../../../client-api/session/loading-entities), 
       e.g. a document object returned from [session.Query](../../../../../client-api/session/querying/how-to-query) 
       or from [session.Load](../../../../../client-api/session/loading-entities#load).  
-    * Pass `IncrementalTimeSeriesFor` the time series name.  
+    * The time series name.  
+      The name **must** begin with "INC:" (can be upper or lower case) to identify the time series as incremental.  
 * Call `IncrementalTimeSeriesFor.Get`.  
 
 {PANEL/}

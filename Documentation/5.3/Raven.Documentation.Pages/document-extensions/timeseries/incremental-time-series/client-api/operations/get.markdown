@@ -19,8 +19,7 @@
 
 {PANEL: `GetTimeSeriesOperation`}
 
-Use `GetTimeSeriesOperation` to retrieve incremental time series entries, including 
-the values stored in entries by each node.  
+Use `GetTimeSeriesOperation` to retrieve the distinct values stored per-node for the requested entries.  
 
 ---
 
@@ -39,10 +38,33 @@ the values stored in entries by each node.
     | `to` (optional) | `DateTime?` | Range end  <br> Default: `DateTime.Max` ||
     | `start` | `int` | Start of first Page |
     | `pageSize` | `int` | Size of each page |
-    | `returnFullResults` | `bool` | If true, retrieve node values from entries |
+    | `returnFullResults` | `bool` | If true, retrieve the values stored per-node |
      
 
 * **Return Value**: **`TimeSeriesRangeResult<TimeSeriesEntry>`**  
+  {CODE-BLOCK:csharp}
+public class TimeSeriesRangeResult 
+    {
+        public DateTime From, To;
+        public TimeSeriesEntry[] Entries;
+        
+        // The actual number of values
+        public long? TotalResults; 
+        
+        // Helps to calculate next start
+        public int? SkippedResults; 
+  {CODE-BLOCK/}
+  {CODE-BLOCK:csharp}
+public class TimeSeriesEntry 
+    {
+        public DateTime Timestamp { get; set; }
+        public double[] Values { get; set; }
+        public string Tag { get; set; }
+        public bool IsRollup { get; set; }
+        
+        // The nodes distribution per each entry
+        public Dictionary<string, double[]> NodeValues { get; set; } 
+   {CODE-BLOCK/}
 
    * Requesting a time series that doesn't exist will return `null`.  
    * Requesting an entries range that doesn't exist will return a `TimeSeriesRangeResult` object 
@@ -64,16 +86,16 @@ the values stored in entries by each node.
    * the number of results you want to retrieve, as the value of `pageSize`.  
    * **true** as the value of `returnFullResults`, if you want to retrieve node values from time series entries.  
 * Call `store.Operations.Send` to execute the operation.  
-* Entries are returned into a `dictionary of `TimeSeriesRangeResult` classes.  
+* Entries are returned into a dictionary of `TimeSeriesRangeResult` classes.  
 * Calculate where the next `Get` operation needs to start.  
    {NOTE: To calculate where the next page should start:}
      * The value you set in `pageSize`, counts the first value of each entry.  
        But each entry may have additional per-node values.  
        The per-node values are counted by the `Get` operation, and returned in a `SkippedResults` value.  
-     * To find where the next page starts, add:  
-        * `start` (your current starting point)  
-        * `pageSize`  
-        * `SkippedResults`  
+     * To find where the next page starts, add (see code sample below):  
+        * Your current starting point  
+        * The returned `Entries.Length`  
+        * The returned `SkippedResults`  
    {NOTE/}
 * Run the next `Get` operation with your calculation result as its `start` entry.  
 
@@ -81,8 +103,10 @@ the values stored in entries by each node.
 
 ### Usage Sample
 
-* In this sample we retrieve 50 entries, calculate where the next `Get` operation should start, 
-  and run another `Get` operation starting there.  
+* In this sample we retrieve 50 entries from an incremental time series that contains 
+  two per-node values in each entry.  
+  We then calculate where the next `Get` operation should start, and run another `Get` 
+  operation starting there.  
   {CODE incremental_GetTimeSeriesOperation@DocumentExtensions\TimeSeries\IncrementalTimeSeriesTests.cs /}  
 
 {PANEL/}

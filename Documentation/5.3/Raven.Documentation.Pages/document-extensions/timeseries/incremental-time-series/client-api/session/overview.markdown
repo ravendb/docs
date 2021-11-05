@@ -5,15 +5,17 @@
 
 {NOTE: }
 
-* Incremental Time Series can be created and managed using a set of [session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work) 
+* Incremental Time Series can be created and managed using a set of 
+  [session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work) 
   API methods, whose functionality is mostly identical to that of 
   [non-incremental time series session methods](../../../../../document-extensions/timeseries/client-api/overview#available-time-series-session-methods).  
 
-* A significant difference between the client APIs of non-incremental and incremental time series 
-  is the lack of an [Append](../../../../../document-extensions/timeseries/client-api/session/append) 
-  method for the latter, since values are not appended but incremented.  
-  An [Increment](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment) 
-  method is available instead, for the creation and modification if incremental time series.  
+* The incremental time series uses the 
+  [Increment](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment) 
+  method to -  
+   * Create a new time series,  
+   * Create a new time series entry,  
+   * and Increase a value by some delta.  
 
 * In this page:  
   * [Session API Methods](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/overview#session-api-methods)  
@@ -37,13 +39,15 @@ and [Delete](../../../../../document-extensions/timeseries/incremental-time-seri
 To use it -  
 
 * Open a session  
-* Create an instance of `IncrementalTimeSeriesFor`  
-    * Either pass `IncrementalTimeSeriesFor` an explicit document ID,  
+* Create an instance of `IncrementalTimeSeriesFor` and pass it:  
+    * An explicit document ID,  
       -or-  
-      Pass it an [entity tracked by the session](../../../../../client-api/session/loading-entities), e.g. a document object returned from [session.Query](../../../../../client-api/session/querying/how-to-query) or from [session.Load](../../../../../client-api/session/loading-entities#load).  
-    * Pass `IncrementalTimeSeriesFor` the time series name.  
-      The name **must** begin with "inc:" to identify the time series as incremental.  
-* Call a `IncrementalTimeSeriesFor` method  
+      An [entity tracked by the session](../../../../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.Query](../../../../../client-api/session/querying/how-to-query) 
+      or from [session.Load](../../../../../client-api/session/loading-entities#load).  
+    * The time series name.  
+      The name **must** begin with "INC:" (can be upper or lower case) to identify the time series as incremental.  
+* Call an `IncrementalTimeSeriesFor` method  
 * Call `session.SaveChanges` for the action to take place.  
 
 

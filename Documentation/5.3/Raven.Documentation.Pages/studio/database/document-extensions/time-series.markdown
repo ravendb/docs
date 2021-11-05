@@ -7,7 +7,7 @@
 * The studio interface allows you to edit, query and index time series data, as well as 
   view it as a list of entries or as a graph.  
 * An **Incremental Time Series** is a special type of time series that allows you to 
-  handle time series values as counters, increasing and decreasing them at will.  
+  handle time series values as counters.  
   Read more about incremental time series [here](../../../document-extensions/timeseries/incremental-time-series/overview), 
   and learn how to define them through Studio [below](../../../studio/database/document-extensions/time-series#incremental-time-series).  
 
@@ -36,7 +36,7 @@
 
 1. To view a document's time series, open its [document view](../../../studio/database/documents/document-view) 
    and click the time series tab on the right.  
-2. Click to create a new time series, [see more below](../../../studio/database/document-extensions/time-series#create-new-time-series-by-creating-the-first-entry).  
+2. Click 'Add Time Series' to create a new time series [see more below](../../../studio/database/document-extensions/time-series#create-new-time-series-by-creating-its-first-entry).  
 3. Hover to view comments when available.  
 4. Click to view and modify time series data.  
 
@@ -44,7 +44,7 @@
 
 {INFO: Info}
 
-* A. Displays the time series':  
+* A. Time series info:  
   * B. **Name**  
     {NOTE: }
     [Incremental Time Series](../../../studio/database/document-extensions/time-series#incremental-time-series) 
@@ -73,7 +73,7 @@
 
 {INFO: Info}
 
-1. Displays time series entries' data, including -  
+1. Time series entry info:  
     * Timestamp  
     * Numerical data (1-32 `double` values)  
     * Optional tag `string`
@@ -104,8 +104,7 @@
       (Learn now to create an incremental time series [here](../../../studio/database/document-extensions/time-series#incremental-time-series))  
 2. **Time Series Name**  
     * Enter time series' name.  
-    * Incremental time series names must start with **INC:** (in either higher 
-      or lower case characters, as you prefer).  
+    * Name cannot start with 'INC:' as this prefix is reserved for incremental time series.  
 3. **Entry Timestamp**  
     * Select a [timestamp](../../../document-extensions/timeseries/overview#timestamps) for the new entry.  
 4. **Tag** (Optional)  
@@ -260,14 +259,19 @@ To specify a range of time series entries:
   by clients, behaving much like [counters](../../../document-extensions/counters/overview) 
   embedded in time series entries.  
 
-* The management of incremental time series via Studio is in most part identical to 
-  that of non-incremental time series, and is described above in detail.  
-  Two significant differences between time series and incremental time series, are -  
-   * Incremental time series lack tags.  
-   * The values sent to incremental time series from each node are kept, 
-     and can be viewed and edited separately from values sent by other nodes.  
+* Similar to Counters, an incremental-time-series value can be increased/decreased by some 
+  delta on any node.  
+  Each node manages and stores its own accumulated local changes per value.  
 
-* Learn about incremental time series [here](../../../document-extensions/timeseries/incremental-time-series/overview).  
+* Simultaneous updates to the same value from multiple nodes do not create any conflict.  
+  The value's total content is simply the accumulation of that value's content stored 
+  per node in the cluster for the same timestamp.  
+
+* This is opposed to the regular-time-series where a value that is modified is replicated 
+  to other nodes, and the highest value from all nodes takes over the existing value's content 
+  for the same timestamp.  
+
+* learn more about incremental-time-series [here](../../../document-extensions/timeseries/incremental-time-series/overview).  
 
 ---
 
@@ -289,10 +293,10 @@ To specify a range of time series entries:
 {WARNING: }
 
 1. **Time Series Type**  
-    * **Enable** to create an Incremental time series.  
+    * Enable to create an Incremental time series.  
 2. **Time Series Name**  
     * Enter time series' name.  
-    * Incremental time series names **must** start with **INC:** (in either higher 
+    * Incremental time series names **must** start with **INC:** (in either upper 
       or lower case characters, as you prefer).  
 3. **Entry Timestamp**  
     * Select a [timestamp](../../../document-extensions/timeseries/overview#timestamps) for the new entry.  
@@ -321,13 +325,16 @@ To specify a range of time series entries:
 {WARNING: }
 
 1. **Show values per node**  
-    * **Disable** to show only the entry's Current Values.  
+    * Enable to view the value's contents distribution per cluster node (see below).  
+      When disabled, only the current value (the value's total content) is visible.  
 2. **Values**  
-    * **Current Value**  
-      The accumulation of all the numbers that cluster nodes have increased *Value #0** by.  
+    * **Total Value**  
+      This is the value's total contents, which is the accumulation of this value's contents from all cluster nodes.  
     * **Increment By**  
-      Enter a positive number to increase Value #0, or a negative number to decrease it.  
-      The value will be modified only when you click the **Save** button.  
+      The number you enter here is the **delta** that will be added to the value's 
+      content on the current node.  
+      Enter a positive number to increase the value or a negative number to decrease it.  
+      The change in the value's total content will be visible after you click the Save button.  
 3. **Add Value**  
    Add an additional value (up to 32 values).  
 4. **Save**  
@@ -342,29 +349,17 @@ To specify a range of time series entries:
 {WARNING: }
 
 1. **Show values per node**  
-    * **Enable** to show the current value **and** the number each node increases it by.  
+    * **Enable** to view the value's contents distribution per cluster node.  
 2. **Values**  
-    * **Current Value**  
-      The accumulation of all the numbers that cluster nodes have increased *Value #0** by.  
+    * **Total Value**  
+      This is the value's total contents, which is the accumulation of this value's contents from all cluster nodes.  
     * **Increment By**  
-      Enter a positive number to increase Value #0, or a negative number to decrease it.  
-      ![Node Value](images/time-series/edit-entry-value_increment-by.png "Node Value")
+      The number you enter here is the **delta** that will be added to the value's 
+      content on the current node.  
+      Enter a positive number to increase the value or a negative number to decrease it.  
+      After clicking **Save**, both the current node and the total value will be updated 
+      with the new accumulated value.  
       The value will be modified only when you click the **Save** button.  
-       {NOTE: }
-        The Studio you are running is a cluster node client, like any other.  
-        When you increase an entry value using Studio, you'll see the modification -  
-
-         * In the number the node your Studio manages increases **Value #0** by:  
-           ![Node Value](images/time-series/edit-entry-value_node-value.png "Node Value")
-         * In the accumulated Current Value:  
-           ![Unified Value](images/time-series/edit-entry-value_unified-value.png "Unified Value")
-
-        {NOTE/}
-    * **Node A**  
-      **Node B**  
-      **Node C**  
-      The number each node increases **Value #0** by.  
-      The number shown for each node is in itself an accumulation of all the numbers this node's clients have increased this value by.  
 3. **Add Value**  
    Add an additional value (up to 32 values).  
    Values you add here change the sum collected from your Studio's cluster node.  
