@@ -89,10 +89,13 @@ public class TimeSeriesEntry
 * Entries are returned into a dictionary of `TimeSeriesRangeResult` classes.  
 * Calculate where the next `Get` operation needs to start.  
    {NOTE: To calculate where the next page should start:}
-     * The value you set in `pageSize`, counts the first value of each entry.  
-       But each entry may have additional per-node values.  
-       The per-node values are counted by the `Get` operation, and returned in a `SkippedResults` value.  
-     * To find where the next page starts, add (see code sample below):  
+
+    * The value you set in pageSize indicates the location of the first entry to retrieve.
+    * More than one entry can exist for the same timestamp since when different nodes increment 
+      a value for the same timestamp, the entries stored on those nodes will have the same 
+      timestamp, resulting in 'duplicate' entries.  
+    * The number of these duplicated entries is returned in the SkippedResults  
+    * To find where the next page starts, add (see code sample below):  
         * Your current starting point  
         * The returned `Entries.Length`  
         * The returned `SkippedResults`  

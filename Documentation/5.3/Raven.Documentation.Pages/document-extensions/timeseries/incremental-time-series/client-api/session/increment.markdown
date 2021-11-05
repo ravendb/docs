@@ -48,13 +48,13 @@
    * Increment a time series entry's array of values at the current time.  
      {CODE incremental_declaration_increment-values-array-at-current-time@DocumentExtensions\TimeSeries\IncrementalTimeSeriesTests.cs /}
    * Increment an entry value at the provided timestamp.  
+     (If the entry exists and has more than one value, only the first 
+     value in its list will be incremented by the passed value.)  
      {CODE incremental_declaration_increment-value-at-provided-timestamp@DocumentExtensions\TimeSeries\IncrementalTimeSeriesTests.cs /}
-     If the entry exists and has more than one value, only the first 
-     value in its list will be incremented by the passed value.  
    * Increment an entry value at the current time.  
+     (If the entry exists and has more than one value, only the first 
+     value in its list will be incremented by the passed value.)  
      {CODE incremental_declaration_increment-value-at-current-time@DocumentExtensions\TimeSeries\IncrementalTimeSeriesTests.cs /}
-     If the entry exists and has more than one value, only the first 
-     value in its list will be incremented by the passed value.  
 
 * **Parameters**  
 
