@@ -48,7 +48,7 @@
   * B. **Name**  
     {NOTE: }
     [Incremental Time Series](../../../studio/database/document-extensions/time-series#incremental-time-series) 
-    names always begin with "**INC:**"  
+    names always begin with `INC:`  
     E.g. **INC: Downloads** in the first time series listed above.  
     {NOTE/}
   * C. **Number of entries**  
@@ -347,9 +347,9 @@ To specify a range of time series entries:
 {WARNING: }
 
 1. **Show values per node**  
-    * **Enable** to view the value's contents distribution per cluster node.  
+    * Enable to view the value's contents distribution per cluster node.  
 2. **Values**  
-    * **Total Value**  
+    * **Current Value**  
       This is the value's total contents, which is the accumulation of this value's contents from all cluster nodes.  
     * **Increment By**  
       The number you enter here is the **delta** that will be added to the value's 
@@ -360,7 +360,6 @@ To specify a range of time series entries:
       The value will be modified only when you click the **Save** button.  
 3. **Add Value**  
    Add an additional value (up to 32 values).  
-   Values you add here change the sum collected from your Studio's cluster node.  
 4. **Save**  
    Click to save your changes.  
 

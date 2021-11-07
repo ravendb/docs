@@ -50,7 +50,7 @@
 
 * **Parallel Modification**  
   * An incremental time series entry can be **modified by multiple clients without conflict**.  
-  * A **node handling a request to incrment a value** stores the value's new contents locally.  
+  * A node handling a request to increment a value stores the value's new contents locally.  
     This contents replicates to all other nodes but does not override this value's contents on 
     the other nodes.  
     Instead, **per timestamp, each node stores an incremental time series entry composed of 
