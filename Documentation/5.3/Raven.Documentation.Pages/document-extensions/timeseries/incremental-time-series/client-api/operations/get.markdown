@@ -38,7 +38,7 @@ Use `GetTimeSeriesOperation` to retrieve the distinct values stored per-node for
     | `to` (optional) | `DateTime?` | Range end  <br> Default: `DateTime.Max` ||
     | `start` | `int` | Start of first Page |
     | `pageSize` | `int` | Size of each page |
-    | `returnFullResults` | `bool` | If true, retrieve the values stored per-node |
+    | `returnFullResults` | `bool` | If true, retrieve the values stored per-node. <br> If false, return `null ` in `TimeSeriesEntry.NodeValues`. |
      
 
 * **Return Value**: **`TimeSeriesRangeResult<TimeSeriesEntry>`**  

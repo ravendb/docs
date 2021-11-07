@@ -31,7 +31,7 @@
 
 ### `IncrementalTimeSeriesFor` Methods
 
-The `IncrementalTimeSeriesFor` class gathers useful incremental time series 
+The `IncrementalTimeSeriesFor` class provides useful incremental time series 
 session API methods, including [Increment](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment), 
 [Get](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/get), 
 and [Delete](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/delete).  

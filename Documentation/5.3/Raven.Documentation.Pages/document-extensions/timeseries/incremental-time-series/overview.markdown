@@ -19,8 +19,7 @@
   and via [Studio](../../../studio/database/document-extensions/time-series#incremental-time-series).  
 
 * In this page:  
-  * [Overview](../../../document-extensions/timeseries/incremental-time-series/overview#overview)  
-     * [What are Incremental Time Series and Why Use Them](../../../document-extensions/timeseries/incremental-time-series/overview#what-are-incremental-time-series-and-why-use-them)  
+  * [What are Incremental Time Series and Why Use Them](../../../document-extensions/timeseries/incremental-time-series/overview#what-are-incremental-time-series-and-why-use-them)  
   * [Incremental Time Series -vs- Non-incremental Time Series](../../../document-extensions/timeseries/incremental-time-series/overview#incremental-time-series--vs--non-incremental-time-series)  
   * [Incremental Time Series Structure](../../../document-extensions/timeseries/incremental-time-series/overview#incremental-time-series-structure)  
 
@@ -30,9 +29,7 @@
 
 ---
 
-{PANEL: Overview}
-
-### What are Incremental Time Series and Why Use Them
+{PANEL: What are Incremental Time Series and Why Use Them}
 
 * **A Time Series That Counts**  
   Many scenarios require us to continuously update a counter, and yet keep track of 
@@ -52,22 +49,24 @@
    {NOTE/}
 
 * **Parallel Modification**  
-  An incremental time series entry can be **modified by multiple clients without conflict**.  
-  A node handling a request for incrementing a value stores the value's new content locally.  
-  This content replicates to all other nodes but does not override this value's content on the other nodes.  
-  Instead, per timestamp, each node stores an incremental time series entry that is composed of the value's 
-  contents per node.  
-  When querying a time series, you can retrieve the total value's contents, which is accumulated from
-  the per-node values, or get the distinct values per-node.  
-   {NOTE: Use Case}
-   A real-life scenario that makes good use of this feature is a bunch of traffic cameras 
-   installed in different directions of a large road intersection, counting passing cars.  
-   Each camera reports to its own cluster node, and the cluster collects the data into 
-   a single time series. Each time series entry contains data from all nodes.  
-   An admin can then query both the accumulated values, counting all cars passing through 
-   the junction at any given moment, and each camera's data separately for a detailed look 
-   at its side of the junction.  
-   {NOTE/}
+  * An incremental time series entry can be **modified by multiple clients without conflict**.  
+  * A **node handling a request to incrment a value** stores the value's new contents locally.  
+    This contents replicates to all other nodes but does not override this value's contents on 
+    the other nodes.  
+    Instead, **per timestamp, each node stores an incremental time series entry composed of 
+    the value's contents per node**.  
+  * When querying a time series, you can retrieve the **total** value contents, 
+    accumulated from the per-node values, or get the **distinct** values per-node.  
+
+     {NOTE: Use Case}
+     A real-life scenario that makes good use of this feature is a bunch of traffic cameras 
+     installed in different directions of a large road intersection, counting passing cars.  
+     Each camera reports to its own cluster node, and the cluster collects the data into 
+     a single time series. Each time series entry contains data from all nodes.  
+     An admin can then query both the accumulated values, counting all cars passing through 
+     the junction at any given moment, and each camera's data separately for a detailed look 
+     at its side of the junction.  
+     {NOTE/}
 
 
 {PANEL/}
@@ -90,17 +89,17 @@
 * **Modified values & Replication**  
    * Non-incremental:  
      A value that is modified on one node is replicated to other nodes and will 
-     replace the existing value's content on the other nodes.  
+     replace the existing value's contents on the other nodes.  
      Upon concurrent updates for the same timestamp, the highest value from all 
-     nodes takes over the value's content.  
+     nodes takes over the value's contents.  
    * Incremental:  
-     A request to increase a value contains the delta by which the value is to be 
+     A request to increase a value contains the **delta** by which the value is to be 
      increased or decreased.  
      A node handling such request stores the value's new contents locally.  
      This contents replicates to all other nodes but doesn't override this value's 
      contents on the other nodes.  
-     Instead, per timestamp, each node stores an incremental time series entry 
-     that is composed of the value's contents per node.  
+     Instead, **per timestamp, each node stores an incremental time series entry 
+     that is composed of the value's contents per node**.  
 
 * **Tag per Entry**  
    * Non-incremental:  
@@ -127,15 +126,16 @@
 * The basic structure and behavior of incremental time series are similar 
   to those of [non-incremental time series](../../../document-extensions/timeseries/overview#time-series-data).  
 * An incremental time series is attached to a document just like a non-incremental 
-  time series is. In Studio, incremental time series are even accessed through the 
+  time series is.  
+  In Studio, incremental time series are even accessed through the 
   familiar [Time Series View](../../..//studio/database/document-extensions/time-series#creating-a-new-incremental-time-series-by-creating-its-first-entry).  
 * An incremental time series is divided into segments and entries the same way 
   a non-incremental time series is.  
+* The main structural difference is incremental time series' capacity to store multiple 
+  per-node values in a single entry and manage them separately.  
 * Each entry is assigned a single unique timestamp.  
   However, when different nodes update the same value at the same timestamp, the entries 
   stored on those nodes will be assigned with the same timestamp.  
-* The main structural difference is incremental time series' capacity to store multiple 
-  per-node values in a single entry and manage them separately.  
 * The number of values that can be stored per incremental time series entry 
   remains 32, but since each entry contains all values stored on all nodes the 
   entry's size may be much larger.  

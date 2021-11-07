@@ -89,10 +89,10 @@
 
 * Increment an array of values in an incremental time series entry.  
   {CODE incremental_create-incremental-time-series@DocumentExtensions\TimeSeries\IncrementalTimeSeriesTests.cs /}
+    * If the time series doesn't exist, it will be created with this first entry.  
     * If the entry doesn't exist, it will be created with the provided values.  
     * If the entry exists, its values will be increased by the provided values.  
        * a negative number will decrease the current value.  
-    * If the time series doesn't exist, it will be created with this first entry.  
 
 {PANEL/}
 

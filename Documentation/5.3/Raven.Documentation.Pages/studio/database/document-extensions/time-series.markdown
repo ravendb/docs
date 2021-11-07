@@ -255,23 +255,21 @@ To specify a range of time series entries:
 
 {PANEL: Incremental Time Series}
 
-* **Incremental Time Series** are time series whose values can be increased and decreased 
-  by clients, behaving much like [counters](../../../document-extensions/counters/overview) 
-  embedded in time series entries.  
+* **Incremental Time Series** are time series whose values 
+  behave as [counters](../../../document-extensions/counters/overview).  
 
 * Similar to Counters, an incremental-time-series value can be increased/decreased by some 
   delta on any node.  
   Each node manages and stores its own accumulated local changes per value.  
 
 * Simultaneous updates to the same value from multiple nodes do not create any conflict.  
-  The value's total content is simply the accumulation of that value's content stored 
+  The value's total contents is simply the accumulation of that value's contents stored 
   per node in the cluster for the same timestamp.  
 
-* This is opposed to the regular-time-series where a value that is modified is replicated 
-  to other nodes, and the highest value from all nodes takes over the existing value's content 
-  for the same timestamp.  
+* This is opposed to non-incremental time series, where a value that is modified 
+  is intended to replace the existing value's contents on all other nodes.  
 
-* learn more about incremental-time-series [here](../../../document-extensions/timeseries/incremental-time-series/overview).  
+* learn more in [Incremental Time Series -vs- Non-incremental Time Series](../../../document-extensions/timeseries/incremental-time-series/overview#incremental-time-series--vs--non-incremental-time-series).  
 
 ---
 
@@ -297,7 +295,7 @@ To specify a range of time series entries:
 2. **Time Series Name**  
     * Enter time series' name.  
     * Incremental time series names **must** start with **INC:** (in either upper 
-      or lower case characters, as you prefer).  
+      or lower case characters).  
 3. **Entry Timestamp**  
     * Select a [timestamp](../../../document-extensions/timeseries/overview#timestamps) for the new entry.  
 4. **Values**  
@@ -326,15 +324,15 @@ To specify a range of time series entries:
 
 1. **Show values per node**  
     * Enable to view the value's contents distribution per cluster node (see below).  
-      When disabled, only the current value (the value's total content) is visible.  
+      When disabled, only the current value (the value's total contents) is visible.  
 2. **Values**  
-    * **Total Value**  
+    * **Current Value**  
       This is the value's total contents, which is the accumulation of this value's contents from all cluster nodes.  
     * **Increment By**  
       The number you enter here is the **delta** that will be added to the value's 
-      content on the current node.  
+      contents on the current node.  
       Enter a positive number to increase the value or a negative number to decrease it.  
-      The change in the value's total content will be visible after you click the Save button.  
+      The change in the value's total contents will be visible after you click the Save button.  
 3. **Add Value**  
    Add an additional value (up to 32 values).  
 4. **Save**  
@@ -355,7 +353,7 @@ To specify a range of time series entries:
       This is the value's total contents, which is the accumulation of this value's contents from all cluster nodes.  
     * **Increment By**  
       The number you enter here is the **delta** that will be added to the value's 
-      content on the current node.  
+      contents on the current node.  
       Enter a positive number to increase the value or a negative number to decrease it.  
       After clicking **Save**, both the current node and the total value will be updated 
       with the new accumulated value.  
