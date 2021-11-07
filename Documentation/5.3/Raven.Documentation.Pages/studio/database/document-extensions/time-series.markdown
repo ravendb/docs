@@ -324,9 +324,9 @@ To specify a range of time series entries:
 
 1. **Show values per node**  
     * Enable to view the value's contents distribution per cluster node (see below).  
-      When disabled, only the current value (the value's total contents) is visible.  
+      When disabled, only the total value (the value's total contents) is visible.  
 2. **Values**  
-    * **Current Value**  
+    * **Total Value**  
       This is the value's total contents, which is the accumulation of this value's contents from all cluster nodes.  
     * **Increment By**  
       The number you enter here is the **delta** that will be added to the value's 
@@ -349,7 +349,7 @@ To specify a range of time series entries:
 1. **Show values per node**  
     * Enable to view the value's contents distribution per cluster node.  
 2. **Values**  
-    * **Current Value**  
+    * **Total Value**  
       This is the value's total contents, which is the accumulation of this value's contents from all cluster nodes.  
     * **Increment By**  
       The number you enter here is the **delta** that will be added to the value's 
