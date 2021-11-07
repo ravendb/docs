@@ -18,19 +18,12 @@ as when documents are modified in the indexed collection(s).
 
 ---
 
-{PANEL: Usage}
-
-When creating an index using `AbstractIndexCreationTask`, use the method 
-`loadCompareExchangeValue()` to load a compare exchange value by its key.  
-
-{CODE:nodejs methods@indexes/indexingCompareExchange.js /}
-
-For javascript indexes, use the method `cmpxchg(<key>)`.
+{PANEL: Syntax}
+For javascript indexes, use the method `Cmpxchg(<key>)`.
 
 | Parameter | Type | Description |
 | - | - | - |
 | **key** | `string` | The key of a particular compare exchange value. |
-| **keys** | `collection<string>` | The keys of multiple compare exchange values. |
 <br/>
 ### Examples
 

@@ -84,7 +84,7 @@ async function examples() {
 
     {
         //region projections_7
-        const results = session.advanced
+        const results = await session.advanced
             .rawQuery(
                 `from Employees as e 
                 select { 
@@ -112,7 +112,6 @@ async function examples() {
             .whereEquals("Name", "Norske Meierier")
             .ofType(Product)
             .all();
-        assert.ok(results[0] instanceof Product);
         //endregion
     }
 

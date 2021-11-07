@@ -121,7 +121,7 @@ class Product {}
     //endregion
 
     //region Increment-definition
-    const increment = store.openSession();
+    const session = store.openSession();
     session.countersFor("documentid").increment("likes", 100);
     ////endregion
 }
