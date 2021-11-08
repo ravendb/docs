@@ -1,0 +1,103 @@
+﻿# Data Subscriptions: Concurrent Subscriptions
+
+---
+
+{NOTE: }
+
+* With **Concurrent Subscriptions**, multiple data subscription workers 
+  are able to connect a common subscription simultaneously.  
+* Different concurrent workers are given different document batches 
+  to process.  
+* With multiple concurrent workers that process different document 
+  batches in parallel, the consumption of a subscription's contents 
+  can be greatly accelerated.  
+* Documents that were assigned to workers whose connection has ended 
+  unexpectedly, can be [reassigned](../../client-api/data-subscriptions/concurrent-subscriptions#connection-failure) 
+  by the server to available workers.  
+
+  [what is the limit? the max number of connections, same as for non-concurrent subscriptions.  
+  the limitation is the number of connections allowed to the system.  ]
+
+
+* In this page:  
+   * [Defining a Concurrent Worket](../../client-api/data-subscriptions/concurrent-subscriptions#defining-concurrent-workers)  
+   * [Dropping a Connection](../../client-api/data-subscriptions/concurrent-subscriptions#dropping-a-connection)  
+   * [Triggering Actions By Connections](../../client-api/data-subscriptions/concurrent-subscriptions#triggering-actions-by-connections)  
+   * [Connection Failure](../../client-api/data-subscriptions/concurrent-subscriptions#connection-failure)  
+
+{NOTE/}
+
+---
+
+{PANEL: Defining Concurrent Workers}
+
+Subscription workers are defined similarly to other workers, except for their 
+[strategy](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay) 
+that is set as [SubscriptionOpeningStrategy.Concurrent](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-subscription-strategy).  
+
+* To define a concurrent worker:  
+   * Create the worker using [GetSubscriptionWorker](../../client-api/data-subscriptions/consumption/api-overview#subscription-worker-generation).  
+   * Pass it a [SubscriptionWorkerOptions](../../client-api/data-subscriptions/consumption/api-overview#subscriptionworkeroptions) instance.  
+   * Set the strategy to `SubscriptionOpeningStrategy.Concurrent`.  
+
+* Usage:  
+   * Define two concurrent workers  
+     {CODE conSub_defineWorkers@ClientApi\DataSubscriptions\ConcurrentSubscriptions.cs /}
+   * Run both workers  
+     {CODE conSub_runWorkers@ClientApi\DataSubscriptions\ConcurrentSubscriptions.cs /}
+
+{PANEL/}
+
+
+{PANEL: Dropping a Connection}
+
+* Use `Subscriptions.DropSubscriptionWorker` to **forcefully disconnect** 
+  any concurrent worker from the subscription it is connected to.  
+    {CODE-BLOCK: csharp}
+    public void DropSubscriptionWorker<T>(SubscriptionWorker<T> worker, string database = null)
+    {CODE-BLOCK/}
+
+* Usage:  
+  {CODE conSub_dropWorker@ClientApi\DataSubscriptions\ConcurrentSubscriptions.cs /}
+
+
+{PANEL/}
+
+
+{PANEL: Triggering Actions By Connections}
+
+* The `OnEstablishedSubscriptionConnection()` method is triggered each 
+  time a concurrent worker establishes a connection. You can embed in it 
+  any code that you want to execute whenever a connection is made.  
+    {CODE-BLOCK: csharp}
+    internal event Action OnEstablishedSubscriptionConnection;
+    {CODE-BLOCK/}
+
+* Usage:  
+  {CODE conSub_OnEstablishedSubscriptionConnection@ClientApi\DataSubscriptions\ConcurrentSubscriptions.cs /}
+
+{PANEL/}
+
+
+{PANEL: Connection Failure}
+
+* When a concurrent worker's connection ends unexpectedly, the 
+  server may assign the documents this worker has been processing 
+  to any available worker.  
+* A worker that reconnects after a connection failure, will be 
+  assigned with a **new** batch of documents, that is **not** 
+  guaranteed to contain the same documents it been processing 
+  before disconnecting.  
+* It may therefore happen that documents will be processed more 
+  than once: First by worker/s that disconnected unexpectedly, 
+  and then by workers they have been reassigned to.  
+
+{PANEL/}
+
+## Related Articles
+
+**Data Subscriptions**:
+
+- [How to Create a Data Subscription](../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
+- [How to Consume a Data Subscription](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
+- [Maintenance Operations](../../client-api/data-subscriptions/advanced-topics/maintenance-operations)
