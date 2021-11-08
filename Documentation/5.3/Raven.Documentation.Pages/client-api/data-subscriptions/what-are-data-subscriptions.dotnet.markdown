@@ -24,9 +24,12 @@ In this page:
 
 {PANEL:Data subscription consumption}
 
-Data subscriptions are consumed by clients, called subscription workers. In any given moment, only one worker can be connected to a data subscription. 
-A worker connected to a data subscription receives a batch of documents and gets to process it. 
-When it's done, depending on the code that the client gave the worker, it can take from seconds to hours. It informs the server about the progress, and the server is ready to send the next batch.
+* Data subscriptions are consumed by clients, called **Subscription Workers**.  
+* You can determine whether workers would be able to connect a subscription 
+  [concurrently, or only one at a time](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay).  
+* A worker that connects a data subscription, receives a batch of documents and gets to process it.  
+  Depending on the code that the client provided the worker with, processing can take from seconds to hours.  
+  When all documents are processed, the worker informs the server of its progress and the server can send it the next batch.  
 
 {PANEL/}
 
@@ -34,7 +37,7 @@ When it's done, depending on the code that the client gave the worker, it can ta
 
 Data subscriptions are defined by the server side definition and by the worker connecting to it:
 
-1. [Subscription Creation Options](../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions): The documents that will be received, it's filtering and projection.
+1. [Subscription Creation Options](../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions): The documents that will be sent to the worker, it's filtering and projection.
 
 2. [Subscription Worker Options](../../client-api/data-subscriptions/consumption/api-overview#subscriptionworkeroptions): Worker batch processing logic, batch size, interaction with other connections.
 
@@ -80,8 +83,13 @@ When the responsible node handling the subscription is down, the subscription ta
 With the Enterprise license the cluster will automatically reassign the work to another node.
 {INFO/}
 
-The TCP connection is also used as the "state" of the worker process and as long as it's alive, the server will not allow other clients to consume the subscription. 
-The TCP connection is kept alive and monitored using "heartbeat" messages. If it's found nonfunctional, the current batch progress will be restarted.
+* The status of the TCP connection is also used to determine the "state" of the worker process.  
+  If the subscription and its workers implement a 
+  [One Worker Per Subscription](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay) 
+  strategy, as long as the connection is alive the server will not allow 
+  other clients to consume the subscription. 
+* The TCP connection is kept alive and monitored using "heartbeat" messages.  
+  If the connection is found nonfunctional, the current batch progress will be restarted.
 
 See the sequence diagram below that summarizes the lifetime of a subscription connection.
 

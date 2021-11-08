@@ -4,9 +4,9 @@
 
 {NOTE: }
 
-Subscriptions are created by performing a request to the server with certain subscription creations parameters, see [Creation API summary](api-overview#create-and-createasync-overloads-summary).  
+Subscription tasks are created by performing a request to the server with certain subscription creations parameters, see [Creation API summary](api-overview#create-and-createasync-overloads-summary).  
 Once created, it's definition and progress will be stored on the cluster, and not in a single server.  
-Upon subscription creation, the cluster will choose a preferred node that will run the subscription (unless client has stated a mentor node).  
+Upon subscription creation, the cluster will choose a preferred node that will run the subscription (unless client has stated a responsible node).  
 From that point and on, clients that will connect to a server in order to consume the subscription will be redirected to the node mentioned above.  
 
 In this page:  
@@ -21,7 +21,7 @@ In this page:
 
 {PANEL:Subscription creation prerequisites}
 
-Data subscription is a batch processing mechanism, that send the clients documents that answer a specific criteria.  
+Data subscription is a batch processing mechanism that sends documents that answer specific criteria to connected clients.  
 In order to create a data subscription, we first need to define the criteria. The minimum is to provide the collection to which the data subscription belongs.
 However, the criteria can be a complex RQL-like expression defining JavaScript functions for the filtering and the projections. See a simple example:
 
@@ -50,8 +50,9 @@ Note that subscription name is unique and it will not be possible to create two 
 
 {PANEL:Responsible node}
 
-As stated above, upon creation, the cluster will choose a node that will be responsible for the data subscription server side processing.  Once chosen, that node
-will be the node that will the only node to process the subscription. There is an enterprise license level feature that support subscription (and any other ongoing task) 
+As stated above, upon creation, the cluster will choose a node that will be responsible for the data subscription server side processing.  
+Once chosen, that node will be the only node to process the subscription. There is an enterprise license level feature 
+that supports subscription (and any other ongoing task) 
 failover between nodes, but eventually, as long as the originally assigned node is online, it will be the one to process the data subscription.  
 Nevertheless, there is an option to manually decide the node that will be responsible for the subscription processing, it's called the `MentorNode`:
 

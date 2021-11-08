@@ -5,9 +5,10 @@
 {NOTE: }
 
 * With **Concurrent Subscriptions**, multiple data subscription workers 
-  are able to connect a common subscription simultaneously.  
+  are able to connect a common subscription task simultaneously.  
 * Different concurrent workers are given different document batches 
   to process.  
+* Documents will never be processed concurrently by multiple workers.  
 * With multiple concurrent workers that process different document 
   batches in parallel, the consumption of a subscription's contents 
   can be greatly accelerated.  
@@ -15,12 +16,8 @@
   unexpectedly, can be [reassigned](../../client-api/data-subscriptions/concurrent-subscriptions#connection-failure) 
   by the server to available workers.  
 
-  [what is the limit? the max number of connections, same as for non-concurrent subscriptions.  
-  the limitation is the number of connections allowed to the system.  ]
-
-
 * In this page:  
-   * [Defining a Concurrent Worket](../../client-api/data-subscriptions/concurrent-subscriptions#defining-concurrent-workers)  
+   * [Defining a Concurrent Workers](../../client-api/data-subscriptions/concurrent-subscriptions#defining-concurrent-workers)  
    * [Dropping a Connection](../../client-api/data-subscriptions/concurrent-subscriptions#dropping-a-connection)  
    * [Triggering Actions By Connections](../../client-api/data-subscriptions/concurrent-subscriptions#triggering-actions-by-connections)  
    * [Connection Failure](../../client-api/data-subscriptions/concurrent-subscriptions#connection-failure)  
@@ -83,14 +80,15 @@ that is set as [SubscriptionOpeningStrategy.Concurrent](../../client-api/data-su
 
 * When a concurrent worker's connection ends unexpectedly, the 
   server may assign the documents this worker has been processing 
-  to any available worker.  
-* A worker that reconnects after a connection failure, will be 
-  assigned with a **new** batch of documents, that is **not** 
-  guaranteed to contain the same documents it been processing 
-  before disconnecting.  
+  to any other concurrent worker that is available.  
+* A worker that reconnects after a connection failure will be assigned 
+  a **new** batch of documents.  
+  It is **not** guaranteed that the new batch will contain the same 
+  documents this worker had been processing before disconnecting.  
 * It may therefore happen that documents will be processed more 
-  than once: First by worker/s that disconnected unexpectedly, 
-  and then by workers they have been reassigned to.  
+  than once:  
+   - First by a worker that disconnected unexpectedly, without acknowledging the procession of its documents, 
+   - and then by workers the documents have been reassigned to.  
 
 {PANEL/}
 

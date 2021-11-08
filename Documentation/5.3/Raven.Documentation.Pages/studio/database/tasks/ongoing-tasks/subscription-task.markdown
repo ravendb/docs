@@ -62,11 +62,12 @@ Click the info button on a task in the task list view, to see
 more detailed information.  
 
 1. Task Details Panel  
-   * Task status - will be "active" while a subscription worker 
-     is connected to this task, and "not active" when no workers 
-     are connected.  
-   * Mode - will be Single if the workers strategy allows them 
-     to connect one by one, or Concurrent for concurrent workers.  
+   * Task status -  
+     **Active**: status is 'Active' while a subscription worker is connected to the task.  
+     **Not active**: status is 'Not-active' when no workers are connected.  
+   * Mode -  
+     **Single**: mode is 'Single' if the workers' strategy allows them to connect one by one.  
+     **Concurrent**: mode is 'Concurrent' for workers with Concurrent strategy  
    * Client URI - the identifier of the subscription worker 
      subscribed to this task.  
    * Connection strategy - determines the workers connection strategy.  

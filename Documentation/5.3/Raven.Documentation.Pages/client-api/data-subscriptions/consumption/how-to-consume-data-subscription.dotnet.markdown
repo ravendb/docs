@@ -12,7 +12,8 @@ In this page:
 
 [SubscriptionWorker lifecycle](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#subscriptionworker-lifecycle)  
 [Error handling](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#error-handling)  
-[Worker interplay](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay)
+[Worker interplay](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay)  
+[Subscription Strategy](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#subscription-strategy)  
 
 {NOTE/}
 
@@ -110,14 +111,14 @@ worker is connected and another tries to connect.
 * `SubscriptionOpeningStrategy.OpenIfFree`  
   The server will allow the worker to connect only if there is currently 
   no other connected worker.  
-  If there is a existing connection, the incoming worker will throw a 
+  If there is an existing connection, the incoming worker will throw a 
   `SubscriptionInUseException`.  
 * `SubscriptionOpeningStrategy.WaitForFree`  
-  If the client currently cannot open the subscription because it is used 
-  by another client, it will wait for the previous client to disconnect and 
+  If the worker currently cannot open the subscription because it is used 
+  by another worker, it will wait for the previous worker to disconnect and 
   connect only then.  
-  This is useful in client failover scenarios, where there is one active 
-  client and another already waits to take its place.  
+  This is useful in worker failover scenarios, where there is one active 
+  worker and another already waits to take its place.  
 * `SubscriptionOpeningStrategy.TakeOver`  
   The server will allow an incoming connection to overthrow an existing one, 
   according to the existing connection strategy:
@@ -132,6 +133,34 @@ worker is connected and another tries to connect.
 * `SubscriptionOpeningStrategy.Concurrent`  
   Multiple workers of the same subscription are allowed to connect it simultaneously.  
   Read more about concurrent subscriptions [here](../../../client-api/data-subscriptions/concurrent-subscriptions).  
+
+{PANEL/}
+
+{PANEL: Subscription Strategy}
+
+* A data subscription can serve **either** -  
+   1. Workers that use a [One Worker Per Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#one-worker-per-subscription-strategies) 
+      strategy  
+  -**or**-  
+   2. Workers that use the [Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-subscription-strategy) 
+      strategy.  
+* After a subscription is created, **the strategy used by the first worker 
+  to connect it** will determine which workers this subscription will be able 
+  to serve until the end of its lifespan.  
+* If a worker that uses the `OpenIfFree`, `WaitForFree`, or `TakeOver` 
+  strategy is the first to connect a subscription, the subscription 
+  will be able to serve only workers of these strategies from then on.  
+   * If a worker that uses the [Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-subscription-strategy) 
+     strategy attempts to connect this subscription -  
+     The connection attempt will be rejected.  
+     `SubscriptionClosedException` will be thrown.  
+* If a worker that uses the `Concurrent` strategy is the first to connect 
+  a subscription, the subscription will be able to serve only concurrent 
+  workers from then on.  
+   * If a worker that uses a [One Worker Per Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#one-worker-per-subscription-strategies) 
+     strategy attempts to connect this subscription -  
+     The connection attempt will be rejected.  
+     `SubscriptionInUseException` will be thrown.  
 
 {PANEL/}
 

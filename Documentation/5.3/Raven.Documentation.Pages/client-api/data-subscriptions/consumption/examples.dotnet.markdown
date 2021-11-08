@@ -8,7 +8,7 @@ In this page:
 
 [Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples#worker-with-a-specified-batch-size)  
 [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples#client-with-full-exception-handling-and-processing-retries)  
-[Subscription that ends when no documents left](../../../client-api/data-subscriptions/consumption/examples#subscription-that-ends-when-no-documents-left)  
+[Subscription that ends when no documents are left](../../../client-api/data-subscriptions/consumption/examples#subscription-that-ends-when-no-documents-are-left)  
 [Worker that processes dynamic objects](../../../client-api/data-subscriptions/consumption/examples#worker-that-processes-dynamic-objects)  
 [Subscription that works with a session](../../../client-api/data-subscriptions/consumption/examples#subscription-that-works-with-a-session)  
 [Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents)  
@@ -35,7 +35,7 @@ Here we implement a client that treats exceptions thrown by worker, and retries 
 
 {PANEL/}
 
-{PANEL:Subscription that ends when no documents left}
+{PANEL:Subscription that ends when no documents are left}
 
 Here we create a subscription client that runs only up to the point there are no more new documents left to process.  
 
@@ -56,7 +56,7 @@ Here we create a worker that processes received data as dynamic objects.
 
 {PANEL:Subscription that works with a session}
 
-Here we create a worker that receives all orders without a shipping date, lets the shipment mechanism to handle it and updates the `ShippedAt` field value.
+Here we create a worker that receives all orders without a shipping date, lets the shipment mechanism handle it and updates the `ShippedAt` field value.
 
 {CODE subscription_with_open_session_usage@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 

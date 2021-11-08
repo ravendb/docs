@@ -32,7 +32,7 @@ namespace Raven.Documentation.Samples.ClientApi.ConcurrentDataSubscriptions
             #region conSub_defineWorkers
             // Define concurrent subscription workers
             var subscriptionWorker1 = store.Subscriptions.GetSubscriptionWorker<Order>(
-                // Connect concurrently with "All Orders" subscription
+                // Set the worker to connect to the "All Orders" subscription task
                 new SubscriptionWorkerOptions("All Orders")
                 {
                     // Set Concurrent strategy
@@ -69,7 +69,7 @@ namespace Raven.Documentation.Samples.ClientApi.ConcurrentDataSubscriptions
             #endregion
 
             #region conSub_runWorkers
-            // Connect concurrently with "All Orders" subscription
+            // Start the concurrent worker. Workers will connect concurrently to the "All Orders" subscription task.
             var subscriptionRuntimeTask1 = subscriptionWorker1.Run(batch =>
             {
                 // process batch

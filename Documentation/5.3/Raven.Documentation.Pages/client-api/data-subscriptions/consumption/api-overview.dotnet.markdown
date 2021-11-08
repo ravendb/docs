@@ -53,7 +53,7 @@ Subscription worker generation is accessible through the `DocumentStore`'s `Subs
 
 {PANEL:Running subscription worker}
 
-After receiving a subscription worker, the subscription worker is still not processing any documents. SubscriptionWorker's `Run` function allows you to start processing worker operations.  
+After [generating](../../../client-api/data-subscriptions/consumption/api-overview#subscription-worker-generation) a subscription worker, the subscription worker is still not processing any documents. SubscriptionWorker's `Run` function allows you to start processing worker operations.  
 The `Run` function receives the client-side code as a delegate that will process the received batches:
 
 {CODE subscriptionWorkerRunning@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
@@ -135,7 +135,7 @@ If such failure occurs, the subscription processing will be stopped, and will ha
 
 | Event | Type\Return type | Description |
 |--------|:-----|-------------| 
-| **AfterAcknowledgment** | `AfterAcknowledgmentAction` (event) | Event that is risen after each the server acknowledges batch processing progress. |
+| **AfterAcknowledgment** | `AfterAcknowledgmentAction` (event) | Event that is risen after each time the server acknowledges batch processing progress. |
 | **OnSubscriptionConnectionRetry** | `Action<Exception>` (event) | Event that is fired when the subscription worker tries to reconnect to the server after a failure. The event receives as a parameter the exception that interrupted the processing. |
 | **OnDisposed** | `Action<SubscriptionWorker<T>>` (event) | Event that is fired after the subscription worker was disposed. |
 

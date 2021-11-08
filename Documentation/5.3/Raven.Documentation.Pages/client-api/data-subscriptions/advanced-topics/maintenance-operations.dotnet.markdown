@@ -6,17 +6,50 @@
 
 This page covers data subscriptions maintenance operations:  
 
+[DocumentSubscriptions class](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#documentsubscriptions-class)  
 [Deletion](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#deletion)  
 [Dropping Connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#dropping-connection)  
 [Disabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#disabling-subscription)  
 [Enabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#enabling-subscription)  
 [Updating subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#updating-subscription)  
 [Getting subscription status](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#getting-subscription-status)  
-[DocumentSubscriptions class](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#documentsubscriptions-class)  
 
 {NOTE/}
 
 ---
+
+{PANEL:DocumentSubscriptions class}
+The `DocumentSubscriptions` class is the class that manages all interaction with the data subscriptions.  
+The class is available through `DocumentStore`'s `Subscriptions` property.
+
+| Method Signature| Return type | Description |
+|--------|:---|-------------| 
+| **Create<T>(SubscriptionCreationOptions<T> options, string database)** | `string` | Creates a new data subscription. |
+| **Create(SubscriptionCreationOptions criteria, string database)** | `string` | Creates a new data subscription. |
+| **Create(SubscriptionCreationOptions criteria, string database)** | `string` | Creates a new data subscription. |
+| **CreateAsync<T>(SubscriptionCreationOptions<T> options, string database)** | `Task<string>` | Creates a new data subscription. |
+| **CreateAsync<T>(Expression<Func<T, bool>> predicate, SubscriptionCreationOptions options, string database)** | `Task<string>` | Creates a new data subscription. |
+| **Delete(string name, string database)** | `void` | Deletes subscription. |
+| **DeleteAsync(string name, string database)** | `Task` | Deletes subscription. |
+| **DropConnection(string name, string database)** | `void` | Drops all existing subscription connections with workers. |
+| **DropConnectionAsync(string name, string database)** | `Task` | Drops all existing subscription connections with workers. |
+| **DropSubscriptionWorker<T>(SubscriptionWorker<T> worker, string database = null)** | `void` | Drops an existing subscription connection with a worker |
+| **Enable(string name, string database)** | `void` | Enables existing subscription. |
+| **EnableAsync(string name, string database)** | `Task` | Enables existing subscription. |
+| **Disable(string name, string database)** | `void` | Disables existing subscription. |
+| **DisableAsync(string name, string database)** | `Task` | Disables existing subscription. |
+| **GetSubscriptions(int start, int take, string database)** | `List<SubscriptionState>` | Returns subscriptions list. |
+| **GetSubscriptionsAsync(int start, int take, string database)** | `Task<List<SubscriptionState>>` | Returns subscriptions list. |
+| **GetSubscriptionState(string subscriptionName, string database)** | `SubscriptionState ` | Get specific subscription state. |
+| **GetSubscriptionStateAsync(string subscriptionName, string database)** | `Task<SubscriptionState> ` | Get specific subscription state. |
+| **GetSubscriptionWorker<T>(string subscriptionName, string database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **GetSubscriptionWorker(string subscriptionName, string database)** | `SubscriptionWorker<dynamic>` | Generates a subscription worker, using default configurations, that processes documents in its raw `BlittableJsonReader`, wrapped by dynamic object. |
+| **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)** | `SubscriptionWorker<dynamic>` | Generates a subscription worker, using default configurations, that processes documents in its raw `BlittableJsonReader`, wrapped by dynamic object. |
+| **Update(SubscriptionUpdateOptions options, string database = null)** | `string` | Updates an existing data subscription. |
+| **UpdateAsync(SubscriptionUpdateOptions options, string database = null, CancellationToken token = default)** | `Task<string>` | Updates an existing data subscription. |
+
+{PANEL/}
 
 {PANEL: Deletion}
 Subscriptions can be entirely deleted from the system.  
@@ -94,45 +127,13 @@ usage:
 | **LastBatchAckTime** | `DateTime?` | Last time a batch processing progress was acknowledged. |
 | **NodeTag** | `string` | Processing server's node tag |
 | **MentorNode** | `string` | The mentor node that was manually set. |
-| **SubscriptionName** | `string` | Subscription's name, and also it's unique identifier |
+| **SubscriptionName** | `string` | Subscription's name, and also its unique identifier |
 | **SubscriptionId** | `long` | Subscription's internal identifier (cluster's operation etag during subscription creation) |
-| **ChangeVectorForNextBatchStartingPoint** | `string` | Change vector, starting from which the subscription will send documents. This value is updated manually, or automatically on batch acknowledgment  |
+| **ChangeVectorForNextBatchStartingPoint** | `string` | The Change Vector from which the subscription will begin sending documents. This value is updated on batch acknowledgement, and can also be set manually. |
 | **Disabled** | `bool` | If true, subscription will not allow workers to connect |
 | **LastClientConnectionTime** | `DateTime?` | Time when last client was connected (value sustained after disconnection) |                
 
 {INFO/}
-
-{PANEL/}
-
-{PANEL:DocumentSubscriptions class}
-The `DocumentSubscriptions` class is the class that manages all interaction with the data subscriptions.  
-The class is available through `DocumentStore`'s `Subscriptions` property.
-
-| Method Signature| Return type | Description |
-|--------|:---|-------------| 
-| **Create<T>(SubscriptionCreationOptions<T> options, string database)** | `string` | Creates a new data subscription. |
-| **Create(SubscriptionCreationOptions criteria, string database)** | `string` | Creates a new data subscription. |
-| **Create(SubscriptionCreationOptions criteria, string database)** | `string` | Creates a new data subscription. |
-| **CreateAsync<T>(SubscriptionCreationOptions<T> options, string database)** | `Task<string>` | Creates a new data subscription. |
-| **CreateAsync<T>(Expression<Func<T, bool>> predicate, SubscriptionCreationOptions options, string database)** | `Task<string>` | Creates a new data subscription. |
-| **Delete(string name, string database)** | `void` | Deletes subscription. |
-| **DeleteAsync(string name, string database)** | `Task` | Deletes subscription. |
-| **DropConnection(string name, string database)** | `void` | Drops existing subscription connection with worker. |
-| **DropConnectionAsync(string name, string database)** | `Task` | Drops existing subscription connection with worker. |
-| **Enable(string name, string database)** | `void` | Enables existing subscription. |
-| **EnableAsync(string name, string database)** | `Task` | Enables existing subscription. |
-| **Disable(string name, string database)** | `void` | Disables existing subscription. |
-| **DisableAsync(string name, string database)** | `Task` | Disables existing subscription. |
-| **GetSubscriptions(int start, int take, string database)** | `List<SubscriptionState>` | Returns subscriptions list. |
-| **GetSubscriptionsAsync(int start, int take, string database)** | `Task<List<SubscriptionState>>` | Returns subscriptions list. |
-| **GetSubscriptionState(string subscriptionName, string database)** | `SubscriptionState ` | Get specific subscription state. |
-| **GetSubscriptionStateAsync(string subscriptionName, string database)** | `Task<SubscriptionState> ` | Get specific subscription state. |
-| **GetSubscriptionWorker<T>(string subscriptionName, string database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
-| **GetSubscriptionWorker(string subscriptionName, string database)** | `SubscriptionWorker<dynamic>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `BlittableJsonReader`, wrapped by dynamic object. |
-| **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
-| **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)** | `SubscriptionWorker<dynamic>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `BlittableJsonReader`, wrapped by dynamic object. |
-| **Update(SubscriptionUpdateOptions options, string database = null)** | `string` | Updates an existing data subscription. |
-| **UpdateAsync(SubscriptionUpdateOptions options, string database = null, CancellationToken token = default)** | `Task<string>` | Updates an existing data subscription. |
 
 {PANEL/}
 
