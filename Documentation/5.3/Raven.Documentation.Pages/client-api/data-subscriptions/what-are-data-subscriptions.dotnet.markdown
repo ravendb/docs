@@ -27,7 +27,7 @@ In this page:
 * Data subscriptions are consumed by clients, called **Subscription Workers**.  
 * You can determine whether workers would be able to connect a subscription 
   [concurrently, or only one at a time](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay).  
-* A worker that connects a data subscription, receives a batch of documents and gets to process it.  
+* A worker that connects a data subscription receives a batch of documents, and gets to process it.  
   Depending on the code that the client provided the worker with, processing can take from seconds to hours.  
   When all documents are processed, the worker informs the server of its progress and the server can send it the next batch.  
 
@@ -35,7 +35,7 @@ In this page:
 
 {PANEL:What defines a data subscription}
 
-Data subscriptions are defined by the server side definition and by the worker connecting to it:
+Data subscriptions are defined by the server-side definition and by the worker connecting to it:
 
 1. [Subscription Creation Options](../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions): The documents that will be sent to the worker, it's filtering and projection.
 
@@ -46,7 +46,7 @@ Data subscriptions are defined by the server side definition and by the worker c
 {PANEL:Documents processing}
 
 Documents are sent in batches and progress will be registered only after the whole batch is processed and acknowledged. 
-Documents are always sent in Etag order which means that data that already been processed and acknowledged won't be sent twice, except for the following scenarios:
+Documents are always sent in Etag order which means that data that has already been processed and acknowledged won't be sent twice, except for the following scenarios:
 
 1. If the document was changed after it was already sent.
 
@@ -63,8 +63,8 @@ A subscription worker will retry processing documents from the last acknowledged
 {PANEL:Progress Persistence}
 
 Processing progress is persisted and therefore it can be paused and resumed from the last point it was stopped. 
-The persistence mechanism also ensures that no documents are missed even in the presence of failure, whether it's client side related, communication, or any other disaster. 
-Subscriptions progress is stored in the cluster level, in the `Enterprise edition`. In the case of node failure, the processing can be automatically failed over to another node.
+The persistence mechanism also ensures that no documents are missed even in the presence of failure, whether it's client-side related, communication, or any other disaster. 
+Subscriptions progress is stored in the cluster level, in the `Enterprise edition`. In the case of a node failure, the processing can be automatically failed over to another node.
 The usage of Change Vectors allows us to continue from a point that is close to the last point reached before failure rather than starting the process from scratch.
 {PANEL/}
 
@@ -72,7 +72,7 @@ The usage of Change Vectors allows us to continue from a point that is close to 
 
 A worker communicates with the data subscription using a custom protocol on top of a long-lived TCP connection. Each successful batch processing consists of these stages:
 
-1. The server sends documents a batch.
+1. The server sends documents in a batch.
 
 2. Worker sends acknowledgment message after it finishes processing the batch.
 
@@ -80,7 +80,7 @@ A worker communicates with the data subscription using a custom protocol on top 
 
 {INFO: Failover}
 When the responsible node handling the subscription is down, the subscription task can be manually reassigned to another node in the cluster.  
-With the Enterprise license the cluster will automatically reassign the work to another node.
+With the Enterprise license, the cluster will automatically reassign the work to another node.
 {INFO/}
 
 * The status of the TCP connection is also used to determine the "state" of the worker process.  
@@ -91,7 +91,7 @@ With the Enterprise license the cluster will automatically reassign the work to 
 * The TCP connection is kept alive and monitored using "heartbeat" messages.  
   If the connection is found nonfunctional, the current batch progress will be restarted.
 
-See the sequence diagram below that summarizes the lifetime of a subscription connection.
+See the sequence diagram below that summarizes the lifespan of a subscription connection.
 
 ![Subscription document processing](images/SubscriptionsDocumentProcessing.png)
 

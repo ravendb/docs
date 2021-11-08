@@ -88,7 +88,7 @@ The `Run` function receives the client-side code as a delegate that will process
 {NOTE:Subscription Session characteristics}
 Session will be created by the same document store that created the worker, therefore will receive the same configurations as any other session created by the store.  
 However, in order to maintain consistency, the session will address the same server that the batch was received from.  
-It won't try to fail over to another server. It might also fail if the subscription worker changes the node it communicates with.  
+It won't try to failover to another server. It might also fail if the subscription worker changes the node it communicates with.  
 Such event could happen if the subscription worker starts again to address its original node after a fallback occurrence.  
 If such failure occurs, the subscription processing will be stopped, and will have to be restarted, as shown [here](../../../client-api/data-subscriptions/consumption/examples#client-with-full-exception-handling-and-processing-retries)  
 {NOTE/}
@@ -147,7 +147,7 @@ If such failure occurs, the subscription processing will be stopped, and will ha
 
 | Return value | |
 | ------------- | ----- |
-| `Task` | Task for which the worker will wait for the event processing to be finished (for async functions etc.) | 
+| `Task` | Task for which the worker will wait for the event processing to be finished (for async functions, etc.) | 
 
 {INFO/}
 
