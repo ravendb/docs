@@ -73,8 +73,8 @@ more detailed information.
    * Client URI - the identifier of the subscription worker 
      subscribed to this task.  
    * Connection strategy - determines the workers connection strategy.  
-   * Change vector for next batch - the change vector of the last 
-     document in the batch that will be sent next.  
+   * Change vector for next batch - the change vector of the last document 
+     that was sent in the last batch.  
    * Last batch acknowledgement time - the last time a worker 
      responded that it has received a batch.  
    * Last client connection time - the last time a worker communicated 
