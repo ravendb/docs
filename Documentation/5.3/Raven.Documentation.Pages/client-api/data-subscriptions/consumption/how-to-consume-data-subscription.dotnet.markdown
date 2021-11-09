@@ -8,12 +8,12 @@ Subscriptions are consumed by processing batches of documents received from the 
 A `SubscriptionWorker` object manages the documents processing and the communication between the client and the server according to a set of configurations received upon its creation. 
 We've introduced several ways to create and configure a SubscriptionWorker, starting from just giving a subscription name, and ending with a detailed configuration object - `SubscriptionWorkerOptions`.
 
-In this page:
-
-[SubscriptionWorker lifecycle](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#subscriptionworker-lifecycle)  
-[Error handling](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#error-handling)  
-[Worker interplay](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay)  
-[Subscription Strategy](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#subscription-strategy)  
+* In this page:
+  * [SubscriptionWorker lifecycle](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#subscriptionworker-lifecycle)  
+  * [Error handling](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#error-handling)  
+  * [Worker interplay](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay)  
+     * [Available Worker Strategies](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#available-worker-strategies)  
+  * [Subscription Strategy](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#subscription-strategy)  
 
 {NOTE/}
 
@@ -88,6 +88,7 @@ useful for logging these unexpected exceptions.
   interact with each other to resolve which will connect the subscription.  
 
 {NOTE: }
+
 The strategy is configured by the `SubscriptionWorkerOptions` `Strategy` field.  
 The strategy field is the enum `SubscriptionOpeningStrategy`.  
 
@@ -98,9 +99,11 @@ The strategy field is the enum `SubscriptionOpeningStrategy`.
 | `TakeOver` | Take over the connection |
 | `Concurrent` | Connect concurrently |
 
-
-
 {NOTE/}
+
+## Available Worker Strategies
+
+---
 
 ### One Worker Per Subscription Strategies 
 
@@ -128,6 +131,8 @@ worker is connected and another tries to connect.
    * The existing connection **has** a `TakeOver` strategy.  
      The incoming connection will throw a SubscriptionInUseException exception.  
 
+---
+
 ### Concurrent Subscription Strategy 
 
 * `SubscriptionOpeningStrategy.Concurrent`  
@@ -138,7 +143,7 @@ worker is connected and another tries to connect.
 
 {PANEL: Subscription Strategy}
 
-* A data subscription can serve **either** -  
+* Each data subscription serves **either** -  
    1. Workers that use a [One Worker Per Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#one-worker-per-subscription-strategies) 
       strategy  
   -**or**-  
@@ -149,14 +154,16 @@ worker is connected and another tries to connect.
   to serve until the end of its lifespan.  
 * If a worker that uses the `OpenIfFree`, `WaitForFree`, or `TakeOver` 
   strategy is the first to connect a subscription, the subscription 
-  will be able to serve only workers of these strategies from then on.  
+  will server from now on only workers that use these strategies.  
+   * The subscription will be available for workers that use any 
+     of these three strategies (`OpenIfFree`, `WaitForFree`, or `TakeOver`).  
    * If a worker that uses the [Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-subscription-strategy) 
      strategy attempts to connect this subscription -  
      The connection attempt will be rejected.  
      `SubscriptionClosedException` will be thrown.  
 * If a worker that uses the `Concurrent` strategy is the first to connect 
-  a subscription, the subscription will be able to serve only concurrent 
-  workers from then on.  
+  a subscription, the subscription will serve from now on only workers that 
+  use the `Concurrent` strategy.  
    * If a worker that uses a [One Worker Per Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#one-worker-per-subscription-strategies) 
      strategy attempts to connect this subscription -  
      The connection attempt will be rejected.  

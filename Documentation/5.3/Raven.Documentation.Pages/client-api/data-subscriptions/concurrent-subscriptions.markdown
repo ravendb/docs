@@ -19,7 +19,6 @@
 * In this page:  
    * [Defining a Concurrent Workers](../../client-api/data-subscriptions/concurrent-subscriptions#defining-concurrent-workers)  
    * [Dropping a Connection](../../client-api/data-subscriptions/concurrent-subscriptions#dropping-a-connection)  
-   * [Triggering Actions By Connections](../../client-api/data-subscriptions/concurrent-subscriptions#triggering-actions-by-connections)  
    * [Connection Failure](../../client-api/data-subscriptions/concurrent-subscriptions#connection-failure)  
 
 {NOTE/}
@@ -59,22 +58,6 @@ that is set as [SubscriptionOpeningStrategy.Concurrent](../../client-api/data-su
 
 
 {PANEL/}
-
-
-{PANEL: Triggering Actions By Connections}
-
-* The `OnEstablishedSubscriptionConnection()` method is triggered each 
-  time a concurrent worker establishes a connection. You can embed in it 
-  any code that you want to execute whenever a connection is made.  
-    {CODE-BLOCK: csharp}
-    internal event Action OnEstablishedSubscriptionConnection;
-    {CODE-BLOCK/}
-
-* Usage:  
-  {CODE conSub_OnEstablishedSubscriptionConnection@ClientApi\DataSubscriptions\ConcurrentSubscriptions.cs /}
-
-{PANEL/}
-
 
 {PANEL: Connection Failure}
 
