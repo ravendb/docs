@@ -63,11 +63,14 @@ more detailed information.
 
 1. Task Details Panel  
    * Task status -  
-     **Active**: status is 'Active' while a subscription worker is connected to the task.  
-     **Not active**: status is 'Not-active' when no workers are connected.  
+     **Active**: status is `Active` while a subscription worker is connected to the task.  
+     **Not active**: status is `Not-active` when no workers are connected.  
    * Mode -  
-     **Single**: mode is 'Single' if the workers' strategy allows them to connect one by one.  
-     **Concurrent**: mode is 'Concurrent' for workers with Concurrent strategy  
+     **Single**: mode is `Single` if the 
+     [subscription strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#subscription-strategy) 
+     allows only one worker to be connected at a time.  
+     **Concurrent**: mode is `Concurrent` if the subscription strategy allows only workers 
+     with Concurrent strategy.  
    * Client URI - the identifier of the subscription worker 
      subscribed to this task.  
    * Connection strategy - determines the workers connection strategy.  
