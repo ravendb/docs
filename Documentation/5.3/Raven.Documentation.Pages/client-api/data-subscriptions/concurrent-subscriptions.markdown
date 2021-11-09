@@ -8,7 +8,6 @@
   are able to connect a common subscription task simultaneously.  
 * Different concurrent workers are given different document batches 
   to process.  
-* Documents will never be processed concurrently by multiple workers.  
 * With multiple concurrent workers that process different document 
   batches in parallel, the consumption of a subscription's contents 
   can be greatly accelerated.  
@@ -27,9 +26,9 @@
 
 {PANEL: Defining Concurrent Workers}
 
-Subscription workers are defined similarly to other workers, except for their 
+Concurrent workers are defined similarly to other workers, except for their 
 [strategy](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay) 
-that is set as [SubscriptionOpeningStrategy.Concurrent](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-subscription-strategy).  
+that is set as [SubscriptionOpeningStrategy.Concurrent](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-strategy).  
 
 * To define a concurrent worker:  
    * Create the worker using [GetSubscriptionWorker](../../client-api/data-subscriptions/consumption/api-overview#subscription-worker-generation).  

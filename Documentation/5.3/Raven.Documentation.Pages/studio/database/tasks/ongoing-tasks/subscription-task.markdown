@@ -3,10 +3,10 @@
 
 {NOTE: }
 
-* Data subscriptions are task that automatically send certain documents to a subscribed 
-client, called the "subscription worker".  
+* A **Data Subscription** is a task that automatically sends certain documents to a subscribed 
+  client, called the "subscription worker".  
 
-* This page explains how to create a subscription on the server side using the Studio.  
+* This page explains how to create a subscription task on the server side using the Studio.  
 
 * In this page:
   * [Subscription Task Definition](../../../../studio/database/tasks/ongoing-tasks/subscription-task#subscription-task-definition)
@@ -21,16 +21,16 @@ client, called the "subscription worker".
 
 ![Figure 1. Subscription Task Definition](images/subscriptions-1.png "Subscription Task Definition")
 
-1. The RQL query which selects which documents the subscription sends 
+1. The RQL query that selects which documents the subscription sends 
    to the client.  
 
-2. Limit the age of the documents that will be retrieved. Default: "the 
-   beginning of time" - meaning all documents are retrieved regardless of 
-   age. The other options are:  
-   * Latest document - of the documents that existed before the subscription 
-     task began, retrieve only the newest one.  
-   * Change vector - specify a starting point for the subscription by a 
-     document change vector.  
+2. Define the starting point from which to send the first batch:  
+   * **Begining of Time** (default option)  
+     All documents matching the RQL query will be sent, regardless of their creation time.  
+   * **Latest Document**  
+     Start from the first new document that will be created after the subscription is created.  
+   * **Change Vector**  
+     Specify a document change vector as the subscription starting point.  
 
 3. Choose which node will perform this task by default.  
 
@@ -42,8 +42,7 @@ client, called the "subscription worker".
 
 ![Figure 2. Testing Subscription](images/subscriptions-2.png "Testing Subscription")
 
-Testing the subscription shows which documents are retrieved by the 
-specified query.  
+Testing the subscription shows which documents match the specified query.  
 
 1. Limit the number of results to retrieve for this test.  
 
@@ -67,17 +66,17 @@ more detailed information.
      **Not active**: status is `Not-active` when no workers are connected.  
    * Mode -  
      **Single**: mode is `Single` if the 
-     [subscription strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#subscription-strategy) 
+     [subscription strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#determining-which-workers-a-subscription-will-serve) 
      allows only one worker to be connected at a time.  
      **Concurrent**: mode is `Concurrent` if the subscription strategy allows only workers 
-     with Concurrent strategy.  
+     that use the `Concurrent` strategy to connect.  
    * Client URI - the identifier of the subscription worker 
      subscribed to this task.  
    * Connection strategy - determines the workers connection strategy.  
    * Change vector for next batch - the change vector of the last 
      document in the batch that will be sent next.  
    * Last batch acknowledgement time - the last time a worker 
-     responded that it has recieved a batch.  
+     responded that it has received a batch.  
    * Last client connection time - the last time a worker communicated 
      with or pinged the server.  
 2. Database Group Topology

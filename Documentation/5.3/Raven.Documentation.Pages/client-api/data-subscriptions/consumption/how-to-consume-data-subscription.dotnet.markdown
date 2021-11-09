@@ -4,16 +4,20 @@
 
 {NOTE: }
 
-Subscriptions are consumed by processing batches of documents received from the server. 
-A `SubscriptionWorker` object manages the documents processing and the communication between the client and the server according to a set of configurations received upon its creation. 
-We've introduced several ways to create and configure a SubscriptionWorker, starting from just giving a subscription name, and ending with a detailed configuration object - `SubscriptionWorkerOptions`.
+* Batches of documents sent from a Subscription Task defined on the server are 
+  consumed and processed by a subscription worker client.  
+* The `SubscripionWorker` object, which is defined on the client, manages the 
+  communication between the server and the client and processes the documents 
+  batches sent from the server.  
+* There are several ways to create and configure the SubscriptionWorker - 
+  see `SubscriptionWorkerOptions`.  
 
 * In this page:
   * [SubscriptionWorker lifecycle](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#subscriptionworker-lifecycle)  
   * [Error handling](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#error-handling)  
   * [Worker interplay](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay)  
      * [Available Worker Strategies](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#available-worker-strategies)  
-  * [Subscription Strategy](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#subscription-strategy)  
+  * [Determining Which Workers a Subscription Will Serve](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#determining-which-workers-a-subscription-will-serve)  
 
 {NOTE/}
 
@@ -29,7 +33,9 @@ To start processing, the `Run` method should be called. The Run method receives 
 
 {CODE subscription_run_simple@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
-From this point on, the subscription worker will start processing batches. If for any reason, the processing is aborted, and the returned task (`subscriptionRuntimeTask`) will be finished with an exception.
+From this point on, the subscription worker will start processing batches.  
+If processing is aborted for any reason, the returned task (`subscriptionRuntimeTask`) 
+will be finished with an exception.  
 
 {PANEL/}
 
@@ -124,16 +130,16 @@ worker is connected and another tries to connect.
   worker and another already waits to take its place.  
 * `SubscriptionOpeningStrategy.TakeOver`  
   The server will allow an incoming connection to overthrow an existing one, 
-  according to the existing connection strategy:
-   * The existing connection **does not** have a `TakeOver` strategy.  
+  according to the existing connection strategy.  
+   * If the existing connection **does not** have a `TakeOver` strategy:  
      The incoming connection will take over, causing the existing 
      connection to throw a `SubscriptionInUseException`.  
-   * The existing connection **has** a `TakeOver` strategy.  
-     The incoming connection will throw a SubscriptionInUseException exception.  
+   * If the existing connection **has** a `TakeOver` strategy:  
+     The incoming connection will throw a `SubscriptionInUseException` exception.  
 
 ---
 
-### Concurrent Subscription Strategy 
+### Concurrent Strategy 
 
 * `SubscriptionOpeningStrategy.Concurrent`  
   Multiple workers of the same subscription are allowed to connect it simultaneously.  
@@ -141,13 +147,13 @@ worker is connected and another tries to connect.
 
 {PANEL/}
 
-{PANEL: Subscription Strategy}
+{PANEL: Determining Which Workers a Subscription Will Serve}
 
 * Each data subscription serves **either** -  
    1. Workers that use a [One Worker Per Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#one-worker-per-subscription-strategies) 
       strategy  
   -**or**-  
-   2. Workers that use the [Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-subscription-strategy) 
+   2. Workers that use the [Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-strategy) 
       strategy.  
 * After a subscription is created, **the strategy used by the first worker 
   to connect it** will determine which workers this subscription will be able 
@@ -157,7 +163,7 @@ worker is connected and another tries to connect.
   will server from now on only workers that use these strategies.  
    * The subscription will be available for workers that use any 
      of these three strategies (`OpenIfFree`, `WaitForFree`, or `TakeOver`).  
-   * If a worker that uses the [Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-subscription-strategy) 
+   * If a worker that uses the [Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-strategy) 
      strategy attempts to connect this subscription -  
      The connection attempt will be rejected.  
      `SubscriptionClosedException` will be thrown.  

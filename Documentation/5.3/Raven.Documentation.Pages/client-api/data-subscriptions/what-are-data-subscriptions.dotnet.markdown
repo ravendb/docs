@@ -62,10 +62,14 @@ A subscription worker will retry processing documents from the last acknowledged
 
 {PANEL:Progress Persistence}
 
-Processing progress is persisted and therefore it can be paused and resumed from the last point it was stopped. 
-The persistence mechanism also ensures that no documents are missed even in the presence of failure, whether it's client-side related, communication, or any other disaster. 
-Subscriptions progress is stored in the cluster level, in the `Enterprise edition`. In the case of a node failure, the processing can be automatically failed over to another node.
-The usage of Change Vectors allows us to continue from a point that is close to the last point reached before failure rather than starting the process from scratch.
+* The processing progress is persisted on the server and therefore the subscription 
+  task can be paused and resumed from the last point it was stopped.  
+* The persistence mechanism also ensures that no documents are missed even in the 
+  presence of failure, whether it's client-side related, communication, or any other disaster.  
+* Subscriptions progress is stored in the cluster level, in the `Enterprise edition`.  
+  In the case of a node failure, the processing can be automatically failed over to another node.  
+* The usage of Change Vectors allows us to continue from a point that is close to 
+  the last point reached before failure rather than starting the process from scratch.  
 {PANEL/}
 
 {PANEL:How the worker communicates with the server}
@@ -115,8 +119,8 @@ workers of the same subscription can connect it one by one, or **concurrently**.
 
 * **Concurrent Subscription Strategy**  
   Using the concurrent subscription strategy, multiple workers of the same subscription can 
-  connect it simultaneously and divide the documents procession load between them to speed it up.  
-   * Batch procession is divided between the multiple workers.  
+  connect it simultaneously and divide the documents processing load between them to speed it up.  
+   * Batch processing is divided between the multiple workers.  
    * Connection failure is handled by assigning batches of failing workers to 
      active available workers.  
    * Read more about this strategy [here](../../client-api/data-subscriptions/concurrent-subscriptions).  
@@ -125,7 +129,8 @@ workers of the same subscription can connect it one by one, or **concurrently**.
 
 {PANEL:Data subscriptions usage example}
 
-Data subscriptions are accessible by a document store. Here's an example of an ad-hoc creation and usage of data subscriptions:
+Data subscriptions are accessible by a document store.  
+Here's an example of creating and using a data subscription:
 
 {CODE subscriptions_example@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
