@@ -149,31 +149,21 @@ worker is connected and another tries to connect.
 
 {PANEL: Determining Which Workers a Subscription Will Serve}
 
-* Each data subscription serves **either** -  
-   1. Workers that use a [One Worker Per Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#one-worker-per-subscription-strategies) 
-      strategy  
-  -**or**-  
-   2. Workers that use the [Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-strategy) 
-      strategy.  
-* After a subscription is created, **the strategy used by the first worker 
-  to connect it** will determine which workers this subscription will be able 
-  to serve until the end of its lifespan.  
-* If a worker that uses the `OpenIfFree`, `WaitForFree`, or `TakeOver` 
-  strategy is the first to connect a subscription, the subscription 
-  will server from now on only workers that use these strategies.  
-   * The subscription will be available for workers that use any 
-     of these three strategies (`OpenIfFree`, `WaitForFree`, or `TakeOver`).  
-   * If a worker that uses the [Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-strategy) 
-     strategy attempts to connect this subscription -  
-     The connection attempt will be rejected.  
-     `SubscriptionClosedException` will be thrown.  
-* If a worker that uses the `Concurrent` strategy is the first to connect 
-  a subscription, the subscription will serve from now on only workers that 
-  use the `Concurrent` strategy.  
-   * If a worker that uses a [One Worker Per Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#one-worker-per-subscription-strategies) 
-     strategy attempts to connect this subscription -  
-     The connection attempt will be rejected.  
-     `SubscriptionInUseException` will be thrown.  
+* A subscription that serves one or more [Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-strategy) 
+  workers, **can serve only other concurrent workers** until all worker connections are dropped.  
+  If a worker that uses a [One Worker Per Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#one-worker-per-subscription-strategies) 
+  strategy attempts to connect it -  
+   * The connection attempt will be rejected.  
+   * `SubscriptionInUseException` will be thrown.  
+
+* A subscription that serves a worker that uses a
+  [One Worker Per Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#one-worker-per-subscription-strategies) 
+  strategy, **cannot** serve 
+  [Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-strategy) 
+  workers until the worker's connection is dropped.  
+  If a concurrent worker attempts to connect it -  
+   * The connection attempt will be rejected.  
+   * `SubscriptionInUseException` will be thrown.  
 
 {PANEL/}
 
