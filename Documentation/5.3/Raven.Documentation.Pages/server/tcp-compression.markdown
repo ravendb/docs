@@ -11,12 +11,12 @@
   to their workers.  
 
 * Especially on the cloud, the significant reduction in the amount of transferred 
-  data translates to significant reduction of costs.  
+  data translates to a significant reduction of costs.  
   
 
 * In this page:  
   * [TCP Compression](../server/tcp-compression#tcp-compression)  
-  * [Compression Algorythm and Ratio](../server/tcp-compression#compression-algorythm-and-ratio)  
+  * [Compression Algorithm and Ratio](../server/tcp-compression#compression-algorithm-and-ratio)  
   * [Enabling TCP Compression](../server/tcp-compression#enabling-tcp-compression)  
 
 {NOTE/}
@@ -43,13 +43,13 @@ With the **TCP compression** feature enabled, data **in transit** is compressed 
   Compressing the data they submit can reduce the traffic volume 
   and the costs of such automated routines considerably.  
 
-## Compression Algorythm and Ratio
+## Compression Algorithm and Ratio
 
 * TCP Compression uses the [Zstandard compression algorithm](https://en.wikipedia.org/wiki/Zstandard), 
   continuously learning your data model to create dictionaries that represent the redundant 
   structural data across transferred documents.  
 
-* Compression ratio tends to assend as the size of the transferred data grows, 
+* Compression ratio tends to ascend as the size of the transferred data grows, 
   and may **top 85%** for big data transfers.  
 
 ## Enabling TCP Compression
