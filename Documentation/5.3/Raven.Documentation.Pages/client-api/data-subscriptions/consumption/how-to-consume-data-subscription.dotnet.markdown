@@ -149,6 +149,12 @@ worker is connected and another tries to connect.
 
 {PANEL: Determining Which Workers a Subscription Will Serve}
 
+{NOTE: }
+The **strategy used by the first worker connecting to a subscription** will determine 
+which additional workers this subscription will be able to serve until all worker connections
+are dropped.  
+{NOTE/}
+
 * A subscription that serves one or more [Concurrent](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#concurrent-strategy) 
   workers, **can serve only other concurrent workers** until all worker connections are dropped.  
   If a worker that uses a [One Worker Per Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#one-worker-per-subscription-strategies) 
