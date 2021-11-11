@@ -24,6 +24,6 @@
 | [Power BI Support](../integrations/postgresql-protocol/overview) | Enterprise | Developer <br> Production (from `Standard` instance size `P30` and up) |
 | [Intelligent RQL Query and Patch Coding Assistance](../studio/database/code-assistance) | Free <br> Professional <br> Enterprise | Free <br> Developer <br> Production |
 | [TCP Data Compression](../server/tcp-compression) | Professional <br> Enterprise | Free <br> Developer <br> Production |
-| [Terraform Support](licenses-required#terraform-support) | Community <br> Professional <br> Enterprise | Free <br> Developer <br> Production |
+| Terraform Support | Community <br> Professional <br> Enterprise | Free <br> Developer <br> Production |
 
 
