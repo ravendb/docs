@@ -8,7 +8,7 @@ There are different licenses for local-onsite servers and highly customizable an
 
 In this page:  
 
-* [Licenses Required](licenses-required#licenses-required)  
+* [Licenses Required](licenses-required#licensestiers-required)  
   
 Brief New Feature Summaries:  
 
@@ -24,13 +24,13 @@ Brief New Feature Summaries:
 
 | **FEATURE** | ON-PREMISE LICENSE | CLOUD TIER |
 | --- | --- | --- |
-| [Incremental Time Series](../document-extensions/timeseries/incremental-time-series/overview) | Free, Professional, and Enterprise | Free, Developer, and Production |
+| [Incremental Time Series](../document-extensions/timeseries/incremental-time-series/overview) | Community, Professional, and Enterprise | Free, Developer, and Production |
 | [Concurrent Subscriptions](../client-api/data-subscriptions/concurrent-subscriptions) | Professional and Enterprise | Developer and Production |
 | [Elasticsearch ETL](../server/ongoing-tasks/etl/elasticsearch) | Professional and Enterprise | Developer and Production |
-| [Power BI Support](../integrations/postgresql-protocol/overview) | Enterprise | Developer and Production |
+| [Power BI Support](../integrations/postgresql-protocol/overview) | Enterprise | Developer and Production (from `Standard` instance size `P30` and up) |
 | [RQL Query/Patch Coding Assistance](../studio/database/code-assistance) | Free, Professional, and Enterprise | Free, Developer, and Production |
-| [TCP Data Compression](../server/tcp-compression) | Professional and Enterprise | Developer and Production |
-| [Terraform Support](licenses-required#terraform-support) | Free, Professional, and Enterprise | Free, Developer, and Production |
+| [TCP Data Compression](../server/tcp-compression) | Professional and Enterprise | Free, Developer and Production |
+| [Terraform Support](licenses-required#terraform-support) | Community, Professional, and Enterprise | Free, Developer, and Production |
 
 
 ## Incremental Time Series
