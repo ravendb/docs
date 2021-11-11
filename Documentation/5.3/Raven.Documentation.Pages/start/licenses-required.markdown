@@ -1,10 +1,9 @@
 # Licenses Required for New Features
 
-RavenDB has various licenses and tiers to meet different companies' needs of feature sets.  
-There are different licenses for local-onsite servers and highly customizable and scalable tiers for cloud-based solutions.  
+* RavenDB has various licenses and tiers to meet different companies' needs of feature sets.  
+  There are different licenses for local-onsite servers and highly customizable and scalable tiers for cloud-based solutions.  
   
-####This article describes the licenses required for features new to version 5.3  
----
+* This article describes the licenses required for features new to version 5.3  
 
 In this page:  
 
