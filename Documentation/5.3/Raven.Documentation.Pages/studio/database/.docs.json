@@ -75,12 +75,6 @@
         "Mappings": []
     },
     {
-        "Path": "code-assistance.markdown",
-        "Name": "RQL Code Assistance",
-        "DiscussionId": "29cf4658-86dd-4188-b0ab-6d75f2d4f78f",
-        "Mappings": []
-    },
-    {
         "Path": "/indexes",
         "Name": "Indexes",
         "Mappings": []
@@ -96,6 +90,11 @@
         "Name": "Stats",
         "Mappings": []
 
+    },
+    {
+        "Path": "code-assistance.markdown",
+        "Name": "RQL Code Assistance",
+        "DiscussionId": "29cf4658-86dd-4188-b0ab-6d75f2d4f78f",
+        "Mappings": []
     }
-
 ]
