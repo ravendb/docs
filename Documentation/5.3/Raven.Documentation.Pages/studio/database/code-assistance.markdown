@@ -19,7 +19,7 @@
   queries an enjoyable task.  
 
 * Code Assistance is available in the [Query](../../studio/database/queries/query-view#query-view), 
-  [Index](../../studio/database/indexes/create-map-index#edit-index-view), 
+  [Patch](../../studio/database/documents/patch-view#patch-view), 
   and [Subscription Task Definition](../../studio/database/tasks/ongoing-tasks/subscription-task#subscription-task-definition) 
   views.  
 
@@ -34,7 +34,7 @@
 
 * The RQL auto-completion tool can be used in these views:  
    - The [Query View](../../studio/database/queries/query-view#query-view)  
-   - The [Index View](../../studio/database/indexes/create-map-index#edit-index-view)  
+   - The [Patch View](../../studio/database/documents/patch-view#patch-view)  
    - The [Subscription Task View](../../studio/database/tasks/ongoing-tasks/subscription-task#subscription-task-definition)  
 * To invoke auto-completion, click **CTRL+Space** while writing RQL.  
 * Options relevant for the query section that your cursor is placed at will be listed.  
@@ -96,7 +96,7 @@ create a JavaScript function).
 ### Studio
 
 - [Query View](../../studio/database/queries/query-view)  
-- [Create Map Index](../../studio/database/indexes/create-map-index)  
+- [Patch View](../../studio/database/documents/patch-view#patch-view)  
 - [Subscription Task](../../studio/database/tasks/ongoing-tasks/subscription-task)  
 
 ### RQL
