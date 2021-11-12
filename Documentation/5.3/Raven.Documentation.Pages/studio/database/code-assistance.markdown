@@ -25,7 +25,6 @@
 
 * In this page:  
   * [Auto-Completion](../../studio/database/code-assistance#auto-completion)  
-     * [When is Auto-Completion Not Available](../../studio/database/code-assistance#when-is-auto-completion-not-available)  
   * [Syntax Verification](../../studio/database/code-assistance#syntax-verification)  
 {NOTE/}
 
@@ -33,10 +32,11 @@
 
 {PANEL: Auto-Completion}
 
-* While writing a [query](../../studio/database/queries/query-view#query-view), 
-  an [index](../../studio/database/indexes/create-map-index#edit-index-view), 
-  or a [subscription task definition](../../studio/database/tasks/ongoing-tasks/subscription-task#subscription-task-definition), 
-  click **CTRL+Space** to invoke the auto-completion tool.  
+* The RQL auto-completion tool can be used in these views:  
+   - The [Query View](../../studio/database/queries/query-view#query-view)  
+   - The [Index View](../../studio/database/indexes/create-map-index#edit-index-view)  
+   - The [Subscription Task View](../../studio/database/tasks/ongoing-tasks/subscription-task#subscription-task-definition)  
+* To invoke auto-completion, click **CTRL+Space** while writing RQL.  
 * Options relevant for the query section that your cursor is placed at will be listed.  
 * Clicking a list item will add it to the query.  
   
@@ -65,36 +65,22 @@ create a JavaScript function).
 
 !["Evolving Query"](images/code-assistance-2.png "Evolving Query")
 
+{INFO: For the queries shown above, auto-completion presents: }
+
 1. The list of **collections** that can be queried   
 2. The list of **keywords** that can be used with the selected collection  
 3. The list of **document fields** that can be queried  
 4. The list of **operators** and **keywords** that can be used  
 
----
-
-### When is Auto-Completion Not Available
-
-Auto-completion cannot be invoked:  
-
-* Within query segments that contain JavaScript, including -  
-   * a [select](../../indexes/querying/what-is-rql#select) clause  
-   * a patch [Update](../../indexes/querying/what-is-rql#update) clause  
-
-* Within a [time series](../../document-extensions/timeseries/querying/overview-and-syntax) 
-  clause, e.g. -  
-  {CODE-BLOCK: javascript}
-from "Companies" 
-select timeseries(
-    // no auto-completion here
-)
-  {CODE-BLOCK/}
+{INFO/}
 
 ---
 
 ### Syntax Verification
 
-As you write your query, its syntax is continuously verified 
-and errors are detected and highlighted.  
+* As you write your query, its syntax is continuously verified and errors are detected.  
+* When an error is detected, an error indicator is displayed on the left side of the edit box.  
+* Hovering over the error indicator shows the error details.  
 
 !["Syntax Verification"](images/code-assistance-3.png "Syntax Verification")
 
