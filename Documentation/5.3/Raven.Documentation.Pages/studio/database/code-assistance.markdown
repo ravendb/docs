@@ -12,7 +12,7 @@
   and continuously checks your **syntax** and highlights potential errors 
   to help you avoid them.  
 
-* RQL code assistance's auto-completetion tool presents data entities, functions, 
+* RQL code assistance's auto-completion tool presents data entities, functions, 
   keywords, and operators that can be used by the query part your cursor is at.  
   The options it suggests can be selected and added to the query, 
   speeding up the writing process and making the creation of intelligent 
@@ -37,7 +37,7 @@
   an [index](../../studio/database/indexes/create-map-index#edit-index-view), 
   or a [subscription task definition](../../studio/database/tasks/ongoing-tasks/subscription-task#subscription-task-definition), 
   click **CTRL+Space** to invoke the auto-completion tool.  
-* Options relevant for the query section that your cursot is placed at will be listed.  
+* Options relevant for the query section that your cursor is placed at will be listed.  
 * Clicking a list item will add it to the query.  
   
 ---
@@ -101,13 +101,18 @@ and errors are detected and highlighted.
 1. a **Syntax error**  
 2. the **Error indicator**  
 3. **Error details**  
-   Hovering over the error indicator opens a pop up that specifies the error details.  
+   Hovering over the error indicator opens a pop-up that specifies the error details.  
 
 {PANEL/}
 
 ## Related Articles
 
-### Integrations
+### Studio
 
-- [PostgreSQL Protocol - Overview](../../../integrations/postgresql-protocol/overview)  
-- [PostgreSQL Protocol - Power BI](../../../integrations/postgresql-protocol/power-bi)  
+- [Query View](../../studio/database/queries/query-view)  
+- [Create Map Index](../../studio/database/indexes/create-map-index)  
+- [Subscription Task](../../studio/database/tasks/ongoing-tasks/subscription-task)  
+
+### RQL
+
+- [What is RQL](../../indexes/querying/what-is-rql)  
