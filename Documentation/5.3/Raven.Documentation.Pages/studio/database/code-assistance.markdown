@@ -5,12 +5,13 @@
 
 {NOTE: }
 
-* All queries addressed to RavenDB use [RQL](../../indexes/querying/what-is-rql), 
+* All queries addressed to the RavenDB server use [RQL](../../indexes/querying/what-is-rql), 
   RavenDB's rich query language.  
-* The query **structure** exposes the **order** by which RavenDB handles operations when serving a query.  
+* The **query structure** exposes the **order of the query operations** 
+  handled by the RavenDB server when serving a query.  
 * RQL Code Assistance is available when writing any query in the Studio.  
   The code auto-completion allows you to see the various paths your query 
-  can take, as data entities, functions, keywords, and operators are presented 
+  can take as data entities, functions, keywords, and operators are presented 
   for you to select, speeding up the writing process and making the creation 
   of intelligent queries an enjoyable task.  
 * In addition, the query syntax is checked and potential errors are highlighted.  
@@ -84,7 +85,7 @@ most basic ones:
 1. **Syntax error** (this symbol cannot be used here)  
 2. **Warning Sign**  
 3. **Error details**  
-   Hover over the error indicator to see the error details.  
+   Hover over the warning sign to see the error details.  
 
 {PANEL/}
 
