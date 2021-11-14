@@ -9,7 +9,7 @@
   RavenDB's rich query language.  
 * The **query structure** exposes the **order of the query operations** 
   handled by the RavenDB server when serving a query.  
-* RQL Code Assistance is available when writing any query in the Studio.  
+* **RQL Code Assistance** is available when writing any query in the Studio.  
   The code auto-completion allows you to see the various paths your query 
   can take as data entities, functions, keywords, and operators are presented 
   for you to select, speeding up the writing process and making the creation 
