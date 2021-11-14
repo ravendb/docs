@@ -22,7 +22,7 @@
 | [Concurrent Subscriptions](../client-api/data-subscriptions/concurrent-subscriptions) | Professional <br> Enterprise | Developer <br> Production |
 | [Elasticsearch ETL](../server/ongoing-tasks/etl/elasticsearch) | Professional <br> Enterprise | Developer <br> Production |
 | [Power BI Support](../integrations/postgresql-protocol/overview) | Enterprise | Developer <br> Production (from `Standard` instance size `P30` and up) |
-| [RQL Code Assistance](../studio/database/code-assistance) | Free <br> Professional <br> Enterprise | Free <br> Developer <br> Production |
+| [RQL Code Assistance](../studio/database/code-assistance) | Community <br> Professional <br> Enterprise | Free <br> Developer <br> Production |
 | [TCP Data Compression](../server/tcp-compression) | Professional <br> Enterprise | Free <br> Developer <br> Production |
 | Terraform Support | Community <br> Professional <br> Enterprise | Free <br> Developer <br> Production |
 
