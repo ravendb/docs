@@ -5,7 +5,8 @@
 
 {NOTE: }
 
-* All queries addressed to RavenDB use the rich [RQL](../../indexes/querying/what-is-rql) language.  
+* All queries addressed to RavenDB use [RQL](../../indexes/querying/what-is-rql), 
+  RavenDB's rich query language.  
 * The query **structure** exposes the **order** by which RavenDB handles operations when serving a query.  
 * RQL Code Assistance is available when writing any query in the Studio.  
   The code auto-completion allows you to see the various paths your query 
