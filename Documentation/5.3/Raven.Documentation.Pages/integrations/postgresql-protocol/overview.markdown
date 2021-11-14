@@ -60,8 +60,8 @@
 
 ### PostgreSQL Port
 
-* To access RavenDB (or: to connect to RavenDB), your clients need not only 
-  its **URL** but also its PostgreSQL **Port** number.  
+* To access RavenDB, your clients need not only its **URL** but also its 
+  PostgreSQL **Port** number.  
   By default, the port number is *5433*.  
 * To use a different port, add the following line to your settings.json file, with a port number 
   of your choice:  
