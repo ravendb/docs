@@ -24,9 +24,12 @@ In this page:
 
 {PANEL:Data subscription consumption}
 
-Data subscriptions are consumed by clients, called subscription workers. In any given moment, only one worker can be connected to a data subscription. 
-A worker connected to a data subscription receives a batch of documents and gets to process it. 
-When it's done, depending on the code that the client gave the worker, it can take from seconds to hours. It informs the server about the progress, and the server is ready to send the next batch.
+* Data subscriptions are consumed by clients, called **Subscription Workers**.  
+* You can determine whether workers would be able to connect a subscription 
+  [concurrently, or only one at a time](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay).  
+* A worker that connects a data subscription receives a batch of documents, and gets to process it.  
+  Depending on the code that the client provided the worker with, processing can take from seconds to hours.  
+  When all documents are processed, the worker informs the server of its progress and the server can send it the next batch.  
 
 {PANEL/}
 
@@ -59,10 +62,14 @@ A subscription worker will retry processing documents from the last acknowledged
 
 {PANEL:Progress Persistence}
 
-Processing progress is persisted and therefore it can be paused and resumed from the last point it was stopped. 
-The persistence mechanism also ensures that no documents are missed even in the presence of failure, whether it's client side related, communication, or any other disaster. 
-Subscriptions progress is stored in the cluster level, in the `Enterprise edition`. In the case of node failure, the processing can be automatically failed over to another node.
-The usage of Change Vectors allows us to continue from a point that is close to the last point reached before failure rather than starting the process from scratch.
+* The processing progress is persisted on the server and therefore the subscription 
+  task can be paused and resumed from the last point it was stopped.  
+* The persistence mechanism also ensures that no documents are missed even in the 
+  presence of failure, whether it's client-side related, communication, or any other disaster.  
+* Subscriptions progress is stored in the cluster level, in the `Enterprise edition`.  
+  In the case of a node failure, the processing can be automatically failed over to another node.  
+* The usage of Change Vectors allows us to continue from a point that is close to 
+  the last point reached before failure rather than starting the process from scratch.  
 {PANEL/}
 
 {PANEL:How the worker communicates with the server}
@@ -80,8 +87,13 @@ When the responsible node handling the subscription is down, the subscription ta
 With the Enterprise license the cluster will automatically reassign the work to another node.
 {INFO/}
 
-The TCP connection is also used as the "state" of the worker process and as long as it's alive, the server will not allow other clients to consume the subscription. 
-The TCP connection is kept alive and monitored using "heartbeat" messages. If it's found nonfunctional, the current batch progress will be restarted.
+* The status of the TCP connection is also used to determine the "state" of the worker process.  
+  If the subscription and its workers implement a 
+  [One Worker Per Subscription](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay) 
+  strategy, as long as the connection is alive the server will not allow 
+  other clients to consume the subscription. 
+* The TCP connection is kept alive and monitored using "heartbeat" messages.  
+  If the connection is found nonfunctional, the current batch progress will be restarted.
 
 See the sequence diagram below that summarizes the lifetime of a subscription connection.
 
@@ -91,16 +103,34 @@ See the sequence diagram below that summarizes the lifetime of a subscription co
 
 {PANEL:Working with multiple clients}
 
-In order to support various inter-worker scenarios, one worker is allowed to take the place of another in the processing of a subscription. 
-Thanks to subscriptions persistence, the worker will be able to continue the work from the point it's predecessor stopped. 
+You can use a **Suscription Worker Strategy** to determine whether multiple 
+workers of the same subscription can connect it one by one, or **concurrently**.  
 
-It's possible to configure that a worker will wait for an existing connection to fail, and take it's place, or we can configure it to force close an existing connection etc. See more in [Workers interplay](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#workers-interplay).
+* **One Worker Per Subscription Strategies**  
+  The one-worker-per-subscription strategies allow workers of the same subscription 
+  to connect it **one worker at a time**, with different strategies to support various 
+  inter-worker scenarios.  
+   * One worker is allowed to take the place of another in the processing of a subscription.  
+     Thanks to subscriptions persistence, the worker will be able to continue the work 
+     starting at the point its predecessor got to.  
+   * You can also configure a worker to wait for an existing connection to fail and take 
+     its place, or to force an existing connection to close.  
+   * Read more about these strategies [here](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#one-worker-per-subscription-strategies).  
+
+* **Concurrent Subscription Strategy**  
+  Using the concurrent subscription strategy, multiple workers of the same subscription can 
+  connect it simultaneously and divide the documents processing load between them to speed it up.  
+   * Batch processing is divided between the multiple workers.  
+   * Connection failure is handled by assigning batches of failing workers to 
+     active available workers.  
+   * Read more about this strategy [here](../../client-api/data-subscriptions/concurrent-subscriptions).  
 
 {PANEL/}
 
 {PANEL:Data subscriptions usage example}
 
-Data subscriptions are accessible by a document store. Here's an example of an ad-hoc creation and usage of data subscriptions:
+Data subscriptions are accessible by a document store.  
+Here's an example of creating and using a data subscription:
 
 {CODE:nodejs subscriptions_example@client-api\dataSubscriptions\dataSubscriptions.js /}
 
