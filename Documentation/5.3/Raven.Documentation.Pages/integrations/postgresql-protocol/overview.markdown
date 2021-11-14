@@ -2,7 +2,7 @@
 
 * RavenDB implements the PostgreSQL protocol, allowing applications and libraries that 
   use PostgreSQL, e.g. [Power BI](../../integrations/postgresql-protocol/power-bi), to 
-  retrieve data from the database.  
+  retrieve data from a RavenDB database.  
 
 * To use RavenDB as a PostgreSQL server you need -  
    * a [license](../../studio/server/license-management) that enables the PostgreSQL Protocol.  
@@ -17,7 +17,7 @@
 {NOTE: }
 
 * In this page:  
-  * [Enabling PostgreSQL, and Additional Settings](../../integrations/postgresql-protocol/overview#enabling-postgresql,-and-additional-settings)  
+  * [Enabling PostgreSQL support](../../integrations/postgresql-protocol/overview#enabling-postgresql-support)  
      * [License](../../integrations/postgresql-protocol/overview#license)  
      * [Settings](../../integrations/postgresql-protocol/overview#settings)  
      * [PostgreSQL Port](../../integrations/postgresql-protocol/overview#postgresql-port)  
@@ -26,27 +26,27 @@
 
 ---
 
-{PANEL: Enabling PostgreSQL, and Additional Settings}
+{PANEL: Enabling PostgreSQL support}
 
 ---
 
 ### License
 
-* Your RavenDB license determines which features are active.  
-* Check whether your license activates PostgreSQL, in Studio's **About** Page.  
-  !["About - License"](images/about-license.png "About - License")
-* If your current license doesn't allow you to use PostgreSQL, acquire [one that does](../../studio/server/license-management).  
+* Your RavenDB license determines which features are available.  
+* Visit Studio's **About** page to find which features are included in your license.  
+  !["PostgreSQL and Power BI support is availbale"](images/about-license.png "PostgreSQL and Power BI support is availbale")
+* If your current license doesn't include the PostgreSQL support, acquire [one that does](../../studio/server/license-management).  
 
 ---
 
 ### Settings
 
-* PostgreSQL must be explicitly enabled in your [settings](../../server/configuration/configuration-options#json).  
+* PostgreSQL protocol support must be explicitly enabled in your [settings](../../server/configuration/configuration-options#json).  
   Add this line to your server's `settings.json` file to enable the PostgreSQL protocol:  
   {CODE-BLOCK:json}
 "Integrations.PostgreSQL.Enabled": true
   {CODE-BLOCK/}
-* If your license enables **PostgreSQL Protocol Support** but not 
+* If your license includes the **PostgreSQL Protocol Support** but not 
   **Power BI Support**, enable RavenDB's [Experimental Features](../../server/configuration/core-configuration#features.availability) 
   by adding this line to your server's `settings.json` file:  
   {CODE-BLOCK:json}
@@ -58,9 +58,9 @@
 
 ### PostgreSQL Port
 
-* To connect RavenDB, your clients need not only its URL but also its PostgreSQL **Port** number.  
+* To connect RavenDB, your clients need not only its **URL** but also its PostgreSQL **Port** number.  
   By default, the port number is *5433*.  
-* To use another port, add the following line to your settings.json file, with a port number 
+* To use a different port, add the following line to your settings.json file, with a port number 
   of your choice:  
   {CODE-BLOCK:json}
 "Integrations.PostgreSQL.Port": 5433
@@ -70,7 +70,7 @@
 
 {PANEL: Security}
 
-Allowing just any client to connect your database (via PostgreSQL or otherwise) 
+Allowing just any client to connect to your database (via PostgreSQL or otherwise) 
 without authentication is risky, and should in general be avoided.  
 {WARNING: }
 If RavenDB is not set as a secure server, it will require no authentication over the PostgreSQL protocol.  

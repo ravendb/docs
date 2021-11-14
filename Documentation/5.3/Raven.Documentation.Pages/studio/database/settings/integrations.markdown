@@ -5,12 +5,15 @@
 
 {NOTE: }
 
+* The Integrations view allows you to define credentials that third-party clients 
+  are required to provide when accessing RavenDB.  
+
 * The **Integrations view** allows you to define credentials, that clients 
   of [software packages bundled with RavenDB](../../../integrations/postgresql-protocol/overview) 
   will be required to provide in order to access RavenDB.  
 
-* Providing the credentials will only be required of clients, if RavenDB 
-  is installed as a [Secure Server](../../../start/installation/setup-wizard).  
+* Providing the credentials is only required of clients when RavenDB is installed as a 
+  [Secure Server](../../../start/installation/setup-wizard).  
 
 * In this page:  
   * [Integrations View](../../../studio/database/settings/integrations#integrations-view)  
@@ -43,9 +46,9 @@
 
 !["Add Credentials"](images/add-credentials.png "Add Credentials")
 
-1. Type user name  
-2. Type password  
-3. Click to generate the password automatically  
+1. Enter user name  
+2. Enter password  
+3. Click to generate a password  
 4. Click to view the password  
 5. Click to copy the credentials  
    **Note**: This is the only opportunity to view and copy the credentials.  
