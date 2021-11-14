@@ -1,7 +1,7 @@
 ﻿# PostgreSQL Protocol: Power BI
 
 * The [Power BI](https://en.wikipedia.org/wiki/Microsoft_Power_BI) Desktop and 
-  Online services Can use RavenDB as a PostgreSQL server and retrieve data from it.  
+  Online services can use RavenDB as a PostgreSQL server and retrieve data from it.  
 
 * See below how to use Power BI Desktop to -  
    * Easily select RavenDB collections and retrieve chosen data.  
@@ -13,7 +13,7 @@
 
 * In this page:  
   * [Using RavenDB From Power BI Desktop](../../integrations/postgresql-protocol/power-bi#using-ravendb-from-power-bi-desktop)  
-     * [Connect RavenDB](../../integrations/postgresql-protocol/power-bi#connect-ravendb)  
+     * [Connect to RavenDB](../../integrations/postgresql-protocol/power-bi#connect-to-ravendb)  
      * [Retrieve Collections Data](../../integrations/postgresql-protocol/power-bi#retrieve-collections-data)  
      * [Query RavenDB Using RQL](../../integrations/postgresql-protocol/power-bi#query-ravendb-using-rql)  
 {NOTE/}
@@ -24,7 +24,7 @@
 
 ---
 
-### Connect RavenDB
+### Connect to RavenDB
 
 !["Get Data"](images/get-data-button.png "Get Data")
 
@@ -40,7 +40,7 @@
 
 !["Connection Details"](images/connection-details.png "Connection Details")
 
-* Provide RavenDB's **URL**, its PostgreSQL port number, and the name of the database you 
+* Provide RavenDB's **URL**, its PostgreSQL **port** number, and the name of the database you 
   want to retrieve data from.  
    * Provide the URL without its "https://" prefix.  
    * RavenDB's PostgreSQL port number is by default 5433, and is [configurable](../../integrations/postgresql-protocol/overview#postgresql-port).  
@@ -58,7 +58,7 @@
 
 ### Retrieve Collections Data
 
-When you connect the database, A list of your database's collection will appear.  
+The database's collections & documents will show once RavenDB is connected.  
 
 !["Collections"](images/collections.png "Collections")
 
@@ -68,10 +68,7 @@ When you connect the database, A list of your database's collection will appear.
 
 !["Retrieved Collection Data"](images/retrieved-collection-data.png "Retrieved Collection Data")
 
-* Your data is loaded, and you can play with it as you will.  
-  One notable field is the rightmost "json()" field; we placed 
-  it there for irregular data items, should there be ones, that 
-  don't fit into one of the otherwise regular json arrays.  
+* Your data is loaded, and you can play with it as you wish.  
 
 ---
 
@@ -83,13 +80,17 @@ to import into Power BI just the data you're looking for.
 !["RQL Query"](images/rql-query.png "RQL Query")
 
 * After providing the URL, port number, and database name,  
-  open **Advanced options**, enter your query into the **SQL Statement** field, 
+  open **Advanced options**, enter your RQL query into the **SQL Statement** field, 
   and click **OK**.  
 
 ---
 
 !["RQL Query Results"](images/rql-query-results.png "RQL Query Results")
 
+* Only the fields resulting from the RQL query will be imported to Power BI.  
+* One notable field is the rightmost `json()` field; we placed 
+  it there for irregular data items, should there be ones, that 
+  don't fit into one of the otherwise regular json arrays.  
 
 {PANEL/}
 
