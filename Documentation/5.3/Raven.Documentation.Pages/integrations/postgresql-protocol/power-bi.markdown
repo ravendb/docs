@@ -69,9 +69,6 @@ The database's collections & documents will show once RavenDB is connected.
 !["Retrieved Collection Data"](images/retrieved-collection-data.png "Retrieved Collection Data")
 
 * Your data is loaded, and you can play with it as you wish.  
-  One notable field is the rightmost json() field; we placed 
-  it there for irregular data items, should there be ones, that 
-  don't fit into one of the otherwise regular json arrays.  
 
 ---
 
@@ -91,6 +88,9 @@ to import into Power BI just the data you're looking for.
 !["RQL Query Results"](images/rql-query-results.png "RQL Query Results")
 
 * Only the fields resulting from the RQL query will be imported to Power BI.  
+* One notable field is the rightmost `json()` field; we placed 
+  it there for irregular data items, should there be ones, that 
+  don't fit into one of the otherwise regular json arrays.  
 
 {PANEL/}
 

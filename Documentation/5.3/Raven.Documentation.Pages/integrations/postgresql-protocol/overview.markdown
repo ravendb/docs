@@ -34,7 +34,9 @@
 
 * Your RavenDB license determines which features are available.  
 * Visit Studio's **About** page to find which features are included in your license.  
-  !["PostgreSQL and Power BI support is availbale"](images/about-license.png "PostgreSQL and Power BI support is availbale")
+
+     !["PostgreSQL and Power BI support"](images/about-license.png "PostgreSQL and Power BI support")
+
 * If your current license doesn't include the PostgreSQL support, acquire [one that does](../../studio/server/license-management).  
 
 ---
@@ -58,7 +60,8 @@
 
 ### PostgreSQL Port
 
-* To connect RavenDB, your clients need not only its **URL** but also its PostgreSQL **Port** number.  
+* To access RavenDB (or: to connect to RavenDB), your clients need not only 
+  its **URL** but also its PostgreSQL **Port** number.  
   By default, the port number is *5433*.  
 * To use a different port, add the following line to your settings.json file, with a port number 
   of your choice:  

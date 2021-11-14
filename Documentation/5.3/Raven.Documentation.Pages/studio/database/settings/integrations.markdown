@@ -5,12 +5,8 @@
 
 {NOTE: }
 
-* The Integrations view allows you to define credentials that third-party clients 
+* The **Integrations View** allows you to define credentials that third-party clients 
   are required to provide when accessing RavenDB.  
-
-* The **Integrations view** allows you to define credentials, that clients 
-  of [software packages bundled with RavenDB](../../../integrations/postgresql-protocol/overview) 
-  will be required to provide in order to access RavenDB.  
 
 * Providing the credentials is only required of clients when RavenDB is installed as a 
   [Secure Server](../../../start/installation/setup-wizard).  
