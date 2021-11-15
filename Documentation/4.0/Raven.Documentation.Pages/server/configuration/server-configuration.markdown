@@ -11,7 +11,8 @@
     * [Server.ProcessAffinityMask](../../server/configuration/server-configuration#server.processaffinitymask)  
     * [Server.IndexingAffinityMask](../../server/configuration/server-configuration#server.indexingaffinitymask)  
     * [Server.NumberOfUnusedCoresByIndexes](../../server/configuration/server-configuration#server.numberofunusedcoresbyindexes)  
-    * [Server.CpuCredits.ExhaustionBackupDelayInMin](../../server/configuration/server-configuration#server.cpucredits.exhaustionbackupdelayinmin)      
+    * [Server.CpuCredits.ExhaustionBackupDelayInMin](../../server/configuration/server-configuration#server.cpucredits.exhaustionbackupdelayinmin)  
+    * [Server.Tcp.Compression.Disable](../../server/configuration/server-configuration#server.tcp.compression.disable)  
 
 {NOTE/}
 
@@ -71,5 +72,16 @@ determines how many minutes the server will wait before retrying the backup task
 If you have an enterprise license, you can access information about CPU credits 
 using [SNMP](../../server/administration/SNMP/snmp).  
 {INFO/}
+
+{PANEL/}
+
+
+{PANEL:Server.Tcp.Compression.Disable}
+
+Disable TCP Compression
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
 
 {PANEL/}

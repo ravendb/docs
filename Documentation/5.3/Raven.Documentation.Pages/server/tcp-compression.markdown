@@ -18,6 +18,7 @@
   * [TCP Compression](../server/tcp-compression#tcp-compression)  
   * [Compression Algorithm and Ratio](../server/tcp-compression#compression-algorithm-and-ratio)  
   * [Enabling TCP Compression](../server/tcp-compression#enabling-tcp-compression)  
+  * [Disabling TCP Compression](../server/tcp-compression#disabling-tcp-compression)  
 
 {NOTE/}
 
@@ -54,12 +55,23 @@ With the **TCP compression** feature enabled, data **in transit** is compressed 
 
 ## Enabling TCP Compression
 
-Your server's [license](../studio/server/license-management) 
-type determines whether TCP compression, among other features, 
-is activated on it. No additional configuration is needed 
-to enable this feature.  
+Your server's [license](../studio/server/license-management) type determines whether 
+TCP compression, among other features, is activated.  
+No additional configuration is needed to enable this feature.  
 
 ![License (Studio View)](images/tcp-compression-license.png "License (Studio View)")
+
+---
+
+### Disabling TCP Compression
+
+* TCP Compression can be disabled by a client, using the client API 
+  DocumentStore `DocumentConventions.DisableTcpCompression ` convention.  
+  {CODE DisableTcpCompression@Server\tcpCompression\tcpCompression.cs /}
+
+* TCP Compression can also be disabled server-wide, using the 
+  server [Server.Tcp.Compression.Disable](../server/configuration/server-configuration#server.tcp.compression.disable) configuration.  
+  Learn how to change database settings using Studio [here](../studio/database/settings/database-settings).  
 
 {PANEL/}
 
