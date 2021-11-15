@@ -1,4 +1,4 @@
-﻿# Query View
+﻿# Studio: Query View
 ---
 
 {NOTE: }
