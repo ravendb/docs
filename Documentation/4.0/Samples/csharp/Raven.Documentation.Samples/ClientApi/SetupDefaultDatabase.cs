@@ -20,7 +20,7 @@ namespace Raven.Documentation.Samples.ClientApi
                 // Specify the 'Northwind' database when opening a Session
                 using (IDocumentSession session = store.OpenSession(database: "NorthWind"))
                 {
-                    // Session will operate on the default 'Northwind' database
+                    // Session will operate on the 'Northwind' database
                 }
 
                 // Specify the 'Northwind' database when sending an Operation
