@@ -196,7 +196,7 @@ If you left the "Automatically register the admin client..." box in the IP setup
 
 If you unchecked the box, before you continue please register the client certificate in the OS store or import it to the browser.
 
-### Run Certificate Import Wizard
+### Install client certificate into browser Run Certificate Import Wizard
 
 A.  Extract the downloaded configuration .zip file `<YourDomainName>.Cluster.Settings.zip` to the parent folder.
 
@@ -245,14 +245,19 @@ J.  Click `Restart`.  A new tab with the Studio should open in your browser and 
 K.  Repeat the process for the remaining nodes. When all the nodes are up, you can view the updated topology in the Studio.  
 
 {NOTE: A Healthy Cluster} 
-All of the nodes in a healthy cluster should be green with green lines between them.  
-If one of the nodes disconnects at any time, the RavenDB studio will show that it is red with a red line showing the disconnect.  
+
+* All of the nodes in a healthy cluster should be green with green lines between them.  
+* If one of the nodes disconnects at any time, the RavenDB studio will show that it is red with a red line showing the disconnect.  
 {NOTE/} 
 
 ![Figure 11. Healthy Cluster](images/setup/12.png "Healthy Cluster")
 </br>
 
-You have successfully finished setting up a secure cluster of RavenDB servers using a Let's Encrypt certificate.
+You have successfully finished setting up a secure cluster of RavenDB servers using a Let's Encrypt certificate.  
+
+  
+You can now [register the cluster as a service](../../start/installation/running-as-service) in your OS (it will run in the background every time your machine starts).
+
 
 {PANEL/}
 
@@ -285,7 +290,7 @@ If you bring your own certificate, you must also take care of the DNS records. I
 If you are running behind a firewall, the DNS records must point to the **external** IP address.
 {WARNING/}
 
-### Example I
+### Example I - On one machine
 
 In the following screenshot, we show an example of constructing a cluster for local development on one machine:
 
@@ -299,7 +304,7 @@ All 3 nodes will run on the local machine:
 
 Each node will run in its own process and have its own data directory and [settings.json](../../server/configuration/configuration-options#json) file. You should have 3 separate RavenDB folders.
 
-### Example II
+### Example II - On separate machines
 
 Each node will run on its own machine in a network.
 
@@ -311,7 +316,7 @@ A common scenario for running an internal cluster will be:
 
 You can deploy a cluster that is completely internal to your network and still gain all the benefits of using certificates and SSL with full trust and complete support from all the standard tooling.
 
-### Example III
+### Example III - Behind a firewall
 
 A RavenDB server can run behind a firewall (in cloud environments for example).
 
@@ -319,7 +324,7 @@ RavenDB will bind to the **private** IP address. However, the DNS records must b
 
 It is your responsibility to update the DNS record of your domain to point to your external IP address.  
 
-### Example IV
+### Example IV - In a Docker container
 
 In Docker, if you choose to use port mapping with the -p flag, You need to check the box "Customize external ports" and supply the exposed ports.  
 
@@ -339,39 +344,53 @@ When finished, you will receive a Zip file containing all of the cluster configu
 
 At this point, click the "Restart Server" button, and wait until the browser redirects you to the new URL (in the example it's "https://a.ravendb.example.com").
 
-If you checked the relevant box in the previous stage, a client certificate is registered in the OS trusted store during setup. The Chrome and Edge browsers use the OS store, so they will let you choose your certificate right before you are redirected. Firefox users will have to manually import the certificate to the browser via Tools > Options > Advanced > Certificates > View Certificates > Your Certificates Tab > Import.
+If you left the "Automatically register the admin client..." box in the IP setup stage checked (it is checked by default), a client certificate is registered in the OS trusted store during setup. The Chrome and Edge browsers use the OS store, so they will let you choose your certificate right before you are redirected. Firefox users will have to manually import the certificate to the browser via Tools > Options > Advanced > Certificates > View Certificates.
 
-If you didn't check the box, please register the client certificate in the OS store or import it to the browser before you continue.
+If you unchecked the box, before you continue please register the client certificate in the OS store or import it to the browser.
 
 ![Figure 4. Restart and choose certificate](images/setup/w4.png "Restart and choose certificate")
 
-If you are setting up a single node, the setup is complete and you can start working.
+If you are setting up a single node, the setup is complete and you can start working.  
+<br/>
 
 ### Setting Up Other Nodes
 
 When you access the Studio please navigate to: Manage Server > Cluster. You will see something similar to this:
 
-![Figure 8. Incomplete Cluster](images/setup/w5.png "Incomplete Cluster")  
+![Figure 8. Incomplete Cluster](images/setup/w5.png "Incomplete Cluster")
 
 Nodes B and C are not running yet. As soon as we start them, node A will detect it and add them to the cluster.
 
 Now, let's bring node B up.
 
-First, copy the configuration Zip file to node B and download/copy a fresh RavenDB server folder. In **Windows**, start RavenDB using the `run.ps1` script. In **Linux**, use the `start.sh` script.
+A.  Copy the zipped configuration `...settings.zip` file to the Node B folder.  
+B.  Extract it into the Node B folder.  
+C.  Extract the downloaded server `RavenDB...zip` folder into the Node B folder.  
+D.  In **Windows**, start the RavenDB setup wizard using the `run.ps1` script. In **Linux**, use the `start.sh` script.
+  
+E.  This time we will choose to `Continue the cluster setup for new node`.
+     ![Figure 9. Choose Cluster Setup](images/setup/10.png "Choose Cluster Setup view")
 
-This time, we will choose to continue the cluster setup.
+F.  Run the Certificate Import Wizard again with the `admin.client...pfx` that's in the Node B folder. Click `next` until done.  
+G.  In the Setup Wizard (image below), `Browse` for and select the **zipped** `...Settings.zip` file from the Node B folder.  
+H.  `Select node tag` (B in this case).  
+I.  Then click `next`.  
+     ![Figure 10. Complete Existing Cluster](images/setup/Complete-Existing-Cluster-Setup.png "Complete Existing Cluster view")
 
-![Figure 9. Continue Setup](images/setup/10.png "Continue Setup")  
+J.  Click `Restart`.  A new tab with the Studio should open in your browser and when you navigate to: Manage Server -> Cluster you should see two green nodes with a green line between them.  
+K.  Repeat the process for the remaining nodes. When all the nodes are up, you can view the updated topology in the Studio.  
 
-Now we will supply the downloaded Zip file and select the node we are currently setting up.
+{NOTE: A Healthy Cluster} 
 
-![Figure 10. Upload Zip File](images/setup/w6.png "Upload Zip File")  
-
-Click restart when finished and repeat the process for more nodes. When all the nodes are up, you can view the updated topology in the studio.
+* All of the nodes in a healthy cluster should be green with green lines between them.  
+* If one of the nodes disconnects at any time, the RavenDB studio will show that it is red with a red line showing the disconnect.  
+{NOTE/} 
 
 ![Figure 11. Complete Cluster](images/setup/w7.png "Complete Cluster")
 
 You have successfully finished setting up a secure cluster of RavenDB servers using your own wildcard certificate.
+  
+You can now [register the cluster as a service](../../start/installation/running-as-service) in your OS (it will run in the background every time your machine starts).
 
 {PANEL/}
 
@@ -385,7 +404,8 @@ In the **Unsecure Mode**, all you need to do is specify the **IP address** and *
 * All security features (authentication, authorization and encryption) are **disabled** in the Unsecure Mode.  
 
 * When choosing to listen to an outside network, the RavenDB server does not provide any security since Authentication is off.  
-  Anyone who can access the server using the configured IP address will be granted **administrative privileges**.  
+
+* Anyone who can access the server using the configured IP address will be granted **administrative privileges**.  
 {DANGER/}
 
 ![Figure 1. Complete Cluster](images/setup/u0.png "Configuring a server on Node A, listening to 127.0.0.1 on port 8080 ")
