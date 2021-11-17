@@ -27,9 +27,9 @@ If such errors happen, they need to be reported as soon as possible to [RavenDB 
 * A _filesystem_ and _hard-drive_ backing up a RavenDB server should have the following properties:
   * support for `fsync`  
   * support for `write-through` on windows and `O_DIRECT` on Linux based OS.  
- 
- Read more about `fsync` across platforms [here](https://www.humboldt.co.uk/fsync-across-platforms/)
   
+ Read more about `fsync` across platforms [here](https://web.archive.org/web/20160319103232/https://www.humboldt.co.uk/fsync-across-platforms/)
+
 {PANEL/}
 
 {PANEL: Resolution}
