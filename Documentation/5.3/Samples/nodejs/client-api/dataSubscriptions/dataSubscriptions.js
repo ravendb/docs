@@ -11,21 +11,17 @@ const session = store.openSession();
 {
     //region subscriptionCreationOverloads
     store.subscriptions.create(clazz, [database]);
+    
     store.subscriptions.create(options, [database]);
-
-    store.subscriptions.createForRevisions(clazz, [database]);
-    store.subscriptions.createForRevisions(options, [database]);
     //endregion
 }
 
     async function example() {
         const subscription = await store.subscriptions.create({});
         //region subscriptionWorkerGeneration
-        store.subscriptions.getSubscriptionWorker(options, [database]);
         store.subscriptions.getSubscriptionWorker(subscriptionName, [database]);
 
-        store.subscriptions.getSubscriptionWorkerForRevisions(options, [database]);
-        store.subscriptions.getSubscriptionWorkerForRevisions(subscriptionName, [database]);
+        store.subscriptions.getSubscriptionWorker(options, [database]);
         //endregion
     }
 
