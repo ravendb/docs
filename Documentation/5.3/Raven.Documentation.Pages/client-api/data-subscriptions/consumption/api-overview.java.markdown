@@ -62,12 +62,12 @@ The `run` function receives the client-side code as a delegate that will process
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **processDocuments** | `Consumer<SubscriptionBatch<T>>` | Delegate for sync batches processing |
-| **processDocuments** | `Consumer<SubscriptionBatch<T>, Task>` | Delegate for async batches processing |
+| **processDocuments** | `Consumer<SubscriptionBatch<T>, CompletableFuture<Void>>` | Delegate for async batches processing |
 | **ct** | `CancellationToken` | Cancellation token used in order to halt the worker operation |
 
 | Return value | |
 | ------------- | ----- |
-| `Task` | Task that is alive as long as the subscription worker is processing or tries processing. If the processing is aborted, the task exits with an exception | 
+| `CompletableFuture<Void>` | Task that is alive as long as the subscription worker is processing or tries processing. If the processing is aborted, the task exits with an exception | 
 
 {PANEL/}
 
@@ -126,7 +126,7 @@ If such failure occurs, the subscription processing will be stopped, and will ha
 | **disposeAsync()** | `Task` | Async version of `dispose()`. |
 | **dispose(boolean waitForSubscriptionTask)** | `void` | Aborts the subscription worker, but allows deciding whether to wait for the `run` function task or not. |
 | **disposeAsync(boolean waitForSubscriptionTask)** | `void` | Async version of `disposeAsync(bool waitForSubscriptionTask)`. |
-| **run (multiple overloads)** | `Task` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](../../../client-api/data-subscriptions/consumption/api-overview#running-subscription-worker)). |
+| **run (multiple overloads)** | `CompletableFuture<Void>` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](../../../client-api/data-subscriptions/consumption/api-overview#running-subscription-worker)). |
 
 {NOTE/}
 
