@@ -66,6 +66,8 @@ public class DataSubscriptions {
     public interface ISubscriptionWorkerRunning<T> {
         //region subscriptionWorkerRunning
         CompletableFuture<Void> run(Consumer<SubscriptionBatch<T>> processDocuments);
+        
+        CompletableFuture<Void> run(Consumer<SubscriptionBatch<T>, Task> processDocuments, CancellationToken ct = default(CancellationToken));
         //endregion
     }
 

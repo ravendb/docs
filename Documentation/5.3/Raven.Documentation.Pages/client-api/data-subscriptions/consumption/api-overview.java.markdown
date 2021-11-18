@@ -45,7 +45,7 @@ Subscription worker generation is accessible through the `DocumentStore`'s `subs
 | **ignoreSubscriberErrors** | `boolean` | If true, will not abort subscription processing if client code, passed to the `run` function, throws an unhandled exception. Default: false. |
 | **strategy** | `SubscriptionOpeningStrategy`<br>(enum) | Sets the way the server will treat current and/or other clients when they will try to connect. See [Workers interplay](how-to-consume-data-subscription#workers-interplay). Default: `OPEN_IF_FREE`. |
 | **maxDocsPerBatch** | `int` | Maximum amount of documents that the server will try sending in a batch. If the server will not find "enough" documents, it won't wait and send the amount it found. Default: 4096. |
-| **closeWhenNoDocsLeft** | `boolean` | If true, it performs an "ad-hoc" operation that processes all possible documents, until the server can't find any new documents to send. At that moment, the task returned by the `Run` function will fail and throw a `SubscriptionClosedException` exception. Default: false. |
+| **closeWhenNoDocsLeft** | `boolean` | If true, it performs an "ad-hoc" operation that processes all possible documents, until the server can't find any new documents to send. At that moment, the task returned by the `run` function will fail and throw a `SubscriptionClosedException` exception. Default: false. |
 | **sendBufferSizeInBytes** | `int` | The size in bytes of the TCP socket buffer used for _sending_ data. <br>Default: 32,768 (32 KiB) |
 | **receiveBufferSizeInBytes** | `int` | The size in bytes of the TCP socket buffer used for _receiving_ data. <br>Default: 32,768 (32 KiB) |
 
@@ -53,8 +53,8 @@ Subscription worker generation is accessible through the `DocumentStore`'s `subs
 
 {PANEL:Running subscription worker}
 
-After receiving a subscription worker, the subscription worker is still not processing any documents. SubscriptionWorker's `run` function allows you to start processing worker operations.  
-The `run` function receives the client-side code as a consumer that will process the received batches:
+After [generating](../../../client-api/data-subscriptions/consumption/api-overview#subscription-worker-generation) a subscription worker, the subscription worker is still not processing any documents. SubscriptionWorker's `run` function allows you to start processing worker operations.  
+The `run` function receives the client-side code as a delegate that will process the received batches:
 
 {CODE:java subscriptionWorkerRunning@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
@@ -62,15 +62,17 @@ The `run` function receives the client-side code as a consumer that will process
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **processDocuments** | `Consumer<SubscriptionBatch<T>>` | Delegate for sync batches processing |
+| **processDocuments** | `Consumer<SubscriptionBatch<T>, Task>` | Delegate for async batches processing |
+| **ct** | `CancellationToken` | Cancellation token used in order to halt the worker operation |
 
 | Return value | |
 | ------------- | ----- |
-| `CompletableFuture<Void>` | Task that is alive as long as the subscription worker is processing or tries processing. If the processing is aborted, the future exits with an exception | 
+| `Task` | Task that is alive as long as the subscription worker is processing or tries processing. If the processing is aborted, the task exits with an exception | 
 
 {PANEL/}
 
 
-{PANEL:SubscriptionBatch&lt;T&gt;}
+{PANEL:SubscriptionBatch<T>}
 
 | Member | Type | Description |
 |--------|:-----|-------------| 
@@ -80,6 +82,7 @@ The `run` function receives the client-side code as a consumer that will process
 | Method Signature | Return value | Description |
 |--------|:-------------|-------------|
 | **openSession()** | `IDocumentSession` | New document session, that tracks all items and included items of the current batch. |
+| **openAsyncSession()** | `IDocumentSession` | New asynchronous document session, that tracks all items and included items of the current batch. |
 
 
 {NOTE:Subscription Session characteristics}
@@ -91,7 +94,7 @@ If such failure occurs, the subscription processing will be stopped, and will ha
 {NOTE/}
 
 
-{INFO:SubscriptionBatch&lt;T&gt;.Item}
+{INFO:SubscriptionBatch<T>.Item}
 
 {NOTE if T is `ObjectNode`, no deserialization will take place /}
 
@@ -105,18 +108,25 @@ If such failure occurs, the subscription processing will be stopped, and will ha
 | **rawMetadata** | `ObjectNode` | Current batch item's underlying document metadata. |
 | **metadata** | `IMetadataDictionary` | Current batch item's underlying metadata values. |
 
+
+{WARNING Usage of `rawResult`, `rawMetadata`, and `metadata` values outside of the document processing delegate are not supported /}
+
+
 {INFO/}
 
 {PANEL/}
 
-{PANEL:SubscriptionWorker&lt;T&gt;}
+{PANEL:SubscriptionWorker<T>}
 
 {NOTE:Methods}
 
 | Method Signature| Return Type | Description |
 |--------|:-----|-------------| 
-| **close()** | `void` | Aborts subscription worker operation ungracefully by waiting for the task returned by the `run` function to finish running. |
-| **run (multiple overloads)** | `CompletableFuture<Void>` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](../../../client-api/data-subscriptions/consumption/api-overview#running-subscription-worker)). |
+| **dispose()** | `void` | Aborts subscription worker operation ungracefully by waiting for the task returned by the `run` function to finish running. |
+| **disposeAsync()** | `Task` | Async version of `dispose()`. |
+| **dispose(boolean waitForSubscriptionTask)** | `void` | Aborts the subscription worker, but allows deciding whether to wait for the `run` function task or not. |
+| **disposeAsync(boolean waitForSubscriptionTask)** | `void` | Async version of `disposeAsync(bool waitForSubscriptionTask)`. |
+| **run (multiple overloads)** | `Task` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](../../../client-api/data-subscriptions/consumption/api-overview#running-subscription-worker)). |
 
 {NOTE/}
 
@@ -124,9 +134,21 @@ If such failure occurs, the subscription processing will be stopped, and will ha
 
 | Event | Type\Return type | Description |
 |--------|:-----|-------------| 
-| **addAfterAcknowledgmentListener** | `Consumer<SubscriptionBatch<T>>` (event) | Event that is risen after each the server acknowledges batch processing progress. |
+| **addAfterAcknowledgmentListener** | `Consumer<SubscriptionBatch<T>>` (event) | Event that is risen after each time the server acknowledges batch processing progress. |
 | **onSubscriptionConnectionRetry** | `Consumer<Exception>` (event) | Event that is fired when the subscription worker tries to reconnect to the server after a failure. The event receives as a parameter the exception that interrupted the processing. |
-| **onClosed** | `Consumer<SubscriptionWorker<T>>` (event) | Event that is fired after the subscription worker was disposed. |
+| **onDisposed** | `Consumer<SubscriptionWorker<T>>` (event) | Event that is fired after the subscription worker was disposed. |
+
+{INFO:AfterAcknowledgmentAction}
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **batch** | `SubscriptionBatch<T>` | The batch process which was acknowledged |
+
+| Return value | |
+| ------------- | ----- |
+| `Task` | Task for which the worker will wait for the event processing to be finished (for async functions, etc.) | 
+
+{INFO/}
 
 {NOTE/}
 
