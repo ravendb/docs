@@ -27,6 +27,7 @@ The application is available at [ravendb.net/downloads](https://ravendb.net/down
 ---
 
 {PANEL: Import from MongoDB}
+In the RavenDB Studio client on the left side, select `Tasks` -> `Import Data`.
 
 ![Figure 1.](images/mongodb-1.png "Import from MongoDB")
 
@@ -44,7 +45,7 @@ The application is available at [ravendb.net/downloads](https://ravendb.net/down
    * Choosing this option will import GridFS attachments and save them as documents with attachments in the `@files` collection.  
    
 5. **Database Name**
-   * Provide the name of the source database.  
+   * Provide the name of the **source** database.  
    
 6. **Migrate all collections**  
    * You can either import all collections or select the collections you'd like to import.  
@@ -57,6 +58,7 @@ The application is available at [ravendb.net/downloads](https://ravendb.net/down
 
 
 {PANEL: Import from CosmosDB}
+In the RavenDB Studio client on the left side, select `Tasks` -> `Import Data`.
 
 ![Figure 2.](images/cosmosdb-1.png "Import from CosmosDB")
 
