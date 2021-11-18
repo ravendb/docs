@@ -20,34 +20,39 @@ This page covers data subscriptions maintenance operations:
 
 {PANEL:DocumentSubscriptions class}
 The `DocumentSubscriptions` class is the class that manages all interaction with the data subscriptions.  
-The class is available through `DocumentStore`'s `Subscriptions` property.
+The class is available through `DocumentStore`'s `subscriptions()` method.
 
 | Method Signature| Return type | Description |
 |--------|:---|-------------| 
-| **Create<T>(SubscriptionCreationOptions<T> options, string database)** | `string` | Creates a new data subscription. |
-| **Create(SubscriptionCreationOptions criteria, string database)** | `string` | Creates a new data subscription. |
-| **Create(SubscriptionCreationOptions criteria, string database)** | `string` | Creates a new data subscription. |
-| **CreateAsync<T>(SubscriptionCreationOptions<T> options, string database)** | `Task<string>` | Creates a new data subscription. |
-| **CreateAsync<T>(Expression<Func<T, bool>> predicate, SubscriptionCreationOptions options, string database)** | `Task<string>` | Creates a new data subscription. |
-| **Delete(string name, string database)** | `void` | Deletes subscription. |
-| **DeleteAsync(string name, string database)** | `Task` | Deletes subscription. |
-| **DropConnection(string name, string database)** | `void` | Drops all existing subscription connections with workers. |
-| **DropConnectionAsync(string name, string database)** | `Task` | Drops all existing subscription connections with workers. |
-| **DropSubscriptionWorker<T>(SubscriptionWorker<T> worker, string database = null)** | `void` | Drops an existing subscription connection with a worker |
-| **Enable(string name, string database)** | `void` | Enables existing subscription. |
-| **EnableAsync(string name, string database)** | `Task` | Enables existing subscription. |
-| **Disable(string name, string database)** | `void` | Disables existing subscription. |
-| **DisableAsync(string name, string database)** | `Task` | Disables existing subscription. |
-| **GetSubscriptions(int start, int take, string database)** | `List<SubscriptionState>` | Returns subscriptions list. |
-| **GetSubscriptionsAsync(int start, int take, string database)** | `Task<List<SubscriptionState>>` | Returns subscriptions list. |
-| **GetSubscriptionState(string subscriptionName, string database)** | `SubscriptionState ` | Get specific subscription state. |
-| **GetSubscriptionStateAsync(string subscriptionName, string database)** | `Task<SubscriptionState> ` | Get specific subscription state. |
-| **GetSubscriptionWorker<T>(string subscriptionName, string database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
-| **GetSubscriptionWorker(string subscriptionName, string database)** | `SubscriptionWorker<dynamic>` | Generates a subscription worker, using default configurations, that processes documents in its raw `BlittableJsonReader`, wrapped by dynamic object. |
-| **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
-| **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)** | `SubscriptionWorker<dynamic>` | Generates a subscription worker, using default configurations, that processes documents in its raw `BlittableJsonReader`, wrapped by dynamic object. |
-| **Update(SubscriptionUpdateOptions options, string database = null)** | `string` | Updates an existing data subscription. |
-| **UpdateAsync(SubscriptionUpdateOptions options, string database = null, CancellationToken token = default)** | `Task<string>` | Updates an existing data subscription. |
+| **create(SubscriptionCreationOptions options)** | `String` | Creates a new data subscription. |
+| **create(SubscriptionCreationOptions options, String database)** | `String` | Creates a new data subscription. |
+| **create(SubscriptionCreationOptions options)** | `String` | Creates a new data subscription. |
+| **create(Class<T> clazz)** | `String` | Creates a new data subscription. |
+| **create(Class<T> clazz, SubscriptionCreationOptions options)** | `String` | Creates a new data subscription. |
+| **create(Class<T> clazz, SubscriptionCreationOptions options, String database)** | `String` | Creates a new data subscription. |
+| **createForRevisions(Class<T> clazz)** | `String` | Creates a new data subscription. |
+| **createForRevisions(Class<T> clazz, SubscriptionCreationOptions options)** | `String` | Creates a new data subscription. |
+| **createForRevisions(Class<T> clazz, SubscriptionCreationOptions options, String database)** | `String` | Creates a new data subscription. |
+| **delete(String name)** | `void` | Deletes subscription. |
+| **delete(String name, String database)** | `void` | Deletes subscription. |
+| **dropConnection(String name)** | `void` | Drops existing subscription connection with worker. |
+| **dropConnection(String name, String database)** | `void` | Drops existing subscription connection with worker. |
+| **getSubscriptions(int start, int take)** | `List<SubscriptionState>` | Returns subscriptions list. |
+| **getSubscriptions(int start, int take, String database)** | `List<SubscriptionState>` | Returns subscriptions list. |
+| **getSubscriptionState(String subscriptionName)** | `SubscriptionState ` | Get specific subscription state. |
+| **getSubscriptionState(String subscriptionName, String database)** | `SubscriptionState ` | Get specific subscription state. |
+| **getSubscriptionWorker(string subscriptionName)** | `SubscriptionWorker<ObjectNode>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `ObjectNode` type . |
+| **getSubscriptionWorker(string subscriptionName, String database)** | `SubscriptionWorker<ObjectNode>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `ObjectNode` type . |
+| **getSubscriptionWorker(SubscriptionWorkerOptions options)** | `SubscriptionWorker<ObjectNode>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `ObjectNode` type . |
+| **getSubscriptionWorker(SubscriptionWorkerOptions options, String database)** | `SubscriptionWorker<ObjectNode>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `ObjectNode` type . |
+| **getSubscriptionWorker<T>(Class<T> clazz, String subscriptionName)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorker<T>(Class<T> clazz, String subscriptionName, String database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorker<T>(Class<T> clazz, SubscriptionWorkerOptions options)** | `SubscriptionWorker<T>` | Generates a subscription worker, using provided configuration, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorker<T>(Class<T> clazz, SubscriptionWorkerOptions options, String database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using provided configuration, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorkerForRevisions<T>(Class<T> clazz, String subscriptionName)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorkerForRevisions<T>(Class<T> clazz, String subscriptionName, String database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorkerForRevisions<T>(Class<T> clazz, SubscriptionWorkerOptions options)** | `SubscriptionWorker<T>` | Generates a subscription worker, using provided configuration, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorkerForRevisions<T>(Class<T> clazz, SubscriptionWorkerOptions options, String database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using provided configuration, that processes documents deserialized to `T` type . |
 
 {PANEL/}
 
@@ -56,11 +61,11 @@ Subscriptions can be entirely deleted from the system.
 
 This operation can be very useful in ad-hoc subscription scenarios when a lot of subscriptions tasks information may accumulate, making tasks management very hard.  
 
-{CODE interface_subscription_deletion@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:java interface_subscription_deletion@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 usage: 
 
-{CODE subscription_deletion@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:java subscription_deletion@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 {PANEL/}
     
@@ -69,11 +74,11 @@ usage:
 Subscription connections with workers can be dropped remotely.  
 A dropped worker will not try to reconnect to the server.
 
-{CODE interface_subscription_dropping@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:java interface_subscription_dropping@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 usage: 
 
-{CODE connection_dropping@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:java connection_dropping@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 {PANEL/}
 
@@ -81,11 +86,11 @@ usage:
 
 Existing subscriptions can be disabled remotely.
 
-{CODE interface_subscription_disabling@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:java interface_subscription_disabling@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 usage: 
 
-{CODE subscription_disabling@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:java subscription_disabling@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 {PANEL/}
 
@@ -94,11 +99,11 @@ usage:
 Existing subscriptions can be enabled remotely.  
 This operation can be useful for already disabled subscriptions. A newly created subscription is enabled initially.
 
-{CODE interface_subscription_enabling@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:java interface_subscription_enabling@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 usage: 
 
-{CODE subscription_enabling@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:java subscription_enabling@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 {PANEL/}
 
@@ -107,31 +112,31 @@ usage:
 See [example](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription) 
 and [API description](../../../client-api/data-subscriptions/creation/api-overview#update-subscription).  
 
-{CODE updating_subscription@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:java updating_subscription@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 {PANEL/}
 
 {PANEL: Getting subscription status}
 
-{CODE interface_subscription_state@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:java interface_subscription_state@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 usage: 
 
-{CODE subscription_state@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:java subscription_state@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 {INFO: SubscriptionState}
 
 | Member | Type | Description |
 |--------|:-----|-------------| 
-| **Query** | `string` | Subscription's RQL like query. |
-| **LastBatchAckTime** | `DateTime?` | Last time a batch processing progress was acknowledged. |
-| **NodeTag** | `string` | Processing server's node tag |
-| **MentorNode** | `string` | The mentor node that was manually set. |
-| **SubscriptionName** | `string` | Subscription's name, and also its unique identifier |
-| **SubscriptionId** | `long` | Subscription's internal identifier (cluster's operation etag during subscription creation) |
-| **ChangeVectorForNextBatchStartingPoint** | `string` | The Change Vector from which the subscription will begin sending documents. This value is updated on batch acknowledgement, and can also be set manually. |
-| **Disabled** | `bool` | If true, subscription will not allow workers to connect |
-| **LastClientConnectionTime** | `DateTime?` | Time when last client was connected (value sustained after disconnection) |                
+| **query** | `String` | Subscription's RQL like query. |
+| **lastBatchAckTime** | `Date` | Last time a batch processing progress was acknowledged. |
+| **nodeTag** | `String` | Processing server's node tag |
+| **mentorNode** | `String` | The mentor node that was manually set. |
+| **subscriptionName** | `String` | Subscription's name, and also it's unique identifier |
+| **subscriptionId** | `long` | Subscription's internal identifier (cluster's operation etag during subscription creation) |
+| **changeVectorForNextBatchStartingPoint** | `String` | Change vector, starting from which the subscription will send documents. This value is updated manually, or automatically on batch acknowledgment  |
+| **disabled** | `boolean` | If true, subscription will not allow workers to connect |
+| **lastClientConnectionTime** | `Date` | Time when last client was connected (value sustained after disconnection) |
 
 {INFO/}
 

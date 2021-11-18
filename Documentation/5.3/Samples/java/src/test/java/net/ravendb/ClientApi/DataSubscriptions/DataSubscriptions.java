@@ -71,6 +71,28 @@ public class DataSubscriptions {
         //endregion
     }
 
+    public interface disabling{
+        //region interface_subscription_disabling
+         void disable(String name);
+
+         void disable(String name, String database);
+        //endregion
+    }
+    public interface enabling{
+        //region interface_subscription_enabling
+        void enable(String name);
+
+        void enable(String name, String database);
+        //endregion
+    }
+    public interface updating{
+        //region updating_subscription
+        String update(SubscriptionUpdateOptions options);
+
+        String update(SubscriptionUpdateOptions options, String database)
+        //endregion
+    }
+
     //region subscriptions_example
     public void worker(IDocumentStore store) {
         SubscriptionCreationOptions options = new SubscriptionCreationOptions();
@@ -258,6 +280,19 @@ public class DataSubscriptions {
                         + " to " + item.getResult().getCurrentRevenue());
                 }
             });
+            //endregion
+        }
+        {
+            String subscriptionName="subscriptionName";
+            //region subscription_disabling
+            store.subscriptions().disable(subscriptionName);
+            //endregion
+
+        }
+        {
+            String subscriptionName="subscriptionName";
+            //region subscription_enabling
+            store.subscriptions().enable(subscriptionName);
             //endregion
         }
     }
