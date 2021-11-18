@@ -11,7 +11,7 @@ const session = store.openSession();
 {
     //region subscriptionCreationOverloads
     store.subscriptions.create(clazz, [database]);
-    
+
     store.subscriptions.create(options, [database]);
     //endregion
 }
@@ -471,4 +471,34 @@ const session = store.openSession();
         });
         //endregion
     }
+
+}
+
+{
+    let subscriptionName= "subscriptionName";
+
+    //region subscription_deletion
+    store.subscriptions.delete(subscriptionName);
+    //endregion
+
+    //region connection_dropping
+    store.subscriptions.dropConnection(subscriptionName);
+    //endregion
+
+    //region subscription_disabling
+    store.subscriptions.disable(subscriptionName);
+    //endregion
+
+    //region subscription_enabling
+    store.subscriptions.enable(subscriptionName);
+    //endregion
+
+    //region updating_subscription
+    store.subscriptions.update(subscriptionName);
+    //endregion
+
+    //region subscription_state
+    const subscriptionState  = store.subscriptions.getSubscriptionState(subscriptionName);
+    //endregion
+
 }

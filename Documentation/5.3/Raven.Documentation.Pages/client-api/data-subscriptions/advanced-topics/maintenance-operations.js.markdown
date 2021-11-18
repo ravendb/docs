@@ -56,11 +56,9 @@ Subscriptions can be entirely deleted from the system.
 
 This operation can be very useful in ad-hoc subscription scenarios when a lot of subscriptions tasks information may accumulate, making tasks management very hard.  
 
-{CODE interface_subscription_deletion@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-
 usage: 
 
-{CODE subscription_deletion@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:nodejs subscription_deletion@client-api\dataSubscriptions\dataSubscriptions.js /}
 
 {PANEL/}
     
@@ -69,11 +67,9 @@ usage:
 Subscription connections with workers can be dropped remotely.  
 A dropped worker will not try to reconnect to the server.
 
-{CODE interface_subscription_dropping@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-
 usage: 
 
-{CODE connection_dropping@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:nodejs connection_dropping@client-api\dataSubscriptions\dataSubscriptions.js /}
 
 {PANEL/}
 
@@ -81,11 +77,9 @@ usage:
 
 Existing subscriptions can be disabled remotely.
 
-{CODE interface_subscription_disabling@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-
 usage: 
 
-{CODE subscription_disabling@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:nodejs subscription_disabling@client-api\dataSubscriptions\dataSubscriptions.js /}
 
 {PANEL/}
 
@@ -94,11 +88,9 @@ usage:
 Existing subscriptions can be enabled remotely.  
 This operation can be useful for already disabled subscriptions. A newly created subscription is enabled initially.
 
-{CODE interface_subscription_enabling@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-
 usage: 
 
-{CODE subscription_enabling@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:nodejs subscription_enabling@client-api\dataSubscriptions\dataSubscriptions.js /}
 
 {PANEL/}
 
@@ -107,31 +99,30 @@ usage:
 See [example](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription) 
 and [API description](../../../client-api/data-subscriptions/creation/api-overview#update-subscription).  
 
-{CODE updating_subscription@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:nodejs updating_subscription@client-api\dataSubscriptions\dataSubscriptions.js /}
 
 {PANEL/}
 
 {PANEL: Getting subscription status}
 
-{CODE interface_subscription_state@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
 usage: 
 
-{CODE subscription_state@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:nodejs subscription_state@client-api\dataSubscriptions\dataSubscriptions.js /}
 
 {INFO: SubscriptionState}
 
 | Member | Type | Description |
 |--------|:-----|-------------| 
-| **Query** | `string` | Subscription's RQL like query. |
-| **LastBatchAckTime** | `DateTime?` | Last time a batch processing progress was acknowledged. |
-| **NodeTag** | `string` | Processing server's node tag |
-| **MentorNode** | `string` | The mentor node that was manually set. |
-| **SubscriptionName** | `string` | Subscription's name, and also its unique identifier |
-| **SubscriptionId** | `long` | Subscription's internal identifier (cluster's operation etag during subscription creation) |
-| **ChangeVectorForNextBatchStartingPoint** | `string` | The Change Vector from which the subscription will begin sending documents. This value is updated on batch acknowledgement, and can also be set manually. |
-| **Disabled** | `bool` | If true, subscription will not allow workers to connect |
-| **LastClientConnectionTime** | `DateTime?` | Time when last client was connected (value sustained after disconnection) |                
+| **query** | `string` | Subscription's RQL like query. |
+| **lastBatchAckTime** | `string` | Last time a batch processing progress was acknowledged. |
+| **nodeTag** | `string` | Processing server's node tag |
+| **mentorName** | `string` | The mentor node that was manually set. |
+| **subscriptionName** | `string` | Subscription's name, and also its unique identifier |
+| **subscriptionId** | `number` | Subscription's internal identifier (cluster's operation etag during subscription creation) |
+| **changeVectorForNextBatchStartingPoint** | `string` | The Change Vector from which the subscription will begin sending documents. This value is updated on batch acknowledgement, and can also be set manually. |
+| **disabled** | `boolean` | If true, subscription will not allow workers to connect |
+| **lastClientConnectionTime** | `string` | Time when last client was connected (value sustained after disconnection) |                
 
 {INFO/}
 
