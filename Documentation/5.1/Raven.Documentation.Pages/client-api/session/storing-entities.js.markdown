@@ -33,7 +33,7 @@ You can pass the following arguments to the `store()` method:
 | Promise | A promise resolved once entity obtained an ID and is stored in Unit of Work |
 
 {WARNING: Asynchronous call }
-`store()` method is asynchronous (since it reaches out to server to get a new ID) and returns a `Promise`, so don't forget to use either `await`, `.then()` it or wait for the `callback` to be called *before* saving changes. 
+`store()` method is asynchronous (since it reaches out to server to get a new ID) and returns a `Promise`, so don't forget to use either `await`, `.then()` *before* saving changes. 
 {WARNING/}
 
 {INFO: On collection name when storing object literals }
