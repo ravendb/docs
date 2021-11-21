@@ -25,8 +25,8 @@ You can pass the following arguments to the `store()` method:
 | **id** | string | Entity will be stored under this ID, (`null` to generate automatically) |
 | **documentType** | class | class used to determine collection of the entity (extracted from entity by default)|
 | **options** | object | Options object with the below properties: |
-| **changeVector* | string | entity *change vector* used for concurrency checks (`null` to skip check) |
-| **documentType* | class | class used to determine collection of the entity (extracted from entity by default)|
+| **changeVector** | string | entity *change vector* used for concurrency checks (`null` to skip check) |
+| **documentType** | class | class used to determine collection of the entity (extracted from entity by default)|
 
 | Return value | |
 | ------------- | ----- |
