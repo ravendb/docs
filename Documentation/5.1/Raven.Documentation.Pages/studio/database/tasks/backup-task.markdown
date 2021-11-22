@@ -7,11 +7,11 @@
 [restore](../../../studio/server/databases/create-new-database/from-backup#create-a-database-from-backup) 
 your database from that point. Learn more in [Backup Overview](../../../server/ongoing-tasks/backup-overview).  
 
-* This view allows you to create ongoing **periodic backup tasks**, as well as one-time 
-**manual backups**, for a particular database.  
+* This article will show you how to create ongoing [**periodic backup tasks**](../../../studio/database/tasks/backup-task#backup-creation), as well as one-time 
+[**manual backups**](../../../studio/database/tasks/backup-task#creating-one-time-manual-backups), for a particular database.  
 
-* It lists manual and periodic backups for the database, and also the **server-wide backups** 
-for this server. See [Studio: Server-Wide Backups](../../../studio/server/server-wide-backup) 
+* It includes manual and periodic backups for the database, and also **server-wide backups** 
+for the server. See [Studio: Server-Wide Backups](../../../studio/server/server-wide-backup) 
 to learn more.  
 
 * A backup is _not_ equivalent to replicating your data, as explained below in 
@@ -25,36 +25,37 @@ to learn more.
   * **Backup Destination** - Select the backup destination  
 
 * In this page:  
-  * [Backup List View](../../../studio/database/tasks/backup-task#backup-list-view)  
+  * [Backups View](../../../studio/database/tasks/backup-task#backups-view)  
   * [Backup Creation](../../../studio/database/tasks/backup-task#backup-creation)  
       * [Content & Scheduling](../../../studio/database/tasks/backup-task#content--scheduling)  
       * [Retention Policy](../../../studio/database/tasks/backup-task#retention-policy)  
       * [Destination](../../../studio/database/tasks/backup-task#destination)  
-      * [Creating Manual Backups](../../../studio/database/tasks/backup-task#creating-manual-backups)  
   * [Periodic Backup Details](../../../studio/database/tasks/backup-task#periodic-backup-details)  
-  * [When the Cluster or Node are Down](../../../studio/database/tasks/backup-task#when-the-cluster-or-node-are-down)  
+  * [When the Cluster or Node is Down](../../../studio/database/tasks/backup-task#when-the-cluster-or-node-is-down)  
   * [Backup Task -vs- Replication Task](../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)  
+  * [Creating One-time Manual Backups](../../../studio/database/tasks/backup-task#creating-one-time-manual-backups)  
+
 
 {NOTE/}
 
 ---
 
-{PANEL: Backup List View}
+{PANEL: Backups View}
 
 ![NoSQL Database Backup Task View](images/backup-task-view.png "Backups View")
 
-{WARNING: }
-1. Create a **manual backup**, see the creation view [below](../../../studio/database/tasks/backup-task#creating-manual-backups).  
+{NOTE: }
+1. Create a one-time [manual backup](../../../studio/database/tasks/backup-task#creating-one-time-manual-backups). This can be vital before upgrading or whenever you want an unscheduled backup. This can also be done in the [periodic backup details view](studio/database/tasks/backup-task#periodic-backup-details)  
 2. Refresh the _Recent Backup_ clock for a manual backup, so that it displays the correct 
 amount of time that has passed since this backup was created.  
-3. Create a **periodic backup task**, see the creation view [below](../../../studio/database/tasks/backup-task#backup-creation).  
-4. View details for this task, see detail view [below](../../../studio/database/tasks/backup-task#periodic-backup-details).  
-5. Edit this database backup task. To edit server-wide backup tasks, see button #7.  
-6. Delete this periodic backup task.  
+3. Create a [periodic backup task](../../../studio/database/tasks/backup-task#backup-creation).  
+4. View [details](../../../studio/database/tasks/backup-task#periodic-backup-details) of periodic backup tasks.  
+5. **Edit** this database backup task. To edit server-wide backup tasks, see button #7.  
+6. **Delete** this periodic backup task.  
 7. Go to the [server-wide backups view](../../../studio/server/server-wide-backup).  
 8. [Restore a database from a backup](../../../studio/server/databases/create-new-database/from-backup#create-a-database-from-backup) 
 (this creates a new database, it doesn't modify this database).  
-{WARNING/}
+{NOTE/}
 
 {INFO: }
 1. The periodic server-wide backup for this server.  
@@ -65,9 +66,9 @@ amount of time that has passed since this backup was created.
 
 {PANEL: Backup Creation}
 
-![Figure 1. Backup Task Definition](images/backup-task-1.png "Create New Backup Task")
+![Figure 1. Backup Task Definition](images/backup-definition-51up-fullandincremental.png "Create New Backup Task")
 
-{WARNING: }
+{NOTE: }
 1) **Task Name** (Optional)  
 
   * Choose a name of your choice  
@@ -91,38 +92,33 @@ amount of time that has passed since this backup was created.
 
   * Select a preferred mentor node from the [Database Group](../../../studio/database/settings/manage-database-group) to be the responsible node for this Backup Task  
   * If no node is selected, then the cluster will assign a responsible node (see [Members Duties](../../../studio/database/settings/manage-database-group#database-group-topology---members-duties))  
-{WARNING/}
+{NOTE/}
 
 ---
 
 ### Content & Scheduling
 
-![Figure 2. Backup Task Schedule and Content](images/backup-task-2.png "Backup Task Schedule & Content")
-
-{WARNING: }
+{NOTE: }
 
 Select the content to back up. Note: Both types can be scheduled.  
 
-  1. **Full Backup** 
-     Full Backup will back up _all_ the database data every time the task is scheduled to work  
+  4) **Full Backup**  
+     Full Backup will back up _all_ the database data every time the task is scheduled to work. Complete database snapshots with full indexes or faster backups (with index definitions only) can be done in full backups.   
 
-  2. **Incremental Backup** 
-     Incremental Backup will only back up the delta of the data since the last Backup that has occurred  
+  5) **Incremental Backup**  
+     Incremental Backup will only back up the delta (changes made) of the data since the last backup that has occurred. Incremental backups transfer less data, but cannot produce snapshots.  
 
 Schedule the Backup Task to occur at regular intervals (daily, monthly, hourly) at specific times.  
-{WARNING/}
+{NOTE/}
 
 Notes:  
-  1. If _only_ **Incremental Backup** is set, then a **Full Backup** will occur only in the _first_ time that the Task is triggered,  
+  1. If **Incremental Backup** is set, then a **Full Backup** will occur only in the _first_ time that the Task is triggered,  
      followed by Incremental Backups according to the scheduled time.  
      The Full Backup that is done the first time will be either a 'Backup' or a 'Snapshot', depending on the type selected.  
 
-  2. Data that is backed up in **Incremental Backup** is _always_ of type 'Backup' - even if the Backup Task Type is 'Snapshot' !  
-     A Snapshot is only  occurring when scheduling 'Full'.  
+  2. Data that is backed up in **Incremental Backup** is _always_ of type 'Backup' - even if the Backup Task Type is 'Snapshot'.  
+     Periodic snapshots can only occur when scheduling 'Full'.  
 
-In the example above:  
-  * A Full Backup is scheduled every day at 02:00 AM - and in addition to that -  
-  * An Incremental Backup is scheduled every 6 hours  
 
 ---
 
@@ -130,12 +126,12 @@ In the example above:
 
 ![Figure 3. Backup Retention Policy](images/backup-task-2_5.png "Retention Policy")
 
-{WARNING: }
+{NOTE: }
 1. Enable / disable the retention policy. If disabled, the backups are stored indefinitely. 
 If enabled, deletion can be scheduled.  
 2. Select the retention period. Once a backup is older than the specified amount of time, 
 it will be deleted during the next scheduled backup task.  
-{WARNING/}
+{NOTE/}
 
 ---
 
@@ -155,28 +151,16 @@ it will be deleted during the next scheduled backup task.
   * [Google Cloud](https://cloud.google.com/)  
   * [Amazon Glacier](https://aws.amazon.com/glacier/)  
   * FTP - Set your FTP protocol & server address  
+  
+<br/>
+ * To achieve a [robust](https://ravendb.net/articles/building-complex-systems-with-duplication-and-multiple-overlapping-fields-of-fire) data protection strategy, the [3-2-1 rule](https://www.nakivo.com/blog/3-2-1-backup-rule-efficient-data-protection-strategy/) can be implemented by creating a periodic backup onto a cloud storage and another on an onsite machine.
+
 
 ---
 
-### Creating Manual Backups
 
-![NoSQL Database Manual Backup Creation](images/manual-backup.png "Manual Backup Creation")
 
-Manual backups have only some of the properties of periodic backups. The backup can 
-be _full_ or _snapshot_. The backup can be encrypted or not. The backup must have a 
-destination, chosen from the same options as a periodic backup.  
-
-Manual backups do not have names, they are be identified by the time they were 
-created. Manual backups are not scheduled, they occur exactly once: when the 
-**Backup Now** button is pressed. The backup cannot be modified afterwards from the 
-Studio.  
-
-Manual backups do not have retention policies, in other words they are not set to 
-be automatically deleted.  
-
-{PANEL/}
-
-{PANEL: Periodic Backup Details}
+###Periodic Backup Details
 
 ![NoSQL Database Backup](images/backup-task-details.png "Backups View")
 
@@ -196,16 +180,16 @@ be automatically deleted.
      assigned the task.  
 {INFO/}
 
-{WARNING: }
+{NOTE: }
 1. **Backup Now**:  
    In addition to the scheduled time defined, you can backup your data now.  
    The scheduled backup will still be triggered as defined.  
 2. **Refresh**:  
    Click to refresh this panel viewed details  
-{WARNING/}
-{PANEL/}
+{NOTE/}
+<br/>
 
-{PANEL: When the Cluster or Node are Down}
+### When the Cluster or Node is Down
 
 * **When the cluster is down** (and there is no leader):  
 
@@ -220,21 +204,41 @@ be automatically deleted.
 
   * If the responsible node for the Backup Task is down during the scheduled time,  
     then another node from the Database Group will take ownership of the task so that there are no gaps in your backups.  
+
 {PANEL/}
+
 
 {PANEL: Backup Task -vs- Replication Task}
 
-* RavenDB's [External Replication](../../../studio/database/tasks/ongoing-tasks/external-replication-task) provides you with an off-site live replica/copy of the data.  
-  ('live' meaning that any changes in the database will be reflected in the replica once they occur).  
-  This is quite useful if you need to shift operations to a secondary data center.  
+* RavenDB's [External Replication](../../../studio/database/tasks/ongoing-tasks/external-replication-task) provides you with an off-site live replica/copy of the database.  
+  ('live' meaning that any changes in the database will be reflected in the replica once they occur). If one database is down, the replica can continue its work, thus greatly improving availability.  
+  This is also quite useful if you need to shift operations to a secondary data center and/or share the workload across more than one server.  
 
-*  But a replica isn't a backup... It doesn't present good solutions to many backup scenarios.  
+*  But a replica isn't a backup... It doesn't present good solutions for many backup scenarios.  
    For example, it doesn't protect you from an accidental collection delete,  
    or tell you the state of the system at, say, 9:03 AM last Friday.  
 
 * A backup keeps an exact state of the database at a specific point in time and can be restored  
   * A new database can be [created from a Backup](../../../studio/server/databases/create-new-database/from-backup)  
-  * This can be done for both 'Backup' & 'Snapshot' types  
+  * This can be done with both 'Backup' & 'Snapshot' types  
+  {PANEL/}
+
+{PANEL: Creating One-time Manual Backups}
+
+![NoSQL Database Manual Backup Creation](images/manual-backup.png "Manual Backup Creation")
+
+Manual backups have only some of the properties of periodic backups. The backup can 
+be _full_ or _snapshot_. The backup can be encrypted or not. The backup must have a 
+[destination](../../../studio/database/tasks/backup-task#destination).  
+
+Manual backups do not have names, they are identified by the time they were 
+created. Manual backups are not scheduled, they occur exactly once: when the 
+**Backup Now** button is pressed. The backup cannot be modified afterwards from the 
+Studio but you can create a new one-time backup whenever you need to.  
+
+Manual backups do not have retention policies, in other words they are not set to 
+be automatically deleted.  
+
 {PANEL/}
 
 ## Related Articles  
@@ -244,6 +248,7 @@ be automatically deleted.
 - [Create a Database : From Backup](../../../studio/server/databases/create-new-database/from-backup)  
 - [Create a Database : General Flow](../../../studio/server/databases/create-new-database/general-flow)  
 - [Create a Database : Encrypted](../../../studio/server/databases/create-new-database/encrypted)  
+- [External Replication](../../../studio/database/tasks/ongoing-tasks/external-replication-task)  
 
 ### Client API  
 - [Restore](../../../client-api/operations/maintenance/backup/restore)  
