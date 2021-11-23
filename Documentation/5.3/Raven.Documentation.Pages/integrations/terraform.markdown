@@ -14,14 +14,14 @@
   and **on the cloud**.  
 
 * Using Terraform to automatize the deployment of RavenDB nodes and clusters, 
-  can save you a lot of manual supervision effort overtime.  
-  Your Terraform configuration represent your infrastructure clearly 
+  can save you a lot of manual supervision effort over time.  
+  Your Terraform configuration represents your infrastructure clearly 
   and concisely, and can always be used to review and easily modify it.  
 
 * In this page:  
   * [Prerequisites](../integrations/terraform#prerequisites)  
   * [Prepare Terraform Configuration](../integrations/terraform#prepare-terraform-configuration)  
-     * [Provider](../integrations/terraform#provider)  
+     * [Provider Configuration](../integrations/terraform#provider-configuration)  
      * [Terraform Local Parameters](../integrations/terraform#terraform-local-parameters)  
      * [RavenDB Resource](../integrations/terraform#ravendb-resource)  
      * [Terraform Output Values](../integrations/terraform#terraform-output-values)  
@@ -84,13 +84,8 @@ options, please consult the official Terraform documentation.
 
 ---
 
-### Provider
-Use the `provider` object to **set RavenDB as the provider**.  
-
-Note that the **version number** relates to the RavenDB Terraform 
-Provider version, and **not** to the RavenDB Product version (that 
-is defined in the [resource](../integrations/terraform#ravendb-resource) 
-block's **package** field).  
+### Provider Configuration
+Use the `provider` object to define a provider, with the following properties:  
 
 {CODE-BLOCK: json}
 provider "ravendb" {
@@ -98,38 +93,47 @@ provider "ravendb" {
 }
 {CODE-BLOCK/}
 
+{NOTE: }
+Note that the version number is RavenDB's current **Terraform Plugin** 
+version (and **not** the RavenDB Product version, which is defined in 
+the [RavenDB Resource](../integrations/terraform#ravendb-resource) 
+block **package** field).  
+{NOTE/}
+
 ---
 
 ### Terraform Local Parameters
-Use the `locals` block to **define local configuration properties** 
-that your resources definitions will be able to refer, including -  
+Use [local values](https://www.terraform.io/docs/language/values/locals.html) 
+to define entities you can refer to when you define your [RavenDB resource](../integrations/terraform#ravendb-resource).  
 
 {CODE-BLOCK: json}
 locals {
     # Node Tags
-    # The tags that will be given to cluster nodes.
+    # The tags that will be given to cluster nodes
+    # Type: set
     nodes = toset([
         "a", "b", "c"
     ])
 
     # Hosts IPs
     # IP addresses of host servers that RavenDB cluster nodes will be deployed to
+    # Type: list(strings)
     hosts = [
         "3.95.238.149", 
         "3.87.248.150", 
         "3.95.220.189" 
     ]
 
-    # Node IPs
-    # For an Unsecure Setup
+    # Node IPs (For an Unsecure Setup)
+    # Type: list(string)
     ravendb_nodes_urls_unsecure = [
         "http://3.95.238.149:8080", 
         "http://3.87.248.150:8080", 
         "http://3.95.220.189:8080"
     ]
   
-    # Node Addresses 
-    # For a Secure Setup
+    # Node Addresses (For a Secure Setup)
+    # Type: list(string)
     ravendb_nodes_urls_secure = [
         "https://a.domain.development.run", 
         "https://b.domain.development.run", 
@@ -141,8 +145,9 @@ locals {
 ---
 
 ### RavenDB Resource
-Use the `resource` block to define your RavenDB node, its hosts, and its properties.  
-Terraform will use this resource to create your cluster nodes.  
+Use a [resource block](https://www.terraform.io/docs/language/resources/syntax.html) 
+to define a RavenDB server, its hosts, and its properties.  
+Terraform will use this resource to install (or remove) your cluster nodes.  
 
 {CODE-BLOCK: json}
 resource "ravendb_server" "server" {
@@ -183,10 +188,14 @@ resource "ravendb_server" "server" {
 
         # HTTP port (Optional)
         # Type: int
+        # Default for a Secure setup: 443
+        # Default for an Unsecure setup: 8080
         http_port = 8080
 
         # TCP port (Optional)
         # Type: int
+        # Default for a Secure setup: 38888
+        # Default for an Unsecure setup: 38881
         tcp_port = 38880
     }
   
@@ -194,8 +203,7 @@ resource "ravendb_server" "server" {
     # Type: filebase64
     license = filebase64("/path/to/license.json")
   
-    # Settings defined here will override settings set by settings.json
-    # Optional
+    # Settings defined here will override settings set by settings.json (Optional)
     settings_override = {
         "Indexing.MapBatchSize": 16384
     }
@@ -207,32 +215,54 @@ resource "ravendb_server" "server" {
         "/path/to/file/file_name.extension" = filebase64("/path/to/file_name.extension")
     }
   
-    # A User name and a path to an Access Key to your server (Optional)
+    # Credentials for Terraform to authenticate with when accessing the host (Optional)
     ssh {
+        # User name 
+        # Type: string
         user = "ubuntu"
+
+        # Path to a stored access key 
+        # Type: filebase64
         pem  = filebase64("/path/to/server.pem")
     }
 }
   {CODE-BLOCK/}
 
+| Entry | Role | Type | Required/Optional |
+| ------------- | ----- | ---- | ---- |
+| **hosts** | Host IP addresses (see [Terraform Local Parameters](../integrations/terraform#terraform-local-parameters) above) | `list` | Required |
+| **database** | RavenDB Database Name <br> If the database doesn't exist, it will be created | `string` | Optional |
+| **unsecured** | Setup Type <br> false => Install a Secure RavenDB setup (**Recommended**) <br> true => Install an Unsecure RavenDB setup (**Not** recommended) | `bool` | Optional |
+| **certificate** | Path to server-side authentication certificate <br> The certificate has to be in pfx format | `filebase64` | Optional, for Secure setup only |
+| **package.version** | RavenDB version | `string` | Required |
+| **package.arch** | Processor Architecture | `string` | Optional |
+| **url.list** | Nodes URLs (see [Terraform Local Parameters](../integrations/terraform#terraform-local-parameters) above) | `string` | Required |
+| **url.http_port** | HTTP port <br> Default for a Secure setup: 443 <br> Default for an Unsecure setup: 8080 | `int` | Optional |
+| **url.tcp_port** | TCP port <br> Default for a Secure setup: 38888 <br> Default for an Unsecure setup: 38881 | `int` | Optional |
+| **license** | Path to RavenDB product license | `filebase64` | Required |
+| **settings_override** | Settings defined here will override settings set by settings.json | `` | Optional |
+| **assets** | Paths to files you want to upload to the server for future usage <br> Left side of the equation: Server path (absolute) to load to <br> Right side of the equation: Original file path (absolute)| `filebase64` | Optional |
+| **ssh.user** | **User Name** for Terraform to authenticate with when accessing the host| `string` | Optional |
+| **ssh.pem** | Path to an **Access Key** for Terraform to authenticate with when accessing the host | `filebase64` | Optional |
+
 ---
 
 ### Terraform Output Values
-Defining [Output Values](https://www.terraform.io/docs/language/values/outputs.html) 
-makes Terraform return values you're interested in, after applying your configuration.  
+Use the [Output Values](https://www.terraform.io/docs/language/values/outputs.html) 
+block to define values that Terraform will return after applying your configuration.  
 
 {CODE-BLOCK: json}
-
 # Return a list of installed RavenDB instances  
+# Type: list(string)
 output "public_instance_ips" {
     value = local.list
 }
 
 # Verify that a database with the defined name exists 
+# Type: string
 output "database_name" {
     value = ravendb_server.server.database
 }
-
 {CODE-BLOCK/}
 
 {PANEL/}
@@ -254,7 +284,7 @@ Terraform application via CLI.
 
 ##Related Articles
 
-**Server**
+**Server**  
 [Cluster Overview](../server/clustering/overview)
 
 
