@@ -254,23 +254,12 @@ Terraform application via CLI.
 
 ##Related Articles
 
-**Cloud**  
-[Overview](cloud-overview)  
-[Migration](cloud-migration)  
-[Security](cloud-security)  
-  
-[Portal](../cloud/portal/cloud-portal)  
-[Backup Tab](../cloud/portal/cloud-portal-backups-tab)  
-  
-[RavenDB on Burstable Instances](https://ayende.com/blog/187681-B/running-ravendb-on-burstable-cloud-instances)  
-[AWS CPU Credits](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html)  
+**Server**
+[Cluster Overview](../server/clustering/overview)
 
-**Client-API**  
-[Backup](../client-api/operations/maintenance/backup/backup)  
-[Restore](../client-api/operations/maintenance/backup/restore)  
 
-**Server**  
-[Backup Overview](../server/ongoing-tasks/backup-overview)  
 
-**Studio**  
-[Backup Task](../studio/database/tasks/backup-task)  
+**External Links**  
+[Terraform Language Documentation](https://www.terraform.io/docs/language/index.html)  
+[Terraform Output Values](https://www.terraform.io/docs/language/values/outputs.html)  
+[Terraform Provisioning](https://www.terraform.io/docs/cli/run/index.html)
