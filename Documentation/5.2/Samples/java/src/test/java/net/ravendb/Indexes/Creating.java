@@ -1,22 +1,17 @@
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
-import net.ravendb.client.documents.conventions.DocumentConventions;
 import net.ravendb.client.documents.indexes.*;
 import net.ravendb.client.documents.operations.indexes.PutIndexesOperation;
 import net.ravendb.client.documents.session.IDocumentSession;
-
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 public class Creating {
 
     private static class Order {
-
     }
-
+    
     private static class Employee {
-
     }
 
     //region indexes_8
@@ -84,8 +79,6 @@ public class Creating {
         }
         //endregion
     }
-
-
 
     public Creating() {
         try (IDocumentStore store = new DocumentStore( new String[]{ "http://127.0.0.1:8080" }, "Northwind")) {
@@ -159,8 +152,7 @@ public class Creating {
         IndexConfiguration configuration;
         //region indexes_9
         public class Orders_Totals extends AbstractIndexCreationTask {
-            public Orders_Totals()
-            {
+            public Orders_Totals() {
                 // ...
                 configuration.put("MapTimeoutInSec","30");
                 setConfiguration(configuration);
@@ -170,55 +162,7 @@ public class Creating {
     }
 
 
-    private class Users_ByName implements IAbstractIndexCreationTask{
-        @Override
-        public String getIndexName() {
-            return null;
-        }
+    private class Users_ByName extends AbstractIndexCreationTask {
 
-        @Override
-        public IndexPriority getPriority() {
-            return null;
-        }
-
-        @Override
-        public IndexState getState() {
-            return null;
-        }
-
-        @Override
-        public IndexDeploymentMode getDeploymentMode() {
-            return null;
-        }
-
-        @Override
-        public DocumentConventions getConventions() {
-            return null;
-        }
-
-        @Override
-        public void setConventions(DocumentConventions documentConventions) {
-
-        }
-
-        @Override
-        public IndexDefinition createIndexDefinition() {
-            return null;
-        }
-
-        @Override
-        public void execute(IDocumentStore iDocumentStore) {
-
-        }
-
-        @Override
-        public void execute(IDocumentStore iDocumentStore, DocumentConventions documentConventions) {
-
-        }
-
-        @Override
-        public void execute(IDocumentStore iDocumentStore, DocumentConventions documentConventions, String s) {
-
-        }
     }
 }
