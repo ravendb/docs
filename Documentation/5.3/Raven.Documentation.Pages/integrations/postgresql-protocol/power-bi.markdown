@@ -40,12 +40,16 @@
 
 !["Connection Details"](images/connection-details.png "Connection Details")
 
-* Provide RavenDB's **URL**, its PostgreSQL **port** number, and the name of the database you 
-  want to retrieve data from.  
-   * Provide the URL without its "https://" prefix.  
-   * RavenDB's PostgreSQL port number is by default 5433, and is [configurable](../../integrations/postgresql-protocol/overview#postgresql-port).  
-   * The URL and port number should be provided in the form **URL:Port**,  
+* **Server**  
+  Enter RavenDB's **URL** and **PostgreSQL port number**.  
+   * Enter the URL and port number in the form: **URL:Port**  
      E.g. - **`a.ravenpostgresql.development.run:5433`**  
+   * Do **not** include the "https://" prefix in the URL.  
+   * RavenDB's PostgreSQL port number is by default 5433, and is [configurable](../../integrations/postgresql-protocol/overview#postgresql-port).  
+* **Database**  
+  Enter the name of the RavenDB database you want to retrieve data from.  
+* **Data Connectivity mode**  
+  Select the **Import** data connectivity mode.  
 
 ---
 
@@ -79,9 +83,37 @@ to import into Power BI just the data you're looking for.
 
 !["RQL Query"](images/rql-query.png "RQL Query")
 
-* After providing the URL, port number, and database name,  
-  open **Advanced options**, enter your RQL query into the **SQL Statement** field, 
-  and click **OK**.  
+* **Server**  
+  Enter RavenDB's **URL** and **PostgreSQL port number**.  
+   * Enter the URL and port number in the form: **URL:Port**  
+     E.g. - **`a.ravenpostgresql.development.run:5433`**  
+   * Do **not** include the "https://" prefix in the URL.  
+   * RavenDB's PostgreSQL port number is by default 5433, and is [configurable](../../integrations/postgresql-protocol/overview#postgresql-port).  
+* **Database**  
+  Enter the name of the RavenDB database you want to retrieve data from.  
+* **Data Connectivity mode**  
+  Select the **Import** data connectivity mode.  
+* **Advanced options**  
+   * Open **Advanced options**.  
+   * Enter your RQL query into the **SQL Statement** field.  
+     {WARNING: Avoid using `;` in RQL queries.}
+      
+      * The [PostgreSQL](../../integrations/postgresql-protocol/overview) library 
+        that Power BI uses to transfer your query to RavenDB, interprets the `;` 
+        symbol as an instruction to split the query.  
+        To avoid splitting the query, please avoid using this symbol in it.  
+      * RavenDB queries can include **JavaScript** code, where `;` 
+        is normally a valid operator.  
+        However, to avoid splitting your query, please avoid using the `;` 
+        operator in JavaScript code as well.  
+        Using `;` is optional in JavaScript, and omitting it will have no effect on your code.  
+      * RavenDB will throw the following exception if an erroneous query is likely 
+        to have been split:  
+        **Unhandled query (Are you using ; in your query? That is likely causing 
+        the postgres client to split the query and results in partial queries)**
+     {WARNING/}  
+      
+      * Click **OK**.  
 
 ---
 
@@ -90,7 +122,7 @@ to import into Power BI just the data you're looking for.
 * Only the fields resulting from the RQL query will be imported to Power BI.  
 * One notable field is the rightmost `json()` field; we placed 
   it there for irregular data items, should there be ones, that 
-  don't fit into one of the otherwise regular json arrays.  
+  don't fit into one of the otherwise regular JSON arrays.  
 
 {PANEL/}
 
