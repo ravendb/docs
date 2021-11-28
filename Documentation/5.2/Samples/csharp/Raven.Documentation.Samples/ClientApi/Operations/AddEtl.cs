@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Operations.Backups;
 using Raven.Client.Documents.Operations.ETL;
 using Raven.Client.Documents.Operations.ETL.SQL;
 //using Raven.Client.Documents.Operations.ETL.OLAP;
@@ -8,6 +10,18 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 {
     public class AddEtl
     {
+        private string myServerAddress;
+        private object myDataBase;
+        private object myUsername;
+        private object myPassword;
+        private object connectionStringName;
+        private string path;
+        private object configuration;
+
+        public object Database { get; }
+        public object UserId { get; }
+        public object Password { get; }
+
         private interface IFoo
         {
             /*
@@ -49,8 +63,29 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 #endregion
             }
 
+            #region raven_etl_connection_string
 
-            using (var store = new DocumentStore())
+            using (var store = GetDocumentStore())
+            {
+                //define connection string
+                var ravenConnectionString = new RavenConnectionString()
+                {
+                    //name connection string
+                    Name = "raven-connection-string-name",
+
+                    //define appropriate node
+                    TopologyDiscoveryUrls = new[] { "http://127.0.0.1:8080" },
+
+                    //define database to connect with on the node
+                    Database = "Northwind",
+                }));
+                //send the connection string to connect
+                var resultRavenString = store.Maintenance.Send(new PutConnectionStringOperation<RavenConnectionString>(ravenConnectionString));
+
+                #endregion
+
+
+                using (var store = new DocumentStore())
             {
                 #region add_sql_etl
                 AddEtlOperation<SqlConnectionString> operation = new AddEtlOperation<SqlConnectionString>(
@@ -101,6 +136,21 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 #endregion
             }
 
+            #region sql_etl_connection_string
+
+            // define new connection string
+            var sqlConnectionString = new SqlConnectionString
+            {
+                // name connection string
+                Name = "SqlConnectionString",
+                // enter the configurations to access your database
+                ConnectionString = myServerAddress;
+                Database = myDataBase;
+                UserId = myUsername;
+                Password = myPassword;
+            };
+                #endregion
+
             using (var store = new DocumentStore())
             {
                 /*
@@ -135,8 +185,48 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 AddEtlOperationResult result = store.Maintenance.Send(operation);
                 #endregion
                 */
+
+                #region olap_Etl_Connection_String
+
+                var connectionString = new OlapConnectionString
+                {
+                    Name = connectionStringName,
+                    LocalSettings = new LocalSettings
+                    {
+                        FolderPath = path
+                    }
+                };
+                AddEtl(store, configuration, connectionString);
+                #endregion
+
+
+                #region olap_Etl_AWS_connection_string
+
+                var myOlapConnectionString = new OlapConnectionString
+                {
+                    Name = "myConnectionStringName",
+                    S3Settings = new S3Settings
+                    {
+                        BucketName = "myBucket",
+                        RemoteFolderName = "my/folder/name",
+                        AwsAccessKey = "myAccessKey",
+                        AwsSecretKey = "myPassword",
+                        AwsRegionName = "us-east-1"
+                    }
+                };
+            #endregion
+
             }
+
+
+
         }
+
+        private void AddEtl(DocumentStore store, object configuration, OlapConnectionString connectionString)
+        {
+            throw new NotImplementedException();
+        }
+    }
     }
 }
 

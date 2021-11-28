@@ -14,13 +14,30 @@ You can add ETL task by using **AddEtlOperation**.
 
 {CODE add_raven_etl@ClientApi\Operations\AddEtl.cs /}
 
+### Connection String for Raven ETL
+
+{CODE raven_etl_connection_string@ClientApi\Operations\AddEtl.cs /}
+
 ## Example - Add Sql ETL Task
 
 {CODE add_sql_etl@ClientApi\Operations\AddEtl.cs /}
 
+{CODE sql_etl_connection_string@ClientApi\Operations\AddEtl.cs /}
+
 ## Example - Add OLAP ETL Task
 
 {CODE add_olap_etl@ClientApi\Operations\AddEtl.cs /}
+
+### Connection String for Olap ETL
+
+The following code sample is for a connection string to a local machine. Click to see connection keys required for [various levels of security](https://www.connectionstrings.com/olap-analysis-services/).
+  
+{CODE olap_Etl_Connection_String@ClientApi\Operations\AddEtl.cs /}
+  
+To connect to a cloud instance, see the [Olap ETL article about ongoing tasks](../../../../server/ongoing-tasks/etl/olap#ongoing-tasks-olap-etl).  
+  
+The following code sample is for a connection string to Amazon AWS. If you use Google or Microsoft cloud servers, change the parameters accordingly.   
+{CODE olap_Etl_AWS_connection_string@ClientApi\Operations\AddEtl.cs /}
 
 ## Example - Add Elasticsearch ETL Task
 
