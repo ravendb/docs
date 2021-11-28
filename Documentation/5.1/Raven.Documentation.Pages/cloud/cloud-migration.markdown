@@ -23,32 +23,38 @@ In order to do so, the **source server** needs to have the **destination server'
 Open the [Management Studio](../studio/overview) of each server.  
 Each server's Studio is available at it [Portal](../cloud/portal/cloud-portal#cloud-portal)'s 
 [Product tab](../cloud/portal/cloud-portal-products-tab#cloud-account-portal-products).  
-!["Server URLs"](images\migration-001-urls.png "Server URLs")  
+
+!["Server URLs"](images\migration-001-urls.png "Server URLs")
 
 ---
 
 In each studio, click **Manage certificates**.  
-!["Manage Certificates"](images\migration-002-manage-certificates.png "Manage Certificates")  
+
+!["Manage Certificates"](images\migration-002-manage-certificates.png "Manage Certificates")
 
 ---
 
 Export the **destination server**'s **Cluster certificate**.  
-!["Cluster Certificate"](images\migration-003-cluster-certificate.png "Cluster Certificate")  
+
+!["Cluster Certificate"](images\migration-003-cluster-certificate.png "Cluster Certificate")
 
 ---
 
 Import the certificate as a **Client Certificate** by the **source server**.  
-!["Client Certificate"](images\migration-004-client-certificate.png "Client Certificate")  
+
+!["Client Certificate"](images\migration-004-client-certificate.png "Client Certificate")
 
 ---
 
 Configure the Client Certificate's **Database Permissions** to include the database whose data you want to migrate.  
-!["Database Permissions"](images\migration-005-database-permissions.png "Database Permissions")  
+
+!["Database Permissions"](images\migration-005-database-permissions.png "Database Permissions")
 
 ---
 
 In the Destination Server, create or select an empty database and open its **Tasks --> Import Data** option.  
-!["Import Data"](images\migrating-data-from-ravendb-steps.png "import data")  
+
+!["Import Data"](images\migrating-data-from-ravendb-steps.png "import data")
 
 1. Select the **Tasks** tab.  
 2. Select **Import Data**.  
@@ -72,7 +78,9 @@ This option doesn't require passing certificates:
 ---
 
 #### First export the data from source server  
-!["Export Data to File"](images\studio-view-export-database-tofile-steps.png "Export Data to File")  
+
+!["Export Data to File"](images\studio-view-export-database-tofile-steps.png "Export Data to File")
+
 1. In the source server, select a database to export and go to **Tasks tab**.  
 2. Select **Export Database**.  
 3. Change the destination file name if you'd prefer (optional).  
@@ -82,7 +90,9 @@ This option doesn't require passing certificates:
 ---
 
 #### Next import the data to destination server from file
-!["Import Data from File"](images\studio-view-import-fromfile-steps.png "Import Data from File")  
+
+!["Import Data from File"](images\studio-view-import-fromfile-steps.png "Import Data from File")
+
 1. In the destination server, go to **Tasks** tab.  
 2. Select **Import Data**.  
 3. **Make sure that you are not writing over data that you want to keep**. One option is [to start a new database with the studio](https://ravendb.net/docs/article-page/5.2/csharp/studio/database/create-new-database/general-flow).  
