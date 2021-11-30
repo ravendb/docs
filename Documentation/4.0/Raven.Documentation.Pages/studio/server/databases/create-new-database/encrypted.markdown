@@ -15,7 +15,7 @@
 {WARNING: WARNING}
 
    * You will not have access to the database if the encryption key is lost.  
-   * Download, print, or copy and save the key in a safe place. IT WILL NOT BE AVAILABLE AGAIN!  
+   * Download, print, or copy and save the key in a safe place. **It will not be available again!**  
    {WARNING/}
 
 {PANEL: Creating Encrypted Database}

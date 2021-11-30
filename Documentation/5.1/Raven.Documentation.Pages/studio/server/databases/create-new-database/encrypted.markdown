@@ -11,6 +11,11 @@
 {NOTE/}
 
 ---
+{WARNING: WARNING}
+
+   * You will not have access to the database if the key is lost.  
+   * Download, print, or copy and save the key in a safe place. **It will not be available again!**  
+{WARNING/}
 
 {PANEL: Creating Encrypted Database}
 
@@ -27,11 +32,7 @@
 2. **QR Code**
    * The QR code representing the key  
 
-{WARNING: WARNING}
 
-   * You will not have access to the database if the key is lost.  
-   * Download, print, or copy and save the key in a safe place. It will NOT be available again!  
-{WARNING/}
 
 {PANEL/}
 

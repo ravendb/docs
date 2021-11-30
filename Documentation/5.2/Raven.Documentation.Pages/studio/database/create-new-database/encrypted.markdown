@@ -12,6 +12,12 @@
 
 ---
 
+{WARNING: WARNING}
+
+   * You will not have access to the database if the key is lost.  
+   * Download, print, or copy and save the key in a safe place. **It will not be available again!**  
+   {WARNING/}
+
 {PANEL: Creating Encrypted Database}
 
 * In addition to the steps described in the [General Database Creation](../../../studio/database/create-new-database/general-flow), click the `Encryption` tab.  

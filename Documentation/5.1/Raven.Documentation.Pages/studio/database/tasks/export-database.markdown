@@ -3,9 +3,21 @@
 A `.ravendbdump` file is RavenDB's format for exporting/importing a database, with backward compatibility between RavenDB versions.  
 To export a `.ravendbdump` file, we need an existing database.  
 
+ In this page:
+
+  * [Export Database to a .ravendbdump file](../../../studio/database/tasks/export-database#export-database-to-a-.ravendbdump-file)  
+  * [Export options](../../../studio/database/tasks/export-database#export-options)  
+    
+  * [Advanced Export Options](../../../studio/database/tasks/export-database#advanced-export-options)  
+    * [Export all collections](../../../studio/database/tasks/export-database#export-all-collections)  
+    * [Transform Script](../../../studio/database/tasks/export-database#transform-script)  
+    * [Customize Configuration and Ongoing Tasks](../../../studio/database/tasks/export-database#customize-configuration-and-ongoing-tasks)  
+    * [Copy command as PowerShell](../../../studio/database/tasks/export-database#copy-command-as-powershell)  
+
 ![Figure 1. Choose and Export Database](images/export-database-studio-view.png "Choose and Export Database")  
 
-1. Select the database to be exported.  There are two places to choose database in the studio interface.  
+1. Select the database to be exported.  
+ It can be selected at the top of the page or by choosing from the detailed list of databases.  
 2. Select the `Tasks` tab.  
 3. Select `Export Database`.  
   
@@ -15,7 +27,7 @@ Here you can filter the data you want to export, add encryption, select collecti
 
 ![Figure 3. Export Options](images/export-database-options.png "Export Options")
 
-* **Include Documents**:  
+1. **Include Documents**:  
   Determines whether to export documents contained in the database.  
   Disabling it automatically disables the exportation of **Attachments** and **Counters** as well.  
     - **Include Attachments**:  
@@ -26,23 +38,21 @@ Here you can filter the data you want to export, add encryption, select collecti
       Determines whether to export Revisions contained in the database.  
     - **Include Conflicts**:  
       Determines whether to export Conflicts contained in the database.  
-* **Include Indexes**:  
+2. **Include Indexes**:  
   Determines whether to export Indexes contained in the database.  
     - **Remove Analyzers**:  
       Determines whether to strip Analyzers used by indexes contained in the file.  
-* **Include Identities**:  
+    * **Include Identities**:  
   Determines whether to export Identities contained in the database.  
-* **Include Compare Exchange**:  
+    * **Include Compare Exchange**:  
   Determines whether to export Compare Exchange values contained in the database.  
-* **Include Subscriptions**:  
+    * **Include Subscriptions**:  
   Determines whether to export Subscriptions contained in the database.  
-* **Include Configuration and Ongoing Tasks**:  
+    * **Include Configuration and Ongoing Tasks**:  
   Determines whether to export the server's 
   [configuration and ongoing tasks](../../../studio/database/tasks/export-database#customize-configuration-and-ongoing-tasks).  
-
-#### Encrypt exported file
-
-Used to add an ecryption key when exporting the database to an encrypted file.  
+3. **Encrypt exported file**:  
+    Used to add an ecryption key when exporting the database to an encrypted file.  
 
 ## Advanced export options
 
@@ -104,12 +114,17 @@ if (id === 'orders/999')
   Determines whether to export Client Configuration.  
 - **Custom Sorters**:  
   Determines whether to include Custom Sorters.  
-- **Connection Strings**:  
+
+**Connection Strings**:  
+
    - **RavenDB Connection Strings** - Determines whether to export RavenDB Connection Strings.  
    - **SQL Connection Strings:** Determines whether to export SQL Connection String values.  
 
 ---
 
 ### Copy command as PowerShell
+
+![Figure 7. Advanced Export Options - Copy command as PowerShell](images/export-command-powershell.png "Advanced export options - Copy command as PowerShell")
+
 
 - Generates the commands to run the exporting logic from PowerShell.  

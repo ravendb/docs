@@ -82,14 +82,15 @@ Samples/1-A,Import from CSV,Inner Object,"[1,2,3,4]",Samples
 Now that we've got a valid CSV file we can import it to RavenDB.  
 
 ![Figure 1. Import CSV file](images/import-from-CSV-studio-view.png "Import CSV file")
-1. Select `Tasks` tab.  
-2. Select `Import Data`.  
+
+1. Select **Tasks** tab.  
+2. Select **Import Data**.  
 3. Make sure that you are importing into the correct database.  
-4. Select `From CSV File`.  
+4. Select **From CSV File**.  
 5. Select the file to import.  
 6. You can name the [collection](../../../../client-api/faq/what-is-a-collection) where the file will be imported.  When running an [RQL](../../../../indexes/querying/what-is-rql) query, the code `from` refers to the collection that contains the desired document.  
 7. Define CSV options.  
-8. Select `Import Collection`  
+8. Select **Import Collection**  
   
 After importing the CSV file, the resulting document should look like the document 
 [above](../../../../studio/database/tasks/import-data/import-from-csv#how-should-i-format-my-documents-as-csv).  

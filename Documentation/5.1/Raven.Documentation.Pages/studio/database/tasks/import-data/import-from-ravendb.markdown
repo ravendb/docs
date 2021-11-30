@@ -32,43 +32,48 @@
 
 {NOTE: }
 
- A.  **Export the destination RavenDB certificate**  
-  Go to `Manage Server -> Certificates` view on the destination RavenDB Studio. (See [Certificates Management](../../../../server/security/authentication/certificate-management)).  
-  Choose `Export Cluster Certificates` option from the `Cluster Certificate` dropdown.  
-   
-  ![Figure 1. Export server certificate](images/import-from-raven-export-server-certificate.png "Export the destination server certificate")
+#### a.  *Export the destination RavenDB certificate*  
 
- B.  **Register this certificate on the source RavenDB server**  
-   Go to `Manage Server -> Certificates` view on the source RavenDB Studio.  
-   Choose `Upload client certificate` to upload the exported certificate as the client certificate.  
+   Go to **Manage Server -> Certificates** view on the destination RavenDB Studio. (See [Certificates Management](../../../../server/security/authentication/certificate-management)).  
+   Choose **Export Cluster Certificates** option from the **Cluster Certificate** dropdown.  
+   
+   ![Figure 1. Export server certificate](images/import-from-raven-export-server-certificate.png "Export the destination server certificate")
+
+#### b.  *Register this certificate on the source RavenDB server*  
+
+   Go to **Manage Server -> Certificates** view on the source RavenDB Studio.  
+   Choose **Upload client certificate** to upload the exported certificate as the client certificate.  
    
    ![Figure 2. Register exported certificate as client certificate](images/import-from-raven-upload-server-cert-as-client-cert.png "Register exported certificate as client certificate")
 
- C.  **Set the certificate details**  
+#### c.  *Set the certificate details*  
+
    **Certificate Name** - Provide a meaningful name for this certificate.  
    **Security Clearance** - Security clearance `User` will provide the necessary access for the data migration purposes.  
    **Database Permissions** - Remember to add `Read/Write` permission to the database you want to import.  
    
    ![Figure 3. Import certificate details](images/import-from-raven-upload-server-cert-as-client-cert-details.png "Set certificate details")
 
- D.  Click `Upload` to complete the upload process.  
+#### d.  *Click "Upload" to complete the process.*  
+
 {NOTE/}
+
 {PANEL/}
 
 {PANEL: Step #2: Access the Import View}
 
-* 1. On the destination RavenDB server, select a `database` into which the data will be imported.  
-  **Note**: Verify this database is empty as the importing will overwrite any existing content.  
+* On the destination RavenDB server, select a **database** into which the data will be imported.  
+    **Note**: Verify this database is empty as the importing will overwrite any existing content.  
    
-  ![Figure 1. Databases List](images/import-from-ravendb-db-list.png "Databases List View")
+    ![Figure 1. Databases List](images/import-from-ravendb-db-list.png "Databases List View")
 
-* 2. Select `Tasks` tab and then `Import Data`.  
+2. Select **Tasks** tab and then **Import Data**.  
    
   ![Figure 2. Import Data](images/Import-Data-FromRavenDB-View.png "Go to Import Data View")
 
-* 3. Select `From RavenDB`.  
+* 3. Select **From RavenDB Server**.  
    
-  ![Figure 3. From RavenD](images/import-from-ravendb-from-ravendb.png "Select 'From RavenDB'")
+  ![Figure 3. From RavenDB Server](images/import-from-ravendb-from-ravendb.png "Select 'From RavenDB Server'")
 
 {PANEL/}
 
@@ -90,16 +95,26 @@
 
 ![Figure 5. Import Options](images/import-from-ravendb-options.png "Import Options")
 
-- **Include Documents:** Determines whether or not documents should be imported. If disabled, attachments and counters will automatically be disabled too. 
-    - **Include Attachments:** Determines whether or not attachments should be imported. 
-    - **Include Revisions:** Determines whether or not Revisions should be imported.
-    - **Include Conflicts:** Determines whether or not Conflicts should be imported.
-- **Include Indexes:** Determines whether or not Indexes should be imported. 
-    - **Remove Analyzers:** Determines whether or not Analyzers used by indexes should be imported. 
-- **Include Identities:** Determines whether or not Identities should be imported.
-- **Include Compare Exchange:** Determines whether or not Compare Exchange values should be imported.
-- **Include Subscriptions:** Determines whether or not Subscriptions should be imported.
-- **Include Configuration and OngoingTasks:** Determines whether or not 
+- **Include Documents**  
+ Determines whether or not documents should be imported. If disabled, attachments and counters will automatically be disabled too. 
+    - **Include Attachments**  
+     Determines whether or not attachments should be imported. 
+    - **Include Revisions**  
+     Determines whether or not Revisions should be imported.
+    - **Include Conflicts**  
+     Determines whether or not Conflicts should be imported.
+- **Include Indexes**  
+ Determines whether or not Indexes should be imported. 
+    - **Remove Analyzers**  
+     Determines whether or not Analyzers used by indexes should be imported. 
+- **Include Identities**  
+ Determines whether or not Identities should be imported.
+- **Include Compare Exchange**  
+ Determines whether or not Compare Exchange values should be imported.
+- **Include Subscriptions**  
+ Determines whether or not Subscriptions should be imported.
+- **Include Configuration and OngoingTasks**  
+ Determines whether or not 
   [server configurations and ongoing tasks](../../../../studio/database/tasks/import-data/import-from-ravendb#customize-configuration-and-ongoing-tasks) 
   should be imported.  
 
@@ -141,25 +156,39 @@ this.collection = this['@metadata']['@collection'];
 
 **Ongoing tasks:**
 
-- **Periodic Backups:** Determines whether or not Periodic Backups tasks configuration should be imported. 
-- **External replications:** Determines whether or not External replications tasks configuration should be imported. 
-- **RavenDB ETLs:** Determines whether or not RavenDB ETLs tasks configuration should be imported.
-- **SQL ETLs:** Determines whether or not SQL ETLs tasks configuration should be imported.
-- **Pull Replication Sinks:** Determines whether or not Pull Replication Sinks tasks configuration should be imported. 
-- **Pull Replication Hubs:** Determines whether or not Pull Replication Hubs tasks configuration used by indexes should be imported. 
+- **Periodic Backups**  
+ Determines whether or not Periodic Backups tasks configuration should be imported. 
+- **External replications**  
+ Determines whether or not External replications tasks configuration should be imported. 
+- **RavenDB ETLs**  
+ Determines whether or not RavenDB ETLs tasks configuration should be imported.
+- **SQL ETLs**  
+ Determines whether or not SQL ETLs tasks configuration should be imported.
+- **Pull Replication Sinks**  
+ Determines whether or not Pull Replication Sinks tasks configuration should be imported. 
+- **Pull Replication Hubs**  
+ Determines whether or not Pull Replication Hubs tasks configuration used by indexes should be imported. 
 
 **Other:**
 
-- **Settings:** Determines whether or not Settings should be imported.
-- **Conflict Solver Configuration:** Determines whether or not Conflict Solver Configuration should be imported.
-- **Revisions Configuration:** Determines whether or not Revisions Configuration should be imported.
-- **Document Expiration:** Determines whether or not Document Expiration settings should be imported.
-- **Client Configuration:** Determines whether or not Client Configuration should be imported. 
-- **Custom Sorters:** Determines whether or not Custom Sorters should imported. 
+- **Settings**  
+ Determines whether or not Settings should be imported.
+- **Conflict Solver Configuration**  
+ Determines whether or not Conflict Solver Configuration should be imported.
+- **Revisions Configuration**  
+ Determines whether or not Revisions Configuration should be imported.
+- **Document Expiration**  
+ Determines whether or not Document Expiration settings should be imported.
+- **Client Configuration**  
+ Determines whether or not Client Configuration should be imported. 
+- **Custom Sorters**  
+ Determines whether or not Custom Sorters should imported. 
 
 **Connection Strings:**
 
-- **RavenDB Connection Strings:** Determines whether or not RavenDB Connection Strings should be imported.
-- **SQL Connection Strings:** Determines whether or not SQL Connection Strings values should be imported.
+- **RavenDB Connection Strings**  
+ Determines whether or not RavenDB Connection Strings should be imported.
+- **SQL Connection Strings**  
+ Determines whether or not SQL Connection Strings values should be imported.
 {NOTE/}
 {PANEL/}
