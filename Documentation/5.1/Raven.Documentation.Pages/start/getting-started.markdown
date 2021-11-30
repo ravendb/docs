@@ -254,7 +254,7 @@ RavenDB is a Document Database. All stored objects are called `documents`. Each 
 
 ### Example II - Loading
 
-The `Session` was designed to help the user write efficient code easily. For example, when a document is being loaded (`.Load`) from the server, there is an option [to retrieve additional documents in the same request](../../client-api/session/loading-entities#load-with-includes) (using `.Include`), minimizing the number of expensive calls.
+The `Session` was designed to help the user write efficient code easily. For example, when a document is being loaded (`.Load`) from the server, there is an option [to retrieve additional documents in the same request](../client-api/session/loading-entities#load-with-includes) (using `.Include`), minimizing the number of expensive calls.
 
 Besides that, the session implements the `Unit of Work` pattern, meaning that all **changes** to loaded entities are **automatically tracked**. The `SaveChanges` call will synchronize (with the server) **only the documents that have changed within the session**. All of those changes are **sent in one request (saving network calls)** and **processed in one transaction** (you can read why RavenDB is an [ACID database here](../client-api/faq/transaction-support)).
 
