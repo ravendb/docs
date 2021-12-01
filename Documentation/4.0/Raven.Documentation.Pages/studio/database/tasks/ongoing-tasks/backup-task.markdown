@@ -57,22 +57,30 @@
 
 * Select the content to back up. Note: Both types can be scheduled.  
   1. **Full Backup**  
-     Full Backup will back up _all_ the database data every time the task is scheduled to work. Complete database snapshots with full indexes or faster backups (with index definitions only) can be done in full backups.   
+     Full Backup will back up _all_ the database data every time the task is scheduled to work.  
 
   2. **Incremental Backup**  
-     Incremental Backup will only back up the delta (changes made) of the data since the last backup that has occurred. Incremental backups transfer less data, but cannot produce snapshots.  
+     Incremental Backup will only back up the delta (changes made) of the data since the last backup that has occurred.  
 
-* Schedule the Backup Task time using a [Cron Expression](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html) (eg. "0 0 12 * * ?" means 0 seconds, 0 minutes, 12pm (noon), every day, every month)  
+
+* Schedule the Backup Task time using a [Cron Expression](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html).  
+ (eg. "0 0 12 * * ?" means "0 seconds, 0 minutes, 12pm (noon), every day, every month")  
 
 * Notes:  
-  1. If **Incremental Backup** is set, then a **Full Backup** will occur only in the _first_ time that the Task is triggered,  
+  1. If _only_ **Incremental Backup** is set, then a **Full Backup** will occur only in the _first_ time that the Task is triggered,  
      followed by Incremental Backups according to the scheduled time.  
      The Full Backup that is done the first time will be either a 'Backup' or a 'Snapshot', depending on the type selected.  
 
-  2. Data that is backed up in **Incremental Backup** is _always_ of type 'Backup' - even if the Backup Task Type is 'Snapshot' !  
+  2. Data that is backed up in **Incremental Backup** is _always_ of type 'Backup' - even if the Backup Task Type is 'Snapshot'.  
      A Snapshot can only occur when scheduling 'Full'.  
 
-* In the example above:  
+{NOTE: Scheduling two backups}
+
+To save on transfer costs you can schedule frequent incremental backups, while backing up your indexes with infrequent full-snapshot type backups. 
+
+{NOTE/}
+
+* In the image "Backup Task Schedule & Content" above:  
   * A Full Backup is scheduled every day at 02:00 AM - and in addition to that -  
   * An Incremental Backup is scheduled every 6 hours  
 {PANEL/}
@@ -93,8 +101,11 @@
   * [Amazon Glacier](https://aws.amazon.com/glacier/)  
   * FTP - Set your FTP protocol & server address  
 
-<br/>
- * To achieve a [robust](https://ravendb.net/articles/building-complex-systems-with-duplication-and-multiple-overlapping-fields-of-fire) data protection strategy, the [3-2-1 rule](https://www.nakivo.com/blog/3-2-1-backup-rule-efficient-data-protection-strategy/) can be implemented by creating a periodic backup onto a cloud storage and another on an onsite machine.
+{NOTE: To achieve a robust data protection strategy}
+ 
+ The [3-2-1 rule](https://www.nakivo.com/blog/3-2-1-backup-rule-efficient-data-protection-strategy/) can be implemented by creating a periodic backup onto a cloud storage and another on an onsite machine.
+
+{NOTE/}
 
 {PANEL/}
 
@@ -141,15 +152,19 @@
 
 {PANEL: Backup Task -vs- Replication Task}
 
-* RavenDB's [External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) provides you with an off-site live replica/copy of the database.  
-  ('live' meaning that any changes in the database will be reflected in the replica once they occur). If one database is down, the replica can continue its work, thus greatly improving availability.  
-  This is also quite useful if you need to shift operations to a secondary data center and/or share the workload across more than one server.  
+* RavenDB's [External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) provides you with an off-site live replica/copy of the data 
+  ('live' meaning that any changes in the database will be reflected in the replica once they occur).  
+  If one database is down, the replica can continue its work, thus greatly improving **availability**.  
+  This is also quite useful if you need to:  
+    * **shift operations** to a secondary data center  
+    * **share the workload** across more than one server.  
 
-*  But a replica isn't a backup... It doesn't present good solutions for many backup scenarios.  
-   For example, it doesn't protect you from an accidental collection delete,  
-   or tell you the state of the system at, say, 9:03 AM last Friday.  
+*  But a replica isn't a backup... It doesn't present good solutions for many **backup scenarios**. For example, backups can:  
+    * protect you from an accidental collection delete  
+    * tell you the state of the system at, say, 9:03 AM last Friday  
+    * protect you from various cyber attacks  
 
-* A backup keeps an exact state of the database at a specific point in time and can be restored  
+* A backup keeps an exact state of the database at a specific point in time and can be restored.  
   * A new database can be [created from a Backup](../../../../studio/server/databases/create-new-database/from-backup)  
   * This can be done with both 'Backup' & 'Snapshot' types  
 {PANEL/}
