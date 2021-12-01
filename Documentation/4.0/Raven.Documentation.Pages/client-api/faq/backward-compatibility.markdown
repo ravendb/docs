@@ -43,6 +43,16 @@ E.g. -
 * `Client 4.5` is **not** compatible with `Server 4.0` because the 
   server is of a lower Minor version.  
 
+{NOTE: }
+
+* Upon receiving an erroneous client request, a server will verify that 
+  the client version is supported.  
+* If the client version is not supported, the server will generate an exception such as -  
+  **`RavenDB does not support interaction between Client API major version 3 and Server version 4
+  when major version does not match.`**  
+
+{NOTE/}
+
 ## RavenDB 4.2 and Higher Compatibility
 Starting with version 4.2, RavenDB clients are compatible with 
 any server of their own version **and higher**.  
