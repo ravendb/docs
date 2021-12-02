@@ -57,10 +57,10 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 AddEtlOperationResult result = store.Maintenance.Send(operation);
                 #endregion
             }
+            using (var store = GetDocumentStore())
 
             #region raven_etl_connection_string
 
-            using (var store = GetDocumentStore())
             {
                 //define connection string
                 var ravenConnectionString = new RavenConnectionString()
@@ -69,18 +69,19 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     Name = "raven-connection-string-name",
 
                     //define appropriate node
-                    TopologyDiscoveryUrls = new[] { "http://127.0.0.1:8080" },
+                    TopologyDiscoveryUrls = new[] { "https://127.0.0.1:8080" },
 
                     //define database to connect with on the node
                     Database = "Northwind",
                 }));
-                //send the connection string to connect
-                var resultRavenString = store.Maintenance.Send(new PutConnectionStringOperation<RavenConnectionString>(ravenConnectionString));
-
+                //create the connection string
+                var resultRavenString = store.Maintenance.Send(
+                    new PutConnectionStringOperation<RavenConnectionString>(ravenConnectionString));
+            }
                 #endregion
 
 
-                using (var store = new DocumentStore())
+            using (var store = new DocumentStore())
             {
                 #region add_sql_etl
                 AddEtlOperation<SqlConnectionString> operation = new AddEtlOperation<SqlConnectionString>(
@@ -129,22 +130,34 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     });
 
                 AddEtlOperationResult result = store.Maintenance.Send(operation);
-                    #endregion
+                #endregion
 
 
-                    #region sql_etl_connection_string
+                #region sql_etl_connection_string
 
-                    // define new connection string
-                    var sqlConnectionString = new SqlConnectionString
+                {
+                // define new connection string
+                PutConnectionStringOperation<SqlConnectionString> operation
+                = new PutConnectionStringOperation<SqlConnectionString>(
+                    new SqlConnectionString
                     {
                         // name connection string
-                        Name = "SqlConnectionString",
-                        // enter the configurations to access your database
-                        ConnectionString = myServerAddress;
-                        Database = myDataBase;
-                        UserId = myUsername;
-                        Password = myPassword;
-                    };
+                        Name = "local_mysql",
+
+                        // define FactoryName
+                        FactoryName = "MySql.Data.MySqlClient",
+
+                        // define database - may also need to define authentication and encryption parameters
+                        // by default, encrypted databases are sent over encrypted channels
+                        ConnectionString = "host=127.0.0.1;user=root;database=Northwind"
+
+                    });
+
+                // create connection string
+                PutConnectionStringResult connectionStringResult
+                = store.Maintenance.Send(operation);
+
+                }
                 #endregion
             }
         }

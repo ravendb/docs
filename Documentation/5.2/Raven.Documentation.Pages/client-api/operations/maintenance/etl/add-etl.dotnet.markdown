@@ -1,16 +1,27 @@
 # Operations: How to Add ETL
 
-You can add ETL task by using **AddEtlOperation**.
+To learn more about ETL (Extract, Transfer, Load) ongoing tasks, see this article on [ETL Basics](../../../../server/ongoing-tasks/etl/basics).  
+
+You can add ETL task by using **AddEtlOperation**.  
+
+To manage them in the Studio read this article about [ETLs and how to add them via the GUI Studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task).  
+
+---
 
 In this page:
 
 * [Syntax](../../../../client-api/operations/maintenance/etl/add-etl#syntax)  
-* [Example - Add Raven ETL](../../../../client-api/operations/maintenance/etl/add-etl#example---add-raven-etl)  
+* [Add Raven ETL](../../../../client-api/operations/maintenance/etl/add-etl#add-raven-etl)  
     * [Connection String for Raven ETL](../../../../client-api/operations/maintenance/etl/add-etl#connection-string-for-raven-etl)  
-* [Example - Add Sql ETL](../../../../client-api/operations/maintenance/etl/add-etl#example---add-sql-etl)  
+    * [Code Sample to Add Raven ETL](../../../../client-api/operations/maintenance/etl/add-etl#code-sample-to-add-raven-etl)  
+
+* [Add Sql ETL](../../../../client-api/operations/maintenance/etl/add-etl#add-sql-etl)  
     * [Connection String for Sql ETL](../../../../client-api/operations/maintenance/etl/add-etl#connection-string-for-sql-etl)  
-* [Example - Add OLAP ETL](../../../../client-api/operations/maintenance/etl/add-etl#example---add-olap-etl)  
+    * [Code Sample to Add Sql ETL](../../../../client-api/operations/maintenance/etl/add-etl#code-sample-to-add-sql-etl)  
+
+* [Add OLAP ETL](../../../../client-api/operations/maintenance/etl/add-etl#add-olap-etl)  
     * [Connection String for Olap ETL](../../../../client-api/operations/maintenance/etl/add-etl#connection-string-for-olap-etl)  
+    * [Code Sample to Add Olap ETL](../../../../client-api/operations/maintenance/etl/add-etl#code-sample-to-add-olap-etl)  
 
 
 
@@ -22,36 +33,48 @@ In this page:
 | ------------- | ----- | ---- |
 | **configuration** | `EtlConfiguration<T>` | ETL configuration where `T` is connection string type |
 
-## Example - Add Raven ETL
-
-{CODE add_raven_etl@ClientApi\Operations\AddEtl.cs /}
+## Add Raven ETL
 
 ### Connection String for Raven ETL
 
+**Secure servers**  
+To connect a secure RavenDB server you need to export the certificate from the source server and install it into the destination server.  
+The `.pfx` certificate can be found in your server installation folder.  
+Be sure that the node definition in the connection string has the "s" in https:  
+
 {CODE raven_etl_connection_string@ClientApi\Operations\AddEtl.cs /}
 
-## Example - Add Sql ETL
+### Code Sample to Add Raven ETL
 
-{CODE add_sql_etl@ClientApi\Operations\AddEtl.cs /}
+{CODE add_raven_etl@ClientApi\Operations\AddEtl.cs /}
+
+## Add Sql ETL
 
 ### Connection String for Sql ETL
 
 {CODE sql_etl_connection_string@ClientApi\Operations\AddEtl.cs /}
 
-## Example - Add OLAP ETL
+### Code Sample to Add Sql ETL
 
-{CODE add_olap_etl@ClientApi\Operations\AddEtl.cs /}
+{CODE add_sql_etl@ClientApi\Operations\AddEtl.cs /}
+
+## Add OLAP ETL
 
 ### Connection String for Olap ETL
 
-The following code sample is for a connection string to a local machine. Click to see connection keys required for [various levels of security](https://www.connectionstrings.com/olap-analysis-services/).
+The following code sample is for a connection string to a local machine.  
   
 {CODE olap_Etl_Connection_String@ClientApi\Operations\AddEtl.cs /}
   
-To connect to a cloud instance, see the [Olap ETL article about ongoing tasks](../../../../server/ongoing-tasks/etl/olap#ongoing-tasks-olap-etl).  
+To connect to a cloud instance, see the [Olap ETL article](../../../../server/ongoing-tasks/etl/olap#section-1).  
   
 The following code sample is for a connection string to Amazon AWS. If you use Google or Microsoft cloud servers, change the parameters accordingly.   
 {CODE olap_Etl_AWS_connection_string@ClientApi\Operations\AddEtl.cs /}
+
+### Code Sample to Add Olap ETL
+
+{CODE add_olap_etl@ClientApi\Operations\AddEtl.cs /}
+
 
 
 ## Related Articles
