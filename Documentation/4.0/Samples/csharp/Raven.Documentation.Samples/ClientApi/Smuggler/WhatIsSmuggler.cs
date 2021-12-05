@@ -79,6 +79,7 @@ namespace Raven.Documentation.Samples.ClientApi.Smuggler
                         {
                             OperateOnTypes = DatabaseItemType.Documents
                         },
+                        // import the .ravendbdump file that you exported (i.e. in the export example above)
                         @"C:\ravendb-exports\Northwind.ravendbdump",
                         token);
 
