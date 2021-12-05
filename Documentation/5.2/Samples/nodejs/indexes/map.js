@@ -1,6 +1,6 @@
-import { 
+import {
     DocumentStore,
-    AbstractIndexCreationTask
+    AbstractCsharpIndexCreationTask
 } from "ravendb";
 
 const store = new DocumentStore();
@@ -8,13 +8,13 @@ const store = new DocumentStore();
 
 {
 //region indexes_1
-class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+class Employees_ByFirstAndLastName extends AbstractCsharpIndexCreationTask {
     // ...
 }
 //endregion
 }
 
-class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+class Employees_ByFirstAndLastName extends AbstractCsharpIndexCreationTask {
     //region indexes_2
     constructor() {
         super();
@@ -28,7 +28,7 @@ class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
 }
 
 //region indexes_7
-class Employees_ByFullName extends AbstractIndexCreationTask {
+class Employees_ByFullName extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
@@ -40,7 +40,7 @@ class Employees_ByFullName extends AbstractIndexCreationTask {
 //endregion
 
 //region indexes_1_0
-class Employees_ByYearOfBirth extends AbstractIndexCreationTask {
+class Employees_ByYearOfBirth extends AbstractCsharpIndexCreationTask {
 
     constructor() {
         super();
@@ -53,7 +53,7 @@ class Employees_ByYearOfBirth extends AbstractIndexCreationTask {
 //endregion
 
 //region indexes_1_2
-class Employees_ByBirthday extends AbstractIndexCreationTask {
+class Employees_ByBirthday extends AbstractCsharpIndexCreationTask {
 
     constructor() {
         super();
@@ -66,7 +66,7 @@ class Employees_ByBirthday extends AbstractIndexCreationTask {
 //endregion
 
 //region indexes_1_4
-class Employees_ByCountry extends AbstractIndexCreationTask {
+class Employees_ByCountry extends AbstractCsharpIndexCreationTask {
 
     constructor() {
         super();
@@ -79,7 +79,7 @@ class Employees_ByCountry extends AbstractIndexCreationTask {
 //endregion
 
 //region indexes_1_6
-class Employees_Query extends AbstractIndexCreationTask {
+class Employees_Query extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 

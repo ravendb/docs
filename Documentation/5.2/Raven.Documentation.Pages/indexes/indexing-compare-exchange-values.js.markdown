@@ -19,7 +19,7 @@ as when documents are modified in the indexed collection(s).
 ---
 
 {PANEL: Syntax}
-For javascript indexes, use the method `Cmpxchg(<key>)`.
+For javascript indexes, use the method `cmpxchg(<key>)`.
 
 | Parameter | Type | Description |
 | - | - | - |

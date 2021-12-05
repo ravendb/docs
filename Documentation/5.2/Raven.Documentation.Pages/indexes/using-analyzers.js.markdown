@@ -149,42 +149,28 @@ Next, define the analyzer for a specific database using the operation `PutAnalyz
 a server-wide analyzer, use `PutServerWideOperation`. These operations are very similar in how they work. 
 Both of them take one parameter: either an `AnalyzerDefinition`, or an array of `AnalyzerDefinition`'s.  
 
-{CODE-BLOCK: csharp}
-public class PutAnalyzersOperation
-{
-    private readonly AnalyzerDefinition[] _analyzersToAdd;
-}
+{CODE:nodejs put_analyzers_operation@indexes\analyzers.js /}
 
-public class PutServerWideAnalyzersOperation
-{
-    private readonly AnalyzerDefinition[] _analyzersToAdd;
-}
-{CODE-BLOCK/}
+{CODE:nodejs put_serverWide_analyzers_operation@indexes\analyzers.js /}
 
 By default, the `PutAnalyzersOperation` will apply to the [default database](../client-api/setting-up-default-database) 
 of the document store you're using. To target a different database, use the `ForDatabase()` method - read more 
 [here](../client-api/operations/how-to/switch-operations-to-a-different-database).  
 
-The `AnalyzerDefinition` object has two properties, `Name` and `Code`:  
+The `AnalyzerDefinition` object has two properties, `name` and `code`:  
 
-{CODE-BLOCK: csharp}
-public class AnalyzerDefinition
-{
-    public string Name { get; set; }
-    public string Code { get; set; }
-}
-{CODE-BLOCK/}
+{CODE:nodejs analyzer_definition@indexes\analyzers.js /}
 
 | Parameter | Type | Description |
 | - | - | - |
-| **Name** | `string` | The class name of your custom analyzer as it appears in your code |
-| **Code** | `string` | Compilable csharp code: a class that inherits from `Lucene.Net.Analysis.Analyzer`, the containing namespace, and the necessary `using` statements. |
+| **name** | `string` | The class name of your custom analyzer as it appears in your code |
+| **code** | `string` | Compilable csharp code: a class that inherits from `Lucene.Net.Analysis.Analyzer`, the containing namespace, and the necessary `using` statements. |
 
 #### Client API Example
 
 Now let's see how everything fits together.  
 
-{CODE analyzers_7@Indexes\Analyzers.cs /}
+{CODE:nodejs analyzers_7@indexes\Analyzers.js /}
 
 ### Adding an Analyzer to the Binaries
 
@@ -201,9 +187,9 @@ By default, each indexed field is analyzed using the '`LowerCaseKeywordAnalyzer`
 
 This behavior can be changed by setting the `FieldIndexing` option for a particular field. The possible values are:  
 
-* `FieldIndexing.Exact`
-* `FieldIndexing.Search`
-* `FieldIndexing.No`
+* `Exact`
+* `Search`
+* `No`
 
 Setting the `FieldIndexing` option for this field to `Exact` turns off the field analysis. This causes all the 
 properties to be treated as a single token and the matches must be exact (case sensitive), using 

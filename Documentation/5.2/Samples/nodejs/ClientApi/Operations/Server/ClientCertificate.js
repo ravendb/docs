@@ -4,8 +4,6 @@ import {
     DocumentStore,
     PutClientCertificateOperation
 } from 'ravendb';
-import { EtlConfiguration } from 'ravendb';
-import { SecurityClearance } from 'ravendb';
 let urls, database, authOptions,permissions,clearance,password,certificate,publicKey,thumbprint;
 {
     //document_store_creation
@@ -18,21 +16,7 @@ let urls, database, authOptions,permissions,clearance,password,certificate,publi
         new CreateClientCertificateOperation([name], [permissions], [clearance], [password]));
     //endregion
 
-    //region cert_1_2
-    export type SecurityClearance =
-        "UnauthenticatedClients"
-        | "ClusterAdmin"
-        | "ClusterNode"
-        | "Operator"
-        | "ValidUser";
-    //endregion
 
-    //region cert_1_3
-    export type DatabaseAccess =
-        "ReadWrite"
-        | "Admin";
-
-    //endregion
 
     async function foo1() {
 

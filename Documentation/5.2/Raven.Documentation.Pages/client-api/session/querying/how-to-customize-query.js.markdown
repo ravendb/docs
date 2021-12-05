@@ -115,10 +115,10 @@ By default, queries are satisfied with the values stored in the index. If the in
 doesn't contain the requested values, they are retrieved from the documents 
 themselves.  
 
+{CODE:nodejs projectionbehavior@ClientApi\Session\Querying\HowToCustomize.js /}
+
 This behavior can be configured using the `projection` option, which takes a 
 `projectionBehavior`:  
-
-{CODE:nodejs projectionbehavior@ClientApi\Session\Querying\HowToCustomize.js /}
 
 * `Default` - query will be satisfied with indexed data when possible, and directly 
 from the document when it is not.  
@@ -131,12 +131,10 @@ when it is not, the field is skipped.
 * `FromDocumentOrThrow` - query will be satisfied with document data. If the 
 document does not contain the requested data, an exception is thrown.  
 
-<!--- 
-TODO: (region projectionbehavior_query in howToCustomize.js)
 ### Example 
 
 {CODE:nodejs projectionbehavior_query@ClientApi\Session\Querying\howToCustomize.js /} 
----->
+
 {PANEL/}
 
 {PANEL:RandomOrdering}

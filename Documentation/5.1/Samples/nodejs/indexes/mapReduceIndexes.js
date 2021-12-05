@@ -1,13 +1,12 @@
 import {
-    DocumentStore,
-    AbstractIndexCreationTask, GetIndexOperation
+    DocumentStore, GetIndexOperation, AbstractCsharpIndexCreationTask
 } from "ravendb";
 
 const store = new DocumentStore();
 const session = store.openSession();
 
 //region map_reduce_0_0
-class Products_ByCategory extends AbstractIndexCreationTask {
+class Products_ByCategory extends AbstractCsharpIndexCreationTask {
 
     constructor() {
         super();
@@ -29,7 +28,7 @@ class Products_ByCategory extends AbstractIndexCreationTask {
 //endregion
 
 //region map_reduce_1_0
-class Products_Average_ByCategory extends AbstractIndexCreationTask {
+class Products_Average_ByCategory extends AbstractCsharpIndexCreationTask {
 
     constructor() {
         super();
@@ -61,7 +60,7 @@ class Products_Average_ByCategory extends AbstractIndexCreationTask {
 //endregion
 
 //region map_reduce_2_0
-class Product_Sales extends AbstractIndexCreationTask {
+class Product_Sales extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
@@ -82,7 +81,7 @@ class Product_Sales extends AbstractIndexCreationTask {
 //endregion
 
 //region map_reduce_3_0
-class Product_Sales_ByMonth extends AbstractIndexCreationTask {
+class Product_Sales_ByMonth extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 

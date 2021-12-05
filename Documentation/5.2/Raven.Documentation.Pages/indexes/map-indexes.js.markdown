@@ -43,9 +43,9 @@ where FirstName = 'Robert'
 
 Please note that indexing capabilities are detected automatically from the returned field type from the indexing function. 
 
-For example, if our `Employee` will have a property called `Age` that is an `integer` then the following indexing function...
+For example, if our `Employee` will have a property called `Age` that is an `number` then the following indexing function...
 
-{CODE-BLOCK:csharp}
+{CODE-BLOCK:javascript}
 from employee in docs.Employees
 select new
 {
@@ -57,11 +57,11 @@ select new
 
 Changing the `Age` type to a `string` will take that capability away from you. The easiest example would be to issue `.ToString()` on the `Age` field...
 
-{CODE-BLOCK:csharp}
+{CODE-BLOCK:javascript}
 from employee in docs.Employees
 select new
 {
-	Age = employee.Age.ToString()
+	Age = employee.Age.toString()()
 }
 {CODE-BLOCK/}
 
@@ -71,7 +71,7 @@ select new
 
 You will probably notice that in the `Studio`, this function is a bit different from the one defined in the `Employees_ByFirstAndLastName` class:
 
-{CODE-BLOCK:csharp}
+{CODE-BLOCK:javascript}
 from employee in docs.Employees
 select new
 {

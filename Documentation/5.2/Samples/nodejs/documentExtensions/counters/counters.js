@@ -4,6 +4,8 @@ import {
 } from "ravendb";
 
 
+class Product {}
+
 const store = new DocumentStore();
 {
     //region counters_region_query
@@ -51,32 +53,6 @@ const store = new DocumentStore();
 
 
 {
-    //region smuggler_options
-    export type DatabaseItemType =
-        "None"
-        | "Documents"
-        | "RevisionDocuments"
-        | "Indexes"
-        | "Identities"
-        | "Tombstones"
-        | "LegacyAttachments"
-        | "Conflicts"
-        | "CompareExchange"
-        | "LegacyDocumentDeletions"
-        | "LegacyAttachmentDeletions"
-        | "DatabaseRecord"
-        | "Unknown"
-        | "Attachments"
-        | "CounterGroups"
-        | "Subscriptions"
-        | "CompareExchangeTombstones"
-        | "TimeSeries";
-    //endregion
-}
-
-class Product {}
-
-{
 
 
     //region counters_region_load_include1
@@ -91,9 +67,10 @@ class Product {}
 
 {
     //region counters_region_load_include2
-    const productPage = session.Load<Product>("orders/1-A", includeBuilder =>
+    const productPage = await session.load<Product>("orders/1-A", includeBuilder =>
         includeBuilder.includeDocuments("products/1-C")
             .includeCounters("ProductLikes", "ProductDislikes" )
+            ,Product
     );
     //endregion
 }
@@ -133,7 +110,7 @@ class Product {}
     const result =query.all();
 
     const bulkInsert = store.bulkInsert();
-    for (var user = 0; user < result.Count; user++)
+    for (var user = 0; user < result.length; user++)
     {
         let userId = result[user].id;
 

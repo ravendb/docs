@@ -1,4 +1,5 @@
 import {
+    AbstractCsharpIndexCreationTask,
     AbstractJavaScriptIndexCreationTask,
     DocumentStore,
     IndexDefinition,
@@ -28,7 +29,7 @@ class Author {
 //endregion
 
 //region indexing_related_documents_2
-class Products_ByCategoryName extends AbstractJavaScriptIndexCreationTask {
+class Products_ByCategoryName extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
@@ -40,7 +41,7 @@ class Products_ByCategoryName extends AbstractJavaScriptIndexCreationTask {
 //endregion
 
 //region indexing_related_documents_5
-class Authors_ByNameAndBooks extends AbstractJavaScriptIndexCreationTask {
+class Authors_ByNameAndBooks extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 

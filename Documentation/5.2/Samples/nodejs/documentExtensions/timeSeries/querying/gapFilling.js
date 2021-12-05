@@ -11,12 +11,12 @@ const session = store.openSession();
 class People{}
 
     //region rql_query
-    const query = session.advanced.rawQuery<TimeSeriesAggregationResult>(
+    const query = session.advanced.rawQuery(
         "from People\n" +
         "select timeseries(\n" +
         "    from HeartRates\n" +
         "    group by  1 second\n" +
         "    with interpolation(liner)\n" +
-        ")"
+        ")", TimeSeriesAggregationResult
     );
     //endregion

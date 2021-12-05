@@ -19,6 +19,7 @@ import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { ServerNode } from "../../Http/ServerNode";
 import { DatabaseSmuggler } from "../../Http/ServerNode";
+import {DocumentStore} from "ravendb";
 
 //document_store_creation
 const store = new DocumentStore(["http://localhost:8080"], "Northwind2");

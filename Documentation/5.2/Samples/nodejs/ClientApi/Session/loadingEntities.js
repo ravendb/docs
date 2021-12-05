@@ -156,34 +156,37 @@ async function examples() {
     }
 }
 
+{
+    let id , object, changeVector;
+    class User {}
     //region loading_entities_7_0
-    (object, changeVector) conditionalLoad<object>(id, changeVector);
+    await session.advanced.conditionalLoad(id, changeVector, object);
     //endregion
 
     //region loading_entities_7_1
     var session = store.openSession();
-    session.store(user, "users/1");
-    session.saveChanges();
+    await session.store(User, "users/1");
+    await session.saveChanges();
 
-    const changeVector = session.advanced.getChangeVectorFor(user);
+    const _changeVector = session.advanced.getChangeVectorFor(User);
 
     // New session which does not track our User entity
     // The given change vector matches 
     // the server-side change vector
     // Does not load the document
     var session = store.openSession();
-    var result1 = session.advanced
-        .conditionalLoad<User>("users/1", changeVector);
+    var result1 = await session.advanced
+        .conditionalLoad("users/1", _changeVector,User);
 
     // Modify the document
-    user.name = "Bob Smith";
-    session.store(user);
-    session.saveChanges();
+    User.name = "Bob Smith";
+    await session.store(User);
+    await session.saveChanges();
 
     // Change vectors do not match
     // Loads the document
-    var result2 = session.advanced
-        .conditionalLoad<User>("users/1", changeVector);
+    var result2 = await session.advanced
+        .conditionalLoad("users/1", _changeVector,User);
     //endregion
-
+}
 

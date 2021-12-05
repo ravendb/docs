@@ -1,7 +1,9 @@
 import * as assert from "assert";
-import { DocumentStore, QueryData, AbstractIndexCreationTask } from "ravendb";
+import {DocumentStore, QueryData, AbstractCsharpIndexCreationTask} from "ravendb";
 
 class Product { }
+class Companies { }
+class Orders { }
 
 const store = new DocumentStore();
 const session = store.openSession();
@@ -14,8 +16,8 @@ async function examples() {
             [ "Name", "Address.City", "Address.Country"],
             [ "Name", "City", "Country"]);
         const results = await session
-            .query({ collection: "Companies" })
-            .selectFields(queryData)
+            .query(Companies)
+            .selectFields(queryData,Companies)
             .all();
         //endregion
     }
@@ -26,8 +28,8 @@ async function examples() {
             [ "ShipTo", "Lines[].ProductName" ],
             [ "ShipTo", "Products" ]);
 
-        const results = await session.query({ collection: "Orders" })
-            .selectFields(queryData)
+        const results = await session.query(Orders)
+            .selectFields(queryData,Orders)
             .all();
         //endregion
     }
@@ -143,14 +145,13 @@ async function examples() {
     }
 
     //region projections_9_0
-    class Companies_ByContact extends AbstractIndexCreationTask {
+    class Companies_ByContact extends AbstractCsharpIndexCreationTask {
         constructor() {
             super();
-            this.map = `from c in docs.Companies 
-                        select new { 
-                            Name = c.Contact.Name, 
-                            Phone = c.Phone 
-                        }`;
+            this.map = `docs.Company.select(company => new {    
+                                Name = company.Contact.Name,    
+                                Phone = company.Phone
+                            })`;
             this.storeAllFields("Yes"); // name and phone fields can be retrieved directly from index
         }
     }
@@ -168,26 +169,19 @@ async function examples() {
     //region projections_11
     class Products_BySupplierName_Result { }
 
-    class Products_BySupplierName extends AbstractIndexCreationTask { }
+    class Products_BySupplierName extends AbstractCsharpIndexCreationTask { }
     //endregion
 
     {
-        //region projections_10
-        const results =  session.query({ indexName: "Company/Companies_ByContact" })
-            .projectInto<ContactDetails>();
-        //endregion
-    }
-
-    {
         //region index_10
-        class Companies_ByContact  extends AbstractIndexCreationTask {
+        class Companies_ByContact  extends AbstractCsharpIndexCreationTask {
             constructor() {
                 super();
 
                 this.map = `docs.Company.select(company => new {    
-                    Name = company.Contact.Name,    
-                    Phone = company.Phone
-                })`;
+                                Name = company.Contact.Name,    
+                                Phone = company.Phone
+                            })`;
             }
         }
         //endregion

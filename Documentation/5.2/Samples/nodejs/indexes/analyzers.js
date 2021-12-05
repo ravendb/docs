@@ -1,9 +1,9 @@
-import { 
-    AbstractIndexCreationTask, 
-    DocumentStore, 
-    IndexDefinition, 
+import {
+    AbstractIndexCreationTask,
+    DocumentStore,
+    IndexDefinition,
     PutIndexesOperation,
-    IndexDefinitionBuilder
+    IndexDefinitionBuilder, PutAnalyzersOperation, PutServerWideAnalyzersOperation
 } from "ravendb";
 
 const store = new DocumentStore();
@@ -91,4 +91,50 @@ async function analyzers() {
     //endregion
 
 }
+
+{
+    //region analyzer_definition
+    const analyzerDefinition = {
+        name: "analyzerName",
+        code: "code"
+    };
+    //endregion
+}
+
+let analyzerDefinition;
+{
+    //region put_analyzers_operation
+    await store.maintenance.send(new PutAnalyzersOperation(analyzerDefinition));
+    //endregion
+}
+{
+    //region put_serverWide_analyzers_operation
+    await store.maintenance.send(new PutServerWideAnalyzersOperation(analyzerDefinition));
+    //endregion
+}
+{
+    //region analyzers_7
+    const analyzerDefinition = {
+        name: "MyAnalyzer",
+        code: "using System.IO;\n" +
+            "using Lucene.Net.Analysis;\n" +
+            "using Lucene.Net.Analysis.Standard;\n" +
+            "\n" +
+            "namespace MyAnalyzer\n" +
+            "{\n" +
+            "   public class MyAnalyzer : Lucene.Net.Analysis.Analyzer\n" +
+            "    {\n" +
+            "        public override TokenStream TokenStream(string fieldName, TextReader reader)\n" +
+            "        {\n" +
+            "            throw new CodeOmitted();\n" +
+            "        }\n" +
+            "    }\n" +
+            "}\n"
+    };
+
+    await store.maintenance.send(new PutAnalyzersOperation(analyzerDefinition))
+    //endregion
+}
+
+
 

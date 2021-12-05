@@ -1,16 +1,13 @@
 import {
     DocumentStore,
-    IndexDefinition,
-    PutIndexesOperation,
-    IndexDefinitionBuilder, AbstractJavaScriptIndexCreationTask, TimeSeriesAggregationResult,
-    AbstractIndexCreationTask
+     AbstractCsharpIndexCreationTask
 } from "ravendb";
 
 let key, keys;
 
 class HotelRoom{}
 
-const store = new DocumentStore();
+const store = new DocumentStore('http://127.0.0.1:8080', 'Northwind2');
 const session = store.openSession();
 {
     //region methods
@@ -22,17 +19,18 @@ const session = store.openSession();
 
 {
     //region index_1
-    class Compare_Exchange_Index extends AbstractIndexCreationTask {
+    class Compare_Exchange_Index extends AbstractCsharpIndexCreationTask {
         constructor() {
             super();
 
             this.map = `docs.HotelRooms.Select(room => new { 
                              RoomID = room.RoomID,     
                              Guests = cmpxchg(room.RoomID)
-                 })`;
+                        })`;
         }
     }
     //endregion
+
 }
 
 {

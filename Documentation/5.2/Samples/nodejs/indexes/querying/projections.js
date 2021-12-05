@@ -1,11 +1,11 @@
-import { 
-    DocumentStore, 
+import {
+    DocumentStore,
     AbstractIndexCreationTask,
     MoreLikeThisStopWords,
-    QueryData
+    QueryData, AbstractCsharpIndexCreationTask
 } from "ravendb";
 
-const store = new DocumentStore();
+const store = new DocumentStore('http://127.0.0.1:8080', 'Northwind2');
 const session = store.openSession();
 
 class Employee { }
@@ -32,7 +32,7 @@ class FullName {
 }
 
 //region indexes_1
-class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+class Employees_ByFirstAndLastName extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
@@ -45,7 +45,7 @@ class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
 //endregion
 
 //region indexes_1_stored
-class Employees_ByFirstAndLastNameWithStoredFields extends AbstractIndexCreationTask {
+class Employees_ByFirstAndLastNameWithStoredFields extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
@@ -60,7 +60,7 @@ class Employees_ByFirstAndLastNameWithStoredFields extends AbstractIndexCreation
 //endregion
 
 //region indexes_2
-class Employees_ByFirstNameAndBirthday extends AbstractIndexCreationTask {
+class Employees_ByFirstNameAndBirthday extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
@@ -73,7 +73,7 @@ class Employees_ByFirstNameAndBirthday extends AbstractIndexCreationTask {
 //endregion
 
 //region indexes_3
-class Orders_ByShipToAndLines extends AbstractIndexCreationTask {
+class Orders_ByShipToAndLines extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
@@ -86,7 +86,7 @@ class Orders_ByShipToAndLines extends AbstractIndexCreationTask {
 //endregion
 
 //region indexes_4
-class Orders_ByShippedAtAndCompany extends AbstractIndexCreationTask {
+class Orders_ByShippedAtAndCompany extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
@@ -103,7 +103,7 @@ async function projections() {
     
         {
             //region projections_1
-            const results = session
+            const results = await session
                 .query({ indexName: "Employees/ByFirstAndLastName" })
                 .selectFields([ "FirstName", "LastName" ])
                 .all();
@@ -125,8 +125,8 @@ async function projections() {
                 [ "ShipTo", "Lines[].ProductName" ],
                 [ "ShipTo", "Products" ]);
 
-            const results = await session.query(Order)
-                .selectFields(queryData)
+            const results = session.query(Order)
+                .selectFields<Order>(queryData,Order)
                 .all();
             //endregion
         }
@@ -210,16 +210,10 @@ async function projections() {
 }
 
 {
-    {
-        //region projections_10
-        const results =  session.query({ indexName: "Company/Companies_ByContact" })
-            .projectInto<ContactDetails>();
-        //endregion
-    }
 
     {
         //region index_10
-        class Companies_ByContact  extends AbstractIndexCreationTask {
+        class Companies_ByContact  extends AbstractCsharpIndexCreationTask {
             constructor() {
                 super();
 

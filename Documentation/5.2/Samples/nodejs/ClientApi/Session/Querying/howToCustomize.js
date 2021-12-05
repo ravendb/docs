@@ -3,7 +3,7 @@ import { DocumentStore } from "ravendb";
 const store = new DocumentStore();
 const session = store.openSession();
 
-let action, queryCustomization, seed, waitTimeout;
+let action, queryCustomization, seed, waitTimeout, projectionBehavior;
 
 {
     const query = session.query({ collection: "test" });
@@ -38,16 +38,9 @@ let action, queryCustomization, seed, waitTimeout;
     queryCustomization.waitForNonStaleResults([waitTimeout]);
     //endregion
 
+    
     //region projectionbehavior
     queryCustomization.projection([projectionBehavior]);
-
-     type projectionBehavior =
-        "Default"
-        |"FromIndex"
-        |"FromIndexOrThrow"
-        |"FromDocument"
-        |"FromDocumentOrThrow"
-        ;
     //endregion
 
 }
@@ -142,8 +135,6 @@ async function customizeExamples() {
         //region projectionbehavior_query
         await  session.advanced.on("beforeQuery",
             event => event.queryCustomization.projection("FromDocument"));
-
-
         //endregion
     }
 
