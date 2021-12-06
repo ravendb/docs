@@ -113,18 +113,17 @@ To load multiple entities that contain a common prefix, use the `loadStartingWit
 
 {PANEL: ConditionalLoad}
 
+This method can be used to check whether a document has been modified 
+since the last time its change vector was recorded, so that the cost of loading it 
+can be saved if it has not been modified.  
+
 The `conditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector). 
 If the entity is tracked by the session, this method returns the entity. If the entity 
 is not tracked, it checks if the provided change vector matches the document's 
 current change vector on the server side. If they match, the entity is not loaded. 
 If the change vectors _do not_ match, the document is loaded.  
 
-In other words, this method can be used to check whether a document has been modified 
-since the last time its change vector was recorded, so that the cost of loading it 
-can be saved if it has not been modified.  
-
-The method is accessible from the `session.advanced` operations.  
-
+The method is accessible from the `session.Advanced` operations.  
 {CODE:nodejs loading_entities_7_0@ClientApi\Session\loadingEntities.js /}
 
 | Parameter | Type | Description |
