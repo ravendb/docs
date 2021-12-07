@@ -28,5 +28,11 @@
     "Name": "Manage Database Group",
     "DiscussionId": "2b0b0669-1254-4bd2-8936-029b2099e261",
     "Mappings": []
+  },
+  {
+    "Path": "time-series-settings.markdown",
+    "Name": "Time Series Settings",
+    "DiscussionId": "7eddb51a-7800-42ed-95ca-31fe5da86470",
+    "Mappings": []
   }
 ]
