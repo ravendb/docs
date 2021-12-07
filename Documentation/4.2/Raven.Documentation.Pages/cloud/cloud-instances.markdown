@@ -2,21 +2,22 @@
 
 {NOTE: }
 
-Use your portal's [Products tab](../cloud/portal/cloud-portal-products-tab) to raise or modify 
+- Use your portal's [Products tab](../cloud/portal/cloud-portal-products-tab) to raise or modify 
 a Free node, a Development node, or a Production cluster.  
-Free and Development nodes, as well as Production "basic" grade clusters, are operated by 
+- Free and Development nodes, as well as Production "basic" grade clusters, are operated by 
 [burstable instances](../cloud/cloud-overview#burstable-vs.-reserved-clusters).  
-The higher production-cluster grades [Standard](../cloud/cloud-instances#standard-grade-production-cluster) 
+- The Production cluster grades [Standard](../cloud/cloud-instances#standard-grade-production-cluster) 
 and [Performance](../cloud/cloud-instances#performance-grade-production-cluster) are 
 [Reserved clusters](../cloud/cloud-overview#burstable-vs.-reserved-clusters).  
 
-* In this page:  
-    * [A Free Cloud Node](../cloud/cloud-instances#a-free-cloud-node)  
-    * [A Development Cloud Server](../cloud/cloud-instances#a-development-cloud-server)  
-    * [A Production Cloud Cluster](../cloud/cloud-instances#a-production-cloud-cluster)  
-       - [Basic-grade Production Cluster](../cloud/cloud-instances#basic-grade-production-cluster)  
-       - [Standard-grade Production Cluster](../cloud/cloud-instances#standard-grade-production-cluster)  
-       - [Performance-grade Production Cluster](../cloud/cloud-instances#performance-grade-production-cluster)  
+In this page:  
+
+* [A Free Cloud Node](../cloud/cloud-instances#a-free-cloud-node)  
+* [A Development Cloud Server](../cloud/cloud-instances#a-development-cloud-server)  
+* [A Production Cloud Cluster](../cloud/cloud-instances#a-production-cloud-cluster)  
+   - [Basic-grade Production Cluster](../cloud/cloud-instances#basic-grade-production-cluster)  
+   - [Standard-grade Production Cluster](../cloud/cloud-instances#standard-grade-production-cluster)  
+   - [Performance-grade Production Cluster](../cloud/cloud-instances#performance-grade-production-cluster)  
 {NOTE/}
 
 ---
@@ -26,7 +27,7 @@ and [Performance](../cloud/cloud-instances#performance-grade-production-cluster)
 ### A Free Cloud Node  
 
 Free RavenDB cloud nodes are great for experiments and evaluation. They are equipped with the 
-most basic configuration and capabilities and have a single node and no Service-level agreement (SLA).  
+most basic configuration and capabilities. They have a single node and no Service-Level Agreement (SLA).  
 You can run only one free node per [account](../cloud/cloud-overview#your-account).  
 
 To raise a free cloud node, use the [Products tab](../cloud/portal/cloud-portal-products-tab) 
@@ -34,15 +35,13 @@ to create a **free**-tier instance.
 !["Tiers and Instances: Free"](images\tiers-and-instances-001-free.png "Tiers and Instances: Free")  
 
 * A free instance is identical to a development [Dev10](../cloud/cloud-instances#a-development-cloud-server) instance.  
-  It comes with a monthly credit of **10$**, used to cover the cost of the instance and incidentals like backup storage 
+  It comes with a monthly credit of **$10**, used to cover the cost of the instance and incidentals like backup storage 
   and traffic.  
   {NOTE: }
-  If your free instance is using more resources than the provided credit, you'll need to pay for these resources or stop your instance. 
+  If your free instance uses more resources than the provided credit, you'll need to pay for these resources or stop your instance. 
   {NOTE/}
 
-    {NOTE: }
-   You can currently locate **Free** Instances only in **Amazon AWS - US East (N. Virginia) - us-east-1** region.  
-  {NOTE/}
+
 
 * The free instance is limited to the [community](https://ravendb.net/buy) subset of features.  
 
@@ -52,19 +51,17 @@ to create a **free**-tier instance.
 
 ### A Development Cloud Server  
 
-A development server is equipped with all RavenDB's features, like Pull Replication and Encrypted Databases.  
+A development server is equipped with all of RavenDB's [features](https://ravendb.net/buy), though it are **not suitable for production** because:  
 
-Such cloud servers are perfect for development, though not for production because of their single-node configuration, 
-[burstable](../cloud/cloud-overview#burstable-instances) CPU usage and lack of 
-[backup](../cloud/cloud-backup-and-restore#cloud-backup) procedure and [SLA](../cloud/portal/cloud-portal-support-tab#support-entitlement).  
+ * Single-node configuration (no [replication](../server/clustering/replication/replication)),  
+ * [Burstable](../cloud/cloud-overview#burstable-instances) CPU usage which is suitable for small to medium production loads.  
+  Burstable instances can become throttled if usage excedes allocated resources.    
+ * Lack of [backup](../cloud/cloud-backup-and-restore#cloud-backup) procedure and  
+ * No [Service Level Agreement](../cloud/portal/cloud-portal-support-tab#support-entitlement).  
 
-To raise a cloud Development server, create a product using the Products tab and choose the **development** tier.  
+To raise a cloud Development server, create a product using the Products tab and choose the **Development** tier.  
 !["Tiers and Instances: Development"](images\tiers-and-instances-002-development.png "Tiers and Instances: Development")  
   
-
-{INFO: }
-A development server's license restricts it from being used in production.  
-{INFO/}
 
 ---
   
@@ -98,21 +95,26 @@ number of IOPS reserved for your instances.
 The default production configuration is a three-node cluster, provisioned in separate 
 availability zones for maximum durability.  
 {NOTE: }
-RavenDB Cloud also offers **multi-region clusters** and clusters with a **higher number of nodes**.  
-Contact Support to provision clusters with configurations that suit your needs.
+RavenDB Cloud also offers **multi-region clusters** to minimize local latency and clusters with a **higher number of nodes** to further distribute the cluster's workload.  
+[Contact Support](https://ravendb.net/contact) to provision customized cloud-based clusters with configurations that suit your needs.
 {NOTE/}
 !["Production Tier"](images\tiers-and-instances-003-production.png "Production Tier")  
-
+   
 The production tier offers three instance levels:  
-1. **Basic**  
-2. **Standard**  
-3. **Performance**  
+1. [Basic](../cloud/cloud-instances#basic-grade-production-cluster)  
+2. [Standard](../cloud/cloud-instances#standard-grade-production-cluster)  
+3. [Performance](../cloud/cloud-instances#performance-grade-production-cluster)  
   
 ---
   
 ####1. Basic-grade Production Cluster
 Basic production clusters are [burstable](../cloud/cloud-overview#burstable-instances).  
 While suitable for low to medium workloads, they trade-off peak efficiency for lower costs.  
+
+{NOTE: Throttling}
+ If burstable instances use more than their allocated budget, they can become [throttled](../cloud/cloud-overview#budget-credits-and-throttling).
+ {NOTE/}
+
 !["Production: Basic"](images\tiers-and-instances-0031-production-basic.png "Production: Basic")  
 
 ---
@@ -140,12 +142,17 @@ number of IOPS reserved for your instances.
 
 ####3. Performance-grade Production Cluster
 Performance cloud clusters are [reserved](../cloud/cloud-overview#reserved-clusters), and we can 
-**custom-tailor** them for your production environment needs so they include High memory, reserved IO with NVMe drives, 
-High compute, and terabytes of storage space.  
+**custom-tailor** them for your production environment needs so they include:  
+
+ * High memory  
+ * Reserved IO with NVMe drives  
+ * Powerful processing  
+ * Terabytes of storage space.  
+
 !["Production: Performance"](images\tiers-and-instances-0034-production-performance.png "Production: Performance")  
 
 {NOTE: }
-The production tier is **highly customizable**.  
+The Performance production tier is **highly customizable**.  
 Contact Support to modify your server configuration, the number of nodes in your cluster, 
 and various parameters of their deployment.  
 If you're interested in high global availability, for example, a multi-region deployment 

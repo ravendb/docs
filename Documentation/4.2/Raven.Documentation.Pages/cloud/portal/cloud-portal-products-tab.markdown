@@ -11,9 +11,9 @@ and [Production](../../cloud/cloud-overview#the-production-tier).
 * In this page:  
   * [Provisioning a New Product](../../cloud/portal/cloud-portal-products-tab#provisioning-a-new-product)  
   * [Managing an Existing Product](../../cloud/portal/cloud-portal-products-tab#managing-an-existing-product)  
-     - [The General tab: Change Instance Type and Storage](../../cloud/portal/cloud-portal-products-tab#e.-manage-product-the-general-tab)  
-     - [The Security tab: Your Certificate and Allowed IPs](../../cloud/portal/cloud-portal-products-tab#f.-manage-product-the-security-tab)  
-     - [The Danger Zone tab: Terminate your Instance](../../cloud/portal/cloud-portal-products-tab#g.-manage-product--the-danger-zone-tab)  
+     - [General: Change Instance Type and Storage](../../cloud/portal/cloud-portal-products-tab#general-change-instance-type-and-storage)  
+     - [Security: Your Certificate and Allowed IPs](../../cloud/portal/cloud-portal-products-tab#security-your-certificate-and-allowed-ips)  
+     - [Danger Zone: Terminate your Instance](../../cloud/portal/cloud-portal-products-tab#danger-zone-terminate-your-instance)  
 {NOTE/}
 
 {PANEL: Provisioning a New Product}
@@ -22,30 +22,29 @@ To provision a new product, open your Portal's Products tab and click **Add Prod
 
 !["Figure 1 - Add Product"](images\portal-001.png "Figure 1 - Add Product")
 
-The New Product wizard will open, and walk you through the following simple stages:  
+The New Product wizard will open and walk you through the following simple stages:  
   
-A. **Plan**  
-B. **Billing**  
-C. **Customize**  
-D. **Summary**  
+A. [Plan](../../cloud/portal/cloud-portal-products-tab#a.-new-product-plan)  
+B. [Billing](../../cloud/portal/cloud-portal-products-tab#b.-new-product-billing)  
+C. [Customize](../../cloud/portal/cloud-portal-products-tab#c.-new-product-customize)  
+D. [Summary](../../cloud/portal/cloud-portal-products-tab#d.-new-product-summary)  
 
 ---
 
 ####A. New Product: Plan
-Use the Plan page to choose your product's **cloud provider**, **region** and **tier**.  
+Use the Plan page to choose your product's cloud **Provider**, **Region** and **Tier**.  
 
 !["Plan Provider Region & Tier"](images\provider-region-tier-selection.png "Figure 2 - Plan Provider Region & Tier")
 
   
 
 1.  **Cloud Provider**  
-   Choose your cloud host. It can currently be one of three providers: **Amazon AWS**, **Microsoft Azure**, and **Google Cloud Platform**.  
+   Choose your cloud host. It can currently be one of three providers:  
+   Amazon AWS, Microsoft Azure, and Google Cloud Platform.  
 
 2.  **Region**  
   Select where your equipment would be physically located.  
-  {NOTE: }
-   You can currently locate **Free** Instances only in **Amazon AWS - US East (N. Virginia) - us-east-1** region.  
-  {NOTE/}
+
   
 3.  **Tier**  
   You can raise a [Free node](../../cloud/cloud-instances#a-free-cloud-node), 
@@ -68,14 +67,17 @@ Choose your product's display name and allowed IP addresses.
 
 !["Figure 4 - New Product: Customize"](images\portal-products-002-customize.png "Figure 4 - New Product: Customize")
 
-- The display name is simply the name by which this product would appear in your Products tab.  
-- The Allowed IPs selection is important.  
-  It determines which addresses would be allowed to manage your database, adding an important layer to your database security.  
-  You can set it to `0.0.0.0/0`, which would allow access from any location, or you can specify certain IPs or IP ranges.  
-  Be aware that you will not be able to access your instance from locations that are not specified in the allowed IPs list.  
-  You can edit the list at any time through the Portal.  
-  Regardless of the allowed IPs setting, your RavenDB Cloud instances will **always require** authentication using X509 
-  certificates for access. The allowed IPs list limits service as an additional layer of security, but isn't the only one.  
+The **Display Name** is simply the name that would appear in your Cloud Products tab.  
+{NOTE: Important }
+  The **Allowed IPs** section determines which addresses would be allowed to manage your database.  
+  This adds an important layer to your database security.  
+  {NOTE/} 
+
+ - You can set **Allowed IPs** to `0.0.0.0/0`, which would allow access from any location, or you can specify certain IPs or IP ranges.  
+ - Be aware that you will not be able to access your instance from locations that are not specified in the allowed IPs list.  
+ - You can **edit the list at any time** through the Portal.  
+ - Regardless of the allowed IPs setting, your RavenDB Cloud **instances will always require authentication** using X509 
+  certificates for access. The allowed IPs list serves as an additional layer of security, but isn't the only one.  
 
     {WARNING: }
     Azure products **do not permit** overlapping of addresses in the Allowed IPs list.  
@@ -114,19 +116,24 @@ To modify an existing product, find it in the Products tab and click its Manage 
 
 You can set it using its three tabs:  
 
-1. **General**  
-2. **Security**  
-3. **Danger Zone**  
+1. [General](../../cloud/portal/cloud-portal-products-tab#general-change-instance-type-and-storage)  
+2. [Security](../../cloud/portal/cloud-portal-products-tab#security-your-certificate-and-allowed-ips)  
+3. [Danger Zone](../../cloud/portal/cloud-portal-products-tab#danger-zone-terminate-your-instance)  
 
 ---
 
-#### E. Manage Product: The General tab  
+### General: Change Instance Type and Storage  
 You can view your configuration and change your product's instance type and storage size here.  
 
 !["Figure 9 - Manage Product tab"](images\portal-products-005-manage-general.png "Figure 9 - Manage Product tab")
 
+---
+
 * **Change Instance Type**  
-  Click this button to scale your product up or down by choosing yourself another configuration.  
+  Use sliders to set your desired configuration.  This can be changed later as you need to scale to changing data processing needs.  
+  
+
+
 
 !["Figure 10 - Manage Product: Scale"](images\portal-products-0051-manage-General-scale.png "Figure 10 - Manage Product: Scale")
 
@@ -134,8 +141,10 @@ You can view your configuration and change your product's instance type and stor
   for example, can upscale to Dev50, but not to the production-tier PB10 configuration.  
   Your databases and data will be automatically migrated into your new configuration.  
 
+---
+
 * **Change Storage**  
-  Click this button to modify your product's storage.  
+  Use this slider to modify your product's storage.  
 
 !["Figure 11 - Manage Product: Storage"](images\portal-products-0052-manage-general-storage.png "Figure 11 - Manage Product: Storage")
   
@@ -144,7 +153,7 @@ You can view your configuration and change your product's instance type and stor
 
 ---
 
-#### F. Manage Product: The Security tab  
+### Security: Your Certificate and Allowed IPs  
 Use the security tab to download your [certificate](../../cloud/cloud-security) or determine which addresses are 
 allowed to connect your database instance.  
 
@@ -157,35 +166,38 @@ allowed to connect your database instance.
 * **Edit**  
   Click this button to edit your product's list of Allowed IPs.  
 
-!["Figure 13 - Manage Product: Edit IPs"](images\portal-products-0061-manage-security-addresses.png "Figure 13 - Manage Product: Edit IPs")
+  !["Figure 13 - Manage Product: Edit IPs"](images\portal-products-0061-manage-security-addresses.png "Figure 13 - Manage Product: Edit IPs")
 
-  The default setting, 0.0.0.0/0, grants access to **all** IP addresses.  
-  All your RavenDB Cloud instances are secured using TLS 1.2 or 1.3 and X509 certificates, but you can increase your 
-  system's security further using this in-depth security measure and restrict access to your cloud instance to 
-  well-known sources, e.g. your application servers. **We recommend it.**  
+  {INFO: We recommend fortifying your security by allowing access only to specific IPs}
+   The default setting, 0.0.0.0/0, grants access to **all** IP addresses.  
+   All of your RavenDB Cloud instances are secured using TLS 1.2 or 1.3 encryption and X509 certificates.  
+   You can increase your 
+   system's security further using this in-depth security measure and restrict access to 
+   trusted sources, e.g. your application servers.   
+   {INFO/}
   
-    {NOTE: }
-    Cross-instance communication **inside the cluster** is **not** subject to these restrictions.
-    {NOTE/}
+{NOTE: }
+Cross-instance communication **inside the cluster** is **not** subject to these restrictions.
+{NOTE/}
 
-    {WARNING: }
-    Azure products **do not permit** overlapping of addresses in the Allowed IPs list. E.g. -  
+{WARNING: }
+Azure products **do not permit** overlapping of addresses in the Allowed IPs list.  E.g.:
   
-   - Listing both 13.64.151.161/32 and 13.74.249.156/32 is **not permitted**.  
-   - Listing 0.0.0.0/0 and any other address is **not permitted**.  
-   - Listing both 51.140.148.192/27 and 13.74.249.156/32 **is permitted**.  
-  {WARNING/}
+- Listing both 13.64.151.161/32 and 13.74.249.156/32 is **not permitted**.  
+- Listing 0.0.0.0/0 and any other address is **not permitted**.  
+- Listing both 51.140.148.192/27 and 13.74.249.156/32 **is permitted**.  
+{WARNING/}
 
 ---
 
-#### G. Manage Product:  The Danger Zone tab  
+### Danger Zone: Terminate your Instance  
   Use this tab's **Terminate** button to eliminate your cluster.  
 
-  {DANGER: }
-  Terminating your instance is **irreversible**. Your data and cluster properties will be permanently lost.  
-  {DANGER/}
+   {DANGER: }
+   Terminating your instance is **irreversible**. Your data and cluster properties will be permanently lost.  
+   {DANGER/}
 
-!["Figure 14 - Manage Product: Terminate"](images\portal-products-007-manage-terminate.png "Figure 14 - Manage Product: Terminate")
+  !["Figure 14 - Manage Product: Terminate"](images\portal-products-007-manage-terminate.png "Figure 14 - Manage Product: Terminate")
 
 
 

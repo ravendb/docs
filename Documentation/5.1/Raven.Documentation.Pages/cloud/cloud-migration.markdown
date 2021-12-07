@@ -28,9 +28,10 @@ Each server's Studio is available at it [Portal](../cloud/portal/cloud-portal#cl
 
 ---
 
-In each studio, click **Manage certificates**.  
+In each studio, select server dashboard and click **Manage certificates**.  
 
-!["Manage Certificates"](images\migration-002-manage-certificates.png "Manage Certificates")
+!["Manage Certificates"](images\migration-cloud-studio-manage-certificates.png "Manage Certificates")
+
 
 ---
 
@@ -71,7 +72,7 @@ In the Destination Server, create or select an empty database and open its **Tas
 {PANEL: Import From File}
   
 Another option is to [export a database](../studio/database/tasks/export-database) from the source server in the 
-**.ravenDBDump** format, and upload it to another database using the 
+`.ravenDBDump` format, and upload it to another database using the 
 [import data from file](../studio/database/tasks/import-data/import-data-file) operation.  
 This option doesn't require passing certificates:  
 
@@ -84,7 +85,8 @@ This option doesn't require passing certificates:
 1. In the source server, select a database to export and go to **Tasks tab**.  
 2. Select **Export Database**.  
 3. Change the destination file name if you'd prefer (optional).  
-4. Select desired options.  Note that **Encrypt Exported File** is off by default.  
+4. Select desired options.  
+ Note that **Encrypt Exported File** is off by default.  
 5. After choosing which data to export, click **Export Database**.  
 
 ---
@@ -95,9 +97,11 @@ This option doesn't require passing certificates:
 
 1. In the destination server, go to **Tasks** tab.  
 2. Select **Import Data**.  
-3. **Make sure that you are not writing over data that you want to keep**. One option is [to start a new database with the studio](https://ravendb.net/docs/article-page/5.2/csharp/studio/database/create-new-database/general-flow).  
-4. Select the '.ravendbdump' file that you previously exported from the source server.  
-5. Select desired options.  **If you encrypted while exporting** make sure to select **imported file is encrypted**.  
+3. **Make sure that you are not writing over data that you want to keep**.  
+ One option is [to start a new database with the studio](https://ravendb.net/docs/article-page/5.2/csharp/studio/database/create-new-database/general-flow).  
+4. Select the `.ravendbdump` file that you previously exported from the source server.  
+5. Select desired options.  
+ **If you encrypted while exporting** make sure to select **imported file is encrypted**.  
 6. Click **Import Database**.  
 
 {PANEL/}

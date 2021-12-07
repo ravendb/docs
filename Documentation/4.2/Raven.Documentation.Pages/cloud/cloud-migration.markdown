@@ -28,9 +28,10 @@ Each server's Studio is available at it [Portal](../cloud/portal/cloud-portal#cl
 
 ---
 
-In each studio, click **Manage certificates**.  
+In each studio, select server dashboard and click **Manage certificates**.  
 
-!["Manage Certificates"](images\migration-002-manage-certificates.png "Manage Certificates")
+!["Manage Certificates"](images\migration-cloud-studio-manage-certificates.png "Manage Certificates")
+
 
 ---
 
@@ -71,6 +72,9 @@ Another option is to [export a database](../studio/database/tasks/export-databas
 **.ravenDBDump** format, and upload it to another database using the 
 [import data from file](../studio/database/tasks/import-data/import-data-file) operation.  
 This option doesn't require passing certificates:  
+{NOTE: Encryption}
+ If you selected encryption during the export, you also need to select encryption during the import.
+ {NOTE/}
 
 ---
 
