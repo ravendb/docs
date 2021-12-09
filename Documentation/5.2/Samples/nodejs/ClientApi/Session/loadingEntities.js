@@ -21,34 +21,34 @@ const store = new DocumentStore();
 const session = store.openSession();
 
 //region loading_entities_1_0
-session.load(id, [documentType]);
+await session.load(id, [documentType]);
 //endregion
 
 //region loading_entities_2_0
-session.include(path);
+await session.include(path);
 //endregion
 
 //region loading_entities_3_0
-session.load(idsArray, [documentType]);
-session.load(idsArray, [options]);
+await session.load(idsArray, [documentType]);
+await session.load(idsArray, [options]);
 //endregion
 
 //region loading_entities_4_0
-session.advanced.loadStartingWith(idPrefix, [options]);
+await session.advanced.loadStartingWith(idPrefix, [options]);
 
-session.advanced.loadStartingWithIntoStream(idPrefix, output, [options]);
+await session.advanced.loadStartingWithIntoStream(idPrefix, output, [options]);
 //endregion
 
 //region loading_entities_5_0
 // stream query results
-session.stream(query, [statsCallback]);
+await session.stream(query, [statsCallback]);
 
 // stream documents with ID starting with
-session.stream(idPrefix, [options]);
+await session.stream(idPrefix, [options]);
 //endregion
 
 //region loading_entities_6_0
-session.advanced.isLoaded(id);
+await session.advanced.isLoaded(id);
 //endregion
 
 class Employee {
@@ -164,7 +164,7 @@ async function examples() {
     //endregion
 
     //region loading_entities_7_1
-    var session = store.openSession();
+    let session = store.openSession();
     await session.store(User, "users/1");
     await session.saveChanges();
 
@@ -174,18 +174,18 @@ async function examples() {
     // The given change vector matches 
     // the server-side change vector
     // Does not load the document
-    var session = store.openSession();
-    var result1 = await session.advanced
+    let session_2 = store.openSession();
+    let user = await session.advanced
         .conditionalLoad("users/1", _changeVector,User);
 
     // Modify the document
-    User.name = "Bob Smith";
-    await session.store(User);
-    await session.saveChanges();
+    user.name = "Bob Smith";
+    await session_2.store(User);
+    await session_2.saveChanges();
 
     // Change vectors do not match
     // Loads the document
-    var result2 = await session.advanced
+    let user2 = await session_2.advanced
         .conditionalLoad("users/1", _changeVector,User);
     //endregion
 }

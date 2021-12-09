@@ -67,10 +67,11 @@ const store = new DocumentStore();
 
 {
     //region counters_region_load_include2
-    const productPage = await session.load<Product>("orders/1-A", includeBuilder =>
-        includeBuilder.includeDocuments("products/1-C")
-            .includeCounters("ProductLikes", "ProductDislikes" )
-            ,Product
+    const productPage = await session.load("orders/1-A", {
+        documentType: Product,
+        includeBuilder: includeBuilder=>
+              includeBuilder.includeDocuments("products/1-C")
+             .includeCounters("ProductLikes", "ProductDislikes" )}
     );
     //endregion
 }

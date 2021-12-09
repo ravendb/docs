@@ -17,7 +17,7 @@ async function examples() {
             [ "Name", "City", "Country"]);
         const results = await session
             .query(Companies)
-            .selectFields(queryData,Companies)
+            .selectFields(queryData, Companies)
             .all();
         //endregion
     }
@@ -29,7 +29,7 @@ async function examples() {
             [ "ShipTo", "Products" ]);
 
         const results = await session.query(Orders)
-            .selectFields(queryData,Orders)
+            .selectFields(queryData, Orders)
             .all();
         //endregion
     }
@@ -148,7 +148,7 @@ async function examples() {
     class Companies_ByContact extends AbstractCsharpIndexCreationTask {
         constructor() {
             super();
-            this.map = `docs.Company.select(company => new {    
+            this.map = `docs.Company.Select(company => new {    
                                 Name = company.Contact.Name,    
                                 Phone = company.Phone
                             })`;
@@ -178,7 +178,7 @@ async function examples() {
             constructor() {
                 super();
 
-                this.map = `docs.Company.select(company => new {    
+                this.map = `docs.Company.Select(company => new {    
                                 Name = company.Contact.Name,    
                                 Phone = company.Phone
                             })`;

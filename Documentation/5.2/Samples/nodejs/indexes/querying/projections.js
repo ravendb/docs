@@ -125,8 +125,8 @@ async function projections() {
                 [ "ShipTo", "Lines[].ProductName" ],
                 [ "ShipTo", "Products" ]);
 
-            const results = session.query(Order)
-                .selectFields<Order>(queryData,Order)
+            const results = await session.query(Order)
+                .selectFields(queryData, Order)
                 .all();
             //endregion
         }
@@ -142,15 +142,15 @@ async function projections() {
         {
             //region projections_4
             const results = await session.advanced
-            .rawQuery(`declare function output(e) {     
-                    var format = function(p) { 
-                        return p.FirstName + " " + p.LastName; 
-                    };     
-
-                    return { FullName : format(e) }; 
-                } from Employees as e select output(e)`)
-                .all();
-                
+                .rawQuery(`declare function output(e) {     
+                        var format = function(p) { 
+                            return p.FirstName + " " + p.LastName; 
+                        };     
+    
+                        return { FullName : format(e) }; 
+                    } from Employees as e select output(e)`)
+                    .all();
+                    
             //endregion
         }
 

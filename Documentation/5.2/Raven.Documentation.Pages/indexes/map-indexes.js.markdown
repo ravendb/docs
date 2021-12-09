@@ -46,23 +46,19 @@ Please note that indexing capabilities are detected automatically from the retur
 For example, if our `Employee` will have a property called `Age` that is an `number` then the following indexing function...
 
 {CODE-BLOCK:javascript}
-from employee in docs.Employees
-select new
-{
-	Age = employee.Age
-}
+`docs.Employees.Select(employee => new {    
+                                Age = employee.Age
+                            })`
 {CODE-BLOCK/}
 
 ...grant us the capability to issue numeric queries (**return all the Employees that `Age` is more than 30**). 
 
-Changing the `Age` type to a `string` will take that capability away from you. The easiest example would be to issue `.ToString()` on the `Age` field...
+Changing the `Age` type to a `string` will take that capability away from you. The easiest example would be to issue `.toString()` on the `Age` field...
 
 {CODE-BLOCK:javascript}
-from employee in docs.Employees
-select new
-{
-	Age = employee.Age.toString()()
-}
+`docs.Employees.Select(employee => new {    
+                                Age = employee.Age.toString()
+                            })`
 {CODE-BLOCK/}
 
 {INFO/}
@@ -72,12 +68,10 @@ select new
 You will probably notice that in the `Studio`, this function is a bit different from the one defined in the `Employees_ByFirstAndLastName` class:
 
 {CODE-BLOCK:javascript}
-from employee in docs.Employees
-select new
-{
-	FirstName = employee.firstName,
-	LastName = employee.lastName
-}
+`docs.Employees.Select(employee => new {    
+                                FirstName = employee.FirstName,
+                                LastName = employee.LastName
+                            })`
 {CODE-BLOCK/}
 
 The part you should pay attention to is `docs.Employees`. This syntax indicates from which collection a server should take the documents for indexing. In our case, documents will be taken from the `Employees` collection. To change the collection, you need to change `Employees` to the desired collection name or remove it and leave only `docs` to index **all documents**.

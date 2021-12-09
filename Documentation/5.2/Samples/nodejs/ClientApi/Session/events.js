@@ -51,14 +51,14 @@ class Product {
     await session.store(new Product(
             {
                 name: "RavenDB v3.5",
-                UnitsInStock: 0
+                unitsInStock: 0
             })
     )
 
     await session.store(new Product(
         {
             name: "RavenDB v4.0",
-            UnitsInStock: 1000
+            unitsInStock: 1000
         })
     )
 
