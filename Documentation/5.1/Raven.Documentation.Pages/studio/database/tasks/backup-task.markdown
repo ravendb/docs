@@ -50,7 +50,8 @@ your database from that point. Learn more in [Backup Overview](../../../server/o
 
 1. [Restore a database from a backup](../../../studio/server/databases/create-new-database/from-backup#create-a-database-from-backup) 
 (this creates a new database, it doesn't modify this database).  
-2. Create a one-time [manual backup](../../../studio/database/tasks/backup-task#creating-one-time-manual-backups). This can be vital before upgrading or whenever you want an unscheduled backup. This can also be done in the [periodic backup details view](../../../studio/database/tasks/backup-task#periodic-backup-details)  
+2. Create a one-time [manual backup](../../../studio/database/tasks/backup-task#creating-one-time-manual-backups).  This can be vital before upgrading or whenever you want an unscheduled backup.  
+ This can also be done in the [periodic backup details view](../../../studio/database/tasks/backup-task#periodic-backup-details)  
 3. Refresh the _Recent Backup_ clock for a manual backup, so that it displays the correct 
 amount of time that has passed since this backup was created.  
 
@@ -62,7 +63,7 @@ amount of time that has passed since this backup was created.
 
 1. Create a [periodic backup task](../../../studio/database/tasks/backup-task#backup-creation).  
 2. [View Details](../../../studio/database/tasks/backup-task#periodic-backup-details) of periodic backup tasks.  
-  * **Backup Now** (eg. before software updates) can be triggered in the 'View Details' interface.
+  * [Backup Now](../../../studio/database/tasks/backup-task#periodic-backup-details) (eg. before software updates) can be triggered in the 'View Details' interface.
 3. **Edit** this database backup task. To edit server-wide backup tasks, see button #5.  
 4. **Delete** this periodic backup task.  
 5. Go to the [server-wide backups view](../../../studio/server/server-wide-backup).  
@@ -106,7 +107,7 @@ while backing up your indexes with infrequent full-snapshot type backups.
 
    * ***Backup***  
        * Backed Up Data: The database data in a JSON format, including documents, indexes (definitions only) & [identities](../../../server/kb/document-identifier-generation#identity)  
-       (same as exported database format)  
+        (same as exported database format)  
        * Size of backup data: Smaller  
        * Backup Speed: Faster  
        * Restoring: Slower, Indexes have to be rebuilt from their definitions  
@@ -252,7 +253,7 @@ it will be deleted during the next scheduled backup task.
 
 {PANEL: Backup Task -vs- Replication Task}
 
-* RavenDB's [External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) provides you with an off-site live replica/copy of the data 
+* RavenDB's [External Replication](../../../studio/database/tasks/ongoing-tasks/external-replication-task) provides you with an off-site live replica/copy of the data 
   ('live' meaning that any changes in the database will be reflected in the replica once they occur).  
   If one database is down, the replica can continue its work, thus greatly improving **availability**.  
   This is also quite useful if you need to:  
