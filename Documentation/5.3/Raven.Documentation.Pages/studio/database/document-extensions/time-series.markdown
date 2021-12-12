@@ -113,7 +113,7 @@
     * Add one or more numerical [values](../../../document-extensions/timeseries/overview#values) (up to 32 values).  
       ![Named Values](images/time-series/named-values.png "Named Values")
     * Time series entry values can be given meaningful names rather than labels like Value #0 and Value #1.  
-      To set entry values' names, use Studio's **Settings > Time Series** view.  
+      To set entry values' names, use Studio's [Time Series Settings View](../../../studio/database/settings/time-series-settings#add-or-edit-time-series-configuration).  
 
 {WARNING/}
 
@@ -302,7 +302,7 @@ To specify a range of time series entries:
     * Add one or more numerical [values](../../../document-extensions/timeseries/overview#values) (up to 32 values).  
       ![Named Values](images/time-series/incremental-named-values.png "Named Values")
     * Time series entry values can be given meaningful names rather than labels like Value #0 and Value #1.  
-      To set entry values' names, use Studio's **Settings > Time Series** view.  
+      To set entry values' names, use Studio's [Time Series Settings View](../../../studio/database/settings/time-series-settings#add-or-edit-time-series-configuration).  
 
 {WARNING/}
 
@@ -370,7 +370,10 @@ To specify a range of time series entries:
 
 ## Related articles
 
-**Document Extensions**:  
+**Studio**  
+[Time Series Settings View](../../../studio/database/settings/time-series-settings)  
+
+**Document Extensions**  
 [Incremental Time Series: Overview](../../../document-extensions/timeseries/incremental-time-series/overview)  
 [Incremental Time Series: Client API](../../../document-extensions/timeseries/incremental-time-series/client-api)  
 [Time Series Overview](../../../document-extensions/timeseries/overview)  
