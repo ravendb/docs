@@ -21,7 +21,7 @@
 {PANEL: Creating Encrypted Database}
 
 * In addition to the steps described in the [General Database Creation](../../../../studio/server/databases/create-new-database/general-flow), click the `Encryption` tab.  
-<br/>
+
 
 ![Figure 1. Create New Database - Encrypted](images/new-database-encrypted.png "Encrypted Database")
 
@@ -33,6 +33,7 @@
 2. **QR Code**
    * The QR code representing the key  
 
+3. **Confirm that you've securely saved the key**
 
 
 {PANEL/}

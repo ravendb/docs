@@ -20,7 +20,10 @@
 {INFO:Before you start}
 
 To migrate data from your existing NoSQL database, you need to download an external tool called `Raven.Migrator`.  
-The application is available at [ravendb.net/downloads](https://ravendb.net/downloads), in the `tools` package.  
+The application is available at [ravendb.net/downloads](https://ravendb.net/downloads), in the `TOOLS` package (see image below).  
+The `Raven.Migrator` tool can be found in the downloaded `Tools` folder. 
+
+![Raven.Migrator Tool Download](images/raven-migrator-tool-download.png "Raven.Migrator Tool Download")
 
 {INFO/}
 
@@ -51,7 +54,7 @@ In the RavenDB Studio client on the left side, select `Tasks` -> `Import Data`.
    * You can either import all collections or select the collections you'd like to import.  
    * Optionally, you can rename the imported collections.  
    
-7. **Use transform script**  
+7. **Use Transform script**  
    * Use a JavaScript to filter / modify imported documents.  
 
 {PANEL/}
@@ -83,7 +86,7 @@ In the RavenDB Studio client on the left side, select `Tasks` -> `Import Data`.
    * You can either import all collections or select the collections you'd like to import.  
    * Optionally, you can rename the imported collections.  
    
-7. **Use transform script**  
+7. **Use Transform script**  
    * Use a JavaScript to filter / modify imported documents.  
 
 {PANEL/}

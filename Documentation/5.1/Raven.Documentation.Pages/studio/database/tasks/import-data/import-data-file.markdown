@@ -33,43 +33,33 @@ Here you can filter the data you want to import, select configuration and apply 
 
 ![Figure 2. Import Options](images/import-from-file-options.png "Import Options")
 
-{NOTE:Importing item that doesn't exist}
-If any of the options is set but the other database doesn't contain any items of that type, the type will be skipped.
+{NOTE:Import settings for items that don't exist in source database}
+If any of the options is set but the source database doesn't contain any items of that type, the item will be skipped.
 {NOTE/}
 
-1. **Include Documents:**  
- Determines whether or not documents contained in the file should be imported or not, if disabled attachments and counters will automatically be disabled too. 
-    - **Include Attachments**  
-     Determines whether or not attachments contained in the file should be imported.  
-    - **Include Legacy Attachments**  
+1. [Include Documents](../../../../studio/database/documents/document-view)  
+   If disabled, the following document related items will automatically be excluded too.  
+    - [Include Attachments](../../../../document-extensions/attachments/what-are-attachments)  
+    - [Include Legacy Attachments](../../../../studio/database/create-new-database/from-legacy-files)  
      Determines whether or not legacy attachments contained in the file should be imported where legacy attachments refers to v2.x and v3.x attachments.  
-    - **Include Counters**  
-     Determines whether or not Counters contained in the file should be imported.  
-    - **Include Legacy Counters**  
-     Determines whether or not Legacy Counters contained in the file should be imported.  
-    - **Include Expired Documents**  
-     Determines whether or not Expired Documents contained in the file should be imported.  
-    - **Include Revisions**  
-     Determines whether or not Revisions contained in the file should be imported.  
-    - **Include Conflicts**  
-     Determines whether or not Conflicts contained in the file should be imported.  
+    - [Include Counters](../../../../document-extensions/counters/overview)  
+    - [Include Legacy Counters](../../../../studio/database/create-new-database/from-legacy-files)  
+    - [Include Artificial Documents](../../../studio/database/indexes/create-map-reduce-index#artificial-documents--vs--regular-documents)  
+    - [Include Expired Documents](../../../../server/extensions/expiration)  
+    - [Include Revisions](../../../../server/extensions/revisions)  
+    - [Include Conflicts](../../../../client-api/cluster/document-conflicts-in-client-side)  
        
-2. **Include Indexes:**  
- Determines whether or not Indexes contained in the file should be imported.  
-    - **Remove Analyzers**  
-     Determines whether or not Analyzers used by indexes contained in the file should be stripted or not.  
- - **Include Identities**  
- Determines whether or not Identities contained in the file should be imported.  
- - **Include Compare Exchange**  
- Determines whether or not Compare Exchange values contained in the file should be imported.  
- - **Include Subscriptions**  
- Determines whether or not Subscriptions contained in the file should be imported.  
- - **Include Configuration and OngoingTasks**  
- Determines whether or not [server configurations and ongoing tasks](../../../../studio/database/tasks/import-data/import-data-file#customize-configuration-and-ongoing-tasks) should be imported.  
+2. [Include Indexes](../../../../indexes/what-are-indexes)  
+    - [Remove Analyzers](../../../../indexes/using-analyzers)  
+    - [Include Identities](../../../../client-api/document-identifiers/working-with-document-identifiers)  
+    - [Include Compare Exchange](../../../../client-api/operations/compare-exchange/overview)  
+    - [Include Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions)  
+    - [Include Configuration and OngoingTasks](../../../../studio/database/tasks/import-data/import-from-ravendb#customize-configuration-and-ongoing-tasks) 
   
   
-3. **Imported file is encrypted**
- Used to add a decryption key when importing data from encrypted file.
+3. [Imported file is encrypted](../../../../server/security/overview#encryption)  
+ Includes the decryption key when importing data from encrypted file.  
+ Make sure that **Encrypt exported file** option was selected when exporting from source database so that the encryption key is included.
 
 ## Advanced import options
 
@@ -95,40 +85,24 @@ delete this['@metadata']['@change-vector']
 
 **Ongoing tasks:**
 
-- **Periodic Backups**  
- Determines whether or not Periodic Backups tasks configuration should be imported or not. 
-- **External replications**  
- Determines whether or not External replications tasks configuration should be imported. 
-- **RavenDB ETLs**  
- Determines whether or not RavenDB ETLs tasks configuration should be imported.
-- **SQL ETLs**  
- Determines whether or not SQL ETLs tasks configuration should be imported.
-- **Pull Replication Sinks**  
- Determines whether or not Pull Replication Sinks tasks configuration should be imported. 
-- **Pull Replication Hubs**  
- Determines whether or not Pull Replication Hubs tasks configuration used by indexes should be stripted or not. 
+- [Periodic Backups](../../../../studio/database/tasks/backup-task)  
+- [External replications](../../../../studio/database/tasks/ongoing-tasks/external-replication-task)  
+- [ETL Tasks - Extract, Transform, Load](../../../../server/ongoing-tasks/etl/basics)  
+- [Pull Replication Sinks](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)  
+- [Pull Replication Hubs](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)  
 
 **Other:**
 
-- **Settings:**  
- Determines whether or not Settings should be imported.
-- **Conflict Solver Configuration**  
- Determines whether or not Conflict Solver Configuration should be imported.
-- **Revisions Configuration**  
- Determines whether or not Revisions Configuration should be imported.
-- **Document Expiration**  
- Determines whether or not Document Expiration settings should be imported.
-- **Client Configuration**  
- Determines whether or not Client Configuration should be imported. 
-- **Custom Sorters**  
- Determines whether or not Custom Sorters should be stripted or not. 
+- [Settings](../../../../studio/database/settings/database-settings)  
+- [Conflict Solver Configuration](../../../../client-api/operations/server-wide/modify-conflict-solver)  
+- [Revisions Configuration](../../../../client-api/operations/revisions/configure-revisions)  
+- [Document Expiration](../../../../server/extensions/expiration)  
+- [Client Configuration](../../../../studio/server/client-configuration)  
+- [Custom Sorters](../../../../indexes/querying/sorting#creating-a-custom-sorter)  
 
 **Connection Strings:**
 
-- **RavenDB Connection Strings**  
- Determines whether or not RavenDB Connection Strings should be imported.
-- **SQL Connection Strings**  
- Determines whether or not SQL Connection Strings values should be imported.
+- [Connection Strings](../../../../client-api/operations/maintenance/connection-strings/add-connection-string) used by ETL tasks to authenticate and connect to external databases will be imported.
 
 ---
 

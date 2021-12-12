@@ -6,7 +6,7 @@
 * Sample data can be generated only on an empty database.  
 
 * Most of the examples in the RavenDB documentation are based on this sample data.  
-  Thus, creating it will enable you to play with the data as you familiarize yourself with RavenDB features by using the documentation.  
+  Thus, creating it will enable you to play with the data as you use the documentation to familiarize yourself with RavenDB features.  
 
 * In this page:  
   * [Create Sample Data](../../../studio/database/tasks/create-sample-data#create-sample-data)  
@@ -22,7 +22,7 @@
     * If you will want to use [multiple nodes](../../../studio/server/databases/create-new-database/general-flow#3.-configure-replication) and/or [encryption](../../../studio/server/databases/create-new-database/encrypted), we recommend creating your playground database so that it will mirror your actual database.  
 
 * Various collections, their documents and sample indexes will be created in your database.  
-<br/>
+
 ---
 1. In `Tasks` tab  
 2. Select `Create Sample Data`  
@@ -33,15 +33,13 @@
 
 {PANEL: The Data Generated - Documents View}
 
-<br/>
-
 ![Figure 2. Documents View](images/Northwind-Documents-View.png "Documents View")
 
 1. Documents tab  
-2. Database Collections  
-3. The document IDs.  
+2. Database **Collections**  
+3. The document **IDs**.  
 4. Which collection each document is in  
-5. Document Extensions each document contains  
+5. Document **Extensions** each document contains  
     * [Attachments](../../../document-extensions/attachments/what-are-attachments)
     * [Revisions](../../../server/extensions/revisions)
     * [Counters](../../../document-extensions/counters/overview)  
@@ -53,9 +51,9 @@
 ![Figure 3. Indexes View](images/Northwind-Indexes-View.png "Indexes View")
 
 1. Index tab  
-2. Select List of Indexes  
-3. Indexes that you can modify  
-4. Query this index  
+2. List of **Indexes**  
+3. Indexes that you can **modify via Studio**  
+4. **Query** this index  
 
 
 {PANEL/}
@@ -63,8 +61,9 @@
 {PANEL: The C# Entities}
 
 * The **C# classes** used for appropriate documents entities can also be viewed  
-    * In `Tasks` tab, select `Create Sample Data`.  
-    * Under the `Create` button, select `View C# classes`.
+    * In **Tasks** tab, select **Create Sample Data**.  
+    * Under the **Create** button, select **View C# classes**.
+
     ![Figure 4. The C# classes](images/View-CS-Classes.png "C# Classes")
 
 {PANEL/}

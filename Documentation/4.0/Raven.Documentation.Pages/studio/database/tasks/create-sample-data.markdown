@@ -6,7 +6,7 @@
 * Sample data can be generated only on an empty database.  
 
 * Most of the examples in the RavenDB documentation are based on this sample data.  
-  Thus, creating it will enable you to play with the data as you familiarize yourself with RavenDB features by using the documentation.  
+  Thus, creating it will enable you to play with the data as you use the documentation to familiarize yourself with RavenDB features.  
 
 * In this page:  
   * [Create Sample Data](../../../studio/database/tasks/create-sample-data#create-sample-data)  
@@ -24,7 +24,7 @@
 * Navigate to `Tasks` options in `Settings`, then click the **'Create'** button to generate the Northwind data.  
 
 * Various collections, their documents and sample indexes will be created in your database.  
-<br/>
+
 ---
 ![Figure 1. Create Sample Data](images/create-sample-data-1.png "Create sample data")
 
@@ -32,7 +32,6 @@
 
 {PANEL: The Data Generated }
 
-<br/>
 
 ![Figure 2. The generated sample documents](images/create-sample-data-2.png "Sample documents generated")
 
