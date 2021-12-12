@@ -9,6 +9,9 @@
    * Voting results  
    * Any event related to the document  
 
+* Counters interact with and can trigger other RavenDB features.  
+ To find out how to use counters with other features, read [Counters and Other Features](../../../client-api/session/counters/counters-and-other-features).  
+
 * Create and manage Counters using API methods, or through the [Studio](../../../studio/database/documents/document-view/additional-features/counters).  
 
 * In this page:  
