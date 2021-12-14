@@ -7,7 +7,7 @@
 [restore](../../../studio/server/databases/create-new-database/from-backup#create-a-database-from-backup) 
 your database from that point. Learn more in [Backup Overview](../../../server/ongoing-tasks/backup-overview).  
 
-* This Studio view enables you to create ongoing [**periodic backup tasks**](../../../studio/database/tasks/backup-task#backup-creation),  
+* This Studio view enables you to create ongoing [**periodic backup tasks**](../../../studio/database/tasks/backup-task#backup-creation), 
  as well as one-time 
 [**manual backups**](../../../studio/database/tasks/backup-task#creating-one-time-manual-backups), for a particular database.  
 
@@ -44,31 +44,31 @@ your database from that point. Learn more in [Backup Overview](../../../server/o
 
 
 
-{WARNING: Manual Backup Tasks View}
+### Manual Backup Tasks View
 
-![Manual Backup Task View](images/manual-backup-task-view.png "Manual Backups View")
+ ![Manual Backup Task View](images/manual-backup-task-view.png "Manual Backups View")
 
-1. [Restore a database from a backup](../../../studio/server/databases/create-new-database/from-backup#create-a-database-from-backup) 
-(this creates a new database, it doesn't modify this database).  
-2. Create a one-time [manual backup](../../../studio/database/tasks/backup-task#creating-one-time-manual-backups).  This can be vital before upgrading or whenever you want an unscheduled backup.  
+ 1. [Restore a database from a backup](../../../studio/server/databases/create-new-database/from-backup#create-a-database-from-backup) 
+ (this creates a new database, it doesn't modify this database).  
+ 2. Create a one-time [manual backup](../../../studio/database/tasks/backup-task#creating-one-time-manual-backups).  This can be vital before upgrading or whenever you want an unscheduled backup.  
  This can also be done in the [periodic backup details view](../../../studio/database/tasks/backup-task#periodic-backup-details)  
-3. Refresh the _Recent Backup_ clock for a manual backup, so that it displays the correct 
-amount of time that has passed since this backup was created.  
+ 3. Refresh the _Recent Backup_ clock for a manual backup, so that it displays the correct 
+ amount of time that has passed since this backup was created.  
 
-{WARNING/}
+---
 
-{WARNING: Periodic Backup Tasks View}
+### Periodic Backup Tasks View
 
 ![Periodic Backup Task View](images/Periodic-backup-task-view.png "Periodic Backups View")
 
-1. Create a [periodic backup task](../../../studio/database/tasks/backup-task#backup-creation).  
-2. [View Details](../../../studio/database/tasks/backup-task#periodic-backup-details) of periodic backup tasks.  
+ 1. Create a [periodic backup task](../../../studio/database/tasks/backup-task#backup-creation).  
+ 2. [View Details](../../../studio/database/tasks/backup-task#periodic-backup-details) of periodic backup tasks.  
   * [Backup Now](../../../studio/database/tasks/backup-task#periodic-backup-details) (eg. before software updates) can be triggered in the 'View Details' interface.
-3. **Edit** this database backup task. To edit server-wide backup tasks, see button #5.  
-4. **Delete** this periodic backup task.  
-5. Go to the [server-wide backups view](../../../studio/server/server-wide-backup).  
+ 3. **Edit** this database backup task. To edit server-wide backup tasks, see button #5.  
+ 4. **Delete** this periodic backup task.  
+ 5. Go to the [server-wide backups view](../../../studio/server/server-wide-backup).  
 
-{WARNING/}
+
 
 
 {INFO: Backups Topology Info}
@@ -92,30 +92,37 @@ while backing up your indexes with infrequent full-snapshot type backups.
 
 {NOTE/}
 
+![Scheduling Two Backups](images/backup-definition-51up-fullandincremental-info.png "Frequent Incremental and Infrequent Full Backups")
+  You can schedule backup tasks to run as frequently as every minute.  
+  
+  **Immediate updates** occur with replication of nodes in a cluster as soon as any change is made.  
+   [Replication](../../../server/clustering/replication/replication) is a different process than backup.  See [Backup Task -vs- Replication Task](../../../studio/database/tasks/backup-task#backup-task--vs--replication-task).  
+  
+---
 
-![Figure 1. Backup Task Definition](images/backup-definition-51up-fullandincremental.png "Create New Backup Task")
-
-{NOTE: }
-
-1. **Task Name** (Optional)  
-
-   * Choose a name of your choice  
-   * If no name is given then RavenDB server will create one for you based on the defined destination  
+![Figure 1. Backup Task Definition](images/backup-definition-51up-fullandincremental1.png "Create New Backup Task")
 
 
-2. **Backup Task Type**:  
 
-   * ***Backup***  
-       * Backed Up Data: The database data in a JSON format, including documents, indexes (definitions only) & [identities](../../../server/kb/document-identifier-generation#identity)  
-        (same as exported database format)  
-       * Size of backup data: Smaller  
-       * Backup Speed: Faster  
-       * Restoring: Slower, Indexes have to be rebuilt from their definitions  
-   * ***Snapshot***  
-       * Backed Up Data: The raw database data including the indexes (definitions and data)
-       * Size of backup data: Larger  
-       * Backup Speed: Slower  
-       * Restoring: Faster, Indexes do not have to be rebuilt  
+ 1. **Task Name** (Optional)  
+
+  * Choose a name of your choice  
+  * If no name is given then RavenDB server will create one for you based on the defined destination  
+
+
+ 2. **Backup Task Type**:  
+
+  * **Backup**  
+     * Backed Up Data: The database data in a JSON format, including documents, indexes (definitions only) & [identities](../../../server/kb/document-identifier-generation#identity) 
+     (same as exported database format)  
+     * Size of backup data: Smaller  
+     * Backup Speed: Faster  
+     * Restoring: Slower, Indexes have to be rebuilt from their definitions  
+  * **Snapshot**  
+     * Backed Up Data: The raw database data including the indexes (definitions and data)
+     * Size of backup data: Larger  
+     * Backup Speed: Slower  
+     * Restoring: Faster, Indexes do not have to be rebuilt  
 
 
 3. **Preferred Node** (Optional)  
@@ -123,33 +130,34 @@ while backing up your indexes with infrequent full-snapshot type backups.
    * Select a preferred mentor node from the [Database Group](../../../studio/database/settings/manage-database-group) to be the responsible node for this Backup Task  
    * If no node is selected, then the cluster will assign a responsible node (see [Members Duties](../../../studio/database/settings/manage-database-group#database-group-topology---members-duties))  
 
-{NOTE/}
 
 ---
 
 ### Content & Scheduling
 
-{NOTE: }
+![Figure 1. Backup Task Scheduling](images/backup-schedule51up-fullandincremental.png "Scheduling Two Backups")
 
-Select the content to back up. Note: Both types can be scheduled.  
+ Select the content to back up. Note: Both incremental and full backups can be scheduled.  
 
-  4) **Full Backup**  
-     Full Backup will back up _all_ the database data every time the task is scheduled to work.  
+ 1. **Full Backup**  
+   Full Backup will back up _all_ the database data every time the task is scheduled to work.  
   
   
-  5) **Incremental Backup**  
-     Incremental Backup will only back up the delta (changes made) of the data since the last backup that has occurred.  
+ 2. **Incremental Backup**  
+   Incremental Backup will only back up the delta (changes made) of the data since the last backup that has occurred.  
 
-Schedule the Backup Task to occur at regular intervals (daily, monthly, hourly) at specific times.  
-{NOTE/}
+ Schedule the Backup Task to occur at regular intervals (daily, monthly, hourly, every minute) at specific times.  
+
 
 Notes:  
-  1. If _only_ **Incremental Backup** is set, then a **Full Backup** will occur only in the _first_ time that the Task is triggered,  
-     followed by Incremental Backups according to the scheduled time.  
-     The Full Backup that is done the first time will be either a 'Backup' or a 'Snapshot', depending on the type selected.  
 
-  2. Data that is backed up in **Incremental Backup** is _always_ of type 'Backup' - even if the Backup Task Type is 'Snapshot'.  
-     A Snapshot can only occur when scheduling 'Full'.  
+* If _only_ **Incremental Backup** is set, then a **Full Backup** will occur only in the _first_ time that the Task is triggered,  
+   followed by Incremental Backups according to the scheduled time.  
+   The Full Backup that is done the first time will be either a 'Backup' or a 'Snapshot', depending on the type selected.  
+
+* Data that is backed up in **Incremental Backup** is _always_ of type 'Backup' - even if the Backup Task Type is 'Snapshot'.  
+   'Backup' types save index definitions, but not the full indexes.  
+   A Snapshot can only occur when scheduling 'Full'.  
 
 ---
 
