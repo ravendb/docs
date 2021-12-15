@@ -5,20 +5,24 @@
 
 {NOTE: }
 
-* The **Time Series Settings** view allows you to define and manage time series 
-  **Named Values** and **Rollup and Retention** policies.  
-   * [Named Values](../../../document-extensions/timeseries/client-api/named-time-series-values) 
-     are time series values that were given titles to clarify their roles.  
-     API methods can [access](../../../document-extensions/timeseries/client-api/named-time-series-values#usage-samples) 
-     time series values by their names.  
-   * [Rollup](../../../document-extensions/timeseries/rollup-and-retention#what-are-rollups) 
-     is the aggregation of time series entries into **new time series** that occupy less 
-     storage space and are extremely fast to query.  
-   * [Retention](../../../document-extensions/timeseries/rollup-and-retention) 
-     is the ongoing removal of time series entries when their age exceeds 
-     a set age limit.  
+* The **Time Series Settings view** allows you to define and manage time series 
+  configurations per collection. Configurations may include:  
 
-* Time series configurations are defined in this view **per collection**.  
+    * [Named Values](../../../document-extensions/timeseries/client-api/named-time-series-values)  
+      A customized name can be set per time series value.  
+      API methods can access time series values by their names.  
+    
+    * [Rollup Policies](../../../document-extensions/timeseries/rollup-and-retention#what-are-rollups)  
+      A rollup policy defines a time frame by which data from an origin time series 
+      will be aggregated into a new **rollup time series**.  
+
+    * [Retention Periods](../../../document-extensions/timeseries/rollup-and-retention)  
+      A retention period defines how long time series entries are kept.  
+      An entry that exceeds this period will be removed.  
+
+
+
+
 
 * In this page:  
   * [Time Series Settings View](../../../studio/database/settings/time-series-settings#time-series-settings-view)  
@@ -58,7 +62,7 @@
        them to run.  
     {NOTE/}
 4. **Defined Time Series Configurations**  
-   View and manage the time series configurations that were already defined (read more [below](../../../studio/database/settings/time-series-settings#defined-time-series-configurations).  
+   View and manage the time series configurations that were already defined (read more [below](../../../studio/database/settings/time-series-settings#defined-time-series-configurations)).  
 5. **Save**  
    Click to save configuration changes and additions.  
 6. **Add or Edit time series configurations**  
@@ -88,7 +92,7 @@
 !["Defined Time Series Configurations - Info"](images/time-series-settings-04_per-collection-configuration-info.png "Defined Time Series Configurations - Info")
 
 1. **Collection Name**  
-   Time series configurations are defined **per collection** (Companies` in the above image).  
+   Time series configurations are defined **per collection** (`Companies` in the above image).  
 
 2. **Rollup and Retention Policies Status**  
    The left sidebar indicates whether Rollup and Retention policies 
@@ -98,33 +102,40 @@
    Rollup and Retention policies defined for time series in this collection (`Companies`).  
    !["Defined Configuration - Rollup and Retention"](images/time-series-settings-04.1_per-collection-rollup-and-retention.png "Defined Configuration - Rollup and Retention")
     * **(a) Raw Data**  
-      The retention policy for collected raw data.  
+      The retention policy for the raw time series entries.
       In this example, entries older than 12 hours will be removed 
       from every raw-data time series in the `Companies` collection.
     * **(b) Rollup Policy for Raw Data**  
-       * **Rollup Time Series Name**  
-         The name of a **rollup time series** that aggregates **time series raw data**.  
-         In this example, the raw data of time series in the `Companies` 
-         collection is aggregated into a new rollup time series named `ByMinute`.
+       * **Rollup Policy Name**  
+         In this example, the policy name is: `ByMinute`.  
+         Raw data of time series in the Companies collection will be aggregated 
+         into a new rollup time series named: `<raw-timeseries-name>@ByMinute`  
        * **Aggregation**  
          The aggregation period defined by the rollup policy.  
          In this example, every 1 minute of raw data is aggregated into 
          a single entry of the `ByMinute` rollup time series.
+         {NOTE: }
+         An entry is added to the rollup time series only when the 
+         defined aggregation time frame has ended.  
+         {NOTE/}
        * **Retention**  
          The retention period defined for the rollup time series.  
          In this example, entries older than 1 hour are removed 
          from the `ByMinute` rollup time series.
     * **(c) Rollup Policy for Rollup Time Series**  
-       * **Rollup Time Series Name**  
-         The name of a **rollup time series** that aggregates data from 
-         a **rollup time series**.  
-         In this example, the rollup time series `30Mins` aggregates 
-         data from the `ByMinute` rollup time series.
+       * **Rollup Policy Name**  
+         In this example, the policy name is: `30Mins`.  
+         Data from the rollup time series `<raw-timeseries-name>@ByMinute>` 
+         will be aggregated into a new rollup time series named: `<raw-timeseries-name>@30Mins`  
        * **Aggregation**  
          The aggregation period defined by the rollup policy.  
          In this example, every 30 minutes of data from the `ByMinute` 
-         rollup time series are aggregated into a single entry 
-         of the `30Mins` rollup time series.
+         rollup time series are aggregated into a single entry of the 
+         `30Mins` rollup time series.  
+         {NOTE: }
+         An entry is added to the rollup time series only when the defined 
+         aggregation time frame has ended.  
+         {NOTE/}
        * **Retention**  
          The retention period defined for the rollup time series.  
          In this example, entries older than 7 days are removed 
@@ -151,14 +162,14 @@
    Click to define a new time series configuration for one of your collections.  
 3. **Select Collection**  
    Select the collection that this time series configuration is for.  
-4. **Enable Retention**  
-   Toggle to create a retention policy.  
+4. **Enable Retention - Raw Data**  
+   Toggle to set a retention policy for raw time series entries.  
    !["Set Retention Policy"](images/time-series-settings-06_retention.png "Set Retention Policy")  
     * **(a) Enable Retention**  
-      Enable to create a retention policy for the **raw data** of time series of the selected collection.  
+      Enable to set a retention time period for **raw data** of all time series in the selected collection.  
     * **(b) Retention Time**  
-      Enter retention time.  
-      In the example above, time series entries older than 1 hour will be removed.  
+      Set the retention time.  
+      In the example above, raw time series entries older than 1 hour will be removed.  
 5. **Add Rollup Policy**  
    Click to add a rollup policy.  
    {NOTE: }
@@ -170,17 +181,18 @@
    of the selected collection's time series, into **new** rollup time series.  
    !["Set Rollup Policy"](images/time-series-settings-07_rollup.png "Set Rollup Policy")  
     * **(a) Policy Name**  
-      Enter Rollup Policy Name  
+      Enter rollup policy Name  
     * **(b) Aggregation Time**  
-      Enter the aggregation period  
-      In the above image, every 10 minutes of raw time series data will be aggregated  
+      Set the aggregation period  
+      In the above example, every 10 minutes of raw time series data will be aggregated  
       into a single entry of the new rollup time series.  
+    * **(c) Enable Retention**  
+      Enable to define a retention policy for the new rollup time series.  
       {NOTE: }
       The **aggregation time** cannot exceed the **retention period** defined for 
       the time series that the data is aggregated from.  
       {NOTE/}
-    * **(c) Enable Retention**  
-      Enable to define a retention policy for the new rollup time series.  
+
 6. **Add Named Values**  
    !["Named Values"](images/time-series-settings-08_named-values.png "Named Values")  
     * **(a) Time Series Name**  
@@ -189,17 +201,16 @@
       Enter the name you want to give this value.  
     * **(c) Add Name**  
       Click to define an additional value name.  
-7. **Confirm**  
-   Click **OK** to confirm your changes.  
-   {NOTE: }
-   This confirmation is internal to this view. Additions and changes you make 
-   in time series configurations will **not** be saved until you click the **Save** 
-   button (9).  
-   {NOTE/}
+7. **Add**  
+   Click **OK** to add this configuration to the configuration list.  
+   {WARNING: }
+   Note: Any modifications made in this view will **Not** be saved until 
+   you click the **Save** button (9).  
+   {WARNING/}
 8. **Cancel**  
    Click to cancel additions and changes to this configuration.  
 9. **Save**  
-   Save your additions and changes to time series configurations.  
+   Save all the modifications made in this view.  
 
 {PANEL/}
 
@@ -216,6 +227,8 @@
      the first rollup time series**.  
    * And so on: each additional rollup policy aggregates data from the 
      time series that precedes it.  
+* Each policy aggregation time must be greater than the aggregation 
+  time set for the previous policy.  
 
 !["Rollup Policies for Rollup Time Series"](images/time-series-settings-09_rollup-time-series.png "Rollup Policies for Rollup Time Series")  
 
@@ -224,15 +237,16 @@
    The raw data collected by time series of the selected collection.  
 
 2. **Rollup Time Series for Raw Data**  
-   The `ByMinute` rollup time series aggregates raw data of time series 
+   The `ByMinute` rollup policy aggregates raw data of time series 
    in the `Companies` collection.  
-   Every minute of raw time series data, is aggregated in a single entry 
-   of the new rollup time series.  
+   Every minute of raw time series data, is aggregated into 
+   a single entry of the new rollup time series.  
 
 3. **Rollup Time Series for Rollup Time Series**  
-   The `30Mins` rollup time series aggregates data from the `ByMinute` rollup time series.  
+   The `30Mins` rollup policy aggregates data from the rollup time series 
+   that was created by the `ByMinute` policy.  
    Every 30 minutes of data from the `ByMinute` rollup time series, 
-   is aggregated in a single entry of the `30Mins` rollup time series.  
+   are aggregated into a single entry of the `30Mins` rollup time series.  
 
 {PANEL/}
 
