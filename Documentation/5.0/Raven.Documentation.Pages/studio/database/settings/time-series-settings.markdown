@@ -57,8 +57,10 @@
 3. **Policy Check Frequency**  
    Set the frequency by which the server checks and executes the Rollup and Retention policies.  
    {NOTE: }
-   Set **Policy Check Frequency** to a frequency that allows your 
-   most frequent policy to run.  
+   Note that any policy defined with a time frame shorter than `Server Check Frequency` 
+   will still be executed at the server checkup time.  
+   E.g., If `Policy Check Frequency` is set to 8 seconds, a retention policy set to 
+   2 seconds will still be checked and executed every 8 seconds.  
    {NOTE/}
 4. **Defined Time Series Configurations**  
    View and manage the time series configurations that were already defined (read more [below](../../../studio/database/settings/time-series-settings#defined-time-series-configurations)).  
