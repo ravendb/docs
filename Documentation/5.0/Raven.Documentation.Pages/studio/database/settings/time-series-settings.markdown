@@ -46,9 +46,9 @@
       !["Set Status"](images/time-series-settings-02_enable-disable.png "Set Status")  
        * Disabled policies will **not be executed**.  
        * Enabled policies' **execution frequency** is determined -  
-         By the **rollup time frame** and **retention period** defined for each policy,  
+         By the server Policy Check Frequency (see below),  
          **-and-**  
-         By the server **Policy Check Frequency** (see below).  
+         By the Rollup Time Frame and Retention Period set by each policy.  
          {NOTE: When a policy is executed:}
          
          * Aggregated entries will be created according to the policy's rollup time frame.  
@@ -111,7 +111,7 @@
          into a new rollup time series named: `<raw-timeseries-name>@ByMinute`  
        * **Aggregation**  
          The aggregation period defined by the rollup policy.  
-         In this example, every 1 minute of raw data is aggregated into 
+         In this example, every 1 minute of raw data will be aggregated into 
          a single entry of the `ByMinute` rollup time series.
          {NOTE: }
          An entry is added to the rollup time series only when the 
@@ -129,7 +129,7 @@
        * **Aggregation**  
          The aggregation period defined by the rollup policy.  
          In this example, every 30 minutes of data from the `ByMinute` 
-         rollup time series are aggregated into a single entry of the 
+         rollup time series will be aggregated into a single entry of the 
          `30Mins` rollup time series.  
          {NOTE: }
          An entry is added to the rollup time series only when the defined 
@@ -174,7 +174,7 @@
    {NOTE: }
    Rollup policies can be defined both for **raw time series data** 
    and for **rollup time series**.  
-   read more [here](../../../studio/database/settings/time-series-settings#rollup-policies-for-rollup-time-series).  
+   Read more [here](../../../studio/database/settings/time-series-settings#rollup-policies-for-rollup-time-series).  
    {NOTE/}
    In the above image, the rollup policy aggregates the **raw data** 
    of the selected collection's time series, into **new** rollup time series.  
@@ -186,7 +186,7 @@
       In the above example, every 10 minutes of raw time series data will be aggregated  
       into a single entry of the new rollup time series.  
     * **(c) Enable Retention**  
-      Enable to define a retention policy for the new rollup time series.
+      Enable to set a retention time period for the new rollup time series entries.
       {NOTE: }
       The **aggregation time** cannot exceed the **retention period** 
       defined for the origin time series.  
@@ -225,9 +225,15 @@
    * The **second** rollup policy aggregates data **from 
      the first rollup time series**.  
    * And so on: each additional rollup policy aggregates data from the 
-     time series that precedes it.  
-* Each policy aggregation time must be greater than the aggregation 
-  time set for the previous policy.  
+     time series that precedes it.
+
+{NOTE: }
+
+* The Aggregation Time set by each policy must be **greater** than the 
+  aggregation time set for the previous policy.  
+* The Aggregation Time **cannot exceed** the Retention Period defined for the 
+  previous time series.
+{NOTE/}
 
 !["Rollup Policies for Rollup Time Series"](images/time-series-settings-09_rollup-time-series.png "Rollup Policies for Rollup Time Series")  
 
