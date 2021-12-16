@@ -52,11 +52,12 @@ class CounterIndex extends AbstractCsharpCountersIndexCreationTask {
 class Companies_ByCounterNames extends AbstractCountersIndexCreationTask{
     constructor() {
         super();
-        this.map = "from e in docs.Employees\n" +
-            "let counterNames = counterNamesFor(e)\n" +
-            "select new{\n" +
-            "   counterNames = counterNames.ToArray()\n" +
-            "}";
+        this.map = "docs.Companies.Select(e => new {\n"+
+            "e = e,\n"+
+        "    counterNames = this.CounterNamesFor(e)\n"+
+        "}).Select(this0 => new {\n"+
+        "    CounterNames = Enumerable.ToArray(this0.counterNames)\n"+
+        "})"
     }
 }
 //endregion
@@ -65,5 +66,6 @@ class Companies_ByCounterNames extends AbstractCountersIndexCreationTask{
 //region query1
 const companies = session
     .query({index: "Companies_ByCounterNames"})
-    .containsAny("counterNames", ["Likes"]).all()
+    .containsAny("counterNames", ["Likes"])
+    .all();
 //endregion
