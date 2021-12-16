@@ -25,7 +25,7 @@ await session.load(id, [documentType]);
 //endregion
 
 //region loading_entities_2_0
-await session.include(path);
+session.include(path);
 //endregion
 
 //region loading_entities_3_0
@@ -48,7 +48,7 @@ await session.stream(idPrefix, [options]);
 //endregion
 
 //region loading_entities_6_0
-await session.advanced.isLoaded(id);
+session.advanced.isLoaded(id);
 //endregion
 
 class Employee {
@@ -157,36 +157,41 @@ async function examples() {
 }
 
 {
-    let id , object, changeVector;
-    class User {}
+    let id, object, changeVector, user;
+
+    class User {
+    }
+
     //region loading_entities_7_0
     await session.advanced.conditionalLoad(id, changeVector, object);
     //endregion
-
+}
+{
     //region loading_entities_7_1
-    let session = store.openSession();
-    await session.store(User, "users/1");
+    const session = store.openSession();
+    let user = new User("Bob")
+    await session.store(user, "users/1");
     await session.saveChanges();
 
-    const _changeVector = session.advanced.getChangeVectorFor(User);
+    const changeVector = session.advanced.getChangeVectorFor(User);
 
     // New session which does not track our User entity
     // The given change vector matches 
     // the server-side change vector
     // Does not load the document
-    let session_2 = store.openSession();
-    let user = await session.advanced
-        .conditionalLoad("users/1", _changeVector,User);
+    const session_2 = store.openSession();
+    const result1 = await session.advanced
+        .conditionalLoad("users/1", changeVector, User);
 
     // Modify the document
     user.name = "Bob Smith";
-    await session_2.store(User);
+    await session_2.store(user);
     await session_2.saveChanges();
 
     // Change vectors do not match
     // Loads the document
-    let user2 = await session_2.advanced
-        .conditionalLoad("users/1", _changeVector,User);
+    const result2 = await session_2.advanced
+        .conditionalLoad("users/1", changeVector, User);
     //endregion
 }
 

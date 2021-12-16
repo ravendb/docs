@@ -184,7 +184,7 @@ class Product {
 }// on_before_conversion_to_document Block End
 
 
-//Todo
+
 //OnAfterConversionToDocument Block
 {
     let session;
@@ -199,7 +199,7 @@ class Product {
     function onAfterConversionToDocument(args) {
         if (args.getEntity() instanceof Product) {
             const product = args.getEntity();
-            if(product.document.after == null){
+            if(product.document.after == null) {
                 product.document.after = true;
             }
         }
