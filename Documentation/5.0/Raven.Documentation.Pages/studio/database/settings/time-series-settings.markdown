@@ -44,30 +44,29 @@
       policies defined in your configurations.  
     * Use the **Set status** dropdown list to enable or disable the selected  policies.  
       !["Set Status"](images/time-series-settings-02_enable-disable.png "Set Status")  
-       * Disabled policies will not be executed.  
-       * Enabled policies will be executed as frequently as determined 
-         by the policies themselves **and** by the frequency in which 
-         the server checks them (see **Policy Check Frequency** blow).  
+       * Disabled policies will **not be executed**.  
+       * Enabled policies' **execution frequency** is determined -  
+         By the **rollup time frame** and **retention period** defined for each policy,  
+         **-and-**  
+         By the server **Policy Check Frequency** (see bellow).  
+         {NOTE: When a policy is executed:}
+         
+         * Aggregated entries will be created according to the policy's rollup time frame.  
+         * Entries will be removed according to the policy's retention period.  
+         {NOTE/}
 3. **Policy Check Frequency**  
    Set the frequency by which the server checks Rollup and Retention policies.  
-    {NOTE: }
-     
-     * The frequency in which policies are executed cannot exceed the 
-       frequency set by **Policy Check Frequency**.  
-       E.g., if a rollup or a retention policy is set to 
-       run every 2 minutes but **Policy Check Frequency** is set to 
-       4 minutes, these policies will run every 4 minutes.  
-     * Be sure to set **Policy Check Frequency** to a frequency 
-       that allows all your policies to run as often as you need 
-       them to run.  
-    {NOTE/}
+   {NOTE: }
+   Set **Policy Check Frequency** to a frequency that allows your 
+   most frequent policy to run.  
+   {NOTE/}
 4. **Defined Time Series Configurations**  
    View and manage the time series configurations that were already defined (read more [below](../../../studio/database/settings/time-series-settings#defined-time-series-configurations)).  
-5. **Save**  
-   Click to save configuration changes and additions.  
-6. **Add or Edit time series configurations**  
+5. **Add or Edit time series configurations**  
     * Click the **Add a collection-specific configuration** button to create a new configuration.  
     * Click a defined configuration **Edit** button to edit an existing configuration.  
+6. **Save**  
+   Click to save the time series configurations.  
 
 {PANEL/}
 
@@ -119,7 +118,7 @@
          defined aggregation time frame has ended.  
          {NOTE/}
        * **Retention**  
-         The retention period defined for the rollup time series.  
+         The retention period defined for the rollup time series entries.  
          In this example, entries older than 1 hour are removed 
          from the `ByMinute` rollup time series.
     * **(c) Rollup Policy for Rollup Time Series**  
@@ -137,7 +136,7 @@
          aggregation time frame has ended.  
          {NOTE/}
        * **Retention**  
-         The retention period defined for the rollup time series.  
+         The retention period defined for the rollup time series entries.  
          In this example, entries older than 7 days are removed 
          from the `30Mins` rollup time series.
 
@@ -187,10 +186,10 @@
       In the above example, every 10 minutes of raw time series data will be aggregated  
       into a single entry of the new rollup time series.  
     * **(c) Enable Retention**  
-      Enable to define a retention policy for the new rollup time series.  
+      Enable to define a retention policy for the new rollup time series.
       {NOTE: }
-      The **aggregation time** cannot exceed the **retention period** defined for 
-      the time series that the data is aggregated from.  
+      The **aggregation time** cannot exceed the **retention period** 
+      defined for the origin time series.  
       {NOTE/}
 
 6. **Add Named Values**  
@@ -208,7 +207,7 @@
    you click the **Save** button (9).  
    {WARNING/}
 8. **Cancel**  
-   Click to cancel additions and changes to this configuration.  
+   Click to cancel.  
 9. **Save**  
    Save all the modifications made in this view.  
 
@@ -237,7 +236,7 @@
    The raw data collected by time series of the selected collection.  
 
 2. **Rollup Time Series for Raw Data**  
-   The `ByMinute` rollup policy aggregates raw data of time series 
+   The `ByMinute` rollup policy aggregates raw data from time series 
    in the `Companies` collection.  
    Every minute of raw time series data, is aggregated into 
    a single entry of the new rollup time series.  
