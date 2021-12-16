@@ -48,7 +48,7 @@
        * Enabled policies' **execution frequency** is determined -  
          By the **rollup time frame** and **retention period** defined for each policy,  
          **-and-**  
-         By the server **Policy Check Frequency** (see bellow).  
+         By the server **Policy Check Frequency** (see below).  
          {NOTE: When a policy is executed:}
          
          * Aggregated entries will be created according to the policy's rollup time frame.  
@@ -233,7 +233,7 @@
 
 
 1. **Time Series Raw Data**  
-   The raw data collected by time series of the selected collection.  
+   The raw data collected in time series of the selected collection.  
 
 2. **Rollup Time Series for Raw Data**  
    The `ByMinute` rollup policy aggregates raw data from time series 
@@ -245,7 +245,7 @@
    The `30Mins` rollup policy aggregates data from the rollup time series 
    that was created by the `ByMinute` policy.  
    Every 30 minutes of data from the `ByMinute` rollup time series, 
-   are aggregated into a single entry of the `30Mins` rollup time series.  
+   are aggregated into a single entry of the new `30Mins` rollup time series.  
 
 {PANEL/}
 
