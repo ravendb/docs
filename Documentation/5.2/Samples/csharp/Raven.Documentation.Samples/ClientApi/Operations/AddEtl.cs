@@ -228,7 +228,9 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                         AwsRegionName = "us-east-1"
                     }
                 };
-            #endregion
+
+                var resultRavenString = store.Maintenance.Send(new PutConnectionStringOperation<RavenConnectionString>(ravenConnectionString));
+                #endregion
 
             }
 

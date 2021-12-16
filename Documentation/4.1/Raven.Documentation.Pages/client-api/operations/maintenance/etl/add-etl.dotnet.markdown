@@ -32,6 +32,7 @@ You can add ETL task by using **AddEtlOperation**.
 | **configuration** | `EtlConfiguration<T>` | ETL configuration where `T` is connection string type |
 
 ## Add Raven ETL
+Add [Raven ETL](../../../../server/ongoing-tasks/etl/raven)
 
 
 ### Connection String for Raven ETL
@@ -40,6 +41,7 @@ You can add ETL task by using **AddEtlOperation**.
 To connect a secure RavenDB server you need to export the certificate from the source server and install it into the destination server.  
 The `.pfx` certificate can be found in your server installation folder.  
 Be sure that the node definition in the connection string has the "s" in https:  
+
 {CODE raven_etl_connection_string@ClientApi\Operations\AddEtl.cs /}
 
 ### Code Sample to Add Raven ETL
@@ -47,6 +49,7 @@ Be sure that the node definition in the connection string has the "s" in https:
 {CODE add_raven_etl@ClientApi\Operations\AddEtl.cs /}
 
 ## Add Sql ETL
+Add [SQL ETL](server/ongoing-tasks/etl/sql)
 
 ### Connection String for Sql ETL
 

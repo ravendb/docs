@@ -38,6 +38,7 @@ In this page:
 | **configuration** | `EtlConfiguration<T>` | ETL configuration where `T` is connection string type |
 
 ## Add Raven ETL
+Add [Raven ETL](../../../../server/ongoing-tasks/etl/raven)
 
 
 ### Connection String for Raven ETL
@@ -54,6 +55,7 @@ Be sure that the node definition in the connection string has the "s" in https:
 {CODE add_raven_etl@ClientApi\Operations\AddEtl.cs /}
 
 ## Add Sql ETL
+Add [SQL ETL](server/ongoing-tasks/etl/sql)
 
 ### Connection String for Sql ETL
 
@@ -64,6 +66,7 @@ Be sure that the node definition in the connection string has the "s" in https:
 {CODE add_sql_etl@ClientApi\Operations\AddEtl.cs /}
 
 ## Add OLAP ETL
+Add [Olap ETL](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task)  
 
 ### Connection String for Olap ETL
 
@@ -83,13 +86,13 @@ The following code sample is for a connection string to Amazon AWS. If you use G
 
 
 ## Add Elasticsearch ETL Task
+Add an [Elasticsearch ETL Task](../../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)  
 
 ### Connection String for Elasticsearch ETL
 Add an [Elasticsearch Connection String](../../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-connection-string)  
   {CODE create-connection-string@ClientApi\Operations\AddEtl.cs /}
 
 ### Code Sample to Add Elasticsearch ETL
-* **Add an [Elasticsearch ETL Task](../../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)**  
   {CODE add_elasticsearch_etl@ClientApi\Operations\AddEtl.cs /}
 
 ## Related Articles

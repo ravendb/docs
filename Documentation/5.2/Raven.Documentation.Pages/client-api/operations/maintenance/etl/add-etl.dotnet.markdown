@@ -34,6 +34,7 @@ In this page:
 | **configuration** | `EtlConfiguration<T>` | ETL configuration where `T` is connection string type |
 
 ## Add Raven ETL
+Add [Raven ETL](../../../../server/ongoing-tasks/etl/raven)
 
 ### Connection String for Raven ETL
 
@@ -49,6 +50,7 @@ Be sure that the node definition in the connection string has the "s" in https:
 {CODE add_raven_etl@ClientApi\Operations\AddEtl.cs /}
 
 ## Add Sql ETL
+Add [SQL ETL](server/ongoing-tasks/etl/sql)
 
 ### Connection String for Sql ETL
 
@@ -59,6 +61,7 @@ Be sure that the node definition in the connection string has the "s" in https:
 {CODE add_sql_etl@ClientApi\Operations\AddEtl.cs /}
 
 ## Add OLAP ETL
+Add [Olap ETL](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task)  
 
 ### Connection String for Olap ETL
 
