@@ -55,7 +55,7 @@
          * Entries will be removed according to the policy's retention period.  
          {NOTE/}
 3. **Policy Check Frequency**  
-   Set the frequency by which the server checks Rollup and Retention policies.  
+   Set the frequency by which the server checks and executes the Rollup and Retention policies.  
    {NOTE: }
    Set **Policy Check Frequency** to a frequency that allows your 
    most frequent policy to run.  
