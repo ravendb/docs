@@ -57,9 +57,9 @@
 3. **Policy Check Frequency**  
    Set the frequency by which the server checks and executes the Rollup and Retention policies.  
    {NOTE: }
-   Note that any policy defined with a time frame shorter than `Server Check Frequency` 
-   will still be executed at the server checkup time.  
-   E.g., If `Policy Check Frequency` is set to 8 seconds, a retention policy set to 
+   Note that any policy defined with a time frame shorter than the server's 
+   **Policy Check Frequency** will still be executed at the server checkup time.  
+   E.g., If Policy Check Frequency is set to 8 seconds, a retention policy set to 
    2 seconds will still be checked and executed every 8 seconds.  
    {NOTE/}
 4. **Defined Time Series Configurations**  
