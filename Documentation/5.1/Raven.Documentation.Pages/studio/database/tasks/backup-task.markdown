@@ -57,7 +57,7 @@ your database from that point. Learn more in [Backup Overview](../../../server/o
 
  1. Create a [periodic backup task](../../../studio/database/tasks/backup-task#backup-creation).  
  2. [View Details](../../../studio/database/tasks/backup-task#periodic-backup-details) of periodic backup tasks.  
-  * [Backup Now](../../../studio/database/tasks/backup-task#periodic-backup-details) (eg. before software updates) can be triggered in the 'View Details' interface.
+  * [Backup Now](../../../studio/database/tasks/backup-task#periodic-backup-details) (e.g. before software updates) can be triggered in the 'View Details' interface.
  3. **Edit** this database backup task. To edit server/node-wide backup tasks, see button #5.  
  4. **Delete** this periodic backup task.  
  5. Go to the [server-wide backups view](../../../studio/server/server-wide-backup).  
@@ -274,13 +274,13 @@ be automatically deleted.
    ('live' meaning that any changes in the database will be duplicated into the replica immediately).  
    If one database is down, replicas (other nodes in the cluster) can continue its work, thus greatly improving **availability**.  
    Replication is also quite useful if you need to:  
-    * **shift operations** to a secondary data center  
-    * **share the workload** across more than one server.  
+    * **Shift operations** to a secondary data center  
+    * **Share the workload** across more than one server.  
 
  *  But a replica isn't a backup. It doesn't present good solutions for many **backup scenarios**. For example, backups can:  
-    * protect you from an accidental collection delete  
-    * tell you the state of the system at, say, 9:03 AM last Friday  
-    * protect you from various cyber attacks  
+    * Protect you from an accidental collection delete  
+    * Tell you the state of the system at, say, 9:03 AM last Friday  
+    * Protect you from various cyber attacks  
 
  * A backup keeps an exact state of the database at a specific point in time and can be restored.  
     * A new database can be [created from a Backup](../../../studio/server/databases/create-new-database/from-backup)  

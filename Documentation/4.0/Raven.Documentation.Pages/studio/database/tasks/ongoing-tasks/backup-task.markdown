@@ -156,13 +156,13 @@ To save on transfer costs you can schedule frequent incremental backups, while b
   ('live' meaning that any changes in the database will be reflected in the replica once they occur).  
   If one database is down, the replica can continue its work, thus greatly improving **availability**.  
   This is also quite useful if you need to:  
-    * **shift operations** to a secondary data center  
-    * **share the workload** across more than one server.  
+    * **Shift operations** to a secondary data center  
+    * **Share the workload** across more than one server.  
 
 *  But a replica isn't a backup... It doesn't present good solutions for many **backup scenarios**. For example, backups can:  
-    * protect you from an accidental collection delete  
-    * tell you the state of the system at, say, 9:03 AM last Friday  
-    * protect you from various cyber attacks  
+    * Protect you from an accidental collection delete  
+    * Tell you the state of the system at, say, 9:03 AM last Friday  
+    * Protect you from various cyber attacks  
 
 * A backup keeps an exact state of the database at a specific point in time and can be restored.  
   * A new database can be [created from a Backup](../../../../studio/server/databases/create-new-database/from-backup)  
