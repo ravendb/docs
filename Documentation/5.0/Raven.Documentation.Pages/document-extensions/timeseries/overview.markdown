@@ -264,6 +264,7 @@ Tags are designated to provide information regarding their entries.
 
 **Studio Articles**  
 [Studio Time Series Management](../../studio/database/document-extensions/time-series)  
+[Time Series Settings View](../../studio/database/settings/time-series-settings)  
 
 **Querying and Indexing**  
 [Time Series Querying](../../document-extensions/timeseries/querying/overview-and-syntax)  
