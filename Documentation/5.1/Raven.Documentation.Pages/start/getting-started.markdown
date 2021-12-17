@@ -2,10 +2,20 @@
 
 Welcome to RavenDB! 
 
-This article will get you started and guide you through all the parts of RavenDB needed for basic understanding and simple setup. It consists of two parts:
+This article will get you started and guide you through all the parts of RavenDB needed for basic understanding and simple setup.  
 
-- The [Server](../start/getting-started#server) part will focus on installation, setup & configuration of the RavenDB server
-- The [Client](../start/getting-started#client) part will describe the general principles behind our client libraries 
+In this page:  
+
+* The [Server](../start/getting-started#server) part will focus on installation, setup & configuration of the RavenDB server  
+    * [Prerequisites](../start/getting-started#prerequisites)  
+    * [Installation & Setup](../start/getting-started#installation--setup)  
+    * [Configuration](../start/getting-started#configuration)  
+    * [Studio](../start/getting-started#studio)  
+    * [Security Concerns](../start/getting-started#security-concerns)  
+* The [Client](../start/getting-started#client) part will describe the general principles behind our client libraries 
+    * [DocumentStore](../start/getting-started#documentstore)  
+    * [Session](../start/getting-started#session)  
+
 
 {PANEL: Server}
 
@@ -47,7 +57,18 @@ We highly recommend **updating** your **MacOS** and checking the [Prerequisites 
 
 ### Installation & Setup
 
-After extraction of the server package, you can start the [Setup Wizard](../start/installation/setup-wizard) by running the `run.ps1` (or `run.sh`) script or by [disabling the 'Setup Wizard' and configuring the server manually](../start/installation/manual).
+1. Set up a parent folder in a permanent location for your installation package and server settings for the next steps.  
+2. Set up separate folders in the parent folder for each node and keeping it in a safe place for future use.  
+![Cluster Parent/Nodes Folder](images/Cluster-Parent-Nodes-Folders.png "Cluster Parent/Nodes Folder")  
+
+{WARNING: Important:} If you move this folder after installation, the server will not run.  
+You'll receive a 'System.InvalidOperationException: Unable to start the server.' error because it will look for the file path that is set when you install.
+{WARNING/}
+
+3. Extract the downloaded `RavenDB...zip` server package into the Node A folder.  
+4. If you want to install the cluster as a service (it will run in the background every time your machine starts), this step will be done after initial installation via the Setup Wizard or manually. Read [Running as a Service](installation/running-as-service).  
+5. Start the [Setup Wizard](../start/installation/setup-wizard) by running `run.ps1` (or `run.sh` in Linux) in PowerShell or [disable the 'Setup Wizard' and configuring the server manually](../start/installation/manual).  
+![Running the Setup Wizard](images/run-ps1-with-PowerShell.png "Running the Setup Wizard")
 
 {NOTE: Running in a Docker container}
 
@@ -86,7 +107,9 @@ appearing:
 
 ### Configuration
 
-The RavenDB server is using a [settings.json](../server/configuration/configuration-options#json) file to store the server-wide configuration options. This file is located in the `Server` directory, but please note that after making changes to this file, a server restart is required in order for them to be applied.
+The RavenDB server is using a [settings.json](../server/configuration/configuration-options#json) file to store the server-wide configuration options.  
+This file is located in the `Server` directory.  
+After making changes to this file, a server restart is required in order for them to be applied.
 
 You can read more about the available configuration options in our [dedicated article](../server/configuration/configuration-options).
 
@@ -114,7 +137,8 @@ Which means that the server will run:
 
 In some cases the port might be in use. This will prevent the Server from starting with an "address in use" error (`EADDRINUSE`).
 
-The port can be changed by editing the `ServerUrl` value.
+The port can be changed by editing the `ServerUrl` value in the `settings.json` file.  
+For a list of IPs and ports already in use, run `netstat -a` in the command line.
 
 {WARNING/}
 
@@ -144,7 +168,8 @@ Our GUI, the RavenDB Management Studio, comes **free** with **every license type
 
 {SAFE/}
 
-After installation and setup, the Studio can be accessed via the browser using the `ServerUrl` or the `ServerPublicUrl` value e.g. `http://localhost:8080`.
+After installation and setup, the Studio can be accessed via the browser using the `ServerUrl` or the `ServerPublicUrl` value e.g. `http://localhost:8080`.  
+Whenever you run the server folder script `run.ps1` the Studio opens automatically in your browser.  
 
 ---
 
@@ -161,9 +186,9 @@ access control to prevent unauthorized access to your data or to explicitly allo
 
 {WARNING/}
 
-**We recommend using the 'Setup Wizard' to easily install RavenDB securely from the very start.**  
+**We recommend using the 'Setup Wizard' to easily install RavenDB securely from the very start** to prevent potential future vulnerability.  The process takes a few minutes and is free.    
 
-Read more about security and how to enable authentication [here](../server/security/overview).
+Read more about security and how to [enable authentication here](../server/security/overview).
 
 {PANEL/}
 
@@ -229,9 +254,9 @@ RavenDB is a Document Database. All stored objects are called `documents`. Each 
 
 ### Example II - Loading
 
-The `Session` was designed to help the user write efficient code easily. For example, when a document is being loaded (`.Load`) from the server, there is an option to retrieve additional documents in the same request (using `.Include`), keeping the number of expensive calls to minimum.
+The `Session` was designed to help the user write efficient code easily. For example, when a document is being loaded (`.Load`) from the server, there is an option [to retrieve additional documents in the same request](../client-api/session/loading-entities#load-with-includes) (using `.Include`), minimizing the number of expensive calls.
 
-Besides that, the session implements the `Unit of Work` pattern, meaning that all **changes** to loaded entities are **automatically tracked**. The `SaveChanges` call will synchronize (with the server) **only the documents that have changed within the session**. **All of those changes are sent in one request (saving network calls)** and **processed in one transaction** (you can read why RavenDB is an **ACID database** [here](../client-api/faq/transaction-support)).
+Besides that, the session implements the `Unit of Work` pattern, meaning that all **changes** to loaded entities are **automatically tracked**. The `SaveChanges` call will synchronize (with the server) **only the documents that have changed within the session**. All of those changes are **sent in one request (saving network calls)** and **processed in one transaction** (you can read why RavenDB is an [ACID database here](../client-api/faq/transaction-support)).
 
 {CODE-TABS}
 {CODE-TAB:csharp:C# client_3@Start/GettingStarted.cs /}
@@ -242,9 +267,11 @@ Besides that, the session implements the `Unit of Work` pattern, meaning that al
 
 ### Example III - Querying
 
-To satisfy queries, indexes are used. From the querying perspective, an index defines which document fields can be used to find a document. The whole indexing process is done asynchronously, which gives very quick querying response times, even when large amounts of data have been changed. However, an implication of this approach is that the index might be [stale](../indexes/stale-indexes).
+To satisfy queries, [indexes](../indexes/what-are-indexes) are used. From the querying perspective, an index defines which document fields can be used to find a document. The whole indexing process is done asynchronously, which gives very quick querying response times, even when large amounts of data have been changed. However, an implication of this approach is that the index might be [stale](../indexes/stale-indexes).
 
-When no index is specified in the query (like in the query below), RavenDB will use its **intelligent auto-indexes** feature that will either use an already existing index or create a new one if no match is found. The other option is to write the index yourself and deploy it to the server. Those indexes are called [Static Indexes](../indexes/creating-and-deploying#static-indexes).
+When no index is specified in the query (like in the query below), RavenDB will use its [intelligent auto-indexes](../indexes/creating-and-deploying#auto-indexes) feature that will either use an already existing index or create a new one if no match is found.
+
+The other option is to write the index yourself and deploy it to the server. Those indexes are called [Static Indexes](../indexes/creating-and-deploying#static-indexes).
 
 Behind the scenes, queries are translated to the Raven Query Language (RQL) syntax. Read more about RQL [here](../indexes/querying/what-is-rql).
 
