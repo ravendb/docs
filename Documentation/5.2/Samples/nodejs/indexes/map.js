@@ -19,10 +19,11 @@ class Employees_ByFirstAndLastName extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
-        this.map = `docs.Employees.Select(employee => new {     
-            FirstName = employee.FirstName,     
-            LastName = employee.LastName 
-        })`;
+        this.map = `from employee in docs.Employees
+            select new { 
+               FirstName = employee.FirstName,     
+               LastName = employee.LastName 
+            }`;
     }
     //endregion
 }
@@ -32,9 +33,10 @@ class Employees_ByFullName extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
-        this.map = `docs.Employees.Select(employee => new {     
-            FullName = employee.FirstName + " " + employee.LastName 
-        })`;
+        this.map = `from employee in docs.Employees
+            select new { 
+               Name = employee.FirstName + ' ' + employee.LastName
+            }`;
     }
 }
 //endregion
@@ -45,9 +47,10 @@ class Employees_ByYearOfBirth extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
-        this.map = `docs.Employees.Select(employee => new {     
-            YearOfBirth = employee.Birthday.Year
-        })`;
+        this.map = `from employee in docs.Employees
+            select new { 
+               YearOfBirth = employee.Birthday.Year,     
+            }`;
     }
 }
 //endregion
@@ -58,10 +61,12 @@ class Employees_ByBirthday extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
-        this.map = `docs.Employees.Select(employee => new {     
-            Birthday = employee.Birthday 
-        })`;
+        this.map = `from employee in docs.Employees
+            select new {     
+                Birthday = employee.Birthday,
+            }`;
     }
+
 }
 //endregion
 
@@ -71,9 +76,10 @@ class Employees_ByCountry extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
-        this.map = `docs.Employees.Select(employee => new {     
+        this.map = `from employee in docs.Employees
+            select new {      
             Country = employee.Address.Country 
-        })`;
+        }`;
     }
 }
 //endregion
@@ -83,14 +89,15 @@ class Employees_Query extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
-        this.map = `docs.Employees.Select(employee => new {     
+        this.map = `from employee in docs.Employees
+            select new {     
             Query = new [] { 
                 employee.FirstName, 
                 employee.LastName, 
                 employee.Title, 
                 employee.Address.City 
             } 
-        })`;
+        }`;
 
         this.index("Query", "Search");
     }
