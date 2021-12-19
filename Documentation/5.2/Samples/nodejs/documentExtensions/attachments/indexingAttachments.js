@@ -49,13 +49,14 @@ class Employee {
     class Companies_With_All_Attachments_JS  extends AbstractCsharpIndexCreationTask {
         constructor() {
             super();
-            this.map = `docs.Companies.Select(company => 
-                        var attachments = LoadAttachments(company);
-                 return attachments.map(attachment => ({
-                     AttachmentName: attachment.Name,
-                     AttachmentContent: attachment.getContentAsString('utf8')
-                  }));
-            )`
+            this.map =
+                "docs.Companies.Select(company =>\n"+
+                "     var attachments = LoadAttachments(company);\n"+
+                "     return attachments.map(attachment => ({\n"+
+                "        AttachmentName: attachment.Name,\n"+
+                "        AttachmentContent: attachment.getContentAsString('utf8')\n"+
+                "  }));\n"+
+            ")"
         }
     }
     //endregion
@@ -65,7 +66,8 @@ class Employee {
 
 //region query1
     //return all employees that have an attachment called "cv.pdf"
-    let employees = session.query({ collection: "Employees_ByAttachmentNames" })
+    const employees = session.query({ collection: "Employees_ByAttachmentNames" })
         .containsAny("attachmentNames", ["employees_cv.pdf"])
-        .selectFields<Company>( "cv.pdf", Employee).all()
+        .selectFields<Employee>( "cv.pdf", Employee)
+        .all()
 //endregion
