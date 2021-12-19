@@ -23,10 +23,9 @@
 
 * Various collections, their documents and sample indexes will be created in your database.  
 
----
-1. In `Tasks` tab  
-2. Select `Create Sample Data`  
-3. Click the `Create` button to generate the Northwind data.  
+1. In **Tasks** tab  
+2. Select **Create Sample Data**  
+3. Click the **Create** button to generate the Northwind data.  
     ![Figure 1. Create Sample Data](images/Create-Sample-Data.png "Create Sample Data")
 
 {PANEL/}
@@ -60,10 +59,13 @@
 
 {PANEL: The C# Entities}
 
-* The **C# classes** used for appropriate documents entities can also be viewed  
-    * In **Tasks** tab, select **Create Sample Data**.  
-    * Under the **Create** button, select **View C# classes**.
+The **C# classes** used for appropriate documents entities can also be viewed  
 
-    ![Figure 4. The C# classes](images/View-CS-Classes.png "C# Classes")
+
+ ![Figure 4. The C# classes](images/View-CS-Classes.png "C# Classes")
+
+  1. In **Tasks** tab, select **Create Sample Data**.  
+  2. Under the **Create** button, select **View C# classes**.
+  3. These are the C# classes. You can scroll to see them all.  
 
 {PANEL/}

@@ -10,7 +10,7 @@
   You can import a database from a previous RavenDB version into your current server.  
 
 * The process consists of the following:  
-  1. [Prepare Servers for the Import Process](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#1:-prepare-servers-for-the-import-process-(secure-4.x-servers-only)) (only when importing from a _secure 4.x server_)  
+  1. [Prepare Servers for the Import Process](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#1:-prepare-servers-for-the-import-process-(secure-4.x-or-newer-servers-only)) (only when importing from a _secure 4.x or newer server_)  
   2. [Access the Import View](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#2:-access-the-import-view)  
   3. [Set the Source Server URL and database](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#3:-set-the-source-server-url-and-database)
   4. [Set Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#4:-set-import-options)
@@ -19,69 +19,92 @@
 
 ---
 
-{PANEL: Step #1: Prepare Servers for the Import Process (Secure 4.x Servers Only)}
+{PANEL: Step #1: Prepare Servers for the Import Process (Secure 4.x or newer Servers Only)}
 
-* Perform this step only if your source RavenDB server is a secure 4.x (or newer) server that is running on HTTPS.  For other servers, skip this step and continue to [Step 2](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#2:-access-the-import-view).
+* Before migrating data from a secure source server, the destination server must also be secure.  
+  You must pass the certificate from the destination to the source server.  The following steps explain how.
 
-* Data from a secure 4.x (or newer) RavenDB server (running on HTTPS) can only be imported to a destination server that is also secure.
+* Perform this step only if your source RavenDB server is a secure verion 4.x (or newer) server that is running on HTTPS.  For other servers, skip this step and continue to [Step 2](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#2:-access-the-import-view).
 
-* For the import to take place, the destination server needs to access the existing source database and fetch data from it.  
+* To import, the destination server needs to access the existing source database and fetch data from it.  
   To grant such access, you must first register the destination server certificate as a client certificate on your source server.  
 
 * To accomplish this, follow these steps:
 
-{NOTE: }
+![Figure 1. Manage Server-Certificates View](images/importing-exporting-certificates.png "Studio Manage Server-Certificates View")
 
-#### a...*Export the destination RavenDB certificate*  
+ 1. Click the **Manage Server** tab.
+ 2. Select **Certificates**.
+ 3. These are the certificate action buttons needed for the next steps.
 
-   Go to **Manage Server -> Certificates** view on the destination RavenDB Studio. (See [Certificates Management](../../../../server/security/authentication/certificate-management)).  
-   Choose **Export Cluster Certificates** option from the **Cluster Certificate** dropdown.  
+ (See [Certificates Management](../../../../server/security/authentication/certificate-management)) for more information on this Studio view.
+
+---
+
+### a...*Export the destination RavenDB certificate from destination server*  
+
+![Figure 2. Export server certificate](images/import-from-raven-export-server-certificate.png "Export the destination server certificate")
+ 
+ * Choose **Export Cluster Certificates** option from the **Cluster Certificate** dropdown.  
+
+---
    
-   ![Figure 1. Export server certificate](images/import-from-raven-export-server-certificate.png "Export the destination server certificate")
+### b...*Register this certificate on the source RavenDB server*  
 
-#### b...*Register this certificate on the source RavenDB server*  
+![Figure 3. Register exported certificate as client certificate](images/import-from-raven-upload-server-cert-as-client-cert.png "Register exported certificate as client certificate")
 
-   Go to **Manage Server -> Certificates** view on the source RavenDB Studio.  
-   Choose **Upload client certificate** to upload the exported certificate as the client certificate.  
-   
-   ![Figure 2. Register exported certificate as client certificate](images/import-from-raven-upload-server-cert-as-client-cert.png "Register exported certificate as client certificate")
+ * Choose **Upload client certificate** to upload the exported certificate as the client certificate.  
 
-#### c...*Set the certificate details*  
+---
 
-   **Certificate Name** - Provide a meaningful name for this certificate.  
-   **Security Clearance** - Security clearance `User` will provide the necessary access for the data migration purposes.  
-   **Database Permissions** - Remember to add `Read/Write` permission to the database you want to import.  
-   
-   ![Figure 3. Import certificate details](images/import-from-raven-upload-server-cert-as-client-cert-details.png "Set certificate details")
+### c...*Set the certificate details*  
 
-#### d...*Click "Upload" to complete the process.*  
+![Figure 4. Import certificate details](images/import-from-raven-upload-server-cert-as-client-cert-details.png "Set certificate details")
 
-{NOTE/}
+ 1. **Name** - Provide a meaningful name for this certificate.  
+ 2. **Security Clearance** - `User` is the minimum clearance that will provide the necessary access for the data migration purposes.  
+ 3. **Certificate File** - Choose the `.pfx` file from the server setup folder. 
+ 4. **Database Permissions** - Remember to add at least `Read/Write` permission to the database you want to import.  
+
+---
+
+### d...*Click "Upload" to complete the process.*  
+
+
 
 {PANEL/}
+
 
 {PANEL: Step #2: Access the Import View}
 
-a.  On the destination RavenDB server, select a **database** into which the data will be imported.  
+   
+![Figure 5. Databases List](images/import-from-ravendb-db-list.png "Databases List View")
+
+ a.  On the destination RavenDB server, select a **database** into which the data will be imported.  
   **Note**: Verify this database is empty as the importing will overwrite any existing content.  
-   
-  ![Figure 1. Databases List](images/import-from-ravendb-db-list.png "Databases List View")
 
-b.  Select **Tasks** tab and then **Import Data**.  
+---
    
-  ![Figure 2. Import Data](images/Import-Data-FromRavenDB-View.png "Go to Import Data View")
+![Figure 6. Import Data](images/Import-Data-FromRavenDB-View.png "Go to Import Data View")
 
-c. Select **From RavenDB Server**.  
+ b.  Select **Tasks** tab and then **Import Data**.  
+
+---
    
-  ![Figure 3. From RavenDB Server](images/import-from-ravendb-from-ravendb.png "Select 'From RavenDB Server'")
+![Figure 7. From RavenDB Server](images/import-from-ravendb-from-ravendb.png "Select 'From RavenDB Server'")
+
+ c. Select **From RavenDB Server**.  
+
 
 {PANEL/}
+
+---
 
 {PANEL: Step #3: Set the Source Server URL and database}
 
 * Specify the source server URL and select the database to import the data from.  
 
-![Figure 4. Import configuration](images/import-from-ravendb-configuration.png "Import Configuration")
+![Figure 8. Import configuration](images/import-from-ravendb-configuration.png "Import Configuration")
 
 1. **Server URL** - URL to server you want to import from. You can specify URL to either 4.x server or 3.x server.  
 2. **Server Version** - The version of the server that you want to import from will show here once you enter the URL.  
@@ -93,24 +116,26 @@ c. Select **From RavenDB Server**.
 * Filter the data you want to import.  
 * Customize advanced configuration and apply a transform script under the [Advanced Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#5:-advanced-import-options).
 
-![Figure 5. Import Options](images/import-from-ravendb-options.png "Import Options")
+![Figure 9. Import Options](images/import-from-ravendb-options.png "Import Options")
 
 {NOTE: }
  Toggling Import Options determines whether the following items will be imported:  
  {NOTE/}
 
-- [Include Documents](../../../../studio/database/documents/document-view)  
- If disabled, the following document related items will automatically be disabled too.  
-    - [Include Attachments](../../../../document-extensions/attachments/what-are-attachments)  
-    - [Include Revisions](../../../../server/extensions/revisions)  
-    - [Include Conflicts](../../../../client-api/cluster/document-conflicts-in-client-side)  
-
-- [Include Indexes](../../../../indexes/what-are-indexes)  
+1. 
+ - [Include Documents](../../../../studio/database/documents/document-view)  
+  If disabled, the following document related items will automatically be disabled too.  
+   - [Include Attachments](../../../../document-extensions/attachments/what-are-attachments)  
+   - [Include Revisions](../../../../server/extensions/revisions)  
+   - [Include Conflicts](../../../../client-api/cluster/document-conflicts-in-client-side)  
+2. 
+ - [Include Indexes](../../../../indexes/what-are-indexes)  
     - [Remove Analyzers](../../../../indexes/using-analyzers)  
-- [Include Identities](../../../../client-api/document-identifiers/working-with-document-identifiers)  
-- [Include Compare Exchange](../../../../client-api/operations/compare-exchange/overview)  
-- [Include Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions)  
-- [Include Configuration and OngoingTasks](../../../../studio/database/tasks/import-data/import-from-ravendb#customize-configuration-and-ongoing-tasks) 
+3. 
+ - [Include Identities](../../../../client-api/document-identifiers/working-with-document-identifiers)  
+ - [Include Compare Exchange](../../../../client-api/operations/compare-exchange/overview)  
+ - [Include Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions)  
+ - [Include Configuration and OngoingTasks](../../../../studio/database/tasks/import-data/import-from-ravendb#customize-configuration-and-ongoing-tasks) 
 
 
 {NOTE:Importing an item that doesn't exist}
@@ -124,7 +149,7 @@ If any of the options is set but the source database doesn't contain any items o
 
 ### Transform Script
 
-![Figure 6. Advanced Import Options - Transform Script](images/import-from-ravendb-advanced-transform-script.png "Advanced Import Options - Transform Script")
+![Figure 10. Advanced Import Options - Transform Script](images/import-from-ravendb-advanced-transform-script.png "Advanced Import Options - Transform Script")
 
 * **Use Transform Script**:  
   When enabled, the supplied javascript will be executed on each document before importing the document.  
@@ -143,31 +168,31 @@ this.collection = this['@metadata']['@collection'];
 {CODE-BLOCK/}
 {NOTE/}
 
-{NOTE: }
+
 
 ### Customize Configuration and Ongoing Tasks
 
-![Figure 7. Advanced Import Options - Customize Configuration and Ongoing Tasks](images/import-from-ravendb-advanced-configuration-ongoing-tasks.png "Advanced Import Options - Customize Configuration and Ongoing Tasks")
+![Figure 11. Advanced Import Options - Customize Configuration and Ongoing Tasks](images/import-from-ravendb-advanced-configuration-ongoing-tasks.png "Advanced Import Options - Customize Configuration and Ongoing Tasks")
 
-**Ongoing tasks:**
+1. **Ongoing tasks:**
 
-- [Periodic Backups](../../../../studio/database/tasks/backup-task)  
-- [External replications](../../../../studio/database/tasks/ongoing-tasks/external-replication-task)  
-- [ETL Tasks - Extract, Transform, Load](../../../../server/ongoing-tasks/etl/basics)  
-- [Pull Replication Sinks](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)  
-- [Pull Replication Hubs](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)  
+ - [Periodic Backups](../../../../studio/database/tasks/backup-task)  
+ - [External replications](../../../../studio/database/tasks/ongoing-tasks/external-replication-task)  
+ - [ETL Tasks - Extract, Transform, Load](../../../../server/ongoing-tasks/etl/basics)  
+ - [Pull Replication Sinks](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)  
+ - [Pull Replication Hubs](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)  
 
-**Other:**
+2. **Other:**
 
-- [Settings](../../../../studio/database/settings/database-settings)  
-- [Conflict Solver Configuration](../../../../client-api/operations/server-wide/modify-conflict-solver)  
-- [Revisions Configuration](../../../../client-api/operations/revisions/configure-revisions)  
-- [Document Expiration](../../../../server/extensions/expiration)  
-- [Client Configuration](../../../../studio/server/client-configuration)  
-- [Custom Sorters](../../../../indexes/querying/sorting#creating-a-custom-sorter)  
+ - [Settings](../../../../studio/database/settings/database-settings)  
+ - [Conflict Solver Configuration](../../../../client-api/operations/server-wide/modify-conflict-solver)  
+ - [Revisions Configuration](../../../../client-api/operations/revisions/configure-revisions)  
+ - [Document Expiration](../../../../server/extensions/expiration)  
+ - [Client Configuration](../../../../studio/server/client-configuration)  
+ - [Custom Sorters](../../../../indexes/querying/sorting#creating-a-custom-sorter)  
 
-**Connection Strings:**
+3. **Connection Strings:**
 
-- [Connection Strings](../../../../client-api/operations/maintenance/connection-strings/add-connection-string) used by ETL tasks to authenticate and connect to external databases will be imported.
-{NOTE/}
+ - [Connection Strings](../../../../client-api/operations/maintenance/connection-strings/add-connection-string) used by ETL tasks to authenticate and connect to external databases will be imported.
+
 {PANEL/}

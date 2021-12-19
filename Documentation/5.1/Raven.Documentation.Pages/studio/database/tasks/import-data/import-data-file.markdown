@@ -14,7 +14,8 @@ In this page:
 ## Import data to destination server from file
   
 If you have already [exported a database](../export-database), follow these steps in the studio when you're ready to import from file.  
-![Figure 1. Importing Database From File ](images/studio-view-import-fromfile-steps.png "Importing Database From File")  
+
+![Figure 1. Importing Database From File ](images/studio-view-import-fromfile-steps.png "Importing Database From File")
 
 1. In the destination server, go to **Tasks** tab.  
 2. Select **Import Data**.  
