@@ -1,7 +1,5 @@
 import {
-    AbstractCountersIndexCreationTask,
-    AbstractCsharpCountersIndexCreationTask,
-    AbstractCsharpMultiMapIndexCreationTask,
+    AbstractCountersIndexCreationTask, AbstractRawJavaScriptCountersIndexCreationTask,
     DocumentStore
 } from "ravendb";
 
@@ -9,21 +7,21 @@ const store = new DocumentStore();
 const session = store.openSession();
 
 //region index_1
-export class MyCounterIndex  extends AbstractCsharpMultiMapIndexCreationTask {
-    public constructor() {
+export class MyCounterIndex  extends AbstractCountersIndexCreationTask {
+    constructor() {
         super();
-        this.addMap(`from counter in docs.counters select new {
+        this.map = `from counter in docs.counters select new {
                 Likes = counter.Value,
                 Name = counter.Name,
                 User = counter.DocumentId
-                }`);
+                }`;
     }
 }
 //endregion
 
 let map,reduce;
 //region javaScriptIndexCreationTask
-class CsharpCountersIndexCreationTask  extends AbstractCsharpCountersIndexCreationTask {
+class CsharpCountersIndexCreationTask  extends AbstractCountersIndexCreationTask {
     public constructor() {
         super();
 
@@ -35,15 +33,19 @@ class CsharpCountersIndexCreationTask  extends AbstractCsharpCountersIndexCreati
 //endregion
 
 //region index_3
-class CounterIndex extends AbstractCsharpCountersIndexCreationTask {
+class MyCounterIndex extends AbstractRawJavaScriptCountersIndexCreationTask {
     public constructor() {
         super();
 
-        this.map = "counters.Companies.HeartRate.Select(counter => new {\n" +
-            "    heartBeat = counter.Value,\n" +
-            "    name = counter.Name,\n" +
-            "    user = counter.DocumentId\n" +
-            "})";
+        this.maps.add(
+            "counters.map('Companies', 'HeartRate', function (counter) {\n" +
+            "return {\n" +
+            "    heartBeat: counter.Value,\n" +
+            "    name: counter.Name,\n" +
+            "    user: counter.DocumentId\n" +
+            "};\n" +
+            "})"
+        );
     }
 }
 //endregion

@@ -4,7 +4,7 @@
 {NOTE: }
 
 * To index counters, create a [static index](../../indexes/creating-and-deploying#static-indexes) 
-that inherits from `AbstractCountersIndexCreationTask` or `AbstractCsharpCountersIndexCreationTask `.  
+that inherits from `AbstractCountersIndexCreationTask ` or `AbstractRawJavaScriptCountersIndexCreationTask `.  
 
 * Auto-indexes for counters are not available at this time.  
 
@@ -24,10 +24,10 @@ In order to index counter values, create an index that inherits from `AbstractCo
 Next, choose one of these two methods which take the index expression:  
 
 {CODE-BLOCK:javascript }
-this.addMap("map");
+this.map("map");
 {CODE-BLOCK/}
 
-`addMap ` only indexes the counters with 
+`map ` only indexes the counters with 
 the specified name.  
 
 Examples of indexes using each method:  
@@ -39,7 +39,7 @@ Examples of indexes using each method:
 
 ---
 
-### `AbstractCsharpCountersIndexCreationTask `
+### `AbstractRawJavaScriptCountersIndexCreationTask `
 
 Creating an index inheriting from `AbstractCsharpCountersIndexCreationTask ` allows 
 you to write your map and reduce functions in JavaScript.  
