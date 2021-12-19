@@ -62,7 +62,7 @@
 ![Figure 4. Import certificate details](images/import-from-raven-upload-server-cert-as-client-cert-details.png "Set certificate details")
 
  1. **Name** - Provide a meaningful name for this certificate.  
- 2. **Security Clearance** - `User` is the minimum clearance that will provide the necessary access for the data migration purposes.  
+ 2. **Security Clearance** - `User` is the minimum [clearance](../../../../server/security/authorization/security-clearance-and-permissions#operator) that will provide the necessary access for the data migration purposes.  
  3. **Certificate File** - Choose the `.pfx` file from the server setup folder. 
  4. **Database Permissions** - Remember to add at least `Read/Write` permission to the database you want to import.  
 
