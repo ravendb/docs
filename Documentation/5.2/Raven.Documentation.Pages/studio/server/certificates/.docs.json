@@ -1,8 +1,15 @@
 [
-  {
-    "Path": "read-only-access-level.markdown",
-    "Name": "Read-Only Access Level",
-    "DiscussionId": "e4fd0d1a-d076-42b9-a8a7-aeecbd93e4a1",
-    "Mappings": []
-  }
+    {
+        "Path": "server-management-certificates-view.markdown",
+        "Name": "Certificates Management View",
+        "DiscussionId": "e4fd0d1a-d076-42b9-a8a7-aeecbd93e4a1",
+        "Mappings": []
+    },
+    {
+        "Path": "read-only-access-level.markdown",
+        "Name": "Read-Only Access Level",
+        "DiscussionId": "e4fd0d1a-d076-42b9-a8a7-aeecbd93e4a1",
+        "Mappings": []
+    }
+
 ]

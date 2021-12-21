@@ -22,18 +22,18 @@ In this page:
 
 ---
 
-### Studio Certificate Management View
+### Studio Certificates Management View
 
 ![Figure 1. Certificates View](images/studio-certificates-overview.png "Studio Certificate Management View")
 
 1. Click **Manage Server** tab.
 2. Select **Certificates**.
-3. Generate or import client certificates and export server certificate with these buttons.
+3. To enable servers to communicate, **generate** or **import** client certificates and **export** server certificate with these buttons.
 4. Status of current server certificate.
 5. Status of current client certificates active in this server.  You can edit or remove client certificates, including authorization levels here. 
 
 Client certificates are managed by RavenDB directly and not through any PKI infrastructure. If you want to remove
-or reduce the permissions on a certificate handed to a client, you can edit the permissions or remove them entirely from this screen.
+or reduce the permissions on a certificate handed to a client, you can edit the permissions or remove them entirely in this screen.
 
 ---
 
@@ -53,15 +53,16 @@ same certificate authority. This is accomplished using a [public key pinning has
 
 In general, RavenDB assumes that an application will implement its own logic regarding what business operations are allowed, limiting 
 itself to protecting the data from unauthorized access. Applications operate on behalf of developers, and as such, they are in a better position to determine what is
-allowed than RavenDB.  
+allowed than RavenDB.  This is why access levels of RavenDB databases in each cluster are highly customizable by [cluster admins](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin) and [operators](../../../server/security/authorization/security-clearance-and-permissions#operator).  
 
-#### Authorization
+### Authorization
 The security system in RavenDB does not assume any correlation between a particular certificate and a user. The concept of a user
 does not really exist within RavenDB in this manner. Instead, you have a certificate that is assigned a set of permissions.  
 
 * [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin)  Full administrative access to cluster and databases within.  
 * [Operator](../../../server/security/authorization/security-clearance-and-permissions#operator)  Admin access to databases, but not to modify the cluster.  
-* [User](../../../server/security/authorization/security-clearance-and-permissions#user)  Lowest levels of privelages.  Must define User Admin, Read/Write, or Read-Only level.
+* [User](../../../server/security/authorization/security-clearance-and-permissions#user)  Lowest levels of privelages. 
+ This access level must be customized by defining [User Admin, Read/Write, or Read-Only](../../../server/security/authorization/security-clearance-and-permissions#user).
 
 In most cases, users do not access RavenDB directly. Aside from admins and developers during the development process, all access to 
 the data inside RavenDB is expected to be done through your applications. A security mechanism on a per-user basis is not meaningful.
@@ -74,18 +75,18 @@ is not permitted to approve their own vacations. The manager, on the other hand,
 From the point of view of RavenDB, the act of editing a vacation request document or approving it looks very much the same, it's a simple document edit.
 The way that the HR system looks at those operations is very different. 
 
-#### Full Access to Database
+### Full Access to Database
 RavenDB expects the applications and systems using it to utilize the security infrastructure it provides to prevent unauthorized access, such as a different
 application trying to access the HR database. However, once access is granted, the access is complete.  
 
 RavenDB security infrastructure operates at the level of the entire database. If you are granted access to a database, you can access 
-any and all documents in that database. There is no way to limit access to particular documents or collections.  
+any and all documents in that database.  
 
-#### Partial Access to Database
+### Partial Access to Database
 
 Exposing some part of the data or exposing read-only access is something that is commonly needed. 
 
-*-Using ETL for selective, one-way data transfer-*  
+#### *-Using ETL for selective, one-way data transfer-*  
 If you need to provide direct access to a part of the database, the way it is usually handled is 
 by [generating a separate certificate](../../../server/security/authentication/certificate-management#generate-client-certificate) for that purpose and granting it access to a _different_ database. 
 In that case, set up an [ETL](../../../server/ongoing-tasks/etl/basics) process from the source data to the destination.  
@@ -94,7 +95,7 @@ In this manner, you can choose exactly what is exposed, including redacting pers
 this also protects the source data from modifications made on the new database. Together, ETL and dedicated databases can be used for fine-grained access, but that 
 tends to be the exception, rather than the rule. 
 
-*-Setting User Access Levels-*  
+####  *-Setting User Access Levels-*  
 You can also do this by giving a client certificate a [User](../../../server/security/authorization/security-clearance-and-permissions#user) security clearance. 
 With this clearance, you can set a different access level to each database. The three "User" access levels are:  
 
@@ -114,7 +115,13 @@ restricted. Learn more about the [Read-Only access level here](../../../studio/s
 
 {PANEL:List of Registered Certificates} 
 
-In the screenshot, we can see a list of registered certificates and their status. Each certificate contains the following:
+In the Studio Certificates Management view, we can see a list of registered client certificates and their status.  
+Notice that the two certificates ("admin" and "AppClients" have different access configurations.)  
+This is done to give admins the ability to protect the contents of their databases by customizing permissions. 
+For example, if an application user should have read-only access, but application managers should have database admin permissions, 
+you can grant different access levels by using different client certificates, each with its own set of permissions.  
+
+Each certificate contains the following:
 
 ![Figure 2. Registered Certificates](images/registered.png "Status of Registered Certificates")
 
@@ -222,6 +229,13 @@ Because client certificates are managed by RavenDB directly and not through any 
 
 - [Overview](../../../server/security/overview)
 - [Manual Certificate Configuration](../../../server/security/authentication/certificate-configuration)
+- [Client Certificate Usage](../../../server/security/authentication/client-certificate-usage)
+- [Certificate Renewal & Rotation](../../../server/security/authentication/certificate-renewal-and-rotation)
+- [Encryption](../../../server/security/encryption/encryption-at-rest)
+
+### Authorization
+
+- [Security Clearance and Permissions](../../../server/security/authorization/security-clearance-and-permissions)
 
 ### Installation
 
@@ -234,4 +248,5 @@ Because client certificates are managed by RavenDB directly and not through any 
 
 ### Studio
 
+- [Studio: Certificate Management View](../../../studio/server/certificates/server-management-certificates-view)
 - [Studio: Read-Only Access Level](../../../studio/server/certificates/read-only-access-level)
