@@ -121,7 +121,7 @@ All 3 nodes will run on the local machine:
 
 Each node will run in its own process and have its own data directory and [settings.json](../../server/configuration/configuration-options#json) file. You should have 3 separate RavenDB folders.
 
-### Example II - On separate machines
+### Example II - On separate machines for higher availability
 
 Each node will run on its own machine in a network.
 
@@ -177,14 +177,15 @@ In some scenarios you will run the setup wizard again. In that case, if none of 
 If the validation fails, you will receive a detailed error. You can go back in the wizard, change settings and try again.
 
 A [common error](../../server/security/common-errors-and-faq) is that DNS records didn't yet update locally.  
-You may wait a bit and try again. If you do not want to wait, you can configure your network card (just for the setup) to use Google's DNS server (8.8.8.8), to bypass caching of DNS records.
+Usually, the solution is to wait a bit and try again. If you do not want to wait, you can configure your network card (just for the setup) to use Google's DNS server (8.8.8.8), to bypass caching of DNS records.
 
 Tip:  use dns.google.com to see the DNS record of your domain.
 
 <br/>
 
-When finished you will receive a Zip file containing all of the cluster configuration files and certificates.  
-Save this .zip file in your parent folder. It has the security certificate and settings and for each node.  
+When finished you will receive a .zip file containing all of the cluster configuration files and certificates.  
+Save this .zip file in each of your server folders. It has the security certificate and settings and for each node.  
+You may need it in the future, so make sure it is saved in a permanent location.
 If you are setting up a cluster, you will use this Zip file to set up the other nodes.
 
 ![Figure 6. Configuration Completed](images/setup/7.png "Configuration Completed Image")  

@@ -57,16 +57,30 @@ We highly recommend **updating** your **MacOS** and checking the [Prerequisites 
 
 ### Installation & Setup
 
-1. Set up a parent folder in a permanent location for your installation package and server settings for the next steps.  
-2. Set up separate folders in the parent folder for each node and keeping it in a safe place for future use.  
-![Cluster Parent/Nodes Folder](images/Cluster-Parent-Nodes-Folders.png "Cluster Parent/Nodes Folder")  
+{NOTE: Highly Available Clusters}
+
+We recommend setting up your cluster nodes on separate machines so that if one goes down, the others can keep the cluster active. 
+
+{NOTE/}
+
+1. Set up a server folders on each machine that will host the nodes in your cluster. 
+ You may want to include the node designation (nodes A, B, C...) in the name of each server folder, to prevent future confusion.  
+
+2. Extract the server package into permanent server folders on each machine.  
+ Each folder that contains an extracted server package will become a functional node in your cluster.  
 
 {WARNING: Important:} If you move this folder after installation, the server will not run.  
 You'll receive a 'System.InvalidOperationException: Unable to start the server.' error because it will look for the file path that is set when you install.
 {WARNING/}
 
-3. Extract the downloaded `RavenDB...zip` server package into the Node A folder.  
-4. If you want to install the cluster as a service (it will run in the background every time your machine starts), this step will be done after initial installation via the Setup Wizard or manually. Read [Running as a Service](installation/running-as-service).  
+If you choose to use only one machine (although this will increase the chances of your cluster going down) you'll need to:
+
+1. Set up a parent folder in a permanent location for your installation package and server settings for the next steps.  
+2. Set up separate folders in the parent folder for each node and keeping it in a safe place for future use.  
+  ![Cluster Parent/Nodes Folder](images/Cluster-Parent-Nodes-Folders.png "Cluster Parent/Nodes Folder")  
+
+3. Extract the downloaded `RavenDB...zip` server package into the each node folder.  
+4. If you want to install the cluster **as a service** (it will automatically run in the background every time your machine starts), this step will be done after initial installation via the Setup Wizard or manually. Read [Running as a Service](installation/running-as-service).  
 5. Start the [Setup Wizard](../start/installation/setup-wizard) by running `run.ps1` (or `run.sh` in Linux) in PowerShell or [disable the 'Setup Wizard' and configuring the server manually](../start/installation/manual).  
 ![Running the Setup Wizard](images/run-ps1-with-PowerShell.png "Running the Setup Wizard")
 
