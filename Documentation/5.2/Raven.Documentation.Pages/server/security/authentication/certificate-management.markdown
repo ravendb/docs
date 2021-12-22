@@ -10,7 +10,6 @@ In this page:
 * [Studio Certificate Management View](../../../server/security/authentication/certificate-management#studio-certificate-management-view)  
 * [Private Keys](../../../server/security/authentication/certificate-management#private-keys)  
 * [The RavenDB Security Authorization Approach](../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)  
-* [List of Registered Certificates](../../../server/security/authentication/certificate-management#list-of-registered-certificates)  
 * [Manage Certificates]()  
  * [List of Registered Certificates](../../../server/security/authentication/certificate-management#list-of-registered-certificates)  
  * [Generate Certificate](../../../server/security/authentication/certificate-management#generate-client-certificate)  
@@ -24,7 +23,7 @@ In this page:
 
 ### Studio Certificates Management View
 
-![Figure 1. Certificates View](images/studio-certificates-overview.png "Studio Certificate Management View")
+![Figure 1. Studio Certificates Management View](images/studio-certificates-overview.png "Studio Certificates Management View")
 
 1. Click **Manage Server** tab.
 2. Select **Certificates**.
@@ -123,7 +122,7 @@ you can grant different access levels by using different client certificates, ea
 
 Each certificate contains the following:
 
-![Figure 2. Registered Certificates](images/registered.png "Status of Registered Certificates")
+![Figure 2. Status of Registered Certificates](images/registered.png "Status of Registered Certificates")
 
 1. Name  
 2. Thumbprint  
@@ -217,7 +216,7 @@ The left side of the following screenshot shows a newly generated client certifi
 If you wish to view the full chain, add the server certificate to the OS trusted store. This step is **not necessary** for RavenDB and is explained here only to show how to view the full chain in Windows. The right side of the screenshot shows the full chain. 
 
 
-![Figure 7. Client Cert Chain](images/client-cert.png)
+![Figure 7. Client Certificate Chain](images/client-cert.png "Client Certificate Chain")
 
 Because client certificates are managed by RavenDB directly and not through any PKI infrastructure **this is perfectly acceptable**. Authenticating a client certificate is done explicitly by looking for the thumbprint in the registered certificates list in the server and not by validating the chain of trust. 
 
