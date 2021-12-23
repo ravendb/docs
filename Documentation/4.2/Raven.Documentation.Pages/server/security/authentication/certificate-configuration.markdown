@@ -16,7 +16,10 @@ If you choose manual setup and/or to provide your own certificate, **you are res
 
 {INFO: Important - Setting up client certificates}
 When the server is running with a certificate for the first time, there are no client certificates registered in the server yet. The first action an administrator will do is to generate/register a new client certificate.
-You can do this by using the [Studio GUI Certifications Management](../../../server/security/authentication/certificate-management) page [RavenDB CLI](../../../server/administration/cli#generateclientcert) (generateClientCert) or by using a client, see the [Client Certificate Usage](../../../server/security/authentication/client-certificate-usage) section for a detailed example.
+You can do this by using the 
+
+* [generateClientCert<>](../../../server/administration/cli#generateclientcert) 
+* Or by using a client. See the [Client Certificate Usage](../../../server/security/authentication/client-certificate-usage) page for a detailed example
 
 You can set up various client certificates with different security clearance levels and database permissions.  See [Certificate Management](../../../server/security/authentication/certificate-management) for more about permissions.  
 {INFO/}
@@ -122,11 +125,11 @@ catch
    * Make sure that the certificate .path or .load script lead to the correct certificate location.  
 6. Run the `run.ps1` script.  It runs in PowerShell as a default, but you can open PowerShell as Admin, browse to the server directory and run from there as well.  
 7. It will start up and launch a browser window that should give an error message about a missing client certificate.  
-8. The powershell window will be running the server terminal. Use the generateClientCert command to generate a client certificate. In the example the certificate will be named RavenDBClient, will be stored at C:\Users\administrator\Documents, and will have no password. If a password is required add it to the end of the command.  
+8. The powershell window will be running the server terminal. If you use the [generateClientCert<>](../../../server/administration/cli#generateclientcert) command to generate a client certificate. In the example the certificate will be named RavenDBClient, will be stored at C:\Users\administrator\Documents, and will have no password. If a password is required add it to the end of the command.  
     "ravendb> generateClientCert RavenDBClient C:\Users\administrator\Documents"  
-9. Extract the contents of the zip file generated.  
+9. Extract the contents of the .zip file generated into the folders where your nodes live. 
 10. Run the `admin.client.certificate...pfx` file and press Enter or Next all the way through to install the certificate in the OS without a password.  
-   To set a password on the certificate, do that instead of pressing Next all the way through.  You'll need to use that password every time you work with the certificate.  
+   * To set a password on the certificate, do that instead of pressing Next all the way through.  You'll need to use that password every time you work with the certificate.  
 11. Reopen the browser and paste the `ServerUrl` that you set in the `settings.json`. Select the certificate in the popup and hit ok. The [RavenDB Studio](../../../studio/overview) should now open.  
 12. In the powershell window type quit to close down the server.  
 13. Run the setup-as-service.ps1. It will setup the service, which will start the server automatically every time the machine starts, but will fail to start if the Local Service account doesn't have access to all the required resources.  
