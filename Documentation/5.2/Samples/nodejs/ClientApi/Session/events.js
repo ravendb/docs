@@ -12,11 +12,6 @@ const store = new DocumentStore();
 const session = store.openSession();
 
 class Product {
-    constructor(name, unitsInStock, discontinued) {
-        this.name = name;
-        this.unitsInStock = unitsInStock;
-        this.discontinued = discontinued;
-    }
 }
 
 
@@ -84,11 +79,11 @@ class Product {
     //endregion
 
     //region before_delete_event
-    store.addSessionListener("beforedelete", event => onBeforeDelete(event));
+    store.addSessionListener("beforeDelete", event => onBeforeDelete(event));
     //endregion
 
     //region delete_session
-    store.addSessionListener("beforedelete", event => onBeforeDelete(event));
+    store.addSessionListener("beforeDelete", event => onBeforeDelete(event));
 
     session = store.openSession();
     let product = await session.load("products/1-A", Product);

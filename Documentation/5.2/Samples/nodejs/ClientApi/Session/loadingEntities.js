@@ -157,23 +157,23 @@ async function examples() {
 }
 
 {
-    let id, object, changeVector, user;
+    let id, object, changeVector, user, clazz;
 
     class User {
     }
 
     //region loading_entities_7_0
-    await session.advanced.conditionalLoad(id, changeVector, object);
+    await session.advanced.conditionalLoad(id, changeVector, clazz);
     //endregion
 }
 {
     //region loading_entities_7_1
     const session = store.openSession();
-    let user = new User("Bob")
+    let user = new User("Bob");
     await session.store(user, "users/1");
     await session.saveChanges();
 
-    const changeVector = session.advanced.getChangeVectorFor(User);
+    const changeVector = session.advanced.getChangeVectorFor(user);
 
     // New session which does not track our User entity
     // The given change vector matches 
