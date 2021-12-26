@@ -206,8 +206,8 @@ remote calls.
     ---
 
 ###Counters Bulk-Insert  
-`store.BulkInsert` is RavenDB's high-performance data insertion operation.  
-Use its `CountersFor` interface's `Increment` method to add or update counters with great speed.  
+`store.bulkInsert` is RavenDB's high-performance data insertion operation.  
+Use its `countersFor` interface's `increment` method to add or update counters with great speed.  
 
 * Syntax  
 
@@ -218,7 +218,7 @@ Use its `CountersFor` interface's `Increment` method to add or update counters w
         |:-------------|:-------------|:-------------|
         | `id` | `String` | Document ID |
 
-   *   `Increment`
+   *   `increment`
           {CODE:java Increment-definition@DocumentExtensions\Counters\Counters.java /}
 
            | Parameters | Type | Description |
@@ -230,7 +230,7 @@ Use its `CountersFor` interface's `Increment` method to add or update counters w
 * Usage Flow  
 
    * Create a `store.bulkInsert` instance.  
-   * Pass the instance's `CountersFor` interface, the document ID  
+   * Pass the instance's `countersFor` interface, the document ID  
    * Call `increment` as many times as you like. Pass it -  
      The Counter Name and Value (delta to be added).
 

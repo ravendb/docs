@@ -191,20 +191,15 @@ public class Counters {
         ArrayList<User> result = new ArrayList<>();
         //region bulk-insert-counters
         try (IDocumentSession session = docStore.openSession()) {
-
             IDocumentQuery<User> query = session.query(User.class)
                     .whereLessThan("age", 30);
-
-
         }
+        
         try (BulkInsertOperation bulkInsert = docStore.bulkInsert()){
-
             for (User user : result) {
                 String userId = user.getID();
-
                 CountersBulkInsert countersFor = bulkInsert.countersFor(userId);
-
-                 bulkInsert.countersFor(userId).increment("downloaded", 100);
+                bulkInsert.countersFor(userId).increment("downloaded", 100);
             }
         }
 
@@ -376,10 +371,7 @@ public class Counters {
 }
 class User {
     String id;
-
-    public void setName(String marcin) {
-    }
-
+    public void setName(String name) {}
     public String getID() {
         return id;
     }
