@@ -14,11 +14,12 @@ class Employee {
     class Employees_ByAttachmentNames extends AbstractCsharpIndexCreationTask {
         constructor() {
             super();
-            this.map = `docs.Employees.Select(e => 
-                    let attachments = AttachmentsFor(e);
-                    new {    
-                            AttachmentNames = attachments.Select(x => x.Name).ToArray()
-                    })`;
+            this.map = `docs.Employees.Select(e => new {
+                e = e,
+                attachments = this.AttachmentsFor(e)
+            }).Select(this0 => new {
+                AttachmentNames = Enumerable.ToArray(this0.attachments.Select(x => x.Name))
+            })`;
         }
     }
 
@@ -29,17 +30,17 @@ class Employee {
     class Companies_With_Attachments_JavaScript  extends AbstractCsharpIndexCreationTask {
         constructor() {
             super();
-            this.map = `docs.Companies.Select(company => 
-                   let attachment = LoadAttachment(company, company.ExternalId);
-                    new {
-                        CompanyName: company.Name,
-                        AttachmentName: attachment.Name,
-                        AttachmentContentType: attachment.ContentType,
-                        AttachmentHash: attachment.Hash,
-                        AttachmentSize: attachment.Size,
-                        AttachmentContent: attachment.getContentAsString('utf8')
-                  
-                 })`
+            this.map = `docs.Companies.Select(company => new {
+                company = company,
+                attachment = this.LoadAttachment(company, (System.String) company.ExternalId)
+            }).Select(this0 => new {
+                CompanyName = this0.company.Name,
+                AttachmentName = this0.attachment.Name,
+                AttachmentContentType = this0.attachment.ContentType,
+                AttachmentHash = this0.attachment.Hash,
+                AttachmentSize = this0.attachment.Size,
+                AttachmentContent = this0.attachment.GetContentAsString(Encoding.UTF8)
+            })`;
         }
     }
     //endregion
@@ -49,13 +50,13 @@ class Employee {
     class Companies_With_All_Attachments_JS  extends AbstractCsharpIndexCreationTask {
         constructor() {
             super();
-            this.map = `docs.Companies.Select(company => 
-                        var attachments = LoadAttachments(company);
-                 return attachments.map(attachment => ({
-                     AttachmentName: attachment.Name,
-                     AttachmentContent: attachment.getContentAsString('utf8')
-                  }));
-            )`
+            this.map =`docs.Companies.Select(company => new {
+                company = company,
+                attachments = this.LoadAttachments(company)
+            }).SelectMany(this0 => this0.attachments, (this0, attachment) => new {
+                AttachmentName = attachment.Name,
+                AttachmentContent = attachment.GetContentAsString(Encoding.UTF8)
+            })`;
         }
     }
     //endregion
@@ -65,7 +66,8 @@ class Employee {
 
 //region query1
     //return all employees that have an attachment called "cv.pdf"
-    let employees = session.query({ collection: "Employees_ByAttachmentNames" })
+    const employees = session.query(Employees_ByAttachmentNames)
         .containsAny("attachmentNames", ["employees_cv.pdf"])
-        .selectFields<Company>( "cv.pdf", Employee).all()
+        .selectFields<Employee>("cv.pdf")
+        .all();
 //endregion
