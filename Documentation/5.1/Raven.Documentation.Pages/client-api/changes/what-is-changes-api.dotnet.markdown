@@ -4,24 +4,22 @@
 
 {NOTE: }
 
-* The RavenDB client offers a push notification feature that allows you to receive messages from a server about events that occurred there.
-  You are able to subscribe to events for all documents, indexes, and operations as well as to indicate a particular one that you are interested in. 
-  This mechanism lets you notify users if something has changed without the need to do any expensive polling. 
-
-* {DANGER:Changes API on a Secure Server}
-  Changes API uses WebSockets under the covers. Due to [the lack of support for client certificates in WebSockets implementation in .NET Core 2.0](https://github.com/dotnet/corefx/issues/5120#issuecomment-348557761)
-  the Changes API won't work for secured servers accessible over HTTPS.
-  This issue is fixed in the final version of .NET Core 2.1 available [here](https://dotnet.microsoft.com/download). In order to workaround this you can switch your application to use .NET Core 2.1.
-  The issue affects only the RavenDB client.
-  {DANGER/}
+* The Changes API is a push notification feature, that allows a client to 
+  receive messages from the server regarding events that occurred on the server.  
+* A client can subscribe to events related to **all** documents, indexes, operations, 
+  counters, or time series, as well as to a **particular event** of interest.  
+* The Changes API enables you to notify users of various changes, without requiring 
+  any expensive polling.  
 
 * In this page:  
-  * [Accessing Changes API](../../)  
-  * [](../../)  
-  * [](../../)  
-  * [](../../)  
-  * [](../../)  
-  * [](../../)  
+  * [Accessing Changes API](../../client-api/changes/what-is-changes-api#accessing-changes-api)  
+  * [Connection interface](../../client-api/changes/what-is-changes-api#connection-interface)  
+  * [Subscribing](../../client-api/changes/what-is-changes-api#subscribing)  
+  * [Unsubscribing](../../client-api/changes/what-is-changes-api#unsubscribing)  
+  * [FAQ](../../client-api/changes/what-is-changes-api#faq)  
+     * [Changes API and Database Timeout](../../client-api/changes/what-is-changes-api#changes-api-and-database-timeout)  
+     * [Changes API and Method Overloads](../../client-api/changes/what-is-changes-api#changes-api-and-method-overloads)  
+     * [Changes API and .NET Core 2.0](../../client-api/changes/what-is-changes-api#changes-api-and-.net-core-2.0)  
 {NOTE/}
 
 ---
@@ -50,7 +48,7 @@ The changes subscription is accessible by a document store through its `IDatabas
 
 {PANEL/}
 
-{PANEL: Subscriptions}
+{PANEL: Subscribing}
 
 In order to retrieve notifications you have to subscribe to server-side events by using one of the following methods:
 
@@ -66,22 +64,47 @@ In order to retrieve notifications you have to subscribe to server-side events b
 - [ForCountersOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes#forcountersofdocument)
 - [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
 - [ForOperationId](../../client-api/changes/how-to-subscribe-to-operation-changes#foroperation)
+- `ForAllTimeSeries`  
+- `ForTimeSeries`  
+- `ForTimeSeriesOfDocument`  
 
 {PANEL/}
 
 {PANEL: Unsubscribing}
 
-In order to end subscription (stop listening for particular notifications) you must `Dispose` it.
+In order to end subscription (stop listening for particular notifications) you must 
+`Dispose` it.
 
 {CODE changes_2@ClientApi\Changes\WhatIsChangesApi.cs /}
 
 {PANEL/}
 
-{PANEL: Remarks}
+{PANEL: FAQ}
 
-{NOTE One or more open Changes API connections will prevent a database from becoming idle and unloaded, regardless of [configuration value for database idle timeout](../../server/configuration/database-configuration#databases.maxidletimeinsec) /}
+#### Changes API and Database Timeout
 
-{INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
+One or more open Changes API connections will prevent a database from becoming 
+idle and unloaded, regardless of [the configuration value for database idle timeout](../../server/configuration/database-configuration#databases.maxidletimeinsec).  
+
+---
+
+#### Changes API and Method Overloads
+
+To get more method overloads, especially the ones supporting delegates, 
+please add the [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) 
+package to your project.  
+
+---
+
+#### Changes API and .NET Core 2.0
+
+Under the hood, the Changes API uses WebSockets.  
+Due to the 
+[lack of client certificates support in the implementation of WebSockets by .NET Core 2.0](https://github.com/dotnet/corefx/issues/5120#issuecomment-348557761), 
+the Changes API will **not work** under this .Net version for secure servers accessed via HTTPS.  
+This issue was fixed in the final version of .NET Core 2.1.  
+To resolve this issue, make sure your application uses .NET Core 2.1 or higher.  
+The issue affects only the RavenDB client.
 
 {PANEL/}
 
