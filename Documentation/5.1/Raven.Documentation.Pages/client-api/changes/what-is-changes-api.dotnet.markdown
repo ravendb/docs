@@ -50,30 +50,38 @@ The changes subscription is accessible by a document store through its `IDatabas
 
 {PANEL: Subscribing}
 
-In order to retrieve notifications you have to subscribe to server-side events by using one of the following methods:
+To receive notifications regarding server-side events, subscribe using one of the following methods.  
 
-- [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes#foralldocuments)
-- [ForAllCounters](../../client-api/changes/how-to-subscribe-to-counter-changes#forallcounters)
-- [ForAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes#forallindexes)
-- [ForAllOperations](../../client-api/changes/how-to-subscribe-to-operation-changes#foralloperations)
-- [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes#fordocument)
-- [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsincollection)
-- [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsstartingwith)
-- [ForCounter](../../client-api/changes/how-to-subscribe-to-counter-changes#forcounter)
-- [ForCounterOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes#forcounterofdocument)
-- [ForCountersOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes#forcountersofdocument)
-- [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
-- [ForOperationId](../../client-api/changes/how-to-subscribe-to-operation-changes#foroperation)
-- `ForAllTimeSeries`  
-- `ForTimeSeries`  
-- `ForTimeSeriesOfDocument`  
+* **For Document Changes:**
+   - [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes#foralldocuments)
+   - [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes#fordocument)
+   - [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsincollection)
+   - [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsstartingwith)
+
+* **For Index Changes:**
+   - [ForAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes#forallindexes)
+   - [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
+
+* **For Operation Changes:**
+   - [ForAllOperations](../../client-api/changes/how-to-subscribe-to-operation-changes#foralloperations)
+   - [ForOperationId](../../client-api/changes/how-to-subscribe-to-operation-changes#foroperation)
+
+* **For Counter Changes:**
+   - [ForAllCounters](../../client-api/changes/how-to-subscribe-to-counter-changes#forallcounters)
+   - [ForCounter](../../client-api/changes/how-to-subscribe-to-counter-changes#forcounter)
+   - [ForCounterOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes#forcounterofdocument)
+   - [ForCountersOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes#forcountersofdocument)
+
+* **For Time Series Changes:**
+   - [ForAllTimeSeries](../../client-api/changes/how-to-subscribe-to-time-series-changes#foralltimeseries)  
+   - [ForTimeSeries](../../client-api/changes/how-to-subscribe-to-time-series-changes#fortimeseries)  
+   - [ForTimeSeriesOfDocument](../../client-api/changes/how-to-subscribe-to-time-series-changes#fortimeseriesofdocument)  
 
 {PANEL/}
 
 {PANEL: Unsubscribing}
 
-In order to end subscription (stop listening for particular notifications) you must 
-`Dispose` it.
+To end a subscription (stop listening for particular notifications) you must `Dispose` of it.
 
 {CODE changes_2@ClientApi\Changes\WhatIsChangesApi.cs /}
 
@@ -90,9 +98,8 @@ idle and unloaded, regardless of [the configuration value for database idle time
 
 #### Changes API and Method Overloads
 
-To get more method overloads, especially the ones supporting delegates, 
-please add the [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) 
-package to your project.  
+To get more method overloads, especially ones supporting delegates, please add the 
+[Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
 
 ---
 
@@ -101,10 +108,11 @@ package to your project.
 Under the hood, the Changes API uses WebSockets.  
 Due to the 
 [lack of client certificates support in the implementation of WebSockets by .NET Core 2.0](https://github.com/dotnet/corefx/issues/5120#issuecomment-348557761), 
-the Changes API will **not work** under this .Net version for secure servers accessed via HTTPS.  
-This issue was fixed in the final version of .NET Core 2.1.  
-To resolve this issue, make sure your application uses .NET Core 2.1 or higher.  
-The issue affects only the RavenDB client.
+the Changes API will **not work** under this .Net version while accessing a secure server over HTTPS.  
+
+* This issue was fixed in the final version of .NET Core 2.1.  
+  To resolve it, make sure your application uses .NET Core 2.1 or higher.  
+* The issue affects only the RavenDB Client.
 
 {PANEL/}
 
