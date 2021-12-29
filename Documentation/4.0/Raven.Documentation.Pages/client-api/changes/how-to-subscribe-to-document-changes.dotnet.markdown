@@ -127,7 +127,10 @@ To observe all document changes use `ForAllDocuments` method.
 
 ## Remarks
 
-{INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
+{WARNING: }
+To get more method overloads, especially ones supporting **delegates**, please add the 
+[System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
+{WARNING/}
 
 ## Related Articles
 

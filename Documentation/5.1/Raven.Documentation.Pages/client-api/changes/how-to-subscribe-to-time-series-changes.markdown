@@ -1,16 +1,33 @@
 # Changes API: How to Subscribe to Time Series Changes
 
-The following methods allow you to subscribe to time series changes:
+---
 
-* [ForTimeSeries - Track All Time Series with a Given Name](../../client-api/changes/how-to-subscribe-to-time-series-changes#fortimeseries)
-* [ForTimeSeriesOfDocument](../../client-api/changes/how-to-subscribe-to-time-series-changes#fortimeseriesofdocument)
-    * [Track a Specific Time Series of a Chosen Document](../../client-api/changes/how-to-subscribe-to-time-series-changes#overload-1)  
-    * [Track Any Time Series of a Chosen Document](../../client-api/changes/how-to-subscribe-to-time-series-changes#overload-2)  
-* [ForAllTimeSeries - Track All Time Series](../../client-api/changes/how-to-subscribe-to-time-series-changes#foralltimeseries)
+{NOTE: }
+
+* Use the following methods to subscribe to Time Series Changes:  
+   * `ForTimeSeries`  
+     Track **all** time series with a given name  
+   * `ForTimeSeriesOfDocument`  
+     Overload #1: Track **a specific** time series of a chosen document  
+     Overload #2: Track **any** time series of a chosen document  
+   * `ForAllTimeSeries`  
+     Track **all** time series  
+
+* In this page:  
+   * [ForTimeSeries](../../client-api/changes/how-to-subscribe-to-time-series-changes#fortimeseries)
+   * [ForTimeSeriesOfDocument](../../client-api/changes/how-to-subscribe-to-time-series-changes#fortimeseriesofdocument)
+   * [ForAllTimeSeries](../../client-api/changes/how-to-subscribe-to-time-series-changes#foralltimeseries)
+
+{NOTE/}
+
+---
+
+
+
 
 {PANEL: ForTimeSeries}
 
-Subscribe to changes in **all time series with a given name**, no matter which document they belong to, 
+Subscribe to changes in **all time-series with a given name**, no matter which document they belong to, 
 using the `ForTimeSeries` method.  
 
 #### Syntax
@@ -33,7 +50,11 @@ using the `ForTimeSeries` method.
 
 {PANEL: ForTimeSeriesOfDocument}
 
-Subscribe to changes in **time series of a chosen document** using the `ForCountersOfDocument` method.  
+Use `ForTimeSeriesOfDocument` to subscribe to changes in **time series of a chosen document**.  
+
+* Two overload methods allow you to  
+   * Track **a specific** time series of the chosen document  
+   * Track **any** time series of the chosen document  
 
 ---
 
@@ -82,7 +103,7 @@ Use this `ForTimeSeriesOfDocument` overload to track changes in **any time serie
 
 {PANEL: ForAllTimeSeries}
 
-Subscribe to changes in **all time series** using the `ForAllTimeSeries` method.  
+Subscribe to changes in **all time-series** using the `ForAllTimeSeries` method.  
 
 #### Syntax
 
@@ -125,7 +146,10 @@ Subscribe to changes in **all time series** using the `ForAllTimeSeries` method.
 
 ## Remarks
 
-{INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
+{WARNING: }
+To get more method overloads, especially ones supporting **delegates**, please add the 
+[System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
+{WARNING/}
 
 ## Related Articles
 

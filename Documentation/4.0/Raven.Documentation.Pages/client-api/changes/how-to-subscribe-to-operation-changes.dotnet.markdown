@@ -88,9 +88,13 @@ Operations changes for all Operations can be observed using the `ForAllOperation
 | **Faulted** | `Indicates that the operation is faulted` |
 | **Canceled** | `Indicates that the operation has been Canceled` |
 {PANEL/}
+
 ## Remarks
 
-{INFO To get more method overloads, especially the ones supporting delegates, please add the [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
+{WARNING: }
+To get more method overloads, especially ones supporting **delegates**, please add the 
+[System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
+{WARNING/}
 
 ## Related Articles
 
