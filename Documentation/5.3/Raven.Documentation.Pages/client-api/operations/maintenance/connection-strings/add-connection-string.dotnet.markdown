@@ -19,13 +19,22 @@ In this page:
 
 ## Syntax
 
+{PANEL: }
+
 {CODE add_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
 | Parameters | | |
 | ------------- | ----- | ---- |
 | **connectionString** | `T` | Connection string to create: `RavenConnectionString` or `SqlConnectionString` |
 
+{PANEL/}
+
+---
+
 ###Configurations
+
+{PANEL: }
+
 
 ####RavenConnectionString Configuration
 
@@ -47,16 +56,32 @@ In this page:
 
 {CODE:csharp connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
+{PANEL/}
+
 ## Example - Add Raven Connection String
 
+{PANEL: }
+
 **Secure servers**  
-To connect a secure RavenDB server you need to export the certificate from the source server and install it into the destination server.  
-The `.pfx` certificate can be found in your server installation folder.  
+To connect a secure RavenDB server you need to [export the certificate](../../../../server/security/authentication/certificate-management) from the source server and install it into the destination server.  
+This can be done easily in the RavenDB Studio:  
+
+![Studio Server Certificate Export](images/export-server-certificate.png "Studio Server Certificate Export")
+
+
+  1. In the source server, click the "Manage Server" tab on the left, then select "Certificates".  
+  2. Click the "Server Certificates" button on the right, then select "Export server certificates".  
+  3. In the destination server, upload the `.pfx` with the "Client certificate" button.
+
 Be sure that the node definition in the connection string has the "s" in https:  
 
 {CODE add_raven_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
+{PANEL/}
+
 ## Example - Add Sql Connection String
+
+{PANEL: }
 
 {CODE add_sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
@@ -71,6 +96,7 @@ Be sure that the node definition in the connection string has the "s" in https:
 ## Example - Add Elasticsearch Connection String  
   {CODE create-connection-string@ClientApi\Operations\ConnectionStrings.cs /}
 
+{PANEL/}
 
 ## Related Articles
 
