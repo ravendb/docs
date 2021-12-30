@@ -1,5 +1,4 @@
 # Counters: Overview
----
 
 {NOTE: }
 
@@ -54,7 +53,7 @@ Among the advantages of this:
 
 A document includes the Counter's _name_, while the Counter's actual _value_ is kept in a separate location.  
 Modifying a Counter's value doesn't require the modification of the document itself.  
-This results in a performant and uncostly operation.
+This results in highly efficient operation.
 
 ---
 
