@@ -77,7 +77,10 @@
 
 {NOTE: Scheduling two backups}
 
-To save on transfer costs you can schedule frequent incremental backups, while backing up your indexes with infrequent full-snapshot type backups. 
+To **save on transfer costs** you can schedule frequent incremental backups  
+
+To ensure that you can **recover lost data**, schedule infrequent 'full' backups.  
+Infrequent backups can be useful if a mistake was made and you need access to data from a few days ago.
 
 {NOTE/}
 

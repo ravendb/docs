@@ -79,7 +79,10 @@
 
 {NOTE: Scheduling two backups}
 
-To save on transfer costs you can schedule frequent incremental backups, while backing up your indexes with infrequent full-snapshot type backups. 
+To **save on transfer costs** you can schedule frequent incremental backups  
+
+To ensure that you can **recover lost data**, schedule infrequent 'full' backups.  
+Infrequent backups can be useful if a mistake was made and you need access to data from a few days ago.
 
 {NOTE/}
 
@@ -106,8 +109,6 @@ it will be deleted during the next scheduled backup task.
 
 * Select backup destinations and enter your credentials for each  
 
-* Note: More than one can be selected  
-
 * Available destinations:  
 
   * Local - Set a folder of your choice (any directory that can be accessed from your machine)  
@@ -117,11 +118,19 @@ it will be deleted during the next scheduled backup task.
   * [Amazon Glacier](https://aws.amazon.com/glacier/)  
   * FTP - Set your FTP protocol & server address  
 
-{NOTE: To achieve a robust data protection strategy}
+ More than one destination can be selected at the same time. The backup process will first write the backup to the local path (or to a temporary path if the local path is not specified).  
  
- The [3-2-1 rule](https://www.nakivo.com/blog/3-2-1-backup-rule-efficient-data-protection-strategy/) can be implemented by creating a periodic backup onto a cloud storage and another on an onsite machine.
+ Once that's done, the backup owner will start uploading the backup to all remote destinations in parallel.  
+ 
+ If any of the remote destinations fail, the entire backup will be considered to have failed.
 
-{NOTE/}
+
+{INFO: For a resilient data protection strategy}
+ 
+  that protects your databases from natural disasters and theft, we recommend scheduling concurrent backups on a local machine and on the cloud. 
+  This strategy is known as [the 3-2-1 Backup Rule](https://en.wikipedia.org/wiki/Backup#3-2-1_rule).  
+
+{INFO/}
 
 
 {PANEL/}
@@ -132,11 +141,10 @@ it will be deleted during the next scheduled backup task.
 
 1. **Backup Task Details**:
    *  Task Status - Active / Not Active / Not on Node  
-   *  Destinations - List of all backup destinations defined  
-   *  Last Full Backup - The last time a Full Backup was done 
-      (Snapshot / Backup type - depending on task definition)  
-   *  Last Incremental Backup - The last time an Incremental Backup was done  
-   *  Next Estimated Backup - Time for next backup 
+   *  Destinations - Local or cloud-based  
+   *  Last Full Backup - (Snapshot / Backup type)  
+   *  Last Incremental Backup  
+   *  Next Estimated Backup - Time until next scheduled backup and which type it will be 
       (Full Backup / Incremental Backup / Snapshot - depending on task definition)  
 
 2. **Graph view**:  

@@ -1,7 +1,8 @@
 # Create a Database: From Backup
----
 
 {NOTE: }
+
+Restoring a database is done easily via the RavenDB Studio. 
 
 * In this page:  
   * [New Database From Backup - Studio Databases View](../../../../studio/server/databases/create-new-database/from-backup#new-database-from-backup---studio-databases-view)  
@@ -36,22 +37,29 @@ Another way to access the New Database From Backup interface is via the Studio B
 
 ![Figure 2. Backup Source Configuration](images/new-database-from-backup-2.png "Backup Source Configuration")
 
-1. [Name your new database](../../../../studio/server/databases/create-new-database/general-flow#2.-database-name).  
+1. [**Name** your new database](../../../../studio/server/databases/create-new-database/general-flow#2.-database-name).  
 
-2. Select the source (from your local machine or various cloud-based options).  
+2. **Source**  
+   Select the source from your local machine or various cloud-based options where your desired backup is stored.  
 
-3. Select the location that you set when you [created your backup](../../../../studio/database/tasks/backup-task).  
-   * If your source is a cloud-based database, you will likely need to enter credentials and passwords as well as location.  
+3. **Backup Directory**  
+   Select the file location that you set when you [created your backup](../../../../studio/database/tasks/backup-task).  
+    * If your source is a cloud-based database, you will likely need to enter credentials and passwords as well as location.  
 
-4. Disabling [ongoing tasks](../../../database/tasks/ongoing-tasks/general-info) will likely require these tasks to be created again.  
+4. **Disable ongoing tasks after restore**  
+   Disabling will likely require [ongoing tasks](../../../database/tasks/ongoing-tasks/general-info) to be created again.  
 
-5. Skipping [indexes](../../../../indexes/what-are-indexes) will require your indexes to be built anew.  
+5. **Skip indexes**  
+   Skipping [indexes](../../../../indexes/what-are-indexes) will require your indexes to be built anew.  
 
-6. Choose a restore point from the backups available on the source and location chosen.  
+6. **Restore Point** 
+   Choose the backup version which will populate your new, restored database.  
+   * **Snapshot** backup type includes fully built indexes which makes restoring the database faster.  
+   * **Full** or **Incremental** types include index definitions from which the new indexes will be built.  
    
 {NOTE: }
- Note: The backup will be restored only to the current node after restore, this database can be added to other nodes using the 'Manage group' button.
- Learn more about **Manage group** in : [Manage group](../../../database/settings/manage-database-group)  
+ Note: The backup will be restored only to the current node after restore. This database can be added to other nodes using the "Add node" button in the [Manage group](../../../database/settings/manage-database-group) Studio view.
+
 {NOTE/}
 {PANEL/}
 

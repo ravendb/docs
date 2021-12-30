@@ -17,7 +17,7 @@
 * A backup is _not equivalent_ to replicating your data, as explained below in 
   [Backup -vs- Replication](../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)  
 
-* For a complete explanation of how backups work and a discussion of which options are best suited for different scenarios, see the [Backups and restores](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/17-backups-and-restores) chapter of the Inside RavenDB book.
+* For a complete explanation of how backups work and a discussion of which options are best suited for different scenarios, see the [Backups and restores](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/17-backups-and-restores) chapter of the "Inside RavenDB" book.
 
 
 * In this page:  
@@ -28,7 +28,7 @@
       * [Backup Encryption](../../../studio/database/tasks/backup-task#backup-encryption)  
       * [Destination](../../../studio/database/tasks/backup-task#destination)  
       * [Periodic Backup Details](../../../studio/database/tasks/backup-task#periodic-backup-details)  
-  * [Creating Manual, One-Time Backups](../../../studio/database/tasks/backup-task#manually-creating-one-time-backups)  
+  * [Manually Creating One-Time Backups](../../../studio/database/tasks/backup-task#manually-creating-one-time-backups)  
   * [When the Cluster or Node is Down](../../../studio/database/tasks/backup-task#when-the-cluster-or-node-is-down)  
   * [Backup Task -vs- Replication Task](../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)  
 
@@ -54,13 +54,12 @@
     You can see all active server-wide and database specific periodic backups.  
 
 
----
 
 {PANEL/}
 
-{PANEL: }
-
 ## Periodic Backup Creation
+
+{PANEL: }
 
 ### Periodic Backup Tasks View
 
@@ -128,11 +127,11 @@ Select the content to back up. Note: Both incremental and full backups can be sc
   
  2. **Incremental Backup**  
     Incremental Backup will only back up the delta (changes made) of the data since the last backup that has occurred.  
-    * If _only_ **Incremental Backup** is set, then a **Full Backup** will occur only in the _first_ time that the Task is triggered,  
+    * If _only_ **Incremental Backup** is set, then a **Full Backup** will occur only the _first_ time that the task is triggered,  
     followed by Incremental Backups according to the scheduled time.  
     The Full Backup that is done the first time will be either a 'Backup' or a 'Snapshot', depending on the type selected.  
     * Data that is backed up in **Incremental Backup** is _always_ of type 'Backup' - even if the Backup Task Type is 'Snapshot'.  
-    'Backup' types save index definitions, but not the full indexes.  
+    'Backup' types save index definitions, but not the fully built indexes.  
 
  Schedule the Backup Tasks to occur at regular intervals (daily, monthly, hourly, every minute) at specific times.  
 
@@ -140,7 +139,8 @@ Select the content to back up. Note: Both incremental and full backups can be sc
 
   To save on data transfer costs you can schedule frequent 'incremental' backups, (which save any changes made since the previous backup).  
   
-  To ensure that you can **recover lost data**, schedule infrequent 'full'-'snapshot' type backups (which back up the entire database, including indexes). 'Snapshot' type backups restore quickly but are larger files.  
+  To ensure that you can **recover lost data**, schedule infrequent 'full' backups.  
+  
   Infrequent backups can be useful if a mistake was made and you need access to data from a few days ago.  
 
   **If downtime while recovering databases is a concern**, you can also set up an [external replica](../../../studio/database/tasks/ongoing-tasks/external-replication-task) and manually fail over to it while you recover the data onto the original cluster.  
