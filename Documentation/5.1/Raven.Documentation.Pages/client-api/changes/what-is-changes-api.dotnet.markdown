@@ -6,8 +6,7 @@
 
 * The Changes API is a Push Notifications service, that allows a RavenDB Client to 
   receive messages from a RavenDB Server regarding events that occurred on the server.  
-* A client can subscribe to events related to **all** documents, indexes, operations, 
-  counters, or time series, as well as to a **particular event** of interest.  
+* A client can subscribe to events related to documents, indexes, operations, counters, or time series.  
 * The Changes API enables you to notify users of various changes, without requiring 
   any expensive polling.  
 
@@ -99,7 +98,8 @@ To receive notifications regarding server-side events, subscribe using one of th
 
 {PANEL: Unsubscribing}
 
-To end a subscription (stop listening for particular notifications) you must `Dispose` of it.
+To end a subscription (stop listening for particular notifications) you must 
+`Dispose` of the subscription.  
 
 {CODE changes_2@ClientApi\Changes\WhatIsChangesApi.cs /}
 
@@ -121,19 +121,6 @@ To get more method overloads, especially ones supporting **delegates**, please a
 [System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
 {WARNING/}
 
----
-
-#### Changes API and .NET Core 2.0
-
-Under the hood, the Changes API uses WebSockets.  
-Due to the 
-[lack of client certificates support in the implementation of WebSockets by .NET Core 2.0](https://github.com/dotnet/corefx/issues/5120#issuecomment-348557761), 
-the Changes API will **not work** under this .Net version while accessing a secure server over HTTPS.  
-
-* This issue was fixed in the final version of .NET Core 2.1.  
-  To resolve it, make sure your application uses .NET Core 2.1 or higher.  
-* The issue affects only the RavenDB Client.
-
 {PANEL/}
 
 {PANEL: Changes API -vs- Data Subscriptions}
@@ -144,9 +131,13 @@ Both services respond to events that take place on the server, by sending update
 to their subscribers.  
 
 * **Changes API is a Push Notifications Service**.  
-   * Changes API subscribers receive only **notifications** about events 
-     that took place on the server. Modified data entities (like documents, 
-     counters, etc.) are not delivered.  
+   * Changes API subscribers receive **notifications** regarding events that 
+     took place on the server, without receiving the actual data entities 
+     affected by these events.  
+     For the modification of a document, for example, the client will receive 
+     a [DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange) 
+     object with details like the document's ID and collection.  
+
    * The server does **not** keep track of sent notifications or 
      checks clients' usage of them. It is a client's responsibility 
      to manage its reactions to such notifications.  
