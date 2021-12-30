@@ -21,7 +21,7 @@ In this page:
   * [List of Registered Certificates](../../../server/security/authentication/certificate-management#list-of-registered-certificates)  
   * [Generate Client Certificate](../../../server/security/authentication/certificate-management#generate-client-certificate)  
   * [Edit Certificate](../../../server/security/authentication/certificate-management#edit-certificate)  
-* [Enabling Commuinication Between Servers: Importing and Exporting Certificates](../../../server/security/authentication/certificate-management#enabling-commuinication-between-servers-importing-and-exporting-certificates)  
+* [Enabling Communication Between Servers: Importing and Exporting Certificates](../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates)  
   * [Upload an Existing Certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate)  
   * [Certificate Collections](../../../server/security/authentication/certificate-management#certificate-collections)  
   * [Export Server Certificates](../../../server/security/authentication/certificate-management#export-server-certificates)  
@@ -226,7 +226,7 @@ Expiration for client certificates is set to 5 years by default.
 
 {PANEL/}
 
-## Enabling Commuinication Between Servers: Importing and Exporting Certificates
+## Enabling Communication Between Servers: Importing and Exporting Certificates
 
 {PANEL:Upload an Existing Certificate} 
 
