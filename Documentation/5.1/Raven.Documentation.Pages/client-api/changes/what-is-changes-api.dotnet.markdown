@@ -18,7 +18,6 @@
   * [FAQ](../../client-api/changes/what-is-changes-api#faq)  
      * [Changes API and Database Timeout](../../client-api/changes/what-is-changes-api#changes-api-and-database-timeout)  
      * [Changes API and Method Overloads](../../client-api/changes/what-is-changes-api#changes-api-and-method-overloads)  
-     * [Changes API and .NET Core 2.0](../../client-api/changes/what-is-changes-api#changes-api-and-.net-core-2.0)  
   * [Changes API -vs- Data Subscriptions](../../client-api/changes/what-is-changes-api#changes-api--vs--data-subscriptions)  
 {NOTE/}
 
