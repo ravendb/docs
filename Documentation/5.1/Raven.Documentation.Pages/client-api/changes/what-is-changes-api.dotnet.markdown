@@ -136,7 +136,7 @@ to their subscribers.
      affected by these events.  
      For the modification of a document, for example, the client will receive 
      a [DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange) 
-     object with details like the document's ID and collection.  
+     object with details like the document's ID and collection name.  
 
    * The server does **not** keep track of sent notifications or 
      checks clients' usage of them. It is a client's responsibility 
