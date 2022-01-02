@@ -37,9 +37,18 @@ You can add ETL task by using **AddEtlOperation**.
 ### Connection String for Raven ETL
 
 **Secure servers**  
-To connect a secure RavenDB server you need to export the certificate from the source server and install it into the destination server.  
-The `.pfx` certificate can be found in your server installation folder.  
-Be sure that the node definition in the connection string has the "s" in https:  
+To connect a secure RavenDB server you need to [export the certificate](../../../../server/security/authentication/certificate-management) from the source server and install it into the destination server.  
+This can be done easily in the RavenDB Studio:  
+
+![Studio Server Certificate Export](images/export-server-certificate.png "Studio Server Certificate Export")
+
+
+  1. In the source server, click the "Manage Server" tab on the left, then select "Certificates".  
+  2. Click the "Server Certificates" button on the right, then select "Export server certificates".  
+  3. In the destination server, upload the `.pfx` with the "Client certificate" button.  
+  
+  Be sure that the node definition in the connection string has the "s" in https:  
+
 {CODE raven_etl_connection_string@ClientApi\Operations\AddEtl.cs /}
 
 ### Code Sample to Add Raven ETL
@@ -47,6 +56,8 @@ Be sure that the node definition in the connection string has the "s" in https:
 {CODE add_raven_etl@ClientApi\Operations\AddEtl.cs /}
 
 ## Add Sql ETL
+Add [SQL ETL](../../../../server/ongoing-tasks/etl/sql)
+
 
 ### Connection String for Sql ETL
 
