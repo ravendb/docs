@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* You can import your existing NoSQL Databases to an [empty](../../../../studio/server/databases/create-new-database/general-flow) RavenDB database.  
+* You can import your existing NoSQL Databases to an [empty](../../../../studio/database/create-new-database/general-flow) RavenDB database.  
 
 * Currently supported:  
    * **MongoDB**  

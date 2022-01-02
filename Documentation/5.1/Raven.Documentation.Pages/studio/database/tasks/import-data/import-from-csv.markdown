@@ -79,6 +79,13 @@ The complete CSV line should look like this:
 Samples/1-A,Import from CSV,Inner Object,"[1,2,3,4]",Samples
 {CODE-BLOCK/} 
 
+{NOTE: }
+
+Note that the first line of a .csv file is applies to the header rows.  
+It names the column headers in a table, but in a .json document it names the key properties.  
+
+{NOTE/}
+
 Now that we've got a valid CSV file we can import it to RavenDB.  
 
 ![Figure 1. Import CSV file](images/import-from-CSV-studio-view.png "Import CSV file")
@@ -89,8 +96,11 @@ Now that we've got a valid CSV file we can import it to RavenDB.
 4. Select **From CSV File**.  
 5. Select the file to import.  
 6. You can name the [collection](../../../../client-api/faq/what-is-a-collection) where the file will be imported.  When running an [RQL](../../../../indexes/querying/what-is-rql) query, the code `from` refers to the collection that contains the desired document.  
-7. Define CSV options.  
+7. Define **CSV options**. Make sure they match the source .csv file.  
+   * Fields Delimiter - Comma is the standard default.
+   * Text Qualifier - Double quote is the standard default.
+   * Whitespace - CSV data is meant to be clean of white spaces because in strings, they can lead to misinterpretations.  Trimming is an opportunity to clean-up unwanted white spaces.  See if your source data has unwanted white spaces before you decide if or how to trim.  
 8. Select **Import Collection**  
   
-After importing the CSV file, the resulting document should look like the document 
+After importing the CSV file, the resulting .json document should look like the document 
 [above](../../../../studio/database/tasks/import-data/import-from-csv#how-should-i-format-my-documents-as-csv).  

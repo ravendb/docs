@@ -81,7 +81,7 @@
 ![Figure 5. Databases List](images/import-from-ravendb-db-list.png "Databases List View")
 
  a.  On the destination RavenDB server, select a **database** into which the data will be imported.  
-  **Note**: Verify this database is empty as the importing will overwrite any existing content.  
+  **Note**: Verify this database is empty as the import will overwrite any existing content.  
 
 ---
    
@@ -106,7 +106,7 @@
 
 ![Figure 8. Import configuration](images/import-from-ravendb-configuration.png "Import Configuration")
 
-1. **Server URL** - URL to server you want to import from. You can specify URL to either 4.x server or 3.x server.  
+1. **Server URL** - URL of the server you want to import from.  
 2. **Server Version** - The version of the server that you want to import from will show here once you enter the URL.  
 3. **Database Name** - The name of the Database that you want to migrate your data from.  
 {PANEL/}

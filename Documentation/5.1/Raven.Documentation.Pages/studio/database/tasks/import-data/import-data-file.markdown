@@ -68,7 +68,8 @@ If any of the options is set but the source database doesn't contain any items o
 
 ![Figure 3. Advanced Import Options - Transform Script](images/import-from-file-advanced-transform-script.png "Advanced Import Options - Transform Script")
 
-- Use Transform Script: when enabled will allow to supply a transform javascript script to be operated on each document contained by the file
+- **Use Transform Script**  
+  Enabling it allows you to provide a transform javascript, that would operate on each document contained by the file.  
 
 {CODE-BLOCK:javascript}
 delete this['@metadata']['@change-vector']

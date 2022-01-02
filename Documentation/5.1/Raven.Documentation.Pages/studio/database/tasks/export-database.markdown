@@ -1,9 +1,10 @@
 ﻿# Export Database to a .ravendbdump file
 
-A `.ravendbdump` file is RavenDB's format for exporting/importing a database, with backward compatibility between RavenDB versions.  
-To export a `.ravendbdump` file, we need an existing source database which you can then import into an empty destination database.  
+* A `.ravendbdump` file is RavenDB's format for exporting/importing a database, with backward compatibility between RavenDB versions.  
 
- In this page:
+* To export a `.ravendbdump` file, we need an **existing source** database which you can then import into an **empty destination** database.  
+
+In this page:
 
   * [Export Database to a .ravendbdump file](../../../studio/database/tasks/export-database#export-database-to-a-.ravendbdump-file)  
   * [Export options](../../../studio/database/tasks/export-database#export-options)  
@@ -18,8 +19,8 @@ To export a `.ravendbdump` file, we need an existing source database which you c
 
 1. Select the database to be exported.  
  It can be selected at the top of the page or by choosing from the detailed list of databases.  
-2. Select the `Tasks` tab.  
-3. Select `Export Database`.  
+2. Select the **Tasks** tab.  
+3. Select **Export Database**.  
   
 ## Export options 
 
@@ -28,7 +29,7 @@ Here you can filter the data you want to export, add encryption, select collecti
 ![Figure 3. Export Options](images/export-database-options.png "Export Options")
 
 {NOTE:Import settings for items that don't exist in source database}
-If any of the options is set but the source database doesn't contain any items of that type, the item will be skipped.
+If any of the options is set but the source database doesn't contain items of that type, the item will be skipped.
 {NOTE/}
 
 1. [Include Documents](../../../studio/database/documents/document-view)  
@@ -40,12 +41,13 @@ If any of the options is set but the source database doesn't contain any items o
     - [Include Revisions](../../../server/extensions/revisions)  
     - [Include Conflicts](../../../client-api/cluster/document-conflicts-in-client-side)  
 
-2. [Include Indexes](../../../indexes/what-are-indexes)  
+2. Other Features
+  - [Include Indexes](../../../indexes/what-are-indexes)  
     - [Remove Analyzers](../../../indexes/using-analyzers)  
-    - [Include Identities](../../../client-api/document-identifiers/working-with-document-identifiers)  
-    - [Include Compare Exchange](../../../client-api/operations/compare-exchange/overview)  
-    - [Include Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)  
-    - [Include Configuration and OngoingTasks](../../../studio/database/tasks/import-data/import-from-ravendb#customize-configuration-and-ongoing-tasks)  
+  - [Include Identities](../../../client-api/document-identifiers/working-with-document-identifiers)  
+  - [Include Compare Exchange](../../../client-api/operations/compare-exchange/overview)  
+  - [Include Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)  
+  - [Include Configuration and OngoingTasks](../../../studio/database/tasks/import-data/import-from-ravendb#customize-configuration-and-ongoing-tasks)  
 
 3. [Imported file is encrypted](../../../server/security/overview#encryption)  
  Includes the decryption key for your destination database to handle encrypted data.  

@@ -18,12 +18,13 @@
 
 {PANEL: Create Sample Data}
 
-* Because you need an empty database, [create a new database](../../../studio/server/databases/create-new-database/general-flow) and name it "Northwind" to sync with the documentation examples.  
+* Because you need an empty database, [create a new database](../../../studio/database/create-new-database/general-flow) and name it "Northwind" to sync with the documentation examples.  
     * If you will want to use [multiple nodes](../../../studio/server/databases/create-new-database/general-flow#3.-configure-replication) and/or [encryption](../../../studio/server/databases/create-new-database/encrypted) in production, we recommend creating your playground database with these features so that your playground database will match your actual database.  
 
 * Various collections, their documents and sample indexes will be created in your database.  
 
-![Figure 1. Create Sample Data](images/Create-Sample-Data.png "Create Sample Data")
+
+ ![Figure 1. Create Sample Data](images/Create-Sample-Data.png "Create Sample Data")
 
  1. In **Tasks** tab  
  2. Select **Create Sample Data**  
