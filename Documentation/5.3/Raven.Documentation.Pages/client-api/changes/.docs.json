@@ -12,12 +12,6 @@
     "Mappings": []
   },
   {
-    "Path": "how-to-subscribe-to-counter-changes.markdown",
-    "Name": "How to Subscribe to Counter Changes",
-    "DiscussionId": "7214d8a7-6b54-4eb7-83e3-c1106f931ecd",
-    "Mappings": []
-  },
-  {
     "Path": "how-to-subscribe-to-index-changes.markdown",
     "Name": "How to Subscribe to Index Changes",
     "DiscussionId": "45cc5772-a3de-4f24-9dce-7215758be8da",
@@ -27,6 +21,18 @@
     "Path": "how-to-subscribe-to-operation-changes.markdown",
     "Name": "How to Subscribe to Operation Changes",
     "DiscussionId": "c2ce2582-a46d-44cd-af33-70afdc41d3a2",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-to-counter-changes.markdown",
+    "Name": "How to Subscribe to Counter Changes",
+    "DiscussionId": "7214d8a7-6b54-4eb7-83e3-c1106f931ecd",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-to-time-series-changes.markdown",
+    "Name": "How to Subscribe to Time Series Changes",
+    "DiscussionId": "7214d8a7-6b54-4eb7-83e3-c1106f931ecd",
     "Mappings": []
   }
 ]
