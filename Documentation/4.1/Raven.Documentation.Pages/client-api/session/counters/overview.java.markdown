@@ -1,5 +1,4 @@
 # Counters: Overview
----
 
 {NOTE: }
 
@@ -8,6 +7,9 @@
    * Sold products  
    * Voting results  
    * Any event related to the document  
+   
+* Counters interact with and can trigger other RavenDB features.  
+ To find out how to use counters with other features, read [Counters and Other Features](../../../client-api/session/counters/counters-and-other-features).  
 
 * Create and manage Counters using API methods, or through the [Studio](../../../studio/database/documents/document-view/additional-features/counters).  
 
@@ -52,7 +54,7 @@ Among the advantages of this:
 
 A document includes the Counter's _name_, while the Counter's actual _value_ is kept in a separate location.  
 Modifying a Counter's value doesn't require the modification of the document itself.  
-This results in a performant and uncostly operation.
+This results in highly efficient operation.
 
 ---
 
