@@ -123,8 +123,8 @@ to their subscribers.
 
 |    | Data Subscriptions | Changes API 
 | -- | -- | 
-| What can the server Track | [Documents](../../client-api/data-subscriptions/what-are-data-subscriptions#documents-processing) | [Documents](../../client-api/changes/how-to-subscribe-to-document-changes) <br> [Indexes](../../client-api/changes/how-to-subscribe-to-index-changes) <br> [Operations](../../client-api/changes/how-to-subscribe-to-operation-changes) 
-| What can the server Deliver | Documents | Notifications 
+| What can the server Track | [Documents](../../client-api/data-subscriptions/what-are-data-subscriptions#documents-processing) <br> Revisions | [Documents](../../client-api/changes/how-to-subscribe-to-document-changes) <br> [Indexes](../../client-api/changes/how-to-subscribe-to-index-changes) <br> [Operations](../../client-api/changes/how-to-subscribe-to-operation-changes) <br> Counters <br> Time Series 
+| What can the server Deliver | Documents <br> Revisions | Notifications 
 | Management | Managed by the Server | Managed by the Client 
 
 
