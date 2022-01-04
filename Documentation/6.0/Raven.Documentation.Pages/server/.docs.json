@@ -1,0 +1,59 @@
+[
+  {
+    "Path": "embedded.markdown",
+    "Name": "Embedded",
+    "DiscussionId": "48e8e424-a89c-4972-823f-582f11a0c7dd",
+    "Mappings": []
+  },
+  {
+    "Path": "/administration",
+    "Name": "Administration",
+    "Mappings": []
+  },
+  {
+    "Path": "/clustering",
+    "Name": "Clustering",
+    "Mappings": []
+  },
+  {
+    "Path": "/configuration",
+    "Name": "Configuration",
+    "Mappings": []
+  },
+  {
+    "Path": "/extensions",
+    "Name": "Extensions",
+    "Mappings": []
+  },
+  {
+    "Path": "/security",
+    "Name": "Security",
+    "Mappings": []
+  },
+  {
+    "Path": "/storage",
+    "Name": "Storage",
+    "Mappings": []
+  },
+  {
+    "Path": "/ongoing-tasks",
+    "Name": "Ongoing Tasks",
+    "Mappings": []
+  },
+  {
+    "Path": "/troubleshooting",
+    "Name": "Troubleshooting",
+    "Mappings": []
+  },
+  {
+      "Path": "/kb",
+      "Name": "Knowledge Base",
+      "Mappings": []
+  },
+  {
+      "Path": "tcp-compression.markdown",
+      "Name": "TCP Compression",
+      "DiscussionId": "48e8e424-a89c-4972-823f-582f11a0c7dd",
+      "Mappings": []
+  }
+]
