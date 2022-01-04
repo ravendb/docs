@@ -9,7 +9,6 @@
 In this page:  
 
 * [Studio Certificate Management View](../../../server/security/authentication/certificate-management#studio-certificates-management-view)  
-* [Private Keys](../../../server/security/authentication/certificate-management#private-keys)  
 * [The RavenDB Security Authorization Approach](../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)  
 * [Create and Configure Certificates](../../../server/security/authentication/certificate-management#create-and-configure-certificates)  
   * [List of Registered Certificates](../../../server/security/authentication/certificate-management#list-of-registered-certificates)  
@@ -19,20 +18,10 @@ In this page:
   * [Export Server Certificates](../../../server/security/authentication/certificate-management#export-server-certificates)  
   * [Upload an Existing Certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate)  
   * [Certificate Collections](../../../server/security/authentication/certificate-management#certificate-collections)  
+  * [Private Keys](../../../server/security/authentication/certificate-management#private-keys)  
   * [Client Certificate Chain of Trust](../../../server/security/authentication/certificate-management#client-certificate-chain-of-trust)  
 
----
 
-{PANEL: }
-
-* RavenDB provides an intuitive certificates management GUI in the Studio.  
-
-* All of the operations which are described below are also available in Command Line Interface (CLI).  
-  - Be sure to configure the `SecurityClearance` for each client certficate because the default is [cluster admin](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin) which has full access.
-  - There are CLI-based means to [generate](../../../server/security/authentication/client-certificate-usage#example-i---using-the-ravendb-cli) and [configure client certificates in Windows](../../../server/security/authentication/client-certificate-usage#example-ii---using-powershell-and-wget-in-windows).  
-  - [Linux](../../../server/security/authentication/client-certificate-usage#example-iii--using-curl-in-linux) developers can use this cURL command sample.  
-
-{PANEL/}
 
 ---
 
@@ -43,11 +32,13 @@ In this page:
 1. Click **Manage Server** tab.
 2. Select **Certificates**.
 3. **Client certificate**  
+   ![Client Certificate Button Options](images/client-certificate-button-options.png "Client Certificate Button Options")
    * **Generate client certificate**  
      [Create and configure](../../../server/security/authentication/certificate-management#generate-client-certificate) a new client certificate  
    * **Upload client certificate**  
      [Import a client certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate) that was exported from another server so that they can communicate.  
 4. **Server certificates**  
+   ![Server Certificates Button Options](images/server-certificates-button-options.png "Server Certificates Button Options")
    * **Export server certificates**  
      [Download server certificates](../../../server/security/authentication/certificate-management#export-server-certificates) so that you can import them into another server.  
    * **Replace server certificates**  
@@ -58,8 +49,11 @@ In this page:
 6. Status of current client certificates active in this server. You can remove or [edit client certificates](../../../server/security/authentication/certificate-management#edit-certificate), 
    including configuring databases permissions and [authorization (security clearance) levels](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) here. 
 
+{NOTE: }
+
 Client certificates are managed by RavenDB directly and not by any [Public Key Infrastructure](https://en.wikipedia.org/wiki/Public_key_infrastructure). 
-If you want to remove or reduce the permissions on a certificate handed to a client, you can edit the permissions or remove them entirely in this studio view.
+
+{NOTE/}
 
 ---
 
@@ -136,7 +130,7 @@ To protect data, developers often need to expose only portions of the database o
 ####  *Using ETL for selective, one-way data transfer*  
 
 Some developers need to provide direct access to a part of the database. The most common approach is to 
-[generate a separate client certificate](../../../server/security/authentication/certificate-management#generate-client-certificate) for that purpose and granting it access to a dedicated, exposed database. 
+[generate a separate client certificate](../../../server/security/authentication/certificate-management#generate-client-certificate) for that purpose and grant it access to a dedicated, exposed database. 
 Then set up an [ETL](../../../server/ongoing-tasks/etl/basics) process from the source data to the exposed, destination database.  
 
 In this manner, you can choose exactly what is exposed, including redacting personal information, hiding details, etc. Because the ETL process is unidirectional, 
@@ -150,12 +144,6 @@ With this clearance, you can set a different access level to each database. The 
 * User [Admin](../../../server/security/authorization/security-clearance-and-permissions#user)  
 * [Read/Write](../../../server/security/authorization/security-clearance-and-permissions#section-1)  
 * [Read-Only](../../../server/security/authorization/security-clearance-and-permissions#section-2)  
-  * The Read-Only access level allows reading data and performing queries on a particular database, but not to write or modify data.  
-  * Indexes cannot be defined, although [auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) can still be created in response to queries.  
-  * Clients can still become [subscription workers](../../../client-api/data-subscriptions/what-are-data-subscriptions) to consume data subscriptions.  
-  * [Ongoing tasks](../../../server/ongoing-tasks/general-info) cannot be defined.  
-  * No configurations can be changed  
-  * Some information about the database and the server is restricted.  
   * Learn more about the [Read-Only access level here](../../../studio/server/certificates/read-only-access-level).  
 
 To learn how to configure each client certificate's database permissions and authorization levels via the RavenDB Studio GUI, see [Create and Configure Certificates](../../../server/security/authentication/certificate-management#create-and-configure-certificates).  
@@ -197,6 +185,8 @@ Each client certificate contains the following:
 
 {PANEL/}
 
+---
+
 {PANEL:Generate Client Certificate} 
 
 Using this view, you can generate client certificates directly via RavenDB.  
@@ -208,7 +198,7 @@ When generating a certificate, you must complete the following fields:
 
 1. Click **Client certificate** and select **Generate client certificate**.  
 2. **Name**  
-   Consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
+   Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
 3. **Security Clearance**  
    Set authorization level for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) to choose appropriate level.  
 4. **Certificate Passphrase**  
@@ -234,6 +224,8 @@ Expiration for client certificates is set to 5 years by default.
 
 {PANEL/}
 
+---
+
 {PANEL:Edit Certificate} 
 
 To edit existing certificates:
@@ -242,7 +234,7 @@ To edit existing certificates:
 
 1. Click the edit button.  
 2. **Name**  
-   Consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
+   Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
 3. **Security Clearance**  
    Set authorization level for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) to choose appropriate level.  
 4. **Thumbprint**  
@@ -302,19 +294,21 @@ a .pfx [collection](../../../server/security/authentication/certificate-manageme
 
 {PANEL:Upload an Existing Certificate} 
 
-In the Certificates Management view, click the **Client certificate** button and you will see the following window.  
+Click the **Client certificate** button, select **Upload client certificate** and you will see the following window.  
 
 ![Figure 4. Upload Existing Certificate](images/upload.png "Upload Existing Certificate")
 
 When uploading an existing certificate .pfx file, you must complete the following fields:
 
 1. **Name**  
-   Consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
+   Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
 2. **Security Clearance**  
    Set authorization level for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) to choose appropriate level.  
 3. **Certificate file**  
-   Upload the `.pfx` certificate file from the destination server installation folder.
-4. **Database permissions**
+   Upload the `.pfx` certificate file from the destination server installation folder.  
+4. **Certificate Passphrase**  
+   (Optional) Set a password for this certificate.  
+4. **Database permissions**  
    Select databases and permission levels for this certificate.  
    If you choose *User* security clearance, you can give access to specific databases on the server and configure [User](../../../server/security/authorization/security-clearance-and-permissions#user) authorization levels for this certificate.  
 
@@ -338,14 +332,27 @@ Expiration for client certificates is set to 5 years by default.
 
 {PANEL:Certificate Collections} 
 
-Pfx files may contain a single certificate or a collection of certificates.
+`.pfx` files may contain a single certificate or a collection of certificates.
 
 When uploading a `.pfx` file with multiple certificates, RavenDB will add all of the certificates to the list of registered certificates as one entry 
 and will allow access to all these certificates explicitly by their thumbprint.
 
 {PANEL/}
 
+---
 
+{PANEL: }
+
+* RavenDB provides an intuitive certificates management GUI in the Studio.  
+
+* All of the operations which are described below are also available in Command Line Interface (CLI).  
+  - Be sure to configure the `SecurityClearance` for each client certficate because the default is [cluster admin](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin) which has full access.
+  - There are CLI-based means to [generate](../../../server/security/authentication/client-certificate-usage#example-i---using-the-ravendb-cli) and [configure client certificates in Windows](../../../server/security/authentication/client-certificate-usage#example-ii---using-powershell-and-wget-in-windows).  
+  - [Linux](../../../server/security/authentication/client-certificate-usage#example-iii--using-curl-in-linux) developers can use this cURL command sample.  
+
+{PANEL/}
+
+---
 
 {PANEL:Client Certificate Chain of Trust} 
 
