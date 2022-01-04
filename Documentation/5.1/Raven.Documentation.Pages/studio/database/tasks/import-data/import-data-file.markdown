@@ -64,6 +64,8 @@ If any of the options is set but the source database doesn't contain any items o
 
 ## Advanced import options
 
+Click the **Advanced** button at the bottom of the options view for the following import features.
+
 ### Transform Script
 
 ![Figure 3. Advanced Import Options - Transform Script](images/import-from-file-advanced-transform-script.png "Advanced Import Options - Transform Script")

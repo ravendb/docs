@@ -33,42 +33,38 @@
 
 ![Figure 1. Manage Server-Certificates View](images/importing-exporting-certificates.png "Studio Manage Server-Certificates View")
 
- 1. Click the **Manage Server** tab.
- 2. Select **Certificates**.
- 3. These are the certificate action buttons needed for the next steps.
+ A. Click the **Manage Server** tab.  
 
- (See [Certificates Management](../../../../server/security/authentication/certificate-management)) for more information on this Studio view.
-
----
-
-### a...*Export the destination RavenDB certificate from destination server*  
-
-![Figure 2. Export server certificate](images/import-from-raven-export-server-certificate.png "Export the destination server certificate")
+ B. Select **Certificates**.  
+   (See [Certificates Management](../../../../server/security/authentication/certificate-management)) for more information on this Studio view.  
  
- * Choose **Export Cluster Certificates** option from the **Cluster Certificate** dropdown.  
+ C. Export the destination RavenDB certificate **from the DESTINATION RavenDB server**.  
+  ![Figure 2. Export server certificate](images/import-from-raven-export-server-certificate.png "Export the destination server certificate")  
 
----
-   
-### b...*Register this certificate on the source RavenDB server*  
+   * Choose **Export Cluster Certificates** option from the **Cluster Certificate** dropdown.  
+ 
+ D. Register this certificate on the **SOURCE RavenDB server**  
+  ![Figure 3. Register exported certificate as client certificate](images/import-from-raven-upload-server-cert-as-client-cert.png "Register exported certificate as client certificate")  
 
-![Figure 3. Register exported certificate as client certificate](images/import-from-raven-upload-server-cert-as-client-cert.png "Register exported certificate as client certificate")
+   * Choose **Upload client certificate** to upload the exported certificate as the client certificate.  
+ 
+ E. Set the certificate details.  
+  ![Figure 4. Import certificate details](images/import-from-raven-upload-server-cert-as-client-cert-details.png "Set certificate details")
 
- * Choose **Upload client certificate** to upload the exported certificate as the client certificate.  
-
----
-
-### c...*Set the certificate details*  
-
-![Figure 4. Import certificate details](images/import-from-raven-upload-server-cert-as-client-cert-details.png "Set certificate details")
-
- 1. **Name** - Provide a meaningful name for this certificate.  
- 2. **Security Clearance** - `User` is the minimum [clearance](../../../../server/security/authorization/security-clearance-and-permissions#operator) that will provide the necessary access for the data migration purposes.  
- 3. **Certificate File** - Choose the `.pfx` file from the server setup folder. 
- 4. **Database Permissions** - Remember to add at least `Read/Write` permission to the database you want to import.  
-
----
-
-### d...*Click "Upload" to complete the process.*  
+1. **Name**  
+   Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
+2. **Security Clearance**  
+   Set [authorization level](../../../../server/security/authorization/security-clearance-and-permissions) for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) to choose appropriate level.  
+3. **Certificate file**  
+   Upload the `.pfx` certificate file from the destination server installation folder.  
+4. **Certificate Passphrase**  
+   (Optional) Set a password for this certificate.  
+4. **Database permissions**  
+   Select databases and permission levels for this certificate.  
+   If you choose *User* security clearance, you can give access to specific databases on the server and configure [User](../../../server/security/authorization/security-clearance-and-permissions#user) authorization levels for this certificate.  
+ 
+ F. Click **Upload** to complete the process.  
+   The uploaded certificate will be added to the list of registered client certificates on this server.  
 
 
 
@@ -80,20 +76,21 @@
    
 ![Figure 5. Databases List](images/import-from-ravendb-db-list.png "Databases List View")
 
- a.  On the destination RavenDB server, select a **database** into which the data will be imported.  
-  **Note**: Verify this database is empty as the import will overwrite any existing content.  
+ On the **destination** RavenDB server, select a **database** into which the data will be imported.  
+  
+ {WARNING: }
+  
+  Verify that this database is empty as the import will overwrite any existing content.  
+
+{WARNING/}
 
 ---
    
-![Figure 6. Import Data](images/Import-Data-FromRavenDB-View.png "Go to Import Data View")
+![Figure 6. Import Data](images/import-from-ravendb-from-ravendb.png "Go to Import Data View")
 
- b.  Select **Tasks** tab and then **Import Data**.  
-
----
-   
-![Figure 7. From RavenDB Server](images/import-from-ravendb-from-ravendb.png "Select 'From RavenDB Server'")
-
- c. Select **From RavenDB Server**.  
+ 1. Click **Tasks** tab.  
+ 2. Select **Import Data**.  
+ 3. Select **From RavenDB**.  
 
 
 {PANEL/}
@@ -106,9 +103,13 @@
 
 ![Figure 8. Import configuration](images/import-from-ravendb-configuration.png "Import Configuration")
 
-1. **Server URL** - URL of the server you want to import from.  
-2. **Server Version** - The version of the server that you want to import from will show here once you enter the URL.  
-3. **Database Name** - The name of the Database that you want to migrate your data from.  
+1. **Server URL**  
+   Paste URL of the server you want to import from.  
+2. **Server Version**  
+   The version of the server that you want to import from will show here once you enter the URL.  
+3. **Database Name**  
+   Enter the name of the database that you want to migrate your data from.  
+
 {PANEL/}
 
 {PANEL: Step #4: Set Import Options}
@@ -126,6 +127,8 @@
  - [Include Documents](../../../../studio/database/documents/document-view)  
   If disabled, the following document related items will automatically be disabled too.  
    - [Include Attachments](../../../../document-extensions/attachments/what-are-attachments)  
+   - [Include Counters](../../../../document-extensions/counters/overview)  
+   - [Include Time Series](../../../../document-extensions/timeseries/overview)  
    - [Include Revisions](../../../../server/extensions/revisions)  
    - [Include Conflicts](../../../../client-api/cluster/document-conflicts-in-client-side)  
 2. 
@@ -145,7 +148,7 @@ If any of the options is set but the source database doesn't contain any items o
 
 {PANEL: Step #5: Advanced Import Options}
 
-{NOTE: }
+Click the **Advanced** button at the bottom of the options view for the following import features.
 
 ### Transform Script
 
