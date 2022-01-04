@@ -3,10 +3,11 @@
 
 {NOTE: }
 
-* Sample data can be generated only on an empty database.  
+* Sample data can be created in playground databases to enable developers to experiment with features before making changes to their actual database.  
+  It is populated with various collections, .json documents, indexes, and document extensions.  
 
-* Most of the examples in the RavenDB documentation are based on this sample data.  
-  Thus, creating it will enable you to play with the data as you use the documentation to familiarize yourself with RavenDB features.  
+* Many of the examples in the RavenDB documentation are based on this sample data.  
+  Creating it will enable you to play with the data as you use the documentation to familiarize yourself with RavenDB features.  
 
 * In this page:  
   * [Create Sample Data](../../../studio/database/tasks/create-sample-data#create-sample-data)  
@@ -18,8 +19,10 @@
 
 {PANEL: Create Sample Data}
 
-* Because you need an empty database, [create a new database](../../../studio/database/create-new-database/general-flow) and name it "Northwind" to sync with the documentation examples.  
-    * If you will want to use [multiple nodes](../../../studio/server/databases/create-new-database/general-flow#3.-configure-replication) and/or [encryption](../../../studio/server/databases/create-new-database/encrypted) in production, we recommend creating your playground database with these features so that your playground database will match your actual database.  
+* Sample data can be added only on an empty database.  To create sample data, you can either empty your playground database or [create a new database](../../../studio/database/create-new-database/general-flow).  
+    * If you plan to use [multiple nodes](../../../studio/server/databases/create-new-database/general-flow#3.-configure-replication) 
+      and/or [encryption](../../../studio/server/databases/create-new-database/encrypted) in production, 
+      we recommend installing your playground database in a similar environment.  
 
 * Various collections, their documents and sample indexes will be created in your database.  
 
