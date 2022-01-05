@@ -40,7 +40,7 @@ In this page:
 4. **Server certificates**  
    ![Server Certificates Button Options](images/server-certificates-button-options.png "Server Certificates Button Options")
    * **Export server certificates**  
-     [Download server certificates](../../../server/security/authentication/certificate-management#export-server-certificates) so that you can import them into another server.  
+     [Download server certificates](../../../server/security/authentication/certificate-management#export-server-certificates) so that you can download and then import them into another server.  
    * **Replace server certificates**  
      [Replace server certificates](../../../server/security/authentication/certificate-renewal-and-rotation) by uploading another `.pfx` certificate.  
 5. Status of current server certificate. 
@@ -55,26 +55,14 @@ Client certificates are managed by RavenDB directly and not by any [Public Key I
 
 {NOTE/}
 
----
 
-### Private Keys
-
-It's important to note that RavenDB does _not_ keep track of the certificate's private key. Whether you generate a client certificate
-via RavenDB or upload an existing client certificate, the private key is not retained. If a certificate was lost, you'll
-need to recreate a new certificate, assign the same permissions, and distribute the certificate again.
-
-{INFO: Implicit Trust}
-If two different RavenDB clusters are communicating securely, and the source cluster has its certificate renewed, the destination cluster could 
-still trust this new certificate - provided that the new certificate is signed with the same private key as the original, and was issued by the 
-same certificate authority. This is accomplished using a [public key pinning hash](../../../server/security/authentication/certificate-renewal-and-rotation#implicit-trust-by-public-key-pinning-hash).  
-{INFO/}
 
 ## The RavenDB Security Authorization Approach
 
 {PANEL: }
 
 In general, RavenDB assumes that an application will implement its own logic and business rules, limiting 
-itself to protecting the data from unauthorized access. Applications operate on behalf of developers, and as such, they are in a better position than RavenDB to determine what is
+itself to protect the data from unauthorized access. Applications operate on behalf of developers, and as such, they are in a better position than RavenDB to determine what is
 allowed.  This is why access levels of RavenDB databases in each cluster are highly customizable by [cluster admins](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin) 
 and [operators](../../../server/security/authorization/security-clearance-and-permissions#operator).  
 
@@ -129,16 +117,26 @@ To protect data, developers often need to expose only portions of the database o
 
 ####  *Using ETL for selective, one-way data transfer*  
 
-Some developers need to provide direct access to a part of the database. The most common approach is to 
-[generate a separate client certificate](../../../server/security/authentication/certificate-management#generate-client-certificate) for that purpose and grant it access to a dedicated, exposed database. 
-Then set up an [ETL](../../../server/ongoing-tasks/etl/basics) process from the source data to the exposed, destination database.  
+Some developers need to provide direct access to portions of a database that also contains sensitive data. One approach is to:  
 
-In this manner, you can choose exactly what is exposed, including redacting personal information, hiding details, etc. Because the ETL process is unidirectional, 
-this also protects the source data from modifications made on the new database. Together, ETL and dedicated databases can be used for fine-grained access, but that 
-tends to be the exception, rather than the rule. 
+1. [Create](../../../studio/database/create-new-database/general-flow) a dedicated database which the public will be able to access.  
+2. [Generate a client certificate](../../../server/security/authentication/certificate-management#generate-client-certificate) with "User" security clearance so that
+   you can configure it to give access only to the dedicated, public-facing database. 
+3. If the dedicated database is on a different cluster than the source database (optional), unzip and then [upload the .pfx certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate) to the source server to enable the two to connect.  
+   * Configure the certificate upload to give access to the source database.  
+4. Then set up an [Extract, Transform, Load (ETL)](../../../server/ongoing-tasks/etl/raven) process from the source database to the exposed, destination database.  
+   * Set up a Javascript Transform script in the ETL to automatically filter the information passed from the source to destination databases.  
+5. Check the dedicated database to make sure that the transform script did what you want it to do. 
+   This database should only have the information that you filtered into it and is ready to expose to the public.
+
+With this approach, you can choose exactly what is exposed, including redacting personal information, hiding details, etc. Because the ETL process is unidirectional, 
+this also protects the source data from modifications made on the new database. On the other hand, ETLs are ongoing tasks, so changes made to data 
+in the source database will be reflected automatically in the destination database.  
+
+Together, ETL and dedicated databases can be used for fine-grained filtration, but that tends to be the exception, rather than the rule. 
 
 ####  *Setting User Access Levels*  
-You can also do this by giving a client certificate a [User](../../../server/security/authorization/security-clearance-and-permissions#user) security clearance. 
+You can also control access by giving a client certificate a [User](../../../server/security/authorization/security-clearance-and-permissions#user) security clearance. 
 With this clearance, you can set a different access level to each database. The three "User" access levels are:  
 
 * User [Admin](../../../server/security/authorization/security-clearance-and-permissions#user)  
@@ -161,7 +159,7 @@ To learn how to configure client certificates via CLI, see [Authentication: Clie
 In the image below, the client certificates (HR, localcluster.client.certificate, Project Managers) have different **security clearance** and **database permissions** configurations.  
 This is done to give admins the ability to protect the contents of their databases by customizing permissions.  
 
-For example, if an application user should have read/write but not admin access over the HR database, while project managers should have operator permissions on all databases, 
+For example, if an application user should have read/write but not admin access over a certain database, while project managers should have operator permissions on all databases, 
 you can grant different [access levels](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) 
 by using different client certificates, each with its own set of permissions.  
 
@@ -232,11 +230,14 @@ To edit existing certificates:
 
 ![Figure 5. Edit Certificate](images/edit.png "Edit Certificate")
 
-1. Click the edit button.  
+1. **Edit**
+   Click the edit button to configure this certificate.  
 2. **Name**  
-   Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
+   Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system 
+   (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
 3. **Security Clearance**  
-   Set authorization level for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) to choose appropriate level.  
+   Set authorization level for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) 
+   to choose appropriate level.  
 4. **Thumbprint**  
    Click the button to copy the unique code assigned to this certificate.  
 5. **Database Permissions**  
@@ -275,13 +276,21 @@ b. **Upload** ([import](../../../server/security/authentication/certificate-mana
 
 ![Importing and Exporting Certificates](images/importing-and-exporting-certificate.png "Importing and Exporting Certificates")
 
- 1. Click **Manage Server** and select **Certificates**.  
- 2. Click **Server certificates** to:  
-    * Export (download) certificate collection so that you can import (upload) it into another server to enable the two to communicate.
-    * Replace existing certificate by uploading .pfx file.
- 3. Click **Client certificate** to:
-    * Generate and configure a new client certificate.  
-    * Upload (import) an existing client certificate from another server to enable the two to communicate.  
+ 1. Click **Manage Server** and select **Certificates** to access the Studio - Certificates Management screen.  
+ 2. Click **Server certificates** in the destination server.  
+   ![Server Certificates Button Options](images/server-certificates-button-options.png "Server Certificates Button Options")
+   * **Export server certificates**  
+     [Download server certificates](../../../server/security/authentication/certificate-management#export-server-certificates) 
+     so that you can download and then import them into another server.  
+   * **Replace server certificates**  
+     [Replace server certificates](../../../server/security/authentication/certificate-renewal-and-rotation) by uploading another `.pfx` certificate.  
+ 3. Click **Client certificate** in the source server.  
+   ![Client Certificate Button Options](images/client-certificate-button-options.png "Client Certificate Button Options")
+   * **Generate client certificate**  
+     [Create and configure](../../../server/security/authentication/certificate-management#generate-client-certificate) a new client certificate  
+   * **Upload client certificate**  
+     [Import a client certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate) 
+     that was exported from another server so that the two can communicate.  
 
 {PANEL:Export Server Certificates} 
 
@@ -349,6 +358,24 @@ and will allow access to all these certificates explicitly by their thumbprint.
   - Be sure to configure the `SecurityClearance` for each client certficate because the default is [cluster admin](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin) which has full access.
   - There are CLI-based means to [generate](../../../server/security/authentication/client-certificate-usage#example-i---using-the-ravendb-cli) and [configure client certificates in Windows](../../../server/security/authentication/client-certificate-usage#example-ii---using-powershell-and-wget-in-windows).  
   - [Linux](../../../server/security/authentication/client-certificate-usage#example-iii--using-curl-in-linux) developers can use this cURL command sample.  
+
+{PANEL/}
+
+---
+
+{PANEL: }
+
+### Private Keys
+
+It's important to note that RavenDB does _not_ keep track of the certificate's private key. Whether you generate a client certificate
+via RavenDB or upload an existing client certificate, the private key is not retained. If a certificate was lost, you'll
+need to recreate a new certificate, assign the same permissions, and distribute the certificate again.
+
+{INFO: Implicit Trust}
+If two different RavenDB clusters are communicating securely, and the source cluster has its certificate renewed, the destination cluster could 
+still trust this new certificate - provided that the new certificate is signed with the same private key as the original, and was issued by the 
+same certificate authority. This is accomplished using a [public key pinning hash](../../../server/security/authentication/certificate-renewal-and-rotation#implicit-trust-by-public-key-pinning-hash).  
+{INFO/}
 
 {PANEL/}
 
