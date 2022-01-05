@@ -10,6 +10,8 @@ In this page:
 
 * [Studio Certificate Management View](../../../server/security/authentication/certificate-management#studio-certificates-management-view)  
 * [The RavenDB Security Authorization Approach](../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)  
+  * [Authorization Levels in Client Certificates](../../../server/security/authentication/certificate-management#authorization-levels-in-client-certificates)  
+  * [Partial Access to Database](../../../server/security/authentication/certificate-management#partial-access-to-database)  
 * [Create and Configure Certificates](../../../server/security/authentication/certificate-management#create-and-configure-certificates)  
   * [List of Registered Certificates](../../../server/security/authentication/certificate-management#list-of-registered-certificates)  
   * [Generate Client Certificate](../../../server/security/authentication/certificate-management#generate-client-certificate)  
@@ -113,21 +115,26 @@ any and all documents in that database unless protection is explicitly configure
 
 ### Partial Access to Database
 
-To protect data, developers often need to expose only portions of the database or to provide read-only access.  
+There are two approaches to give partial access to a database:
+
+ * [Using ETL for selective, one-way data transfer](../../../server/security/authentication/certificate-management#using-etl-for-selective-one-way-data-transfer)  
+ * [Setting "User" Access Levels](../../../server/security/authentication/certificate-management#setting-user-access-levels)  
 
 ####  *Using ETL for selective, one-way data transfer*  
 
-Some developers need to provide direct access to portions of a database that also contains sensitive data. One approach is to:  
+Some developers need to provide partial access to a database that also contains sensitive data. One approach is to set up an ETL:  
 
 1. [Create](../../../studio/database/create-new-database/general-flow) a dedicated database which the public will be able to access.  
 2. [Generate a client certificate](../../../server/security/authentication/certificate-management#generate-client-certificate) with "User" security clearance so that
    you can configure it to give access only to the dedicated, public-facing database. 
 3. If the dedicated database is on a different cluster than the source database (optional), unzip and then [upload the .pfx certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate) to the source server to enable the two to connect.  
-   * Configure the certificate upload to give access to the source database.  
+   * While uploading, configure the certificate to give access to the source database.  
 4. Then set up an [Extract, Transform, Load (ETL)](../../../server/ongoing-tasks/etl/raven) process from the source database to the exposed, destination database.  
    * Set up a Javascript Transform script in the ETL to automatically filter the information passed from the source to destination databases.  
 5. Check the dedicated database to make sure that the transform script did what you want it to do. 
    This database should only have the information that you filtered into it and is ready to expose to the public.
+
+{NOTE: }
 
 With this approach, you can choose exactly what is exposed, including redacting personal information, hiding details, etc. Because the ETL process is unidirectional, 
 this also protects the source data from modifications made on the new database. On the other hand, ETLs are ongoing tasks, so changes made to data 
@@ -135,7 +142,10 @@ in the source database will be reflected automatically in the destination databa
 
 Together, ETL and dedicated databases can be used for fine-grained filtration, but that tends to be the exception, rather than the rule. 
 
-####  *Setting User Access Levels*  
+{NOTE/}
+
+####  *Setting "User" Access Levels*  
+
 You can also control access by giving a client certificate a [User](../../../server/security/authorization/security-clearance-and-permissions#user) security clearance. 
 With this clearance, you can set a different access level to each database. The three "User" access levels are:  
 
@@ -144,8 +154,15 @@ With this clearance, you can set a different access level to each database. The 
 * [Read-Only](../../../server/security/authorization/security-clearance-and-permissions#section-2)  
   * Learn more about the [Read-Only access level here](../../../studio/server/certificates/read-only-access-level).  
 
-To learn how to configure each client certificate's database permissions and authorization levels via the RavenDB Studio GUI, see [Create and Configure Certificates](../../../server/security/authentication/certificate-management#create-and-configure-certificates).  
-To learn how to configure client certificates via CLI, see [Authentication: Client Certificate Usage](../../../server/security/authentication/client-certificate-usage#authentication-client-certificate-usage)
+{NOTE: }
+
+This approach is similar to HR Manager and customers in the example given [above](../../../server/security/authentication/certificate-management#authorization-levels-in-client-certificates). 
+It enables developers to control access levels by configuring client certificates.  
+
+{NOTE/}
+
+* To learn how to configure each client certificate's database permissions and authorization levels via the RavenDB Studio GUI, see [Create and Configure Certificates](../../../server/security/authentication/certificate-management#create-and-configure-certificates).  
+* To learn how to configure client certificates via CLI, see [Authentication: Client Certificate Usage](../../../server/security/authentication/client-certificate-usage#authentication-client-certificate-usage)
 
 
 {PANEL/}
@@ -230,7 +247,7 @@ To edit existing certificates:
 
 ![Figure 5. Edit Certificate](images/edit.png "Edit Certificate")
 
-1. **Edit**
+1. **Edit**  
    Click the edit button to configure this certificate.  
 2. **Name**  
    Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system 
@@ -282,12 +299,8 @@ b. **Upload** ([import](../../../server/security/authentication/certificate-mana
    * **Export server certificates**  
      [Download server certificates](../../../server/security/authentication/certificate-management#export-server-certificates) 
      so that you can download and then import them into another server.  
-   * **Replace server certificates**  
-     [Replace server certificates](../../../server/security/authentication/certificate-renewal-and-rotation) by uploading another `.pfx` certificate.  
  3. Click **Client certificate** in the source server.  
    ![Client Certificate Button Options](images/client-certificate-button-options.png "Client Certificate Button Options")
-   * **Generate client certificate**  
-     [Create and configure](../../../server/security/authentication/certificate-management#generate-client-certificate) a new client certificate  
    * **Upload client certificate**  
      [Import a client certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate) 
      that was exported from another server so that the two can communicate.  
@@ -307,7 +320,7 @@ Click the **Client certificate** button, select **Upload client certificate** an
 
 ![Figure 4. Upload Existing Certificate](images/upload.png "Upload Existing Certificate")
 
-When uploading an existing certificate .pfx file, you must complete the following fields:
+When uploading an existing certificate .pfx file, you must configure the certificate by completing the following fields:
 
 1. **Name**  
    Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
