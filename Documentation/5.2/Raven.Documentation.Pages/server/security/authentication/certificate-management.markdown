@@ -5,6 +5,7 @@
 
 * Read about the logic and rationale behind RavenDB's client certificates in [The RavenDB Security Authorization Approach](../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach) to ensure that you configure them appropriately.  
 
+* See the API article for integrating a client certificate into an application via the [document store](../../../client-api/creating-document-store).  
 
 In this page:  
 
@@ -126,13 +127,15 @@ Some developers need to provide partial access to a database that also contains 
 
 1. [Create](../../../studio/database/create-new-database/general-flow) a dedicated database which the public will be able to access.  
 2. [Generate a client certificate](../../../server/security/authentication/certificate-management#generate-client-certificate) with "User" security clearance so that
-   you can configure it to give access only to the dedicated, public-facing database. 
-3. If the dedicated database is on a different cluster than the source database (optional), unzip and then [upload the .pfx certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate) to the source server to enable the two to connect.  
-   * While uploading, configure the certificate to give access to the source database.  
+   you can configure it to give access only to the dedicated, public-facing database.  
+3. If the dedicated database is on a different cluster than the source database: (This is optional. If both databases are on the same cluster, skip to step 4.)  
+   * [Export (download) server certificates](../../../server/security/authentication/certificate-management#export-server-certificates) from the **destination server**.  
+   * [Upload the .pfx certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate) to the **source server** to enable the two to connect.  
+    * While uploading, configure the certificate to give access to the target source database.  
 4. Then set up an [Extract, Transform, Load (ETL)](../../../server/ongoing-tasks/etl/raven) process from the source database to the exposed, destination database.  
    * Set up a Javascript Transform script in the ETL to automatically filter the information passed from the source to destination databases.  
 5. Check the dedicated database to make sure that the transform script did what you want it to do. 
-   This database should only have the information that you filtered into it and is ready to expose to the public.
+   This database should only have the information that you filtered and is ready to expose to the public.
 
 {NOTE: }
 
