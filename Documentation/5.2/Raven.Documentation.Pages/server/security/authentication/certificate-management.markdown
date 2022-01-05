@@ -123,7 +123,7 @@ There are two approaches to give partial access to a database:
 
 ####  *Using ETL for selective, one-way data transfer*  
 
-Some developers need to provide partial access to a database that also contains sensitive data. One approach is to set up an ETL:  
+Some developers need to provide partial access to a database that also contains sensitive data. One approach is to set up an [Extract, Transform, Load (ETL) task](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task):  
 
 1. [Create](../../../studio/database/create-new-database/general-flow) a dedicated database which the public will be able to access.  
 2. [Generate a client certificate](../../../server/security/authentication/certificate-management#generate-client-certificate) with "User" security clearance so that
@@ -132,8 +132,10 @@ Some developers need to provide partial access to a database that also contains 
    * [Export (download) server certificates](../../../server/security/authentication/certificate-management#export-server-certificates) from the **destination server**.  
    * [Upload the .pfx certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate) to the **source server** to enable the two to connect.  
     * While uploading, configure the certificate to give access to the target source database.  
-4. Then set up an [Extract, Transform, Load (ETL)](../../../server/ongoing-tasks/etl/raven) process from the source database to the exposed, destination database.  
-   * Set up a Javascript Transform script in the ETL to automatically filter the information passed from the source to destination databases.  
+4. Then set up an [ETL](../../../server/ongoing-tasks/etl/raven) task from the source database to the exposed, destination database.  
+   * Set up a Javascript [Transform script](../../../server/ongoing-tasks/etl/basics#transform) in the ETL to automatically filter the information passed from the source to destination databases.  
+   * After entering the script code, you can click the blue button to [Test script](../../../server/ongoing-tasks/etl/test-scripts) before saving the ETL.  Once you click the red **Save** button, 
+     the ETL task begins to work.  It will transform and add the data to the dedicated database.  
 5. Check the dedicated database to make sure that the transform script did what you want it to do. 
    This database should only have the information that you filtered and is ready to expose to the public.
 
