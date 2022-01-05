@@ -1,0 +1,100 @@
+[
+    {
+        "Path": "databases-list-view.markdown",
+        "Name": "Database List View",
+        "DiscussionId": "29cf4658-86dd-4188-b0ab-6d75f2d4f78f",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "studio/server/databases/databases-list-view"
+            },
+            {
+                "Version": 4.1,
+                "Key": "studio/server/databases/databases-list-view"
+            },
+            {
+                "Version": 4.2,
+                "Key": "studio/server/databases/databases-list-view"
+            },
+            {
+                "Version": 5.0,
+                "Key": "studio/server/databases/databases-list-view"
+            },
+            {
+                "Version": 5.1,
+                "Key": "studio/server/databases/databases-list-view"
+            }
+        ]
+    },
+    {
+        "Path": "/create-new-database",
+        "Name": "Create New Database",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "studio/server/databases/create-new-database"
+            },
+            {
+                "Version": 4.1,
+                "Key": "studio/server/databases/create-new-database"
+            },
+            {
+                "Version": 4.2,
+                "Key": "studio/server/databases/create-new-database"
+            },
+            {
+                "Version": 5.0,
+                "Key": "studio/server/databases/create-new-database"
+            },
+            {
+                "Version": 5.1,
+                "Key": "studio/server/databases/create-new-database"
+            }
+        ]
+    },
+    {
+        "Path": "/documents",
+        "Name": "Documents",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/document-extensions",
+        "Name": "Document Extensions",
+        "Mappings": []
+    },
+    {
+        "Path": "/settings",
+        "Name": "Settings",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/tasks",
+        "Name": "Tasks",
+        "Mappings": []
+    },
+    {
+        "Path": "/indexes",
+        "Name": "Indexes",
+        "Mappings": []
+    },
+    {
+        "Path": "/queries",
+        "Name": "Queries",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/stats",
+        "Name": "Stats",
+        "Mappings": []
+
+    },
+    {
+        "Path": "code-assistance.markdown",
+        "Name": "RQL Code Assistance",
+        "DiscussionId": "29cf4658-86dd-4188-b0ab-6d75f2d4f78f",
+        "Mappings": []
+    }
+]

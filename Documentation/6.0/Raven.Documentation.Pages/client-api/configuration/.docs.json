@@ -1,0 +1,36 @@
+[
+  {
+    "Path": "conventions.markdown",
+    "Name": "Conventions",
+    "DiscussionId": "7d155893-f629-4b13-afbf-f1786a3528d7",
+    "Mappings": []
+  },
+  {
+    "Path": "querying.markdown",
+    "Name": "Querying",
+    "DiscussionId": "da2fdd00-edeb-40a3-8d5c-33933fc23a46",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/configuration/conventions/querying"
+      }
+    ]
+  },
+  {
+    "Path": "serialization.markdown",
+    "Name": "Serialization",
+    "DiscussionId": "da305bdb-37c5-4ee9-b5a2-f641969427e1",
+    "Mappings": []
+  },
+  {
+    "Path": "load-balance-and-failover.markdown",
+    "Name": "Load Balance & Failover",
+    "DiscussionId": "b0d33f30-29ae-4972-8342-e6ce5ac9a4d1",
+    "Mappings": []
+  },
+  {
+    "Path": "/identifier-generation",
+    "Name": "Identifier generation",
+    "Mappings": []
+  }
+]

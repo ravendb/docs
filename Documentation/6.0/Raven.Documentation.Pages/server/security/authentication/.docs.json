@@ -1,0 +1,38 @@
+[
+  {
+    "Path": "certificate-configuration.markdown",
+    "Name": "Manual Certificate Configuration",
+    "DiscussionId": "3c2f2857-a7f2-4508-bbd8-7c60faca6bb9",
+    "Mappings": []
+  },
+  {
+    "Path": "certificate-management.markdown",
+    "Name": "Certificate Management",
+    "DiscussionId": "9177520e-4641-4e32-8a21-e06fec0bc2d0",
+    "Mappings": []
+  },
+  {
+    "Path": "client-certificate-usage.markdown",
+    "Name": "Client Certificate Usage",
+    "DiscussionId": "5c04910c-24b4-4313-b774-9849324f74a6",
+    "Mappings": []
+  },
+  {
+    "Path": "certificate-renewal-and-rotation.markdown",
+    "Name": "Certificate Renewal & Rotation",
+    "DiscussionId": "17379223-bafb-4ff5-a2c5-fe254e18ec6c",
+    "Mappings": []
+  },
+  {
+    "Path": "lets-encrypt-certificates.markdown",
+    "Name": "Let's Encrypt Certificates",
+    "DiscussionId": "6e5cdd59-d3f8-4b6d-b292-f75525d4bba3",
+    "Mappings": []
+  },
+  {
+      "Path": "solve-cluster-certificate-renewal-issue.markdown",
+      "Name": "Solve Certificate Renewal Issue",
+      "DiscussionId": "86ac6882-e202-4781-a1cd-65ad7555226b",
+      "Mappings": []
+  }
+]
