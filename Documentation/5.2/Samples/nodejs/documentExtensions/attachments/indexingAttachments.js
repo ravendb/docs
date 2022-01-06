@@ -3,9 +3,12 @@ import {AbstractCsharpIndexCreationTask, DocumentStore} from "ravendb";
 const store = new DocumentStore('http://127.0.0.1:8080', 'Northwind');
 const session = store.openSession();
 
-class CEmployees_ByAttachmentNames {}
+class CEmployees_ByAttachmentNames {
+}
+
 class Company {
 }
+
 class Employee {
 }
 
@@ -27,7 +30,7 @@ class Employee {
 }
 {
     //region LoadAtt_index_JS
-    class Companies_With_Attachments_JavaScript  extends AbstractCsharpIndexCreationTask {
+    class Companies_With_Attachments_JavaScript extends AbstractCsharpIndexCreationTask {
         constructor() {
             super();
             this.map = `docs.Companies.Select(company => new {
@@ -43,14 +46,15 @@ class Employee {
             })`;
         }
     }
+
     //endregion
 }
 {
     //region LoadAtts_index_JS
-    class Companies_With_All_Attachments_JS  extends AbstractCsharpIndexCreationTask {
+    class Companies_With_All_Attachments_JS extends AbstractCsharpIndexCreationTask {
         constructor() {
             super();
-            this.map =`docs.Companies.Select(company => new {
+            this.map = `docs.Companies.Select(company => new {
                 company = company,
                 attachments = this.LoadAttachments(company)
             }).SelectMany(this0 => this0.attachments, (this0, attachment) => new {
@@ -59,15 +63,15 @@ class Employee {
             })`;
         }
     }
+
     //endregion
 }
 
 
-
 //region query1
-    //return all employees that have an attachment called "cv.pdf"
-    const employees = session.query(Employees_ByAttachmentNames)
-        .containsAny("attachmentNames", ["employees_cv.pdf"])
-        .selectFields<Employee>("cv.pdf")
-        .all();
+//return all employees that have an attachment called "cv.pdf"
+const employees = await session.query(Employees_ByAttachmentNames)
+    .containsAny("attachmentNames", ["employees_cv.pdf"])
+    .selectFields("cv.pdf")
+    .all();
 //endregion

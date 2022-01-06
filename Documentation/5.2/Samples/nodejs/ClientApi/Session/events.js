@@ -33,6 +33,7 @@ class Product {
             }
         }
     }
+
     //endregion
 
     //region OnBeforeStore
@@ -44,10 +45,10 @@ class Product {
 
     session = store.openSession();
     await session.store(new Product(
-            {
-                name: "RavenDB v3.5",
-                unitsInStock: 0
-            })
+        {
+            name: "RavenDB v3.5",
+            unitsInStock: 0
+        })
     )
 
     await session.store(new Product(
@@ -76,6 +77,7 @@ class Product {
     function onBeforeDelete(args) {
         throw new Error("Not implemented");
     }
+
     //endregion
 
     //region before_delete_event
@@ -139,6 +141,7 @@ class Product {
     function onBeforeQuery(args) {
         args.queryCustomization.noCaching();
     }
+
     //endregion
 
     //region before_query_event
@@ -149,6 +152,7 @@ class Product {
     function onBeforeQuery(args) {
         args.queryCustomization.waitForNonStaleResults(30);
     }
+
     //endregion
 }
 
@@ -166,9 +170,10 @@ class Product {
     function onBeforeConversionToDocument(args) {
         if (args.getEntity() instanceof Product) {
             const product = args.getEntity();
-            product.before=true;
+            product.before = true;
         }
     }
+
     //endregion
 
     //region beforeConversionToDocument_event
@@ -177,7 +182,6 @@ class Product {
 
 
 }// on_before_conversion_to_document Block End
-
 
 
 //OnAfterConversionToDocument Block
@@ -194,11 +198,12 @@ class Product {
     function onAfterConversionToDocument(args) {
         if (args.getEntity() instanceof Product) {
             const product = args.getEntity();
-            if(product.document.after == null) {
+            if (product.document.after == null) {
                 product.document.after = true;
             }
         }
     }
+
     //endregion
 
     //region afterConversionToDocument_event

@@ -4,23 +4,24 @@ import {
 } from "ravendb";
 
 
-class Product {}
+class Product {
+}
 
 const store = new DocumentStore();
 {
     //region counters_region_query
     const session = store.openSession();
-    const  query= session.query({ collection: "Products" })
+    const query = session.query({collection: "Products"})
         .selectFields("ProductLikes");
     const queryResults = query.all();
 
-    for (let counterValue  in queryResults) {
+    for (let counterValue in queryResults) {
         console.log("ProductLikes: " + counterValue);
     }
     //endregion
 }
 
-    const session = store.openSession();
+const session = store.openSession();
 {
     //region counters_region_rawqueries_counter
     //Various RQL expressions sent to the server using counter()
@@ -56,8 +57,8 @@ const store = new DocumentStore();
 
 
     //region counters_region_load_include1
-    const productPage = await session.load("orders/1-A",{
-        includes : includeBuilder => includeBuilder
+    const productPage = await session.load("orders/1-A", {
+        includes: includeBuilder => includeBuilder
             .includeDocuments("products/1-C")
             .includeCounters(["ProductLikes", "ProductDislikes"])
     });
@@ -67,18 +68,18 @@ const store = new DocumentStore();
 {
     //region counters_region_load_include2
     const productPage = await session.load("orders/1-A", {
-        documentType: Product,
-        includeBuilder:this.includeBuilder
-            .includeDocuments("products/1-C")
-            .includeCounters(["ProductLikes", "ProductDislikes"])
-    }
+            documentType: Product,
+            includes: includeBuilder =>
+                includeBuilder.includeDocuments("products/1-C")
+                    .includeCounters(["ProductLikes", "ProductDislikes"])
+        }
     );
     //endregion
 }
 
 {
     //region counters_region_query_include_single_Counter
-    const query = session.query({ collection: "Product" })
+    const query = session.query({collection: "Product"})
         .include(includeBuilder =>
             includeBuilder.includeCounter("ProductLikes"));
     //endregion
@@ -86,9 +87,9 @@ const store = new DocumentStore();
 
 {
     //region counters_region_query_include_multiple_Counters
-    const query = session.query({ collection: "Product" })
+    const query = session.query({collection: "Product"})
         .include(includeBuilder =>
-            includeBuilder.includeCounters(  "ProductLikes", "ProductDownloads" ));
+            includeBuilder.includeCounters("ProductLikes", "ProductDownloads"));
     //endregion
 }
 
@@ -106,13 +107,12 @@ const store = new DocumentStore();
 
 {
     //region bulk-insert-counters
-    const query = session.query({collection:"User"})
-        .whereBetween("Age",0,30)
-    const result =query.all();
+    const query = session.query({collection: "User"})
+        .whereBetween("Age", 0, 30)
+    const result = query.all();
 
     const bulkInsert = store.bulkInsert();
-    for (var user = 0; user < result.length; user++)
-    {
+    for (let user = 0; user < result.length; user++) {
         let userId = result[user].id;
 
         // Choose document
