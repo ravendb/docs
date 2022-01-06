@@ -17,15 +17,23 @@ If you have already [exported a database](../export-database), follow these step
 
 ![Figure 1. Importing Database From File ](images/studio-view-import-fromfile-steps.png "Importing Database From File")
 
-1. In the destination server, go to **Tasks** tab.  
-2. Select **Import Data**.  
-3. *Make sure that you are not writing over data that you want to keep*.  
- One option is [to start a new database with the studio](https://ravendb.net/docs/article-page/5.2/csharp/studio/database/create-new-database/general-flow).  
-4. Select the `.ravendbdump` file that you previously exported from the source server.  
-5. Select desired [options](../../tasks/import-data/import-data-file#import-options).  
- *If you encrypted while exporting* make sure to select **imported file is encrypted**.  
-6. Click **Import Database**. 
-
+1. **Tasks**  
+   In the destination server, click Tasks tab.  
+2. **Import Data**.  
+   Click to see various impoprt options.  
+3. **From file (.ravendbdump)**  
+   Seclect to import from a source database which has previously been [exported](../export-database).  
+4. *Make sure that you are not writing over data that you want to keep*.  
+   One option is [to start a new database with the studio](https://ravendb.net/docs/article-page/5.2/csharp/studio/database/create-new-database/general-flow).  
+5. **Select file**  
+   Select the `.ravendbdump` file that you previously exported from the source server.  
+6. Select desired [options](../../tasks/import-data/import-data-file#import-options).  
+  *If you encrypted while exporting* make sure to select **imported file is encrypted**.  
+  You will need to paste the encryption key that you saved when creating the encrypted database.  
+7. **Advanced**  
+   Click to configure [advanced import options]  
+8. **Import Database**  
+   Click after configuring the new database to finalize the import task.  
 
 
 ## Import options 
@@ -71,7 +79,7 @@ Click the **Advanced** button at the bottom of the options view for the followin
 ![Figure 3. Advanced Import Options - Transform Script](images/import-from-file-advanced-transform-script.png "Advanced Import Options - Transform Script")
 
 - **Use Transform Script**  
-  Enabling it allows you to provide a transform javascript, that would operate on each document contained by the file.  
+  Enabling this **advanced** option allows you to provide a transform javascript, that would operate on each document imported from the file.  
 
 {CODE-BLOCK:javascript}
 delete this['@metadata']['@change-vector']
@@ -84,6 +92,8 @@ delete this['@metadata']['@change-vector']
 ---
 
 ### Customize Configuration and Ongoing Tasks
+
+This **advanced** option enables you to choose whether to import various ongoing tasks, connection strings and advanced configurations.
 
 ![Figure 4. Advanced Import Options - Customize Configuration and Ongoing Tasks](images/import-from-file-advanced-configuration-ongoing-tasks.png "Advanced Import Options - Customize Configuration and Ongoing Tasks")
 
@@ -111,6 +121,8 @@ delete this['@metadata']['@change-vector']
 ---
 
 ### Copy command as PowerShell
+
+This **advanced** option enables you to copy the PowerShell command that is created based on the options that were chosen above.  
 
 ![Figure 5. Import Command Powershell](images/import-command-powershell.png "Import Command Powershell")
 

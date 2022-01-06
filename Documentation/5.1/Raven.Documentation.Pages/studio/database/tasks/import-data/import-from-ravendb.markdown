@@ -9,7 +9,7 @@
 * Backward compatibility is supported.  
   You can import a database from a previous RavenDB version into your current server.  
 
-* The process consists of the following:  
+* The process consists of the following steps:  
   1st: [Prepare Servers for the Import Process](../../../../studio/database/tasks/import-data/import-from-ravendb#1st:-prepare-servers-for-the-import-process-(relevant-for-secure-versions-4.x-or-newer)) (relevant for secure versions 4.x or newer)  
   2nd: [Access the Import View](../../../../studio/database/tasks/import-data/import-from-ravendb#2nd:-access-the-import-view)  
   3rd: [Set the Source Server URL and database](../../../../studio/database/tasks/import-data/import-from-ravendb#3rd:-set-the-source-server-url-and-database)  
@@ -31,44 +31,44 @@
 
 * To accomplish this, follow these steps:
 
-![Manage Server-Certificates View](images/importing-exporting-certificates.png "Studio Manage Server-Certificates View")
+ ![Manage Server-Certificates View](images/importing-exporting-certificates.png "Studio Manage Server-Certificates View")
 
- 1. **Manage Server**  
-    Click the Manage Server tab.
+  1. **Manage Server**  
+     Click the Manage Server tab.
 
- 2. **Certificates**.  
-   Select Certificates. (See [Certificates Management](../../../../server/security/authentication/certificate-management)) for more information on this Studio view.  
+  2. **Certificates**.  
+    Select Certificates. (See [Certificates Management](../../../../server/security/authentication/certificate-management)) for more information on this Studio view.  
  
- 3. **Server certificates**  
-   Export the destination RavenDB certificate **from the DESTINATION RavenDB server**.  
-   ![Export server certificate](images/import-from-raven-export-server-certificate.png "Export the destination server certificate")  
+  3. **Server certificates**  
+    Export the destination RavenDB certificate **from the DESTINATION RavenDB server**.  
+    ![Export server certificate](images/import-from-raven-export-server-certificate.png "Export the destination server certificate")  
 
-    * Choose **Export Server Certificates** option from the **Server Certificates** dropdown.  
+     * Choose **Export Server Certificates** option from the **Server Certificates** dropdown.  
  
- 4. **Client certificate**  
-   Register this certificate on the **SOURCE RavenDB server**  
-   ![Register exported certificate as client certificate](images/import-from-raven-upload-server-cert-as-client-cert.png "Register exported certificate as client certificate")  
+  4. **Client certificate**  
+    Register this certificate on the **SOURCE RavenDB server**  
+    ![Register exported certificate as client certificate](images/import-from-raven-upload-server-cert-as-client-cert.png "Register exported certificate as client certificate")  
 
-    * Choose **Upload client certificate** to upload the exported certificate as the client certificate.  
+     * Choose **Upload client certificate** to upload the exported certificate as the client certificate.  
  
- 5. **Upload client certificate**  
-  Set the certificate details.  
-  ![Import certificate details](images/import-from-raven-upload-server-cert-as-client-cert-details.png "Set certificate details")
+  5. **Upload client certificate**  
+   Set the certificate details.  
+   ![Import certificate details](images/import-from-raven-upload-server-cert-as-client-cert-details.png "Set certificate details")
 
-  1. **Name**  
+   1. **Name**  
     Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
-  2. **Security Clearance**  
+   2. **Security Clearance**  
     Set [authorization level](../../../../server/security/authorization/security-clearance-and-permissions) for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) to choose appropriate level.  
-  3. **Certificate file**  
+   3. **Certificate file**  
     Upload the `.pfx` certificate file from the destination server installation folder.  
-  4. **Certificate Passphrase**  
+   4. **Certificate Passphrase**  
     (Optional) Set a password for this certificate.  
-  5. **Database permissions**  
+   5. **Database permissions**  
     Select databases and permission levels for this certificate.  
     If you choose *User* security clearance, you can give access to specific databases on the server and configure [User](../../../server/security/authorization/security-clearance-and-permissions#user) authorization levels for this certificate.  
  
- F. Click **Upload** to complete the process.  
-    The uploaded certificate will be added to the list of registered client certificates on this server.  
+    Click **Upload** to complete the process.  
+     The uploaded certificate will be added to the list of registered client certificates on this server.  
 
 
 
