@@ -9,6 +9,7 @@ cloud servers and between [different RavenDB versions](../migration/client-api/i
 * In this page  
   * [Import From Live RavenDB instance](cloud-migration#import-from-live-ravendb-instance)  
   * [Import From File](cloud-migration#import-from-file)  
+  * [Documents Recently Deleted from Source Database](cloud-migration#documents-recently-deleted-from-source-database)  
 
 {NOTE/}
 
@@ -22,38 +23,46 @@ In order to do so, the **source server** needs to have the **destination server'
 Open the [Management Studio](../studio/overview) of each server.  
 Each server's Studio is available at it [Portal](../cloud/portal/cloud-portal#cloud-portal)'s 
 [Product tab](../cloud/portal/cloud-portal-products-tab#cloud-account-portal-products).  
-!["Server URLs"](images\migration-001-urls.png "Server URLs")  
+
+!["Server URLs"](images\migration-001-urls.png "Server URLs")
 
 ---
 
-In each studio, click **Manage certificates**.  
-!["Manage Certificates"](images\migration-002-manage-certificates.png "Manage Certificates")  
+In each studio, select server dashboard and click **Manage certificates**.  
+
+!["Manage Certificates"](images\migration-cloud-studio-manage-certificates.png "Manage Certificates")
+
 
 ---
 
 Export the **destination server**'s **Cluster certificate**.  
-!["Cluster Certificate"](images\migration-003-cluster-certificate.png "Cluster Certificate")  
+
+!["Cluster Certificate"](images\migration-003-cluster-certificate.png "Cluster Certificate")
 
 ---
 
 Import the certificate as a **Client Certificate** by the **source server**.  
-!["Client Certificate"](images\migration-004-client-certificate.png "Client Certificate")  
+
+!["Client Certificate"](images\migration-004-client-certificate.png "Client Certificate")
 
 ---
 
 Configure the Client Certificate's **Database Permissions** to include the database whose data you want to migrate.  
-!["Database Permissions"](images\migration-005-database-permissions.png "Database Permissions")  
+
+!["Database Permissions"](images\migration-005-database-permissions.png "Database Permissions")
 
 ---
 
 In the Destination Server, create or select an empty database and open its **Settings --> Import Data** option.  
-!["Import Data"](images\migration-006-import-data.png "import data")  
+
+!["Import Data"](images\migration-006-import-data.png "import data")
 
 ---
 
 Enter the URL of the source server.  
 Choose which data to migrate, and click **Migrate Database**.  
-!["Import Options"](images\migration-007-options.png "Import Options")  
+
+!["Import Options"](images\migration-007-options.png "Import Options")
 
 {PANEL/}
 
@@ -63,6 +72,9 @@ Another option is to [export a database](../studio/database/tasks/export-databas
 **.ravenDBDump** format, and upload it to another database using the 
 [import data from file](../studio/database/tasks/import-data/import-data-file) operation.  
 This option doesn't require passing certificates:  
+{NOTE: Encryption}
+ If you selected encryption during the export, you also need to select encryption during the import.
+ {NOTE/}
 
 ---
 
@@ -76,6 +88,18 @@ Click the **From file (.ravendbdump)** tab.
 Select the file and click **Import Database**.  
 
 {PANEL/}
+
+##Documents Recently Deleted from Source Database  
+
+* If you've deleted documents from the source database in the last few minutes before live-importing, 
+the deleted documents will still appear in the destination database. 
+This is because after deleting a document, a [tombstone](../glossary/tombstone) is left behind as a signal for backups and 
+various behind-the-scene processes.  
+* Once all of these processes have been completed, 
+the tombstones are cleaned. They are cleaned every 5 minutes by default. You can configure the [tombstone cleaner time intervals](../server/configuration/tombstone-configuration).   
+* After they are cleaned, performing another live-import will show that the documents have been deleted.  
+  
+
 
 ##Related Articles
 

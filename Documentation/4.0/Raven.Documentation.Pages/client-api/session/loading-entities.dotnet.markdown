@@ -136,8 +136,8 @@ To load multiple entities that contain a common prefix, use the `LoadStartingWit
 
 Entities can be streamed from the server using one of the following `Stream` methods from the `Advanced` session operations.
 
-Streaming query results does not support the [`include` feature](../../../client-api/how-to/handle-document-relationships#includes). 
-Learn more in [How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results).  
+Streaming query results does not support the [`include` feature](../../client-api/how-to/handle-document-relationships#includes). 
+Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results).  
 
 {INFO Entities loaded using `Stream` will be transient (not attached to session). /}
 
@@ -183,8 +183,11 @@ Fetch documents for a ID prefix directly into a stream:
 
 {PANEL:IsLoaded}
 
-To check if an entity is attached to a session, e.g. it has been loaded previously, use the `IsLoaded` method from the `Advanced` session operations.
-
+To check if an entity is attached to a session, e.g. it has been loaded previously, use the `IsLoaded` method from the **Advanced** session operations.  
+  
+`IsLoaded` checks if you've already tried to load a document during the current session.  
+If you try to load a document that no longer exists with the `Load` method (perhaps it has been deleted),  
+`IsLoaded` will then return `true` because `IsLoaded` shows that you've already tried to load the non-existent document.  
 {CODE loading_entities_6_0@ClientApi\Session\LoadingEntities.cs /}
 
 | Parameters | | |

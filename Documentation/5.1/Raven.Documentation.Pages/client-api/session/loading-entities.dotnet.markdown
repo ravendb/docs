@@ -148,15 +148,15 @@ To load multiple entities that contain a common prefix, use the `LoadStartingWit
 
 {PANEL: ConditionalLoad}
 
+This method can be used to check whether a document has been modified 
+since the last time its change vector was recorded, so that the cost of loading it 
+can be saved if it has not been modified.  
+
 The `ConditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector). 
 If the entity is tracked by the session, this method returns the entity. If the entity 
 is not tracked, it checks if the provided change vector matches the document's 
 current change vector on the server side. If they match, the entity is not loaded. 
 If the change vectors _do not_ match, the document is loaded.  
-
-In other words, this method can be used to check whether a document has been modified 
-since the last time its change vector was recorded, so that the cost of loading it 
-can be saved if it has not been modified.  
 
 The method is accessible from the `session.Advanced` operations.  
 
@@ -187,8 +187,8 @@ The method is accessible from the `session.Advanced` operations.
 
 Entities can be streamed from the server using one of the following `Stream` methods from the `Advanced` session operations.
 
-Streaming query results does not support the [`include` feature](../../../client-api/how-to/handle-document-relationships#includes). 
-Learn more in [How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results).  
+Streaming query results does not support the [`include` feature](../../client-api/how-to/handle-document-relationships#includes). 
+Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results).  
 
 {INFO Entities loaded using `Stream` will be transient (not attached to session). /}
 
@@ -234,7 +234,9 @@ Fetch documents for a ID prefix directly into a stream:
 
 {PANEL:IsLoaded}
 
-To check if an entity is attached to a session, e.g. it has been loaded previously, use the `IsLoaded` method from the `Advanced` session operations.
+To check if an entity is attached to a session, e.g. it has been loaded previously, use the `IsLoaded` method from the `Advanced` session operations.  
+  
+If you try to load a document that does not exist with the `Load` method, `IsLoaded` will return `true` because that document load has already been attempted.  
 
 {CODE loading_entities_6_0@ClientApi\Session\LoadingEntities.cs /}
 

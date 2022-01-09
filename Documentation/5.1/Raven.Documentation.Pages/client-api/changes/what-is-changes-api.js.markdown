@@ -1,20 +1,29 @@
-# Changes API 
+# What Is the Changes API
 
-The RavenDB client offers a push notification feature that allows you to receive messages from a server about events that occurred there.
-You are able to subscribe to events for all documents, indexes, and operations as well as to indicate a particular one that you are interested in. 
-This mechanism lets you notify users if something has changed without the need to do any expensive polling. 
+---
 
-{DANGER:Changes API on Secured Server}
+{NOTE: }
 
-Changes API uses WebSockets under the covers. Due to [the lack of support for client certificates in WebSockets implementation in .NET Core 2.0](https://github.com/dotnet/corefx/issues/5120#issuecomment-348557761)
-the Changes API won't work for secured servers accessible over HTTPS.
+* The Changes API is a Push Notifications service, that allows a RavenDB Client to 
+  receive messages from a RavenDB Server regarding events that occurred on the server.  
+* A client can subscribe to events related to documents, indexes, operations, counters, or time series.  
+* The Changes API enables you to notify users of various changes, without requiring 
+  any expensive polling.  
 
-This issue is fixed in the final version of .NET Core 2.1 available [here](https://dotnet.microsoft.com/download). In order to workaround this you can switch your application to use .NET Core 2.1.
+* In this page:  
+  * [Accessing Changes API](../../client-api/changes/what-is-changes-api#accessing-changes-api)  
+  * [Connection interface](../../client-api/changes/what-is-changes-api#connection-interface)  
+  * [Subscribing](../../client-api/changes/what-is-changes-api#subscribing)  
+  * [Unsubscribing](../../client-api/changes/what-is-changes-api#unsubscribing)  
+  * [FAQ](../../client-api/changes/what-is-changes-api#faq)  
+     * [Changes API and Database Timeout](../../client-api/changes/what-is-changes-api#changes-api-and-database-timeout)  
+     * [Changes API and Method Overloads](../../client-api/changes/what-is-changes-api#changes-api-and-method-overloads)  
+  * [Changes API -vs- Data Subscriptions](../../client-api/changes/what-is-changes-api#changes-api--vs--data-subscriptions)  
+{NOTE/}
 
-The issue affects only the RavenDB client.
-{DANGER/}
+---
 
-## Accessing Changes API
+{PANEL: Accessing Changes API}
 
 The changes subscription is accessible by a document store through its `IDatabaseChanges` interface.
 
@@ -28,7 +37,9 @@ The changes subscription is accessible by a document store through its `IDatabas
 | ------------- | ----- |
 | `IDatabaseChanges` object | Instance implementing IDatabaseChanges interface. |
 
-## Connection interface
+{PANEL/}
+
+{PANEL: Connection interface}
 
 Changes object interface extends `IConnectableChanges` interface that represents the connection. It exposes the following properties, methods and events.
 
@@ -39,9 +50,11 @@ Changes object interface extends `IConnectableChanges` interface that represents
 | **on("error")** | method | Adds a listener for 'error' event | 
 | **ensureConnectedNow()** | method | Returns a `Promise` resolved once connection to the server is established. | 
 
-## Subscriptions
+{PANEL/}
 
-In order to retrieve notifications you have to subscribe to server-side events by using one of the following methods:
+{PANEL: Subscribing}
+
+To receive notifications regarding server-side events, subscribe using one of the following methods.  
 
 - [forAllDocuments()](../../client-api/changes/how-to-subscribe-to-document-changes#foralldocuments)
 - [forAllIndexes()](../../client-api/changes/how-to-subscribe-to-index-changes#forallindexes)
@@ -52,18 +65,70 @@ In order to retrieve notifications you have to subscribe to server-side events b
 - [forIndex()](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
 - [forOperationId()](../../client-api/changes/how-to-subscribe-to-operation-changes#foroperation)
 
-## Unsubscribing
+{PANEL/}
 
-In order to end subscription (stop listening for particular notifications) you must `dispose()` it.
+{PANEL: Unsubscribing}
+
+To end a subscription (stop listening for particular notifications) use `dispose`.  
 
 {CODE:nodejs changes_2@client-api\changes\whatIsChangesApi.js /}
 
-## Remarks
+{PANEL/}
 
-{NOTE One or more open Changes API connections will prevent a database from becoming idle and unloaded, regardless of [configuration value for database idle timeout](../../server/configuration/database-configuration#databases.maxidletimeinsec)/}
+{PANEL: FAQ}
 
-{INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
+#### Changes API and Database Timeout
 
+One or more open Changes API connections will prevent a database from becoming 
+idle and unloaded, regardless of [the configuration value for database idle timeout](../../server/configuration/database-configuration#databases.maxidletimeinsec).  
+
+---
+
+#### Changes API and Method Overloads
+
+{WARNING: }
+To get more method overloads, especially ones supporting **delegates**, please add the 
+[System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
+{WARNING/}
+
+{PANEL/}
+
+{PANEL: Changes API -vs- Data Subscriptions}
+
+**Changes API** and [Data Subscription](../../client-api/data-subscriptions/what-are-data-subscriptions) 
+are services that a RavenDB Server provides subscribing clients.  
+Both services respond to events that take place on the server, by sending updates 
+to their subscribers.  
+
+* **Changes API is a Push Notifications Service**.  
+   * Changes API subscribers receive **notifications** regarding events that 
+     took place on the server, without receiving the actual data entities 
+     affected by these events.  
+     For the modification of a document, for example, the client will receive 
+     a [DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange) 
+     object with details like the document's ID and collection name.  
+
+   * The server does **not** keep track of sent notifications or 
+     checks clients' usage of them. It is a client's responsibility 
+     to manage its reactions to such notifications.  
+
+* **Data Subscription is a Data Consumption Service**.  
+   * A Data Subscription task keeps track of document modifications in the 
+     database and delivers the documents in an orderly fashion when subscribers 
+     indicate they are ready to receive them. 
+   * The process is fully managed by the server, leaving very little for 
+     the subscribers to do besides consuming the delivered documents.  
+
+---
+
+|    | Data Subscriptions | Changes API 
+| -- | -- | 
+| What can the server Track | [Documents](../../client-api/data-subscriptions/what-are-data-subscriptions#documents-processing) <br> Revisions | [Documents](../../client-api/changes/how-to-subscribe-to-document-changes) <br> [Indexes](../../client-api/changes/how-to-subscribe-to-index-changes) <br> [Operations](../../client-api/changes/how-to-subscribe-to-operation-changes) <br> Counters <br> Time Series 
+| What can the server Deliver | Documents <br> Revisions | Notifications 
+| Management | Managed by the Server | Managed by the Client 
+
+
+{PANEL/}
 
 ## Related Articles
 
