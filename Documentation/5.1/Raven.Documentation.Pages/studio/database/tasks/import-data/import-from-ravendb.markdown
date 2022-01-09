@@ -3,28 +3,28 @@
 
 {NOTE: }
 
-* In addition to importing data from a [.ravendbdump](../../../../studio/database/tasks/import-data/import-data-file) file,  
+* In addition to importing data from a [.ravendbdump](../../../../studio/database/tasks/import-data/import-data-file) file, 
   data can also be imported directly from an existing database on a **live RavenDB server**.  
 
 * Backward compatibility is supported.  
   You can import a database from a previous RavenDB version into your current server.  
 
 * The process consists of the following steps:  
-  1st: [Prepare Servers for the Import Process](../../../../studio/database/tasks/import-data/import-from-ravendb#1st:-prepare-servers-for-the-import-process-(relevant-for-secure-versions-4.x-or-newer)) (relevant for secure versions 4.x or newer)  
-  2nd: [Access the Import View](../../../../studio/database/tasks/import-data/import-from-ravendb#2nd:-access-the-import-view)  
-  3rd: [Set the Source Server URL and database](../../../../studio/database/tasks/import-data/import-from-ravendb#3rd:-set-the-source-server-url-and-database)  
-  4th: [Set Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb#4th:-set-import-options)  
-  5th: [Advanced Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb#5th:-advanced-import-options)  
+  1st Step: [Prepare Servers for the Import Process](../../../../studio/database/tasks/import-data/import-from-ravendb#1st-step:-prepare-servers-for-the-import-process)   
+  2nd Step: [Access the Import View](../../../../studio/database/tasks/import-data/import-from-ravendb#2nd-step:-access-the-import-view)  
+  3rd Step: [Set the Source Server URL and database](../../../../studio/database/tasks/import-data/import-from-ravendb#3rd-step:-set-the-source-server-url-and-database)  
+  4th Step: [Set Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb#4th-step:-set-import-options)  
+  5th Step: [Advanced Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb#5th-step:-advanced-import-options)  
 {NOTE/}
 
 ---
 
-{PANEL: 1st: Prepare Servers for the Import Process (relevant for secure versions 4.x or newer)}
+{PANEL: 1st Step: Prepare Servers for the Import Process }
 
 * Before migrating data from a secure source server, the destination server must also be secure.  
   You must pass the certificate from the destination to the source server.  The following steps explain how.
 
-* Perform this step only if your source RavenDB server is a secure verion 4.x (or newer) server that is running on HTTPS.  For other servers, skip this step and continue to [Step 2](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#2:-access-the-import-view).
+* Perform this step only if your source RavenDB server is a secure verion 4.x (or newer) server that is running on HTTPS.  For other servers, skip this step and continue to [Step 2](../../../../studio/database/tasks/import-data/import-from-ravendb#2nd:-access-the-import-view).
 
 * To import, the destination server needs to access the existing source database and fetch data from it.  
   To grant such access, you must first register the destination server certificate as a client certificate on your source server.  
@@ -75,7 +75,7 @@
 {PANEL/}
 
 
-{PANEL: 2nd: Access the Import View}
+{PANEL: 2nd Step: Access the Import View}
 
    
 ![Databases List](images/import-from-ravendb-db-list.png "Databases List View")
@@ -84,7 +84,7 @@
   
  {WARNING: }
   
-  Verify that this database is empty as the import will overwrite any existing content.  
+  1. Verify that this database is empty as the import will overwrite any existing content.
 
 {WARNING/}
 
@@ -101,7 +101,7 @@
 
 ---
 
-{PANEL: 3rd: Set the Source Server URL and database}
+{PANEL: 3rd Step: Set the Source Server URL and database}
 
 * Specify the source server URL and select the database to import the data from.  
 
@@ -116,7 +116,7 @@
 
 {PANEL/}
 
-{PANEL: 4th: Set Import Options}
+{PANEL: 4th Step: Set Import Options}
 
 * Filter the data you want to import.  
 * Customize advanced configuration and apply a transform script under the [Advanced Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#5:-advanced-import-options).
@@ -127,18 +127,18 @@
  Toggling Import Options determines whether the following items will be imported:  
  {NOTE/}
 
-1. 
+1. **Documents**  
  - [Include Documents](../../../../studio/database/documents/document-view)  
-  If disabled, the following document related items will automatically be disabled too.  
+   Toggle to include documents and to enable inclusion of the following document related items:  
    - [Include Attachments](../../../../document-extensions/attachments/what-are-attachments)  
    - [Include Counters](../../../../document-extensions/counters/overview)  
    - [Include Time Series](../../../../document-extensions/timeseries/overview)  
    - [Include Revisions](../../../../server/extensions/revisions)  
    - [Include Conflicts](../../../../client-api/cluster/document-conflicts-in-client-side)  
-2. 
+2. **Indexes**  
  - [Include Indexes](../../../../indexes/what-are-indexes)  
     - [Remove Analyzers](../../../../indexes/using-analyzers)  
-3. 
+3. **Other**  
  - [Include Identities](../../../../client-api/document-identifiers/working-with-document-identifiers)  
  - [Include Compare Exchange](../../../../client-api/operations/compare-exchange/overview)  
  - [Include Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions)  
@@ -150,16 +150,20 @@ If any of the options is set but the source database doesn't contain any items o
 {NOTE/}
 {PANEL/}
 
-{PANEL: 5th: Advanced Import Options}
+{PANEL: 5th Step: Advanced Import Options}
 
 Click the **Advanced** button at the bottom of the options view for the following import features.
 
 ### Transform Script
 
+In the Studio, select **database** > click **Task** tab > select **Import** > select **From RavenDB** > click the **Advanced** button at the bottom > toggle **Use Transform script**.  
+
 ![Advanced Import Options - Transform Script](images/import-from-ravendb-advanced-transform-script.png "Advanced Import Options - Transform Script")
 
 * **Use Transform Script**:  
   When enabled, the supplied javascript will be executed on each document before importing the document.  
+
+Sample transform javascripts:
 
 {CODE-BLOCK:javascript}
 // Example 1
@@ -178,6 +182,9 @@ this.collection = this['@metadata']['@collection'];
 
 
 ### Customize Configuration and Ongoing Tasks
+
+In the Studio, select **database** > click **Task** tab > select **Import** > select **From RavenDB** > click the **Advanced** button at the bottom > toggle **Customize Configuration and Ongoing Tasks**.  
+
 
 ![Advanced Import Options - Customize Configuration and Ongoing Tasks](images/import-from-ravendb-advanced-configuration-ongoing-tasks.png "Advanced Import Options - Customize Configuration and Ongoing Tasks")
 

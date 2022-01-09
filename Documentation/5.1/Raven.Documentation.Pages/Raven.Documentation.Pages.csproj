@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="studio\database\tasks\images\Snags-CSD\Northwind-Indexes-View.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="RavenDB.Client" Version="5.1.0-nightly-20200929-0713" />
   </ItemGroup>
 

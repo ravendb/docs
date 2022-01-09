@@ -12,20 +12,24 @@
 * You can import all collections, or select specific collections to import.  
 
 * In this page:
+
+  * [Download Raven.Migrator Tool](../../../../studio/database/tasks/import-data/import-from-other#download-raven.migrator-tool)  
   * [Import from MongoDB](../../../../studio/database/tasks/import-data/import-from-other#import-from-mongodb)  
   * [Import from CosmosDB](../../../../studio/database/tasks/import-data/import-from-other#import-from-cosmosdb)  
+
 {NOTE/}
 
 
-{INFO:Before you start}
+
+{PANEL: Download Raven.Migrator Tool}
 
 To migrate data from your existing NoSQL database, you need to download an external tool called `Raven.Migrator`.  
-The application is available at [ravendb.net/downloads](https://ravendb.net/downloads), in the `TOOLS` package (see image below).  
+The application is available at [ravendb.net/download](https://ravendb.net/download), in the `TOOLS` package (see image below).  
 The `Raven.Migrator` tool can be found in the downloaded `Tools` folder. 
 
 ![Raven.Migrator Tool Download](images/raven-migrator-tool-download.png "Raven.Migrator Tool Download")
 
-{INFO/}
+{PANEL/}
 
 ---
 
@@ -35,7 +39,7 @@ In the RavenDB Studio client on the left side, select `Tasks` -> `Import Data`.
 ![Figure 1.](images/mongodb-1.png "Import from MongoDB")
 
 1. **Migrator Path**  
-   * Find `Raven.Migrator.exe` in the tools package here: [ravendb.net/downloads](https://ravendb.net/downloads)  
+   * Find `Raven.Migrator.exe` in the [tools package](../../../../studio/database/tasks/import-data/import-from-other#download-raven.migrator-tool).  
    * Provide a path to `Raven.Migrator.exe`'s folder.  
 
 2. **Database Source**  
@@ -67,7 +71,7 @@ In the RavenDB Studio client on the left side, select `Tasks` -> `Import Data`.
 
 
 1. **Migrator Path**  
-   * Find `Raven.Migrator.exe` in the tools package here: [ravendb.net/downloads](https://ravendb.net/downloads)  
+   * Find `Raven.Migrator.exe` in the [tools package](../../../../studio/database/tasks/import-data/import-from-other#download-raven.migrator-tool).  
    * Provide a path to `Raven.Migrator.exe`'s folder.  
 
 2. **Database Source**  

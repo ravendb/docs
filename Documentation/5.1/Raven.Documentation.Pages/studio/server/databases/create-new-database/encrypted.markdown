@@ -1,21 +1,19 @@
 # Create a Database: Encrypted
----
 
 {NOTE: }
 
-* Encryption is possible only if authentication is enabled and a server certificate is defined
+* Encrypted databases in RavenDB use Daniel J. Bernstein's [XChaCha20-Poly1305](https://libsodium.gitbook.io/doc/secret-key_cryptography/aead/chacha20-poly1305/xchacha20-poly1305_construction) 
+ authenticated encryption algorithm. They are encrypted at rest and by default, also in transit.  
 
-* Learn more about **encryption** in: [Encryption At Rest](../../../../server/security/encryption/encryption-at-rest)  
-  Learn how to enable **authentication** in: [Certificate Configuration](../../../../server/security/authentication/certificate-configuration)  
-  Learn about the **secret key** in: [Secret Key Management](../../../../server/security/encryption/secret-key-management)  
+* Encryption is possible only if [security authentication is enabled](../../../../start/installation/setup-wizard) and a server certificate is defined.
+
+* Learn more about **encryption** in: [Encryption At Rest](../../../../server/security/encryption/encryption-at-rest).  
+  Learn how to enable **authentication** in: [Certificate Configuration](../../../../server/security/authentication/certificate-configuration).  
+  Learn about the **secret key** in: [Secret Key Management](../../../../server/security/encryption/secret-key-management).  
 {NOTE/}
 
 ---
-{WARNING: WARNING}
 
-   * You will not have access to the database if the key is lost.  
-   * Download, print, or copy and save the key in a safe place. **It will not be available again!**  
-{WARNING/}
 
 {PANEL: Creating Encrypted Database}
 
@@ -41,7 +39,12 @@
 4. **QR Code**  
    * The QR code representing the key  
 
-5. **Confirm that you've securely saved the key**
+5. **Confirm that you've securely saved the key**  
+   {WARNING: WARNING}
+
+   * You will not have access to the database if the key is lost.  
+   * Download, print, or copy and save the key in a safe place. **It will not be available again!**  
+   {WARNING/}
 
 
 
