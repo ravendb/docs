@@ -120,11 +120,11 @@ public class Counters {
             //region counters_region_load_include1
             //include single Counters
             Product productPage = session
-                    .load(Product.class, "products/1-C", includeBuilder -> {
-                        includeBuilder.includeCounter("productLikes")
-                                .includeCounter("productDislikes")
-                                .includeCounter("productDownloads");
-                    });
+                .load(Product.class, "products/1-C", includeBuilder -> {
+                    includeBuilder.includeCounter("productLikes")
+                        .includeCounter("productDislikes")
+                        .includeCounter("productDownloads");
+                });
             //endregion
         }
 
@@ -135,7 +135,7 @@ public class Counters {
 
             Product productPage = session.load(Product.class, "orders/1-A", includeBuilder -> {
                 includeBuilder.includeDocuments("products/1-C")
-                        .includeCounters(new String[]{"productLikes", "productDislikes"});
+                    .includeCounters(new String[]{"productLikes", "productDislikes"});
             });
             //endregion
         }
@@ -144,9 +144,9 @@ public class Counters {
             //region counters_region_query_include_single_Counter
             //include a single Counter
             IDocumentQuery<Product> query = session.query(Product.class)
-                    .include(includeBuilder -> {
-                        includeBuilder.includeCounter("productLikes");
-                    });
+                .include(includeBuilder -> {
+                    includeBuilder.includeCounter("productLikes");
+                });
             //endregion
         }
 
@@ -154,9 +154,9 @@ public class Counters {
             //region counters_region_query_include_multiple_Counters
             //include multiple Counters
             IDocumentQuery<Product> query = session.query(Product.class)
-                    .include(includeBuilder -> {
-                        includeBuilder.includeCounters(new String[]{"productLikes", "productDownloads"});
-                    });
+                .include(includeBuilder -> {
+                    includeBuilder.includeCounters(new String[]{"productLikes", "productDownloads"});
+                });
             //endregion
         }
 
@@ -165,34 +165,34 @@ public class Counters {
             //Various RQL expressions sent to the server using counter()
             //Returned Counter value is accumulated
             List<CounterResult> rawQuery1 = session
-                    .advanced()
-                    .rawQuery(CounterResult.class, "from products as p select counter(p, \"productLikes\")")
-                    .toList();
+                .advanced()
+                .rawQuery(CounterResult.class, "from products as p select counter(p, \"productLikes\")")
+                .toList();
 
             List<CounterResult> rawQuery2 = session.advanced().rawQuery(CounterResult.class,
-                    "from products select counter(\"productLikes\") as productLikesCount")
-                    .toList();
+                "from products select counter(\"productLikes\") as productLikesCount")
+                .toList();
 
             List<CounterResult> rawQuery3 = session.advanced()
-                    .rawQuery(CounterResult.class,
-                            "from products where PricePerUnit > 50 select Name, counter(\"productLikes\")")
-                    .toList();
+                .rawQuery(CounterResult.class,
+                    "from products where PricePerUnit > 50 select Name, counter(\"productLikes\")")
+                .toList();
             //endregion
 
             //region counters_region_rawqueries_counterRaw
             //An RQL expression sent to the server using counterRaw()
             //Returned Counter value is distributed
             List<CounterResultRaw> query = session
-                    .advanced().rawQuery(CounterResultRaw.class,
-                            "from users as u select counterRaw(u, \"downloads\")")
-                    .toList();
+                .advanced().rawQuery(CounterResultRaw.class,
+                    "from users as u select counterRaw(u, \"downloads\")")
+                .toList();
             //endregion
         }
         List<User> result = new ArrayList<>();
         //region bulk-insert-counters
         try (IDocumentSession session = docStore.openSession()) {
             IDocumentQuery<User> query = session.query(User.class)
-                    .whereLessThan("age", 30);
+                .whereLessThan("age", 30);
 
             result = query.toList();
         }
@@ -354,9 +354,9 @@ public class Counters {
             DatabaseSmugglerExportOptions exportOptions = new DatabaseSmugglerExportOptions();
             //region smuggler_options
             exportOptions.setOperateOnTypes(EnumSet.of(
-                    DatabaseItemType.INDEXES,
-                    DatabaseItemType.DOCUMENTS,
-                    DatabaseItemType.COUNTERS));
+                DatabaseItemType.INDEXES,
+                DatabaseItemType.DOCUMENTS,
+                DatabaseItemType.COUNTERS));
             //endregion
         }
     }
