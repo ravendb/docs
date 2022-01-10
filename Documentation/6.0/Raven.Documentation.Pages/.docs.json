@@ -53,5 +53,10 @@
         "Path": "/cloud",
         "Name": "Cloud",
         "Mappings": []
+    },
+    {
+        "Path": "/sharding",
+        "Name": "Sharding",
+        "Mappings": []
     }
 ]
