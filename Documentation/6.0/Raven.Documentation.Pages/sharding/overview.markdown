@@ -1,22 +1,32 @@
 ﻿# Sharding: Overview
 
-* **Sharding**, as implemented by RavenDB, is the distribution of a database's 
-  contents between cluster nodes so each node, aka **Shard**, is responsible 
-  for the storage and management of a **unique subset of the entire dataset**.  
-  E.g., Shard A may be responsible for documents of the Users collection, and 
-  Shard B for documents of the Orders collection.  
+* **Sharding** is the division of database contents between autonomous **Shards**.  
+  In most cases, it is implemented to allow an efficient management of exceptionally large databases.  
 
-* Sharding is implemented in most cases to allow the efficient management of an 
-  exceptionally large database.  
+* Each **shard** is responsible for the storage and management of a **unique subset** 
+  of the entire database contents.  
+  E.g. -  
+   * Documents can be allocated to 3 shards: **A**, **B** and **C**, by the document name.  
+     Documents starting with `A..` to `I..` will be allocated to shard **A**,  
+     documents starting with `J..` to `R..` to shard **B**,  
+     and documents starting with `S..` to `Z..` to shard **C**.  
+   * If a client requests a document whose name starts with J, the cluster will direct the request to shard **B**.  
 
-* Clients access to the database is unaffected, and the client API remains in 
-  most part unchanged.  
+* **RavenDB shards** are comprised of **cluster nodes**.  
+  The number of cluster nodes that comprise each shard, is determined by the **Sharding Replication Factor**.  
+  E.g., a replication factor of 2 determines that each shard is comprised of 2 nodes.  
 
-* Changes in the behavior and usage of features like Indexing, Data Subscriptions, 
-  and others, under a sharded databases, are documented in this article and in 
-  articles specific to each feature.  
+* Clients access to sharded databases is the same as to unsharded databases, 
+  requiring no changes on the client side.  
 
-* A sharded database can be created via API or Studio.  
+* The client API is generally unchanged under a sharded database.  
+   * An obvious exception to this is the database creation API, which 
+     now allows you to create a sharded database and set its options.  
+
+* A sharded database can be created via API or using Studio.  
+
+* Changes in RavenDB features under a sharded databases are addressed in general 
+  lines [below]() and documented in detail in feature-specific articles.  
 
 ---
 
@@ -25,7 +35,13 @@
 * In this page:  
   * [Sharding](../)  
   * Design  
-     * Buckets  
+     * Terminology  
+        * $ - Database$Shard  
+        * Buckets  
+        * Linked documents - DocumentA$DocumentB
+     * Unique subsets  
+     * Sharding Factor  
+     * DatabaseReplication: Database groups  
   * Enabling Sharding  
   * Sharding and Other Features  
      * Indexing  
