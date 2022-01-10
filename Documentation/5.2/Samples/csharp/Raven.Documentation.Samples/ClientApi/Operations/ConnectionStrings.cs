@@ -187,7 +187,9 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 };
                 var connectionString = olapConnectionString;
 
-                AddEtl(store, configuration, connectionString);
+                var resultOlapString = store.Maintenance.Send
+                    (new PutConnectionStringOperation<OlapConnectionString>(olapConnectionString));
+                ;
                 #endregion
             }
 
@@ -208,7 +210,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     }
                 };
 
-                var resultOlapString = store.Maintenance.Send(new PutConnectionStringOperation<OlapConnectionString>(myOlapConnectionString));
+                var resultOlapString = store.Maintenance.Send
+                    (new PutConnectionStringOperation<OlapConnectionString>(myOlapConnectionString));
 
                 #endregion
             }

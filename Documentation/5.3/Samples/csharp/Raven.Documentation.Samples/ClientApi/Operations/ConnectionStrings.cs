@@ -188,8 +188,9 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     }
                 };
                 var connectionString = olapConnectionString;
-                
-                AddEtl(store, configuration, connectionString);
+
+                var resultOlapString = store.Maintenance.Send
+                    (new PutConnectionStringOperation<OlapConnectionString>(olapConnectionString));
                 #endregion
             }
 
@@ -283,16 +284,15 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 public string FolderPath { get; set; }
 
                 // If on AWS Cloud
-                public string S3Settings { get; set; }
-                public string BucketName { get; set; }
-                public string RemoteFolderName { get; set; }
-                public string AwsAccessKey { get; set; }
-                public string AwsSecretKey { get; set; }
-                public string AwsRegionName { get; set; }
-
+                public LocalSettings LocalSettings { get; set; }
+                public S3Settings S3Settings { get; set; }
+                public AzureSettings AzureSettings { get; set; }
+                public GlacierSettings GlacierSettings { get; set; }
+                public GoogleCloudSettings GoogleCloudSettings { get; set; }
+                public FtpSettings FtpSettings { get; set; }
+                public override ConnectionStringType Type => ConnectionStringType.Olap;
                 public ConnectionStringType Type => ConnectionStringType.Olap;
-
-            }
+            }s
             #endregion
 
             #region elasticsearch_connection_string_config
