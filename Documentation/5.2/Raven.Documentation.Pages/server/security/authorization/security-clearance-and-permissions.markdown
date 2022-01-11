@@ -88,8 +88,14 @@ A `User` certificate with a `Read/Write` access level can perform all operations
 
 ### `Read Only`
 
-The `Read Only` access level only allows you to read data from a database, but not to write data. All kinds of 
-queries are permitted. The following operations are **forbidden**:  
+The `Read Only` access level **allows** clients to: 
+
+- Read data from a database, but not to write or modify data.  
+- Query the databases that are configured in the client certificate.  
+   * Auto-indexes are built as a normal result of queries.  
+- Be subscription workers to consume data subscriptions.  
+
+The following operations are **forbidden**:  
 
 - Creating documents or modifying existing documents  
 - Changing any configurations or settings  
