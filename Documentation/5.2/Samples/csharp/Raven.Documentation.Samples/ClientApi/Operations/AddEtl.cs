@@ -200,9 +200,25 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 #endregion
                 */
 
-                #region olap_Etl_Connection_String
+                #region olap_connection_string_config
+        public class OlapConnectionString : ConnectionString
+        {
+            public string Name { get; set; }
+            public string S3Settings { get; set; }
+            public string BucketName { get; set; }
+            public string RemoteFolderName { get; set; }
+            public string AwsAccessKey { get; set; }
+            public string AwsSecretKey { get; set; }
+            public string AwsRegionName { get; set; }
 
-                var connectionString = new OlapConnectionString
+            public ConnectionStringType Type => ConnectionStringType.Olap;
+
+        }
+                #endregion  
+
+        #region olap_Etl_Connection_String
+
+        var connectionString = new OlapConnectionString
                 {
                     Name = connectionStringName,
                     LocalSettings = new LocalSettings
@@ -210,7 +226,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                         FolderPath = path
                     }
                 };
-                AddEtl(store, configuration, connectionString);
+                var resultOlapString = store.Maintenance.Send
+                    (new PutConnectionStringOperation<OlapConnectionString>(myOlapConnectionString));
                 #endregion
 
 
