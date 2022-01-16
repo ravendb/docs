@@ -5,7 +5,7 @@
 RavenDB has developed a quick and simple process to set up a fully secure cluster with our Setup Wizard.  
 We've developed automatic renewals of certificates when setting up with the Setup Wizard together with Let's Encrypt.  
 
-If you choose manual setup and/or to provide your own certificate, **you are responsible for their periodic renewal**.
+If you choose manual setup and/or to provide your own certificate, **you are responsible for its periodic renewal**.
 
 {NOTE/}
 
@@ -19,12 +19,16 @@ In this page:
 
 ## Downloading Server and Setting Up Node Folders
 Download the [RavenDB server package](https://ravendb.net/download) and extract it into permanent server folders on each machine.  
+
 We recommend using multiple machines to improve [cluster availability via failover](../../client-api/cluster/how-client-integrates-with-replication-and-cluster) in case one goes down.  
-Each folder that contains an extracted server package will become a functional node in your cluster.  
 
-By default, when Server is started using `run.ps1` (or `run.sh`) script. It will open a browser with a [Setup Wizard](../../start/installation/setup-wizard) which will guide you through the Server configuration process.
+* Each folder that contains an extracted server package will become a functional node in your cluster.  
+* If you move the folders after installation, **the server will not work**.  
+   You'll receive a 'System.InvalidOperationException: Unable to start the server.' error because it will look for the file path that is set when you install.  
 
-The setup is started because the default configuration file [settings.json](../../server/configuration/configuration-options#json) (found in the downloaded RavenDB Server package) comes configured like this:
+By default, when a server is started using `run.ps1` (or `run.sh` in Linux) script. It will open a browser with a [Setup Wizard](../../start/installation/setup-wizard) which will guide you through the server configuration process.  
+
+The setup is started because the default configuration file [settings.json](../../server/configuration/configuration-options#json) (found in the downloaded RavenDB Server package inside the **Server** folder) comes configured like this:
 
 {CODE-BLOCK:json}
 {
@@ -51,7 +55,7 @@ Setting the `ServerUrl` to `http://127.0.0.1:0` will bind the server to a `local
 {NOTE:Port in Use}
 
 In some cases the port might be in use, this will prevent the Server from starting with "address in use" error (`EADDRINUSE`).  
-For a list of IPs and ports already in use on your machine, run `netstat -a` in the command line.  
+For a list of IPs and ports already in use on your machine, enter `netstat -a` in the command line.  
 
 {NOTE/}
 
@@ -60,7 +64,11 @@ For a list of IPs and ports already in use on your machine, run `netstat -a` in 
 {WARNING: Protect Your Cluster From The Start}
 
 We highly recommend securing your server from the start to [prevent potential vulnerabilities](https://ravendb.net/articles/ravendb-secure-by-default-document-database) later.  
- RavenDB makes securing your cluster from the start as easy as possible to prevent the possiblity of forgetting to secure before going into production.
+ RavenDB makes securing your cluster from the start as easy as possible to prevent the possiblity of forgetting to secure before going into production. 
+
+If you set RavenDB to listen to connections outside your local machine without first securing your cluster, 
+your database will immediately block this now vulnerable configuration and require the administrator to properly setup the security and 
+access control to prevent unauthorized access.  
 
 {WARNING/}
 
