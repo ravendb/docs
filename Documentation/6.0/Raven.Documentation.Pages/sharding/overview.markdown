@@ -43,13 +43,13 @@ storing and managing it may become too demanding for any single node.
 System performance may suffer as resources like RAM, CPU, and storage are 
 exhausted, routine chores like indexing and backup become massive tasks, 
 responsiveness to client requests and queries slows down, and the system's 
-throughput spreads thin, serving an ever growing number of clients.  
+throughput spreads thin, serving an ever-growing number of clients.  
 
 As the volume of stored data grows, the database can be scaled out by 
 splitting it to [shards](../sharding/overview#shards), allowing it to be 
 handled by multiple nodes and presenting practically no limit to its growth.  
 The size of the overall database, comprised of all shards, can reach in 
-this fashion dozens terabytes and more while keeping the resources 
+this fashion dozens of terabytes and more while keeping the resources 
 of each shard in check and maintaining its high performance and throughput.  
 
 ---
@@ -65,6 +65,13 @@ outweighs its benefits when the database is smaller than 250GB or so
 We recommend that you plan ahead for a transition to a sharded database when 
 your database size is in the vicinity of 250GB. You should probably be well 
 after the transition when it reaches 500GB.  
+{NOTE/}
+
+{NOTE: }
+
+* A database of a version under 6.0 cannot currently be migrated to a sharded database.  
+* An unsharded database cannot currently be turned to a sharded database,  
+  and a sharded database cannot currently be turned to an unsharded database.
 {NOTE/}
 
 {PANEL/}
@@ -191,7 +198,7 @@ the shards' performance is unhurt.
 * Sharding is enabled by the database license, no further steps are required.
 {NOTE/}
 
-To create a sharded database via API, use `CreateDatabaseOperation` as follows.  
+To create a sharded database via API, use [CreateDatabaseOperation](../client-api/operations/server-wide/create-database) as follows.  
 
 {CODE-BLOCK:csharp}
 store.Maintenance.Server.Send(
@@ -205,21 +212,8 @@ store.Maintenance.Server.Send(
 
 ## Related articles
 
-**Integrations**  
-[Integrations: Power BI](../../integrations/postgresql-protocol/power-bi)  
-
-**Studio**  
-[Studio: Integrations and Credentials](../../studio/database/settings/integrations)  
-
-**Security**  
-[Setup Wizard](../../start/installation/setup-wizard)  
-[Security Overview](../../server/security/overview)  
-
-**Settings**  
-[settings.json](../../server/configuration/configuration-options#json)  
-
-**Additional Links**  
-[Microsoft Power BI Download Page](https://powerbi.microsoft.com/en-us/downloads)  
+**Client API**  
+[Create Database](../client-api/operations/server-wide/create-database)  
 
 
 
