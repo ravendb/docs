@@ -21,7 +21,7 @@
 
 * In this page:  
   * [Sharding](../sharding/overview#sharding)  
-     * [When Should I Use Sharding?](../sharding/overview#when-should-i-use-sharding)  
+     * [When Should Sharding be Used?](../sharding/overview#when-should-sharding-be-used)  
   * [Shards](../sharding/overview#shards)  
      * [Shard Replication](../sharding/overview#shard-replication)  
   * [Buckets](../sharding/overview#buckets)  
@@ -39,32 +39,34 @@
 {PANEL: Sharding}
 
 As a database grows [very large](https://en.wikipedia.org/wiki/Very_large_database), 
-storing and managing it may become too demanding for any single node.  
-System performance may suffer as resources like RAM, CPU, and storage are 
-exhausted, routine chores like indexing and backup become massive tasks, 
-responsiveness to client requests and queries slows down, and the system's 
-throughput spreads thin, serving an ever-growing number of clients.  
+storing and managing it become too demanding for any single node: 
+The system's **performance** suffers as its resources, i.e. RAM, CPU, 
+and storage, are exhausted, **routine chores** like indexing and backup 
+become massive tasks, **responsiveness** to client requests and queries 
+drops, and the system's **throughput** spreads thin among an ever-growing 
+number of users.  
 
-As the volume of stored data grows, the database can be scaled out by 
-splitting it to [shards](../sharding/overview#shards), allowing it to be 
-handled by multiple nodes and presenting practically no limit to its growth.  
-The size of the overall database, comprised of all shards, can reach in 
-this fashion dozens of terabytes and more while keeping the resources 
+**Sharding** means scaling out a database by splitting its contents 
+between autonomous [shards](../sharding/overview#shards).  
+As the database continues to grow, additional shards can be added 
+to share the burden, setting a much higher limit to the database's 
+potential growth.  
+The size of the overall database, comprised of all its shards, can reach 
+in this fashion dozens of terabytes and more, while keeping the resources 
 of each shard in check and maintaining its high performance and throughput.  
 
 ---
 
-### When Should I Use Sharding?
+### When Should Sharding be Used?
 
 While sharding solves many issues related to the storage and management 
-of high-volume databases, its implementation does present an overhead that 
-outweighs its benefits when the database is smaller than 250GB or so 
-(assuming the node can still comfortably handle this volume).  
+of high-volume databases, its implementation does come with an overhead 
+that outweighs its benefits when the database is smaller than 250 GB or so.  
 
 {NOTE: }
-We recommend that you plan ahead for a transition to a sharded database when 
-your database size is in the vicinity of 250GB. You should probably be well 
-after the transition when it reaches 500GB.  
+We recommend that you transit your data to a sharded database when its 
+size is in the vicinity of 250 GB. You should probably be well after 
+the transition when it reaches 500 GB.  
 {NOTE/}
 
 {NOTE: }
@@ -121,8 +123,9 @@ The number of documents and the amount of data stored in each bucket may vary.
 
 The number of buckets allocated for the whole database is fixed, always remaining 
 **1,048,576** (1024 times 1024).  
-Each shard is assigned with a range of buckets from this overall portion, in which 
-documents can be stored.  
+Each shard is assigned by the cluster with a range of buckets from this overall 
+portion, in which documents [and their extensions](../sharding/overview#document-extensions-storage) 
+can be stored.  
 
 !["Buckets Allocation"](images/buckets-allocation.png "Buckets Allocation")
 
@@ -131,24 +134,25 @@ documents can be stored.
 ### Buckets Population
 
 Buckets are populated with documents automatically by the cluster.  
-A hash algorithm is executed over each document ID. The resulting 
-hash code, a number between 0 and 1,048,576, is the number of the 
-bucket in which the document is stored.  
+
+* A hash algorithm is executed over each document ID.  
+* The resulting hash code, a number between 0 and 1,048,576, 
+  is the number of the bucket in which the document is stored.  
+* As buckets are spread among different shards, the bucket number 
+  set for a document also determines which shard the document 
+  will reside on.  
 
 !["Buckets Population"](images/buckets-population.png "Buckets Population")
 
-As buckets are spread among different shards, the bucket number 
-allocated for a document also determines which shard the document 
-will reside on.  
 
 ---
 
 ### Document Extensions Storage
 
-Document extensions (i.e. Attachments, Time series, Counters, and 
-Revisions) are stored in the same bucket as the document they belong to.  
-To make this happen, the bucket number (hash code) they are given 
-is calculated by the ID of the document that owns them.  
+Document extensions (i.e. Attachments, Time series, Counters, and Revisions) 
+are stored **in the same bucket as the document they belong to**.  
+To make this happen, the bucket number ([hash code](../sharding/overview#buckets-population)) 
+document extensions are given, is calculated by the ID of the document that owns them.  
 
 ---
 
@@ -181,9 +185,10 @@ of the shards is overpopulated and others are underpopulated.
 
 **Resharding** is a continuous, automatic process in which buckets are 
 reallocated by the cluster from one shard to another to maintain a balanced 
-database, in which shards handle about the same volume of data.  
-Resharding is performed gradually, at a steady pace, to make sure that 
-the shards' performance is unhurt.  
+database, in which different shards handle about the same volume of data 
+as each other.  
+Resharding is performed gradually, at a steady pace, to make sure it 
+has no damaging effect on the shards' performance and availability.  
 
 {PANEL/}
 
@@ -204,9 +209,11 @@ To create a sharded database via API, use [CreateDatabaseOperation](../client-ap
 store.Maintenance.Server.Send(
     new CreateDatabaseOperation(
         new DatabaseRecord(database), 
-        replicationFactor: 2, // Sharding Replication Factor
-        shardFactor: 3)); // Sharding Factor
+        replicationFactor: 2, // Shard Replication Factor
+        shardFactor: 3)); // Number of Shards
 {CODE-BLOCK/}
+
+* Read about **shard replicatgion** and the Shard Replication Factor [here](../sharding/overview#shard-replication).  
 
 {PANEL/}
 
@@ -215,5 +222,7 @@ store.Maintenance.Server.Send(
 **Client API**  
 [Create Database](../client-api/operations/server-wide/create-database)  
 
+**External Links**  
+[very large Database](https://en.wikipedia.org/wiki/Very_large_database)  
 
 
