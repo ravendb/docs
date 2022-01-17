@@ -20,6 +20,8 @@
 {NOTE: }
 
 * In this page:  
+  * [Sharding](../sharding/overview#sharding)  
+     * [When Should I Use Sharding?](../sharding/overview#when-should-i-use-sharding)  
   * [Shards](../sharding/overview#shards)  
      * [Shard Replication](../sharding/overview#shard-replication)  
   * [Buckets](../sharding/overview#buckets)  
@@ -34,6 +36,41 @@
 
 ---
 
+{PANEL: Sharding}
+
+As a database grows [very large](https://en.wikipedia.org/wiki/Very_large_database), 
+storing and managing it may become too demanding for any single node.  
+System performance may suffer as resources like RAM, CPU, and storage are 
+exhausted, routine chores like indexing and backup become massive tasks, 
+responsiveness to client requests and queries slows down, and the system's 
+throughput spreads thin, serving an ever growing number of clients.  
+
+As the volume of stored data grows, the database can be scaled out by 
+splitting it to [shards](../sharding/overview#shards), allowing it to be 
+handled by multiple nodes and presenting practically no limit to its growth.  
+The size of the overall database, comprised of all shards, can reach in 
+this fashion dozens terabytes and more while keeping the resources 
+of each shard in check and maintaining its high performance and throughput.  
+
+---
+
+### When Should I Use Sharding?
+
+While sharding solves many issues related to the storage and management 
+of high-volume databases, its implementation does present an overhead that 
+outweighs its benefits when the database is smaller than 250GB or so 
+(assuming the node can still comfortably handle this volume).  
+
+{NOTE: }
+We recommend that you plan ahead for a transition to a sharded database when 
+your database size is in the vicinity of 250GB. You should probably be well 
+after the transition when it reaches 500GB.  
+{NOTE/}
+
+{PANEL/}
+
+---
+
 {PANEL: Shards}
 
 While each cluster node of an Unsharded database handles a full replica 
@@ -41,25 +78,11 @@ of the entire database, each node of a Sharded database, aka **Shard**,
 is assigned with a **subset** of the entire database contents.  
 {NOTE: }
 Take for example a 3-shards database, in which shard **A** is populated with 
-documents `Users/1` to `Users/2000`, shard **B** with documents `Users/2001` 
-to `Users/4000`, and shard **C** with documents `Users/4001` to `Users/6000`.  
+documents `Users/1`..`Users/2000`, shard **B** with documents `Users/2001`..`Users/4000`, 
+and shard **C** with documents `Users/4001`..`Users/6000`.  
 A client requesting this database for `Users/3000`, will be routed by 
 the cluster to shard **B** and served by it.  
 {NOTE/}
-
-* **Shards and Huge Databases**  
-  The **size of the overall database**, comprised of all shards, can thus 
-  grow to dozens and even hundreds of terabytes, while keeping each shard's 
-  storage in a manageable size and maintaining its high performance and throughput.  
-
-* **Shards and Indexing**  
-  Indexing is one of the most demanding tasks that a database is required 
-  to perform, and one of the most rewarding. As the database grows bigger, 
-  both ends of the equation become more apparent: the price for indexing 
-  in CPU usage and its reward in instant replies to client requests.  
-  Implementing sharding with an exceptionally large database splits 
-  indexing tasks between shards, minimizing each shard's indexing effort 
-  and accelerating the service for a smaller number of clients.  
 
 ---
 
@@ -83,15 +106,18 @@ the **Shard Replication Factor**.
 {PANEL: Buckets}
 
 Documents are stored in a sharded database within virtual containers named **Buckets**.  
-The number of documents occupying each shard and their sizes may vary.  
+The number of documents and the amount of data stored in each bucket may vary.  
 
 ---
 
 ### Buckets Allocation
 
 The number of buckets allocated for the whole database is fixed, always remaining 
-**1,048,576** (1024 times 1024). Each shard is assigned with a partial range of 
-buckets from this overall portion, in which documents can be stored.  
+**1,048,576** (1024 times 1024).  
+Each shard is assigned with a range of buckets from this overall portion, in which 
+documents can be stored.  
+
+!["Buckets Allocation"](images/buckets-allocation.png "Buckets Allocation")
 
 ---
 
@@ -101,6 +127,8 @@ Buckets are populated with documents automatically by the cluster.
 A hash algorithm is executed over each document ID. The resulting 
 hash code, a number between 0 and 1,048,576, is the number of the 
 bucket in which the document is stored.  
+
+!["Buckets Population"](images/buckets-population.png "Buckets Population")
 
 As buckets are spread among different shards, the bucket number 
 allocated for a document also determines which shard the document 
@@ -127,15 +155,17 @@ the suffix ID, and store the document in this bucket.
 
 {NOTE: }
 E.g. - 
-Original document ID: `Users/1`  
-The document you want Users/1 to share a bucket with: `Users/2`  
-Rename `Users/1` to: `Users/1$Users/2`
+Original document ID: `Users/70`  
+The document you want Users/70 to share a bucket with: `Users/4`  
+Rename `Users/1` to: `Users/70$Users/4`
 {NOTE/}
+
+!["Forcing Documents to Share a Bucket"](images/force-docs-to-share-bucket.png "Forcing Documents to Share a Bucket")
 
 {WARNING: }
 Be careful not to force the storage of too many documents in the same bucket 
 (and shard), to prevent the creation of an imbalanced database in which one 
-of the shards is overpopulated and the others are underpopulated.  
+of the shards is overpopulated and others are underpopulated.  
 {WARNING/}
 
 {PANEL/}
