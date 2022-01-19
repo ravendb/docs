@@ -78,6 +78,9 @@ Be sure that the node definition in the connection string has the "s" in https:
 
 {CODE add_sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
+{PANEL/}
+
+
 ## Example - Add Olap Connection String - Local Machine
 
 {CODE olap_Etl_Connection_String@ClientApi\Operations\ConnectionStrings.cs /}
@@ -85,6 +88,10 @@ Be sure that the node definition in the connection string has the "s" in https:
 ## Example - Add Olap Connection String - AWS Cloud
 
 {CODE olap_Etl_AWS_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+
+{PANEL/}
+
+{PANEL: }
 
 ## Example - Add Elasticsearch Connection String  
   {CODE create-connection-string@ClientApi\Operations\ConnectionStrings.cs /}

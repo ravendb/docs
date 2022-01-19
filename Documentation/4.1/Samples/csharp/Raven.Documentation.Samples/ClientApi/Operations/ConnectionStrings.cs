@@ -130,7 +130,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     //define database to connect with on the node
                     Database = "Northwind",
 
-                }));
+                };
                 //create the connection string
                 var resultRavenString = store.Maintenance.Send(
                     new PutConnectionStringOperation<RavenConnectionString>(ravenConnectionString));
