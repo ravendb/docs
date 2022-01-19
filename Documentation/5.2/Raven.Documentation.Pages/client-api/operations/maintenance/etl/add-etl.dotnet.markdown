@@ -33,29 +33,31 @@ In this page:
 | ------------- | ----- | ---- |
 | **configuration** | `EtlConfiguration<T>` | ETL configuration where `T` is connection string type |
 
+{PANEL: }
+
 ## Add Raven ETL
 Add [Raven ETL](../../../../server/ongoing-tasks/etl/raven)
 
 ### Connection String for Raven ETL
 
 **Secure servers**  
-To connect a secure RavenDB server you need to [export the certificate](../../../../server/security/authentication/certificate-management) from the source server and install it into the destination server.  
-This can be done easily in the RavenDB Studio:  
+In addition to defining a connection string, to connect secure RavenDB servers you must [export the server certificate](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
+from the source server and install it into the destination server.  
 
-![Studio Server Certificate Export](images/export-server-certificate.png "Studio Server Certificate Export")
+After passing the certificate, you can either create an ETL with a connection string and transformation script [via the studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) 
+or with the following API.  
 
-
-  1. In the source server, click the "Manage Server" tab on the left, then select "Certificates".  
-  2. Click the "Server Certificates" button on the right, then select "Export server certificates".  
-  3. In the destination server, upload the `.pfx` with the "Client certificate" button.  
-  
-  Be sure that the node definition in the connection string has the "s" in https:  
+Be sure that the node definition in the connection string has the "s" in https:  
 
 {CODE raven_etl_connection_string@ClientApi\Operations\AddEtl.cs /}
 
 ### Code Sample to Add Raven ETL
 
 {CODE add_raven_etl@ClientApi\Operations\AddEtl.cs /}
+
+{PANEL/}
+
+{PANEL: }
 
 ## Add Sql ETL
 Add [SQL ETL](../../../../server/ongoing-tasks/etl/sql)
@@ -68,6 +70,10 @@ Add [SQL ETL](../../../../server/ongoing-tasks/etl/sql)
 
 {CODE add_sql_etl@ClientApi\Operations\AddEtl.cs /}
 
+{PANEL/}
+
+{PANEL: }
+
 ## Add OLAP ETL
 Add [Olap ETL](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task)  
 
@@ -77,7 +83,7 @@ The following code sample is for a connection string to a local machine.
   
 {CODE olap_Etl_Connection_String@ClientApi\Operations\AddEtl.cs /}
   
-To connect to a cloud instance, see the [Olap ETL article](../../../../server/ongoing-tasks/etl/olap#section-1).  
+To see API with properties to connect to various cloud servers and an in-depth explanation of transform scripts, see the [Olap ETL article](../../../../server/ongoing-tasks/etl/olap#section-1).  
   
 The following code sample is for a connection string to Amazon AWS. If you use Google or Microsoft cloud servers, change the parameters accordingly.   
 {CODE olap_Etl_AWS_connection_string@ClientApi\Operations\AddEtl.cs /}
@@ -86,7 +92,7 @@ The following code sample is for a connection string to Amazon AWS. If you use G
 
 {CODE add_olap_etl@ClientApi\Operations\AddEtl.cs /}
 
-
+{PANEL/}
 
 ## Related Articles
 

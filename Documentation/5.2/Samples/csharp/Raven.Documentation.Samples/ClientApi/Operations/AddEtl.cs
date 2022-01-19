@@ -5,19 +5,15 @@ using Raven.Client.Documents.Operations.Backups;
 using Raven.Client.Documents.Operations.ConnectionStrings;
 using Raven.Client.Documents.Operations.ETL;
 using Raven.Client.Documents.Operations.ETL.SQL;
-//using Raven.Client.Documents.Operations.ETL.OLAP;
+using Raven.Client.Documents.Operations.ETL.OLAP;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations
 {
     public class AddEtl
     {
-        private string myServerAddress;
-        private object myDataBase;
-        private object myUsername;
-        private object myPassword;
-        private object connectionStringName;
+
+        private string connectionStringName;
         private string path;
-        private object configuration;
 
         public object Database { get; }
         public object UserId { get; }
@@ -32,7 +28,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             */
         }
 
-        public AddEtl(object store)
+        public AddEtl()
         {
             using (var store = new DocumentStore())
             {
@@ -59,11 +55,12 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                             }
                         }
                     });
-
+                
                 AddEtlOperationResult result = store.Maintenance.Send(operation);
                 #endregion
             }
-            using (var store = GetDocumentStore())
+
+            using (var store = new DocumentStore())
 
             #region raven_etl_connection_string
 
@@ -79,7 +76,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
                     //define database to connect with on the node
                     Database = "Northwind",
-                }));
+                };
                 //create the connection string
                 var resultRavenString = store.Maintenance.Send(
                     new PutConnectionStringOperation<RavenConnectionString>(ravenConnectionString));
@@ -137,6 +134,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 AddEtlOperationResult result = store.Maintenance.Send(operation);
                 #endregion
             }
+
+            using (var store = new DocumentStore())
 
             #region sql_etl_connection_string
 
@@ -199,55 +198,63 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 AddEtlOperationResult result = store.Maintenance.Send(operation);
                 #endregion
                 */
-
+                /*
                 #region olap_connection_string_config
-        public class OlapConnectionString : ConnectionString
+
+    public class OlapConnectionString : ConnectionString
         {
             public string Name { get; set; }
-            public string S3Settings { get; set; }
-            public string BucketName { get; set; }
-            public string RemoteFolderName { get; set; }
-            public string AwsAccessKey { get; set; }
-            public string AwsSecretKey { get; set; }
-            public string AwsRegionName { get; set; }
-
-            public ConnectionStringType Type => ConnectionStringType.Olap;
+            public LocalSettings LocalSettings { get; set; }
+            public S3Settings S3Settings { get; set; }
+            public AzureSettings AzureSettings { get; set; }
+            public GlacierSettings GlacierSettings { get; set; }
+            public GoogleCloudSettings GoogleCloudSettings { get; set; }
+            public FtpSettings FtpSettings { get; set; }
+            public override ConnectionStringType Type => ConnectionStringType.Olap;
 
         }
-                #endregion  
+        #endregion
+                */
 
-        #region olap_Etl_Connection_String
 
-        var connectionString = new OlapConnectionString
+
                 {
-                    Name = connectionStringName,
-                    LocalSettings = new LocalSettings
+                    #region olap_Etl_Connection_String
+
+                    var myOlapConnectionString = new OlapConnectionString
                     {
-                        FolderPath = path
-                    }
-                };
-                var resultOlapString = store.Maintenance.Send
-                    (new PutConnectionStringOperation<OlapConnectionString>(myOlapConnectionString));
-                #endregion
+                        Name = connectionStringName,
+                        LocalSettings = new LocalSettings
+                        {
+                            FolderPath = path
+                        }
+                    };
+                    var resultOlapString = store.Maintenance.Send
+                        (new PutConnectionStringOperation<OlapConnectionString>(myOlapConnectionString));
+                    #endregion
+                }
 
-
-                #region olap_Etl_AWS_connection_string
-
-                var myOlapConnectionString = new OlapConnectionString
                 {
-                    Name = "myConnectionStringName",
-                    S3Settings = new S3Settings
-                    {
-                        BucketName = "myBucket",
-                        RemoteFolderName = "my/folder/name",
-                        AwsAccessKey = "myAccessKey",
-                        AwsSecretKey = "myPassword",
-                        AwsRegionName = "us-east-1"
-                    }
-                };
+                    #region olap_Etl_AWS_connection_string
 
-                var resultRavenString = store.Maintenance.Send(new PutConnectionStringOperation<RavenConnectionString>(ravenConnectionString));
-                #endregion
+                    var myOlapConnectionString = new OlapConnectionString
+                    {
+                        Name = "myConnectionStringName",
+                        S3Settings = new S3Settings
+                        {
+                            BucketName = "myBucket",
+                            RemoteFolderName = "my/folder/name",
+                            AwsAccessKey = "myAccessKey",
+                            AwsSecretKey = "myPassword",
+                            AwsRegionName = "us-east-1"
+                        }
+                    };
+
+                    var resultOlapString = store.Maintenance.Send(
+                        new PutConnectionStringOperation<OlapConnectionString>(myOlapConnectionString));
+                    #endregion 
+                }
+
 
             }
 
@@ -255,11 +262,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
         }
 
-        private void AddEtl(DocumentStore store, object configuration, OlapConnectionString connectionString)
-        {
-            throw new NotImplementedException();
-        }
+
     }
-    }
+    
 }
 

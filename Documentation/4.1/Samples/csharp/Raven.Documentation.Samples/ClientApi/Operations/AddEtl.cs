@@ -57,7 +57,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 AddEtlOperationResult result = store.Maintenance.Send(operation);
                 #endregion
             }
-            using (var store = GetDocumentStore())
+            using (var store = new DocumentStore())
 
             #region raven_etl_connection_string
 
@@ -73,29 +73,29 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
                     //define database to connect with on the node
                     Database = "Northwind",
-                }));
+                };
                 //create the connection string
                 var resultRavenString = store.Maintenance.Send(
                     new PutConnectionStringOperation<RavenConnectionString>(ravenConnectionString));
             }
             #endregion
 
-
-            using (var store = new DocumentStore())
             {
-                #region add_sql_etl
-                AddEtlOperation<SqlConnectionString> operation = new AddEtlOperation<SqlConnectionString>(
-                    new SqlEtlConfiguration
-                    {
-                        ConnectionStringName = "sql-connection-string-name",
-                        FactoryName = "System.Data.SqlClient",
-                        Name = "Orders to SQL",
-                        SqlTables = {
+                using (var store = new DocumentStore())
+                {
+                    #region add_sql_etl
+                    AddEtlOperation<SqlConnectionString> operation = new AddEtlOperation<SqlConnectionString>(
+                        new SqlEtlConfiguration
+                        {
+                            ConnectionStringName = "sql-connection-string-name",
+                            FactoryName = "System.Data.SqlClient",
+                            Name = "Orders to SQL",
+                            SqlTables = {
                             new SqlEtlTable {TableName = "Orders", DocumentIdColumn = "Id", InsertOnlyMode = false},
                             new SqlEtlTable {TableName = "OrderLines", DocumentIdColumn = "OrderId", InsertOnlyMode = false},
-                        },
-                        Transforms =
-                        {
+                            },
+                            Transforms =
+                            {
                             new Transformation
                             {
                                 Name = "Script #1",
@@ -126,12 +126,14 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                                             // Load to SQL table 'Orders'
                                             loadToOrders(orderData)"
                             }
-                        }
-                    });
+                            }
+                        });
 
-                AddEtlOperationResult result = store.Maintenance.Send(operation);
-                #endregion
+                    AddEtlOperationResult result = store.Maintenance.Send(operation);
+                    #endregion
+                }
 
+                using (var store = new DocumentStore())
 
                 #region sql_etl_connection_string
 
@@ -163,8 +165,5 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
         }
     }
 
-    private System.IDisposable GetDocumentStore()
-    {
-        throw new System.NotImplementedException();
-    }
+
 }
