@@ -55,7 +55,9 @@ Documents are always sent in Etag order which means that data that has already b
 3. In case of subscription failover (`Enterprise feature`), when there is a chance that documents will be processed again, because it's not always possible to find the same starting point on a different machine.
 
 {NOTE: }
-If the database has Revisions defined, the subscription can be configured to process pairs of subsequent document revisions. Read more in [revisions support](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning).
+If the database has Revisions defined, the subscription can be configured to process pairs 
+of subsequent document revisions.  
+Read more here: [revisions support](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)
 {NOTE/}
 
 {PANEL/}
