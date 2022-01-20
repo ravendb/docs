@@ -6,7 +6,7 @@
   or [Manually](../../start/installation/manual), you can register the Server as a Service using the `rvn` tool that can be found inside the RavenDB Server 
   distribution package.
 
-* After registering RavenDB as a service, be sure to check your OS list of "Services" manager to see that the "RavenDB" service is there 
+* After registering RavenDB as a service, be sure to check your OS "Services" manager to see that the "RavenDB" service is there 
   and that the Startup Type is "Automatic".  
 
 In this page: 
@@ -27,24 +27,27 @@ The prerequisites for running RavenDB as a Service are defined [here](../../star
 
 ### Registering
 
-To register RavenDB as a Service on Windows OS, run powershell with administrator privileges. 
+To register RavenDB as a Service on Windows OS, run PowerShell with administrator privileges.  
 Navigate to the RavenDB package root and execute:  
 
 {CODE-BLOCK:powershell}
-.\setup-as-service.ps1
+`.\setup-as-service.ps1`
 {CODE-BLOCK/}
 
-If you recieve an error `setup-as-service.ps1 cannot be loaded. The file...is not digitally signed`, 
-first run the following command `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
-and after you affirm the "Execution Policy Change" with `Y`, you can run `.\setup-as-service.ps1`.  
+If you receive the following error:  
+"setup-as-service.ps1 cannot be loaded. The file [YourFileLocation] is not digitally signed" 
 
-Alternatively, navigate to the node `Server` folder and execute the following command:  
+1. Run the following command `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`.
+2. Affirm the "Execution Policy Change" with `Y`. 
+3. Run `.\setup-as-service.ps1` again.  
+
+Alternatively, navigate to the node **Server** folder and execute the following command:  
 
 {CODE-BLOCK:powershell}
-.\rvn.exe windows-service register --service-name RavenDB
+`.\rvn.exe windows-service register --service-name RavenDB`
 {CODE-BLOCK/}
 
-If you want to run the service under a non-default user (`Local Service` is default) then execute following command:
+If you want to run the service under a non-default user (**Local Service** is default) then execute the following command:
 
 {CODE-BLOCK:powershell}
 .\rvn.exe windows-service register --service-name RavenDB --service-user-name MyUser --service-user-password MyPassword
@@ -79,7 +82,7 @@ Service can be also controlled using the `start` and `stop` commands:
 
 You can run RavenDB as a daemon by running the script `install-daemon.sh` from the package root.
 
-Alternatively, open a bash terminal, and create the following file `/etc/systemd/system/ravendb.service`, using super user permissions:
+Alternatively, open a bash terminal, and create the following file `/etc/systemd/system/ravendb.service`, using super-user permissions:
 
 {CODE-BLOCK:bash}
 [Unit]
