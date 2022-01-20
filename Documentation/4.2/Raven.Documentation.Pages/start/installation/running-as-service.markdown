@@ -1,12 +1,27 @@
 # Installation: Running as a Service
 
+* Running servers as OS services reduces downtime whenever a machine restarts because the servers automatically start every time the machine boots.  
+
+* After completing the Server configuration process either via the [Setup Wizard](../../start/installation/setup-wizard) 
+  or [Manually](../../start/installation/manual), you can register the Server as a Service using the `rvn` tool that can be found inside the RavenDB Server 
+  distribution package.
+
+* After registering RavenDB as a service, be sure to check your OS list of "Services" manager to see that the "RavenDB" service is there 
+  and that the Startup Type is "Automatic".  
+
+In this page: 
+
+* [Windows](../../start/installation/running-as-service#windows)  
+  * [Registering](../../start/installation/running-as-service#registering)  
+  * [Unregistering](../../start/installation/running-as-service#unregistering)  
+  * [Starting and Stopping](../../start/installation/running-as-service#starting-and-stopping)  
+* [Linux - Ubuntu 16.04](../../start/installation/running-as-service#linux---ubuntu-16.04)  
+
 {INFO:Prerequisites}
 
 The prerequisites for running RavenDB as a Service are defined [here](../../start/getting-started#prerequisites).  
 
 {INFO/}
-
-After completing the Server configuration process either via the [Setup Wizard](../../start/installation/setup-wizard) or [Manually](../../start/installation/manual), you can register the Server as a Service using the `rvn` tool that can be found inside the RavenDB Server distribution package.
 
 {PANEL:Windows}
 
@@ -19,7 +34,11 @@ Navigate to the RavenDB package root and execute:
 .\setup-as-service.ps1
 {CODE-BLOCK/}
 
-Alternatively, navigate to the `Server` folder and execute the following command:  
+If you recieve an error `setup-as-service.ps1 cannot be loaded. The file...is not digitally signed`, 
+first run the following command `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
+and after you affirm the "Execution Policy Change" with `Y`, you can run `.\setup-as-service.ps1`.  
+
+Alternatively, navigate to the node `Server` folder and execute the following command:  
 
 {CODE-BLOCK:powershell}
 .\rvn.exe windows-service register --service-name RavenDB
@@ -109,7 +128,9 @@ journalctl -f -u ravendb.service
 
 ### Installation
 
-- [System Requirements](../../start/installation/system-requirements)
-- [System Configuration Recommendations](../../start/installation/system-configuration-recommendations)
+- [Setup Wizard](../../start/installation/setup-wizard)
+- [Manual Setup](../../start/installation/manual)
 - [Running in a Docker Container](../../start/installation/running-in-docker-container)
 - [Upgrading to New Version](../../start/installation/upgrading-to-new-version)
+- [System Requirements](../../start/installation/system-requirements)
+- [System Configuration Recommendations](../../start/installation/system-configuration-recommendations)
