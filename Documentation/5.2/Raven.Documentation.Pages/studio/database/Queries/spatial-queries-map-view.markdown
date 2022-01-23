@@ -178,8 +178,8 @@ spatial.within(
   {CODE-TAB:csharp:spatial.wkt spatial.wkt@Studio\Database\Queries\Queries.cs /}
   {CODE-TABS/}
   The **search coordinates** are provided in **a different order** for the two syntaxes.  
-  For `spatial.circle`, provide the Longitude first and the Latitude second.  
-  For `spatial.wkt`, provide the Latitude first and the Longitude second.  
+  For `spatial.circle`, provide the Latitude first and the Longitude second.  
+  For `spatial.wkt`, provide the Longitude first and the Latitude second.  
 
 * **Region Color**  
   When multiple regions are defined, they are given different colors in the spatial map view.  
