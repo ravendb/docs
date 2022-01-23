@@ -187,7 +187,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                         FolderPath = path
                     }
                 };
-                var connectionString = olapConnectionString;
 
                 var resultOlapString = store.Maintenance.Send
                     (new PutConnectionStringOperation<OlapConnectionString>(olapConnectionString));
