@@ -37,14 +37,7 @@ Add [Raven ETL](../../../../server/ongoing-tasks/etl/raven)
 **Secure servers**  
 In addition to defining a connection string, to connect secure RavenDB servers you must [export the server certificate](../../../../server/security/authentication/certificate-management) 
 from the source server and install it into the destination server.  
-This can be done easily in the RavenDB Studio with the following steps:  
 
-![Studio Server Certificate Export](images/export-server-certificate.png "Studio Server Certificate Export")
-
-  1. In the source server, click the "Manage Server" tab on the left, then select "Certificates".  
-  2. Click the "Server Certificates" button on the right, then select "Export server certificates".  
-  3. In the destination server, upload the `.pfx` with the "Client certificate" button.  
-  
 After passing the certificate, you can either create an ETL with a connection string and transform script [via the studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) 
 or with the following API.  
 
