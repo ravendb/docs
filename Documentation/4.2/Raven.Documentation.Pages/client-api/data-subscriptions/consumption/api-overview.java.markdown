@@ -82,14 +82,17 @@ The `run` function receives the client-side code as a consumer that will process
 | **openSession()** | `IDocumentSession` | New document session, that tracks all items and included items of the current batch. |
 
 
-{NOTE:Subscription Session characteristics}
-Session will be created by the same document store that created the worker, therefore will receive the same configurations as any other session created by the store.  
-However, in order to maintain consistency, the session will address the same server that the batch was received from.  
-It won't try to fail over to another server. It might also fail if the subscription worker changes the node it communicates with.  
-Such event could happen if the subscription worker starts again to address its original node after a fallback occurrence.  
-If such failure occurs, the subscription processing will be stopped, and will have to be restarted, as shown [here](../../../client-api/data-subscriptions/consumption/examples#client-with-full-exception-handling-and-processing-retries)  
-{NOTE/}
+{NOTE:Subscription Worker Connectivity}
 
+As long as there is no exception, the worker will continue addressing the same 
+server that the first batch was received from.  
+If the worker fails to reach that node, it will try to 
+[failover](../../../client-api/configuration/load-balance-and-failover#readbalancebehavior-options) to another node 
+from the session's topology list.  
+The node that the worker succeeded connecting to, will inform the worker which 
+node is currently responsible for data subscriptions.  
+
+{NOTE/}
 
 {INFO:SubscriptionBatch&lt;T&gt;.Item}
 
