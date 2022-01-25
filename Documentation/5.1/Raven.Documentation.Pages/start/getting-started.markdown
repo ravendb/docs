@@ -2,24 +2,26 @@
 
 Welcome to RavenDB! 
 
-This article will get you started and guide you through all the parts of RavenDB needed for basic understanding and simple setup.  
+This article will get you started and guide you through all the aspects of RavenDB needed for basic understanding and a simple setup.  
 
 In this page:  
 
-* The [Server](../start/getting-started#server) part will focus on installation, setup & configuration of the RavenDB server  
+* The [Server](../start/getting-started#server) portion will focus on installation, setup & configuration of the RavenDB server  
     * [Prerequisites](../start/getting-started#prerequisites)  
     * [Installation & Setup](../start/getting-started#installation--setup)  
     * [Configuration](../start/getting-started#configuration)  
     * [Studio](../start/getting-started#studio)  
     * [Security Concerns](../start/getting-started#security-concerns)  
-* The [Client](../start/getting-started#client) part will describe the general principles behind our client libraries 
+* The [Client](../start/getting-started#client) portion will describe the general logic and principles behind our client libraries 
     * [DocumentStore](../start/getting-started#documentstore)  
     * [Session](../start/getting-started#session)  
 
+---
 
 {PANEL: Server}
 
-Let's start by installing and configuring the server. In order to do that first we need to download the server package from the [downloads](https://ravendb.net/downloads) page.
+Let's start by installing and configuring the server. To do that, first we need to download the server package 
+from the [downloads](https://ravendb.net/downloads) page.
 
 RavenDB is cross-platform with support for the following operating systems:
 
@@ -43,7 +45,7 @@ Please install [Visual C++ 2015 Redistributable Package](https://support.microso
 
 {NOTE: Linux}
 
-We highly recommend **updating** your **Linux OS** prior to launching the RavenDB server. Also check if .NET Core requires any other prerequisites in the [Prerequisites for .NET Core on Linux](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites) article written by Microsoft.
+We highly recommend **updating** your **Linux OS** prior to launching the RavenDB server. Also, check if .NET Core requires any other prerequisites in the [Prerequisites for .NET Core on Linux](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites) article written by Microsoft.
 
 {NOTE/}
 
@@ -57,16 +59,34 @@ We highly recommend **updating** your **MacOS** and checking the [Prerequisites 
 
 ### Installation & Setup
 
-1. Set up a parent folder in a permanent location for your installation package and server settings for the next steps.  
-2. Set up separate folders in the parent folder for each node and keeping it in a safe place for future use.  
-![Cluster Parent/Nodes Folder](images/Cluster-Parent-Nodes-Folders.png "Cluster Parent/Nodes Folder")  
+{NOTE: Highly Available Clusters}
+
+We recommend setting up your cluster nodes on separate machines so that if one goes down, the others can keep the cluster active. 
+
+{NOTE/}
+
+1. Set up a server folder on each machine that will host the nodes in your cluster. 
+ You may want to include the node designation (nodes A, B, C...) in the name of each server folder, to prevent future confusion.  
+
+2. Extract the server package into permanent server folders on each machine.  
+ Each folder that contains an extracted server package will become a functional node in your cluster.  
+ If you've set up on separate machines, go to step 3 below.  
 
 {WARNING: Important:} If you move this folder after installation, the server will not run.  
-You'll receive a 'System.InvalidOperationException: Unable to start the server.' error because it will look for the file path that is set when you install.
+You'll receive a 'System.InvalidOperationException: Unable to start the server.' error because it will look for the file path that is set 
+when you install. If you must move your folder at a later time, you can [reconfigure the certificate file path](../server/security/authentication/certificate-configuration#standard-manual-setup-with-certificate-stored-locally) 
+in the `settings.json` file.
 {WARNING/}
 
-3. Extract the downloaded `RavenDB...zip` server package into the Node A folder.  
-4. If you want to install the cluster as a service (it will run in the background every time your machine starts), this step will be done after initial installation via the Setup Wizard or manually. Read [Running as a Service](installation/running-as-service).  
+If you choose to use only one machine (although this will increase the chances of your cluster going down) you'll need to:
+
+1. Set up a parent folder in a permanent location for your installation package and server settings for the next steps.  
+2. Set up separate folders in the parent folder for each node and keep it in a safe place for future use.  
+  ![Cluster Parent/Nodes Folder](images/Cluster-Parent-Nodes-Folders.png "Cluster Parent/Nodes Folder")  
+
+3. Extract the [downloaded](https://ravendb.net/downloads) `RavenDB...zip` server package into each node folder.  
+4. If you want to install the cluster **as a service** (it will improve availability because it will automatically run in the background every time your 
+machine restarts), this simple step will be done after initial secure installation via the Setup Wizard or manually. Read [Running as a Service](installation/running-as-service).  
 5. Start the [Setup Wizard](../start/installation/setup-wizard) by running `run.ps1` (or `run.sh` in Linux) in PowerShell or [disable the 'Setup Wizard' and configuring the server manually](../start/installation/manual).  
 ![Running the Setup Wizard](images/run-ps1-with-PowerShell.png "Running the Setup Wizard")
 
@@ -107,9 +127,11 @@ appearing:
 
 ### Configuration
 
-The RavenDB server is using a [settings.json](../server/configuration/configuration-options#json) file to store the server-wide configuration options.  
-This file is located in the `Server` directory.  
-After making changes to this file, a server restart is required in order for them to be applied.
+The RavenDB server uses a [settings.json](../server/configuration/configuration-options#json) file in each node `Server` folder to store the server-wide configuration options.  
+When starting a server, RavenDB will look for the `settings.json` file in the node `Server` folder, so it must be located there.  
+The [Setup Wizard](../start/installation/setup-wizard) places it correctly automatically.  
+
+After making changes to this file, a server restart is required for them to be applied.  
 
 You can read more about the available configuration options in our [dedicated article](../server/configuration/configuration-options).
 
@@ -125,7 +147,7 @@ The configuration file included in each RavenDB server distribution package is a
 }
 {CODE-BLOCK/}
 
-Which means that the server will run:
+This means that the server will run:
 
 - On `localhost` with a `random port`
 - In `Setup Wizard` mode
@@ -135,7 +157,7 @@ Which means that the server will run:
 
 {WARNING: Port in Use}
 
-In some cases the port might be in use. This will prevent the Server from starting with an "address in use" error (`EADDRINUSE`).
+In some cases, the port might be in use. This will prevent the Server from starting with an "address in use" error (`EADDRINUSE`).
 
 The port can be changed by editing the `ServerUrl` value in the `settings.json` file.  
 For a list of IPs and ports already in use, run `netstat -a` in the command line.
@@ -175,13 +197,16 @@ Whenever you run the server folder script `run.ps1` the Studio opens automatical
 
 ### Security Concerns
 
+**We recommend using the 'Setup Wizard' to easily install RavenDB securely from the very start** to prevent potential future vulnerability.  
+[The process](../start/getting-started#installation--setup) in RavenDB only takes a few minutes and is free.  
+
 To let a developer start coding an application quickly, RavenDB will run with the following default security mode:
 
 {WARNING: Default Security Mode}
 
 As long as the database is used inside the local machine and no outside connections are allowed, you can ignore security concerns 
 and you require no authentication. Once you set RavenDB to listen to connections outside your local machine, 
-your database will immediately block this now vulnerable configuration and require the administrator to properly setup the security and 
+your database will immediately block this now vulnerable configuration and require the administrator to properly set up the security and 
 access control to prevent unauthorized access to your data or to explicitly allow the unsecured configuration.
 
 {WARNING/}
@@ -287,7 +312,7 @@ select Name
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-The following articles can extend your knowledge about the `Session`:
+**Session** - The following articles can extend your knowledge about the Session:
 
 - [What is a Session and how does it work?](../client-api/session/what-is-a-session-and-how-does-it-work)
 - [Opening a Session](../client-api/session/opening-a-session)
@@ -296,15 +321,15 @@ The following articles can extend your knowledge about the `Session`:
 - [Loading Entities](../client-api/session/loading-entities)
 - [Saving Changes](../client-api/session/saving-changes)
 
-The introductory articles describing `Querying` can be found here:
+**Querying** - The introductory articles describing Querying can be found here:
 
 - [Basics](../indexes/querying/basics)
 - [What is RQL?](../indexes/querying/what-is-rql)
 
-If you wish to understand `Indexes` better, we recommend reading the following articles:
+**Indexes** - If you wish to understand Indexes better, we recommend reading the following articles:
 
 - [Indexes: What are indexes?](../indexes/what-are-indexes)
-- [Indexes: Creating and deploying indexes?](../indexes/creating-and-deploying)
+- [Indexes: Creating and deploying indexes](../indexes/creating-and-deploying) (RavenDB's Auto-Indexing and how to set up static indexes)  
 - [Indexes: Indexing basics](../indexes/indexing-basics)
 - [Indexes: Map indexes](../indexes/map-indexes)
 
