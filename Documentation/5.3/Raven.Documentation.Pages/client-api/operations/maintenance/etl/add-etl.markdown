@@ -1,10 +1,15 @@
 # Operations: How to Add ETL
 
-To learn more about ETL (Extract, Transfer, Load) ongoing tasks, see this article on [ETL Basics](../../../../server/ongoing-tasks/etl/basics).  
+* ETL tasks are ongoing tasks that:
+  1. Extract selected data from your source database when changes are made or new data is added.
+  2. Apply a transform script on the data.
+  3. Load the transformed data to a destination that you designate.  
 
-You can add ETL task by using **AddEtlOperation**.  
+* To learn more about ETL (Extract, Transfer, Load) ongoing tasks, see this article on [ETL Basics](../../../../server/ongoing-tasks/etl/basics).  
 
-To manage them in the Studio read this article about [ETLs and how to add them via the GUI Studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task).  
+* You can add ETL task by using the **AddEtlOperation** method.  
+
+* To learn how to manage ETL tasks using Studio see: [RavenDB ETL Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task).  
 
 ---
 
@@ -41,20 +46,19 @@ In this page:
 
 
 ## Add Raven ETL
-Add [Raven ETL](../../../../server/ongoing-tasks/etl/raven)
+
+[Raven ETL](../../../../server/ongoing-tasks/etl/raven) tasks enable ongoing Extract, Transform, Load functionality between RavenDB servers.  
 
 
 ### Connection String for Raven ETL
 
-**Secure servers**  
-In addition to defining a connection string, to connect secure RavenDB servers you must [export the server certificate](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
-from the source server and install it into the destination server.  
+* **Secure servers**  
+  In addition to defining a connection string, to connect secure RavenDB servers you must [export the server certificate](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
+  from the source server and install it into the destination server.  
 
-After passing the certificate, you can either create an ETL with a connection string and transformation script [via the studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) 
-or with the following API.  
+* After passing the certificate, you can either create an ETL with a connection string and transformation script [via the studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) 
+  or with the following API.  
   
-  Be sure that the node definition in the connection string has the "s" in https:  
-
 {CODE raven_etl_connection_string@ClientApi\Operations\AddEtl.cs /}
 
 ### Code Sample to Add Raven ETL
@@ -68,8 +72,9 @@ or with the following API.
 
 
 ## Add Sql ETL
-Add [SQL ETL](../../../../server/ongoing-tasks/etl/sql)
 
+[SQL ETL](../../../../server/ongoing-tasks/etl/sql) tasks enable ongoing Extract, Transform, Load functionality from RavenDB to SQL databases. 
+ 
 ### Connection String for Sql ETL
 
 {CODE sql_etl_connection_string@ClientApi\Operations\AddEtl.cs /}
@@ -85,7 +90,8 @@ Add [SQL ETL](../../../../server/ongoing-tasks/etl/sql)
 
 
 ## Add OLAP ETL
-Add [Olap ETL](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task)  
+[Olap ETL](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task) is an ETL process that converts RavenDB data to the Apache Parquet file format  
+and sends it to local storage, cloud servers or File Transfer Protocol.
 
 ### Connection String for Olap ETL
 
@@ -109,7 +115,8 @@ The following code sample is for a connection string to Amazon AWS. If you use G
 {PANEL: }
 
 ## Add Elasticsearch ETL Task
-Add an [Elasticsearch ETL Task](../../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)  
+[Elasticsearch ETL Task](../../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task) tasks enable ongoing 
+Extract, Transform, Load functionality from RavenDB to Elasticsearch destinations.  
 
 ### Connection String for Elasticsearch ETL
 Add an [Elasticsearch Connection String](../../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-connection-string)  

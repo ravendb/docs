@@ -1,10 +1,15 @@
 # Operations: How to Add ETL
 
-To learn more about ETL (Extract, Transfer, Load) ongoing tasks, see this article on [ETL Basics](../../../../server/ongoing-tasks/etl/basics).  
+* ETL tasks are ongoing tasks that:
+  1. Extract selected data from your source database when changes are made or new data is added.
+  2. Apply a transform script on the data.
+  3. Load the transformed data to a destination that you designate.  
 
-You can add ETL task by using **AddEtlOperation**.  
+* To learn more about ETL (Extract, Transfer, Load) ongoing tasks, see this article on [ETL Basics](../../../../server/ongoing-tasks/etl/basics).  
 
-To manage them in the Studio read this article about [ETLs and how to add them via the GUI Studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task).  
+* You can add ETL task by using the **AddEtlOperation** method.  
+
+* To learn how to manage ETL tasks using Studio see: [RavenDB ETL Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task).  
 
 ---
 
@@ -32,21 +37,18 @@ You can add ETL task by using **AddEtlOperation**.
 | **configuration** | `EtlConfiguration<T>` | ETL configuration where `T` is connection string type |
 
 ## Add Raven ETL
-Add [Raven ETL](../../../../server/ongoing-tasks/etl/raven)
 
-**Secure servers**  
-In addition to defining a connection string, to connect secure RavenDB servers you must [export the server certificate](../../../../server/security/authentication/certificate-management) 
-from the source server and install it into the destination server.  
+[Raven ETL](../../../../server/ongoing-tasks/etl/raven) tasks enable ongoing Extract, Transform, Load functionality between RavenDB servers.  
 
-After passing the certificate, you can either create an ETL with a connection string and transform script [via the studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) 
-or with the following API.  
+* **Secure servers**  
+  In addition to defining a connection string, to connect secure RavenDB servers you must [export the server certificate](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
+  from the source server and install it into the destination server.  
 
-
+* After passing the certificate, you can either create an ETL with a connection string and transformation script [via the studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) 
+  or with the following API.  
+  
 ### Connection String for Raven ETL
 
-**Secure servers**  
-To connect a secure RavenDB server you need to [export the certificate](../../../../server/security/authentication/certificate-management) from the source server and install it into the destination server.  
-Be sure that the node definition in the connection string has the "s" in https:  
 
 {CODE raven_etl_connection_string@ClientApi\Operations\AddEtl.cs /}
 
@@ -55,7 +57,8 @@ Be sure that the node definition in the connection string has the "s" in https:
 {CODE add_raven_etl@ClientApi\Operations\AddEtl.cs /}
 
 ## Add Sql ETL
-Add [SQL ETL](../../../../server/ongoing-tasks/etl/sql)
+
+[SQL ETL](../../../../server/ongoing-tasks/etl/sql) tasks enable ongoing Extract, Transform, Load functionality from RavenDB to SQL servers. 
 
 ### Connection String for Sql ETL
 
