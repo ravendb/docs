@@ -12,10 +12,16 @@
 
 ---
 
+{WARNING: WARNING}
+
+   * You will not have access to the database if the encryption key is lost.  
+   * Download, print, or copy and save the key in a safe place. **It will not be available again!**  
+   {WARNING/}
+
 {PANEL: Creating Encrypted Database}
 
 * In addition to the steps described in the [General Database Creation](../../../../studio/server/databases/create-new-database/general-flow), click the `Encryption` tab.  
-<br/>
+
 
 ![Figure 1. Create New Database - Encrypted](images/new-database-encrypted.png "Encrypted Database")
 
@@ -27,10 +33,8 @@
 2. **QR Code**
    * The QR code representing the key  
 
-{WARNING: WARNING}
+3. **Confirm that you've securely saved the key**
 
-   * You will not have access to the database if the key is lost.  
-   * Download, print, or copy and save the key in a safe place. It will NOT be available again!  
-   {WARNING/}
+
 
 {PANEL/}

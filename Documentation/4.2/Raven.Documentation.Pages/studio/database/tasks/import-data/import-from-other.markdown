@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* You can import your existing NoSQL Databases to RavenDB.  
+* You can import your existing NoSQL Databases to an [empty](../../../../studio/server/databases/create-new-database/general-flow) RavenDB database.  
 
 * Currently supported:  
    * **MongoDB**  
@@ -20,13 +20,17 @@
 {INFO:Before you start}
 
 To migrate data from your existing NoSQL database, you need to download an external tool called `Raven.Migrator`.  
-The application is available at [ravendb.net/downloads](https://ravendb.net/downloads), in the `tools` package.  
+The application is available at [ravendb.net/downloads](https://ravendb.net/downloads), in the `TOOLS` package (see image below).  
+The `Raven.Migrator` tool can be found in the downloaded `Tools` folder. 
+
+![Raven.Migrator Tool Download](images/raven-migrator-tool-download.png "Raven.Migrator Tool Download")
 
 {INFO/}
 
 ---
 
 {PANEL: Import from MongoDB}
+In the RavenDB Studio client on the left side, select `Tasks` -> `Import Data`.
 
 ![Figure 1.](images/mongodb-1.png "Import from MongoDB")
 
@@ -44,19 +48,20 @@ The application is available at [ravendb.net/downloads](https://ravendb.net/down
    * Choosing this option will import GridFS attachments and save them as documents with attachments in the `@files` collection.  
    
 5. **Database Name**
-   * Provide the name of the source database.  
+   * Provide the name of the **source** database.  
    
 6. **Migrate all collections**  
    * You can either import all collections or select the collections you'd like to import.  
    * Optionally, you can rename the imported collections.  
    
-7. **Use transform script**  
+7. **Use Transform script**  
    * Use a JavaScript to filter / modify imported documents.  
 
 {PANEL/}
 
 
 {PANEL: Import from CosmosDB}
+In the RavenDB Studio client on the left side, select `Tasks` -> `Import Data`.
 
 ![Figure 2.](images/cosmosdb-1.png "Import from CosmosDB")
 
@@ -81,7 +86,7 @@ The application is available at [ravendb.net/downloads](https://ravendb.net/down
    * You can either import all collections or select the collections you'd like to import.  
    * Optionally, you can rename the imported collections.  
    
-7. **Use transform script**  
+7. **Use Transform script**  
    * Use a JavaScript to filter / modify imported documents.  
 
 {PANEL/}
