@@ -69,27 +69,31 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 #endregion
             }
 
+            #region get_all_connection_strings
+
             using (var store = new DocumentStore())
             {
-                #region get_all_connection_strings
                 GetConnectionStringsOperation operation = new GetConnectionStringsOperation();
                 GetConnectionStringsResult connectionStrings = store.Maintenance.Send(operation);
                 Dictionary<string, SqlConnectionString> sqlConnectionStrings = connectionStrings.SqlConnectionStrings;
                 Dictionary<string, RavenConnectionString> ravenConnectionStrings = connectionStrings.RavenConnectionStrings;
                 Dictionary<string, OlapConnectionString> olapConnectionStrings = connectionStrings.OlapConnectionStrings;
-                #endregion
             }
+
+            #endregion
+
+            #region get_connection_string_by_name
 
             using (var store = new DocumentStore())
             {
-                #region get_connection_string_by_name
                 GetConnectionStringsOperation operation =
                     new GetConnectionStringsOperation("local_mysql", ConnectionStringType.Sql);
                 GetConnectionStringsResult connectionStrings = store.Maintenance.Send(operation);
                 Dictionary<string, SqlConnectionString> sqlConnectionStrings = connectionStrings.SqlConnectionStrings;
                 SqlConnectionString mysqlConnectionString = sqlConnectionStrings["local_mysql"];
-                #endregion
             }
+            #endregion
+
 
             using (var store = new DocumentStore())
             {
@@ -244,6 +248,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             #endregion
 
             #region olap_connection_string_config
+
             public class OlapConnectionString : ConnectionString
             {
                 public string Name { get; set; }

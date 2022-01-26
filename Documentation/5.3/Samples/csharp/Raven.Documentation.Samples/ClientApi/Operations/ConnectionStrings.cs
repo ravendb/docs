@@ -70,28 +70,30 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 #endregion
             }
 
+            #region get_all_connection_strings
+
             using (var store = new DocumentStore())
             {
-                #region get_all_connection_strings
                 GetConnectionStringsOperation operation = new GetConnectionStringsOperation();
                 GetConnectionStringsResult connectionStrings = store.Maintenance.Send(operation);
                 Dictionary<string, SqlConnectionString> sqlConnectionStrings = connectionStrings.SqlConnectionStrings;
                 Dictionary<string, RavenConnectionString> ravenConnectionStrings = connectionStrings.RavenConnectionStrings;
                 Dictionary<string, OlapConnectionString> olapConnectionStrings = connectionStrings.OlapConnectionStrings;
-                Dictionary<string, ElasticSearchConnectionString> elasticSearchConnectionStrings = connectionStrings.ElasticSearchConnectionStrings;
-                #endregion
             }
+
+            #endregion
+
+            #region get_connection_string_by_name
 
             using (var store = new DocumentStore())
             {
-                #region get_connection_string_by_name
                 GetConnectionStringsOperation operation =
                     new GetConnectionStringsOperation("local_mysql", ConnectionStringType.Sql);
                 GetConnectionStringsResult connectionStrings = store.Maintenance.Send(operation);
                 Dictionary<string, SqlConnectionString> sqlConnectionStrings = connectionStrings.SqlConnectionStrings;
                 SqlConnectionString mysqlConnectionString = sqlConnectionStrings["local_mysql"];
-                #endregion
             }
+            #endregion
 
             using (var store = new DocumentStore())
             {
@@ -130,7 +132,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     Name = "raven-connection-string-name",
 
                     //define appropriate node
-                    //Be sure that the node definition in the connection string has the "s" in https
+                    //Be sure to include the "s" in https for secure servers.
                     TopologyDiscoveryUrls = new[] { "https://127.0.0.1:8080" },
 
                     //define database to connect with on the node
@@ -269,7 +271,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             }
             #endregion
 
-            #region olap_connection_string_config
+            #region olap_connection_string_config 
             public class OlapConnectionString : ConnectionString
             {
                 public string Name { get; set; }

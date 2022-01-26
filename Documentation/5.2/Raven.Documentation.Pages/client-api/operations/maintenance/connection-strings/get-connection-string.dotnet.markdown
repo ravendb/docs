@@ -9,10 +9,10 @@
 In this page:
 
 * [GetConnectionStringsOperation](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#GetConnectionStringsOperation)  
-* [RavenConnectionString Configuration](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#ravenconnectionstring-configuration)  
-* [SqlConnectionString Configuration](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#sqlconnectionstring-configuration)  
-* [OlapConnectionString Configuration](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#olapconnectionstring-configuration)  
-* [Generic ConnectionString Configuration](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#generic-connectionstring)  
+* [RavenConnectionString](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#ravenconnectionstring-configuration)  
+* [SqlConnectionString](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#sqlconnectionstring-configuration)  
+* [OlapConnectionString](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#olapconnectionstring-configuration)  
+* [Generic ConnectionString](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#generic-connectionstring)  
 * [Example - Get all Connection Strings](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#example---get-all-connection-strings)  
 * [Example - Get Connection String By Name and Type](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#example---get-connection-string-by-name-and-type)  
 
@@ -43,7 +43,7 @@ In this page:
 
 ####OlapConnectionString Configuration
 
-{CODE:csharp olap_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+{CODE:csharp olap_connection_string_config@ClientApi\Operations\ConnectionStrings.cs /}
 
 ####Generic ConnectionString
 

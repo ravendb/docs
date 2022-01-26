@@ -8,54 +8,52 @@
 
 In this page:
 
-* [Syntax](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#syntax)  
-* [Configurations](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#configurations)  
-* [Example - Add Raven Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#example---add-raven-connection-string)  
-* [Example - Add Sql Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#example---add-sql-connection-string)  
+* [PutConnectionStringOperation](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#putconnectionstringoperation)  
+* [Add a Raven Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-raven-connection-string)  
+* [Add a Sql Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-sql-connection-string)  
 
-## PutConnectionStringOperation
+{PANEL: `PutConnectionStringOperation`}
 
 {CODE add_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
-| Parameters | | |
+| Parameters | Connection String Type | Description |
 | ------------- | ----- | ---- |
 | **connectionString** | `T` | Connection string to create: `RavenConnectionString` or `SqlConnectionString` |
 
 
-#### ConnectionString
+#### `ConnectionString`
 
 {CODE:csharp connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
+{PANEL/}
 
 
-## Add a Raven Connection String
 
-{PANEL: }
+{PANEL: Add a Raven Connection String}
 
 {NOTE: Secure servers}
  To connect a secure RavenDB server you need to [export the certificate](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) from the source server and install it into the destination server.  
- This can be done easily in the RavenDB Studio -> Server Management -> Certificates view.
+ This can be done easily in the RavenDB Studio -> Server Management -> [Certificates view](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates).
 {NOTE/}
 
 {CODE add_raven_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
-#### RavenConnectionString Configuration
-
-{CODE:csharp raven_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+* `RavenConnectionString` 
+  {CODE:csharp raven_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
 {PANEL/}
 
-## Add a Sql Connection String
 
-{PANEL: }
+
+{PANEL: Add a Sql Connection String}
 
 {CODE add_sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
-#### SqlConnectionString Configuration
-
-{CODE:csharp sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+* `SqlConnectionString` 
+  {CODE:csharp sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
 {PANEL/}
+
 ## Related Articles
 
 ### Connection Strings
