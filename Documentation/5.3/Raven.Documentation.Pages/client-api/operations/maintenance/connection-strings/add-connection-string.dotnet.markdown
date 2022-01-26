@@ -1,23 +1,20 @@
 # Operations: How to Add a Connection String
 
-* You can add a connection string by using **PutConnectionStringOperation**.
+* You can add a connection string by using the [**PutConnectionStringOperation** method](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#putconnectionstringoperation).
 
-* This article explains how to define the properties needed to connect to an external database.  
+* This article demonstrates how to define the properties needed to connect to an external database.  
 
 * Standard properties (name, database location, password) are explained here.  
 
 In this page:
 
-* [Syntax](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#syntax)  
-* [Configurations](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#configurations)  
-* [Example - Add Raven Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#example---add-raven-connection-string)  
-* [Example - Add Sql Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#example---add-sql-connection-string)  
-* [Example - Add Olap Connection String - Local Machine](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#example---add-olap-connection-string---local-machine)  
- * [Example - Add Olap Connection String - AWS Cloud](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#example---add-olap-connection-string---aws-cloud)  
- 
-* [Example - Add Elasticsearch Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#example---add-elasticsearch-connection-string)  
+* [PutConnectionStringOperation](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#putconnectionstringoperation)  
+* [Add a Raven Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-raven-connection-string)  
+* [Add a Sql Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-sql-connection-string)  
+* [Add an Olap Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-olap-connection-string)  
+* [Add an Elasticsearch Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-elasticsearch-connection-string)  
 
-## Syntax
+## PutConnectionStringOperation
 
 {PANEL: }
 
@@ -27,74 +24,75 @@ In this page:
 | ------------- | ----- | ---- |
 | **connectionString** | `T` | Connection string to create: `RavenConnectionString` or `SqlConnectionString` |
 
-{PANEL/}
 
----
-
-###Configurations
-
-{PANEL: }
-
-
-####RavenConnectionString Configuration
-
-{CODE:csharp raven_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
-
-####SqlConnectionString Configuration
-
-{CODE:csharp sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
-
-####OlapConnectionString Configuration
-
-{CODE:csharp olap_connection_string_config@ClientApi\Operations\ConnectionStrings.cs /}
-
-####Elasticsearch ConnectionString Configuration
-
-{CODE:csharp elasticsearch_connection_string_config@ClientApi\Operations\ConnectionStrings.cs /}
-
-####ConnectionString
+#### ConnectionString
 
 {CODE:csharp connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
 {PANEL/}
 
-## Example - Add Raven Connection String
+## Add a Raven Connection String
 
 {PANEL: }
 
-**Secure servers**  
-To connect a secure RavenDB server you need to [export the certificate](../../../../server/security/authentication/certificate-management) from the source server and install it into the destination server.  
-This can be done easily in the RavenDB Studio -> Server Management -> Certificates view.
-
-Be sure that the node definition in the connection string has the "s" in https:  
+{NOTE: Secure servers}
+ To connect a secure RavenDB server you need to [export the certificate](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) from the source server and install it into the destination server.  
+ This can be done easily in the RavenDB Studio -> Server Management -> Certificates view.
+{NOTE/}
 
 {CODE add_raven_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
+#### RavenConnectionString Configuration
+
+{CODE:csharp raven_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+
 {PANEL/}
 
-## Example - Add Sql Connection String
+## Add a Sql Connection String
 
 {PANEL: }
 
 {CODE add_sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
-{PANEL/}
+#### SqlConnectionString Configuration
 
-
-## Example - Add Olap Connection String - Local Machine
-
-{CODE olap_Etl_Connection_String@ClientApi\Operations\ConnectionStrings.cs /}
-
-## Example - Add Olap Connection String - AWS Cloud
-
-{CODE olap_Etl_AWS_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+{CODE:csharp sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
 {PANEL/}
+
+## Add an Olap Connection String
 
 {PANEL: }
 
-## Example - Add Elasticsearch Connection String  
-  {CODE create-connection-string@ClientApi\Operations\ConnectionStrings.cs /}
+#### To a Local Machine
+
+{CODE olap_Etl_Connection_String@ClientApi\Operations\ConnectionStrings.cs /}
+
+#### To a Cloud-Based Server
+
+To connect to a cloud instance, see the [Olap ETL article](../../../../server/ongoing-tasks/etl/olap#section-1).  
+  
+The following code sample is for a connection string to Amazon AWS.  
+If you use Google or Microsoft cloud servers, change the parameters accordingly.   
+
+{CODE olap_Etl_AWS_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+
+#### OlapConnectionString Configuration
+
+{CODE:csharp olap_connection_string_config@ClientApi\Operations\ConnectionStrings.cs /}
+
+{PANEL/}
+
+
+## Add an Elasticsearch Connection String  
+
+{PANEL: }
+
+{CODE create-connection-string@ClientApi\Operations\ConnectionStrings.cs /}
+
+#### Elasticsearch ConnectionString Configuration
+
+{CODE:csharp elasticsearch_connection_string_config@ClientApi\Operations\ConnectionStrings.cs /}
 
 {PANEL/}
 
@@ -104,3 +102,14 @@ Be sure that the node definition in the connection string has the "s" in https:
 
 - [Get](../../../../client-api/operations/maintenance/connection-strings/get-connection-string)
 - [Remove](../../../../client-api/operations/maintenance/connection-strings/remove-connection-string)
+
+### ETL (Extract, Transform, Load) Tasks
+
+- [Operations: How to Add ETL](../../../../client-api/operations/maintenance/etl/add-etl)
+- [Ongoing Tasks: ETL Basics](../../../../server/ongoing-tasks/etl/basics)
+
+### External Replication
+
+- [External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task)
+- [How Replication Works](../../../../server/clustering/replication/replication)
+

@@ -128,6 +128,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     Name = "raven-connection-string-name",
 
                     //define appropriate node
+                    //Be sure that the node definition in the connection string has the "s" in https
                     TopologyDiscoveryUrls = new[] { "https://127.0.0.1:8080" },
 
                     //define database to connect with on the node
@@ -246,17 +247,14 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             public class OlapConnectionString : ConnectionString
             {
                 public string Name { get; set; }
-
-                // If on AWS Cloud
-                public string S3Settings { get; set; }
-                public string BucketName { get; set; }
-                public string RemoteFolderName { get; set; }
-                public string AwsAccessKey { get; set; }
-                public string AwsSecretKey { get; set; }
-                public string AwsRegionName { get; set; }
+                public LocalSettings LocalSettings { get; set; }
+                public S3Settings S3Settings { get; set; }
+                public AzureSettings AzureSettings { get; set; }
+                public GlacierSettings GlacierSettings { get; set; }
+                public GoogleCloudSettings GoogleCloudSettings { get; set; }
+                public FtpSettings FtpSettings { get; set; }
 
                 public ConnectionStringType Type => ConnectionStringType.Olap;
-
             }
             #endregion
 

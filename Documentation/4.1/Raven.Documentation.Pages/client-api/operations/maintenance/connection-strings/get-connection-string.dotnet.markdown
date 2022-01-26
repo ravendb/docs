@@ -1,20 +1,20 @@
 # Operations: How to Get Connection String
 
-* This article explains how to configure the properties for `GetConnectionStringOperation`  
-  To see how to define the properties of a connection string (e.g. password, database name, etc.), see [Add Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string)
+* You can get connection strings by using the [**GetConnectionStringsOperation** method](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#GetConnectionStringsOperation).
 
-* You can get connection strings by using **GetConnectionStringsOperation**.
+* This article explains how to configure the properties for the `GetConnectionStringOperation` method  
+  To see how to define the properties of a connection string (e.g. password, database name, etc.), see [Add Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string)
 
 In this page:
 
-* [Syntax](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#syntax)  
+* [GetConnectionStringsOperation](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#GetConnectionStringsOperation)  
 * [RavenConnectionString Configuration](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#ravenconnectionstring-configuration)  
 * [SqlConnectionString Configuration](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#sqlconnectionstring-configuration)  
 * [Generic ConnectionString Configuration](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#generic-connectionstring)  
 * [Example - Get all Connection Strings](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#example---get-all-connection-strings)  
 * [Example - Get Connection String By Name and Type](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#example---get-connection-string-by-name-and-type)  
 
-## Syntax
+## GetConnectionStringsOperation
 
 {CODE get_connection_strings@ClientApi\Operations\ConnectionStrings.cs /}
 
@@ -34,13 +34,9 @@ In this page:
 
 {CODE:csharp raven_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
-
-
 ####SqlConnectionString Configuration
 
 {CODE:csharp sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
-
-
 
 ####Generic ConnectionString Configuration
 
@@ -53,9 +49,6 @@ In this page:
 ## Example - Get Connection String By Name and Type
 
 {CODE get_connection_string_by_name@ClientApi\Operations\ConnectionStrings.cs /}
-
-
-
 
 
 ## Related Articles

@@ -130,6 +130,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     Name = "raven-connection-string-name",
 
                     //define appropriate node
+                    //Be sure that the node definition in the connection string has the "s" in https
                     TopologyDiscoveryUrls = new[] { "https://127.0.0.1:8080" },
 
                     //define database to connect with on the node
@@ -278,6 +279,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 public GlacierSettings GlacierSettings { get; set; }
                 public GoogleCloudSettings GoogleCloudSettings { get; set; }
                 public FtpSettings FtpSettings { get; set; }
+
                 public ConnectionStringType Type => ConnectionStringType.Olap;
             }
             #endregion
