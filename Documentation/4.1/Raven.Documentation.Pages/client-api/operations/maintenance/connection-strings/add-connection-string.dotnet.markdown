@@ -1,10 +1,8 @@
 # Operations: How to Add a Connection String
 
-* You can add a connection string by using the [**PutConnectionStringOperation** method](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#putconnectionstringoperation).
+* You can add a connection string by using the [**PutConnectionStringOperation**](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#putconnectionstringoperation) method.
 
-* This article demonstrates how to define the properties needed to connect to an external database.  
-
-* Standard properties (name, database location, password) are explained here.  
+* This article demonstrates how to connect to an external database.  
 
 In this page:
 
@@ -32,7 +30,7 @@ In this page:
 {PANEL: Add a Raven Connection String}
 
 {NOTE: Secure servers}
- To connect a secure RavenDB server you need to [export the certificate](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) from the source server and install it into the destination server.  
+ To connect a secure RavenDB server you need to export the certificate from the source server and install it into the destination server.  
  This can be done easily in the RavenDB Studio -> Server Management -> [Certificates view](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates).
 {NOTE/}
 
@@ -45,7 +43,7 @@ In this page:
 
 
 
-{PANEL: Add a Sql Connection String}
+{PANEL: Add an Sql Connection String}
 
 {CODE add_sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 

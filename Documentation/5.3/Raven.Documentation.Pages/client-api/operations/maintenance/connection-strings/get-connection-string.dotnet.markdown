@@ -1,23 +1,17 @@
 # Operations: How to Get Connection String
 
-* You can get connection strings by using the [**GetConnectionStringsOperation** method](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#getconnectionstringsoperation).
+* Get a connection string's properties using the [**GetConnectionStringsOperation**](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#getconnectionstringsoperation) method.
 
-* This article explains how to configure the properties for the `GetConnectionStringOperation` method  
-  To see how to define the properties of a connection string (e.g. password, database name, etc.), see [Add Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string)
+* To learn how to **Create** a connection string see: [Add Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string)
 
 
 In this page:
 
 * [GetConnectionStringsOperation](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#getconnectionstringsoperation)  
-* [RavenConnectionString](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#ravenconnectionstring)  
-* [SqlConnectionString](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#sqlconnectionstring)  
-* [OlapConnectionString](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#olapconnectionstring)  
-* [ElasticsearchConnectionString](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#elasticsearchconnectionstring)  
-* [Generic ConnectionString](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#generic-connectionstring)  
-* [Example - Get all Connection Strings](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#example---get-all-connection-strings)  
-* [Example - Get Connection String By Name and Type](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#example---get-connection-string-by-name-and-type)  
+* [Definitions](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#definitions)
+* [Code Samples](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#code-samples)
 
-## GetConnectionStringsOperation
+{PANEL: `GetConnectionStringsOperation`}
 
 {CODE get_connection_strings@ClientApi\Operations\ConnectionStrings.cs /}
 
@@ -27,33 +21,50 @@ In this page:
 | **type** | `ConnectionStringType` | Connection string type: `Raven`, `Sql`, `Olap`, or `ElasticSearch`|
 
 
-| Connection String Type | Return Value |  | Description |
-| -- | ------------- | ----- | --- |
+| Type | Return Value | Return Value Type | Description |
+| ---- | ------------- | ----- | --- |
 | Sql | `SqlConnectionStrings` | Dictionary<string, SqlConnectionString> | Dictionary that maps sql connection string name to definition |
 | Raven | `RavenConnectionStrings` | Dictionary<string, RavenConnectionString> | Dictionary that maps raven connection string name to definition |
 | Olap | `OlapConnectionStrings` |  Dictionary<string, OlapConnectionString> | Dictionary that maps olap connection string name to definition |
 | ElasticSearch | `ElasticsearchConnectionStrings` |  Dictionary<string, ElasticsearchConnectionString> | Dictionary that maps elasticsearch connection string name to definition |
 
+{PANEL/}
+
+{PANEL: Definitions}
 
 #### `RavenConnectionString`
+
+A Raven connection string definition:
 
 {CODE:csharp raven_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
 #### `SqlConnectionString`
 
+An Sql connection string definition:
+
 {CODE:csharp sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
 #### `OlapConnectionString`
+
+An Olap connection string definition:
 
 {CODE:csharp olap_connection_string_config@ClientApi\Operations\ConnectionStrings.cs /}
 
 #### `ElasticsearchConnectionString`
 
+An Elasticsearch connection string definition:
+
 {CODE:csharp elasticsearch_connection_string_config@ClientApi\Operations\ConnectionStrings.cs /}
 
-#### Generic `ConnectionString`
+#### `ConnectionString`
+
+A generic connection string definition:
 
 {CODE:csharp connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+
+{PANEL/}
+
+{PANEL: Code Samples}
 
 #### Get all Connection Strings
 
@@ -63,6 +74,7 @@ In this page:
 
 {CODE get_connection_string_by_name@ClientApi\Operations\ConnectionStrings.cs /}
 
+{PANEL/}
 
 ## Related Articles
 

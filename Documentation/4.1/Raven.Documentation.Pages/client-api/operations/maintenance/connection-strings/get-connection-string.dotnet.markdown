@@ -1,54 +1,66 @@
 # Operations: How to Get Connection String
 
-* You can get connection strings by using the [**GetConnectionStringsOperation** method](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#GetConnectionStringsOperation).
+* Get a connection string's properties using the [**GetConnectionStringsOperation**](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#getconnectionstringsoperation) method.
 
-* This article explains how to configure the properties for the `GetConnectionStringOperation` method  
-  To see how to define the properties of a connection string (e.g. password, database name, etc.), see [Add Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string)
+* To learn how to **Create** a connection string see: [Add Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string)
 
 In this page:
 
 * [GetConnectionStringsOperation](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#GetConnectionStringsOperation)  
-* [RavenConnectionString Configuration](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#ravenconnectionstring-configuration)  
-* [SqlConnectionString Configuration](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#sqlconnectionstring-configuration)  
-* [Generic ConnectionString Configuration](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#generic-connectionstring)  
-* [Example - Get all Connection Strings](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#example---get-all-connection-strings)  
-* [Example - Get Connection String By Name and Type](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#example---get-connection-string-by-name-and-type)  
+* [Definitions](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#definitions)
+* [Code Samples](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#code-samples)
 
-## GetConnectionStringsOperation
+{PANEL: `GetConnectionStringsOperation`}
 
 {CODE get_connection_strings@ClientApi\Operations\ConnectionStrings.cs /}
 
-| Parameters | | |
+| Parameters | Data Type | Description |
 | ------------- | ----- | ---- |
 | **connectionStringName** | `string` | Connection string name |
 | **type** | `ConnectionStringType` | Connection string type: `Raven` or `Sql` |
 
 
-| Return Value | | |
-| ------------- | ----- | --- |
+| Type | Return Value | Return Value Type | Description |
+| ---- | ------------- | ----- | --- |
 | `SqlConnectionStrings` | Dictionary<string, SqlConnectionString> | Dictionary which maps sql connection string name to definition |
 | `RavenConnectionStrings` | Dictionary<string, RavenConnectionString> | Dictionary which maps raven connection string name to definition |
 
 
-####RavenConnectionString Configuration
+{PANEL/}
+
+{PANEL: Definitions}
+
+#### `RavenConnectionString`
+
+A Raven connection string definition:
 
 {CODE:csharp raven_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
-####SqlConnectionString Configuration
+#### `SqlConnectionString`
+
+An Sql connection string definition:
 
 {CODE:csharp sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
-####Generic ConnectionString Configuration
+#### `ConnectionString`
+
+A generic connection string definition:
 
 {CODE:csharp connection_string@ClientApi\Operations\ConnectionStrings.cs /}
 
-## Example - Get all Connection Strings
+{PANEL/}
+
+{PANEL: Code Samples}
+
+#### Get all Connection Strings
 
 {CODE get_all_connection_strings@ClientApi\Operations\ConnectionStrings.cs /}
 
-## Example - Get Connection String By Name and Type
+#### Get Connection String By Name and Type
 
 {CODE get_connection_string_by_name@ClientApi\Operations\ConnectionStrings.cs /}
+
+{PANEL/}
 
 
 ## Related Articles
