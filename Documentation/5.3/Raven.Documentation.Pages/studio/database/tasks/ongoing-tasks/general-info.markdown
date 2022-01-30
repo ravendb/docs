@@ -27,7 +27,7 @@
       * Convert database data to the _Parquet_ file format for the purpose of OLAP  
       * Data can be filtered and modified with transformation scripts  
   * [Elasticsearch ETL](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task)  
-      * Write all or chosen database documents to an Elasticsearch database  
+      * Write all or chosen database documents to an Elasticsearch destination  
       * Data can be filtered and modified with transformation scripts  
   * [Backup](../../../../studio/database/tasks/backup-task)  
       * Schedule a backup or a snapshot of the database at a specified point in time  

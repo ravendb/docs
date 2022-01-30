@@ -4,14 +4,14 @@
 
 {NOTE: }
 
-* An **Elasticsearch ETL task** is an ongoing process that -  
-    * **Extracts** selected documents from the database,  
-    * **Transforms** the documents using a user-defined script,  
-    * and **Loads** the documents to an Elasticsearch destination.  
+* An **Elasticsearch ETL Task** creates an ETL process that transfers data 
+  from selected RavenDB collections to an Elasticsearch destination.  
+  The transferred data can be filtered and modified by transformation scripts.  
 * An Elasticsearch ETL task transfers **documents only**.  
   Document extensions like attachments, counters, or time series, will not be transferred.  
-* This page explains how to create an Elasticsearch ETL task using Studio.  
-  Learn more about this process [here](../../../../server/ongoing-tasks/etl/elasticsearch).  
+* This page explains how to create an Elasticsearch ETL task using the Studio.  
+  Learn more about Elasticsearch ETL tasks and how to create one using 
+  the client API in [Ongoing Tasks: Elasticsearch ETL](../../../../server/ongoing-tasks/etl/elasticsearch)  
 
 * In this page:  
   * [Navigate to the Elasticsearch ETL Task View](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#navigate-to-the-elasticsearch-etl-task-view)  
@@ -41,112 +41,120 @@ To begin creating your Elasticsearch ETL task:
 !["Define Elasticsearch ETL task"](images/elasticsearch-etl-define-task.png "Define Elasticsearch ETL task")
 
 1. **Task Name** (Optional)  
-   * Choose a name for your task  
-   * If no name is provided, the cluster will create a name based on the defined connection string (e,g, *ElasticSearch ETL to ElasticConStr*).  
+   * Enter a name for your task  
+   * If no name is provided, the cluster will create a name based on the defined connection string,  
+     e.g. *ElasticSearch ETL to ElasticConStr*  
 
 2. **Task State**  
-   The task state can be -  
+   Select the task state:  
    Enabled - The task runs in the background, transforming and sending documents as defined in this view.  
-   Disabled - The task does not transform and send documents.  
+   Disabled - No documents are transformed and sent.  
 
 3. **Responsible Node** (Optional)  
-  * Select a preferred mentor node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be responsible for this task.  
+  * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be responsible for this task.  
   * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)).  
 
 4. **Connection String**  
-   * The connection string defines the destination Elasticsearch URLs.  
-   * If you already created connection strings, you can select one from the list.  
-   * You can create a new connection string:  
-
-     !["Create Connection String"](images/elasticsearch-connection-string.png "Create Connection String")
-     
-     a. **Name** - The connection string name  
-     b. **Nodes URLs** - The Elasticsearch destination/s URL/s  
-     c. **Authentication** - The authentication method used by the Elasticsearch destination node/s.  
-   * Available authentication methods:  
-
-     !["Authentication Methods"](images/elasticsearch-connection-string-authentication.png "Authentication Methods")
+    * Select an existing connection string from the list or create a new one.  
+    * The connection string defines the destination Elasticsearch URLs and the 
+      authentication method.  
+      !["Create Connection String"](images/elasticsearch-connection-string.png "Create Connection String")
+        * a. **Name** - Enter a name for the connection string.  
+        * b. **Nodes URLs** - Provide the URL(s) of the destination Elasticsearch node(s).  
+        * c. **Authentication** - Select the authentication method relevant for the 
+          Elasticsearch node(s)
+          !["Authentication Methods"](images/elasticsearch-connection-string-authentication.png "Authentication Methods")
 
 {PANEL/}
 
 {PANEL: Elasticsearch Indexes}
 
 Elasticsearch uses [Indexes](https://www.elastic.co/blog/what-is-an-elasticsearch-index) to store, access, and delete documents.  
-Use the task **Elasticsearch Indexes** settings to choose the indexes the task will access.  
+Use the task's **Elasticsearch Indexes** settings to determine which Elastsicsearch 
+Indexes the ETL task will access.  
 
 !["Define Elasticsearch Index"](images/elasticsearch-indexes-define-index.png "Define Elasticsearch Index")
 
-1. **Add Index** (Optional)  
-  * Click to add an Elasticsearch index to the list.  
+#### 1. Add Index
 
-2. **Index Name**  
-   Provide an Elasticsearch Index name, as defined by the transformation script 
-   [loadTo\\<Target\\>(obj)](../../../../server/ongoing-tasks/etl/basics#transform) command (where `Target` is the index name 
-   and `obj` is the object to be passed to Elasticsearch).  
-   **E.g.**, a transformation script's `loadToOrders(orderData)` command requires you to define an Elasticsearch `orders` Index.  
-    * **Elasticsearch** requires an **all lower case** index name (e.g. `orders`).  
-    * **The transformation script** allows both lower and higher-case characters (e.g. both `loadToOrders` and `loadToorders` are permitted).  
+* Click to add an Elasticsearch index to the list.  
 
-3. **Document ID Property Name**  
-   Provide the name of a property passed by the transformation script to Elasticsearch, as an ID.  
-   Elasticsearch will store your documents by this ID, and you will be able to delete and modify them by it.  
-   **E.g.**, if one of the properties of the object passed by your transformation script to Elasticsearch is "DocID", 
-   you can use DocID as the index's ID Property.  
+#### 2. Index Name
 
-4. **Insert Only**  
-   By default, the ETL task appends a new document only after deleting its existing version using `_delete_by_query`.  
-   Enabling `Insert Only` prevents the task from sending `_delete_by_query` messages, allowing you to append 
-   documents without removing their existing version first.  
-   {WARNING: }
-   Enabling **Insert Only** would accumulate new document versions on Elasticsearch without ever removing them.  
-   {WARNING/}
+* Enter the Elasticsearch index name.  
+  The index name must match the index name provided in the 
+  [loadTo\\\<indexName\\\>](../../../../server/ongoing-tasks/etl/basics#transform) command 
+  in the transformation script.  
+  E.g., using the command `loadToOrders` in the transformation script requires you 
+  to define here an index by the name of `orders`.  
+* The index name entered here must be all lower case, as required by Elasticsearch.  
+  E.g. `orders`
+* The index name used in the transformation script command can be either lower 
+  or upper-case.  
+  E.g. both `loadToOrders` and `loadToorders` are permitted.  
 
-5. **Confirm**  
-   Click to add this index to the list.  
+#### 3. Document ID Property Name
 
-6. **Cancel**  
-   Click to cancel the operation without adding the index to the list.  
+* Enter the name of a transformation script property that contains `id(this)`.  
+  This property will be created in each generated Elasticsearch document, and 
+  allow the ETL task to recognize the documents by their original RavenDB IDs 
+  even when they are hosted by Elasticsearch.  
 
----
+* E.g. -  
+   * The transformation script property: `OrderId: id(this)`  
+   * The property name you enter as **Document ID Property Name**: `OrderId`  
+   * In each document that the transformation script creates in Elasticsearch, 
+     it will create a property named `OrderId`, that contains the original 
+     RavenDB document ID.  
 
-!["Indexes List"](images/elasticsearch-indexes-list.png "Indexes List")
+#### 4. Insert Only
 
-1. **Defined Index**  
-   An Elasticsearch index that has been added.  
-2. **Index**  
-   Elasticsearch index name.  
-3. **Document ID Property**  
-   The RavenDB document property that is used as an Elasticsearch ID.  
-4. **Edit Index**  
-   Click to edit index properties.  
-5. **Remove Index**  
-   Click to remove this index from the list.  
+* By default, the ETL task will:  
+  1. **Delete** from the Elasticsearch destination all documents that 
+     match the provided document ID field.  
+     To do that, the ETL task will send the Elasticsearch destination 
+     a `_delete_by_query` command.  
+  2. **Append** new documents.  
+     To do that, the ETL task will send the Elasticsearch destination 
+     a `_bulk` command.  
+
+* Check **Insert Only** to **skip the first step** and append new documents **without** 
+  deleting existing ones first.  
+  {WARNING: }
+   Enabling **Insert Only** would accumulate new document versions on 
+   your Elasticsearch destination without ever removing them.  
+  {WARNING/}
+
+#### 5. Confirm
+
+* Click to add this index to the list.  
+
+#### 6. Cancel
+
+* Click to cancel the operation without adding the index to the list.  
+
+#### 7. An index that was added
+
+* Can be edited or deleted.  
 
 {PANEL/}
 
 {PANEL: Transformation Script}
 
-* A transformation script sends Elasticsearch -  
-   * an optional [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) 
-     command, to delete existing document versions before appending new ones.  
-     You can [omit](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
-     _delete_by_query commands from the script using the task's **Insert Only** option.  
-   * a [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) 
-     command to append RavenDB documents to Elasticsearch.  
+The transformation script defines the json document that will be sent to the 
+Elasticsearch destination per RavenDB document from the selected collections.  
 
 ### Add Transformation Script
 
 !["List of transformation Scripts"](images/elasticsearch-transformation-scripts-list.png "List of transformation Scripts")
 
-1. **Transform Scripts**  
-  List of existing transformation scripts.  
-
-2. **Add Transformation Script**  
+1. **Add Transformation Script**  
    Click to add a new transformation script to the list.  
 
-3. **Existing Script**  
-     a. **Edit** - Click to edit the script.  
-     b. **Remove** - Click to remove the script from the list.  
+2. **Existing Script**  
+     a. **Script** name & **Collections** on which it is defined. (Informative)  
+     b. **Edit** - Click to edit the script.  
+     c. **Remove** - Click to remove the script from the list.  
 
 ---
 
@@ -154,15 +162,27 @@ Use the task **Elasticsearch Indexes** settings to choose the indexes the task w
 
 !["Edit Transformation Script"](images/elasticsearch-edit-transformation-script.png "Edit Transformation Script")
 
-1. **Script Name** (Optional)  
-   The script is named automatically.  
-   Optionally, give it a name of your choice.  
+1. **Script Name**  
+   Enter a name for the script (Optional).  
+   A default name will be generated if no name is entered, e.g. Script_1  
 
 2. **Script**  
-   *  Add or edit the transformation script.  
-   *  Add all the Elasticsearch indexes your script uses, to the [indexes list](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes).  
+   Edit the transformation script.  
+   * Define a **document object** whose contents will be extracted from 
+     each RavenDB document processed by the ETL task and appended as 
+     a document to the Elasticsearch destination.  
+     E.g., `var orderData` in the above example.  
+   * Make sure that one of the properties of the document object 
+     is given the value `id(this)`.  
+     {NOTE: }
+     The ETL task will use this property [to identify](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#document-id-property-name) 
+     documents that reside on the Elasticsearch destination by their source 
+     RavenDB document ID.  
+     {NOTE/}
+   * Use the loadTo\<indexName\> method to pass the document object 
+     to the Elasticsearch destination.  
 
-3. **Syntax**
+3. **Syntax**  
    Click for a transformation script Syntax Sample.  
 
 4. **Collections**  
