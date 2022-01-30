@@ -12,6 +12,8 @@ In this page:
 * [Configurations](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#configurations)  
 * [Example - Add Raven Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#example---add-raven-connection-string)  
 * [Example - Add Sql Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#example---add-sql-connection-string)  
+* [Example - Add Olap Connection String - Local Machine](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#example---add-olap-connection-string---local-machine)  
+ * [Example - Add Olap Connection String - AWS Cloud](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#example---add-olap-connection-string---aws-cloud)  
 
 ## Syntax
 
@@ -20,7 +22,6 @@ In this page:
 | Parameters | | |
 | ------------- | ----- | ---- |
 | **connectionString** | `T` | Connection string to create: `RavenConnectionString` or `SqlConnectionString` |
-
 
 ###Configurations
 
@@ -31,6 +32,10 @@ In this page:
 ####SqlConnectionString Configuration
 
 {CODE:csharp sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+
+####OlapConnectionString Configuration
+
+{CODE:csharp olap_connection_string_config@ClientApi\Operations\ConnectionStrings.cs /}
 
 ####ConnectionString
 
@@ -48,6 +53,15 @@ Be sure that the node definition in the connection string has the "s" in https:
 ## Example - Add Sql Connection String
 
 {CODE add_sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+
+## Example - Add Olap Connection String - Local Machine
+
+{CODE olap_Etl_Connection_String@ClientApi\Operations\ConnectionStrings.cs /}
+
+## Example - Add Olap Connection String - AWS Cloud
+
+{CODE olap_Etl_AWS_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+
 
 ## Related Articles
 

@@ -40,7 +40,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     Database = "Northwind2",
                     TopologyDiscoveryUrls = new[]
                     {
-                        "http://rvn2:8080"
+                        "https://rvn2:8080"
                     }
                 });
 
@@ -113,6 +113,61 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 store.Maintenance.Send(operation);
                 #endregion
             }
+
+            using (var store = GetDocumentStore())
+            #region raven_etl_connection_string
+
+            {
+                //define connection string
+                var ravenConnectionString = new RavenConnectionString()
+                {
+                    //name connection string
+                    Name = "raven-connection-string-name",
+
+                    //define appropriate node
+                    TopologyDiscoveryUrls = new[] { "https://127.0.0.1:8080" },
+
+                    //define database to connect with on the node
+                    Database = "Northwind",
+
+                }));
+                //create the connection string
+                var resultRavenString = store.Maintenance.Send(
+                    new PutConnectionStringOperation<RavenConnectionString>(ravenConnectionString));
+            }
+            #endregion
+
+            using (var store = new DocumentStore())
+            #region sql_etl_connection_string
+
+            {
+                // define new connection string
+                PutConnectionStringOperation<SqlConnectionString> operation
+                = new PutConnectionStringOperation<SqlConnectionString>(
+                    new SqlConnectionString
+                    {
+                            // name connection string
+                            Name = "local_mysql",
+
+                            // define FactoryName
+                            FactoryName = "MySql.Data.MySqlClient",
+
+                            // define database - may also need to define authentication and encryption parameters
+                            // by default, encrypted databases are sent over encrypted channels
+                            ConnectionString = "host=127.0.0.1;user=root;database=Northwind"
+
+                    });
+
+                // create connection string
+                PutConnectionStringResult connectionStringResult
+                = store.Maintenance.Send(operation);
+
+            }
+
+            #endregion
+
+
+
         }
     }
 
