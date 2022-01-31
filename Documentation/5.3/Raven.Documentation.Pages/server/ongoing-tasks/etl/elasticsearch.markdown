@@ -15,8 +15,8 @@
   * [Transformation Script](../../../server/ongoing-tasks/etl/elasticsearch#transformation-script)  
   * [Data Delivery](../../../server/ongoing-tasks/etl/elasticsearch#data-delivery)  
      * [What is Transferred](../../../server/ongoing-tasks/etl/elasticsearch#what-is-transferred)  
-     * [Transactions](../../../server/ongoing-tasks/etl/elasticsearch#transactions)  
      * [Document Identifiers](../../../server/ongoing-tasks/etl/elasticsearch#document-identifiers)  
+     * [Transactions](../../../server/ongoing-tasks/etl/elasticsearch#transactions)  
      * [Insert Only Mode](../../../server/ongoing-tasks/etl/elasticsearch#insert-only-mode)  
   * [Elasticsearch Index Definition](../../../server/ongoing-tasks/etl/elasticsearch#elasticsearch-index-definition)  
   * [Client API](../../../server/ongoing-tasks/etl/elasticsearch#client-api)  
@@ -65,14 +65,16 @@
 * The script **Loads** data to the Elasticsearch destination using the 
   [loadTo\\<Target\\>(obj)](../../../server/ongoing-tasks/etl/basics#transform) command.  
    * `Target` is the name of the Elasticsearch index to which the data is transferred.  
-      * In your task settings, define Elasticsearch Index names using **lower-case characters**.  
-        E.g. **orders**  
-      * In your transformation script, however, you can define `Target` using higher and lower case 
-        characters, as you prefer. (the task will transform the index name to lower-case characters 
-        while connecting Elasticsearch.)  
-        E.g. use either **loadToOrders** or **loadToorders**.  
+       * **In the task settings**:  
+         Define Elasticsearch Index names using only lower-case characters (as required by Elasticsearch).  
+         E.g. orders
+       * **In the transformation script**:  
+         The target can be defined using both upper and lower-case characters.  
+         The task will transform the index name to all lower-case characters before sending it to Elasticsearch.  
+         E.g. use either loadToOrders or loadToorders.  
    * `obj` is an object defined by the script, that will be loaded to Elasticsearch.  
-     E.g. `orderData` in the following script:  
+     It determines the shape and contents of the document that will be created on the Elasticsearch Index.  
+     E.g., the following script defines the `orderData` object and loads it to the `orders` index:  
      {CODE-BLOCK: JavaScript}
      var orderData = { DocId: id(this),
                   OrderLinesCount: this.Lines.length,
@@ -94,49 +96,53 @@ Document extensions like attachments, counters, or time series, will not be tran
 
 ---
 
-### Transactions
-
-The task delivers the data to the Elasticsearch destination in one or two calls per index.  
-
-1. an optional [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) 
-   command, to delete existing versions of RavenDB documents from Elasticsearch before appending new ones.  
-   {CODE-BLOCK: JavaScript}
-   POST orders/_delete_by_query?refresh=true
-{"query":{"terms":{"DocID":["orders/1-a"]}}}
-     {CODE-BLOCK/}
-2. [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) command, 
-   to append RavenDB documents to the Elasticsearch destination.  
-   {CODE-BLOCK: JavaScript}
-   POST orders/_bulk?refresh=wait_for
-{"index":{"_id":null}}
-{"OrderLinesCount":3,"TotalCost":0,"DocID":"orders/1-a"}
-     {CODE-BLOCK/}
-
----
-
 ### Document Identifiers
 
 * When Elasticsearch stores RavenDB documents, it provides each of them 
   with an automatically-generated iD.  
 * RavenDB needs to delete and replace documents, but cannot do it 
   using Elasticsearch's arbitrarily generated IDs.  
-  Instead, it uses one of the document's properties as ID.  
-* You need to decide which document property RavenDB would use as a document identifier.  
-  To define it:  
-   * Set `DocumentIdProperty` through code (see [code sample](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)).  
-   * Or set the [Document ID Property Name](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) field 
-     via Studio.  
+  Instead, one of the transferred document's properties is used as ID.  
 * The identifier must be a property that the transformation script passes to Elasticsearch.  
-  E.g., the **DocId** property that is created by the script below can be used as an identifier.  
-  {CODE-BLOCK: JavaScript}
+  To achieve this:  
+   * Add a dedicated property to the transferred data structure in your script, 
+     that will hold the original RavenDB document ID.  
+     The property's Name can be any name of your choice.  
+     The property's Value must be: `id(this)`  
+   * E.g., the **DocId** property below is used to hold the RavenDB document ID in the transferred document.  
+     {CODE-BLOCK: JavaScript}
   var orderData = {
-                 DocId: id(this),
+                 DocId: id(this), // document ID property
                  OrderLinesCount: this.Lines.length,
                  TotalCost: 0
                   };
 
 loadToOrders(orderData);
   {CODE-BLOCK/}
+* In addition to specifying this document property in the script, it must be defined for the ETL task:  
+   * Either set `DocumentIdProperty` through code (see [code sample](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)),  
+   * or Set the [Document ID Property Name](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) field via Studio.  
+
+---
+
+### Transactions
+
+The task delivers the data to the Elasticsearch destination in one or two calls per index.  
+
+1. [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html):  
+   An optional command, to delete existing versions of RavenDB documents from Elasticsearch 
+   before appending new ones.  
+   {CODE-BLOCK: JavaScript}
+   POST orders/_delete_by_query?refresh=true
+{"query":{"terms":{"DocID":["orders/1-a"]}}}
+     {CODE-BLOCK/}
+2. [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html):  
+   Append RavenDB documents to the Elasticsearch destination.  
+   {CODE-BLOCK: JavaScript}
+   POST orders/_bulk?refresh=wait_for
+{"index":{"_id":null}}
+{"OrderLinesCount":3,"TotalCost":0,"DocID":"orders/1-a"}
+     {CODE-BLOCK/}
 
 ---
 
@@ -159,7 +165,7 @@ to **omit** _delete_by_query commands and so refrain from deleting documents bef
 {PANEL: Elasticsearch Index Definition}
 
 * When the Elasticsearch ETL task runs for the very first time, it will create any Elsasticsearch index defined in 
-  the task that dosn't exist yet.  
+  the task that doesn't exist yet.  
 
 * When creating the index, the document property that will hold the RavenDB document ID will be defined as a non-analyzed field, 
   with type [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/7.15/keyword.html) to avoid having full-text-search 
@@ -236,23 +242,23 @@ as **"keyword"** in your index definition.
 
 **Code Sample**:  
 {CODE create-connection-string@ClientApi\Operations\AddEtl.cs /}
-{NOTE: Connection String Properties}  
+{NOTE: Connection String Object}  
 
-* `ElasticSearchConnectionString` (the configuration for each ETL task destination) =  
+* `ElasticSearchConnectionString`  
 
     | Property | Type | Description |
     |:-------------|:-------------|:-------------|
     | **Name** | `string` | Connection string Name |
     | **Nodes** | `string[]` | A list of URLs to Elasticsearch destinations |
-    | **Authentication** | `Authentication` | Optional authentication methods |
+    | **Authentication** | `Authentication` | Optional authentication method <br> (Do not use when no authentication is required) |
 
 * `Authentication` (Authentication methods)  
 
     | Property | Type | Description |
     |:-------------|:-------------|:-------------|
-    | **Basic** | `BasicAuthentication` | Authenticate transfers by **user name** and **password** |
-    | **ApiKey** | `ApiKeyAuthentication` | Authenticate transfers by an **API key** |
-    | **Certificate** | `CertificateAuthentication` | Authenticate transfers by **certificate** |
+    | **Basic** | `BasicAuthentication` | Authenticate connection by **username** and **password** |
+    | **ApiKey** | `ApiKeyAuthentication` | Authenticate connection by an **API key** |
+    | **Certificate** | `CertificateAuthentication` | Authenticate connection by **certificate** |
 
 * `BasicAuthentication` (Authenticate transfers by **user name** and **password**)  
 

@@ -141,7 +141,7 @@ Indexes the ETL task will access.
 
 {PANEL: Transformation Script}
 
-The transformation script defines the json document that will be sent to the 
+The transformation script defines the JSON document that will be sent to the 
 Elasticsearch destination per RavenDB document from the selected collections.  
 
 ### Add Transformation Script
