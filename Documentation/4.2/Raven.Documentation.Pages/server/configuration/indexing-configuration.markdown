@@ -42,6 +42,17 @@ If not set, or set to null - use 'Temp' folder inside the index data directory
 
 {PANEL/}
 
+{PANEL:Indexing.MaxNumberOfConcurrentlyRunningIndexes}
+
+Set how many indexes can run concurrently to prevent overwhelming system resources.
+
+- **Type**: `int`
+- **Default**: `null` No limit
+- **MinValue**: 1
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
 {PANEL:Indexing.MaxTimeForDocumentTransactionToRemainOpenInSec}
 
 Set how many seconds indexing will keep document transaction open when indexing.
