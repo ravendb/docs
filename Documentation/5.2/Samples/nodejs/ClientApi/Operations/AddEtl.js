@@ -1,7 +1,7 @@
 
 import {
     AddEtlOperation,
-    DocumentStore,
+    DocumentStore, OlapEtlConfiguration,
     RavenEtlConfiguration,
     SqlEtlConfiguration,
     SqlEtlTable,
@@ -85,6 +85,6 @@ import { EtlConfiguration } from 'ravendb';
     });
 
     const operationOlap = new AddEtlOperation(etlConfigurationOlap);
-    const etlResultOlap = await store.maintenance.send(operation);
+    const etlResultOlap = await store.maintenance.send(operationOlap);
     //endregion
 }

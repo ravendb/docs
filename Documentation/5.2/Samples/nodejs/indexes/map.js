@@ -1,6 +1,6 @@
-import { 
+import {
     DocumentStore,
-    AbstractIndexCreationTask
+    AbstractCsharpIndexCreationTask
 } from "ravendb";
 
 const store = new DocumentStore();
@@ -8,89 +8,96 @@ const store = new DocumentStore();
 
 {
 //region indexes_1
-class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+class Employees_ByFirstAndLastName extends AbstractCsharpIndexCreationTask {
     // ...
 }
 //endregion
 }
 
-class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+class Employees_ByFirstAndLastName extends AbstractCsharpIndexCreationTask {
     //region indexes_2
     constructor() {
         super();
 
-        this.map = `docs.Employees.Select(employee => new {     
-            FirstName = employee.FirstName,     
-            LastName = employee.LastName 
-        })`;
+        this.map = `from employee in docs.Employees
+            select new { 
+               FirstName = employee.FirstName,     
+               LastName = employee.LastName 
+            }`;
     }
     //endregion
 }
 
 //region indexes_7
-class Employees_ByFullName extends AbstractIndexCreationTask {
+class Employees_ByFullName extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
-        this.map = `docs.Employees.Select(employee => new {     
-            FullName = employee.FirstName + " " + employee.LastName 
-        })`;
+        this.map = `from employee in docs.Employees
+            select new { 
+               Name = employee.FirstName + ' ' + employee.LastName
+            }`;
     }
 }
 //endregion
 
 //region indexes_1_0
-class Employees_ByYearOfBirth extends AbstractIndexCreationTask {
+class Employees_ByYearOfBirth extends AbstractCsharpIndexCreationTask {
 
     constructor() {
         super();
 
-        this.map = `docs.Employees.Select(employee => new {     
-            YearOfBirth = employee.Birthday.Year
-        })`;
+        this.map = `from employee in docs.Employees
+            select new { 
+               YearOfBirth = employee.Birthday.Year,     
+            }`;
     }
 }
 //endregion
 
 //region indexes_1_2
-class Employees_ByBirthday extends AbstractIndexCreationTask {
+class Employees_ByBirthday extends AbstractCsharpIndexCreationTask {
 
     constructor() {
         super();
 
-        this.map = `docs.Employees.Select(employee => new {     
-            Birthday = employee.Birthday 
-        })`;
+        this.map = `from employee in docs.Employees
+            select new {     
+                Birthday = employee.Birthday,
+            }`;
     }
+
 }
 //endregion
 
 //region indexes_1_4
-class Employees_ByCountry extends AbstractIndexCreationTask {
+class Employees_ByCountry extends AbstractCsharpIndexCreationTask {
 
     constructor() {
         super();
 
-        this.map = `docs.Employees.Select(employee => new {     
+        this.map = `from employee in docs.Employees
+            select new {      
             Country = employee.Address.Country 
-        })`;
+        }`;
     }
 }
 //endregion
 
 //region indexes_1_6
-class Employees_Query extends AbstractIndexCreationTask {
+class Employees_Query extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
-        this.map = `docs.Employees.Select(employee => new {     
+        this.map = `from employee in docs.Employees
+            select new {     
             Query = new [] { 
                 employee.FirstName, 
                 employee.LastName, 
                 employee.Title, 
                 employee.Address.City 
             } 
-        })`;
+        }`;
 
         this.index("Query", "Search");
     }

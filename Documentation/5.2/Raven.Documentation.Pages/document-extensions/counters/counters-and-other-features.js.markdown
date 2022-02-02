@@ -92,8 +92,27 @@ database items from an existing file into the database.
 
 * **Transferred Counter Value**: **Distributed**  
   Smuggler transfers the entire series of values that the different nodes maintain for a Counter.  
-* To make Smuggler handle Counters, include `DatabaseItemType.Counters` in `OperateOnTypes`'s list of entities to import or export.  
-  {CODE:nodejs smuggler_options@documentExtensions\counters\counters.js /}
+* To make Smuggler handle Counters, use `DatabaseItemType` entities to import or export.  
+
+`DatabaseItemType` options:  
+* `None`  
+* `Documents`  
+* `RevisionDocuments`  
+* `Indexes`  
+* `Identities`  
+* `Tombstones`  
+* `LegacyAttachments`  
+* `Conflicts`  
+* `CompareExchange`  
+* `LegacyDocumentDeletions`  
+* `LegacyAttachmentDeletions`  
+* `DatabaseRecord`  
+* `Unknown`  
+* `Attachments`  
+* `CounterGroups`  
+* `Subscriptions`  
+* `CompareExchangeTombstones`  
+* `TimeSeries`  
 
 ---
 

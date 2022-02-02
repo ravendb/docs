@@ -6,9 +6,18 @@ You can generate a client certificate using **CreateClientCertificateOperation**
 
 {CODE:nodejs cert_1_1@ClientApi\Operations\Server\ClientCertificate.js /}
 
-{CODE:nodejs cert_1_2@ClientApi\Operations\Server\ClientCertificate.js /}
+`SecurityClearance` options:
 
-{CODE:nodejs cert_1_3@ClientApi\Operations\Server\ClientCertificate.js /}
+* `UnauthenticatedClients`  
+* `ClusterAdmin`  
+* `ClusterNode`  
+* `Operator`  
+* `ValidUser`  
+
+`DatabaseAccess ` options:
+
+* `ReadWrite`  
+* `Admin`  
 
 | Parameters | | |
 | ------------- | ------------- | ----- |

@@ -146,7 +146,6 @@ You can use this method instead of using selectFields` together with all fields 
 ### Example
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query projections_10@indexes\querying\projections.js /}
 {CODE-TAB:nodejs:Index index_10@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Companies/ByContact' 

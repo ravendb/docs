@@ -1,15 +1,15 @@
 import * as fs from "fs";
-import { DocumentStore } from "ravendb";
+import {DocumentStore} from "ravendb";
 
-let query, 
-    id, 
-    callback, 
-    statsCallback, 
-    documentType, 
-    idsArray, 
-    includes, 
+let query,
+    id,
+    callback,
+    statsCallback,
+    documentType,
+    idsArray,
+    includes,
     path,
-    idPrefix,           
+    idPrefix,
     matches,
     start,
     pageSize,
@@ -21,7 +21,7 @@ const store = new DocumentStore();
 const session = store.openSession();
 
 //region loading_entities_1_0
-session.load(id, [documentType]);
+await session.load(id, [documentType]);
 //endregion
 
 //region loading_entities_2_0
@@ -29,34 +29,37 @@ session.include(path);
 //endregion
 
 //region loading_entities_3_0
-session.load(idsArray, [documentType]);
-session.load(idsArray, [options]);
+await session.load(idsArray, [documentType]);
+await session.load(idsArray, [options]);
 //endregion
 
 //region loading_entities_4_0
-session.advanced.loadStartingWith(idPrefix, [options]);
+await session.advanced.loadStartingWith(idPrefix, [options]);
 
-session.advanced.loadStartingWithIntoStream(idPrefix, output, [options]);
+await session.advanced.loadStartingWithIntoStream(idPrefix, output, [options]);
 //endregion
 
 //region loading_entities_5_0
 // stream query results
-session.stream(query, [statsCallback]);
+await session.stream(query, [statsCallback]);
 
 // stream documents with ID starting with
-session.stream(idPrefix, [options]);
+await session.stream(idPrefix, [options]);
 //endregion
 
 //region loading_entities_6_0
 session.advanced.isLoaded(id);
+
 //endregion
 
 class Employee {
 
 }
+
 class Supplier {
 
 }
+
 class Product {
     constructor(supplier) {
         this.supplier = supplier;
@@ -93,7 +96,7 @@ async function examples() {
 
     //region loading_entities_3_1
     const employees = await session.load(
-        [ "employees/1", "employees/2", "employees/3" ]);
+        ["employees/1", "employees/2", "employees/3"]);
     // {
     //     "employees/1": { ... },
     //     "employees/2": { ... }
@@ -106,7 +109,7 @@ async function examples() {
     const result = await session
         .advanced
         .loadStartingWith("employees/", {
-            start: 0, 
+            start: 0,
             pageSize: 128
         });
     //endregion
@@ -119,7 +122,7 @@ async function examples() {
             .advanced
             .loadStartingWith("employees/", {
                 matches: "1*|2*",
-                start: 0, 
+                start: 0,
                 pageSize: 128
             });
         //endregion
@@ -156,34 +159,44 @@ async function examples() {
     }
 }
 
-    //region loading_entities_7_0
-    (object, changeVector) conditionalLoad<object>(id, changeVector);
-    //endregion
+{
+    let id, object, changeVector, user, clazz;
 
+    class User {
+    }
+
+    //region loading_entities_7_0
+    await session.advanced.conditionalLoad(id, changeVector, clazz);
+    //endregion
+}
+{
     //region loading_entities_7_1
-    var session = store.openSession();
-    session.store(user, "users/1");
-    session.saveChanges();
+    const session = store.openSession();
+    const user = new User("Bob");
+    await session.store(user, "users/1");
+    await session.saveChanges();
 
     const changeVector = session.advanced.getChangeVectorFor(user);
+    
+    {
+        // New session which does not track our User entity
+        // The given change vector matches
+        // the server-side change vector
+        // Does not load the document
+        const session = store.openSession();
+        const result1 = await session.advanced
+            .conditionalLoad("users/1", changeVector, User);
 
-    // New session which does not track our User entity
-    // The given change vector matches 
-    // the server-side change vector
-    // Does not load the document
-    var session = store.openSession();
-    var result1 = session.advanced
-        .conditionalLoad<User>("users/1", changeVector);
+        // Modify the document
+        user.name = "Bob Smith";
+        await session.store(user);
+        await session.saveChanges();
 
-    // Modify the document
-    user.name = "Bob Smith";
-    session.store(user);
-    session.saveChanges();
-
-    // Change vectors do not match
-    // Loads the document
-    var result2 = session.advanced
-        .conditionalLoad<User>("users/1", changeVector);
-    //endregion
-
+        // Change vectors do not match
+        // Loads the document
+        const result2 = await session.advanced
+            .conditionalLoad("users/1", changeVector, User);
+        //endregion
+    }
+}
 

@@ -1,8 +1,8 @@
-import { 
+import {
     DocumentStore,
     IndexDefinition,
     PutIndexesOperation,
-    AbstractIndexCreationTask
+    AbstractIndexCreationTask, AbstractCsharpIndexCreationTask
 } from "ravendb";
 
 const store = new DocumentStore();
@@ -27,7 +27,7 @@ class BlogPostComment {
 //endregion
 
 //region indexes_2
-class BlogPosts_ByCommentAuthor extends AbstractIndexCreationTask {
+class BlogPosts_ByCommentAuthor extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
         this.map = "docs.BlogPosts.Select(post => new {\n" +

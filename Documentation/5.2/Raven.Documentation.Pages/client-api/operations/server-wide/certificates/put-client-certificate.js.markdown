@@ -6,10 +6,18 @@ You can register an existing client certificate using **PutClientCertificateOper
 
 {CODE:nodejs cert_put_1@ClientApi\Operations\Server\ClientCertificate.js /}
 
-{CODE:nodejs cert_1_2@ClientApi\Operations\Server\ClientCertificate.js /}
+`SecurityClearance` options:
 
-{CODE:nodejs cert_1_3@ClientApi\Operations\Server\ClientCertificate.js /}
+* `UnauthenticatedClients`  
+* `ClusterAdmin`  
+* `ClusterNode`  
+* `Operator`  
+* `ValidUser`  
 
+`DatabaseAccess ` options:
+
+* `ReadWrite`  
+* `Admin`  
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
