@@ -57,7 +57,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 AddEtlOperationResult result = store.Maintenance.Send(operation);
                 #endregion
             }
-            using (var store = GetDocumentStore())
+            using (var store = new DocumentStore())
 
             #region raven_etl_connection_string
 
@@ -74,12 +74,12 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
                     //define database to connect with on the node
                     Database = "Northwind",
-                }));
+                };
                 //create the connection string
                 var resultRavenString = store.Maintenance.Send(
                     new PutConnectionStringOperation<RavenConnectionString>(ravenConnectionString));
             }
-                #endregion
+            #endregion
 
 
             using (var store = new DocumentStore())
@@ -132,40 +132,34 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
                 AddEtlOperationResult result = store.Maintenance.Send(operation);
                 #endregion
+            }
 
 
-                #region sql_etl_connection_string
+            using (var store = new DocumentStore())
 
+            #region sql_etl_connection_string
+            {
                 {
-                // define new connection string
-                PutConnectionStringOperation<SqlConnectionString> operation
-                = new PutConnectionStringOperation<SqlConnectionString>(
-                    new SqlConnectionString
-                    {
-                        // name connection string
-                        Name = "local_mysql",
+                    // define new connection string
+                    PutConnectionStringOperation<SqlConnectionString> operation
+                    = new PutConnectionStringOperation<SqlConnectionString>(
+                        new SqlConnectionString
+                        {
+                            // name connection string
+                            Name = "local_mysql",
 
-                        // define FactoryName
-                        FactoryName = "MySql.Data.MySqlClient",
-
-                        // define database - may also need to define authentication and encryption parameters
-                        // by default, encrypted databases are sent over encrypted channels
-                        ConnectionString = "host=127.0.0.1;user=root;database=Northwind"
-
-                    });
-
-                // create connection string
-                PutConnectionStringResult connectionStringResult
-                = store.Maintenance.Send(operation);
-
+                            // define data source and database name
+                            // may also need to define authentication and encryption parameters
+                            ConnectionString = @"Data Source=localhost\sqlexpress;Integrated Security=SSPI;
+                                    Connection Timeout=3;Initial Catalog=SqlReplication-Northwind;"
+                        });
+            
+                    // create connection string
+                    PutConnectionStringResult connectionStringResult = store.Maintenance.Send(operation);
                 }
                 #endregion
             }
         }
     }
 
-        private System.IDisposable GetDocumentStore()
-        {
-            throw new System.NotImplementedException();
-        }
-    }
+}
