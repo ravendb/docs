@@ -36,7 +36,7 @@
       * Authentication method required by the Elasticsearch nodes.  
    * **Define the Elasticsearch Indexes**  
       * Indexes are used by Elasticsearch to store and locate documents.  
-      * The ETL task will insert new documents to the specified Elasticsearch destinations.  
+      * The ETL task will send new documents to the specified Elasticsearch indexes.  
       * If not otherwise specified, existing Elasticsearch documents will be removed before adding new documents.  
       * A [document identifier](../../../server/ongoing-tasks/etl/elasticsearch#document-identifiers) 
         field property is defined per document, and used by the delete command to locate the matching documents.  
