@@ -167,9 +167,10 @@ to **omit** _delete_by_query commands and so refrain from deleting documents bef
 * When the Elasticsearch ETL task runs for the very first time, it will create any Elsasticsearch index defined in 
   the task that doesn't exist yet.  
 
-* When creating the index, the document property that will hold the RavenDB document ID will be defined as a non-analyzed field, 
-  with type [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/7.15/keyword.html) to avoid having full-text-search 
-  on it.  
+* When the index is created, the document property that holds the RavenDB document ID will be defined 
+  as a non-analyzed field, with type 
+  [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/7.15/keyword.html) to avoid having 
+  full-text-search on it.  
   This way the RavenDB document identifiers won't be analyzed and the task will be able to `_delete_by_query` using exact match on those IDs.  
   I.e.  
   {CODE-BLOCK: JavaScript}
