@@ -39,7 +39,7 @@
       * The ETL task will insert new documents to the specified Elasticsearch destinations.  
       * If not otherwise specified, existing Elasticsearch documents will be removed before adding new documents.  
       * A [document identifier](../../../server/ongoing-tasks/etl/elasticsearch#document-identifiers) 
-        field property is defined per index, and used by the delete command to locate the matching documents.  
+        field property is defined per document, and used by the delete command to locate the matching documents.  
    * **Define Transformation Scripts**.  
      The transformation script determines which RavenDB documents will be transferred, 
      to which Elasticsearch Indexes, and in what form.  
@@ -58,8 +58,8 @@
   those of all other ETL types ([RavenDB ETL](../../../server/ongoing-tasks/etl/raven), 
   [SQL ETL](../../../server/ongoing-tasks/etl/sql), and 
   [OLAP ETL](../../../server/ongoing-tasks/etl/olap)) scripts.  
-  The script is used to select the documents the task would _Extract_ from the database, 
-  _Transform_ the retrieved data, and _Load_ it to the Elasticsearch destination.  
+  The script defines which documents will be _Extracted_ from the database, 
+  _Transforms_ the retrieved data, and _Loads_ it to the Elasticsearch destination.
   Learn about ETL transformation scripts [here](../../../server/ongoing-tasks/etl/basics#transform).  
 
 * The script **Loads** data to the Elasticsearch destination using the 
@@ -221,7 +221,7 @@ as **"keyword"** in your index definition.
     | **ElasticIndexes** | `List<ElasticSearchIndex>` | A list of Elasticsearch indexes |
     | **Transforms** | `List<Transformation>` | A list of transformation scripts |
 
-* `ElasticSearchIndex` (A list of Elasticsearch indexes)  
+* `ElasticSearchIndex`  
 
     | Property | Type | Description |
     |:-------------|:-------------|:-------------|
@@ -236,7 +236,7 @@ as **"keyword"** in your index definition.
 ### Add an Elasticsearch Connection String
 
 * An Elasticsearch connection string includes a list of **Elasticsearch destinations URLs**, 
-  and determines the **Authentication Method** the client needs to access them.  
+  and determines the **Authentication Method** required to access them.  
    * Omit the Authentication property if the Elasticsearch destination requires no authentication.  
    * Add a connection string as shown below.  
 

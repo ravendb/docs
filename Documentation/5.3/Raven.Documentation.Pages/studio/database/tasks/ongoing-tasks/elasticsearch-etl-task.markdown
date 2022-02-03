@@ -42,7 +42,7 @@ To begin creating your Elasticsearch ETL task:
 
 1. **Task Name** (Optional)  
    * Enter a name for your task  
-   * If no name is provided, the cluster will create a name based on the defined connection string,  
+   * If no name is provided, the server will create a name based on the defined connection string,  
      e.g. *ElasticSearch ETL to ElasticConStr*  
 
 2. **Task State**  
@@ -95,10 +95,10 @@ Indexes the ETL task will access.
 
 #### 3. Document ID Property Name
 
-* Enter the name of a transformation script property that contains `id(this)`.  
+* Enter the name of the transformation script property that contains `id(this)`.  
   This property will be created in each generated Elasticsearch document, and 
   allow the ETL task to recognize the documents by their original RavenDB IDs 
-  even when they are hosted by Elasticsearch.  
+  when they are hosted in Elasticsearch.  
 
 * E.g. -  
    * The transformation script property: `OrderId: id(this)`  
@@ -179,7 +179,7 @@ Elasticsearch destination per RavenDB document from the selected collections.
      documents that reside on the Elasticsearch destination by their source 
      RavenDB document ID.  
      {NOTE/}
-   * Use the loadTo\<indexName\> method to pass the document object 
+   * Use the `loadTo\<indexName\>` method to pass the document object 
      to the Elasticsearch destination.  
 
 3. **Syntax**  
@@ -192,13 +192,17 @@ Elasticsearch destination per RavenDB document from the selected collections.
       A list of collections that were already selected.  
 
 5. **Apply script to documents from beginning of time (Reset)**  
-    * When this option is **enabled**, the script will be executed over **all existing documents in the 
+    * When this option is **enabled**:  
+      The script will be executed over **all existing documents in the 
       specified collections** the first time the task runs.  
-    * When this option is **disabled**, the script will be executed **only over new and modified documents**.  
-    * If [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) is **enabled**,  
+    * When this option is **disabled**:  
+      The script will be executed **only over new and modified documents**.  
+    * If [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
+      is **enabled**:  
       RavenDB documents will be appended to Elasticsearch **without deleting documents from Elasticsearch first**.  
-    * If [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) is **disabled**,
-      documents will be **deleted from Elasticsearch first**, and then appended to it from RavenDB.  
+    * If [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
+      is **disabled**:  
+      Documents will be **deleted from Elasticsearch first**, and then appended to it from RavenDB.  
 
 6. **Add/Update**  
    Click to add a new script or update the task with changes made in an existing script.  
@@ -246,11 +250,12 @@ The test results view displays a **preview** of the tested document, and the **c
    2. **Elasticsearch Index**  
       The index the commands and data are sent to.  
    3. [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) Segment  
-      With a list of IDs by which Elasticsearch would locate and remove existing documents.  
+      The delete POST command with a list of IDs by which Elasticsearch would 
+      locate and remove existing documents.  
       Deleting existing document versions is **optional**, enable [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
       to prevent the task from sending `_delete_by_query` commands.  
    4. [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) Segment  
-      With a list of document objects, each with data extracted from RavenDB and an ID that Elasticsearch stores it by.  
+      The bulk POST command with a list of document objects, each with data extracted from RavenDB and an ID that Elasticsearch stores it by.  
 
 {PANEL/}
 
