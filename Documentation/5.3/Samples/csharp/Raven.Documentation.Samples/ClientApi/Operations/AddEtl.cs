@@ -321,13 +321,15 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                         // Define Elasticsearch Indexes
                         new ElasticSearchIndex { // Elasticsearch Index name
                                                  IndexName = "orders", 
-                                                 // Elasticsearch identifier for transferred RavenDB documents 
-                                                 // (make sure a property with this name is defined in the transform script)
+                                                 // The Elasticsearch document property that will contain
+                                                 // the source RavenDB document id.
+                                                 // Make sure this property is also defined inside the
+                                                 // transform script.
                                                  DocumentIdProperty = "DocId", 
-                                                 // If true, don't send _delete_by_query before appending docs
                                                  InsertOnlyMode = false }, 
                         new ElasticSearchIndex { IndexName = "lines",
                                                  DocumentIdProperty = "OrderLinesCount", 
+                                                 // If true, don't send _delete_by_query before appending docs
                                                  InsertOnlyMode = true 
                                                }
                     },
@@ -335,15 +337,20 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     {   // Transformation script configuration
                         new Transformation()
                         {
-                            Collections = { "Orders" }, // RavenDB collections that the script uses
+                            // RavenDB collections that the script uses
+                            Collections = { "Orders" }, 
+
                             Script = @"var orderData = {
                                        DocId: id(this),
                                        OrderLinesCount: this.Lines.length,
                                        TotalCost: 0
                                        };
 
+                                       // Write the `orderData` as a document to the Elasticsearch 'orders' index
                                        loadToOrders(orderData);", 
-                            Name = "TransformIDsAndLinesCount" // Transformation script Name
+                            
+                            // Transformation script Name
+                            Name = "TransformIDsAndLinesCount" 
                         }
                     }
                 });
