@@ -7,8 +7,14 @@
   },
   {
     "Path": "loading.markdown",
-    "Name": "Loading Revisions",
+    "Name": "Loading",
     "DiscussionId": "ba3f27dd-dc68-4851-a6bd-3c0166703820",
+    "Mappings": []
+  },
+  {
+    "Path": "counter-revisions.markdown",
+    "Name": "Counter Revisions",
+    "DiscussionId": "68e60b2c-83a2-42dd-b464-9deb18c90e7a",
     "Mappings": []
   }
 ]

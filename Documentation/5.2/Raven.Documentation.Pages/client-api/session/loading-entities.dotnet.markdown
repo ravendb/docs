@@ -52,8 +52,15 @@ The most basic way to load a single entity is to use one of the `Load` methods.
 When there is a 'relationship' between documents, those documents can be loaded in a 
 single request call using the `Include + Load` methods. Learn more in 
 [How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships).  
-See also [including counters](../../document-extensions/counters/counters-and-other-features#including-counters) 
-and [including time series](../../document-extensions/timeseries/client-api/session/include/overview).
+
+{NOTE: }
+Also see:  
+
+* [Including Counters](../../document-extensions/counters/counters-and-other-features#including-counters)  
+* [Including Time Series](../../document-extensions/timeseries/client-api/session/include/overview)  
+* [Including Compare Exchange Values](../../client-api/operations/compare-exchange/include-compare-exchange)  
+* [Including Document Revisions](../../client-api/session/revisions/including)  
+{NOTE/}
 
 {CODE loading_entities_2_0@ClientApi\Session\LoadingEntities.cs /}
 
