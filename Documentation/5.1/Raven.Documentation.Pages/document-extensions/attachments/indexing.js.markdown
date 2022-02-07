@@ -21,11 +21,11 @@
 ### Using AttachmentsFor()
 
 The `AttachmentsFor` method returns information about each attachment that extends 
-a specified document, including their names, sizes, and content type. write index definition as string.
+a specified document, including their names, sizes, and content type.  
 
 {CODE-TABS}
-{CODE-TAB:java:Method syntax@DocumentExtensions\Attachments\IndexingAttachments.java /}
-{CODE-TAB:java:AttachmentName result@DocumentExtensions\Attachments\IndexingAttachments.java /}
+{CODE-TAB:csharp:Method syntax@DocumentExtensions\Attachments\IndexingAttachments.cs /}
+{CODE-TAB:csharp:Result result@DocumentExtensions\Attachments\IndexingAttachments.cs /}
 {CODE-TABS/}
 
 The `AttachmentsFor` method is available in `AbstractIndexCreationTask`.
@@ -35,12 +35,12 @@ The `AttachmentsFor` method is available in `AbstractIndexCreationTask`.
 `LoadAttachment()` loads an attachment to the index by document and attachment name.  
 `LoadAttachments()` loads all the attachments of a given document.  
 
-{CODE:java syntax_2@DocumentExtensions\Attachments\IndexingAttachments.java /}
+{CODE:csharp syntax_2@DocumentExtensions\Attachments\IndexingAttachments.cs /}
 
 | Parameter | Type | Description |
 | - | - | - |
 | **doc** | A server-side document, an entity | The document whose attachments you want to load |
-| **name** | `String` | The name of the attachment you want to load |
+| **name** | `string` | The name of the attachment you want to load |
 
 #### GetContentAs Methods
 
@@ -75,25 +75,26 @@ image content.
 #### Indexes with `AttachmentsFor()`
 
 {CODE-TABS}
-{CODE-TAB:java:JavaScript-syntax AttFor_index_JS@DocumentExtensions\Attachments\IndexingAttachments.java /}
+{CODE-TAB:nodejs:JavaScript-syntax AttFor_index_JS@documentExtensions\attachments\indexingAttachments.js /}
 {CODE-TABS/}
 
 #### Indexes with `LoadAttachment()`
 
 {CODE-TABS}
-{CODE-TAB:java:JavaScript-syntax LoadAtt_index_JS@DocumentExtensions\Attachments\IndexingAttachments.java /}
+{CODE-TAB:nodejs:JavaScript-syntax LoadAtt_index_JS@documentExtensions\attachments\indexingAttachments.js /}
 {CODE-TABS/}
 
 #### Indexes with `LoadAttachments()`
 
 {CODE-TABS}
-{CODE-TAB:java:JavaScript-syntax LoadAtts_index_JS@DocumentExtensions\Attachments\IndexingAttachments.java /}
+{CODE-TAB:nodejs:JavaScript-syntax LoadAtts_index_JS@documentExtensions\attachments\indexingAttachments.js /}
 {CODE-TABS/}
 
 #### Querying the Index
 
-
-{CODE:java query1@DocumentExtensions\Attachments\IndexingAttachments.java /}
+{CODE-TABS}
+{CODE-TAB:nodejs:Sync query1@documentExtensions\attachments\indexingAttachments.js /}
+{CODE-TABS/}
 
 {PANEL/}
 

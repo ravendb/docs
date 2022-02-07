@@ -16,6 +16,7 @@
   * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
   * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features#counters-and-other-features-summary)  
   * [Including Counters](../../document-extensions/counters/counters-and-other-features#including-counters)  
+  * [Counters Bulk-Insert](../../document-extensions/counters/counters-and-other-features#counters-bulk-insert)  
 {NOTE/}
 
 ---
@@ -201,6 +202,42 @@ remote calls.
     {CODE-TAB:java:IncludeCounter counters_region_query_include_single_Counter@DocumentExtensions\Counters\Counters.java /}
     {CODE-TAB:java:IncludeCounters counters_region_query_include_multiple_Counters@DocumentExtensions\Counters\Counters.java /}
     {CODE-TABS/}
+
+    ---
+
+###Counters Bulk-Insert  
+`store.bulkInsert` is RavenDB's high-performance data insertion operation.  
+Use its `countersFor` interface's `increment` method to add or update counters with great speed.  
+
+* Syntax  
+
+   * `countersFor`
+       {CODE:java CountersFor-definition@DocumentExtensions\Counters\Counters.java /}
+
+        | Parameters | Type | Description |
+        |:-------------|:-------------|:-------------|
+        | `id` | `String` | Document ID |
+
+   *   `increment`
+          {CODE:java Increment-definition@DocumentExtensions\Counters\Counters.java /}
+
+           | Parameters | Type | Description |
+           |:-------------|:-------------|:-------------|
+           | `name` | `String` | Counter Name |
+           | `id` | `String` | Document ID |
+           | `delta` | `long` | Default: 1L |
+
+* Usage Flow  
+
+   * Create a `store.bulkInsert` instance.  
+   * Pass the instance's `countersFor` interface, the document ID  
+   * Call `increment` as many times as you like. Pass it -  
+     The Counter Name and Value (delta to be added).
+
+* Usage Sample  
+  In this sample, we attach a counter to all User documents.
+   {CODE:java bulk-insert-counters@DocumentExtensions\Counters\Counters.java /}  
+
 
 {PANEL/}
 
