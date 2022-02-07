@@ -12,7 +12,7 @@
    * Loaded using `session.Load`  
    * Queried using `session.Query`  
    * Queried using `session.Advanced.RawQuery`  
-* You can include revisions by their **Creation Date** or by the document's **Change Vector**.  
+* You can include revisions by their **Creation Date** and by documents' **Change Vectors**.  
 
 - [Including Revisions](../../../client-api/session/revisions/including#including-revisions)  
 - [Syntax](../../../client-api/session/revisions/including#syntax)  
@@ -48,34 +48,41 @@ with the document, to make the document's history available for instant inspecti
 
 #### Including Revisions By Date
 
-To include a revision by its **creation date**, we simply pass a `DateTime` 
-parameter with the relevant date to the relevant method 
-([session.Load](../../../client-api/session/revisions/including#including-revisions-with-session.load), 
+To include a revision by its **creation date**, pass ([session.Load](../../../client-api/session/revisions/including#including-revisions-with-session.load), 
 [session.Query](../../../client-api/session/revisions/including#including-revisions-with-session.query), 
-or [session.Advanced.RawQuery](../../../client-api/session/revisions/including#including-revisions-with-session.advanced.rawquery)).  
-The included revision is the closest revision to precede the given date.  
+or your [Raw Query](../../../client-api/session/revisions/including#including-revisions-with-session.advanced.rawquery) 
+a `DateTime` value.  
+
+* If you provide the exact creation date of a document revision, this revision will be included.  
+* If no exact match is found, the revision whose date precedes the date you provided will be included.  
+  E.g., If the date you provided is between revision #499 and revision #500, revision #499 will be included.  
+* If no revisions exist, an empty `IncludeRevisions` object will be returned.  
 
 ---
 
 #### Including Revisions By Change Vector
 
-When a document is updated, its [change vector](../../../server/clustering/replication/change-vector) 
-is updated as well. If the Revisions feature is enabled, the update will also be reflected by the 
-creation of a new document revision.  
-We can include a revision **by the change vector of the document it contains**.  
+When a document is modified, its [Change Vector](../../../server/clustering/replication/change-vector) 
+is revised as well to trigger the document's replication, backup, etc.  
 
-To include a revision by its document's change vector, we do **not** provide the change vector directly.  
-Instead, we provide a path to a **property** of the document whose revision it is, i.e. the document that 
-we intend to load, that contains the wanted change vector.  
+Old change vectors are not normally kept.  
+If the **Revisions** feature is enabled, however, a new document revision is also created 
+each time a document is modified, and the updated change vector marks the new revision.  
 
-Keeping the change vectors of wanted revisions within properties of the documents they relate to, 
-keeps them in context and clarifies their role.  
+We can therefore track and include document revisions by their change vectors.  
+To do so, we need to:  
+
+1. Store the change vector whose revision we seek, in a property of the document.  
+2. Provide the seeking method or query with a path to this document property.  
+
+This way, the change vectors always remain in the context of their document.  
+
 {NOTE: }
-We can, for example, add change vectors that indicate changes in an employee's
-payroll, to a "SalaryUpdates" property of the employee's payroll document.  
-Each time we need to re-evaluate the employee's salary, we'd be able to instantly 
-locate past salary revisions by the change vectors we kept, and load these revisions 
-with the document to help our evaluation.  
+We can, for example, add a change vector to the "SalaryUpdates" property 
+of an employee's payroll document, each time the employee's salary is raised.  
+Then, when we need to re-evaluate the employee's salary, we can instantly 
+track their past salary raises by the kept change vectors, and load these 
+revisions along with the payroll document to help our evaluation.  
 {NOTE/}
 
 {PANEL/}
@@ -127,14 +134,11 @@ The revision that immediately precedes the given date will be included.
 
 {PANEL: Including Revisions With `session.Query`}
 
-Including revisions for `session.Query` follows the same principles shown 
-for [session.Load](../../../client-api/session/revisions/including#including-revisions-with-session.load) 
-above:  
-
-* To include a revision by date, the date is passed to `IncludeRevisions` in `DateTime` format.  
-* To include a single revision or a group of revisions by their change vectors, 
-  a path to the loaded document's property that holds these change vectors is passed 
-  to `IncludeRevisions`.  
+* To include a revision by date, pass `IncludeRevisions` a 
+  [DateTime value](../../../client-api/session/revisions/including#including-revisions-by-date).  
+* To include a single revision or a group of revisions by change vectors, pass 
+  `IncludeRevisions` a [path](../../../client-api/session/revisions/including#including-revisions-by-change-vector) 
+  to a property of the loaded document, that stores change vectors.  
 
 #### Query: Include Revisions by Date
 
@@ -151,6 +155,12 @@ above:
 {PANEL/}
 
 {PANEL: Including Revisions with `session.Advanced.RawQuery`}
+
+* To include revisions by date or change vector, pass the raw query `include revisions` 
+  command either a `DateTime` value or a `path` to a  change vector document property.  
+* RavenDB will figure out by itself whether the parameter you passed it was a date or 
+  a path, and include revisions accordingly.  
+* Aliases (e.g. `from Users as U`) are not supported by raw queries that includes revisions.  
 
 #### Raw Query: Include Revisions by Date
 

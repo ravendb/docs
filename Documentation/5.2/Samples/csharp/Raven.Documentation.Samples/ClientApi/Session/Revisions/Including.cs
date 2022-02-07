@@ -82,12 +82,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                     #endregion
                 }
 
-
                 using (var session = store.OpenSession())
                 {
                     var beforeGivenDate = DateTime.UtcNow;
                     #region IncludeRevisions_7_RawQueryByDate
-                    // Include revision preceding the given date
+                    // Pass the `include revision` command a `DateTime`
+                    // value to include a revision by date.  
                     var query = session.Advanced
                         .RawQuery<User>("from Users include revisions($p0)")
                         .AddParameter("p0", beforeGivenDate)
@@ -99,7 +99,9 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                 using (var session = store.OpenSession())
                 {
                     #region IncludeRevisions_8_RawQueryByChangeVector
-                    // Include revision by change vector
+                    // Pass the `include revision` command a `path`
+                    // to a document property that holds change vectors,
+                    // to include revisions by change vectors.  
                     var query = session.Advanced
                         .RawQuery<UserDefinedClass>("from Users where Name = 'JohnDoe' include revisions($p0)")
                         .AddParameter("p0", "Payroll_1_ChangeVector")
