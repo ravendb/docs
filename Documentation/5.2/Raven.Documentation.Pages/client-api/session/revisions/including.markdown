@@ -167,9 +167,9 @@ The revision that immediately precedes the given date will be included.
 
 * To include revisions by date or change vector, pass the raw query `include revisions` 
   command either a `DateTime` value or a `path` to a  change vector document property.  
-* RavenDB will figure out by itself whether the parameter you passed it was a date or 
+* RavenDB will figure out by itself whether the parameter you passed was a date or 
   a path, and include revisions accordingly.  
-* Aliases (e.g. `from Users as U`) are not supported by raw queries that includes revisions.  
+* Aliases (e.g. `from Users as U`) are not supported by raw queries that include revisions.  
 
 #### Raw Query: Include Revisions by Date
 
@@ -187,10 +187,11 @@ The revision that immediately precedes the given date will be included.
 
 ## Related Articles
 
-### Revisions
+### Client API
 
 - [What are Revisions](../../../client-api/session/revisions/what-are-revisions)
-- [Revisions in Data Subscriptions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)
+- [Loading Revisions](../../../client-api/session/revisions/loading))
+- [Include](../../../client-api/how-to/handle-document-relationships#includes)
 
 ### Server
 
