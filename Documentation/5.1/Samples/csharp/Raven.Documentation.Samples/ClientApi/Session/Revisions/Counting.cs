@@ -24,14 +24,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                 using (var session = store.OpenSession())
                 {
                     #region example_sync
-                    var RevisionsCount = session.Advanced.Revisions.GetCountFor(CompanyProfile.Id);
+                    var revisionsCount = session.Advanced.Revisions.GetCountFor(CompanyProfile.Id);
                     #endregion
                 }
 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region example_async
-                    var RevisionsCount = await asyncSession.Advanced.Revisions.GetCountForAsync(CompanyProfile.Id);
+                    var revisionsCount = await asyncSession.Advanced.Revisions.GetCountForAsync(CompanyProfile.Id);
                     #endregion
                 }
             }
