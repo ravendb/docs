@@ -53,6 +53,21 @@ Set how many indexes can run concurrently to prevent overwhelming system resourc
 
 {PANEL/}
 
+{PANEL:Indexing.IndexStartupBehaviorType}
+
+Manipulate index startup behavior on database load with following options:  
+(Can be useful if many databases and/or indexes open and start concurrently, causing IO usage 
+ to max out system resouces, thus slowing indexing.)
+
+- **Type**: `enum`
+- **Default**: All databases load and indexes start as soon as indexes are open.  
+  - **Immediate**: Same as default.
+  - **Pause**: Opens all indexes, but they are paused until manually started.
+  - **Delay**: First opens all indexes and when they are all open, starts them.  
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
 {PANEL:Indexing.MaxTimeForDocumentTransactionToRemainOpenInSec}
 
 Set how many seconds indexing will keep document transaction open when indexing.

@@ -234,7 +234,8 @@ You can configure [batch stops](../../../studio/database/indexes/indexing-perfor
     accumulated enough credits to run another batch process.  
     This causes indexing to seem slow.  
     * On a local machine, you can upgrade your hardware, divide the work onto more machines in a cluster, and/or optimize your indexes. 
-    * On a cloud instance, you can [upgrade](../../../cloud/portal/cloud-portal-products-tab) your instance, [scale](../../../cloud/cloud-scaling), and/or optimize your indexes.  
+    * On a cloud instance, you can [upgrade](../../../cloud/portal/cloud-portal-products-tab) your instance, [scale](../../../cloud/cloud-scaling), 
+      [externally replicate](../../../studio/database/tasks/ongoing-tasks/external-replication-task) to new instances, and/or optimize your indexes.  
 
 ---
 
