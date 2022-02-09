@@ -15,9 +15,9 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
             public interface IRevisionIncludeBuilder<T, out TBuilder>
             {
                 #region IncludeRevisions_1_IncludeRevisions
+                TBuilder IncludeRevisions(DateTime before);
                 TBuilder IncludeRevisions(Expression<Func<T, string>> path);
                 TBuilder IncludeRevisions(Expression<Func<T, IEnumerable<string>>> path);
-                TBuilder IncludeRevisions(DateTime before);
                 #endregion
             }
         }
@@ -34,7 +34,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                 {
                     #region IncludeRevisions_2_LoadByDate
                     var query = session.Load<User>(id, builder => builder
-                        .IncludeRevisions(dateTime));
+                        .IncludeRevisions(dateTime.ToUniversalTime()));
 
                     // This revision has been included, and is now loaded from memory
                     var revision = session.Advanced.Revisions.Get<User>(id, dateTime.ToUniversalTime());
@@ -46,9 +46,9 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                     #region IncludeRevisions_4_LoadByChangeVector
                     var sn = session.Load<UserDefinedClass>(id, builder => builder
                         // Include a single revision 
-                        .IncludeRevisions(x => x.Payroll_1_ChangeVector)
+                        .IncludeRevisions(x => x.ContractRev_1_ChangeVector)
                         // Include a group of revisions
-                        .IncludeRevisions(x => x.PayrollChangeVectors));
+                        .IncludeRevisions(x => x.ContractRevChangeVectors));
 
                     var metadatas = session.Advanced.Revisions.GetMetadataFor(id);
                     cv = metadatas.First().GetString(Constants.Documents.Metadata.ChangeVector);
@@ -73,12 +73,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                 using (var session = store.OpenSession())
                 {
                     #region IncludeRevisions_6_QueryByChangeVectors
-                    // Include the revision whose change vector is stored in "Payroll_3_ChangeVector"
-                    // and the revisions whose change vectors are stored in "PayrollChangeVectors"
+                    // Include the revision whose change vector is stored in "ContractRev_2_ChangeVector"
+                    // and the revisions whose change vectors are stored in "ContractRevChangeVectors"
                     var query = session.Load<UserDefinedClass>(id, builder => builder
                         .IncludeRevisions(dateTime)
-                        .IncludeRevisions(x => x.Payroll_3_ChangeVector)
-                        .IncludeRevisions(x => x.PayrollChangeVectors));
+                        .IncludeRevisions(x => x.ContractRev_2_ChangeVector)
+                        .IncludeRevisions(x => x.ContractRevChangeVectors));
                     #endregion
                 }
 
@@ -104,7 +104,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                     // to include revisions by change vectors.  
                     var query = session.Advanced
                         .RawQuery<UserDefinedClass>("from Users where Name = 'JohnDoe' include revisions($p0)")
-                        .AddParameter("p0", "Payroll_1_ChangeVector")
+                        .AddParameter("p0", "ContractRev_1_ChangeVector")
                         .WaitForNonStaleResults()
                         .ToList();
                     #endregion
@@ -118,13 +118,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
             public string Name { get; set; }
             
             // A single revision's Change Vector
-            public string Payroll_1_ChangeVector { get; set; }
+            public string ContractRev_1_ChangeVector { get; set; }
             
-            public string Payroll_2_ChangeVector { get; set; }
-            public string Payroll_3_ChangeVector { get; set; }
+            public string ContractRev_2_ChangeVector { get; set; }
             
             // An array of revision Change Vectors
-            public List<string> PayrollChangeVectors { get; set; }
+            public List<string> ContractRevChangeVectors { get; set; }
         }
         #endregion
 

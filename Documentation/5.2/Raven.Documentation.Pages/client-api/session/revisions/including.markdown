@@ -49,7 +49,7 @@ Revisions can be Included by their **Creation Date** or **Change Vector**.
 
 #### Including Revisions By Date
 
-To include a revision by its **creation date** -  
+To include **a single revision** by its **creation date** -  
 Pass a `DateTime` value to 
 [session.Load](../../../client-api/session/revisions/including#including-revisions-with-session.load) 
 or [session.Query](../../../client-api/session/revisions/including#including-revisions-with-session.query) 
@@ -58,8 +58,11 @@ or to a [Raw Query](../../../client-api/session/revisions/including#including-re
 using `.AddParameter`.  
 
 * If the provided date matches the creation date of a document revision, this revision will be included.  
-* If no exact match is found, the revision whose date precedes the date you provided will be included.  
-  E.g., If the date you provided is between that of revision #49 and revision #50, revision #49 will be included.  
+* If no exact match is found, the nearest revision to precede it will be included.  
+   * E.g. -  
+     If the date you provided is `Aprl 7 2020`,  
+     and it is located between two existing revisions dated `April 2 2020` and `April 11 2020`,  
+     the `April 2` revision will be included.  
 * If no revisions exist, an empty `IncludeRevisions` object will be returned.  
 
 ---
@@ -70,11 +73,11 @@ Each time a document is modified, its [Change Vector](../../../server/clustering
 is revised to trigger the document's replication, backup, etc.  
 While the **Revisions** feature is enabled, each new document revision keeps the document's 
 change vector at the time of its creation.  
-We can therefore track and include document revisions by their change vectors.  
-To do so, we need to:  
+We can use this to track and include **Single** or **Multiple** document revisions by their change vectors.  
+To do so:  
 
 1. Store helpful change vectors in advance, in a property of the document.  
-2. When we want to include revisions by their change vector -  
+2. When you want to include revisions by their change vector -  
    Pass the **path** to the document property to 
    [session.Load](../../../client-api/session/revisions/including#including-revisions-with-session.load) 
    or [session.Query](../../../client-api/session/revisions/including#including-revisions-with-session.query) 
@@ -83,15 +86,13 @@ To do so, we need to:
    using `.AddParameter`.  
 
 {NOTE: }
-Storing a document's change vectors in one of the document's properties always 
-keeps them in context.  
-
-Change vector trails can be helpful in numerous ways, e.g. -  
-A change vector can be added to an employee's payroll document "SalaryUpdates" 
-property, each time the employee's salary is updated.  
-When it's time to re-evaluate this employee's salary and their payroll document 
-is loaded, past revisions of the document, showing their salary updates over 
-the years, can be included to help with the calculations.  
+Storing a document's change vector/s in one of the document's properties helps 
+clarify their context and purpose.  
+E.g. -  
+A change vector can be added to an employee's contract document's "ContractRev" property 
+each time the contract is revised (e.g. when their salary is raised).  
+Whenever the time comes to re-evaluate this employee's terms and their contract 
+is loaded, its past revisions can be easily included with it by their change vectors.  
 {NOTE/}
 
 {PANEL/}
@@ -105,9 +106,9 @@ and `session.Query`, using one of the `IncludeRevisions` methods.
 
 | Parameters | Type | Description |
 | ------------- | --------------------------- | ----- |
+| **before** | `DateTime` | A **single revision** that matches or precedes the given date will be included. |
 | **path** | `Expression<Func<T, string>>` | A path to a document property that contains **a single change vector**. <br> The revision whose change vector is contained in the document property will be Included. |
 | **path** | `Expression<Func<T, IEnumerable<string>>>` | A path to a document property that contains **an array of change vectors**. <br> The revisions whose change vectors are contained in the array will be Included. |
-| **before** | `DateTime` | The revision that precedes the given date will be included. |
 
 {PANEL/}
 
@@ -116,8 +117,9 @@ and `session.Query`, using one of the `IncludeRevisions` methods.
 
 #### Load: Include Revisions by Date
 
-To include a revision by its **creation date**, pass `IncludeRevisions` the date.  
-The revision that immediately precedes the given date will be included.  
+To include a **single revision** by its **creation date**, pass `IncludeRevisions` the date.  
+The revision whose date [matches or immediately precedes](../../../client-api/session/revisions/including#including-revisions-by-date) 
+that of the given date will be included.  
 
 * **Sample**:  
   {CODE IncludeRevisions_2_LoadByDate@ClientApi\Session\Revisions\Including.cs /}
@@ -126,7 +128,7 @@ The revision that immediately precedes the given date will be included.
 
 #### Load: Include Revisions by Change Vector
 
-* To include a revision by a document's change vector:  
+* To include a **single revision** by a document's change vector:  
   Pass `IncludeRevisions` the path to a property of the document you load, 
   that contains the change vector.  
 
