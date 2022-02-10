@@ -97,7 +97,7 @@ After executing the code above we will get from the server ID something that loo
 
 ## Identities
 
-If you really need to have consecutive IDs across the cluster, you can use the identity option. To do so you need to use a pipe (`|`) as a suffix to the provided ID. It will tell RavenDB to create
+If you really need to have successive IDs across the cluster, you can use the identity option. To do so you need to use a pipe (`|`) as a suffix to the provided ID. It will tell RavenDB to create
 the ID when the document is saved but here it will use a special always-incrementing integer value that is cluster wide.
 
 {CODE:nodejs session_identity_id@client-api\documentIdentifiers\workingWithDocumentIdentifiers.js /}

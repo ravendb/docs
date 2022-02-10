@@ -127,11 +127,11 @@ This separator can be changed to any other character except | in the
   *  As opposed to the Server-Side ID, This value _will be unique_ across all the nodes within the Database Group in the cluster.  
 
 * **When to use**:  
-  * Use an identity only if you really need documents with absolute consecutive IDs,  
+  * Use an identity only if you really need documents with successive IDs,  
     i.e. when generating invoices, or upon legal obligation.  
   * Note: using an identity _doesn't_ protect you from skipping values in the sequence because:
       *  Documents could have been deleted  
-      *  A failed transaction still increments the identity value, thus causing a hole in the sequence
+      *  A failed transaction still increments the identity value, thus causing a gap in the sequence
 
 * **Example**:  
   * From a server running on node 'A':  
@@ -147,7 +147,7 @@ This separator can be changed to any other character except | in the
   * Moreover, upon a failure scenario, if the node cannot communicate with the other cluster members, or the majority of nodes cannot be communicated with,
     saving the document will fail as the requested identity cannot be generated.  
   * All the other ID generation methods can work without any issue when the server is disconnected from the cluster,  
-    so unless you truly need consecutive IDs, use one of the other options.
+    so unless you truly need successive IDs, use one of the other options.
 {PANEL/}
 
 {PANEL: HiLo Algorithm}
