@@ -127,9 +127,9 @@ The indexing stripe shows the overall indexing process.
  4. **Output Count**  
     The number of index entries that the index returned from the data store.  
  5. **Failed Count**  
-    The number of documents that the index failed to process.  
+    The number of index entries that the index failed to process.  
  6. **Success Count**  
-    The number of documents that the index succeeded to process.  
+    The number of index entries that the index succeeded to process.  
  7. **Documents Size**  
     Total size of the documents returned from the data store.  
  8. **Average Document Size**  
@@ -254,10 +254,10 @@ You can configure [batch stops](../../../studio/database/indexes/indexing-perfor
   can be useful (even in a NoSql database) when developers need to pull information from different documents into an indexing process.  The `LoadDocument` method
   creates a relationship between the two documents and ensures that whenever the referenced document is updated, the referencing documents will be re-indexed to 
   stay current with the new details.  
-   - `LoadDocument` is a great feature, but problems arise if a large number of documents reference a single document (or a small set of them) that are frequently changed. 
-     If frequent changes are made to these few documents, all the documents referencing it will also need to be reindexed. 
+   - `LoadDocument` is a useful feature, but problems arise if a large number of documents reference a single document (or a small set of them) that is frequently changed. 
+     If frequent changes are made to this document, all the documents referencing it will also need to be reindexed. 
      In other words, the amount of work that an index has to do because 
-     of a single document change can be extremely large and may cause delays in indexing.  
+     of a single document frequently changing can be extremely large and may cause delays in indexing.  
       - The high IO demands in this situation can then cause further problems such as longer request duration and cluster instability.
       - Sometimes, `LoadDocument` misuse is caused by trying to apply relational modeling approaches to document-based databases.  
         If you're accustomed to relational data modeling, you can learn about effective [document modeling](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling) in the "Inside RavenDB" book.  
