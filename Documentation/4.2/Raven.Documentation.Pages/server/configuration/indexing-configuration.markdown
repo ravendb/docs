@@ -49,7 +49,7 @@ Set how many indexes can run concurrently to prevent overwhelming system resourc
 - **Type**: `int`
 - **Default**: `null` No limit
 - **MinValue**: 1
-- **Scope**: Server-wide or per database
+- **Scope**: Server-wide only (can be configured only in the settings.json file located in your RavenDB executable folder)
 
 {PANEL/}
 
@@ -87,6 +87,18 @@ Set how many seconds to keep a superseded auto index.
 - **Type**: `int`
 - **Default**: `15`
 - **Scope**: Server-wide or per database
+
+{PANEL/}
+
+{PANEL:Indexing.TimeSinceLastQueryAfterWhichDeepCleanupCanBeExecutedInMin}
+
+Set how many minutes to wait before deep cleaning an idle index.  
+A deep clean can cause the next batch process to take longer to process a query  
+(similar to the first time an index is being built).  
+
+- **Type**: `int`
+- **Default**: `10`
+- **Scope**: Server-wide or per database 
 
 {PANEL/}
 
