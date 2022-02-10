@@ -58,10 +58,15 @@ file:
 ### Configuration options
 
 There are several configurable SNMP properties in RavenDB.  
+
+---
+
 #### For SNMPv1:  
 
 * The SNMP port - default: `161`  
 * List of supported SNMP versions - default: `"V2C;V3"`  
+
+---
 
 #### For SNMPv2c:  
 
@@ -69,6 +74,8 @@ There are several configurable SNMP properties in RavenDB.
 
 The community string is used like a password. It is sent with each SNMP `GET` request and allows or 
 denies access to the monitored device.  
+
+---
 
 #### For SNMPv3:  
 
@@ -105,6 +112,8 @@ The most basic SNMP commands are `snmpget`, `snmpset` and `snmptrapd`.
 For example, using the SNMP agent you could run the following snmpget commands which get the server 
 up-time metric.  
 
+---
+
 #### For SNMPv2c:  
 {CODE-BLOCK:plain}
 snmpget -v 2c -c ravendb live-test.ravendb.net 1.3.6.1.4.1.45751.1.1.1.3
@@ -112,6 +121,8 @@ snmpget -v 2c -c ravendb live-test.ravendb.net 1.3.6.1.4.1.45751.1.1.1.3
 
 Where **ravendb** is the community string (configured via `Monitoring.Snmp.Community` configuration 
 option) and "live-test.ravendb.net" is the host.  
+
+---
 
 #### For SNMPv3
 {CODE-BLOCK:plain}
@@ -143,11 +154,21 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 ### List of OIDs
 
 {NOTE: }
-You can get a list of all OIDs along with their descriptions via HTTP `GET` endpoint `<serverUrl>/monitoring/snmp/oids`  
-{NOTE/}
 
-{NOTE: }
-RavenDB's **root OID** is: **1.3.6.1.4.1.45751.1.1.**
+* You can get a list of all OIDs along with their descriptions via this HTTP `GET` endpoint:  
+  `<serverUrl>/monitoring/snmp/oids`  
+  E.g. [http://live-test.ravendb.net/monitoring/snmp/oids](http://live-test.ravendb.net/monitoring/snmp/oids)  
+
+* Where values are represented by `X`, `D`, or `I` in the OIDs list below:  
+   * `X` may be:  
+     `0` - **any kind of collection**  
+     `1` - **a generation-0 or generation-1 collection**  
+     `2` - **a blocking generation-2 collection**  
+     `3` - **a background collection** (this is always a generation 2 collection)  
+   * `D` - **Database number**  
+   * `I` - **Index number**  
+
+* RavenDB's **root OID** is: **1.3.6.1.4.1.45751.1.1.**
 {NOTE/}
 
 | OID | Metric |
@@ -159,6 +180,7 @@ RavenDB's **root OID** is: **1.3.6.1.4.1.45751.1.1.**
 | 1.2.1 | Server version |
 | 1.2.2 | Server full version |
 | 1.3 | Server up-time |
+| 1.3.6.1.2.1.1.3.0 | Server up-time |
 | 1.4 | Server process ID |
 | 1.5.1 | Process CPU usage in % |
 | 1.5.2 | Machine CPU usage in % |
@@ -180,22 +202,22 @@ RavenDB's **root OID** is: **1.3.6.1.4.1.45751.1.1.**
 | 1.6.8 | Server unmanaged memory size in MB |
 | 1.6.9 | Server encryption buffers memory being in use in MB |
 | 1.6.10 | Server encryption buffers memory being in pool in MB |
-| 1.6.11.X.1 | Specifies if this is a compacting GC or not. |
-| 1.6.11.X.2 | Specifies if this is a concurrent GC or not. |
-| 1.6.11.X.3 | Gets the number of objects ready for finalization this GC observed. |
-| 1.6.11.X.4 | Gets the total fragmentation (in MB) when the last garbage collection occurred. |
-| 1.6.11.X.5 | Gets the generation this GC collected. |
-| 1.6.11.X.6 | Gets the total heap size (in MB) when the last garbage collection occurred. |
-| 1.6.11.X.7 | Gets the high memory load threshold (in MB) when the last garbage collection occurred. |
-| 1.6.11.X.8 | The index of this GC. |
-| 1.6.11.X.9 | Gets the memory load (in MB) when the last garbage collection occurred. |
-| 1.6.11.X.10.1 | Gets the pause durations. First item in the array. |
-| 1.6.11.X.10.2 | Gets the pause durations. Second item in the array. |
-| 1.6.11.X.11 | Gets the pause time percentage in the GC so far. |
-| 1.6.11.X.12 | Gets the number of pinned objects this GC observed. |
-| 1.6.11.X.13 | Gets the promoted MB for this GC. |
-| 1.6.11.X.14 | Gets the total available memory (in MB) for the garbage collector to use when the last garbage collection occurred. |
-| 1.6.11.X.15 | Gets the total committed MB of the managed heap. |
+| 1.6.11.`X`.1 | Specifies if this is a compacting GC or not. |
+| 1.6.11.`X`.2 | Specifies if this is a concurrent GC or not. |
+| 1.6.11.`X`.3 | Gets the number of objects ready for finalization this GC observed. |
+| 1.6.11.`X`.4 | Gets the total fragmentation (in MB) when the last garbage collection occurred. |
+| 1.6.11.`X`.5 | Gets the generation this GC collected. |
+| 1.6.11.`X`.6 | Gets the total heap size (in MB) when the last garbage collection occurred. |
+| 1.6.11.`X`.7 | Gets the high memory load threshold (in MB) when the last garbage collection occurred. |
+| 1.6.11.`X`.8 | The index of this GC. |
+| 1.6.11.`X`.9 | Gets the memory load (in MB) when the last garbage collection occurred. |
+| 1.6.11.`X`.10.1 | Gets the pause durations. First item in the array. |
+| 1.6.11.`X`.10.2 | Gets the pause durations. Second item in the array. |
+| 1.6.11.`X`.11 | Gets the pause time percentage in the GC so far. |
+| 1.6.11.`X`.12 | Gets the number of pinned objects this GC observed. |
+| 1.6.11.`X`.13 | Gets the promoted MB for this GC. |
+| 1.6.11.`X`.14 | Gets the total available memory (in MB) for the garbage collector to use when the last garbage collection occurred. |
+| 1.6.11.`X`.15 | Gets the total committed MB of the managed heap. |
 | 1.7.1 | Number of concurrent requests |
 | 1.7.2 | Total number of requests since server startup |
 | 1.7.3 | Number of requests per second (one minute rate) |
@@ -226,56 +248,56 @@ RavenDB's **root OID** is: **1.3.6.1.4.1.45751.1.1.**
 | 3.2.1 | Cluster term |
 | 3.2.2 | Cluster index |
 | 3.2.3 | Cluster ID |
-| 5.2.X.1.1 | Database name |
-| 5.2.X.1.2 | Number of indexes |
-| 5.2.X.1.3 | Number of stale indexes |
-| 5.2.X.1.4 | Number of documents |
-| 5.2.X.1.5 | Number of revision documents |
-| 5.2.X.1.6 | Number of attachments |
-| 5.2.X.1.7 | Number of unique attachments |
-| 5.2.X.1.10 | Number of alerts |
-| 5.2.X.1.11 | Database ID |
-| 5.2.X.1.12 | Database up-time |
-| 5.2.X.1.13 | Indicates if database is loaded |
-| 5.2.X.1.14 | Number of rehabs |
-| 5.2.X.1.15 | Number of performance hints |
-| 5.2.X.1.16 | Number of indexing errors |
-| 5.2.X.2.1 | Documents storage allocated size in MB |
-| 5.2.X.2.2 | Documents storage used size in MB |
-| 5.2.X.2.3 | Index storage allocated size in MB |
-| 5.2.X.2.4 | Index storage used size in MB |
-| 5.2.X.2.5 | Total storage size in MB |
-| 5.2.X.2.6 | Remaining storage disk space in MB |
-| 5.2.X.3.1 | Number of document puts per second (one minute rate) |
-| 5.2.X.3.2 | Number of indexed documents per second for map indexes (one minute rate) |
-| 5.2.X.3.3 | Number of maps per second for map-reduce indexes (one minute rate) |
-| 5.2.X.3.4 | Number of reduces per second for map-reduce indexes (one minute rate) |
-| 5.2.X.3.5 | Number of requests per second (one minute rate) |
-| 5.2.X.3.6 | Number of requests from database start |
-| 5.2.X.3.7 | Average request time in milliseconds |
-| 5.2.X.5.1 | Number of indexes |
-| 5.2.X.5.2 | Number of static indexes |
-| 5.2.X.5.3 | Number of auto indexes |
-| 5.2.X.5.4 | Number of idle indexes |
-| 5.2.X.5.5 | Number of disabled indexes |
-| 5.2.X.5.6 | Number of error indexes |
-| 5.2.X.6.1 | Number of writes (documents, attachments, counters) |
-| 5.2.X.6.2 | Number of bytes written (documents, attachments, counters) |
-| 5.2.X.4.Y.1 | Indicates if index exists |
-| 5.2.X.4.Y.2 | Index name |
-| 5.2.X.4.Y.4 | Index priority |
-| 5.2.X.4.Y.5 | Index state |
-| 5.2.X.4.Y.6 | Number of index errors |
-| 5.2.X.4.Y.7 | Last query time |
-| 5.2.X.4.Y.8 | Index indexing time |
-| 5.2.X.4.Y.9 | Time since last query |
-| 5.2.X.4.Y.10 | Time since last indexing |
-| 5.2.X.4.Y.11 | Index lock mode |
-| 5.2.X.4.Y.12 | Indicates if index is invalid |
-| 5.2.X.4.Y.13 | Index status |
-| 5.2.X.4.Y.14 | Number of maps per second (one minute rate) |
-| 5.2.X.4.Y.15 | Number of reduces per second (one minute rate) |
-| 5.2.X.4.Y.16 | Index type |
+| 5.2.`D`.1.1 | Database name |
+| 5.2.`D`.1.2 | Number of indexes |
+| 5.2.`D`.1.3 | Number of stale indexes |
+| 5.2.`D`.1.4 | Number of documents |
+| 5.2.`D`.1.5 | Number of revision documents |
+| 5.2.`D`.1.6 | Number of attachments |
+| 5.2.`D`.1.7 | Number of unique attachments |
+| 5.2.`D`.1.10 | Number of alerts |
+| 5.2.`D`.1.11 | Database ID |
+| 5.2.`D`.1.12 | Database up-time |
+| 5.2.`D`.1.13 | Indicates if database is loaded |
+| 5.2.`D`.1.14 | Number of rehabs |
+| 5.2.`D`.1.15 | Number of performance hints |
+| 5.2.`D`.1.16 | Number of indexing errors |
+| 5.2.`D`.2.1 | Documents storage allocated size in MB |
+| 5.2.`D`.2.2 | Documents storage used size in MB |
+| 5.2.`D`.2.3 | Index storage allocated size in MB |
+| 5.2.`D`.2.4 | Index storage used size in MB |
+| 5.2.`D`.2.5 | Total storage size in MB |
+| 5.2.`D`.2.6 | Remaining storage disk space in MB |
+| 5.2.`D`.3.1 | Number of document puts per second (one minute rate) |
+| 5.2.`D`.3.2 | Number of indexed documents per second for map indexes (one minute rate) |
+| 5.2.`D`.3.3 | Number of maps per second for map-reduce indexes (one minute rate) |
+| 5.2.`D`.3.4 | Number of reduces per second for map-reduce indexes (one minute rate) |
+| 5.2.`D`.3.5 | Number of requests per second (one minute rate) |
+| 5.2.`D`.3.6 | Number of requests from database start |
+| 5.2.`D`.3.7 | Average request time in milliseconds |
+| 5.2.`D`.5.1 | Number of indexes |
+| 5.2.`D`.5.2 | Number of static indexes |
+| 5.2.`D`.5.3 | Number of auto indexes |
+| 5.2.`D`.5.4 | Number of idle indexes |
+| 5.2.`D`.5.5 | Number of disabled indexes |
+| 5.2.`D`.5.6 | Number of error indexes |
+| 5.2.`D`.6.1 | Number of writes (documents, attachments, counters) |
+| 5.2.`D`.6.2 | Number of bytes written (documents, attachments, counters) |
+| 5.2.`D`.4.`I`.1 | Indicates if index exists |
+| 5.2.`D`.4.`I`.2 | Index name |
+| 5.2.`D`.4.`I`.4 | Index priority |
+| 5.2.`D`.4.`I`.5 | Index state |
+| 5.2.`D`.4.`I`.6 | Number of index errors |
+| 5.2.`D`.4.`I`.7 | Last query time |
+| 5.2.`D`.4.`I`.8 | Index indexing time |
+| 5.2.`D`.4.`I`.9 | Time since last query |
+| 5.2.`D`.4.`I`.10 | Time since last indexing |
+| 5.2.`D`.4.`I`.11 | Index lock mode |
+| 5.2.`D`.4.`I`.12 | Indicates if index is invalid |
+| 5.2.`D`.4.`I`.13 | Index status |
+| 5.2.`D`.4.`I`.14 | Number of maps per second (one minute rate) |
+| 5.2.`D`.4.`I`.15 | Number of reduces per second (one minute rate) |
+| 5.2.`D`.4.`I`.16 | Index type |
 | 5.1.1 | Number of all databases |
 | 5.1.2 | Number of loaded databases |
 | 5.1.3 | Time since oldest backup |
@@ -291,6 +313,8 @@ RavenDB's **root OID** is: **1.3.6.1.4.1.45751.1.1.**
 | 5.1.9.1 | Number of writes (documents, attachments, counters) in all loaded databases |
 | 5.1.9.2 | Number of bytes written (documents, attachments, counters) in all loaded databases |
 | 5.1.10 | Number of faulted databases |
+
+---
 
 ### Templates
 
