@@ -44,7 +44,7 @@ If not set, or set to null - use 'Temp' folder inside the index data directory
 
 {PANEL:Indexing.MaxNumberOfConcurrentlyRunningIndexes}
 
-Set how many indexes can run concurrently to prevent overwhelming system resources.
+Set how many indexes can run concurrently to prevent overwhelming system resources and slow indexing.
 
 - **Type**: `int`
 - **Default**: `null` No limit
@@ -55,15 +55,15 @@ Set how many indexes can run concurrently to prevent overwhelming system resourc
 
 {PANEL:Indexing.IndexStartupBehaviorType}
 
-Manipulate index startup behavior on database load with following options:  
+Manipulate index startup behavior on database load with the following options:  
 (Can be useful if many databases and/or indexes open and start concurrently, causing IO usage 
- to max out system resouces, thus slowing indexing.)
+ to max out system resouces, therefore slow index startup behavior.)
 
-- **Type**: `enum`
-- **Default**: All databases load and indexes start as soon as indexes are open.  
+- **Type**: `string`
+- **Default**: All databases load and each index starts as soon as it is open.  
   - **Immediate**: Same as default.
   - **Pause**: Opens all indexes, but they are paused until manually started.
-  - **Delay**: First opens all indexes and when they are all open, starts them.  
+  - **Delay**: Delays starting of indexes until all databases and indexes are open.  
 - **Scope**: Server-wide or per database
 
 {PANEL/}
