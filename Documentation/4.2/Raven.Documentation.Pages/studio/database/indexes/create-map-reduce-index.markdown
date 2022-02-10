@@ -10,7 +10,7 @@
 
 * Once new data comes into the database, or existing documents are modified,  
   the Map-Reduce index will re-calculate the aggregated data,  
-  so that the aggregation results are always available and up-to-date !  
+  so that the aggregation results are always available and up-to-date.  
 
 * The aggregation computation is done in two separate consecutive actions: the `Map` and the `Reduce`.  
 
@@ -33,6 +33,7 @@
       * [Artificial -vs- Regular Documents](../../../studio/database/indexes/create-map-reduce-index#artificial-documents--vs--regular-documents)  
       * [Artificial Documents Usage](../../../studio/database/indexes/create-map-reduce-index#artificial-documents-usage)  
       * [Artificial Documents Limitations](../../../studio/database/indexes/create-map-reduce-index#limitations)  
+  * [Configuration](../../../studio/database/indexes/create-map-reduce-index#configuration)  
 {NOTE/}
 
 ---
@@ -211,6 +212,14 @@ pattern determines which output documents will be included in each reference doc
   2. Artificial documents cannot use [Revisions](../../../server/extensions/revisions) or [Attachments](../../../client-api/session/attachments/what-are-attachments).  
 
 {NOTE/}
+{PANEL/}
+
+{PANEL: Configuration}
+
+![Figure 4. Configuration](images/create-map-index-4.png "Figure-4: Configuration")
+
+* Set values for specific index configuration options.  
+* Learn more about each option in: [Configuration: Indexing](../../../server/configuration/indexing-configuration).  
 {PANEL/}
 
 ## Related Articles

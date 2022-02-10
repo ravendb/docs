@@ -13,6 +13,7 @@
 * In this page:  
   * [Define a Map Function](../../../studio/database/indexes/create-multi-map-index#define-a-map-function)  
   * [Add another Map Function](../../../studio/database/indexes/create-multi-map-index#add-another-map-function)  
+  * [Options, Configuration, Additional Assemblies and Sources](../../../studio/database/indexes/create-multi-map-index#options,-configuration,-additional-assemblies-and-sources)
 {NOTE/}
 
 ---
@@ -21,15 +22,18 @@
 
 ![Figure 1. Initial Map Function](images/create-multi-map-index-1.png)  
 
-1. **Index Name** - An index name can be composed of letters, digits, `.`, `/`, `-`, and `_`. The name must be unique in the scope of the database.  
+1. **Index Name**  
+   An index name can be composed of letters, digits, `.`, `/`, `-`, and `_`. The name must be unique in the scope of the database.  
    * Uniqueness is evaluated in a _case-insensitive_ way - you can't create indexes named both `usersbyname` and `UsersByName`.  
    * The characters `_` and `/` are treated as equivalent - you can't create indexes named both `users/byname` and `users_byname`.  
    * If the index name contains the character `.`, it must have some other character on _both sides_ to be valid. `/./` is a valid index name, but 
    `./`, `/.`, and `/../` are all invalid.  
 
-2. The **Map Function**
+2. The **Map Function**  
+   For a detailed description of how to define the Map function, see [Create Map Index](../../../studio/database/indexes/create-map-index)
 
-3. Add another map function to create a multi-map index.
+3. **Add map**  
+   [Add another map function](../../../studio/database/indexes/create-multi-map-index#add-another-map-function) to create a multi-map index.
 
 {NOTE: }
 
@@ -51,13 +55,20 @@ The `Collection` field indexed in the above example is not mandatory but can be 
 
 * So when querying on this Multi-Map index, results will come from **both** Employees collection and Companies collection.  
 
-* [Index field options](../../../studio/database/indexes/create-map-index#index-field-options), 
-  [Configuration](../../../studio/database/indexes/create-map-index#configuration), 
-  [Assitional Assemblies](../../../studio/database/indexes/create-map-index#additional-assemblies) 
-  & [Additional Sources](../../../studio/database/indexes/create-map-index#additional-sources) 
-  can be defined for the Multi-Map index in the same way as done for a [Simple Map Index](../../../studio/database/indexes/create-map-index#create-multi-map-index).  
 {NOTE/}
+
 {PANEL/}
+
+{PANEL: Options, Configuration, Additional Assemblies and Sources}
+
+[Index field options](../../../studio/database/indexes/create-map-index#index-field-options), 
+  [Configuration](../../../studio/database/indexes/create-map-index#configuration), 
+  [Additional Assemblies](../../../studio/database/indexes/create-map-index#additional-assemblies) 
+  & [Additional Sources](../../../studio/database/indexes/create-map-index#additional-sources) 
+  can be defined in the Studio for the Multi-Map index in the same way as is done for a [Simple Map Index](../../../studio/database/indexes/create-map-index#create-multi-map-index).  
+
+{PANEL/}
+
 
 
 ## Related Articles

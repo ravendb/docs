@@ -10,7 +10,7 @@
 
 * Once new data comes into the database, or existing documents are modified,  
   the Map-Reduce index will re-calculate the aggregated data,  
-  so that the aggregation results are always available and up-to-date !  
+  so that the aggregation results are always available and up-to-date.  
 
 * The aggregation computation is done in two separate consecutive actions: the `Map` and the `Reduce`.  
 
@@ -33,6 +33,7 @@
       * [Artificial -vs- Regular Documents](../../../studio/database/indexes/create-map-reduce-index#artificial-documents--vs--regular-documents)  
       * [Artificial Documents Usage](../../../studio/database/indexes/create-map-reduce-index#artificial-documents-usage)  
       * [Artificial Documents Limitations](../../../studio/database/indexes/create-map-reduce-index#limitations)  
+  * [Configuration](../../../studio/database/indexes/create-map-reduce-index#configuration)
 {NOTE/}
 
 ---
@@ -49,13 +50,15 @@
 
 ![Figure 1. The Map Function](images/create-map-reduce-index-1.png "The Map Function")
 
-1. **Index Name** - An index name can be composed of letters, digits, `.`, `/`, `-`, and `_`. The name must be unique in the scope of the database.  
+1. **Index Name**  
+   An index name can be composed of letters, digits, `.`, `/`, `-`, and `_`. The name must be unique in the scope of the database.  
    * Uniqueness is evaluated in a _case-insensitive_ way - you can't create indexes named both `usersbyname` and `UsersByName`.  
    * The characters `_` and `/` are treated as equivalent - you can't create indexes named both `users/byname` and `users_byname`.  
    * If the index name contains the character `.`, it must have some other character on _both sides_ to be valid. `/./` is a valid index name, but 
    `./`, `/.`, and `/../` are all invalid.  
 
-2. The Map function in defines the following 3 fields that will be indexed:  
+2. **Maps**  
+   The Map function in defines the following 3 fields that will be indexed:  
 
    * **order.Company** -  
      The company  
@@ -72,7 +75,8 @@
      This field will be aggregated later in the Reduce stage, accumulating the data from all the Orders documents, per company.  
      The accumulative value of this field will represent the total amount spent by a company on _all_ orders.  
 
-3. Next, click 'Add Reduction' to continue and add the 'Reduce' function. 
+3. **Add reduction**  
+   Next, click 'Add Reduction' to continue and add the 'Reduce' function. 
    See [The Reduce Stage](../../../studio/database/indexes/create-map-reduce-index#the-reduce-stage).
 {PANEL/}
 
@@ -82,7 +86,8 @@
 
 ![Figure 2. The Reduce Function](images/create-map-reduce-index-2.png "The Reduce Function")
 
-1. * In the Reduce function above, results are grouped by the `Company` field,  
+1. **Reduce Function Definition**  
+   * In the Reduce function above, results are grouped by the `Company` field,  
      so that we can get the data per company. ``` (group result by result.Company)```  
 
    * The index results will show in the following format:  
@@ -95,7 +100,8 @@
      * **TotalOrdesAmount** - is the aggregation of the _total orders amount_ made by each company  
        (How much money the company has spent all together, on _all_ orders).  
 
-2. Optional: The results of the Map-Reduce index can be saved in a new collection.  
+2. **Output Reduce Results to Collection**  
+   Optional: The results of the Map-Reduce index can be saved in a new collection.  
    Learn more in [Saving Map-Reduce Results in a Collection (Artificial Documents)](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))
 {PANEL/}
 
@@ -211,6 +217,14 @@ pattern determines which output documents will be included in each reference doc
   2. Artificial documents cannot use [Revisions](../../../server/extensions/revisions) or [Attachments](../../../document-extensions/attachments/what-are-attachments).  
 
 {NOTE/}
+{PANEL/}
+
+{PANEL: Configuration}
+
+![Figure 4. Configuration](images/create-map-index-4.png "Figure-4: Configuration")
+
+* Set values for specific index configuration options.  
+* Learn more about each option in: [Configuration: Indexing](../../../server/configuration/indexing-configuration).  
 {PANEL/}
 
 ## Related Articles
