@@ -172,6 +172,9 @@ Storage stages show statistics related to reading and writing to disk.
 
 ![Storage/Commit Statistics](images/storage-commit-stats.png "Storage/Commit Statistics")
 
+![Storage/DocumentRead Statistics](images/storage-read-stats.png "Storage/DocumentRead Statistics")
+
+
   1. **Duration**  
      The amount of time it took to store the data to disk.  
      If this stage takes a long time after the index is already built, it may reveal a hardware problem.
