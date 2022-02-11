@@ -4,9 +4,10 @@
 
 * To learn how to **Create** a connection string see: [Add Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string)
 
+
 In this page:
 
-* [GetConnectionStringsOperation](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#GetConnectionStringsOperation)  
+* [GetConnectionStringsOperation](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#getconnectionstringsoperation)  
 * [Definitions](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#definitions)
 * [Code Samples](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#code-samples)
 
@@ -17,14 +18,15 @@ In this page:
 | Parameters | Data Type | Description |
 | ------------- | ----- | ---- |
 | **connectionStringName** | `string` | Connection string name |
-| **type** | `ConnectionStringType` | Connection string type: `Raven` or `Sql` |
+| **type** | `ConnectionStringType` | Connection string type: `Raven`, `Sql`, `Olap`, or `ElasticSearch`|
 
 
 | Type | Return Value | Return Value Type | Description |
 | ---- | ------------- | ----- | --- |
-| `SqlConnectionStrings` | Dictionary<string, SqlConnectionString> | Dictionary which maps sql connection string name to definition |
-| `RavenConnectionStrings` | Dictionary<string, RavenConnectionString> | Dictionary which maps raven connection string name to definition |
-
+| Sql | `SqlConnectionStrings` | Dictionary<string, SqlConnectionString> | Dictionary that maps sql connection string name to definition |
+| Raven | `RavenConnectionStrings` | Dictionary<string, RavenConnectionString> | Dictionary that maps raven connection string name to definition |
+| Olap | `OlapConnectionStrings` |  Dictionary<string, OlapConnectionString> | Dictionary that maps olap connection string name to definition |
+| ElasticSearch | `ElasticsearchConnectionStrings` |  Dictionary<string, ElasticsearchConnectionString> | Dictionary that maps elasticsearch connection string name to definition |
 
 {PANEL/}
 
@@ -41,6 +43,18 @@ A Raven connection string definition:
 An Sql connection string definition:
 
 {CODE:csharp sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+
+#### `OlapConnectionString`
+
+An Olap connection string definition:
+
+{CODE:csharp olap_connection_string_config@ClientApi\Operations\ConnectionStrings.cs /}
+
+#### `ElasticsearchConnectionString`
+
+An Elasticsearch connection string definition:
+
+{CODE:csharp elasticsearch_connection_string_config@ClientApi\Operations\ConnectionStrings.cs /}
 
 #### `ConnectionString`
 
@@ -61,7 +75,6 @@ A generic connection string definition:
 {CODE get_connection_string_by_name@ClientApi\Operations\ConnectionStrings.cs /}
 
 {PANEL/}
-
 
 ## Related Articles
 

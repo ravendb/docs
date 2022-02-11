@@ -40,7 +40,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     Database = "Northwind2",
                     TopologyDiscoveryUrls = new[]
                     {
-                        "http://rvn2:8080"
+                        // Be sure to include the "s" in https for secure servers.
+                        "https://rvn2:8080"
                     }
                 });
 
@@ -67,27 +68,32 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 #endregion
             }
 
+
+            #region get_all_connection_strings
+
             using (var store = new DocumentStore())
             {
-                #region get_all_connection_strings
                 GetConnectionStringsOperation operation = new GetConnectionStringsOperation();
                 GetConnectionStringsResult connectionStrings = store.Maintenance.Send(operation);
                 Dictionary<string, SqlConnectionString> sqlConnectionStrings = connectionStrings.SqlConnectionStrings;
                 Dictionary<string, RavenConnectionString> ravenConnectionStrings = connectionStrings.RavenConnectionStrings;
-                #endregion
+                Dictionary<string, OlapConnectionString> olapConnectionStrings = connectionStrings.OlapConnectionStrings;
             }
-            
+
+            #endregion
+
+            #region get_connection_string_by_name
+
             using (var store = new DocumentStore())
             {
-                #region get_connection_string_by_name
-                GetConnectionStringsOperation operation = 
+                GetConnectionStringsOperation operation =
                     new GetConnectionStringsOperation("local_mysql", ConnectionStringType.Sql);
                 GetConnectionStringsResult connectionStrings = store.Maintenance.Send(operation);
                 Dictionary<string, SqlConnectionString> sqlConnectionStrings = connectionStrings.SqlConnectionStrings;
                 SqlConnectionString mysqlConnectionString = sqlConnectionStrings["local_mysql"];
-                #endregion
             }
-            
+            #endregion
+
             using (var store = new DocumentStore())
             {
 
@@ -113,6 +119,62 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 store.Maintenance.Send(operation);
                 #endregion
             }
+
+            using (var store = GetDocumentStore())
+            #region raven_etl_connection_string
+
+            {
+                //define connection string
+                var ravenConnectionString = new RavenConnectionString()
+                {
+                    //name connection string
+                    Name = "raven-connection-string-name",
+
+                    //define appropriate node
+                    //Be sure that the node definition in the connection string has the "s" in https
+                    TopologyDiscoveryUrls = new[] { "https://127.0.0.1:8080" },
+
+                    //define database to connect with on the node
+                    Database = "Northwind",
+
+                };
+                //create the connection string
+                var resultRavenString = store.Maintenance.Send(
+                    new PutConnectionStringOperation<RavenConnectionString>(ravenConnectionString));
+            }
+            #endregion
+
+            using (var store = new DocumentStore())
+            #region sql_etl_connection_string
+
+            {
+                // define new connection string
+                PutConnectionStringOperation<SqlConnectionString> operation
+                = new PutConnectionStringOperation<SqlConnectionString>(
+                    new SqlConnectionString
+                    {
+                            // name connection string
+                            Name = "local_mysql",
+
+                            // define FactoryName
+                            FactoryName = "MySql.Data.MySqlClient",
+
+                            // define database - may also need to define authentication and encryption parameters
+                            // by default, encrypted databases are sent over encrypted channels
+                            ConnectionString = "host=127.0.0.1;user=root;database=Northwind"
+
+                    });
+
+                // create connection string
+                PutConnectionStringResult connectionStringResult
+                = store.Maintenance.Send(operation);
+
+            }
+
+            #endregion
+
+
+
         }
     }
 
