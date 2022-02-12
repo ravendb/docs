@@ -97,31 +97,48 @@ After executing the code above we will get from the server ID something that loo
 
 ## Identities
 
-If you really need to have successive IDs across the cluster, you can use the identity option. To do so you need to use a pipe (`|`) as a suffix to the provided ID. It will tell RavenDB to create
-the ID when the document is saved but here it will use a special always-incrementing integer value that is cluster wide.
+If you need IDs to increment across the cluster, you can use the **Identity** option.  
+To do so you need to use a pipe (`|`) as a suffix to the provided ID. This will instruct RavenDB 
+to create the ID when the document is saved, using a special cluster-wide integer value that is 
+continuously incremented.  
+
+{NOTE: }
+Using an identity guarantees that IDs will be incremental, but does **not** guarantee 
+that there wouldn't be gaps in the sequence.  
+The IDs sequence can therefore be, for example, `companies/1`, `companies/2`, `companies/4`..  
+This is because -  
+
+ *  Documents could have been deleted.  
+ *  A failed transaction still increments the identity value, thus causing a gap in the sequence.  
+{NOTE/}
 
 {CODE session_identity_id@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}
 
-After execution of the code above the ID will be `companies/1`. Here we don't add the tag of the node to the end of the ID because this number is unique in the cluster.
-Identities are sequential, so running the above code again will generate `companies/2`, and so on.
+After the execution of the code above, the ID will be `companies/1`.  
+We do not add the node tag to the end of the ID, because the added number is unique in the cluster.  
+Identities continuously increase, so running the above code again will generate `companies/2`, and so on.  
 
-{NOTE: Identity Parts Separator}
-By default, document IDs created by the server use the character / to separate their components. 
-This separator can be changed to any other character except | in the 
+Note that we used `companies` as the prefix just to follow the RavenDB convention.  
+Nothing prevents you from providing a different prefix, unrelated to the collection name.
+
+{WARNING: }
+Be aware that using the pipe symbol (`|`) as a prefix to the ID generates a call to the cluster 
+and might affect performance. 
+{WARNING/}
+
+{NOTE: }
+
+* **Identity Parts Separator**  
+By default, document IDs created by the server use `/` to separate their components.  
+This separator can be changed to any other character except `|`, in the 
 [Global Identifier Generation Conventions](../../client-api/configuration/identifier-generation/global#identitypartsseparator).  
-  
-See [Setting Identity IDs Using Commands and Operations](../../client-api/document-identifiers/working-with-document-identifiers#setting-identity-ids-using-commands-and-operations) for details.  
-{NOTE/}  
+See [Setting Identity IDs Using Commands and Operations](../../client-api/document-identifiers/working-with-document-identifiers#setting-identity-ids-using-commands-and-operations) 
+for details.  
 
-{WARNING Using the pipe symbol (`|`) as a prefix to the ID generates a call to the cluster and **might** affect performance /}
-
-{INFO:Prefix convention}
-Note that we used `companies` as the prefix just to follow the RavenDB convention. But nothing stands in your way to provide a different prefix which will be completely unrelated to the collection name.
-{INFO/}
-
-{INFO:Concurrent writes}
-The identities are generated and updated on the server side in the atomic fashion. This means you can safely use this approach in the concurrent writes scenario.
-{INFO/}
+* **Concurrent writes**  
+  The identities are generated and updated on the server side in the atomic fashion.  
+  This means you can safely use this approach in the concurrent writes scenario.
+{NOTE/}
 
 ## Commands Usage
 
