@@ -56,14 +56,14 @@ Set how many indexes can run concurrently to prevent overwhelming system resourc
 {PANEL:Indexing.IndexStartupBehaviorType}
 
 Manipulate index startup behavior on database load with the following options:  
-(Can be useful if many databases and/or indexes open and start concurrently, causing IO usage 
- to max out system resouces, therefore slow index startup behavior.)
+(This method can prevent slow index startup behavior when many indexes open and 
+start processing concurrently, which would cause IO usage to max out system resources.)
 
 - **Type**: `string`
-- **Default**: All databases load and each index starts as soon as it is open.  
+- **Default**: Each index starts as soon as it is opened.  
   - **Immediate**: Same as default.
   - **Pause**: Opens all indexes, but they are paused until manually started.
-  - **Delay**: Delays starting of indexes until all databases and indexes are open.  
+  - **Delay**: Delays starting index processes until all indexes are open.  
 - **Scope**: Server-wide or per database
 
 {PANEL/}
