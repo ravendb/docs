@@ -15,11 +15,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
             public interface IRevisionIncludeBuilder<T, out TBuilder>
             {
                 #region IncludeRevisions_1_IncludeRevisions
-                // Incude a single revision by date
+                // Include a single revision by Date
                 TBuilder IncludeRevisions(DateTime before);
-                // Include a single revision by changevector
+                // Include a single revision by Change Vector
                 TBuilder IncludeRevisions(Expression<Func<T, string>> path);
-                // Include an array of revisions by changevectors
+                // Include an array of revisions by Change Vectors
                 TBuilder IncludeRevisions(Expression<Func<T, IEnumerable<string>>> path);
                 #endregion
             }
@@ -158,9 +158,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
             
             // A single revision's Change Vector
             public string ContractRev_1_ChangeVector { get; set; }
-            
+
+            // A single revision's Change Vector
             public string ContractRev_2_ChangeVector { get; set; }
-            
+
             // An array of revision Change Vectors
             public List<string> ContractRevChangeVectors { get; set; }
         }

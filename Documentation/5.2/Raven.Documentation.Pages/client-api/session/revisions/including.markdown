@@ -40,7 +40,7 @@ When the document is loaded, [Loading](../../../client-api/session/revisions/loa
 any of its included revisions will retrieve them from memory rather than from the server.  
 
 This may be useful when, for example, a document that contains financial data 
-is loaded by an auditing application. The document's past revisions can be Included 
+is loaded by an auditing application. The document's past revisions can be included 
 with the document, to make the document's history available for instant inspection.  
 
 Revisions can be Included by their **Creation Date** or **Change Vector**.  
@@ -60,7 +60,7 @@ using `.AddParameter`.
 * If the provided date matches the creation date of a document revision, this revision will be included.  
 * If no exact match is found, the nearest revision to precede it will be included.  
    * E.g. -  
-     If the date you provided is `Aprl 7 2020`,  
+     If the date you provided is `April 7 2020`,  
      and it is located between two existing revisions dated `April 2 2020` and `April 11 2020`,  
      the `April 2` revision will be included.  
 * If no revisions exist, an empty `IncludeRevisions` object will be returned.  
@@ -121,8 +121,7 @@ To include a **single revision** by its **creation date**, pass `IncludeRevision
 The revision whose date [matches or immediately precedes](../../../client-api/session/revisions/including#including-revisions-by-date) 
 that of the given date will be included.  
 
-* **Sample**:  
-  {CODE IncludeRevisions_2_LoadByDate@ClientApi\Session\Revisions\Including.cs /}
+{CODE IncludeRevisions_2_LoadByDate@ClientApi\Session\Revisions\Including.cs /}
 
 ---
 
@@ -136,10 +135,11 @@ that of the given date will be included.
   Pass `IncludeRevisions` the path to a property of the document you load, 
   that contains an array of change vectors.  
 
-* **Example for a user defined class with properties for change vectors**:  
-  {CODE IncludeRevisions_3_UserDefinition@ClientApi\Session\Revisions\Including.cs /}
 * **Sample**:  
   {CODE IncludeRevisions_4_LoadByChangeVector@ClientApi\Session\Revisions\Including.cs /}
+  `UserDefinedClass`:  
+  {CODE IncludeRevisions_3_UserDefinition@ClientApi\Session\Revisions\Including.cs /}
+
 
 {PANEL/}
 
@@ -152,16 +152,12 @@ that of the given date will be included.
   to a property of the loaded document, that stores change vectors.  
 
 #### Query: Include Revisions by Date
-
-* **Sample**:  
-  {CODE IncludeRevisions_5_QueryByDate@ClientApi\Session\Revisions\Including.cs /}
+{CODE IncludeRevisions_5_QueryByDate@ClientApi\Session\Revisions\Including.cs /}
 
 ---
 
 #### Query: Include Revisions by Change Vector
-
-* **Sample**:  
-  {CODE IncludeRevisions_6_QueryByChangeVectors@ClientApi\Session\Revisions\Including.cs /}
+{CODE IncludeRevisions_6_QueryByChangeVectors@ClientApi\Session\Revisions\Including.cs /}
 
 {PANEL/}
 
@@ -174,16 +170,12 @@ that of the given date will be included.
 * Aliases (e.g. `from Users as U`) are not supported by raw queries that include revisions.  
 
 #### Raw Query: Include Revisions by Date
-
-* **Sample**:  
-  {CODE IncludeRevisions_7_RawQueryByDate@ClientApi\Session\Revisions\Including.cs /}
+{CODE IncludeRevisions_7_RawQueryByDate@ClientApi\Session\Revisions\Including.cs /}
 
 ---
 
 #### Raw Query: Include Revisions by Change Vector
-
-* **Sample**:  
-  {CODE IncludeRevisions_8_RawQueryByChangeVector@ClientApi\Session\Revisions\Including.cs /}
+{CODE IncludeRevisions_8_RawQueryByChangeVector@ClientApi\Session\Revisions\Including.cs /}
 
 {PANEL/}
 
@@ -192,7 +184,7 @@ that of the given date will be included.
 ### Client API
 
 - [What are Revisions](../../../client-api/session/revisions/what-are-revisions)
-- [Loading Revisions](../../../client-api/session/revisions/loading))
+- [Loading Revisions](../../../client-api/session/revisions/loading)
 - [Include](../../../client-api/how-to/handle-document-relationships#includes)
 
 ### Server
