@@ -15,7 +15,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
             public interface IRevisionIncludeBuilder<T, out TBuilder>
             {
                 #region IncludeRevisions_1_IncludeRevisions
-                // Include a single revision by Date
+                // Include a single revision by Time
                 TBuilder IncludeRevisions(DateTime before);
                 // Include a single revision by Change Vector
                 TBuilder IncludeRevisions(Expression<Func<T, string>> path);
@@ -32,25 +32,25 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
 
                 const string id = "users/95";
                 string cv;
-                var dateTime = DateTime.Now.ToLocalTime();
+                var creationTime = DateTime.Now.ToLocalTime();
                 using (var session = store.OpenSession())
                 {
-                    #region IncludeRevisions_2_LoadByDate
+                    #region IncludeRevisions_2_LoadByTime
                     // Pass `IncludeRevisions` a `DateTime` value
                     var query = session.Load<User>(id, builder => builder
-                        .IncludeRevisions(dateTime.ToUniversalTime()));
+                        .IncludeRevisions(creationTime.ToUniversalTime()));
 
-                    // The revision has been included by date,
+                    // The revision has been included by its creation time,
                     // and is now retrieved locally from the session
                     var revision = session
-                        .Advanced.Revisions.Get<User>(id, dateTime.ToUniversalTime());
+                        .Advanced.Revisions.Get<User>(id, creationTime.ToUniversalTime());
                     #endregion
                 }
 
                 using (var session = store.OpenSession())
                 {
                     #region IncludeRevisions_4_LoadByChangeVector
-                    var sn = session.Load<UserDefinedClass>(id, builder => builder
+                    var sn = session.Load<Contract>(id, builder => builder
                         // Include a single revision 
                         .IncludeRevisions(x => x.ContractRev_1_ChangeVector)
                         // Include a group of revisions
@@ -63,20 +63,19 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                     #endregion
                 }
 
-                var beforeDateTime = DateTime.UtcNow;
                 using (var session = store.OpenSession())
                 {
-                    #region IncludeRevisions_5_QueryByDate
+                    #region IncludeRevisions_5_QueryByTime
                     // Pass `IncludeRevisions` a `DateTime` value
                     var query = session.Query<User>()
                         .Customize(x => x.WaitForNonStaleResults())
                         .Include(builder => builder
-                            .IncludeRevisions(beforeDateTime.ToUniversalTime()));
+                            .IncludeRevisions(creationTime.ToUniversalTime()));
 
-                    // The revision has been included by date,
+                    // The revision has been included by its creation time,
                     // and is now retrieved locally from the session
                     var revision = session
-                        .Advanced.Revisions.Get<User>(id, dateTime.ToUniversalTime());
+                        .Advanced.Revisions.Get<User>(id, creationTime.ToUniversalTime());
                     #endregion
                 }
 
@@ -87,8 +86,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                     // "ContractRev_2_ChangeVector",
                     // and the revisions whose change vectors are stored in
                     // "ContractRevChangeVectors"
-                    var query = session.Load<UserDefinedClass>(id, builder => builder
-                        .IncludeRevisions(dateTime)
+                    var query = session.Load<Contract>(id, builder => builder
+                        .IncludeRevisions(creationTime)
                         .IncludeRevisions(x => x.ContractRev_2_ChangeVector)
                         .IncludeRevisions(x => x.ContractRevChangeVectors));
 
@@ -101,19 +100,18 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
 
                 using (var session = store.OpenSession())
                 {
-                    var beforeGivenDate = DateTime.UtcNow;
-                    #region IncludeRevisions_7_RawQueryByDate
+                    #region IncludeRevisions_7_RawQueryByTime
                     // Pass the `include revision` command a `DateTime` value
                     var query = session.Advanced
                         .RawQuery<User>("from Users include revisions($p0)")
-                        .AddParameter("p0", beforeGivenDate.ToUniversalTime())
+                        .AddParameter("p0", creationTime.ToUniversalTime())
                         .WaitForNonStaleResults()
                         .ToList();
 
-                    // The revision has been included by date,
+                    // The revision has been included by its creation time,
                     // and is now retrieved locally from the session
                     var revision = session
-                        .Advanced.Revisions.Get<User>(id, dateTime.ToUniversalTime());
+                        .Advanced.Revisions.Get<User>(id, creationTime.ToUniversalTime());
 
                     #endregion
                 }
@@ -127,7 +125,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                         .GetString(Constants.Documents.Metadata.ChangeVector);
 
                     session.Advanced
-                        .Patch<UserDefinedClass, string>(id, x => x.ContractRev_1_ChangeVector, changeVector);
+                        .Patch<Contract, string>(id, x => x.ContractRev_1_ChangeVector, changeVector);
                     session.SaveChanges();
                 }
                 
@@ -137,14 +135,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                     // Pass the `include revision` command a `path`
                     // to a document property that holds change vector/s,
                     var query = session.Advanced
-                        .RawQuery<UserDefinedClass>("from Users where Name = 'JohnDoe' include revisions($p0)")
+                        .RawQuery<Contract>("from Users where Name = 'JohnDoe' include revisions($p0)")
                         .AddParameter("p0", "ContractRev_1_ChangeVector")
                         .WaitForNonStaleResults()
                         .ToList();
 
                     // The revision has been included by change vector,
                     // and is now retrieved locally from the session
-                    var revision = session.Advanced.Revisions.Get<UserDefinedClass>(changeVector);
+                    var revision = session.Advanced.Revisions.Get<Contract>(changeVector);
 
                     #endregion
                 }
@@ -152,7 +150,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
         }
 
         #region IncludeRevisions_3_UserDefinition
-        private class UserDefinedClass
+        private class Contract
         {
             public string Name { get; set; }
             
