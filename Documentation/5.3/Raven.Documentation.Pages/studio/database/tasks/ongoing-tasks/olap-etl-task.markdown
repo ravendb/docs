@@ -1,10 +1,8 @@
 ﻿# OLAP ETL Task
 
----
-
 {NOTE: }
 
-* The **OLAP ETL task** is an ETL process that converts RavenDB data to the 
+* The **OLAP ETL task** is an Extract, Transform, Load process that converts RavenDB data to the 
 [_Apache Parquet_](https://parquet.apache.org/documentation/latest/) file format, and sends 
 it to one or more of these destinations:  
   * [Amazon S3](https://aws.amazon.com/s3/)
@@ -13,6 +11,9 @@ it to one or more of these destinations:
   * [Google Cloud Platform](https://cloud.google.com/)
   * File Transfer Protocol
   * Local storage
+
+* ETL tasks provide opportunities to perform various [Transform Scripts](../../../../server/ongoing-tasks/etl/raven#transformation-script-options) 
+  where developers can define changes to apply on the data before it is loaded to the destination. 
 
 * This page explains how to create an OLAP ETL task using the studio. To 
 learn more about OLAP ETL tasks, and how to create one using the client API, 
@@ -25,7 +26,7 @@ see [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap).
       * [Run Frequency](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#run-frequency)
       * [OLAP Connection String](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#olap-connection-string)
       * [OLAP ETL Destinations](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#olap-etl-destinations)
-      * [Transform Script](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#transform-script)
+      * [Transform Scripts](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#transform-scripts)
       * [Override ID column](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#override-id-column)
 
 {NOTE/}
@@ -44,80 +45,102 @@ To begin creating your OLAP ETL task:
 
 {PANEL: Define an OLAP ETL Task}
 
-!["New OLAP ETL task"](images/olap-etl-1.png "New OLAP ETL task view")
+!["New OLAP ETL task"](images/olap-etl-5.png "New OLAP ETL task view")
 
-{WARNING: }
 
 1. The name of this ETL task (optional).  
 2. Choose which of the cluster nodes will run this task (optional).  
-3. Set a custom partition value which can be referenced in the transform script. [See below](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#custom-partition-value).  
 
-{WARNING/}
 <br/>
+
 ### Custom Partition Value
 
 !["Custom partition value"](images/olap-etl-2.png "Custom partition value")
 
 * A custom partition can be defined to differentiate parquet file locations when 
 using the same connection string in multiple OLAP ETL tasks.  
-* The custom partition **name** is defined inside the transformation script.  
+* The custom partition **name** is defined inside the [transformation scripts](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#transform-scripts).  
 * The custom partition **value** is defined in the input box above.  
 * The custom partition value is referenced in the transform script as 
 `$customPartitionValue`.  
 * A parquet file path with custom partition will have the following format:  
   `{RemoteFolderName}/{CollectionName}/{customPartitionName=$customPartitionValue}`  
 * Learn more in [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap#the-custom-partition-value).  
+
+---
+
 <br/>
 ### Run Frequency
 
 !["Task run frequency"](images/olap-etl-3.png "Task run frequency")
 
-* Select the exact timing and frequency at which this task should run from the dropdown menu.  
-* The maximum frequency is once every minute.  
-* Select 'custom' from the dropdown menu to schedule the task using your own customized 
+1. **Run Frequency**  
+   Select the exact timing and frequency at which this task should run from the dropdown menu.  
+    * The maximum frequency is once every minute.  
+2. **Custom**  
+   Select 'custom' from the dropdown menu to schedule the task using your own customized 
 [cron expression](https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm).  
+
+---
+
 <br/>
 ### OLAP Connection String
 
+* Select an existing connection string from the available dropdown or 
+
 !["OLAP connection string"](images/olap-etl-4.png "OLAP connection string")
 
-* Select an existing connection string from the available dropdown or create a new one.  
-* If you choose to create a new connection string you can enter its name and destination here.  
-* Multiple destinations can be defined.  
+* **Create a new OLAP connection string**  
+  Toggle on to create and define a new OLAP connection string for this ETL task  
+  * If you choose to create a new connection string you can enter its name and destination here.  
+  * Multiple destinations can be defined.  
+
 <br/>
 ### OLAP ETL Destinations
 
-!["OLAP ETL destinations"](images/olap-etl-5.png "OLAP ETL destinations")
-
 Select one or more destinations from this list. Clicking each toggle reveals further 
 fields and configuration options for each destination.  
+
+!["OLAP ETL destinations"](images/olap-etl-7.png "OLAP ETL destinations")
+
+   * For custom [Amazon S3](https://aws.amazon.com/s3/) servers  
+     * **Force path style**  
+       Change the default S3 bucket file path convention.  
+       ![ForcePathStyle](images/studio-force-path-style.png "ForcePathStyle")
+
+---
+
 <br/>
-### Transform Script
+### Transform Scripts
 
-!["List of transform scripts"](images/olap-etl-6.png "List of transform scripts")
+You can edit, delete or add to the list of existing transform scripts.
 
-{WARNING: }
+!["List of transform scripts"](images/olap-etl-8.png "List of transform scripts")
 
-1. List of existing transform scripts.  
-2. Add a new transform script.  
+1. Add a new transform script.  
 2. Edit an existing transform script.  
 
-{WARNING/}
+Create and edit transform Java scripts on the right side of the OLAP ETL Studio view.
 
-!["Transform script"](images/olap-etl-7.png "Transform script")
+!["Define Transform Script"](images/olap-etl-9.png "Define Transform Script")
 
-{WARNING: }
 
-1. The script name is generated once the 'Add' button is clicked. The name of a script 
-is always in the format: "Script #[order of script creation]".  
-2. The transform script. Learn more about these scripts [here](../../../../server/ongoing-tasks/etl/raven#transformation-script-options).  
-3. Select a collection (or enter a new collection name) on which this script will operate.  
-4. The selected collection names on which the script operates.  
-5. If this option is checked, the script will operate on all existing documents in the 
-specified collections the first time the task runs. When the option is unchecked, the 
-script operates only on new documents.  
 
-{WARNING/}
+1. **Name**  
+   The script name is generated once the 'Add' button is clicked. The name of a script 
+   is always in the format: "Script #[order of script creation]".  
+2. **The transform script**  
+   Learn more about [transformation scripts](../../../../server/ongoing-tasks/etl/raven#transformation-script-options).  
+3. **Select a collection**  
+   (or enter a new collection name) on which this script will operate.  
+4. **Collections Selected**  
+   The selected collection names on which the script operates.  
+5. **Apply script to documents from beginning of time (Reset)**  
+   * If selected, this script will operate on all existing documents in the 
+   specified collections the first time the task runs.  
+   * When not selected, this script operates only on new documents.  
+
+
 
 {INFO: }
 
@@ -140,7 +163,6 @@ aren't specified in the script:
 These settings allow you to specify a different column name for the document ID column 
 in a parquet file. The default ID column name is `_id`.  
 
-{WARNING: }
 
 1. Add a new setting.  
 2. Select the name of the parquet table for which you want to override the ID column.  
@@ -148,7 +170,6 @@ in a parquet file. The default ID column name is `_id`.
 4. Click to add this setting.  
 5. Click to edit this setting.  
 
-{WARNING/}
 
 {PANEL/}
 
@@ -158,6 +179,7 @@ in a parquet file. The default ID column name is `_id`.
 
 - [ETL Basics](../../../../server/ongoing-tasks/etl/raven)  
 - [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap)  
+- [Transformation Script Options](../../../../server/ongoing-tasks/etl/raven#transformation-script-options)
 
 ### Client API
 

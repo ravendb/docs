@@ -90,6 +90,7 @@ This is the list of different settings objects that the `OlapConnectionString` o
 | `BucketName` | `string` | The name of the S3 bucket that is the destination for this ETL |
 | `CustomServerUrl` | `string` | The custom URL to the S3 bucket, if you have one |
 | `RemoteFolderName` | `string` | Name of the destination folder within the S3 bucket |
+| `ForcePathStyle` | `bool` | Change the default S3 bucket file path convention on custom S3 server|
 
 #### `GlacierSettings`
 

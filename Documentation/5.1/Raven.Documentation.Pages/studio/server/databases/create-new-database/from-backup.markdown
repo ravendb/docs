@@ -41,6 +41,11 @@ Another way to access the New Database From Backup interface is via the Studio B
 
 2. **Source**  
    Select the source from your local machine or various cloud-based options where your desired backup is stored.  
+    * For custom [Amazon S3](https://aws.amazon.com/s3/) servers  
+      * **Force path style**  
+       Change the default S3 bucket file path convention.  
+       ![ForcePathStyle](images/new-database-from-backup-s3-force-path-style.png "ForcePathStyle")
+
 
 3. **Backup Directory**  
    Select the file location that you set when you [created your backup](../../../../studio/database/tasks/backup-task).  
