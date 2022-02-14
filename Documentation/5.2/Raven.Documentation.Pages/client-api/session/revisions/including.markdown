@@ -15,7 +15,9 @@
    * Queried using `Session.Advanced.RawQuery`  
 
 - [Including Revisions](../../../client-api/session/revisions/including#including-revisions)  
-- [`IncludeRevisions`](../../../client-api/session/revisions/including#includerevisions)  
+   - [Including Revisions By Time](../../../client-api/session/revisions/including#including-revisions-by-time)  
+   - [Including Revisions By Change Vector](../../../client-api/session/revisions/including#including-revisions-by-change-vector)  
+   - [`IncludeRevisions`](../../../client-api/session/revisions/including#section)  
 - [Including Revisions With `Session.Load`](../../../client-api/session/revisions/including#including-revisions-with-session.load)  
    - [By Time](../../../client-api/session/revisions/including#load-include-revisions-by-time)  
    - [By Change Vector](../../../client-api/session/revisions/including#load-include-revisions-by-change-vector)  
@@ -95,9 +97,9 @@ Whenever the time comes to re-evaluate this employee's terms and their contract
 is loaded, its past revisions can be easily included with it by their change vectors.  
 {NOTE/}
 
-{PANEL/}
+----
 
-{PANEL: `IncludeRevisions`}
+#### `IncludeRevisions`
 
 Revisions can be included with documents retrieved via `Session.Load` 
 and `Session.Query`, using one of the `IncludeRevisions` methods.  
@@ -131,7 +133,7 @@ that of the given time will be included.
   Pass `IncludeRevisions` the path to a property of the document you load, 
   that contains the change vector.  
 
-* To include **a Group of revisions** by their change vectors:  
+* To include **a group of revisions** by their change vectors:  
   Pass `IncludeRevisions` the path to a property of the document you load, 
   that contains an array of change vectors.  
 

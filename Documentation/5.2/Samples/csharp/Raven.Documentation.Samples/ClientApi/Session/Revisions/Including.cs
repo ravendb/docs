@@ -68,7 +68,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                     #region IncludeRevisions_5_QueryByTime
                     // Pass `IncludeRevisions` a `DateTime` value
                     var query = session.Query<User>()
-                        .Customize(x => x.WaitForNonStaleResults())
                         .Include(builder => builder
                             .IncludeRevisions(creationTime.ToUniversalTime()));
 
@@ -105,7 +104,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                     var query = session.Advanced
                         .RawQuery<User>("from Users include revisions($p0)")
                         .AddParameter("p0", creationTime.ToUniversalTime())
-                        .WaitForNonStaleResults()
                         .ToList();
 
                     // The revision has been included by its creation time,
@@ -137,7 +135,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                     var query = session.Advanced
                         .RawQuery<Contract>("from Users where Name = 'JohnDoe' include revisions($p0)")
                         .AddParameter("p0", "ContractRev_1_ChangeVector")
-                        .WaitForNonStaleResults()
                         .ToList();
 
                     // The revision has been included by change vector,
