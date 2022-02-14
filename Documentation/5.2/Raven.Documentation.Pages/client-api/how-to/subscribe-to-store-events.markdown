@@ -7,29 +7,40 @@
 * **Events** allow users to perform custom actions in response to operations made in 
   a `Document Store` or a `Session`.  
 
-* An event is invoked when the selected action is executed on an entity, or querying is performed.  
+* An event is invoked when the selected action is executed on an entity, 
+  or querying is performed.  
 
-* An event subscribed to in the `DocumentStore` level is valid for all succeeding sessions.  
+* Subscribing to an event at the `DocumentStore` level subscribes to this 
+  event in all subsequent sessions.  
 
-* An event subscribed to in a `Session` is valid in this session.  
-  Subscribing to an event within a session overrides subscribing 
-  to it in the `DocumentStore` level.  
+* Subscribing to an event in a `Session` is valid only for this session.  
   Read more about `Session` events [here](../../client-api/session/how-to/subscribe-to-events).  
 
 * In this page:  
-   * [OnBeforeRequest](../../client-api/how-to/subscribe-to-store-events#onbeforerequest)  
-   * [OnSucceedRequest](../../client-api/how-to/subscribe-to-store-events#onsucceedrequest)  
+   * [Store Events](../../client-api/how-to/subscribe-to-store-events#store-events)
+      * [OnBeforeRequest](../../client-api/how-to/subscribe-to-store-events#section)  
+      * [OnSucceedRequest](../../client-api/how-to/subscribe-to-store-events#section-1)  
+      * [AfterDispose](../../client-api/how-to/subscribe-to-store-events#section-2)  
+      * [BeforeDispose](../../client-api/how-to/subscribe-to-store-events#section-3)  
+      * [RequestExecutorCreated](../../client-api/how-to/subscribe-to-store-events#section-4)  
+      * [OnSessionCreated](../../client-api/how-to/subscribe-to-store-events#section-5)  
+      * [OnFailedRequest](../../client-api/how-to/subscribe-to-store-events#section-6)  
+      * [OnTopologyUpdated](../../client-api/how-to/subscribe-to-store-events#section-7)  
+   * [Store/Session Events](../../client-api/how-to/subscribe-to-store-events#store/session-events)
 
 {NOTE/}
 
 ---
 
-{PANEL: OnBeforeRequest}
+{PANEL: Store Events}
 
-This event is invoked as a part of sending a request to the server, but before 
-the request is actually sent.  
+You can subscribe to the following events only at the store level, not within a session.  
+
+## `OnBeforeRequest`
+
+This event is invoked by sending a request to the server, before the request 
+is actually sent.  
 It should be defined with this signature:  
-
 {CODE-BLOCK: csharp}
 private void OnBeforeRequestEvent(object sender, BeforeRequestEventArgs args);
 {CODE-BLOCK/}
@@ -38,38 +49,35 @@ private void OnBeforeRequestEvent(object sender, BeforeRequestEventArgs args);
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| IDocumentStore | `string` | The store that the request was sent from, triggering this event |
-| args | `BeforeRequestEventArgs` | the database name and URL, and the intended request for the server |
+| **sender** | `IDocumentStore ` | The store that the request was sent from, triggering this event |
+| **args** | `BeforeRequestEventArgs` | the database name and URL, and the intended request for the server |
 
-The class `BeforeRequestEventArgs`:  
+`BeforeRequestEventArgs`:  
 {CODE-BLOCK: csharp}
 public class BeforeRequestEventArgs : EventArgs
 {
-   // Database Name
-   public string Database { get; }
-   // Database URL
-   public string Url { get; }
-   // Intended request from the server  
-   public HttpRequestMessage Request { get; }
-   public int AttemptNumber { get; }
+    // Database Name
+    public string Database { get; }
+    // Database URL
+    public string Url { get; }
+    // The request intended to be sent to the server  
+    public HttpRequestMessage Request { get; }
+    // The number of attempts made to send the request to the server
+    public int AttemptNumber { get; }
 }
 {CODE-BLOCK/}
 
-### Example
+* **Example**:  
+  To define a method that checks URLs sent in a document store request:  
+  {CODE OnBeforeRequestEvent@ClientApi\DocumentStore\StoreEvents.cs /}
 
-If we want to check URLs sent in requests by our document store, we can define a method as follows:  
-{CODE OnBeforeRequestEvent@ClientApi\DocumentStore\Events.cs /}
+    To subscribe to the event:  
+    {CODE SubscribeToOnBeforeRequest@ClientApi\DocumentStore\StoreEvents.cs /}
 
-And then subscribe the event as follows:
-{CODE SubscribeToOnBeforeRequest@ClientApi\DocumentStore\Events.cs /}
+## `OnSucceedRequest`
 
-{PANEL/}
-
-{PANEL: OnSucceedRequest}
-
-This event is executed after receiving a successful reply from the server.  
+This event is invoked by receiving a successful reply from the server.  
 It should be defined with this signature:  
-
 {CODE-BLOCK: csharp}
 private void OnSucceedRequestEvent(object sender, SucceedRequestEventArgs args);
 {CODE-BLOCK/}
@@ -78,33 +86,76 @@ private void OnSucceedRequestEvent(object sender, SucceedRequestEventArgs args);
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| IDocumentStore | `string` | The store whose request succeeded, triggering this event |
-| args | `SucceedRequestEventArgs` | the database name and URL, and the messages sent to the server and returned from it |
+| **sender** | `IDocumentStore ` | The store that the request was sent from, triggering this event |
+| **args** | `SucceedRequestEventArgs` | the database name and URL, and the messages sent to the server and returned from it |
 
-The class `SucceedRequestEventArgs`:  
+`SucceedRequestEventArgs`:  
 {CODE-BLOCK: csharp}
 public class SucceedRequestEventArgs : EventArgs
 {
-   // Database Name
-   public string Database { get; }
-   // Database URL
-   public string Url { get; }
-   // Message returned from the server
-   public HttpResponseMessage Response { get; }
-   // Request from the server
-   public HttpRequestMessage Request { get; }
-   public int AttemptNumber { get; }
+    // Database Name
+    public string Database { get; }
+    // Database URL
+    public string Url { get; }
+    // The message returned from the server
+    public HttpResponseMessage Response { get; }
+    // The original request sent to the server
+    public HttpRequestMessage Request { get; }
+    // The number of attempts made to send the request to the server
+    public int AttemptNumber { get; }
 }
 {CODE-BLOCK/}
 
+* **Example**  
+  To define a method that would be activated when a request succeeds:  
+  {CODE OnSucceedRequestEvent@ClientApi\DocumentStore\StoreEvents.cs /}
 
-### Example
+    To subscribe to the event:  
+    {CODE SubscribeToOnSucceedRequest@ClientApi\DocumentStore\StoreEvents.cs /}
 
-If we want to check whether our request was successful, we can define a method as follows:  
-{CODE OnSucceedRequestEvent@ClientApi\DocumentStore\Events.cs /}
+## `AfterDispose`
+This event is invoked just after a document store is disposed of.  
 
-And then subscribe the event as follows:
-{CODE SubscribeToOnSucceedRequest@ClientApi\DocumentStore\Events.cs /}
+## `BeforeDispose`
+This event is invoked just before a document store is disposed of.  
+
+## `RequestExecutorCreated`
+This event is invoked when a Request Executor is created, 
+allowing you to subscribe to various events of the request executor.  
+
+## `OnSessionCreated`
+This event is invoked after a session is created.  
+
+## `OnFailedRequest`
+This event is invoked before a request fails.  
+
+## `OnTopologyUpdated`
+This event is invoked by a topology update (e.g. when a node is added), 
+**after** the topology is updated.  
+
+{PANEL/}
+
+{PANEL: Store/Session Events}
+You can subscribe to the following events both at the store level and in a session.  
+
+{NOTE: }
+
+  * Subscribing to an event in a session limits the scope of the subscription to this session.  
+  * When you subscribe to an event at the store level, the subscription is inherited by 
+    all subsequent sessions.  
+
+{NOTE/}
+
+* [OnBeforeStore](../../client-api/session/how-to/subscribe-to-events#onbeforestore)  
+* [OnAfterSaveChanges](../../client-api/session/how-to/subscribe-to-events#onaftersavechanges)  
+* [OnBeforeDelete](../../client-api/session/how-to/subscribe-to-events#onbeforedelete)  
+* [OnBeforeQuery](../../client-api/session/how-to/subscribe-to-events#onbeforequery)  
+* [OnBeforeConversionToDocument](../../client-api/session/how-to/subscribe-to-events#onbeforeconversiontodocument)  
+* [OnAfterConversionToDocument](../../client-api/session/how-to/subscribe-to-events#onafterconversiontodocument)  
+* [OnBeforeConversionToEntity](../../client-api/session/how-to/subscribe-to-events#onbeforeconversiontoentity)  
+* [OnAfterConversionToEntity](../../client-api/session/how-to/subscribe-to-events#onafterconversiontoentity)  
+* `OnSessionDisposing`  
+  This event is invoked by the disposal of a session, **before** the session is disposed of.  
 
 {PANEL/}
 

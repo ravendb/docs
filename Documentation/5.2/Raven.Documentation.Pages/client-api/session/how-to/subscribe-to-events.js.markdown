@@ -5,11 +5,10 @@
 
 * An event is invoked when the selected action is executed on an entity, or querying is performed.  
 
-* An event subscribed to in the `DocumentStore` level is valid for all succeeding sessions.  
+* Subscribing to an event in a `Session` is valid only for this session.  
 
-* An event subscribed to in a `Session` is valid in this session.  
-  Subscribing to an event within a session overrides subscribing 
-  to it in the `DocumentStore` level.  
+* Subscribing to an event at the `DocumentStore` level subscribes to this 
+  event in all subsequent sessions.  
   Read more about `DocumentStore` events [here](../../../client-api/how-to/subscribe-to-store-events).  
 
 {PANEL:OnBeforeStore}

@@ -8,7 +8,7 @@ using Sparrow.Logging;
 
 namespace Raven.Documentation.Samples.ClientApi.Session
 {
-    public class Events
+    public class StoreEvents
     {
         private static readonly Logger Log;
 
@@ -40,24 +40,25 @@ namespace Raven.Documentation.Samples.ClientApi.Session
         {
             if (args.Response.IsSuccessStatusCode == true)
             {
-                // action to be taken if the request was successful
+                // action to be taken after a successful request
             }
         }
         #endregion
 
-        public Events()
+        void Events()
         {
-            #region SubscribeToOnBeforeRequest
+            
             using (var store = new DocumentStore())
             {
+                #region SubscribeToOnBeforeRequest
                 // Subscribe to the event
                 store.OnBeforeRequest += OnBeforeRequestEvent;
                 #endregion
             }
 
-            #region SubscribeToOnSucceedRequest
             using (var store = new DocumentStore())
             {
+                #region SubscribeToOnSucceedRequest
                 // Subscribe to the event
                 store.OnSucceedRequest += OnSucceedRequestEvent;
                 #endregion
