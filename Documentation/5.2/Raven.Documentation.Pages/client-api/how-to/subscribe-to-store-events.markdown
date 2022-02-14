@@ -49,8 +49,8 @@ private void OnBeforeRequestEvent(object sender, BeforeRequestEventArgs args);
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| **sender** | `IDocumentStore ` | The store that the request was sent from, triggering this event |
-| **args** | `BeforeRequestEventArgs` | the database name and URL, and the intended request for the server |
+| **sender** | `IDocumentStore ` | The subscribed store that triggered the event |
+| **args** | `BeforeRequestEventArgs` | See details below |
 
 `BeforeRequestEventArgs`:  
 {CODE-BLOCK: csharp}
@@ -86,8 +86,8 @@ private void OnSucceedRequestEvent(object sender, SucceedRequestEventArgs args);
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| **sender** | `IDocumentStore ` | The store that the request was sent from, triggering this event |
-| **args** | `SucceedRequestEventArgs` | the database name and URL, and the messages sent to the server and returned from it |
+| **sender** | `IDocumentStore ` | The subscribed store that triggered the event |
+| **args** | `SucceedRequestEventArgs` | See details below |
 
 `SucceedRequestEventArgs`:  
 {CODE-BLOCK: csharp}
@@ -114,24 +114,153 @@ public class SucceedRequestEventArgs : EventArgs
     {CODE SubscribeToOnSucceedRequest@ClientApi\DocumentStore\StoreEvents.cs /}
 
 ## `AfterDispose`
-This event is invoked just after a document store is disposed of.  
+This event is invoked immediately after a document store is disposed of.  
+It should be defined with this signature:  
+{CODE-BLOCK: csharp}
+private void AfterDisposeEvent(object sender, EventHandler args);
+{CODE-BLOCK/}
+
+**Parameters**:  
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **sender** | `IDocumentStore ` | The subscribed store whose disposal triggered the event |
+| **args** | `EventHandler` | **args** has no contents for this event |
 
 ## `BeforeDispose`
-This event is invoked just before a document store is disposed of.  
+This event is invoked immediately before a document store is disposed of.  
+It should be defined with this signature:  
+{CODE-BLOCK: csharp}
+private void BeforeDisposeEvent(object sender, EventHandler args);
+{CODE-BLOCK/}
+
+**Parameters**:  
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **sender** | `IDocumentStore ` | The subscribed store whose disposal triggered the event |
+| **args** | `EventHandler` | **args** has no contents for this event |
 
 ## `RequestExecutorCreated`
 This event is invoked when a Request Executor is created, 
 allowing you to subscribe to various events of the request executor.  
+It should be defined with this signature:  
+{CODE-BLOCK: csharp}
+private void RequestExecutorCreatedEvent(object sender, RequestExecutor args);
+{CODE-BLOCK/}
+
+**Parameters**:  
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **sender** | `IDocumentStore ` | The subscribed store that triggered the event |
+| **args** | `RequestExecutor` | The created Request Executor instance |
 
 ## `OnSessionCreated`
-This event is invoked after a session is created.  
+This event is invoked after a session is created, allowing you, 
+for example, to configure the session is various ways.  
+
+It should be defined with this signature:  
+{CODE-BLOCK: csharp}
+private void OnSessionCreatedEvent(object sender, SessionCreatedEventArgs args);
+{CODE-BLOCK/}
+
+**Parameters**:  
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **sender** | `IDocumentStore ` | The subscribed store that triggered the event |
+| **args** | `SessionCreatedEventArgs` | The created Session |
+
+`SessionCreatedEventArgs`:  
+{CODE-BLOCK: csharp}
+public class SessionCreatedEventArgs : EventArgs
+{
+    public InMemoryDocumentSessionOperations Session { get; }
+}
+{CODE-BLOCK/}
+
+* **Example**  
+  To define a method that would be activated when a session is created:  
+  {CODE OnSessionCreatedEvent@ClientApi\DocumentStore\StoreEvents.cs /}
+
+    To subscribe to the event:  
+    {CODE SubscribeToOnSessionCreated@ClientApi\DocumentStore\StoreEvents.cs /}
+    
 
 ## `OnFailedRequest`
-This event is invoked before a request fails.  
+This event is invoked before a request fails, allows you to, for example, track and log failed requests.  
+It should be defined with this signature:  
+{CODE-BLOCK: csharp}
+private void OnFailedRequestEvent(object sender, FailedRequestEventArgs args);
+{CODE-BLOCK/}
+
+**Parameters**:  
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **sender** | `IDocumentStore ` | The subscribed store that triggered the event |
+| **args** | `FailedRequestEventArgs` | See details below |
+
+`FailedRequestEventArgs`:  
+{CODE-BLOCK: csharp}
+public class FailedRequestEventArgs : EventArgs
+{
+    // Database Name
+    public string Database { get; }
+    // Database URL
+    public string Url { get; }
+    // The exception returned from the server
+    public Exception Exception { get; }
+    // The message returned from the server
+    public HttpResponseMessage Response { get; }
+    // The original request sent to the server
+    public HttpRequestMessage Request { get; }
+}
+{CODE-BLOCK/}
+
+* **Example**  
+  To define a method that would be activated when a request fails:  
+  {CODE OnFailedRequestEvent@ClientApi\DocumentStore\StoreEvents.cs /}
+
+    To subscribe to the event:  
+    {CODE SubscribeToOnFailedRequest@ClientApi\DocumentStore\StoreEvents.cs /}
 
 ## `OnTopologyUpdated`
 This event is invoked by a topology update (e.g. when a node is added), 
 **after** the topology is updated.  
+It should be defined with this signature:  
+{CODE-BLOCK: csharp}
+private void OnTopologyUpdatedEvent(object sender, TopologyUpdatedEventArgs args);
+{CODE-BLOCK/}
+
+**Parameters**:  
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **sender** | `IDocumentStore ` | The subscribed store that triggered the event |
+| **args** | `TopologyUpdatedEventArgs` | The updated list of nodes |
+
+`TopologyUpdatedEventArgs`:  
+{CODE-BLOCK: csharp}
+public class TopologyUpdatedEventArgs : EventArgs
+{
+    public Topology Topology { get; }
+}
+{CODE-BLOCK/}
+
+public class Topology
+{
+    public long Etag;
+    public List<ServerNode> Nodes;
+}
+
+* **Example**  
+  To define a method that would be activated when a request fails:  
+  {CODE OnTopologyUpdatedEvent@ClientApi\DocumentStore\StoreEvents.cs /}
+
+    To subscribe to the event:  
+    {CODE SubscribeToOnTopologyUpdated@ClientApi\DocumentStore\StoreEvents.cs /}
 
 {PANEL/}
 
@@ -157,6 +286,10 @@ You can subscribe to the following events both at the store level and in a sessi
 * `OnSessionDisposing`  
   This event is invoked by the disposal of a session, **before** the session is disposed of.  
 
+add: write about it in the session article and link to it here
+just the session
+for example allows me to track number of open and disposed sessions
+they can understand if they open too many sessions, or forget to dispoes them, etc.
 {PANEL/}
 
 ## Related articles
