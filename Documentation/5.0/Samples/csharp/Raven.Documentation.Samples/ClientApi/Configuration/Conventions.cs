@@ -86,6 +86,19 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     #region IdentityPartsSeparator
                     IdentityPartsSeparator = '~'
                     #endregion
+                    ,
+                    #region WaitForIndexesAfterSaveChangesTimeout
+                    WaitForIndexesAfterSaveChangesTimeout = TimeSpan.FromSeconds(10)
+                    #endregion
+                    ,
+                    #region WaitForReplicationAfterSaveChangesTimeout
+                    WaitForReplicationAfterSaveChangesTimeout = TimeSpan.FromSeconds(10)
+                    #endregion
+                    ,
+                    #region WaitForNonStaleResultsTimeout
+                    WaitForNonStaleResultsTimeout = TimeSpan.FromSeconds(10)
+                    #endregion
+
                 }
             };
             

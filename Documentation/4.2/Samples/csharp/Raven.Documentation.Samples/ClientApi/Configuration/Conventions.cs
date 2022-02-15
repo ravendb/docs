@@ -23,7 +23,7 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
             }
             #endregion
         }
-        
+
         #region FirstChar
         private string FirstCharToLower(string str) => $"{Char.ToLower(str[0])}{str.Substring(1)}";
         #endregion
@@ -78,8 +78,22 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     #region AddIdFieldToDynamicObjects
                     AddIdFieldToDynamicObjects = false
                     #endregion
-                }
+                    ,
+                    #region WaitForIndexesAfterSaveChangesTimeout
+                    WaitForIndexesAfterSaveChangesTimeout = TimeSpan.FromSeconds(10)
+                    #endregion
+                    ,
+                    #region WaitForReplicationAfterSaveChangesTimeout
+                    WaitForReplicationAfterSaveChangesTimeout = TimeSpan.FromSeconds(10)
+                    #endregion
+                    ,
+                    #region WaitForNonStaleResultsTimeout
+                    WaitForNonStaleResultsTimeout = TimeSpan.FromSeconds(10)
+                    #endregion
+               }
             };
+        }
+    };
             
             var stor2e = new DocumentStore()
             {

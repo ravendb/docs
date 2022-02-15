@@ -133,6 +133,28 @@ Determines whether an Id field is automatically added to dynamic objects. Defaul
 This function can be configured to disable entity tracking for certain entities. 
 Learn more [here](../../client-api/session/configuration/how-to-disable-tracking#shouldignoreentitychanges-method)
 
+## WaitForIndexesAfterSaveChangesTimeout
+
+Sets the default timeout for DocumentSession.Advanced.WaitForIndexesAfterSaveChanges method.  
+
+Default: 15 Seconds.  
+
+{CODE WaitForIndexesAfterSaveChangesTimeout@ClientApi\Configuration\Conventions.cs /}
+
+## WaitForReplicationAfterSaveChangesTimeout
+
+Sets the default timeout for DocumentSession.Advanced.WaitForReplicationAfterSaveChanges method.
+Default: 15 Seconds.
+
+{CODE WaitForReplicationAfterSaveChangesTimeout@ClientApi\Configuration\Conventions.cs /}
+
+## WaitForNonStaleResultsTimeout
+
+Sets the default timeout WaitForNonStaleResults methods used when querying. 
+Default: 15 Seconds.
+
+{CODE WaitForNonStaleResultsTimeout@ClientApi\Configuration\Conventions.cs /}
+
 ## Related Articles
 
 ### Conventions
