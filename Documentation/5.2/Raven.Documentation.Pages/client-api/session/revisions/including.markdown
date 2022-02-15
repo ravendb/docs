@@ -67,6 +67,7 @@ using `.AddParameter`.
      the `April 2` revision will be included.  
 * If no revisions exist RavenDB will remember it, and when you ask for the revision
   it will skip the trip to the server and return `null`.  
+
 ---
 
 #### Including Revisions By Change Vector
