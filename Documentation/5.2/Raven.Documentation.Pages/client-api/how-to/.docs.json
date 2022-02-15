@@ -32,6 +32,12 @@
     ]
   },
   {
+    "Path": "subscribe-to-store-events.markdown",
+    "Name": "...subscribe to Store events",
+    "DiscussionId": "73c9f0f3-2b5b-4a53-8fab-b5c2bf66c46b",
+    "Mappings": []
+  },
+  {
     "Path": "use-low-level-commands.markdown",
     "Name": "...use low-level commands",
     "DiscussionId": "62dd8114-3cb7-487e-9371-5d5f6d37bdcc",

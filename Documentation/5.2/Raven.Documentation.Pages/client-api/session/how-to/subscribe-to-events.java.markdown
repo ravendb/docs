@@ -1,12 +1,15 @@
-# Session: How to Subscribe to Events
+# Session: Subscribing to Session Events
 
-The concept of events provides users with a mechanism to perform custom actions in response to operations taken in a session. 
+* **Events** allow users to perform custom actions in response to operations made in 
+  a `Document Store` or a `Session`.  
 
-The event is invoked when a particular action is executed on an entity or querying is performed.
+* An event is invoked when the selected action is executed on an entity, or querying is performed.  
 
-{INFO:Subscribing to an event}
-Subscribing an event can be done in the `DocumentStore` object, which will be valid for all future sessions or subscribing in an already opened session with `session.advanced()` which will overwrite the existing event for the current session. 
-{INFO/}
+* Subscribing to an event in a `Session` is valid only for this session.  
+
+* Subscribing to an event at the `DocumentStore` level subscribes to this 
+  event in all subsequent sessions.  
+  Read more about `DocumentStore` events [here](../../../client-api/how-to/subscribe-to-store-events).  
 
 {PANEL:beforeStoreListener}
 
@@ -330,8 +333,9 @@ public class AfterConversionToEntityEventArgs {
 
 ### Document Store
 
-- [What is a Document Store](../../../client-api/what-is-a-document-store)
+- [What is a Document Store](../../../client-api/what-is-a-document-store)  
 
 ### Session
 
-- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [What is a Session and How does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)  
+- [Subscribe to Store Events](../../../client-api/how-to/subscribe-to-store-events)  
