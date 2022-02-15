@@ -242,6 +242,32 @@ This event is invoked after conversion of a JSON document to an entity. It takes
 
 {PANEL/}
 
+{PANEL:OnSessionDisposing}
+
+This event is invoked by the disposal of a session, **before** the session is disposed of.  
+Keeping track of sessions disposal allows you, among other uses, to verify that sessions 
+that are no longer needed are disposed of.  
+
+{CODE-BLOCK: csharp}
+private void OnSessionDisposingEvent(object sender, SessionDisposingEventArgs args);
+{CODE-BLOCK/}
+
+| Parameters | Type | Description |
+| - | - | - |
+| **sender** | `IDocumentSession` | The session whose disposal triggered this event |
+| **args** | `SessionDisposingEventArgs` | `args` contains the session that is disposed of. |
+
+The class `SessionDisposingEventArgs`:  
+
+{CODE-BLOCK: csharp}
+public class SessionDisposingEventArgs : EventArgs
+{
+    public InMemoryDocumentSessionOperations Session { get; }
+}
+{CODE-BLOCK/}
+
+{PANEL/}
+
 ## Related articles
 
 ### Document Store

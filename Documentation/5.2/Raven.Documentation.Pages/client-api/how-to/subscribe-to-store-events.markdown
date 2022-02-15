@@ -157,9 +157,8 @@ private void RequestExecutorCreatedEvent(object sender, RequestExecutor args);
 | **args** | `RequestExecutor` | The created Request Executor instance |
 
 ## `OnSessionCreated`
-This event is invoked after a session is created, allowing you, 
-for example, to configure the session is various ways.  
-
+This event is invoked after a session is created, allowing you, for example, 
+to change session configurations.  
 It should be defined with this signature:  
 {CODE-BLOCK: csharp}
 private void OnSessionCreatedEvent(object sender, SessionCreatedEventArgs args);
@@ -189,7 +188,8 @@ public class SessionCreatedEventArgs : EventArgs
     
 
 ## `OnFailedRequest`
-This event is invoked before a request fails, allows you to, for example, track and log failed requests.  
+This event is invoked before a request fails. It allows you, for example, to track 
+and log failed requests.  
 It should be defined with this signature:  
 {CODE-BLOCK: csharp}
 private void OnFailedRequestEvent(object sender, FailedRequestEventArgs args);
@@ -249,6 +249,7 @@ public class TopologyUpdatedEventArgs : EventArgs
 }
 {CODE-BLOCK/}
 
+`Topology`:  
 public class Topology
 {
     public long Etag;
@@ -256,7 +257,7 @@ public class Topology
 }
 
 * **Example**  
-  To define a method that would be activated when a request fails:  
+  To define a method that would be activated on a topology update:  
   {CODE OnTopologyUpdatedEvent@ClientApi\DocumentStore\StoreEvents.cs /}
 
     To subscribe to the event:  
@@ -283,13 +284,8 @@ You can subscribe to the following events both at the store level and in a sessi
 * [OnAfterConversionToDocument](../../client-api/session/how-to/subscribe-to-events#onafterconversiontodocument)  
 * [OnBeforeConversionToEntity](../../client-api/session/how-to/subscribe-to-events#onbeforeconversiontoentity)  
 * [OnAfterConversionToEntity](../../client-api/session/how-to/subscribe-to-events#onafterconversiontoentity)  
-* `OnSessionDisposing`  
-  This event is invoked by the disposal of a session, **before** the session is disposed of.  
-
-add: write about it in the session article and link to it here
-just the session
-for example allows me to track number of open and disposed sessions
-they can understand if they open too many sessions, or forget to dispoes them, etc.
+* [OnSessionDisposing](../../client-api/session/how-to/subscribe-to-events#onsessiondisposing)  
+  
 {PANEL/}
 
 ## Related articles
