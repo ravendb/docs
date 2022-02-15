@@ -150,7 +150,7 @@ Default: 15 Seconds.
 
 ## WaitForNonStaleResultsTimeout
 
-Sets the default timeout for DocumentSession WaitForNonStaleResults methods. 
+Sets the default timeout WaitForNonStaleResults methods used when querying. 
 Default: 15 Seconds.
 
 {CODE WaitForNonStaleResultsTimeout@ClientApi\Configuration\Conventions.cs /}
