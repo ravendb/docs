@@ -65,8 +65,8 @@ using `.AddParameter`.
      If the time you provided is `April 7 2020`,  
      and it is located between two existing revisions dated `April 2 2020` and `April 11 2020`,  
      the `April 2` revision will be included.  
-* If no revisions exist, an empty `IncludeRevisions` object will be returned.  
-
+* If no revisions exist RavenDB will remember it, and when you ask for the revision
+  it will skip the trip to the server and return `null`.  
 ---
 
 #### Including Revisions By Change Vector
