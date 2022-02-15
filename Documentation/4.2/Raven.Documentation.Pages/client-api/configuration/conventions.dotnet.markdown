@@ -115,6 +115,29 @@ Determines whether an Id field is automatically added to dynamic objects. Defaul
 
 {CODE AddIdFieldToDynamicObjects@ClientApi\Configuration\Conventions.cs /}
 
+## WaitForIndexesAfterSaveChangesTimeout
+
+Sets the default timeout for DocumentSession.Advanced.WaitForIndexesAfterSaveChanges method.  
+
+Default: 15 Seconds.  
+
+{CODE WaitForIndexesAfterSaveChangesTimeout@ClientApi\Configuration\Conventions.cs /}
+
+## WaitForReplicationAfterSaveChangesTimeout
+
+Sets the default timeout for DocumentSession.Advanced.WaitForReplicationAfterSaveChanges method.
+Default: 15 Seconds.
+
+{CODE WaitForReplicationAfterSaveChangesTimeout@ClientApi\Configuration\Conventions.cs /}
+
+## WaitForNonStaleResultsTimeout
+
+Sets the default timeout for DocumentSession WaitForNonStaleResults methods. 
+Default: 15 Seconds.
+
+{CODE WaitForNonStaleResultsTimeout@ClientApi\Configuration\Conventions.cs /}
+
+
 ## Related Articles
 
 ### Conventions
