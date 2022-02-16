@@ -1,5 +1,13 @@
 # Configuration: Database
 
+After editing & saving a configuration key, the change does not take effect 
+  until the database is [reloaded via the Studio](../../studio/database/settings/database-settings#how-to-reload-the-database)
+  or via [API operations](../../client-api/operations/maintenance/configuration/database-settings-operation).  
+
+{WARNING: Warning}
+Do not modify the database settings unless you are an expert and know what you're doing.  
+{WARNING/}
+
 {PANEL:Databases.QueryTimeoutInSec}
 
 The time in seconds to wait before canceling a query.
