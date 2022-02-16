@@ -59,7 +59,7 @@ Whether revision compression should be on by default or not on newly created dat
 - **Default**: `true`  
 - **Scope**: Server-wide only  
 
-Determines whether (revisions)[../../server/extensions/revisions] should be compressed.  
+Determines whether [revisions](../../server/extensions/revisions) should be compressed.  
 Applies to all databases created on this server.  
 
 {PANEL/}

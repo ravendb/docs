@@ -3,15 +3,21 @@
 
 {NOTE: }
 
+* The **Documents Compression** feature uses the [Zstd compression algorithm](https://github.com/facebook/zstd) to 
+  continuously create a more efficient data model with better compression ratios.  
+
 * Go to **Settings** > **Documents Compression** to configure compression for a 
 particular database.  
+  * Revisions are compressed by default.  
+  * **Compress all collections** or specific collections can be selected for compression in this view.  
 
-* Go to **Stats** > **Storage Report** to see the contents and size of your database' 
+* Go to **Stats** > **Storage Report** to see the contents and size of your database 
 storage.  
 
 * In this page:  
   * [Configure Documents Compression](../../../studio/database/settings/documents-compression#configure-documents-compression)  
   * [Database Storage Report](../../../studio/database/settings/documents-compression#database-storage-report)  
+
 
 {NOTE/}
 
@@ -19,20 +25,36 @@ storage.
 
 {PANEL: Configure Documents Compression}
 
-RavendDB will compress documents for selected collections, when storing those documents.  
+RavendDB will compress documents in selected collections or in all collections when storing those documents.  
 The compression will be applied to:  
 
 * Newly created documents  
 * Existing documents that are modified and saved  
 
-An existing document opened just for reading will **not** be compressed.  
+* If opened just for reading, **existing documents will not be compressed** .  
+  * If you also want to compress existing documents without editing them, 
+    after configuring the collections to compress you can use the [CompactDatabaseOperation](../../../client-api/operations/server-wide/compact-database).
+    While removing empty gaps which occupy space in your database, this operation will also trigger compression on collections that were configured.  
+     * Note: Compression and compaction are two different methods. Compression reduces the amount of storage that data uses, 
+       while compaction removes empty gaps that still occupy space after deletes.  
+
+* Compression is configured in the [Database Record](../../../studio/database/settings/database-record).  
 
 ![Document Compression Configuration](images/documents-compression.png "Document Compression Configuration")
 
-1. Select the collections for which to activate compression.  
-2. List of selected collections.  
-3. Toggle whether to activate compression for all revisions of all collections.  
-4. Save and apply configuration.  
+1. **Select Collection(s)**  
+   Select the collections on which to activate compression or select  
+    * **Compress all collections**  
+      ![Compress All Collections](images/documents-compression-all-collections.png "Compress All Collections")  
+      Toggle to compress new or modified documents in all collections in this particular database.  
+2. **Collections Selected**  
+   List of selected collections (seen if "Compress all collections" is toggled off).  
+3. **Compress Revisions**  
+   Toggle whether to activate compression for all revisions of all collections.  
+4. **Save**  
+   Save and apply configuration.  
+
+
 
 {PANEL/}
 
@@ -54,7 +76,12 @@ Go to this page (Stats > Storage Report) to see the compression effect.
 ### Server
 
 - [Documents Compression](../../../server/storage/documents-compression)
+- [Database Configuration - Compress Revisions Default](../../../server/configuration/database-configuration#databases.compression.compressrevisionsdefault)
 
 ### Studio
 
 - [Database Record](../../../studio/database/settings/database-record)
+
+### API 
+
+- [To Compact a Database](../../../client-api/operations/server-wide/compact-database)
