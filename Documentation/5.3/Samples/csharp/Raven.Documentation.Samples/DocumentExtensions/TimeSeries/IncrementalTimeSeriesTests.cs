@@ -107,8 +107,78 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
             }
         }
-        
-   
+
+
+        public async Task PatchIncrementalTimeSeries()
+        {
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    session.Store(new User(), "users/1-A");
+                    session.SaveChanges();
+
+                    var baseline = DateTime.Today;
+
+                    List<double> values = new List<double>();
+                    List<DateTime> timeStamps = new List<DateTime>();
+
+                    for (var cnt = 0; cnt < 100; cnt++)
+                    {
+                        values.Add(100);
+                        timeStamps.Add(baseline.AddSeconds(cnt));
+                    }
+
+                    session.Advanced.Defer(new PatchCommandData("users/1-A", null,
+                        new PatchRequest
+                        {
+                            Script = @"
+                                var i = 0;
+                                for(i = 0; i < $values.length; i++)
+                                {
+                                    timeseries(id(this), $timeseries)
+                                    .increment (
+                                        new Date($timeStamps[i]), 
+                                        $values[i]);
+                                }",
+
+                            Values =
+                            {
+                                { "timeseries", "INC:StockPrice" },
+                                { "timeStamps", timeStamps},
+                                { "values", values },
+                            }
+                        }, null));
+
+                    #region incremental_PatchIncrementalTimeSeries
+                    session.Advanced.Defer(new PatchCommandData("users/1-A", null,
+                        new PatchRequest
+                        {
+                            Script = @"
+                                var i = 0;
+                                for(i = 0; i < $timeStamps.length; i++)
+                                {
+                                    timeseries(id(this), $timeseries)
+                                    .increment (
+                                        new Date($timeStamps[i]), 
+                                        $factor);
+                                }",
+
+                            Values =
+                            {
+                                { "timeseries", "INC:StockPrice" },
+                                { "timeStamps", timeStamps},
+                                { "factor", 2 },
+                            }
+                        }, null));
+                    #endregion
+
+                    session.SaveChanges();
+                }
+            }
+        }
+
+
 
 
         private struct Downloads
