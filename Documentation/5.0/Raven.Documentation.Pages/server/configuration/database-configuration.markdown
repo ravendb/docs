@@ -1,7 +1,9 @@
 # Configuration: Database
 
-After editing & saving a configuration key, the change does not take effect 
-  until the database is [reloaded via the Studio](../../studio/database/settings/database-settings#how-to-reload-the-database)
+* This article describes database configuration settings. 
+
+* After editing & saving a configuration key, the change does not take effect 
+  until the database is [disabled and enabled via the Studio](../../studio/database/settings/database-settings#how-to-reload-the-database)
   or via [API operations](../../client-api/operations/maintenance/configuration/database-settings-operation).  
 
 {WARNING: Warning}
