@@ -1,4 +1,4 @@
-﻿# Time Series: JavaScript Support
+﻿# Incremental Time Series: JavaScript Support
 
 {NOTE: }
 
@@ -7,26 +7,42 @@
   [Javascript Support](../../../../document-extensions/timeseries/client-api/javascript-support) 
   has been extended to support incremental time series.  
 
-* You can use the Javascript [Increment](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support#increment) 
+* You can use the Javascript [timeseries.increment](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support#timeseries.increment) 
   method to create and modify incremental time series and their entries.  
   The method behaves the same way it does when it is called [using C#](../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment).  
 
-* Incremental time series **cannot** use the non-incrmental time series 
-  [Append](../../../../document-extensions/timeseries/client-api/javascript-support#section-1) method.  
+* Incremental time series **cannot** use the non-incremental time series 
+  [timeseries.append](../../../../document-extensions/timeseries/client-api/javascript-support#section-1) method.  
 
 * Other Javascript methods available for an incremental time series:  
-   * [delete](../../../../document-extensions/timeseries/client-api/javascript-support#section-2)   
-   * [get](../../../../document-extensions/timeseries/client-api/javascript-support#section-3)  
+   * [timeseries.delete](../../../../document-extensions/timeseries/client-api/javascript-support#section-2)   
+   * [timeseries.get](../../../../document-extensions/timeseries/client-api/javascript-support#section-3)  
 
 * In this page:  
-  * [`Increment`](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support#increment)  
-  * [Usage Samples](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support#usage-sample)  
+  * [The `timeseries` Interface](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support#the-timeseries-interface)  
+  * [`timeseries.increment`](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support#timeseries.increment)  
+  * [Usage Sample](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support#usage-sample)  
 
 {NOTE/}
 
----
+{PANEL: The `timeseries` Interface}
 
-{PANEL: `Increment`}
+* Use `timeseries (doc, name)` to  choose a time series by the ID of its owner document and 
+  by the series name.  
+
+       | Parameter | Type | Description 
+       |:---:|:---:| --- |
+       | doc | `string` <br> or <br> `document instance` | Document ID, e.g. `users/1-A` <br> <br> e.g. `this`  
+       | name | `string` | Incremental time series Name (e.g. `INC:StockPrice`) 
+
+* Use one of the following methods to access the chosen time series:  
+   * [timeseries.increment](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support#the-timeseries-interface)  
+   * [timeseries.delete](../../../../document-extensions/timeseries/client-api/javascript-support#section-2)  
+   * [timeseries.get](../../../../document-extensions/timeseries/client-api/javascript-support#section-3)  
+
+{PANEL/}
+
+{PANEL: `timeseries.increment`}
 
 * There are four `Increment` methods:  
    * Increment a time series entry's array of values at the provided timestamp.   
@@ -67,6 +83,10 @@ that has been originally miscalculated.
 {PANEL/}
 
 ## Related articles
+
+**Javascript**  
+[Knowledge Base: JavaScript Engine](../../../../server/kb/javascript-engine)  
+[Time Series: Javascript Support](../../../../document-extensions/timeseries/client-api/javascript-support)  
 
 **Time Series Overview**  
 [Time Series Overview](../../../../document-extensions/timeseries/overview)  

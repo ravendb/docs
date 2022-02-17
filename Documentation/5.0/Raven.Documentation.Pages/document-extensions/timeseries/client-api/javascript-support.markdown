@@ -121,6 +121,10 @@ Use this method to retrieve a range of time series entries.
 
 ## Related articles
 
+**Javascript**  
+[Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine)  
+[Incremental Time Series: Javascript Support](../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support)  
+
 **Time Series Overview**  
 [Time Series Overview](../../../document-extensions/timeseries/overview)  
 
