@@ -1,8 +1,8 @@
 # Apply Database Configuration Settings
 
 * `PutDatabaseSettingsOperation` saves new database settings.
-* `ToggleDatabasesStateOperation` disables/enables database to apply new settings because changes 
-  only take effect when a database is loading or enabled.  See [code sample](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation) below. 
+* `ToggleDatabasesStateOperation` disables/enables database. This can be used to apply new settings because configurations 
+  are loaded on startup. A database reboot is required for changes to take effect. See [code sample](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation) below. 
   * The first line should give the argument `true` so that the database is disabled.  
   * The next line should give the argument `false` to enable the database, thus applying the changes that were saved.
 * `GetDatabaseSettingsOperation` shows a dictionary of newly configured settings.
@@ -25,16 +25,55 @@ In this page:
 
 ## Syntax
 
-| Method | Type | Arguments | Description |
-| -------- | ---- | ------ | -------------------|
-| `PutDatabaseSettingsOperation` | `string` | `store.Database, settings` | Saves new database settings |
-| `ToggleDatabasesStateOperation` | `bool` | `store.Database, disable: true` | Disables database |
-| `ToggleDatabasesStateOperation` | `bool` | `store.Database, disable: false` | Enables (reloads) database to apply saved settings |
-| `GetDatabaseSettingsOperation` | `string` | `store.Database`, `Assert.NotNull(settings)` | Shows newly configured settings |
+{NOTE: }
+[PutDatabaseSettingsOperation()](../../../../client-api/operations/maintenance/configuration/database-settings-operation#putdatabasesettingsoperation)  
 
-### Using Statements
+`public PutDatabaseSettingsOperation(string databaseName, Dictionary<string, string> configurationSettings)`
 
-{CODE using@ClientApi\Operations\ClientConfig.cs /}
+| Parameters | Type | Description |
+| -------- | ---- | -------------------|
+| Database name | `string` | Select database to change settings for. |
+| `Dictionary<string, string> configurationSettings` | `string` | Pass configuration settings. |
+
+ | Return Type | Description |
+ | ---- | -------------------|
+ | `PutDatabaseConfigurationSettingsCommand` | Saves settings (must still disable -> enable to apply new configurations) |
+
+ {NOTE/}
+
+{NOTE: }
+
+[ToggleDatabasesStateOperation()](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation)  
+
+`public ToggleDatabasesStateOperation(string databaseName, bool disable)`  
+
+ | Parameters | Type | Description |
+| -------- | ---- | -------------------|
+| Database name | `string` | Select database to change settings for. |
+| disable: `true` | `bool` | Disable database. |
+| disable: `false` | `bool` | Enable database - applies new configurations. |
+
+ | Return Type | Description |
+ | ---- | -------------------|
+ | `DisableDatabaseToggleResult` | `true` disables database. Then enable it to reboot quickly |
+
+{NOTE/}
+
+{NOTE: }
+
+[GetDatabaseSettingsOperation()](../../../../client-api/operations/maintenance/configuration/database-settings-operation#getdatabasesettingsoperation)  
+
+`public GetDatabaseSettingsOperation(string databaseName)`
+
+ | Parameters | Type | Description |
+| -------- | ---- | -------------------|
+| Database name | `string` | Select database to view its new settings. |
+
+  | Return Type | Description |
+ | ---- | -------------------|
+ | `settings` | View new database configuration settings |
+
+ {NOTE/}
 
 {PANEL: PutDatabaseSettingsOperation}
 

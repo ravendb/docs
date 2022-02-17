@@ -1,12 +1,10 @@
-﻿#region using
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.Configuration;
 using Raven.Client.Http;
 using Raven.Client.ServerWide.Operations;
 using Xunit;
 using Raven.Client.ServerWide.Operations.Configuration;
-#endregion
 
 namespace Raven.Documentation.Samples.ClientApi.Operations
 {
