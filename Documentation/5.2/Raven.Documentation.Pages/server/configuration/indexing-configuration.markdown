@@ -93,8 +93,8 @@ Set how many seconds to keep a superseded auto index.
 {PANEL:Indexing.TimeSinceLastQueryAfterWhichDeepCleanupCanBeExecutedInMin}
 
 Set how many minutes to wait before deep cleaning an idle index.  
-A deep clean can cause the next batch process to take longer to process a query  
-(similar to the first time an index is being built).  
+Deep cleanup reduces the cost of idle indexes.  
+It might slow the first query after the deep cleanup, thereafter queries return to normal performance.  
 
 - **Type**: `int`
 - **Default**: `10`
