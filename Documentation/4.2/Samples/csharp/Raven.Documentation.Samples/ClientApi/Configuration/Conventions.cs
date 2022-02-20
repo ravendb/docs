@@ -92,9 +92,7 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     #endregion
                }
             };
-        }
-    };
-            
+
             var stor2e = new DocumentStore()
             {
                 Conventions =
@@ -105,5 +103,9 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                 }
             };
         }
+    };
+            
+
+        
     }
-}
+
