@@ -33,11 +33,8 @@ In this page:
 | Parameters | Type | Description |
 | -------- | ---- | -------------------|
 | Database name | `string` | Select database to change settings for. |
-| `Dictionary<string, string> configurationSettings` | `string` | Pass configuration settings. |
+| Configuration Settings | Dictionary<string, string> | Pass configuration settings. |
 
- | Return Type | Description |
- | ---- | -------------------|
- | `PutDatabaseConfigurationSettingsCommand` | Updates settings (must still disable -> enable to apply new configurations) |
 
  {NOTE/}
 
@@ -55,7 +52,7 @@ In this page:
 
  | Return Type | Description |
  | ---- | -------------------|
- | `DisableDatabaseToggleResult` | `true` disables database. Then enable it to reboot quickly |
+ | `DisableDatabaseToggleResult` | The result of a disable or enable database. |
 
 {NOTE/}
 
@@ -71,7 +68,7 @@ In this page:
 
   | Return Type | Description |
  | ---- | -------------------|
- | `settings` | View new database configuration settings |
+ | `DatabaseSettings` | View new database configuration settings |
 
  {NOTE/}
 
