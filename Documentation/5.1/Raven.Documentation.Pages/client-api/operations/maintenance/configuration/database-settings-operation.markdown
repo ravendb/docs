@@ -48,7 +48,6 @@ In this page:
 | -------- | ---- | -------------------|
 | Database name | `string` | Select database to change settings for. |
 | disable: `true` | `bool` | Disable database. |
-| disable: `false` | `bool` | Enable database - applies new configurations. |
 
  | Return Type | Description |
  | ---- | -------------------|
