@@ -14,7 +14,7 @@ In this page:
 * [Types of Index Tracks](../../../studio/database/indexes/indexing-performance#types-of-index-tracks)
 * [Index Statistics View](../../../studio/database/indexes/indexing-performance#index-statistics-view)
 * [Common Indexing Issues](../../../studio/database/indexes/indexing-performance#common-indexing-issues)
-  - [Resource Overload](../../../studio/database/indexes/indexing-performance#resource-overload)
+  - [Resource Exhaustion](../../../studio/database/indexes/indexing-performance#resource-exhaustion)
   - [Low Memory](../../../studio/database/indexes/indexing-performance#low-memory)
   - [Concurrent Processing of Too Many Indexes](../../../studio/database/indexes/indexing-performance#concurrent-processing-of-too-many-indexes)
   - [LoadDocument Misuse](../../../studio/database/indexes/indexing-performance#loaddocument-misuse)
@@ -147,7 +147,7 @@ Click the following links to learn more about defining indexes via the Studio:
        The batch managed to cover all of the documents needed.  
      - **(Name of the method used to create a batch stop)**  
        There are a number of configurations that break up large batch processes into smaller batches to prevent exhausting system resources.  
-       While these batch stops prevent system overload, they also point to potential opportunities to optimize your indexes.  
+       While these batch stops prevent system exhaustion, they also point to potential opportunities to optimize your indexes.  
        These situations are discussed in the section on [common indexing issues](../../../studio/database/indexes/indexing-performance#common-indexing-issues)
 3. **Storage** stages  
      The amount of time it took to read or write the data to disk.  
@@ -171,7 +171,7 @@ batch stops to break up huge batch processes into smaller batches to prevent exh
 If a configuration is specific to an index, it can be [set in the Studio](../../../studio/database/indexes/create-map-index#configuration).  
 If it is a server-wide only configuration, it must be set in the server's [settings.json](../../../server/configuration/configuration-options#json).  
 
-While they prevent system overloads, batch stops also point to potential **opportunities to optimize** your indexes.  
+While they prevent system exhaustion, batch stops also point to potential **opportunities to optimize** your indexes.  
  
 Batch stops break up processes into smaller batches when  
 
@@ -183,10 +183,10 @@ Batch stops break up processes into smaller batches when
 
 ---
 
-#### Resource Overload
+#### Resource Exhaustion
 
 Some indexes are responsible for a huge dataset and/or have very complex, demanding definitions.  
-To prevent resource overload, RavenDB can break up large batches into smaller ones.  
+To prevent resource exhaustion, RavenDB can break up large batches into smaller ones.  
 You can configure [batch stops](../../../studio/database/indexes/indexing-performance#common-indexing-issues) with the following methods:
 
 - [Indexing.MapTimeoutInSec](../../../server/configuration/indexing-configuration#indexing.maptimeoutinsec)  
