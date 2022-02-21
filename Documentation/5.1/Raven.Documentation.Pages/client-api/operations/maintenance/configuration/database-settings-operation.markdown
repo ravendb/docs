@@ -37,7 +37,7 @@ In this page:
 
  | Return Type | Description |
  | ---- | -------------------|
- | `PutDatabaseConfigurationSettingsCommand` | Saves settings (must still disable -> enable to apply new configurations) |
+ | `PutDatabaseConfigurationSettingsCommand` | Updates settings (must still disable -> enable to apply new configurations) |
 
  {NOTE/}
 
