@@ -47,7 +47,7 @@ In this page:
  | Parameters | Type | Description |
 | -------- | ---- | -------------------|
 | Database name | `string` | Select database to change settings for. |
-| disable: `true` | `bool` | Disable database. |
+| disable | `bool` | Expected state of database. |
 
  | Return Type | Description |
  | ---- | -------------------|
