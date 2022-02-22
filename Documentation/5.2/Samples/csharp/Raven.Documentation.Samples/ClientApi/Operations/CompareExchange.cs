@@ -347,8 +347,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                    (new SessionOptions
                    {TransactionMode = TransactionMode.ClusterWide}))
             {
-                await session.StoreAsync(new User(), "users/johndoe");
                 // an atomic guard Will be used here
+                await session.StoreAsync(new User(), "users/johndoe");
                 await session.SaveChangesAsync();
             }
             #endregion
@@ -372,10 +372,10 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             using (var session = store.OpenAsyncSession
                    (new SessionOptions
                     {TransactionMode = TransactionMode.ClusterWide,
-                     DisableAtomicDocumentWritesInClusterWideTransaction = true}))
+                       // no atomic guards will be used in this session
+                       DisableAtomicDocumentWritesInClusterWideTransaction = true}))
             {
                 await session.StoreAsync(new User(), "users/johndoe");
-                // an atomic guard will Not be used here
                 await session.SaveChangesAsync();
             }
             #endregion
