@@ -39,7 +39,6 @@ There is one prerequsite and one recommendation for the Embedded package:
 Prerequsite:
 
 - Install [.NET Core runtime](https://dotnet.microsoft.com/en-us/download) either manually or [along with a RavenDB full version](embedded#setting-server-directory)
-  - .NET Core is available for Windows, Linux, macOS, and Docker.
   - Be sure that the RavenDB server [FrameworkVersion](../server/embedded#net-frameworkversion) definition matches the .NET Core 
     version that you install.  
 
@@ -121,7 +120,7 @@ Install-Package RavenDB.Embedded -Version 4.1.0
 RavenDB Embedded Server is available under `EmbeddedServer.Instance`. In order to start it call `StartServer` method.
 {CODE start_server@Server\Embedded.cs /}
 
-For more control on how to start the server just pass to `StartServer` method a `ServerOptions` object and that`s it.
+For more control on how to start the server, pass to `StartServer` method a `ServerOptions` object.
 
 ### ServerOptions
 
@@ -136,7 +135,7 @@ Thus, by leaving the default FrameworkVersion definition, RavenDB embedded serve
 version that is currently running on the machine, starting from the version at the time of the server release. 
 
 > .NET Core versions are specified in each RavenDB release "What's new" article if .NET was updated in that release.  
-> Be sure to select the RavenDB version number that you are using.
+> Be sure to specify the RavenDB version number that you are using.
 
 To stay within a major or minor .NET release, but ensure flexibility with patch releases, 
 use a floating integer `x`.  
