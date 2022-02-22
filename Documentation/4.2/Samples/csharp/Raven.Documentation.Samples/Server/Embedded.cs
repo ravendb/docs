@@ -87,6 +87,15 @@ namespace Raven.Documentation.Samples.Server
 
             #endregion
 
+            #region start_server_with_FrameworkVersion_defined
+
+            EmbeddedServer.Instance.StartServer(new ServerOptions
+            {
+                FrameworkVersion = "3.1.15+",
+            });
+
+            #endregion
+
             #region start_server_with_server_directory_option
 
             EmbeddedServer.Instance.StartServer(new ServerOptions
