@@ -333,36 +333,56 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             }
         }
 
-        public async Task AtomicGuards()
+        public async Task CreateAtomicGuard()
         {
-            using (var documentStore = new DocumentStore())
+            //var (nodes, leader) = await CreateRaftCluster(3);
+            using var store = new DocumentStore
             {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "test"
+            }.Initialize();
 
-                #region atomc-guard_enabled
-                using (var session = documentStore.OpenAsyncSession
-                       (new SessionOptions
-                        { TransactionMode = TransactionMode.ClusterWide }))
-                {
-                    // an atomic guard will be created for this transaction
-                    await session.StoreAsync(new User(), "users/johndoe");
-                    await session.SaveChangesAsync();
-                }
-                #endregion
-
-                #region atomc-guard_disabled
-                using (var session = documentStore.OpenAsyncSession
-                       (new SessionOptions
-                       {TransactionMode = TransactionMode.ClusterWide,
-                        // disable automatic creation of atomic guards
-                        DisableAtomicDocumentWritesInClusterWideTransaction = true }))
-                {
-                    // an atomic guard will not be created automatically for this transaction
-                    session.Advanced.ClusterTransaction.CreateCompareExchangeValue("users/johndoe", "johndoe");
-                    await session.StoreAsync(new User(), "users/johndoe");
-                    await session.SaveChangesAsync();
-                }
-                #endregion
+            #region atomic-guards-enabled
+            using (var session = store.OpenAsyncSession
+                   (new SessionOptions
+                   {TransactionMode = TransactionMode.ClusterWide}))
+            {
+                await session.StoreAsync(new User(), "users/johndoe");
+                // an atomic guard Will be used here
+                await session.SaveChangesAsync();
             }
+            #endregion
+
+            // WaitForUserToContinueTheTest(store);
+
+            var result = await store.Operations.SendAsync(new GetCompareExchangeValuesOperation<User>(""));
+        }
+
+        public async Task DoNotCreateAtomicGuard()
+        {
+            //var (nodes, leader) = await CreateRaftCluster(3);
+            using var store = new DocumentStore
+            {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "test"
+            }.Initialize();
+
+
+            #region atomic-guards-disabled
+            using (var session = store.OpenAsyncSession
+                   (new SessionOptions
+                    {TransactionMode = TransactionMode.ClusterWide,
+                     DisableAtomicDocumentWritesInClusterWideTransaction = true}))
+            {
+                await session.StoreAsync(new User(), "users/johndoe");
+                // an atomic guard will Not be used here
+                await session.SaveChangesAsync();
+            }
+            #endregion
+
+            // WaitForUserToContinueTheTest(store);
+
+            var result = await store.Operations.SendAsync(new GetCompareExchangeValuesOperation<User>(""));
         }
 
         private class User
