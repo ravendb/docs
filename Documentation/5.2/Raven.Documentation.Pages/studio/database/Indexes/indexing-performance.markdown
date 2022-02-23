@@ -90,9 +90,11 @@ In this page:
 
 {INFO: Editing an Index in the Studio}
 Click the following links to learn more about defining indexes via the Studio:  
+
 - [Map Index](../../../studio/database/indexes/create-map-index)  
 - [Multi-Map Index](../../../studio/database/indexes/create-multi-map-index)  
 - [Map-Reduce Index](../../../studio/database/indexes/create-map-reduce-index)  
+
 {INFO/}
 
 {PANEL/}
@@ -200,15 +202,20 @@ You can configure [batch stops](../../../studio/database/indexes/indexing-perfor
 
 #### Low Memory 
 
-- [Low Memory](../../../server/configuration/memory-configuration#memory.lowmemorylimitinmb) resources can slow down your system and result in [batch stops](../../../studio/database/indexes/indexing-performance#common-indexing-issues).  
-  This can happen on a local machine or [basic](../../../cloud/cloud-instances#basic-grade-production-cluster) cloud instances.  
-    * Unless you're running a [production cloud tier](../../../) with CPU priority of [standard](../../../cloud/cloud-instances#standard-grade-production-cluster) 
+* [Low Memory](../../../server/configuration/memory-configuration#memory.lowmemorylimitinmb) resources can slow down your system and result in [batch stops](../../../studio/database/indexes/indexing-performance#common-indexing-issues). 
+   * **On a local machine**  
+     * You can upgrade your hardware, divide the work onto more machines in a cluster, and/or optimize your indexes.  
+     * Until then, there are a number of [indexing configurations](../../../server/configuration/indexing-configuration#indexing.mapbatchsize) that you can configure
+      to break up processes into smaller batches. 
+  * **Cloud server**  
+    Your indexing process will continue until it is finished, but will be broken up into smaller batches and continue when enough CPU credits accumulate.  
+    This can happen on [basic](../../../cloud/cloud-instances#basic-grade-production-cluster)-level cloud instances.  
+     * Unless you're running a [production cloud tier](../../../) with CPU priority of [standard](../../../cloud/cloud-instances#standard-grade-production-cluster) 
     or [Performance](../../../cloud/cloud-instances#performance-grade-production-cluster), your cluster is [burstable and subject to throttling](../../../cloud/cloud-overview#budget-credits-and-throttling).  
     This means that you have CPU credits with limits.  If you have reached your credit limit, RavenDB will wait until you've 
     accumulated enough credits to run another batch process.  
     This causes indexing to seem slow.  
-    * On a local machine, you can upgrade your hardware, divide the work onto more machines in a cluster, and/or optimize your indexes. 
-    * On a cloud instance, you can [upgrade](../../../cloud/portal/cloud-portal-products-tab) your instance, [scale](../../../cloud/cloud-scaling), 
+     * On a cloud instance, you can [upgrade](../../../cloud/portal/cloud-portal-products-tab) your instance, [scale](../../../cloud/cloud-scaling), 
       [externally replicate](../../../studio/database/tasks/ongoing-tasks/external-replication-task) to new instances, and/or optimize your indexes.  
 
 ---
