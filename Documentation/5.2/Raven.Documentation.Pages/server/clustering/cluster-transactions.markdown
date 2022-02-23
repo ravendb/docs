@@ -1,19 +1,24 @@
 # Cluster: Cluster-Wide Transactions
+---
 
-Cluster transactions are a way to ensure that certain operations will favor consistency over availability in the CAP theorem.
+{NOTE: }
 
-This page contains:
+* Cluster transactions are a way to ensure that certain operations will favor consistency over availability in the CAP theorem.  
+* Code examples and client API can be found [here](../../client-api/session/saving-changes#transaction-mode---cluster-wide).
 
-- [Why do we need Cluster Wide Transactions](../../server/clustering/cluster-transactions#why-cluster-wide-transactions)
-- [How cluster transaction works](../../server/clustering/cluster-transactions#how-cluster-transaction-works) described by the flow of a cluster transaction request example.
-- [Cluster Transaction Properties](../../server/clustering/cluster-transactions#cluster-transaction-properties)
-- [Concurrent Cluster Wide and Single-Node Transactions](../../server/clustering/cluster-transactions#oncurrent-cluster-and-single-node-transactions)
-- [Failure modes in cluster wide transactions](../../server/clustering/cluster-transactions#failure-modes)
-- [Debug cluster wide transaction](../../server/clustering/cluster-transactions#debug-cluster-wide-transaction)
+* This page contains:
+   * [Why Cluster Wide Transactions](../../server/clustering/cluster-transactions#why-cluster-wide-transactions)
+   * [How Cluster Transactions Work](../../server/clustering/cluster-transactions#how-cluster-transactions-work) described by the flow of a cluster transaction request example.
+   * [Cluster Transactions Properties](../../server/clustering/cluster-transactions#cluster-transactions-properties)
+   * [Concurrent Cluster Wide and Single-Node Transactions](../../server/clustering/cluster-transactions#concurrent-cluster-wide-and-single-node-transactions)
+   * [Failure Modes in Cluster Wide Transactions](../../server/clustering/cluster-transactions#failure-modes-in-cluster-wide-transactions)
+   * [Debug Cluster Wide Transactions](../../server/clustering/cluster-transactions#debug-cluster-wide-transactions)
 
-Code examples and client API can be found [here](../../client-api/session/saving-changes#transaction-mode---cluster-wide).
+{NOTE/}
 
-## Why Cluster Wide Transactions
+---
+
+{PANEL: Why Cluster Wide Transactions}
 
 Usually, RavenDB's uses the multi master model and apply a transaction on a single node first then asynchronously replicates the data to other
 members in the cluster. This ensures that even in the presence of network partitions or hard failures RavenDB is able to 
@@ -31,7 +36,9 @@ the cluster. If it is not able to do so, the cluster wide transaction will fail.
 For the rest of this document we are going to refer to single node transactions, applied on a single node and then disseminated using async
 replication vs. cluster wide transactions that are accepted by a majority of the nodes in the cluster and then applied on each of them.
 
-## How Cluster Transaction Works
+{PANEL/}
+
+{PANEL: How Cluster Transactions Work}
 
 1. A request sent from the client via [SaveChanges()](../../client-api/session/saving-changes) will generate a [Raft Command](../../server/clustering/rachis/consensus-operations#implementation-details) and the server will wait for a consensus on it.
 2. When consensus is achieved, each node will validate the compare exchange values first, if this fails the transaction is rolled back.
@@ -46,28 +53,34 @@ On success, the client receives the transaction's [Raft Index](../../server/clus
 
 7. In the background the [Cluster Observer](../../server/clustering/distribution/cluster-observer) will track the completed cluster transactions and order to remove the local cluster state machine only when it has been successfully committed on _all_ of the database nodes.
 
-## Cluster Transaction Properties
+{PANEL/}
+
+{PANEL: Cluster Transactions Properties}
 
 The Cluster transaction feature allows to perform consistent cluster wide ACID transactions and can be composed from two optional parts:  
 
 1. [Compare Exchange](../../client-api/operations/compare-exchange/overview) values, which will be validated and executed by the cluster.
    {INFO: }
-   Compare exchange values can be created and managed explicitly in your code.  
+   Compare exchange key/value pairs can be created and managed explicitly in your code.  
    Starting from RavenDB 5.2, they can also be created and managed automatically by RavenDB.  
-   Compare exchange values that are automatically administered by RavenDB are called 
+   Compare exchange entries that are automatically administered by RavenDB are called 
    **Atomic Guards**, read more about them [here](../../client-api/operations/compare-exchange/atomic-guards).  
    {INFO/}
 2. Store/Delete operations on documents, which are executed by the database nodes after the transaction has been accepted.
 
 **Atomicity** - After having a quorum for the cluster transaction request by raft and successful concurrency check for the compare exchange values, it is guaranteed to be executed.
-Failure during the quorum or the concurrency check will roll back the transaction, while failure during the commit of the documents will halt any further cluster transactions execution on the database until that failure is remedied (failure mode for the documents commits are described later [here](../../server/clustering/cluster-transactions#failure-modes-for-cluster-wide_transactions)).
+Failure during the quorum or the concurrency check will roll back the transaction, while failure during the commit of the documents will halt any further cluster transactions execution on the database until that failure is remedied (failure mode for the documents commits are described later [here](../../server/clustering/cluster-transactions#failure-modes-in-cluster-wide-transactions)).
 
 **Consistency** - Is guaranteed on the requested node. The node will complete the request only when the transaction is completed and the documents are persistent on the node. The response to the client will contain the cluster transaction [Raft Index](../../server/clustering/rachis/consensus-operations#raft-index) 
 so it be added to any future request in order to ensure that the node has committed that transaction before serving the client. 
 
 **Durability** - Once the transaction has been accepted it is guaranteed to run on all the database's node, even in the case of system (or even cluster-wide) restarts or failures.
 
-## Concurrent Cluster and Single-Node Transactions
+{PANEL/}
+
+{PANEL: Concurrent Cluster Wide and Single-Node Transactions}
+
+---
 
 ### Case 1: Multiple concurrent cluster transactions  
 
@@ -81,6 +94,8 @@ database nodes without regards to the current node state.
 
 {INFO If the concurrency check of the compare exchange has passed, the transaction will proceed and will be committed on all the database nodes. /}
 
+---
+
 ### Case 2: Concurrent cluster and non-cluster transaction
 
 When mixing cluster wide transactions and single node transactions, you need to be aware of the rules RavenDB uses to resolve conflicts between them.
@@ -92,21 +107,31 @@ transaction has already been applied (either directly on the node or via replica
 
 [Replication](../../server/clustering/replication/replication) will try to synchronize the data, so in order to avoid conflicts every document that was modified under the cluster transaction will receive the special `RAFT:int64-sequential-number` [Change Vector](../../server/clustering/replication/change-vector) and the special flag `FromClusterTx` which ensure precedence over a regular change vector.
 
-## Case 3: Cluster transaction with an External incoming replication
+---
+
+### Case 3: Cluster transaction with an External incoming replication
 
 While the internal replication with the cluster is discussed in the previous case, the case where two clusters are connected via external replication is a bit different.
 
 The logic of documents that were changed by the cluster transaction versus document that were changed be the regular transaction stays the same, but upon the case where a conflict is on a document that was changed by both local cluster transaction and a remote cluster transaction, the local one will have precedence, but the `FromClusterTx` flag is removed, so on the next conflict the local is no longer treated as a modified by cluster transaction document.
 
-## Failure Modes
+{PANEL/}
+
+{PANEL: Failure Modes in Cluster Wide Transactions}
+
+---
 
 ### No majority
 
 Cluster wide transaction can operate only with a functional cluster, so if no consensus was acquired for the cluster transaction by the majority of the nodes or currently there is no leader, the transaction will be rolled back.
 
+---
+
 ### Concurrency issues for compare exchange operations
 
 Acquiring a consensus doesn't mean the acceptance of the transaction. Once the consensus is acquired, each node will do a concurrency check on the compare exchange values, and if this fails the transaction rolled back.   
+
+---
 
 ### Failure to apply transaction on database nodes
 
@@ -120,7 +145,9 @@ And any failure at this stage must be remedied.
 
 {WARNING The execution of cluster transaction on the database will be stopped until this type of failure will be fixed. /}
 
-## Debug Cluster Wide Transaction
+{PANEL/}
+
+{PANEL: Debug Cluster Wide Transactions}
 
 To view the current state of the cluster transaction that are waited to completed by all of the database node can be found at:
 
@@ -134,3 +161,18 @@ Parameters
 | --- | --- | --- |
 |`from` (optional) | `long` (default: 0)| Get cluster transactions from the raft change vector index. |
 |`take` (optional) | `int` (default: `int.MaxValue`) | The number of cluster transaction to show. |
+
+{PANEL/}
+
+## Related Articles
+
+### Client API
+- [Compare Exchange: Overview](../../client-api/operations/compare-exchange/overview)
+- [Atomic Guards](../../client-api/operations/compare-exchange/atomic-guards)
+
+### Session
+- [Cluster-Wide Session](../../client-api/session/cluster-transaction#open-cluster-wide-session)
+
+### Server
+- [Cluster-Wide Transactions ACIDity](../../server/clustering/cluster-transactions#cluster-transaction-properties)
+

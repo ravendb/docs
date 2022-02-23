@@ -6,10 +6,11 @@
 * **Atomic guards** are 
   [compare exchange](../../../client-api/operations/compare-exchange/overview) 
   key/value pairs that RavenDB creates and manages automatically to guarantee the 
+  atomicity and overall 
   [ACID](../../../server/clustering/cluster-transactions#cluster-transaction-properties) 
   properties of cluster-wide transactions.  
 
-* Prior to the introduction of this feature (in RavenDB 5.2), client code had to 
+* Prior to the introduction of this feature (in **RavenDB 5.2**), client code had to 
   administer compare exchange entries explicitly. You can still do that if you wish, by 
   [disabling](../../../client-api/operations/compare-exchange/atomic-guards#disabling-atomic-guards) 
   the automatic usage of atomic guards in a session and defining and managing compare exchange 
@@ -76,7 +77,7 @@ removed by a RavenDB cleanup task. You do not need to handle the cleanup yoursel
 
 {NOTE: }
 Since different cleanup tasks handle the removal of deleted and expired documents 
-and the removal of expired atomic guards, it may heppen that atomic guards of removed 
+and the removal of expired atomic guards, it may happen that atomic guards of removed 
 documents would linger in the compare exchange entries list a short while longer before 
 they are removed.  
 
