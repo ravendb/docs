@@ -42,6 +42,32 @@ If not set, or set to null - use 'Temp' folder inside the index data directory
 
 {PANEL/}
 
+{PANEL:Indexing.MaxNumberOfConcurrentlyRunningIndexes}
+
+Set how many indexes can run concurrently to prevent overwhelming system resources and slow indexing.
+
+- **Type**: `int`
+- **Default**: `null` No limit
+- **MinValue**: 1
+- **Scope**: Server-wide only (can be configured only in the settings.json file located in your RavenDB executable folder)
+
+{PANEL/}
+
+{PANEL:Indexing.IndexStartupBehaviorType}
+
+Manipulate index startup behavior on database load with the following options:  
+(This method can prevent slow index startup behavior in scenarios where many indexes open and 
+start processing concurrently, which would cause IO usage to max out system resources.)
+
+- **Type**: `string`
+- **Default**: Each index starts as soon as it is opened.  
+  - **Immediate**: Same as default.
+  - **Pause**: Opens all indexes, but they are paused until manually started.
+  - **Delay**: Delays starting index processes until all indexes are open.  
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
 {PANEL:Indexing.MaxTimeForDocumentTransactionToRemainOpenInSec}
 
 Set how many seconds indexing will keep document transaction open when indexing.
@@ -61,6 +87,18 @@ Set how many seconds to keep a superseded auto index.
 - **Type**: `int`
 - **Default**: `15`
 - **Scope**: Server-wide or per database
+
+{PANEL/}
+
+{PANEL:Indexing.TimeSinceLastQueryAfterWhichDeepCleanupCanBeExecutedInMin}
+
+Set how many minutes to wait before deep cleaning an idle index.  
+Deep cleanup reduces the cost of idle indexes.  
+It might slow the first query after the deep cleanup, thereafter queries return to normal performance.  
+
+- **Type**: `int`
+- **Default**: `10`
+- **Scope**: Server-wide or per database or per index
 
 {PANEL/}
 
