@@ -345,11 +345,33 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             #region atomic-guards-enabled
             using (var session = store.OpenAsyncSession
                    (new SessionOptions
-                   {TransactionMode = TransactionMode.ClusterWide}))
+                    // a cluster-wide session is opened
+                    {TransactionMode = TransactionMode.ClusterWide}))
             {
-                // an atomic guard Will be used here
+                // an atomic guard is inexplicitly created for the new document
                 await session.StoreAsync(new User(), "users/johndoe");
                 await session.SaveChangesAsync();
+            }
+
+            // two cluster-wide sessions are opened
+            using (var session1 = store.OpenAsyncSession(
+                   new SessionOptions 
+                   {TransactionMode = TransactionMode.ClusterWide}))
+            using (var session2 = store.OpenAsyncSession(
+                   new SessionOptions 
+                   {TransactionMode = TransactionMode.ClusterWide}))
+            {   // the atomic guard is inexplicitly used by both sessions.
+                // session1 is permitted to change the document,
+                // since no other session currently holds the atomic guard.  
+                var loadedUser1 = await session1.LoadAsync<User>("users/johndoe");
+                loadedUser1.Name = "jindoe";
+                // session2 is rejected with an exception,
+                // since session1 currently holds the atomic guard.  
+                var loadedUser2 = await session2.LoadAsync<User>("users/johndoe");
+                loadedUser2.Name = "jandoe";
+
+                await session1.SaveChangesAsync();
+                await session2.SaveChangesAsync();
             }
             #endregion
 
