@@ -1,8 +1,15 @@
 # Apply Database Configuration Settings
 
-* `PutDatabaseSettingsOperation` saves new database settings.
-* `ToggleDatabasesStateOperation` disables/enables database. This can be used to apply new settings because configurations 
-  are loaded on startup. A database reboot is required for changes to take effect. See [code sample](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation) below. 
+---
+
+{NOTE: }
+
+Use the following methods to change, save, and apply database configuration settings. 
+
+* `PutDatabaseSettingsOperation` sets and saves new database configurations.
+* `ToggleDatabasesStateOperation` disables/enables database.  
+  This is used after `PutDatabaseSettingsOperation` to apply new settings because configurations are loaded on startup.  
+  Database reboot is required for changes to take effect. See [code sample](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation-sample) below. 
   * The first line should give the argument `true` so that the database is disabled.  
   * The next line should give the argument `false` to enable the database, thus applying the changes that were saved.
 * `GetDatabaseSettingsOperation` shows a dictionary of newly configured settings.
@@ -19,30 +26,35 @@ Do not modify the database settings unless you are an expert and know what you'r
 In this page:
 
 * [Syntax](../../../../client-api/operations/maintenance/configuration/database-settings-operation#syntax)
-  * [PutDatabaseSettingsOperation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#putdatabasesettingsoperation)
-  * [ToggleDatabasesStateOperation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation)
-  * [GetDatabaseSettingsOperation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#getdatabasesettingsoperation)
+  * [PutDatabaseSettingsOperation Sample](../../../../client-api/operations/maintenance/configuration/database-settings-operation#putdatabasesettingsoperation-sample)
+  * [ToggleDatabasesStateOperation Sample](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation-sample)
+  * [GetDatabaseSettingsOperation Sample](../../../../client-api/operations/maintenance/configuration/database-settings-operation#getdatabasesettingsoperation-sample)
 
-## Syntax
+{NOTE/}
 
-{NOTE: }
-[PutDatabaseSettingsOperation()](../../../../client-api/operations/maintenance/configuration/database-settings-operation#putdatabasesettingsoperation)  
+{PANEL: Syntax}
 
-`public PutDatabaseSettingsOperation(string databaseName, Dictionary<string, string> configurationSettings)`
+---
+
+### `PutDatabaseSettingsOperation`
+
+See code sample for [PutDatabaseSettingsOperation()](../../../../client-api/operations/maintenance/configuration/database-settings-operation#putdatabasesettingsoperation-sample)  
+
+{CODE signature-PutConfigurationSettings@ClientApi\Operations\ClientConfig.cs /}
 
 | Parameters | Type | Description |
 | -------- | ---- | -------------------|
 | Database name | `string` | Select database to change settings for. |
 | Configuration Settings | Dictionary<string, string> | Pass configuration settings. |
 
+---
 
- {NOTE/}
 
-{NOTE: }
+### `ToggleDatabasesStateOperation`
 
-[ToggleDatabasesStateOperation()](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation)  
+See code sample for [ToggleDatabasesStateOperation()](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation-sample)  
 
-`public ToggleDatabasesStateOperation(string databaseName, bool disable)`  
+{CODE signature-ToggleDatabasesStateOperation@ClientApi\Operations\ClientConfig.cs /}
 
  | Parameters | Type | Description |
 | -------- | ---- | -------------------|
@@ -53,15 +65,15 @@ In this page:
  | ---- | -------------------|
  | `DisableDatabaseToggleResult` | The result of a disable or enable database. |
 
-{NOTE/}
+---
 
-{NOTE: }
+### `GetDatabaseSettingsOperation`
 
-[GetDatabaseSettingsOperation()](../../../../client-api/operations/maintenance/configuration/database-settings-operation#getdatabasesettingsoperation)  
+See code sample for [GetDatabaseSettingsOperation()](../../../../client-api/operations/maintenance/configuration/database-settings-operation#getdatabasesettingsoperation-sample) 
 
-`public GetDatabaseSettingsOperation(string databaseName)`
+{CODE signature-GetDatabaseSettingsOperation@ClientApi\Operations\ClientConfig.cs /}
 
- | Parameters | Type | Description |
+ | Parameter | Type | Description |
 | -------- | ---- | -------------------|
 | Database name | `string` | Select database to view its new settings. |
 
@@ -69,17 +81,20 @@ In this page:
  | ---- | -------------------|
  | `DatabaseSettings` | View new database configuration settings |
 
- {NOTE/}
 
-{PANEL: PutDatabaseSettingsOperation}
 
-The following sample shows how to use `PutDatabaseSettingsOperation` in the context of a generic database configuration.  
+ {PANEL/}
+
+{PANEL: PutDatabaseSettingsOperation Sample}
+
+The following sample shows how to use `PutDatabaseSettingsOperation` in the context of a generic database configuration. This method sets and saves new database configurations. 
+To apply the new settings, use [ToggleDatabasesStateOperation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation-sample).  
 
 {CODE ApplyDatabaseSettings-PutDatabaseSettingsOperation@ClientApi\Operations\ClientConfig.cs /}
 
 {PANEL/}
 
-{PANEL: ToggleDatabasesStateOperation}
+{PANEL: ToggleDatabasesStateOperation Sample}
 
 The following sample shows how to apply new database configurations with `ToggleDatabasesStateOperation`.  
 
@@ -90,7 +105,7 @@ The following sample shows how to apply new database configurations with `Toggle
 
 {PANEL/}
 
-{PANEL: GetDatabaseSettingsOperation}
+{PANEL: GetDatabaseSettingsOperation Sample}
 
 The following sample shows a dictionary of newly configured settings with `GetDatabaseSettingsOperation`.
 

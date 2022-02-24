@@ -61,6 +61,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     #endregion
                 }
 
+
                 {
                     #region ApplyDatabaseSettings-PutDatabaseSettingsOperation
                     // Configure database settings
@@ -84,6 +85,29 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                         return settings;
                     }
                     #endregion
+                }
+
+                {
+                    #region signature-PutConfigurationSettings
+                    static void PutConfigurationSettings(DocumentStore store, Dictionary<string, string> settings)
+                    #endregion
+                    {
+
+                    }
+
+                    #region signature-ToggleDatabasesStateOperation
+                    store.Maintenance.Server.Send(new ToggleDatabasesStateOperation(store.Database, disable: true));
+                    #endregion
+                    {
+
+                    }
+
+                    #region signature-GetDatabaseSettingsOperation
+                    var settings = store.Maintenance.Send(new GetDatabaseSettingsOperation(store.Database));
+                    #endregion
+                    {
+
+                    }
                 }
 
             }
