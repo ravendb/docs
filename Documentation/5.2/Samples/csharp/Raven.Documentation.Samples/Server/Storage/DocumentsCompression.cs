@@ -1,42 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Raven.Client;
-using Raven.Client.Documents;
-using Raven.Client.Documents.Indexes;
-using Raven.Client.Documents.Operations;
-using Raven.Client.Documents.Operations.CompareExchange;
-using Raven.Client.Documents.Operations.Configuration;
-using Raven.Client.Documents.Queries;
-using Raven.Client.Documents.Session;
-using Raven.Client.Http;
-using Raven.Client.Json;
-using Raven.Client.ServerWide;
+﻿using Raven.Client.Documents;
 using Raven.Client.ServerWide.Operations;
-using Raven.Documentation.Samples.Indexes.Querying;
 using Raven.Client.ServerWide;
 
 namespace Raven.Documentation.Samples.ClientApi
 {
     class DocumentsCompression
     {
-        
-        #region Syntax_0
+
+/*        #region Syntax_0
         public class DocumentsCompressionConfiguration
         {
             public string[] Collections { get; set; }
             public bool CompressRevisions { get; set; }
             public bool CompressAllCollections { get; set; }
         }
-        #endregion
-        
+        #endregion*/
+
 
         public void Example()
         {
-
-
             #region Example_0
             using (var store = new DocumentStore())
             {
@@ -53,6 +35,20 @@ namespace Raven.Documentation.Samples.ClientApi
             }
             #endregion
 
+            #region CompressAllCollections
+            using (var store = new DocumentStore())
+            {
+                // Retrieve database record
+                var record = store.Maintenance.Server.Send(new GetDatabaseRecordOperation(store.Database));
+
+                // To configure compression on all collections for new or edited documents
+                var dbrecord = store.Maintenance.Server.Send(new GetDatabaseRecordOperation(store.Database));
+                dbrecord.DocumentsCompression.CompressAllCollections = true;
+
+                // Update the server
+                store.Maintenance.Server.Send(new UpdateDatabaseOperation(record, record.Etag));
+            }
+            #endregion
         }
     }
 }

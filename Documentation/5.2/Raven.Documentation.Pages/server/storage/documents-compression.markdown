@@ -57,7 +57,12 @@ option in the `DatabaseRecord`.
 
 {CODE:csharp Syntax_0@Server/Storage/DocumentsCompression.cs /}  
 
-In this example, we configure compression to be active on the collection `Orders` 
+To configure compression on all collections for new or edited documents in a particular database:
+
+{CODE:csharp CompressAllCollections@Server/Storage/DocumentsCompression.cs /}  
+
+Some collections require such frequent trips to and from the disk that compressing and decompressing each time can reduce performance.  
+In this example, instead of compressing all collections, we configure compression to be active on the collection `Orders` 
 and on the revisions of all collections:  
 
 {CODE:csharp Example_0@Server/Storage/DocumentsCompression.cs /}  
