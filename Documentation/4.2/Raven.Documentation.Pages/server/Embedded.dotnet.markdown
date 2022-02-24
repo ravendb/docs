@@ -117,7 +117,9 @@ Install-Package RavenDB.Embedded -Version 4.1.0
 
 ### Starting the Server
 
-RavenDB Embedded Server is available under `EmbeddedServer.Instance`. In order to start it call `StartServer` method.
+RavenDB Embedded Server is available under `EmbeddedServer.Instance`.  
+In order to start it, call `StartServer` method.
+
 {CODE start_server@Server\Embedded.cs /}
 
 For more control on how to start the server, pass to `StartServer` method a `ServerOptions` object.
@@ -132,20 +134,31 @@ The default FrameworkVersion is defined to work with any .NET version from the t
 and newer by using the `+` moderator.  For example, `ServerOptions.FrameworkVersion = 3.1.17+`.  
 
 Thus, by leaving the default FrameworkVersion definition, RavenDB embedded servers will automatically look for the .NET 
-version that is currently running on the machine, starting from the version at the time of the server release. 
+version that is currently running on the machine, starting from the version at the time of the server release.  
 
-> .NET Core versions are specified in each RavenDB release "What's new" article if .NET was updated in that release.  
-> Be sure to specify the RavenDB version number that you are using.
+{INFO: Making Sure That You Have the Right .NET Version}
+
+Remember that each RavenDB release is programmed to work with the .NET version that was current at the time of release.  
+
+* For example, let's say you are running RavenDB 5.1. If you search the internet for "RavenDB 5.1 What's New", at the bottom of the "Server" section, 
+  you'll find that RavenDB 5.1 is programmed to work with .NET 5.0.6.  
+  * By default, your RavenDB server will look for .NET 5.0.6, 5.0.7, etc. So, as long as you have at least one of these .NET versions running on your machine,
+   RavenDB will work well.  
+   This is true if you also have .NET 6.0 running on your machine, as long as 5.0.6+ is running too.  
+  * You can have multiple .NET versions running at the same time.
+
+{INFO/}
 
 To stay within a major or minor .NET release, but ensure flexibility with patch releases, 
 use a floating integer `x`.  
 It will always use the newest version found on your machine.  
 
-For example, `ServerOptions.FrameworkVersion = 3.x` or `...3.2.x`.  
-This definition will ensure that RavenDB will stay within the 3.. release but will not look for 4.x.  
+For example, `ServerOptions.FrameworkVersion = 3.x` will work on the newest 3.x release.  
+`...= 3.2.x` will work on the newest 3.2 release.  
+Neither will look for 4.x.  
 
-Changing the default setting may cause problems if .NET is upgraded on the machine 
-beyond the version defined manually, at least until .NET 4.5, when .NET started being [backward compatible](https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/version-compatibility).  
+In version 4.5, .NET started being [backward compatible](https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/version-compatibility).  
+This is relevant for RavenDB versions 5.1 and up.  
 
 | ServerOption Name | Type | Description |
 | ------------- | ------------- | ----- |
@@ -153,10 +166,11 @@ beyond the version defined manually, at least until .NET 4.5, when .NET started 
 
 | Parameter | Description |
 | --------- | ------------- |
-| 3.1.17+ | Default setting (Actual version number is set at the time of server release.) In this example, the server will work properly with .NET versions 3.1.17 **or newer**  |
-| 3.1.17 | Server will **only** work properly with this exact .NET release |
-| 3.1.x | Server will stay current with .NET patch releases |
-| 3.x | Server will stay current with .NET minor releases and patch releases |
+| null | The server will pick the newest .NET version installed on your machine. This may cause problems with RavenDB versions 5.0 or less. |
+| 3.1.17+ | Default setting (Actual version number is set at the time of server release.) In this example, the server will work properly with .NET patch releases that are greater than or equal to 3.1.17 |
+| 3.1.17 | The server will **only** work properly with this exact .NET release |
+| 3.1.x | The server will pick the newest .NET patch release on your machine |
+| 3.x | The server will pick the newest .NET minor releases and patch releases on your machine |
 
 {CODE start_server_with_FrameworkVersion_defined@Server\Embedded.cs /}
 

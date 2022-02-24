@@ -61,13 +61,13 @@ At the end of the test we query for TestDocument where their name contains the w
 {PANEL: ConfigureServer}
 
 The `ConfigureServer` method allows you to be more in control on your server.  
-You can use it with `ServerTestOptions` to change the path to the Raven server binaries, specify data storage path, security, .NET framework, etc.
+You can use it with `TestServerOptions` to change the path to the Raven server binaries, specify data storage path, security, .NET framework, etc.
 
-{INFO:ServerTestOptions}
+{INFO:TestServerOptions}
 
-See the complete list of `ServerTestOptions`, which inherits from [ServerOptions](../server/Embedded#getting-started).  
+See the complete list of `TestServerOptions`, which inherits from [ServerOptions](../server/Embedded#getting-started).  
 
-Defining ServerTestOptions allows you to be more in control of 
+Defining TestServerOptions allows you to be more in control of 
 how the embedded server is going to run with just a minor [definition change](../start/test-driver#example-2).
 
 {INFO /}
@@ -76,10 +76,11 @@ how the embedded server is going to run with just a minor [definition change](..
 
 .NET FrameworkVersion is set to the version at the time of the RavenDB server release that was downloaded.  
 
-By default, RavenDB looks for the newest .NET version on your machine by using the `+` moderator in the definition.  
+By default, RavenDB looks for the exact release it was compiled with or newer by using the `+` moderator in the FrameworkVersion definition.  
 
 Thus, if the server on your machine is set to `ServerTestOptions.FrameworkVersion = 3.1.17+`, it will work properly with 
-all .NET versions 3.1.17 and newer, including 4.0 and up.  
+all .NET versions 3.1.17 and newer patch releases (.17, .18, .19, etc...). So, as long as you have .NET 3.1.17 or 18 or 19 on your machine, the server will run smoothly. 
+Note: You can have multiple versions of .NET running on your machine at the same time.  
 
 To learn more, including alternative settings, see the section about [setting .NET FrameworkVersion](../server/Embedded#net-frameworkversion).
 

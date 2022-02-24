@@ -59,11 +59,11 @@ At the end of the test we query for TestDocument where their name contains the w
 
 {PANEL: ConfigureServer}
 The `ConfigureServer` method allows you to be more in control on your server. 
-You can use it with `ServerTestOptions` to change the path to the Raven server binaries or to specify where your RavenDB data is stored, security, etc.
+You can use it with `TestServerOptions` to change the path to the Raven server binaries or to specify where your RavenDB data is stored, security, etc.
 
-{INFO:ServerTestOptions}
+{INFO:TestServerOptions}
 
-`ServerTestOptions` inherits from [ServerOptions](../server/Embedded#getting-started). In that way you can be more in control of how the embedded server is going to run
+`TestServerOptions` inherits from [ServerOptions](../server/Embedded#getting-started). In that way you can be more in control of how the embedded server is going to run
 with just a minor change. Here you can change your ServerDirectory.
 
 {INFO /}
