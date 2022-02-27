@@ -69,8 +69,9 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     {
                         // Save the new settings with PutDatabaseSettingsOperation
                         store.Maintenance.Send(new PutDatabaseSettingsOperation(store.Database, settings));
-                        // The following two lines are needed to disable/enable the database so that the changes take effect
+                        // Disable the database
                         store.Maintenance.Server.Send(new ToggleDatabasesStateOperation(store.Database, disable: true));
+                        // Enable the database to apply new settings
                         store.Maintenance.Server.Send(new ToggleDatabasesStateOperation(store.Database, disable: false));
                     }
                     #endregion

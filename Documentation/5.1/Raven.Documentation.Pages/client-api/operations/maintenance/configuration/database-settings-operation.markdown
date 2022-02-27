@@ -11,10 +11,14 @@ Use the following methods to change, save, and apply database configuration sett
   This is used after `PutDatabaseSettingsOperation` to apply new settings because configurations are loaded on startup. See [code sample](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation) below. 
 * `GetDatabaseSettingsOperation` shows a dictionary of newly configured settings.
 
+{INFO: }
+
 * Database settings can also be [configured via the Studio](../../../../studio/database/settings/database-settings#database-settings)
 
 * After editing & saving a configuration, the change does not take effect 
   until the database is [disabled and enabled again](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation).  
+
+{INFO/}
 
 {WARNING: Warning}
 Do not modify the database settings unless you are an expert and know what you're doing.  
@@ -61,10 +65,8 @@ This is used to disable/enable the database after `PutDatabaseSettingsOperation`
  | ---- | -------------------|
  | `DisableDatabaseToggleResult` | The result of a disable or enable database. |
 
-The following sample shows how to apply new database configurations with `ToggleDatabasesStateOperation`.  
-
-  * The first line should give the argument `true` so that the database is disabled.  
-  * The next line should give the argument `false` to enable the database, thus applying the changes that were saved.
+The following sample uses `ToggleDatabasesStateOperation` to disable and then enable the database, effectively reloading 
+the database to apply a new configuration.  
 
 {CODE ApplyDatabaseSettings-PutDatabaseSettingsOperation@ClientApi\Operations\ClientConfig.cs /}
 
@@ -73,7 +75,7 @@ The following sample shows how to apply new database configurations with `Toggle
 
 {PANEL: GetDatabaseSettingsOperation}
 
-This provides a dictionary of newly configured settings.
+Get a dictionary only of newly configured settings.
 
 {CODE signature-GetDatabaseSettingsOperation@ClientApi\Operations\ClientConfig.cs /}
 
