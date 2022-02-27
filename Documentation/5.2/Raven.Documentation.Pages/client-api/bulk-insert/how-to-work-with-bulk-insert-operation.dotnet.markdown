@@ -105,7 +105,10 @@ The following options can be configured for BulkInsert.
 
 ### SkipOverwriteIfUnchanged
 
-To reduce IO usage, `SkipOverwriteIfUnchanged` prevents re-indexing documents that weren't changed by saving only documents that were changed.
+Prevent overriding documents if there are no changes when compared to the already existing ones.  
+
+Enabling this can avoid a lot of additional work including triggering re-indexation, subscriptions, and ETL processes.  
+It introduces slight overlay into bulk insert process because of the need to compare the existing documents with the ones that are being inserted. 
 
 {CODE bulk_insert_option_SkipOverwriteIfUnchanged@ClientApi\BulkInsert\BulkInserts.cs /}
 
