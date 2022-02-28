@@ -1,12 +1,22 @@
 # Session: Querying: How to Query
+---
 
-This session explains the following methods to query a database:
+{NOTE: }
 
-* `session.Query`
-* `session.Advanced.DocumentQuery`
-* `session.Advanced.RawQuery`
+* You can query the database using these methods:  
+   * `session.Query`
+   * `session.Advanced.DocumentQuery`
+   * `session.Advanced.RawQuery`
 
-## Session.Query
+* In this page:
+   * [session.Query](../../../client-api/session/querying/how-to-query#session.query)  
+   * [session.Advanced.DocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery)  
+   * [session.Advanced.RawQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery)  
+   * [Custom Methods and Extensions for LINQ](../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq)  
+
+{NOTE/}
+
+{PANEL: `Session.Query`}
 
 The most straightforward way to issue a query is by using the `Query` method which allows you to define queries using LINQ. In order to take advantage of querying capabilities specific for RavenDB, the querying API provides extension methods that will be described later.
 
@@ -68,7 +78,9 @@ or
 {CODE-TAB:csharp:Async query_1_5_async@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TABS/}
 
-## Session.Advanced.DocumentQuery
+{PANEL/}
+
+{PANEL: Session.Advanced.DocumentQuery}
 
 The advanced querying methods accessible by `session.Advanced.DocumentQuery` is the low-level API used to query RavenDB. The entire LINQ API is the wrapper of `DocumentQuery` API and
 each query created using LINQ is built on top of it. Since it offers the full spectrum of querying capabilities, you might find it handy when doing very complex queries that are difficult
@@ -81,7 +93,9 @@ to shape using Linq.
 {CODE-TAB:csharp:Async query_1_6_async@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TABS/}
 
-## Session.Advanced.RawQuery
+{PANEL/}
+
+{PANEL: Session.Advanced.RawQuery}
 
 Queries in RavenDB use a SQL-like language called RavenDB Query Language ([RQL](../../../indexes/querying/what-is-rql)). All of the above queries generate RQL sent to the server. The session also gives you the way to express the query directly in RQL using `RawQuery` method.
 
@@ -92,7 +106,9 @@ Queries in RavenDB use a SQL-like language called RavenDB Query Language ([RQL](
 {CODE-TAB:csharp:Async query_1_7_async@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TABS/}
 
-## Custom Methods and Extensions for LINQ
+{PANEL/}
+
+{PANEL: Custom Methods and Extensions for LINQ}
 
 Available custom methods and extensions:
 
@@ -124,6 +140,8 @@ Available custom methods and extensions:
 - [SuggestUsing](../../../client-api/session/querying/how-to-work-with-suggestions)
 - ToListAsync
 - ToArrayAsync
+
+{PANEL/}
 
 ## Related Articles
 
