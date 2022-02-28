@@ -35,9 +35,11 @@ In this page:
 {PANEL: PutDatabaseSettingsOperation}
 
 This method sets and saves new database configurations.  
-To apply the new settings, use [ToggleDatabasesStateOperation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation-sample).  
+To apply the new settings, use [ToggleDatabasesStateOperation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation).  
 
-{CODE signature-PutConfigurationSettings@ClientApi\Operations\ClientConfig.cs /}
+{CODE signature-PutDatabaseSettingsOperation@ClientApi\Operations\ClientConfig.cs /}
+
+Syntax:
 
 | Parameters | Type | Description |
 | -------- | ---- | -------------------|
@@ -55,6 +57,8 @@ The following sample shows how to use `PutDatabaseSettingsOperation` in the cont
 This is used to disable/enable the database after `PutDatabaseSettingsOperation` to apply new settings because configurations are loaded on database startup.
 
 {CODE signature-ToggleDatabasesStateOperation@ClientApi\Operations\ClientConfig.cs /}
+
+Syntax:
 
  | Parameters | Type | Description |
 | -------- | ---- | -------------------|
@@ -75,17 +79,25 @@ the database to apply a new configuration.
 
 {PANEL: GetDatabaseSettingsOperation}
 
-Get a dictionary only of newly configured settings.
+Get a key/value dictionary only of newly configured database settings. Only settings that have changed are retrieved.
 
 {CODE signature-GetDatabaseSettingsOperation@ClientApi\Operations\ClientConfig.cs /}
 
+Syntax:
+
  | Parameter | Type | Description |
 | -------- | ---- | -------------------|
-| Database name | `string` | Select database to view its new settings. |
+| databaseName | `string` | Select database to view its new settings. |
 
   | Return Type | Description |
  | ---- | -------------------|
- | `DatabaseSettings` | View new database configuration settings |
+ | `DatabaseSettings` | A key/value dictionary of database settings <br> Only settings that have changed are retrieved |
+
+Definining `DatabaseSettings`:
+
+{CODE DatabaseSettingsDefinition@ClientApi\Operations\ClientConfig.cs /}
+
+Sample:
 
 Get a dictionary of newly configured settings with `GetDatabaseSettingsOperation`.
 

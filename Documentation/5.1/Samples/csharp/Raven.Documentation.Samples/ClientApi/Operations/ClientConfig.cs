@@ -5,6 +5,14 @@ using Raven.Client.Http;
 using Raven.Client.ServerWide.Operations;
 using Xunit;
 using Raven.Client.ServerWide.Operations.Configuration;
+using System.Net.Http;
+using Raven.Client.Documents.Conventions;
+using Raven.Client.Http;
+using Raven.Client.Json;
+using Raven.Client.Json.Serialization;
+using Raven.Client.Util;
+using Sparrow.Json;
+
 
 namespace Raven.Documentation.Samples.ClientApi.Operations
 {
@@ -32,6 +40,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 public long Etag { get; set; }
 
                 public ClientConfiguration Configuration { get; set; }
+            }
+            #endregion
+
+            #region DatabaseSettingsDefinition
+            public class DatabaseSettings
+            {
+                public Dictionary<string, string> Settings { get; set; }
             }
             #endregion
         }
@@ -70,9 +85,9 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                         // Save the new settings with PutDatabaseSettingsOperation
                         store.Maintenance.Send(new PutDatabaseSettingsOperation(store.Database, settings));
                         // Disable the database
-                        store.Maintenance.Server.Send(new ToggleDatabasesStateOperation(store.Database, disable: true));
+                        store.Maintenance.Server.Send(new ToggleDatabasesStateOperation(store.Database, true));
                         // Enable the database to apply new settings
-                        store.Maintenance.Server.Send(new ToggleDatabasesStateOperation(store.Database, disable: false));
+                        store.Maintenance.Server.Send(new ToggleDatabasesStateOperation(store.Database, false));
                     }
                     #endregion
                 }
@@ -89,22 +104,25 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 }
 
                 {
-                    #region signature-PutConfigurationSettings
-                    static void PutConfigurationSettings(DocumentStore store, Dictionary<string, string> settings)
+                    static void
+                    #region signature-PutDatabaseSettingsOperation
+                    PutDatabaseSettingsOperation(string databaseName, Dictionary<string, string> configurationSettings)
                     #endregion
                     {
 
                     }
 
+                    static void
                     #region signature-ToggleDatabasesStateOperation
-                    store.Maintenance.Server.Send(new ToggleDatabasesStateOperation(store.Database, disable: true));
+                    ToggleDatabasesStateOperation(string databaseName, bool disable)
                     #endregion
                     {
 
                     }
 
+                    static void
                     #region signature-GetDatabaseSettingsOperation
-                    var settings = store.Maintenance.Send(new GetDatabaseSettingsOperation(store.Database));
+                    GetDatabaseSettingsOperation(string databaseName)
                     #endregion
                     {
 
