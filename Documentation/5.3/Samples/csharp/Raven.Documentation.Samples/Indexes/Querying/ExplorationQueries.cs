@@ -5,12 +5,11 @@ using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Linq;
 using Raven.Documentation.Samples.Orders;
 
-namespace Raven.Documentation.Samples.Indexes.Querying.ResultsFilter
+namespace Raven.Documentation.Samples.Indexes.Querying.ExplorationQueries
 {
-    public class ResultsFilter
+    public class ExplorationQueries
     {
-
-        public ResultsFilter()
+        public ExplorationQueries()
         {
             using var store = new DocumentStore();
 
@@ -18,13 +17,13 @@ namespace Raven.Documentation.Samples.Indexes.Querying.ResultsFilter
             {
                 #region exploration-queries_1.1
                 var result = session.Query<Employee>()
-                    .Filter(f => f.Address.Country == "USA")
+                    .Filter(f => f.Address.Country == "USA", limit: 500)
                     .SingleOrDefault();
                 #endregion
 
                 #region exploration-queries_1.2
                 result = session.Advanced.DocumentQuery<Employee>()
-                    .Filter(p => p.Equals(a => a.Address.Country, "USA"))
+                    .Filter(p => p.Equals(a => a.Address.Country, "USA"), limit: 500)
                     .SingleOrDefault();
                 #endregion
 
@@ -39,7 +38,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying.ResultsFilter
                 #region exploration-queries_2.1
                 var emp = session.Query<Employee>()
                     .Where(w => w.ReportsTo == "Central Office")
-                    .Filter(f => f.Address.Country == "USA")
+                    .Filter(f => f.Address.Country == "USA", limit: 500)
                     .SingleOrDefault();
                 ;
                 #endregion
@@ -47,16 +46,18 @@ namespace Raven.Documentation.Samples.Indexes.Querying.ResultsFilter
                 #region exploration-queries_2.2
                 emp = session.Advanced.DocumentQuery<Employee>()
                       .WhereEquals(w => w.ReportsTo, "Central Office")
-                      .Filter(p => p.Equals(a => a.Address.Country, "USA"))
+                      .Filter(p => p.Equals(a => a.Address.Country, "USA"), limit: 500)
                       .SingleOrDefault();
                 #endregion
 
                 #region exploration-queries_2.3
                 emp = session.Advanced.RawQuery<Employee>
                     ("from Employees as e where e.ReportsTo = $office " +
-                     "filter e.Address.Country = $location")
+                     "filter e.Address.Country = $location" +
+                     "filter_limit $limit")
                     .AddParameter("office", "Central Office")
                     .AddParameter("location", "USA")
+                    .AddParameter("limit", 500)
                     .SingleOrDefault();
                 #endregion
             }
