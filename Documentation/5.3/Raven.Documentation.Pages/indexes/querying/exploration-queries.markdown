@@ -9,52 +9,58 @@
   or [Raw RQL](../../client-api/session/querying/how-to-query#session.advanced.rawquery), 
   while the dataset is still held by the server.  
 
-* Datasets retrieved using both Index queries and Collection queries can be filtered, using -  
-   * `Query.Filter`,  
-   * `DocumentQuery.Filter`,  
-   * or RQL's `filter` keyword  
+* An exploration query uses no index, and will never create one.  
+  You can use it to explore datasets retrieved by both Index queries and Collection queries.  
 
-* Exploration queries require no index and will never create one, and can therefore be applied 
-  to explore the retrieved dataset without fearing that an index would be created and have to be 
-  maintained from now on.  
+* Apply an exploration query using -  
+   * `Query.Filter`  
+   * `DocumentQuery.Filter`  
+   * RQL's `filter` keyword  
 
-    {WARNING: }
-    This kind of filtering may, however, be a **taxing operation**, since the entire dataset is 
-    scanned and filtered. Applying `filter` to the results of a collection query, for example, 
-    e.g. `from Employees filter Name = 'Jane'`, would burden the server with the scanning and 
-    filtering of the entire collection and cost the user a substantial waiting time.  
-    It is therefore recommended to use exploration queries **for infrequent explorations** that 
-    require no index, prefer `where` for repeating queries that would benefit from the creation 
-    of an index, and **limit** the number of records explorfation queries filter (we provide them 
-    with a `limit` option for this purpose).  
-    {WARNING/}
+* Run an exploration query as a one-time operation when you don't want your filtering to 
+  create an index that will then have to be maintained by the cluster.  
+
+* Exploration queries may be a taxing operation, since they scan and filter the entire retrieved dataset.
+  {WARNING: }
+  We recommend that you **Limit** the number of records that an exploration query filters,  
+  and filter data using [where](../../../../indexes/querying/filtering) in reoccuring queries.
+  {WARNING/}
+  Read more [below](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used) 
+  about using, limiting, and avoiding exploration queries.  
 
 * In this page:  
-   * [`filter`](../../indexes/querying/exploration-queries#filter)  
+   * [When Should Exploration Queries Be Used](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used)
+   * [Syntax](../../indexes/querying/exploration-queries#syntax)  
    * [`filter` properties]()  
+   * [Exploration Queries and Other RavenDB Features]()  
 
 {NOTE/}
 
----
+{PANEL: When Should Exploration Queries Be Used}
 
-{PANEL: Exploration Queries}
+Exploration queries require no index and will never create one, and can therefore be applied 
+to explore the retrieved dataset without fearing that an index would be created and have to be 
+maintained from now on by the cluster.  
 
-Exploration queries can be applied to datasets retrieved by both index and 
-collection qieries.  
-* an **index query** (retrieved using [where](../../indexes/querying/filtering)), e.g. -  
-  `from Employees as e where e.ReportsTo = 'Central Office`  
- `filter e.Address.Country = 'USA'`  
-* a **collection query**, e.g. -  
-  `from Employees`  
- `filter Name = 'Jane'`  
+{WARNING: }
+This kind of filtering may, however, be a **taxing operation**, since the entire dataset is 
+scanned and filtered. Applying `filter` to the a large dataset, e.g. to the results of 
+a collection query like in `from Employees filter Name = 'Jane'`, would burden the server 
+with the scanning and filtering of the entire collection and cost the user a substantial 
+waiting time.  
+It is therefore recommended to -  
+    
+* Use exploration queries **for one-time explorations** that require no index, 
+  and prefer [where](../../indexes/querying/filtering) for repeating queries.  
+* **Limit** the number of records that the explorfation query filters (we provide 
+  the different `filter` methods with a `limit` option for this purpose).  
+{WARNING/}
 
 {PANEL/}
 
-{PANEL: `filter`}
+{PANEL: Syntax}
 
-## Syntax
-
-* `Query.Filter`:
+* `Query.Filter`  
   {CODE-BLOCK:csharp}  
   IRavenQueryable<T> Filter<T>(this IRavenQueryable<T> source, 
                              Expression<Func<T, bool>> predicate, 
@@ -67,7 +73,7 @@ collection qieries.
     | **predicate** | `Expression<Func<T, bool>>` | The condition by which retrieved records are filtered |
     | **limit** | `int ` | Limits the number of filtered records (Recommended) <br> Default: all retrieved records |
 
-* `DocumentQuery.Filter`:
+* `DocumentQuery.Filter`  
   {CODE-BLOCK:csharp}  
   IDocumentQuery<T> Filter(Action<IFilterFactory<T>> builder, 
                          int limit = int.MaxValue);
@@ -77,6 +83,13 @@ collection qieries.
     | ---------- | ---- | ----------- |
     | **builder** | `Action<IFilterFactory<T>>` | Your filter |
     | **limit** | `int ` | Limits the number of filtered records (Recommended) <br> Default: all retrieved records |
+
+* **RQL**  
+   * In an RQL query, use:  
+     The `filter` keyword, followed by the filter conditions.  
+     The `filter_limit` option, followed by the number of records to be filtered.  
+   * E.g. -  
+     `from Employees as e where e.ReportsTo = 'Central Office filter e.Address.Country = 'USA' filter_limit 500``  
 
 ## Usage
 
@@ -107,6 +120,13 @@ where e.ReportsTo != null
 filter e.FirstName == 'Anne' or e.Extension == 5467
 select { FullName: e.FirstName +  " " + e.LastName }
 {CODE-BLOCK/}
+
+{PANEL/}
+
+{PANEL: Exploration Queries and Other RavenDB Features}
+
+exploration queries and subscriptions
+
 
 {PANEL/}
 
