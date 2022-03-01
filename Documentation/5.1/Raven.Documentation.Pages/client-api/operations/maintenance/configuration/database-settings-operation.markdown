@@ -37,9 +37,9 @@ In this page:
 This method sets and saves new database configurations.  
 To apply the new settings, use [ToggleDatabasesStateOperation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation).  
 
-{CODE signature-PutDatabaseSettingsOperation@ClientApi\Operations\ClientConfig.cs /}
-
 **Syntax:**
+
+{CODE signature-PutDatabaseSettingsOperation@ClientApi\Operations\ClientConfig.cs /}
 
 | Parameters | Type | Description |
 | -------- | ---- | -------------------|
@@ -58,11 +58,11 @@ The following sample shows how to use `PutDatabaseSettingsOperation` to set the 
 
 {PANEL: ToggleDatabasesStateOperation}
 
-Use `ToggleDatabasesStateOperation` to disable/enable the database, e.g. to apply new settings after [PutDatabaseSettingsOperation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#putdatabasesettingsoperation1`+9) is called.
-
-{CODE signature-ToggleDatabasesStateOperation@ClientApi\Operations\ClientConfig.cs /}
+Use `ToggleDatabasesStateOperation` to disable/enable the database, e.g. to apply new settings after [PutDatabaseSettingsOperation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#putdatabasesettingsoperation) is called.
 
 **Syntax:**
+
+{CODE signature-ToggleDatabasesStateOperation@ClientApi\Operations\ClientConfig.cs /}
 
  | Parameters | Type | Description |
 | -------- | ---- | -------------------|
@@ -85,9 +85,9 @@ the database to apply a new configuration.
 
 Use `GetDatabaseSettingsOperation` to retrieve a dictionary of the changes made in the database settings. Only settings that have changed will be retrieved.
 
-{CODE signature-GetDatabaseSettingsOperation@ClientApi\Operations\ClientConfig.cs /}
-
 **Syntax:**
+
+{CODE signature-GetDatabaseSettingsOperation@ClientApi\Operations\ClientConfig.cs /}
 
  | Parameter | Type | Description |
 | -------- | ---- | -------------------|
@@ -119,6 +119,7 @@ Get a dictionary of newly configured settings with `GetDatabaseSettingsOperation
 ### Studio
 
 - [Client Configuration](../../../../studio/server/client-configuration)
+- [Database Settings](../../../../studio/database/settings/database-settings#database-settings)
 
 ### Operations
 
