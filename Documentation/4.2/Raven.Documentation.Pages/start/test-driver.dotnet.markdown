@@ -80,7 +80,6 @@ By default, RavenDB looks for the exact release it was compiled with or newer by
 
 Thus, if the server on your machine is set to `ServerTestOptions.FrameworkVersion = 3.1.17+`, it will work properly with 
 all .NET versions 3.1.17 and newer patch releases (.17, .18, .19, etc...). So, as long as you have .NET 3.1.17 or 18 or 19 on your machine, the server will run smoothly. 
-Note: You can have multiple versions of .NET running on your machine at the same time.  
 
 To learn more, including alternative settings, see the section about [setting .NET FrameworkVersion](../server/Embedded#net-frameworkversion).
 

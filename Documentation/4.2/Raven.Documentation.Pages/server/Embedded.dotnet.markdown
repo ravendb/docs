@@ -21,9 +21,9 @@
 
 ---
 
-{PANEL:Overview}
+{PANEL: Overview}
 
-RavenDB makes it very easy to be embedded within your application, with RavenDB Embedded package you can integrate your RavenDB server with few easy steps.
+RavenDB makes it very easy to be embedded within your application, with RavenDB Embedded package you can integrate your RavenDB server with a few easy steps. 
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync embedded_example@Server\Embedded.cs /}
@@ -32,9 +32,9 @@ RavenDB makes it very easy to be embedded within your application, with RavenDB 
 
 {PANEL/}
 
-{PANEL:Prerequisites}
+{PANEL: Prerequisite}
 
-There is one prerequsite and one recommendation for the Embedded package:
+There is one prerequisite and one recommendation for the Embedded package:
 
 Prerequsite:
 
@@ -51,7 +51,7 @@ Recommendation:
 
 RavenDB Embedded **does not include .NET Core runtime required for it to run**. 
 
-By default the `ServerOptions.FrameworkVersion` is set to the .NET Core version that we compiled the server with and 
+By default, the `ServerOptions.FrameworkVersion` is set to the .NET Core version that we compiled the server with and 
 `ServerOptions.DotNetPath` is set to `dotnet` meaning that it will require to have it declared in PATH. 
 
 We highly recommend using the .NET Core framework version defined in `ServerOptions.FrameworkVersion` for proper functioning 
@@ -67,7 +67,7 @@ Due to the NuGet limitations, we recommend that the Embedded package should be i
 The transition between those two is easy due to built-in into Visual Studio 2017 migrator written by Microsoft. Please read 
 following [article](https://docs.microsoft.com/en-us/nuget/reference/migrate-packages-config-to-package-reference) written by Microsoft that will guide you through the process.
 
-Please note that **binding redirects** in `App.config` are still required when 'PackageReference' is used in old csproj project. 
+Please note that **binding redirects** in `App.config` are still required when 'PackageReference' is used in old csproj projects. 
 Not doing so might result in an assembly load exception e.g.
 
 ```
@@ -138,14 +138,12 @@ version that is currently running on the machine, starting from the version at t
 
 {INFO: Making Sure That You Have the Right .NET Version}
 
-Remember that each RavenDB release is programmed to work with the .NET version that was current at the time of release.  
+Remember that each RavenDB release is compiled with the .NET version that was current at the time of release.  
 
-* For example, let's say you are running RavenDB 5.1. If you search the internet for "RavenDB 5.1 What's New", at the bottom of the "Server" section, 
-  you'll find that RavenDB 5.1 is programmed to work with .NET 5.0.6.  
-  * By default, your RavenDB server will look for .NET 5.0.6, 5.0.7, etc. So, as long as you have at least one of these .NET versions running on your machine,
-   RavenDB will work well.  
-   This is true if you also have .NET 6.0 running on your machine, as long as 5.0.6+ is running too.  
-  * You can have multiple .NET versions running at the same time.
+* To find what .Net version supports RavenDB 5.1, for example, open the [RavenDB 5.1 What's New](https://ravendb.net/docs/article-page/5.1/csharp/start/whats-new) page.
+  The correct .Net version for RavenDB 5.1, .NET 5.0.6., is listed at the bottom of the "Server" section."
+* By default, your RavenDB server will look for .NET 5.0.6, 5.0.7, etc. So, as long as you have at least one of these .NET versions running on your machine,
+  RavenDB will work well.  
 
 {INFO/}
 
@@ -153,12 +151,9 @@ To stay within a major or minor .NET release, but ensure flexibility with patch 
 use a floating integer `x`.  
 It will always use the newest version found on your machine.  
 
-For example, `ServerOptions.FrameworkVersion = 3.x` will work on the newest 3.x release.  
-`...= 3.2.x` will work on the newest 3.2 release.  
+For example, `ServerOptions.FrameworkVersion = 3.x` will look for the newest 3.x release.  
+`...= 3.2.x` will look for the newest 3.2 release.  
 Neither will look for 4.x.  
-
-In version 4.5, .NET started being [backward compatible](https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/version-compatibility).  
-This is relevant for RavenDB versions 5.1 and up.  
 
 | ServerOption Name | Type | Description |
 | ------------- | ------------- | ----- |
@@ -166,7 +161,7 @@ This is relevant for RavenDB versions 5.1 and up.
 
 | Parameter | Description |
 | --------- | ------------- |
-| null | The server will pick the newest .NET version installed on your machine. This may cause problems with RavenDB versions 5.0 or less. |
+| null | The server will pick the newest .NET version installed on your machine. |
 | 3.1.17+ | Default setting (Actual version number is set at the time of server release.) In this example, the server will work properly with .NET patch releases that are greater than or equal to 3.1.17 |
 | 3.1.17 | The server will **only** work properly with this exact .NET release |
 | 3.1.x | The server will pick the newest .NET patch release on your machine |
@@ -188,7 +183,7 @@ This is relevant for RavenDB versions 5.1 and up.
 
 {CODE start_server_with_options@Server\Embedded.cs /}
 
-Without the `ServerOptions`, RavenDB server will start with a default values on `127.0.0.1:{Random Port}`.
+Without the `ServerOptions`, RavenDB server will start with a default value of `127.0.0.1:{Random Port}`.
 
 #### Setting Server Directory
 In case you're not interested in installing the .Net run-time environment on your system, you can -  
@@ -229,23 +224,28 @@ Event data is of type `ServerProcessExitedEventArgs`.
 
 ### Security
 
-RavenDB Embedded support running a secured server.
-Just run `Secured` method in `ServerOptions` object.
+RavenDB Embedded supports running a secured server.
+Just run `Secured` method in the `ServerOptions` object.
 
 We have two overloads to `Secured`:
+
+`PathToServerCertificate`
+
 {CODE security@Server\Embedded.cs /}
 
-The first way to enable authentication is to set certificate with the path to your .pfx 
-server certificate. You may supply the certificate password using certPassword.
+The first way to enable authentication is to set the [certificate with the path to your .pfx](../server/security/authentication/certificate-configuration#standard-manual-setup-with-certificate-stored-locally) 
+server certificate. You may supply the certificate password using certPassword.  
+
+`certLoadExec`  
+Or, to access the certificate via logic that is external to RavenDB, you can use the following approach: 
 
 {CODE security2@Server\Embedded.cs /}
 
-This option is useful when you want to protect your certificate (private key) with other solutions such as "Azure Key Vault", 
-"HashiCorp Vault" or even Hardware-Based Protection. 
-RavenDB will invoke a process you specify, so you can write your own scripts / mini programs and apply whatever logic you need. 
+This option is useful when you want to protect your certificate (private key) with other solutions such as "Azure Key Vault", "HashiCorp Vault" or even Hardware-Based Protection. RavenDB will invoke a process you specify, so you can write your own scripts / mini-programs and apply the logic that you need.
+
 It creates a clean separation between RavenDB and the secret store in use.
+
 RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
-In this options you can control on your client certificate and to use in a different certificate for your client.
 
 ---
 
