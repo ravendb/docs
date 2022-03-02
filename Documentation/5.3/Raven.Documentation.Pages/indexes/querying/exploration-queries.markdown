@@ -9,24 +9,24 @@
   or [Raw RQL](../../client-api/session/querying/how-to-query#session.advanced.rawquery), 
   while the dataset is still held by the server.  
 
-* An exploration query uses no index, and will never create one.  
-  You can use it to explore datasets retrieved by both Index queries and Collection queries.  
+* The **entire retrieved dataset** is scanned and filtered, **without requiring or creating an index**.  
+  This makes this type of filtering ideal for one-time explorations, when you want to avoid the creation 
+  of an index that would then have to be maintained by the cluster.  
 
 * Apply an exploration query using -  
    * `Query.Filter`  
    * `DocumentQuery.Filter`  
    * RQL's `filter` keyword  
 
-* Run an exploration query as a one-time operation when you don't want your filtering to 
-  create an index that will then have to be maintained by the cluster.  
+* You can filter the datasets retrieved by both **Index queries** and **Collection queries**.  
 
-* Exploration queries may be a taxing operation, since they scan and filter the entire retrieved dataset.
-  {WARNING: }
-  We recommend that you **Limit** the number of records that an exploration query filters,  
-  and filter data using [where](../../../../indexes/querying/filtering) in reoccuring queries.
-  {WARNING/}
-  Read more [below](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used) 
-  about using, limiting, and avoiding exploration queries.  
+* Exploration queries need to be used 
+  [catiously](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used), 
+  since the scanning and filtering of all the retrieved data without index makes them 
+  a **taxing operation** when large datasets are handled.  
+  We recommend that you -  
+    * **Limit** the number of records that an exploration query filters.  
+    * Use [where](../../indexes/querying/filtering) rather than `filter` in reoccuring queries.  
 
 * In this page:  
    * [When Should Exploration Queries Be Used](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used)
@@ -38,22 +38,32 @@
 
 {PANEL: When Should Exploration Queries Be Used}
 
-Exploration queries require no index and will never create one, and can therefore be applied 
-to explore the retrieved dataset without fearing that an index would be created and have to be 
-maintained from now on by the cluster.  
+`filter` can be applied to a **collection query**, like in:  
+`from Employees filter Name = 'Jane'`  
+
+it can also be applied to an **index query**, like in:  
+`from Employees as e where e.ReportsTo = 'Central Office' filter e.Address.Country = 'USA'`
+
+In both cases, the **entire retrieved dataset** is scanned and filtered, 
+**without using or creating any index**.  
+This helps understand when exploration queries should and shouldn't be used.  
+
+{INFO: }
+**Use** `filter` for an ad-hoc exploration of the retrieved dataset, that matches 
+no existing index and is not expected to be repeated much.  
+The dataset will be filtered without creating an unrequired index that the cluster 
+would continue updating from now on.  
+{INFO/}
+
+Be aware, though, that when a large dataset is retrieved (the whole collection in 
+the case of a collection query) exploring it using `filter` would be a **taxing operation**, 
+occupy the server and cost the user a substantial waiting time.  
 
 {WARNING: }
-This kind of filtering may, however, be a **taxing operation**, since the entire dataset is 
-scanned and filtered. Applying `filter` to the a large dataset, e.g. to the results of 
-a collection query like in `from Employees filter Name = 'Jane'`, would burden the server 
-with the scanning and filtering of the entire collection and cost the user a substantial 
-waiting time.  
-It is therefore recommended to -  
-    
-* Use exploration queries **for one-time explorations** that require no index, 
-  and prefer [where](../../indexes/querying/filtering) for repeating queries.  
-* **Limit** the number of records that the explorfation query filters (we provide 
-  the different `filter` methods with a `limit` option for this purpose).  
+
+* **Limit** the number of records that an explorfation query filters.  
+  We provide the different `filter` methods with a `limit` option for this purpose.  
+* Use [where](../../indexes/querying/filtering) for reoccuring queries.  
 {WARNING/}
 
 {PANEL/}
