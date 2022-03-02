@@ -2,7 +2,7 @@
 
 {NOTE: }
 
-* The **OLAP ETL task** is an Extract, Transform, Load process that converts RavenDB data to the 
+* The **OLAP ETL task** is an [ETL](../../../../server/ongoing-tasks/etl/basics) process that converts RavenDB data to the 
 [_Apache Parquet_](https://parquet.apache.org/documentation/latest/) file format, and sends 
 it to one or more of these destinations:  
   * [Amazon S3](https://aws.amazon.com/s3/)
@@ -11,9 +11,6 @@ it to one or more of these destinations:
   * [Google Cloud Platform](https://cloud.google.com/)
   * File Transfer Protocol
   * Local storage
-
-* ETL tasks provide opportunities to perform various [Transform Scripts](../../../../server/ongoing-tasks/etl/raven#transformation-script-options) 
-  where developers can define changes to apply on the data before it is loaded to the destination. 
 
 * This page explains how to create an OLAP ETL task using the studio. To 
 learn more about OLAP ETL tasks, and how to create one using the client API, 
@@ -103,10 +100,14 @@ fields and configuration options for each destination.
 
 !["OLAP ETL destinations"](images/olap-etl-7.png "OLAP ETL destinations")
 
-   * For custom [Amazon S3](https://aws.amazon.com/s3/) servers  
-     * **Force path style**  
-       Change the default S3 bucket file path convention.  
-       ![ForcePathStyle](images/studio-force-path-style.png "ForcePathStyle")
+  If you use an [Amazon S3](https://aws.amazon.com/s3/) custom host:
+  ![ForcePathStyle](images/studio-force-path-style.png "ForcePathStyle")
+
+   * a- **Use a custom S3 host**  
+     Toggle to provide a custom server URL.  
+   * b- **Force path style**  
+     Toggle to change the default S3 bucket [path convention](https://aws.amazon.com/blogs/aws/amazon-s3-path-deprecation-plan-the-rest-of-the-story/) on your custom Amazon S3 host.  
+
 
 ---
 
@@ -120,7 +121,7 @@ You can edit, delete or add to the list of existing transform scripts.
 1. Add a new transform script.  
 2. Edit an existing transform script.  
 
-Create and edit transform Java scripts on the right side of the OLAP ETL Studio view.
+Create and edit transform Javascripts on the right side of the OLAP ETL Studio view.
 
 !["Define Transform Script"](images/olap-etl-9.png "Define Transform Script")
 

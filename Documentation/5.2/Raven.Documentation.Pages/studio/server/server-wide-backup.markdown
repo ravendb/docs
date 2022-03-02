@@ -76,6 +76,13 @@ The settings are similar to those of a [regular backup task](../../studio/databa
 
 7. **Destination**  
    See [below](../../studio/server/server-wide-backup#destination).  
+   * If you use an [Amazon S3](https://aws.amazon.com/s3/) custom host:
+     ![ForcePathStyle](images/studio-force-path-style.png "ForcePathStyle")
+      * a- **Use a custom S3 host**  
+        Toggle to provide a custom server URL.  
+      * b- **Force path style**  
+        Toggle to change the default S3 bucket [path convention](https://aws.amazon.com/blogs/aws/amazon-s3-path-deprecation-plan-the-rest-of-the-story/) on your custom Amazon S3 host.  
+
 
 ### Encryption
 

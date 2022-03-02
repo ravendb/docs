@@ -90,7 +90,7 @@ This is the list of different settings objects that the `OlapConnectionString` o
 | `BucketName` | `string` | The name of the S3 bucket that is the destination for this ETL |
 | `CustomServerUrl` | `string` | The custom URL to the S3 bucket, if you have one |
 | `RemoteFolderName` | `string` | Name of the destination folder within the S3 bucket |
-| `ForcePathStyle` | `bool` | Change the default S3 bucket file path convention on custom S3 server|
+| `ForcePathStyle` | `bool` | Change the default S3 bucket path convention on custom S3 server|
 
 #### `GlacierSettings`
 
@@ -147,7 +147,7 @@ metadata in unix time. This field appears as another column in the destination t
 Transformation scripts are similar to those in the RavenDB ETL and SQL ETL tasks - see more about this in 
 [ETL Basics](../../../server/ongoing-tasks/etl/basics#transform). The major difference is that data output 
 by the ETL task can be divided into folders and child folders called _partitions_. Querying the data usually involves scanning 
-the entire folder, so there is an advantage in efficiency to dividing the data into more folders.  
+the entire folder, so there is an efficiency advantage to dividing the data into more folders.  
 
 #### The `key` Parameter
 

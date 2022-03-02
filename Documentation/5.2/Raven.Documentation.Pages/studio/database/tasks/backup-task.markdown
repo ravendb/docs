@@ -201,11 +201,12 @@ Make sure to save the destinations and credentials information so that your team
  1. Local machine storage  
    - Set a folder of your choice (any directory that can be accessed from your machine)  
  2. Cloud storage options  
-   * [Amazon S3](https://aws.amazon.com/s3/)  
-     * **Force path style**  
-       Change the default S3 bucket file path convention on custom s3 server.  
-       ![ForcePathStyle](images/studio-force-path-style.png "ForcePathStyle")
-
+   * [Amazon S3](https://aws.amazon.com/s3/)
+     ![ForcePathStyle](images/studio-force-path-style.png "ForcePathStyle")
+      * a- **Use a custom S3 host**  
+        Toggle to provide a custom server URL.  
+      * b- **Force path style**  
+        Toggle to change the default S3 bucket [path convention](https://aws.amazon.com/blogs/aws/amazon-s3-path-deprecation-plan-the-rest-of-the-story/) on your custom Amazon S3 host.  
    * [Microsoft Azure](https://azure.microsoft.com/en-us/services/storage/)  
    * [Google Cloud](https://cloud.google.com/)  
    * [Amazon Glacier](https://aws.amazon.com/glacier/)  
