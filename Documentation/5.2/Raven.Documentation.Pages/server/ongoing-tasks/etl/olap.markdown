@@ -151,8 +151,8 @@ the entire folder, so there is an efficiency advantage to dividing the data into
 
 #### The `key` Parameter
 
-As with other ETL tasks, the method that actually loads an entry to its destination is `loadTo<folder name>()`, 
-but unlike the other ETL tasks the method takes two parameters: the entry itself, and an additional 'key'. 
+As with other ETL tasks, the method that loads an entry to its destination is `loadTo<folder name>()`, 
+but unlike the other ETL tasks, the method takes two parameters: the entry itself, and an additional 'key'. 
 This `key` determines how many partitions there are and what their names are.  
 
 {CODE-BLOCK: javascript}
@@ -246,7 +246,7 @@ can appear anywhere in the folder structure.
 Athena is a SQL query engine in the AWS environment that can both read directly from S3 buckets and 
 output to S3 buckets.  
 
-Here are a few examples of queries you can run in Athena. But first you need to configure the 
+Here are a few examples of queries you can run in Athena. But first, you need to configure the 
 destination for your query results: go to settings, and under "query result location" input the path 
 to your preferred bucket. [Read more here](https://docs.aws.amazon.com/athena/latest/ug/querying.html#query-results-specify-location-console)
 
@@ -302,7 +302,7 @@ from monthly_sales
 group by _id
 {CODE-BLOCK/}
 
-Querying for most recent version in an append-only table:
+Querying for the most recent version in an append-only table:
 e.g. select everything in the table, and in case we have duplicates (multiple rows with the same id)
 - only take the most recent version (the one with the highest _lastModifiedTime):
 {CODE-BLOCK: sql}
@@ -319,8 +319,8 @@ INNER JOIN
 
 #### Apache Parquet
 
-Parquet is an open source text-based file format. Like [ORC](https://orc.apache.org/), columns are stored together 
-instead or rows being stored together (the same fields from multiple documents, rather than 
+Parquet is an open-source text-based file format. Like [ORC](https://orc.apache.org/), columns are stored together 
+instead of rows being stored together (the same fields from multiple documents, rather than 
 whole documents). This makes queries more efficient.  
 
 {PANEL/}

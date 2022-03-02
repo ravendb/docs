@@ -8,7 +8,7 @@ _-or-_
   a **Server-Wide Backup Task** that backs up **all** the databases in your cluster.  
   Specific databases can be manually excluded from this task.  
 
-* When scheduling a **Server-Wide Backup Task**, RavenDB actually creates a 
+* When scheduling a **Server-Wide Backup Task**, RavenDB creates a 
   [regular ongoing backup task](../../studio/database/tasks/backup-task) 
   for each database in the cluster, and a backup will be created for each database at the specified scheduled time.  
   The prefix '**Server Wide Backup**' is added to the name of the created ongoing backup tasks.  
@@ -172,7 +172,7 @@ To edit or modify a Server-Wide task, navigate back to the [Server-Wide Backup v
   For each database, the responsible node for the task is set by the cluster to one of the database group nodes.
 
 * Since defining a Server-Wide backup actually creates regular backup tasks, 
-  the behavior of a Server-Wide Backup Task when the cluster or responsible-node is down is identical to that of a regular backup task.  
+  the behavior of a Server-Wide Backup Task when the cluster or responsible node is down is identical to that of a regular backup task.  
   See [Backup Task - When Cluster or Node are Down](../../studio/database/tasks/backup-task#backup-task---when-cluster-or-node-are-down).  
 
 * A graphical view of the database group shows which node is responsible for which task.  

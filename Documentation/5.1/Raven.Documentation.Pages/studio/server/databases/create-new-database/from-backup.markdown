@@ -39,6 +39,8 @@ Another way to access the New Database From Backup interface is via the Studio B
 
 1. [**Name** your new database](../../../../studio/server/databases/create-new-database/general-flow#2.-database-name).  
 
+2. **Source**  
+   Select the source server type to see the fields necessary to access the backup
    * If you use an [Amazon S3](https://aws.amazon.com/s3/) custom host:
      ![ForcePathStyle](images/studio-force-path-style.png "ForcePathStyle")
       * a- **Use a custom S3 host**  

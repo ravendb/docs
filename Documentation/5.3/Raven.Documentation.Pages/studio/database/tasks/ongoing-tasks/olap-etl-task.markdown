@@ -1,5 +1,7 @@
 ﻿# OLAP ETL Task
 
+--
+
 {NOTE: }
 
 * The **OLAP ETL task** is an [ETL](../../../../server/ongoing-tasks/etl/basics) process that converts RavenDB data to the 
@@ -91,6 +93,8 @@ using the same connection string in multiple OLAP ETL tasks.
   Toggle on to create and define a new OLAP connection string for this ETL task  
   * If you choose to create a new connection string you can enter its name and destination here.  
   * Multiple destinations can be defined.  
+
+---
 
 <br/>
 ### OLAP ETL Destinations
