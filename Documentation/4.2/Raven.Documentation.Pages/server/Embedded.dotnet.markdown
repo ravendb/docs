@@ -227,21 +227,22 @@ Event data is of type `ServerProcessExitedEventArgs`.
 RavenDB Embedded supports running a secured server.
 Just run `Secured` method in the `ServerOptions` object.
 
-We have two overloads to `Secured`:
-
-`PathToServerCertificate`
+#### Set up security using the certificate path 
 
 {CODE security@Server\Embedded.cs /}
 
 The first way to enable authentication is to set the [certificate with the path to your .pfx](../server/security/authentication/certificate-configuration#standard-manual-setup-with-certificate-stored-locally) 
 server certificate. You may supply the certificate password using certPassword.  
 
-`certLoadExec`  
-Or, to access the certificate via logic that is external to RavenDB, you can use the following approach: 
+#### Set up security using a custom script
+
+To access the certificate via logic that is external to RavenDB, you can use the following approach: 
 
 {CODE security2@Server\Embedded.cs /}
 
-This option is useful when you want to protect your certificate (private key) with other solutions such as "Azure Key Vault", "HashiCorp Vault" or even Hardware-Based Protection. RavenDB will invoke a process you specify, so you can write your own scripts / mini-programs and apply the logic that you need.
+This option is useful when you want to protect your certificate (private key) with other solutions such as 
+"Azure Key Vault", "HashiCorp Vault" or even Hardware-Based Protection. RavenDB will invoke a process you specify, 
+so you can write your own scripts / mini-programs and apply the logic that you need.
 
 It creates a clean separation between RavenDB and the secret store in use.
 
