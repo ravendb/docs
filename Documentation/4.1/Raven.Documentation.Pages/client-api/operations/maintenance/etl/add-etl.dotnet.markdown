@@ -44,7 +44,7 @@ You can add ETL task by using the **AddEtlOperation** method.
 
 * **Secure servers**  
   In addition to defining a connection string, to connect secure RavenDB servers you must [export the server certificate](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
-  from the source server and install it into the destination server.  
+  from the destination server and install it into the source server.  
 
 * After passing the certificate, you can either create an ETL with a connection string and transformation script [via the studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) 
   or with the following API.  

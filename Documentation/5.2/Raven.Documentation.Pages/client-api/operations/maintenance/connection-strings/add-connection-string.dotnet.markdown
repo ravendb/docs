@@ -33,7 +33,8 @@ In this page:
 {PANEL: Add a Raven Connection String}
 
 {NOTE: Secure servers}
- To [connect secure RavenDB servers](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) you need to export the certificate from the source server and install it into the destination server.  
+ To [connect secure RavenDB servers](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
+ you need to export the certificate from the destination server and install it into the source server.  
  This can be done easily in the RavenDB Studio -> Server Management -> [Certificates view](../../../../server/security/authentication/certificate-management#studio-certificates-management-view).
 {NOTE/}
 
