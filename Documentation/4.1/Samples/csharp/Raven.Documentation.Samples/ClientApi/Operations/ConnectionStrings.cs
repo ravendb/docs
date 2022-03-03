@@ -77,7 +77,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 GetConnectionStringsResult connectionStrings = store.Maintenance.Send(operation);
                 Dictionary<string, SqlConnectionString> sqlConnectionStrings = connectionStrings.SqlConnectionStrings;
                 Dictionary<string, RavenConnectionString> ravenConnectionStrings = connectionStrings.RavenConnectionStrings;
-                Dictionary<string, OlapConnectionString> olapConnectionStrings = connectionStrings.OlapConnectionStrings;
             }
 
             #endregion
@@ -120,7 +119,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 #endregion
             }
 
-            using (var store = GetDocumentStore())
+            using (var store = new DocumentStore())
             #region raven_etl_connection_string
 
             {
