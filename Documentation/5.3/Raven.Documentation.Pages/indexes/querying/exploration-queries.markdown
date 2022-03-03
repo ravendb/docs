@@ -16,12 +16,19 @@
 * You can filter the datasets retrieved by both **Index queries** and **Collection queries**.  
 
 * Exploration queries need to be used 
-  [catiously](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used), 
-  since the scanning and filtering of all the retrieved data without index makes them 
-  a **taxing operation** when large datasets are handled.  
-  We recommend that you -  
+  [with caution](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used) 
+  since scanning and filtering all the data retrieved by a query cost substantial 
+  [server resources and user waiting time](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries) 
+  when large datasets are handled.  
+    {WARNING: }
+
+    We recommend that you -  
+
     * **Limit** the number of records that an exploration query filters.  
-    * Use [where](../../indexes/querying/filtering) in recurring queries.  
+    * Use [where](../../indexes/querying/filtering) in recurring queries, 
+      so the filter would [use an index](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries).  
+
+    {WARNING/}
 
 * In this page:  
    * [`filter`](../../indexes/querying/exploration-queries#filter)
@@ -29,8 +36,8 @@
    * [Syntax](../../indexes/querying/exploration-queries#syntax)
    * [Usage](../../indexes/querying/exploration-queries#usage)
       * [With Collection Queries](../../indexes/querying/exploration-queries#with-collection-queries)
-      * [With Index Queries (`where`)](../../indexes/querying/exploration-queries#with-index-queries-)
-      * [With Projections (`select`)](../../indexes/querying/exploration-queries#with-projections-)
+      * [With Queries that Use an Index](../../indexes/querying/exploration-queries#with-queries-that-use-an-index)
+      * [With Projections](../../indexes/querying/exploration-queries#with-projections)
       * [With User-Defined Javascript Functions (`declare`)](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-)
 
 {NOTE/}
@@ -43,12 +50,10 @@ Exploration queries can be applied using -
 * `DocumentQuery.Filter`  
 * RQL's `filter` keyword  
 
-The added filtering is parsed and executed by RavenDB's Javascript engine, 
-and can be implemented wherever Javascript is used, including within 
-Map/Reduce indexes and by subscription workers.  
+The added filtering is parsed and executed by RavenDB's Javascript engine.  
 
-The filtering conditions are basically similar to those implemented by 
-[where](../../indexes/querying/filtering), and can be further enhanced 
+The provided filtering operations resemble those implemented by 
+[where](../../indexes/querying/filtering) and can be further enhanced 
 by Javascript functions of your own.  
 Read [here](../../indexes/querying/exploration-queries#with-a-javascript-function:-declare) 
 about creating and using your own Javascript function in your filters.  
@@ -63,29 +68,45 @@ from Employees as e
 filter e.Address.Country = 'USA'
 {CODE-BLOCK/}
 
-it can also be applied to an Index query, like in:  
+it can also be applied to queries handled by an index, e.g. -  
+
 {CODE-BLOCK: javascript}
+// in a dynamic query via an auto-index  
 from Employees as e 
 where e.Title = 'Sales Representative'  
 filter e.Address.Country = 'USA'
 {CODE-BLOCK/}
 
-In both cases, the entire retrieved dataset is scanned and filtered, 
-without using or creating an index.  
-This helps understand when exploration queries Should and should Not be used:  
+{CODE-BLOCK: javascript}
+// in a query that uses an index explicitly  
+from index 'Orders/ByCompany' 
+filter Count > 10
+{CODE-BLOCK/}
+
+Both in a collection query and in a query handled by an index, the entire retrieved 
+dataset is scanned and filtered.  
+This helps understand when exploration queries Should be used, why a Limit 
+should be set for the number of filtered records, and when `where` should 
+be preferred:  
 
 {INFO: }
-**Use** `filter` for an ad-hoc exploration of the retrieved dataset, that matches 
+#### When to use
+Use `filter` for an ad-hoc exploration of the retrieved dataset, that matches 
 no existing index and is not expected to be repeated much.  
-The dataset will be filtered without creating an unrequired index that the cluster 
-would continue updating from now on.  
+
+* You gain the ability to filter post-query results on the server side, for 
+  both collection queries and when an index was used.  
+* The dataset will be filtered without creating an unrequired index that the cluster 
+  would continue updating from now on.  
 {INFO/}
 {WARNING: }
-Be aware, though, that when a large dataset is retrieved, like the whole collection in 
-the case of a collection query, exploring it all using `filter` would be taxing for the 
-server and cost the user a substantial waiting time.  
+#### Limit the query, and prefer `where` for recurring queries 
+Be aware that when a large dataset is retrieved, like the whole collection in 
+the case of a collection query, exploring it all using `filter` would tax the server 
+in memory and CPU usage while it checks the filter condition for each query result, 
+and cost the user a substantial waiting time. Therefore -  
 
-* **Limit** the number of records that an exploration query filters, e.g. -  
+* **Limit** the number of records that an exploration query filters, e.g.:  
   {CODE-BLOCK: javascript}
   from Employees as e 
 where e.Title = 'Sales Representative'  
@@ -110,7 +131,7 @@ filter_limit 500 // limit the number of filtered records
 
     | Parameters | Type | Description |
     | ---------- | ---- | ----------- |
-    | **source** | `IRavenQueryable<T>` | Query source |
+    | **source** | `IRavenQueryable<T>` | `Filter`, defined as an `IRavenQueryable` extension method |
     | **predicate** | `Expression<Func<T, bool>>` | The condition by which retrieved records are filtered |
     | **limit** | `int ` | Limits the number of filtered records (Recommended) <br> Default: all retrieved records |
 
@@ -151,14 +172,14 @@ Use `filter` with a collection query to scan and filter the entire collection.
 
 {WARNING: }
 Filtering a sizable collection will burden the server and prolong user waiting time.  
-Set a `limit` to restrict the number of filtered records.  
+Set a `filter_limit` to restrict the number of filtered records.  
 {WARNING/}
 
 ---
 
-### With Index Queries (`where`)
+### With Queries that Use an Index
 
-Use `filter` after a `where` clause to filter the reults retrieved by an index query.  
+Use `filter` after a `where` clause to filter the results retrieved by an index query.  
 {CODE-TABS}
 {CODE-TAB:csharp:Query exploration-queries_2.1@Indexes\Querying\ExplorationQueries.cs /}
 {CODE-TAB:csharp:DocumentQuery exploration-queries_2.2@Indexes\Querying\ExplorationQueries.cs /}
@@ -167,9 +188,9 @@ Use `filter` after a `where` clause to filter the reults retrieved by an index q
 
 ---
 
-### With Projections (`select`)
+### With Projections
 
-The filtered results can be projected using `select`.  
+The filtered results can be projected using `select`, like those of any other query.  
 {CODE-TABS}
 {CODE-TAB:csharp:Query exploration-queries_3.1@Indexes\Querying\ExplorationQueries.cs /}
 {CODE-TAB:csharp:DocumentQuery exploration-queries_3.2@Indexes\Querying\ExplorationQueries.cs /}
@@ -187,8 +208,6 @@ to your needs.
 
 Here is a simple example:  
 {CODE-BLOCK: javascript}
-$prefix = "Sales"
-
 // declare a Javascript function
 declare function titlePrefix(r, prefix) 
 { 
@@ -197,7 +216,6 @@ declare function titlePrefix(r, prefix)
 } 
 
 from Employees as e 
-where startsWith(e.HiredAt, '1993')
 
 // Filter using the function you've declared
 filter titlePrefix(e, $prefix)

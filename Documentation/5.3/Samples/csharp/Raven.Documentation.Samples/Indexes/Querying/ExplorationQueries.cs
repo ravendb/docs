@@ -73,7 +73,6 @@ namespace Raven.Documentation.Samples.Indexes.Querying.ExplorationQueries
                 #region exploration-queries_3.1
                 var emp1 = session
                     .Query<Employee>()
-                    .Where(w => w.Title == "Sales Representative")
                     .Filter(f => f.Address.Country == "USA", limit: 500)
                     .Select(x => new
                      {
@@ -89,7 +88,6 @@ namespace Raven.Documentation.Samples.Indexes.Querying.ExplorationQueries
                 };
 
                 var emp2 = session.Advanced.DocumentQuery<Employee>()
-                      .WhereEquals(w => w.Title, "Sales Representative")
                       .Filter(p => p.Equals(a => a.Address.Country, "USA"), limit: 500)
                       .SelectFields<Employee>(fullName)
                       .ToList();
@@ -98,7 +96,6 @@ namespace Raven.Documentation.Samples.Indexes.Querying.ExplorationQueries
                 #region exploration-queries_3.3
                 var emp3 = session.Advanced.RawQuery<Employee>
                     ("from Employees as e" +
-                        "where e.Title == 'Sales Representative'" +
                         "filter startsWith(e.FirstName, 'A')" +
                         "select { FullName: e.FirstName + ' ' + e.LastName }");
                 #endregion
