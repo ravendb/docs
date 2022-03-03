@@ -289,22 +289,23 @@ The following section explains how to give configurable access that enables comm
 
 {NOTE: }
 
-To connect two secure databases, you must
+To connect two secure databases, the destination cluster needs to trust the source cluster.  
+To achieve that you need to:
 
-a. **Export** ([download](../../../server/security/authentication/certificate-management#export-server-certificates)) the `.pfx` certificate from the destination cluster.  
-b. **Upload** ([import](../../../server/security/authentication/certificate-management#upload-an-existing-certificate)) the downloaded certificate into the source server.  
+a. **Export** ([download](../../../server/security/authentication/certificate-management#export-server-certificates)) the server certificate **from the source server**.  
+b. **Upload** ([import](../../../server/security/authentication/certificate-management#upload-an-existing-certificate)) the downloaded certificate **into the destination server**.  
 
 {NOTE/}
 
 ![Importing and Exporting Certificates](images/importing-and-exporting-certificate.png "Importing and Exporting Certificates")
 
  1. Click **Manage Server** and select **Certificates** to access the Studio - Certificates Management screen.  
- 2. Click **Server certificates** in the destination server.  
+ 2. Click **Server certificates** in the source server.  
    ![Server Certificates Button Options](images/server-certificates-button-options.png "Server Certificates Button Options")
    * **Export server certificates**  
      [Download server certificates](../../../server/security/authentication/certificate-management#export-server-certificates) 
      so that you can download and then import them into another server.  
- 3. Click **Client certificate** in the source server.  
+ 3. Click **Client certificate** in the destination server.  
    ![Client Certificate Button Options](images/client-certificate-button-options.png "Client Certificate Button Options")
    * **Upload client certificate**  
      [Import a client certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate) 

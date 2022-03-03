@@ -12,6 +12,17 @@ You can add ETL task by using **AddEtlOperation**.
 
 ## Example - Add Raven ETL
 
+{NOTE: Secure servers}
+ To [connect secure RavenDB servers](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
+ you need to 
+
+  1. Export the server certificate from the source server. 
+  2. Install it as a client certificate on the destination server.  
+
+ This can be done in the RavenDB Studio -> Server Management -> [Certificates view](../../../../server/security/authentication/certificate-management#studio-certificates-management-view).
+{NOTE/}
+
+
 {CODE:java add_raven_etl@ClientApi\Operations\AddEtl.java /}
 
 ## Example - Add Sql ETL
