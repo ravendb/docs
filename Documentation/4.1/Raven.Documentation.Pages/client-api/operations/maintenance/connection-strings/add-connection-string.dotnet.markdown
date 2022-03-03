@@ -32,7 +32,11 @@ In this page:
 
 {NOTE: Secure servers}
  To [connect secure RavenDB servers](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
- you need to export the certificate from the source server and install it into the destination server.  
+ you need to 
+
+  1. Export the server certificate from the source server. 
+  2. Install it as a client certificate on the destination server.  
+
 {NOTE/}
 
 {CODE add_raven_connection_string@ClientApi\Operations\ConnectionStrings.cs /}

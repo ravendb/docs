@@ -289,11 +289,11 @@ The following section explains how to give configurable access that enables comm
 
 {NOTE: }
 
-To connect two secure databases, you must
+To connect two secure databases, the destination cluster needs to trust the source cluster.  
+To achieve that you need to:
 
-a. **Export** ([download](../../../server/security/authentication/certificate-management#export-server-certificates)) the server `.pfx` certificate **from the source** cluster.  
-b. **Upload** ([import](../../../server/security/authentication/certificate-management#upload-an-existing-certificate)) the downloaded certificate **into the destination** server 
-   so that it will trust the source.  
+a. **Export** ([download](../../../server/security/authentication/certificate-management#export-server-certificates)) the server certificate **from the source server**.  
+b. **Upload** ([import](../../../server/security/authentication/certificate-management#upload-an-existing-certificate)) the downloaded certificate **into the destination server**.  
 
 {NOTE/}
 
