@@ -8,7 +8,7 @@
 instance - things like indexing, communication inside a cluster, or the server's memory usage.  
 
 * These metrics can be collected with the [RavenDB Telegraf Plugin](https://docs.influxdata.com/telegraf/v1.18/plugins/#ravendb) 
-and displayed as live graphs with [Grafana](https://grafana.com/).  \
+and displayed as live graphs with [Grafana](https://grafana.com/).  
 
 {NOTE/}
 
@@ -21,25 +21,26 @@ and processing agent designed to work with time series data. Version 1.18 of Tel
 plugin for RavenDB that collects data from RavenDB's monitoring endpoints. The recommended use 
 for the RavenDB plugin is to have Telegraf output to [InfluxDB](https://www.influxdata.com/products/influxdb/), 
 and from there the data can be queried by [Grafana](https://grafana.com/) and displayed on your own 
-data tracking dashboard. But this feature is flexible - Telegraf can output data to other destinations. 
+data tracking dashboard. But this feature is flexible - Telegraf can output data to other destinations.  
 
-The monitoring endpoints output data in JSON format. There are four endpoints: 
-* `<your server URL>/admin/monitoring/v1/server`
-* `<your server URL>/admin/monitoring/v1/databases`
-* `<your server URL>/admin/monitoring/v1/indexes`
-* `<your server URL>/admin/monitoring/v1/collections`
+The monitoring endpoints output data in JSON format. There are four endpoints:  
+
+* `<your server URL>/admin/monitoring/v1/server`  
+* `<your server URL>/admin/monitoring/v1/databases`  
+* `<your server URL>/admin/monitoring/v1/indexes`  
+* `<your server URL>/admin/monitoring/v1/collections`  
 
 The following is a list of JSON fields returned by the endpoints:  
 
 | Endpoint Suffix | Field Name | Description |
 | - | - | - |
-| `collection` | `collection_name` | Collection name |
-| `collection` | `database_name` | Name of this collection's database |
-| `collection` | `documents_count` | Number of documents in collection |
-| `collection` | `documents_size_in_bytes` | Size of documents in bytes |
-| `collection` | `revisions_size_in_bytes` | Size of revisions in bytes |
-| `collection` | `tombstones_size_in_bytes` | Size of tombstones in bytes |
-| `collection` | `total_size_in_bytes` | Total size of sollection in bytes |
+| `collections` | `collection_name` | Collection name |
+| `collections` | `database_name` | Name of this collection's database |
+| `collections` | `documents_count` | Number of documents in collection |
+| `collections` | `documents_size_in_bytes` | Size of documents in bytes |
+| `collections` | `revisions_size_in_bytes` | Size of revisions in bytes |
+| `collections` | `tombstones_size_in_bytes` | Size of tombstones in bytes |
+| `collections` | `total_size_in_bytes` | Total size of collection in bytes |
 | `databases` | `database_id` | Database ID |
 | `databases` | `database_name` | Database name |
 | `databases` | `counts_alerts` | Number of alerts |
