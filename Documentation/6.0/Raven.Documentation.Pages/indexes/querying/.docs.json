@@ -23,6 +23,12 @@
     "Mappings": []
   },
   {
+    "Path": "exploration-queries.markdown",
+    "Name": "Exploration Queries",
+    "DiscussionId": "1ebf06c6-6688-4884-9a04-fdaa449192bc",
+    "Mappings": []
+  },
+  {
     "Path": "paging.markdown",
     "Name": "Paging",
     "DiscussionId": "f59f48e7-3864-4f4d-84e6-ae5f427c9784",
