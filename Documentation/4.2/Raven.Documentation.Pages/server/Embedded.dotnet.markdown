@@ -12,6 +12,7 @@
   * [Getting Started](../server/embedded#getting-started)  
       * [Installation](../server/embedded#installation)  
       * [Starting the Server](../server/embedded#starting-the-server)  
+      * [.NET FrameworkVersion](../server/embedded#net-frameworkversion)
       * [Security](../server/embedded#security)  
       * [Document Store](../server/embedded#document-store)  
       * [Get Server URL and Process ID](../server/embedded#get-server-url-and-process-id)  
@@ -20,9 +21,9 @@
 
 ---
 
-{PANEL:Overview}
+{PANEL: Overview}
 
-RavenDB makes it very easy to be embedded within your application, with RavenDB Embedded package you can integrate your RavenDB server with few easy steps.
+RavenDB makes it very easy to be embedded within your application, with RavenDB Embedded package you can integrate your RavenDB server with a few easy steps. 
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync embedded_example@Server\Embedded.cs /}
@@ -31,38 +32,48 @@ RavenDB makes it very easy to be embedded within your application, with RavenDB 
 
 {PANEL/}
 
-{PANEL:Prerequisites}
+{PANEL: Prerequisite}
 
-There is one prerequsite and one recommendation for the Embedded package:
+There is one prerequisite and one recommendation for the Embedded package:
 
 Prerequsite:
 
-- Install **.NET Core runtime** either manually or [along with a RavenDB full version](embedded#setting-server-directory)
+- Install [.NET Core runtime](https://dotnet.microsoft.com/en-us/download) either manually or [along with a RavenDB full version](embedded#setting-server-directory)
+  - Be sure that the RavenDB server [FrameworkVersion](../server/embedded#net-frameworkversion) definition matches the .NET Core 
+    version that you install.  
 
 Recommendation:
 
-- **Projects targeting .NET Framework 4.6.1+** that use old `packages.config` for maintaining NuGet packages should be **migrated to `PackageReference` package management** (please refer to section below on how to achieve this)
+- **Projects targeting .NET Framework 4.6.1+** that use old `packages.config` for maintaining NuGet packages should be **migrated to 
+  `PackageReference` package management** (please refer to section below on how to achieve this)
 
 {NOTE:.NET Core Runtime}
 
 RavenDB Embedded **does not include .NET Core runtime required for it to run**. 
 
-By default the `ServerOptions.FrameworkVersion` is set to the .NET Core version that we compiled the server with and `ServerOptions.DotNetPath` is set to `dotnet` meaning that it will require to have it declared in PATH. 
+By default, the `ServerOptions.FrameworkVersion` is set to the .NET Core version that we compiled the server with and 
+`ServerOptions.DotNetPath` is set to `dotnet` meaning that it will require to have it declared in PATH. 
 
-We highly recommend using the .NET Core framework version defined in `ServerOptions.FrameworkVersion` for proper functioning of the Server. The .NET Core runtime can be downloaded from [here](https://dotnet.microsoft.com/download).
+We highly recommend using the .NET Core framework version defined in `ServerOptions.FrameworkVersion` for proper functioning 
+of the Server. The .NET Core runtime can be downloaded from [here](https://dotnet.microsoft.com/download).
 
 {NOTE/}
 
 {NOTE:Migrating from `packages.config` to `PackageReference` in old csproj projects}
 
-Due to the NuGet limitations, we recommend that the Embedded package should be installed via newer package management using `PackageReference` instead of old `packages.config`. 
+Due to the NuGet limitations, we recommend that the Embedded package should be installed via newer package management using 
+`PackageReference` instead of old `packages.config`. 
 
-The transition between those two is easy due to built-in into Visual Studio 2017 migrator written by Microsoft. Please read following [article](https://docs.microsoft.com/en-us/nuget/reference/migrate-packages-config-to-package-reference) written by Microsoft that will guide you through the process.
+The transition between those two is easy due to built-in into Visual Studio 2017 migrator written by Microsoft. Please read 
+following [article](https://docs.microsoft.com/en-us/nuget/reference/migrate-packages-config-to-package-reference) written by Microsoft that will guide you through the process.
 
-Please note that **binding redirects** in `App.config` are still required when 'PackageReference' is used in old csproj project. Not doing so might result in an assembly load exception e.g.
+Please note that **binding redirects** in `App.config` are still required when 'PackageReference' is used in old csproj projects. 
+Not doing so might result in an assembly load exception e.g.
 
 ```
-Could not load file or assembly 'System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The located assembly's manifest definition does not match the assembly reference. (Exception from HRESULT: 0x80131040)
+Could not load file or assembly 'System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, 
+PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The located assembly's manifest definition does not 
+match the assembly reference. (Exception from HRESULT: 0x80131040)
 ```
 
 {CODE-TABS}
@@ -106,16 +117,62 @@ Install-Package RavenDB.Embedded -Version 4.1.0
 
 ### Starting the Server
 
-RavenDB Embedded Server is available under `EmbeddedServer.Instance`. In order to start it call `StartServer` method.
+RavenDB Embedded Server is available under `EmbeddedServer.Instance`.  
+In order to start it, call `StartServer` method.
+
 {CODE start_server@Server\Embedded.cs /}
 
-For more control on how to start the server just pass to `StartServer` method a `ServerOptions` object and that`s it.
+For more control on how to start the server, pass to `StartServer` method a `ServerOptions` object.
 
-#### ServerOptions
+### ServerOptions
+
+Set ServerOptions to change server settings such as .NET FrameworkVersion, DataDirectory or [other ServerOptions](../server/embedded#other-serveroptions). 
+
+#### .NET FrameworkVersion
+
+The default FrameworkVersion is defined to work with any .NET version from the time of the RavenDB server release 
+and newer by using the `+` moderator.  For example, `ServerOptions.FrameworkVersion = 3.1.17+`.  
+
+Thus, by leaving the default FrameworkVersion definition, RavenDB embedded servers will automatically look for the .NET 
+version that is currently running on the machine, starting from the version at the time of the server release.  
+
+{INFO: Making Sure That You Have the Right .NET Version}
+
+Remember that each RavenDB release is compiled with the .NET version that was current at the time of release.  
+
+* To find what .Net version supports RavenDB 5.1, for example, open the [RavenDB 5.1 What's New](https://ravendb.net/docs/article-page/5.1/csharp/start/whats-new) page.
+  The correct .Net version for RavenDB 5.1, .NET 5.0.6., is listed at the bottom of the "Server" section."
+* By default, your RavenDB server will look for .NET 5.0.6, 5.0.7, etc. So, as long as you have at least one of these .NET versions running on your machine,
+  RavenDB will work well.  
+
+{INFO/}
+
+To stay within a major or minor .NET release, but ensure flexibility with patch releases, 
+use a floating integer `x`.  
+It will always use the newest version found on your machine.  
+
+For example, `ServerOptions.FrameworkVersion = 3.x` will look for the newest 3.x release.  
+`...= 3.2.x` will look for the newest 3.2 release.  
+Neither will look for 4.x.  
+
+| ServerOption Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **FrameworkVersion** | string | The .NET Core framework version to run the server with |
+
+| Parameter | Description |
+| --------- | ------------- |
+| null | The server will pick the newest .NET version installed on your machine. |
+| 3.1.17+ | Default setting (Actual version number is set at the time of server release.) In this example, the server will work properly with .NET patch releases that are greater than or equal to 3.1.17 |
+| 3.1.17 | The server will **only** work properly with this exact .NET release |
+| 3.1.x | The server will pick the newest .NET patch release on your machine |
+| 3.x | The server will pick the newest .NET minor releases and patch releases on your machine |
+
+{CODE start_server_with_FrameworkVersion_defined@Server\Embedded.cs /}
+
+#### Other ServerOptions
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **FrameworkVersion** | string | The .NET Core framework version to run the server with |
 | **DataDirectory** | string | Indicates where your data should be stored |
 | **DotNetPath** | string | The path to exec `dotnet` (if it is in PATH, leave it)|
 | **AcceptEula** |  bool | If set to `false`, will ask to accept our terms & conditions |
@@ -126,7 +183,7 @@ For more control on how to start the server just pass to `StartServer` method a 
 
 {CODE start_server_with_options@Server\Embedded.cs /}
 
-Without the `ServerOptions`, RavenDB server will start with a default values on `127.0.0.1:{Random Port}`.
+Without the `ServerOptions`, RavenDB server will start with a default value of `127.0.0.1:{Random Port}`.
 
 #### Setting Server Directory
 In case you're not interested in installing the .Net run-time environment on your system, you can -  
@@ -167,28 +224,37 @@ Event data is of type `ServerProcessExitedEventArgs`.
 
 ### Security
 
-RavenDB Embedded support running a secured server.
-Just run `Secured` method in `ServerOptions` object.
+RavenDB Embedded supports running a secured server.
+Just run `Secured` method in the `ServerOptions` object.
 
-We have two overloads to `Secured`:
+#### Set up security using the certificate path 
+
 {CODE security@Server\Embedded.cs /}
 
-The first way to enable authentication is to set certificate with the path to your .pfx 
-server certificate. You may supply the certificate password using certPassword.
+The first way to enable authentication is to set the [certificate with the path to your .pfx](../server/security/authentication/certificate-configuration#standard-manual-setup-with-certificate-stored-locally) 
+server certificate. You may supply the certificate password using certPassword.  
+
+#### Set up security using a custom script
+
+To access the certificate via logic that is external to RavenDB, you can use the following approach: 
 
 {CODE security2@Server\Embedded.cs /}
 
-This option is useful when you want to protect your certificate (private key) with other solutions such as "Azure Key Vault", "HashiCorp Vault" or even Hardware-Based Protection. 
-RavenDB will invoke a process you specify, so you can write your own scripts / mini programs and apply whatever logic you need. It creates a clean separation between RavenDB and the secret store in use.
+This option is useful when you want to protect your certificate (private key) with other solutions such as 
+"Azure Key Vault", "HashiCorp Vault" or even Hardware-Based Protection. RavenDB will invoke a process you specify, 
+so you can write your own scripts / mini-programs and apply the logic that you need.
+
+It creates a clean separation between RavenDB and the secret store in use.
+
 RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
-In this options you can control on your client certificate and to use in a different certificate for your client.
 
 ---
 
 ### Document Store
 
 After starting the server you can get the DocumentStore from the Embedded Server and start working with RavenDB.
-Getting the DocumentStore from The Embedded Server is pretty easy you only need to call `GetDocumentStore` or `GetDocumentStoreAsync` with the name of the database you like to work with. 
+Getting the DocumentStore from The Embedded Server is pretty easy you only need to call `GetDocumentStore` or `GetDocumentStoreAsync` 
+with the name of the database you like to work with. 
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync get_document_store@Server\Embedded.cs /}
@@ -217,7 +283,8 @@ For more control on the process you can call the methods with `DatabaseOptions` 
 
 #### Server URL
 
-The `GetServerUriAsync` method can be used to retrieve the Embedded server URL. It must be called after server was started, because it waits for the server initialization to complete.
+The `GetServerUriAsync` method can be used to retrieve the Embedded server URL. It must be called after server was started, 
+because it waits for the server initialization to complete.
 The URL can be used for example for creating a custom document store, omitting the `GetDocumentStore` method entirely.
 
 {CODE get_server_url_async@Server/Embedded.cs /}
