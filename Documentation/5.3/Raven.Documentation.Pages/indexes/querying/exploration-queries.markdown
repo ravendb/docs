@@ -26,7 +26,7 @@
 
     * **Limit** the number of records that an exploration query filters.  
     * Use [where](../../indexes/querying/filtering) in recurring queries, 
-      so the filter would [use an index](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries).  
+      so the query would [use an index](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries).  
 
     {WARNING/}
 
@@ -85,7 +85,7 @@ filter Count > 10
 
 Both in a collection query and in a query handled by an index, the entire retrieved 
 dataset is scanned and filtered.  
-This helps understand when exploration queries Should be used, why a Limit 
+This helps understand when exploration queries should be used, why a Limit 
 should be set for the number of filtered records, and when `where` should 
 be preferred:  
 
@@ -109,7 +109,6 @@ and cost the user a substantial waiting time. Therefore -
 * **Limit** the number of records that an exploration query filters, e.g.:  
   {CODE-BLOCK: javascript}
   from Employees as e 
-where e.Title = 'Sales Representative'  
 filter e.Address.Country = 'USA'
 filter_limit 500 // limit the number of filtered records
   {CODE-BLOCK/}
