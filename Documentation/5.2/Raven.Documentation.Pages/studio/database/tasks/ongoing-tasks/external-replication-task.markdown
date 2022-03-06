@@ -52,7 +52,7 @@
 {PANEL: Step-by-Step Guide}
 
 1. **Pass Certificate from Source Server to Destination Server**  
-  This step must be done if replicating *to a separate server* so that the destination server trusts the source.
+  This step must be done if replicating *to a separate server* so that the destination server trusts the source.  
   * **Via RavenDB Studio:**  
     Navigate from the "Manage Server" tab (left side) > "Certificates" to open the [Certificate Management](../../../../server/security/authentication/certificate-management) view.  
      - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates).  

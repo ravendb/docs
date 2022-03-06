@@ -13,11 +13,12 @@
 
 * ETL is different from data replication. See [RavenDB ETL Task -vs- Replication Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--replication-task)  
 
-* In RavenDB ETL, **a certificate must be passed** from the source server to the destination so that the destination server trusts the source.  
+* In RavenDB ETL, [a certificate must be passed](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate) from the source server to the destination so that the destination server trusts the source.  
 
 * In this page:  
   * [RavenDB ETL Task - Definition](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---definition)  
   * [RavenDB ETL Task - Transform Scripts](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---transform-scripts)  
+  * [RavenDB ETL Task - Passing Certificate](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate)  
   * [RavenDB ETL Task - Details in Tasks List View](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---details-in-tasks-list-view)  
   * [RavenDB ETL Task - Offline Behaviour](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---offline-behaviour)  
   * [RavenDB ETL Task -vs- Replication Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--replication-task)  
@@ -61,6 +62,22 @@
    rather than apply the update only to new or updated documents.  
 
 5. Select the collections for the ETL task -or - apply to all collections  
+{PANEL/}
+
+{PANEL: Passing Certificate}
+
+**Pass Certificate from Source Server to Destination Server**  
+  This step must be done if connecting *to a separate server* so that the destination server trusts the source.  
+
+  * **Via RavenDB Studio:**  
+    Navigate from the "Manage Server" tab (left side) > "Certificates" to open the [Certificate Management](../../../../server/security/authentication/certificate-management) view.  
+     - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates).  
+  * **Via API:**  
+    See the code sample to learn how to [define a client certificate in the DocumentStore()](../../../../client-api/creating-document-store).  
+     - To generate and configure a client certificate from the source server, see [CreateClientCertificateOperation](../../../../client-api/operations/server-wide/certificates/create-client-certificate)
+     - Learn the rationale needed to configure client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
+
+
 {PANEL/}
 
 {PANEL: RavenDB ETL Task - Details in Tasks List View}
