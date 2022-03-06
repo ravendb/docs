@@ -122,7 +122,6 @@ Navigate from **Tasks tab** > **Ongoing Tasks** > choose existing Hub/Sink or **
 
 Select existing access or define a new sink/hub, then click **Save** to create a new replication access where filtration is defined.  
 
-
 {INFO: }
 
 * **Both the Hub and the Sink can filter data**  
@@ -138,6 +137,7 @@ Select existing access or define a new sink/hub, then click **Save** to create a
 {INFO/}
 
 {PANEL/}
+
 
 {PANEL: What does the replication include?}
 
@@ -159,7 +159,7 @@ Read about Hub/Sink Replication backward compatibility with Pull Replication [He
 
 ## Related Articles
 
-**Studio Articles**:   
+**Studio Articles**:  
 
 - [Replication Hub Task](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task)  
 - [Replication Sink Task](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task)  
@@ -170,7 +170,7 @@ Read about Hub/Sink Replication backward compatibility with Pull Replication [He
 - [External Replication](../../../../../server/ongoing-tasks/external-replication)  
 - [Client Certificate Usage](../../../../../server/security/authentication/client-certificate-usage)  
 
-**Client Articles**:
+**Client Articles**:  
 
 - [Adding a Connection String](../../../../../client-api/operations/maintenance/connection-strings/add-connection-string#operations-how-to-add-a-connection-string)  
 

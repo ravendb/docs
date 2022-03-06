@@ -150,6 +150,7 @@ Read about Hub/Sink Replication backward compatibility with Pull Replication [He
 [Replication Sink Task](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task)  
 
 **Server Articles**:  
+[Hub/Sink Replication (includes code samples)](../../../../../server/ongoing-tasks/hub-sink-replication)  
 [External Replication](../../../../../server/ongoing-tasks/external-replication)  
 [Client Certificate Usage](../../../../../server/security/authentication/client-certificate-usage)  
 
