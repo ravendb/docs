@@ -90,6 +90,7 @@ This is the list of different settings objects that the `OlapConnectionString` o
 | `BucketName` | `string` | The name of the S3 bucket that is the destination for this ETL |
 | `CustomServerUrl` | `string` | The custom URL to the S3 bucket, if you have one |
 | `RemoteFolderName` | `string` | Name of the destination folder within the S3 bucket |
+| `ForcePathStyle` | `bool` | Change the default S3 bucket path convention on custom S3 server|
 
 #### `GlacierSettings`
 
@@ -146,12 +147,12 @@ metadata in unix time. This field appears as another column in the destination t
 Transformation scripts are similar to those in the RavenDB ETL and SQL ETL tasks - see more about this in 
 [ETL Basics](../../../server/ongoing-tasks/etl/basics#transform). The major difference is that data output 
 by the ETL task can be divided into folders and child folders called _partitions_. Querying the data usually involves scanning 
-the entire folder, so there is an advantage in efficiency to dividing the data into more folders.  
+the entire folder, so there is an efficiency advantage to dividing the data into more folders.  
 
 #### The `key` Parameter
 
-As with other ETL tasks, the method that actually loads an entry to its destination is `loadTo<folder name>()`, 
-but unlike the other ETL tasks the method takes two parameters: the entry itself, and an additional 'key'. 
+As with other ETL tasks, the method that loads an entry to its destination is `loadTo<folder name>()`, 
+but unlike the other ETL tasks, the method takes two parameters: the entry itself, and an additional 'key'. 
 This `key` determines how many partitions there are and what their names are.  
 
 {CODE-BLOCK: javascript}
@@ -245,7 +246,7 @@ can appear anywhere in the folder structure.
 Athena is a SQL query engine in the AWS environment that can both read directly from S3 buckets and 
 output to S3 buckets.  
 
-Here are a few examples of queries you can run in Athena. But first you need to configure the 
+Here are a few examples of queries you can run in Athena. But first, you need to configure the 
 destination for your query results: go to settings, and under "query result location" input the path 
 to your preferred bucket. [Read more here](https://docs.aws.amazon.com/athena/latest/ug/querying.html#query-results-specify-location-console)
 
@@ -301,7 +302,7 @@ from monthly_sales
 group by _id
 {CODE-BLOCK/}
 
-Querying for most recent version in an append-only table:
+Querying for the most recent version in an append-only table:
 e.g. select everything in the table, and in case we have duplicates (multiple rows with the same id)
 - only take the most recent version (the one with the highest _lastModifiedTime):
 {CODE-BLOCK: sql}
@@ -318,8 +319,8 @@ INNER JOIN
 
 #### Apache Parquet
 
-Parquet is an open source text-based file format. Like [ORC](https://orc.apache.org/), columns are stored together 
-instead or rows being stored together (the same fields from multiple documents, rather than 
+Parquet is an open-source text-based file format. Like [ORC](https://orc.apache.org/), columns are stored together 
+instead of rows being stored together (the same fields from multiple documents, rather than 
 whole documents). This makes queries more efficient.  
 
 {PANEL/}

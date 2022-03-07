@@ -202,6 +202,10 @@ Make sure to save the destinations and credentials information so that your team
    - Set a folder of your choice (any directory that can be accessed from your machine)  
  2. Cloud storage options  
    * [Amazon S3](https://aws.amazon.com/s3/)  
+     * **Force path style**  
+       If your custom S3 server supports only path styles, toggle **Force path style** to change the default S3 bucket file path convention.  
+       ![ForcePathStyle](images/studio-force-path-style.png "ForcePathStyle")
+
    * [Microsoft Azure](https://azure.microsoft.com/en-us/services/storage/)  
    * [Google Cloud](https://cloud.google.com/)  
    * [Amazon Glacier](https://aws.amazon.com/glacier/)  
