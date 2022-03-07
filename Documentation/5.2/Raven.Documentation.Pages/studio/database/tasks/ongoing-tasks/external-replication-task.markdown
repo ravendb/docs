@@ -84,6 +84,14 @@
 
 {PANEL: External Replication Task - Definition}
 
+To use the External Replication Task Studio interface:  
+
+a. Select the source database  
+b. Select **Tasks** tab  
+c. **Ongoing Tasks**  
+d. **Add a database task**  
+e. **External Replication**  
+
 ![Figure 1. External Replication Task Definition](images/external-replication-1.png "Create New External Replication Task")
 
 1. **Task Name** (Optional)  

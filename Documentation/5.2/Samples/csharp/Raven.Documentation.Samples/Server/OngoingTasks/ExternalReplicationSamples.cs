@@ -18,7 +18,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ExternalReplicationSam
             string connectionStrName = null;
 
             #region ExternalReplication
-            //setup connection string from StoreA to StoreB
+            //setup connection string from sourceStore to destinationStore
             await sourceStore.Maintenance.SendAsync(new PutConnectionStringOperation<RavenConnectionString>(new RavenConnectionString
             {
                 Database = destinationStore.Database,

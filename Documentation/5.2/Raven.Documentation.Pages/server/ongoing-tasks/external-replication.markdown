@@ -51,18 +51,24 @@ In this page:
 The vital elements of an External Replication task are:
 
 * The `UpdateExternalReplicationOperation()` method.
-* The target server needs the [certificate from the source](../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) server so that it will trust it.
+* The target server needs the [certificate from the source](../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
+  server so that it will trust the source.
 * The [connection string](../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-raven-connection-string) with target server URL and any other details needed to access the target server.
 * The following properties in the `ExternalReplication` object:
-  * The target database name.
-  * The connection string name.
+  * **ConnectionStringName**  
+    The connection string name.  
+  * **Name**  
+    The target database name.
 
 {CODE ExternalReplication@Server\OngoingTasks\ExternalReplicationSamples.cs /}
 
 Optional elements include the following properties in the `ExternalReplication` object:
 
-* Preferred responsible node in source server.
-* Amount of time to delay replication.  
+* **MentorNode**  
+  Preferred responsible node in source server.
+* **DelayReplicationFor**  
+  Amount of time to delay replication.  
+  The following sample shows a 30 minute delay.  Delay can also be set by days, hours, and seconds.  
 
 {CODE ExternalReplicationWithMentorAndDelay@Server\OngoingTasks\ExternalReplicationSamples.cs /}
 
@@ -89,6 +95,7 @@ Optional elements include the following properties in the `ExternalReplication` 
     because data transfer can overwrite existing data.  
   * If the source database is [encrypted](../../../../studio/database/create-new-database/encrypted#creating-encrypted-database), 
     be sure that the target database is as well.  
+    The Studio databases list view has a logo that shows which databases are encrypted.
      ![Encrypted Logo](images/encrypted-logo.png "Encrypted Logo")
 3. **Define External Replication Task in the Source Database**  
     Learn more about [defining the task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task#external-replication-task---definition) in the dedicated section.  
@@ -107,6 +114,16 @@ Optional elements include the following properties in the `ExternalReplication` 
 {PANEL/}
 
 {PANEL: External Replication Task - Definition}
+
+To learn how to define an external replication task via code, see [code sample](../../server/ongoing-tasks/external-replication#code-sample---external-replication).  
+
+Via RavenDB Studio:  
+
+a. Select the source database  
+b. Select **Tasks** tab  
+c. **Ongoing Tasks**  
+d. **Add a database task**  
+e. **External Replication** to use the following interface.  
 
 ![Figure 1. External Replication Task Definition](images/external-replication-1.png "Create New External Replication Task")
 
