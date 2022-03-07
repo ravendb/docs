@@ -14,6 +14,7 @@
 In this page: 
 
 * [General Information about External Replication Task](../../server/ongoing-tasks/external-replication#general-information-about-external-replication-task)
+* [Code Sample - External Replication](../../server/ongoing-tasks/external-replication#code-sample---external-replication)
 * [Step-by-Step Guide](../../server/ongoing-tasks/external-replication#step-by-step-guide)
 * [External Replication Task - Definition](../../server/ongoing-tasks/external-replication#external-replication-task---definition)  
 * [External Replication Task - Offline Behaviour](../../studio/database/tasks/ongoing-tasks/external-replication-task#external-replication---offline-behaviour)
@@ -44,6 +45,33 @@ In this page:
   * It is recommended to have the same [policy configuration](../../server/clustering/replication/replication-conflicts#configuring-conflict-resolution-using-the-client) on both the source and the target databases.  
 
 {PANEL/}
+
+{PANEL: Code Sample - External Replication}
+
+The vital elements of an External Replication task are:
+
+* The `UpdateExternalReplicationOperation()` method.
+* The target server needs the [certificate from the source](../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) server so that it will trust it.
+* The [connection string](../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-raven-connection-string) with target server URL and any other details needed to access the target server.
+* The following properties in the `ExternalReplication` object:
+  * The target database name.
+  * The connection string name.
+
+{CODE ExternalReplication@Server\OngoingTasks\ExternalReplicationSamples.cs /}
+
+Optional elements include the following properties in the `ExternalReplication` object:
+
+* Preferred responsible node in source server.
+* Amount of time to delay replication.  
+
+{CODE ExternalReplicationWithMentorAndDelay@Server\OngoingTasks\ExternalReplicationSamples.cs /}
+
+`ExternalReplication` properties:
+
+{CODE ExternalReplicationProperties@Server\OngoingTasks\ExternalReplicationSamples.cs /}
+
+{PANEL/}
+
 
 {PANEL: Step-by-Step Guide}
 
@@ -165,12 +193,14 @@ While you can and should always use backup for those cases, having a live databa
 ### Replication
 
 **Studio Articles**:  
+
 - [External Replication](../../studio/database/tasks/ongoing-tasks/external-replication-task)  
 - [Hub/Sink Replication: Overview](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)  
 - [Replication Hub Task](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task)  
 - [Replication Sink Task](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task)  
 
 **Server Articles**:  
+
 - [How Replication Works](../../server/clustering/replication/replication)  
 - [Replication Conflicts](../../server/clustering/replication/replication-conflicts#configuring-conflict-resolution-using-the-client)  
 - [Certificates Management](../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates)  
@@ -178,6 +208,7 @@ While you can and should always use backup for those cases, having a live databa
 - [Client Certificate Usage](../../server/security/authentication/client-certificate-usage)  
 
 **Client API Articles**:  
+
 - [Adding a Connection String](../../client-api/operations/maintenance/connection-strings/add-connection-string#operations-how-to-add-a-connection-string)  
 
 
