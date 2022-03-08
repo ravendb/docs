@@ -10,7 +10,7 @@
 
 * "Live" means that the replica is up to date at all times. Any changes in the source database will be reflected in the replica once they occur.  
 
-* For additional functionality, such as filtration, two-way replication, and flexible connectivity, consider [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview).  
+* For additional functionality, such as filtration and two-way replication, consider [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview).  
   
 * External Replication task does _not_ create a backup of your data. See more in [Backup -vs- Replication](../../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)  
 
@@ -76,7 +76,7 @@
      - Connection String  
   * **Save**  
     Click "Save" to activate the External Replication task.  
-    Check the target database to see if data has transfered.  
+    Check the target database to see if data has transferred.  
 
 
 
@@ -84,7 +84,7 @@
 
 {PANEL: External Replication Task - Definition}
 
-To use the External Replication Task Studio interface:  
+To access the External Replication Task Studio interface:  
 
 a. Select the source database  
 b. Select **Tasks** tab  
@@ -94,20 +94,23 @@ e. **External Replication**
 
 ![Figure 1. External Replication Task Definition](images/external-replication-1.png "Create New External Replication Task")
 
-1. **Task Name** (Optional)  
+1. **Source Database**  
+   Be sure that you are defining the task from the correct source database.  
+
+2. **Task Name** (Optional)  
    * Choose a name of your choice  
    * If no name is given then RavenDB server will create one for you based on the defined connection string  
 
-2. **Task Delay Time** (Optional)  
+3. **Task Delay Time** (Optional)  
    * If a delay time is set then data will be replicated only after this time period has passed for each data change.  
    * Having a delayed instance of a database allows you to "go back in time" and undo contamination to your data due to a faulty patch script or other human errors.  
      * This doesn't replace the need to [safely backup your databases](../../../../studio/database/tasks/backup-task), but it does provide a way to stay online while repairing.  
 
-3. **Preferred Node** (Optional)  
+4. **Preferred Node** (Optional)  
   * Select a preferred mentor node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be the responsible node for this External Replication Task  
   * If not selected, then the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties))  
 
-4. **Connection String**  
+5. **Connection String**  
   * Select a connection string from the pre-defined list -or- create a new connection string to be used.  
   * The connection string defines the external database and its server URL to replicate to.  
     ![External Replication: Connection String](images/external-replication-connection-string.png "External Replication: Connection String")

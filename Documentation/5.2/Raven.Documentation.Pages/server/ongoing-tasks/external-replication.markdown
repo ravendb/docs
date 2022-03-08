@@ -68,7 +68,7 @@ Optional elements include the following properties in the `ExternalReplication` 
   Preferred responsible node in source server.
 * **DelayReplicationFor**  
   Amount of time to delay replication.  
-  The following sample shows a 30 minute delay.  Delay can also be set by days, hours, and seconds.  
+  The following sample shows a 30-minute delay.  Delay can also be set by days, hours, and seconds.  
 
 {CODE ExternalReplicationWithMentorAndDelay@Server\OngoingTasks\ExternalReplicationSamples.cs /}
 
@@ -107,7 +107,7 @@ Optional elements include the following properties in the `ExternalReplication` 
      - Connection String  
   * **Save**  
     Click "Save" to activate the External Replication task.  
-    Check the target database to see if data has transfered.  
+    Check the target database to see if data has transferred.  
 
 
 
@@ -117,7 +117,7 @@ Optional elements include the following properties in the `ExternalReplication` 
 
 To learn how to define an external replication task via code, see [code sample](../../server/ongoing-tasks/external-replication#code-sample---external-replication).  
 
-Via RavenDB Studio:  
+To configure via RavenDB Studio:  
 
 a. Select the source database  
 b. Select **Tasks** tab  
@@ -127,20 +127,23 @@ e. **External Replication** to use the following interface.
 
 ![Figure 1. External Replication Task Definition](images/external-replication-1.png "Create New External Replication Task")
 
-1. **Task Name** (Optional)  
+1. **Source Database**  
+   Be sure that you are defining the task from the correct source database.  
+
+2. **Task Name** (Optional)  
    * Choose a name of your choice  
    * If no name is given then RavenDB server will create one for you based on the defined connection string  
 
-2. **Task Delay Time** (Optional)  
+3. **Task Delay Time** (Optional)  
    * If a delay time is set then data will be replicated only after this time period has passed for each data change.  
    * Having a delayed instance of a database allows you to "go back in time" and undo contamination to your data due to a faulty patch script or other human errors.  
      * This doesn't replace the need to [safely backup your databases](../../../../studio/database/tasks/backup-task), but it does provide a way to stay online while repairing.  
 
-3. **Preferred Node** (Optional)  
+4. **Preferred Node** (Optional)  
   * Select a preferred mentor node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be the responsible node for this External Replication Task  
   * If not selected, then the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties))  
 
-4. **Connection String**  
+5. **Connection String**  
   * Select a connection string from the pre-defined list -or- create a new connection string to be used.  
   * The connection string defines the external database and its server URL to replicate to.  
     ![External Replication: Connection String](images/external-replication-connection-string.png "External Replication: Connection String")
@@ -200,10 +203,14 @@ e. **External Replication** to use the following interface.
 
 ## Delayed Replication
 
-In RavenDB we introduced a new kind of replication, _delayed replication_, what it does is replicating data that is delayed by `X` amount of time.  
-The _delayed replication_ works just like normal replication but instead of sending data right away it waits `X` amount of time.  
-Having a delayed instance of a database allows you to "go back in time" and undo contamination to your data due to a faulty patch script or other human errors.  
-While you can and should always use backup for those cases, having a live database makes it super fast to failover to and prevent business lose while you take down the faulty databases and restore them.  
+In RavenDB we introduced a new kind of replication, _delayed replication_. It replicates data that is 
+delayed by `X` amount of time.  
+The _delayed replication_ works just like normal replication but instead of sending data immediately, 
+it waits `X` amount of time.  
+Having a delayed instance of a database allows you to "go back in time" and undo contamination to your data 
+due to a faulty patch script or other human errors.  
+While you can and should always use backup for those cases, having a live database makes it super fast to failover 
+to prevent business losses while you repair the faulty databases.  
 
 ## Related articles
 
