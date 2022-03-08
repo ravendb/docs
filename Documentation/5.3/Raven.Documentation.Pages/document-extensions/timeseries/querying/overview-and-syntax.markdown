@@ -261,7 +261,7 @@ select ts(e)
 #### Use Studio To Experiment
 
 You can use [Studio](../../../studio/database/document-extensions/time-series) 
-to experience the samples provided here and test your own queries.  
+to try the samples provided here and test your own queries.  
 
 !["Time Series Query in Studio"](images/time-series-query.png "Time Series Query in Studio")
 
