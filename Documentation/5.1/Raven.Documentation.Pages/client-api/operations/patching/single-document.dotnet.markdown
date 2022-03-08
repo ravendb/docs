@@ -11,7 +11,9 @@ Patching can be done from the client as well as in the studio.
 
 * In this page:  
   * [API overview](../../../client-api/operations/patching/single-document#api-overview)  
+    * [List of Script Methods](../../../)
   * [Examples](../../../client-api/operations/patching/single-document#examples)  
+
 {NOTE/}
 
 ## API Overview
