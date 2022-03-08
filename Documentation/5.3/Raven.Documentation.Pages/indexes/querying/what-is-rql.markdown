@@ -109,9 +109,8 @@ from Employees as e select output(e)
 {CODE-BLOCK/}
 
 Values are returned from a declared Javascript function as a set of values 
-rather than in an array, to ease the access to them.  
-This is particularly helpful when time series values are handled, read more 
-about this instance [here](../../document-extensions/timeseries/querying/overview-and-syntax#combine-time-series-and-javascript-functions).  
+rather than in an array, to ease their projection. See an example for this 
+usage [here](../../document-extensions/timeseries/querying/overview-and-syntax#combine-time-series-and-javascript-functions).  
 
 {PANEL/}
 
