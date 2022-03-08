@@ -11,6 +11,7 @@ using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Queries;
 using Raven.Client.Documents.Session;
 using Raven.Documentation.Samples.Orders;
+using Raven.Documentation.Samples;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
 {
@@ -776,6 +777,30 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     Script = "put('employees/', this);",
                 }));
                 #endregion
+            }
+
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region Add_Or_Patch_Sample
+                    var id = "orders/1-A";
+
+                    session.Advanced.AddOrPatch<Order, DateTime>(
+                    id,
+                    new Order
+                    {
+                        Company = "Hibernating Rhinos",
+                        Employee = "Jane Smith",
+                        RequireAt = DateTime.Now
+                    },
+                    x => x.RequireAt, new DateTime(2022, 9, 12));
+                    session.SaveChanges();
+                    
+                    session.Delete(id);
+                    session.SaveChanges();
+                    #endregion
+                }
             }
 
             using (var store = new DocumentStore())

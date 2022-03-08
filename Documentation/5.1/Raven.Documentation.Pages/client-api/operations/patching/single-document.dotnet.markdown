@@ -1,18 +1,43 @@
 # Patching: How to Perform Single Document Patch Operations
 
 {NOTE: }
-The **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on the server side and is useful as a performance enhancement or for updating denormalized data in entities.
+The **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. 
+The whole operation is executed on the server side and is useful as a performance enhancement or for updating denormalized data in entities.
+
+For example, they can be used in a loop that is activated whenever a user looks at a product on a site 
+which adds that data to a (viewed products) portion of a document. 
+These viewed products can then be displayed next time the user enters the site.  
+We can assume that there are many viewed items, so using a patch reduces the amount of trips to the server.
 
 The current page deals with patch operations on single documents.
 
-Patching has three possible interfaces: [Typed Session API](../../../client-api/operations/patching/single-document#typed-session-api), [Non-Typed Session API](../../../client-api/operations/patching/single-document#non-typed-session-api), and [Operations API](../../../client-api/operations/patching/single-document#operations-api).
+Patching has three possible interfaces: [Typed Session API](../../../client-api/operations/patching/single-document#typed-session-api), 
+[Non-Typed Session API](../../../client-api/operations/patching/single-document#non-typed-session-api), 
+and [Operations API](../../../client-api/operations/patching/single-document#operations-api).
 
 Patching can be done from the client as well as in the studio.  
 
-* In this page:  
-  * [API overview](../../../client-api/operations/patching/single-document#api-overview)  
-    * [List of Script Methods](../../../)
-  * [Examples](../../../client-api/operations/patching/single-document#examples)  
+In this page:  
+
+* [API overview](../../../client-api/operations/patching/single-document#api-overview)  
+  * [List of Script Methods](../../../client-api/operations/patching/single-document#list-of-script-methods)
+* [Examples](../../../client-api/operations/patching/single-document#examples)  
+  * [Change Field's Value](../../../client-api/operations/patching/single-document#change-fields-value)  
+  * [Change Values of Two Fields](../../../client-api/operations/patching/single-document#change-values-of-two-fields)  
+  * [Increment Value](../../../client-api/operations/patching/single-document#increment-value)  
+  * [Add or Patch](../../../client-api/operations/patching/single-document#add-or-patch)  
+  * [Add Item to Array](../../../client-api/operations/patching/single-document#add-item-to-array)  
+  * [Insert Item into Specific Position in Array](../../../client-api/operations/patching/single-document#insert-item-into-specific-position-in-array)  
+  * [Modify Item in Specific Position in Array](../../../client-api/operations/patching/single-document#modify-item-in-specific-position-in-array)  
+  * [Filter out Items from an Array](../../../client-api/operations/patching/single-document#filter-out-items-from-an-array)  
+  * [Loading Documents in a Script](../../../client-api/operations/patching/single-document#loading-documents-in-a-script)  
+  * [Remove Property](../../../client-api/operations/patching/single-document#remove-property)  
+  * [Rename Property](../../../client-api/operations/patching/single-document#rename-property)  
+  * [Add Document](../../../client-api/operations/patching/single-document#add-document)  
+  * [Clone Document](../../../client-api/operations/patching/single-document#clone-document)  
+  * [Increment Counter](../../../client-api/operations/patching/single-document#increment-counter)  
+  * [Delete Counter](../../../client-api/operations/patching/single-document#delete-counter)  
+  * [Get Counter](../../../client-api/operations/patching/single-document#get-counter)  
 
 {NOTE/}
 
@@ -183,6 +208,19 @@ more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/k
 {CODE-TAB:csharp:Session-syntax-untyped increment_age_non_generic_session@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TAB:csharp:Operations-syntax increment_age_non_generic_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
+
+###Add or Patch
+
+`Session.Advanced.AddOrPatch`
+
+`AddOrPatch` adds or edits field(s) in a single document.  
+
+If the document doesn't yet exist, this operation adds the document, but doesn't patch.  
+
+{CODE Add_Or_Patch_Sample@ClientApi\Operations\PatchRequests.cs /}
+
+
+
 
 ###Add Item to Array
 
