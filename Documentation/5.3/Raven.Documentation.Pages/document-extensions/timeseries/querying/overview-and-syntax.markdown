@@ -234,7 +234,8 @@ array, to ease the projection of retrieved values.
 projected by the query.  
 To retrieve the values, the Javascript function calls the time series function.  
 
-{CODE-BLOCK: javascript}
+{CODE-TABS}
+{CODE-TAB-BLOCK:javascript:RQL}
 declare timeseries retrieveHeartRateValues(e)
 {
     from e.HeartRates
@@ -246,7 +247,10 @@ declare function ts(e) {
     var results = [];
     // structure the results
     for(var i = 0 ; i < r.Results.length; i ++) {
-        results.push({Timestamp: r.Results[i].Timestamp, Value: r.Results[i].Values[0], Tag: r.Results[i].Tag })
+        results.push({
+            Timestamp: r.Results[i].Timestamp, 
+            Value: r.Results[i].Values[0].toFixed(2), 
+            Tag: r.Results[i].Tag  ?? "default"})
     }
     return results;
 }
@@ -254,7 +258,12 @@ declare function ts(e) {
 from Employees as e
 // Call the custom Javascript function to get a structure of values to project
 select ts(e)
-{CODE-BLOCK/}
+{CODE-TAB-BLOCK/}
+{CODE-TAB:csharp:LINQ DefineCustomFunctions@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE-TABS/}
+
+This is the custom `ModifiedTimeSeriesEntry` class we use in the LINQ sample:  
+{CODE DefineCustomFunctions_ModifiedTimeSeriesEntry@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 ---
 
