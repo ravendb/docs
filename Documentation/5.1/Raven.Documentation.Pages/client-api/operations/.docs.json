@@ -40,5 +40,10 @@
     "Path": "/how-to",
     "Name": "How to...",
     "Mappings": []
+  },
+  {
+    "Path": "/revisions",
+    "Name": "Revisions",
+    "Mappings": []
   }
 ]
