@@ -62,10 +62,12 @@ To **disable** the automatic usage of atomic guards in a session, set the sessio
 In the sample below, the session uses **no atomic guards**.  
 {CODE:csharp atomic-guards-disabled@ClientApi/Operations/CompareExchange.cs /}
 
-{WARNING: }
+{WARNING: Warning}
 To **guarantee ACIDity in cluster-wide transactions** when atomic guards are disabled,  
 you have to explicitly [set and use](../../../client-api/operations/compare-exchange/overview) 
 the required compare exchange key/value pairs.  
+
+Only disable and edit Atomic Guards if you truly know what you're doing as it can negatively impact ACID transaction guarantees.  
 {WARNING/}
 
 {PANEL/}
