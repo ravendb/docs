@@ -21,7 +21,7 @@
 
 ###Is there a one-time backup?
 
-No. Backup is an on-going task and is meant to back your data up continuously.  
+No. Backup is an ongoing task and is meant to back your data up continuously.  
 
 * If you wish, you can trigger it for immediate execution and then disable or delete the task.  
 * You can also use [Smuggler](../../../../client-api/smuggler/what-is-smuggler#what-is-smuggler) as an equivalent of a full backup for a single [export](../../../../client-api/smuggler/what-is-smuggler#export) operation.  
@@ -37,7 +37,7 @@ Cluster configuration and nodes setup can be easily re-created, no special backu
 
 ###How should the servers' time be set in a multi-node cluster?
 
-The backup task is running on schedule according to the executing server local time.  
+The backup task runs on schedule according to the executing server's local time.  
 It is recommended that you set all nodes to the same time. This way, backup files' time-signatures are consistent even when the backups are created by different nodes.  
 
 ---
@@ -58,14 +58,18 @@ Creating a backup task is a one-time operation. There really is no reason to do 
 Other advantages of RavenDB's backup system include:  
 
 * **The creation of a reliable point-in-time freeze** of backed-up data.  
-* **The assurance of ACID compliancy** for backed up data during interactions with the file system.  
+* **The assurance of ACID compliance** for backed up data during interactions with the file system.  
 
 ---
 
 ###Does RavenDB automatically delete old backups?  
 
-No, RavenDB does not automatically remove backup files, you need to take care of it yourself.  
-You can use services like crontab (a Linux scheduling procedure) to create an old-backup-files-removal routine.  
+You can configure RavenDB to delete old backups with the `RetentionPolicy` feature.  
+If you enable it, RavenDB will delete backups after the `TimeSpan` that you set.  
+By default, `RetentionPolicy` is disabled.  
+
+Learn how to change the [Retention Policy via the RavenDB Studio](../../../../studio/database/tasks/backup-task#retention-policy).  
+Learn how to change the [Retention Policy via API](../../../../client-api/operations/maintenance/backup/backup#backup-retention-policy).
 
 ---
 
