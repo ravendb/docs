@@ -47,7 +47,7 @@ It is recommended that you set all nodes to the same time. This way, backup file
 Although [External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) 
 and [Backup](../../../../client-api/operations/maintenance/backup/backup) 
 are both ongoing-tasks, they have different aims and behavior.  
-See [Backup Task -vs- External Replication Task](../../../../studio/database/tasks/backup-task#backup-task--vs--replication-task).  
+See [Backup Task -vs- External Replication Task](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task--vs--replication-task).  
 
 ---
 
@@ -102,7 +102,7 @@ While in progress, the backup content is written to a **.in-progress* file on di
 - [What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)  
 
 ###Studio  
-- [The Backup Task](../../../../studio/database/tasks/backup-task)  
+- [The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
 - [Create Database: from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
 - [Create a Database: General Flow](../../../../studio/server/databases/create-new-database/general-flow)  
 - [Create a Database: Encrypted](../../../../studio/server/databases/create-new-database/encrypted)  
