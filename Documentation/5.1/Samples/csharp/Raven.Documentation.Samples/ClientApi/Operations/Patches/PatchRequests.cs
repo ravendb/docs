@@ -783,7 +783,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
             {
                 using (var session = store.OpenSession())
                 {
-                    #region Add_Or_Patch_Sample
+                     #region Add_Or_Patch_Sample
                     var id = "orders/1-A";
 
                     session.Advanced.AddOrPatch<Order, DateTime>(
@@ -795,9 +795,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                         RequireAt = DateTime.Now
                     },
                     x => x.RequireAt, new DateTime(2022, 9, 12));
-                    session.SaveChanges();
-                    
-                    session.Delete(id);
                     session.SaveChanges();
                     #endregion
                 }

@@ -7,12 +7,6 @@
   The whole operation is executed on the server-side and is useful as a performance enhancement or for 
   updating denormalized data in entities.
 
-* For example, a patch can be used in a loop that is activated whenever a user looks at a product on a site. 
-  It would add that data to a 'viewed products' portion of a document to be used later, 
-  and only saves that portion of the document. 
-  Items on a site are viewed frequently, so using a patch can greatly reduce the number of trips to the server 
-  as well as reduce overall IO usage.
-
 * The current page covers patch operations on single documents.
 
 * Patching has three possible interfaces: [Typed Session API](../../../client-api/operations/patching/single-document#typed-session-api), 
@@ -224,8 +218,6 @@ more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/k
 ---
 
 ###Add or Patch
-
-`Session.Advanced.AddOrPatch`
 
 `AddOrPatch` adds or edits field(s) in a single document.  
 
