@@ -35,13 +35,18 @@
     1. **Delete**  
        Click to delete this compare exchange key/value pair.  
        {WARNING: Warning}
-       Deleting a compare exchange pair will remove ACID guarantees for transactions that use it.
+       Deleting a compare exchange pair will remove ACID guarantees for transactions if the pair was set up to protect ACIDity.  
+       Only remove or edit these if you _truly_ know what you're doing.  
+       If the key name starts with `rvn-atomic`, it is an [Atomic Guard](../../../client-api/operations/compare-exchange/atomic-guards)
+       which RavenDB creates and maintains automatically to protect transacations.  
+       Do not remove Atomic Guards.
        {WARNING/}
     2. **Key**  
        A unique identifier that is reserved across the cluster.  
          ![Atomic Guard](images/compare-exchange-atomic-guard.png "Atomic Guard")
-          * Keys starting with "rvn-atomic" are [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards). They are created, edited and removed automatically by RavenDB.  
-            We strongly recommend not editing or deleting them manually because unless you're an expert, doing so will likely disable ACID guarantees for transactions.
+          * Keys starting with "rvn-atomic" are [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards).  
+            They are created and maintained automatically by RavenDB.  
+            Do not remove or edit these as this will disable ACID guarantees for transactions.  
     3. **Value**  
        Edit to change the value associated with the key.  
        Before a cluster allows a transaction, it needs to see that the value matches the expected value.  
