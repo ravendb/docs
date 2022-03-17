@@ -9,9 +9,9 @@
   atomicity and overall 
   [ACID](../../../server/clustering/cluster-transactions#cluster-transaction-properties) 
   properties of cluster-wide transactions.  
-
+    * They are created automatically when a session's `TransactionMode` is defined as `ClusterWide`.
 * Prior to the introduction of this feature (in **RavenDB 5.2**), client code had to 
-  administer compare exchange entries explicitly. You can still do that if you wish, by 
+  administer compare-exchange entries explicitly. You can still do that if you wish, by 
   [disabling](../../../client-api/operations/compare-exchange/atomic-guards#disabling-atomic-guards) 
   the automatic usage of atomic guards in a session and defining and managing compare exchange 
   key/value pairs 
@@ -32,12 +32,13 @@
 
 {PANEL: Syntax and Usage}
 
-Atomic guards are used **by default** when a session's transaction mode is 
+Atomic guards are created **by default** when a session's transaction mode is 
 [ClusterWide](../../../client-api/session/cluster-transaction#open-cluster-wide-session).  
 
-In the code sample below, for example, an atomic guard is inexplicitly 
+In the code sample below, for example, an atomic guard is automatically 
 created upon the creation of a new document, and then used when two sessions 
 compete on changing the document.  
+
 {CODE:csharp atomic-guards-enabled@ClientApi/Operations/CompareExchange.cs /}
 
 If you [examine](../../../studio/database/documents/documents-and-collections#the-documents-view) 
@@ -74,7 +75,7 @@ Only disable and edit Atomic Guards if you truly know what you're doing as it ca
 
 {PANEL: Expiration}
 
-Atomic guards expire on the expiration of the documents they are used for, and are automatically 
+Atomic guards expire on the expiration of the documents they are used for and are automatically 
 removed by a RavenDB cleanup task. You do not need to handle the cleanup yourself.  
 
 {NOTE: }

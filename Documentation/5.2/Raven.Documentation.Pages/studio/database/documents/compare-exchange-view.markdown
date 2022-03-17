@@ -5,9 +5,8 @@
 
 * Compare exchange key/value pairs can be used to guarantee the atomicity and overall ACID properties of [cluster-wide transactions](../../../server/clustering/cluster-transactions).  
 
-* RavenDB guarantees cluster-wide ACID safe transactions on each document by automatically including [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
-  (compare exchange key/value pairs) in each document.  
-  * Atomic Guards are compare exchange values that RavenDB creates and maintains automatically.
+* Since RavenDB 5.2, we guarantee cluster-wide ACID safe transactions on each document by automatically including [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards). 
+  These compare exchange key/value pairs are associated with each document that is created in a cluster-wide session.  
     {WARNING: Warning}
     Do not remove or edit atomic guards manually as it will likely disable ACID guarantees for transactions.
     {WARNING/}
@@ -24,7 +23,7 @@
 ![Compare Exchange View](images/compare-exchange-view.png "Compare Exchange View")
 
 1. **Documents Tab**  
-   Select to see document related options.  
+   Select to see document-related options.  
 2. **Compare Exchange**  
    Select to see the Compare Exchange Studio view.  
 3. **Add new item**  
@@ -38,7 +37,7 @@
        Deleting a compare exchange pair will remove ACID guarantees for transactions if the pair was set up to protect ACIDity.  
        Only remove or edit these if you _truly_ know what you're doing.  
        If the key name starts with `rvn-atomic`, it is an [Atomic Guard](../../../client-api/operations/compare-exchange/atomic-guards)
-       which RavenDB creates and maintains automatically to protect transacations.  
+       which RavenDB creates and maintains automatically in cluster-wide sessions to protect transactions.  
        Do not remove Atomic Guards.
        {WARNING/}
     2. **Key**  

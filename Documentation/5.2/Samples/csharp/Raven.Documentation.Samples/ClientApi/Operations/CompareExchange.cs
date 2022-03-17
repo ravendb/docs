@@ -345,32 +345,36 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             #region atomic-guards-enabled
             using (var session = store.OpenAsyncSession
                    (new SessionOptions
-                    // a cluster-wide session is opened
+                    // A cluster-wide session is opened.
                     {TransactionMode = TransactionMode.ClusterWide}))
             {
-                // an atomic guard is inexplicitly created for the new document
                 await session.StoreAsync(new User(), "users/johndoe");
                 await session.SaveChangesAsync();
+                // An atomic guard is now automatically created for the new document.
             }
 
-            // two cluster-wide sessions are opened
+            // Two cluster-wide sessions are opened.
             using (var session1 = store.OpenAsyncSession(
                    new SessionOptions 
                    {TransactionMode = TransactionMode.ClusterWide}))
             using (var session2 = store.OpenAsyncSession(
                    new SessionOptions 
                    {TransactionMode = TransactionMode.ClusterWide}))
-            {   // the atomic guard is inexplicitly used by both sessions.
-                // session1 is permitted to change the document,
-                // since no other session currently holds the atomic guard.  
+            {
+                // The session that loads the document first
+                // will get hold of its related atomic-guard.
                 var loadedUser1 = await session1.LoadAsync<User>("users/johndoe");
                 loadedUser1.Name = "jindoe";
-                // session2 is rejected with an exception,
-                // since session1 currently holds the atomic guard.  
+
+                // session1 now holds the document's Atomic Guard.
+                // session2 can still load the same document.
                 var loadedUser2 = await session2.LoadAsync<User>("users/johndoe");
                 loadedUser2.Name = "jandoe";
 
                 await session1.SaveChangesAsync();
+
+                // session2.SaveChanges() will be rejected with an exception
+                // since session1 currently holds the atomic guard.  
                 await session2.SaveChangesAsync();
             }
             #endregion
