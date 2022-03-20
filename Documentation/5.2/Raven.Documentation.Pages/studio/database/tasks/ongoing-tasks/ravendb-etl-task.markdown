@@ -18,7 +18,7 @@
 * In this page:  
   * [RavenDB ETL Task - Definition](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---definition)  
   * [RavenDB ETL Task - Transform Scripts](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---transform-scripts)  
-  * [RavenDB ETL Task - Passing Certificate](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate)  
+  * [Passing Certificate Between Secure Servers](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate-between-secure-servers)  
   * [RavenDB ETL Task - Details in Tasks List View](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---details-in-tasks-list-view)  
   * [RavenDB ETL Task - Offline Behaviour](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---offline-behaviour)  
   * [RavenDB ETL Task -vs- Replication Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--replication-task)  
@@ -64,7 +64,7 @@
 5. Select the collections for the ETL task -or - apply to all collections  
 {PANEL/}
 
-{PANEL: Passing Certificate}
+{PANEL: Passing Certificate Between Secure Servers}
 
 **Pass Certificate from Source Server to Destination Server**  
   This step must be done if connecting *to a separate server* so that the destination server trusts the source.  

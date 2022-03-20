@@ -4,9 +4,8 @@ using Raven.Client.ServerWide.Operations;
 
 namespace Raven.Documentation.Samples.ClientApi
 {
-    class DocumentsCompression
+    class DocumentsCompressionConfigExample
     {
-        /*
         #region Syntax_0
         public class DocumentsCompressionConfiguration
         {
@@ -15,12 +14,11 @@ namespace Raven.Documentation.Samples.ClientApi
             public bool CompressAllCollections { get; set; }
         }
         #endregion
-        */
-
+    }
+    class DocumentsCompression
+    {
         public void Example()
         {
-
-
             #region Example_0
             using (var store = new DocumentStore())
             {
@@ -36,7 +34,6 @@ namespace Raven.Documentation.Samples.ClientApi
                 store.Maintenance.Server.Send(new UpdateDatabaseOperation(record, record.Etag));
             }
             #endregion
-
         }
     }
 }

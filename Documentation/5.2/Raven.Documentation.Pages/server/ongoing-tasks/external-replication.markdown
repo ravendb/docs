@@ -3,21 +3,27 @@
 
 {NOTE: }
 
-* A live replication between two different database groups is called _external replication_.  
+* Schedule an **External Replication Task** in order to have a _live_ replica of your data in another database:  
+  * In a separate RavenDB cluster [on local machines](../../../../start/getting-started) or [a cloud instance](../../../../cloud/cloud-overview), 
+    which can be used as a failover if the source cluster is down.  
+     * Note: External Replication task does _not_ create a backup of your data and indexes. See more in [Backup -vs- Replication](../../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
+  * In the same cluster if you want a live copy that won't be a client failover target.
+
+* "Live" means that the replica is up to date at all times. Any changes in the source database will be reflected in the replica once they occur.  
 
 * This ongoing task replicates one-way - from the source to the destination.
 
-* For additional functionality, such as filtration, two-way replication, and flexible connectivity, consider [Hub/Sink Replication](../../server/ongoing-tasks/hub-sink-replication).  
+* For additional functionality such as filtration and two-way replication consider [Hub/Sink Replication](../../server/ongoing-tasks/hub-sink-replication).  
 
-* To replicate between two separate RavenDB servers, you need to [pass a client certificate](../../server/ongoing-tasks/external-replication#step-by-step-guide) from the source server to the destination.
+* To replicate between two separate, secure RavenDB servers, you need to [pass a client certificate](../../server/ongoing-tasks/external-replication#step-by-step-guide) from the source server to the destination.
 
 In this page: 
 
 * [General Information about External Replication Task](../../server/ongoing-tasks/external-replication#general-information-about-external-replication-task)
-* [Code Sample - External Replication](../../server/ongoing-tasks/external-replication#code-sample---external-replication)
+* [Code Sample](../../server/ongoing-tasks/external-replication#code-sample)
 * [Step-by-Step Guide](../../server/ongoing-tasks/external-replication#step-by-step-guide)
-* [External Replication Task - Definition](../../server/ongoing-tasks/external-replication#external-replication-task---definition)  
-* [External Replication Task - Offline Behaviour](../../studio/database/tasks/ongoing-tasks/external-replication-task#external-replication---offline-behaviour)
+* [Definition](../../server/ongoing-tasks/external-replication#definition)  
+* [Offline Behavior](../../server/ongoing-tasks/external-replication#offline-behavior)
 * [Delayed Replication](../../server/ongoing-tasks/external-replication#delayed-replication)
 
 {NOTE/}
@@ -26,17 +32,30 @@ In this page:
 
 **What is being replicated:**  
 
-  * All database documents  
-  * [Attachments](../../document-extensions/attachments/what-are-attachments)  
-  * [Revisions](../../server/extensions/revisions)  
-  * [Counters](../../document-extensions/counters/overview)
-  * [Time Series](../../document-extensions/timeseries/overview)
+ * All database documents and related data:  
+   * [Attachments](../../document-extensions/attachments/what-are-attachments)  
+   * [Revisions](../../server/extensions/revisions)  
+   * [Counters](../../document-extensions/counters/overview)
+   * [Time Series](../../document-extensions/timeseries/overview)
 
 **What is _not_ being replicated:**  
 
-  * [Indexes](../../indexes/creating-and-deploying)  
-  * Any server level behaviours such as:  
-    *  [Conflict resolver definition](../../server/clustering/replication/replication-conflicts#conflict-resolution-script)  
+  * Server and cluster level features:  
+    * [Indexes](../../indexes/creating-and-deploying)  
+    * [Conflict resolver definitions](../../server/clustering/replication/replication-conflicts#conflict-resolution-script)  
+    * [Compare-Exchange](../../client-api/operations/compare-exchange/overview)
+    * [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions)
+    * [Identities](../../server/kb/document-identifier-generation#identity)  
+    * Ongoing tasks
+      * [ETL](../../server/ongoing-tasks/etl/basics)
+      * [Backup](../../studio/database/tasks/backup-task)
+      * [Hub/Sink Replication](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)
+
+{NOTE: Why are cluster-level features not replicated?}
+To provide for architecture that prevents conflicts between clusters, especially when ACID transactions are important, 
+RavenDB is designed so that data ownership is at the cluster level.  
+To learn more, see [Data Ownership in a Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system).
+{NOTE/}
 
 **Conflicts:**  
 
@@ -46,14 +65,15 @@ In this page:
 
 {PANEL/}
 
-{PANEL: Code Sample - External Replication}
+{PANEL: Code Sample}
 
-The vital elements of an External Replication task are:
+The required elements of an External Replication task are:
 
 * The `UpdateExternalReplicationOperation()` method.
-* The target server needs the [certificate from the source](../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
-  server so that it will trust the source.
-* The [connection string](../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-raven-connection-string) with target server URL and any other details needed to access the target server.
+* The destination server needs the [certificate from the source server](../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
+  so that it will trust the source.
+* The [connection string](../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-raven-connection-string) 
+  with destination server URL and any other details needed to access the destination server.
 * The following properties in the `ExternalReplication` object:
   * **ConnectionStringName**  
     The connection string name.  
@@ -81,103 +101,20 @@ Optional elements include the following properties in the `ExternalReplication` 
 
 {PANEL: Step-by-Step Guide}
 
-1. **Pass Certificate from Source Server to Destination Server**  
-  This step must be done if replicating *to a separate server* so that the destination server trusts the source.  
-  * **Via RavenDB Studio:**  
-    Navigate from the "Manage Server" tab (left side) > "Certificates" to open the [Certificate Management](../../server/security/authentication/certificate-management) view.  
-     - Learn how to [pass certificates here](../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates).  
-  * **Via API:**  
-    See the code sample to learn how to [define a client certificate in the DocumentStore()](../../../../client-api/creating-document-store).  
-     - To generate and configure a client certificate from the source server, see [CreateClientCertificateOperation](../../../../client-api/operations/server-wide/certificates/create-client-certificate)
-     - Learn the rationale needed to configure client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
-2. **Create Target Database in Destination Server**  
-  * Consider [creating an empty target database](../../../../studio/database/create-new-database/general-flow) 
-    because data transfer can overwrite existing data.  
-  * If the source database is [encrypted](../../../../studio/database/create-new-database/encrypted#creating-encrypted-database), 
-    be sure that the target database is as well.  
-    The Studio databases list view has a logo that shows which databases are encrypted.
-     ![Encrypted Logo](images/encrypted-logo.png "Encrypted Logo")
-3. **Define External Replication Task in the Source Database**  
-    Learn more about [defining the task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task#external-replication-task---definition) in the dedicated section.  
-  * **Optional Definitions**  
-     - Task Name  
-     - Delay Time  
-     - Preferred Node  
-  * **Required Definition**  
-     - Connection String  
-  * **Save**  
-    Click "Save" to activate the External Replication task.  
-    Check the target database to see if data has transferred.  
-
-
+To create an external replication task via the RavenDB Studio, see the [Step-by-Step Guide](../../studio/database/tasks/ongoing-tasks/external-replication-task#step-by-step-guide)
 
 {PANEL/}
 
-{PANEL: External Replication Task - Definition}
+{PANEL: Definition}
 
-To learn how to define an external replication task via code, see [code sample](../../server/ongoing-tasks/external-replication#code-sample---external-replication).  
+To learn how to define an external replication task via code, see [code sample](../../server/ongoing-tasks/external-replication#code-sample).  
 
-To configure via RavenDB Studio:  
-
-a. Select the source database  
-b. Select **Tasks** tab  
-c. **Ongoing Tasks**  
-d. **Add a database task**  
-e. **External Replication** to use the following interface.  
-
-![Figure 1. External Replication Task Definition](images/external-replication-1.png "Create New External Replication Task")
-
-1. **Source Database**  
-   Be sure that you are defining the task from the correct source database.  
-
-2. **Task Name** (Optional)  
-   * Choose a name of your choice  
-   * If no name is given then RavenDB server will create one for you based on the defined connection string  
-
-3. **Task Delay Time** (Optional)  
-   * If a delay time is set then data will be replicated only after this time period has passed for each data change.  
-   * Having a delayed instance of a database allows you to "go back in time" and undo contamination to your data due to a faulty patch script or other human errors.  
-     * This doesn't replace the need to [safely backup your databases](../../../../studio/database/tasks/backup-task), but it does provide a way to stay online while repairing.  
-
-4. **Preferred Node** (Optional)  
-  * Select a preferred mentor node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be the responsible node for this External Replication Task  
-  * If not selected, then the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties))  
-
-5. **Connection String**  
-  * Select a connection string from the pre-defined list -or- create a new connection string to be used.  
-  * The connection string defines the external database and its server URL to replicate to.  
-    ![External Replication: Connection String](images/external-replication-connection-string.png "External Replication: Connection String")
-      1. **Name**  
-        Give the connection string a meaningful name.  
-      2. **Database**  
-        Copy the exact name of the destination database.  
-          * If the source database is encrypted, make sure that the destination is encrypted as well.
-      3. **Discovery URL**  
-        Copy the URL from the destination database here.
-         ![External Replication: URL](images/external-replication-url.png "External Replication: URL")
-           * Be sure to copy only the server URL - without extraneous details.  
-      4. **Save**  
-         Click "Save" to activate the External Replication task.
+You can also configure external eplication tasks [via RavenDB Studio](../../studio/database/tasks/ongoing-tasks/external-replication-task#definition).  
 
 {PANEL/}
 
-{PANEL: External Replication - Task Details}
 
-![Figure 2. External Replication Task - Task List View](images/external-replication-2.png "Tasks List View Details")
-
-1. **External Replication Task Details**:
-   *  Task Status - Active / Not Active / Not on Node / Reconnect  
-   *  Connection String - The connection string used  
-   *  Destination Database - The external database to which the data is being replicated  
-   *  Actual Destination URL - The server URL to which the data is actually being replicated,  
-      the one that is currently used out of the available _Topology Discovery URLs_  
-   *  Topology Discovery URLs - List of the available destination Database Group servers URLs  
-
-2. **Graph view**:  
-   Graph view of the responsible node for the External Replication Task  
-{PANEL/}
-
-{PANEL: External Replication - Offline Behaviour}
+{PANEL: Offline Behavior}
 
 * **When the source cluster is down** (and there is no leader):  
 
@@ -204,13 +141,15 @@ e. **External Replication** to use the following interface.
 ## Delayed Replication
 
 In RavenDB we introduced a new kind of replication, _delayed replication_. It replicates data that is 
-delayed by `X` amount of time.  
-The _delayed replication_ works just like normal replication but instead of sending data immediately, 
-it waits `X` amount of time.  
+delayed by `X` amount of time. 
+_Delayed replication_ works just like normal replication but instead of sending data immediately, 
+it waits `X` amount of time. 
 Having a delayed instance of a database allows you to "go back in time" and undo contamination to your data 
 due to a faulty patch script or other human errors.  
 While you can and should always use backup for those cases, having a live database makes it super fast to failover 
 to prevent business losses while you repair the faulty databases.  
+
+* To set delayed replication, see "3. **Set Replication Delay Time**" in the [definition instructions](../../studio/database/tasks/ongoing-tasks/external-replication-task#definition).  
 
 ## Related articles
 

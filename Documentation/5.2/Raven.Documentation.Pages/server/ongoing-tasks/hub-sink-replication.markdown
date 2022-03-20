@@ -24,6 +24,7 @@ Hub whenever they are online.
 {INFO/}  
 
 * In this page:  
+   * [What is and is not replicated?](../../server/ongoing-tasks/hub-sink-replication#what-is-and-is-not-replicated?)  
    * [Defining Replication Tasks](../../server/ongoing-tasks/hub-sink-replication#defining-replication-tasks)  
      * [Defining a Replication Hub](../../server/ongoing-tasks/hub-sink-replication#defining-a-replication-hub)  
      * [Defining a Hub Access](../../server/ongoing-tasks/hub-sink-replication#defining-a-hub-access)  
@@ -36,27 +37,75 @@ Hub whenever they are online.
 
 ---
 
+
+{PANEL: What is and is not replicated?}
+
+{INFO: }
+
+After the tasks are defined, **changed** documents whose replication is allowed by 
+both the Hub and the Sink filters will replicate.  
+
+If you want the entire database to be replicated in the destination, you can [import the database](../../studio/database/tasks/import-data/import-from-ravendb) 
+into the destination.  
+
+After the data is in the destination server, setting up a hub/sink replication ongoing task will keep the two databases up to date.  
+
+{INFO/}
+
+**What is being replicated:**  
+
+  * All database documents and related data:  
+    * [Attachments](../../document-extensions/attachments/what-are-attachments)  
+    * [Revisions](../../server/extensions/revisions)  
+    * [Counters](../../document-extensions/counters/overview)
+    * [Time Series](../../document-extensions/timeseries/overview)
+
+**What is _not_ being replicated:**  
+
+  * Server and cluster level features:  
+    * [Indexes](../../indexes/creating-and-deploying)  
+    * [Conflict resolver definitions](../../server/clustering/replication/replication-conflicts#conflict-resolution-script)  
+    * [Compare-Exchange](../../client-api/operations/compare-exchange/overview)
+    * [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions)
+    * [Identities](../../server/kb/document-identifier-generation#identity)  
+    * Ongoing tasks
+      * [ETL](../../server/ongoing-tasks/etl/basics)
+      * [Backup](../../studio/database/tasks/backup-task)
+      * [Hub/Sink Replication](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)
+
+{NOTE: Why are some cluster-level features not replicated?}
+To provide for architecture that prevents conflicts between clusters, especially when ACID transactions are important, 
+RavenDB is designed so that data ownership is at the cluster level.  
+To learn more, see [Data Ownership in a Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system).
+
+It is also best to ensure that each cluster defines policies, configurations, and ongoing tasks that are relevant for it.  
+{NOTE/}
+
+{PANEL/}
+
+
+
 {PANEL: Defining Replication Tasks}
 
 To start replication via Hub and Sink tasks, you need to define -  
 
 1. **A Hub task**  
 2. **Hub Access/es**  
-    * Multiple Sink tasks can connect a Hub using each access you define for it.  
-    * Each access has an associate certificate, that is used by the Sink to 
+    * Multiple Sink tasks can connect a Hub using each Access you define for it.  
+    * Each Access has an associated certificate, that is used by the Sink to 
       authenticate with the Hub. This certificate is used to identify the specific 
-      access and the relevant filters for the connection.  
+      Access and the relevant filters for the connection.  
 3. **Sink task/s**  
 4. **Filtering**  
     * You can enable or disable *replication filtering*, and specify the paths 
       of documents whose replication is allowed.  
     * Allowed paths are defined separately for the Hub and for the Sink.  
-    * You can further increase filtering resolution, by defining separate 
-      lists of allowed paths for *incoming* and *outgoing* documents.  
+    * You can filter incoming and outgoing replication defining separate lists of allowed paths 
+      for *incoming* and *outgoing* documents.  
+      * Only documents that are allowed by both the hub and sink filters will be replicated.  
 
 
-When the tasks are defined, changed documents whose replication is allowed by 
-both the Hub and the Sink will replicate.  
+
 
 ---
 
@@ -267,7 +316,7 @@ also the Sink's responsibility to reconnect on network failure.
 As part of the connection handshake, the Sink fetches an ordered list 
 of nodes from the Hub cluster. If a preferred node is defined (by explicitly 
 selecting a mentor node), it will be at the top of this list.  
-The Sink will try to connect the first node in the list, and proceed 
+The Sink will try to connect to the first node in the list, and proceed 
 down the list with every failed attempt.  
 If the connection fails with all nodes, the Sink will request the list again.  
 

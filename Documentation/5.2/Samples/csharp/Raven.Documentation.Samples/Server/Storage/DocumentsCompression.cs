@@ -4,19 +4,20 @@ using Raven.Client.ServerWide;
 
 namespace Raven.Documentation.Samples.ClientApi
 {
-    class DocumentsCompression
+        class DocumentsCompressionConfigExample
     {
-
-/*        #region Syntax_0
+        #region Syntax_0
         public class DocumentsCompressionConfiguration
         {
             public string[] Collections { get; set; }
             public bool CompressRevisions { get; set; }
             public bool CompressAllCollections { get; set; }
         }
-        #endregion*/
+        #endregion
+    }
 
-
+    class DocumentsCompression
+    {
         public void Example()
         {
             #region Example_0

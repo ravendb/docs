@@ -25,6 +25,7 @@ and Sink replication tasks.
 
 * In this page:
     * [What is Hub/Sink Replication for?](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#what-is-hub/sink-replication-for?)  
+    * [What is and is not replicated?](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#what-is-and-is-not-replicated?)  
     * [Accesses and Certificates](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#accesses-and-certificates)  
     * [Filtered Replication](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#filtered-replication)  
     * [What does the replication include?](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#what-does-the-replication-include?)  
@@ -61,11 +62,53 @@ and Sink replication tasks.
 
 {PANEL/}
 
+{PANEL: What is and is not replicated?}
+
+**What is being replicated:**  
+
+  * All database documents and related data:  
+    * [Attachments](../../../../../document-extensions/attachments/what-are-attachments)  
+    * [Revisions](../../../../../server/extensions/revisions)  
+    * [Counters](../../../../../document-extensions/counters/overview)
+    * [Time Series](../../../../../document-extensions/timeseries/overview)
+
+**What is _not_ being replicated:**  
+
+  * Server and cluster level features:  
+    * [Indexes](../../../../../indexes/creating-and-deploying)  
+    * [Conflict resolver definitions](../../../../../server/clustering/replication/replication-conflicts#conflict-resolution-script)  
+    * [Compare-Exchange](../../../../../client-api/operations/compare-exchange/overview)
+    * [Subscriptions](../../../../../client-api/data-subscriptions/what-are-data-subscriptions)
+    * [Identities](../../../../../server/kb/document-identifier-generation#identity)  
+    * Ongoing tasks
+      * [ETL](../../../../../server/ongoing-tasks/etl/basics)
+      * [Backup](../../../../../studio/database/tasks/backup-task)
+      * [Hub/Sink Replication](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)
+
+{NOTE: Why are some cluster-level features not replicated?}
+To provide for architecture that prevents conflicts between clusters, especially when ACID transactions are important, 
+RavenDB is designed so that data ownership is at the cluster level.  
+To learn more, see [Data Ownership in a Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system).
+
+It is also best to ensure that each cluster defines policies, configurations, and ongoing tasks that are relevant for it.  
+{NOTE/}
+
+{PANEL/}
+
 {PANEL: Accesses and Certificates}
 
 The connection between Hub and Sink tasks is validated using public-key cryptography.  
 
-Navigate from **Tasks tab** > **Ongoing Tasks** > choose existing Hub/Sink or **Add Database Task** > **Replication Hub** or **Replication Sink**  
+To access the Hub or Sink Task Studio interface:  
+
+a. Open the **Databases** view in the source server.  
+b. Select the database where the task will be active.  
+c. Click **Tasks** tab.  
+d. Select **Ongoing Tasks**  
+e. Click **Add a database task**  
+f. Click **Replication Hub** or **Replication Sink**.  
+g. Toggle desired configurations and click **Add Access** to view the following interface:
+
 
 ![Certificates](images/certificates-hub-sink-replication.png "Certificates")
 
@@ -116,7 +159,15 @@ can be useful in numerous cases, e.g. -
   speed tickets as if they were collected by another camera (e.g. to overrun
   a ticket collected by any chosen camera, with a blank one).  
 
-Navigate from **Tasks tab** > **Ongoing Tasks** > choose existing Hub/Sink or **Add Database Task** > **Replication Hub** or **Replication Sink**  
+To access the Hub or Sink Task Studio interface:  
+
+a. Open the **Databases** view in the source server.  
+b. Select the database where the task will be active.  
+c. Click **Tasks** tab.  
+d. Select **Ongoing Tasks**  
+e. Click **Add a database task**  
+f. Click **Replication Hub** or **Replication Sink**.  
+g. Toggle desired configurations and click **Add Access** to view the following interface:
 
 ![Filtered Replication](images/filtering-hub-sink-replication.png "Filtered Replication")
 

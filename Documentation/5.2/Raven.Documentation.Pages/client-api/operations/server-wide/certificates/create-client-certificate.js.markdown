@@ -48,8 +48,8 @@
 ## Related articles
 
 **Client API Articles**:  
-- [How to **delete** certificate?](../../../../client-api/operations/server-wide/certificates/delete-certificate)  
-- [How to **put** client certificate?](../../../../client-api/operations/server-wide/certificates/put-client-certificate)  
+- [How to delete certificate?](../../../../client-api/operations/server-wide/certificates/delete-certificate)  
+- [How to put client certificate?](../../../../client-api/operations/server-wide/certificates/put-client-certificate)  
 
 **Server Articles**:  
 - [Certificates Management](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates)  

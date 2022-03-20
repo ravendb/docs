@@ -8,35 +8,9 @@ using System;
 namespace Raven.Documentation.Samples.Server.OngoingTasks.ExternalReplicationSamples
 {
 
-    public class ExternalReplicationSample
+    public class ExternalReplicationExampleConfig
     {
 
-        public async Task ExtRepSimple()
-        {
-            IDocumentStore sourceStore = null;
-            IDocumentStore destinationStore = null;
-            string connectionStrName = null;
-
-            #region ExternalReplication
-            //setup connection string from sourceStore to destinationStore
-            await sourceStore.Maintenance.SendAsync(new PutConnectionStringOperation<RavenConnectionString>(new RavenConnectionString
-            {
-                Database = destinationStore.Database,
-                Name = connectionStrName,
-                TopologyDiscoveryUrls = destinationStore.Urls
-            }));
-
-            //define external replication
-            await sourceStore.Maintenance.SendAsync(new UpdateExternalReplicationOperation(new ExternalReplication
-            {
-                ConnectionStringName = connectionStrName,
-                Name = "targetDatabaseName",
-            }));
-
-            #endregion
-
-
-         /*
         #region ExternalReplicationProperties
         public class ExternalReplication
         {
@@ -46,7 +20,40 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ExternalReplicationSam
             public string MentorNode { get; set; }
         }
         #endregion
-         */
+
+    }
+
+    public class ExternalReplicationSample
+    {
+
+        public async Task ExtRepSimple()
+        {
+            #region ExternalReplication
+            IDocumentStore sourceStore = null;
+            IDocumentStore destinationStore = null;
+            string connectionStrName = null;
+
+            //setup connection string from sourceStore to destinationStore
+            await sourceStore.Maintenance.SendAsync(
+                new PutConnectionStringOperation<RavenConnectionString>(new RavenConnectionString
+            {
+                Database = destinationStore.Database,
+                Name = connectionStrName,
+                TopologyDiscoveryUrls = destinationStore.Urls
+            }));
+
+            //define external replication
+            await sourceStore.Maintenance.SendAsync(
+                new UpdateExternalReplicationOperation(new ExternalReplication
+            {
+                ConnectionStringName = connectionStrName,
+                Name = "targetDatabaseName",
+            }));
+
+            #endregion
+
+
+
         }
 
 
@@ -57,7 +64,8 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ExternalReplicationSam
             string connectionStrName = null;
 
             //setup connection string from sourceStore to destinationStore
-            await sourceStore.Maintenance.SendAsync(new PutConnectionStringOperation<RavenConnectionString>(new RavenConnectionString
+            await sourceStore.Maintenance.SendAsync(
+                new PutConnectionStringOperation<RavenConnectionString>(new RavenConnectionString
             {
                 Database = destinationStore.Database,
                 Name = connectionStrName,
@@ -66,7 +74,8 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ExternalReplicationSam
 
             #region ExternalReplicationWithMentorAndDelay
             //define external replication with mentor node and delay timespan
-            await sourceStore.Maintenance.SendAsync(new UpdateExternalReplicationOperation(new ExternalReplication
+            await sourceStore.Maintenance.SendAsync(
+                new UpdateExternalReplicationOperation(new ExternalReplication
             {
                 ConnectionStringName = connectionStrName,
                 Name = "targetDatabaseName",

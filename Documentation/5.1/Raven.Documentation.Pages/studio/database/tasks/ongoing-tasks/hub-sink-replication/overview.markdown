@@ -26,6 +26,7 @@ and Sink replication tasks.
 * In this page:
     * [What is Hub/Sink Replication for?](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#what-is-hub/sink-replication-for?)  
     * [Filtered Replication](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#filtered-replication)  
+    * [What is and is not replicated?](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#what-is-and-is-not-replicated?)  
     * [Accesses and Certificates](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#accesses-and-certificates)  
     * [What does the replication include?](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#what-does-the-replication-include?)  
     * [Failover](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#failover)  
@@ -98,6 +99,42 @@ can be useful in numerous cases, e.g. -
 {INFO/}
 
 {PANEL/}
+
+
+{PANEL: What is and is not replicated?}
+
+**What is being replicated:**  
+
+  * All database documents and related data:  
+    * [Attachments](../../../../document-extensions/attachments/what-are-attachments)  
+    * [Revisions](../../../../server/extensions/revisions)  
+    * [Counters](../../../../document-extensions/counters/overview)
+    * [Time Series](../../../../document-extensions/timeseries/overview)
+
+**What is _not_ being replicated:**  
+
+  * Server and cluster level features:  
+    * [Indexes](../../../../indexes/creating-and-deploying)  
+    * [Conflict resolver definitions](../../../../server/clustering/replication/replication-conflicts#conflict-resolution-script)  
+    * [Compare-Exchange](../../../../client-api/operations/compare-exchange/overview)
+    * [Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions)
+    * [Identities](../../server/kb/document-identifier-generation#identity)  
+    * Ongoing tasks
+      * [ETL](../../../../server/ongoing-tasks/etl/basics)
+      * [Backup](../../../../studio/database/tasks/backup-task)
+      * [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)
+
+{NOTE: Why are some cluster-level features not replicated?}
+To provide for architecture that prevents conflicts between clusters, especially when ACID transactions are important, 
+RavenDB is designed so that data ownership is at the cluster level.  
+To learn more, see [Data Ownership in a Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system).
+
+It is also best to ensure that each cluster defines policies, configurations, and ongoing tasks that are relevant for it.  
+{NOTE/}
+
+{PANEL/}
+
+
 
 {PANEL: Accesses and Certificates}
 
