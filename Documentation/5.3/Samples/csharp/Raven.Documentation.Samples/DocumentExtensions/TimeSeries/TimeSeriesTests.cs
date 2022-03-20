@@ -21,7 +21,6 @@ using Raven.Client.Documents.Indexes.TimeSeries;
 using Raven.Client.Documents.Operations.Indexes;
 using Raven.Client.ServerWide.Operations;
 using Raven.Client.ServerWide;
-using static Raven.Documentation.Samples.ClientApi.HowTo.HandleDocumentRelationships;
 
 namespace Documentation.Samples.DocumentExtensions.TimeSeries
 {
@@ -2718,6 +2717,15 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             public string AddressId { get; set; }
             public int Count { get; set; }
             public int Age { get; set; }
+        }
+
+        private class Person
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+            public string LastName { get; set; }
+            public int Age { get; set; }
+            public string WorksAt { get; set; }
         }
 
         public class Company

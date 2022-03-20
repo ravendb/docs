@@ -25,9 +25,9 @@ using Raven.Client.Documents.Session.Loaders;
 
 namespace Documentation.Samples.DocumentExtensions.TimeSeries
 {
-    public class SampleTimeSeriesMethods
+    public class SampleIncrementalTimeSeriesMethods
     {
-        private SampleTimeSeriesMethods(ITestOutputHelper output)
+        private SampleIncrementalTimeSeriesMethods(ITestOutputHelper output)
         {
         }
 
@@ -198,7 +198,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
     }
 
-    public class SampleTimeSeriesDefinitions
+    public class SampleIncrementalTimeSeriesDefinitions
     {
         private interface Foo
         {
