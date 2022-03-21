@@ -1,16 +1,38 @@
 # Revisions
+---
 
-The revisions feature will create a revision (snapshot) for every document, upon every update received or when it is deleted.
-It is useful when you need to track the history of the documents or when you need a full audit trail.
+{NOTE: }
 
-## Configuration
+* The **Revisions** feature will create a revision (snapshot) for a document 
+  every time the document is updated or upon its deletion.  
+  The trail of revisions created for the document can then be browsed, and 
+  the currently live document can be reverted to any of its past revisions.  
+* Revisions can be enabled for documents of all collections, or for specific collections.  
+* Among many other usages you can use Revisions to track a document's history 
+  of changes, revert a corrupted document, or conduct a full audit.  
+* Revisions can be configured using API methods or via Studio.
+
+* In this page:  
+  * [Configuration](../../server/extensions/revisions#configuration)  
+     * [Configuration Options](../../server/extensions/revisions#configuration-options)
+  * [How it Works](../../server/extensions/revisions#how-it-works)  
+  * [Enabling or Disabling on an Existing Database](../../server/extensions/revisions#enabling-or-disabling-on-an-existing-database)  
+  * [Storage Concerns](../../server/extensions/revisions#storage-concerns)  
+
+{NOTE/}
+
+---
+
+{PANEL: Configuration}
 
 You can configure the revisions feature using the studio:
 
-![Configuring revisions feature on the database](images/configure-revisions.png)
+![Configuring revisions feature on the database](images/configure-revisions.png "Configuring revisions feature on the database")
 
 By default, the revisions feature will track history for all the documents and never purge old revisions. 
 You can configure this for all collections (using the default configuration) and you can have a configuration for a specific collection.
+
+---
 
 #### Configuration Options:
 
@@ -31,7 +53,9 @@ Then override the behavior of the revisions feature by specifying a configuratio
 
 Conversely, we can disable the default configuration (`Disabled = true`) but enable revisions for a specific collection.
 
-## How it Works
+{PANEL/}
+
+{PANEL: How it Works}
 
 With the revisions feature enabled, let's execute this code:
 
@@ -39,12 +63,13 @@ With the revisions feature enabled, let's execute this code:
 
 If we inspect the document we will see that the following revision were created:
 
-![Figure 1: Revisions](images\revisions1.png)
+![Figure 1: Revisions](images\revisions1.png "Figure 1: Revisions")
+
 
 This is a revision of the document (you can navigate to the document by clicking on `See the current document`) which is stored on the revisions storage.
 Now, let's modify the original document. This would create another revision:
 
-![Figure 2: Revisions, Modified](images\revisions2.png)
+![Figure 2: Revisions, Modified](images\revisions2.png "Figure 2: Revisions, Modified")
 
 As you can see, we have a full audit record of all the changes that were made to the document.
 
@@ -62,18 +87,20 @@ The document would be removed but a revision will be created, so you aren't goin
 In order to see orphaned revisions (revisions of deleted documents), you can go to the `Documents > Revisions Bin` section in the studio, 
 which would list all revisions without existing document:
 
-![Figure 3: Revisions, Deleted](images\revisions3.png)
+![Figure 3: Revisions, Deleted](images\revisions3.png "Figure 3: Revisions, Deleted")
 
 If you'll go and create another document with this ID (users/1), then the revision won't be shown anymore in the Revision Bin section, 
 but you can navigate to the document and see it's revisions, including the deleted once.
 
 Clicking on the revision we can also navigate to the other revisions of this document:
 
-![Figure 4: Revisions, Deleted - other revisions](images\revisions4.png)
+![Figure 4: Revisions, Deleted - other revisions](images\revisions4.png "Figure 4: Revisions, Deleted - other revisions")
 
 The revisions feature attempts to make things as simple as possible. Once it is enabled, you'll automatically get the appropriate audit trail.
 
-## Enabling or Disabling on an Existing Database
+{PANEL/}
+
+{PANEL: Enabling or Disabling on an Existing Database}
 
 The revisions feature can be enabled on a existing database with (or without) data with some restrictions. 
 You need to bear in mind that new revision will be created for any new save or delete operation, but this will not affect any existing data that was created prior turning that feature on.
@@ -82,11 +109,78 @@ If you create a document, then turn on revisions, and then overwrite the documen
 It's possible also to disable the revisions feature on an existing database.
 In this case all existing revisions would still be stored and not deleted but we won't create any new revisions on any put or delete operations.
 
-## Storage Concerns
+{PANEL/}
+
+{PANEL: Storage Concerns}
 
 Enabling the revisions will affect the usage of storage space. Each revision of a document is stored in full. The revisions of documents use the same blittable JSON format as regular 
 documents so the compression of individual fields is enabled (any text field that is greater than 128 bytes will be compressed).
 
+{PANEL/}
+
+{PANEL: Create a Revision Manually}
+
+So far we've seen revisions created automatically by RavenDB upon document update or deletion, 
+when the Revisions feature is enabled.  
+You can, however, create revisions manually as well, regardless of the feature being enabled 
+or disabled. This is useful when, for example, you're not interested in having the revisions 
+feature enabled but do want to create a revision of a specific document before changing it in 
+case something goes wrong or for some other reason.  
+
+---
+
+#### Creating a Revision Manually Via Studio
+
+To create a revision manually via Studio, simply use the **Create Revision** button.  
+![Figure 5: Create a revision manually](images\revisions5.png "Figure 5: Create a revision manually")
+
+---
+
+#### Creating a Revision Manually Via API
+
+To create a revision manually via the API, use the `ForceRevisionCreationFor` method.  
+
+* **Method overloads**  
+  {CODE-BLOCK: csharp}
+  // Force the creation of a revision by an entity tracked by the session
+void ForceRevisionCreationFor<T>(T entity, 
+              ForceRevisionStrategy strategy = ForceRevisionStrategy.Before);
+// Force the creation of a revision by document ID
+void ForceRevisionCreationFor(string id, 
+              ForceRevisionStrategy strategy = ForceRevisionStrategy.Before);
+  {CODE-BLOCK/}
+
+* **Parameters**  
+
+    | Parameter | Type | Description |
+    | - | - | - |
+    | **entity** | `T` | An entity, tracked by the session, for the document you want to create a revision for |
+    | **id** | string | The ID of the document you want to create a revision for |
+    | **strategy** | `ForceRevisionStrategy` | The strategy you want to use while creating the revision (see below) |
+
+* `ForceRevisionStrategy`  
+  {CODE-BLOCK: csharp}
+    public enum ForceRevisionStrategy
+    {
+        // Do not force a revision
+        None,
+        
+        // Create a forced revision from the document that is currently in store, 
+        // BEFORE applying any changes made by the user.  
+        // The only exception will be a new document, for which a revision will be 
+        // created AFTER the update.
+        Before
+    }
+  {CODE-BLOCK/}
+
+
+* **Sample: Using an ID**  
+  {CODE configuration@Server\Revisions.cs /}
+
+* **Sample: Using an Entity**  
+  {CODE configuration@Server\Revisions.cs /}
+
+{PANEL/}
 
 ## Related Articles
 
