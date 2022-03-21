@@ -21,17 +21,18 @@
 
 ###Is there a one-time backup?
 
-No. Backup is an ongoing task and is meant to back your data up continuously.  
+Yes. Although [backup is a vital ongoing task](../../../../studio/database/tasks/backup-task#periodic-backup-creation) and is meant to back your data up continuously, 
+you can also use [one-time manual backups](../../../../studio/database/tasks/backup-task#manually-creating-one-time-backups) 
+(e.g. before upgrading or other maintenance).  
 
-* If you wish, you can trigger it for immediate execution and then disable or delete the task.  
 * You can also use [Smuggler](../../../../client-api/smuggler/what-is-smuggler#what-is-smuggler) as an equivalent of a full backup for a single [export](../../../../client-api/smuggler/what-is-smuggler#export) operation.  
 
 ---
 
 ###How do I create a backup of my cluster configuration?  
 
-Only database contents can be backed up. 
-Cluster configuration and nodes setup can be easily re-created, no special backup procedure is needed for it.  
+Only database contents and indexes can be backed up. 
+Cluster configuration and nodes setup can be re-created, so no special backup procedure is needed for it.  
 
 ---
 
@@ -46,18 +47,20 @@ It is recommended that you set all nodes to the same time. This way, backup file
 
 Although [External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) 
 and [Backup](../../../../client-api/operations/maintenance/backup/backup) 
-are both ongoing-tasks, they have different aims and behavior.  
+are both ongoing-tasks that create a copy of your data, they have different aims and behavior. 
+For example, replication tasks don't copy indexes, but they do create a live copy that can be used as a failover and distribute the workload.  
 See [Backup Task -vs- External Replication Task](../../../../studio/database/tasks/backup-task#backup-task--vs--replication-task).  
 
 ---
 
 ###Can I simply copy the database folder contents whenever I need to create a backup?  
 
-Simply copying the database folder is **not** a good substitute for RavenDB's backup procedures.  
-Creating a backup task is a one-time operation. There really is no reason to do it manually again and again.  
+Simply copying the database folder of a live database will probably create corrupted data in the backup.  
+Creating an [ongoing backup task](../../../../client-api/operations/maintenance/backup/backup) is a one-time operation. 
+There really is no reason to do it manually again and again.  
 Other advantages of RavenDB's backup system include:  
 
-* **The creation of a reliable point-in-time freeze** of backed-up data.  
+* **The creation of a reliable point-in-time freeze** of backed-up data that can be used in case of mistaken deletes or patches.  
 * **The assurance of ACID compliance** for backed up data during interactions with the file system.  
 
 ---
@@ -75,11 +78,11 @@ Learn how to change the [Retention Policy via API](../../../../client-api/operat
 
 ###Are there any locations that backup files should NOT be stored at?  
 
-It is recommended **not** to store backups on the same drive as your database data files, since -  
+It is recommended **not to store backups on the same drive as your database** data files, 
+since both the database and the backups would be exposed to the same risks.  
 
-* Reading from and writing to the same drive can slow down other database operations.  
-* Disk space can run low as backups start piling up.  
-* Both the database and the backups would be exposed to the same risks.  
+There are many [options for backup locations](../../../../studio/database/tasks/backup-task#destination).  
+We recommend creating ongoing backups in two different types of locations (cloud and local machine).  
 
 ---
 
