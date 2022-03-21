@@ -8,6 +8,7 @@ using Raven.Client.Documents.Operations.Indexes;
 using Raven.Client.Documents.Operations.Revisions;
 using Raven.Client.Documents.Session;
 using Raven.Client.Json;
+using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.Server
 {
@@ -85,5 +86,49 @@ namespace Raven.Documentation.Samples.Server
                 }
             }
         }
+
+        public async Task ForceRevisionCreationForSample()
+        {
+            using (var store = new DocumentStore())
+            {
+                string companyId;
+                using (var session = store.OpenSession())
+                {
+                    #region ForceRevisionCreationByEntity
+                    var company = new Company { 
+                            Name = "CompanyProfile" };
+                    session.Store(company);
+                    companyId = company.Id;
+                    session.SaveChanges();
+
+                    // Forcing the creation of a revision by entity becomes possible 
+                    // only after the document is saved and becomes a tracked entity
+                    session.Advanced.Revisions.ForceRevisionCreationFor<Company>(company);
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region ForceRevisionCreationByID
+                    session.Advanced.Revisions.ForceRevisionCreationFor(companyId);
+                    session.SaveChanges();
+                    #endregion
+
+                    var revisionsCount = session.Advanced.Revisions.GetFor<Company>(companyId).Count;
+                }
+            }
+        }
+
+        public class Company
+        {
+            public string Id { get; set; }
+            public string ExternalId { get; set; }
+            public string Name { get; set; }
+            public Contact Contact { get; set; }
+            public Address Address { get; set; }
+            public string Phone { get; set; }
+            public string Fax { get; set; }
+        }
+
     }
 }

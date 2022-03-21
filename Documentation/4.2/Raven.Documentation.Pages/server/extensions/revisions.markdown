@@ -4,7 +4,7 @@
 {NOTE: }
 
 * The **Revisions** feature will create a revision (snapshot) for a document 
-  every time the document is updated or upon its deletion.  
+  every time the document is updated and upon its deletion.  
   The trail of revisions created for the document can then be browsed, and 
   the currently live document can be reverted to any of its past revisions.  
 * Revisions can be enabled for documents of all collections, or for specific collections.  
@@ -18,6 +18,7 @@
   * [How it Works](../../server/extensions/revisions#how-it-works)  
   * [Enabling or Disabling on an Existing Database](../../server/extensions/revisions#enabling-or-disabling-on-an-existing-database)  
   * [Storage Concerns](../../server/extensions/revisions#storage-concerns)  
+  * [Force Revision Creation](../../server/extensions/revisions#force-revision-creation)  
 
 {NOTE/}
 
@@ -118,45 +119,53 @@ documents so the compression of individual fields is enabled (any text field tha
 
 {PANEL/}
 
-{PANEL: Create a Revision Manually}
+{PANEL: Force Revision Creation}
 
-So far we've seen revisions created automatically by RavenDB upon document update or deletion, 
-when the Revisions feature is enabled.  
-You can, however, create revisions manually as well, regardless of the feature being enabled 
-or disabled. This is useful when, for example, you're not interested in having the revisions 
-feature enabled but do want to create a revision of a specific document before changing it in 
-case something goes wrong or for some other reason.  
+So far we've discussed the automatic creation of revisions when the feature is enabled. 
+But you can also **force the creation** of a document revision, whether the feature is 
+enabled or not.  
+This is useful when, for example, you choose to disable Revisions but 
+still want to create a revision for a specific document, e.g. to take a snapshot of the 
+document as a precaution before changing it.  
+
+* You can force the creation of a revision using Studio or the `ForceRevisionCreationFor` API method.  
+* A revision will be created Even If:  
+   * There is no Revisions configuration for the collection  
+   * The document was not modified  
 
 ---
 
-#### Creating a Revision Manually Via Studio
+#### Force Revision Creation via Studio
 
-To create a revision manually via Studio, simply use the **Create Revision** button.  
+To create a revision manually via Studio, use the **Create Revision** button in the 
+document view's Revisions tab.  
 ![Figure 5: Create a revision manually](images\revisions5.png "Figure 5: Create a revision manually")
 
 ---
 
-#### Creating a Revision Manually Via API
+#### Force Revision Creation via API
 
-To create a revision manually via the API, use the `ForceRevisionCreationFor` method.  
+To create a revision manually via the API, use the session `ForceRevisionCreationFor` method.  
 
-* **Method overloads**  
+* **`ForceRevisionCreationFor` overloads**:  
   {CODE-BLOCK: csharp}
-  // Force the creation of a revision by an entity tracked by the session
+  // Make the session create a revision for a document by entity.
+// Can be used with tracked entities only.
 void ForceRevisionCreationFor<T>(T entity, 
               ForceRevisionStrategy strategy = ForceRevisionStrategy.Before);
-// Force the creation of a revision by document ID
+
+// Make the session create a revision for a document by the document's ID.
 void ForceRevisionCreationFor(string id, 
               ForceRevisionStrategy strategy = ForceRevisionStrategy.Before);
   {CODE-BLOCK/}
 
-* **Parameters**  
+* **Parameters**:  
 
     | Parameter | Type | Description |
     | - | - | - |
-    | **entity** | `T` | An entity, tracked by the session, for the document you want to create a revision for |
-    | **id** | string | The ID of the document you want to create a revision for |
-    | **strategy** | `ForceRevisionStrategy` | The strategy you want to use while creating the revision (see below) |
+    | **entity** | `T` | The tracked entity you want to create a revision for |
+    | **id** | string | ID of the document you want to create a revision for |
+    | **strategy** | `ForceRevisionStrategy` | Defines the revision creation strategy (see below). <br> Default: `ForceRevisionStrategy.Before` |
 
 * `ForceRevisionStrategy`  
   {CODE-BLOCK: csharp}
@@ -167,18 +176,19 @@ void ForceRevisionCreationFor(string id,
         
         // Create a forced revision from the document that is currently in store, 
         // BEFORE applying any changes made by the user.  
-        // The only exception will be a new document, for which a revision will be 
+        // The only exception is a new document, for which a revision will be 
         // created AFTER the update.
         Before
     }
   {CODE-BLOCK/}
 
+---
 
-* **Sample: Using an ID**  
-  {CODE configuration@Server\Revisions.cs /}
-
-* **Sample: Using an Entity**  
-  {CODE configuration@Server\Revisions.cs /}
+#### Sample: Force revision creation by document ID
+{CODE-TABS}
+{CODE-TAB:csharp:By_ID ForceRevisionCreationByID@Server\Revisions.cs /}
+{CODE-TAB:csharp:By_Entity ForceRevisionCreationByEntity@Server\Revisions.cs /}
+{CODE-TABS/}
 
 {PANEL/}
 
@@ -186,7 +196,7 @@ void ForceRevisionCreationFor(string id,
 
 ### Client API
 
-- [What are Revisions](../../client-api/session/revisions/what-are-revisions)
-- [Loading Revisions](../../client-api/session/revisions/loading)
-- [Revisions in Data Subscriptions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)
-
+- [Session: What are Revisions](../../client-api/session/revisions/what-are-revisions)  
+- [Session: Loading Revisions](../../client-api/session/revisions/loading)  
+- [Operations: How to Configure Revisions](../../client-api/operations/revisions/configure-revisions)  
+- [Revisions in Data Subscriptions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)  
