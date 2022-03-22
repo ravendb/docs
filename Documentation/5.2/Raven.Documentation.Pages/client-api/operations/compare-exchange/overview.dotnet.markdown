@@ -9,8 +9,8 @@
 
 * Compare exchange can be created and managed explicitly in your code.  
 
-* To ensure ACIDity across the cluster, since RavenDB 5.2 they are created automatically as [Atomic Guards](../../../client-api/operations/compare-exchange/overview#atomic-guards) 
-  whenever the session is defined as `ClusterWide`.
+* To ensure ACIDity across the cluster, since RavenDB 5.2 they are created automatically as [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
+  in cluster-wide sessions.
 
 * Once defined, the Compare Exchange Values can be accessed via [GetCompareExchangeValuesOperation](../../../client-api/operations/compare-exchange/get-compare-exchange-values),  
   or by using RQL in a query ([see example-I below](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).  
@@ -18,9 +18,7 @@
 In this page:  
 
   * [Compare Exchange Values in RavenDB](../../../client-api/operations/compare-exchange/overview#compare-exchange-values-in-ravendb)  
-  * [Transaction Scope](../../../client-api/operations/compare-exchange/overview#transaction-scope)  
-    * [Manually Created](../../../client-api/operations/compare-exchange/overview#manually-created)  
-    * [Atomic Guards](../../../client-api/operations/compare-exchange/overview#atomic-guards)  
+  * [Transaction Scope for Compare-Exchange Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)  
   * [Creating a Key](../../../client-api/operations/compare-exchange/overview#creating-a-key)  
   * [Updating a Key](../../../client-api/operations/compare-exchange/overview#updating-a-key)  
   * [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)  
@@ -42,43 +40,22 @@ In this page:
 
 {PANEL/}
 
-{PANEL: Transaction Scope}
+{PANEL: Transaction Scope for Compare-Exchange Operations}
 
-#### Manually Created
 
-* A manually created compare-exchange [operation](../../../client-api/operations/what-are-operations) 
+* A compare-exchange [operation](../../../client-api/operations/what-are-operations) 
   is done on the [document store](../../../client-api/what-is-a-document-store).  
   It is therefore not part of the session transactions.  
 
 * Even if written inside the session scope, a compare exchange operation will be executed regardless 
-  of whether the `session.SaveChanges()` succeeds or fails.  
+  of whether the session SaveChanges() succeeds or fails.  
 
 * Thus, if a compare-exchange operation has failed when used inside a session block,  
   it will **not** be rolled back automatically upon a [session transaction failure](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching).  
 
-#### Atomic Guards
-
-* RavenDB uses automatically created compare exchange items, called [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards), 
-  to ensure cluster-wide ACID transactions as of version 5.2.  
-
-* When working with a [cluster-wide session](../../../client-api/session/cluster-transaction), 
-  an Atomic Guard is created upon a successful creation of a document.  
-  * To set the session as cluster-wide the `TransactionMode` must be defined as `ClusterWide`.
-
-* If `session.SaveChanges()` fails, the Atomic Guard is not created.  
-
 {INFO: }
-
-* Atomic Guards are local to the cluster they were defined on.  
-
-* Atomic Guards will not be replicated across clusters in replication tasks.  
-
-
+Compare-exchange items can also be created and managed with [Session.Advanced methods](../../../client-api/session/cluster-transaction) instead of via operations.  
 {INFO/}
-
-{WARNING: Warning}
-Do not remove or edit atomic guards manually as it will likely disable ACID guarantees for cluster-wide transactions.
-{WARNING/}
 
 {PANEL/}
 

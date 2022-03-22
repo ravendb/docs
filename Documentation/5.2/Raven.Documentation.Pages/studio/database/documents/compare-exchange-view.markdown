@@ -11,7 +11,7 @@
     Do not remove or edit atomic guards manually as it will likely disable ACID guarantees for transactions.
     {WARNING/}
 
-* You can also create new compare exchange key/value pairs to use in other situations.  
+* You can also manually create new compare exchange key/value pairs to use in other situations.  
   See examples in the [overview API article](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation).
 
 {NOTE/}

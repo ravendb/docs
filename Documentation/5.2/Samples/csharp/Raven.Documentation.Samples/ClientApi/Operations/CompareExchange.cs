@@ -350,7 +350,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             {
                 await session.StoreAsync(new User(), "users/johndoe");
                 await session.SaveChangesAsync();
-                // An atomic guard is now automatically created for the new document.
+                // An atomic guard is now automatically created for the new document "users/johndoe".
             }
 
             // Two cluster-wide sessions are opened.
