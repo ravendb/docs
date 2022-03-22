@@ -31,8 +31,13 @@ you can also use [one-time manual backups](../../../../studio/database/tasks/bac
 
 ###How do I create a backup of my cluster configuration?  
 
-Only database contents can be backed up. 
-Cluster configuration and nodes setup can be easily re-created, no special backup procedure is needed for it.  
+Only database contents and indexes can be backed up. 
+Cluster configuration and nodes setup can be [re-created](../../../../start/getting-started#installation--setup) 
+and [restored from backup](../../../../studio/server/databases/create-new-database/from-backup), so no special backup procedure is needed for it.  
+
+You can [replicate your database](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview) so that there is a live version available 
+to distribute the workload and act as a failover in case of cluster failure while you restore the database.  
+[Is an External Replication a good substitute for a backup task?](../../../../client-api/operations/maintenance/backup/faq#is-an-external-replication-task-a-good-substitute-for-a-backup-task)  
 
 ---
 
@@ -48,7 +53,8 @@ It is recommended that you set all nodes to the same time. This way, backup file
 Although [External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) 
 and [Backup](../../../../client-api/operations/maintenance/backup/backup) 
 are both ongoing-tasks that create a copy of your data, they have different aims and behavior. 
-For example, replication tasks don't copy indexes, but they do create a live copy that can be used as a failover and distribute the workload.  
+For example, replication tasks don't allow you to retrieve data from a history/restore point after mistakes, 
+but they do create a live copy that can be used as a failover and they can distribute the workload.  
 See [Backup Task -vs- External Replication Task](../../../../studio/database/tasks/backup-task#backup-task--vs--replication-task).  
 
 ---
@@ -57,8 +63,9 @@ See [Backup Task -vs- External Replication Task](../../../../studio/database/tas
 
 Simply copying the database folder of a live database will probably create corrupted data in the backup.  
 Creating an [ongoing backup task](../../../../client-api/operations/maintenance/backup/backup) is a one-time operation. 
-There really is no reason to do it manually again and again.  
+There really is no reason to do it manually again and again. Properly backing up provides: 
 
+* **Up-to-date backups** by incrementally and frequently updating changes in the data.  
 * **The creation of a reliable point-in-time freeze** of backed-up data that can be used in case of mistaken deletes or patches.  
 * **The assurance of ACID compliance** for backed up data during interactions with the file system.  
 
@@ -82,18 +89,20 @@ since both the database and the backups would be exposed to the same risks.
 
 There are many [options for backup locations](../../../../studio/database/tasks/backup-task#destination).  
 We recommend creating ongoing backups in two different types of locations (cloud and local machine).  
+You can store your backups in multiple locations by setting up one [on-going backup task](../../../../studio/database/tasks/backup-task#periodic-backup-creation)
+with multiple destinations.  
 
 ---
 
 ###What happens when a backup process fails before completion?  
 
-While in progress, the backup content is written to a **.in-progress* file on disk.  
+While in progress, the backup content is written to an **.in-progress* file on disk.  
 
 * Once **backup is complete**, the file is renamed to its correct final name.  
 * If the backup process **fails before completion**, the **.in-progress* file remains on disk.  
   This file will not be used in any future Restore processes.  
   If the failed process was an incremental-backup task, any future incremental backups will 
-  continue from the correct place before the file was created.  
+  continue from the correct place before the file was created so that the backup is consistent with the source.  
 
 {PANEL/}
 
