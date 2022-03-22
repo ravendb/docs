@@ -31,7 +31,17 @@ you can also use [one-time manual backups](../../../../studio/database/tasks/bac
 
 ###How do I create a backup of my cluster configuration?  
 
-Only database contents and indexes can be backed up. 
+Both binary "Snapshot" and json "Backup" types of backup tasks save: 
+
+* Database contents
+* Document extensions
+* Indexes
+* Revisions
+* Conflict configurations
+* Identities
+* Compare-exchange items
+* Subscriptions.  
+
 Cluster configuration and nodes setup can be [re-created](../../../../start/getting-started#installation--setup) 
 and [restored from backup](../../../../studio/server/databases/create-new-database/from-backup), so no special backup procedure is needed for it.  
 
@@ -87,10 +97,11 @@ Learn how to change the [Retention Policy via API](../../../../client-api/operat
 It is recommended **not to store backups on the same drive as your database** data files, 
 since both the database and the backups would be exposed to the same risks.  
 
-There are many [options for backup locations](../../../../studio/database/tasks/backup-task#destination).  
-We recommend creating ongoing backups in two different types of locations (cloud and local machine).  
-You can store your backups in multiple locations by setting up one [on-going backup task](../../../../studio/database/tasks/backup-task#periodic-backup-creation)
-with multiple destinations.  
+* Disk space can run low as backups start piling up unless you [set your retention policy for backups](../../../../client-api/operations/maintenance/backup/faq#does-ravendb-automatically-delete-old-backups).
+* There are many [options for backup locations](../../../../studio/database/tasks/backup-task#destination).  
+* We recommend creating ongoing backups in two different types of locations (cloud and local machine).  
+  You can store your backups in multiple locations by setting up one [on-going backup task](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task)
+  with multiple destinations.  
 
 ---
 

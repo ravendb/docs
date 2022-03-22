@@ -87,10 +87,11 @@ Learn how to change the [Retention Policy via RavenDB Studio](../../../../studio
 It is recommended **not to store backups on the same drive as your database** data files, 
 since both the database and the backups would be exposed to the same risks.  
 
-There are many [options for backup locations](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---destination).  
-We recommend creating ongoing backups in two different types of locations (cloud and local machine).  
-You can store your backups in multiple locations by setting up one [on-going backup task](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task)
-with multiple destinations.  
+* Disk space can run low as backups start piling up unless you [set your retention policy for backups](../../../../client-api/operations/maintenance/backup/faq#does-ravendb-automatically-delete-old-backups).
+* There are many [options for backup locations](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---destination).  
+* We recommend creating ongoing backups in two different types of locations (cloud and local machine).  
+  You can store your backups in multiple locations by setting up one [on-going backup task](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task)
+  with multiple destinations.  
 
 ---
 
