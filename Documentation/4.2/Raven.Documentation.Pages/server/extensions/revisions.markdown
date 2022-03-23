@@ -8,8 +8,9 @@
   The trail of revisions created for the document can then be browsed, and 
   the currently live document can be reverted to any of its past revisions.  
 * Revisions can be enabled for documents of all collections, or for specific collections.  
-* Among many other usages you can use Revisions to track a document's history 
-  of changes, revert a corrupted document, or conduct a full audit.  
+* Tracking document revisions allows you, for example, to check how an employee's 
+  contract has changed over time, revert a single corrupted document without restoring 
+  a backup, or to conduct a full-scale audit.  
 * Revisions can be configured using API methods or via Studio.
 
 * In this page:  
@@ -126,12 +127,11 @@ But you can also **force the creation** of a document revision, whether the feat
 enabled or not.  
 This is useful when, for example, you choose to disable Revisions but 
 still want to create a revision for a specific document, e.g. to take a snapshot of the 
-document as a precaution before changing it.  
+document as a precaution before editing it.  
 
-* You can force the creation of a revision using Studio or the `ForceRevisionCreationFor` API method.  
-* A revision will be created Even If:  
-   * There is no Revisions configuration for the collection  
-   * The document was not modified  
+* You can force the creation of a revision via Studio or using the `ForceRevisionCreationFor` API method.  
+* A revision will be created Even If the Revisions feature is disabled for the document's collection.  
+* A revision will be created Even If The document was not modified.  
 
 ---
 
@@ -147,19 +147,19 @@ document view's Revisions tab.
 
 To create a revision manually via the API, use the session `ForceRevisionCreationFor` method.  
 
-* **`ForceRevisionCreationFor` overloads**:  
-  {CODE-BLOCK: csharp}
-  // Make the session create a revision for a document by entity.
+`ForceRevisionCreationFor` overloads:  
+{CODE-BLOCK: csharp}
+// Force revision creation by entity.
 // Can be used with tracked entities only.
 void ForceRevisionCreationFor<T>(T entity, 
               ForceRevisionStrategy strategy = ForceRevisionStrategy.Before);
 
-// Make the session create a revision for a document by the document's ID.
+// Force revision creation by document ID.
 void ForceRevisionCreationFor(string id, 
               ForceRevisionStrategy strategy = ForceRevisionStrategy.Before);
-  {CODE-BLOCK/}
+{CODE-BLOCK/}
 
-* **Parameters**:  
+* **Parameters**:
 
     | Parameter | Type | Description |
     | - | - | - |
@@ -167,28 +167,26 @@ void ForceRevisionCreationFor(string id,
     | **id** | string | ID of the document you want to create a revision for |
     | **strategy** | `ForceRevisionStrategy` | Defines the revision creation strategy (see below). <br> Default: `ForceRevisionStrategy.Before` |
 
-* `ForceRevisionStrategy`  
-  {CODE-BLOCK: csharp}
-    public enum ForceRevisionStrategy
-    {
-        // Do not force a revision
-        None,
+    `ForceRevisionStrategy`:
+    {CODE-BLOCK: csharp}
+public enum ForceRevisionStrategy
+{
+    // Do not force a revision
+    None,
         
-        // Create a forced revision from the document that is currently in store, 
-        // BEFORE applying any changes made by the user.  
-        // The only exception is a new document, for which a revision will be 
-        // created AFTER the update.
+    // Create a forced revision from the document that is currently in store, 
+    // BEFORE applying any changes made by the user.  
+    // The only exception is a new document, for which a revision will be 
+    // created AFTER the update.
         Before
-    }
-  {CODE-BLOCK/}
+}
+    {CODE-BLOCK/}
 
----
-
-#### Sample: Force revision creation by document ID
-{CODE-TABS}
-{CODE-TAB:csharp:By_ID ForceRevisionCreationByID@Server\Revisions.cs /}
-{CODE-TAB:csharp:By_Entity ForceRevisionCreationByEntity@Server\Revisions.cs /}
-{CODE-TABS/}
+* **Sample**:
+    {CODE-TABS}
+    {CODE-TAB:csharp:By_ID ForceRevisionCreationByID@Server\Revisions.cs /}
+    {CODE-TAB:csharp:By_Entity ForceRevisionCreationByEntity@Server\Revisions.cs /}
+    {CODE-TABS/}
 
 {PANEL/}
 

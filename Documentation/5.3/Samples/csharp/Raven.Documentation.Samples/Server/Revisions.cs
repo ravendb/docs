@@ -95,14 +95,15 @@ namespace Raven.Documentation.Samples.Server
                 using (var session = store.OpenSession())
                 {
                     #region ForceRevisionCreationByEntity
+                    // Force revision creation by entity
                     var company = new Company { 
                             Name = "CompanyProfile" };
                     session.Store(company);
                     companyId = company.Id;
                     session.SaveChanges();
 
-                    // Forcing the creation of a revision by entity becomes possible 
-                    // only after the document is saved and becomes a tracked entity
+                    // Forcing the creation of a revision by entity can be performed 
+                    // only when the entity is tracked, after the document is stored.
                     session.Advanced.Revisions.ForceRevisionCreationFor<Company>(company);
                     #endregion
                 }
@@ -110,6 +111,7 @@ namespace Raven.Documentation.Samples.Server
                 using (var session = store.OpenSession())
                 {
                     #region ForceRevisionCreationByID
+                    // Force revision creation by ID
                     session.Advanced.Revisions.ForceRevisionCreationFor(companyId);
                     session.SaveChanges();
                     #endregion
