@@ -92,8 +92,8 @@ public class TimeSeriesEntry
 
 {PANEL: `GetMultipleTimeSeriesOperation`}
 
-Use `GetMultipleTimeSeriesOperation` to retrieve data from 
-multiple time series.  
+To retrieve data from **multiple** time series, 
+use [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get#getmultipletimeseriesoperation).  
 
 {PANEL/}
 
