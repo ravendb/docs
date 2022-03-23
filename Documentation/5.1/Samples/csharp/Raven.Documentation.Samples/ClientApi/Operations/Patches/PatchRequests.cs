@@ -23,7 +23,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
             void Increment<T, U>(T entity, Expression<Func<T, U>> fieldPath, U delta);
 
             void Increment<T, U>(string id, Expression<Func<T, U>> fieldPath, U delta);
-
             #endregion
 
             #region patch_generic_interface_set_value
@@ -39,6 +38,19 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
 
             void Patch<T, U>(string id, Expression<Func<T, IEnumerable<U>>> fieldPath,
                 Expression<Func<JavaScriptArray<U>, object>> arrayMofificationLambda);
+            #endregion
+
+            #region add_or_patch_generic
+            void AddOrPatch<T, TU>(string id, T entity, Expression<Func<T, TU>> path, TU value);
+            #endregion
+
+            #region add_or_patch_array_generic
+            void AddOrPatch<T, TU>(string id, T entity, Expression<Func<T, List<TU>>> path, 
+                Expression<Func<JavaScriptArray<TU>, object>> arrayAdder);
+            #endregion
+
+            #region add_or_increment_generic
+            void AddOrIncrement<T, TU>(string id, T entity, Expression<Func<T, TU>> path, TU valToAdd);
             #endregion
 
             #region patch_non_generic_interface_in_session
@@ -791,7 +803,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     new Order
                     {
                         Company = "Hibernating Rhinos",
-                        Employee = "Jane Smith",
+                        Employee = "Felicity Smoak",
                         RequireAt = DateTime.Now
                     },
                     x => x.RequireAt, new DateTime(2022, 9, 12));
@@ -799,6 +811,52 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     #endregion
                 }
             }
+
+            using (var store = new DocumentStore())
+            using (var session = store.OpenSession())
+            #region Add_Or_Patch_Array_Sample
+            {
+                var id = "users/1-A";
+
+                session.Advanced.AddOrPatch<User, DateTime>(
+                id,
+                new User
+                {
+                    FirstName = "Velma",
+                    LastName = "Dinkley",
+                    LoginTimes =
+                    new List<DateTime>
+                    {
+                        DateTime.UtcNow
+                    }
+                },
+                x => x.LoginTimes,
+                u => u.Add(new DateTime(1993, 09, 12), new DateTime(2000, 01, 01)));
+
+                session.SaveChanges();
+            }
+            #endregion
+
+
+            using (var store = new DocumentStore())
+            using (var session = store.OpenSession())
+            #region Add_Or_Increment_Sample
+            {
+                var id = "users/1-A";
+
+                session.Advanced.AddOrIncrement<User, int>(id,
+                    new User
+                    {
+                        FirstName = "Harper",
+                        LastName = "Row",
+                        LoginCount = 1
+
+                    }, x => x.LoginCount, 3);
+
+                session.SaveChanges();
+
+            }
+            #endregion
 
             using (var store = new DocumentStore())
             {

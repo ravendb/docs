@@ -2,8 +2,8 @@
 
 {NOTE: }
 
-* The **Patch** operation is used to perform *partial* document updates with *one trip to the server*, 
-  without having to load, modify, and save a full document. 
+* The **Patch** operation is used to perform *partial* document updates with **one trip to the server**, 
+  instead of loading, modifying, and saving a full document. 
   The whole operation is executed on the server-side and is useful as a performance enhancement or for 
   updating denormalized data in entities.
 
@@ -13,7 +13,7 @@
 [Non-Typed Session API](../../../client-api/operations/patching/single-document#non-typed-session-api), 
 and [Operations API](../../../client-api/operations/patching/single-document#operations-api).
 
-* Patching can be done from the [client](../../../client-api/operations/patching/single-document#examples) as well as in the [studio](../../../studio/database/documents/patch-view).  
+* Patching can be done from the [client API](../../../client-api/operations/patching/single-document#examples) as well as in the [studio](../../../studio/database/documents/patch-view).  
 
 In this page:  
 
@@ -26,7 +26,9 @@ In this page:
   * [Change Field's Value](../../../client-api/operations/patching/single-document#change-fields-value)  
   * [Change Values of Two Fields](../../../client-api/operations/patching/single-document#change-values-of-two-fields)  
   * [Increment Value](../../../client-api/operations/patching/single-document#increment-value)  
+  * [Add or Increment](../../../client-api/operations/patching/single-document#add-or-increment)  
   * [Add or Patch](../../../client-api/operations/patching/single-document#add-or-patch)  
+  * [Add or Patch to an Existing Array](../../../client-api/operations/patching/single-document#add-or-patch-to-an-existing-array)  
   * [Add Item to Array](../../../client-api/operations/patching/single-document#add-item-to-array)  
   * [Insert Item into Specific Position in Array](../../../client-api/operations/patching/single-document#insert-item-into-specific-position-in-array)  
   * [Modify Item in Specific Position in Array](../../../client-api/operations/patching/single-document#modify-item-in-specific-position-in-array)  
@@ -49,11 +51,13 @@ In this page:
 A type-safe session interface that allows performing the most common patch operations.  
 The patch request will be sent to the server only after the call to `SaveChanges`. This way it's possible to perform multiple operations in one request to the server.  
 
+{NOTE: }
+
 ### Increment Field Value
 `Session.Advanced.Increment`
 {CODE patch_generic_interface_increment@ClientApi\Operations\Patches\PatchRequests.cs /}
 
-| Parameters | | |
+| Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **T** | `Type` | Entity type |
 | **U** | `Type` | Field type, must be of numeric type or a `string` of `char` for string concatenation |
@@ -64,11 +68,32 @@ The patch request will be sent to the server only after the call to `SaveChanges
 
 * Note the numeric values [restrictions](../../../server/kb/numbers-in-ravendb) in JavaScript
 
+---
+
+`Session.Advanced.AddOrIncrement`
+{CODE add_or_increment_generic@ClientApi\Operations\Patches\PatchRequests.cs /}
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **T** | `Type` | Entity type |
+| **U** | `Type` | Field type, must be of numeric type or a `string` of `char` for string concatenation |
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
+| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **path** | `Expression<Func<T, TU>>` | Lambda describing the path to the field. |
+| **valToAdd** | `U` | Value to be added. |
+
+{NOTE/}
+
+---
+
+{NOTE: }
+
+
 ### Set Field Value
 `Session.Advanced.Patch`
 {CODE patch_generic_interface_set_value@ClientApi\Operations\Patches\PatchRequests.cs /}
 
-| Parameters | | |
+| Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **T** | `Type` | Entity type |
 | **U** | `Type` | Field type|
@@ -77,11 +102,33 @@ The patch request will be sent to the server only after the call to `SaveChanges
 | **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
 | **delta** | `U` | Value to set. |
 
+---
+
+`Session.Advanced.AddOrPatch`
+
+{CODE add_or_patch_generic@ClientApi\Operations\Patches\PatchRequests.cs /}
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **T** | `Type` | Entity type |
+| **U** | `Type` | Field type|
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
+| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **fieldPath** | `Expression<Func<T, TU>>` | Lambda describing the path to the field. |
+| **value** | `U` | Value to set. |
+
+{NOTE/}
+
+---
+
+{NOTE: }
+
+
 ### Array Manipulation
 `Session.Advanced.Patch`
 {CODE patch_generic_interface_array_modification_lambda@ClientApi\Operations\Patches\PatchRequests.cs /}
 
-| Parameters | | |
+| Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **T** | `Type` | Entity type |
 | **U** | `Type` | Field type|
@@ -89,6 +136,21 @@ The patch request will be sent to the server only after the call to `SaveChanges
 | **entity id** | `string` | Entity ID on which the operation should be performed. |
 | **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
 | **arrayMofificationLambda** | `Expression<Func<JavaScriptArray<U>, object>>` | Lambda that modifies the array, see `JavaScriptArray` below. |
+
+---
+
+`Session.Advanced.AddOrPatch`
+{CODE add_or_patch_array_generic@ClientApi\Operations\Patches\PatchRequests.cs /}
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **T** | `Type` | Entity type |
+| **U** | `Type` | Field type|
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
+| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **path** | `Expression<Func<T, TU>>` | Lambda describing the path to the field. |
+| **Expression<Func<JavaScriptArray** | `Expression<Func<JavaScriptArray<TU>, object>>` | Lambda that modifies the array, see `JavaScriptArray` below. |
+| **arrayAdder** | `Add()` | Values to add to array. |
 
 {INFO:JavaScriptArray}
 `JavaScriptArray` allows building lambdas representing array manipulations for patches.  
@@ -101,6 +163,8 @@ The patch request will be sent to the server only after the call to `SaveChanges
 | **RemoveAll(Func<T, bool> predicate)** | `JavaScriptArray` | Removes all the items in the array that satisfy the given predicate. |
 
 {INFO/}
+
+{NOTE/}
 
 {PANEL/}
 
@@ -115,7 +179,7 @@ The patch request will be sent to the server only after the call to `SaveChanges
 
 {INFO: PatchCommandData}
 
-| Constructor|  | |
+| Constructor| Type | Description |
 |--------|:-----|-------------|
 | **id** | `string` | ID of the document to be patched. |
 | **changeVector** | `string` | [Can be null] Change vector of the document to be patched, used to verify that the document was not changed before the patch reached it. |
@@ -129,7 +193,7 @@ The patch request will be sent to the server only after the call to `SaveChanges
 We highly recommend using scripts with parameters. This allows RavenDB to cache scripts and boost performance. 
 Parameters can be accessed in the script through the `args` object and passed using PatchRequest's "Values" parameter.
 
-| Members | | |
+| Members | Type | Description |
 | ------------- | ------------- | ----- |
 | **Script** | `string` | JavaScript code to be run. |
 | **Values** | `Dictionary<string, object>` | Parameters to be passed to the script. The parameters can be accessed using the '$' prefix. Parameter starting with a '$' will be used as is, without further concatenation. |
@@ -149,7 +213,7 @@ An operations interface that exposes the full functionality and allows performin
 
 {INFO: PatchOperation}
 
-| Constructor|  | |
+| Constructor| Type | Description |
 |--------|:-----|-------------|
 | **id** | `string` | ID of the document to be patched. |
 | **changeVector** | `string` | [Can be null] Change vector of the document to be patched, used to verify that the document was not changed before the patch reached it. |
@@ -217,6 +281,14 @@ more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/k
 
 ---
 
+###Add or Increment
+
+`AddOrIncrement` increments an existing field or adds a new one in documents where they didn't exist.
+
+{CODE Add_Or_Increment_Sample@ClientApi\Operations\Patches\PatchRequests.cs /}
+
+---
+
 ###Add or Patch
 
 `AddOrPatch` adds or edits field(s) in a single document.  
@@ -224,6 +296,15 @@ more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/k
 If the document doesn't yet exist, this operation adds the document but doesn't patch it.  
 
 {CODE Add_Or_Patch_Sample@ClientApi\Operations\Patches\PatchRequests.cs /}
+
+---
+
+###Add or Patch to an Existing Array
+
+This sample shows how to patch an existing array or add it to documents where it doesn't yet exist.
+
+{CODE Add_Or_Patch_Array_Sample@ClientApi\Operations\Patches\PatchRequests.cs /}
+
 
 ---
 
