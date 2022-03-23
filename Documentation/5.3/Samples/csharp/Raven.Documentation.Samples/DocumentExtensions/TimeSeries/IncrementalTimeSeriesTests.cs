@@ -92,17 +92,15 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 var pageSize = 100;
                 var entries = store.Operations
                                   .Send(new GetTimeSeriesOperation("users/ayende",
-                                   "INC:Downloads", start: 0, pageSize: pageSize / 2, 
+                                   "INC:Downloads", start: 0, pageSize: pageSize, 
                                    returnFullResults: true));
 
-                // we get 50 unique entries but we read 100 entries from the segment
-                // so next call we should start from position 101: numberOfUniqueEntries + skippedResults 
-                var nextStart = entries.Entries.Length + entries.SkippedResults;
+                int nextStart = entries.Entries.Length + pageSize;
 
                 entries = store.Operations
                                   .Send(new GetTimeSeriesOperation("users/ayende",
-                                   "INC:Downloads", start: (int)nextStart,
-                                   pageSize: pageSize / 2, returnFullResults: true));
+                                   "INC:Downloads", start: nextStart, pageSize: pageSize, 
+                                   returnFullResults: true));
                 #endregion
 
             }
