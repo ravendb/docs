@@ -13,7 +13,8 @@
 
 * ETL is different from data replication. See [RavenDB ETL Task -vs- Replication Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--replication-task)  
 
-* In RavenDB ETL between secure clusters, **a certificate must be passed** from the source cluster to the destination so that the destination cluster trusts the source.  
+* In RavenDB ETL between secure clusters, you must **export a cluster certificate** from the source cluster, then **upload the certificate** into the destination.  
+  This is done so that the destination cluster trusts the source.  
 
 * In this page:  
   * [RavenDB ETL Task - Definition](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---definition)  
@@ -51,16 +52,16 @@
 2. Edit or Delete an existing script  
 
 3. Enter the script to use.  
-   In the above example, each source document from the 'Products' collection will be sent to the 'ProductsInfo' collection in the destination database db3 
+   In the above example, each source document from the 'Products' collection will be sent to the 'ProductsInfo' collection in the destination database *db3* 
    (which is external to the cluster).  
-   Each new document will have 2 fields: 'ProductName' & 'SupplierName'.  
+   Each new document will have 2 fields: 'ProductName' and 'SupplierName'.  
    For detailed script options see [Transformation Script Options](../../../../server/ongoing-tasks/etl/raven#transformation-script-options).  
 
 4. By default, updates to the ETL script will _not_ be applied to documents that were already sent.  
    When checking this option RavenDB will start the ETL process for this script from _scratch_ ("beginning of time"),  
    rather than apply the update only to new or updated documents.  
 
-5. Select the collections for the ETL task -or - apply to all collections  
+5. Select the collections for the ETL task - **or** - apply to all collections  
 {PANEL/}
 
 {PANEL: RavenDB ETL Task - Details in Tasks List View}
