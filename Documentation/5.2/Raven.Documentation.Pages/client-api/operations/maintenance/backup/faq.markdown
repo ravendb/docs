@@ -33,19 +33,17 @@ you can also use [one-time manual backups](../../../../studio/database/tasks/bac
 
 You can run a [server-wide ongoing backup](../../../../studio/server/server-wide-backup) 
 which backs up each of the databases in your cluster.  
-What does it back up? Both binary "Snapshot" and json "Backup" types of backup tasks save: 
+What does it back up? Both binary "Snapshot" and json "Backup" types of backup tasks 
+save the entire [database record](../../../../studio/database/settings/database-record) including: 
 
 * Database contents
-* Document extensions (attachments, counters, time-series)
+* Document extensions (attachments, counters, and time-series)
 * Indexes (json Backup saves only the index definitions, while Snapshot saves fully built indexes)
 * Revisions
 * Conflict configurations
 * Identities
 * Compare-exchange items
-* Subscriptions  
-
-Note that **backups don't save ETL and replication** tasks.  
-They would need to be set up again if you rebuild your cluster.  
+* Ongoing tasks (Ongoing backup, ETL, Subscription, and Replication tasks)  
 
 **Cluster configuration and nodes setup** can be [re-created](../../../../start/getting-started#installation--setup) 
 and databases can be [restored from backup](../../../../studio/server/databases/create-new-database/from-backup).  
