@@ -4,7 +4,7 @@
 {NOTE: }
 
 * The **Documents Compression** feature uses the Zstd compression algorithm to 
-  continuously create a more efficient data model with better compression ratios.  
+  continuously create a more efficient data model with [constantly improving compression ratios](../../server/storage/documents-compression#overview).  
 
 * RavendDB will compress documents in selected collections or in all collections when storing those documents.  
   The compression will be applied to:  
@@ -13,8 +13,8 @@
 
 {INFO: Compressing all existing documents}
 Only new or modified documents from selected collections will be compressed.  
-To compress all existing documents without modifying them,  
-use [CompactDatabaseOperation](../../../client-api/operations/server-wide/compact-database) 
+To compress **all** existing documents without modifying them,  
+use [CompactDatabaseOperation](../../client-api/operations/server-wide/compact-database) 
 after configuring which collections to compress.
 {INFO/}
 

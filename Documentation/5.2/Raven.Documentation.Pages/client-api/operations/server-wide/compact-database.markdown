@@ -3,17 +3,20 @@
 * Use the CompactDatabaseOperation to compact a database.  
 * Compaction removes empty gaps that still occupy space after deletes.
 * You can choose what should be compacted: documents and/or listed indexes.  
+* Compaction can also be done in the Studio database statistics [Storage Report](../../../studio/database/settings/documents-compression#database-storage-report)
 
 {WARNING: }
 The compacting operation is executed **asynchronously**, 
 and during this operation **the database will be offline**.  
 {WARNING/}
 
-{INFO: Compaction compresses all collections configured for compression}
+{INFO: Compaction triggers compression on all collections configured for compression}
 If [documents compression](../../../server/storage/documents-compression) is set on any collection, 
 all documents in that collection will be compressed upon compaction.  
-Without using CompactDatabaseOperation, only documents that are modified become compressed.
+Without using CompactDatabaseOperation, only documents that are created or modified become compressed.
 {INFO/}
+
+
 
 ## Syntax
 
