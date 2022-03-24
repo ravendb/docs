@@ -42,7 +42,6 @@ Use `GetTimeSeriesOperation` to retrieve the distinct values stored per-node for
      
 
 * **Return Value**: **`TimeSeriesRangeResult<TimeSeriesEntry>`**  
-  Entries are returned into a dictionary of `TimeSeriesRangeResult` classes.  
   {CODE-BLOCK:csharp}
 public class TimeSeriesRangeResult 
     {
