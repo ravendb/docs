@@ -89,14 +89,14 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 #endregion
 
                 #region incremental_GetTimeSeriesOperation
-                var pageSize = 100;
+                int pageSize = 100;
                 var entries = store.Operations
                                   .Send(new GetTimeSeriesOperation("users/ayende",
                                    "INC:Downloads", start: 0, pageSize: pageSize, 
                                    returnFullResults: true));
 
-                int nextStart = entries.Entries.Length + pageSize;
-
+                //load another page, starting with the first entry that wasn't read yet
+                int nextStart = entries.Entries.Length;
                 entries = store.Operations
                                   .Send(new GetTimeSeriesOperation("users/ayende",
                                    "INC:Downloads", start: nextStart, pageSize: pageSize, 

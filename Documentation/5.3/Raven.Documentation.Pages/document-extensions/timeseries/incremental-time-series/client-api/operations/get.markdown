@@ -52,8 +52,6 @@ public class TimeSeriesRangeResult
         // The actual number of values
         public long? TotalResults; 
         
-        // Included Documents
-        public BlittableJsonReaderObject Includes; 
   {CODE-BLOCK/}
   {CODE-BLOCK:csharp}
 public class TimeSeriesEntry 
