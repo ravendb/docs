@@ -5,7 +5,7 @@
 
 * In this page:  
   * [Is there a one-time backup?](../../../../client-api/operations/maintenance/backup/faq#is-there-a-one-time-backup)  
-  * [How do I create a backup of my cluster configuration?](../../../../client-api/operations/maintenance/backup/faq#how-do-i-create-a-backup-of-my-cluster-configuration)  
+  * [How do I create a backup of my cluster, not just one database?](../../../../client-api/operations/maintenance/backup/faq#how-do-i-create-a-backup-of-my-cluster-not-just-one-database)  
   * [How should the servers' time be set in a multi-node cluster?](../../../../client-api/operations/maintenance/backup/faq#how-should-the-servers-time-be-set-in-a-multi-node-cluster)  
   * [Is an External Replication a good substitute for a backup task?](../../../../client-api/operations/maintenance/backup/faq#is-an-external-replication-task-a-good-substitute-for-a-backup-task)  
   * [Can I simply copy the database folder contents whenever I need to create a backup?](../../../../client-api/operations/maintenance/backup/faq#can-i-simply-copy-the-database-folder-contents-whenever-i-need-to-create-a-backup)  
@@ -29,24 +29,29 @@ you can also use [one-time manual backups](../../../../studio/database/tasks/bac
 
 ---
 
-###How do I create a backup of my cluster configuration?  
+###How do I create a backup of my cluster, not just one database?  
 
-Both binary "Snapshot" and json "Backup" types of backup tasks save: 
+You can run a [server-wide ongoing backup](../../../../studio/server/server-wide-backup) 
+which backs up each of the databases in your cluster.  
+What does it back up? Both binary "Snapshot" and json "Backup" types of backup tasks save: 
 
 * Database contents
-* Document extensions
-* Indexes
+* Document extensions (attachments, counters, time-series)
+* Indexes (json Backup saves only the index definitions, while Snapshot saves fully built indexes)
 * Revisions
 * Conflict configurations
 * Identities
 * Compare-exchange items
-* Subscriptions.  
+* Subscriptions  
 
-Cluster configuration and nodes setup can be [re-created](../../../../start/getting-started#installation--setup) 
-and [restored from backup](../../../../studio/server/databases/create-new-database/from-backup), so no special backup procedure is needed for it.  
+Note that **backups don't save ETL and replication** tasks.  
+They would need to be set up again if you rebuild your cluster.  
 
-You can [replicate your database](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview) so that there is a live version available 
-to distribute the workload and act as a failover in case of cluster failure while you restore the database.  
+**Cluster configuration and nodes setup** can be [re-created](../../../../start/getting-started#installation--setup) 
+and databases can be [restored from backup](../../../../studio/server/databases/create-new-database/from-backup).  
+
+**To prevent downtime while rebuilding**, you can [replicate your database](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview) 
+so that there is a live version available to distribute the workload and act as a failover.  
 [Is an External Replication a good substitute for a backup task?](../../../../client-api/operations/maintenance/backup/faq#is-an-external-replication-task-a-good-substitute-for-a-backup-task)  
 
 ---
@@ -54,7 +59,8 @@ to distribute the workload and act as a failover in case of cluster failure whil
 ###How should the servers' time be set in a multi-node cluster?
 
 The backup task runs on schedule according to the executing server's local time.  
-It is recommended that you set all nodes to the same time. This way, backup files' time-signatures are consistent even when the backups are created by different nodes.  
+It is recommended that you set all nodes to the same time. This way, backup files' 
+time-signatures are consistent even when the backups are created by different nodes.  
 
 ---
 
@@ -62,7 +68,8 @@ It is recommended that you set all nodes to the same time. This way, backup file
 
 Although [External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) 
 and [Backup](../../../../client-api/operations/maintenance/backup/backup) 
-are both ongoing-tasks that create a copy of your data, they have different aims and behavior. 
+are both ongoing tasks that create a copy of your data, they have different aims and behavior.  
+
 For example, replication tasks don't allow you to retrieve data from a history/restore point after mistakes, 
 but they do create a live copy that can be used as a failover and they can distribute the workload.  
 See [Backup Task -vs- External Replication Task](../../../../studio/database/tasks/backup-task#backup-task--vs--replication-task).  
