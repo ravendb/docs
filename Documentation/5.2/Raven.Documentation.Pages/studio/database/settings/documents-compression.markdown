@@ -11,6 +11,19 @@ particular database.
   * Revisions are compressed by default.  
   * **Compress all collections** or specific collections can be selected for compression in this view.  
 
+* Compression will be applied to:  
+  * Newly created documents  
+  * Existing documents when they are modified and saved  
+
+{INFO: Compressing all existing documents}
+
+Only new or modified documents from selected collections will be compressed.  
+To compress all existing documents without modifying them,  
+use [CompactDatabaseOperation](../../../client-api/operations/server-wide/compact-database) 
+after configuring which collections to compress.
+
+{INFO/}
+
 * Go to **Stats** > **Storage Report** to see the contents and size of your database 
 storage.  
 
@@ -34,8 +47,10 @@ The compression will be applied to:
 * If opened just for reading, **existing documents will not be compressed** .  
   * If you also want to compress existing documents without editing them, 
     after configuring the collections to compress you can use the [CompactDatabaseOperation](../../../client-api/operations/server-wide/compact-database).
-    While removing empty gaps which occupy space in your database, this operation will also trigger compression on collections that were configured.  
-     * Note: Compression and compaction are two different methods. Compression reduces the amount of storage that data uses, 
+    While removing empty gaps which occupy space in your database, 
+    this operation will also trigger compression on collections that were configured.  
+     * Note: Compression and compaction are two different methods.  
+       Compression reduces the amount of storage that data uses,  
        while compaction removes empty gaps that still occupy space after deletes.  
 
 * Compression is configured in the [Database Record](../../../studio/database/settings/database-record).  
@@ -61,13 +76,21 @@ The compression will be applied to:
 {PANEL: Database Storage Report}
 
 The database storage report displays detailed information about the database's physical storage.  
-Go to this page (Stats > Storage Report) to see the compression effect. 
+Go to this page (Stats > Storage Report) to see the effect of compression and compaction.  
 (Refresh the page to see the changes.)  
 
 ![sampleDB Storage Report](images/storage-report.png "sampleDB Storage Report")
 
-1. The size of each rectangle is proportional to its storage size.  
-   Click any rectangle to view its subdirectories details.  
+1. **Database Component**
+   The size of each rectangle is proportional to its storage size.  
+   Click any rectangle to view its subdirectories' details.  
+   To see storage details, hover over a section or see the detailed list below.  
+2. **Compact Database**
+   * Click to [compact the database](../../../client-api/operations/server-wide/compact-database) 
+     by removing empty gaps which occupy space in your database.
+   * All documents will be compressed in any collection where compression is configured when 
+     using the `CompactDatabaseOperation`.  
+   * Note: During this operation **the database will be offline**.
 
 {PANEL/}
 

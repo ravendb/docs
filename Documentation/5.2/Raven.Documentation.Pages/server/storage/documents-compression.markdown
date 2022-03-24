@@ -11,6 +11,13 @@
   * Newly created documents  
   * Existing documents that are modified and saved  
 
+{INFO: Compressing all existing documents}
+Only new or modified documents from selected collections will be compressed.  
+To compress all existing documents without modifying them,  
+use [CompactDatabaseOperation](../../../client-api/operations/server-wide/compact-database) 
+after configuring which collections to compress.
+{INFO/}
+
 * If opened just for reading, **existing documents will not be compressed** .  
   * If you also want to compress existing documents without editing them, 
     after configuring the collections to compress you can use the [CompactDatabaseOperation](../../client-api/operations/server-wide/compact-database).
