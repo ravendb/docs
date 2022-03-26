@@ -37,7 +37,7 @@ What does it back up? Both binary "Snapshot" and json "Backup" types of backup t
 save the entire [database record](../../../../studio/database/settings/database-record) including: 
 
 * Database contents
-* Document extensions (attachments, counters, time-series)
+* Document extensions (attachments, counters, and time-series)
 * Indexes (json Backup saves only the index definitions, while Snapshot saves fully built indexes)
 * Revisions
 * Conflict configurations
@@ -57,7 +57,8 @@ so that there is a live version available to distribute the workload and act as 
 ###How should the servers' time be set in a multi-node cluster?
 
 The backup task runs on schedule according to the executing server's local time.  
-It is recommended that you set all nodes to the same time. This way, backup files' time-signatures are consistent even when the backups are created by different nodes.  
+It is recommended that you set all nodes to the same time. This way, backup files' 
+time-signatures are consistent even when the backups are created by different nodes.  
 
 ---
 
@@ -77,6 +78,7 @@ See [Backup Task -vs- External Replication Task](../../../../studio/database/tas
 
 Simply copying the database folder of a live database will probably create corrupted data in the backup.  
 Creating an [ongoing backup task](../../../../client-api/operations/maintenance/backup/backup) is a one-time operation. 
+There really is no reason to do it manually again and again.  
 There really is no reason to do it manually again and again. Properly backing up provides: 
 
 * **Up-to-date backups** by incrementally and frequently updating changes in the data.  
@@ -133,9 +135,9 @@ While in progress, the backup content is written to an **.in-progress* file on d
 
 ###Studio  
 - [The Backup Task](../../../../studio/database/tasks/backup-task)  
-- [Create Database: from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
-- [Create a Database: General Flow](../../../../studio/server/databases/create-new-database/general-flow)  
-- [Create a Database: Encrypted](../../../../studio/server/databases/create-new-database/encrypted)  
+- [Create Database: from Backup](../../../../studio/database/create-new-database/from-backup)  
+- [Create a Database: General Flow](../../../../studio/database/create-new-database/general-flow)  
+- [Create a Database: Encrypted](../../../../studio/database/create-new-database/encrypted)  
 
 ###Security  
 - [Database Encryption](../../../../server/security/encryption/database-encryption)  
