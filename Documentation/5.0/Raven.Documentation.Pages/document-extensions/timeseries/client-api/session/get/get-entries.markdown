@@ -12,6 +12,8 @@ To get a range of time series entries, use one of the `TimeSeriesFor.Get` method
   time series data while [loading](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load) 
   or [querying](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query) 
   documents, to keep the data locally in the client's session and refrain from unnecessary additional trips to the server.  
+* While loading time series entries, you can Include the series **parent document** and/or documents 
+  whose IDs are **specified in entry tags**.  
 * When caching is enabled, time series data is kept in the session cache as well.  
 
 {INFO/}
@@ -21,6 +23,8 @@ To get a range of time series entries, use one of the `TimeSeriesFor.Get` method
       * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#syntax)  
       * [Usage Flow](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#usage-flow)  
       * [Usage Samples](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#usage-samples)  
+   * [Include Parent and Tagged Documents](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents)  
+
 
 {NOTE/}
 
@@ -94,6 +98,19 @@ To get a range of time series entries, use one of the `TimeSeriesFor.Get` method
    {CODE-TABS/}
 
 {PANEL/}
+
+{PANEL: Include Parent and Tagged Documents}
+
+While retrieving time series data using `TimeSeriesFor.Get`, you can Include the series' 
+**parent document** and/or documents [referred to by entry tags](../../../../../document-extensions/timeseries/overview#tags).  
+The documents will be cached in the session, and instantly retrieved from memory if loaded 
+by the user.  
+
+To include parent or tagged documents, use this syntax:  
+{CODE IncludeParentAndTaggedDocuments@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+
+{PANEL/}
+
 
 ## Related articles
 
