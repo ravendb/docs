@@ -13,7 +13,7 @@
 
 * ETL is different from data replication. See [RavenDB ETL Task -vs- Replication Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--replication-task)  
 
-* In RavenDB ETL, [a certificate must be passed](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate) from the source server to the destination so that the destination server trusts the source.  
+* In RavenDB ETL, [a certificate must be passed](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate-between-secure-clusters) from the source server to the destination so that the destination server trusts the source.  
 
 * In this page:  
   * [RavenDB ETL Task - Definition](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---definition)  
