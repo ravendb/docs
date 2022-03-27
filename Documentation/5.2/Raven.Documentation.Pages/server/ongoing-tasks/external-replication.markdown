@@ -6,7 +6,8 @@
 * Schedule an **External Replication Task** in order to have a _live_ replica of your data in another database:  
   * In a separate RavenDB cluster [on local machines](../../../../start/getting-started) or [a cloud instance](../../../../cloud/cloud-overview), 
     which can be used as a failover if the source cluster is down.  
-     * Note: External Replication task does _not_ create a backup of your data and indexes. See more in [Backup -vs- Replication](../../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
+    Note: External Replication task **does _not_ create a backup** of your data and indexes.  
+    See more in [Backup -vs- Replication](../../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
   * In the same cluster if you want a live copy that won't be a client failover target.
 
 * "Live" means that the replica is up to date at all times. Any changes in the source database will be reflected in the replica once they occur.  
