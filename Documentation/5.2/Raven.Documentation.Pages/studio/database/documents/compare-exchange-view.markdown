@@ -3,16 +3,36 @@
 
 {NOTE: }
 
-* Compare exchange key/value pairs can be used to guarantee the atomicity and overall ACID properties of [cluster-wide transactions](../../../server/clustering/cluster-transactions).  
+What are Compare Exchange Items?  
 
-* Since RavenDB 5.2, we guarantee cluster-wide ACID safe transactions on each document by automatically including [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards). 
-  These compare exchange key/value pairs are associated with each document that is created in a cluster-wide session.  
-    {WARNING: Warning}
-    Do not remove or edit atomic guards manually as it will likely disable ACID guarantees for transactions.
-    {WARNING/}
+* CmpXchg are cluster-wide key/value pair items where the key is a unique identifier in the database,
+  across all your database group nodes.
+* Creating & modifying a CmpXchg item is an atomic, thread-safe, compare-and-swap interlocked compare-exchange operation.
+  * In a cluster, the CmpXchg item is distributed to all nodes in a [cluster-wide transactions](../../../server/clustering/cluster-transactions)
+    so that a consistent unique key is guaranteed cluster-wide.  
 
-* You can also manually create new compare exchange key/value pairs to use in other situations.  
-  See examples in the [overview API article](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation).
+How are they useful?  
+
+* The CmpXchg items can be used to coordinate work between threads, clients, nodes, or sessions that are 
+  trying to access a shared resource (such as a document) at the same time.  
+  * They're useful when you want to do highly consistent operations at the cluster level, not just the individual node.  
+  * RavenDB automatically creates Atomic Guards to ensure consistency in cluster-wide transactions.  
+* This singular key can also be used to reserve a resource in various other situations (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).  
+
+
+How can I manage them?
+
+* Compare exchange items are created and managed by either of the following:
+  * RavenDB [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards)  
+    To guarantee ACIDity across the cluster, 
+    as of RavenDB 5.2, we automatically create and maintain Atomic Guard CmpXchg items in cluster-wide sessions.  
+  * [API Operations](../../../client-api/operations/compare-exchange/overview)
+  * [Session - Cluster Transaction](../../../client-api/session/cluster-transaction)
+  * Using the [RavenDB Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
+
+In this page:
+
+* [The Compare Exchange View](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
 
 {NOTE/}
 
@@ -23,38 +43,37 @@
 ![Compare Exchange View](images/compare-exchange-view.png "Compare Exchange View")
 
 1. **Documents Tab**  
-   Select to see document-related options.  
+   Select to see document-related options and the list of documents in this datase .  
 2. **Compare Exchange**  
-   Select to see the Compare Exchange Studio view.  
+   Select to see the Compare Exchange view.  
 3. **Add new item**  
    Click to add a new compare exchange key/value pair.  
 4. **Compare exchange key/value properties**  
-   Click the edit button or key name to edit this pair.  
+   Click the edit button or key name to edit this item.  
     ![Compare Exchange Single Pair](images/compare-exchange-single-pair.png "Compare Exchange Single Pair")
-    1. **Delete**  
-       Click to delete this compare exchange key/value pair.  
-       {WARNING: Warning}
-       Deleting a compare exchange pair will remove ACID guarantees for transactions if the pair was set up to protect ACIDity.  
-       Only remove or edit these if you _truly_ know what you're doing.  
-       If the key name starts with `rvn-atomic`, it is an [Atomic Guard](../../../client-api/operations/compare-exchange/atomic-guards)
-       which RavenDB creates and maintains automatically in cluster-wide sessions to protect transactions.  
-       Do not remove Atomic Guards.
-       {WARNING/}
-    2. **Key**  
+    1. **Key**  
        A unique identifier that is reserved across the cluster.  
          ![Atomic Guard](images/compare-exchange-atomic-guard.png "Atomic Guard")
-          * Keys starting with "rvn-atomic" are [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards).  
-            They are created and maintained automatically by RavenDB.  
-            Do not remove or edit these as this will disable ACID guarantees for transactions.  
-    3. **Value**  
-       Edit to change the value associated with the key.  
+            {INFO: Atomic Guards}
+            If keys start with "rvn-atomic" they are [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards).  
+            They are created and maintained automatically to guarantee ACID cluster-wide transactions.  
+            **Do not remove or edit these** as this will disable ACID guarantees.  
+            {INFO/}
+    2. **Value**  
+       Enter a value that will be associated with the key.  
+       Values can be numbers, stings, arrays, or objects. Any value that can be represented as JSON is valid.
        Before a cluster allows a transaction, it needs to see that the value matches the expected value.  
-    4. **Metadata**  
+    3. **Metadata**  
        Click to add metadata.  
-       The metadata is associated with the key.  
-    5. **Raft Index**  
+       The metadata is associated with the key, similar to document's metadata.  
+    4. **Raft Index**  
        The raft index is updated automatically each time the value is changed, indicating the value's current version to allow concurrency control.  
-
+    5. **Delete**  
+       Click to delete this compare exchange item.  
+       {WARNING: Warning}
+       Deleting a compare exchange item will remove ACID guarantees for transactions if the pair was set up to protect ACIDity.  
+       Only remove or edit these if you _truly_ know what you're doing.  
+       {WARNING/}
 
 {PANEL/}
 

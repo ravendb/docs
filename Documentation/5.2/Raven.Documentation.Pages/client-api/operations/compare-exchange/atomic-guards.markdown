@@ -5,29 +5,30 @@
 
 * **Atomic guards** are 
   [compare exchange](../../../client-api/operations/compare-exchange/overview) 
-  key/value pairs that RavenDB creates and manages automatically in cluster-wide sessions to guarantee the 
-  atomicity and overall 
+  key/value pairs that RavenDB creates and manages automatically to guarantee 
   [ACID](../../../server/clustering/cluster-transactions#cluster-transaction-properties) 
-  properties of cluster-wide transactions.  
+  transactions in cluster-wide sessions.  
+
+* Atomic Guards coordinate work between sessions or nodes that try to write on a document at the same time. 
+  Saving a document is prevented if another session is currently holding that document's related 'key'.
+  When finished, the session releases the key.  
 
 * Prior to the introduction of this feature (in **RavenDB 5.2**), client code had to 
-  administer compare-exchange entries explicitly. You can still do that if you wish, by 
+  administer compare-exchange entries explicitly. You can still do that if you wish by 
   [disabling](../../../client-api/operations/compare-exchange/atomic-guards#disabling-atomic-guards) 
   the automatic usage of atomic guards in a session and defining and managing compare exchange 
   key/value pairs 
   [yourself](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation) 
   where needed.  
-  * **We strongly recommend not managing compare-exchange manually** unless you _truly_ know what you're doing. 
+  * **We strongly recommend not managing atomic guards manually** unless you _truly_ know what you're doing. 
     Doing so could cancel RavenDB's ACID transaction guarantees.  
-
-* Atomic guards [expire](../../../client-api/operations/compare-exchange/atomic-guards#expiration) 
-  on (or shortly after) the expiration or removal of the documents they serve.  
 
 * In this page:
   * [When are Atomic Guards Created](../../../client-api/operations/compare-exchange/atomic-guards#when-are-atomic-guards-created)  
+  * [Atomic Guard Transaction Scope](../../../client-api/operations/compare-exchange/atomic-guards#atomic-guard-transaction-scope)  
   * [Syntax and Usage](../../../client-api/operations/compare-exchange/atomic-guards#syntax-and-usage)  
   * [Disabling Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards#disabling-atomic-guards)  
-  * [Expiration](../../../client-api/operations/compare-exchange/atomic-guards#expiration)  
+  * [When are Atomic Guards Removed](../../../client-api/operations/compare-exchange/atomic-guards#when-are-atomic-guards-removed)  
 
 {NOTE/}
 
@@ -37,30 +38,24 @@
 
 * Atomic guards are created **by default** when a session's transaction mode is 
   [ClusterWide](../../../client-api/session/cluster-transaction#open-cluster-wide-session).  
-
-* They are only created when creating a document with a fully successful session SaveChanges.  
-
-* If you disable Atomic Guards, you remove RavenDB's guarantee of ACID transactions across the cluster.  
+  * They are created when creating or modifying a document with a fully successful session SaveChanges.  
 
 {PANEL/}
 
 {PANEL: Atomic Guard Transaction Scope}
 
-* RavenDB uses automatically created compare exchange items, called [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards), 
-  to ensure cluster-wide ACID transactions as of version 5.2.  
-
 * When working with a [cluster-wide session](../../../client-api/session/cluster-transaction), 
   an Atomic Guard is created upon a successful creation of a document.  
-  * To set the session as cluster-wide the `TransactionMode` must be defined as `ClusterWide`.
+  * To set a session as cluster-wide, define its `TransactionMode` as `ClusterWide` when opening the session.
 
-* If `session.SaveChanges()` fails, the entire session is rolled-back and the Atomic Guard is not created.  
+* If the session's `SaveChanges()` fails, the entire session is rolled-back and the Atomic Guard is not created.  
 
 {INFO: }
 
 * Atomic Guards are local to the cluster they were defined on.  
 
-* Atomic Guards will not be replicated across separate clusters in any replication task.  
-  We've designed them this way so that [data ownership remains the cluster level](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system).  
+* Atomic Guards will not be replicated to another cluster in any ongoing replication task.  
+  We've designed them this way so that [data ownership remains at the cluster level](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system).  
 
 
 {INFO/}
@@ -77,8 +72,11 @@ compete on changing the document.
 
 If you [examine](../../../studio/database/documents/documents-and-collections#the-documents-view) 
 the compare exchange entries list after running the above sample, you'll see the atomic guard that 
-was automatically created and used by it.  
+was automatically created.  
 ![Atomic Guard](images/atomic-guard.png "Atomic Guard")
+
+   * The generated Automic Guard key name is composed of the prefix `rvn-atomic`
+     and name of the document that it is associated with.
 
 
 {PANEL/}
@@ -108,7 +106,7 @@ Only disable and edit Atomic Guards if you truly know what you're doing as it ca
 
 {PANEL/}
 
-{PANEL: Expiration}
+{PANEL: When are Atomic Guards Removed}
 
 Atomic guards expire on the expiration of the documents they are used for and are automatically 
 removed by a RavenDB cleanup task. You do not need to handle the cleanup yourself.  

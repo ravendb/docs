@@ -3,14 +3,31 @@
 
 {NOTE: }
 
-* The **Compare Exchange** feature allows you to perform cluster-wide _interlocked distributed operations_.  
+What are Compare Exchange Items?  
 
-* Compare-exchange key/value pairs can be used to prevent writing on a document if another session is currently holding the 'key'.  
+* CmpXchg are cluster-wide key/value pair items where the key is a unique identifier in the database,
+  across all your database group nodes.
+* Creating & modifying a CmpXchg item is an atomic, thread-safe, compare-and-swap interlocked compare-exchange operation.
+  * The CmpXchg item is distributed to all nodes in a [cluster-wide transaction](../../../server/clustering/cluster-transactions)
+    so that a consistent, unique key is guaranteed cluster-wide.  
 
-* Compare exchange can be created and managed explicitly in your code.  
+How are they useful?  
 
-* To ensure ACIDity across the cluster, since RavenDB 5.2 they are created automatically as [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
-  in cluster-wide sessions.
+* The CmpXchg items can be used to coordinate work between threads, clients, nodes, or sessions that are 
+  trying to access a shared resource (such as a document) at the same time.  
+  * They're useful when you want to do highly consistent operations at the cluster level, not just the individual node.  
+  * RavenDB automatically creates Atomic Guards to ensure consistency in cluster-wide transactions.  
+* This singular key can also be used to reserve a resource in various other situations (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).  
+
+How can I manage them?
+
+* Compare exchange items are created and managed by either of the following:
+  * RavenDB [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards)  
+    To guarantee ACIDity across the cluster, 
+    as of RavenDB 5.2, we automatically create and maintain Atomic Guard CmpXchg items in cluster-wide sessions.  
+  * [API Operations](../../../client-api/operations/compare-exchange/overview)
+  * [Session - Cluster Transaction](../../../client-api/session/cluster-transaction)
+  * Using the [RavenDB Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
 
 * Once defined, the Compare Exchange Values can be accessed via [GetCompareExchangeValuesOperation](../../../client-api/operations/compare-exchange/get-compare-exchange-values),  
   or by using RQL in a query ([see example-I below](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).  
@@ -30,8 +47,7 @@ In this page:
 
 {PANEL: Compare Exchange Values in RavenDB}
 
-* Unique **Keys** can be reserved across the cluster in the [Database Group](../../../studio/database/settings/manage-database-group).  
-  Each key has an associated **Value** which RavenDB uses to compare with the expected value.  
+* Each key has an associated **Value** which RavenDB uses to compare with the expected value.  
 
 * The compare-exchange value must remain consistent throughout the cluster.  
 
@@ -48,14 +64,11 @@ In this page:
   It is therefore not part of the session transactions.  
 
 * Even if written inside the session scope, a compare exchange operation will be executed regardless 
-  of whether the session SaveChanges() succeeds or fails.  
+  of whether the session SaveChanges( ) succeeds or fails.  
 
-* Thus, if a compare-exchange operation has failed when used inside a session block,  
-  it will **not** be rolled back automatically upon a [session transaction failure](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching).  
-
-{INFO: }
-Compare-exchange items can also be created and managed with [Session.Advanced methods](../../../client-api/session/cluster-transaction) instead of via operations.  
-{INFO/}
+* Thus, upon a [session transaction failure](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching), 
+  if you had a successful cmpXchg operation inside the session block scope, 
+  it will **not** be rolled back automatically.  
 
 {PANEL/}
 
