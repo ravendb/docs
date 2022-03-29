@@ -795,27 +795,22 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
             {
                 using (var session = store.OpenSession())
                 {
-                     #region Add_Or_Patch_Sample
-                    // Set DateTime value on users/1-A
                     var id = "users/1-A";
-
-                    // Call method and specify <entity type, field type>, then (document ID.
+                    #region Add_Or_Patch_Sample
+                    // While running AddOrPatch specify <entity type, field type>
                     session.Advanced.AddOrPatch<User, DateTime>(
-                        id,
 
-                    // Specify entity on which the operation should be performed.
+                    // Specify document id and entity on which the operation should be performed.
+                        id,
                         new User
                         {
-                            FirstName = "Hibernating",
-                            LastName = "Rhinos",
+                            FirstName = "John",
+                            LastName = "Doe",
                             LastLogin = DateTime.Now
                         },
-                        // Lambda describing the path to the field and value to set.
+                        // The path to the field and value to set.
                         x => x.LastLogin, new DateTime(2021, 9, 12));
 
-                    // Save session changes to complete the patch.
-                    // If SaveChanges throws an exception on any part of the session, 
-                    // the whole session will be rolled back.
                     session.SaveChanges();
                     #endregion
                 }
@@ -823,63 +818,56 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
 
             using (var store = new DocumentStore())
             using (var session = store.OpenSession())
-            #region Add_Or_Patch_Array_Sample
-            {   // Add new values to an existing array in users/1-A
+            {   
                 var id = "users/1-A";
-
-                // Call method and specify <entity type, field type>, then (document ID.
+                #region Add_Or_Patch_Array_Sample
+                // While running AddOrPatch specify <entity type, field type>
                 session.Advanced.AddOrPatch<User, DateTime>(
-                    id,
 
-                    // Specify entity on which the operation should be performed.
+                    // Specify document id and entity on which the operation should be performed.
+                    id,
                     new User
                     {
-                        FirstName = "Hibernating",
-                        LastName = "Rhinos",
+                        FirstName = "John",
+                        LastName = "Doe",
                         LoginTimes =
                         new List<DateTime>
                         {
                                 DateTime.UtcNow
                         }
                     },
-                    // Lambda describing the path to the field
+                    // The path to the field
                     x => x.LoginTimes,
-                    // Lambda that modifies the array
+                    // Modifies the array
                     u => u.Add(new DateTime(1993, 09, 12), new DateTime(2000, 01, 01)));
 
-                // Save session changes to complete the patch.
-                // If SaveChanges throws an exception on any part of the session, 
-                // the whole session will be rolled back.
                 session.SaveChanges();
+                #endregion
             }
-            #endregion
 
 
             using (var store = new DocumentStore())
             using (var session = store.OpenSession())
-            #region Add_Or_Increment_Sample
-            {   // Increment LoginCount in users/1-A by 1
                 var id = "users/1-A";
 
-                // Call method and specify <entity type, field type>, then (document ID.
-                session.Advanced.AddOrIncrement<User, int>(id,
+            #region Add_Or_Increment_Sample
+            // While running AddOrIncrement specify <entity type, field type>
+            session.Advanced.AddOrIncrement<User, int>(
 
-                    // Specify entity on which the operation should be performed.
+                    // Specify document id and entity on which the operation should be performed.
+                    id,
                     new User
                     {
-                        FirstName = "Hibernating",
-                        LastName = "Rhinos",
+                        FirstName = "John",
+                        LastName = "Doe",
                         LoginCount = 1
 
-                    // Lambda describing the path to the field and value to be added.
+                    // The path to the field and value to be added.
                     }, x => x.LoginCount, 1);
 
-                // Save session changes to complete the patch.
-                // If SaveChanges throws an exception on any part of the session, 
-                // the whole session will be rolled back.
                 session.SaveChanges();
-            }
             #endregion
+        }
 
             using (var store = new DocumentStore())
             {
