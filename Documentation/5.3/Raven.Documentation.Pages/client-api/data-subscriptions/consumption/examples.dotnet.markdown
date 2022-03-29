@@ -6,6 +6,7 @@
 
 In this page:  
 
+[Subscription workers with failover on other nodes](../../../client-api/data-subscriptions/consumption/examples#subscription-workers-with-failover-on-other-nodes)  
 [Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples#worker-with-a-specified-batch-size)  
 [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples#client-with-full-exception-handling-and-processing-retries)  
 [Subscription that ends when no documents are left](../../../client-api/data-subscriptions/consumption/examples#subscription-that-ends-when-no-documents-are-left)  
@@ -13,11 +14,20 @@ In this page:
 [Subscription that works with a session](../../../client-api/data-subscriptions/consumption/examples#subscription-that-works-with-a-session)  
 [Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents)  
 [Subscription that works with lowest level API](../../../client-api/data-subscriptions/consumption/examples#subscription-that-works-with-lowest-level-api)  
-[Two subscription workers that are waiting for each other](../../../client-api/data-subscriptions/consumption/examples#two-subscription-workers-that-are-waiting-for-each-other)  
+[Subscription workers with a primary and a secondary node](../../../client-api/data-subscriptions/consumption/examples#subscription-workers-with-a-primary-and-a-secondary-node)  
 
 {NOTE/}
 
 ---
+
+{PANEL:Subscription workers with failover on other nodes}
+
+In this configuration, any available node will create a worker.  
+If the worker fails, another available node will take over.
+
+{CODE waitforfree@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
+{PANEL/}
 
 {PANEL:Worker with a specified batch size}
 
@@ -81,18 +91,17 @@ but it may be dangerous due to the direct usage of unmanaged memory.
 
 {PANEL/}
 
-{PANEL:Two subscription workers that are waiting for each other}
+{PANEL:Subscription workers with a primary and a secondary node}
 
 Here we create two workers:  
-* The main worker with the `TakeOver` strategy that will take over the other worker and take the lead  
-* The secondary worker that will wait for the first worker to fail (due to machine failure etc.)
 
-The main worker:
+* The primary worker, set with a `TakeOver` strategy, will take the lead over the secondary worker.  
+* The secondary worker, set with a `WaitForFree` strategy, will take over if the primary worker fails (e.g. due to a machine failure).  
 
+The primary worker:  
 {CODE waiting_subscription_1@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
-The secondary worker:
-
+The secondary worker:  
 {CODE waiting_subscription_2@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
 {PANEL/}
