@@ -82,7 +82,7 @@ map('Employees', function(employee)
 
 
 
-...grant us the capability to issue numeric queries (**return all the Employees that Age is more than 30**). 
+...grants us the capability to issue numeric queries (**return all the Employees whose Age is more than 30**). 
 
 Changing the `Age` type to a `string` will take that capability away from you. The easiest example would be to issue `.ToString()` on the `Age` field...
 
@@ -148,7 +148,8 @@ where FullName = 'Robert King'
 
 {INFO: Information}
 
-In this example, the index field `Query` combines all values from various Employee fields into one. The default Analyzer on field is changed to enable `Full Text Search` operations. The matches no longer need to be exact.
+In this example, the index field `Query` combines all values from various Employee fields into one. 
+The default Analyzer on fields is changed to enable `Full Text Search` operations. The matches no longer need to be exact.
 
 You can read more about analyzers and `Full Text Search` [here](../indexes/using-analyzers).
 
