@@ -796,17 +796,17 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 using (var session = store.OpenSession())
                 {
                      #region Add_Or_Patch_Sample
-                    var id = "orders/1-A";
+                    var id = "users/1-A";
 
-                    session.Advanced.AddOrPatch<Order, DateTime>(
-                    id,
-                    new Order
-                    {
-                        Company = "Hibernating Rhinos",
-                        Employee = "Felicity Smoak",
-                        RequireAt = DateTime.Now
-                    },
-                    x => x.RequireAt, new DateTime(2022, 9, 12));
+                    session.Advanced.AddOrPatch<User, DateTime>(
+                        id,
+                        new User
+                        {
+                            FirstName = "Hibernating",
+                            LastName = "Rhinos",
+                            LastLogin = DateTime.Now
+                        },
+                        x => x.LastLogin, new DateTime(2021, 9, 12));
                     session.SaveChanges();
                     #endregion
                 }
@@ -819,19 +819,21 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 var id = "users/1-A";
 
                 session.Advanced.AddOrPatch<User, DateTime>(
-                id,
-                new User
-                {
-                    FirstName = "Velma",
-                    LastName = "Dinkley",
-                    LoginTimes =
-                    new List<DateTime>
+                    id,
+                    new User
                     {
-                        DateTime.UtcNow
-                    }
-                },
-                x => x.LoginTimes,
-                u => u.Add(new DateTime(1993, 09, 12), new DateTime(2000, 01, 01)));
+                        FirstName = "Hibernating",
+                        LastName = "Rhinos",
+                        LoginTimes =
+                        new List<DateTime>
+                        {
+                                DateTime.UtcNow
+                        }
+                    },
+                    x => x.LoginTimes,
+                    u => u.Add(new DateTime(1993, 09, 12), new DateTime(2000, 01, 01)));
+
+                session.SaveChanges();
 
                 session.SaveChanges();
             }
@@ -847,11 +849,11 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 session.Advanced.AddOrIncrement<User, int>(id,
                     new User
                     {
-                        FirstName = "Harper",
-                        LastName = "Row",
+                        FirstName = "Hibernating",
+                        LastName = "Rhinos",
                         LoginCount = 1
 
-                    }, x => x.LoginCount, 3);
+                    }, x => x.LoginCount, 1);
 
                 session.SaveChanges();
 

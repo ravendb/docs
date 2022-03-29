@@ -76,7 +76,7 @@ The patch request will be sent to the server only after the call to `SaveChanges
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **T** | `Type` | Entity type |
-| **U** | `Type` | Field type, must be of numeric type or a `string` of `char` for string concatenation |
+| **TU** | `Type` | Field type, must be of numeric type or a `string` of `char` for string concatenation |
 | **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
 | **entity id** | `string` | Entity ID on which the operation should be performed. |
 | **path** | `Expression<Func<T, TU>>` | Lambda describing the path to the field. |
@@ -111,7 +111,7 @@ The patch request will be sent to the server only after the call to `SaveChanges
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **T** | `Type` | Entity type |
-| **U** | `Type` | Field type|
+| **TU** | `Type` | Field type|
 | **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
 | **entity id** | `string` | Entity ID on which the operation should be performed. |
 | **fieldPath** | `Expression<Func<T, TU>>` | Lambda describing the path to the field. |
@@ -145,11 +145,11 @@ The patch request will be sent to the server only after the call to `SaveChanges
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **T** | `Type` | Entity type |
-| **U** | `Type` | Field type|
+| **TU** | `Type` | Field type|
 | **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
 | **entity id** | `string` | Entity ID on which the operation should be performed. |
 | **path** | `Expression<Func<T, TU>>` | Lambda describing the path to the field. |
-| **Expression<Func<JavaScriptArray** | `Expression<Func<JavaScriptArray<TU>, object>>` | Lambda that modifies the array, see `JavaScriptArray` below. |
+| **Expression<Func<JavaScriptArray>** | `Expression<Func<JavaScriptArray<TU>, object>>` | Lambda that modifies the array, see `JavaScriptArray` below. |
 | **arrayAdder** | `Add()` | Values to add to array. |
 
 {INFO:JavaScriptArray}

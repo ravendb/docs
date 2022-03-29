@@ -138,7 +138,8 @@ namespace Raven.Documentation.Samples
         {
             public string FirstName { get; set; }
             public string LastName { get; set; }
-            public DateTime LoginTimes { get; set; }
+            public List<DateTime> LoginTimes { get; set; }
+            public DateTime LastLogin { get; set; }
             public int LoginCount { get; set; }
             public string Supplies { get; set; }
         }
