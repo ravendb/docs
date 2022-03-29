@@ -9,19 +9,20 @@ These **mapping functions** are **LINQ-based functions** or  **JavaScript functi
 You can:
 
 - [index single fields](../indexes/map-indexes#indexing-single-fields)
-- [combined multiple fields](../indexes/map-indexes#combining-multiple-fields-together) together
+- [combine multiple fields](../indexes/map-indexes#combining-multiple-fields-together) together
 - [index partial field data](../indexes/map-indexes#indexing-partial-field-data)
 - [index nested data](../indexes/map-indexes#indexing-nested-data)
 - [index fields from related documents](../indexes/indexing-related-documents)
 - [index fields from multiple collections](../indexes/indexing-polymorphic-data#multi-map-indexes)
 - [configure whether to index a document if the specified fields are `null`](../indexes/map-indexes#indexing-missing-fields)
-- ...and more. 
 
 ## Indexing Single Fields
 
 Let's create an index that will help us search for `Employees` by their `FirstName`, `LastName`, or both.
 
 - First, let's create an index called `Employees/ByFirstAndLastName`
+  - Note that the naming separator character "`_`" in your code will become "/" in the index name.  
+    In the following sample, "`Employees_ByFirstAndLastName`" will become "Employees/ByFirstAndLastName" in your indexes list.
 
 {CODE-TABS}
 {CODE-TAB:csharp:LINQ-syntax indexes_1@Indexes/Map.cs /}
