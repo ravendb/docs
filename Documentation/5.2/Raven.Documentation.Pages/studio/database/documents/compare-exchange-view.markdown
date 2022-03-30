@@ -3,24 +3,12 @@
 
 {NOTE: }
 
-What are Compare Exchange Items?  
-
-* CmpXchg are cluster-wide key/value pair items where the key is a unique identifier in the database,
-  across all your database group nodes.
-* Creating & modifying a CmpXchg item is an atomic, thread-safe, compare-and-swap interlocked compare-exchange operation.
-  * In a cluster, the CmpXchg item is distributed to all nodes in a [cluster-wide transactions](../../../server/clustering/cluster-transactions)
-    so that a consistent unique key is guaranteed cluster-wide.  
-
-How are they useful?  
-
-* The CmpXchg items can be used to coordinate work between threads, clients, nodes, or sessions that are 
-  trying to access a shared resource (such as a document) at the same time.  
-  * They're useful when you want to do highly consistent operations at the cluster level, not just the individual node.  
-  * RavenDB automatically creates Atomic Guards to ensure consistency in cluster-wide transactions.  
-* This singular key can also be used to reserve a resource in various other situations (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).  
-
-
-How can I manage them?
+* [Compare-Exchange](../../../client-api/operations/compare-exchange/overview) key/value pairs are used to 
+  coordinate work between threads, clients, nodes, or sessions that are 
+  trying to access a shared resource (such as a document) at the same time.
+  
+* In a cluster-wide setting, they are shared by and can be used by every node in the cluster to maintain ACIDity 
+  by ensuring that two entities cannot write on the same document at the same time.  
 
 * Compare exchange items are created and managed by either of the following:
   * RavenDB [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards)  
@@ -29,6 +17,9 @@ How can I manage them?
   * [API Operations](../../../client-api/operations/compare-exchange/overview)
   * [Session - Cluster Transaction](../../../client-api/session/cluster-transaction)
   * Using the [RavenDB Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
+
+* This singular key can also be used to reserve a resource in various other situations  
+  (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).  
 
 In this page:
 
@@ -43,7 +34,7 @@ In this page:
 ![Compare Exchange View](images/compare-exchange-view.png "Compare Exchange View")
 
 1. **Documents Tab**  
-   Select to see document-related options and the list of documents in this datase .  
+   Select to see document-related options and the list of documents in this database .  
 2. **Compare Exchange**  
    Select to see the Compare Exchange view.  
 3. **Add new item**  
@@ -53,16 +44,18 @@ In this page:
     ![Compare Exchange Single Pair](images/compare-exchange-single-pair.png "Compare Exchange Single Pair")
     1. **Key**  
        A unique identifier that is reserved across the cluster.  
-         ![Atomic Guard](images/compare-exchange-atomic-guard.png "Atomic Guard")
-            {INFO: Atomic Guards}
-            If keys start with "rvn-atomic" they are [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards).  
-            They are created and maintained automatically to guarantee ACID cluster-wide transactions.  
-            **Do not remove or edit these** as this will disable ACID guarantees.  
-            {INFO/}
+       Enter any string of your choice.  
+        {INFO: Atomic Guards}
+        If keys start with "rvn-atomic", they are [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards).  
+        They are created and maintained automatically to guarantee ACID cluster-wide transactions.  
+        **Do not remove or edit these** as this will disable ACID guarantees.  
+        
+        ![Atomic Guard](images/compare-exchange-atomic-guard.png "Atomic Guard")
+
+        {INFO/}
     2. **Value**  
        Enter a value that will be associated with the key.  
        Values can be numbers, stings, arrays, or objects. Any value that can be represented as JSON is valid.
-       Before a cluster allows a transaction, it needs to see that the value matches the expected value.  
     3. **Metadata**  
        Click to add metadata.  
        The metadata is associated with the key, similar to document's metadata.  
@@ -74,6 +67,8 @@ In this page:
        Deleting a compare exchange item will remove ACID guarantees for transactions if the pair was set up to protect ACIDity.  
        Only remove or edit these if you _truly_ know what you're doing.  
        {WARNING/}
+    6. **Save**  
+       You can only save if the actual current Raft Index version matches the expected Raft Index.  
 
 {PANEL/}
 

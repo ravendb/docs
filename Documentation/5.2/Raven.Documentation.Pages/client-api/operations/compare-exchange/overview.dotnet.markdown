@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-What are Compare Exchange Items?  
+**What are Compare Exchange Items?**  
 
 * CmpXchg are cluster-wide key/value pair items where the key is a unique identifier in the database,
   across all your database group nodes.
@@ -11,30 +11,29 @@ What are Compare Exchange Items?
   * The CmpXchg item is distributed to all nodes in a [cluster-wide transaction](../../../server/clustering/cluster-transactions)
     so that a consistent, unique key is guaranteed cluster-wide.  
 
-How are they useful?  
+**How are they useful?**  
 
 * The CmpXchg items can be used to coordinate work between threads, clients, nodes, or sessions that are 
   trying to access a shared resource (such as a document) at the same time.  
   * They're useful when you want to do highly consistent operations at the cluster level, not just the individual node.  
   * RavenDB automatically creates Atomic Guards to ensure consistency in cluster-wide transactions.  
-* This singular key can also be used to reserve a resource in various other situations (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).  
+* This singular key can also be used to reserve a resource in various other situations  
+  (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).  
 
-How can I manage them?
+**How can I manage them?**  
 
 * Compare exchange items are created and managed by either of the following:
   * RavenDB [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards)  
     To guarantee ACIDity across the cluster, 
     as of RavenDB 5.2, we automatically create and maintain Atomic Guard CmpXchg items in cluster-wide sessions.  
-  * [API Operations](../../../client-api/operations/compare-exchange/overview)
+  * [API Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations) See below.
   * [Session - Cluster Transaction](../../../client-api/session/cluster-transaction)
   * Using the [RavenDB Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
 
-* Once defined, the Compare Exchange Values can be accessed via [GetCompareExchangeValuesOperation](../../../client-api/operations/compare-exchange/get-compare-exchange-values),  
-  or by using RQL in a query ([see example-I below](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).  
+* Once defined, the Compare Exchange Values can be accessed via [GetCompareExchangeValuesOperation](../../../client-api/operations/compare-exchange/get-compare-exchange-values).  
 
 In this page:  
 
-  * [Compare Exchange Values in RavenDB](../../../client-api/operations/compare-exchange/overview#compare-exchange-values-in-ravendb)  
   * [Transaction Scope for Compare-Exchange Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)  
   * [Creating a Key](../../../client-api/operations/compare-exchange/overview#creating-a-key)  
   * [Updating a Key](../../../client-api/operations/compare-exchange/overview#updating-a-key)  
@@ -45,17 +44,6 @@ In this page:
 
 ---
 
-{PANEL: Compare Exchange Values in RavenDB}
-
-* Each key has an associated **Value** which RavenDB uses to compare with the expected value.  
-
-* The compare-exchange value must remain consistent throughout the cluster.  
-
-* Modifying these values is an [interlocked compare exchange operation](https://ayende.com/blog/182948-C/distributed-compare-exchange-operations-with-ravendb),  
-  meaning that to maintain consistency, a majority of the nodes need to agree before a change can be made.  
-
-{PANEL/}
-
 {PANEL: Transaction Scope for Compare-Exchange Operations}
 
 
@@ -64,7 +52,7 @@ In this page:
   It is therefore not part of the session transactions.  
 
 * Even if written inside the session scope, a compare exchange operation will be executed regardless 
-  of whether the session SaveChanges( ) succeeds or fails.  
+  of whether the session `SaveChanges( )` succeeds or fails.  
 
 * Thus, upon a [session transaction failure](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching), 
   if you had a successful cmpXchg operation inside the session block scope, 

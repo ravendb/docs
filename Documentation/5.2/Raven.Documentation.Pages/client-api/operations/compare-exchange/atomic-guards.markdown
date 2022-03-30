@@ -37,8 +37,14 @@
 {PANEL: When are Atomic Guards Created}
 
 * Atomic guards are created **by default** when a session's transaction mode is 
-  [ClusterWide](../../../client-api/session/cluster-transaction#open-cluster-wide-session).  
-  * They are created when creating or modifying a document with a fully successful session SaveChanges.  
+  [ClusterWide](../../../client-api/session/cluster-transaction#open-cluster-wide-session) **and**  
+  * New documents:  
+    Atomic Guards are created upon a successful session SaveChanges of a new document 
+    in a cluster-wide session.  
+  * Existing documents that don't have Atomic Guards:  
+    New Atomic Guards are created when modifying an existing document in a cluster-wide session.  
+* If a document already has an associated Atomic Guard:  
+  Upon modifying a document in a new session, the Raft Index of its related cmpXchg item will increment.
 
 {PANEL/}
 
@@ -70,25 +76,18 @@ compete on changing the document.
 
 {CODE:csharp atomic-guards-enabled@ClientApi/Operations/CompareExchange.cs /}
 
-If you [examine](../../../studio/database/documents/documents-and-collections#the-documents-view) 
+If you [examine](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view) 
 the compare exchange entries list after running the above sample, you'll see the atomic guard that 
 was automatically created.  
 ![Atomic Guard](images/atomic-guard.png "Atomic Guard")
 
-   * The generated Automic Guard key name is composed of the prefix `rvn-atomic`
+   * The generated Atomic Guard key name is composed of the prefix `rvn-atomic`
      and name of the document that it is associated with.
 
 
 {PANEL/}
 
 {PANEL: Disabling Atomic Guards}
-
-{WARNING: }
-**Do not remove or edit** atomic guards manually, as sessions that use them 
-may consider them occupied and prevent their modification.  
-If you accidentally remove an active atomic guard (that is, the atomic guard 
-of a live document), re-create the document.  
-{WARNING/}
 
 To **disable** the automatic usage of atomic guards in a session, set the session 
 `DisableAtomicDocumentWritesInClusterWideTransaction` configuration option to `true`.  
@@ -97,12 +96,22 @@ In the sample below, the session uses **no atomic guards**.
 {CODE:csharp atomic-guards-disabled@ClientApi/Operations/CompareExchange.cs /}
 
 {WARNING: Warning}
-To **guarantee ACIDity in cluster-wide transactions** when atomic guards are disabled,  
+To enable **ACIDity in cluster-wide transactions** when atomic guards are disabled,  
 you have to explicitly [set and use](../../../client-api/operations/compare-exchange/overview) 
 the required compare exchange key/value pairs.  
 
-Only disable and edit Atomic Guards if you truly know what you're doing as it can negatively impact ACID transaction guarantees.  
+Only disable and edit Atomic Guards if you truly know what you're doing as it can negatively 
+impact ACID transaction guarantees.  
+
+**Do not remove or edit** atomic guards manually while a session is using them. 
+A session that is currently using these removed atomic guards will not be able to save 
+their related documents resulting in an error.  
 {WARNING/}
+
+{NOTE: }
+If you accidentally remove an active atomic guard that is associated with an existing document, 
+re-save the document in a cluster-wide session which will re-create the Atomic Guard.  
+{NOTE/}
 
 {PANEL/}
 
