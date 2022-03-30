@@ -848,6 +848,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
 
             using (var store = new DocumentStore())
             using (var session = store.OpenSession())
+            { 
                 var id = "users/1-A";
 
             #region Add_Or_Increment_Sample
