@@ -56,6 +56,12 @@
     "Mappings": []
   },
   {
+    "Path": "multi-map-reduce-indexes.markdown",
+    "Name": "Multi-Map-Reduce Indexes",
+    "DiscussionId": "816bd86a-70ee-4742-a9e1-98aefac49870",
+    "Mappings": []
+  },
+  {
     "Path": "javascript-indexes.markdown",
     "Name": "JavaScript Indexes",
     "DiscussionId": "362ffb44-0792-45c6-befc-1d739fee4f6e",
