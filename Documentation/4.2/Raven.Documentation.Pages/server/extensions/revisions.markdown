@@ -178,7 +178,7 @@ public enum ForceRevisionStrategy
     // BEFORE applying any changes made by the user.  
     // The only exception is a new document, for which a revision will be 
     // created AFTER the update.
-        Before
+    Before
 }
     {CODE-BLOCK/}
 

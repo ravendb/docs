@@ -97,7 +97,8 @@ namespace Raven.Documentation.Samples.Server
                     #region ForceRevisionCreationByEntity
                     // Force revision creation by entity
                     var company = new Company { 
-                            Name = "CompanyProfile" };
+                            Name = "CompanyProfile" 
+                        };
                     session.Store(company);
                     companyId = company.Id;
                     session.SaveChanges();
