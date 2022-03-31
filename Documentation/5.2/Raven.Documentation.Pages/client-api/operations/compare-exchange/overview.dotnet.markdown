@@ -32,7 +32,7 @@
 
 * Once defined, the Compare Exchange Values can be accessed via [GetCompareExchangeValuesOperation](../../../client-api/operations/compare-exchange/get-compare-exchange-values).  
 
-In this page:  
+**In this page:**  
 
   * [Transaction Scope for Compare-Exchange Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)  
   * [Creating a Key](../../../client-api/operations/compare-exchange/overview#creating-a-key)  

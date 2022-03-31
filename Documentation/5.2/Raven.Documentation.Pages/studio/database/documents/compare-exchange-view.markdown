@@ -68,7 +68,8 @@ In this page:
        Only remove or edit these if you _truly_ know what you're doing.  
        {WARNING/}
     6. **Save**  
-       You can only save if the actual current Raft Index version matches the expected Raft Index.  
+       Save will only succeed if the Raft Index version that is currently stored within RavenDB for this key 
+       matches the version that shows in the view.  
 
 {PANEL/}
 

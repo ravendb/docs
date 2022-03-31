@@ -36,13 +36,12 @@
 
 {PANEL: When are Atomic Guards Created}
 
-* Atomic guards are created **by default** when a session's transaction mode is 
-  [ClusterWide](../../../client-api/session/cluster-transaction#open-cluster-wide-session) **and**  
+* Atomic Guards are created by default only when the session's transaction mode is set to 
+  [ClusterWide](../../../client-api/session/cluster-transaction#open-cluster-wide-session):
   * New documents:  
-    Atomic Guards are created upon a successful session SaveChanges of a new document 
-    in a cluster-wide session.  
+    A new Atomic Guard is created when successfully saving a new document in the cluster-wide session.  
   * Existing documents that don't have Atomic Guards:  
-    New Atomic Guards are created when modifying an existing document in a cluster-wide session.  
+    A new Atomic Guard is created when modifying an existing document in the cluster-wide session.  
 * If a document already has an associated Atomic Guard:  
   Upon modifying a document in a new session, the Raft Index of its related cmpXchg item will increment.
 
