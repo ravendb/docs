@@ -14,7 +14,7 @@
 **How are they useful?**  
 
 * The CmpXchg items can be used to coordinate work between threads, clients, nodes, or sessions that are 
-  trying to access a shared resource (such as a document) at the same time.  
+  trying to modify a shared resource (such as a document) at the same time.  
   * They're useful when you want to do highly consistent operations at the cluster level, not just the individual node.  
   * RavenDB automatically creates Atomic Guards to ensure consistency in cluster-wide transactions.  
 * This singular key can also be used to reserve a resource in various other situations  
