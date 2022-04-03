@@ -107,6 +107,7 @@ namespace Raven.Documentation.Samples
             public string HomePhone { get; set; }
             public string Extension { get; set; }
             public string ReportsTo { get; set; }
+            public string Email { get; set; }
             public List<string> Notes { get; set; }
             public List<string> Territories { get; set; }
         }
@@ -132,5 +133,15 @@ namespace Raven.Documentation.Samples
             public string Phone { get; set; }
         }
         #endregion
+
+        public class User
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public List<DateTime> LoginTimes { get; set; }
+            public DateTime LastLogin { get; set; }
+            public int LoginCount { get; set; }
+            public string Supplies { get; set; }
+        }
     }
 }
