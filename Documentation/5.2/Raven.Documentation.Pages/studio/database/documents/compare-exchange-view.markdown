@@ -3,12 +3,15 @@
 
 {NOTE: }
 
-* [Compare-Exchange](../../../client-api/operations/compare-exchange/overview) key/value pairs are used to 
-  coordinate work between threads, clients, nodes, or sessions that are 
+* [Compare-Exchange](../../../client-api/operations/compare-exchange/overview) are cluster-wide key/value pair items where the key 
+  is a unique identifier in the database.
+
+* CmpXchg items are used to coordinate work between threads, clients, nodes, or sessions that are 
   trying to access a shared resource (such as a document) at the same time.
-  
-* In a cluster-wide setting, they are shared by and can be used by every node in the cluster to maintain ACIDity 
-  by ensuring that two entities cannot write on the same document at the same time.  
+   * In a cluster-wide setting, they are shared by and can be used by every node in the cluster to maintain ACIDity 
+   by ensuring that two entities cannot write on the same document at the same time.  
+
+* The singular CmpXchg key can also be used to reserve a resource in various other situations, as seen in [these examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation).
 
 * Compare exchange items are created and managed by either of the following:
   * RavenDB [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards)  
@@ -17,9 +20,6 @@
   * [API Operations](../../../client-api/operations/compare-exchange/overview)
   * [Session - Cluster Transaction](../../../client-api/session/cluster-transaction)
   * Using the [RavenDB Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
-
-* This singular key can also be used to reserve a resource in various other situations  
-  (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).  
 
 In this page:
 
