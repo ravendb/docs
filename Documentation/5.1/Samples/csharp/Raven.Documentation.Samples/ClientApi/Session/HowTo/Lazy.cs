@@ -63,16 +63,23 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 
                 }
 
+                string changeVector;
                 using (var session = store.OpenSession())
                 {
                     User user = new User();
-
+                    session.Store(user, "users/1-A");
+                    session.SaveChanges();
+                    changeVector = session.Advanced.GetChangeVectorFor(user);
+                }
+                
+                using (var session = store.OpenSession())
+                {
                     #region lazy_ConditionalLoad
                     var lazy = session
                         .Advanced
                         .Lazily
                         // Load only if the change vector has changed
-                        .ConditionalLoad<User>(user.Id, user.ChangeVector);
+                        .ConditionalLoad<User>("users/1-A", changeVector);
                     
                     var load = lazy.Value; // The operation will be executed here
                     #endregion
