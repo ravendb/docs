@@ -25,7 +25,7 @@ Use `GetTimeSeriesOperation` to retrieve the distinct values stored per-node for
 
 ### Syntax
 
-* **Definition**
+* `GetTimeSeriesOperation` Definition:  
   {CODE incremental_declaration_GetTimeSeriesOperation@DocumentExtensions\TimeSeries\IncrementalTimeSeriesTests.cs /}
 
 * **Parameters**  
@@ -37,7 +37,7 @@ Use `GetTimeSeriesOperation` to retrieve the distinct values stored per-node for
     | `from` (optional) | `DateTime?` | Range start  <br> Default: `DateTime.Min` ||
     | `to` (optional) | `DateTime?` | Range end  <br> Default: `DateTime.Max` ||
     | `start` | `int` | Start of first Page |
-    | `pageSize` | `int` | Size of each page |
+    | `pageSize` | `int` | Size of each page, counted in [entries with unique timestamps](../../../../../document-extensions/timeseries/incremental-time-series/overview#incremental-time-series-structure) |
     | `returnFullResults` | `bool` | If true, retrieve the values stored per-node. <br> If false, return `null ` in `TimeSeriesEntry.NodeValues`. |
      
 
@@ -51,8 +51,6 @@ public class TimeSeriesRangeResult
         // The actual number of values
         public long? TotalResults; 
         
-        // Helps to calculate next start
-        public int? SkippedResults; 
   {CODE-BLOCK/}
   {CODE-BLOCK:csharp}
 public class TimeSeriesEntry 
@@ -66,41 +64,16 @@ public class TimeSeriesEntry
         public Dictionary<string, double[]> NodeValues { get; set; } 
    {CODE-BLOCK/}
 
-   * Requesting a time series that doesn't exist will return `null`.  
-   * Requesting an entries range that doesn't exist will return a `TimeSeriesRangeResult` object 
-     with an empty `Entries` property.  
+     {NOTE: }
+
+      * Requesting a time series that doesn't exist will return `null`.  
+      * Requesting an entries range that doesn't exist will return a `TimeSeriesRangeResult` object 
+        with an empty `Entries` property.  
+
+     {NOTE/}
 
 * **Exceptions**  
   Exceptions are not generated.  
-
----
-
-### Usage Flow
-
-* Pass `GetTimeSeriesOperation` -  
-   * Document ID  
-   * Incremental Time Series Name  
-   * Range Start  
-   * Range End.  
-   * **0** as the value of `start`, if you want to start with the first entry.  
-   * the number of results you want to retrieve, as the value of `pageSize`.  
-   * **true** as the value of `returnFullResults`, if you want to retrieve node values from time series entries.  
-* Call `store.Operations.Send` to execute the operation.  
-* Entries are returned into a dictionary of `TimeSeriesRangeResult` classes.  
-* Calculate where the next `Get` operation needs to start.  
-   {NOTE: To calculate where the next page should start:}
-
-    * The value you set in pageSize indicates the location of the first entry to retrieve.
-    * More than one entry can exist for the same timestamp since when different nodes increment 
-      a value for the same timestamp, the entries stored on those nodes will have the same 
-      timestamp, resulting in 'duplicate' entries.  
-    * The number of these duplicated entries is returned in the SkippedResults  
-    * To find where the next page starts, add (see code sample below):  
-        * Your current starting point  
-        * The returned `Entries.Length`  
-        * The returned `SkippedResults`  
-   {NOTE/}
-* Run the next `Get` operation with your calculation result as its `start` entry.  
 
 ---
 
@@ -116,8 +89,8 @@ public class TimeSeriesEntry
 
 {PANEL: `GetMultipleTimeSeriesOperation`}
 
-Use `GetMultipleTimeSeriesOperation` to retrieve data from 
-multiple time series.  
+To retrieve data from **multiple** time series, 
+use [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get#getmultipletimeseriesoperation).  
 
 {PANEL/}
 

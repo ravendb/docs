@@ -25,9 +25,9 @@ using Raven.Client.Documents.Session.Loaders;
 
 namespace Documentation.Samples.DocumentExtensions.TimeSeries
 {
-    public class SampleTimeSeriesMethods
+    public class SampleIncrementalTimeSeriesMethods
     {
-        private SampleTimeSeriesMethods(ITestOutputHelper output)
+        private SampleIncrementalTimeSeriesMethods(ITestOutputHelper output)
         {
         }
 
@@ -89,20 +89,18 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 #endregion
 
                 #region incremental_GetTimeSeriesOperation
-                var pageSize = 100;
+                int pageSize = 100;
                 var entries = store.Operations
                                   .Send(new GetTimeSeriesOperation("users/ayende",
-                                   "INC:Downloads", start: 0, pageSize: pageSize / 2, 
+                                   "INC:Downloads", start: 0, pageSize: pageSize, 
                                    returnFullResults: true));
 
-                // we get 50 unique entries but we read 100 entries from the segment
-                // so next call we should start from position 101: numberOfUniqueEntries + skippedResults 
-                var nextStart = entries.Entries.Length + entries.SkippedResults;
-
+                //load another page, starting with the first entry that wasn't read yet
+                int nextStart = entries.Entries.Length;
                 entries = store.Operations
                                   .Send(new GetTimeSeriesOperation("users/ayende",
-                                   "INC:Downloads", start: (int)nextStart,
-                                   pageSize: pageSize / 2, returnFullResults: true));
+                                   "INC:Downloads", start: nextStart, pageSize: pageSize, 
+                                   returnFullResults: true));
                 #endregion
 
             }
@@ -198,7 +196,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
     }
 
-    public class SampleTimeSeriesDefinitions
+    public class SampleIncrementalTimeSeriesDefinitions
     {
         private interface Foo
         {
