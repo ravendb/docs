@@ -28,5 +28,11 @@
         "Name": "OLAP ETL Task",
         "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
         "Mappings": []
+    },
+    {
+        "Path": "ravendb-etl-task.markdown",
+        "Name": "RavenDB ETL Task",
+        "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
+        "Mappings": []
     }
 ]

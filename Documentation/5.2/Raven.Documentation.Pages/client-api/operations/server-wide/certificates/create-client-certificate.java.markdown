@@ -1,6 +1,13 @@
 # Operations: Server: How to Generate a Client Certificate
+---
 
-You can generate a client certificate using **CreateClientCertificateOperation**. 
+{NOTE: }
+
+* You can generate a client certificate using **CreateClientCertificateOperation**.  
+
+* Learn the rationale needed to properly define client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
+
+{NOTE/}
 
 ## Syntax
 
@@ -31,5 +38,10 @@ You can generate a client certificate using **CreateClientCertificateOperation**
 
 ## Related articles
 
-- [How to **delete** certificate?](../../../../client-api/operations/server-wide/certificates/delete-certificate) 
-- [How to **put** client certificate?](../../../../client-api/operations/server-wide/certificates/put-client-certificate) 
+**Client API Articles**:  
+- [How to delete certificate?](../../../../client-api/operations/server-wide/certificates/delete-certificate)  
+- [How to put client certificate?](../../../../client-api/operations/server-wide/certificates/put-client-certificate)  
+
+**Server Articles**:  
+- [Certificates Management](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates)  
+- [Client Certificate Usage](../../../../server/security/authentication/client-certificate-usage)  

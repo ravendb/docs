@@ -13,12 +13,12 @@
 
 * ETL is different from data replication. See [RavenDB ETL Task -vs- Replication Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--replication-task)  
 
-* In RavenDB ETL between secure clusters, you must **export a cluster certificate** from the source cluster, then **upload the certificate** into the destination.  
-  This is done so that the destination cluster trusts the source.  
+* In RavenDB ETL, [a certificate must be passed](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate-between-secure-clusters) from the source server to the destination so that the destination server trusts the source.  
 
 * In this page:  
   * [RavenDB ETL Task - Definition](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---definition)  
   * [RavenDB ETL Task - Transform Scripts](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---transform-scripts)  
+  * [Passing Certificate Between Secure Clusters](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate-between-secure-clusters)  
   * [RavenDB ETL Task - Details in Tasks List View](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---details-in-tasks-list-view)  
   * [RavenDB ETL Task - Offline Behaviour](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---offline-behaviour)  
   * [RavenDB ETL Task -vs- Replication Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--replication-task)  
@@ -41,6 +41,7 @@
 3. **Connection String**  
    * Select an existing connection string from the list or create a new one  
    * The connection string defines the destination database and its database group server nodes URLs  
+
 {PANEL/}
 
 {PANEL: RavenDB ETL Task - Transform Scripts}
@@ -52,9 +53,9 @@
 2. Edit or Delete an existing script  
 
 3. Enter the script to use.  
-   In the above example, each source document from the 'Products' collection will be sent to the 'ProductsInfo' collection in the destination database *db3* 
+   In the above example, each source document from the "Products" collection will be sent to the "ProductsInfo" collection in the destination database *db3* 
    (which is external to the cluster).  
-   Each new document will have 2 fields: 'ProductName' and 'SupplierName'.  
+   Each new document will have 2 fields: "ProductName" and "SupplierName".  
    For detailed script options see [Transformation Script Options](../../../../server/ongoing-tasks/etl/raven#transformation-script-options).  
 
 4. By default, updates to the ETL script will _not_ be applied to documents that were already sent.  
@@ -62,6 +63,22 @@
    rather than apply the update only to new or updated documents.  
 
 5. Select the collections for the ETL task - **or** - apply to all collections  
+{PANEL/}
+
+{PANEL: Passing Certificate Between Secure Clusters}
+
+**Pass Certificate from Source Cluster to Destination Cluster**  
+  This step must be done if connecting *to a another cluster* so that the destination cluster trusts the source.  
+
+  * **Via RavenDB Studio:**  
+    Navigate from the "Manage Server" tab (left side) > "Certificates" to open the [Certificate Management](../../../../server/security/authentication/certificate-management) view.  
+     - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates).  
+  * **Via API:**  
+    See the code sample to learn how to [define a client certificate in the DocumentStore()](../../../../client-api/creating-document-store).  
+     - To generate and configure a client certificate from the source server, see [CreateClientCertificateOperation](../../../../client-api/operations/server-wide/certificates/create-client-certificate)
+     - Learn the rationale needed to configure client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
+
+
 {PANEL/}
 
 {PANEL: RavenDB ETL Task - Details in Tasks List View}
