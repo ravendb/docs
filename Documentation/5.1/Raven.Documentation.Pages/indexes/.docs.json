@@ -49,12 +49,18 @@
       }
     ]
   },
-  {
+{
     "Path": "map-reduce-indexes.markdown",
     "Name": "Map-Reduce Indexes",
     "DiscussionId": "816bd86a-70ee-4742-a9e1-98aefac49870",
     "Mappings": []
-  },
+},
+    {
+    "Path": "multi-map-reduce-indexes.markdown",
+    "Name": "Multi-Map-Reduce Indexes",
+    "DiscussionId": "816bd86a-70ee-4742-a9e1-98aefac49870",
+    "Mappings": []
+},
   {
     "Path": "javascript-indexes.markdown",
     "Name": "JavaScript Indexes",

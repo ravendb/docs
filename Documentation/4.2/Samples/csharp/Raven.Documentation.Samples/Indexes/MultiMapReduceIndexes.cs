@@ -6,116 +6,95 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Indexes.MapReduce;
 using Raven.Documentation.Samples.Orders;
+using Raven.Documentation.Samples;
 using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.Session;
+using static Raven.Documentation.Samples.Indexes.MultiMapReduce.MultiMapReduceIndex;
 
-
-namespace Raven.Documentation.Samples.Indexes.MultiMap
+namespace Raven.Documentation.Samples.Indexes.MultiMapReduce
 {
-    #region map_reduce_0_0
-    public class Products_ByCategory : AbstractIndexCreationTask<Product, Products_ByCategory.Result>
-    {
-        public class Result
-        {
-            public string Category { get; set; }
-
-            public int Count { get; set; }
-        }
-
-        public Products_ByCategory()
-        {
-            Map = products => from product in products
-                              let categoryName = LoadDocument<Category>(product.Category).Name
-                              select new
-                              {
-                                  Category = categoryName,
-                                  Count = 1
-                              };
-
-            Reduce = results => from result in results
-                                group result by result.Category into g
-                                select new
-                                {
-                                    Category = g.Key,
-                                    Count = g.Sum(x => x.Count)
-                                };
-        }
-    }
-    #endregion
-
-
-
     public class MultiMapReduceIndex
     {
-        #region Multi-Map-Reduce-LINQ
-        public class CityCommerceDetails : AbstractMultiMapIndexCreationTask<CityCommerceDetails.IndexEntry>
+        #region multi_map_reduce_LINQ
+        public class Cities_Details :
+          AbstractMultiMapIndexCreationTask<Cities_Details.IndexEntry>
         {
             public class IndexEntry
             {
-                public string CityName { get; set; }
-                public int NumberOfCompaniesInCity { get; set; }
-                public int NumberOfSuppliersInCity { get; set; }
-                public int NumberOfItemsShippedToCity { get; set; }
+                public string City;
+                public int Companies, Employees, Suppliers;
             }
 
-            public CityCommerceDetails()
+            public Cities_Details()
             {
-                AddMap<Company>(companies => 
-                    from company in companies
+                AddMap<Employee>(emps =>
+                    from e in emps
                     select new IndexEntry
                     {
-                        CityName = company.Address.City,
-                        NumberOfCompaniesInCity = 1,
-                        NumberOfSuppliersInCity = 0,
-                        NumberOfItemsShippedToCity = 0
-                    });
+                        City = e.Address.City,
+                        Companies = 0,
+                        Suppliers = 0,
+                        Employees = 1
+                    }
+                );
 
-                AddMap<Supplier>(suppliers => 
-                    from supplier in suppliers
+                AddMap<Company>(companies =>
+                    from c in companies
                     select new IndexEntry
                     {
-                        CityName = supplier.Address.City,
-                        NumberOfCompaniesInCity = 0,
-                        NumberOfSuppliersInCity = 1,
-                        NumberOfItemsShippedToCity = 0
-                    });
+                        City = c.Address.City,
+                        Companies = 1,
+                        Suppliers = 0,
+                        Employees = 0
+                    }
+                );
 
-                AddMap<Order>(orders => 
-                    from order in orders
+                AddMap<Supplier>(suppliers =>
+                    from s in suppliers
                     select new IndexEntry
                     {
-                        CityName = order.ShipTo.City,
-                        NumberOfCompaniesInCity = 0,
-                        NumberOfSuppliersInCity = 0,
-                        NumberOfItemsShippedToCity = order.Lines.Sum(x => x.Quantity)
-                    });
+                        City = s.Address.City,
+                        Companies = 0,
+                        Suppliers = 1,
+                        Employees = 0
+                    }
+                );
 
-                Reduce = results => 
+                Reduce = results =>
                     from result in results
-                    group result by result.CityName into g
-                    select new
+                    group result by result.City
+                    into g
+                    select new IndexEntry
                     {
-                        CityName = g.Key,
-                        NumberOfCompaniesInCity = g.Sum(x => x.NumberOfCompaniesInCity),
-                        NumberOfSuppliersInCity = g.Sum(x => x.NumberOfSuppliersInCity),
-                        NumberOfItemsShippedToCity = g.Sum(x => x.NumberOfItemsShippedToCity)
+                        City = g.Key,
+                        Companies = g.Sum(x => x.Companies),
+                        Suppliers = g.Sum(x => x.Suppliers),
+                        Employees = g.Sum(x => x.Employees)
                     };
             }
         }
-        #endregion
-
-        #region multi-map-reduce-index-query
-        List<CityCommerceDetails.IndexEntry> commerceDetails;
-
-        using (IDocumentSession session = DocumentStoreHolder.Store.OpenSession())
-        {
-            commerceDetails = session.Query<CityCommerceDetails.IndexEntry, CityCommerceDetails>()
-                .Where(doc => doc.NumberOfCompaniesInCity > minCompaniesCount ||
-                              doc.NumberOfItemsShippedToCity > minItemsCount)
-                .OrderBy(x => x.CityName)
-                .ToList();
-
-}
-        #endregion
     }
+        #endregion
+
+    public class MultiMapReduceIndexQuery
+    {
+        public MultiMapReduceIndexQuery()
+        {
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region multi-map-reduce-index-query
+                    IList<Cities_Details.IndexEntry> commerceDetails = session
+                    .Query<Cities_Details.IndexEntry, Cities_Details>()
+                    .Where(doc => doc.Companies > 5)
+                    .OrderBy(x => x.City)
+                    .ToList();
+                    #endregion
+                }
+            }
+        }
+    }
+
+
 }

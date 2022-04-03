@@ -5,13 +5,17 @@
 
 * A **Multi Map-Reduce** index allows aggregating data from several collections.  
 
-* **The map phase**  
+* **The multi-map phase**  
   The index collects data from various collections as defined.  
   It indexes the defined fields in the collections requested and saves the information 
   to reduce trips to the disk every time a query uses the index.  
 
 * **The reduce phase**  
-  It then aggregates, or sorts, the data.  
+  It then aggregates, or sorts, the data. The aggregated value can be queried on with very little cost, 
+  as computations are done while indexing, and not at query time. 
+  
+* **Querying the index**  
+  When a query is made, RavenDB returns the results directly from the index.  
 
 * **Updating indexes upon document modifications:**  
   Whenever documents in the indexed collections are modified, the index is updated behind the scenes 
@@ -38,16 +42,14 @@ In this page:
 
 {PANEL: Multi-Map-Reduce Sample}
 
-In this sample we define the map phase on collections 'Company', 'Supplier' and 'Order'.  
+In this sample we define the map phase on collections 'Employees', 'Companies' and 'Suppliers'.  
 We then define the reduce phase.  
 
-You can see this sample in RavenDB's [Code Walkthrough on Multi-Map-Reduce Index](https://demo.ravendb.net/demos/csharp/multi-map-indexes/multi-map-reduce-index#) 
-where you can see the code logic step-by-step, play with variables, and run the index in RavenDB's studio.  
+You can see this sample described in [Inside RavenDB - Multi-Map-Reduce Indexes](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/11-mapreduce-and-aggregations-in-ravendb#multimapreduce-indexes).
 
-{CODE:csharp Multi-Map-Reduce-LINQ@Indexes\MultiMapReduceIndexes.cs /}
+{CODE:csharp multi_map_reduce_LINQ@Indexes\MultiMapReduceIndexes.cs /}
 
-After defining the Multi-Map-Reduce index,  
-define a session query.
+Now define a session query.
 
 {CODE:csharp multi-map-reduce-index-query@Indexes\MultiMapReduceIndexes.cs /}
 
@@ -64,6 +66,9 @@ define a session query.
 
 - [Indexing Related Documents](../indexes/indexing-related-documents)
 - [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+- [Map Indexes](../indexes/map-indexes)
+- [Map-Reduce Indexes](../indexes/map-reduce-indexes)
+- [Multi-Map Indexes](../indexes/multi-map-indexes)
 
 ### Querying
 
@@ -71,6 +76,8 @@ define a session query.
 
 ### Studio
 
+- [Create Map Index](../studio/database/indexes/create-map-index)
+- [Create Multi-Map Index](../studio/database/indexes/create-multi-map-index)
 - [Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index)
 
 <br/>
@@ -78,3 +85,5 @@ define a session query.
 ## Code Walkthrough
 
 - [Multi-Map-Reduce-Index](https://demo.ravendb.net/demos/csharp/multi-map-indexes/multi-map-reduce-index#)
+- [Map Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-index)
+- [Map-Reduce Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-reduce-index)
