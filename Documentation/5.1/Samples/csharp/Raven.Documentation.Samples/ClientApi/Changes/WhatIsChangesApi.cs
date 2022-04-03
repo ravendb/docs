@@ -20,10 +20,11 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
             using (var store = new DocumentStore())
             {
                 #region changes_2
-                IDatabaseChanges subscription = store.Changes();
-                await subscription.EnsureConnectedNow();
-                subscription.ForAllDocuments().Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
-
+                IDatabaseChanges changes = store.Changes();
+                await changes.EnsureConnectedNow();
+                var subscription = changes
+                        .ForAllDocuments()
+                        .Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
                 try
                 {
                     // application code here
