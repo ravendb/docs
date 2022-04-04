@@ -11,7 +11,7 @@
   * A key which is a unique string across the cluster  
   * A value which can be any json value you choose  
   * Raft index which increments to enable comparison.  
-    Any changes to the value or metadata changes the Raft index.  
+    Any change to the value or metadata changes the Raft index.  
   * Metadata  
 
 * Creating and modifying a compare-exchange item is atomic and thread-safe. It is a compare-and-swap interlocked 
@@ -47,9 +47,9 @@
     as a result of a change in the value.
 
 * The compare-exchange items can be used to coordinate work between threads, clients, nodes, or sessions that are 
-  trying to modify a shared resource the same time.  
+  trying to modify a shared resource at the same time.  
 
-* To maintain ACID transactions, create or modify documents in a cluster-wide session to create [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards):  
+* To maintain **ACID transactions**, create or modify documents in a cluster-wide session to create [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards):  
   * Atomic Guards are associated with a document ID across the cluster.  
   * Instead of looking for changes in the value, they look for changes in the associated document.
   * Whenever one thread holds the cluster-wide Atomic Guard associated with a document, other threads will be able to read the document, 
