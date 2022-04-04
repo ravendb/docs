@@ -21,8 +21,11 @@ You can:
 Let's create an index that will help us search for `Employees` by their `FirstName`, `LastName`, or both.
 
 - First, let's create an index called `Employees/ByFirstAndLastName`
-  - Note that the naming separator character "`_`" in your code will become "/" in the index name.  
-    In the following sample, "`Employees_ByFirstAndLastName`" will become "Employees/ByFirstAndLastName" in your indexes list.
+
+{NOTE: }
+ The naming separator character "`_`" in your code will become "/" in the index name.  
+ In the following sample, "`Employees_ByFirstAndLastName`" will become "Employees/ByFirstAndLastName" in your indexes list.
+{NOTE/}
 
 {CODE-TABS}
 {CODE-TAB:csharp:LINQ-syntax indexes_1@Indexes/Map.cs /}
