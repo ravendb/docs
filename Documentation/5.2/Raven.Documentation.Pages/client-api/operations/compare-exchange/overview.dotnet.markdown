@@ -3,37 +3,30 @@
 
 {NOTE: }
 
-**What are Compare Exchange Items?**  
+**What Compare Exchange Items Are**  
 
-* CmpXchg are cluster-wide key/value pair items where the key is a unique identifier in the database,
-  across all your database group nodes.
-* Creating & modifying a CmpXchg item is an atomic, thread-safe, compare-and-swap interlocked compare-exchange operation.
-  * The CmpXchg item is distributed to all nodes in a [cluster-wide transaction](../../../server/clustering/cluster-transactions)
+* Compare-exchange items are cluster-wide key/value pairs where the key is a unique identifier. 
+
+* Each compare-exchange item contains: 
+  * A key which is a unique string across the cluster  
+  * A value which can be any json value you choose  
+  * Raft index which increments to enable comparison.  
+    Any changes to the value or metadata changes the Raft index.  
+  * Metadata  
+
+* Creating and modifying a compare-exchange item is atomic and thread-safe. It is a compare-and-swap interlocked 
+  compare-exchange operation.
+  * The compare-exchange item is distributed to all nodes in a [cluster-wide transaction](../../../server/clustering/cluster-transactions)
     so that a consistent, unique key is guaranteed cluster-wide.  
 
-**How are they useful?**  
+**To Ensure ACID Transactions**  
+  RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
+  in cluster-wide transactions.  
 
-* The CmpXchg items can be used to coordinate work between threads, clients, nodes, or sessions that are 
-  trying to modify a shared resource (such as a document) at the same time.  
-  * They're useful when you want to do highly consistent operations at the cluster level, not just the individual node.  
-  * RavenDB automatically creates Atomic Guards to ensure consistency in cluster-wide transactions.  
-* This singular key can also be used to reserve a resource in various other situations  
-  (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).  
-
-**How can I manage them?**  
-
-* Compare exchange items are created and managed by either of the following:
-  * RavenDB [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards)  
-    To guarantee ACIDity across the cluster, 
-    as of RavenDB 5.2, we automatically create and maintain Atomic Guard CmpXchg items in cluster-wide sessions.  
-  * [API Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations) See below.
-  * [Session - Cluster Transaction](../../../client-api/session/cluster-transaction)
-  * Using the [RavenDB Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
-
-* Once defined, the Compare Exchange Values can be accessed via [GetCompareExchangeValuesOperation](../../../client-api/operations/compare-exchange/get-compare-exchange-values).  
 
 **In this page:**  
 
+  * [How to Use Compare-Exchange Items](../../../client-api/operations/compare-exchange/overview#how-to-use-compare-exchange-items)  
   * [Transaction Scope for Compare-Exchange Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)  
   * [Creating a Key](../../../client-api/operations/compare-exchange/overview#creating-a-key)  
   * [Updating a Key](../../../client-api/operations/compare-exchange/overview#updating-a-key)  
@@ -43,6 +36,40 @@
 {NOTE/}
 
 ---
+
+{PANEL: How to Use Compare-Exchange Items}
+
+**How they are useful**  
+
+* Compare-exchange items can be used in various situations to protect or reserve a resource by checking changes in values.  
+  (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).
+  * If you create a compare-exchange key/value pair, you can decide what happens when the Raft index increments 
+    as a result of a change in the value.
+
+* The compare-exchange items can be used to coordinate work between threads, clients, nodes, or sessions that are 
+  trying to modify a shared resource the same time.  
+
+* To maintain ACID transactions, create or modify documents in a cluster-wide session to create [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards):  
+  * Atomic Guards are associated with a document ID across the cluster.  
+  * Instead of looking for changes in the value, they look for changes in the associated document.
+  * Whenever one thread holds the cluster-wide Atomic Guard associated with a document, other threads will be able to read the document, 
+    but they will not be able to modify it until the first thread finishes.  
+  * Every time a document is modified, the compare-exchange Raft Index is incremented. This ensures that if, for example, the 
+    same document is being read by node B while node A is writing on it, the Raft index won't match when node B tries to write. 
+    This will throw an exception, forcing node B to re-read and thus have an updated version of the document.  
+  * Cluster-wide transactions have a performance cost when compared to normal transactions, but they guarantee isolation.  
+
+**How to manage them**  
+
+* Compare exchange items are created and managed with any of the following approaches:
+  * Activate RavenDB [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards)  
+    To guarantee ACIDity across the cluster, 
+    as of RavenDB 5.2, we automatically create and maintain Atomic Guard compare-exchange items in cluster-wide sessions.  
+  * [Client API Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations) See below.
+  * [Cluster-Wide Sessions](../../../client-api/session/cluster-transaction)
+  * Using [Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
+
+{PANEL/}
 
 {PANEL: Transaction Scope for Compare-Exchange Operations}
 
@@ -55,14 +82,14 @@
   of whether the session `SaveChanges( )` succeeds or fails.  
 
 * Thus, upon a [session transaction failure](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching), 
-  if you had a successful cmpXchg operation inside the session block scope, 
+  if you had a successful compare-exchange operation inside the session block scope, 
   it will **not** be rolled back automatically.  
 
 {PANEL/}
 
 {PANEL: Creating a Key}
 
-* Provide the following when saving a **key**:
+Provide the following when saving a **key**:
 
 | Parameter | Description |
 | ------------- | ---- |
@@ -79,7 +106,7 @@
 
 {PANEL: Updating a Key}
 
-* Updating a 'Compare Exchange' key can be divided into 2 phases:
+Updating a 'Compare Exchange' key can be divided into 2 phases:
 
   1. [Get](../../../client-api/operations/compare-exchange/get-compare-exchange-value) the existing _Key_. The associated _Value_ and _Index_ are received.  
 

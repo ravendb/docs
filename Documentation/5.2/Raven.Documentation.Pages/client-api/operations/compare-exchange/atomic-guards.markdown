@@ -95,22 +95,19 @@ In the sample below, the session uses **no atomic guards**.
 {CODE:csharp atomic-guards-disabled@ClientApi/Operations/CompareExchange.cs /}
 
 {WARNING: Warning}
-To enable **ACIDity in cluster-wide transactions** when atomic guards are disabled,  
-you have to explicitly [set and use](../../../client-api/operations/compare-exchange/overview) 
-the required compare exchange key/value pairs.  
+* To enable **ACIDity in cluster-wide transactions** when atomic guards are disabled,  
+  you have to explicitly [set and use](../../../client-api/operations/compare-exchange/overview) 
+  the required compare exchange key/value pairs.  
 
-Only disable and edit Atomic Guards if you truly know what you're doing as it can negatively 
-impact ACID transaction guarantees.  
+* Only disable and edit Atomic Guards if you truly know what you're doing as it can negatively 
+  impact ACID transaction guarantees.  
 
-**Do not remove or edit** atomic guards manually while a session is using them. 
-A session that is currently using these removed atomic guards will not be able to save 
-their related documents resulting in an error.  
+* **Do not remove or edit** atomic guards manually while a session is using them. 
+  A session that is currently using these removed atomic guards will not be able to save 
+  their related documents resulting in an error.  
+  * If you accidentally remove an active atomic guard that is associated with an existing document, 
+    re-save the document in a cluster-wide session which will re-create the Atomic Guard.  
 {WARNING/}
-
-{NOTE: }
-If you accidentally remove an active atomic guard that is associated with an existing document, 
-re-save the document in a cluster-wide session which will re-create the Atomic Guard.  
-{NOTE/}
 
 {PANEL/}
 
