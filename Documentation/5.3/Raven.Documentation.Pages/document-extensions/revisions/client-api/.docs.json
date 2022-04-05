@@ -1,0 +1,12 @@
+[
+  {
+    "Path": "/session",
+    "Name": "Session",
+    "Mappings": []
+  },
+  {
+    "Path": "/operations",
+    "Name": "Operations",
+    "Mappings": []
+  }
+]

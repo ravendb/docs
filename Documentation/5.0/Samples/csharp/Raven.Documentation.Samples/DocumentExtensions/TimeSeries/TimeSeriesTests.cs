@@ -636,12 +636,12 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     // Get all time series entries
                     TimeSeriesEntry[] entries = 
                         session.TimeSeriesFor("users/john", "HeartRates")
-                        .Get(DateTime.MinValue, DateTime.MaxValue),
-                        includes: builder => builder
-                        // Include documents referred-to by entry tags
-                        .IncludeTags()
-                        // Include Parent Document
-                        .IncludeDocument());
+                            .Get(DateTime.MinValue, DateTime.MaxValue,
+                                includes: builder => builder
+                            // Include documents referred-to by entry tags
+                            .IncludeTags()
+                            // Include Parent Document
+                            .IncludeDocument());
                     #endregion
                 }
             }
