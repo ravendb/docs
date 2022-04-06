@@ -43,10 +43,11 @@ This object contains the four revisions settings for a particular collection:
 {CODE-BLOCK: csharp}
 public class RevisionsCollectionConfiguration
 {
-    public TimeSpan? MinimumRevisionAgeToKeep;
-    public long? MinimumRevisionsToKeep;
-    public bool Disabled;
-    public bool PurgeOnDelete;
+    public long? MinimumRevisionsToKeep { get; set; }
+    public TimeSpan? MinimumRevisionAgeToKeep { get; set; }
+    public bool Disabled { get; set; }
+    public bool PurgeOnDelete { get; set; }
+    public long? MaximumRevisionsToDeleteUponDocumentUpdate { get; set; }
 }
 {CODE-BLOCK/}
 

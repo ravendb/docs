@@ -1,25 +1,29 @@
-# Revisions
+# Revisions Overview
 ---
 
 {NOTE: }
 
-* The **Revisions** feature will create a revision (snapshot) for a document 
+* The **Revisions** feature will create a revision (snapshot) of a document 
   every time the document is updated and upon its deletion.  
-  The trail of revisions created for the document can then be browsed, and 
-  the currently live document can be reverted to any of its past revisions.  
+  You will then be able to browse the trail of revisions created for the document, 
+  and revert the currently live document to any of its past revisions.  
 * Revisions can be enabled for documents of all collections, or for specific collections.  
 * Tracking document revisions allows you, for example, to check how an employee's 
   contract has changed over time, revert a single corrupted document without restoring 
-  a backup, or to conduct a full-scale audit.  
-* Revisions can be configured using API methods or via Studio.
+  a backup, or conduct a full-scale audit.  
+* You can keep Revisions storage usage at bay by limiting the number and age 
+  of revisions that RavenDB keeps.  
+  Revisions that exceed the set limits will be automatically purged.  
+* Revisions can be configured using API methods or via Studio.  
 
 * In this page:  
-  * [Configuration](../../server/extensions/revisions#configuration)  
-     * [Configuration Options](../../server/extensions/revisions#configuration-options)
-  * [How it Works](../../server/extensions/revisions#how-it-works)  
-  * [Enabling or Disabling on an Existing Database](../../server/extensions/revisions#enabling-or-disabling-on-an-existing-database)  
-  * [Storage Concerns](../../server/extensions/revisions#storage-concerns)  
-  * [Force Revision Creation](../../server/extensions/revisions#force-revision-creation)  
+  * [Configuration](../../document-extensions/revisions/overview#configuration)  
+     * [Via Studio](../../document-extensions/revisions/overview#configuring-revisions-using-studio)  
+     * [Via API](../../document-extensions/revisions/overview#configuring-revisions-using-the-client-api)  
+  * [How it Works](../../document-extensions/revisions/overview#how-it-works)  
+  * [Enabling or Disabling on an Existing Database](../../document-extensions/revisions/overview#enabling-or-disabling-on-an-existing-database)  
+  * [Storage Concerns](../../document-extensions/revisions/overview#storage-concerns)  
+  * [Force Revision Creation](../../document-extensions/revisions/overview#force-revision-creation)  
 
 {NOTE/}
 
@@ -27,16 +31,31 @@
 
 {PANEL: Configuration}
 
-You can configure the revisions feature using the studio:
+By default, revisions are created for **all documents** and existing revisions are **never purged**.  
 
-![Configuring revisions feature on the database](images/configure-revisions.png "Configuring revisions feature on the database")
-
-By default, the revisions feature will track history for all the documents and never purge old revisions. 
-You can configure this for all collections (using the default configuration) and you can have a configuration for a specific collection.
+* You can change the default behavior by creating a default configuration of your own.  
+  The default configuration applies to all the collections that a collection-specific 
+  configuration hasn't been defined for.  
+* You can also define collection-specific configurations that override the default 
+  configuration for given collection.  
+* Revisions configurations can define:  
+   * Whether the Revisions feature is **Enabled** or **Disabled**  
+   * Whether documents' revisions would be purged when the documents are deleted.  
+   * Whether to **Limit** the number of revisions that are kept for a document.  
 
 ---
 
-#### Configuration Options:
+### Configuring Revisions Using Studio
+
+![Configuring Revisions Using Studio](images/configure-revisions.png "Configuring Revisions Using Studio")
+
+{INFO: }
+Learn more about configuring Revisions via Studio [here]().  
+{INFO/}
+
+---
+
+### Configuring Revisions Using the Client API
 
 | Configuration option | Description |
 | - | - |
@@ -45,15 +64,16 @@ You can configure this for all collections (using the default configuration) and
 | **MinimumRevisionAgeToKeep** | Configure a minimum retention time before the revisions can be expired. Default: none. |
 | **Disabled** | If true, disable the revisions feature for this configuration (default or specific collection). Default: false. |
 
-You can also configure the revisions feature using the client:
-
 {CODE configuration@DocumentExtensions\Revisions\Revisions.cs /}
 
-It is possible to have a default configuration telling the revisions feature to revision all documents. 
 Set `Disabled=false`, which is the default, on the default configuration, and only keep up to 5 revisions, purging older ones (`MinimumRevisionsToKeep=5`).
 Then override the behavior of the revisions feature by specifying a configuration specifically to a collection. 
 
 Conversely, we can disable the default configuration (`Disabled = true`) but enable revisions for a specific collection.
+
+{INFO: }
+Learn more about configuring Revisions using the client API [here](../../document-extensions/revisions/client-api/operations/configure-revisions).  
+{INFO/}
 
 {PANEL/}
 
@@ -194,7 +214,7 @@ public enum ForceRevisionStrategy
 
 ### Client API
 
-- [Session: What are Revisions](../../client-api/session/revisions/what-are-revisions)  
-- [Session: Loading Revisions](../../client-api/session/revisions/loading)  
-- [Operations: How to Configure Revisions](../../client-api/operations/revisions/configure-revisions)  
+- [Session: What are Revisions](../../document-extensions/revisions/client-api/session/what-are-revisions)  
+- [Session: Loading Revisions](../../document-extensions/revisions/client-api/session/loading)  
+- [Operations: How to Configure Revisions](../../document-extensions/revisions/client-api/operations/configure-revisions)  
 - [Revisions in Data Subscriptions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)  
