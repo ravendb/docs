@@ -3,36 +3,35 @@
 
 {NOTE: }
 
-* **Map-Reduce indexes** allow you to perform complex ***data aggregation*** that can be queried on with very little cost,  
+* **Map-Reduce indexes** allow you to perform complex ***data aggregation*** that can be queried on with very little cost, 
   regardless of the data size.  
 
-* The aggregation is done during the indexing phase, _not_ at query time.  
+* To expediate queries, the aggregation is done during the indexing phase, _not_ at query time.  
 
 * Once new data comes into the database, or existing documents are modified,  
-  the Map-Reduce index will re-calculate the aggregated data,  
+  the Map-Reduce index will re-calculate the aggregated data  
   so that the aggregation results are always available and up-to-date !  
 
 * The aggregation computation is done in two separate consecutive actions: the `Map` and the `Reduce`.  
-
-* **The Map stage:**  
-  This first stage runs the defined Map function(s) on each document, indexing the specified fields.  
-
-* **The Reduce stage:**  
-  This second stage groups the specified requested fields that were indexed in the Map stage,  
-  and then runs the Reduce function to get a final aggregation result per field value.  
+  * **The Map stage:**  
+    This first stage runs the defined Map function(s) on each document, indexing the specified fields.  
+  * **The Reduce stage:**  
+    This second stage groups the specified requested fields that were indexed in the Map stage,  
+    and then runs the Reduce function to get a final aggregation result per field value.  
 
 * The Map-Reduce results can be visualized in the [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer).  
 
-* In this page:  
-  * [The Map Stage](../../../studio/database/indexes/create-map-reduce-index#the-map-stage)  
-  * [The Reduce Stage](../../../studio/database/indexes/create-map-reduce-index#the-reduce-stage)  
-  * [Important Guidelines](../../../studio/database/indexes/create-map-reduce-index#important-guidelines)  
-  * [Map-Reduce Query Results](../../../studio/database/indexes/create-map-reduce-index#map-reduce-query-results)  
-  * [Multi-Map-Reduce](../../../studio/database/indexes/create-map-reduce-index#multi-map-reduce)    
-  * [Saving Map-Reduce Results into a Collection (Artificial Documents)](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))  
-      * [Artificial -vs- Regular Documents](../../../studio/database/indexes/create-map-reduce-index#artificial-documents--vs--regular-documents)  
-      * [Artificial Documents Usage](../../../studio/database/indexes/create-map-reduce-index#artificial-documents-usage)  
-      * [Artificial Documents Limitations](../../../studio/database/indexes/create-map-reduce-index#limitations)  
+In this page:  
+
+* [The Map Stage](../../../studio/database/indexes/create-map-reduce-index#the-map-stage)  
+* [The Reduce Stage](../../../studio/database/indexes/create-map-reduce-index#the-reduce-stage)  
+* [Important Guidelines](../../../studio/database/indexes/create-map-reduce-index#important-guidelines)  
+* [Map-Reduce Query Results](../../../studio/database/indexes/create-map-reduce-index#map-reduce-query-results)  
+* [Multi-Map-Reduce](../../../studio/database/indexes/create-map-reduce-index#multi-map-reduce)    
+* [Saving Map-Reduce Results into a Collection (Artificial Documents)](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))  
+    * [Artificial -vs- Regular Documents](../../../studio/database/indexes/create-map-reduce-index#artificial-documents--vs--regular-documents)  
+    * [Artificial Documents Usage](../../../studio/database/indexes/create-map-reduce-index#artificial-documents-usage)  
+    * [Artificial Documents Limitations](../../../studio/database/indexes/create-map-reduce-index#limitations)  
 {NOTE/}
 
 ---
