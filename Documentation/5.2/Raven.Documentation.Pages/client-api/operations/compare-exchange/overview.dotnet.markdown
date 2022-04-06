@@ -6,8 +6,8 @@
 * **Compare-exchange** items are cluster-wide key/value pairs where the key is a unique identifier. 
 
 * Each compare-exchange item contains: 
-  * A key which is a unique string across the cluster  
-  * A value which can be any json value you choose  
+  * A key which is a unique string across the cluster.  
+  * A value which can be any json value you choose.  
   * Raft index which increments to enable comparison.  
     Any change to the value or metadata changes the Raft index.  
   * Metadata  
@@ -19,6 +19,8 @@
 
 * **To Ensure ACID Transactions** RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
   in cluster-wide transactions.  
+  * Cluster-wide transactions present a performance cost when compared to non-cluster-wide transactions. 
+    They prioritize consistency over performance to ensure ACIDity across the cluster.  
 
 
 **In this page:**  
@@ -38,32 +40,34 @@
 
 ### Why use compare-exchange items
 
-* Compare-exchange items can be used in various situations to protect or reserve a resource by checking changes in values.  
-  (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).
-  * If you create a compare-exchange key/value pair, you can decide what happens when the Raft index increments 
-    as a result of a change in the value.
-
 * Compare-exchange items can be used to coordinate work between threads, clients, nodes, or sessions that are 
   trying to modify a shared resource at the same time.  
+  * To save changes on a document, the session first checks if another session is currently locking that document.
+  * If it is available to modify, the session checks if the Raft index has changed since it loaded the document.  
+  * If the Raft index has indeed incremented, the session will need to re-load the document to write only on it's current version.
+  
+* You can use compare-exchange items in various situations to protect or reserve a resource by checking changes in values. 
+  (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).
+  * If you create a compare-exchange key/value pair, you can decide what actions to implement when the Raft index increments 
+    as a result of a change in the value.
+
+
+
+
 
 ---
 
-### How to use them to guarantee ACID transactions  
+### How compare-exchange items work when protecting shared documents 
 
-* Create or modify documents in a cluster-wide session to create [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards):  
-  * Atomic Guards are associated with a document ID across the cluster.  
-  * Whenever one session holds the cluster-wide Atomic Guard associated with a document, other sessions will be able to read the document, 
-    but they will not be able to modify it until the first session finishes.  
-  * The value in an atomic guard is `null` because instead of looking for changes in the value, 
-    it looks for changes in the associated document.
-  * Every time a document is modified, the compare-exchange Raft Index is incremented. This ensures that if, for example, 
-    a document is being read by node B while node A is writing on it 
-      * The Raft index will have changed and won't match when node B tries to write. 
-      * This will throw an exception. 
-      * Node B is forced to re-read and thus have an updated version of the document.  
-  * Cluster-wide transactions have a performance cost when compared to non-cluster-wide transactions, but they guarantee isolation.  
-  * You can disable Atomic Guards and manually maintain them via code.  See the [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
-    article to learn more.  
+  * Whenever one session holds a compare-exchange item associated with a document, other sessions can read the document 
+    but not modify it.  
+  * Every time a document is modified, the compare-exchange Raft Index is incremented.  
+    Let's imagine a scenareo where a document is being read by node B while it is locked by node A. 
+      * When Node B tries to write, the Raft index will have been changed as a response to node A's modification. 
+      * This will throw a concurrency exception. 
+      * Node B is forced to re-read and thus can only write on an updated version of the document.  
+  * To ensure [isolation](https://en.wikipedia.org/wiki/ACID#Isolation) in concurrent transactions, RavenDB automatically creates and maintains [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
+    in cluster-wide transactions.  
 
 ---
 
@@ -85,11 +89,12 @@
   is performed on the [document store](../../../client-api/what-is-a-document-store) level.  
   It is therefore not part of the session transactions.  
 
-* Even if written inside the session scope, a compare exchange operation will be executed regardless 
-  of whether the session `SaveChanges( )` succeeds or fails.  
+* Even if written inside the session scope, a compare exchange **operation** will be executed regardless 
+  of whether the session `SaveChanges( )` succeeds or fails. 
+  * This is not the case when using compare-exchange [session methods](../../../client-api/session/cluster-transaction)
 
 * Thus, upon a [session transaction failure](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching), 
-  if you had a successful compare-exchange operation inside the session block scope, 
+  if you had a successful compare-exchange operation inside the failed session block, 
   it will **not** be rolled back automatically.  
 
 {PANEL/}
