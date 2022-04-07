@@ -38,40 +38,48 @@
 
 {PANEL: Using Compare-Exchange Items}
 
-### Why use compare-exchange items
+#### Why use compare-exchange items
 
 * Compare-exchange items can be used to coordinate work between threads, clients, nodes, or sessions that are 
-  trying to modify a shared resource at the same time.  
-  * To save changes on a document, the session first checks if another session is currently locking that document.
-  * If it is available to modify, the session checks if the Raft index has changed since it loaded the document.  
-  * If the Raft index has indeed incremented, the session will need to re-load the document to write only on it's current version.
+  trying to modify a shared resource (such as a document) at the same time.  
+
   
 * You can use compare-exchange items in various situations to protect or reserve a resource by checking changes in values. 
   (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).
   * If you create a compare-exchange key/value pair, you can decide what actions to implement when the Raft index increments 
     as a result of a change in the value.
 
+---
 
+#### How compare-exchange items work when protecting shared documents 
 
+  
+* Every time a document in a cluster-wide session is modified, RavenDB automatically creates 
+  or uses an associated compare-exchange item called [Atomic Guard](../../../client-api/operations/compare-exchange/atomic-guards).  
+  * Whenever one session holds an Atomic Guard associated with a document, other sessions can read the document 
+    but not modify it. The session releases the item after the SaveChanges( ) succeeds on all of the session transactions.  
+    The item's Raft Index is incremented with every document modification that is saved.  
+  * To save changes on a document, the session first checks if another session is currently locking that document.  
+  * If it is available to modify, the session checks if the Raft index has changed since it loaded the document.  
+  * If the Raft index has indeed incremented, a `ConcurrencyException` will be thrown.  
+* Be sure that your business logic is written so that if a concurrency exception is thrown, it re-writes the transaction from the session.  
+  To ensure [atomicity](https://en.wikipedia.org/wiki/ACID#Atomicity) if even one session transaction fails, the entire [session will roll back](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching).  
+  The session will need to re-load all of the documents and apply the session logic again.
 
+    {INFO: }
+    **Performance cost of cluster-wide sessions**  
+    Cluster-wide transactions are more expensive than non-cluster-wide transactions.  
+    They prioritize consistency over performance to ensure ACIDity across the cluster.  
+
+    * One way to prevent concurrency issues without cluster-wide sessions is to ensure that one node is responsible for writing.  
+      * By default, one node is responsible for all reads and writes. You can configure [load balancing](../../../client-api/session/configuration/use-session-context-for-load-balancing)
+        to fine-tune the settings to your needs.  
+      * To distribute work, you can set different nodes to be responsible for different sets of data.  Learn more in the article [Scaling Distributed Work in RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/7-scaling-distributed-work-in-ravendb) 
+    {INFO/}
 
 ---
 
-### How compare-exchange items work when protecting shared documents 
-
-  * Whenever one session holds a compare-exchange item associated with a document, other sessions can read the document 
-    but not modify it.  
-  * Every time a document is modified, the compare-exchange Raft Index is incremented.  
-    Let's imagine a scenareo where a document is being read by node B while it is locked by node A. 
-      * When Node B tries to write, the Raft index will have been changed as a response to node A's modification. 
-      * This will throw a concurrency exception. 
-      * Node B is forced to re-read and thus can only write on an updated version of the document.  
-  * To ensure [isolation](https://en.wikipedia.org/wiki/ACID#Isolation) in concurrent transactions, RavenDB automatically creates and maintains [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
-    in cluster-wide transactions.  
-
----
-
-### How compare-exchange items are managed  
+#### How compare-exchange items are managed  
 
 * Compare exchange items are created and managed with any of the following approaches:
   * RavenDB creates and maintains [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) automatically in 
