@@ -7,10 +7,11 @@
 
 * Each compare-exchange item contains: 
   * A key which is a unique string across the cluster.  
-  * A value which can be any json value you choose.  
+  * A value which can be numbers, strings, arrays, or objects.  
+    Any value that can be represented as JSON is valid.
+  * Metadata  
   * Raft index which increments to enable comparison.  
     Any change to the value or metadata changes the Raft index.  
-  * Metadata  
 
 * Creating and modifying a compare-exchange item is an atomic, thread-safe [compare-and-swap](https://en.wikipedia.org/wiki/Compare-and-swap) interlocked 
   compare-exchange operation.
@@ -19,7 +20,7 @@
 
 * **To Ensure ACID Transactions** RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
   in cluster-wide transactions.  
-  * Cluster-wide transactions present a performance cost when compared to non-cluster-wide transactions. 
+  * Cluster-wide transactions present a [performance cost](../../../client-api/operations/compare-exchange/overview#performance-cost-of-cluster-wide-sessions) when compared to non-cluster-wide transactions. 
     They prioritize consistency over performance to ensure ACIDity across the cluster.  
 
 
@@ -40,42 +41,14 @@
 
 #### Why use compare-exchange items
 
-* Compare-exchange items can be used to coordinate work between threads, clients, nodes, or sessions that are 
+* Compare-exchange items can be used to coordinate work between sessions that are 
   trying to modify a shared resource (such as a document) at the same time.  
 
   
-* You can use compare-exchange items in various situations to protect or reserve a resource by checking changes in values. 
+* You can use compare-exchange items in various situations to protect or reserve a resource.  
   (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).
-  * If you create a compare-exchange key/value pair, you can decide what actions to implement when the Raft index increments 
-    as a result of a change in the value.
-
----
-
-#### How compare-exchange items work when protecting shared documents 
-
-  
-* Every time a document in a cluster-wide session is modified, RavenDB automatically creates 
-  or uses an associated compare-exchange item called [Atomic Guard](../../../client-api/operations/compare-exchange/atomic-guards).  
-  * Whenever one session holds an Atomic Guard associated with a document, other sessions can read the document 
-    but not modify it. The session releases the item after the SaveChanges( ) succeeds on all of the session transactions.  
-    The item's Raft Index is incremented with every document modification that is saved.  
-  * To save changes on a document, the session first checks if another session is currently locking that document.  
-  * If it is available to modify, the session checks if the Raft index has changed since it loaded the document.  
-  * If the Raft index has indeed incremented, a `ConcurrencyException` will be thrown.  
-* Be sure that your business logic is written so that if a concurrency exception is thrown, it re-writes the transaction from the session.  
-  To ensure [atomicity](https://en.wikipedia.org/wiki/ACID#Atomicity) if even one session transaction fails, the entire [session will roll back](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching).  
-  The session will need to re-load all of the documents and apply the session logic again.
-
-    {INFO: }
-    **Performance cost of cluster-wide sessions**  
-    Cluster-wide transactions are more expensive than non-cluster-wide transactions.  
-    They prioritize consistency over performance to ensure ACIDity across the cluster.  
-
-    * One way to prevent concurrency issues without cluster-wide sessions is to ensure that one node is responsible for writing.  
-      * By default, one node is responsible for all reads and writes. You can configure [load balancing](../../../client-api/session/configuration/use-session-context-for-load-balancing)
-        to fine-tune the settings to your needs.  
-      * To distribute work, you can set different nodes to be responsible for different sets of data.  Learn more in the article [Scaling Distributed Work in RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/7-scaling-distributed-work-in-ravendb) 
-    {INFO/}
+  * If you create a compare-exchange key/value pair, you can decide what actions to implement when the Raft index increments. 
+    The Raft index increments as a result of a change in the compare-exchange value or metadata.  
 
 ---
 
@@ -87,6 +60,36 @@
   * Via [Client API Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)  
   * In [Cluster-Wide Sessions](../../../client-api/session/cluster-transaction)
   * Using [Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
+
+---
+
+#### How Atomic Guard items work when protecting shared documents in cluster-wide sessions
+
+  
+* Every time a document in a cluster-wide session is modified, RavenDB automatically creates 
+  or uses an associated compare-exchange item called [Atomic Guard](../../../client-api/operations/compare-exchange/atomic-guards).  
+  * Whenever one session holds an Atomic Guard associated with a document, other sessions can read the document 
+    but not modify it. The session releases the Atomic Guard after the SaveChanges( ) succeeds on all of the session transactions.  
+    An Atomic Guard's Raft Index is incremented with every document modification that is saved.  
+  * To save changes on a document, the session first checks if another session is currently locking that document.  
+  * If it is available to modify, the session checks if the Raft index has incremented since it loaded the document.  
+  * A `ConcurrencyException` will be thrown if:
+      * The Raft index has incremented.  
+      * The Atomic Guard is locking the document.  
+* To ensure [atomicity](https://en.wikipedia.org/wiki/ACID#Atomicity) if even one session transaction fails, the entire [session will roll back](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching).
+  Be sure that your business logic is written so that **if a concurrency exception is thrown**, your code will re-execute the entire session.  
+
+
+{INFO: }
+####Performance cost of cluster-wide sessions  
+Cluster-wide transactions are more expensive than non-cluster-wide transactions.  
+They prioritize consistency over performance to ensure ACIDity across the cluster.  
+
+* One way to prevent concurrency issues without cluster-wide sessions is to ensure that one node is responsible for writing.  
+    * By default, one node is responsible for all reads and writes. You can configure [load balancing](../../../client-api/session/configuration/use-session-context-for-load-balancing)
+    to fine-tune the settings to your needs.  
+    * To distribute work, you can set different nodes to be responsible for different sets of data.  Learn more in the article [Scaling Distributed Work in RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/7-scaling-distributed-work-in-ravendb) 
+{INFO/}
 
 {PANEL/}
 

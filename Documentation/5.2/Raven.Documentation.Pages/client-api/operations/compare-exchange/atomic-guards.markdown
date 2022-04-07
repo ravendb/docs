@@ -9,7 +9,7 @@
   [ACID](../../../server/clustering/cluster-transactions#cluster-transaction-properties) 
   transactions in cluster-wide sessions.  
 
-* Atomic Guards coordinate work between sessions or nodes that try to write on a document at the same time. 
+* Atomic Guards coordinate work between sessions that try to write on a document at the same time. 
   Saving a document is prevented if another session is currently holding that document's related 'key'.
   When finished, the session releases the key.  
 
