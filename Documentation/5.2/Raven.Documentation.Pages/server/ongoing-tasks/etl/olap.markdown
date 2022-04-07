@@ -13,7 +13,7 @@ are especially useful for conducting OLAP. These destinations currently include:
   * File Transfer Protocol
   * Local storage
 
-* The data is encoded in the [Apache Parquet format](https://parquet.apache.org/documentation/latest/), 
+* The data is encoded in the [Apache Parquet format](https://parquet.apache.org/docs), 
 an alternative to CSV that is much faster to query. Unlike CSV, Parquet groups the data according to its 
 column (by field) instead of by row (by document).  
 
