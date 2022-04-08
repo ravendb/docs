@@ -76,7 +76,8 @@
   * A `ConcurrencyException` will be thrown if:
       * The Raft index has incremented.  
       * The Atomic Guard is locking the document.  
-* To ensure [atomicity](https://en.wikipedia.org/wiki/ACID#Atomicity) if even one session transaction fails, the entire [session will roll back](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching).
+* **If a ConcurrencyException is thrown**:  
+  To ensure [atomicity](https://en.wikipedia.org/wiki/ACID#Atomicity) if even one session transaction fails, the entire [session will roll back](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching).
   Be sure that your business logic is written so that **if a concurrency exception is thrown**, your code will re-execute the entire session.  
 
 
