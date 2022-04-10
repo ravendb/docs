@@ -359,10 +359,10 @@ namespace Raven.Documentation.Samples.Indexes
                 {
                     #region multi-map-reduce-index-query
                     IList<Cities_Details.IndexEntry> commerceDetails = session
-                    .Query<Cities_Details.IndexEntry, Cities_Details>()
-                    .Where(doc => doc.Companies > 5)
-                    .OrderBy(x => x.City)
-                    .ToList();
+                        .Query<Cities_Details.IndexEntry, Cities_Details>()
+                        .Where(doc => doc.Companies > 5)
+                        .OrderBy(x => x.City)
+                        .ToList();
                     #endregion
                 }
             }
