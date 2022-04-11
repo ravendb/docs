@@ -3,16 +3,22 @@
 
 {NOTE: }
 
-* The **Revisions** feature will create a revision (snapshot) of a document 
-  every time the document is updated and upon its deletion.  
-  Once revisions are created for a document, you can observe them and revert 
-  the document's live version to any of its past revisions.  
+* The **Revisions** feature creates a revision (snapshot) of a document every 
+  time the document is updated and upon its deletion.  
+  The trail of revisions created for a document can be observed to track 
+  the document's history, and the currently live version of the document 
+  can be reverted to any of its past revisions.  
 * Tracking document revisions allows you, for example, to check how an employee's 
   contract has changed over time, revert a single corrupted document without restoring 
   a backup, or conduct a full-scale audit.  
-* Revisions can be enabled for **all collections** or for **specific collections**.  
-* Old revisions can be **automatically purged** to free storage space.  
-* Revisions can be configured using API methods or via Studio.  
+* You can create Revisions **configurations** that apply to **all** or **specific** 
+  collections.  
+  A Revisions configuration can -  
+   * **Enable** or **disable** the creation of revisions.  
+   * **Limit** the number of revisions that are being kept.  
+     RavenDB will **automatically purge** revisions by the limits you define, 
+     to free storage space and keep only relevant revisions.  
+* Revisions can be configured and managed using API methods or via Studio.  
 
 * In this page:  
   * [Configuration](../../document-extensions/revisions/overview#configuration)  
@@ -27,53 +33,59 @@
 
 ---
 
-{PANEL: Configuration}
-
-### Configurations Scope
+{PANEL: Revisions Configurations}
 
 By default, revisions are created for **all documents** and existing revisions 
 are **never purged**.  
-You can create **Revision Configurations** to change these defaults for 
-all collections and for a selected collection.  
 
-* You can change the default behavior by defining a **default configuration** 
+* You can change this default behavior by defining a **default configuration** 
   of your own.  
-  Your default configuration will apply to documents of all the collections 
+  The default configuration will apply to documents of all the collections 
   that a collection-specific configuration hasn't been set for.  
 
 * You can also define **collection-specific configurations**.  
   A collection-specific configuration overrides the default configuration 
   for the collection it is defined for.  
 
+* Configuration properties include:  
+   * Enabling/Disabling Revisions  
+     **Enabling** Revisions allows the creation of new revisions and the purging of existing revisions.  
+     **Disabling** Revisions prevents the creation of new revisions and the purging of existing revisions.  
+   * Limits to the number of revisions allowed per document.  
+     The number of revisions per document can be limited by Number or Age.  
+     Revisions that breech the limits you set will be automatically [purged](../../document-extensions/revisions/overview#purging) 
+     by RavenDB when the configuration is implemented.  
+   * You can read more [here](../../document-extensions/revisions/client-api/operations/configure-revisions#revisionscollectionconfiguration) 
+     about available configuration options and how to apply them.  
+
 ---
 
-### Configurations Contents
+### The Execution of Revisions Configurations
 
-A configuration **Enables** or **Disables** Revisions for the collection/s 
-it is defined for, and determines whether and how existing revisions will be 
-**Purged** (removed to free storage space).  
+Defining a Revisions configuration does **not** immediately triggers its execution.  
 
-Learn [here](../../document-extensions/revisions/client-api/operations/configure-revisions#revisionscollectionconfiguration) 
-what configuration settings are available.  
+A configuration is executed:  
 
----
+* When documents are modified.  
+  When a document is modified the Revisions configuration that applies 
+  to its collection is examined.  
+  If the Revisions feature is enabled for the document's collection:  
+   * A revision of the document will be created.  
+   * Revisions that need to be purged will be deleted.  
 
-### Purging
-
-Defining a purging policy in a Revisions configuration does **not** 
-immediately purges revisions. This is because the purging policy 
-may apply to numerous revisions across the database, and purging them 
-all at once may require considerable resources.  
-
-The actual purging can be initiated in two ways:  
-
-* When the document the revisions belong to is modified, the configuration 
-  that applies to this collection will be executed and revisions that should 
-  be purged by this configuration will be deleted.  
-
-* When the [Enforce Configuration]() operation is activated, all revision 
-  configurations will be executed and any revision that should be purged 
-  by the configuration that applies to its collection will be deleted.  
+* When [Enforce Configuration]() is applied.  
+  Applying this operation triggers the examination of the default 
+  configuration and all collection-specific configurations, 
+  and the immediate implementation of them all.  
+  {WARNING: }
+  
+  * All the revisions that pend purging will be permanently deleted, 
+    make sure your configurations do not trigger the removal of needed 
+    revisions.  
+  * A sizeable database may contain numerous revisions pending purging, 
+    and enforcing configurations may require substantial server resources.  
+    Time this operation accordingly.  
+  {WARNING/}
 
 ---
 
