@@ -1,15 +1,35 @@
 # Indexes: Map-Reduce Indexes
+---
 
-Map-Reduce indexes allow you to perform complex aggregations of data. The first stage, called the map, runs over documents and extracts portions of data according to the defined mapping function(s).
-Upon completion of the first phase, reduction is applied to the map results and the final outcome is produced.
+{NOTE: }
 
-The idea behind map-reduce indexing is that aggregation queries using such indexes are very cheap. The aggregation is performed only once and the results are stored inside the index.
-Once new data comes into the database or existing documents are modified, the map-reduce index will keep the aggregation results up-to-date. The aggregations are never done during
-querying to avoid expensive calculations that could result in severe performance degradation. When you make the query, RavenDB immediately returns the matching results directly from the index.
+* **Map-Reduce indexes** allow you to perform complex ***data aggregation*** that can be queried on with very little cost, 
+  regardless of the data size.  
 
-For a more in-depth look at how map reduce works, you can read this post: [RavenDB 4.0 Unsung Heroes: Map/reduce](https://ayende.com/blog/179938/ravendb-4-0-unsung-heroes-map-reduce).
+* To expedite queries and prevent performance degradation during queries, the aggregation is done during the indexing phase, _not_ at query time.  
 
-{PANEL:Creating}
+* Once new data comes into the database, or existing documents are modified,  
+  the Map-Reduce index will re-calculate the aggregated data  
+  so that the aggregation results are always available and up-to-date !  
+
+* The aggregation computation is done in two separate consecutive actions: the `Map` and the `Reduce`.  
+  * **The Map stage:**  
+    This first stage runs the defined Map function(s) on each document, indexing the specified fields.  
+  * **The Reduce stage:**  
+    This second stage groups the specified requested fields that were indexed in the Map stage,  
+    and then runs the Reduce function to get a final aggregation result per field value.  
+
+For a more in-depth look at how map-reduce works, you can read this post: [RavenDB 4.0 Unsung Heroes: Map/reduce](https://ayende.com/blog/179938/ravendb-4-0-unsung-heroes-map-reduce).
+
+In this page: 
+
+* [Creating Map Reduce Indexes](../indexes/map-reduce-indexes#creating-map-reduce-indexes)
+* [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)
+* [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents)
+
+{NOTE/}
+
+{PANEL:Creating Map Reduce Indexes}
 
 When it comes to index creation, the only difference between simple indexes and the map-reduce ones is an additional reduce function defined in index definition. 
 To deploy an index we need to create a definition and deploy it using one of the ways described in the [creating and deploying](../indexes/creating-and-deploying) article.
@@ -76,6 +96,31 @@ and send the query:
 from 'Product/Sales'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+{PANEL/}
+
+{PANEL:Creating Multi-Map-Reduce Indexes}
+
+A **Multi-Map-Reduce** index allows aggregating (or 'reducing') data from several collections.  
+
+They can be created and edited via [Studio](../studio/database/indexes/create-map-reduce-index#multi-map-reduce), or with API as shown below.  
+
+In the following code sample, we define the map phase on collections 'Employees', 'Companies', and 'Suppliers'.  
+We then define the reduce phase.  
+
+See samples about [counting](../indexes/map-reduce-indexes#example-i---count), 
+[calculating average](../indexes/map-reduce-indexes#example-ii---average), and a more advanced [calculation](../indexes/map-reduce-indexes#example-iii---calculations).  
+
+
+{CODE:csharp multi_map_reduce_LINQ@Indexes\MapReduceIndexes.cs /}
+
+A query on the index:
+
+{CODE:csharp multi-map-reduce-index-query@Indexes\MapReduceIndexes.cs /}
+
+{NOTE: }
+You can see this sample described in detail in [Inside RavenDB - Multi-Map-Reduce Indexes](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/11-mapreduce-and-aggregations-in-ravendb#multimapreduce-indexes).
+{NOTE/}
 
 {PANEL/}
 
@@ -262,8 +307,8 @@ from the relevant collection before creating the index or output the results to 
 
 ### Indexes
 
-- [Indexing Related Documents](../indexes/indexing-related-documents)
-- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+- [Map Indexes](../indexes/map-indexes)
+- [Multi-Map Indexes](../indexes/multi-map-indexes)
 
 ### Querying
 
@@ -271,4 +316,17 @@ from the relevant collection before creating the index or output the results to 
 
 ### Studio
 
-- [Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index)
+- [Indexes: Overview](../studio/database/indexes/indexes-overview)
+- [Index List View](../studio/database/indexes/indexes-list-view)
+- [Create Map Index](../studio/database/indexes/create-map-index)
+- [Create Multi-Map Index](../studio/database/indexes/create-multi-map-index)
+- [Map-Reduce Visualizer](../studio/database/indexes/map-reduce-visualizer)
+
+<br/>
+
+## Code Walkthrough
+
+- [Map Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-index)
+- [Map-Reduce Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-reduce-index)
+- [Multi-Map-Reduce-Index](https://demo.ravendb.net/demos/csharp/multi-map-indexes/multi-map-reduce-index#)
+

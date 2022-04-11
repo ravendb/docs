@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Indexes.MapReduce;
@@ -300,8 +299,9 @@ namespace Raven.Documentation.Samples.Indexes
 
             public Cities_Details()
             {
-                AddMap<Employee>(emps =>
-                    from e in emps
+                // Map employees collection.
+                AddMap<Employee>(employees =>
+                    from e in employees
                     select new IndexEntry
                     {
                         City = e.Address.City,
@@ -311,6 +311,7 @@ namespace Raven.Documentation.Samples.Indexes
                     }
                 );
 
+                // Map companies collection.
                 AddMap<Company>(companies =>
                     from c in companies
                     select new IndexEntry
@@ -322,6 +323,7 @@ namespace Raven.Documentation.Samples.Indexes
                     }
                 );
 
+                // Map suppliers collection.
                 AddMap<Supplier>(suppliers =>
                     from s in suppliers
                     select new IndexEntry
@@ -333,6 +335,7 @@ namespace Raven.Documentation.Samples.Indexes
                     }
                 );
 
+                // Apply reduction/aggregation on multi-map results.
                 Reduce = results =>
                     from result in results
                     group result by result.City
@@ -346,8 +349,8 @@ namespace Raven.Documentation.Samples.Indexes
                     };
             }
         }
+        #endregion
     }
-    #endregion
 
     public class MultiMapReduceIndexQuery
     {
@@ -358,6 +361,7 @@ namespace Raven.Documentation.Samples.Indexes
                 using (var session = store.OpenSession())
                 {
                     #region multi-map-reduce-index-query
+                    // Queries the index "Cities_Details" - filters "Companies" results and orders by "City".
                     IList<Cities_Details.IndexEntry> commerceDetails = session
                         .Query<Cities_Details.IndexEntry, Cities_Details>()
                         .Where(doc => doc.Companies > 5)

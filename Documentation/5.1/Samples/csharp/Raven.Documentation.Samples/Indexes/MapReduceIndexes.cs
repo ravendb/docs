@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Indexes.MapReduce;
 using Raven.Documentation.Samples.Orders;
+using static Raven.Documentation.Samples.Indexes.MultiMapReduceIndex;
 
 
 namespace Raven.Documentation.Samples.Indexes
@@ -181,6 +181,94 @@ namespace Raven.Documentation.Samples.Indexes
                     IList<Product_Sales.Result> results = session
                         .Advanced
                         .DocumentQuery<Product_Sales.Result, Product_Sales>()
+                        .ToList();
+                    #endregion
+                }
+            }
+        }
+    }
+
+    public class MultiMapReduceIndex
+    {
+        #region multi_map_reduce_LINQ
+        public class Cities_Details :
+          AbstractMultiMapIndexCreationTask<Cities_Details.IndexEntry>
+        {
+            public class IndexEntry
+            {
+                public string City;
+                public int Companies, Employees, Suppliers;
+            }
+
+            public Cities_Details()
+            {
+                // Map employees collection.
+                AddMap<Employee>(employees =>
+                    from e in employees
+                    select new IndexEntry
+                    {
+                        City = e.Address.City,
+                        Companies = 0,
+                        Suppliers = 0,
+                        Employees = 1
+                    }
+                );
+
+                // Map companies collection.
+                AddMap<Company>(companies =>
+                    from c in companies
+                    select new IndexEntry
+                    {
+                        City = c.Address.City,
+                        Companies = 1,
+                        Suppliers = 0,
+                        Employees = 0
+                    }
+                );
+
+                // Map suppliers collection.
+                AddMap<Supplier>(suppliers =>
+                    from s in suppliers
+                    select new IndexEntry
+                    {
+                        City = s.Address.City,
+                        Companies = 0,
+                        Suppliers = 1,
+                        Employees = 0
+                    }
+                );
+
+                // Apply reduction/aggregation on multi-map results.
+                Reduce = results =>
+                    from result in results
+                    group result by result.City
+                    into g
+                    select new IndexEntry
+                    {
+                        City = g.Key,
+                        Companies = g.Sum(x => x.Companies),
+                        Suppliers = g.Sum(x => x.Suppliers),
+                        Employees = g.Sum(x => x.Employees)
+                    };
+            }
+        }
+        #endregion
+    }
+
+    public class MultiMapReduceIndexQuery
+    {
+        public MultiMapReduceIndexQuery()
+        {
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region multi-map-reduce-index-query
+                    // Queries the index "Cities_Details" - filters "Companies" results and orders by "City".
+                    IList<Cities_Details.IndexEntry> commerceDetails = session
+                        .Query<Cities_Details.IndexEntry, Cities_Details>()
+                        .Where(doc => doc.Companies > 5)
+                        .OrderBy(x => x.City)
                         .ToList();
                     #endregion
                 }

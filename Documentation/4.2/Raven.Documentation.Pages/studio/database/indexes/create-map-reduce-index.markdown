@@ -6,7 +6,7 @@
 * **Map-Reduce indexes** allow you to perform complex ***data aggregation*** that can be queried on with very little cost, 
   regardless of the data size.  
 
-* To expediate queries, the aggregation is done during the indexing phase, _not_ at query time.  
+*  To expedite queries and prevent performance degradation during queries, the aggregation is done during the indexing phase, _not_ at query time.  
 
 * Once new data comes into the database, or existing documents are modified,  
   the Map-Reduce index will re-calculate the aggregated data  
@@ -225,3 +225,11 @@ pattern determines which output documents will be included in each reference doc
 - [Create Map Index](../../../studio/database/indexes/create-map-index)
 - [Create Multi-Map Index](../../../studio/database/indexes/create-multi-map-index)
 - [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer)
+
+<br/>
+
+## Code Walkthrough
+
+- [Multi-Map-Reduce-Index](https://demo.ravendb.net/demos/csharp/multi-map-indexes/multi-map-reduce-index#)
+- [Map Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-index)
+- [Map-Reduce Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-reduce-index)

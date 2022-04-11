@@ -1,4 +1,7 @@
 # Indexes: Map-Reduce Indexes
+---
+
+{NOTE: }
 
 * **Map-Reduce indexes** allow you to perform complex ***data aggregation*** that can be queried on with very little cost, 
   regardless of the data size.  
@@ -24,7 +27,9 @@ In this page:
 * [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)
 * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents)
 
-{PANEL:Creating}
+{NOTE/}
+
+{PANEL:Creating Map Reduce Indexes}
 
 When it comes to index creation, the only difference between simple indexes and the map-reduce ones is an additional reduce function defined in index definition. 
 To deploy an index we need to create a definition and deploy it using one of the ways described in the [creating and deploying](../indexes/creating-and-deploying) article.
@@ -96,20 +101,25 @@ from 'Product/Sales'
 
 {PANEL:Creating Multi-Map-Reduce Indexes}
 
-A **Multi-Map-Reduce** index allows aggregating data from several collections.  
+A **Multi-Map-Reduce** index allows aggregating (or 'reducing') data from several collections.  
 
-They can be created and edited via [Studio](../studio/database/indexes/create-map-reduce-index) or with API, as shown below.  
+They can be created and edited via [Studio](../studio/database/indexes/create-map-reduce-index#multi-map-reduce), or with API as shown below.  
 
 In the following code sample, we define the map phase on collections 'Employees', 'Companies', and 'Suppliers'.  
 We then define the reduce phase.  
 
-You can see this sample described in [Inside RavenDB - Multi-Map-Reduce Indexes](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/11-mapreduce-and-aggregations-in-ravendb#multimapreduce-indexes).
+See samples about [counting](../indexes/map-reduce-indexes#example-i---count), 
+[calculating average](../indexes/map-reduce-indexes#example-ii---average), and a more advanced [calculation](../indexes/map-reduce-indexes#example-iii---calculations).  
 
 {CODE:csharp multi_map_reduce_LINQ@Indexes\MapReduceIndexes.cs /}
 
-Now define a session query.
+A query on the index:
 
 {CODE:csharp multi-map-reduce-index-query@Indexes\MapReduceIndexes.cs /}
+
+{NOTE: }
+You can see this sample described in detail in [Inside RavenDB - Multi-Map-Reduce Indexes](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/11-mapreduce-and-aggregations-in-ravendb#multimapreduce-indexes).
+{NOTE/}
 
 {PANEL/}
 
@@ -183,26 +193,26 @@ Those flags are used internally by the database to filter out artificial documen
 
 ### Indexes
 
-### Indexes
-- [Map Indexes](../../../indexes/map-indexes)
-- [Multi-Map Indexes](../../../indexes/multi-map-indexes)
-- [Map-Reduce Indexes](../../../indexes/map-reduce-indexes)
+- [Map Indexes](../indexes/map-indexes)
+- [Multi-Map Indexes](../indexes/multi-map-indexes)
 
 ### Querying
 
 - [Basics](../indexes/querying/basics)
 
 ### Studio
-- [Indexes: Overview](../../../studio/database/indexes/indexes-overview)
-- [Index List View](../../../studio/database/indexes/indexes-list-view)
-- [Create Map Index](../../../studio/database/indexes/create-map-index)
-- [Create Multi-Map Index](../../../studio/database/indexes/create-multi-map-index)
-- [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer)
+
+- [Indexes: Overview](../studio/database/indexes/indexes-overview)
+- [Index List View](../studio/database/indexes/indexes-list-view)
+- [Create Map Index](../studio/database/indexes/create-map-index)
+- [Create Multi-Map Index](../studio/database/indexes/create-multi-map-index)
+- [Map-Reduce Visualizer](../studio/database/indexes/map-reduce-visualizer)
 
 <br/>
 
 ## Code Walkthrough
 
-- [Multi-Map-Reduce-Index](https://demo.ravendb.net/demos/csharp/multi-map-indexes/multi-map-reduce-index#)
 - [Map Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-index)
 - [Map-Reduce Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-reduce-index)
+- [Multi-Map-Reduce-Index](https://demo.ravendb.net/demos/csharp/multi-map-indexes/multi-map-reduce-index#)
+

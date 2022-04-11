@@ -1,10 +1,20 @@
 # Indexes: Multi-Map Indexes
+---
 
-Multi-Map indexes allow you to index data from multiple collections e.g. polymorphic data (check the [example](../indexes/indexing-polymorphic-data)) 
-or any common data between types.  
+{NOTE: }
 
-Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes).  
+* Multi-Map indexes allow you to index data from multiple collections e.g. polymorphic data (check the [example](../indexes/indexing-polymorphic-data)) 
+  or any common data between types.  
 
+* Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes).  
+
+In this page:
+
+* [AddMap & AddMapForAll](../indexes/multi-map-indexes#addmap--addmapforall)
+* [Indexing Polymorphic Data](../indexes/multi-map-indexes#indexing-polymorphic-data)
+* [Searching Across Multiple Collections](../indexes/multi-map-indexes#searching-across-multiple-collections)
+
+{NOTE/}
 
 ## AddMap & AddMapForAll
 
@@ -63,3 +73,12 @@ and query it using:
 
 ### Studio
 - [Create Multi-Map Index](../studio/database/indexes/create-multi-map-index)
+
+<br/>
+
+## Code Walkthrough
+
+- [Multi-Map-Index: Basic](https://demo.ravendb.net/demos/csharp/multi-map-indexes/multi-map-index-basic)
+- [Multi-Map-Index: Customized Fields](https://demo.ravendb.net/demos/csharp/multi-map-indexes/multi-map-index-customized-fields)
+- [Map Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-index)
+- [Multi-Map-Reduce Index](https://demo.ravendb.net/demos/csharp/multi-map-indexes/multi-map-reduce-index)
