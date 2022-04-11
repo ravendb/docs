@@ -51,12 +51,13 @@ public class RevisionsCollectionConfiguration
 }
 {CODE-BLOCK/}
 
-| Configuration Option | Description | Default |
-| - | - | - |
-| **MinimumRevisionsToKeep** | The minimum number of revisions to keep per document | `null` - unlimited |
-| **MinimumRevisionAgeToKeep** | The minimum amount of time to keep each revision. [Format of `TimeSpan`](https://docs.microsoft.com/en-us/dotnet/api/system.timespan). | `null` - unlimited |
-| **Disabled** | Indicates whether to completely disable revisions for documents in this collection | `false` |
-| **PurgeOnDelete** | When a document is deleted, this indicates whether all of its revisions should be deleted as well | `false` |
+| Configuration Option | Type | Description | Default |
+| - | - | - | - |
+| **MinimumRevisionsToKeep** | `long` | The number of revisions to keep per document. <br> E.g. if `MinimumRevisionsToKeep` is set to 5 revisions 6 and on will be purged. <br> set to `null` to keep revisions with no number limit | `null` |
+| **MinimumRevisionAgeToKeep** | `TimeSpan` <br> [`TimeSpan` format](https://docs.microsoft.com/en-us/dotnet/api/system.timespan) | The time span for which revisions should be kept. <br> E.g. if `MinimumRevisionAgeToKeep` is set to 1 month, revisions older than a month will be purged. <br> set to `null` to keep revisions with no time span limit | `null` |
+| **Disabled** | `bool` | When `true`, the creation of revisions is disabled for documents of this collection | `false` |
+| **PurgeOnDelete** | `bool` | When `true`, deleting a document will delete all its revisions as well | `false` |
+| **MaximumRevisionsToDeleteUponDocumentUpdate ** | `long` | The maximum number of revisions to delete upon document update. <br> set to `null` for no maximum limit | `null` |
 
 A revision is only deleted if both the `MinimumRevisionsToKeep` for that document is exceeded, **and** the revision is older 
 than the `MinimumRevisionAgeToKeep` limit. The oldest revisions are deleted first.  

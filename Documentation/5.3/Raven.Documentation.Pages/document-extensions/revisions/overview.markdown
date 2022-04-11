@@ -5,15 +5,13 @@
 
 * The **Revisions** feature will create a revision (snapshot) of a document 
   every time the document is updated and upon its deletion.  
-  You will then be able to browse the trail of revisions created for the document, 
-  and revert the currently live document to any of its past revisions.  
-* Revisions can be enabled for documents of all collections, or for specific collections.  
+  Once revisions are created for a document, you can observe them and revert 
+  the document's live version to any of its past revisions.  
 * Tracking document revisions allows you, for example, to check how an employee's 
   contract has changed over time, revert a single corrupted document without restoring 
   a backup, or conduct a full-scale audit.  
-* You can keep Revisions storage usage at bay by limiting the number and age 
-  of revisions that RavenDB keeps.  
-  Revisions that exceed the set limits will be automatically purged.  
+* Revisions can be enabled for **all collections** or for **specific collections**.  
+* Old revisions can be **automatically purged** to free storage space.  
 * Revisions can be configured using API methods or via Studio.  
 
 * In this page:  
@@ -31,38 +29,75 @@
 
 {PANEL: Configuration}
 
-By default, revisions are created for **all documents** and existing revisions are **never purged**.  
+### Configurations Scope
 
-* You can change the default behavior by creating a default configuration of your own.  
-  The default configuration applies to all the collections that a collection-specific 
-  configuration hasn't been defined for.  
-* You can also define collection-specific configurations that override the default 
-  configuration for given collection.  
-* Revisions configurations can define:  
-   * Whether the Revisions feature is **Enabled** or **Disabled**  
-   * Whether documents' revisions would be purged when the documents are deleted.  
-   * Whether to **Limit** the number of revisions that are kept for a document.  
+By default, revisions are created for **all documents** and existing revisions 
+are **never purged**.  
+You can create **Revision Configurations** to change these defaults for 
+all collections and for a selected collection.  
 
----
+* You can change the default behavior by defining a **default configuration** 
+  of your own.  
+  Your default configuration will apply to documents of all the collections 
+  that a collection-specific configuration hasn't been set for.  
 
-### Configuring Revisions Using Studio
-
-![Configuring Revisions Using Studio](images/configure-revisions.png "Configuring Revisions Using Studio")
-
-{INFO: }
-Learn more about configuring Revisions via Studio [here]().  
-{INFO/}
+* You can also define **collection-specific configurations**.  
+  A collection-specific configuration overrides the default configuration 
+  for the collection it is defined for.  
 
 ---
 
-### Configuring Revisions Using the Client API
+### Configurations Contents
 
-| Configuration option | Description |
-| - | - |
-| **PurgeOnDelete** | Configure whether to delete the revisions upon document delete or create a delete marker instead. Default: false. |
-| **MinimumRevisionsToKeep** | Configure the minimum number of revisions to keep. Default: none. |
-| **MinimumRevisionAgeToKeep** | Configure a minimum retention time before the revisions can be expired. Default: none. |
-| **Disabled** | If true, disable the revisions feature for this configuration (default or specific collection). Default: false. |
+A configuration **Enables** or **Disables** Revisions for the collection/s 
+it is defined for, and determines whether and how existing revisions will be 
+**Purged** (removed to free storage space).  
+
+Learn [here](../../document-extensions/revisions/client-api/operations/configure-revisions#revisionscollectionconfiguration) 
+what configuration settings are available.  
+
+---
+
+### Purging
+
+Defining a purging policy in a Revisions configuration does **not** 
+immediately purges revisions. This is because the purging policy 
+may apply to numerous revisions across the database, and purging them 
+all at once may require considerable resources.  
+
+The actual purging can be initiated in two ways:  
+
+* When the document the revisions belong to is modified, the configuration 
+  that applies to this collection will be executed and revisions that should 
+  be purged by this configuration will be deleted.  
+
+* When the [Enforce Configuration]() operation is activated, all revision 
+  configurations will be executed and any revision that should be purged 
+  by the configuration that applies to its collection will be deleted.  
+
+---
+
+### Configuring and Using Revisions
+
+#### Configuring and managing revisions using Studio
+
+Revisions settings can be found in two Studio views:  
+
+* In the Documents View [Revisions Tab](../../studio/database/document-extensions/revisions)  
+  Use this view to observe and manage the revisions created for each document.  
+* In the Studio Settings [Document Revisions](../../studio/database/settings/document-revisions) page  
+  Use this page to create and manage revision configurations.  
+
+#### Configuring and managing revisions using the client API
+
+* Revisions Store Operations:  
+  [Creating configurations](../../document-extensions/revisions/client-api/operations/configure-revisions)  
+  [Getting and Counting Revisions](../../document-extensions/revisions/client-api/operations/get-revisions)  
+
+* Revisions Session methods:  
+  [Loading revisions](../../document-extensions/revisions/client-api/session/loading)  
+  [Counting Revisions](../../document-extensions/revisions/client-api/session/counting)  
+  [Including revisions](../../document-extensions/revisions/client-api/session/including)  
 
 {CODE configuration@DocumentExtensions\Revisions\Revisions.cs /}
 

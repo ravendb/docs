@@ -14,5 +14,11 @@
     "Path": "/client-api",
     "Name": "Client API",
     "Mappings": []
+  },
+  {
+    "Path": "revisions-and-other-features.markdown",
+    "Name": "Revisions and Other Features",
+    "DiscussionId": "68e60b2c-83a2-42dd-b464-9deb18c90e7a",
+    "Mappings": []
   }
 ]
