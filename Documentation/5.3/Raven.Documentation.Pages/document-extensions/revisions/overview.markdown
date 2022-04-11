@@ -78,12 +78,12 @@ A configuration is executed:
   configuration and all collection-specific configurations, 
   and the immediate implementation of them all.  
   {WARNING: }
+  All the revisions that pend purging will be permanently deleted.  
   
-  * All the revisions that pend purging will be permanently deleted, 
-    make sure your configurations do not trigger the removal of needed 
-    revisions.  
+  * Make sure your configurations do not trigger the removal of revisions 
+    you may need.  
   * A sizeable database may contain numerous revisions pending purging, 
-    and enforcing configurations may require substantial server resources.  
+    and purging then all at once may require substantial server resources.  
     Time this operation accordingly.  
   {WARNING/}
 
@@ -91,25 +91,21 @@ A configuration is executed:
 
 ### Configuring and Using Revisions
 
-#### Configuring and managing revisions using Studio
+* **Configuring and managing revisions using Studio**  
+  Revisions settings can be found in two Studio views:  
+   * The Documents View [Revisions Tab](../../studio/database/document-extensions/revisions)  
+     Use this view to observe and manage the revisions created for each document.  
+   * The Studio Settings [Document Revisions](../../studio/database/settings/document-revisions) page  
+     Use this page to create and manage revision configurations.  
 
-Revisions settings can be found in two Studio views:  
-
-* In the Documents View [Revisions Tab](../../studio/database/document-extensions/revisions)  
-  Use this view to observe and manage the revisions created for each document.  
-* In the Studio Settings [Document Revisions](../../studio/database/settings/document-revisions) page  
-  Use this page to create and manage revision configurations.  
-
-#### Configuring and managing revisions using the client API
-
-* Revisions Store Operations:  
-  [Creating configurations](../../document-extensions/revisions/client-api/operations/configure-revisions)  
-  [Getting and Counting Revisions](../../document-extensions/revisions/client-api/operations/get-revisions)  
-
-* Revisions Session methods:  
-  [Loading revisions](../../document-extensions/revisions/client-api/session/loading)  
-  [Counting Revisions](../../document-extensions/revisions/client-api/session/counting)  
-  [Including revisions](../../document-extensions/revisions/client-api/session/including)  
+* **Configuring and managing revisions using the client API**  
+   * Revisions Store Operations:  
+     [Creating configurations](../../document-extensions/revisions/client-api/operations/configure-revisions)  
+     [Getting and Counting Revisions](../../document-extensions/revisions/client-api/operations/get-revisions)  
+   * Revisions Session methods:  
+     [Loading revisions](../../document-extensions/revisions/client-api/session/loading)  
+     [Counting Revisions](../../document-extensions/revisions/client-api/session/counting)  
+     [Including revisions](../../document-extensions/revisions/client-api/session/including)  
 
 {CODE configuration@DocumentExtensions\Revisions\Revisions.cs /}
 
