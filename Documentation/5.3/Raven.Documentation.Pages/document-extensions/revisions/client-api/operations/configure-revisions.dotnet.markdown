@@ -35,7 +35,15 @@ To configure the revisions settings for a database and/or the collections in tha
 `RevisionsCollectionConfiguration` objects in a `RevisionsConfiguration` object.  
 [3.](../../../client-api/operations/revisions/configure-revisions#configurerevisionsoperation) Send that 
 `RevisionsConfiguration` to the server.  
-<br/>
+
+**In the example below** we create a **default configuration** that enables Revisions 
+for all collections and limits the number and age of revisions that will be kept.  
+We also create two **collection-specific configurations** that override the default 
+configuration and disable Revisions for `Users` and `Orders`.  
+{CODE default-and-collection-specific-configuration@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
+
+---
+
 ### RevisionsCollectionConfiguration
 
 This object contains the four revisions settings for a particular collection:  
@@ -53,26 +61,20 @@ public class RevisionsCollectionConfiguration
 
 | Configuration Option | Type | Description | Default |
 | - | - | - | - |
-| **MinimumRevisionsToKeep** | `long` | The number of revisions to keep per document. <br> E.g. if `MinimumRevisionsToKeep` is set to 5 revisions 6 and on will be purged. <br> set to `null` to keep revisions with no number limit | `null` |
-| **MinimumRevisionAgeToKeep** | `TimeSpan` <br> [`TimeSpan` format](https://docs.microsoft.com/en-us/dotnet/api/system.timespan) | The time span for which revisions should be kept. <br> E.g. if `MinimumRevisionAgeToKeep` is set to 1 month, revisions older than a month will be purged. <br> set to `null` to keep revisions with no time span limit | `null` |
+| **MinimumRevisionsToKeep** | `long` | Limit the Number of revisions to keep per document. <br> E.g. `MinimumRevisionsToKeep = 5` means revisions 6 and on will be purged. <br> `null` = no limit | `null` |
+| **MinimumRevisionAgeToKeep** | [TimeSpan](https://docs.microsoft.com/en-us/dotnet/api/system.timespan) | Limit the Age of revisions kept per document. <br> E.g.`MinimumRevisionAgeToKeep = TimeSpan.FromDays(14)` means revisions older than 14 days will be purged. <br> `null` = no age limit | `null` |
 | **Disabled** | `bool` | When `true`, the creation of revisions is disabled for documents of this collection | `false` |
 | **PurgeOnDelete** | `bool` | When `true`, deleting a document will delete all its revisions as well | `false` |
-| **MaximumRevisionsToDeleteUponDocumentUpdate ** | `long` | The maximum number of revisions to delete upon document update. <br> set to `null` for no maximum limit | `null` |
+| **MaximumRevisionsToDeleteUponDocumentUpdate** | `long` | The maximum number of revisions to delete upon document update. <br> set to `null` for no maximum limit | `null` |
 
-A revision is only deleted if both the `MinimumRevisionsToKeep` for that document is exceeded, **and** the revision is older 
-than the `MinimumRevisionAgeToKeep` limit. The oldest revisions are deleted first.  
-
-* By default both these options are set to `null`, meaning that an unlimited number of revisions will be saved 
-indefinitely.  
-
-* If only `MinimumRevisionsToKeep` is null, revisions will be deleted only when they are older than 
-`MinimumRevisionAgeToKeep`.  
-
-* If only `MinimumRevisionAgeToKeep` is null, revisions will be deleted each time there are more revisions than 
-`MinimumRevisionsToKeep`.  
-
-These deletions will only take place _when a new revision is added_ to a document. Until a new revision is added, that 
-document's revisions can exceed these limits.  
+* Disabling Revisions disables not only the creation of new revisions but also the purging of existing revisions.
+* A revision is deleted if the `MinimumRevisionsToKeep` for that document is exceeded **or** the revision is older 
+  than the `MinimumRevisionAgeToKeep` limit.  
+   * By default both these options are set to `null`, meaning that an unlimited number of revisions will be saved 
+     indefinitely.  
+   * These deletions will only take place when a document is modified, if Revisions is enabled for the document's 
+     collection.  Until these conditions are met, documents' revisions are kept even if they exceed the limits 
+     set in the configuration that applies to them.  
 
 ---
 
