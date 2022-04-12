@@ -31,7 +31,7 @@ Perhaps two clients may be talking to separate database nodes and both of them c
 They will both create what will end up as a duplicate user.  
 
 To handle this (and similar) scenarios, RavenDB offers the cluster-wide transaction feature. It allows you to explicitly state that you want
-a particular interaction with the database to favor consistency over performance to ensure that changes are going to be applied in an
+a particular interaction with the database to favor consistency over availability to ensure that changes are going to be applied in an
 identical manner across the cluster even in the presence of failures and network partitions.  
 
 In order to ensure that, RavenDB requires that a cluster-wide transaction will be accepted by at least a majority of the voting nodes in 
