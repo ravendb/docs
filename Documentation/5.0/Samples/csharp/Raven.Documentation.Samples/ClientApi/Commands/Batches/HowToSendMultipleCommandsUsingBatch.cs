@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Session;
 using Raven.Client.Documents.Commands;
 using Raven.Client.Documents.Commands.Batches;
 using Raven.Client.Documents.Conventions;
@@ -13,10 +14,12 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Batches
 {
     public class BatchInterface
     {
-        private class BatchCommand
+        private class SingleNodeBatchCommand
         {
             #region batch_1
-            public BatchCommand(DocumentConventions conventions, JsonOperationContext context, List<ICommandData> commands, BatchOptions options = null)
+            public SingleNodeBatchCommand(DocumentConventions conventions, JsonOperationContext context, 
+                List<ICommandData> commands, BatchOptions options = null, 
+                TransactionMode mode = TransactionMode.SingleNode)
                 #endregion
             {
 
@@ -30,9 +33,9 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Batches
         public class BatchOptions
         {
             public bool WaitForReplicas { get; set; }
-
             //if set to true, will wait for replication to be performed on at least a majority
             //of DB instances (applies only when WaitForReplicas is set to true)
+
             public bool Majority { get; set; }
 
             public int NumberOfReplicasToWaitFor { get; set; }
@@ -57,7 +60,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Batches
         {
             using (var documentStore = new DocumentStore())
             {
-                /*
+                
                 #region batch_3
                 using (var session = documentStore.OpenSession())
                 {
@@ -74,13 +77,16 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Batches
                         new DeleteCommandData("users/2-A", null)
                     };
 
-                    var batch = new BatchCommand(documentStore.Conventions, session.Advanced.Context, commands);
+                    // By including the method SingleNodeBatchCommand(),
+                    // multiple commands can be executed in a single request
+                    // and several operations can share the same transaction.
+                    var batch = new SingleNodeBatchCommand(documentStore.Conventions, session.Advanced.Context, commands);
                     session.Advanced.RequestExecutor.Execute(batch, session.Advanced.Context);
                 }
                 #endregion
-                */
+                
 
-                /*
+                
                 #region batch_3_async
                 using (var session = documentStore.OpenAsyncSession())
                 {
@@ -97,11 +103,14 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Batches
                         new DeleteCommandData("users/2-A", null)
                     };
 
-                    var batch = new BatchCommand(documentStore.Conventions, session.Advanced.Context, commands);
+                    // By including the method SingleNodeBatchCommand(),
+                    // multiple commands can be executed in a single request
+                    // and several operations can share the same transaction.
+                    var batch = new SingleNodeBatchCommand(documentStore.Conventions, session.Advanced.Context, commands);
                     await session.Advanced.RequestExecutor.ExecuteAsync(batch, session.Advanced.Context);
                 }
                 #endregion
-                */
+                
             }
         }
     }
