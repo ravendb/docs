@@ -6,7 +6,7 @@ In this section, we review some of the common security configuration errors and 
 [Authentication Issues](../../server/security/common-errors-and-faq#authentication-issues)  
 [Encryption Issues](../../server/security/common-errors-and-faq#encryption-issues)  
 
-## Setup Wizard Issues  
+{PANEL: Setup Wizard Issues}  
 
 * [Server cannot bind to the provided private IP address](../../server/security/common-errors-and-faq#server-cannot-bind-to-the-provided-private-ip-address)
 * [Ports are blocked by the firewall](../../server/security/common-errors-and-faq#ports-are-blocked-by-the-firewall)
@@ -80,7 +80,7 @@ Try to clear your local/network DNS cache or wait a few minutes and try again.
 Another temporary solution is to configure your local network connection to use google's DNS server (8.8.8.8).
 {CODE-BLOCK/}
 
-This error probably means that the DNS is cached. You can wait a few minutes or reset the network DNS cache 
+This error probably means that the DNS is cached. You can wait a few minutes or reset the network DNS cache, 
 but in many cases the easiest solution is to [temporarily switch your DNS server to 8.8.8.8](https://developers.google.com/speed/public-dns/docs/using) 
 You can click the Try Again button to restart the validation process of the Setup Wizard.
 
@@ -111,7 +111,7 @@ You can keep track of your RavenDB clusters and their associated DNS records at 
 
 Yes.  
 
-1. The [Customers Portal](https://customers.ravendb.net) allows you to easily edit DNS records which are associated with your license.
+1. The [Customers Portal](https://customers.ravendb.net) allows you to easily edit DNS records that are associated with your license.
 2. You can run the setup wizard again.
 
 If you supply different IP addresses then the wizard will update the DNS records of your domain.  
@@ -124,8 +124,8 @@ If you use a new domain or if you add/remove nodes in the new configuration then
 Yes.  
 You can use the Zip file to re-install or deploy the server/cluster elsewhere.  
 Download a fresh copy of RavenDB and run the setup wizard. Then choose `Continue Cluster Setup` and select node A.
-This will use the existing Zip file and same configuration and certificate which were previously chosen.  
-When building a cluster, repeat this step with nodes B, C and so on.
+This will use the existing Zip file and the same configuration and certificate which were previously chosen.  
+When building a cluster, repeat this step with nodes B, C, and so on.
 
 ---
 
@@ -168,19 +168,23 @@ and make sure you have all of the fields defined properly. Take a look at the fo
 
 Things to check:
 
-* "Setup.Mode" must be "LetsEncrypt" - The automatic renewal process only works if you acquired your certificate through the RavenDB setup wizard and used LetsEncrypt.  
+* **Setup.Mode" must be "LetsEncrypt**  
+  The automatic renewal process only works if you acquired your certificate through the RavenDB setup wizard and used LetsEncrypt.  
   If you did not set up your cluster with the setup wizard and with LetsEncrypt, you are responsible to renew your certificate periodically.  
   * To enable RavenDB's automatic certificate renewal, set up a new cluster with the setup wizard, create parallel databases, 
     reconfigure the [document store](../../client-api/creating-document-store) to connect to the new databases, 
     and [import the data](../../studio/database/tasks/import-data/import-from-ravendb).  
-* "Security.Certificate.LetsEncrypt.Email" must be identical to the e-mail which is associated with your license.  
-* "PublicServerUrl" and "PublicServerUrl.Tcp" must contain the same domain as the one chosen during the setup wizard and is associated with your license.  
-* "ExternalIp" should be defined only if you are running behind a firewall (cloud VM, docker, etc...).  
+* **Security.Certificate.LetsEncrypt.Email**  
+  must be identical to the e-mail which is associated with your license.  
+* **PublicServerUrl and PublicServerUrl.Tcp**  
+  must contain the same domain as the one chosen during the setup wizard and is associated with your license.  
+* **ExternalIp**  
+  should be defined only if you are running behind a firewall (cloud VM, docker, etc...).  
 
-If all of this looks right, and the certificate still doesn't renew automatically and there are no alerts telling you what's wrong, 
-you can contact support. Make sure to supply the server logs with your ticket. When running in a cluster, please provide the logs from all nodes.
-
-If your logs are turned off, open `Manage Server`->`Admin Logs` in the Studio, and keep them open while you click the `Renew` button in the certificate view.
+* If all of this looks right, and the certificate still doesn't renew automatically and there are no alerts telling you what's wrong, 
+  you can contact support.  
+  * Make sure to supply the server logs with your ticket. When running in a cluster, please provide the logs from all nodes.
+  * If your logs are turned off, open `Manage Server`->`Admin Logs` in the Studio, and keep them open while you click the `Renew` button in the certificate view.
 
 ---
 
@@ -199,6 +203,8 @@ Learn how to handle this issue [here](../../server/security/authentication/solve
 If your license is due to expire, be sure to **renew the license**.  
 Do not set up a new license because this will cause domain name issues.  
 
+To renew your license, navigate to the [Studio "About" tab](../../studio/server/license-management):  
+
 ![Renew License in Studio](images/renew-license-studio.png "Renew License in Studio")
 
 ![Paste License Renewal Key](images/paste-license-renewal-key.png "Paste License Renewal Key")  
@@ -210,8 +216,9 @@ Do not set up a new license because this will cause domain name issues.
   3. **Submit button**  
      Click to complete the procedure.
 
+{PANEL/}
 
-## Authentication Issues  
+{PANEL: Authentication Issues}
 
 * [Authentication Error Occurred in Chrome or Edge](../../server/security/common-errors-and-faq#authentication-error-occurred-in-chrome-or-edge)
 * [RavenDB is running as a service in Windows and Chrome doesn't use the client certificate from the OS store](../../server/security/common-errors-and-faq#ravendb-is-running-as-a-service-in-windows-and-chrome-doesnt-use-the-client-certificate-from-the-os-store)
@@ -237,21 +244,17 @@ There were problems authenticating the request:
 This server requires client certificate for authentication, but none was provided by the client.
 {CODE-BLOCK/}
 
-The first solution is to close **all instances** of the browser and restart it.
-
-If that didn't work, register the client certificate in the OS store.  
-In Windows, double click the .pfx certificate and click next all the way for default settings or set a different path and/or a password.  
-In Linux, import it directly to the browser.  
-
-When the browser asks which certificate to use, if there are a few options and the wrong one was previously chosen for this server, you can either:
-
+1. The first solution is to close **all instances** of the browser and restart it.
+2. If that didn't work, register the client certificate in the OS store.  
+   In Windows, double click the .pfx certificate and click next all the way for default settings or set a different path and/or a password.  
+   In Linux, import it directly to the browser.  
+3. When the browser asks which certificate to use, if there are a few options and the wrong one was previously chosen for this server, you can either:
  * Remove the certificate from the browser's memory (In Chrome, Settings -> Privacy and security -> Manage certificates), 
    then reinstall the .pfx certificate with the process described above.
  * Open an incognito tab (ctrl + shift + N in Chrome) and paste the server URL into the address bar, then select the correct certificate name.  
-
-In case none of the above works, you have an option to bring your own certificate and have RavenDB trust it. 
-It can be any client certificate which works in your OS and browser, even if it wasn't generated by RavenDB. 
-See [trusting an existing certificate](../../server/administration/cli#trustclientcert).  
+4. In case none of the above works, you have an option to bring your own certificate and have RavenDB trust it. 
+   It can be any client certificate that works in your OS and browser, even if it wasn't generated by RavenDB. 
+   See [trusting an existing certificate](../../server/administration/cli#trustclientcert).  
 
 **If you are running in Windows 7 or Windows Server 2008 or older**:  
 The first thing to try is to install the **SERVER** certificate to the OS where your server is running, close **all instances** of the browser and restart it.
@@ -274,7 +277,7 @@ Value data: 0 (False)
 
 That is because the certificate was installed to the OS by the service user (during setup) but Chrome can't access it because 
 it's running as another user (or as Administrator).  
-The solution is to import the certificate manually to Chrome (Settings -> Privacy and security -> Security -> Manage certificates) 
+The solution is to import the certificate manually to Chrome (In Chrome, Settings -> Privacy and security -> Security -> Manage certificates) 
 or to install the .pfx certificate again to the OS store, this time with the same user as Chrome.
 
 ---
@@ -290,7 +293,7 @@ There were problems authenticating the request:
 This server requires client certificate for authentication, but none was provided by the client.
 {CODE-BLOCK/}
 
-Firefox doesn't use the OS certificate store like Chrome or Edge. Please import the certificate manually ("Settings" -> "Privacy and Security" -> scroll down to Security and click "View Certificates" -> "Import"). 
+Firefox doesn't use the OS certificate store like Chrome or Edge. Please import the certificate manually (In Firefox, "Settings" -> "Privacy and Security" -> scroll down to Security and click "View Certificates" -> "Import").  
 Then close **all instances** of the browser and restart it.
 
 ![Figure 3. Firefox Import](images/2.png)
@@ -313,7 +316,7 @@ You can also add a password to the current certificate by using OpenSSL or by im
 
 Firefox **sometimes** fails to import a perfectly good certificate for no apparent reason and without a proper error message.
 
-You can try to generate a new password protected certificate using the RavenDB CLI and import that instead.
+You can try to generate a new password-protected certificate using the RavenDB CLI and import that instead.
 
 If it didn't help, you can use any other client certificate you have which works with Firefox (even if it wasn't generated by RavenDB) and have RavenDB trust it. See [trusting an existing certificate](../../server/administration/cli#trustclientcert).
 
@@ -390,7 +393,7 @@ In powershell for example it can be solved like this:
 
 ### How to regain access to a server when you have physical access but no client certificate
 
-An admin client certificate can be generated through the [RavenDB CLI](../../server/administration/cli). If RavenDB runs as a console application, the CLI is just there. When running as a service, please use the `rvn admin-channel`.  
+An admin client certificate can be generated through the [RavenDB CLI](../../server/administration/cli#generateclientcert If RavenDB runs as a console application, the CLI is just there. When running as a service, please use the `rvn admin-channel`.  
 Use either the [generateClientCert](../../server/administration/cli#generateclientcert) command, or (if you already have a certificate) the [trustClientCert](../../server/administration/cli#trustclientcert) command.
 
 Another way to gain access for an existing certificate is to add the [Security.WellKnownCertificates.Admin](../../server/configuration/security-configuration#security.wellknowncertificates.admin) configuration to `settings.json` with your existing certificate's thumbprint.
@@ -425,14 +428,18 @@ for automatically persisting the certificate to the whole cluster. If you have y
 you still need to place empty scripts in the `Security.Certificate.Renew.Exec` and `Security.Certificate.Change.Exec` paths or an exception will be 
 thrown.  
 
+{PANEL/}
 
-## Encryption Issues  
-
+{PANEL: Encryption Issues}
 
 ### Insufficient Memory Exception
 
 {CODE-BLOCK:plain}
-Memory exception occurred: System.InsufficientMemoryException: Failed to increase the min working set size so we can lock 4,294,967,296 for D:\stackoverflow\RavenData\Databases\SO\Indexes\Auto_Questions_ByBody\Temp\compression.0000000000.buffers. With encrypted databases we lock some memory in order to avoid leaking secrets to disk. Treating this as a catastrophic error and aborting the current operation.
+Memory exception occurred: System.InsufficientMemoryException:  
+Failed to increase the min working set size so we can lock 4,294,967,296 for  
+D:\stackoverflow\RavenData\Databases\SO\Indexes\Auto_Questions_ByBody\Temp\compression.0000000000.buffers.  
+With encrypted databases we lock some memory in order to avoid leaking secrets to disk.  
+Treating this as a catastrophic error and aborting the current operation.
 {CODE-BLOCK/}
 
 When encryption is turned on, RavenDB locks memory in order to avoid leaking secrets to disk. Read more [here](../../server/security/encryption/encryption-at-rest#locking-memory).
@@ -447,6 +454,8 @@ sudo prlimit --pid [process-id] --memlock=[new-limit-in-bytes]
 {CODE-BLOCK/}
 
 To figure out what the new limit should be, look at the exception thrown by RavenDB, which includes this size.
+
+{PANEL/}
 
 ## Related Articles
 
