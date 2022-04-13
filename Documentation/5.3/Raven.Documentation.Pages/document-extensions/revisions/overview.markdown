@@ -8,11 +8,12 @@
   The trail of revisions created for a document can be observed to track 
   the document's history, and the currently live version of the document 
   can be reverted to any of its past revisions.  
+* The creation of a document revision can also be [initiated manually](../../document-extensions/revisions/overview#force-revision-creation).  
 * Tracking document revisions allows you, for example, to check how an employee's 
   contract has changed over time, revert a single corrupted document without restoring 
   a backup, or conduct a full-scale audit.  
 * You can create default and collection-specific Revisions **configurations** 
-  to determine whether revisions will be created and whether to limit their 
+  to determine whether revisions will be created or not and whether to limit their 
   number per document.  
   RavenDB will check your configurations when documents are modified, 
   and create and purge revisions by your settings.  
@@ -22,9 +23,9 @@
   * [Revisions Configurations](../../document-extensions/revisions/overview#revisions-configurations)  
      * [Creating and Applying Configurations](../../document-extensions/revisions/overview#creating-and-applying-configurations)  
      * [When are Configurations Executed](../../document-extensions/revisions/overview#when-are-configurations-executed)  
+     * [Enabling and Disabling Revisions for existing documents](../../document-extensions/revisions/overview#enabling-and-disabling-revisions-for-existing-documents)  
   * [How it Works](../../document-extensions/revisions/overview#how-it-works)  
-  * [Enabling or Disabling on an Existing Database](../../document-extensions/revisions/overview#enabling-or-disabling-on-an-existing-database)  
-  * [Storage Concerns](../../document-extensions/revisions/overview#storage-concerns)  
+  * [Revisions Storage](../../document-extensions/revisions/overview#revisions-storage)  
   * [Force Revision Creation](../../document-extensions/revisions/overview#force-revision-creation)  
 
 {NOTE/}
@@ -33,23 +34,28 @@
 
 {PANEL: Revisions Configurations}
 
-By default, revisions are created for **all documents** and existing revisions 
-are **never purged**.  
+By default, RavenDB does **Not** create or purge document revisions when 
+documents are modified or deleted.  
 
-* You can change this default behavior by defining a **default configuration** 
-  of your own.  
+* You can change this behavior by defining a **default configuration** that 
+  applies to all document collections.  
 
-* You can also define **collection-specific configurations** that will override 
-  the default configuration for the collections they are defined for.  
+* You can also define **collection-specific** configurations that apply only 
+  to the collections they are defined for.  
+  {NOTE: }
+  If you define both a default configuration and collection-specific configurations, 
+  a collection-specific configuration will **override** the default configuration 
+  for the collection it is defined for.  
+  {NOTE/}
 
-* **Configuration properties** determine:  
-   * **Whether to Enable or Disable Revisions**.  
-     Enabling Revisions instructs RavenDB to Create a new revision and Purge existing 
-     ones by your purging settings when documents are modified.  
-     Disabling Revisions instructs RavenDB **not** to create or purge revisions.  
-   * **Whether and by what limits revisions will be purged**.  
-   * Learn [here](../../document-extensions/revisions/client-api/operations/configure-revisions#revisionscollectionconfiguration) 
-     about the available configuration options and how to apply them.  
+* A Revisions Configuration defines -  
+   * Whether to Enable or Disable Revisions.  
+     If Revisions is **Enabled** RavenDB will Create a new revision and Purge existing 
+     revisions by your settings when documents are modified or deleted.  
+     If Revisions is **Disabled** RavenDB will **not** create or purge revisions.  
+   * Whether existing revisions should be **purged**.  
+   * See [below](../../document-extensions/revisions/overview#creating-and-applying-configurations) 
+     where to learn more about configuration options and how to apply them.  
 
 ---
 
@@ -59,13 +65,12 @@ Configurations can be created and applied using Studio or client API methods.
 
 #### Via Studio
 
-* Use the Studio Settings [Document Revisions page](../../studio/database/settings/document-revisions) 
-  to create and manage revision configurations.  
+* Use the Studio Settings [Document Revisions](../../studio/database/settings/document-revisions) 
+  page to create and manage revision configurations.  
 * Use the Documents View [Revisions tab](../../studio/database/document-extensions/revisions) 
   to observe and manage the revisions created for each document.  
 
 #### Via API methods
-Follow the links below to learn how to manage revisions using API methods.  
 
 * Revisions Store Operations:  
   [Creating configurations](../../document-extensions/revisions/client-api/operations/configure-revisions)  
@@ -90,7 +95,7 @@ Configurations are executed:
    * Revisions are purged by limits set in the configuration.  
 
 * **When [Enforce Configuration]() is applied**.  
-  Applying this operation triggers the immediate examination and execution 
+  Enforcing Configuration triggers the immediate examination and execution 
   of the default configuration and all collection-specific configurations.  
   {WARNING: }
   Sizeable databases and collections may contain numerous revisions pending 
@@ -98,70 +103,100 @@ Configurations are executed:
   this operation may require substantial server resources, and time it accordingly.  
   {WARNING/}
 
+---
+
+### Enabling and Disabling Revisions for existing documents
+
+* **Enabling Revisions for existing documents**  
+  Creating a configuration that enables Revisions for populated collections 
+  will cause the creation of revisions for documents of these collections 
+  starting at the time the feature was enabled, but not retrospectively.  
+   * If you enable Revisions and then **modify an existing document**:  
+     A revision that records the modified document will be created.  
+     No revision will be created for the document's original version.  
+   * If you enable Revisions and then **create a document**:  
+     As you create the document a revision will also be created, 
+     recording the document at its initial state.  
+
+* **Disabling Revisions for existing documents**  
+  Disabling Revisions for existing documents will stop the creation 
+  of new revisions and the purging of existing ones, **leaving all 
+  existing document revisions intact**.  
+
 {PANEL/}
 
 {PANEL: How it Works}
 
-With the revisions feature enabled (learn [here](../../document-extensions/revisions/client-api/operations/configure-revisions#syntax 
-how to enable it), let's execute this code:
+Let's go through the process of Revisions creation to get a taste of its advantages.  
 
-{CODE store@DocumentExtensions\Revisions\Revisions.cs /}
+1. Enable Revisions for the `Users` collection so we can experiment with it.  
+   You can enable it [using Studio](../../studio/database/settings/document-revisions) 
+   or the [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions#syntax) 
+   Store operation.  
+   
+2. Create a new document in the `Users` collection. We'll create revisions for this document.  
+   You can create the document [Using Studio](../../studio/database/documents/create-new-document#create-new-document) 
+   or the [session.Store](../../client-api/session/storing-entities#example) method.  
 
-This will create the document, and also add its first revision.  
-If we inspect the document we will see this revision:
+3. Using Studio to inspect the new document's [Revisions tab](../../studio/database/document-extensions/revisions) 
+   will show that creating the document also created its first revision.  
+   ![Figure 1: Revisions](images\revisions1.png "Figure 1: Revisions")
 
-![Figure 1: Revisions](images\revisions1.png "Figure 1: Revisions")
+4. Click the **See the current document** button to return to the live document version.  
+   Modify the document and save your changes.  
+   This will create a second revision.  
+   ![Figure 2: Revisions, Modified](images\revisions2.png "Figure 2: Revisions, Modified")
+   {NOTE: }
+   As you see, we have a full audit trail of all the changes that were made in the document.  
+   You can get its revisions data and metadata using the [GetRevisionsOperation](../../document-extensions/revisions/client-api/operations/get-revisions) 
+   Store operation or a number of available [Session methods](../../document-extensions/revisions/client-api/session/loading):  
+   {CODE get_revisions@DocumentExtensions\Revisions\Revisions.cs /}
+   {NOTE/}
+   
+5. Delete the document.  
+   Though you removed the document, **its audit trail is not lost**:  the revisions 
+   remain, including a new one indicating that the document was deleted.  
 
+    To see the "orphaned" revisions (whose parent document was deleted) open the Studio 
+    `Documents > Revisions Bin` section.  
+    Clicking the removed document's ID will show its revisions.  
+    ![Figure 3: Revisions, Deleted](images\revisions3.png "Figure 3: Revisions, Deleted")
 
-This is a revision of the document (you can navigate to the document by clicking on `See the current document`) which is stored on the revisions storage.
-Now, let's modify the original document. This would create another revision:
-
-![Figure 2: Revisions, Modified](images\revisions2.png "Figure 2: Revisions, Modified")
-
-As you can see, we have a full audit record of all the changes that were made to the document.
-
-You can access the revisions of a specific document by the document's ID ("users/1").
-Or you can access a specific revision by its change vector or by a specific date.
-Accessing a revision by a change vector would return a specific revision, 
-while accessing a revision by a date would return the revision on this specific date if exists,
-and if not it would return the revision right before this date.
-
-{CODE get_revisions@DocumentExtensions\Revisions\Revisions.cs /}
-
-Now, let's delete the document. 
-The document would be removed but a revision will be created, so you aren't going to lose the audit trail if the document is deleted.
-
-In order to see orphaned revisions (revisions of deleted documents), you can go to the `Documents > Revisions Bin` section in the studio, 
-which would list all revisions without existing document:
-
-![Figure 3: Revisions, Deleted](images\revisions3.png "Figure 3: Revisions, Deleted")
-
-If you'll go and create another document with this ID (users/1), then the revision won't be shown anymore in the Revision Bin section, 
-but you can navigate to the document and see it's revisions, including the deleted ones.
-
-Clicking on the revision we can also navigate to the other revisions of this document:
-
-![Figure 4: Revisions, Deleted - other revisions](images\revisions4.png "Figure 4: Revisions, Deleted - other revisions")
-
-The revisions feature attempts to make things as simple as possible. Once it is enabled, you'll automatically get the appropriate audit trail.
-
+6. Create a document with the same ID as the document you deleted.  
+   The revisions of the deleted document will be removed from the 
+   revisions bin and added to the new document.  
+   ![Figure 4: Revisions, Deleted - other revisions](images\revisions4.png "Figure 4: Revisions, Deleted - other revisions")
 {PANEL/}
 
-{PANEL: Enabling or Disabling on an Existing Database}
+{PANEL: Revisions Storage}
 
-The revisions feature can be enabled on a existing database with (or without) data with some restrictions. 
-You need to bear in mind that new revision will be created for any new save or delete operation, but this will not affect any existing data that was created prior turning that feature on.
-If you create a document, then turn on revisions, and then overwrite the document, there won't be a revision for the original document. However, you would have a revision of the put operation after the revisions feature was enabled.
+### Revisions Documents Storage  
 
-It's possible also to disable the revisions feature on an existing database.
-In this case all existing revisions would still be stored and not deleted but we won't create any new revisions on any put or delete operations.
+The creation of a document revision stores a full version of the modified document, 
+in the same **blittable JSON document** format as that of regular documents.  
+The compression of individual fields is enabled as for regular documents: any text 
+field of more than 128 bytes is compressed.  
 
-{PANEL/}
+### Revisions Document Extensions Storage
 
-{PANEL: Storage Concerns}
+* **Time Series**  
+  The revisions of a document that owns time series do **not** store the time series 
+  data, but include in their metadata a **timeseries-snapshot** with some information 
+  regarding the time series at the time of the revisions creation.  
+  Read [here](../../document-extensions/timeseries/time-series-and-other-features#revisions) 
+  more about time series and revisions.  
 
-Enabling the revisions will affect the usage of storage space. Each revision of a document is stored in full. The revisions of documents use the same blittable JSON format as regular 
-documents so the compression of individual fields is enabled (any text field that is greater than 128 bytes will be compressed).
+* **Counters**  
+  The revisions of a document that owns counters contain the counters' **names and values** 
+  at the time of the revisions creation.  
+  Read [here](../../document-extensions/counters/counters-and-other-features#counters-and-revisions) 
+  more about counters and revisions.  
+  
+* **Attachments**  
+  The revisions of a document that owns **attachments** contain **references** 
+  to the attachments in RavenDB's storage, without replicating the attachments.  
+  An attachment will be removed from RavenDB's storage only when no live 
+  documents or document revisions refer to it.  
 
 {PANEL/}
 

@@ -14,9 +14,9 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
 
             using (var documentStore = new DocumentStore())
             {
+                #region default-and-collection-specific-configuration
                 documentStore.Maintenance.Send(new ConfigureRevisionsOperation(new RevisionsConfiguration
                 {
-                    #region default-and-collection-specific-configuration
                     // A default configuration that applies to all collections
                     Default = new RevisionsCollectionConfiguration
                     {
@@ -35,12 +35,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                     // Collection-specific configurations that override the default configuration
                     Collections = new Dictionary<string, RevisionsCollectionConfiguration>
                     {
-                        // Disable Revisions for these two collections
-                        {"Users", new RevisionsCollectionConfiguration {Disabled = true}},
+                        // Enable Revisions for Users
+                        {"Users", new RevisionsCollectionConfiguration {Disabled = false}},
+                        // Disable Revisions for Orders
                         {"Orders", new RevisionsCollectionConfiguration {Disabled = true}}
                     }
-                    #endregion
                 }));
+                #endregion
 
                 using (var session = documentStore.OpenSession())
                 {

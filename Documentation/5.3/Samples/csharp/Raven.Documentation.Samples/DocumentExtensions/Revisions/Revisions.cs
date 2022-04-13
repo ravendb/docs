@@ -47,41 +47,46 @@ namespace Raven.Documentation.Samples.Server
                 #endregion
 
                 #region store
-                using (var session = store.OpenAsyncSession())
+                using (var session = store.OpenSession())
                 {
-                    await session.StoreAsync(new User
+                    session.Store(new User
                     {
                         Name = "Ayende Rahien"
                     });
 
-                    await session.SaveChangesAsync();
+                    session.SaveChanges();
                 }
                 #endregion
 
                 Loan loan = new Loan { Id = "loans/1" };
 
-                using (var session = store.OpenAsyncSession())
+                using (var session = store.OpenSession())
                 {
                     #region get_revisions
-                    List<User> revisions = await session
+                    // Get all the revisions that were created for a document, by document ID
+                    List<User> revisions = session
                         .Advanced
                         .Revisions
-                        .GetForAsync<User>("users/1", start: 0, pageSize: 25);
+                        .GetFor<User>("users/1", start: 0, pageSize: 25);
 
-                    List<MetadataAsDictionary> revisionsMetadata = await session
+                    // Get revisions metadata 
+                    List<MetadataAsDictionary> revisionsMetadata = session
                         .Advanced
                         .Revisions
-                        .GetMetadataForAsync("users/1", start: 0, pageSize: 25);
+                        .GetMetadataFor("users/1", start: 0, pageSize: 25);
 
-                    User revison = await session
+                    // Get revisions by their change vectors
+                    User revison = session
                         .Advanced
                         .Revisions
-                        .GetAsync<User>(revisionsMetadata[0].GetString(Constants.Documents.Metadata.ChangeVector));
+                        .Get<User>(revisionsMetadata[0].GetString(Constants.Documents.Metadata.ChangeVector));
 
-                    User revisonAtYearAgo = await session
+                    // Get a revision by its creation time
+                    // If no revision was created at that precise time, get the first revision to precede it
+                    User revisonAtYearAgo = session
                         .Advanced
                         .Revisions
-                        .GetAsync<User>("users/1", DateTime.Now.AddYears(-1));
+                        .Get<User>("users/1", DateTime.Now.AddYears(-1));
                     #endregion
                 }
             }
