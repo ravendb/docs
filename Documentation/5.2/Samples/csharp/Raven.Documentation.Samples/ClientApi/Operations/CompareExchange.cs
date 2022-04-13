@@ -361,25 +361,23 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                    new SessionOptions 
                    {TransactionMode = TransactionMode.ClusterWide}))
             {
-                // The session that loads the document first
-                // will get hold of its related atomic-guard.
+                // Two sessions will load the same document at the same time.
                 var loadedUser1 = await session1.LoadAsync<User>("users/johndoe");
                 loadedUser1.Name = "jindoe";
 
-                // session1 now holds the document's Atomic Guard.
-                // session2 can still load the same document.
                 var loadedUser2 = await session2.LoadAsync<User>("users/johndoe");
                 loadedUser2.Name = "jandoe";
 
+                // Session1 will save changes first, which triggers a change in the 
+                // version number of the associated Atomic Guard.
                 await session1.SaveChangesAsync();
 
-                // session2.SaveChanges() will be rejected with an exception
-                // since session1 currently holds the atomic guard.  
+                // Session2.SaveChanges() will be rejected with a ConcurrencyException
+                // since session1 already changed the Atomic Guard version.  
+                // Session2 is expecting the version that it had when it loaded the document.
                 await session2.SaveChangesAsync();
             }
             #endregion
-
-            // WaitForUserToContinueTheTest(store);
 
             var result = await store.Operations.SendAsync(new GetCompareExchangeValuesOperation<User>(""));
         }

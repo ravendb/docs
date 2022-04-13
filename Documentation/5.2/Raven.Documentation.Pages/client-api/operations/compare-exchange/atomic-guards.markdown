@@ -10,8 +10,8 @@
   transactions in cluster-wide sessions.  
 
 * Atomic Guards coordinate work between sessions that try to write on a document at the same time. 
-  Saving a document is prevented if another session is currently holding that document's related 'key'.
-  When finished, the session releases the key.  
+  Saving a document is prevented if another session has incremented the Atomic Guard Raft index, 
+  which is triggered by changing the document.
 
 * Prior to the introduction of this feature (in **RavenDB 5.2**), client code had to 
   administer compare-exchange entries explicitly. You can still do that if you wish by 
@@ -106,7 +106,7 @@ In the sample below, the session uses **no atomic guards**.
   A session that is currently using these removed atomic guards will not be able to save 
   their related documents resulting in an error.  
   * If you accidentally remove an active atomic guard that is associated with an existing document, 
-    re-save the document in a cluster-wide session which will re-create the Atomic Guard.  
+    recreate or save the document again in a cluster-wide session which will re-create the Atomic Guard.  
 {WARNING/}
 
 {PANEL/}

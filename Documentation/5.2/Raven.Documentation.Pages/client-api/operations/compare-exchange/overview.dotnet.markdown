@@ -10,7 +10,7 @@
   * A value which can be numbers, strings, arrays, or objects.  
     Any value that can be represented as JSON is valid.
   * Metadata  
-  * Raft index which increments to enable comparison.  
+  * Raft index - A version number which is modified on each change.  
     Any change to the value or metadata changes the Raft index.  
 
 * Creating and modifying a compare-exchange item is an atomic, thread-safe [compare-and-swap](https://en.wikipedia.org/wiki/Compare-and-swap) interlocked 
@@ -65,31 +65,30 @@
 
 #### How Atomic Guard items work when protecting shared documents in cluster-wide sessions
 
-  
 * Every time a document in a cluster-wide session is modified, RavenDB automatically creates 
   or uses an associated compare-exchange item called [Atomic Guard](../../../client-api/operations/compare-exchange/atomic-guards).  
-  * Whenever one session holds an Atomic Guard associated with a document, other sessions can read the document 
-    but not modify it. The session releases the Atomic Guard after the SaveChanges( ) succeeds on all of the session transactions.  
-    An Atomic Guard's Raft Index is incremented with every document modification that is saved.  
-  * To save changes on a document, the session first checks if another session is currently locking that document.  
-  * If it is available to modify, the session checks if the Raft index has incremented since it loaded the document.  
-  * A `ConcurrencyException` will be thrown if:
-      * The Raft index has incremented.  
-      * The Atomic Guard is locking the document.  
+  * Whenever one session changes and saves a document, the Atomic Guard version changes. 
+    If other sessions loaded the document before the version changed, they will not be able to modify it.  
+  * A `ConcurrencyException` will be thrown if the Atomic Guard version was modified by another session.  
 * **If a ConcurrencyException is thrown**:  
-  To ensure [atomicity](https://en.wikipedia.org/wiki/ACID#Atomicity) if even one session transaction fails, the entire [session will roll back](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching).
+  To ensure [atomicity](https://en.wikipedia.org/wiki/ACID#Atomicity), if even one session transaction fails, the entire [session will roll back](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching).  
   Be sure that your business logic is written so that **if a concurrency exception is thrown**, your code will re-execute the entire session.  
 
 
 {INFO: }
 ####Performance cost of cluster-wide sessions  
-Cluster-wide transactions are more expensive than non-cluster-wide transactions.  
-They prioritize consistency over performance to ensure ACIDity across the cluster.  
+Cluster-wide transactions are more expensive than node-local transactions due to Raft concensus checks.  
+People prefer a cluster-wide transaction when they prioritize consistency over performance and availability.  
+It ensures ACIDity across the cluster.  
 
-* One way to prevent concurrency issues without cluster-wide sessions is to ensure that one node is responsible for writing.  
-    * By default, one node is responsible for all reads and writes. You can configure [load balancing](../../../client-api/session/configuration/use-session-context-for-load-balancing)
-    to fine-tune the settings to your needs.  
-    * To distribute work, you can set different nodes to be responsible for different sets of data.  Learn more in the article [Scaling Distributed Work in RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/7-scaling-distributed-work-in-ravendb) 
+* One way to protect ACID transactions **without** using cluster-wide sessions is to ensure that one node is responsible for writing on a specific database.  
+    * RavenDB node-local transactions are ACID on the local node, but if two nodes write concurrently on the same document, [conlicts](../../../server/clustering/replication/replication-conflicts)
+      can occur. 
+    * By default to prevent conflicts, one node is responsible for all reads and writes.  
+      You can configure [load balancing](../../../client-api/session/configuration/use-session-context-for-load-balancing)
+      to fine-tune the settings to your needs.  
+    * To distribute work, you can set different nodes to be responsible for different sets of data.  
+      Learn more in the article [Scaling Distributed Work in RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/7-scaling-distributed-work-in-ravendb). 
 {INFO/}
 
 {PANEL/}
