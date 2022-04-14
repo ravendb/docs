@@ -112,22 +112,12 @@ and [database](../indexes/index-throttling#index-throttling-per-database) settin
 
 
 * **From Code**:  
-  Set throttling for a specific index using the `Indexing.ThrottlingTimeInterval` property.  
-  {CODE-BLOCK:csharp}
-var index = new Orders_ByOrder
-{
-    Configuration =
-    {
-        [RavenConfiguration.GetKey(x => x.Indexing.ThrottlingTimeInterval)] = "2000",
-    }
-};
-await index.ExecuteAsync(store);
-  {CODE-BLOCK/}
-  The batch size can be left for RavenDB to decide, or you can set it yourself using 
-  the [MapBatchSize](../server/configuration/indexing-configuration#indexing.mapbatchsize) property.  
-  {CODE-BLOCK:csharp}
-[RavenConfiguration.GetKey(x => x.Indexing.MapBatchSize)] = "500"
-  {CODE-BLOCK/}
+  Set throttling for a specific index using the `Indexing.Throttling.TimeIntervalInMs` property.  
+  {CODE:csharp throttlingInterval@Indexes/IndexThrottling.cs /}
+
+    The batch size can be left for RavenDB to decide, or you can set it yourself using 
+    the [Indexing.MapBatchSize](../server/configuration/indexing-configuration#indexing.mapbatchsize) property.  
+    {CODE:csharp batchSize@Indexes/IndexThrottling.cs /}
 
 * **From Studio**:  
   Use the [Configuration tab](../studio/database/indexes/create-map-index#configuration) of an index definition 
