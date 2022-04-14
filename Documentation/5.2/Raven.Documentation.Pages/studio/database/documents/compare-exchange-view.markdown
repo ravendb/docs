@@ -82,7 +82,7 @@ In this page:
 
 - [Cluster-Wide Transactions](../../../server/clustering/cluster-transactions)  
 
-<br/>
+---
 
 ## Code Walkthrough
 

@@ -43,7 +43,8 @@
   * Existing documents that don't have Atomic Guards:  
     A new Atomic Guard is created when modifying an existing document in the cluster-wide session.  
 * If a document already has an associated Atomic Guard:  
-  Upon modifying a document in a new session, the Raft Index of its related cmpXchg item will increment.
+  Upon modifying a document in a new session, the value of its related atomic guard key will be modified, 
+  allowing RavenDB to detect that changes were made to this key..
 
 {PANEL/}
 

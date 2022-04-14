@@ -95,18 +95,23 @@ It ensures ACIDity across the cluster.
 
 {PANEL: Transaction Scope for Compare-Exchange Operations}
 
+Conventionally, compare-exchange **session operations** are used in [cluster-wide sessions](../../../client-api/session/cluster-transaction).  
+Since RavenDB 5.2, we automatically create and maintain [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
+to guarantee cluster-wide session ACID transactions.
 
-* A compare-exchange [operation](../../../client-api/operations/what-are-operations) 
+This article is about non-session-specific compare-exchange operations.
+
+* A non-session specific compare-exchange [operation](../../../client-api/operations/what-are-operations) (described below) 
   is performed on the [document store](../../../client-api/what-is-a-document-store) level.  
   It is therefore not part of the session transactions.  
 
-* Even if written inside the session scope, a compare exchange **operation** will be executed regardless 
+* Even if written inside the session scope, a non-session compare exchange **operation** will be executed regardless 
   of whether the session `SaveChanges( )` succeeds or fails. 
   * This is not the case when using compare-exchange [session methods](../../../client-api/session/cluster-transaction)
 
 * Thus, upon a [session transaction failure](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching), 
-  if you had a successful compare-exchange operation inside the failed session block, 
-  it will **not** be rolled back automatically.  
+  if you had a successful compare-exchange operation (as described below) inside the failed session block, 
+  it will **not** be rolled back automatically with the failed session.  
 
 {PANEL/}
 
@@ -184,9 +189,9 @@ from Users as s where id() == cmpxchg("emails/ayende@ayende.com")
 
 ### Studio
 
-- [Compare Exchange View](../../../studio/database/documents/compare-exchange-view)
+- [Compare Exchange View](../../../studio/database/documents/compare-exchange-view)  
 
-<br/>
+---
 
 ## Code Walkthrough
 
