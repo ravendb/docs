@@ -19,7 +19,7 @@ This page contains:
 
 {PANEL: Why Cluster Wide Transactions}
 
-Usually, RavenDB's uses the multi-master model and applies a transaction on a single node first then asynchronously replicates the data to other
+Usually, RavenDB uses the multi-master model and applies a transaction on a single node first, then it asynchronously replicates the data to other
 members in the cluster. This ensures that even in the presence of network partitions or hard failures, RavenDB is able to 
 accept writes and safely keep them.  
 
