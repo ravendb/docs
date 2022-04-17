@@ -105,6 +105,8 @@ This article is about non-session-specific compare-exchange operations.
   is performed on the [document store](../../../client-api/what-is-a-document-store) level.  
   It is therefore not part of the session transactions.  
 
+{WARNING: If a session fails}
+
 * Even if written inside the session scope, a non-session compare exchange **operation** will be executed regardless 
   of whether the session `SaveChanges( )` succeeds or fails. 
   * This is not the case when using compare-exchange [session methods](../../../client-api/session/cluster-transaction)
@@ -112,6 +114,7 @@ This article is about non-session-specific compare-exchange operations.
 * Thus, upon a [session transaction failure](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching), 
   if you had a successful compare-exchange operation (as described below) inside the failed session block, 
   it will **not** be rolled back automatically with the failed session.  
+{WARNING/}
 
 {PANEL/}
 
