@@ -4,12 +4,12 @@
 {NOTE: }
 
 * **Document Revisions** are snapshots of documents and their document extensions.  
-   * Revisions can be created **automatically** for documents when the documents 
+   * Revisions can be created for documents **automatically** when the documents 
      are created, modified, or deleted.  
-   * A revision can also be crated [manually](../../document-extensions/revisions/overview#force-revision-creation).  
+   * Revisions can also be created for documents [manually](../../document-extensions/revisions/overview#force-revision-creation).  
 
     {INFO: }
-    The trail of revisions that is created for a document can be inspected 
+    The trail of revisions created for a document can be inspected 
     to track the changes made in the document over time.  
     The document's live version can be reverted to any of its recorded revisions.  
   
@@ -23,7 +23,7 @@
   To enable, disable, or limit the Revisions feature, 
   apply [Revisions Configurations](../../document-extensions/revisions/overview#revisions-configurations) 
   to all and/or specific collections.  
-* Revisions and their configurations can be managed and used via API methods and Studio.  
+* Revisions and their configurations can be managed via API methods or using Studio.  
 
 * In this page:  
   * [Revisions Configurations](../../document-extensions/revisions/overview#revisions-configurations)  
@@ -147,40 +147,39 @@ Configurations are executed:
 
 Let's go through the process of Revisions creation for a taste of its advantages.  
 
-1. Enable Revisions for the `Users` collection so we can experiment with the feature.  
+2. **Enable Revisions** so we can experiment with the feature.  
    You can enable Revisions using [Studio](../../studio/database/settings/document-revisions) 
    or the [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions#syntax) 
    Store operation.  
-   
-2. Create a new document in the `Users` collection. We'll create revisions for this document.  
+   ![Enable Revisions for the Users Collection](images\revisions_enable-revisions.png "Enable Revisions for the Users Collection")
+
+2. **Create a new document in the `Users` collection**. We'll create revisions for this document.  
    You can create the document using [Studio](../../studio/database/documents/create-new-document#create-new-document) 
    or the [session.Store](../../client-api/session/storing-entities#example) method.  
+   ![Create a Document](images\revisions_create-document.png "Create a Document")
 
-3. Using Studio to inspect the [Revisions tab](../../studio/database/document-extensions/revisions) 
-   of the new document will show that creating the document also created its first revision.  
-   ![Figure 1: Revisions](images\revisions1.png "Figure 1: Revisions")
+3. Creating the document also created its first revision.  
+   **Use Studio to inspect the new document's [Revisions tab](../../studio/database/document-extensions/revisions)**.  
+   ![Revision when Creating a Document](images\revisions_document-created.png "Revision when Creating a Document")
 
-4. Click the **See the current document** button to return to the live document version.  
-   Modify the document and save your changes.  
+4. Click the _See the current document_ button to return to the live document version.  
+   **Modify and Save the document**.  
    This will create a second revision.  
-   ![Figure 2: Revisions, Modified](images\revisions2.png "Figure 2: Revisions, Modified")
-   {NOTE: }
-   As you see, we have a full audit trail of all the changes that were made in the document.  
-   {NOTE/}
+   ![Revision when Modifying a Document](images\revisions_modify-document.png "Revision when Modifying a Document")
    
-5. Delete the document.  
-   Though you removed the document, **its audit trail is not lost**:  the revisions 
+5. **Delete the document**.  
+   Though you removed the document, its **audit trail** is **not lost**:  the revisions 
    remain, including a new one indicating that the document was deleted.  
 
     To see the "orphaned" revisions (whose parent document was deleted) open the Studio 
     `Documents > Revisions Bin` section.  
     Clicking the removed document's ID will show its revisions.  
-    ![Figure 3: Revisions, Deleted](images\revisions3.png "Figure 3: Revisions, Deleted")
+    ![Revisions Bin](images\revisions_revisions-bin.png "Revisions Bin")
 
-6. Create a document with the same ID as the document you deleted.  
+6. **Create a document with the same ID as the document you deleted**.  
    The revisions of the deleted document will be removed from the 
    revisions bin and added to the new document.  
-   ![Figure 4: Revisions, Deleted - other revisions](images\revisions4.png "Figure 4: Revisions, Deleted - other revisions")
+   ![Revisions for a Re-created Document](images\revisions_recreated-document.png "Revisions for a Re-created Document")
 {PANEL/}
 
 {PANEL: Revisions Storage}
@@ -234,7 +233,7 @@ document as a precaution before editing it.
 
 To create a revision manually via Studio, use the **Create Revision** button in the 
 document view's Revisions tab.  
-![Figure 5: Create a revision manually](images\revisions5.png "Figure 5: Create a revision manually")
+![Create a revision manually](images\revisions_create-revision-manually.png "Create a revision manually")
 
 ---
 
