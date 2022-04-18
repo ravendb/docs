@@ -54,9 +54,9 @@ namespace Raven.Documentation.Samples.Indexes
         {
             public class Result
             {
-                public string Name { get; set; }
+                public string AuthorName { get; set; }
 
-                public IEnumerable<string> Books { get; set; }
+                public IEnumerable<string> BookNames { get; set; }
             }
 
             public Authors_ByNameAndBooks()
@@ -64,8 +64,8 @@ namespace Raven.Documentation.Samples.Indexes
                 Map = authors => from author in authors
                                  select new Result
                                  {
-                                     Name = author.Name,
-                                     Books = author.BookIds.Select(x => LoadDocument<Book>(x).Name)
+                                     AuthorName = author.Name,
+                                     BookNames = author.BookIds.Select(x => LoadDocument<Book>(x).Name)
                                  };
             }
         }
@@ -118,20 +118,19 @@ namespace Raven.Documentation.Samples.Indexes
                     #endregion
                 }
 
-                /*
+                
                 #region indexing_related_documents_RQL_Products-Beverages
                 from index "Products/ByCategoryName"
                 where CategoryName == "Beverages"
                 #endregion
-                */
-                /*
+
                 #region indexing_related_documents_Studio
                 docs.Products.Select(product =>
                 new{CategoryName = (this.LoadDocument(
                     product.Category, "Categories")).Name
                     })
                 #endregion
-                */
+                
                 #region indexing_related_documents_6
                 store.Maintenance.Send(new PutIndexesOperation
                 (
