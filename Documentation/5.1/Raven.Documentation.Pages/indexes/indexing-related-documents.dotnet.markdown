@@ -9,12 +9,14 @@
 * [Include( )](../client-api/session/loading-entities#load-with-includes) 
   is an alternative session CRUD method that can pull data from related documents while reducing expensive trips to the disk.  
 
+* People who are accustomed to relational models but want the agility and efficiency of document-based models 
+  should understand that [documents are most effective when they stand on their own](LINK TO ARTICLE/VIDEO HERE) 
+  and [relations are harmless exceptions](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/10-static-indexes-and-other-advanced-options#indexing-referenced-data) to the rule.
 
 {INFO Indexes are updated automatically whenever related documents change. /}
 
-{WARNING: }
-As [Inside RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/10-static-indexes-and-other-advanced-options#indexing-referenced-data)
-explains, `LoadDocument` can be a useful way to enable rapid querying of related documents by having 
+{WARNING: Linking Many Documents to a Constantly Changing Document}
+`LoadDocument` can be a useful way to enable rapid querying of related documents by having 
 an index do the work behind the scenes.  
 
 However, it has a performance cost if you frequently modify documents that are referenced by many other documents. 
