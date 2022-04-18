@@ -42,7 +42,12 @@ This is why the `LoadDocument` function was introduced.
 {CODE-TAB:csharp:Linq-syntax indexing_related_documents_2@Indexes\IndexingRelatedDocuments.cs /}
 {CODE-TAB:csharp:Operation indexing_related_documents_3@Indexes\IndexingRelatedDocuments.cs /}
 {CODE-TAB:csharp:JavaScript indexing_related_documents_2@Indexes\JavaScript.cs /}
-{CODE-TAB:csharp:Studio indexing_related_documents_Studio@Indexes\IndexingRelatedDocuments.cs /}
+{CODE-TAB-BLOCK:csharp:Studio-syntax}
+docs.Products.Select(product =>
+new{CategoryName = (this.LoadDocument(
+    product.Category, "Categories")).Name
+    })
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 To see how this code works with Northwind sample data, you can [create sample data for a playground server](../studio/database/tasks/create-sample-data) 
@@ -52,7 +57,10 @@ Now we can query the index to search for products using the `CategoryName` as a 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync-Linq-syntax indexing_related_documents_7@Indexes\IndexingRelatedDocuments.cs /}
 {CODE-TAB:csharp:Async-Linq-syntax indexing_related_documents_AsyncQuery_Products-Beverages@Indexes\IndexingRelatedDocuments.cs /}
-{CODE-TAB:csharp:RQL indexing_related_documents_RQL_Products-Beverages@Indexes\IndexingRelatedDocuments.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "ProductCategory"
+where CategoryName == "Beverages"
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 
