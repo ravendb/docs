@@ -5,6 +5,7 @@ using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Operations.Indexes;
 using Raven.Documentation.Samples.Indexes.Foo;
 using Raven.Documentation.Samples.Orders;
+using Raven.Client.Documents.Linq;
 
 namespace Raven.Documentation.Samples.Indexes
 {
@@ -73,7 +74,7 @@ namespace Raven.Documentation.Samples.Indexes
 
     public class IndexingRelatedDocuments
     {
-        public void Sample()
+        public async void Sample()
         {
             using (var store = new DocumentStore())
             {
@@ -106,6 +107,31 @@ namespace Raven.Documentation.Samples.Indexes
                     #endregion
                 }
 
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region indexing_related_documents_AsyncQuery_Products-Beverages
+                    IList<Product> results = await asyncSession
+                        .Query<Products_ByCategoryName.Result, Products_ByCategoryName>()
+                        .Where(x => x.CategoryName == "Beverages")
+                        .OfType<Product>()
+                        .ToListAsync();
+                    #endregion
+                }
+
+                /*
+                #region indexing_related_documents_RQL_Products-Beverages
+                from index "Products/ByCategoryName"
+                where CategoryName == "Beverages"
+                #endregion
+                */
+                /*
+                #region indexing_related_documents_Studio
+                docs.Products.Select(product =>
+                new{CategoryName = (this.LoadDocument(
+                    product.Category, "Categories")).Name
+                    })
+                #endregion
+                */
                 #region indexing_related_documents_6
                 store.Maintenance.Send(new PutIndexesOperation
                 (
