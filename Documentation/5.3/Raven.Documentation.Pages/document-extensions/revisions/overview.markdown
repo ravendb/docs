@@ -1,23 +1,29 @@
-# Revisions Overview
+# Document Revisions Overview
 ---
 
 {NOTE: }
 
-* The **Revisions** feature creates a revision (snapshot) of a document every 
-  time the document is updated and upon its deletion.  
-  The trail of revisions created for a document can be observed to track 
-  the document's history, and the currently live version of the document 
-  can be reverted to any of its past revisions.  
-* The creation of a document revision can also be [initiated manually](../../document-extensions/revisions/overview#force-revision-creation).  
-* Tracking document revisions allows you, for example, to check how an employee's 
-  contract has changed over time, revert a single corrupted document without restoring 
-  a backup, or conduct a full-scale audit.  
-* You can create default and collection-specific Revisions **configurations** 
-  to determine whether revisions will be created or not and whether to limit their 
-  number per document.  
-  RavenDB will check your configurations when documents are modified, 
-  and create and purge revisions by your settings.  
-* Revisions can be configured and managed using API methods or via Studio.  
+* **Document Revisions** are snapshots of documents and their document extensions.  
+   * Revisions can be created **automatically** for documents when the documents 
+     are created, modified, or deleted.  
+   * A revision can also be crated [manually](../../document-extensions/revisions/overview#force-revision-creation).  
+
+    {INFO: }
+    The trail of revisions that is created for a document can be inspected 
+    to track the changes made in the document over time.  
+    The document's live version can be reverted to any of its recorded revisions.  
+  
+    Tracking document revisions allows you, for example, to check how an employee's 
+    contract has changed over time, restore a single corrupted document without requiring 
+    a backup file, or conduct a full-scale audit of your data.  
+    {INFO/}
+
+* Revisions are automatically **created** and **purged** for a document 
+  only if the Revisions feature is enabled for the document's collection.  
+  To enable, disable, or limit the Revisions feature, 
+  apply [Revisions Configurations](../../document-extensions/revisions/overview#revisions-configurations) 
+  to all and/or specific collections.  
+* Revisions and their configurations can be managed and used via API methods and Studio.  
 
 * In this page:  
   * [Revisions Configurations](../../document-extensions/revisions/overview#revisions-configurations)  
@@ -34,8 +40,8 @@
 
 {PANEL: Revisions Configurations}
 
-By default, RavenDB does **Not** create or purge document revisions when 
-documents are modified or deleted.  
+By default, the Revisions feature is Disabled for all collections: no revisions 
+are created or purged for any document.  
 
 * You can change this behavior by defining a **default configuration** that 
   applies to all document collections.  
@@ -50,10 +56,14 @@ documents are modified or deleted.
 
 * A Revisions Configuration defines -  
    * Whether to Enable or Disable Revisions.  
-     If Revisions is **Enabled** RavenDB will Create a new revision and Purge existing 
-     revisions by your settings when documents are modified or deleted.  
-     If Revisions is **Disabled** RavenDB will **not** create or purge revisions.  
-   * Whether existing revisions should be **purged**.  
+     If the Revisions feature is Enabled for a collection, creating, modifying, 
+     or deleting any document of this collection will trigger the automatic Creation 
+     of a new document revision and optionally the Purging of existing revisions for 
+     the document.  
+     If the Revisions feature is Disabled for a collection, RavenDB will **not** 
+     automatically create or purge revisions for documents of this collection.  
+   * Whether to limit the number of revisions that can be kept per document.  
+     RavenDB will only purge revisions if they exceed the limits you set here.  
    * See [below](../../document-extensions/revisions/overview#creating-and-applying-configurations) 
      where to learn more about configuration options and how to apply them.  
 
@@ -68,17 +78,25 @@ Configurations can be created and applied using Studio or client API methods.
 * Use the Studio Settings [Document Revisions](../../studio/database/settings/document-revisions) 
   page to create and manage revision configurations.  
 * Use the Documents View [Revisions tab](../../studio/database/document-extensions/revisions) 
-  to observe and manage the revisions created for each document.  
+  to inspect and manage the revisions created for each document.  
 
 #### Via API methods
 
 * Revisions Store Operations:  
-  [Creating configurations](../../document-extensions/revisions/client-api/operations/configure-revisions)  
-  [Getting and Counting Revisions](../../document-extensions/revisions/client-api/operations/get-revisions)  
+  [Creating configurations](../../document-extensions/revisions/client-api/operations/configure-revisions) using
+  [`ConfigureRevisionsOperation`](../../document-extensions/revisions/client-api/operations/configure-revisions#configurerevisionsoperation)  
+  [Getting and Counting Revisions](../../document-extensions/revisions/client-api/operations/get-revisions) using 
+  [`GetRevisionsOperation`](../../document-extensions/revisions/client-api/operations/get-revisions#getrevisionsoperation)  
 * Revisions Session methods:  
-  [Loading revisions](../../document-extensions/revisions/client-api/session/loading)  
-  [Counting Revisions](../../document-extensions/revisions/client-api/session/counting)  
-  [Including revisions](../../document-extensions/revisions/client-api/session/including)  
+  [Loading revisions and their metadata](../../document-extensions/revisions/client-api/session/loading) using 
+  [`GetFor`](../../document-extensions/revisions/client-api/session/loading#getfor), 
+  [`GetMetadataFor`](../../document-extensions/revisions/client-api/session/loading#getmetadatafor), and 
+  [`Get`](../../document-extensions/revisions/client-api/session/loading#get)  
+  [Counting Revisions](../../document-extensions/revisions/client-api/session/counting) using 
+  [`GetCountFor`](../../document-extensions/revisions/client-api/session/counting#getcountfor)  
+  [Including revisions](../../document-extensions/revisions/client-api/session/including) using 
+  [`IncludeRevisions`](../../document-extensions/revisions/client-api/session/including#section) and 
+  [`RawQuery`](../../document-extensions/revisions/client-api/session/including#including-revisions-with-session.advanced.rawquery)  
 
 ---
 
@@ -87,18 +105,18 @@ Configurations can be created and applied using Studio or client API methods.
 Creating a Revisions configuration does **not** immediately trigger its execution.  
 Configurations are executed:  
 
-* **When documents are modified or deleted**.  
-  When a document is modified or deleted the Revisions configuration that applies 
-  to its collection is examined.  
+* **When documents are Created, Modified, or Deleted**  
+  When a document is created, modified or deleted the Revisions configuration that applies 
+  to the document's collection is examined.  
   If the Revisions feature is enabled for this collection:  
    * A revision of the document is created.  
-   * Revisions are purged by limits set in the configuration.  
+   * Revisions are potentially purged by limits set in the configuration.  
 
-* **When [Enforce Configuration]() is applied**.  
+* **When [Enforce Configuration]() is applied**  
   Enforcing Configuration triggers the immediate examination and execution 
   of the default configuration and all collection-specific configurations.  
   {WARNING: }
-  Sizeable databases and collections may contain numerous revisions pending 
+  Large databases and collections may contain numerous revisions pending 
   purging, that Enforcing Configuration will purge all at once. Be aware that 
   this operation may require substantial server resources, and time it accordingly.  
   {WARNING/}
@@ -127,19 +145,19 @@ Configurations are executed:
 
 {PANEL: How it Works}
 
-Let's go through the process of Revisions creation to get a taste of its advantages.  
+Let's go through the process of Revisions creation for a taste of its advantages.  
 
-1. Enable Revisions for the `Users` collection so we can experiment with it.  
-   You can enable it [using Studio](../../studio/database/settings/document-revisions) 
+1. Enable Revisions for the `Users` collection so we can experiment with the feature.  
+   You can enable Revisions using [Studio](../../studio/database/settings/document-revisions) 
    or the [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions#syntax) 
    Store operation.  
    
 2. Create a new document in the `Users` collection. We'll create revisions for this document.  
-   You can create the document [Using Studio](../../studio/database/documents/create-new-document#create-new-document) 
+   You can create the document using [Studio](../../studio/database/documents/create-new-document#create-new-document) 
    or the [session.Store](../../client-api/session/storing-entities#example) method.  
 
-3. Using Studio to inspect the new document's [Revisions tab](../../studio/database/document-extensions/revisions) 
-   will show that creating the document also created its first revision.  
+3. Using Studio to inspect the [Revisions tab](../../studio/database/document-extensions/revisions) 
+   of the new document will show that creating the document also created its first revision.  
    ![Figure 1: Revisions](images\revisions1.png "Figure 1: Revisions")
 
 4. Click the **See the current document** button to return to the live document version.  
@@ -148,9 +166,6 @@ Let's go through the process of Revisions creation to get a taste of its advanta
    ![Figure 2: Revisions, Modified](images\revisions2.png "Figure 2: Revisions, Modified")
    {NOTE: }
    As you see, we have a full audit trail of all the changes that were made in the document.  
-   You can get its revisions data and metadata using the [GetRevisionsOperation](../../document-extensions/revisions/client-api/operations/get-revisions) 
-   Store operation or a number of available [Session methods](../../document-extensions/revisions/client-api/session/loading):  
-   {CODE get_revisions@DocumentExtensions\Revisions\Revisions.cs /}
    {NOTE/}
    
 5. Delete the document.  

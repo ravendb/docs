@@ -1,13 +1,14 @@
 # Revisions: Loading Revisions
 
-There are a few methods that allow you to download revisions from a database:   
+There are a few methods that allow you to download revisions from a database:  
 
-- **session.Advanced.Revisions.GetFor** 
-    - can be used to return all previous revisions for a specified document   
-- **session.Advanced.Revisions.GetMetadataFor**
-    - can be used to return metadata of all previous revisions for a specified document  
+- **session.Advanced.Revisions.GetFor**  
+    - Retrieve all the revisions that exist for a specified document  
+- **session.Advanced.Revisions.GetMetadataFor** 
+    - Retrieve the metadata for all the revisions that exist for a specified document  
 - **session.Advanced.Revisions.Get**
-    - can be used to retrieve a revision(s) using a change vector(s)  
+    - Retrieve one or multiple revisions by their change vectors  
+    - Retrieve a revision by its creation time  
 
 {PANEL:GetFor}
 
@@ -57,15 +58,35 @@ There are a few methods that allow you to download revisions from a database:
 
 {CODE syntax_3@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
 
-| Parameters | | |
+| Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **changeVector** or **changeVectors**| string or `IEnumerable<string>` | one or many revision change vectors |
+| **changeVector** | `string` | revision change vectors |
+| **changeVectors**| `IEnumerable<string>` | revisions change vectors |
+| **date** or **changeVectors**| `DateTime ` | revision creation time |
 
-### Example
+### Example I
+Get a revision by its change vector:  
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync example_3_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
-{CODE-TAB:csharp:Async example_3_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+{CODE-TAB:csharp:Sync example_3.1_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+{CODE-TAB:csharp:Async example_3.1_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+{CODE-TABS/}
+
+### Example II
+Get revisions metadata, extract a revision's change vector from the metadata, 
+and get the revision by the change vector:  
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync example_3.2_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+{CODE-TAB:csharp:Async example_3.2_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+{CODE-TABS/}
+
+### Example III
+Get a revision by its creation time:  
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync example_3.3_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+{CODE-TAB:csharp:Async example_3.3_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
 {CODE-TABS/}
 
 {PANEL/}
