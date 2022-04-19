@@ -31,7 +31,7 @@ that make it clear to the user what they can and can't do.
 
 {PANEL: Create a Client Certificate with Read Only Access}
 
-![](images/read-only-certificates-1.png)
+![Certificates view](images/read-only-certificates-1.png)
 
 {INFO: }
 
@@ -80,7 +80,7 @@ and database permissions can all be modified.
 This section shows the slight variations in the studio that tell you which security 
 clearance and which access level you currently have, and what you can or can't do.  
 
-![](images/read-only-certificates-2.png)
+![RavenDB Studio view](images/read-only-certificates-2.png)
 
 {INFO: }
 
@@ -92,7 +92,7 @@ the certificate your browser is using to access the server.
 
 {INFO/}  
 
-![](images/read-only-certificates-3.png)
+![Manage Server view](images/read-only-certificates-3.png)
 
 {INFO: }
 
@@ -110,7 +110,7 @@ cluster topology can be viewed.
 
 {INFO/}
 
-![](images/read-only-certificates-4.png)
+![Tasks and Settings views](images/read-only-certificates-4.png)
 
 {INFO: }
 
@@ -124,7 +124,7 @@ restriced.
 
 {INFO/}
 
-![](images/read-only-certificates-5.png)
+![Indexes view](images/read-only-certificates-5.png)
 
 {INFO: }
 
