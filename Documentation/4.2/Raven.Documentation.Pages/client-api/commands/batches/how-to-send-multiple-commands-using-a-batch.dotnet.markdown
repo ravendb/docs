@@ -1,3 +1,4 @@
+
 # Batches: How to Send Multiple Commands Using a Batch
 ---
 
@@ -12,6 +13,7 @@ In this page:
 * [Example](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch#example)
 
 {NOTE/}
+
 ## Syntax
 
 {CODE batch_1@ClientApi\Commands\Batches\HowToSendMultipleCommandsUsingBatch.cs /}
