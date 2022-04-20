@@ -4,7 +4,8 @@
     "Name": "Overview",
     "DiscussionId": "ed9e00a0-d1bd-4fa4-bb47-585538a29f51",
     "Mappings": []
-  },{
+  },
+  {
     "Path": "revert-revisions.markdown",
     "Name": "Revert Revisions",
     "DiscussionId": "ed9e00a0-d1bd-4fa4-bb47-585538a29f51",

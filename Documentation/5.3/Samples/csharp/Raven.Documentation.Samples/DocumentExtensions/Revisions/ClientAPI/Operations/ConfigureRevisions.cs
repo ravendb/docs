@@ -14,116 +14,99 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
 
             using (var documentStore = new DocumentStore())
             {
-                #region default-and-collection-specific-configuration
-                documentStore.Maintenance.Send(new ConfigureRevisionsOperation(new RevisionsConfiguration
-                {
-                    // A default configuration that applies to all collections
-                    Default = new RevisionsCollectionConfiguration
-                    {
-                        // Enable Revisions
-                        Disabled = false,
-                        // Do not purge revisions of documents when the documents are deleted
-                        PurgeOnDelete = false,
-                        // Keep the 5 most recent revisions per document, purge older revisions
-                        MinimumRevisionsToKeep = 5,
-                        // Keep revisions created in the last 14 days, and purge older revisions
-                        MinimumRevisionAgeToKeep = TimeSpan.FromDays(14),
-                        // Even if MinimumRevisionsToKeep or MinimumRevisionAgeToKeep are exceeded,
-                        // purge no more than 15 revisions when the document is modified.
-                        MaximumRevisionsToDeleteUponDocumentUpdate = 15
-                    },
-                    // Collection-specific configurations that override the default configuration
-                    Collections = new Dictionary<string, RevisionsCollectionConfiguration>
-                    {
-                        // Enable Revisions for Users
-                        {"Users", new RevisionsCollectionConfiguration {Disabled = false}},
-                        // Disable Revisions for Orders
-                        {"Orders", new RevisionsCollectionConfiguration {Disabled = true}}
-                    }
-                }));
-                #endregion
-
                 using (var session = documentStore.OpenSession())
                 {
                     #region operation_sync
-                    // Create a configuration for the Employees collection
-                    var employeesRevConfig = new RevisionsCollectionConfiguration() 
+                    // Create a default configuration that will apply to all collections
+                    var defaultRevConfig = new RevisionsCollectionConfiguration()
                     {
-                        MinimumRevisionAgeToKeep = new TimeSpan(hours: 1, minutes: 23, seconds: 45),
+                        MinimumRevisionsToKeep = 100,
+                        MinimumRevisionAgeToKeep = new TimeSpan(days: 7, 0, 0, 0),
+                        PurgeOnDelete = false,
+
+                        // Even if MinimumRevisionsToKeep or MinimumRevisionAgeToKeep are exceeded,
+                        // purge no more than 15 revisions each time the document is modified.
+                        MaximumRevisionsToDeleteUponDocumentUpdate = 15
+                    };
+
+                    // Create a collection-specific configuration
+                    // that will override the default configuration for the Employees collection
+                    var employeesRevConfig = new RevisionsCollectionConfiguration()
+                    {
                         MinimumRevisionsToKeep = 42,
+                        MinimumRevisionAgeToKeep = new TimeSpan(hours: 1, minutes: 23, seconds: 45),
                         PurgeOnDelete = true
                     };
 
-                    // Create a configuration for the Products collection
+                    // Create a collection-specific configuration
+                    // that will override the default configuration for the Products collection
                     var productsRevConfig = new RevisionsCollectionConfiguration()
                     {
                         Disabled = true
                     };
 
-                    // Create a default collection configuration
-                    var defaultRevConfig = new RevisionsCollectionConfiguration()
+                    // Combine the configurations in a RevisionsConfiguration object
+                    var revConfig = new RevisionsConfiguration()
                     {
-                        MinimumRevisionAgeToKeep = new TimeSpan(days: 7, 0, 0, 0),
-                        MinimumRevisionsToKeep = 100,
-                        PurgeOnDelete = false
-                    };
+                        Default = defaultRevConfig,
 
-                    // Combine to create a configuration for the database
-                    var northwindRevConfig = new RevisionsConfiguration()
-                    {
                         Collections = new Dictionary<string, RevisionsCollectionConfiguration>()
                         {
                             { "Employees", employeesRevConfig },
                             { "Products", productsRevConfig }
-                        },
-
-                        Default = defaultRevConfig
+                        }
                     };
 
-                    // Execute the operation to update the database
-                    documentStore.Maintenance.Send(new ConfigureRevisionsOperation(northwindRevConfig));
+                    // Execute the operation to update Revisions settings
+                    documentStore.Maintenance.Send(new ConfigureRevisionsOperation(revConfig));
                     #endregion
                 }
 
                 using (var asyncSession = documentStore.OpenAsyncSession())
                 {
                     #region operation_async
-                    // Create a configuration for the Employees collection
+                    // Create a default configuration that will apply to all collections
+                    var defaultRevConfig = new RevisionsCollectionConfiguration()
+                    {
+                        MinimumRevisionsToKeep = 100,
+                        MinimumRevisionAgeToKeep = new TimeSpan(days: 7, 0, 0, 0),
+                        PurgeOnDelete = false,
+
+                        // Even if MinimumRevisionsToKeep or MinimumRevisionAgeToKeep are exceeded,
+                        // purge no more than 15 revisions each time the document is modified.
+                        MaximumRevisionsToDeleteUponDocumentUpdate = 15
+                    };
+
+                    // Create a collection-specific configuration
+                    // that will override the default configuration for the Employees collection
                     var employeesRevConfig = new RevisionsCollectionConfiguration()
                     {
-                        MinimumRevisionAgeToKeep = new TimeSpan(hours: 1, minutes: 23, seconds: 45),
                         MinimumRevisionsToKeep = 42,
+                        MinimumRevisionAgeToKeep = new TimeSpan(hours: 1, minutes: 23, seconds: 45),
                         PurgeOnDelete = true
                     };
 
-                    // Create a configuration for the Products collection
+                    // Create a collection-specific configuration
+                    // that will override the default configuration for the Products collection
                     var productsRevConfig = new RevisionsCollectionConfiguration()
                     {
                         Disabled = true
                     };
 
-                    // Create a default collection configuration
-                    var defaultRevConfig = new RevisionsCollectionConfiguration()
+                    // Combine the configurations in a RevisionsConfiguration object
+                    var revConfig = new RevisionsConfiguration()
                     {
-                        MinimumRevisionAgeToKeep = new TimeSpan(days: 7, 0, 0, 0),
-                        MinimumRevisionsToKeep = 100,
-                        PurgeOnDelete = false
-                    };
+                        Default = defaultRevConfig,
 
-                    // Combine to create a configuration for the database
-                    var northwindRevConfig = new RevisionsConfiguration()
-                    {
                         Collections = new Dictionary<string, RevisionsCollectionConfiguration>()
                         {
                             { "Employees", employeesRevConfig },
                             { "Products", productsRevConfig }
-                        },
-
-                        Default = defaultRevConfig
+                        }
                     };
 
-                    // Execute the operation to update the database
-                    await documentStore.Maintenance.SendAsync(new ConfigureRevisionsOperation(northwindRevConfig));
+                    // Execute the operation to update Revisions settings
+                    await documentStore.Maintenance.SendAsync(new ConfigureRevisionsOperation(revConfig));
                     #endregion
                 }
             }
