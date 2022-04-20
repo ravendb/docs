@@ -203,17 +203,18 @@ f. Click **External Replication** to access the following interface.
 
 ## Related Articles
 
-**Studio Articles**:  
-- [Hub/Sink Replication: Overview](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)  
-- [Replication Hub Task](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task)  
-- [Replication Sink Task](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task)  
+### Studio Articles
 
-**Server Articles**:  
+- [Hub/Sink Replication: Overview](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)
+- [Replication Hub Task](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task)
+- [Replication Sink Task](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task)
+
+### Server Articles
+
 - [Replication Conflicts](../../../../server/clustering/replication/replication-conflicts#configuring-conflict-resolution-using-the-client)
-- [Certificates Management](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates)  
-- [External Replication](../../../../server/ongoing-tasks/external-replication)  
-- [Client Certificate Usage](../../../../server/security/authentication/client-certificate-usage)  
+- [Certificates Management](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates)
+- [External Replication](../../../../server/ongoing-tasks/external-replication)
+- [Client Certificate Usage](../../../../server/security/authentication/client-certificate-usage)
 
-**Client API Articles**:  
-- [Adding a Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#operations-how-to-add-a-connection-string)  
-
+### Client API Articles
+- [Adding a Connection String](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#operations-how-to-add-a-connection-string)
