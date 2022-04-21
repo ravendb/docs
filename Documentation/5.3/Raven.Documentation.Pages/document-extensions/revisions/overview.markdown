@@ -30,8 +30,8 @@
 * In this page:  
   * [Revisions Configurations](../../document-extensions/revisions/overview#revisions-configurations)  
      * [Configurations Scope](../../document-extensions/revisions/overview#configurations-scope)  
-     * [Configurations Properties](../../document-extensions/revisions/overview#configurations-properties)  
      * [Defining Configurations](../../document-extensions/revisions/overview#defining-configurations)  
+     * [Configurations Properties](../../document-extensions/revisions/overview#configurations-properties)  
      * [Configurations Execution](../../document-extensions/revisions/overview#configurations-execution)  
      * [Enabling and Disabling Revisions for Existing Documents](../../document-extensions/revisions/overview#enabling-and-disabling-revisions-for-existing-documents)  
   * [How it Works](../../document-extensions/revisions/overview#how-it-works)  
@@ -44,6 +44,12 @@
 
 {PANEL: Revisions Configurations}
 
+**Revisions configurations** are introduced here in depth because in order to enable, 
+disable, or fine-tune the Revisions feature for a document, a Revisions configuration 
+has to be applied to the document's collection.  
+
+---
+
 #### Configurations Scope
 
 By default, the Revisions feature is **Disabled** for all collections: no revisions 
@@ -54,28 +60,10 @@ are created or purged for any document.
 * You can also define **collection-specific** configurations that apply only 
   to the collections they are defined for.  
   {NOTE: }
-  If you define both a default configuration and collection-specific configurations, 
-  a collection-specific configuration will **override** the default configuration 
-  for the collection it is defined for.  
+  If you apply both a default configuration and collection-specific configurations, 
+  collection-specific configurations will **override** the default configuration 
+  for the collections they are applied to.  
   {NOTE/}
-
----
-
-#### Configurations Properties
-
-A configuration defines -  
-
-* _Whether to Enable or Disable Revisions_.  
-  If the Revisions feature is Enabled for a collection, creating, modifying, 
-  or deleting any document of this collection will trigger the automatic Creation 
-  of a new document revision and optionally the Purging of existing revisions for 
-  the document.  
-  If the Revisions feature is Disabled for a collection, RavenDB will **not** 
-  automatically create or purge revisions for documents of this collection.  
-* _Whether to limit the number of revisions that can be kept per document_.  
-  RavenDB will only purge revisions if they exceed the limits you set here.  
-* Learn more [here](../../document-extensions/revisions/client-api/operations/configure-revisions#section-2) 
-  about configuration propertiers.  
 
 ---
 
@@ -95,6 +83,24 @@ Configurations can be created and applied using Studio or the API.
 
 ---
 
+#### Configurations Properties
+
+A configuration defines -  
+
+* _Whether to Enable or Disable Revisions_.  
+   * If the Revisions feature is **Enabled** for a collection, creating, modifying, 
+     or deleting any document of this collection will trigger the automatic Creation 
+     of a new document revision and optionally the Purging of existing revisions for 
+     the document.  
+   * If the Revisions feature is **Disabled** for a collection, RavenDB will **not** 
+     automatically Create or Purge revisions for documents of this collection.  
+* _Whether to Limit the number of revisions that can be kept per document_.  
+  RavenDB will only purge revisions if they exceed the limits you set here.  
+* [Learn more here](../../document-extensions/revisions/client-api/operations/configure-revisions#section-2) 
+  about the available configuration propertiers.  
+
+---
+
 #### Configurations Execution
 
 Creating a Revisions configuration does **not** immediately trigger its execution.  
@@ -104,8 +110,8 @@ Configurations are executed:
   When a document is created, modified or deleted the Revisions configuration that applies 
   to the document's collection is examined.  
   If the Revisions feature is enabled for this collection:  
-   * A revision of the document is created.  
-   * Revisions are potentially purged by limits set in the configuration.  
+   * A revision of the document will be created.  
+   * Revisions will optionally  be purged by limits set in the configuration.  
 
 2. **When [Enforce Configuration]() is applied**.  
   Enforcing Configuration triggers the immediate examination and execution 
@@ -120,14 +126,14 @@ Configurations are executed:
 
 #### Enabling and Disabling Revisions for Existing Documents
 
-* **Enabling Revisions** for a collection that is already populated with documents:  
-   * Revisions will **not** be created for the existing documents' initial versions.  
-   * The first revision will be created for an existing document when the document is modified or deleted.  
-     If the document was modified, its first revision will record its **modified version**.  
+* When the Revisions feature is **Enabled** for a populated collection:  
+  The first revision will be created for an existing document the next 
+  time the document is modified (recording the document **after** its 
+  modification), or when the document is deleted.  
 
-* **Disabling Revisions** for a collection after revisions were already created:  
-   * The creation of new revisions and the purging of existing revisions will cease.  
-   * Existing revisions will remain in storage.  
+* **Disabling Revisions** for a collection after revisions were created:  
+   * The creation of new revisions and the purging of existing revisions will stop.  
+   * Existing revisions will remain intact.  
 
 {PANEL/}
 
@@ -136,7 +142,7 @@ Configurations are executed:
 Let's go through the process of Revisions creation to get a taste of its advantages.  
 
 1. **Enable Revisions** so we can experiment with the feature.  
-   You can enable Revisions using [Studio](../../studio/database/settings/document-revisions) 
+   The Revisions feature can be enabled using [Studio](../../studio/database/settings/document-revisions) 
    or the [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions#syntax) 
    Store operation.  
    
