@@ -7,8 +7,8 @@
 * A document's revisions can be counted using the `session.Advanced.Revisions.GetCountFor` method.  
 
 * In this page:  
-   * [`GetCountFor`](../../../client-api/session/revisions/counting#getcountfor)  
-   * [Usage Sample](../../../client-api/session/revisions/counting#usage-sample)  
+   * [`GetCountFor`](../../../../document-extensions/revisions/client-api/session/counting#getcountfor)  
+   * [Usage Sample](../../../../document-extensions/revisions/client-api/session/counting#usage-sample)  
 
 {NOTE/}
 
@@ -41,14 +41,14 @@ Get the number of revisions created for a document:
 
 ### Session
 
-- [What are Revisions](../../../client-api/session/revisions/what-are-revisions)  
-- [Loading Revisions](../../../client-api/session/revisions/loading)  
+- [What are Revisions](../../../../client-api/session/revisions/what-are-revisions)  
+- [Loading Revisions](../../../../client-api/session/revisions/loading)  
 
 ### Operations
 
-- [Configure Revisions](../../../client-api/operations/revisions/configure-revisions)
-- [Get Revisions](../../../client-api/operations/revisions/get-revisions)
+- [Configure Revisions](../../../../client-api/operations/revisions/configure-revisions)
+- [Get Revisions](../../../../client-api/operations/revisions/get-revisions)
 
 ### Server
 
-- [Revisions](../../../server/extensions/revisions)
+- [Revisions](../../../../server/extensions/revisions)

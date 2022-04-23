@@ -6,11 +6,11 @@
 
 * **Get** and **Count** a document's revisions using the `GetRevisionsOperation` store operation.  
 * To **Count** a document's revisions without getting them, use the 
-  [GetCountFor](../../../client-api/session/revisions/counting) session method.  
+  [GetCountFor](../../../../document-extensions/revisions/client-api/session/counting) session method.  
 
 * In this page:  
-  * [`GetRevisionsOperation`](../../../client-api/operations/revisions/get-revisions#getrevisionsoperation)  
-  * [Usage Samples](../../../client-api/operations/revisions/get-revisions#usage-samples)  
+  * [`GetRevisionsOperation`](../../../../document-extensions/revisions/client-api/operations/get-revisions#getrevisionsoperation)  
+  * [Usage Samples](../../../../document-extensions/revisions/client-api/operations/get-revisions#usage-samples)  
 
 {NOTE/}
 
@@ -90,13 +90,13 @@ wrapped in a `Parameters` object:
 
 ### Operations
 
-- [Configure Revisions](../../../client-api/operations/revisions/configure-revisions)
+- [Configure Revisions](../../../../client-api/operations/revisions/configure-revisions)
 
 ### Session
 
-- [What Are Revisions](../../../client-api/session/revisions/what-are-revisions)
-- [Counting Revisions](../../../client-api/session/revisions/counting)
+- [What Are Revisions](../../../../client-api/session/revisions/what-are-revisions)
+- [Counting Revisions](../../../../client-api/session/revisions/counting)
 
 ### Server
 
-- [Revisions](../../../server/extensions/revisions)
+- [Revisions](../../../../server/extensions/revisions)

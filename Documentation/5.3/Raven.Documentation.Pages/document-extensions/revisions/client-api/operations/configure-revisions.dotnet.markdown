@@ -4,21 +4,28 @@
 
 {NOTE: }
 
-* [Revisions configurations](../../../../document-extensions/revisions/overview#revisions-configurations) 
-  determine whether [revisions](../../../../document-extensions/revisions/overview) 
-  would be automatically created or not, and whether to limit the number of revisions kept per document.  
+* Use the [ConfigureRevisionsOperation](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section) 
+  Store operation to apply a [Revisions configuration](../../../../document-extensions/revisions/overview#database-revisions-configuration) 
+  to the database.  
 
-* You can apply a **default configuration** to all database collections.  
-  You can also apply **collection-specific configurations** that would override 
-  the default configuration only for the collections you apply them to.  
+* A Revisions configuration is comprised of a Default configuration and/or Collection-specific configurations.  
+   * A **Default configuration** configures Revisions settings for all database collections.  
+   * **Collection-specific configurations** override the default configuration for the collections 
+     they are applied to.  
 
-    This way you can, for example, easily enable revisions for all collections but one 
-    (by applying a default configuration that enables Revisions for all collections, 
-    and a collection-specific configuration that disables the feature for a single collection).  
+* The Default and Collection-specific configurations are defined in 
+  [RevisionsCollectionConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-2) 
+  objects.  
 
-* Revisions configurations are **defined** using `RevisionsConfiguration` and `RevisionsCollectionConfiguration` objects.  
-  Revisions configurations are **applied** using the `ConfigureRevisionsOperation` Store operation.  
+* All `RevisionsCollectionConfiguration` objects are gathered in a single 
+  [RevisionsConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-1) 
+  object.  
+  There is one `RevisionsConfiguration` object per database, stored in the database record.  
 
+* The `RevisionsConfiguration` object is passed to the 
+  [ConfigureRevisionsOperation](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section) 
+  Store operation and applied to the database when the operation is executed, **replacing** the current 
+  Revisions configuration in the database record.  
 
 * In this page:  
  * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions#syntax)  
@@ -66,6 +73,7 @@ configuration for the collections they are defined for.
 ### `RevisionsCollectionConfiguration`
 
 This object contains a collection-specific Revisions configuration.  
+It can also be used to define the default configuration for all database collections.  
 {CODE:csharp RevisionsCollectionConfiguration_definition@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisionsDefinitions.cs /}
 
 * **Properties**  
@@ -99,22 +107,18 @@ To apply a Revisions configuration to all and/or specific collections, follow th
    object for every collection you want to set Revisions for.  
 2. If you want to define a default configuration, create a 
    `RevisionsCollectionConfiguration` object for it.  
-3. Add the `RevisionsCollectionConfiguration` objects to a 
+3. Add all the `RevisionsCollectionConfiguration` objects you created to a 
    [RevisionsConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-1) 
    object.  
 4. Pass the `RevisionsConfiguration` object to the 
    [ConfigureRevisionsOperation](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section) 
    Store operation.  
-   Running this method will apply the Revisions configuration.  
-
-{WARNING: }
-**Note** that sending your Revisions configuration to the server 
-will **replace** the existing default and collection-specific configurations.  
-If you want to **modify** the existing configuration (e.g. by 
-adding it a collection-specific configuration, or modifying 
-the default configuration), **retrieve and edit** the existing 
-configuration [as shown here](../../../../document-extensions/revisions/client-api/operations/configure-revisions#example-ii---modify-existing-configuration).  
-{WARNING/}
+   Executing the operation will replace the Revisions configuration in thedatabase record.  
+   {WARNING: }
+    If you want to **modify** the existing configuration rather than replace it,  
+    retrieve the current configuration and edit it 
+    [as shown here](../../../../document-extensions/revisions/client-api/operations/configure-revisions#example-ii---modify-existing-configuration).  
+    {WARNING/}
 
 {PANEL/}
 
@@ -122,9 +126,9 @@ configuration [as shown here](../../../../document-extensions/revisions/client-a
 
 ### Example I - Replace Existing Configuration
 
-In this example we **replace** the entire Revisions configuration that the server 
-currently applies with our own settings (that include a default configuration 
-and two collection-specific configurations).  
+In this example we **replace** the existing Revisions configuration 
+(if there is one) with our own, that applies a default configuration 
+and two collection-specific configurations.  
 
 {INFO: }
 Note that the configuration is applied to the Document Store's [default database](../../../../client-api/setting-up-default-database).  
@@ -141,13 +145,13 @@ To configure a different database, use the
 
 ### Example II - Modify Existing Configuration
 
-In this example we **modify** the Revisions configuration that the server 
-currently applies.  
+In this example we **modify** the existing Revisions configuration 
+(if there is one) default and collection-specific configurations.  
+
 We retrieve the existing configuration from the database record, 
 and check its contents.  
-If the existing configuration is empty, we simply define a new configuration.  
-If the existing configuration is populated, we modify it (replacing its default 
-configuration with our own and replacing or adding two collection-specific configurations.  
+If the existing configuration is empty, we define a new configuration.  
+If the existing configuration is populated, we modify it.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync update-existing-configuration_sync@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}

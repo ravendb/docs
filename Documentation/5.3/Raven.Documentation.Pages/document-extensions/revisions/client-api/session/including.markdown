@@ -4,7 +4,7 @@
 {NOTE: }
 
 * A document's **Revisions** can be 
-  [Included](../../../client-api/how-to/handle-document-relationships#includes) 
+  [Included](../../../../client-api/how-to/handle-document-relationships#includes) 
   with the document.  
   The included revisions are retrieved when the document is loaded, without 
   requiring additional trips to the server.  
@@ -14,19 +14,20 @@
    * Queried using `Session.Query`  
    * Queried using `Session.Advanced.RawQuery`  
 
-- [Including Revisions](../../../client-api/session/revisions/including#including-revisions)  
-   - [Including Revisions By Time](../../../client-api/session/revisions/including#including-revisions-by-time)  
-   - [Including Revisions By Change Vector](../../../client-api/session/revisions/including#including-revisions-by-change-vector)  
-   - [`IncludeRevisions`](../../../client-api/session/revisions/including#section)  
-- [Including Revisions With `Session.Load`](../../../client-api/session/revisions/including#including-revisions-with-session.load)  
-   - [By Time](../../../client-api/session/revisions/including#load-include-revisions-by-time)  
-   - [By Change Vector](../../../client-api/session/revisions/including#load-include-revisions-by-change-vector)  
-- [Including Revisions With `Session.Query`](../../../client-api/session/revisions/including#including-revisions-with-session.query)  
-   - [By Time](../../../client-api/session/revisions/including#query-include-revisions-by-time)  
-   - [By Change Vector](../../../client-api/session/revisions/including#query-include-revisions-by-change-vector)  
-- [Including Revisions with `Session.Advanced.RawQuery`](../../../client-api/session/revisions/including#including-revisions-with-session.advanced.rawquery)  
-   - [By Time](../../../client-api/session/revisions/including#raw-query-include-revisions-by-time)  
-   - [By Change Vector](../../../client-api/session/revisions/including#raw-query-include-revisions-by-change-vector)  
+* In this page:  
+  * [Including Revisions](../../../../document-extensions/revisions/client-api/session/including#including-revisions)  
+      * [Including Revisions By Time](../../../../document-extensions/revisions/client-api/session/including#including-revisions-by-time)  
+      * [Including Revisions By Change Vector](../../../../document-extensions/revisions/client-api/session/including#including-revisions-by-change-vector)  
+      * [`IncludeRevisions`](../../../../document-extensions/revisions/client-api/session/including#section)  
+  * [Including Revisions With `Session.Load`](../../../../document-extensions/revisions/client-api/session/including#including-revisions-with-session.load)  
+      * [By Time](../../../../document-extensions/revisions/client-api/session/including#load-include-revisions-by-time)  
+      * [By Change Vector](../../../../document-extensions/revisions/client-api/session/including#load-include-revisions-by-change-vector)  
+  * [Including Revisions With `Session.Query`](../../../../document-extensions/revisions/client-api/session/including#including-revisions-with-session.query)  
+      * [By Time](../../../../document-extensions/revisions/client-api/session/including#query-include-revisions-by-time)  
+      * [By Change Vector](../../../../document-extensions/revisions/client-api/session/including#query-include-revisions-by-change-vector)  
+  * [Including Revisions with `Session.Advanced.RawQuery`](../../../../document-extensions/revisions/client-api/session/including#including-revisions-with-session.advanced.rawquery)  
+      * [By Time](../../../../document-extensions/revisions/client-api/session/including#raw-query-include-revisions-by-time)  
+      * [By Change Vector](../../../../document-extensions/revisions/client-api/session/including#raw-query-include-revisions-by-change-vector)  
 
 {NOTE/}
 
@@ -38,7 +39,7 @@ When it is known prior to the retrieval of a document that its revisions may
 be needed, the revisions can be **Included** so they'd be loaded along with the 
 document without requiring additional trips to the server.  
 
-When the document is loaded, [Loading](../../../client-api/session/revisions/loading) 
+When the document is loaded, [Loading](../../../../document-extensions/revisions/client-api/session/loading) 
 any of its included revisions will retrieve them from memory rather than from the server.  
 
 This may be useful when, for example, a document that contains financial data 
@@ -53,10 +54,10 @@ Revisions can be Included by their **Creation Time** or **Change Vector**.
 
 To include **a single revision** by its **creation time** -  
 Pass a `DateTime` value to 
-[Session.Load](../../../client-api/session/revisions/including#including-revisions-with-session.load) 
-or [Session.Query](../../../client-api/session/revisions/including#including-revisions-with-session.query) 
+[Session.Load](../../../../document-extensions/revisions/client-api/session/including#including-revisions-with-session.load) 
+or [Session.Query](../../../../document-extensions/revisions/client-api/session/including#including-revisions-with-session.query) 
 using `IncludeRevisions` (see below),  
-or to a [Raw Query](../../../client-api/session/revisions/including#including-revisions-with-session.advanced.rawquery) 
+or to a [Raw Query](../../../../document-extensions/revisions/client-api/session/including#including-revisions-with-session.advanced.rawquery) 
 using `.AddParameter`.  
 
 * If the provided time matches the creation time of a document revision, this revision will be included.  
@@ -72,7 +73,7 @@ using `.AddParameter`.
 
 #### Including Revisions By Change Vector
 
-Each time a document is modified, its [Change Vector](../../../server/clustering/replication/change-vector) 
+Each time a document is modified, its [Change Vector](../../../../server/clustering/replication/change-vector) 
 is revised to trigger the document's replication, backup, etc.  
 While the **Revisions** feature is enabled, each new document revision keeps the document's 
 change vector at the time of its creation.  
@@ -82,10 +83,10 @@ To do so:
 1. Store helpful change vectors in advance, in a property of the document.  
 2. When you want to include revisions by their change vector -  
    Pass the **path** to the document property to 
-   [Session.Load](../../../client-api/session/revisions/including#including-revisions-with-session.load) 
-   or [Session.Query](../../../client-api/session/revisions/including#including-revisions-with-session.query) 
+   [Session.Load](../../../../document-extensions/revisions/client-api/session/including#including-revisions-with-session.load) 
+   or [Session.Query](../../../../document-extensions/revisions/client-api/session/including#including-revisions-with-session.query) 
    via `IncludeRevisions` (see below),  
-   or to a [Raw Query](../../../client-api/session/revisions/including#including-revisions-with-session.advanced.rawquery) 
+   or to a [Raw Query](../../../../document-extensions/revisions/client-api/session/including#including-revisions-with-session.advanced.rawquery) 
    using `.AddParameter`.  
 
 {NOTE: }
@@ -121,7 +122,7 @@ and `Session.Query`, using one of the `IncludeRevisions` methods.
 #### Load: Include Revisions by Time
 
 To include a **single revision** by its **creation time**, pass `IncludeRevisions` the time.  
-The revision whose creation time [matches or immediately precedes](../../../client-api/session/revisions/including#including-revisions-by-time) 
+The revision whose creation time [matches or immediately precedes](../../../../document-extensions/revisions/client-api/session/including#including-revisions-by-time) 
 that of the given time will be included.  
 
 {CODE IncludeRevisions_2_LoadByTime@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
@@ -149,9 +150,9 @@ that of the given time will be included.
 {PANEL: Including Revisions With `Session.Query`}
 
 * To include a revision by time, pass `IncludeRevisions` a 
-  [DateTime value](../../../client-api/session/revisions/including#including-revisions-by-time).  
+  [DateTime value](../../../../document-extensions/revisions/client-api/session/including#including-revisions-by-time).  
 * To include a single revision or a group of revisions by change vectors, pass 
-  `IncludeRevisions` a [path](../../../client-api/session/revisions/including#including-revisions-by-change-vector) 
+  `IncludeRevisions` a [path](../../../../document-extensions/revisions/client-api/session/including#including-revisions-by-change-vector) 
   to a property of the loaded document, that stores change vectors.  
 
 #### Query: Include Revisions by Time
@@ -186,10 +187,10 @@ that of the given time will be included.
 
 ### Client API
 
-- [What are Revisions](../../../client-api/session/revisions/what-are-revisions)
-- [Loading Revisions](../../../client-api/session/revisions/loading)
-- [Include](../../../client-api/how-to/handle-document-relationships#includes)
+- [What are Revisions](../../../../client-api/session/revisions/what-are-revisions)
+- [Loading Revisions](../../../../client-api/session/revisions/loading)
+- [Include](../../../../client-api/how-to/handle-document-relationships#includes)
 
 ### Server
 
-- [Revisions](../../../server/extensions/revisions)
+- [Revisions](../../../../server/extensions/revisions)

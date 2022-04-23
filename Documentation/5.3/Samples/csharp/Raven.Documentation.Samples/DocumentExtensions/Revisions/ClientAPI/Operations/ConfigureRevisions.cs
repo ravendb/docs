@@ -181,11 +181,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                     {
                         configuration.Default = defaultRevConfig;
 
-                        // Remove collection configurations in case they already exist, and then add them
-                        configuration.Collections.Remove("Employees");
-                        configuration.Collections.Add("Employees", employeesRevConfig);
-                        configuration.Collections.Remove("Products");
-                        configuration.Collections.Add("Products", productsRevConfig);
+                        configuration.Collections["Employees"] = employeesRevConfig;
+                        configuration.Collections["Products"] = productsRevConfig;
                     }
 
                     // Update the configuration
@@ -263,11 +260,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                     {
                         configuration.Default = defaultRevConfig;
 
-                        // Remove collection configurations in case they already exist, and then add them
-                        configuration.Collections.Remove("Employees");
-                        configuration.Collections.Add("Employees", employeesRevConfig);
-                        configuration.Collections.Remove("Products");
-                        configuration.Collections.Add("Products", productsRevConfig);
+                        configuration.Collections["Employees"] = employeesRevConfig;
+                        configuration.Collections["Products"] = productsRevConfig;
                     }
 
                     // Update the configuration
