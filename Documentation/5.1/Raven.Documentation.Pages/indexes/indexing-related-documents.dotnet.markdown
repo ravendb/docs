@@ -10,10 +10,12 @@
   is an alternative session CRUD method that can pull data from related documents while reducing expensive trips to the disk.  
 
 * People who are accustomed to relational models but want the agility and efficiency of document-based models 
-  should understand that [documents are most effective when they stand on their own](LINK TO ARTICLE/VIDEO HERE) 
+  should understand that [documents are most effective when they generally stand on their own](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling) 
   and [relations are harmless exceptions](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/10-static-indexes-and-other-advanced-options#indexing-referenced-data) to the rule.
 
-{INFO Indexes are updated automatically whenever related documents change. /}
+{INFO: Important} 
+Indexes are updated automatically whenever related documents change. 
+{INFO/}
 
 {WARNING: Linking Many Documents to a Constantly Changing Document}
 `LoadDocument` can be a useful way to enable rapid querying of related documents by having 
@@ -21,7 +23,8 @@ an index do the work behind the scenes.
 
 However, it has a performance cost if you frequently modify documents that are referenced by many other documents. 
 Referencing frequently changed documents will repeatedly trigger background indexing on every related document. 
-This can tax system resources and cause slow, stale indexing. 
+This can tax system resources and cause slow, stale indexing.  
+Consider using [Include( )](../client-api/session/loading-entities#load-with-includes) instead.  
 {WARNING/}
 
 In this page:
@@ -31,13 +34,13 @@ In this page:
 
 {NOTE/}
 
-## Example I
+{PANEL: Example I}
 
 Let's consider a simple `Product - Category` scenario where you want to look for a `Product` by `Category Name`.
 
 ![Product-Category Link in JSON Documents](images/products-categories-link.png "Product-Category Link in JSON Documents")
 
-Without `LoadDocument`, you would have to create a fairly complex multiple map-reduce index.  
+Without `LoadDocument`, you would have to create a fairly complex Multi-Map-Reduce index.  
 This is why the `LoadDocument` function was introduced.
 
 {CODE-TABS}
@@ -65,8 +68,9 @@ where CategoryName == "Beverages"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+{PANEL/}
 
-## Example II
+{PANEL: Example II}
 
 Our next scenario will show us how indexing more complex relationships is also straightforward.  
 Let's consider the following case where we'll want to query two related documents:
@@ -84,6 +88,8 @@ To create an index with `Author Name` and list of `Book Names`, we need do the f
 We can now query the index by specifying fields from related documents. 
 
 {CODE indexing_related_documents_8@Indexes\IndexingRelatedDocuments.cs /}
+
+{PANEL/}
 
 ## Related Articles
 
@@ -112,6 +118,7 @@ We can now query the index by specifying fields from related documents.
 
 ## Inside RavenDB
 
+- [Document Modeling](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling)
 - [Session CRUD Operations - Include](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/2-zero-to-ravendb#includes)
 - [Indexing Referenced Data](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/10-static-indexes-and-other-advanced-options#indexing-referenced-data)
 
