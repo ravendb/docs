@@ -12,7 +12,7 @@
   only if the Revisions feature is enabled for the document's collection.  
   To enable or disable the Revisions feature for collections, and to set 
   limits for the number of revisions that can be kept per document, 
-  apply a [Revisions configuration](../../document-extensions/revisions/overview#database-revisions-configuration) 
+  apply a [Revisions configuration](../../document-extensions/revisions/overview#revisions-configuration) 
   to the database.  
   all and/or specific collections.  
 
@@ -29,7 +29,7 @@
 * Revisions and their configurations can be managed via API methods or using Studio.  
 
 * In this page:  
-  * [Database Revisions Configuration](../../document-extensions/revisions/overview#database-revisions-configuration)  
+  * [Revisions Configuration](../../document-extensions/revisions/overview#revisions-configuration)  
      * [Default and Collection-Specific Configurations](../../document-extensions/revisions/overview#default-and-collection-specific-configurations)  
      * [Defining a Revisions Configuration](../../document-extensions/revisions/overview#defining-a-revisions-configuration)  
      * [Revisions Configuration Properties](../../document-extensions/revisions/overview#revisions-configuration-properties)  
@@ -43,7 +43,7 @@
 
 ---
 
-{PANEL: Database Revisions Configuration}
+{PANEL: Revisions Configuration}
 
 By default, the Revisions feature is **Disabled** for all collections: no revisions 
 are created or purged for any document.  
@@ -201,6 +201,8 @@ field of more than 128 bytes is compressed.
 
 {NOTE: }
 Learn [here](../../server/storage/documents-compression) how to apply Document Compression to revisions.  
+Learn [here](../../server/configuration/database-configuration#databases.compression.compressrevisionsdefault) 
+how to compress revisions by default.  
 {NOTE/}
 
 

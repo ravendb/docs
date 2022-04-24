@@ -5,7 +5,7 @@
 {NOTE: }
 
 * Use the [ConfigureRevisionsOperation](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section) 
-  Store operation to apply a [Revisions configuration](../../../../document-extensions/revisions/overview#database-revisions-configuration) 
+  Store operation to apply a [Revisions configuration](../../../../document-extensions/revisions/overview#revisions-configuration) 
   to the database.  
 
 * A Revisions configuration is comprised of a Default configuration and/or Collection-specific configurations.  
