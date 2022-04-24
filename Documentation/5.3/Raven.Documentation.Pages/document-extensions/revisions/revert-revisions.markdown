@@ -4,27 +4,36 @@
 
 {NOTE: }
 
-* The **Revert Revisions** option attempts to bring your database back 
-  to its state at a specified point of time.  
-  To achieve it:  
-   * Documents are given new revisions that copy their historic 
-     revisions, effectively replacing their live versions with the 
-     historic ones.  
-   * Documents that did not exist at the specified time are deleted.  
+* **Revert Revisions** is a Studio operation that allows you to return 
+  the database to its state at a specified point in time.  
+  To achieve this:  
+   * Document revisions at the specified point in time are retrieved
+     and saved, creating a new revision and effectively replacing the 
+     live document version.  
+     If a revision that matches the specified point in time is not found 
+     for a document, its latest revision preceding that time is used.  
+   * Documents that did not exist at the specified point in time are 
+     deleted.  
 
-* The accuracy in which the database can be reverted to any of its 
-  historic states depends upon the frequency in which documents were 
-  revisioned.  
+     {WARNING: Enable Revisions before executing Revert Revisions.}
+     If you want the operation to be revertible, you must enable Revisions 
+     for collections in which documents may be reverted or deleted.  
+     If revisions were created for all documents, you'll be able to 
+     revert the whole operation simply by repeating it and specifying 
+     a point in time just before you executed the operation.  
+     If revisions were **not** created for documents, their revertion 
+     or deletion will be final.  
+     {WARNING/}
 
 * Being able to bring the database back to any of its historic states 
-  can, for example, ease database auditing, help understand document 
-  changes in their historical context, and instantly restore the 
-  database without requiring restoration from backup (so a DB admin 
-  can experiment with potentially damaging operations like patching 
-  without fearing the consequences).  
+  can, for example, ease database auditing, help understand changes made 
+  in documents in their historical context, and instantly restore the 
+  database to one of its past states without searching and restoring 
+  a stored backup.  
   
-* The operation can be reversed by repeating it while specifying 
-  a point of time that preceded the "Revert Revisions" operation.  
+* The accuracy in which the database can be reverted to one of its
+  historic states depends upon the frequency in which documents have 
+  been revisioned.  
 
 * In this page:  
    * [Revert Revisions](../../document-extensions/revisions/revert-revisions#revert-revisions)  
@@ -35,37 +44,29 @@
 
 {PANEL: Revert Revisions}
 
-Allow to revert the database to a specific point in time.
+To Revert Revisions, reverting the database to a specified point in time, 
+open the Studio Settings > **Document Revisions** View.  
 
-{INFO: }
+![Document Revisions View](images/revert-revisions-1.png "Document Revisions View")
 
-This feature is available only if [Revisions](../../server/extensions/revisions) are enabled.
+1. **Document Revisions View**  
+   Click to configure and Revert revisions.  
+2. **Revisions Configuration**  
+   Make sure Revisions is Enabled before executing Revert Revisions, 
+   by creating default and/or collection-specific configurations for 
+   collections that may be affected when Revert Revisions is executed.  
+3. **Revert Revisions**  
+   Click to specify a point in time to revert the database to.  
 
-{INFO/}
+---
 
-You can find this option under the `Document Revisions` in the studio:
+![Revert Revisions](images/revert-revisions-2.png "Revert Revisions")
 
-![Figure 1.](images/revert-revisions.png)  
-
-<br>
-
-Clicking on `Revert Revision` will open the the following window:
-
-![Figure 2.](images/revert-revisions-2.png)
-
-| Name   |      Description      |  Value Type |
-|----------|-------------|------|
-| `Point in Time` |  Roll back all of the documents to the version at the specified time. | `DateTime` |
-| `Window` |    Window parameter is used for performance optimization: since revisions are not sorted by date, we stop the revert process when hitting a versioned document outside the window.  |   `long` (default: 96 * 3,600) |
-
-
-
-For example when reverting to the point in time of `16/03/2019 09:55 UTC` the following rules are applied:
-
-* Documents modified after `16/03/2019 09:55 UTC` will be reverted (by creating new revision) to latest version before `16/03/2019 09:55 UTC`.
-* If collection has maximum revisions limit and all of them were created after `16/03/2019 09:55 UTC` the oldest revision will be used.
-* Documents created after `16/03/2019 09:55 UTC` will be deleted and moved to Revisions Bin.
-* Remaining documents will not be modified.
+1. **Point in Time**  
+   Click to specify the point in time that documents will roll back to.  
+2. **Time Window**  
+   The Time Window value is used for performance optimization.  
+   By default, it is set to 96 hours.  
 
 {PANEL/}
 

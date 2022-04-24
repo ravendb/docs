@@ -13,7 +13,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
             {
                 using (var session = store.OpenSession())
                 {
-                    #region example
+                    #region revisions-and-other-features_counters
+                    // Use GetMetadataFor to get revisions metadata
                     List<MetadataAsDictionary> orderRevisionsMetadata =
                         session
                             .Advanced
@@ -23,6 +24,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
                                 start: 0,
                                 pageSize: 10);
 
+                    // Extract counters data from the metadata
                     List<MetadataAsDictionary> orderCountersSnapshots = 
                         orderRevisionsMetadata
                             .Where(metadata => 

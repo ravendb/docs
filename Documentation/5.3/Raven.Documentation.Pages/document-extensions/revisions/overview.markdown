@@ -199,26 +199,16 @@ in the same **blittable JSON document** format as that of regular documents.
 The compression of individual fields is enabled as for regular documents: any text 
 field of more than 128 bytes is compressed.  
 
+{NOTE: }
+Learn [here](../../server/storage/documents-compression) how to apply Document Compression to revisions.  
+{NOTE/}
+
+
 ### Revisions Document Extensions Storage
 
-* **Time Series**  
-  The revisions of a document that owns time series do **not** store the time series 
-  data, but include in their metadata a **timeseries-snapshot** with some information 
-  regarding the time series at the time of the revisions creation.  
-  Read [here](../../document-extensions/timeseries/time-series-and-other-features#revisions) 
-  more about time series and revisions.  
-
-* **Counters**  
-  The revisions of a document that owns counters contain the counters' **names and values** 
-  at the time of the revisions creation.  
-  Read [here](../../document-extensions/counters/counters-and-other-features#counters-and-revisions) 
-  more about counters and revisions.  
-  
-* **Attachments**  
-  The revisions of a document that owns **attachments** contain **references** 
-  to the attachments in RavenDB's storage, without replicating the attachments.  
-  An attachment will be removed from RavenDB's storage only when no live 
-  documents or document revisions refer to it.  
+Read [here](../../document-extensions/revisions/revisions-and-other-features#revisions-and-time-series) about revisions and **time series**.  
+Read [here](../../document-extensions/revisions/revisions-and-other-features#revisions-and-counters) about revisions and **counters**.  
+Read [here](../../document-extensions/revisions/revisions-and-other-features#revisions-and-attachments) about revisions and **attachments**.  
 
 {PANEL/}
 
