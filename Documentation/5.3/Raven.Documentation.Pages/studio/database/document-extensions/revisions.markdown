@@ -3,64 +3,92 @@
 
 {NOTE: }
 
-* The **Revisions** feature will create a revision (snapshot) of a document 
-  every time the document is updated and upon its deletion.  
-  Once revisions are created for a document, you can observe them and revert 
-  the document's live version to any of its past revisions.  
-* Tracking document revisions allows you, for example, to check how an employee's 
-  contract has changed over time, revert a single corrupted document without restoring 
-  a backup, or conduct a full-scale audit.  
-* Revisions can be enabled for **all collections** or for **specific collections**.  
-* Old revisions can be **automatically purged** to free storage space.  
-* Revisions can be configured using API methods or via Studio.  
+* [Document Revisions](../../../document-extensions/revisions/overview) 
+  are snapshots of documents, that can be created automatically upon 
+  document creation, modification, or deletion and can be used for data 
+  auditing, instant restoration after document corruption, and various 
+  other uses.  
+* This page describes the Document View 
+  [Revisions tab](../../studio/database/document-extensions/revisions), 
+  that shows each document's revisions trail and can be used to inspect, 
+  administer, and create revisions.  
+* Find [here](../../../document-extensions/revisions/overview#how-it-works) 
+  a dynamic walkthrough that demonstrates revisions management.  
 
-* In this page:  
-  * [Configuration](../../document-extensions/revisions/overview#configuration)  
-     * [Via Studio](../../document-extensions/revisions/overview#configuring-revisions-using-studio)  
-     * [Via API](../../document-extensions/revisions/overview#configuring-revisions-using-the-client-api)  
-  * [How it Works](../../document-extensions/revisions/overview#how-it-works)  
-  * [Enabling or Disabling on an Existing Database](../../document-extensions/revisions/overview#enabling-or-disabling-on-an-existing-database)  
-  * [Storage Concerns](../../document-extensions/revisions/overview#storage-concerns)  
-  * [Force Revision Creation](../../document-extensions/revisions/overview#force-revision-creation)  
+* In this page:
+  * [Revisions Tab](../../../studio/database/document-extensions/revisions#revisions-tab)
+  * [Revision Inspection](../../../studio/database/document-extensions/revisions#revision-inspection)
+  * [Revisions Comparison](../../../studio/database/document-extensions/revisions#revisions-comparison)
 
 {NOTE/}
 
 ---
 
-{PANEL: How it Works}
+{PANEL: Revisions Tab}
 
-![Figure 1: Revisions](images\revisions\revisions1.png "Figure 1: Revisions")
+A document's Revisions tab displays the full trail of revisions created for the document, 
+allowing you to inspect each revision, force the creation of a new revision, and compare 
+revisions to the live document version.  
+
+![Revisions Tab](images/revisions/document-revisions.png "Revisions Tab")
+
+1. [document view](../../../studio/database/documents/document-view) > **Revisions tab**  
+   Click to display the document's Revisions tab.  
+   Revisions are listed in the Revisions tab by their creation time signatures.  
+2. **Create Revision**  
+   Click to create a new revision for this document.  
+   [Learn here](../../../document-extensions/revisions/overview#force-revision-creation) 
+   about forcing the creation of a new revision via Studio or the API.  
+3. **A Revision**  
+   Click to inspect this revision.  
+4. **Compare Revision**  
+   Click to compare this revision with the current live version of this document.  
+
+{PANEL/}
+
+{PANEL: Revision Inspection}
+
+![Click to Inspect](images/revisions/click-revision.png "Click to Inspect")
+
+* **Click a revision time signature** to inspect the revision's contents.  
+
+---
+
+![Revision Inspection](images/revisions/revision-inspection.png "Revision Inspection")
+
+1. **Clone**  
+   Click to create a document that replicates the revision's contents.  
+   Cloning the revision using the same ID as its parent document will revert the document to this revision.  
+2. **See the current document**  
+   Click to return to the revision's parent document view.  
+3. **Revision Inspection Box**  
+   The revision is displayed in read-only mode.  
+
+{PANEL/}
 
 
-This is a revision of the document (you can navigate to the document by clicking on `See the current document`) which is stored on the revisions storage.
-Now, let's modify the original document. This would create another revision:
+{PANEL: Revisions Comparison}
 
-![Figure 2: Revisions, Modified](images\revisions\revisions2.png "Figure 2: Revisions, Modified")
+![Click to Compare](images/revisions/click-to-compare.png "Click to Compare")
 
-As you can see, we have a full audit record of all the changes that were made to the document.
+* Click a revision's Comparison button to compare it with other revisions.  
 
-You can access the revisions of a specific document by the document's ID ("users/1").
-Or you can access a specific revision by its change vector or by a specific date.
-Accessing a revision by a change vector would return a specific revision, 
-while accessing a revision by a date would return the revision on this specific date if exists,
-and if not it would return the revision right before this date.
+---
 
-Now, let's delete the document. 
-The document would be removed but a revision will be created, so you aren't going to lose the audit trail if the document is deleted.
+![Revision Comparison](images/revisions/revision-comparison.png "Revision Comparison")
 
-In order to see orphaned revisions (revisions of deleted documents), you can go to the `Documents > Revisions Bin` section in the studio, 
-which would list all revisions without existing document:
+1. **Exit revisions compare mode**  
+   Click to exit the comparison window and return to the Revisions tab in the Document View.  
+2. **Compare with**  
+   Click to select a revision to compare with.  
+   ![Compare-with Drop List](images/revisions/compare-with-drop-list.png "Compare-with Drop List")
+3. **Left-hand revision**  
+   The left-hand view displays the revision selected in the Revisions tab.  
+4. **Right-hand revision**  
+  The right-hand view displays the revision selected using the "Compare with" drop down list.  
+5. **Summary line**  
+  This line summarizes the differences found between the two revisions.  
 
-![Figure 3: Revisions, Deleted](images\revisions\revisions3.png "Figure 3: Revisions, Deleted")
-
-If you'll go and create another document with this ID (users/1), then the revision won't be shown anymore in the Revision Bin section, 
-but you can navigate to the document and see it's revisions, including the deleted ones.
-
-Clicking on the revision we can also navigate to the other revisions of this document:
-
-![Figure 4: Revisions, Deleted - other revisions](images\revisions\revisions4.png "Figure 4: Revisions, Deleted - other revisions")
-
-The revisions feature attempts to make things as simple as possible. Once it is enabled, you'll automatically get the appropriate audit trail.
 
 {PANEL/}
 

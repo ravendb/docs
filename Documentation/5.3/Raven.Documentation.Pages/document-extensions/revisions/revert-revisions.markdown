@@ -90,8 +90,8 @@ To Revert Revisions, open the Studio Settings > **Document Revisions** view.
       RavenDB goes through the document's revisions in the revisions storage, 
       where revisions are ordered by change vector, not by creation time.  
     * The **Time Window** value sets a limit to the search.  
-      If a revision whose creation time exceeds the time window limit is reached, 
-      the search will end and the document will not be reverted.  
+      If the search reaches a revision whose creation time exceeds the time 
+      window limit, the search will **end** and the document will **not be reverted**.  
     * the search limit is: `Point in Time` **+** `Time Window`  
       {INFO: E.g.}
       If `Point in Time` is **2 days ago**  

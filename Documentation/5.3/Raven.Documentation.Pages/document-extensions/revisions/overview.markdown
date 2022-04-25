@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* **Document Revisions** are snapshots of documents and their document extensions.  
+* **Document Revisions** are snapshots of documents and their extensions.  
    * Revisions can be created for documents **automatically** when the documents 
      are created, modified, or deleted.  
    * Revisions can also be created for documents [manually](../../document-extensions/revisions/overview#force-revision-creation).  
