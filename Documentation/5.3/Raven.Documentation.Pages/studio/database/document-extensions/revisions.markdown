@@ -8,17 +8,21 @@
   document creation, modification, or deletion and can be used for data 
   auditing, instant restoration after document corruption, and various 
   other uses.  
-* This page describes the Document View 
-  [Revisions tab](../../studio/database/document-extensions/revisions), 
-  that shows each document's revisions trail and can be used to inspect, 
-  administer, and create revisions.  
+* This page describes -  
+   * the Document View [Revisions tab](../../../studio/database/document-extensions/revisions#revisions-tab), 
+     that lists the revisions created for a document and allows to inspect 
+     each revision, compare it with other revisions, and create new revisions.  
+   * The [Revisions Bin](../../../studio/database/document-extensions/revisions#revisions-bin), 
+     that holds the revisions of deleted documents.  
 * Find [here](../../../document-extensions/revisions/overview#how-it-works) 
   a dynamic walkthrough that demonstrates revisions management.  
 
 * In this page:
-  * [Revisions Tab](../../../studio/database/document-extensions/revisions#revisions-tab)
-  * [Revision Inspection](../../../studio/database/document-extensions/revisions#revision-inspection)
-  * [Revisions Comparison](../../../studio/database/document-extensions/revisions#revisions-comparison)
+  * [Revisions Tab](../../../studio/database/document-extensions/revisions#revisions-tab)  
+  * [Revision Inspection](../../../studio/database/document-extensions/revisions#revision-inspection)  
+  * [Revisions Comparison](../../../studio/database/document-extensions/revisions#revisions-comparison)  
+  * [Revisions Bin](../../../studio/database/document-extensions/revisions#revisions-bin)  
+     * [Returning Revisions From The Revisions Bin](../../../studio/database/document-extensions/revisions#returning-revisions-from-the-revisions-bin)  
 
 {NOTE/}
 
@@ -89,6 +93,44 @@ revisions to the live document version.
 5. **Summary line**  
   This line summarizes the differences found between the two revisions.  
 
+{PANEL/}
+
+{PANEL: Revisions Bin}
+
+Deleting a document that the Revisions feature is enabled for will create 
+a new revision for the document and move all its revisions to the revisions bin.  
+
+![Revisions Bin](images/revisions/revisions-bin.png "Revisions Bin")
+
+1. **Revisions Bin**  
+   Click to open the Revisions Bin view.  
+   Each item listed in the Revisions Bin view references all the revisions created for a deleted document.  
+2. **Delete**  
+   Click to remove selected items.  
+   Deleting revisions from the revisions bin will dispose of these revisions irrevocably.  
+3. **Selection Boxes**  
+   Check to select items.  
+4. **Deleted Document ID**  
+   Click to inspect the revisions created for this document (aka "orphaned revisions" 
+   because their parent document has been deleted).  
+   ![Orphaned Revisions](images/revisions/orphaned-revisions.png "Orphaned Revisions")
+     * Revisions stored in the revisions bin can be 
+       [inspected](../../../studio/database/document-extensions/revisions#revision-inspection) 
+       and cloned just like the revisions of a live document.  
+5. **Deletion Revision Change Vector**  
+   Change vector of the revision that was created for the document when it was deleted.  
+6. **Deletion Date**  
+
+---
+
+### Returning Revisions From The Revisions Bin
+
+Giving a **new document** the ID of a deleted document whose revisions are 
+in the revisions bin, will remove the revisions from the bin and add them to 
+the new document.  
+The revision that was created when the document was deleted, will mark 
+the deletion event in the document history.  
+![New document with revisions added from Revisions Bin](images/revisions/returned-revisions.png "New document with revisions added from Revisions Bin")
 
 {PANEL/}
 
