@@ -63,6 +63,18 @@ At the end of the test we query for TestDocument where their name contains the w
 The `ConfigureServer` method allows you to be more in control on your server.  
 You can use it with `TestServerOptions` to change the path to the Raven server binaries, specify data storage path, security, .NET framework, etc.
 
+{NOTE: }
+
+`ConfigureServer` can only be set once per test run.  
+It needs to be set before `DocumentStore` is called.  
+See an [example](../start/test-driver#complete-example) below.  
+
+If it is called twice, or within the `DocumentStore` scope, you will get the following error message:
+
+> System.InvalidOperationException : Cannot configure server after it was started. Please call 'ConfigureServer' method before any 'GetDocumentStore' is called.  
+
+{NOTE/}
+
 {INFO:TestServerOptions}
 
 See the complete list of `TestServerOptions`, which inherits from [ServerOptions](../server/Embedded#getting-started).  
@@ -71,6 +83,10 @@ Defining TestServerOptions allows you to be more in control of
 how the embedded server is going to run with just a minor [definition change](../start/test-driver#example-2).
 
 {INFO /}
+
+#### Example
+
+{CODE test_driver_ConfigureServer@Start\RavenDBTestDriver.cs /}
 
 #### .NET FrameworkVersion 
 
@@ -82,10 +98,6 @@ Thus, if the server on your machine is set to `ServerTestOptions.FrameworkVersio
 all .NET versions 3.1.17 and newer patch releases (.17, .18, .19, etc...). So, as long as you have .NET 3.1.17 or 18 or 19 on your machine, the server will run smoothly. 
 
 To learn more, including alternative settings, see the section about [setting .NET FrameworkVersion](../server/Embedded#net-frameworkversion).
-
-#### Example
-
-{CODE test_driver_ConfigureServer@Start\RavenDBTestDriver.cs /}
 
 {PANEL/}
 
