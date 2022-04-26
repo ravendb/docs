@@ -8,12 +8,12 @@
   Store operation to apply a [Revisions configuration](../../../../document-extensions/revisions/overview#revisions-configuration) 
   to the database.  
 
-* A Revisions configuration is comprised of a Default configuration and/or Collection-specific configurations.  
-   * A **Default configuration** configures Revisions settings for all database collections.  
-   * **Collection-specific configurations** override the default configuration for the collections 
+* A Revisions configuration is comprised of Default settings and/or Collection-specific configurations.  
+   * The **default settings** apply to all database collections.  
+   * **Collection-specific configurations** override the default settings for the collections 
      they are applied to.  
 
-* The Default and Collection-specific configurations are defined in 
+* Default settings and Collection-specific configurations are defined in 
   [RevisionsCollectionConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-2) 
   objects.  
 
@@ -56,16 +56,16 @@ The `ConfigureRevisionsOperation` Store operation is used to apply your Revision
 
 ### `RevisionsConfiguration`
 
-This object contains a Default configuration that applies to all collections, 
+This object contains the default settings that apply to all collections, 
 and a Dictionary of collection-specific configurations that override the default 
-configuration for the collections they are defined for.  
+settings for the collections they are defined for.  
 {CODE:csharp RevisionsConfiguration_definition@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisionsDefinitions.cs /}
 
 * **Properties**  
 
     | Property | Type | Description |
     | - | - | - |
-    | **Default** | `RevisionsCollectionConfiguration` | An optional default configuration that applies to any collection not specified in `Collections` |
+    | **Default** | `RevisionsCollectionConfiguration` | Optional default settings that apply to any collection not specified in `Collections` |
     | **Collections** | `Dictionary<string, RevisionsCollectionConfiguration>` | A Dictionary of collection-specific configurations, where - <br> The `keys` are collection names. <br> The `values` are the corresponding configurations. |
 
 ---
@@ -73,7 +73,7 @@ configuration for the collections they are defined for.
 ### `RevisionsCollectionConfiguration`
 
 This object contains a collection-specific Revisions configuration.  
-It can also be used to define the default configuration for all database collections.  
+It can also be used to define the default settings for all database collections.  
 {CODE:csharp RevisionsCollectionConfiguration_definition@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisionsDefinitions.cs /}
 
 * **Properties**  
@@ -105,15 +105,15 @@ To apply a Revisions configuration to all and/or specific collections, follow th
 
 1. Create a [RevisionsCollectionConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-2) 
    object for every collection you want to set Revisions for.  
-2. If you want to define a default configuration, create a 
-   `RevisionsCollectionConfiguration` object for it.  
+2. If you want to define default settings, create a 
+   `RevisionsCollectionConfiguration` object for them.  
 3. Add all the `RevisionsCollectionConfiguration` objects you created to a 
    [RevisionsConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-1) 
    object.  
 4. Pass the `RevisionsConfiguration` object to the 
    [ConfigureRevisionsOperation](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section) 
    Store operation.  
-   Executing the operation will replace the Revisions configuration in thedatabase record.  
+   Executing the operation will replace the Revisions configuration in the database record.  
    {WARNING: }
     If you want to **modify** the existing configuration rather than replace it,  
     retrieve the current configuration and edit it 
@@ -127,8 +127,8 @@ To apply a Revisions configuration to all and/or specific collections, follow th
 ### Example I - Replace Existing Configuration
 
 In this example we **replace** the existing Revisions configuration 
-(if there is one) with our own, that applies a default configuration 
-and two collection-specific configurations.  
+(if there is one) with our own, applying default settings and two 
+collection-specific configurations.  
 
 {INFO: }
 Note that the configuration is applied to the Document Store's [default database](../../../../client-api/setting-up-default-database).  
@@ -145,13 +145,13 @@ To configure a different database, use the
 
 ### Example II - Modify Existing Configuration
 
-In this example we **modify** the existing Revisions configuration 
-(if there is one) default and collection-specific configurations.  
+In this example we **modify** the existing Revisions configuration's 
+default settings and collection-specific configurations.  
 
 We retrieve the existing configuration from the database record, 
 and check its contents.  
-If the existing configuration is empty, we define a new configuration.  
-If the existing configuration is populated, we modify it.  
+If no configuration is found, we define a new configuration.  
+If a configuration is already defined, we modify the existing configuration.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync update-existing-configuration_sync@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}

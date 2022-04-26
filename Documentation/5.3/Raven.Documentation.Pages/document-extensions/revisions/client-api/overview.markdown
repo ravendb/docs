@@ -5,7 +5,7 @@
 {NOTE: }
 
 The Revisions client API includes a set of session methods and store operations 
-that you can use to [configure](../../../document-extensions/revisions/overview#revisions-configurations), 
+that you can use to [configure](../../../document-extensions/revisions/overview#revisions-configuration), 
 manage and use document revisions.  
 
 * In this page:  
@@ -18,11 +18,11 @@ manage and use document revisions.
 
 {PANEL: Revisions Store Operations}
 
-* [Creating configurations](../../../document-extensions/revisions/client-api/operations/configure-revisions)  
-   * [ConfigureRevisionsOperation](../../../document-extensions/revisions/client-api/operations/configure-revisions#configurerevisionsoperation)  
-     Use this operation to apply 
-     [Revisions configurations](../../../document-extensions/revisions/overview#revisions-configurations) 
-     to your collections.  
+* [Creating a Revisions Configuration](../../../document-extensions/revisions/client-api/operations/configure-revisions)  
+   * [ConfigureRevisionsOperation](../../../document-extensions/revisions/client-api/operations/configure-revisions#section)  
+     Use this operation to apply a 
+     [Revisions configuration](../../../document-extensions/revisions/overview#revisions-configuration) 
+     to your database.  
 * [Getting and Counting Revisions](../../../document-extensions/revisions/client-api/operations/get-revisions)  
    * [GetRevisionsOperation](../../../document-extensions/revisions/client-api/operations/get-revisions#getrevisionsoperation)  
      Use this operation to Get and Count Revisions.  

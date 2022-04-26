@@ -18,7 +18,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                 using (var session = documentStore.OpenSession())
                 {
                     #region configure-revisions_sync
-                    // Create a default configuration that will apply to all collections
+                    // Define default settings that will apply to all collections
                     var defaultRevConfig = new RevisionsCollectionConfiguration()
                     {
                         MinimumRevisionsToKeep = 100,
@@ -31,7 +31,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                     };
 
                     // Create a collection-specific configuration
-                    // that will override the default configuration for the Employees collection
+                    // that will override the default settings for the Employees collection
                     var employeesRevConfig = new RevisionsCollectionConfiguration()
                     {
                         MinimumRevisionsToKeep = 42,
@@ -40,7 +40,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                     };
 
                     // Create a collection-specific configuration
-                    // that will override the default configuration for the Products collection
+                    // that will override the default settings for the Products collection
                     var productsRevConfig = new RevisionsCollectionConfiguration()
                     {
                         Disabled = true
@@ -66,7 +66,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                 using (var asyncSession = documentStore.OpenAsyncSession())
                 {
                     #region configure-revisions_async
-                    // Create a default configuration that will apply to all collections
+                    // Define default settings that will apply to all collections
                     var defaultRevConfig = new RevisionsCollectionConfiguration()
                     {
                         MinimumRevisionsToKeep = 100,
@@ -79,7 +79,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                     };
 
                     // Create a collection-specific configuration
-                    // that will override the default configuration for the Employees collection
+                    // that will override the default settings for the Employees collection
                     var employeesRevConfig = new RevisionsCollectionConfiguration()
                     {
                         MinimumRevisionsToKeep = 42,
@@ -88,7 +88,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                     };
 
                     // Create a collection-specific configuration
-                    // that will override the default configuration for the Products collection
+                    // that will override the default settings for the Products collection
                     var productsRevConfig = new RevisionsCollectionConfiguration()
                     {
                         Disabled = true
@@ -114,7 +114,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                 // Update an existing configuration - sync
                 using (var session = documentStore.OpenSession())
                 {
-                    // Create a default configuration that will apply to all collections
+                    // Define default settings that will apply to all collections
                     var defaultRevConfig = new RevisionsCollectionConfiguration()
                     {
                         MinimumRevisionsToKeep = 100,
@@ -127,7 +127,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                     };
 
                     // Create a collection-specific configuration
-                    // that will override the default configuration for the Employees collection
+                    // that will override the default settings for the Employees collection
                     var employeesRevConfig = new RevisionsCollectionConfiguration()
                     {
                         MinimumRevisionsToKeep = 42,
@@ -136,7 +136,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                     };
 
                     // Create a collection-specific configuration
-                    // that will override the default configuration for the Products collection
+                    // that will override the default settings for the Products collection
                     var productsRevConfig = new RevisionsCollectionConfiguration()
                     {
                         Disabled = true
@@ -193,7 +193,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                 // Update an existing configuration - async
                 using (var session = documentStore.OpenSession())
                 {
-                    // Create a default configuration that will apply to all collections
+                    // Define default settings that will apply to all collections
                     var defaultRevConfig = new RevisionsCollectionConfiguration()
                     {
                         MinimumRevisionsToKeep = 100,
@@ -206,7 +206,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                     };
 
                     // Create a collection-specific configuration
-                    // that will override the default configuration for the Employees collection
+                    // that will override the default settings for the Employees collection
                     var employeesRevConfig = new RevisionsCollectionConfiguration()
                     {
                         MinimumRevisionsToKeep = 42,
@@ -215,7 +215,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                     };
 
                     // Create a collection-specific configuration
-                    // that will override the default configuration for the Products collection
+                    // that will override the default settings for the Products collection
                     var productsRevConfig = new RevisionsCollectionConfiguration()
                     {
                         Disabled = true

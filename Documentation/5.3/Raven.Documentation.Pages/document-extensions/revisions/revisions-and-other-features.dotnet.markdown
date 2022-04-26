@@ -109,7 +109,7 @@ overwritten, a new revision will be created for the target document as expected.
 {PANEL/}
 
 {PANEL: Revisions and Backup}
-Revisions are stored in [backups](../../server/ongoing-tasks/backup-overview#backup-contents).  
+Revisions are [backed up](../../server/ongoing-tasks/backup-overview#backup-contents).  
 {PANEL/}
 
 {PANEL: Revisions and Data Subscriptions}

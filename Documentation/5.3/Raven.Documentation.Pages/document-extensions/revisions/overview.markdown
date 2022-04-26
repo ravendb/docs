@@ -26,11 +26,11 @@
     a backup file, or conduct a full-scale audit of your data.  
     {INFO/}
 
-* Revisions and their configurations can be managed via API methods or using Studio.  
+* Revisions and their configuration can be managed via API methods or using Studio.  
 
 * In this page:  
   * [Revisions Configuration](../../document-extensions/revisions/overview#revisions-configuration)  
-     * [Default and Collection-Specific Configurations](../../document-extensions/revisions/overview#default-and-collection-specific-configurations)  
+     * [Default Settings and Collection-Specific Configurations](../../document-extensions/revisions/overview#default-settings-and-collection-specific-configurations)  
      * [Defining a Revisions Configuration](../../document-extensions/revisions/overview#defining-a-revisions-configuration)  
      * [Revisions Configuration Properties](../../document-extensions/revisions/overview#revisions-configuration-properties)  
      * [Revisions Configuration Execution](../../document-extensions/revisions/overview#revisions-configuration-execution)  
@@ -50,25 +50,25 @@ are created or purged for any document.
 You can change this behavior, and other Revisions settings, by applying 
 a Revisions Configuration to the database.  
 
-The database Revisions configuration enables or disables the creations and purging 
-of revisions for documents, and optionally limits the number of revisions kept per 
-document.  
+The Revisions configuration enables or disables the creation and purging 
+of revisions for documents, and optionally limits the number of revisions 
+kept per document.  
 
 There is one Revisions configuration per database, stored in the database record.  
 
 ---
 
-#### Default and Collection-Specific Configurations
+#### Default Settings and Collection-Specific Configurations
 
-The Revisions configuration is comprised of a **Default configuration** and/or 
-of **collection-specific configurations**.  
+The Revisions configuration is comprised of **Default Settings** and/or 
+**Collection-specific configurations**.  
 
-* The **default configuration** applies to all documents that a collection-specific 
+* The **default settings** apply to all the documents that a collection-specific 
   configuration is not applied to.  
 * **Collection-specific** configurations apply only to documents of the collections 
-  they are defined for, overriding the default configuration for these collections.  
+  they are defined for, overriding the default settings for these collections.  
   {NOTE: }
-  If you apply no default configuration, Revisions will be **disabled** for any 
+  If you apply no default settings, Revisions will be **disabled** for any 
   collection that a collection-specific configuration is not applied to.  
   {NOTE/}
 
@@ -77,13 +77,14 @@ of **collection-specific configurations**.
 You can apply a Revisions configuration using Studio or the API.  
 
 * Via Studio:
-   * Use the Studio Settings [Document Revisions](../../studio/database/settings/document-revisions) 
-     page to create and manage Default and Collection-specific configurations.  
-   * Use the Document View [Revisions tab](../../studio/database/document-extensions/revisions) 
-     to inspect and manage the revisions created for each document.  
+   * Manage the Revisions configuration via Studio using the Studio Settings 
+     [Document Revisions](../../studio/database/settings/document-revisions) 
+     page.  
+   * Inspect and manage the revisions created for each document using Studio's 
+     Document View [Revisions tab](../../studio/database/document-extensions/revisions#revisions-tab).  
 * Via API:
   [Read here](../../document-extensions/revisions/client-api/operations/configure-revisions) 
-  how to define a Revisions configuration and apply it using the `ConfigureRevisionsOperation`
+  how to define and apply a Revisions configuration using the `ConfigureRevisionsOperation`
   Store operation.  
 
 ---
@@ -119,12 +120,20 @@ Default and collection-specific configurations are executed:
    * Revisions will optionally  be purged by limits set in the configuration.  
 
 2. **When [Enforce Configuration]() is applied**.  
-  Enforcing Configuration triggers the immediate examination and execution 
-  of the default configuration and all collection-specific configurations.  
+  Enforcing Configuration applies the Revisions configuration immediately 
+  throughout the database, **purging** all the revisions that pend purging 
+  by default settings or collection-specific configurations and **deleting** 
+  all the revisions that no configuration applies to.  
   {WARNING: }
-  Large databases and collections may contain numerous revisions pending 
-  purging, that Enforcing Configuration will purge all at once. Be aware that 
-  this operation may require substantial server resources, and time it accordingly.  
+  
+  * Large databases and collections may contain numerous revisions pending 
+    purging, that Enforcing Configuration will purge all at once.  
+    Be aware that this operation may require substantial server resources, 
+    and time it accordingly.  
+  * Revisions that were created over time that no configuration currently 
+    applies to will be deleted. Make sure your configuration includes the 
+    default settings and collection-specific configurations that will 
+    keep the revisions you want to keep intact.  
   {WARNING/}
 
 ---
