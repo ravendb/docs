@@ -1,4 +1,4 @@
-﻿# Operations: How to Configure Revisions
+﻿# Revisions: Configuring Revisions
 
 ---
 
@@ -127,18 +127,25 @@ The following code sample updates the settings of the Document Store's [default 
 
 ## Related Articles
 
+### Document Extensions
+
+* [Document Revisions Overview](../../../../document-extensions/revisions/overview)  
+* [Revert Revisions](../../../../document-extensions/revisions/revert-revisions)  
+* [Revisions and Other Features](../../../../document-extensions/revisions/revisions-and-other-features)  
+
 ### Client API
 
-- [What Are Revisions](../../../client-api/session/revisions/what-are-revisions)
-- [What Is a Collection](../../../client-api/faq/what-is-a-collection)
-- [What Are Operations](../../../client-api/operations/what-are-operations)
-- [Switch Operation Database](../../../client-api/operations/how-to/switch-operations-to-a-different-database)
-- [Setting Up a Default Database](../../../client-api/setting-up-default-database)
-
-### Server
-
-- [Revisions](../../../server/extensions/revisions)
+* [Revisions: API Overview](../../../../document-extensions/revisions/client-api/overview)  
+* [Session: Loading Revisions](../../../../document-extensions/revisions/client-api/session/loading)  
+* [Session: Including Revisions](../../../../document-extensions/revisions/client-api/session/including)  
+* [Session: Counting Revisions](../../../../document-extensions/revisions/client-api/session/counting)  
+* [What Is a Collection](../../../../client-api/faq/what-is-a-collection)
+* [What Are Operations](../../../../client-api/operations/what-are-operations)
+* [Switch Operation Database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database)
+* [Setting Up a Default Database](../../../../client-api/setting-up-default-database)
 
 ### Studio
 
-- [Manage Database Group](../../../studio/database/settings/manage-database-group)
+* [Settings: Document Revisions](../../../../studio/database/settings/document-revisions)  
+* [Document Extensions: Revisions](../../../../studio/database/document-extensions/revisions)  
+* [Manage Database Group](../../../../studio/database/settings/manage-database-group)

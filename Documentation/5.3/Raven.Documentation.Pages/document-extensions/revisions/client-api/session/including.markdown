@@ -185,12 +185,20 @@ that of the given time will be included.
 
 ## Related Articles
 
+### Document Extensions
+
+* [Document Revisions Overview](../../../../document-extensions/revisions/overview)  
+* [Revert Revisions](../../../../document-extensions/revisions/revert-revisions)  
+* [Revisions and Other Features](../../../../document-extensions/revisions/revisions-and-other-features)  
+
 ### Client API
 
-- [What are Revisions](../../../../client-api/session/revisions/what-are-revisions)
-- [Loading Revisions](../../../../client-api/session/revisions/loading)
-- [Include](../../../../client-api/how-to/handle-document-relationships#includes)
+* [Revisions: API Overview](../../../../document-extensions/revisions/client-api/overview)  
+* [Operations: Configuring Revisions](../../../../document-extensions/revisions/client-api/operations/configure-revisions)  
+* [Session: Loading Revisions](../../../../document-extensions/revisions/client-api/session/loading)  
+* [Session: Counting Revisions](../../../../document-extensions/revisions/client-api/session/counting)  
 
-### Server
+### Studio
 
-- [Revisions](../../../../server/extensions/revisions)
+* [Settings: Document Revisions](../../../../studio/database/settings/document-revisions)  
+* [Document Extensions: Revisions](../../../../studio/database/document-extensions/revisions)  

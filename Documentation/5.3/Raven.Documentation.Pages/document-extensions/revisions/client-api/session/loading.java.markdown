@@ -63,11 +63,20 @@ There are a few methods that allow you to download revisions from a database:
 
 ## Related Articles
 
-### Revisions
+### Document Extensions
 
-- [What are Revisions](../../../client-api/session/revisions/what-are-revisions)
-- [Revisions in Data Subscriptions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)
+* [Document Revisions Overview](../../../../document-extensions/revisions/overview)  
+* [Revert Revisions](../../../../document-extensions/revisions/revert-revisions)  
+* [Revisions and Other Features](../../../../document-extensions/revisions/revisions-and-other-features)  
 
-### Server
+### Client API
 
-- [Revisions](../../../server/extensions/revisions)
+* [Revisions: API Overview](../../../../document-extensions/revisions/client-api/overview)  
+* [Operations: Configuring Revisions](../../../../document-extensions/revisions/client-api/operations/configure-revisions)  
+* [Session: Including Revisions](../../../../document-extensions/revisions/client-api/session/including)  
+* [Session: Counting Revisions](../../../../document-extensions/revisions/client-api/session/counting)  
+
+### Studio
+
+* [Settings: Document Revisions](../../../../studio/database/settings/document-revisions)  
+* [Document Extensions: Revisions](../../../../studio/database/document-extensions/revisions)  

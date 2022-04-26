@@ -1,4 +1,4 @@
-﻿# Operations: Get and Count Revisions
+﻿# Revisions: Getting and Counting Revisions
 
 ---
 
@@ -88,15 +88,20 @@ wrapped in a `Parameters` object:
 
 ## Related Articles
 
-### Operations
+### Document Extensions
 
-- [Configure Revisions](../../../../client-api/operations/revisions/configure-revisions)
+* [Document Revisions Overview](../../../../document-extensions/revisions/overview)  
+* [Revert Revisions](../../../../document-extensions/revisions/revert-revisions)  
+* [Revisions and Other Features](../../../../document-extensions/revisions/revisions-and-other-features)  
 
-### Session
+### Client API
 
-- [What Are Revisions](../../../../client-api/session/revisions/what-are-revisions)
-- [Counting Revisions](../../../../client-api/session/revisions/counting)
+* [Revisions: API Overview](../../../../document-extensions/revisions/client-api/overview)  
+* [Operations: Configuring Revisions](../../../../document-extensions/revisions/client-api/operations/configure-revisions)  
+* [Session: Loading Revisions](../../../../document-extensions/revisions/client-api/session/loading)  
+* [Session: Including Revisions](../../../../document-extensions/revisions/client-api/session/including)  
+* [Session: Counting Revisions](../../../../document-extensions/revisions/client-api/session/counting)  
 
-### Server
-
-- [Revisions](../../../../server/extensions/revisions)
+### Studio
+* [Settings: Document Revisions](../../../../studio/database/settings/document-revisions)  
+* [Document Extensions: Revisions](../../../../studio/database/document-extensions/revisions)  

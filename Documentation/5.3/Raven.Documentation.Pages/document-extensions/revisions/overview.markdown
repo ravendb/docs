@@ -297,9 +297,18 @@ public enum ForceRevisionStrategy
 
 ## Related Articles
 
+### Document Extensions
+
+* [Revert Revisions](../../document-extensions/revisions/revert-revisions)  
+* [Revisions and Other Features](../../document-extensions/revisions/revisions-and-other-features)  
+
 ### Client API
 
-- [Session: What are Revisions](../../document-extensions/revisions/client-api/session/what-are-revisions)  
-- [Session: Loading Revisions](../../document-extensions/revisions/client-api/session/loading)  
-- [Operations: How to Configure Revisions](../../document-extensions/revisions/client-api/operations/configure-revisions)  
-- [Revisions in Data Subscriptions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)  
+* [Revisions: API Overview](../../document-extensions/revisions/client-api/overview)  
+* [Operations: Configuring Revisions](../../document-extensions/revisions/client-api/operations/configure-revisions)  
+* [Session: Loading Revisions](../../document-extensions/revisions/client-api/session/loading)  
+
+### Studio
+
+* [Settings: Document Revisions](../../studio/database/settings/document-revisions)  
+* [Document Extensions: Revisions](../../studio/database/document-extensions/revisions)  

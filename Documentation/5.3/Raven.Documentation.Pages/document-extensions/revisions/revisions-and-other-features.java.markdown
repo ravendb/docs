@@ -16,12 +16,23 @@ Incrementing an existing counter does not modify the parent document and will no
 
 ## Related Articles
 
-### Revisions
+### Document Extensions
 
-- [What are Revisions](../../../client-api/session/revisions/loading)
-- [Loading](../../../client-api/session/revisions/loading)
+* [Document Revisions Overview](../../document-extensions/revisions/overview)  
+* [Revert Revisions](../../document-extensions/revisions/revert-revisions)  
+* [Counters: Overview](../../document-extensions/counters/overview)
+* [Time Series: Overview](../../document-extensions/timeseries/overview)
+* [Attachments: What are Attachments](../../document-extensions/attachments/what-are-attachments)
 
-### Counters
+### Client API
+* [Revisions: API Overview](../../document-extensions/revisions/client-api/overview)  
+* [Operations: Configuring Revisions](../../document-extensions/revisions/client-api/operations/configure-revisions)  
+* [Session: Loading Revisions](../../document-extensions/revisions/client-api/session/loading)  
 
-- [Counter Batch Operation](../../../client-api/operations/counters/counter-batch)
-- [Get Counters Operation](../../../client-api/operations/counters/get-counters)
+### Studio
+* [Settings: Document Revisions](../../studio/database/settings/document-revisions)  
+* [Document Extensions: Revisions](../../studio/database/document-extensions/revisions)  
+
+### Data Subscriptions
+* [What Are Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions)  
+* [Revisions and Data Subscriptions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)  

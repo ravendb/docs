@@ -37,7 +37,13 @@
    Click after modifying the configuration to apply your changes.  
 4. **Revert Revisions**  
    Click to [revert the database](../../../document-extensions/revisions/revert-revisions) 
-   to a specified point in time.  
+   to its state at a specified point in time  
+    * Documents created **before** the point in time will be **kept**.  
+      If the documents own revisions, they will be **reverted** to the revision created 
+      at the specified point in time or to the nearest revision preceding this time.
+    * Documents created **after** the specified point in time will be **deleted**.  
+    * Only documents will be reverted. Other entities, like ongoing tasks for example, 
+      will not be modifiied by this process.  
 5. **Enforce Configuration**  
    Click to [Enforce the Revisions configuration](../../../studio/database/settings/document-revisions#enforce-configuration).  
    {WARNING: }
@@ -76,15 +82,18 @@
 
 ![Enforce Configuration](images/revisions/enforce-configuration-1.png "Enforce Configuration")
 
-* Enforcing Configuration will:  
-   * **Enforce the default settings and all collection-specific configurations.**  
+* Executing **Enforce Configuration** will:  
+   * **Enforce the Revisions configuration's default settings and all 
+     its collection-specific configurations.**  
      All the revisions that pend purging will be **purged**.  
+     {INFO: }
      Revisions that pend purging are revisions that should be purged 
      according to the default settings or to the collection-specific 
      configuration that applies to them.  
+     {INFO/}
    * **Delete all the revisions that no configuration applies to.**  
-     If default settings were's defined for the Revisions configuration 
-     (or the default settings are disabled), Revisions that no collection-specific 
+     If the Revisions configuration has no default settings (or the 
+     default settings are disabled), Revisions that no collection-specific 
      configuration applies to will be **deleted**.  
 * **Note**:  
       {WARNING: }
@@ -101,7 +110,8 @@
 
     {WARNING/}
 
-* Enforcing Configuration will detail the process and allow you to proceed or cancel.  
+* Enforcing the configuration will list the collections that configurations 
+  are defined for, explain the process, and allow you to proceed or cancel the operation.  
   ![Proceed or Cancle](images/revisions/enforce-configuration-2.png "Proceed or Cancle")
 
 {PANEL/}
@@ -112,7 +122,7 @@
 
 1. **Create document defaults**  
    Click to define default settings that will apply to all the collections 
-   that a collection-specific configuration is not applied to.  
+   that a collection-specific configuration is not defined for.  
 2. **Purge revisions on document delete**  
    Enable if you want document revisions to be deleted when their 
    parent document is deleted.  
@@ -120,8 +130,8 @@
    ![Limit By Number](images/revisions/define-default-settings_limit-by-number.png "Limit By Number")  
    Enable to set a limit to the number of revisions that can be kept in the revisions 
    storage per document.  
-   If this limit is set, old revisions will be purged when new ones are added 
-   if the limit is exceeded.  
+   If this limit is set, old revisions that exceed it will be purged when 
+   their parent document is modified.  
     * **Set # of revisions to delete upon document update**  
       Enabling **Limit # of revisions to keep** will display this setting as well:
       ![Maximum Number of Revisions to Purge](images/revisions/maximum-revisions-to-purge.png "Maximum Number of Revisions to Purge")  
@@ -131,13 +141,13 @@
       RavenDB will refrain from purging more revisions than this limit allows 
       it to purge, even if the number of revisions that pend purging exceeds it.  
       Setting this limit can reserve server resources if many revisions pend 
-      purging, by dividing the purging between multiple modification events.  
+      purging, by dividing the purging between multiple document modifications.  
       {INFO/}
 4. **Limit # of revisions to keep By Age**  
    ![Limit By Age](images/revisions/define-default-settings_limit-by-age.png "Limit By Age")
    Enable to set a Revisions age limit.  
    If this limit is set, revisions older than the age it defines will be purged 
-   when the document is modified.  
+   when their parent document is modified.  
     * Enabling this setting will disply the **Set # of revisions to delete upon document update** 
       setting as well (read about it above).  
 5. Click **OK** to modify or create the default settings, or **Cancel**.  
@@ -165,8 +175,8 @@
    ![Limit By Number](images/revisions/define-default-settings_limit-by-number.png "Limit By Number")  
    Enable to set a limit to the number of revisions that can be kept in the revisions 
    storage per document.  
-   If this limit is set, old revisions will be purged when new ones are added 
-   if the limit is exceeded.  
+   If this limit is set, old revisions that exceed it will be purged when 
+   their parent document is modified.  
     * **Set # of revisions to delete upon document update**  
       Enabling **Limit # of revisions to keep** will display this setting as well:
       ![Maximum Number of Revisions to Purge](images/revisions/maximum-revisions-to-purge.png "Maximum Number of Revisions to Purge")  
@@ -176,13 +186,13 @@
       RavenDB will refrain from purging more revisions than this limit allows 
       it to purge, even if the number of revisions that pend purging exceeds it.  
       Setting this limit can reserve server resources if many revisions pend 
-      purging, by dividing the purging between multiple modification events.  
+      purging, by dividing the purging between multiple document modifications.  
       {INFO/}
 5. **Limit # of revisions to keep By Age**  
    ![Limit By Age](images/revisions/define-default-settings_limit-by-age.png "Limit By Age")
    Enable to set a Revisions age limit.  
    If this limit is set, revisions older than the age it defines will be purged 
-   when the document is modified.  
+   when their parent document is modified.  
     * Enabling this setting will disply the **Set # of revisions to delete upon document update** 
       setting as well (read about it above).  
 6. Click **OK** to modify or create the configuration, or **Cancel**.  
@@ -195,8 +205,22 @@
 
 ## Related Articles
 
+## Related Articles
+
 ### Document Extensions
 
-- [Session: What are Revisions](../../../document-extensions/revisions/client-api/session/what-are-revisions)  
-- [Session: Loading Revisions](../../../document-extensions/revisions/client-api/session/loading)  
-- [Operations: How to Configure Revisions](../../../document-extensions/revisions/client-api/operations/configure-revisions)  
+* [Document Revisions Overview](../../../document-extensions/revisions/overview)  
+* [Revert Revisions](../../../document-extensions/revisions/revert-revisions)  
+* [Revisions and Other Features](../../../document-extensions/revisions/revisions-and-other-features)  
+
+### Client API
+
+* [Revisions: API Overview](../../../document-extensions/revisions/client-api/overview)  
+* [Operations: Configuring Revisions](../../../document-extensions/revisions/client-api/operations/configure-revisions)  
+* [Session: Loading Revisions](../../../document-extensions/revisions/client-api/session/loading)  
+* [Session: Including Revisions](../../../document-extensions/revisions/client-api/session/including)  
+* [Session: Counting Revisions](../../../document-extensions/revisions/client-api/session/counting)  
+
+### Studio
+
+* [Document Extensions: Revisions](../../../studio/database/document-extensions/revisions)  

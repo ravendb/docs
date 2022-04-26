@@ -1,4 +1,4 @@
-﻿#Counters
+﻿#Document Extensions: Counters
 ---
 
 {NOTE: }
@@ -148,6 +148,8 @@ and **Import** them into your database when required.
 
 
 ## Related articles
-**Client API Articles**:  
-[Counters Overview (Session Usage)](../../../document-extensions/counters/overview)  
-[Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)  
+
+### Client API Articles
+
+* [Counters Overview (Session Usage)](../../../document-extensions/counters/overview)  
+* [Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)  

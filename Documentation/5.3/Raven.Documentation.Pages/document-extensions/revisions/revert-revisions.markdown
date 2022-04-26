@@ -102,4 +102,19 @@ To Revert Revisions, open the Studio Settings > **Document Revisions** view.
 {PANEL/}
 
 ## Related Articles
-[Revisions](../../server/extensions/revisions)
+
+### Document Extensions
+
+* [Document Revisions Overview](../../document-extensions/revisions/overview)  
+* [Revisions and Other Features](../../document-extensions/revisions/revisions-and-other-features)  
+
+### Client API
+
+* [Revisions: API Overview](../../document-extensions/revisions/client-api/overview)  
+* [Operations: Configuring Revisions](../../document-extensions/revisions/client-api/operations/configure-revisions)  
+* [Session: Loading Revisions](../../document-extensions/revisions/client-api/session/loading)  
+
+### Studio
+
+* [Settings: Document Revisions](../../studio/database/settings/document-revisions)  
+* [Document Extensions: Revisions](../../studio/database/document-extensions/revisions)  
