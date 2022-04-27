@@ -194,7 +194,7 @@ public enum ForceRevisionStrategy
 
 ### Client API
 
-- [Session: What are Revisions](../../client-api/session/revisions/what-are-revisions)  
+- [Revisions API Overview](../../document-extensions/revisions/client-api/overview)  
 - [Session: Loading Revisions](../../client-api/session/revisions/loading)  
 - [Operations: How to Configure Revisions](../../client-api/operations/revisions/configure-revisions)  
 - [Revisions in Data Subscriptions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)  

@@ -4,9 +4,10 @@
 
 {NOTE: }
 
-The Revisions client API includes a set of session methods and store operations 
-that you can use to [configure](../../../document-extensions/revisions/overview#revisions-configuration), 
-manage and use document revisions.  
+* The Revisions client API includes a set of session methods and store operations 
+  that you can use to [configure](../../../document-extensions/revisions/overview#revisions-configuration), 
+  manage and use document revisions.  
+* Learn about revisions here: [Docuument Revisions Overview](../../../document-extensions/revisions/overview)  
 
 * In this page:  
   * [Revisions Store Operations](../../../document-extensions/revisions/client-api/overview#revisions-store-operations)  
