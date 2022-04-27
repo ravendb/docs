@@ -4,18 +4,18 @@
 
 {NOTE: }
 
-* [Revisions](../../../server/extensions/revisions) are snapshots of documents that are taken automatically each time a 
-document is updated or deleted.  
+* [Revisions](../../../../document-extensions/revisions/overview) are snapshots of documents that 
+  are taken automatically each time a document is updated or deleted.  
 
 * Revisions can be stored indefinitely, or they can be deleted when certain conditions are met. These conditions can be set 
-using the Configure Revisions Operation.  
+  using the Configure Revisions Operation.  
 
 * In this page:  
-  * [Syntax](../../../client-api/operations/revisions/configure-revisions#syntax)  
-      * [RevisionsCollectionConfiguration](../../../client-api/operations/revisions/configure-revisions#revisionscollectionconfiguration)  
-      * [RevisionsConfiguration](../../../client-api/operations/revisions/configure-revisions#revisionsconfiguration)  
-      * [ConfigureRevisionsOperation](../../../client-api/operations/revisions/configure-revisions#configurerevisionsoperation)  
-  * [Example](../../../client-api/operations/revisions/configure-revisions#example)  
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions#syntax)  
+      * [RevisionsCollectionConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#revisionscollectionconfiguration)  
+      * [RevisionsConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#revisionsconfiguration)  
+      * [ConfigureRevisionsOperation](../../../../document-extensions/revisions/client-api/operations/configure-revisions#configurerevisionsoperation)  
+  * [Example](../../../../document-extensions/revisions/client-api/operations/configure-revisions#example)  
 
 {NOTE/}
 
@@ -23,19 +23,23 @@ using the Configure Revisions Operation.
 
 {PANEL: Syntax}
 
-The ConfigureRevisionsOperation modifies the revisions settings for a particular [database](../../../studio/database/settings/manage-database-group). 
-Within that database, each [collection](../../../client-api/faq/what-is-a-collection) can have its own separate revisions 
+The ConfigureRevisionsOperation modifies the revisions settings for a particular [database](../../../../studio/database/settings/manage-database-group). 
+Within that database, each [collection](../../../../client-api/faq/what-is-a-collection) can have its own separate revisions 
 settings.  
 
 To configure the revisions settings for a database and/or the collections in that database, follow these steps:  
 
-[1.](../../../client-api/operations/revisions/configure-revisions#revisionscollectionconfiguration) Create a 
-`RevisionsCollectionConfiguration` object for each desired collection.  
-[2.](../../../client-api/operations/revisions/configure-revisions#revisionsconfiguration) Put those 
-`RevisionsCollectionConfiguration` objects in a `RevisionsConfiguration` object.  
-[3.](../../../client-api/operations/revisions/configure-revisions#configurerevisionsoperation) Send that 
-`RevisionsConfiguration` to the server.  
-<br/>
+[1.](../../../../document-extensions/revisions/client-api/operations/configure-revisions#revisionscollectionconfiguration) 
+Create a RevisionsCollectionConfiguration` object for each desired collection.  
+
+[2.](../../../../document-extensions/revisions/client-api/operations/configure-revisions#revisionsconfiguration) 
+Put those `RevisionsCollectionConfiguration` objects in a `RevisionsConfiguration` object.  
+
+[3.](../../../../document-extensions/revisions/client-api/operations/configure-revisions#configurerevisionsoperation) 
+Send that RevisionsConfiguration` to the server.  
+
+---
+
 ### RevisionsCollectionConfiguration
 
 This object contains the four revisions settings for a particular collection:  
@@ -94,7 +98,7 @@ public class RevisionsConfiguration
 
 Note that when this object is sent to the server, it overrides the configurations for **all** collections, including all existing 
 configurations currently on the server. If a collection is not listed in `collections` and `defaultConfig` has not been set, the 
-default values listed in the table [above](../../../client-api/operations/revisions/configure-revisions#revisionscollectionconfiguration) 
+default values listed in the table [above](../../../../document-extensions/revisions/client-api/operations/configure-revisions#revisionscollectionconfiguration) 
 are applied.  
 
 ---
@@ -117,9 +121,9 @@ public ConfigureRevisionsOperation(RevisionsConfiguration configuration);
 
 {PANEL: Example}
 
-The following code sample updates the settings of the Document Store's [default database](../../../client-api/setting-up-default-database) 
+The following code sample updates the settings of the Document Store's [default database](../../../../client-api/setting-up-default-database) 
 - which in this case is a database named "Northwind". To update the configuration of different database, use the 
-[`forDatabase()` method](../../../client-api/operations/how-to/switch-operations-to-a-different-database).
+[`forDatabase()` method](../../../../client-api/operations/how-to/switch-operations-to-a-different-database).
 
 {CODE:java operation@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.java /}
 

@@ -69,16 +69,16 @@ and Sink replication tasks.
 
   * All database documents and related data:  
     * [Attachments](../../../../../document-extensions/attachments/what-are-attachments)  
-    * [Revisions](../../../../../server/extensions/revisions)  
-    * [Counters](../../../../../document-extensions/counters/overview)
-    * [Time Series](../../../../../document-extensions/timeseries/overview)
+    * [Revisions](../../../../../document-extensions/revisions/overview)  
+    * [Counters](../../../../../document-extensions/counters/overview)  
+    * [Time Series](../../../../../document-extensions/timeseries/overview)  
 
 **What is _not_ being replicated:**  
 
   * Server and cluster level features:  
     * [Indexes](../../../../../indexes/creating-and-deploying)  
     * [Conflict resolver definitions](../../../../../server/clustering/replication/replication-conflicts#conflict-resolution-script)  
-    * [Compare-Exchange](../../../../../client-api/operations/compare-exchange/overview)
+    * [Compare-Exchange](../../../../../client-api/operations/compare-exchange/overview)  
     * [Subscriptions](../../../../../client-api/data-subscriptions/what-are-data-subscriptions)
     * [Identities](../../../../../server/kb/document-identifier-generation#identity)  
     * Ongoing tasks
@@ -197,7 +197,7 @@ Documents are replicated along with all their properties, including
 [Time Series](../../../../../document-extensions/timeseries/overview), 
 [counters](../../../../../document-extensions/counters/overview), 
 [attachments](../../../../../document-extensions/attachments/what-are-attachments) 
-and [revisions](../../../../../server/extensions/revisions).  
+and [revisions](../../../../../document-extensions/revisions/overview). 
 
 {PANEL/}
 

@@ -13,11 +13,12 @@
   {
     "Path": "revisions.markdown",
     "Name": "Revisions",
+    "LastSupportedVersion": "5.2",
     "DiscussionId": "3d192550-88e6-41c3-b069-e505e4fa1645",
     "Mappings": [
       {
-        "Version": 3.5,
-        "Key": "server/bundles/versioning"
+          "Version": 5.3,
+          "Key": "document-extensions/revisions/overview"
       }
     ]
   }

@@ -3,18 +3,57 @@
         "Path": "loading.markdown",
         "Name": "Loading",
         "DiscussionId": "ba3f27dd-dc68-4851-a6bd-3c0166703820",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/session/revisions/loading"
+            },
+            {
+                "Version": 5.1,
+                "Key": "client-api/session/revisions/loading"
+            },
+            {
+                "Version": 5.0,
+                "Key": "client-api/session/revisions/loading"
+            },
+            {
+                "Version": 4.2,
+                "Key": "client-api/session/revisions/loading"
+            },
+            {
+                "Version": 4.1,
+                "Key": "client-api/session/revisions/loading"
+            },
+            {
+                "Version": 4.0,
+                "Key": "client-api/session/revisions/loading"
+            }
+        ]
     },
     {
         "Path": "including.markdown",
         "Name": "Including",
         "DiscussionId": "ba3f27dd-dc68-4851-a6bd-3c0166703820",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/session/revisions/including"
+            }
+        ]
     },
     {
         "Path": "counting.markdown",
         "Name": "Counting",
         "DiscussionId": "ba3f27dd-dc68-4851-a6bd-3c0166703820",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/session/revisions/counting"
+            },
+            {
+                "Version": 5.1,
+                "Key": "client-api/session/revisions/counting"
+            }
+        ]
     }
 ]

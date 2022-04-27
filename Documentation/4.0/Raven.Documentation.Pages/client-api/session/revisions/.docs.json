@@ -14,7 +14,13 @@
   {
     "Path": "loading.markdown",
     "Name": "Loading",
+    "LastSupportedVersion": "5.2",
     "DiscussionId": "ba3f27dd-dc68-4851-a6bd-3c0166703820",
-    "Mappings": []
+    "Mappings": [
+        {
+            "Version": 5.3,
+            "Key": "document-extensions/revisions/client-api/session/loading"
+        }
+    ]
   }
 ]
