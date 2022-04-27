@@ -22,7 +22,7 @@
   * [Revision Inspection](../../../studio/database/document-extensions/revisions#revision-inspection)  
   * [Revisions Comparison](../../../studio/database/document-extensions/revisions#revisions-comparison)  
   * [Revisions Bin](../../../studio/database/document-extensions/revisions#revisions-bin)  
-     * [Returning Revisions From The Revisions Bin](../../../studio/database/document-extensions/revisions#returning-revisions-from-the-revisions-bin)  
+     * [Restoring Revisions](../../../studio/database/document-extensions/revisions#restoring-revisions)  
 
 {NOTE/}
 
@@ -123,14 +123,17 @@ a new revision for the document and move all its revisions to the revisions bin.
 
 ---
 
-### Returning Revisions From The Revisions Bin
+### Restoring Revisions
 
 Giving a **new document** the ID of a deleted document whose revisions are 
-in the revisions bin, will remove the revisions from the bin and add them to 
-the new document.  
-The revision that was created when the document was deleted, will mark 
-the deletion event in the document history.  
-![New document with revisions added from Revisions Bin](images/revisions/returned-revisions.png "New document with revisions added from Revisions Bin")
+kept in the revisions bin, will restore the revisions from the bin and add 
+them to the new document.
+
+Opening the document's Revisions tab will display the whole audit trail, 
+including the revisions created when the old document was deleted and when 
+the new one was created.
+
+![Restored Revisions](images/revisions/restored-revisions.png "Restored Revisions")
 
 {PANEL/}
 

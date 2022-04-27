@@ -98,13 +98,14 @@ overwritten, a new revision will be created for the target document as expected.
 
 {PANEL: Revisions Replication, Export and Import}
 
-* Revisions are [replicated](../../server/clustering/replication/replication) from one database to another.  
-* Revisions can be replicated using an [External Replication Task](../../studio/database/tasks/ongoing-tasks/external-replication-task).  
-* Revisions can be exported and imported using [Smuggler](../../client-api/smuggler/what-is-smuggler).  
-* Revisions can be [exported](../../studio/database/tasks/export-database#export-options) 
-  and [imported](../../studio/database/tasks/import-data/import-data-file#import-options) 
-  using a `.ravendbdump` file.  
+* Revisions are transferred during [replication](../../server/clustering/replication/replication).  
+* Revisions can be transferred using an [External Replication Task](../../studio/database/tasks/ongoing-tasks/external-replication-task).  
+* Revisions can be Imported and exported with a `.ravendbdump` file -  
+   * Using [the API](../../client-api/smuggler/what-is-smuggler).  
+   * Using the Studio [import](../../studio/database/tasks/import-data/import-data-file#import-options) 
+  and [export](../../studio/database/tasks/export-database#export-options) views.  
 * Revisions can be imported from a [live RavenDB server](../../studio/database/tasks/import-data/import-from-ravendb#step-#4:-set-import-options).  
+  ![Import from Live Server](images\import-from-live-server.png "Import from Live Server")
 
 {PANEL/}
 
