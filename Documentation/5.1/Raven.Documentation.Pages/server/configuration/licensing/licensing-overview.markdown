@@ -1,0 +1,140 @@
+# Licensing Overview
+---
+
+{NOTE: }
+
+* There are four licensing options available for you to choose according to your needs.  
+  See the [pricing page](https://ravendb.net/buy) for more info about which features are included in each license.  
+   * **Development** (fully-featured and temporary - must be upgraded before launch)
+   * **Community** (basic production grade)
+   * **Professional** (standard production grade)
+   * **Enterprise** (high-performance, fully-featured production grade)
+   * [Cloud portal](../../../cloud/cloud-overview) for cloud-based servers
+
+* Your license code is sent to the email address that you chose when registering your license.  
+  It is in .json format.  
+
+* Licenses are activated and updated automatically unless: 
+  * You change the [license configurations](../../../server/configuration/licensing/license-configuration) in your server's settings.json.
+  * RavenDB's "License Server" cannot connect to check and update any changes in your license.  
+    This is usually either caused by a firewall blocking the connection or when servers run offline.  
+    * See Studio [License Server](../../../studio/server/license-management#license-information) to check your connection to
+      RavenDB's automatic License Server.
+
+* Licenses can also be [managed via Studio](../../../studio/server/license-management).
+
+In this page:
+
+* [Activating Your License](../../../server/configuration/licensing/licensing-overview#activating-your-license)
+* [Changing Your License](../../../server/configuration/licensing/licensing-overview#changing-your-license)
+* [Renewing Your License](../../../server/configuration/licensing/licensing-overview#renewing-your-license)
+* [Force Update for Immediate Usage](../../../server/configuration/licensing/licensing-overview#force-update-for-immediate-usage)
+* [Offline Activation, Upgrade, and Renewal](../../../server/configuration/licensing/licensing-overview#renewing-your-license)
+
+{NOTE/}
+
+{PANEL: Activating Your License}
+
+Because licenses are activated and updated automatically by default, the following sections are only relevant if you 
+changed the license configurations in the server's [settings.json](../../../server/configuration/configuration-options#json).
+
+To activate your license, you must either embed the code directly into the settings.json, 
+or provide a path to the license code as a .json file.  
+
+You can either [activate via Studio](../../../studio/server/license-management#register-license) or use the following 
+[configuration](../../../server/configuration/licensing/license-configuration) options in settings.json:
+
+* **License**  
+    Embed the full license string for RavenDB. If `License` is specified, it overrides the `License.Path` configuration.  
+    E.g. - `"License": paste your license code including curly brackets here`  
+    Your license code was sent to the email that is registered with the license.
+
+* **License.Path**  
+    Path (either **full** or **relative to the Server folder**) to the license file.  
+    Default: `license.json` in the **Server** folder.  
+    E.g. (full) - `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
+    E.g. (relative) - `"License.Path": "License\\license.json"`  
+
+{NOTE: }
+
+* Each instance of RavenDB has to be registered with a license.  
+* A development license isn't applicable for commercial use and must be upgraded before launching.  
+  * When [upgrading](https://ravendb.net/buy), be sure to choose the license that has the features 
+    with which your client was developed.  
+    For example, if you need Backups, ETL, Encryption, or Hub/Sink replication, be sure that your license includes these features.
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: Changing Your License}
+
+Upon [changing your license](https://ravendb.net/buy), RavenDB will send the new license code to the email 
+registered with the license.  
+Copy the entire code block and either:  
+
+* [Update via Studio](../../../studio/server/license-management#replace-license) 
+* [Replace the license code](../../../server/configuration/licensing/licensing-overview#activating-your-license) where it is located (either directly in the settings.json or 
+  in the file path that settings.json is configured for.)  
+
+If the default connection with RavenDB's [License Server](../../../studio/server/license-management#license-information) is active, 
+the license will update tonight.  
+To update it immidiately, you can [force the update in Studio](../../../studio/server/license-management#force-update).
+
+{INFO: Maintaining auto-renewal of Let's Encrypt certificate}
+If you set up with the [Setup Wizard](../../../start/installation/setup-wizard) and used a Let's Encrypt certificate, 
+contact [customer support](https://ravendb.net/contact) when changing your license to maintain auto-renewals 
+of certificates.  
+Otherwise, changing your license ID will cause a mismatch between the new one and the ID that Let's Encrypt expects when renewing.
+{INFO/}
+
+{PANEL/}
+
+{PANEL: Renewing Your License}
+
+By default, RavenDB automatically renews a license as long as it isn't cancelled.  
+If the automatic renewal feature is turned off in the settings.json, you can renew your license with the same process 
+as [activating your license](../../../server/configuration/licensing/licensing-overview#activating-your-license).
+
+{PANEL/}
+
+{PANEL: Force Update for Immediate Usage}
+
+Unless the feature is disabled, RavenDB automatically checks and implements license updates every night.  
+
+If you've upgraded your license and want to work with the new features today, you can 
+[force the update in Studio](../../../studio/server/license-management#force-update).
+
+{PANEL/}
+
+{PANEL: Offline Activation, Upgrade, and Renewal}
+
+If your sever is disconnected from the internet, RavenDB's default automatic renewal feature cannot trigger renewal.  
+The feature must be disabled and the license must be manually placed, either directly in the settings.json 
+or in the license.json file.
+
+1. **Disable automatic renewal.**  
+   In the [settings.json](../../../server/configuration/configuration-options#json) 
+   (located in the installation package "Server" folder), add the following configuration 
+   `"License.DisableAutoUpdateFromApi": "true"`.
+2. **Either set path to license file in settings.json or embed the license code directly into the settings.json.**  
+   * File path option - `"License.Path": "path to your .json license file"`
+   * Embed in settings.json - `"License": paste your license code including curly brackets here`.
+   * See [examples here](../../../server/configuration/licensing/licensing-overview#activating-your-license).
+4. **Other license configuration options**  
+   See [Configuration: License Options](../../../server/configuration/licensing/license-configuration)
+
+{PANEL/}
+
+## Related Articles
+
+- [Studio : Licensing Management](../../studio/server/license-management)
+- [Configuration : License Options](../../server/configuration/license-configuration)
+- [Configuring the settings.json](../../../server/configuration/configuration-options#json)
+
+
+## Related Links
+
+- [Get License](https://ravendb.net/buy)
+- [Support Options](https://ravendb.net/support)
+

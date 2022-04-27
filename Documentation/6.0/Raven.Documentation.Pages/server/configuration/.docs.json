@@ -64,12 +64,11 @@
     "DiscussionId": "40464303-54d4-44f4-95c0-a69e0de985a2",
     "Mappings": []
   },
-  {
-    "Path": "license-configuration.markdown",
-    "Name": "License Configuration",
-    "DiscussionId": "f96e07fc-5344-4ba6-ab5c-d4263ee8be6b",
-    "Mappings": []
-  },
+    {
+        "Path": "/licensing",
+        "Name": "Licensing",
+        "Mappings": []
+    },
   {
     "Path": "logs-configuration.markdown",
     "Name": "Logs Configuration",
