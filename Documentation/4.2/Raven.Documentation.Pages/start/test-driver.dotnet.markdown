@@ -1,6 +1,6 @@
 # Getting Started: Writing your Unit Test using TestDriver
 
-In this section we will explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) in order to write unit tests for working with RavenDB.
+In this section, we will explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) in order to write unit tests for working with RavenDB.
 TestDriver uses an [Embedded](../server/embedded) package with the same set of [prerequisites](../server/embedded#prerequisites) to run the Server.
 
 - [RavenTestDriver](../start/test-driver#raventestdriver)
@@ -44,24 +44,29 @@ Pre-Initializing the IDocumentStore allows you to mutate the conventions used by
 {PANEL/}
 
 {PANEL:UnitTest}
-We'll be using [xunit](https://www.nuget.org/packages/xunit/) for my test framework in the below example.
-Note that the test itself is meant to show different capabilities of the test driver and is not meant to be the most efficient.
+
+We'll be using [xunit](https://www.nuget.org/packages/xunit/) for the test framework in the below example.  
+
+> Note that the test itself is meant to show different capabilities of the test driver and is not meant to be the most efficient.  
+
 The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver#complete-example)
 
 ### Example
 
-{CODE test_driver_MyFirstTest@Start\RavenDBTestDriver.cs /}
+In the test, we get an IDocumentStore to our test database. Deploy an index and insert two documents into it. 
+We then wait for the indexing to complete and launch the Studio so we can verify that the documents 
+and index are deployed (we can remove this line once the test is working).
+At the end of the test, we query for TestDocument where their name contains the word 'hello', 
+and we assert that we have only one such document.
 
-In the test we get an IDocumentStore to our test database. Deploy an index and insert two documents into it. 
-We then wait for the indexing to complete and launch the Studio so we can verify that the documents and index are deployed (we can remove this line once the test is working).
-At the end of the test we query for TestDocument where their name contains the world 'hello' and assert that we have only one such document.
+{CODE test_driver_MyFirstTest@Start\RavenDBTestDriver.cs /}
 
 {PANEL/}
 
 {PANEL: ConfigureServer}
 
-The `ConfigureServer` method allows you to be more in control on your server.  
-You can use it with `TestServerOptions` to change the path to the Raven server binaries, specify data storage path, security, .NET framework, etc.
+The `ConfigureServer` method allows you to be more in control of your server.  
+You can use it with `TestServerOptions` to change the path to the Raven server binaries, specify data storage path, security, adjust .NET framework versions, etc.
 
 {NOTE: }
 
@@ -102,6 +107,14 @@ To learn more, including alternative settings, see the section about [setting .N
 {PANEL/}
 
 {PANEL:Complete Example}
+
+This is a full unit test using [Xunit](https://www.nuget.org/packages/xunit/).
+
+We get an IDocumentStore to our test database, deploy an index, and insert two documents into it. 
+We then wait for the indexing to complete and launch the Studio so we can verify that the documents 
+and index are deployed (we can remove this line once the test is working).
+At the end of the test, we query for TestDocument where their name contains the word 'hello', 
+and we assert that we have only one such document.
 
 {CODE test_full_example@Start\RavenDBTestDriverFull.cs /}
 
