@@ -27,6 +27,12 @@
     ]
   },
   {
+    "Path": "conflict-revisions-configuration.markdown",
+    "Name": "Conflict Revisions Configuration",
+    "DiscussionId": "43588db5-317b-4d2c-afb6-5db073dca55c",
+    "Mappings": []
+  },
+  {
     "Path": "get-revisions.markdown",
     "Name": "Getting and Counting",
     "DiscussionId": "43588db5-317b-4d2c-afb6-5db073dca55c",

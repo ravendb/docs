@@ -25,11 +25,11 @@ In case of failure it will re-start with the [Initial Handshake Procedure](../..
 ## Replication Transaction Boundary
 
 The boundary of a transaction is extended across multiple nodes.  
-If there are several documents in the same transaction they will be sent in the same replication batch to keep the data consistent.
+If there are several documents in the same transaction they will be sent in the same replication 
+batch to keep the data consistent.  
 
-However this not always ensure the data consistency, since the same document can be modified in a different transactions and therefor be sent in a different batch.
+However this doesn't always ensure the data consistency, since the same document can be modified in a different 
+transaction and be sent in a different batch.  
 
-Ensuring the replication consistency can be achieved by one of the following:
-
-1. [Write Assurance](../../../client-api/session/saving-changes#waiting-for-replication---write-assurance).  
-2. Enable [Revisions](../../../server/extensions/revisions) and thus will replicate the revisions along side the documents.
+Replication consistency can be achieved using 
+[Write Assurance](../../../client-api/session/saving-changes#waiting-for-replication---write-assurance).  

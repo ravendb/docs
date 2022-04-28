@@ -268,6 +268,43 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                     await documentStore.Maintenance.SendAsync(new ConfigureRevisionsOperation(configuration));
                     #endregion
                 }
+
+
+                using (var session = documentStore.OpenSession())
+                {
+
+                    #region conflict-revisions-configuration_sync
+                    // Modify the document conflicts configuration
+                    documentStore.Maintenance.Server.Send(
+                    new ConfigureRevisionsForConflictsOperation(documentStore.Database,
+                        new RevisionsCollectionConfiguration
+                        {
+                            // Purge conflict revisions upon their parent document deletion
+                            PurgeOnDelete = true,
+
+                            // Limit the number of conflict revisions to keep
+                            MinimumRevisionsToKeep = 50
+                        }));
+                    #endregion
+                }
+
+                using (var asyncSession = documentStore.OpenAsyncSession())
+                {
+
+                    #region conflict-revisions-configuration_async
+                    // Modify the document conflicts configuration
+                    await documentStore.Maintenance.Server.SendAsync(
+                    new ConfigureRevisionsForConflictsOperation(documentStore.Database,
+                        new RevisionsCollectionConfiguration
+                        {
+                            // Purge conflict revisions upon their parent document deletion
+                            PurgeOnDelete = true,
+
+                            // Limit the number of conflict revisions to keep
+                            MinimumRevisionsToKeep = 50
+                        }));
+                    #endregion
+                }
             }
         }
     }

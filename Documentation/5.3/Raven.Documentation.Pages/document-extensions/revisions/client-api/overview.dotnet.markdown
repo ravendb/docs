@@ -24,6 +24,8 @@
      Use this operation to apply a 
      [Revisions configuration](../../../document-extensions/revisions/overview#revisions-configuration) 
      to your database.  
+* [Conflict Revisions Configuration](../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration)  
+  Use this operation to manage the creation and purging of revisions for conflicting documents.  
 * [Getting and Counting Revisions](../../../document-extensions/revisions/client-api/operations/get-revisions)  
    * [GetRevisionsOperation](../../../document-extensions/revisions/client-api/operations/get-revisions#getrevisionsoperation)  
      Use this operation to Get and Count Revisions.  

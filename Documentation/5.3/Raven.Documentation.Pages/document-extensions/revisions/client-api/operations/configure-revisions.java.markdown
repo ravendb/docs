@@ -106,7 +106,7 @@ are applied.
 ### ConfigureRevisionsOperation
 
 Lastly, the operation itself sends the `RevisionsConfiguration` to the server, overriding **all** existing collection configurations. 
-You'll want to store these configurations on the client side so they don't have to be created from scratch each time you want to 
+You'll want to store these configurations on the client-side so they don't have to be created from scratch each time you want to 
 modify them.  
 
 {CODE-BLOCK: java}

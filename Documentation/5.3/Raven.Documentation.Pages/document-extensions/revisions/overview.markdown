@@ -247,6 +247,7 @@ document as a precaution before editing it.
 
 To create a revision manually via Studio, use the **Create Revision** button in the 
 document view's Revisions tab.  
+
 ![Create a revision manually](images\revisions_create-revision-manually.png "Create a revision manually")
 
 ---

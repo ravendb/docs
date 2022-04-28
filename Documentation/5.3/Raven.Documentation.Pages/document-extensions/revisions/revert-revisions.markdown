@@ -27,12 +27,12 @@
 {PANEL: Revert Revisions}
 
 **Revert Revisions** is used to revert all the documents in the database 
-to their state in a historical point in time.  
+to their state at a historical point in time.  
 
 When the process is executed:  
 
 * Documents created **before** the point in time will be **kept**.  
-   * Any of these documents that owns revisions will be **reverted** 
+   * Any of these documents that own revisions will be **reverted** 
      to the revision created at the specified point in time or to 
      the nearest revision preceding this time.  
      {INFO: }
@@ -44,7 +44,7 @@ When the process is executed:
      in time but may hold revisions that were created **after** that 
      time, may be reverted to a revision newer than the specified time.  
      By doing so we make sure that all the documents that existed 
-     at the time you specified still exist after the revertion.  
+     at the time you specified still exist after the reversion.  
      {INFO/}
    * To revert a document to one of its revisions, RavenDB will create 
      a new revision for the document that replicates the historical 
@@ -63,7 +63,7 @@ To Revert Revisions, open the Studio Settings > **Document Revisions** view.
    Open the view to configure and revert revisions.  
 2. **Revisions Configuration**  
    Our ability to revert database documents to their past revisions, 
-   and the accuracy of the revertion (how close we can get to the database 
+   and the accuracy of the reversion (how close we can get to the database 
    state at the specified time), depend upon continuous creation 
    of revisions.  
    Make sure that a [Revisions configuratio](../../document-extensions/revisions/overview#revisions-configuration) 
@@ -84,7 +84,7 @@ To Revert Revisions, open the Studio Settings > **Document Revisions** view.
 2. **Time Window**  
    Set a Time Window value to limit the search by.  
    Restricting the search to the set time window prevents RavenDB from 
-   conducting unnecessarily long searches and revertion to revisions 
+   conducting unnecessarily long searches and reversion to revisions 
    that are too old.  
     * To revert each document to its state at the specified point in time, 
       RavenDB goes through the document's revisions in the revisions storage, 

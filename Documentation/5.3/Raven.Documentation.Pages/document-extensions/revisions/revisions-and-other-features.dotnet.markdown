@@ -13,7 +13,7 @@
    * [Revisions and Time Series](../../document-extensions/revisions/revisions-and-other-features#revisions-and-time-series)  
    * [Revisions and Attachments](../../document-extensions/revisions/revisions-and-other-features#revisions-and-attachments)  
    * [Revisions and ETL](../../document-extensions/revisions/revisions-and-other-features#revisions-and-etl)  
-   * [Revisions Replication, Export and Import](../../document-extensions/revisions/revisions-and-other-features#revisions-replication,-export-and-import)  
+   * [Revisions Replication, Export, and Import](../../document-extensions/revisions/revisions-and-other-features#revisions-replication,-export,-and-import)  
    * [Revisions and Backup](../../document-extensions/revisions/revisions-and-other-features#revisions-and-backup)  
    * [Revisions and Data Subscriptions](../../document-extensions/revisions/revisions-and-other-features#revisions-and-data-subscriptions)  
 
@@ -96,7 +96,7 @@ overwritten, a new revision will be created for the target document as expected.
 
 {PANEL/}
 
-{PANEL: Revisions Replication, Export and Import}
+{PANEL: Revisions Replication, Export, and Import}
 
 * Revisions are transferred during [replication](../../server/clustering/replication/replication).  
 * Revisions can be transferred using an [External Replication Task](../../studio/database/tasks/ongoing-tasks/external-replication-task).  

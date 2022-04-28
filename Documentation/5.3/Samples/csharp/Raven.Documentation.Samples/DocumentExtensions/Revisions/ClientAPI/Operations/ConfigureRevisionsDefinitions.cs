@@ -8,6 +8,18 @@ using Raven.Client.Documents.Operations.Revisions;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.RevisionsDefinitions
 {
+
+    public class ConfigureRevisionsForConflictsOperation
+    {
+
+        #region ConfigureRevisionsForConflictsOperation_definition
+        public ConfigureRevisionsForConflictsOperation(string database, RevisionsCollectionConfiguration configuration)
+        #endregion
+        {
+
+        }
+    }
+
     public class ConfigureRevisionsOperation
     {
         #region ConfigureRevisionsOperation_definition

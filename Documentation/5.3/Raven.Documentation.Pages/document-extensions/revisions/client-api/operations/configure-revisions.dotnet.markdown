@@ -126,7 +126,7 @@ To apply a Revisions configuration to all and/or specific collections, follow th
 
 ### Example I - Replace Existing Configuration
 
-In this example we **replace** the existing Revisions configuration 
+In this example, we **replace** the existing Revisions configuration 
 (if there is one) with our own, applying default settings and two 
 collection-specific configurations.  
 
@@ -145,7 +145,7 @@ To configure a different database, use the
 
 ### Example II - Modify Existing Configuration
 
-In this example we **modify** the existing Revisions configuration's 
+In this example, we **modify** the existing Revisions configuration 
 default settings and collection-specific configurations.  
 
 We retrieve the existing configuration from the database record, 
