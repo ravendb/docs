@@ -219,17 +219,19 @@ Let's play with revisions a little to get a taste of its advantages.
 
 ### Revisions Documents Storage  
 
-The creation of a document revision stores a full version of the modified document, 
-in the same **blittable JSON document** format as that of regular documents.  
-The compression of individual fields is enabled as for regular documents: any text 
-field of more than 128 bytes is compressed.  
+* The creation of a document revision stores a full version of the modified document 
+  in the revisions storage, in the same **blittable JSON document** format as that of 
+  regular documents.  
 
-{NOTE: }
-Learn [here](../../server/storage/documents-compression) how to apply Document Compression to revisions.  
-Learn [here](../../server/configuration/database-configuration#databases.compression.compressrevisionsdefault) 
-how to compress revisions by default.  
-{NOTE/}
+* **Revisions Compression**  
+   * The compression of individual fields is enabled as for regular documents: any text 
+     field of more than 128 bytes is compressed.  
+   * Revisions are compressed by default.  
+     Learn [here](../../server/configuration/database-configuration#databases.compression.compressrevisionsdefault) 
+     how to toggle this database option on and off.  
+   * Learn [here](../../server/storage/documents-compression) how to apply Document Compression to revisions.  
 
+---
 
 ### Revisions Document Extensions Storage
 

@@ -42,6 +42,12 @@ specification of the Counter's value on each node.
 
 ---
 
+### Reverted Data
+When a document is reverted to a revision that owns counters, the counters are restored 
+to functionality along with their values.  
+
+---
+
 ### Code Sample
 Use [GetMetadataFor](../../document-extensions/revisions/client-api/session/loading#getmetadatafor) 
 to get a document's revisions metadata, and extract counters' data from the metadata.
@@ -69,6 +75,12 @@ with general information regarding the time series at the time of the revision c
   
 Read more about Revisions and Time Series [here](../../document-extensions/timeseries/time-series-and-other-features#revisions).  
 
+---
+
+### Reverted Data
+When a document is reverted to a revision that owns time series, the time series 
+are **not** restored.  
+
 {PANEL/}
 
 {PANEL: Revisions and Attachments}
@@ -86,6 +98,12 @@ references to them in an `@attachments` array in their metadata.
 Attachments are not replicated when new revisions are created.  
 An attachment will be removed from RavenDB's storage only when 
 there is no live document or document revision that refers to it.  
+
+---
+
+### Reverted Data
+When a document is reverted to a revision that owns attachments, the attachments 
+are restored to their state when the revision was created.  
 
 {PANEL/}
 
