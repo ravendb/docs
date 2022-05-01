@@ -17,6 +17,7 @@
   * [Defining the Default Settings](../../../studio/database/settings/document-revisions#defining-default-settings)  
   * [Defining a Collection-Specific Configuration](../../../studio/database/settings/document-revisions#defining-a-collection-specific-configuration)  
   * [Editing the Conflicting Document Defaults](../../../studio/database/settings/document-revisions#editing-the-conflicting-document-defaults)  
+     * [Example](../../../studio/database/settings/document-revisions#here-is-an-example-showing-how-revisions-for-conflicting-documents-work.)  
   * [Enforce Configuration](../../../studio/database/settings/document-revisions#enforce-configuration)  
 
 
@@ -101,7 +102,7 @@ and enabled, the Revisions feature will remain disabled for all document collect
 
 {PANEL: Defining Default Settings}
 
-![Define Default Settings](images/revisions/define-default-settings.png "Define Default Settings")
+![Defining Default Settings](images/revisions/define-default-settings.png "Defining Default Settings")
 
 1. **Create document defaults**  
    Click to define default settings that will apply to all the collections 
@@ -165,39 +166,47 @@ and enabled, the Revisions feature will remain disabled for all document collect
 
 {PANEL: Editing the Conflicting Document Defaults}
 
-![Editing the Conflicting Document Defaults](images/revisions/conflicting-document-defaults.png "Editing the Conflicting Document Defaults")
+![Conflicting Document Defaults](images/revisions/conflicting-document-defaults.png "Conflicting Document Defaults")
 
-Click the **Edit** button to edit the conflict revisions configuration.  
-Its settings are similar to those of the
-[default settings](../../../studio/database/settings/document-revisions#defining-default-settings) 
-and the collection-specific configuration.  
+* Click the **Edit** button to edit the conflict revisions configuration.  
 
 ---
 
-**Let's see an example.**  
+![Editing the Conflicting Document Defaults](images/revisions/edit-conflicting-docs-configuration.png "Editing the Conflicting Document Defaults")
 
-When the conflict revisions configuration is enabled, revisions 
-will be created when documents enter a conflict and when the conflict 
-is resolved.  
+* The settings are similar to those of the
+  [default settings](../../../studio/database/settings/document-revisions#defining-default-settings) 
+  and the collection-specific configuration.  
+* Note that the **Limit # of revisions to keep by age** value is set to `45 Days` by default.  
+  This means that revisions created for conflicting documents will start to be purged 
+  after 45 days, whenever their parent documents are modified.  
 
-When a document that is already stored in the database is replicated 
-into it, we will typically see in the document's 
-[Revisions tab](../../../studio/database/document-extensions/revisions#revisions-tab) 
-that three revisions were created: the first and second revisions mark 
-the conflict for the local and incoming documents, and the third revision 
-indicates that the conflict was resolved.  
+---
 
-Here are these three revisions, with the conflict state marked in 
-their metadata.  
+#### Here is an Example, showing how revisions for conflicting documents work.
+
+* For this example, we created a conflict by replicating into the database 
+  a document with an ID similar to that of a local document.  
+
+    Remember that revisions will be created when documents **enter a conflict** 
+    and when the conflict is **resolved**.  
+    In this case, **three** revisions will be created:  
+     1. when the replicated document arrives and enters a conflict state  
+     2. when the local document enters a conflict state on the arrival of the replicated document  
+     3. when the conflict is resolved by replacing the local document with the replicated one  
+
+* To see these revisions, we open the document's 
+  [Revisions tab](../../../studio/database/document-extensions/revisions#revisions-tab).  
+  The conflict state is indicated in each revision's `metadata`.  
 
 
-![1. Incoming Document in Conflict](images/revisions/conflict-revisions-1.png "1. Incoming Document in Conflict")
+    ![1. Incoming Document in Conflict](images/revisions/conflict-revisions-1.png "1. Incoming Document in Conflict")
 
 
-![3. Local Document in Conflict](images/revisions/conflict-revisions-2.png "2. Local Document in Conflict")
+    ![3. Local Document in Conflict](images/revisions/conflict-revisions-2.png "2. Local Document in Conflict")
 
 
-![3. Conflict Resolved](images/revisions/conflict-revisions-3.png "3. Conflict Resolved")
+    ![3. Conflict Resolved](images/revisions/conflict-revisions-3.png "3. Conflict Resolved")
 
 
 
@@ -239,7 +248,7 @@ their metadata.
 * Enforcing the configuration will list the collections that configurations 
   are defined for, explain the process, and allow you to proceed or cancel the operation.  
 
-  ![Proceed or Cancel](images/revisions/enforce-configuration-2.png "Proceed or Cancel")
+    ![Proceed or Cancel](images/revisions/enforce-configuration-2.png "Proceed or Cancel")
 
 {PANEL/}
 

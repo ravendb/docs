@@ -13,10 +13,6 @@
   database to one of its past states without searching and restoring 
   a stored backup.  
   
-* The accuracy in which the database can be reverted to a historical 
-  point in time depends upon the frequency in which revisions were 
-  created for documents.  
-
 * In this page:  
    * [Revert Revisions](../../document-extensions/revisions/revert-revisions#revert-revisions)  
 
@@ -26,7 +22,7 @@
 
 {PANEL: Revert Revisions}
 
-**Revert Revisions** is used to revert all the documents in the database 
+**Revert Revisions** is used to revert **all the documents** in the database 
 to their state at a historical point in time.  
 
 When the process is executed:  
@@ -47,7 +43,7 @@ When the process is executed:
      at the time you specified still exist after the reversion.  
      {INFO/}
    * To revert a document to one of its revisions, RavenDB will create 
-     a new revision for the document that replicates the historical 
+     a new revision for the document that copieschanged to "copies" the historical 
      revision, effectively replacing the live version of the document.  
 * Documents created **after** the specified point in time will be **deleted**.  
 * Database entities other than documents, such as ongoing tasks, will **not** 
@@ -77,7 +73,7 @@ To Revert Revisions, open the Studio Settings > **Document Revisions** view.
 
 1. **Point in Time**  
    Specify the point in time to revert documents to.  
-   Documents will ve reverted to a revision that was created for them 
+   Documents will be reverted to a revision that was created for them 
    at the specified point in time, or to the nearest revision preceding 
    this time.  
 

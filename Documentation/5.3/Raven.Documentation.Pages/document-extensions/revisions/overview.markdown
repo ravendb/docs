@@ -56,6 +56,19 @@ kept per document.
 
 There is one Revisions configuration per database, stored in the database record.  
 
+{NOTE: Conflict Revisions}
+Revisions created for **conflicting documents** are a special case, that is 
+not covered in this article.  
+
+* Conflict revisions are **Enabled** by default.  
+* Read about the conflict revisions API here: 
+  [Conflict Revisions Configuration](../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration)  
+* Read about managing conflict revisions via Studio here: 
+  [Editing the Conflicting Document Defaults](../../studio/database/settings/document-revisions#editing-the-conflicting-document-defaults)  
+
+{NOTE/}
+
+
 ---
 
 #### Default Settings and Collection-Specific Configurations
@@ -119,7 +132,7 @@ Default and collection-specific configurations are executed:
    * A revision of the document will be created.  
    * Revisions will optionally be purged by limits set in the configuration.  
 
-2. **When [Enforce Configuration]() is applied**.  
+2. **When [Enforce Configuration](../../studio/database/settings/document-revisions#enforce-configuration) is applied**.  
   Enforcing Configuration applies the Revisions configuration immediately 
   throughout the database, **purging** all the revisions that pend purging 
   by default settings or collection-specific configurations and **deleting** 

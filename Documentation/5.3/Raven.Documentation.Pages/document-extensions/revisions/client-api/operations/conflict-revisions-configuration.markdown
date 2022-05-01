@@ -7,10 +7,15 @@
 * RavenDB can create revisions for document conflicts 
   when the conflicts occur and when they are resolved.  
 
-* To manage the creation and purging of revisions for conflicting documents, 
-  apply a **Conflict Revisions Configuration** using the 
-  `ConfigureRevisionsForConflictsOperation` store operation .  
+* To manage the creation and purging of revisions for conflicting 
+  documents, a **Conflict Revisions Configuration** can be applied 
+  using the `ConfigureRevisionsForConflictsOperation` store operation .  
   **This configuration applies to all document collections.**  
+
+* RavenDB applies a conflict revisions configuration by default.  
+  You will only need to run the operation yourself if you want to 
+  disable the feature or change its characteristics (e.g. to modify 
+  the number of conflict revisions kept per document).  
 
 * If you defined [default settings](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-1) 
   for your [Revisions configuration](../../../../document-extensions/revisions/overview#revisions-configuration), 
@@ -27,6 +32,7 @@
 
 * In this page:  
  * [`ConfigureRevisionsForConflictsOperation`](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration#configurerevisionsforconflictsoperation)  
+     * [Storage Considerations](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration#storage-considerations)  
  * [Example](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration#example)  
 
 {NOTE/}
@@ -46,11 +52,30 @@ object with your settings.
 | **database** | `string` | The name of the database whose conflict revisions you want to manage |
 | **configuration** | [RevisionsCollectionConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-2) | The conflict revisions configuration to apply |
 
+---
+
+### Storage Considerations
+
+Tracking document conflicts and understanding their reasons becomes much easier 
+when conflict revisions are created automatically.  
+However, if many conflicts occur unexpectedly it may trigger the creation of 
+a large number of conflict revisions and increase the database size significantly.  
+
+* Limit the number of conflict revisions kept per document using the 
+  `MinimumRevisionsToKeep` and `MinimumRevisionAgeToKeep` 
+  [RevisionsCollectionConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-2) 
+  properties.  
+* Revisions are purged upon [modification of their parent documents](../../../../document-extensions/revisions/overview#revisions-configuration-execution).  
+  If you want to purge a large number of revisions at once, you can **cautiously** use 
+  [Enforce Configuration](../../../../studio/database/settings/document-revisions#enforce-configuration).  
+
 {PANEL/}
 
 {PANEL: Example}
 
-In this example we 
+In this example we create a Conflict Revisions configuration that 
+[purges conflict revisions](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration#storage-considerations) 
+when their parent documents are deleted or their age exceeds 45 days.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync conflict-revisions-configuration_sync@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}

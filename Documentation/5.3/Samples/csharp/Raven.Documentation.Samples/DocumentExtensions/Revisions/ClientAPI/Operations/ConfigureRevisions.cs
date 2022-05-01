@@ -282,8 +282,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                             // Purge conflict revisions upon their parent document deletion
                             PurgeOnDelete = true,
 
-                            // Limit the number of conflict revisions to keep
-                            MinimumRevisionsToKeep = 50
+                            // Limit the number of conflict revisions by age, to 45 days
+                            MinimumRevisionAgeToKeep = new TimeSpan(days: 45, 0, 0, 0)
                         }));
                     #endregion
                 }
@@ -300,8 +300,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Revisions
                             // Purge conflict revisions upon their parent document deletion
                             PurgeOnDelete = true,
 
-                            // Limit the number of conflict revisions to keep
-                            MinimumRevisionsToKeep = 50
+                            // Limit the number of conflict revisions by age, to 45 days
+                            MinimumRevisionAgeToKeep = new TimeSpan(days: 45, 0, 0, 0)
                         }));
                     #endregion
                 }

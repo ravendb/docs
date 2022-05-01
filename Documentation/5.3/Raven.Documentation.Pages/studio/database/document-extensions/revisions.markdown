@@ -89,7 +89,7 @@ revisions to the live document version.
 3. **Left-hand revision**  
    The left-hand view displays the revision selected in the Revisions tab.  
 4. **Right-hand revision**  
-  The right-hand view displays the revision selected using the "Compare with" drop down list.  
+  The right-hand view displays the revision selected using the "Compare with" drop-down list.  
 5. **Summary line**  
   This line summarizes the differences found between the two revisions.  
 

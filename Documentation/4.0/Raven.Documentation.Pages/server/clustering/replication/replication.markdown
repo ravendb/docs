@@ -31,5 +31,21 @@ batch to keep the data consistent.
 However this doesn't always ensure the data consistency, since the same document can be modified in a different 
 transaction and be sent in a different batch.  
 
-Replication consistency can be achieved using 
-[Write Assurance](../../../client-api/session/saving-changes#waiting-for-replication---write-assurance).  
+#### Replication consistency can be achieved by -  
+
+* Using [Write Assurance](../../../client-api/session/saving-changes#waiting-for-replication---write-assurance).  
+* Enabling [Revisions](../../../server/extensions/revisions).  
+  When documents that own revisions are replicated, their revisions will be replicated with them.  
+  
+     **Let's see how this helps replication consistency**.  
+     Consider a scenario in which the replication includes two transmissions: **Tx1** and **Tx2**.  
+     **Tx1** is sent first, replicating `Users/1` and `Users/2`.  
+     **Tx2** is sent second, replicating only `Users/2` that was modified again.  
+   
+     In this situation **Tx1** will replace only the target `Users/1`, since `Users/2` is 
+     considered to be in an ongoing modification.  
+     As a result, the replication destination will be left in partial state until the arrival of **Tx2**.  
+   
+     The scenario is different if the replicated documents include revisions.  
+     **Tx1** will include and replicate its own revision of `Users2`, which will become 
+     the live document version on the destination and ensure replication consistency.  
