@@ -37,15 +37,28 @@ transaction and be sent in a different batch.
 * Enabling [Revisions](../../../server/extensions/revisions).  
   When documents that own revisions are replicated, their revisions will be replicated with them.  
   
-     **Let's see how this helps replication consistency**.  
-     Consider a scenario in which the replication includes two transmissions: **Tx1** and **Tx2**.  
-     **Tx1** is sent first, replicating `Users/1` and `Users/2`.  
-     **Tx2** is sent second, replicating only `Users/2` that was modified again.  
-   
-     In this situation **Tx1** will replace only the target `Users/1`, since `Users/2` is 
-     considered to be in an ongoing modification.  
-     As a result, the replication destination will be left in partial state until the arrival of **Tx2**.  
-   
-     The scenario is different if the replicated documents include revisions.  
-     **Tx1** will include and replicate its own revision of `Users2`, which will become 
-     the live document version on the destination and ensure replication consistency.  
+     {INFO: Let's see how the replication of revisions helps data consistency.}
+     Consider a scenario in which two documents, `Users/1` and `Users/2`, 
+     are **created in the same transaction**, and then `Users/2` is **modified 
+     in a different transaction**.  
+     
+     * **How will `Users/1` and `Users/2` be replicated?**  
+       When RavenDB creates replication batches, it includes in the batches documents by 
+       their Etag.  
+       By this rule, `Users/1` and `Users/2`, that were created in the same 
+       transaction and therefore had the same Etag, should have shared a batch.  
+       But in this case `Users/2` was modified after its creation. its Etag is 
+       now different than that of `Users/1`, and it may be replicated in a different batch.  
+       If this happens, `Users/1` will be replicated to the destination without `Users/2` 
+       though they were created in the same transaction, causing a data inconsistency that 
+       will persist until the arrival of `Users/2`.  
+     
+     * **The scenario will be different if revisions are enabled.**  
+       In this case the creation of `Users/1` and `Users/2` will also create revisions 
+       for them both. These revisions will continue to carry the Etag given to them 
+       at their creation, and will be replicated in the same batch.  
+       When the batch arrives at the destination, data consistency will be kept:  
+       `Users/1` will be stored, and so will the `Users/2` revision, that will become 
+       a live `Users/2` document.  
+
+     {INFO/}
