@@ -3,6 +3,7 @@
 In this section, we review some of the common security configuration errors and explain how to handle them.
 
 [Setup Wizard Issues](../../server/security/common-errors-and-faq#setup-wizard-issues)  
+[Changing Configurations and Renewals Issues](../../server/security/common-errors-and-faq#changing-configurations-and-renewals-issues)  
 [Authentication Issues](../../server/security/common-errors-and-faq#authentication-issues)  
 [Encryption Issues](../../server/security/common-errors-and-faq#encryption-issues)  
 
@@ -12,12 +13,7 @@ In this section, we review some of the common security configuration errors and 
 * [Ports are blocked by the firewall](../../server/security/common-errors-and-faq#ports-are-blocked-by-the-firewall)
 * [DNS is cached locally](../../server/security/common-errors-and-faq#dns-is-cached-locally)
 * [Long DNS propagation time](../../server/security/common-errors-and-faq#long-dns-propagation-time)
-* [After installing with Let's Encrypt, can I change the DNS records?](../../server/security/common-errors-and-faq#after-installing-with-lets-encrypt-can-i-change-the-dns-records)
 * [If I already have the Zip file, can I avoid repeating the setup process?](../../server/security/common-errors-and-faq#if-i-already-have-the-zip-file-can-i-avoid-repeating-the-setup-process)
-* [Can I change the (private) IP address RavenDB binds to?](../../server/security/common-errors-and-faq#can-i-change-the-private-ip-address-ravendb-binds-to)
-* [The Let's Encrypt certificate is about to expire but doesn't renew automatically](../../server/security/common-errors-and-faq#the-lets-encrypt-certificate-is-about-to-expire-but-doesnt-renew-automatically)
-* [Let's Encrypt certificate permission errors after renewal](../../server/security/common-errors-and-faq#lets-encrypt-certificate-permission-errors-after-renewal)
-* [What should I do when my license expires?](../../server/security/common-errors-and-faq#what-should-i-do-when-my-license-expires)
 
 ---
 
@@ -107,6 +103,27 @@ You can keep track of your RavenDB clusters and their associated DNS records at 
 
 ---
 
+### If I already have the Zip file, can I avoid repeating the setup process?
+
+Yes.  
+You can use the Zip file to re-install or deploy the server/cluster elsewhere.  
+Download a fresh copy of RavenDB and run the setup wizard. Then choose `Continue Cluster Setup` and select node A.
+This will use the existing Zip file and the same configuration and certificate which were previously chosen.  
+When building a cluster, repeat this step with nodes B, C, and so on.
+
+
+{PANEL/}
+
+{PANEL: Changing Configurations and Renewals Issues}
+
+* [After installing with Let's Encrypt, can I change the DNS records?](../../server/security/common-errors-and-faq#after-installing-with-lets-encrypt-can-i-change-the-dns-records)
+* [Can I change the (private) IP address RavenDB binds to?](../../server/security/common-errors-and-faq#can-i-change-the-private-ip-address-ravendb-binds-to)
+* [The Let's Encrypt certificate is about to expire but doesn't renew automatically](../../server/security/common-errors-and-faq#the-lets-encrypt-certificate-is-about-to-expire-but-doesnt-renew-automatically)
+* [What should I do when my license expires?](../../server/security/common-errors-and-faq#what-should-i-do-when-my-license-expires)
+* [Let's Encrypt certificate permission errors after renewal](../../server/security/common-errors-and-faq#lets-encrypt-certificate-permission-errors-after-renewal)
+
+---
+
 ### After installing with Let's Encrypt, can I change the DNS records?
 
 Yes.  
@@ -116,16 +133,6 @@ Yes.
 
 If you supply different IP addresses then the wizard will update the DNS records of your domain.  
 If you use a new domain or if you add/remove nodes in the new configuration then the wizard will also fetch a new certificate.
-
----
-
-### If I already have the Zip file, can I avoid repeating the setup process?
-
-Yes.  
-You can use the Zip file to re-install or deploy the server/cluster elsewhere.  
-Download a fresh copy of RavenDB and run the setup wizard. Then choose `Continue Cluster Setup` and select node A.
-This will use the existing Zip file and the same configuration and certificate which were previously chosen.  
-When building a cluster, repeat this step with nodes B, C, and so on.
 
 ---
 
@@ -139,7 +146,7 @@ change the `ServerUrl` setting and restart the server.
 
 ### The Let's Encrypt certificate is about to expire but doesn't renew automatically
 
-If you are getting the following error you must update the RavenDB server. This bug is fixed as of build 4.0.3-patch-40033.
+If you are getting the following error you must update the RavenDB server. 
 
 {CODE-BLOCK:plain}
 Failed to update certificate from Lets Encrypt, EXCEPTION: System.InvalidOperationException: 
@@ -186,24 +193,29 @@ Things to check:
   * Make sure to supply the server logs with your ticket. When running in a cluster, please provide the logs from all nodes.
   * If your logs are turned off, open `Manage Server`->`Admin Logs` in the Studio, and keep them open while you click the `Renew` button in the certificate view.
 
----
-
-### Let's Encrypt certificate permission errors after renewal
-
-If you have External Replication or ETL to another cluster, or if you use 
-your own Let's Encrypt certificates as client certificates, the next certificate 
-renewal may cause permission issues that need to be handled manually.  
-
-Learn how to handle this issue [here](../../server/security/authentication/solve-cluster-certificate-renewal-issue).  
-
----
+  ---
 
 ### What should I do when my license expires?
+
+By default, the RavenDB license update server automatically renews licenses.
+If your server is running offline or a firewall is blocking the connection with the license server, 
+you will need to renew your license key manually.  
 
 If your license is due to expire, be sure to **renew the license**.  
 Do not set up a new license because this will cause domain name issues.  
 
-To renew your license, navigate to the [Studio "About" tab](../../studio/server/license-management):  
+If you get automatic Let's Encrypt certificate renewals, contact RavenDB support to renew the license because changing the 
+license ID will cause a mismatch that will cancel the auto-certificate renewal.  
+
+Copy your new license code key from the email that was given when registering your license.  
+Paste it either: 
+
+* Directly into the settings.json
+  * e.g. `"License": paste your license code including curly brackets here` 
+* Into the .json file `license.json`, to which the file path is provided in the settings.json
+  * e.g. `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
+
+To renew your license via studio, navigate to the [Studio "About" tab](../../studio/server/license-management):  
 
 ![Renew License in Studio](images/renew-license-studio.png "Renew License in Studio")
 
@@ -215,6 +227,17 @@ To renew your license, navigate to the [Studio "About" tab](../../studio/server/
      Paste the renewal key from the email into the interface.
   3. **Submit button**  
      Click to complete the procedure.
+
+---
+
+### Let's Encrypt certificate permission errors after renewal
+
+If you have External Replication or ETL to another cluster, or if you use 
+your own Let's Encrypt certificates as client certificates, the next certificate 
+renewal may cause permission issues that need to be handled manually.  
+
+Learn how to handle this issue [here](../../server/security/authentication/solve-cluster-certificate-renewal-issue).  
+
 
 {PANEL/}
 
@@ -463,6 +486,7 @@ To figure out what the new limit should be, look at the exception thrown by Rave
 
 - [Setup Wizard](../../start/installation/setup-wizard)
 - [Manual Setup](../../start/installation/manual)
+- [Running in a Docker Container](../../start/installation/running-in-docker-container)
 
 ### Setup Examples
 

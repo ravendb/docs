@@ -341,6 +341,7 @@ select Name
 
 - [Setup Wizard](../start/installation/setup-wizard)
 - [System Requirements](../start/installation/system-requirements)
+- [Running in a Docker Container](../../start/installation/running-in-docker-container)
 
 ### Client API
 

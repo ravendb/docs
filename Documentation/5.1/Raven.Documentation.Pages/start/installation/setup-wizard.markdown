@@ -668,6 +668,7 @@ Learn more in [Adding a Node to a Cluster](../../studio/server/cluster/add-node-
 ### Getting Started
 - [Manual Setup](../../start/installation/manual)
 - [Running as a Service](../../start/installation/running-as-service)
+- [Running in a Docker Container](../../start/installation/running-in-docker-container)
 - [Setup Example - AWS Windows VM](../../start/installation/setup-examples/aws-windows-vm)
 - [Setup Example - AWS Linux VM](../../start/installation/setup-examples/aws-linux-vm)
 - [Setup Example - Docker on AWS Linux VM](../../start/installation/setup-examples/aws-docker-linux-vm)
