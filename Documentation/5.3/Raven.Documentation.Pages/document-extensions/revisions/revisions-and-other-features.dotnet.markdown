@@ -102,7 +102,9 @@ overwritten, a new revision will be created for the target document as expected.
 {PANEL: Revisions Replication, Export, and Import}
 
 * Revisions are transferred during [replication](../../server/clustering/replication/replication).  
-* Revisions can be transferred using an [External Replication Task](../../studio/database/tasks/ongoing-tasks/external-replication-task).  
+* Revisions can be sent by an [External Replication Task](../../studio/database/tasks/ongoing-tasks/external-replication-task).  
+  [Read here](../../server/clustering/replication/replication#replication-consistency-can-be-achieved-by--) 
+  about using revisions to keep the consistency of replicated data.  
 * Revisions can be Imported and exported with a `.ravendbdump` file -  
    * Using [the API](../../client-api/smuggler/what-is-smuggler).  
    * Using the Studio [import](../../studio/database/tasks/import-data/import-data-file#import-options) 

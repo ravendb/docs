@@ -43,12 +43,14 @@ transaction and be sent in a different batch.
      in a different transaction**.  
      
      * **How will `Users/1` and `Users/2` be replicated?**  
-       When RavenDB creates replication batches, it includes in the batches documents by 
-       their Etag.  
-       By this rule, `Users/1` and `Users/2`, that were created in the same 
-       transaction and therefore had the same Etag, should have shared a batch.  
-       But in this case `Users/2` was modified after its creation. its Etag is 
-       now different than that of `Users/1`, and it may be replicated in a different batch.  
+       When RavenDB creates replication batches, it keeps the 
+       [transaction boundary](../../../server/clustering/replication/replication#replication-transaction-boundary) 
+       by always sending documents that were modified in the same transaction, 
+       **in the same batch**.  
+       In our scenario, however, `Users/2` was modified after its creation, it 
+       is now recognized by its Etag as a part of a different transaction than 
+       that of `Users/1`, and the two documents may be replicated in two different 
+       batches, `Users/1` first and `Users/2` later.  
        If this happens, `Users/1` will be replicated to the destination without `Users/2` 
        though they were created in the same transaction, causing a data inconsistency that 
        will persist until the arrival of `Users/2`.  
