@@ -41,6 +41,8 @@
      Use this method to retrieve metadata for all revisions kept for a specified document.  
    * [Get](../../../document-extensions/revisions/client-api/session/loading#get)  
      Use this method to retrieve revisions by change vector or creation time.  
+   * Read [here](../../../client-api/session/how-to/perform-operations-lazily#revisions) 
+     about the **lazy versions** of `GetFor`, `GetMetadataFor`, and `Get`.  
 * [Counting Revisions](../../../document-extensions/revisions/client-api/session/counting)  
    * [GetCountFor](../../../document-extensions/revisions/client-api/session/counting#getcountfor)  
      Use this method to count the revisions kept for a document.  
