@@ -9,11 +9,12 @@ using Raven.Client.Documents.Operations.Indexes;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Raven.Documentation.Samples.ClientApi.HowTo.DateAndTimeOnly
+namespace Raven.Documentation.Samples.ClientApi.HowTo.DateAndTimeOnlySample
 {
-    public class DateAndTimeOnlySamples;
+    public class DateAndTimeOnlySamples 
+    { 
     #region DateAndTimeOnlyIndexSample
-    private class DateAndTimeOnlyIndex : AbstractIndexCreationTask<DateAndTimeOnly, DateAndTimeOnlyIndex.IndexEntry>
+    public class DateAndTimeOnlyIndex : AbstractIndexCreationTask<DateAndTimeOnly, DateAndTimeOnlyIndex.IndexEntry>
     {
         public class IndexEntry
         {
@@ -24,7 +25,16 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo.DateAndTimeOnly
             public TimeOnly TimeOnly { get; set; }
         }
 
-        public DateAndTimeOnlyIndex()
+        private class DateAndTimeOnly
+        {
+            public DateOnly DateOnly { get; set; }
+            public TimeOnly TimeOnly { get; set; }
+            public DateTime DateTime { get; set; }
+
+            public int? Age { get; set; }
+        }
+
+            public DateAndTimeOnlyIndex()
         {
             Map = dates => from date in dates
                            select new IndexEntry() { DateOnly = date.DateOnly, TimeOnly = date.TimeOnly };
@@ -42,5 +52,7 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo.DateAndTimeOnly
         .Where(i => i.TimeOnly > after && i.TimeOnly < before)
         .ToList();
     #endregion
+
+
 }
 }

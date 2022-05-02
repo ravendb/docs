@@ -1,19 +1,20 @@
-# Client API: How to Use TimeOnly and DateOnly
+# Client API: How to Use TimeOnly and DateOnly Types
 ---
 
 {NOTE: }
 
-* RavenDB has introduced the ability to rapidly query with the functionality of .NET's DateOnly or TimeOnly types
-  while leaving your existing data as is.  
+* RavenDB has introduced the ability to convert `DateTime` or strings written in date/time formats to .NET's 
+  `DateOnly` or `TimeOnly` types without slowing down queries and while leaving your existing data as is.  
 
-* We do this in the [indexes](../../indexes/map-indexes) by converting the types `DateTime` or strings that are written in date or time formats 
-  into `DateOnly` or `TimeOnly` ([see example below](../../client-api/how-to/using-timeonly-and-dateonly#convert-and-use-date/timeonly-without-affecting-your-existing-data)).  
+* We do this in the [indexes](../../indexes/map-indexes) so that the conversions and calculations are done behind the scenes
+  and the data is ready for fast queries. [See sample index below.](../../client-api/how-to/using-timeonly-and-dateonly#convert-and-use-date/timeonly-without-affecting-your-existing-data)).  
 
 * It is also possible to covert via patch or query, but we recommend doing so in the index because:
   * Patch changes your existing data, which may cause problems with existing logic that uses that data.
   * Queries become slow if they are defined with demanding processes. 
-  * By creating static indexes that work behind the scenes to convert your data to Ticks or to Date/TimeOnly values, 
-    you won't need to process the conversion at query time.
+  * [Static indexes](../../indexes/indexing-basics) process new data in the background, 
+    including calculations and converstions to Ticks or to Date/TimeOnly values, 
+    so that the data is ready at query time.
 
 In this page: 
 
@@ -24,10 +25,12 @@ In this page:
 
 {PANEL: About DateOnly and TimeOnly}
 
+These two new C# types are available from .NET 6.0+ (RavenDB 5.3+).  
+
 * **DateOnly**  
   According to [Microsoft .NET Blog](https://devblogs.microsoft.com/dotnet/date-time-and-time-zone-enhancements-in-net-6/#the-dateonly-type)
-  DateOnly is ideal for scenarios such as birth dates, anniversary dates, hire dates, 
-  and other business dates that are not typically associated with any particular time.
+  DateOnly is ideal for scenarios such as birth dates, anniversaries, hire dates, 
+  and other business dates that are not typically associated with any particular time. 
   * See [their usage examples here.](https://devblogs.microsoft.com/dotnet/date-time-and-time-zone-enhancements-in-net-6/#the-dateonly-type)
 
 * **TimeOnly**  
@@ -75,6 +78,7 @@ Because the query is on a static index, you can rapidly query on ticks if you ch
 ## Related Articles 
 
 - [Creating and Deploying Indexes](../../indexes/creating-and-deploying)  
+- [Indexing Basics](../../indexes/indexing-basics)
 - [Map Indexes](../../indexes/map-indexes)
 
 
