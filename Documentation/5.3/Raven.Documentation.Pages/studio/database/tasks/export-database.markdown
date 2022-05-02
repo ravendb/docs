@@ -92,13 +92,13 @@ Click to display the advanced export options.
      ![Figure 6. Advanced Export Options - Customize Configuration and Ongoing Tasks](images/export-database-advanced-configuration.png "Advanced export options - Customize Configuration and Ongoing Tasks")
 
 4. **Export Command**  
-   Click to create a PowerShell, Cmd or Bash command.  
+   Click to create a **PowerShell**, **Cmd** or **Bash** command.  
    Running the command you created from the selected command line window will export your data 
    as defined by your settings.  
 
       ![PowerShell Command](images/export-command-powershell.png "PowerShell Command")
 
-       **A**. Select the command line to prepare a command for  
+       **A**. Click the **Export Command** button and Select the command line to prepare a command for  
        **B**. Click to copy the created export command to the clipboard  
 
 5. **Close Advanced**  
