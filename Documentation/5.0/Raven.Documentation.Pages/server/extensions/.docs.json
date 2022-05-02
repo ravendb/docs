@@ -11,6 +11,12 @@
     ]
   },
   {
+    "Path": "refresh.markdown",
+    "Name": "Refresh",
+    "DiscussionId": "b976732a-3da7-48e5-a454-4f34b8f716f9",
+    "Mappings": []
+  },
+  {
     "Path": "revisions.markdown",
     "Name": "Revisions",
     "LastSupportedVersion": "5.2",
