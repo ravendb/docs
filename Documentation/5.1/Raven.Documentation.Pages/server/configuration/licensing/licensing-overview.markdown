@@ -36,7 +36,8 @@ In this page:
 {PANEL: Activating Your License}
 
 Because licenses are activated and updated automatically by default, the following sections are only relevant if you 
-changed the license configurations in the server's [settings.json](../../../server/configuration/configuration-options#json).
+changed the license configurations in the server's [settings.json](../../../server/configuration/configuration-options#json)
+or if your server is running offline.
 
 To activate your license, you must either embed the code directly into the settings.json, 
 or provide a path to the license code as a .json file.  
@@ -50,8 +51,8 @@ You can either [activate via Studio](../../../studio/server/license-management#r
     Your license code was sent to the email that is registered with the license.
 
 * **License.Path**  
-    Path (either **full** or **relative to the Server folder**) to the license file.  
-    Default: `license.json` in the **Server** folder.  
+    Path to the license file (either **full** or **relative to the Server folder**).  
+    The file `license.json` is in each node's **...Cluster.Settings.zip** in wizard installs or possibly the**Server** folder if manually installed.  
     E.g. (full) - `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
     E.g. (relative) - `"License.Path": "License\\license.json"`  
 
@@ -62,6 +63,9 @@ You can either [activate via Studio](../../../studio/server/license-management#r
   * When [upgrading](https://ravendb.net/buy), be sure to choose the license that has the features 
     with which your client was developed.  
     For example, if you need Backups, ETL, Encryption, or Hub/Sink replication, be sure that your license includes these features.
+  * To prevent unexpected issues upon launching, you can use a temporary [cloud instance](../../../cloud/cloud-overview#instances-provisioning-and-ravendb-products) 
+    with machine performance specs similar to your plans for production. This way you can securely test the API and processing of 
+    data that mimics your actual data-set and planned infrastructure.  
 
 {NOTE/}
 

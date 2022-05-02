@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <None Remove="studio\database\tasks\images\Snags-CSD\Northwind-Indexes-View.png" />
+    <None Remove="studio\server\images\snag\license-serversnag.snag" />
   </ItemGroup>
 
   <ItemGroup>
