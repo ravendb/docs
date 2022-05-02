@@ -5,7 +5,7 @@
 {NOTE: }
 
 * The **OLAP ETL task** is an [ETL](../../../../server/ongoing-tasks/etl/basics) process that converts RavenDB data to the 
-[_Apache Parquet_](https://parquet.apache.org/docs) file format, and sends 
+[_Apache Parquet_](https://parquet.apache.org/docs/) file format, and sends 
 it to one or more of these destinations:  
   * [Amazon S3](https://aws.amazon.com/s3/)
   * [Amazon Glacier](https://aws.amazon.com/glacier/)
