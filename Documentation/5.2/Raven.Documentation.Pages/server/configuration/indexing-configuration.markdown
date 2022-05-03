@@ -1,4 +1,5 @@
 # Configuration: Indexing
+---
 
 {PANEL:Indexing.RunInMemory}
 
@@ -8,7 +9,8 @@ Set if indexes should run purely in memory.
 - **Default**: `null`
 - **Scope**: Server-wide or per database
 
-When running in memory, the index information is not written to disk and if the server is restarted all indexing data will be lost. This is mostly useful for testing or faster non-persistant indexing.
+When running in memory, the index information is not written to disk and if the server is restarted all 
+indexing data will be lost. This is mostly useful for testing or faster non-persistent indexing.
  
 If not set or set to **null** - indexing will run in memory if core settings *RunInMemory* is set to true.
 
@@ -340,5 +342,16 @@ Smallest n-gram to generate when [NGram analyzer](../../indexes/using-analyzers)
 - **Type**: `string`
 - **Default**: `RavenStandardAnalyzer`
 - **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL:Indexing.Static.RequireAdminToDeployJavaScriptIndexes}
+
+Require database `Admin` [clearance](../../server/security/authorization/security-clearance-and-permissions) 
+to deploy [JavaScript indexes](../../indexes/javascript-indexes).
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide or per database
 
 {PANEL/}

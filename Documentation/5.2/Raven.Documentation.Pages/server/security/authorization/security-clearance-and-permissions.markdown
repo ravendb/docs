@@ -27,7 +27,7 @@ The following operations are allowed **only** for `Cluster Admin` certificates:
 
 {PANEL:Operator}
 
-A client certificate with an `Operator` security clearance has admin access to all databases, 
+A client certificate with an `Operator` security clearance has admin access to all databases 
 but is unable to modify the cluster. It cannot perform operations such as 
 add/remove/promote/demote nodes from the cluster. This is useful in a hosted solution 
 (such as **RavenDB Cloud**). If you are running on your own machines, you'll typically ignore 
@@ -88,12 +88,14 @@ A `User` certificate with a `Read/Write` access level can perform all operations
 
 ### `Read Only`
 
-The `Read Only` access level **allows** clients to: 
+The `ReadOnly` access level **allows** clients to: 
 
 - Read data from a database, but not to write or modify data.  
 - Query the databases that are configured in the client certificate.  
    * Auto-indexes are built as a normal result of queries.  
 - Be subscription workers to consume data subscriptions.  
+
+{INFO: Unauthorized actions for ReadOnly client certificates}
 
 The following operations are **forbidden**:  
 
@@ -101,7 +103,13 @@ The following operations are **forbidden**:
 - Changing any configurations or settings  
 - Creating or modifying [ongoing tasks](../../../server/ongoing-tasks/general-info)  
 - Defining [static indexes](../../../indexes/creating-and-deploying#static-indexes) (the database will create 
-[auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) as normal in response to queries)  
+[auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) as normal in response to queries)
+  * [JavaScript static indexes](../../../indexes/javascript-indexes) are permitted by default with Read Only User certificates.  
+    To configure a server or database so that only Admin certificates will be able to deploy JavaScript static indexes,  
+    configure [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../../server/configuration/indexing-configuration#indexing.static.requireadmintodeployjavascriptindexes) 
+    to `true`.
+
+{INFO/}
 
 Learn more about the `Read Only` access level [here](../../../studio/server/certificates/read-only-access-level).
 
