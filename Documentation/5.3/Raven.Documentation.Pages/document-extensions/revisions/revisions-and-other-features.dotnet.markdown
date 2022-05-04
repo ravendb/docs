@@ -13,7 +13,8 @@
    * [Revisions and Time Series](../../document-extensions/revisions/revisions-and-other-features#revisions-and-time-series)  
    * [Revisions and Attachments](../../document-extensions/revisions/revisions-and-other-features#revisions-and-attachments)  
    * [Revisions and ETL](../../document-extensions/revisions/revisions-and-other-features#revisions-and-etl)  
-   * [Revisions Replication, Export, and Import](../../document-extensions/revisions/revisions-and-other-features#revisions-replication,-export,-and-import)  
+   * [Revisions and Replication](../../document-extensions/revisions/revisions-and-other-features#revisions-and-replication)  
+   * [Revisions Import and Export](../../document-extensions/revisions/revisions-and-other-features#revisions-import-and-export)  
    * [Revisions and Backup](../../document-extensions/revisions/revisions-and-other-features#revisions-and-backup)  
    * [Revisions and Data Subscriptions](../../document-extensions/revisions/revisions-and-other-features#revisions-and-data-subscriptions)  
 
@@ -117,12 +118,20 @@ overwritten, a new revision will be created for the target document as expected.
 
 {PANEL/}
 
-{PANEL: Revisions Replication, Export, and Import}
+{PANEL: Revisions and Replication}
 
-* Revisions are transferred during [replication](../../server/clustering/replication/replication).  
-* Revisions can be sent by an [External Replication Task](../../studio/database/tasks/ongoing-tasks/external-replication-task).  
-  [Read here](../../server/clustering/replication/replication#replication-consistency-can-be-achieved-by--) 
-  about using revisions to keep the consistency of replicated data.  
+* Revisions **are** transferred during [replication](../../server/clustering/replication/replication) between nodes 
+  of the same database group.  
+* Revisions **can be** sent by an [External Replication Task](../../studio/database/tasks/ongoing-tasks/external-replication-task#general-information-about-external-replication-task).  
+
+{INFO: }
+Revisions can [help in keeping the consistency of replicated data](../../server/clustering/replication/replication#replication-consistency-can-be-achieved-by--).  
+{INFO/}
+
+{PANEL/}
+
+{PANEL: Revisions Import and Export}
+
 * Revisions can be Imported and exported with a `.ravendbdump` file -  
    * Using [the API](../../client-api/smuggler/what-is-smuggler).  
    * Using the Studio [import](../../studio/database/tasks/import-data/import-data-file#import-options) 
