@@ -5,10 +5,10 @@
 
 * [Document Revisions](../../../document-extensions/revisions/overview) 
   are snapshots of documents, that can be created automatically upon 
-  document creation, modification, or deletion and can be used for data 
-  auditing, instant restoration after document corruption, and various 
-  other uses.  
-* This page describes -  
+  document creation, modification, or deletion.  
+* Revisions can be used for data auditing, instant restoration after 
+  document corruption, and various other uses.  
+* The Studio views that this article describes are -  
    * the Document View [Revisions tab](../../../studio/database/document-extensions/revisions#revisions-tab), 
      that lists the revisions created for a document and allows to inspect 
      each revision, compare it with other revisions, and create new revisions.  
@@ -36,11 +36,13 @@ revisions to the live document version.
 
 ![Revisions Tab](images/revisions/document-revisions.png "Revisions Tab")
 
-1. [document view](../../../studio/database/documents/document-view) > **Revisions tab**  
+1. [Document View](../../../studio/database/documents/document-view) > **Revisions tab**  
    Click to display the document's Revisions tab.  
    Revisions are listed in the Revisions tab by their creation time signatures.  
+   The current number of revisions is displayed in the tab header.  
 2. **Create Revision**  
    Click to create a new revision for this document.  
+   A new revision will be created if the document doesn't already have a revision for the latest content.  
    [Learn here](../../../document-extensions/revisions/overview#force-revision-creation) 
    about forcing the creation of a new revision via Studio or the API.  
 3. **A Revision**  
@@ -61,8 +63,12 @@ revisions to the live document version.
 ![Revision Inspection](images/revisions/revision-inspection.png "Revision Inspection")
 
 1. **Clone**  
-   Click to create a document that replicates the revision's contents.  
-   Cloning the revision using the same ID as its parent document will revert the document to this revision.  
+   Click to create a document that copies the revision's contents.  
+   {INFO: }
+   Cloning the revision will open the 'new document view' with this revision's contents.  
+   You can then save the clone under a new name to create a new document.  
+   Saving the clone with the exact same ID as the revision's parent document will revert the document to this revision.  
+   {INFO/}
 2. **See the current document**  
    Click to return to the revision's parent document view.  
 3. **Revision Inspection Box**  
@@ -97,36 +103,41 @@ revisions to the live document version.
 
 {PANEL: Revisions Bin}
 
-Deleting a document that the Revisions feature is enabled for will create 
-a new revision for the document and move all its revisions to the revisions bin.  
+Deleting a document that the Revisions feature is enabled for will:  
+
+* Create a new revision for the document, that marks its deletion.  
+* Move all the document's revisions, including the deletion revision, 
+  to the revisions bin.  
 
 ![Revisions Bin](images/revisions/revisions-bin.png "Revisions Bin")
 
 1. **Revisions Bin**  
    Click to open the Revisions Bin view.  
-   Each item listed in the Revisions Bin view references all the revisions created for a deleted document.  
-2. **Delete**  
+   Each item listed in the Revisions Bin view marks all the revisions created for a deleted document.  
+2. **Selection Boxes**  
+   Check to select items.  
+3. **Delete**  
    Click to remove selected items.  
    Deleting revisions from the revisions bin will dispose of these revisions irrevocably.  
-3. **Selection Boxes**  
-   Check to select items.  
 4. **Deleted Document ID**  
-   Click to inspect the revisions created for this document (aka "orphaned revisions" 
+   This is the ID of the document that was deleted.  
+   Click it to inspect the revisions created for this document (aka "orphaned revisions" 
    because their parent document has been deleted).  
    ![Orphaned Revisions](images/revisions/orphaned-revisions.png "Orphaned Revisions")
      * Revisions stored in the revisions bin can be 
        [inspected](../../../studio/database/document-extensions/revisions#revision-inspection) 
        and cloned just like the revisions of a live document.  
-5. **Deletion Revision Change Vector**  
-   Change vector of the revision that was created for the document when it was deleted.  
+5. **Change Vector**  
+   The change vector of the revision that was created for the document when it was deleted.  
 6. **Deletion Date**  
+   The date/time when the document was deleted.  
 
 ---
 
 ### Restoring Revisions
 
 Giving a **new document** the ID of a deleted document whose revisions are 
-kept in the revisions bin, will restore the revisions from the bin and add 
+kept in the Revisions Bin, will restore the revisions from the bin and add 
 them to the new document.
 
 Opening the document's Revisions tab will display the whole audit trail, 
