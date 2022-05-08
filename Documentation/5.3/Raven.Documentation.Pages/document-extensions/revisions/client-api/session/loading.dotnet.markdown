@@ -59,7 +59,7 @@ for a specified document.
 | ------------- | ------------- | ----- |
 | **id** | string | ID of the document whose revisions' metadata is retrieved |
 | **start** | int | First revision to retrieve metadata for |
-| **pageSize** | int | The metadata for how many revisions to retrieve per page |
+| **pageSize** | int | how many revisions to retrieve per page |
 
 #### Example
 

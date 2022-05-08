@@ -62,17 +62,20 @@ revisions to the live document version.
 
 ![Revision Inspection](images/revisions/revision-inspection.png "Revision Inspection")
 
-1. **Clone**  
+1. **Revision**  
+   The REVISION label indicates that you are viewing a revision and not 
+   the parent document.  
+2. **Clone**  
    Click to create a document that copies the revision's contents.  
    {INFO: }
    Cloning the revision will open the 'new document view' with this revision's contents.  
    You can then save the clone under a new name to create a new document.  
    Saving the clone with the exact same ID as the revision's parent document will revert the document to this revision.  
    {INFO/}
-2. **See the current document**  
+3. **See the current document**  
    Click to return to the revision's parent document view.  
-3. **Revision Inspection Box**  
-   The revision is displayed in read-only mode.  
+4. **Revision Inspection Area**  
+   The revision's content, displayed in read-only mode.  
 
 {PANEL/}
 
@@ -106,14 +109,14 @@ revisions to the live document version.
 Deleting a document that the Revisions feature is enabled for will:  
 
 * Create a new revision for the document, that marks its deletion.  
-* Move all the document's revisions, including the deletion revision, 
+* Move all the document's revisions, including the delete revision, 
   to the revisions bin.  
 
 ![Revisions Bin](images/revisions/revisions-bin.png "Revisions Bin")
 
 1. **Revisions Bin**  
    Click to open the Revisions Bin view.  
-   Each item listed in the Revisions Bin view marks all the revisions created for a deleted document.  
+   Each item listed in the Revisions Bin view references all the revisions created for a deleted document.  
 2. **Selection Boxes**  
    Check to select items.  
 3. **Delete**  
@@ -138,11 +141,11 @@ Deleting a document that the Revisions feature is enabled for will:
 
 Giving a **new document** the ID of a deleted document whose revisions are 
 kept in the Revisions Bin, will restore the revisions from the bin and add 
-them to the new document.
+them to the new document.  
 
 Opening the document's Revisions tab will display the whole audit trail, 
-including the revisions created when the old document was deleted and when 
-the new one was created.
+including the delete-revision created when the old document was deleted 
+and the revision created when the new document was created.  
 
 ![Restored Revisions](images/revisions/restored-revisions.png "Restored Revisions")
 

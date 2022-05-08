@@ -26,7 +26,7 @@
 
 ### Revisions Creation
 
-* A revision will **not** be created upon modifications to 
+* A revision will **not** be created upon modifications to existing 
   [counter](../../document-extensions/counters/overview) values.  
 * **Creating** or **removing** a counter modifies the counter's 
   parent document by adding the counter's name or removing it from 
@@ -60,7 +60,7 @@ to get a document's revisions metadata, and extract counters' data from the meta
 
 ### Revisions Creation
 
-* A revision will **not** be created upon modifications to 
+* A revision will **not** be created upon modifications to existing 
   [time series](../../document-extensions/timeseries/overview) values.  
 * **Creating** or **removing** a time series modifies the time series' 
   parent document by adding the time series' name or removing it 

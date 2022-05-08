@@ -33,21 +33,22 @@ When the process is executed:
      the nearest revision preceding this time.  
      {INFO: }
      When the number of revisions that a document may keep is 
-     [limited](../../document-extensions/revisions/overview#revisions-configuration-properties)
+     [limited](../../document-extensions/revisions/overview#revisions-configuration-options)
      (by number or age), only the most recent revisions are kept 
      for it.  
-     Such documents, that were created **before** the specified point 
-     in time but may hold revisions that were created **after** that 
-     time, may be reverted to a revision newer than the specified time.  
+     It may thus happen, that the document was created **before** 
+     the specified point in time, but it currently holds only revisions 
+     that were created **after** that time.  
+     Such documents may be reverted to a revision newer than the specified time.  
      By doing so we make sure that all the documents that existed 
-     at the time you specified still exist after the reversion.  
+     at the time you specified still exist after reverting the database.  
      {INFO/}
    * To revert a document to one of its revisions, RavenDB will create 
-     a new revision for the document that copieschanged to "copies" the historical 
-     revision, effectively replacing the live version of the document.  
+     a new revision for the document that copies the historical revision, 
+     effectively replacing the live version of the document.  
 * Documents created **after** the specified point in time will be **deleted**.  
-* Database entities other than documents, such as ongoing tasks, will **not** 
-  be reverted by this process.  
+* Database entities other than documents, such as ongoing tasks, indexes, 
+  and compare-exchange pairs, will **not** be reverted by this process.  
 
 ---
 
@@ -62,7 +63,7 @@ To Revert Revisions, open the Studio Settings > **Document Revisions** view.
    and the accuracy of the reversion (how close we can get to the database 
    state at the specified time), depend upon continuous creation 
    of revisions.  
-   Make sure that a [Revisions configuratio](../../document-extensions/revisions/overview#revisions-configuration) 
+   Make sure that a [Revisions configuration](../../document-extensions/revisions/overview#revisions-configuration) 
    that suits your needs is defined.  
 3. **Revert Revisions**  
    Click to specify a point in time to revert the database to.  

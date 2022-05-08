@@ -8,7 +8,7 @@
   Store operation to apply a [Revisions configuration](../../../../document-extensions/revisions/overview#revisions-configuration) 
   to the database.  
 
-* A Revisions configuration is comprised of Default settings and/or Collection-specific configurations.  
+* A Revisions configuration includes Default settings and/or Collection-specific configurations.  
    * The **default settings** apply to all database collections.  
    * **Collection-specific configurations** override the default settings for the collections 
      they are applied to.  

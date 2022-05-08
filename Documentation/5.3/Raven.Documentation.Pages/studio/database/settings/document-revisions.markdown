@@ -5,9 +5,9 @@
 
 {NOTE: }
 
-* Use the **Document Revisions** Settings view to create and manage a 
+* Use the **Document Revisions** Settings view to create and manage the 
   Revisions configuration.  
-* You can learn about revisions [here](../../../document-extensions/revisions/overview) 
+* Learn more about revisions [here](../../../document-extensions/revisions/overview) 
   and about the Revisions configuration 
   [here](../../../document-extensions/revisions/overview#revisions-configuration).  
 
@@ -41,7 +41,7 @@
    Click to [revert the database](../../../document-extensions/revisions/revert-revisions) 
    to its state at a specified point in time  
     * Documents created **before** the point in time will be **kept**.  
-      If the documents own revisions, they will be **reverted** to the revision created 
+      If a document owns revisions, the document will be **reverted** to the revision created 
       at the specified point in time or to the nearest revision preceding this time.
     * Documents created **after** the specified point in time will be **deleted**.  
     * Only documents will be reverted. Other entities (like ongoing tasks, for example) 
@@ -50,7 +50,8 @@
    Click to [Enforce the Revisions configuration](../../../studio/database/settings/document-revisions#enforce-configuration).  
    {WARNING: }
    This operation may delete many revisions irrevocably and require substantial 
-   server resources. Please read carefully the section dedicated to it.  
+   server resources.  
+   Please read carefully the section dedicated to it.  
    {WARNING/}
 6. **Create document defaults**  
    Click to define default settings that will apply to documents of all 
@@ -58,7 +59,7 @@
 7. **Add a collection-specific configuration**  
    Click to create a configuration for a specific collection.  
    If default settings were defined, a collection-specific configuration 
-   will override them for the collection it is defined for.  
+   will override them for this collection.  
 8. **The defined Revisions configuration**  
    Read more [below](../../../studio/database/settings/document-revisions#the-revisions-configuration).  
 
@@ -66,28 +67,31 @@
 
 {PANEL: The Revisions Configuration}
 
-The Revisions configuration can be comprised of default settings that apply to all 
-document collections, and/or of configurations that apply only to specific collections 
+The Revisions configuration can include default settings that apply to all 
+document collections, and/or configurations that apply only to specific collections 
 and override the default settings for these collections.  
 
 As long as no default settings or collection-specific configurations are defined 
-and enabled, the Revisions feature will remain disabled for all document collections.  
+and enabled, the Revisions feature will remain disabled and no revisions will be 
+created for any document collection.  
 
 ![Defined Configuration](images/revisions/defined-configuration.png "Defined Configuration")
 
 1. **Document Defaults**  
-  These are optional Default Settings that apply to all the collections that 
-  a collection-specific configuration is not defined for.  
-2.**Conflicting Document Defaults**  
-  This pre-defined [conflict revisions configuration](../../../studio/database/settings/document-revisions#editing-the-conflicting-document-defaults) 
-  can help you keep track of document conflicts by enabling the creation of revisions 
-  when conflicts occur and when they are resolved.  
-  This configuration cannot be removed, but if you're sure you're not 
-  interested in tracking document conflicts using revisions you can disable it.  
-3.**Collections**  
-  These are optional collection-specific Configurations whose settings override 
-  the default settings and the conflict revisions configuration for the collections 
-  they are defined for.  
+   These are optional Default Settings that apply to all the collections that 
+   a collection-specific configuration is not defined for.  
+2. **Conflicting Document Defaults**  
+   This pre-defined conflict-revisions configuration can help you keep track of 
+   document conflicts, by enabling the creation of revisions when conflicts occur 
+   and when they are resolved.  
+    * The Conflicting Document Defaults configuration cannot be removed.  
+    * You can [modify](../../../studio/database/settings/document-revisions#editing-the-conflicting-document-defaults) 
+      this configuration, or, if you are certain you're not interested in tracking 
+      document conflicts using revisions, you can disable it.  
+3. **Collections**  
+   These are optional collection-specific Configurations whose settings override 
+   the Document Defaults settings and the Conflicting Document Defaults settings 
+   for the collections they are defined for.  
 4. **Selection Box**  
    Click to select this configuration.  
    Selected configurations can be enabled or disabled using the **set Status** button.  
@@ -114,8 +118,8 @@ and enabled, the Revisions feature will remain disabled for all document collect
    ![Limit By Number](images/revisions/define-default-settings_limit-by-number.png "Limit By Number")  
    Enable to set a limit to the number of revisions that can be kept in the revisions 
    storage per document.  
-   If this limit is set, old revisions that exceed it will be purged when 
-   their parent document is modified.  
+   If this limit is set and the number of revisions exceeds it, revisions will be 
+   purged (starting from the oldest revision) when their parent document is modified.  
     * **Set # of revisions to delete upon document update**  
       Enabling **Limit # of revisions to keep** will display this setting as well:
       ![Maximum Number of Revisions to Purge](images/revisions/maximum-revisions-to-purge.png "Maximum Number of Revisions to Purge")  
@@ -128,17 +132,19 @@ and enabled, the Revisions feature will remain disabled for all document collect
       purging, by dividing the purging between multiple document modifications.  
       {INFO/}
 4. **Limit # of revisions to keep By Age**  
-   ![Limit By Age](images/revisions/define-default-settings_limit-by-age.png "Limit By Age")
+   ![Limit By Age](images/revisions/define-default-settings_limit-by-age.png "Limit By Age")  
    Enable to set a Revisions age limit.  
-   If this limit is set, revisions older than the age it defines will be purged 
+   If this limit is set, revisions older than the defined age will be purged 
    when their parent document is modified.  
-    * Enabling this setting will display the **Set # of revisions to delete upon document update** 
-      setting as well (read about it above).  
-5. Click **OK** to modify or create the default settings, or **Cancel**.  
+    * Enabling this setting will also display the **Set # of revisions to delete upon document update** 
+      setting (read about it above).  
+5. Click **OK** to keep these default settings, or **Cancel**.  
    Confirming will add the new settings to the Revisions configuration **Default** section:  
    ![Defined Default Settings](images/revisions/defined-default-settings.png "Defined Default Settings")
+   {INFO: }
    Remember to also [Save the configuration](../../../studio/database/settings/document-revisions#the-revisions-configuration) 
    to apply the new settings.  
+   {INFO/}
 
 {PANEL/}
 
@@ -156,11 +162,13 @@ and enabled, the Revisions feature will remain disabled for all document collect
    These options are similar to those explained above regarding the 
    [default configuration settings](../../../studio/database/settings/document-revisions#defining-default-settings), 
    the only difference is in the scope of both configurations.  
-4. Click **OK** to modify or create the configuration, or **Cancel**.  
+4. Click **OK** to keep the configuration, or **Cancel**.  
    Confirming will add the new configuration to the **Collections** section:  
    ![Defined Configuration](images/revisions/defined-collection-specific-configuration.png "Defined Configuration")
+   {INFO: }
    Remember to also [Save the configuration](../../../studio/database/settings/document-revisions#the-revisions-configuration) 
    to apply the new settings.  
+   {INFO/}
 
 {PANEL/}
 
@@ -190,10 +198,10 @@ and enabled, the Revisions feature will remain disabled for all document collect
 
     Remember that revisions will be created when documents **enter a conflict** 
     and when the conflict is **resolved**.  
-    In this case, **three** revisions will be created:  
-     1. when the replicated document arrives and enters a conflict state  
-     2. when the local document enters a conflict state on the arrival of the replicated document  
-     3. when the conflict is resolved by replacing the local document with the replicated one  
+    In this case, **three** revisions were created:  
+     1. when the replicated document arrived and entered a conflict state  
+     2. when the local document entered a conflict state on the arrival of the replicated document  
+     3. when the conflict was resolved by replacing the local document with the replicated one  
 
 * To see these revisions, we open the document's 
   [Revisions tab](../../../studio/database/document-extensions/revisions#revisions-tab).  
@@ -223,7 +231,7 @@ and enabled, the Revisions feature will remain disabled for all document collect
      All the revisions that pend purging will be **purged**.  
      {INFO: }
      Revisions that pend purging are revisions that should be purged 
-     according to the default settings or to the collection-specific 
+     according to the default settings or the collection-specific 
      configuration that applies to them.  
      {INFO/}
    * **Delete all the revisions that no configuration applies to.**  
@@ -234,7 +242,7 @@ and enabled, the Revisions feature will remain disabled for all document collect
       {WARNING: }
 
       * Large databases and collections may contain numerous revisions 
-        pending purging, that Enforcing Configuration will purge all at once.  
+        pending purging that Enforcing Configuration will purge all at once.  
         Be aware that this operation may require substantial server resources, 
         and time it accordingly.  
       * Revisions that were created over time that no configuration currently 
@@ -245,8 +253,9 @@ and enabled, the Revisions feature will remain disabled for all document collect
 
     {WARNING/}
 
-* Enforcing the configuration will list the collections that configurations 
-  are defined for, explain the process, and allow you to proceed or cancel the operation.  
+* Clicking 'Enforce Configuration' will present the confirmation dialog 
+  shown below, that will list the collections that configurations are defined 
+  for, explain the process, and allow you to proceed or cancel the operation.  
 
     ![Proceed or Cancel](images/revisions/enforce-configuration-2.png "Proceed or Cancel")
 

@@ -13,8 +13,7 @@
   To enable or disable the Revisions feature for collections, and to set 
   limits for the number of revisions that can be kept per document, 
   apply a [Revisions configuration](../../document-extensions/revisions/overview#revisions-configuration) 
-  to the database.  
-  all and/or specific collections.  
+  to all and/or specific collections.  
 
 * The trail of revisions created for a document can be inspected to track the changes 
   made in the document over time, and the document's live version can be reverted to any 
@@ -32,7 +31,7 @@
   * [Revisions Configuration](../../document-extensions/revisions/overview#revisions-configuration)  
      * [Default Settings and Collection-Specific Configurations](../../document-extensions/revisions/overview#default-settings-and-collection-specific-configurations)  
      * [Defining a Revisions Configuration](../../document-extensions/revisions/overview#defining-a-revisions-configuration)  
-     * [Revisions Configuration Properties](../../document-extensions/revisions/overview#revisions-configuration-properties)  
+     * [Revisions Configuration Options](../../document-extensions/revisions/overview#revisions-configuration-options)  
      * [Revisions Configuration Execution](../../document-extensions/revisions/overview#revisions-configuration-execution)  
      * [Enabling and Disabling Revisions for Existing Documents](../../document-extensions/revisions/overview#enabling-and-disabling-revisions-for-existing-documents)  
   * [How it Works](../../document-extensions/revisions/overview#how-it-works)  
@@ -54,7 +53,7 @@ The Revisions configuration enables or disables the creation and purging
 of revisions for documents, and optionally limits the number of revisions 
 kept per document.  
 
-There is one Revisions configuration per database, stored in the database record.  
+There is a single Revisions configuration per database, stored in the database record.  
 
 {NOTE: Conflict Revisions}
 Revisions created for **conflicting documents** are a special case, that is 
@@ -102,7 +101,7 @@ You can apply a Revisions configuration using Studio or the API.
 
 ---
 
-#### Revisions Configuration Properties
+#### Revisions Configuration Options
 
 A Revisions configuration defines -  
 
@@ -116,23 +115,23 @@ A Revisions configuration defines -
 * _Whether to Limit the number of revisions that can be kept per document_.  
   RavenDB will only purge revisions if they exceed the limits you set here.  
 * [Learn more here](../../document-extensions/revisions/client-api/operations/configure-revisions#section-2) 
-  about the available configuration properties.  
+  about the available configuration options.  
 
 ---
 
 #### Revisions Configuration Execution
 
 Creating a Revisions configuration does **not** immediately trigger its execution.  
-Default and collection-specific configurations are executed:  
+Default and collection-specific configurations are executed when -  
 
-1. **When documents are Created, Modified, or Deleted**.  
-  When a document is created, modified, or deleted the configuration (either 
+1. **Documents are Created, Modified, or Deleted**.  
+  When a document is created, modified, or deleted, the configuration (either 
   default or collection-specific) that applies to its collection is examined.  
   If the Revisions feature is enabled for this collection:  
    * A revision of the document will be created.  
-   * Revisions will optionally be purged by limits set in the configuration.  
+   * Revisions will optionally be purged according to limits set in the configuration.  
 
-2. **When [Enforce Configuration](../../studio/database/settings/document-revisions#enforce-configuration) is applied**.  
+2. **[Enforce Configuration](../../studio/database/settings/document-revisions#enforce-configuration) is applied**.  
   Enforcing Configuration applies the Revisions configuration immediately 
   throughout the database, **purging** all the revisions that pend purging 
   by default settings or collection-specific configurations and **deleting** 
@@ -140,7 +139,7 @@ Default and collection-specific configurations are executed:
   {WARNING: }
   
   * Large databases and collections may contain numerous revisions pending 
-    purging, that Enforcing Configuration will purge all at once.  
+    purging that Enforcing Configuration will purge all at once.  
     Be aware that this operation may require substantial server resources, 
     and time it accordingly.  
   * Revisions that were created over time that no configuration currently 
@@ -187,7 +186,7 @@ Let's play with revisions a little to get a taste of its advantages.
    
      ![Revision for Document Creation](images\revisions_document-created.png "Revision for Document Creation")
    
-     (Click the _See the current document_ button to return to the live document version.)  
+     (Click the _See the current document_ button to return to the parent document view.)  
 
 4. **Modify and Save the document**.  
    This will create a second revision.  
@@ -195,12 +194,14 @@ Let's play with revisions a little to get a taste of its advantages.
      ![Revision for Document Modification](images\revisions_modify-document.png "Revision for Document Modification")
    
 5. **Delete the document**.  
-   Though you removed the document, its **audit trail** is **not lost**:  the revisions 
-   remain, including a new one indicating that the document was deleted.  
+   Though you deleted the document, its **audit trail** is **not lost**: 
+   all revisions were moved to the Revisions Bin, including a new revision 
+   (called "Delete-Revision"), created to indicate that the document was 
+   deleted.  
 
-      To see the "orphaned" revisions (whose parent document was 
-      deleted) open the Studio `Documents > Revisions Bin` section.  
-      Clicking the removed document's ID will show its revisions.  
+      To see the "orphaned" revisions (whose parent document was deleted):  
+       * Open the Studio `Documents > Revisions Bin` section  
+       * Click the deleted document's ID 
     
       ![Revisions Bin](images\revisions_revisions-bin.png "Revisions Bin")
 
@@ -208,8 +209,8 @@ Let's play with revisions a little to get a taste of its advantages.
    The revisions of the deleted document will be **restored** from the 
    revisions bin and added to the new document. Opening the document's 
    Revisions tab will display the whole audit trail, including the 
-   revisions created when the old document was deleted and when the 
-   new one was created.  
+   delete-revision created when the old document was deleted and the 
+   revision created when the new document was created.  
    
      ![Restored Revisions](images\revisions_restored.png "Restored Revisions")
 
@@ -224,7 +225,7 @@ Let's play with revisions a little to get a taste of its advantages.
   regular documents.  
 
 * **Revisions Compression**  
-   * The compression of individual fields is enabled as for regular documents: any text 
+   * individual fields are compressed as they are compressed in regular documents: any text 
      field of more than 128 bytes is compressed.  
    * Revisions are compressed by default.  
      Learn [here](../../server/configuration/database-configuration#databases.compression.compressrevisionsdefault) 
@@ -253,8 +254,10 @@ document as a precaution before editing it.
 * You can force the creation of a revision via Studio or using the 
   [ForceRevisionCreationFor](../../document-extensions/revisions/overview#force-revision-creation-via-api) 
   API method.  
-* A revision will be created even if the Revisions feature is disabled for the document's collection.  
-* A revision will be created even if the document was not modified.  
+* A revision **will** be created even if the Revisions feature is disabled for the document's collection.  
+* A revision **will** be created even if the document was not modified.  
+* A revision **will not** be created if the contents of the latest revision is identical to that 
+  of the live document.  
 
 ---
 

@@ -36,11 +36,12 @@
 {PANEL: Including Revisions}
 
 When it is known prior to the retrieval of a document that its revisions may 
-be needed, the revisions can be **Included** so they'd be loaded along with the 
-document without requiring additional trips to the server.  
+be needed, the revisions can be **Included** with the document when the document 
+is loaded, and stored locally.  
 
-When the document is loaded, [Loading](../../../../document-extensions/revisions/client-api/session/loading) 
-any of its included revisions will retrieve them from memory rather than from the server.  
+[Loading](../../../../document-extensions/revisions/client-api/session/loading) 
+a revision that was included with the document will retrieve it from memory rather 
+than require an additional trip to the server.  
 
 This may be useful when, for example, a document that contains financial data 
 is loaded by an auditing application. The document's past revisions can be included 
