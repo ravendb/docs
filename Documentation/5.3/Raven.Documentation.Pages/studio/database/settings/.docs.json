@@ -24,6 +24,12 @@
     "Mappings": []
   },
   {
+    "Path": "studio-configuration.markdown",
+    "Name": "Studio Configuration",
+    "DiscussionId": "ad621b83-5577-4048-9d5f-c443372d8847",
+    "Mappings": []
+  },
+  {
     "Path": "document-expiration.markdown",
     "Name": "Document Expiraton",
     "DiscussionId": "c5633531-4b5d-4816-97d4-82d351f3f6a2",
