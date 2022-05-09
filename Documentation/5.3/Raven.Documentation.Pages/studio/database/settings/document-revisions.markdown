@@ -202,6 +202,10 @@ created for any document collection.
      1. when the replicated document arrived and entered a conflict state  
      2. when the local document entered a conflict state on the arrival of the replicated document  
      3. when the conflict was resolved by replacing the local document with the replicated one  
+        {INFO: }
+        In this exmaple, the conflict was resolved by placing the replicated version as the current document.  
+        Learn more about conflict resolution [here](../../../studio/database/settings/conflict-resolution#conflict-resolution).  
+        {INFO/}
 
 * To see these revisions, we open the document's 
   [Revisions tab](../../../studio/database/document-extensions/revisions#revisions-tab).  
@@ -226,8 +230,8 @@ created for any document collection.
 ![Enforce Configuration](images/revisions/enforce-configuration-1.png "Enforce Configuration")
 
 * Executing **Enforce Configuration** will:  
-   * **Enforce the Revisions configuration's default settings and all 
-     its collection-specific configurations.**  
+   * **Enforce the Revisions configuration's default settings 
+     and collection-specific configurations.**  
      All the revisions that pend purging will be **purged**.  
      {INFO: }
      Revisions that pend purging are revisions that should be purged 

@@ -255,9 +255,7 @@ document as a precaution before editing it.
   [ForceRevisionCreationFor](../../document-extensions/revisions/overview#force-revision-creation-via-api) 
   API method.  
 * A revision **will** be created even if the Revisions feature is disabled for the document's collection.  
-* A revision **will** be created even if the document was not modified.  
-* A revision **will not** be created if the contents of the latest revision is identical to that 
-  of the live document.  
+* A revision **will** be created even if the document was not modified (unless the document has revisions and the latest revision contains the current document contents).  
 
 ---
 
