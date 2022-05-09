@@ -4,7 +4,7 @@
 {NOTE: }
 This feature was created for users who want to create a static index and prefer JavaScript over C#.  
 
-JavaScript indexes can be defined by a user with lower permissions than the C# indexes (admin not required).  
+JavaScript indexes can be defined by a user with lower permissions than the C# indexes (User/Read-Write certificates can also define JS indexes).  
 To configure defining a static index as Admin only in JavaScript as well, set [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../server/configuration/indexing-configuration#indexing.static.requireadmintodeployjavascriptindexes)
 configuration to `true`.
 

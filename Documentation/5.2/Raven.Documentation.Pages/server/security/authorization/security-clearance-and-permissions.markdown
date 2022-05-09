@@ -86,6 +86,11 @@ The following operations are permitted at the `Admin` access level but not for `
 
 A `User` certificate with a `Read/Write` access level can perform all operations **except** for those listed above in the 'Admin' section.  
 
+  * [JavaScript static indexes](../../../indexes/javascript-indexes) are permitted by default with Read/Write User certificates.  
+    To configure a server or database so that only Admin certificates will be able to deploy JavaScript static indexes,  
+    configure [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../../server/configuration/indexing-configuration#indexing.static.requireadmintodeployjavascriptindexes) 
+    to `true`.
+
 ### `Read Only`
 
 The `ReadOnly` access level **allows** clients to: 
@@ -104,10 +109,7 @@ The following operations are **forbidden**:
 - Creating or modifying [ongoing tasks](../../../server/ongoing-tasks/general-info)  
 - Defining [static indexes](../../../indexes/creating-and-deploying#static-indexes) (the database will create 
 [auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) as normal in response to queries)
-  * [JavaScript static indexes](../../../indexes/javascript-indexes) are permitted by default with Read Only User certificates.  
-    To configure a server or database so that only Admin certificates will be able to deploy JavaScript static indexes,  
-    configure [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../../server/configuration/indexing-configuration#indexing.static.requireadmintodeployjavascriptindexes) 
-    to `true`.
+
 
 {INFO/}
 
