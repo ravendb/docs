@@ -113,9 +113,6 @@ A **Multi-Map-Reduce** index allows aggregating (or 'reducing') data from severa
 
 They can be created and edited via [Studio](../studio/database/indexes/create-map-reduce-index#multi-map-reduce), or with API as shown below.  
 
-See samples about [counting](../indexes/map-reduce-indexes#example-i---count), 
-[calculating average](../indexes/map-reduce-indexes#example-ii---average), and a more advanced [calculation](../indexes/map-reduce-indexes#example-iii---calculations).  
-
 In the following code sample, we want the number of companies, suppliers, and employees per city.  
 We define the map phase on collections 'Employees', 'Companies', and 'Suppliers'.  
 We then define the reduce phase.  
