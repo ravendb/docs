@@ -20,8 +20,8 @@
 
 {PANEL: Why Cluster Wide Transactions}
 
-Usually, RavenDB's uses the multi-master model and applies a transaction on a single node first then asynchronously replicates the data to other
-members in the cluster. This ensures that even in the presence of network partitions or hard failures, RavenDB is able to 
+Usually, RavenDB uses the multi-master model and applies a transaction on a single node first then asynchronously replicates the data to other
+members in the cluster. This ensures that even in the presence of network partitions or hard failures, RavenDB can 
 accept writes and safely keep them.  
 
 The downside of the multi-master model is that certain error modes can cause two clients to try to modify the same set of documents 
@@ -49,9 +49,9 @@ replication vs. cluster-wide transactions that are accepted by a majority of the
    and the server will wait for a consensus on it.
 2. When consensus is achieved, each node will validate the compare-exchange values first.  
    If this fails, the entire session transaction is rolled back. From the nature of the [Raft consensus algorithm](../../server/clustering/rachis/what-is-rachis#what-is-raft-?) 
-   the cluster-wide transaction should be either _eventually_ be accepted on _all_ nodes or fail on _all_ of them. 
+   the cluster-wide transaction should either _eventually_ be accepted on _all_ nodes or fail on _all_ of them. 
 3. Once the validation has passed, the request is stored on the local cluster state machine of every node and is 
-   processed in an asynchronous manner by the relevant database.
+   processed asynchronously by the relevant database.
 4. The relevant database notices that it has pending cluster transactions and starts to execute them.  
    Since order matters, a failure at this stage will halt the cluster transaction execution until it is fixed.  
    The possible failure modes for this scenario are listed below.  
@@ -80,7 +80,7 @@ The Cluster transaction feature enables RavneDB to perform consistent cluster-wi
 2. Store/Delete operations on documents, which are executed by the database nodes after the transaction has been accepted.
 
 **Atomicity**  
-After having a quorum for the cluster transaction request by raft and successful concurrency check 
+After having a quorum for the cluster transaction request by raft and a successful concurrency check 
 of the compare exchange values, the transaction is guaranteed to be executed.
 Failure during the quorum or the concurrency check will roll back the entire session transaction,  
 while failure during the commit of the documents will halt any further cluster transactions execution on the database 
@@ -173,7 +173,7 @@ Any failure at this stage must be remedied.
 | Failure | How to fix it |
 | ----- | ----- |
 | Out of disk space | Freeing space will fix the problem and allow cluster transactions to be committed. |
-| Creation/Deletion of a document with a different collection | Deleting the document on the other collection |
+| Creation/Deletion of a document with a different collection | Deleting the document from the other collection |
 
 {WARNING The execution of cluster transactions on the database will be stopped until these types of failures are fixed. /}
 
