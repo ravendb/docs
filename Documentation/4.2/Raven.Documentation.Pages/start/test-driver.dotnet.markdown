@@ -5,7 +5,7 @@
 
 * In this section, we explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) to write RavenDB unit tests.  
 
-* TestDriver uses an [Embedded Server](../server/embedded) package with the same set of [prerequisites](../server/embedded#prerequisites) as embedded servers to run the tests.  
+* TestDriver uses an [Embedded Server](../server/embedded) package with the same set of [prerequisite](../server/embedded#prerequisite) as embedded servers to run the tests.  
 
 * In this page: 
  - [RavenTestDriver](../start/test-driver#raventestdriver)
@@ -20,7 +20,7 @@
 {PANEL:RavenTestDriver}
 
 First, we define a class that derives from Raven's TestDriver.
-Let's start with reviewing the TestDriver's methods and properties and later we will get into implementation (a complete code sample of a RavenTestDriver can be found at the [bottom](../start/test-driver##complete-example) of the page).
+Let's start with reviewing the TestDriver's methods and properties and later we will get into implementation (a complete code sample of a RavenTestDriver can be found at the [bottom](../start/test-driver#complete-example) of the page).
 
 ### Properties and Methods
 | Signature | Description |
@@ -61,12 +61,12 @@ The example below depends on the `TestDocumentByName` index and `TestDocument` c
 
 ### Example
 
-In the test, we get an `IDocumentStore` object to our test database, deploy an index, and insert two documents into the document store.  
+In the example, we get an `IDocumentStore` object to our test database, deploy an index, and insert two documents into the document store.  
 
 We then use `WaitForUserToContinueTheTest(store)` which launches the Studio so we can verify that the documents 
 and index are deployed (we can remove this line after the test succeeds).  
 
-At the end of the test, we use `session.Query` to query for "TestDocument" where the name contains the word 'hello', 
+Finally, we use `session.Query` to query for "TestDocument" where the name contains the word 'hello', 
 and we assert that we have only one such document.
 
 {CODE test_driver_MyFirstTest@Start\RavenDBTestDriver.cs /}
@@ -110,7 +110,7 @@ In the test, we get an `IDocumentStore` object to our test database, deploy an i
 We then use `WaitForUserToContinueTheTest(store)` which launches the Studio so we can verify that the documents 
 and index are deployed (we can remove this line after the test succeeds).  
 
-At the end of the test, we use `session.Query` to query for "TestDocument" where the name contains the word 'hello', 
+Finally, we use `session.Query` to query for "TestDocument" where the name contains the word 'hello', 
 and we assert that we have only one such document.
 
 {CODE test_full_example@Start\RavenDBTestDriverFull.cs /}
