@@ -6,13 +6,13 @@
 * Cluster transactions are a way to ensure that certain operations will favor consistency over availability in the CAP theorem.  
 * Code examples and client API can be found [here](../../client-api/session/saving-changes#transaction-mode---cluster-wide).
 
-* This page contains:
-   * [Why Cluster Wide Transactions](../../server/clustering/cluster-transactions#why-cluster-wide-transactions)
-   * [How Cluster Transactions Work](../../server/clustering/cluster-transactions#how-cluster-transactions-work) described by the flow of a cluster transaction request example.
-   * [Cluster Transactions Properties](../../server/clustering/cluster-transactions#cluster-transactions-properties)
-   * [Concurrent Cluster Wide and Single-Node Transactions](../../server/clustering/cluster-transactions#concurrent-cluster-wide-and-single-node-transactions)
-   * [Failure Modes in Cluster Wide Transactions](../../server/clustering/cluster-transactions#failure-modes-in-cluster-wide-transactions)
-   * [Debug Cluster Wide Transactions](../../server/clustering/cluster-transactions#debug-cluster-wide-transactions)
+* In this page:
+  * [Why Cluster Wide Transactions](../../server/clustering/cluster-transactions#why-cluster-wide-transactions)
+  * [How Cluster Transactions Work](../../server/clustering/cluster-transactions#how-cluster-transactions-work) described by the flow of a cluster transaction request example.
+  * [Cluster Transactions Properties](../../server/clustering/cluster-transactions#cluster-transactions-properties)
+  * [Concurrent Cluster Wide and Single-Node Transactions](../../server/clustering/cluster-transactions#concurrent-cluster-wide-and-single-node-transactions)
+  * [Failure Modes in Cluster Wide Transactions](../../server/clustering/cluster-transactions#failure-modes-in-cluster-wide-transactions)
+  * [Debug Cluster Wide Transactions](../../server/clustering/cluster-transactions#debug-cluster-wide-transactions)
 
 {NOTE/}
 
