@@ -30,13 +30,13 @@
 
 {NOTE: Loading Documents}
 
-* In order to load data to the destination database you must call the `loadTo<CollectionName>()` method and pass a JS object.  
+* To load data to the destination database you must call the `loadTo<CollectionName>()` method and pass a JS object.  
 
 * Indicating the collection name in the load method is a convention.  
 
 * The objects passed to the `loadTo` method will be sent to the target database in the last `Load` stage.  
 
-* All results created in a single ETL run will be sent in a single batch and processed transactionally on the destination.
+* All results created in a single ETL run will be sent in a single batch and processed transactionally in the destination.
 
 * For example, if you want to write data to `Employees` collection you need to call the following method in the script body:
 
@@ -71,7 +71,7 @@ loadToEmployees(this);
 
 * If the specified collection is the _same_ as the original one then the document is loaded to the _same_ collection and the original identifier is preserved.  
 
-* For example, the following ETL script defined on `Employees` collection will keep the same identifiers in the target database:  
+* For example, the following ETL script defined in `Employees` collection will keep the same identifiers in the target database:  
 
 {CODE-BLOCK:javascript}
 // original identifier will be preserved
@@ -160,9 +160,9 @@ loadToEmployees(this);
 
 {NOTE: Sending attachments together with documents}
 
-* Attachment is sent along with a transformed document if it's explicitly defined in the script by using `addAttachment()` method. By default attachment name is preserved.
-* The below script sends _all_ attachments of a current document by taking advantage of `getAttachments()` function, loads each of them during transformation and adds to
-a document that will be sent to 'Users' collection on destination side
+* Attachment is sent along with a transformed document if it's explicitly defined in the script by using `addAttachment()` method. By default, attachment name is preserved.
+* The script below sends _all_ attachments of a current document by taking advantage of `getAttachments()` function, loads each of them during transformation, and adds them to
+a document that will be sent to the 'Users' collection on the destination database.
 
 {CODE-BLOCK:javascript}
 var doc = loadToUsers(this);
@@ -179,7 +179,7 @@ for (var i = 0; i < attachments.length; i++) {
 
 * If `addAttachment()` is called with two arguments, the first one can indicate a new name for an attachment. In the below example attachment `photo`
 will be sent and stored under `picture` name.
-* In order to check the existence of an attachment `hasAttachment()` function is used
+* To check the existence of an attachment `hasAttachment()` function is used
 
 {CODE-BLOCK:javascript}
 var employee = loadToEmployees({
@@ -192,7 +192,7 @@ if (hasAttachment('photo')) {
 {CODE-BLOCK/}
 {NOTE/}
 
-{NOTE: Loading non existing attachment}
+{NOTE: Loading non-existent attachment}
 
 * Function `loadAttachment()` returns `null` if a document doesn't have an attachment with a given name. Passing such reference to `addAttachment()` will be no-op and no error will be thrown.
 
@@ -214,10 +214,10 @@ var attachments = this['@metadata']['@attachments'];
 
 * Counters are sent automatically when you send a _full_ collection to the destination using an _empty_ script.
 * If a script is defined RavenDB doesn't send counters by default.
-* In order to indicate that a counter should also be sent, the behavior function needs to be defined in the script which decides if the counter should be sent if it's modified
-(e.g. by increment operation). It the relevant function doesn't exist a counter isn't loaded.
+* To indicate that a counter should also be sent, the behavior function needs to be defined in the script which decides if the counter should be sent if it's modified
+(e.g. by increment operation). If the relevant function doesn't exist a counter isn't loaded.
 * The reason that counters require special functions is that incrementing a counter _doesn't_ modify the change vector of a related document so the document _isn't_ processed
-by ETL on a counter change.
+by ETL on a change in the counter.
 * Another option of sending a counter is to explicitly add it in a script to a loaded document.
 
 {NOTE: Counter behavior function}
@@ -240,9 +240,9 @@ function loadCountersOf<CollectionName>Behavior(docId, counterName) {
 }
 {CODE-BLOCK/}
 
-* `<CollectionName>` needs to be substituted by a real collection name that ETL script is working on (same convention as for `loadTo` method)
+* `<CollectionName>` needs to be substituted by a real collection name that the ETL script is working on (same convention as for `loadTo` method)
 
-* The first parameter is the identifier of a document, the second one is the name of a modified counter for that doc.
+* The first parameter is the identifier of a document. The second one is the name of a modified counter for that doc.
 
 * If function returns `true` then a change value is propagated to a destination.
 
@@ -271,9 +271,13 @@ function loadCountersOfProductsBehavior(docId, counterName) {
 {NOTE: }
 ####Adding counter explicitly in a script
 
-* The usage of counter behavior functions is limited to dealing with counters of documents that are loaded to the same collection. If a transformation script for `Employees`
-collection specifies that they are loaded to `People` collection in a target database then due to document ID generation strategy by ETL process (see above 'Documents Identifiers' paragraph)
-the counters won't be sent as the final ID of loaded document isn't known on the source side. Although you can use special functions in the script code to deal with counters then:
+* The usage of counter behavior functions is limited to dealing with counters of documents 
+  that are loaded to the same collection. If a transformation script for `Employees`
+  collection specifies that they are loaded to the `People` collection in a target database, 
+  then due to document ID generation strategy by ETL process (see above 'Documents Identifiers' paragraph),
+  the counters won't be sent as the final ID of a loaded document isn't known on the source side.  
+  
+  You can use special functions in the script code to deal with counters:
 
 {CODE-BLOCK:javascript}
 var person = loadToPeople({ Name: this.Name + ' ' + this.LastName });
@@ -287,7 +291,7 @@ person.addCounter(loadCounter('likes'));
 
 {INFO: Important}
 
-As the transformation script is run on a document update then counters added explicitly (`addCounter()`) will be loaded along with documents _only_ if document is changed.
+As the transformation script is run on a document update then counters added explicitly (`addCounter()`) will be loaded along with documents _only_ if the document is changed.
 It means that incremented counter value won't be sent until a document is modified and the ETL process will run the transformation for it.
 
 {INFO/}
@@ -297,7 +301,7 @@ It means that incremented counter value won't be sent until a document is modifi
 
 {NOTE: Counter value override by ETL}
 
-Counters sent by ETL process always _override_ the existing value on the destination. ETL doesn't send _increment_ counter command but it sets the value using _put_ command.
+Counters sent by the ETL process always _override_ the existing value on the destination. ETL doesn't send _increment_ counter command but it sets the value using _put_ command.
 
 {NOTE/}
 
@@ -313,19 +317,19 @@ documents by default.
 
 ### Time Series Load Behavior Function
 
-* The time series behavior function is defined in the script to set the conditions under 
-which time series data is loaded.  
-* The load behavior function evaluates each [time series segment](../../../document-extensions/timeseries/design#segmentation) 
+* The time-series behavior function is defined in the script to set the conditions under 
+which time-series data is loaded.  
+* The load behavior function evaluates each [time-series segment](../../../document-extensions/timeseries/design#segmentation) 
 and decides whether to load it to the destination database. ETL only updates the data 
-that has changed: if only one time series entry is modified, only the segment that 
+that has changed: if only one time-series entry is modified, only the segment that 
 entry belongs to is evaluated.  
-* Changes to time series trigger ETL on both the time series itself and on the document 
+* Changes to time-series trigger ETL on both the time-series itself and on the document 
 it extends.  
 * The function returns either a boolean, or an object with two `Date` values that 
-specify the range of time series entries to load.  
-* The time series behavior function can _only_ be applied to time series whose source 
-collection and target collection have the same name. Loading a time series from an 
-Employees collection on the server side to a Users collection at the target database 
+specify the range of time-series entries to load.  
+* The time-series behavior function can _only_ be applied to time-series whose source 
+collection and target collection have the same name. Loading a time-series from an 
+Employees collection on the server-side to a Users collection at the target database 
 is not possible using the load behavior function.  
 * The function should be defined with the following signature:  
 
@@ -338,7 +342,7 @@ function loadTimeSeriesOf<collection name>Behavior(docId, timeSeriesName) {
 
 | Parameter | Type | Description |
 | - | - | - |
-| **\<collection name>** | A part of the function's name | Determines which collection's documents this behavior function applies to. A function named `loadTimeSeriesOfEmployeesBehavior` will apply on all time series in the collection `Employees` |
+| **\<collection name>** | A part of the function's name | Determines which collection's documents this behavior function applies to. A function named `loadTimeSeriesOfEmployeesBehavior` will apply on all time-series in the collection `Employees` |
 | **docId** | `string` | This parameter is used inside the function to refer to the documents' ID |
 | **timeSeriesName** | `string` | This parameter is used inside the function to refer to the time series' name |
 
@@ -395,7 +399,7 @@ extend has changed.
 #### Filtering by start and end date
 
 Both the behavior function and `loadTimeSeries()` accept a start and end date as 
-second and third parameters. If these are set, only time series data within this 
+second and third parameters. If these are set, only time-series data within this 
 time span is loaded to the destination database.  
 
 {CODE-BLOCK:javascript}
@@ -422,19 +426,23 @@ function loadTimeSeriesOfUsersBehavior(doc, ts)
 
 {PANEL: Deletions}
 
-* As described above, the identifiers created for the sent documents can be different from the original source documents identifiers.  
-  The source isn't aware of the new IDs created so documents deletion requires a special approach.  
+* As described above, the identifiers created for the sent documents can be different from the original source documents' identifiers.  
+  The source isn't aware of the new IDs created so documents' deletion requires a special approach.  
 
-* In order to remove the matching documents on the destination side, the deletion of a document sends a command to remove documents that have an ID with a _well-known prefix_.  
+* In order to remove the matching documents on the destination side, the deletion of a document sends a command 
+  to remove documents that have an ID with a _well-known prefix_.  
 
 * For example: 
   1. Document `employees/1-A` is processed by ETL and put into `People` collection with ID:  
      `employees/1-A/people/0000000000000000001-A`.  
-  2. Deletion of the `employees/1-A` document on the source side triggers sending a command that deletes documents having the following prefix in their ID: `employees/1-A/people/`.  
+  2. Deletion of the `employees/1-A` document on the source side triggers sending a command that deletes documents 
+     having the following prefix in their ID: `employees/1-A/people/`.  
 
-* If you output multiple documents from a single document then multiple delete commands will be sent, one for each prefix containing the destination collection name.  
+* If you output multiple documents from a single document then multiple delete commands will be sent, 
+  one for each prefix containing the destination collection name.  
 
-* When documents are sent to the same collection and IDs don't change then deletion on the source results in sending a single delete command for a given ID.  
+* When documents are sent to the same collection and IDs don't change then deletion on the source results in 
+  sending a single delete command for a given ID.  
 
 * Deletions can be filtered by defining deletion behavior functions in the script.
 
@@ -443,36 +451,59 @@ function loadTimeSeriesOfUsersBehavior(doc, ts)
 In order to define deletion handling for a specific collection use the following signature:
 
 {CODE-BLOCK:javascript}
-function deleteDocumentsOf<CollectionName>Behavior(docId) {
+function deleteDocumentsOf<CollectionName>Behavior(docId, deleted) {
    return [true | false]; 
 }
 {CODE-BLOCK/}
 
-   - `<CollectionName>` needs to be substituted by a real collection name that ETL script is working on (same convention as for `loadTo` method)
-   - The first parameter is the identifier of a deleted document.
+- `<CollectionName>` needs to be substituted by a real collection name that the ETL script is working on (same convention as for [loadTo](../../../server/ongoing-tasks/etl/raven#transformation-script-options) 
+  method)
+   - e.g. `function deleteDocumentsOfOrdersBehavior(docId, deleted) {return [true | false];}`  
+
+| Parameter | Type | Description |
+| - | - | - |
+| **docId** | `string` | The identifier of a deleted document. |
+| **deleted** | `bool` | Optional and therefore doesn't affect existing code. If you don't include the `deleted` parameter, RavenDB will execute the function without checking if the document was deleted from the source database. <br/> If you include `deleted`, RavenDB will check if the document was indeed deleted or just updated.  If the document was deleted in the source database, it will also delete the document in the destination database. |
+
+| Return Value | Description |
+| - | - |
+| **true** | If the behavior function returns `true`, the document will be deleted from the destination database. |
+| **false** | The document will not be deleted from the destination database. |
 
 {NOTE/}
 
 {NOTE: Generic function for deletion handling}
 
-Another option is the usage of generic function for deletion handling:
+Another option is the usage of generic function for collection specific deletion handling:
 
 {CODE-BLOCK:javascript}
-function deleteDocumentsBehavior(docId, collection) {
+function deleteDocumentsBehavior(docId, collection, deleted) {
    return [true | false]; 
 }
 {CODE-BLOCK/}
 
-   - The first parameter is the identifier of a deleted document.
-   - The second parameter is the name of a collection.
+| Parameter | Type | Description |
+| - | - | - |
+| **docId** | `string` | The identifier of a deleted document. |
+| **collection** | `string` | The name of a collection. |
+| **deleted** | `bool` | Optional and therefore doesn't affect existing code. If you don't include the `deleted` parameter, RavenDB will execute the function without checking if the document was deleted from the source database. <br/> If you include `deleted`, RavenDB will check if the document was indeed deleted or just updated.  If the document was deleted in the source database, it will also delete the document in the destination database. |
+
+| Return Value | Description |
+| - | - |
+| **true** | If the behavior function returns `true`, the document will be deleted from the destination database. |
+| **false** | The document will not be deleted from the destination database. |
+
 
 {NOTE/}
 
    - A document deletion is propagated to a destination only if the function returns `true`.
 
-   - By the time that ETL process runs a delete behavior function, a document is already deleted. If you want to filter deletions, you need some way to store that information
+   - By the time an ETL process runs a delete behavior function, a document is already deleted. If you want to filter deletions, you need some way to store that information
    in order to be able to determine if a document should be deleted in the delete behavior function.
 
+{NOTE: Preventing deletions in the destination database}
+
+There are a few ways to prevent deletions. 
 
 #### Example - filtering out all deletions
 
@@ -486,7 +517,7 @@ function deleteDocumentsOfUsersBehavior(docId) {
 
 #### Example - storing deletion info in additional document
 
-* When you delete a document you can store a deletion marker document that will prevent from propagating the deletion by ETL. In the below example if `LocalOnlyDeletions/{docId}`
+* When you delete a document you can store a deletion marker document that will prevent the deletion by ETL. In the below example if `LocalOnlyDeletions/{docId}`
 exists then we skip this deletion during ETL. You can add `@expires` tag to the metadata when storing the marker document, so it would be automatically cleanup after a certain time
 by [the expiration extension](../../../server/extensions/expiration).
 
@@ -502,13 +533,26 @@ function deleteDocumentsOfUsersBehavior(docId) {
 
 #### Example - filtering deletions using generic function
 
-- If you define ETL for all documents, regardless a collection they belong to, then the generic function might become very handy to filter out deletions using a collection name
+- If you define ETL for all documents, regardless of the collection they belong to, then the 
+  generic function can filter deletions by collection name.
 
 {CODE-BLOCK:javascript}
-function deleteDocumentsBehavior(docId, collection) {
+function deleteDocumentsBehavior(docId, collection, deleted) {
     return 'Users' != collection;
 }
 {CODE-BLOCK/}
+
+| Parameter | Type | Description |
+| - | - | - |
+| **docId** | `string` | The identifier of a deleted document. |
+| **collection** | `string` | The name of a collection. |
+| **deleted** | `bool` | Optional and therefore doesn't affect existing code. If you don't include the `deleted` parameter, RavenDB will execute the function without checking if the document was deleted from the source database. <br/> If you include `deleted`, RavenDB will check if the document was indeed deleted or just updated.  If the document was deleted in the source database, it will also delete the document in the destination database. |
+
+| Return Value | Description |
+| - | - |
+| **bool** | If the returned value is `true`, the document will be deleted. |
+
+{NOTE/}
 
 {PANEL/}
 
