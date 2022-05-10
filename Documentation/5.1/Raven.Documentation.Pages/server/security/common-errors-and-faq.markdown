@@ -1,11 +1,11 @@
 # Security: Common Errors & FAQ
 
-In this section, we review some of the common security configuration errors and explain how to handle them.
+In this page, we review some of the common security configuration errors and explain how to handle them.
 
-[Setup Wizard Issues](../../server/security/common-errors-and-faq#setup-wizard-issues)  
-[Changing Configurations and Renewals Issues](../../server/security/common-errors-and-faq#changing-configurations-and-renewals-issues)  
-[Authentication Issues](../../server/security/common-errors-and-faq#authentication-issues)  
-[Encryption Issues](../../server/security/common-errors-and-faq#encryption-issues)  
+* [Setup Wizard Issues](../../server/security/common-errors-and-faq#setup-wizard-issues)  
+* [Changing Configurations and Renewals Issues](../../server/security/common-errors-and-faq#changing-configurations-and-renewals-issues)  
+* [Authentication Issues](../../server/security/common-errors-and-faq#authentication-issues)  
+* [Encryption Issues](../../server/security/common-errors-and-faq#encryption-issues)  
 
 {PANEL: Setup Wizard Issues}  
 

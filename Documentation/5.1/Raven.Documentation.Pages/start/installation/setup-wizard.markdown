@@ -25,22 +25,18 @@
 
 * If you are having trouble using the wizard, or with security in general, please visit the [Security Common Errors & FAQ](../../Server/Security/common-errors-and-faq) section.
 
- In this page:  
-
-- [Select Setup Mode](../../start/installation/setup-wizard#select-setup-mode)  
-- [Secure Setup with a Free Let's Encrypt Certificate](../../start/installation/setup-wizard#secure-setup-with-a-free-let)  
-
-    * [Configuring The Server Addresses](../../start/installation/setup-wizard#configuring-the-server-addresses)  
-    * [Installing The Certificate](../../start/installation/setup-wizard#installing-the-certificate)  
-    * [Setting Up Other Nodes](../../start/installation/setup-wizard#setting-up-other-nodes)  
-    * [Next Steps](../../start/installation/setup-wizard#next-steps)
-
-- [Secure Setup with Your Own Certificate](../../start/installation/setup-wizard#secure-setup-with-your-own-certificate)  
-    * [Configuring The Server Addresses](../../start/installation/setup-wizard#configuring-the-server-addresses-1)  
-    * [Setting Up Other Nodes](../../start/installation/setup-wizard#setting-up-other-nodes-1)  
-    * [Next Steps](../../start/installation/setup-wizard#next-steps)
-
-- [Unsecure Setup](../../start/installation/setup-wizard#unsecure-setup)  
+* In this page:
+   * [Select Setup Mode](../../start/installation/setup-wizard#select-setup-mode)  
+   * [Secure Setup with a Free Let's Encrypt Certificate](../../start/installation/setup-wizard#secure-setup-with-a-free-let)  
+      * [Configuring The Server Addresses](../../start/installation/setup-wizard#configuring-the-server-addresses)  
+      * [Installing The Certificate](../../start/installation/setup-wizard#installing-the-certificate)  
+      * [Setting Up Other Nodes](../../start/installation/setup-wizard#setting-up-other-nodes)  
+      * [Next Steps](../../start/installation/setup-wizard#next-steps)
+   * [Secure Setup with Your Own Certificate](../../start/installation/setup-wizard#secure-setup-with-your-own-certificate)  
+      * [Configuring The Server Addresses](../../start/installation/setup-wizard#configuring-the-server-addresses-1)  
+      * [Setting Up Other Nodes](../../start/installation/setup-wizard#setting-up-other-nodes-1)  
+      * [Next Steps](../../start/installation/setup-wizard#next-steps)
+   * [Unsecure Setup](../../start/installation/setup-wizard#unsecure-setup)  
 
 {INFO: Help Us Improve Prompt}
 When you first launch RavenDB, you will see this prompt asking if you'd be willing to 
