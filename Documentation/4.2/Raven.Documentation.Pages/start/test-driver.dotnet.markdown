@@ -1,7 +1,11 @@
 # Getting Started: Writing your Unit Test using TestDriver
+---
 
-In this section, we explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) to write RavenDB unit tests.
-TestDriver uses an [Embedded](../server/embedded) package with the same set of [prerequisites](../server/embedded#prerequisites) as embedded servers to run the Server.
+{NOTE: }
+
+* In this section, we explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) to write RavenDB unit tests.  
+
+* TestDriver uses an [Embedded Server](../server/embedded) package with the same set of [prerequisites](../server/embedded#prerequisites) as embedded servers to run the tests.  
 
 * In this page: 
  - [RavenTestDriver](../start/test-driver#raventestdriver)
@@ -10,6 +14,8 @@ TestDriver uses an [Embedded](../server/embedded) package with the same set of [
  - [Unit test](../start/test-driver#unittest)
  - [Complete example](../start/test-driver#complete-example)
  - [CI Servers](../start/test-driver#continuous-integration-servers)
+
+{NOTE/}
 
 {PANEL:RavenTestDriver}
 
@@ -60,7 +66,7 @@ In the test, we get an `IDocumentStore` object to our test database, deploy an i
 We then use `WaitForUserToContinueTheTest(store)` which launches the Studio so we can verify that the documents 
 and index are deployed (we can remove this line after the test succeeds).  
 
-At the end of the test, we use `session.Query< document, index name >()` to query for "TestDocument" where the name contains the word 'hello', 
+At the end of the test, we use `session.Query` to query for "TestDocument" where the name contains the word 'hello', 
 and we assert that we have only one such document.
 
 {CODE test_driver_MyFirstTest@Start\RavenDBTestDriver.cs /}
@@ -77,8 +83,7 @@ You can use it with `TestServerOptions` to change the path to the Raven server b
   See an [example](../start/test-driver#complete-example) below.  
 
 * If it is called twice, or within the `DocumentStore` scope, you will get the following error message:
-
-`System.InvalidOperationException : Cannot configure server after it was started. Please call 'ConfigureServer' method before any 'GetDocumentStore' is called.`  
+  `System.InvalidOperationException : Cannot configure server after it was started. Please call 'ConfigureServer' method before any 'GetDocumentStore' is called.`  
 
 {INFO:TestServerOptions}
 
@@ -105,7 +110,7 @@ In the test, we get an `IDocumentStore` object to our test database, deploy an i
 We then use `WaitForUserToContinueTheTest(store)` which launches the Studio so we can verify that the documents 
 and index are deployed (we can remove this line after the test succeeds).  
 
-At the end of the test, we use `session.Query< document, index name >()` to query for "TestDocument" where the name contains the word 'hello', 
+At the end of the test, we use `session.Query` to query for "TestDocument" where the name contains the word 'hello', 
 and we assert that we have only one such document.
 
 {CODE test_full_example@Start\RavenDBTestDriverFull.cs /}
