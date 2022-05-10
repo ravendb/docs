@@ -11,13 +11,20 @@
     ]
   },
   {
+    "Path": "refresh.markdown",
+    "Name": "Refresh",
+    "DiscussionId": "b976732a-3da7-48e5-a454-4f34b8f716f9",
+    "Mappings": []
+  },
+  {
     "Path": "revisions.markdown",
     "Name": "Revisions",
+    "LastSupportedVersion": "5.2",
     "DiscussionId": "3d192550-88e6-41c3-b069-e505e4fa1645",
     "Mappings": [
       {
-        "Version": 3.5,
-        "Key": "server/bundles/versioning"
+          "Version": 5.3,
+          "Key": "document-extensions/revisions/overview"
       }
     ]
   },
@@ -25,6 +32,13 @@
     "Path": "revert-revisions.markdown",
     "Name": "Revert Revisions",
     "DiscussionId": "625a9c5b-b534-4be4-85f8-becfc1a2d404",
-    "Mappings": []
+    "LastSupportedVersion": "5.2",
+    "DiscussionId": "625a9c5b-b534-4be4-85f8-becfc1a2d404",
+    "Mappings": [
+      {
+          "Version": 5.3,
+          "Key": "document-extensions/revisions/revert-revisions"
+      }
+    ]
   }
 ]

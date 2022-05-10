@@ -2,14 +2,25 @@
   {
     "Path": "configure-revisions.markdown",
     "Name": "Configure Revisions",
+    "LastSupportedVersion": "5.2",
     "DiscussionId": "43588db5-317b-4d2c-afb6-5db073dca55c",
-    "Mappings": []
+    "Mappings": [
+        {
+            "Version": 5.3,
+            "Key": "document-extensions/revisions/client-api/operations/configure-revisions"
+        }
+    ]
   },
-  {
-    "Path": "get-revisions.markdown",
-    "Name": "Get Revisions",
-    "DiscussionId": "43588db5-317b-4d2c-afb6-5db073dca55c",
-    "Mappings": []
-  }
-
+    {
+        "Path": "get-revisions.markdown",
+        "Name": "Get Revisions",
+        "LastSupportedVersion": "5.2",
+        "DiscussionId": "43588db5-317b-4d2c-afb6-5db073dca55c",
+        "Mappings": [
+            {
+                "Version": 5.3,
+                "Key": "document-extensions/revisions/client-api/operations/get-revisions"
+            }
+        ]
+    }
 ]

@@ -11,20 +11,9 @@
     ]
   },
   {
-    "Path": "revisions.markdown",
-    "Name": "Revisions",
-    "DiscussionId": "3d192550-88e6-41c3-b069-e505e4fa1645",
-    "Mappings": [
-      {
-        "Version": 3.5,
-        "Key": "server/bundles/versioning"
-      }
-    ]
-  },
-  {
-    "Path": "revert-revisions.markdown",
-    "Name": "Revert Revisions",
-    "DiscussionId": "625a9c5b-b534-4be4-85f8-becfc1a2d404",
+    "Path": "refresh.markdown",
+    "Name": "Refresh",
+    "DiscussionId": "b976732a-3da7-48e5-a454-4f34b8f716f9",
     "Mappings": []
   }
 ]

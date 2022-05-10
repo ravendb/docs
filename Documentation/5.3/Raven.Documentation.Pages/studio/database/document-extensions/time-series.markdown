@@ -1,4 +1,4 @@
-﻿# Time Series
+﻿# Document Extensions: Time Series
 ---
 
 {NOTE: }
@@ -370,14 +370,17 @@ To specify a range of time series entries:
 
 ## Related articles
 
-**Studio**  
-[Time Series Settings View](../../../studio/database/settings/time-series-settings)  
+### Studio
 
-**Document Extensions**  
-[Incremental Time Series: Overview](../../../document-extensions/timeseries/incremental-time-series/overview)  
-[Incremental Time Series: Client API](../../../document-extensions/timeseries/incremental-time-series/client-api)  
-[Time Series Overview](../../../document-extensions/timeseries/overview)  
-[Time Series Queries](../../../document-extensions/timeseries/querying/overview-and-syntax)  
+* [Time Series Settings View](../../../studio/database/settings/time-series-settings)  
 
-**Querying**  
-[What is RQL](../../../indexes/querying/what-is-rql)
+### Document Extensions
+
+* [Incremental Time Series: Overview](../../../document-extensions/timeseries/incremental-time-series/overview)  
+* [Incremental Time Series: Client API](../../../document-extensions/timeseries/incremental-time-series/client-api)  
+* [Time Series Overview](../../../document-extensions/timeseries/overview)  
+* [Time Series Queries](../../../document-extensions/timeseries/querying/overview-and-syntax)  
+
+### Querying
+
+* [What is RQL](../../../indexes/querying/what-is-rql)
