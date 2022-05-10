@@ -1,9 +1,9 @@
-# Indexes: Indexing Counters
+# Indexes: Indexing Time Series
 ---
 
 {INFO: }
 
-Learn about **Indexing Counters** here: [Document Extensions > Counters > Indexing Counters](../document-extensions/counters/indexing).  
+Learn about **Indexing Time Series** here: [Document Extensions > Time Series > Indexing Time Series](../document-extensions/timeseries/indexing).  
 
 {INFO/}
 
@@ -13,8 +13,7 @@ Learn about **Indexing Counters** here: [Document Extensions > Counters > Indexi
 - [Indexing Related Documents](../indexes/indexing-related-documents)  
 - [Map-Reduce Indexes](../indexes/map-reduce-indexes)  
 - [Creating and Deploying Indexes](../indexes/creating-and-deploying)  
-- [Indexing Time Series](../document-extensions/timeseries/indexing)  
 
 ### Document Extensions  
-- [Counters: Overview](../document-extensions/counters/overview)  
+- [Time Series: Overview](../document-extensions/timeseries/overview)  
 - [Indexing Counters](../document-extensions/counters/indexing)  

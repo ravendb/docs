@@ -148,6 +148,12 @@
         "Mappings": []
     },
     {
+        "Path": "indexing-time-series.markdown",
+        "Name": "Indexing Time Series",
+        "DiscussionId": "439e9ec8-773a-4bdf-8bfa-bafa7a48ece6",
+        "Mappings": []
+    },
+    {
         "Path": "indexing-linq-extensions.markdown",
         "Name": "Indexing LINQ Extensions",
         "DiscussionId": "9582128c-557c-44c5-8176-fab6c4c669cd",
