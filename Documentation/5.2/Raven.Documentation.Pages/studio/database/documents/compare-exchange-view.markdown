@@ -17,9 +17,8 @@
   * [Session - Cluster Transaction](../../../client-api/session/cluster-transaction)
   * Using the [RavenDB Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
 
-In this page:
-
-* [The Compare Exchange View](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
+* In this page:
+  * [The Compare Exchange View](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
 
 {NOTE/}
 

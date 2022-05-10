@@ -23,15 +23,13 @@
   * Cluster-wide transactions present a [performance cost](../../../client-api/operations/compare-exchange/overview#performance-cost-of-cluster-wide-sessions) when compared to non-cluster-wide transactions. 
     They prioritize consistency over performance to ensure ACIDity across the cluster.  
 
-
-**In this page:**  
-
-  * [Using Compare-Exchange Items](../../../client-api/operations/compare-exchange/overview#using-compare-exchange-items)  
-  * [Transaction Scope for Compare-Exchange Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)  
-  * [Creating a Key](../../../client-api/operations/compare-exchange/overview#creating-a-key)  
-  * [Updating a Key](../../../client-api/operations/compare-exchange/overview#updating-a-key)  
-  * [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)  
-  * [Example II- Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview#example-ii---reserve-a-shared-resource)  
+*In this page:  
+ * [Using Compare-Exchange Items](../../../client-api/operations/compare-exchange/overview#using-compare-exchange-items)  
+ * [Transaction Scope for Compare-Exchange Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)  
+ * [Creating a Key](../../../client-api/operations/compare-exchange/overview#creating-a-key)  
+ * [Updating a Key](../../../client-api/operations/compare-exchange/overview#updating-a-key)  
+ * [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)  
+ * [Example II- Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview#example-ii---reserve-a-shared-resource)  
 
 {NOTE/}
 
