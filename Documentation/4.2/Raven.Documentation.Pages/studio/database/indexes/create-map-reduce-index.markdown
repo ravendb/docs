@@ -21,14 +21,13 @@
 
 * The Map-Reduce results can be visualized in the [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer).  
 
-In this page:  
-
-* [The Map Stage](../../../studio/database/indexes/create-map-reduce-index#the-map-stage)  
-* [The Reduce Stage](../../../studio/database/indexes/create-map-reduce-index#the-reduce-stage)  
-* [Important Guidelines](../../../studio/database/indexes/create-map-reduce-index#important-guidelines)  
-* [Map-Reduce Query Results](../../../studio/database/indexes/create-map-reduce-index#map-reduce-query-results)  
-* [Multi-Map-Reduce](../../../studio/database/indexes/create-map-reduce-index#multi-map-reduce)    
-* [Saving Map-Reduce Results into a Collection (Artificial Documents)](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))  
+* In this page:  
+  * [The Map Stage](../../../studio/database/indexes/create-map-reduce-index#the-map-stage)  
+  * [The Reduce Stage](../../../studio/database/indexes/create-map-reduce-index#the-reduce-stage)  
+  * [Important Guidelines](../../../studio/database/indexes/create-map-reduce-index#important-guidelines)  
+  * [Map-Reduce Query Results](../../../studio/database/indexes/create-map-reduce-index#map-reduce-query-results)  
+  * [Multi-Map-Reduce](../../../studio/database/indexes/create-map-reduce-index#multi-map-reduce)    
+  * [Saving Map-Reduce Results into a Collection (Artificial Documents)](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))  
     * [Artificial -vs- Regular Documents](../../../studio/database/indexes/create-map-reduce-index#artificial-documents--vs--regular-documents)  
     * [Artificial Documents Usage](../../../studio/database/indexes/create-map-reduce-index#artificial-documents-usage)  
     * [Artificial Documents Limitations](../../../studio/database/indexes/create-map-reduce-index#limitations)  

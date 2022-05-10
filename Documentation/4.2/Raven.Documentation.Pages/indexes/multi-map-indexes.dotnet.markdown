@@ -8,11 +8,10 @@
 
 * Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes).  
 
-In this page:
-
-* [AddMap & AddMapForAll](../indexes/multi-map-indexes#addmap--addmapforall)
-* [Indexing Polymorphic Data](../indexes/multi-map-indexes#indexing-polymorphic-data)
-* [Searching Across Multiple Collections](../indexes/multi-map-indexes#searching-across-multiple-collections)
+* In this page:
+  * [AddMap & AddMapForAll](../indexes/multi-map-indexes#addmap--addmapforall)
+  * [Indexing Polymorphic Data](../indexes/multi-map-indexes#indexing-polymorphic-data)
+  * [Searching Across Multiple Collections](../indexes/multi-map-indexes#searching-across-multiple-collections)
 
 {NOTE/}
 

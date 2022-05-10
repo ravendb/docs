@@ -21,11 +21,10 @@
 
 For a more in-depth look at how map-reduce works, you can read this post: [RavenDB 4.0 Unsung Heroes: Map/reduce](https://ayende.com/blog/179938/ravendb-4-0-unsung-heroes-map-reduce).
 
-In this page: 
-
-* [Creating Map Reduce Indexes](../indexes/map-reduce-indexes#creating-map-reduce-indexes)
-* [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)
-* [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents)
+* In this page: 
+  * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes#creating-map-reduce-indexes)
+  * [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)
+  * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents)
 
 {NOTE/}
 
