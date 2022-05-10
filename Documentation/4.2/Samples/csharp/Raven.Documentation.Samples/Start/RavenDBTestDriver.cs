@@ -55,9 +55,15 @@ namespace RavenDBTestDriver
 
             var testServerOptions = new TestServerOptions
             {
-                FrameworkVersion = "3.1.15+", // Look for newest version on machine including 3.1.15 and any newer patches, but not major new releases (default is .NET version at time of server release).  
-                ServerDirectory = "PATH_TO_RAVENDB_SERVER", // Specify where ravendb server binaries are located (Optional)
-                DataDirectory = "PATH_TO_RAVENDB_DATADIR", // Specify where ravendb data will be placed/located (Optional)
+                // Look for newest version on machine including 3.1.15 and any newer patches, but not major new releases
+                // (default is .NET version at time of server release).
+                FrameworkVersion = "3.1.15+",
+
+                // Specify where ravendb server binaries are located (Optional)
+                ServerDirectory = "PATH_TO_RAVENDB_SERVER",
+
+                // Specify where ravendb data will be placed/located (Optional)
+                DataDirectory = "PATH_TO_RAVENDB_DATADIR", 
             };
 
             ConfigureServer(testServerOptions);
