@@ -1,18 +1,41 @@
 # Indexes: Map-Reduce Indexes
+---
 
-Map-Reduce indexes allow you to perform complex aggregations of data. The first stage, called the map, runs over documents and extracts portions of data according to the defined mapping function(s).
-Upon completion of the first phase, reduction is applied to the map results and the final outcome is produced.
+{NOTE: }
 
-The idea behind map-reduce indexing is that aggregation queries using such indexes are very cheap. The aggregation is performed only once and the results are stored inside the index.
-Once new data comes into the database or existing documents are modified, the map-reduce index will keep the aggregation results up-to-date. The aggregations are never done during
-querying to avoid expensive calculations that could result in severe performance degradation. When you make the query, RavenDB immediately returns the matching results directly from the index.
+* **Map-Reduce indexes** allow you to perform complex ***data aggregation*** that can be queried on with very little cost, 
+  regardless of the data size.  
 
-For a more in-depth look at how map reduce works, you can read this post: [RavenDB 4.0 Unsung Heroes: Map/reduce](https://ayende.com/blog/179938/ravendb-4-0-unsung-heroes-map-reduce).
+* To expedite queries and prevent performance degradation during queries, the aggregation is done during the indexing phase, _not_ at query time.  
 
-{PANEL:Creating}
+* Once new data comes into the database, or existing documents are modified,  
+  the Map-Reduce index will re-calculate the aggregated data  
+  so that the aggregation results are always available and up-to-date.  
 
-When it comes to index creation, the only difference between simple indexes and the map-reduce ones is an additional reduce function defined in index definition. 
-To deploy an index we need to create a definition and deploy it using one of the ways described in the [creating and deploying](../indexes/creating-and-deploying) article.
+* The aggregation computation is done in two separate consecutive actions: the `Map` and the `Reduce`.  
+  * **The Map stage:**  
+    This first stage runs the defined Map function(s) on each document, indexing the specified fields.  
+  * **The Reduce stage:**  
+    This second stage groups the specified requested fields that were indexed in the Map stage,  
+    and then runs the Reduce function to get a final aggregation result per field value.  
+
+For a more in-depth look at how map-reduce works, you can read this post: [RavenDB 4.0 Unsung Heroes: Map/reduce](https://ayende.com/blog/179938/ravendb-4-0-unsung-heroes-map-reduce).
+
+* In this page: 
+  * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes#creating-map-reduce-indexes)
+  * [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)
+  * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents)
+
+{NOTE/}
+
+{PANEL:Creating Map Reduce Indexes}
+
+When it comes to index creation, the only difference between simple indexes and the map-reduce ones is an additional 
+reduce function defined in the index definition. 
+To deploy an index we need to create a definition and deploy it using one of the ways described in the 
+[creating and deploying](../indexes/creating-and-deploying) article.
+
+---
 
 ### Example I - Count
 
@@ -36,6 +59,8 @@ where Category == 'Seafood'
 
 The above query will return one result for _Seafood_ with the appropriate number of products from that category.
 
+---
+
 ### Example II - Average
 
 In this example, we will count an average product price for each category. The index definition:
@@ -55,6 +80,8 @@ from 'Products/Average/ByCategory'
 where Category == 'Seafood'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+---
 
 ### Example III - Calculations
 
@@ -76,6 +103,28 @@ and send the query:
 from 'Product/Sales'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+{PANEL/}
+
+{PANEL:Creating Multi-Map-Reduce Indexes}
+
+A **Multi-Map-Reduce** index allows aggregating (or 'reducing') data from several collections.  
+
+They can be created and edited via [Studio](../studio/database/indexes/create-map-reduce-index#multi-map-reduce), or with API as shown below.  
+
+In the following code sample, we want the number of companies, suppliers, and employees per city.  
+We define the map phase on collections 'Employees', 'Companies', and 'Suppliers'.  
+We then define the reduce phase.  
+
+{CODE:csharp multi_map_reduce_LINQ@Indexes\MapReduceIndexes.cs /}
+
+A query on the index:
+
+{CODE:csharp multi-map-reduce-index-query@Indexes\MapReduceIndexes.cs /}
+
+{NOTE: }
+You can see this sample described in detail in [Inside RavenDB - Multi-Map-Reduce Indexes](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/11-mapreduce-and-aggregations-in-ravendb#multimapreduce-indexes).
+{NOTE/}
 
 {PANEL/}
 
@@ -114,6 +163,8 @@ see [Example II](../indexes/map-reduce-indexes#example-ii).
 
 Learn more about how to configure output and reference documents in the 
 [Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index).  
+
+---
 
 ### Artificial Document Properties  
 
@@ -156,6 +207,8 @@ The pattern is built using the same syntax as
 See [here](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings) 
 to learn about the date formatting in particular.  
 
+---
+
 #### Metadata
 
 Artificial documents generated by map-reduce indexes get the following `@flags` in their metadata:  
@@ -165,6 +218,8 @@ Artificial documents generated by map-reduce indexes get the following `@flags` 
 {CODE-BLOCK/}
 
 These flags are used internally by the database to filter out artificial documents during replication.  
+
+---
 
 ### Syntax
 
@@ -187,7 +242,9 @@ type of reference documents:
 | Parameters | Type | Description |
 | - | - | - |
 | **Id** | `string` | The reference document's ID |
-| **ReduceOutputs** | `List<string>` | List of map reduce output documents that this reference document aggregates. Determined by the pattern of the reference document ID. |
+| **ReduceOutputs** | `List<string>` | List of map-reduce output documents that this reference document aggregates. Determined by the pattern of the reference document ID. |
+
+---
 
 ### Examples
 
@@ -222,12 +279,16 @@ This gives the reference documents IDs in this general format: `sales/daily/1998
 The reference document with that ID contains the IDs of all the output documents from 
 May 6th 1998.  
 
+---
+
 #### Example II
 
-This is an example of a "recursive" map reduce index - it indexes the output documents 
+This is an example of a "recursive" map-reduce index - it indexes the output documents 
 of the index above, using the reference documents.  
 
 {CODE:csharp map_reduce_4_0@Indexes\MapReduceIndexes.cs /}
+
+---
 
 ### Remarks
 
@@ -245,14 +306,14 @@ It's forbidden to output reduce results to the collection that:
 - the current index is loading a document from it (e.g. index has `LoadDocument(id, "Invoices")` outputs to `Invoices`), 
 - it is processed by another map-reduce index that outputs results to a collection that the current index is working on (e.g. one index on `Invoices` collection outputs to `DailyInvoices`, another index on `DailyInvoices` outputs to `Invoices`)
 
-Since that would result in the infinite indexing loop (the index puts an artificial document that triggers the indexing and so on), you will get the detailed error on attempt to create such invalid construction.
+Since that would result in the infinite indexing loop (the index puts an artificial document that triggers the indexing and so on), you will get the detailed error on an attempt to create such invalid construction.
 
 {WARNING/}
 
 {WARNING:Existing collection}
 
 Creating a map-reduce index which defines the output collection that already exists and it contains documents will result in an error. You need to delete all documents
-from the relevant collection before creating the index or output the results to a different one.
+from the relevant collection before creating the index or outputting the results to a different one.
 
 {WARNING/}
 
@@ -262,8 +323,8 @@ from the relevant collection before creating the index or output the results to 
 
 ### Indexes
 
-- [Indexing Related Documents](../indexes/indexing-related-documents)
-- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+- [Map Indexes](../indexes/map-indexes)
+- [Multi-Map Indexes](../indexes/multi-map-indexes)
 
 ### Querying
 
@@ -271,4 +332,17 @@ from the relevant collection before creating the index or output the results to 
 
 ### Studio
 
-- [Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index)
+- [Indexes: Overview](../studio/database/indexes/indexes-overview)
+- [Index List View](../studio/database/indexes/indexes-list-view)
+- [Create Map Index](../studio/database/indexes/create-map-index)
+- [Create Multi-Map Index](../studio/database/indexes/create-multi-map-index)
+- [Map-Reduce Visualizer](../studio/database/indexes/map-reduce-visualizer)
+
+<br/>
+
+## Code Walkthrough
+
+- [Map Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-index)
+- [Map-Reduce Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-reduce-index)
+- [Multi-Map-Reduce-Index](https://demo.ravendb.net/demos/csharp/multi-map-indexes/multi-map-reduce-index#)
+
