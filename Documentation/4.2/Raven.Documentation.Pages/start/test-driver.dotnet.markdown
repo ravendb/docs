@@ -3,13 +3,14 @@
 In this section, we will explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) in order to write unit tests for working with RavenDB.
 TestDriver uses an [Embedded](../server/embedded) package with the same set of [prerequisites](../server/embedded#prerequisites) to run the Server.
 
-- [RavenTestDriver](../start/test-driver#raventestdriver)
-- [Pre-initializing the store](../start/test-driver#preinitialize)
-- [ConfigureServer](../start/test-driver#configureserver)
-  - [.NET FrameworkVersion](../start/test-driver#net-frameworkversion)
-- [Unit test](../start/test-driver#unittest)
-- [Complete example](../start/test-driver#complete-example)
-- [CI Servers](../start/test-driver#continuous-integration-servers)
+* In this page: 
+ - [RavenTestDriver](../start/test-driver#raventestdriver)
+ - [Pre-initializing the store](../start/test-driver#preinitialize)
+ - [ConfigureServer](../start/test-driver#configureserver)
+ - [.NET FrameworkVersion](../start/test-driver#net-frameworkversion)
+ - [Unit test](../start/test-driver#unittest)
+ - [Complete example](../start/test-driver#complete-example)
+ - [CI Servers](../start/test-driver#continuous-integration-servers)
 
 {PANEL:RavenTestDriver}
 
