@@ -8,6 +8,13 @@ It is the administrator's responsibility to generate client certificates and ass
 
 A client certificate's security clearance can be one of the following:
 
+* [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin)
+* [Operator](../../../server/security/authorization/security-clearance-and-permissions#operator)
+* [User](../../../server/security/authorization/security-clearance-and-permissions#user)  
+  * [Admin](../../../server/security/authorization/security-clearance-and-permissions#section)  
+  * [Read/Write](../../../server/security/authorization/security-clearance-and-permissions#section-1) 
+  * [Read Only](../../../server/security/authorization/security-clearance-and-permissions#section-2)
+
 {PANEL:Cluster Admin}
 
 `Cluster Admin` is the highest security clearance. There are no restrictions. A `Cluster Admin` certificate has admin permissions to all databases. It also has the ability to modify the cluster itself.

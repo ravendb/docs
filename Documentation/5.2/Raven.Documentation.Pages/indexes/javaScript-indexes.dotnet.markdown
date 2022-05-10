@@ -10,12 +10,11 @@ configuration to `true`.
 
 All other capabilities and features are the same as C# indexes.   
 
-In this page:
-
-* [Creating  JavaScript index](../indexes/javascript-indexes#creating--javascript-index)
-* [Map index](../indexes/javascript-indexes#map-index)
-* [Multi map index](../indexes/javascript-indexes#multi-map-index)
-* [Map-Reduce index](../indexes/javascript-indexes#map-reduce-index)
+* In this page:
+  * [Creating  JavaScript index](../indexes/javascript-indexes#creating--javascript-index)
+  * [Map index](../indexes/javascript-indexes#map-index)
+  * [Multi map index](../indexes/javascript-indexes#multi-map-index)
+  * [Map-Reduce index](../indexes/javascript-indexes#map-reduce-index)
 
 {NOTE/}
 
