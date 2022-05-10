@@ -345,37 +345,39 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             #region atomic-guards-enabled
             using (var session = store.OpenAsyncSession
                    (new SessionOptions
-                    // a cluster-wide session is opened
+                    // A cluster-wide session is opened.
                     {TransactionMode = TransactionMode.ClusterWide}))
             {
-                // an atomic guard is inexplicitly created for the new document
                 await session.StoreAsync(new User(), "users/johndoe");
                 await session.SaveChangesAsync();
+                // An atomic guard is now automatically created for the new document "users/johndoe".
             }
 
-            // two cluster-wide sessions are opened
+            // Two cluster-wide sessions are opened.
             using (var session1 = store.OpenAsyncSession(
                    new SessionOptions 
                    {TransactionMode = TransactionMode.ClusterWide}))
             using (var session2 = store.OpenAsyncSession(
                    new SessionOptions 
                    {TransactionMode = TransactionMode.ClusterWide}))
-            {   // the atomic guard is inexplicitly used by both sessions.
-                // session1 is permitted to change the document,
-                // since no other session currently holds the atomic guard.  
+            {
+                // Two sessions will load the same document at the same time.
                 var loadedUser1 = await session1.LoadAsync<User>("users/johndoe");
                 loadedUser1.Name = "jindoe";
-                // session2 is rejected with an exception,
-                // since session1 currently holds the atomic guard.  
+
                 var loadedUser2 = await session2.LoadAsync<User>("users/johndoe");
                 loadedUser2.Name = "jandoe";
 
+                // Session1 will save changes first, which triggers a change in the 
+                // version number of the associated Atomic Guard.
                 await session1.SaveChangesAsync();
+
+                // Session2.SaveChanges() will be rejected with a ConcurrencyException
+                // since session1 already changed the Atomic Guard version.  
+                // Session2 is expecting the version that it had when it loaded the document.
                 await session2.SaveChangesAsync();
             }
             #endregion
-
-            // WaitForUserToContinueTheTest(store);
 
             var result = await store.Operations.SendAsync(new GetCompareExchangeValuesOperation<User>(""));
         }
