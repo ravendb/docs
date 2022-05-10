@@ -50,7 +50,7 @@ namespace RavenDBTestDriverFullExample
                 // Queries are defined in the session scope.
                 // If there is no relevant index to quickly answer the query, RavenDB creates an auto-index
                 // based on the query parameters.
-                // However, here the query will use the static index defined below and filter the results by name.
+                // This query will use the static index defined in lines 63-70 and filter the results by name.
                 using (var session = store.OpenSession())
                 {
                     var query = session.Query<TestDocument, TestDocumentByName>()

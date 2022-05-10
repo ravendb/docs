@@ -1,13 +1,12 @@
 # Getting Started: Writing your Unit Test using TestDriver
 
-In this section, we will explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) in order to write unit tests for working with RavenDB.
-TestDriver uses an [Embedded](../server/embedded) package with the same set of [prerequisites](../server/embedded#prerequisites) to run the Server.
+In this section, we explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) to write RavenDB unit tests.
+TestDriver uses an [Embedded](../server/embedded) package with the same set of [prerequisites](../server/embedded#prerequisites) as embedded servers to run the Server.
 
 * In this page: 
  - [RavenTestDriver](../start/test-driver#raventestdriver)
  - [Pre-initializing the store](../start/test-driver#preinitialize)
  - [ConfigureServer](../start/test-driver#configureserver)
- - [.NET FrameworkVersion](../start/test-driver#net-frameworkversion)
  - [Unit test](../start/test-driver#unittest)
  - [Complete example](../start/test-driver#complete-example)
  - [CI Servers](../start/test-driver#continuous-integration-servers)
@@ -46,18 +45,22 @@ Pre-Initializing the IDocumentStore allows you to mutate the conventions used by
 
 {PANEL:UnitTest}
 
-We'll be using [xunit](https://www.nuget.org/packages/xunit/) for the test framework in the below example.  
+We use [xunit](https://www.nuget.org/packages/xunit/) for the test framework in the below example.  
 
-> Note that the test itself is meant to show different capabilities of the test driver and is not meant to be the most efficient.  
+{NOTE: }
+Note that the test itself is meant to show different capabilities of the test driver and is not meant to be the most efficient.  
+{NOTE/}
 
 The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver#complete-example)
 
 ### Example
 
-In the test, we get an IDocumentStore to our test database. Deploy an index and insert two documents into it. 
-We then wait for the indexing to complete and launch the Studio so we can verify that the documents 
-and index are deployed (we can remove this line once the test is working).
-At the end of the test, we query for TestDocument where their name contains the word 'hello', 
+In the test, we get an `IDocumentStore` object to our test database, deploy an index, and insert two documents into the document store.  
+
+We then use `WaitForUserToContinueTheTest(store)` which launches the Studio so we can verify that the documents 
+and index are deployed (we can remove this line after the test succeeds).  
+
+At the end of the test, we use `session.Query< document, index name >()` to query for "TestDocument" where the name contains the word 'hello', 
 and we assert that we have only one such document.
 
 {CODE test_driver_MyFirstTest@Start\RavenDBTestDriver.cs /}
@@ -67,26 +70,23 @@ and we assert that we have only one such document.
 {PANEL: ConfigureServer}
 
 The `ConfigureServer` method allows you to be more in control of your server.  
-You can use it with `TestServerOptions` to change the path to the Raven server binaries, specify data storage path, security, adjust .NET framework versions, etc.
+You can use it with `TestServerOptions` to change the path to the Raven server binaries, specify data storage path, adjust .NET framework versions, etc.
 
-{NOTE: }
+* `ConfigureServer` can only be set once per test run.  
+  It needs to be set before `DocumentStore` is called.  
+  See an [example](../start/test-driver#complete-example) below.  
 
-`ConfigureServer` can only be set once per test run.  
-It needs to be set before `DocumentStore` is called.  
-See an [example](../start/test-driver#complete-example) below.  
+* If it is called twice, or within the `DocumentStore` scope, you will get the following error message:
 
-If it is called twice, or within the `DocumentStore` scope, you will get the following error message:
-
-> System.InvalidOperationException : Cannot configure server after it was started. Please call 'ConfigureServer' method before any 'GetDocumentStore' is called.  
-
-{NOTE/}
+`System.InvalidOperationException : Cannot configure server after it was started. Please call 'ConfigureServer' method before any 'GetDocumentStore' is called.`  
 
 {INFO:TestServerOptions}
 
-See the complete list of `TestServerOptions`, which inherits from [ServerOptions](../server/Embedded#getting-started).  
-
 Defining TestServerOptions allows you to be more in control of 
 how the embedded server is going to run with just a minor [definition change](../start/test-driver#example-2).
+
+* To see the complete list of `TestServerOptions`, which inherits from embedded servers, go to embedded [ServerOptions](../server/Embedded#getting-started).  
+* It's important to be sure that the correct [.NET FrameworkVersion](../server/Embedded#net-frameworkversion) is set.
 
 {INFO /}
 
@@ -94,27 +94,18 @@ how the embedded server is going to run with just a minor [definition change](..
 
 {CODE test_driver_ConfigureServer@Start\RavenDBTestDriver.cs /}
 
-#### .NET FrameworkVersion 
-
-.NET FrameworkVersion is set to the version at the time of the RavenDB server release that was downloaded.  
-
-By default, RavenDB looks for the exact release it was compiled with or newer by using the `+` moderator in the FrameworkVersion definition.  
-
-Thus, if the server on your machine is set to `ServerTestOptions.FrameworkVersion = 3.1.17+`, it will work properly with 
-all .NET versions 3.1.17 and newer patch releases (.17, .18, .19, etc...). So, as long as you have .NET 3.1.17 or 18 or 19 on your machine, the server will run smoothly. 
-
-To learn more, including alternative settings, see the section about [setting .NET FrameworkVersion](../server/Embedded#net-frameworkversion).
-
 {PANEL/}
 
 {PANEL:Complete Example}
 
 This is a full unit test using [Xunit](https://www.nuget.org/packages/xunit/).
 
-We get an IDocumentStore to our test database, deploy an index, and insert two documents into it. 
-We then wait for the indexing to complete and launch the Studio so we can verify that the documents 
-and index are deployed (we can remove this line once the test is working).
-At the end of the test, we query for TestDocument where their name contains the word 'hello', 
+In the test, we get an `IDocumentStore` object to our test database, deploy an index, and insert two documents into the document store.  
+
+We then use `WaitForUserToContinueTheTest(store)` which launches the Studio so we can verify that the documents 
+and index are deployed (we can remove this line after the test succeeds).  
+
+At the end of the test, we use `session.Query< document, index name >()` to query for "TestDocument" where the name contains the word 'hello', 
 and we assert that we have only one such document.
 
 {CODE test_full_example@Start\RavenDBTestDriverFull.cs /}
