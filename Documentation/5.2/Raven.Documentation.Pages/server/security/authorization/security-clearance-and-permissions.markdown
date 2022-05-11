@@ -1,19 +1,22 @@
 # Authorization: Security Clearance and Permissions
 
-X.509 certificates are used for authentication - validating that users are who they say they are. Once a connection is authenticated, RavenDB uses the certificate for authorization as well. 
+* X.509 certificates are used for authentication - validating that users are who they say they are. 
+  Once a connection is authenticated, RavenDB uses the certificate for authorization as well. 
 
-Each certificate is associated with a security clearance and access permissions per database.
+* Each certificate is associated with a security clearance and access permissions per database.
 
-It is the administrator's responsibility to generate client certificates and assign permissions. Read more in the [Certificate Management](../authentication/certificate-management) section.
+* It is the administrator's responsibility to generate client certificates and assign permissions. 
+  Read more in the [Certificate Management](../authentication/certificate-management) page.
 
-A client certificate's security clearance can be one of the following:
+* A client certificate's security clearance can be one of the following: Cluster Admin, Operator, User.
 
-* [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin)
-* [Operator](../../../server/security/authorization/security-clearance-and-permissions#operator)
-* [User](../../../server/security/authorization/security-clearance-and-permissions#user)  
-  * [Admin](../../../server/security/authorization/security-clearance-and-permissions#section)  
-  * [Read/Write](../../../server/security/authorization/security-clearance-and-permissions#section-1) 
-  * [Read Only](../../../server/security/authorization/security-clearance-and-permissions#section-2)
+* In this page:
+   * [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin)
+   * [Operator](../../../server/security/authorization/security-clearance-and-permissions#operator)
+   * [User](../../../server/security/authorization/security-clearance-and-permissions#user)  
+      * [Admin](../../../server/security/authorization/security-clearance-and-permissions#section)  
+      * [Read/Write](../../../server/security/authorization/security-clearance-and-permissions#section-1) 
+      * [Read Only](../../../server/security/authorization/security-clearance-and-permissions#section-2)
 
 {PANEL:Cluster Admin}
 
@@ -75,6 +78,8 @@ These access levels are, from highest to lowest:
 
 If no access level is defined for a particular database, the certificate doesn't grant access to that database at all.  
 
+---
+
 ### `Admin`
 
 The following operations are permitted at the `Admin` access level but not for `Read/Write` or `Read Only`:
@@ -89,14 +94,18 @@ The following operations are permitted at the `Admin` access level but not for `
 - Get transaction info
 - Perform SQL migration
 
+---
+
 ### `Read/Write`
 
 A `User` certificate with a `Read/Write` access level can perform all operations **except** for those listed above in the 'Admin' section.  
 
   * [JavaScript static indexes](../../../indexes/javascript-indexes) are permitted by default with Read/Write User certificates.  
     To configure a server or database so that only Admin certificates will be able to deploy JavaScript static indexes,  
-    configure [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../../server/configuration/indexing-configuration#indexing.static.requireadmintodeployjavascriptindexes) 
+    set [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../../server/configuration/indexing-configuration#indexing.static.requireadmintodeployjavascriptindexes) 
     to `true`.
+
+---
 
 ### `Read Only`
 
@@ -128,9 +137,11 @@ Learn more about the `Read Only` access level [here](../../../studio/server/cert
 
 ### Security
 
-- [Overview](../../../server/security/authorization/security-clearance-and-permissions)
+- [Certificate Management](../../../server/security/authentication/certificate-management)
+- [Configuring Certificates via Powershell](../../../server/security/authentication/client-certificate-usage#example-ii---using-powershell-and-wget-in-windows)
 - [Common Errors and FAQ](../../../server/security/common-errors-and-faq)
 
 ### Studio
 
+- [Certificate Management](../../../studio/server/certificates/server-management-certificates-view)
 - [Studio: Read-Only Access Level](../../../studio/server/certificates/read-only-access-level)
