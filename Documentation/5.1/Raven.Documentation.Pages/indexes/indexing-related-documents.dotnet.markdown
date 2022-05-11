@@ -27,10 +27,9 @@ This can tax system resources and cause slow, stale indexing.
 Consider using [Include( )](../client-api/session/loading-entities#load-with-includes) instead.  
 {WARNING/}
 
-In this page:
-
-* [Example I](../indexes/indexing-related-documents#example-i)
-* [Example II](../indexes/indexing-related-documents#example-ii)
+* In this page:
+   * [Example I](../indexes/indexing-related-documents#example-i)
+   * [Example II](../indexes/indexing-related-documents#example-ii)
 
 {NOTE/}
 
