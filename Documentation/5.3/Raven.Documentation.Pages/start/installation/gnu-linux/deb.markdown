@@ -241,12 +241,12 @@ Its default values are:
 [Unit]
 Description=RavenDB NoSQL Database
 
-// Run after the network interfaces are up
+# Run after the network interfaces are up
 After=network.target
 
 [Service]
 
-// Process limits  
+# Process limits  
 LimitCORE=infinity 
 LimitNOFILE=65535
 LimitRSS=infinity
@@ -254,18 +254,18 @@ LimitAS=infinity
 LimitMEMLOCK=infinity
 TasksMax=infinity
 
-// Run as user ravendb
+# Run as user ravendb
 User=ravendb
 
 StartLimitBurst=0
 Restart=on-failure
 
-// Single-process application
+# Single-process application
 Type=simple
 
 TimeoutStopSec=300
 
-// RavenDB directories
+# RavenDB directories
 Environment="RAVEN_DataDir=/var/lib/ravendb/data"
 Environment="RAVEN_Indexing_NugetPackagesPath=/var/lib/ravendb/nuget"
 Environment="RAVEN_Logs_Path=/var/log/ravendb/logs"
@@ -274,7 +274,7 @@ Environment="RAVEN_Security_MasterKey_Path=/etc/ravendb/security/master.key"
 Environment="RAVEN_Setup_Certificate_Path=/etc/ravendb/security/server.pfx"
 Environment="HOME=/var/lib/ravendb"
 
-// Startup process
+# Startup process
 ExecStart=/usr/lib/ravendb/server/Raven.Server -c "/etc/ravendb/settings.json"
 
 [Install]
