@@ -7,14 +7,14 @@
   index related documents with `LoadDocument`.
 
 * [Include( )](../client-api/session/loading-entities#load-with-includes) 
-  is an alternative session CRUD method that can pull data from related documents while reducing expensive trips to the disk.  
+  is an alternative session CRUD method that can pull data from related documents while reducing expensive trips to the server.  
 
 * People who are accustomed to relational models but want the agility and efficiency of document-based models 
   should understand that [documents are most effective when they generally stand on their own](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling) 
   and [relations are harmless exceptions](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/10-static-indexes-and-other-advanced-options#indexing-referenced-data) to the rule.
 
 {INFO: Important} 
-Indexes are updated automatically whenever related documents change. 
+The indexes will be updated automatically whenever related documents change. 
 {INFO/}
 
 {WARNING: Linking Many Documents to a Constantly Changing Document}
@@ -63,7 +63,8 @@ Now we can query the index to search for products using the `CategoryName` as a 
 {CODE-TAB:csharp:Sync-Linq-syntax indexing_related_documents_7@Indexes\IndexingRelatedDocuments.cs /}
 {CODE-TAB:csharp:Async-Linq-syntax indexing_related_documents_AsyncQuery_Products-Beverages@Indexes\IndexingRelatedDocuments.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index "ProductCategory"
+// Note that the naming separator character "_" in the index definition name becomes "/" in RQL
+from index "Products/ByCategoryName"
 where CategoryName == "Beverages"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
