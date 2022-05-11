@@ -2,15 +2,18 @@
 ---
 
 {NOTE: }
+
 * This feature was created for users who want to create a static index and prefer JavaScript over C#.  
 
 * JavaScript indexes can be defined with a User/Read-Write certificate, whereas C# static indexes 
   require User/Admin certificate or higher.  
-  To prevent the creation of nonessential, resource taxing indexes, you can configure JavaScript index creation with **Admin only privileges** by setting 
+
+* To ensure that only database admins can create JavaScript indexes, 
+  you can configure JavaScript index creation with **Admin only privileges** by setting 
   [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../server/configuration/indexing-configuration#indexing.static.requireadmintodeployjavascriptindexes)
   configuration to `true`.
 
-* All other capabilities and features are the same as C# indexes.   
+* All other capabilities and features of RavenDB JavaScript indexes are the same as in RavenDB [C# indexes](../indexes/indexing-basics).   
 
 * In this page:
   * [Creating  JavaScript index](../indexes/javascript-indexes#creating--javascript-index)
@@ -23,9 +26,8 @@
 ## Creating  JavaScript index
 
 If we want to create JavaScript index we need to create an instance of our class that inherits 
-from AbstractJavaScriptIndexCreationTask.   
-AbstractJavaScriptIndexCreationTask inherits from AbstractIndexCreationTask 
-(Read more about [AbstractIndexCreationTask here](../indexes/creating-and-deploying#Using-AbstractIndexCreationTask).)
+from `AbstractJavaScriptIndexCreationTask`.   
+`AbstractJavaScriptIndexCreationTask` inherits from [AbstractIndexCreationTask](../indexes/creating-and-deploying#Using-AbstractIndexCreationTask)
 
 {CODE javaScriptindexes_1@Indexes\JavaScript.cs /}
 

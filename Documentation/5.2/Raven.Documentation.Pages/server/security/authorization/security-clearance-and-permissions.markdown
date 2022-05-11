@@ -112,9 +112,12 @@ A `User` certificate with a `Read/Write` access level can perform all operations
 The `ReadOnly` access level **allows** clients to: 
 
 - Read data from a database, but not to write or modify data.  
-- Query the databases that are configured in the client certificate.  
-   * Auto-indexes are built as a normal result of queries.  
 - Be subscription workers to consume data subscriptions.  
+- Query the databases that are configured in the client certificate.  
+  {NOTE: }
+  [An Auto-index](../../../indexes/creating-and-deploying#auto-indexes) 
+  is built if there is no existing index that satisfies a query.  
+  {NOTE/}
 
 {INFO: Unauthorized actions for ReadOnly client certificates}
 
@@ -124,7 +127,7 @@ The following operations are **forbidden**:
 - Changing any configurations or settings  
 - Creating or modifying [ongoing tasks](../../../server/ongoing-tasks/general-info)  
 - Defining [static indexes](../../../indexes/creating-and-deploying#static-indexes) (the database will create 
-[auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) as normal in response to queries)
+[auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) if there is no existing index that satisfies a query.)
 
 
 {INFO/}
