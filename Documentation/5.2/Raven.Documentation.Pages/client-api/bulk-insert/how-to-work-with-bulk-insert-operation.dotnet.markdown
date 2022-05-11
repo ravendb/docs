@@ -4,7 +4,7 @@
 
 * `BulkInsert` is useful when inserting a large quantity of data from the client to the server.  
 * It is an optimized time-saving approach with a few [limitations](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#limitations)
-  such as transactionality and the minor possibility of interruptions during the operation.
+  such as transactionality and the possibility of interruptions during the operation.
 
 In this page:
 
@@ -88,9 +88,9 @@ The following methods can be used when creating a bulk insert.
     you can configure [SkipOverwriteIfUnchanged](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#skipoverwriteifunchanged) as `true`.  
     It only overwrites existing documents if a change has been made since the last insertion.
   * **If you need full transactionality**, the [session](../../client-api/session/what-is-a-session-and-how-does-it-work) may be a better option.  
-    If using the session, because all of the data is processed in one transaction, your machine's RAM must be able to handle the 
+    If using the session, because all of the data is processed in one transaction, your server resources must be able to handle the 
     entire data-set included in the transaction.  
-* Bulk insert is **not thread-safe**, meaning that it isn't transactional.  
+* Bulk insert is **not thread-safe**.  
   A single bulk insert should not be accessed concurrently.  
   * The use of multiple bulk inserts concurrently on the same client is supported.  
   * Also the use in an async context is supported.
@@ -125,7 +125,7 @@ The following options can be configured for BulkInsert.
 Prevent overriding documents if there are no changes when compared to the already existing ones.  
 
 Enabling this can avoid a lot of additional work including triggering re-indexation, subscriptions, and ETL processes.  
-It introduces slight overlay into bulk insert process because of the need to compare the existing documents with the ones that are being inserted. 
+It introduces slight overlay into the bulk insert process because of the need to compare the existing documents with the ones that are being inserted. 
 
 {CODE bulk_insert_option_SkipOverwriteIfUnchanged@ClientApi\BulkInsert\BulkInserts.cs /}
 

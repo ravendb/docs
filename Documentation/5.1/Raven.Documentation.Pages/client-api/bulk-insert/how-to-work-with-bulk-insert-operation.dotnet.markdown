@@ -5,7 +5,7 @@
 
 * `BulkInsert` is useful when inserting a large quantity of data from the client to the server.  
 * It is an optimized time-saving approach with a few [limitations](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#limitations)
-  such as transactionality and the minor possibility of interruptions during the operation.
+  such as transactionality and the possibility of interruptions during the operation.
 
 In this page:
 
@@ -56,9 +56,9 @@ There are a couple limitations to the API:
   * If the operation was interrupted, one option is to re-insert the whole dataset in a new operation.  
     It will overwrite existing documents.
   * **If you need full transactionality**, the [session](../../client-api/session/what-is-a-session-and-how-does-it-work) may be a better option.  
-    If using the session, because all of the data is processed in one transaction, your machine's RAM must be able to handle the 
+    If using the session, because all of the data is processed in one transaction, your server resources must be able to handle the 
     entire data-set included in the transaction.  
-* Bulk insert is **not thread-safe**, meaning that it isn't transactional.  
+* Bulk insert is **not thread-safe**.  
   A single bulk insert should not be accessed concurrently.  
   * The use of multiple bulk inserts concurrently on the same client is supported.  
   * Also the use in an async context is supported.
