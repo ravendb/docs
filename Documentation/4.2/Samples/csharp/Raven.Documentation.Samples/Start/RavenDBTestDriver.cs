@@ -31,8 +31,14 @@ namespace RavenDBTestDriver
                     session.Store(new TestDocument { Name = "Goodbye..." });
                     session.SaveChanges();
                 }
-                WaitForIndexing(store); //If we want to query documents sometime we need to wait for the indexes to catch up
-                WaitForUserToContinueTheTest(store);//Sometimes we want to debug the test itself, this redirect us to the studio
+                // If we want to query documents, sometimes we need to wait for the indexes to catch up  
+                // to prevent using stale indexes.
+                WaitForIndexing(store);
+
+                // Sometimes we want to debug the test itself. This method redirects us to the studio
+                // so that we can see if the code worked as expected (in this case, created two documents).
+                WaitForUserToContinueTheTest(store);
+
                 using (var session = store.OpenSession())
                 {
                     var query = session.Query<TestDocument, TestDocumentByName>().Where(x => x.Name == "hello").ToList();
@@ -49,9 +55,15 @@ namespace RavenDBTestDriver
 
             var testServerOptions = new TestServerOptions
             {
-                FrameworkVersion = "3.1.15+", // Look for newest version on machine including 3.1.15 and up (default is set at time of server release).  
-                ServerDirectory = "PATH_TO_RAVENDB_SERVER", // Specify where ravendb server binaries are located (Optional)
-                DataDirectory = "PATH_TO_RAVENDB_DATADIR", // Specify where ravendb data will be placed/located (Optional)
+                // Looks for the newest version on your machine including 3.1.15 and any newer patches
+                // but not major new releases (default is .NET version at time of server release).
+                FrameworkVersion = "3.1.15+",
+
+                // Specifies where ravendb server binaries are located (Optional)
+                ServerDirectory = "PATH_TO_RAVENDB_SERVER",
+
+                // Specifies where ravendb data will be placed/located (Optional)
+                DataDirectory = "PATH_TO_RAVENDB_DATADIR", 
             };
 
             ConfigureServer(testServerOptions);
