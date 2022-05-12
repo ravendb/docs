@@ -98,7 +98,7 @@ The following operations are permitted at the `Admin` access level but not for `
 
 ### `Read/Write`
 
-A `User` certificate with a `Read/Write` access level can perform all operations **except** for those listed above in the 'Admin' section.  
+A `User` certificate with a `Read/Write` access level can perform all operations **except** for those listed above in the 'Admin' and 'Operator'sections.  
 
   * [JavaScript static indexes](../../../indexes/javascript-indexes) are permitted by default with Read/Write User certificates.  
     To configure a server or database so that only Admin certificates will be able to deploy JavaScript static indexes,  
