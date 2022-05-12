@@ -3,23 +3,24 @@
 
 {NOTE: }
 
+* As long as you are running .NET version 6.0+ and RavenDB 5.3+, to save storage space and streamline you can store and query [DateOnly](https://devblogs.microsoft.com/dotnet/date-time-and-time-zone-enhancements-in-net-6/#the-dateonly-type) 
+  and [TimeOnly](https://devblogs.microsoft.com/dotnet/date-time-and-time-zone-enhancements-in-net-6/#the-timeonly-type) types 
+  instead of `DateTime` when you only need to know the date or the time.  
+
 * RavenDB has introduced the ability to convert `DateTime` or strings written in date/time formats to .NET's 
   `DateOnly` or `TimeOnly` types without slowing down queries and while leaving your existing data as is.  
+   * Use `AsDateOnly` or `AsTimeOnly` in a static index (SEE EXAMPLES BELOW)
+   * `AsDateOnly` and `AsTimeOnly` automatically convert strings to ticks for faster querying.  
 
-* We do this in the [indexes](../../indexes/map-indexes) so that the conversions and calculations are done behind the scenes
+* We convert the types in [static indexes](../../indexes/map-indexes) so that the conversions and calculations are done behind the scenes
   and the data is ready for fast queries. [See sample index below.](../../client-api/how-to/using-timeonly-and-dateonly#convert-and-use-date/timeonly-without-affecting-your-existing-data)).  
 
-* It is also possible to covert via patch or query, but we recommend doing so in the index because:
-  * Patch changes your existing data, which may cause problems with existing logic that uses that data.
-  * Queries become slow if they are defined with demanding processes. 
-  * [Static indexes](../../indexes/indexing-basics) process new data in the background, 
-    including calculations and converstions to Ticks or to Date/TimeOnly values, 
-    so that the data is ready at query time.
+* It is also possible to covert via patch or query, but it is [far more efficient](../../client-api/how-to/using-timeonly-and-dateonly#convert-and-use-date/timeonly-without-affecting-your-existing-data) 
+  to do so in a static index. 
 
-In this page: 
-
-* [About DateOnly and TimeOnly](../../client-api/how-to/using-timeonly-and-dateonly#about-dateonly-and-timeonly) 
-* [Convert and Use Date/TimeOnly Without Affecting Your Existing Data](../../client-api/how-to/using-timeonly-and-dateonly#convert-and-use-date/timeonly-without-affecting-your-existing-data) 
+* In this page: 
+   * [About DateOnly and TimeOnly](../../client-api/how-to/using-timeonly-and-dateonly#about-dateonly-and-timeonly) 
+   * [Convert and Use Date/TimeOnly Without Affecting Your Existing Data](../../client-api/how-to/using-timeonly-and-dateonly#convert-and-use-date/timeonly-without-affecting-your-existing-data) 
 
 {NOTE/}
 
@@ -43,18 +44,28 @@ These two new C# types are available from .NET 6.0+ (RavenDB 5.3+).
 
 {PANEL: Convert and Use Date/TimeOnly Without Affecting Your Existing Data}
 
-[Static indexes](../../indexes/map-indexes) can process calculations on existing data and enable you to rapidly query it without changing your data.  
+It is possible to covert via patch or query, but it is far more efficient to do so in a [static index](../../indexes/map-indexes). 
+
+   * Patch changes your existing data, which may cause problems with existing logic that uses that data.
+   * Queries become slow if they are defined with demanding processes.  
+     Also, queries will need to process all of your data every time. 
+   * [Static indexes](../../indexes/indexing-basics) process new data in the background, 
+    including calculations and converstions to Ticks or to Date/TimeOnly values, 
+    so that the data is ready at query time when you [query the index](../../indexes/querying/basics#example-iv---querying-a-specified-index).  
+       * These indexes do all of the calculations on the entire dataset defined the first time they run, and then they only need to 
+         process changes in data, which is far less expensive than running the calculations on the entire dataset 
+         each time with a query.
 
 {INFO: Ticks}
 To be able to use ticks with DateOnly or TimeOnly, you must create a **static index** that computes the conversion.  
 
-An auto-index will not convert DateOnly or TimeOnly into ticks, but will be able to convert data to strings.  
-You can also compare strings, though comparing ticks is usually much faster.  
-The index orders the strings according to the first digits, then the second, and so on.  
+An auto-index will not convert DateOnly or TimeOnly into ticks, but will be data as strings.  
+You can also compare strings, though comparing ticks is usually much faster and a static index needs to be used to do so.  
+Strings can be ordered according to the first digits, then the second, and so on (Radix Sorting).  
 
 {INFO/}
 
-The index must be declared as DateOnly or TimeOnly. 
+The index must have a field that declares the type as DateOnly or TimeOnly. 
 
 {CODE DateAndTimeOnlyIndexSample@ClientApi/HowTo/UseTimeOnlyAndDateOnly.cs /}
 
