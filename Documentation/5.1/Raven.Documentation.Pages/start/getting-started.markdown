@@ -1,22 +1,24 @@
 # Getting Started
+---
+
+{NOTE: }
 
 Welcome to RavenDB! 
 
 This article will get you started and guide you through all the aspects of RavenDB needed for basic understanding and a simple setup.  
 
-In this page:  
+* In this page:
+   * The [Server](../start/getting-started#server) portion will focus on installation, setup & configuration of the RavenDB server  
+      * [Prerequisites](../start/getting-started#prerequisites)  
+      * [Installation & Setup](../start/getting-started#installation--setup)  
+      * [Configuration](../start/getting-started#configuration)  
+      * [Studio](../start/getting-started#studio)  
+      * [Security Concerns](../start/getting-started#security-concerns)  
+   * The [Client](../start/getting-started#client) portion will describe the general logic and principles behind our client libraries 
+      * [DocumentStore](../start/getting-started#documentstore)  
+      * [Session](../start/getting-started#session)  
 
-* The [Server](../start/getting-started#server) portion will focus on installation, setup & configuration of the RavenDB server  
-    * [Prerequisites](../start/getting-started#prerequisites)  
-    * [Installation & Setup](../start/getting-started#installation--setup)  
-    * [Configuration](../start/getting-started#configuration)  
-    * [Studio](../start/getting-started#studio)  
-    * [Security Concerns](../start/getting-started#security-concerns)  
-* The [Client](../start/getting-started#client) portion will describe the general logic and principles behind our client libraries 
-    * [DocumentStore](../start/getting-started#documentstore)  
-    * [Session](../start/getting-started#session)  
-
----
+{NOTE/}
 
 {PANEL: Server}
 
@@ -341,6 +343,7 @@ select Name
 
 - [Setup Wizard](../start/installation/setup-wizard)
 - [System Requirements](../start/installation/system-requirements)
+- [Running in a Docker Container](../../start/installation/running-in-docker-container)
 
 ### Client API
 
