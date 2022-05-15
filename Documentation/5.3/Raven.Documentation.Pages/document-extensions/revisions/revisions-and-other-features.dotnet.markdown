@@ -79,8 +79,18 @@ Read more about Revisions and Time Series [here](../../document-extensions/times
 ---
 
 ### Reverted Data
-When a document is reverted to a revision that owns time series, the time series 
-are **not** restored.  
+
+When a document is reverted to a point in time in which the revision had a time series: 
+
+* The reverted document will **Not** contain the time series in the following cases:
+   * The time series was deleted from the current document.  
+   * The document itself was deleted,  
+
+* The reverted document **Will** contain the time series if:  
+   * The time series is held by the current document (i.e. neither the time series nor the document were deleted).  
+     {NOTE: }
+      Note: the time series **data** will **not** be reverted, but remain as it was before the document was reverted.  
+     {NOTE/}
 
 {PANEL/}
 
