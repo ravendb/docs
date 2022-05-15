@@ -106,11 +106,16 @@ revisions to the live document version.
 
 {PANEL: Revisions Bin}
 
-Deleting a document that the Revisions feature is enabled for will:  
+When the Revisions feature is **Enabled** for a document's collection, and the document is deleted:  
 
-* Create a new revision for the document, that marks its deletion.  
-* Move all the document's revisions, including the delete revision, 
-  to the revisions bin.  
+* A delete-revision will be created for the document, marking its deletion.  
+* The delete-revision and all the document's revisions, both Automatically-Created 
+  and Manually-Created, will be moved to the Revisions Bin.  
+
+When the Revisions feature is **Disabled** for a document's collection, and the document is deleted:  
+
+* The document and all its revisions will be deleted irrevocably.  
+
 
 ![Revisions Bin](images/revisions/revisions-bin.png "Revisions Bin")
 
