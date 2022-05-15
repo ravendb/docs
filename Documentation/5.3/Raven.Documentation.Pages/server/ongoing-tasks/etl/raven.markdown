@@ -5,13 +5,13 @@
 
 * **RavenDB ETL Task** creates an [ETL](../../../server/ongoing-tasks/etl/basics) process for a given database when the destination is another RavenDB database.  
 
+* The script is executed per document once the document is created or modified.  
+
 * It can be defined in code or using the [Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) by creating a `RavenDB ETL` task under `Settings -> Manage Ongoing Tasks`.  
 
 * One RavenDB ETL task can have multiple transformation scripts.  
 
 * Each script can be defined on a single collection, multiple selected collections or be applied to **all** documents regardless of the associated collection.  
-
-* The script is executed per document once the document is created or modified.  
 
 * In this page:  
   * [Transformation Script Options](../../../server/ongoing-tasks/etl/raven#transformation-script-options)  
@@ -34,11 +34,11 @@
 
 * Indicating the collection name in the load method is a convention.  
 
-* The objects passed to the `loadTo` method will be sent to the target database in the last `Load` stage.  
+* The objects passed to the `loadTo` method will be sent to the target database in the last stage - `Load`.  
 
 * All results created in a single ETL run will be sent in a single batch and processed transactionally in the destination.
 
-* For example, if you want to write data to `Employees` collection you need to call the following method in the script body:
+* For example, if you want to write data to the `Employees` collection you need to call the following method in the script body:
 
 {CODE-BLOCK:javascript}
 loadToEmployees({ ... });
@@ -65,7 +65,9 @@ loadToEmployees(this);
 {CODE-BLOCK/}
 {NOTE/}
 
-{NOTE: Documents Identifiers}
+{NOTE: }
+
+### Documents Identifiers
 
 * The documents generated in the destination database are given an id according to the collection name specified in the `loadTo` method.  
 
@@ -215,7 +217,7 @@ var attachments = this['@metadata']['@attachments'];
 * Counters are sent automatically when you send a _full_ collection to the destination using an _empty_ script.
 * If a script is defined RavenDB doesn't send counters by default.
 * To indicate that a counter should also be sent, the behavior function needs to be defined in the script which decides if the counter should be sent if it's modified
-(e.g. by increment operation). If the relevant function doesn't exist a counter isn't loaded.
+(e.g. by increment operation). If the relevant function doesn't exist, a counter isn't loaded.
 * The reason that counters require special functions is that incrementing a counter _doesn't_ modify the change vector of a related document so the document _isn't_ processed
 by ETL on a change in the counter.
 * Another option of sending a counter is to explicitly add it in a script to a loaded document.
@@ -274,10 +276,10 @@ function loadCountersOfProductsBehavior(docId, counterName) {
 * The usage of counter behavior functions is limited to dealing with counters of documents 
   that are loaded to the same collection. If a transformation script for `Employees`
   collection specifies that they are loaded to the `People` collection in a target database, 
-  then due to document ID generation strategy by ETL process (see above 'Documents Identifiers' paragraph),
+  then due to document ID generation strategy by ETL process (see [Documents Identifiers](../../../server/ongoing-tasks/etl/raven#documents-identifiers)),
   the counters won't be sent as the final ID of a loaded document isn't known on the source side.  
   
-  You can use special functions in the script code to deal with counters:
+  You can use special functions in the script code to deal with counters on documents that are loaded into different collections:
 
 {CODE-BLOCK:javascript}
 var person = loadToPeople({ Name: this.Name + ' ' + this.LastName });
@@ -426,8 +428,17 @@ function loadTimeSeriesOfUsersBehavior(doc, ts)
 
 {PANEL: Deletions}
 
-* As described above, the identifiers created for the sent documents can be different from the original source documents' identifiers.  
+* [As described above](../../../server/ongoing-tasks/etl/raven#documents-identifiers), 
+  the identifiers created for the sent documents can be different from the original source documents' identifiers.  
   The source isn't aware of the new IDs created so documents' deletion requires a special approach.  
+
+* If we load a document to the same collection, then the id is preserved.  
+  In that case, we don't need to code a deletion command before loading an updated document. 
+  
+* But when we load documents to a different collection, then the id is different,  
+  so we have to delete the documents in the destination before loading the updated documents to replace the deleted ones.
+
+* See a [sample signature of entire ETL with deletion behavior defined](../../../server/ongoing-tasks/etl/raven#sample-signature-of-entire-etl-with-deletion-behavior-defined)
 
 * In order to remove the matching documents on the destination side, the deletion of a document sends a command 
   to remove documents that have an ID with a _well-known prefix_.  
@@ -448,10 +459,30 @@ function loadTimeSeriesOfUsersBehavior(doc, ts)
 
 {NOTE: Collection specific function deletion handling}
 
-In order to define deletion handling for a specific collection use the following signature:
+* ETL is triggered any time a document is updated or deleted in a collection where ETL is set. 
+
+* To define deletion handling for a specific collection use the following signature 
+  that checks if the document was deleted or updated in the source database. 
+  If it was deleted in the source and the `return` is set to `true`, 
+  it will also be deleted in the destination without loading a replacement. 
+
+* If the `return` is set to `false`, or if the document was not deleted, 
+  the document in the destination will not be deleted.
 
 {CODE-BLOCK:javascript}
 function deleteDocumentsOf<CollectionName>Behavior(docId, deleted) {
+   return [true | false]; 
+}
+{CODE-BLOCK/}
+
+Alternately, the following signature will not check if the document was indeed deleted.  
+
+Leaving out the `delete` parameter will trigger the command regardless of whether the source document was deleted.  
+This means that if a source document was updated, but not deleted, 
+it will be deleted in the destination before the updated document is loaded.
+
+{CODE-BLOCK:javascript}
+function deleteDocumentsOf<CollectionName>Behavior(docId) {
    return [true | false]; 
 }
 {CODE-BLOCK/}
@@ -474,10 +505,21 @@ function deleteDocumentsOf<CollectionName>Behavior(docId, deleted) {
 
 {NOTE: Generic function for deletion handling}
 
-Another option is the usage of generic function for collection specific deletion handling:
+Another option is the usage of a generic function for collection-specific deletion handling.
+
+The following signature will use the `deleted` parameter to check whether a document was deleted in the source database.  
+If it was deleted in the source, it will also be deleted in the destination without loading a replacement.
 
 {CODE-BLOCK:javascript}
 function deleteDocumentsBehavior(docId, collection, deleted) {
+   return [true | false]; 
+}
+{CODE-BLOCK/}
+
+The following signature will run the command regardless of whether the document was deleted from the source database.
+
+{CODE-BLOCK:javascript}
+function deleteDocumentsBehavior(docId, collection) {
    return [true | false]; 
 }
 {CODE-BLOCK/}
@@ -553,6 +595,26 @@ function deleteDocumentsBehavior(docId, collection, deleted) {
 | **bool** | If the returned value is `true`, the document will be deleted. |
 
 {NOTE/}
+
+#### Sample signature of entire ETL with deletion behavior defined
+
+The following example will check if the source document was deleted or just updated before 
+loading the transformed document. [It is only required if](../../../server/ongoing-tasks/etl/raven#deletions)
+loaded to a different collection than the source document's collection.  
+
+* If the source document is deleted, the destination will also be deleted.  
+* If it is not deleted, the ETL will delete from the destination, then load the transformed document to replace the deleted one.
+
+{CODE-BLOCK:javascript}
+loadToUsers ({
+    Name: this.Name + " some new data.."
+});
+
+function deleteDocumentsOfUsersBehavior(documentId, deleted) {
+    // propagate document deletions if source is deleted
+    return true; 
+}
+{CODE-BLOCK/}
 
 {PANEL/}
 
