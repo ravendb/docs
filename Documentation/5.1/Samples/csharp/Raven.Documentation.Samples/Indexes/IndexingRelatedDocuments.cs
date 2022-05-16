@@ -5,6 +5,7 @@ using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Operations.Indexes;
 using Raven.Documentation.Samples.Indexes.Foo;
 using Raven.Documentation.Samples.Orders;
+using Raven.Client.Documents.Linq;
 
 namespace Raven.Documentation.Samples.Indexes
 {
@@ -53,9 +54,9 @@ namespace Raven.Documentation.Samples.Indexes
         {
             public class Result
             {
-                public string Name { get; set; }
+                public string AuthorName { get; set; }
 
-                public IEnumerable<string> Books { get; set; }
+                public IEnumerable<string> BookNames { get; set; }
             }
 
             public Authors_ByNameAndBooks()
@@ -63,8 +64,8 @@ namespace Raven.Documentation.Samples.Indexes
                 Map = authors => from author in authors
                                  select new Result
                                  {
-                                     Name = author.Name,
-                                     Books = author.BookIds.Select(x => LoadDocument<Book>(x).Name)
+                                     AuthorName = author.Name,
+                                     BookNames = author.BookIds.Select(x => LoadDocument<Book>(x).Name)
                                  };
             }
         }
@@ -73,7 +74,7 @@ namespace Raven.Documentation.Samples.Indexes
 
     public class IndexingRelatedDocuments
     {
-        public void Sample()
+        public async void Sample()
         {
             using (var store = new DocumentStore())
             {
@@ -103,6 +104,17 @@ namespace Raven.Documentation.Samples.Indexes
                         .Where(x => x.CategoryName == "Beverages")
                         .OfType<Product>()
                         .ToList();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region indexing_related_documents_AsyncQuery_Products-Beverages
+                    IList<Product> results = await asyncSession
+                        .Query<Products_ByCategoryName.Result, Products_ByCategoryName>()
+                        .Where(x => x.CategoryName == "Beverages")
+                        .OfType<Product>()
+                        .ToListAsync();
                     #endregion
                 }
 
