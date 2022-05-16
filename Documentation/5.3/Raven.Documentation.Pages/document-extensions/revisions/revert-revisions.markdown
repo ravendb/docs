@@ -77,6 +77,13 @@ To Revert Revisions, open the Studio Settings > **Document Revisions** view.
    Documents will be reverted to a revision that was created for them 
    at the specified point in time, or to the nearest revision preceding 
    this time.  
+     
+       Clicking the Point in Time box will display the Revert Revisions scenario.  
+       The database will be reverted to the time displayed in the scenario 
+       in [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).  
+
+       ![Revert Revisions Scenario](images/revert-revisions-scenario.png "Revert Revisions Scenario")
+
 
 2. **Time Window**  
    Set a Time Window value to limit the search by.  

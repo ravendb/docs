@@ -318,8 +318,9 @@ public enum ForceRevisionStrategy
 
 Deleting a document that owns a manually-created revision 
 will not move the revision to the revisions bin.  
-* a `delete revision` will Not be created.  
-* manual revisions will not be kept in the revisions bin.  
+
+* A `delete revision` will Not be created.  
+* Manual revisions will not be kept in the revisions bin.  
 
 {NOTE/}
 
