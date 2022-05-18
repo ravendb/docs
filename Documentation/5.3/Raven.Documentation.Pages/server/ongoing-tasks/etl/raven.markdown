@@ -3,15 +3,19 @@
 
 {NOTE: }
 
-* **RavenDB ETL Task** creates an [ETL](../../../server/ongoing-tasks/etl/basics) process for a given database when the destination is another RavenDB database.  
+* **RavenDB ETL Task** creates an [ETL](../../../server/ongoing-tasks/etl/basics) 
+  process for a given database when the destination is another RavenDB database.  
 
-* The script is executed per document once the document is created or modified.  
+* The script is executed per document whenever the document is created, modified and/or deleted.  
 
-* It can be defined in code or using the [Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) by creating a `RavenDB ETL` task under `Settings -> Manage Ongoing Tasks`.  
+* It can be defined in code or using the [Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) 
+  by creating a `RavenDB ETL` task:  
+  * Choose database -> Click **Tasks** tab on the left -> Select **Ongoing Tasks** -> Click **Add a database task** -> Select **RavenDB ETL**.  
 
-* One RavenDB ETL task can have multiple transformation scripts.  
+* One RavenDB ETL task can have multiple transformation scripts and each script can load to a different collection.  
 
-* Each script can be defined on a single collection, multiple selected collections or be applied to **all** documents regardless of the associated collection.  
+* Each script can be defined on the source database to trigger ETL from a single collection, 
+  multiple selected collections or be applied to **all** documents regardless of the associated collection(s).  
 
 * In this page:  
   * [Transformation Script Options](../../../server/ongoing-tasks/etl/raven#transformation-script-options)  
@@ -21,6 +25,7 @@
   * [Time Series](../../../server/ongoing-tasks/etl/raven#time-series)  
   * [Revisions](../../../server/ongoing-tasks/etl/raven#revisions)  
   * [Deletions](../../../server/ongoing-tasks/etl/raven#deletions)  
+  * [ResetETLOperation](../../../server/ongoing-tasks/etl/raven#resetetloperation)
   * [Example](../../../server/ongoing-tasks/etl/raven#example)  
 {NOTE/}
 
@@ -474,34 +479,36 @@ function loadTimeSeriesOfUsersBehavior(doc, ts)
 
 ### Collection specific function deletion handling
 
-* ETL is triggered any time a document is updated or deleted in a collection where ETL is set. 
+ETL is triggered any time a document is created, updated, or deleted in a collection where ETL is set. 
 
-* To define deletion handling for a specific collection, use the following signature 
-  that checks if the document was deleted or updated in the source database. 
-  If it was deleted in the source and the `return` is set to `true`, 
-  it will also be deleted in the destination without loading a replacement. 
-
-* If the `return` is set to `false`, or if the document was not deleted, 
-  the document in the destination will not be deleted. Because of the difference in collections, 
-  the update will result in a new version being stored in addition to the older ones.  
+To define deletion handling when the source and destination collections are the same, use the following sample. 
 
 {CODE-BLOCK:javascript}
 function deleteDocumentsOf<CollectionName>Behavior(docId, deleted) {
-   return [true | false]; 
+    // If any document in the specified source collection is modified but is not deleted,  
+    // then the ETL will not send a delete command to the destination.  
+    if (deleted == false) 
+    return [false]; 
+    // If the source document was deleted, the destination will also be deleted and there will be no replacement.
+    else return true;
 }
 {CODE-BLOCK/}
 
-Alternately, the following signature will not check if the document was deleted.  
+Alternately, leaving out the `deleted` parameter will not allow you to check if the source document was deleted and will 
+trigger the command regardless of whether the source document was deleted.  
 
-Leaving out the `delete` parameter will trigger the command regardless of whether the source document was deleted. 
-This means that if a source document was updated, but not deleted, 
-it will be deleted in the destination before the updated document is loaded to replace it if `return` is set to `true`.  
-
-If it is set to `false`, a 'historical' list of the documents will accumulate in the destination collection every time 
-the source document is updated.  
+* This means that if `return` is `true` and  
+  if a source document was updated, but not deleted,  
+  it will be deleted in the destination before the updated document with a new ID is loaded to replace the previous one.  
+   * If the source document was deleted, the destination will also be deleted and there will be no replacement.
+* If `return` is `false`, a 'historical' set of the document will accumulate in the destination collection every time 
+  the source document is updated.  
+  The number at the end of the ID will automatically increment with every new version. 
+   * If the document was deleted from the source, the set of old versions of the document will remain in the destination 
+     because the delete behavior returns `false`.
 
 {CODE-BLOCK:javascript}
-function deleteDocumentsOf<CollectionName>Behavior(docId) {
+function deleteDocumentsOf<CollectionName>Behavior(docId, deleted) {
    return [true | false]; 
 }
 {CODE-BLOCK/}
@@ -517,7 +524,7 @@ function deleteDocumentsOf<CollectionName>Behavior(docId) {
 
 | Return Value | Description |
 | - | - |
-| **true** | If the behavior function returns `true`, the document will be deleted from the destination database. |
+| **true** | The document will be deleted from the destination database. |
 | **false** | The document will not be deleted from the destination database. |
 
 {NOTE/}
@@ -528,16 +535,32 @@ function deleteDocumentsOf<CollectionName>Behavior(docId) {
 
 Another option is the usage of a generic function for collection-specific deletion handling.
 
-The following signature will use the `deleted` parameter to check whether a document was deleted in the source database.  
-If it was deleted in the source, it will also be deleted in the destination without loading a replacement.
+To define deletion handling when the source collection may be different from the destination collection , use the following sample where: 
 
 {CODE-BLOCK:javascript}
 function deleteDocumentsBehavior(docId, collection, deleted) {
-   return [true | false]; 
+    // If the destination collection is different than the source and  
+    // if any document in the specified source collection is modified but is not deleted,  
+    // then the ETL will not send a delete command to the destination (the old document versions will remain)
+    if (deleted == false) 
+    return false; 
+    // If the source document was deleted, the destination will also be deleted and there will be no replacement.
+    else return true;
 }
 {CODE-BLOCK/}
 
-The following signature will run the command regardless of whether the document was deleted from the source database.
+Alternately, leaving out the `deleted` parameter will not allow you to check if the source document was deleted and will 
+trigger the command regardless of whether the source document was deleted.  
+
+* This means that if `return` is `true` and  
+  if a source document was updated, but not deleted,  
+  it will be deleted in the destination before the updated document with a new ID is loaded to replace the previous one.  
+   * If the source document was deleted, the destination will also be deleted and there will be no replacement.
+* If `return` is `false`, a 'historical' set of the document will accumulate in the destination collection every time 
+  the source document is updated.  
+  The number at the end of the ID will automatically increment with every new version. 
+   * If the document was deleted from the source, the set of old versions of the document will remain in the destination 
+     because the delete behavior returns `false`.
 
 {CODE-BLOCK:javascript}
 function deleteDocumentsBehavior(docId, collection) {
@@ -640,6 +663,13 @@ function deleteDocumentsOfUsersBehavior(documentId, deleted) {
     return true; 
 }
 {CODE-BLOCK/}
+
+{PANEL/}
+
+{PANEL: ResetEtlOperation}
+
+ETL process states keep track of the [etag](../../../glossary/etag) of the last processed document.  
+`ResetEtlOperation( )` sets the etag to 0 so that the process starts over.  
 
 {PANEL/}
 
