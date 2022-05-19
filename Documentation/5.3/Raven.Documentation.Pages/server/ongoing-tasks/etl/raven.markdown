@@ -447,7 +447,7 @@ function loadTimeSeriesOfUsersBehavior(doc, ts)
      in which the number at the end is incremented with each version.  
       * e.g. `"...profile/0000000000000000019-B"` will become `".../profile/0000000000000000020-B"`
       * The word before the number is the collection name and the letter after the number is the node.  
-        In this case, I am looking at two versions of a document in the collection "profile" which is in a database in node "B" 
+        In this case, I am looking at two versions of a document in the collection "Profile" which is in a database in node "B" 
         and which has been updated via ETL 20 times.
 
 * If you want to keep the old versions of documents in the destination database (from the example above, ...0001-...00019), 
@@ -472,7 +472,7 @@ function loadTimeSeriesOfUsersBehavior(doc, ts)
 * If you output multiple documents from a single document, then multiple delete commands will be sent, 
   one for each prefix containing the destination collection name.  
 
-* When documents are sent to the same collection and IDs don't change then deletion on the source results in 
+* When documents are sent to the same collection and IDs don't change, then deletion on the source results in 
   sending a single delete command for a given ID.  
 
 * Deletions can be filtered by defining deletion behavior functions in the script.
@@ -488,9 +488,9 @@ function deleteDocumentsOf<CollectionName>Behavior(docId, deleted) {
     // If any document in the specified source collection is modified but is not deleted,  
     // then the ETL will not send a delete command to the destination, thus saving a history of it.  
     if (deleted == false) 
-    return [false]; 
+    return false; 
     // If the source document was deleted, the destination will also be deleted 
-    // including all of it's version history. There will be no replacement.
+    // including all of it's version history. 
     else return true;
 }
 {CODE-BLOCK/}
@@ -498,11 +498,11 @@ function deleteDocumentsOf<CollectionName>Behavior(docId, deleted) {
 Alternately, leaving out the `deleted` parameter will not allow you to check if the source document was deleted and will 
 trigger the command regardless of whether the source document was deleted.  
 
-* This means that if `return` is `true` and  
+* This means that if the method returns `true` and  
   if a source document was updated, but not deleted,  
   it will be deleted in the destination before the updated document with a new ID is loaded to replace the previous one.  
-   * If the source document was deleted, the destination will also be deleted and there will be no replacement.
-* If `return` is `false`, a 'historical' set of the document will accumulate in the destination collection every time 
+   * If the source document was deleted, the destination will also be deleted.
+* If the method returns`false`, a 'historical' set of the document will accumulate in the destination collection every time 
   the source document is updated.  
   The number at the end of the ID will automatically increment with every new version (see intro of deletions section). 
    * If the document was deleted from the source, the set of old versions of the document will remain in the destination 
@@ -544,7 +544,7 @@ function deleteDocumentsBehavior(docId, collection, deleted) {
     // then the ETL will not send a delete command to the destination collection "Users"
     // (the old document versions will remain and a new version will be stored with an incremented ID)
     if (collection == "Users" && deleted == false) 
-    return false; 
+        return false; 
     // If the source document was deleted, delete the entire set of versions from the destination.
     else return true;
 }
@@ -553,11 +553,11 @@ function deleteDocumentsBehavior(docId, collection, deleted) {
 Alternately, leaving out the `deleted` parameter will not allow you to check if the source document was deleted and will 
 trigger the command regardless of whether the source document was deleted.  
 
-* This means that if `return` is `true` and  
+* This means that if the method returns `true` and  
   if a source document was updated, but not deleted,  
   it will be deleted in the destination before the updated document with an incremented ID is loaded to replace the previous one.  
-   * If the source document was deleted, the destination will also be deleted and there will be no replacement.
-* If `return` is `false`, a 'historical' set of the document will accumulate in the destination collection every time 
+   * If the source document was deleted, the destination will also be deleted.
+* If the method returns `false`, a 'historical' set of the document will accumulate in the destination collection every time 
   the source document is updated.  
   The number at the end of the ID will automatically increment with every new version. 
    * If the document was deleted from the source, the set of old versions of the document will remain in the destination 
@@ -667,7 +667,7 @@ function deleteDocumentsBehavior(docId, collection, deleted) {
     // If the source document information is updated (not deleted), 
     // the script will delete then replace the destination document (with an incremented ID) to keep it current.
     if (collection = "productsHistory" && deleted = true)
-    return false; 
+        return false; 
 }
 {CODE-BLOCK/}
 
