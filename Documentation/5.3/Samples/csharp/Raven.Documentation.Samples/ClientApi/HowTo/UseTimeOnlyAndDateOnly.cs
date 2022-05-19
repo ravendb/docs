@@ -17,7 +17,7 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo.DateAndTimeOnlySample
         {
             public StringAsDateOnlyConversion()
             {
-                // This map index converts strings that are in date format with AsDateOnly.
+                // This map index converts strings that are in date format to DateOnly with AsDateOnly().
                 Map = items => from item in items
                                select new DateOnlyItem { DateOnlyField = AsDateOnly(item.StringDateOnlyField) };
             }
@@ -64,10 +64,12 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo.DateAndTimeOnlySample
         }
 
         #region IndexConvertsDateTimeWithAsDateOnlySample
+        // Create a Static Index.
         public class DateTimeAsDateOnlyConversion : AbstractIndexCreationTask<DateTimeItem, DateOnlyItem>
         {
             public DateTimeAsDateOnlyConversion()
             {
+                // This map index converts DateTime to DateOnly with AsDateOnly().
                 Map = items => from item in items
                                select new DateOnlyItem { DateOnlyField = AsDateOnly(item.DateTimeField) };
             }
@@ -87,17 +89,20 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo.DateAndTimeOnlySample
             #region AsDateOnlyStringToDateOnlyQuerySample
             using (var session = store.OpenSession()) 
         {
+            // A DateTime value is saved
             session.Store(new DateTimeItem()
             {
                 DateTimeField = DateTime.Now
             });
             session.SaveChanges();
         }
+        // The index above is called and we wait for the index to finish converting
         new DateTimeAsDateOnlyConversion().Execute(store);
         WaitForIndexing(store);
 
         using (var session = store.OpenSession())
         {
+            // Query the index
             var today = DateOnly.FromDateTime(DateTime.Now);
             var element = session.Query<DateOnlyItem, DateTimeAsDateOnlyConversion>()
                 .Where(item => item.DateOnlyField == today).As<DateTimeItem>().Single();
