@@ -42,20 +42,19 @@ These two new C# types are available from .NET 6.0+ (RavenDB 5.3+).
 
 {PANEL: Convert and Use Date/TimeOnly Without Affecting Your Existing Data}
 
-In RavenDB, we offer conversion of types in static indexes with the methods [AsDateOnly or AsTimeOnly](../../client-api/how-to/using-timeonly-and-dateonly#use--or--in-a-static-index-to-convert-strings-or-datetime-types).
+In RavenDB, we offer conversion of types in static indexes with the methods [AsDateOnly or AsTimeOnly](../../client-api/how-to/using-timeonly-and-dateonly#use--or--in-a-static-index-to-convert-strings-or-datetime).
 
 * [Static indexes](../../indexes/indexing-basics) process new data in the background, 
   including calculations and converstions to DateOnly/TimeOnly values, which can be used as ticks,  
   so that the data is ready at query time when you [query the index](../../indexes/querying/basics#example-iv---querying-a-specified-index).  
     * These indexes do all of the calculations on the entire dataset that you define the first time they run, and then they only need to 
-      process changes in data. This is far less expensive than running the calculations and conversions on the entire dataset 
-      each time you query and it doesn't affect your existing data.
+      process changes in data. 
 
 {INFO: Ticks}
 If your data is in strings, to use ticks you must create a **static index** 
 that computes the conversion from strings to [DateOnly or TimeOnly](../../client-api/how-to/using-timeonly-and-dateonly#convert-and-use-date/timeonly-without-affecting-your-existing-data).  
 
-An auto-index will not convert DateOnly or TimeOnly into ticks, but will process strings as strings.  
+An auto-index will not convert DateOnly or TimeOnly into ticks, but will index data as strings.  
 By defining a query that creates an auto-index which orders the strings you can also compare strings, 
 though comparing ticks is much faster.  
 
@@ -77,8 +76,7 @@ Strings are automatically converted to ticks for faster querying.
 
 {CODE IndexConvertsStringsWithAsDateOnlySample@ClientApi/HowTo/UseTimeOnlyAndDateOnly.cs /}
 
-
-Using the static index above, here a string "2022-05-12" is saved, the index converts it to `DateOnly`, then 
+Using the static index above, here a string in date format "2022-05-12" is saved, the index above converts it to `DateOnly`, then 
 the index is queried.  
 
 {CODE AsDateOnlyStringToDateOnlyQuerySample@ClientApi/HowTo/UseTimeOnlyAndDateOnly.cs /}
@@ -87,10 +85,9 @@ the index is queried.
 
 #### Converting `DateTime` with minimal cost
 
-The following generic sample is a map index that converts `DateTime` into `DateOnly` in the index instead of doing expensive 
-conversions repetetively in queries.  
+The following generic sample is a map index that converts `DateTime` into `DateOnly` and saves the values in the index.
 
-When the converted data is available in the index, you can inexpensively [query the index](../../indexes/querying/basics#example-iv---querying-a-specified-index).
+Once the converted data is available in the static index, you can inexpensively [query the index](../../indexes/querying/basics#example-iv---querying-a-specified-index).
 
 {CODE IndexConvertsDateTimeWithAsDateOnlySample@ClientApi/HowTo/UseTimeOnlyAndDateOnly.cs /}
 

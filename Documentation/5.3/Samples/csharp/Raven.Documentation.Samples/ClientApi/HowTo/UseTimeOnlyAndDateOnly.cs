@@ -12,10 +12,12 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo.DateAndTimeOnlySample
     public class DateAndTimeOnlySamples : RavenTestDriver
     {
         #region IndexConvertsStringsWithAsDateOnlySample
+        // Create a Static Index.
         public class StringAsDateOnlyConversion : AbstractIndexCreationTask<StringItem, DateOnlyItem>
         {
             public StringAsDateOnlyConversion()
             {
+                // This map index converts strings that are in date format with AsDateOnly.
                 Map = items => from item in items
                                select new DateOnlyItem { DateOnlyField = AsDateOnly(item.StringDateOnlyField) };
             }
@@ -38,20 +40,25 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo.DateAndTimeOnlySample
             #region AsDateOnlyStringToDateOnlyQuerySample
             using (var session = store.OpenSession())
             {
+                // A string in date format is saved.
                 session.Store(new StringItem()
                 {
                     StringDateOnlyField = "2022-05-12"
                 });
                 session.SaveChanges();
             }
+            // This is the index used earlier.
             new StringAsDateOnlyConversion().Execute(store);
             WaitForIndexing(store);
 
             using (var session = store.OpenSession())
             {
                 var today = new DateOnly(2022, 5, 12);
+                // Query the index created earlier for items which were marked with today's date
                 var element = session.Query<DateOnlyItem, StringAsDateOnlyConversion>()
-                    .Where(item => item.DateOnlyField == today).As<StringItem>().Single();
+                    .Where(item => item.DateOnlyField == today)
+                    // This is an optional type relaxation for projections 
+                    .As<StringItem>().Single();
             }
             #endregion
         }
