@@ -106,15 +106,13 @@ The index must have a field that declares the type as DateOnly or TimeOnly.
 
 {CODE DateAndTimeOnlyIndexSample@ClientApi/HowTo/UseTimeOnlyAndDateOnly.cs /}
 
-Now you can query on the converted data to find DateOnly or TimeOnly information.  
-
 For example, the following query will find all of the entries that occured between 15:00 and 17:00 
 without considering the date.
 
 {CODE TimeOnly_between15-17@ClientApi/HowTo/UseTimeOnlyAndDateOnly.cs /}
 
 **Querying on Ticks**  
-Strings are automatically converted to ticks with []`AsDateOnly` and `AsTimeOnly`](../../client-api/how-to/using-timeonly-and-dateonly#use--or--in-a-static-index-to-convert-strings-or-datetime-types).  
+Strings are automatically converted to ticks with [`AsDateOnly` and `AsTimeOnly`](../../client-api/how-to/using-timeonly-and-dateonly#use--or--in-a-static-index-to-convert-strings-or-datetime).  
 
 {PANEL/}
 
