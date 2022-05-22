@@ -1,8 +1,26 @@
 ﻿# Change Vector
+---
 
-### What is a Change Vector?
-Change vectors is the RavenDB implementation of the [Vector clock](https://en.wikipedia.org/wiki/Vector_clock) concept.
-They give us partial order over modifications of documents in a RavenDB cluster.
+{NOTE: }
+
+* Change vectors are the RavenDB implementation of the [Vector clock](https://en.wikipedia.org/wiki/Vector_clock) concept.
+  They give us partial order over modifications of documents in a RavenDB cluster.
+
+* Change vectors are updated every time a document is [modified](../../../server/clustering/replication/change-vector#concurrency-control--change-vectors) 
+  in any way.
+
+* In this page:
+   * [What are Change Vectors Constructed From?](../../../server/clustering/replication/change-vector#what-are-change-vectors-constructed-from)
+   * [How are Change Vectors used to Determine Order?](../../../server/clustering/replication/change-vector#how-are-change-vectors-used-to-determine-order)
+   * [Concurrency Control & Change Vectors](../../../server/clustering/replication/change-vector#concurrency-control--change-vectors)
+   * [Change Vector Comparisons](../../../server/clustering/replication/change-vector#change-vector-comparisons)
+   * [Concurrency Control at the Cluster](../../../server/clustering/replication/change-vector#concurrency-control-at-the-cluster)
+   * [Database Global Change Vector](../../../server/clustering/replication/change-vector#database-global-change-vector)
+   * [After Restoring a Database from Backup](../../../server/clustering/replication/change-vector#after-restoring-a-database-from-backup)
+
+   
+
+{NOTE/}
 
 ### What are Change Vectors Constructed From?
 A change vector is constructed from entries, one per database. 
@@ -19,27 +37,38 @@ the document was modified on node `A` its local `ETag` is `1` and the database I
 as the number of database instances in the database group grows. If an instance is no longer being used, its entry can be removed 
 from the change vector to save space using the [UpdateUnusedDatabasesOperation](../../../client-api/operations/maintenance/clean-change-vector).  
 
-An `ETag` is a value that is scoped to a database instance on a particular node and is guranteed to always increase. It is used internally for many purposes and is the natural
+An `ETag` is a value that is scoped to a database instance on a particular node and is guaranteed to always increase. It is used internally for many purposes and is the natural
 sort order for many operations (indexing, replication, ETL, etc).
 The database ID is used for cases where the node tag is not unique, which could happen when using external replication or restoring from backup.
+
+---
 
 ### How are Change Vectors used to Determine Order?
 Given two change vectors `X` and `Y` we would say that `X` >= `Y` if foreach entry of `X` the value of the ETag is greater or equal to the corresponding entry in `Y` and `Y` has no entries that `X` doesn't have.  
 The same goes for <= we would say that `X` <= `Y` if foreach entry of `X` the value of the ETag is smaller or equal to the corresponding entry in `Y` and `X` has no entries that `Y` doesn't have.  
-We would say that `X` <> `Y` (no order or conflicted) if `X` has an entry with a higher ETag value than `Y` and `Y` has a different entry where its ETag value is greater than X.
+We would say that `X` <> `Y` (no order or conflict) if `X` has an entry with a higher ETag value than `Y`, and `Y` has a different entry where its ETag value is greater than X.
 
 ## Concurrency Control & Change Vectors
 
-RavenDB defines some simple rules to determine how to handle concurrent operations on the same document across the cluster. It uses the document's change vector.
-This allows RavenDB to detect concurrency issues when writing to a document and conflicts when the document have been concurrently modified on different nodes during network partition.
+RavenDB defines some simple rules to determine how to handle concurrent operations on the same document across the cluster. 
+It uses the document's change vector.
+This allows RavenDB to detect concurrency issues when writing to a document and throws an exception when the document 
+has been concurrently modified on different nodes during network partition to prevent data corruption.
 
-Every document in RavenDB has a corresponding change vector. This change vector is updated by RavenDB every time the document is changed. This happens when on document creation and 
-any modification such as `PUT`, `PATCH`, 'DELETE' or their bulk versions. A delete operation will also cause RavenDB to update the document change vector, however, at that point the change vector will belong to
+Every document in RavenDB has a corresponding change vector. 
+This change vector is updated by RavenDB every time the document is changed. 
+This happens when on document creation and 
+any modification such as `PUT`, `PATCH`, 'DELETE' or their bulk versions. 
+A delete operation will also cause RavenDB to update the document change vector, 
+however, at that point, the change vector will belong to
 the document tombstone (since the document itself has already been deleted).
 
 A change vector is present in the document's metadata and each time
-a document is updated, the server will update the change vector. This is mostly used internally inside RavenDB for many purposes (conflict detection, deciding what documents a particular
-subscription has already seen, what was sent to an ETL destination, etc) but can also be very useful for clients.
+a document is updated, the server will update the change vector. 
+This is mostly used internally inside RavenDB for many purposes 
+(conflict detection, deciding what documents a particular
+subscription has already seen, what was sent to an ETL destination, etc) 
+but can also be very useful for clients.
 
 In particular, the change vector is _guaranteed_ to change whenever the document changes and can be used as part of optimistic concurrency checks. A document modification can all specify an expected change vector for a document (with an empty change vector signifying that the document does not exists). In such a case, all operations in the 
 transaction will be aborted and no changes will be applied to any of the documents modified in the transaction.
@@ -51,7 +80,9 @@ The comparison is defined as follows:
   
 * Two change vectors are equal when and only when all etags _equal_ between corresponding node and database IDs
 * Change vector A is larger than change vector B if and only if all etags are _larger or equal_ between corresponding node and database IDs
-* Change vector A conflicts with change vector B if and only if at least one etags is _larger, equal or has node etag (and the other don't)_ and at least one etags is _smaller_ between corresponding node and database IDs
+* Change vector A conflicts with change vector B if and only if at least one of the etags 
+  is _larger, equal, or has node etag (and the other doesn't)_ and at least one etags is _smaller_ between 
+  corresponding node and database IDs
   
 Note that the change vectors are unsortable for two reasons:
 
@@ -125,9 +156,20 @@ Note that if data is considered contained by a database it doesn't mean it is pr
 
 {NOTE/}
 
+---
+
+### After Restoring a Database from Backup
+
+[Change vector data](../../../server/ongoing-tasks/backup-overview#backup-contents) is backed up in Snapshot type backups.
+
+On the other hand, "Logical"/"Backup" (including incremental) backups do not save change vector data.  
+Restoring a database from a logical backup will restart the documents' change vectors.  
+
 ## Related Articles
 
 ### Client API
 
 - [How to enable optimistic concurrency](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency)
+- [How to get entity change vector](../../../client-api/session/how-to/get-entity-change-vector)
+- [How to clean change vector](../../../client-api/operations/maintenance/clean-change-vector)
 

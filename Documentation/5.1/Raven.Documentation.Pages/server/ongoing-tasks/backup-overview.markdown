@@ -3,17 +3,20 @@
 
 {NOTE: }
 
-* Maintaining a proper backup routine ensures that you'd be able to restore your data to its state in chosen points of time.  
+* Maintaining a proper backup routine ensures that you'd be able to restore your data to its state at chosen points in time. 
   Use this overview as an introduction to backing up and restoring your databases.  
 
 * The two principal reasons for backing up your database are -  
    * **Securing data** in case catastrophe strikes.  
-   * **Freezing data in chosen points-in-time** to retain access to it in various stages of its existence/development.  
+   * **Freezing data in chosen points-in-time** to revert to, (e.g. if a mistake was made in a patch or an upgrade).  
 
 * RavenDB's Backup is an **Ongoing task**.  
    * Routinely backing up your data is a fundamental aspect of your database maintenance.  
-     Backup is therefore provided not as a one-time operation, but as an [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) that runs in the background.  
+     Backup is therefore defined consistently as an [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) 
+     that runs in the background.  
      It is configured once and then executed periodically according to the defined schedule.  
+
+* Backup can be configured with [Client API](../../client-api/operations/maintenance/backup/backup) or in the [Studio](../../studio/database/tasks/backup-task).
 
 * In this page:  
   * [Backup Type](../../server/ongoing-tasks/backup-overview#backup-type)  
@@ -22,6 +25,7 @@
   * [Backup Name and Folder Structure](../../server/ongoing-tasks/backup-overview#backup-name-and-folder-structure)  
   * [Encryption](../../server/ongoing-tasks/backup-overview#encryption)  
   * [Compression](../../server/ongoing-tasks/backup-overview#compression)  
+  * [Retention Policy](../../server/ongoing-tasks/backup-overview#retention-policy)  
   * [Restoration Procedure](../../server/ongoing-tasks/backup-overview#restoration-procedure)  
 {NOTE/}
 
@@ -32,9 +36,14 @@
 There are two backup types: [Logical-backup](../../client-api/operations/maintenance/backup/backup#logical-backup) (or simply "Backup") and [Snapshot](../../client-api/operations/maintenance/backup/backup#snapshot).  
 
 * **Logical Backup**  
-  A logical backup is a compressed JSON dump of database contents, including documents and additional data.  
+  A logical backup is a compressed JSON dump of database contents, including documents, index definitions, and [additional data](../../server/ongoing-tasks/backup-overview#backup-contents).  
+   * Incremental Backups, which frequently save only the changes made since the last backup to reduce tranfer costs, can be defined via Logical Backups.
 * **SnapShot**  
-  A snapshot is a binary image of the [database and journals](../../server/storage/directory-structure#storage--directory-structure) at a given point-in-time.  
+  A snapshot is a binary image of the database contents, full indexes, and [additional data](../../server/ongoing-tasks/backup-overview#backup-contents) 
+  at a given point in time.  
+   * Complete indexes are saved, which reduces restoration time but increases data transferred during backups.
+   * Cannot do [incremental backups](../../server/ongoing-tasks/backup-overview#backup-scope:-full-or-incremental) 
+     (the changes made since the last backup) with Snapshot because it is a complete image. 
   {NOTE: }
   Snapshots are only available for _Enterprise subscribers_.  
   {NOTE/}
@@ -55,13 +64,14 @@ Backed-up data includes both database-level and cluster-level contents, as detai
 | Conflicts |
 | Subscriptions |
 
-| Cluster-level data|
-|---- |
-| Database Record |
-| Compare-exchange values |
-| Identities |
-| Indexes (Logical-Backups: Index definitions only) |
-| Ongoing Tasks configuration (4.0 Snapshots only, 4.2 Logical-backups & Snapshots) |
+| Cluster-level data | Note |
+|---- | -------|
+| Database Record | |
+| Compare-exchange values | |
+| Change Vector data | Snapshots save Change Vector data. Restoring from a Logical Backup causes Change Vector data to restart.|
+| Identities | |
+| Indexes | Snapshots: Complete Indexes,  Logical-Backups: Index definitions only |
+| Ongoing Tasks configuration | 4.0 Snapshots only, 4.2 Logical-backups & Snapshots |
 
 {PANEL/}
 
@@ -139,12 +149,25 @@ Stored backup data can be [Encrypted](../../client-api/operations/maintenance/ba
 
 {PANEL/}
 
+{PANEL: Retention Policy}
+
+By default, backups are not deleted. The backup retention policy sets a retention period, 
+at the end of which backups are deleted. Deletion occurs during the next scheduled backup task 
+after the end of the retention period.
+
+* Set retention policy [via API](../../client-api/operations/maintenance/backup/backup#backup-retention-policy).
+* Set retention policy [via Studio](../../studio/database/tasks/backup-task#retention-policy).
+
+{PANEL/}
+
 {PANEL: Restoration Procedure}
 
 In order to restore a database - 
 
 * [Provide RavenDB](../../client-api/operations/maintenance/backup/restore#restoring-a-database:-configuration-and-execution) 
   with the backup folder's path.
+* To [restore an encrypted database](../../client-api/operations/maintenance/backup/encrypted-backup#restoring-an-encrypted-backup), 
+  you must provide the encryption key.
 * RavenDB will browse this folder and restore the full-backup found in it.  
 * RavenDB will then restore the incremental-backups one by one, up to and including the last one.
   You can set `LastFileNameToRestore` to 

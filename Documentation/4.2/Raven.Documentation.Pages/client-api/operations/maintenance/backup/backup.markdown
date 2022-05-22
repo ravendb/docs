@@ -35,11 +35,14 @@
 
 * During the restoration, RavenDB -  
    * Re-inserts all data into the database.  
-   * Re-indexes the data.  
+   * Re-indexes the data from backed up definitions.  
 
-* Restoration Time is, therefore, **slower** than that required when restoring a Snapshot.  
+* Restoration Time is, therefore, **slower** than when restoring from a Snapshot.  
 
 * Backup file size is **significantly smaller** than that of a Snapshot.
+
+* In addition to full data backup, Logical Backups can be defined as **incremental**, 
+  frequently saving any changes made since the previous backup.
 
 * The following code sample defines a full-backup task that would be executed every 3 hours:  
   {CODE logical_full_backup_every_3_hours@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
@@ -49,8 +52,10 @@
 
 ####Snapshot
 
-* A SnapShot is a compressed binary duplication of the [database and journals](../../../../server/storage/directory-structure#storage--directory-structure) file structure at a given point-in-time.  
-  Snapshot-backups are available only for **Enterprise subscribers**.  
+* A SnapShot is a compressed binary duplication of the full database, ongoing tasks, and journals 
+  [file structure](../../../../server/storage/directory-structure#storage--directory-structure) 
+  at a given point-in-time, including fully built indexes.  
+  Snapshot-backups are available for **Enterprise subscribers**.  
 * During restoration -
    * Re-inserting data into the database is not required.  
    * Re-indexing is not required.  
@@ -58,6 +63,8 @@
 * Restoration is typically **faster** than that of a logical backup.  
 
 * Snapshot size is typically **larger** than that of a logical backup.  
+
+* Snapshot cannot backup data incrementally.  
 
 * Code Sample:  
   {CODE backup_type_snapshot@ClientApi\Operations\Maintenance\Backup\Backup.cs /}

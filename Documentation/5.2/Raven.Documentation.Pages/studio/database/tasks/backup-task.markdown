@@ -17,6 +17,8 @@
 * A backup is _not equivalent_ to replicating your data, as explained below in 
   [Backup -vs- Replication](../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)  
 
+* To see what data different backup types save, see the [backup overview article](../../../server/ongoing-tasks/backup-overview).
+
 * For a complete explanation of how backups work and a discussion of which options are best suited for different scenarios, see the [Backups and restores](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/17-backups-and-restores) chapter of the "Inside RavenDB" book.
 
 
@@ -349,7 +351,7 @@ There are also some important differences:
     * Protect you from various cyber attacks  
 
  * A backup keeps an exact state of the database at a specific point in time and can be restored.  
-    * A new database can be [created from a Backup](../../../studio/server/databases/create-new-database/from-backup)  
+    * A new database can be [created from a Backup](../../../studio/database/create-new-database/from-backup)  
     * This can be done with both 'Backup' & 'Snapshot' types  
 
 {PANEL/}
