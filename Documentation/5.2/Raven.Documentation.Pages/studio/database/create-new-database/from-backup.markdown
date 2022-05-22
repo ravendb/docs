@@ -6,8 +6,8 @@
 Restoring a database is done easily via the RavenDB Studio. 
 
 * In this page:  
-  * [New Database From Backup - Studio Databases View](../../../studio/server/databases/create-new-database/from-backup#new-database-from-backup---studio-databases-view)  
-  * [New Database From Backup - Studio Backups View](../../../studio/server/databases/create-new-database/from-backup#new-database-from-backup---studio-backups-view)  
+  * [New Database From Backup - Studio Databases View](../../../studio/database/create-new-database/from-backup#new-database-from-backup---studio-databases-view)  
+  * [New Database From Backup - Studio Backups View](../../../studio/database/create-new-database/from-backup#new-database-from-backup---studio-backups-view)  
   * [Backup Source Configuration](../../../studio/database/create-new-database/from-backup#backup-source-configuration)  
 
 {NOTE/}
@@ -38,7 +38,7 @@ Another way to access the New Database From Backup interface is via the Studio B
 
 ![Figure 2. Backup Source Configuration](images/new-database-from-backup-2.png "Backup Source Configuration")
 
-1. [**Name** your new database](../../../studio/server/databases/create-new-database/general-flow#2.-database-name).  
+1. [**Name** your new database](../../../studio/database/create-new-database/general-flow#2.-database-name).  
 
 2. **Source**  
    Select the source server type to see the fields necessary to access the backup
@@ -55,7 +55,7 @@ Another way to access the New Database From Backup interface is via the Studio B
     * If your source is a cloud-based database, you will likely need to enter credentials and passwords as well as location.  
 
 4. **Disable ongoing tasks after restore**  
-   Disabling will likely require [ongoing tasks](../../../database/tasks/ongoing-tasks/general-info) to be created again.  
+   Disabling will likely require [ongoing tasks](../../../studio/database/tasks/ongoing-tasks/general-info) to be created again.  
 
 5. **Skip indexes**  
    Skipping [indexes](../../../indexes/what-are-indexes) will require your indexes to be built anew.  
@@ -66,7 +66,7 @@ Another way to access the New Database From Backup interface is via the Studio B
    * **Full** or **Incremental** types include index definitions from which the new indexes will be built.  
    
 {NOTE: }
- Note: The backup will be restored only to the current node after restore. This database can be added to other nodes using the "Add node" button in the [Manage group](../../../database/settings/manage-database-group) Studio view.
+ Note: The backup will be restored only to the current node after restore. This database can be added to other nodes using the "Add node" button in the [Manage group](../../../studio/database/settings/manage-database-group#database-group-topology---actions) Studio view.
 
 {NOTE/}
 {PANEL/}
