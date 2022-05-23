@@ -1,16 +1,58 @@
 # Indexes: Creating and Deploying Indexes
+---
 
-**Indexes are used by the server to satisfy queries.** Whenever a user issues a query, RavenDB will use an existing index if it matches the query. If it doesn't, RavenDB will create a new one.
+{NOTE: }
 
-{INFO:Remember}
+* Indexes are used by the server to satisfy queries.  
+  They are at the heart of RavenDB's efficiency and should be understood before indexes and queries are defined in production.
 
-Indexes created by issuing a query are called `dynamic` or `Auto` indexes. They can be easily identified. Their name starts with `Auto/` prefix.
+* They can do a number of operations on the data behind the scenes so that queries that use this alrady processed data are as fast as possible.  
 
-Indexes created explicitly by the user are called `static`.
+* Whenever a user issues a query _that doesn't specify an index_, RavenDB's Query Optimizer will try to find an 
+  existing auto-index that fulfills the query.  
+   * If one doesn't yet exist, RavenDB will either create an auto-index or optimize an existing one if it almost satisfies the query.
+
+* Indexes process data assigned to them as the data changes. For example, if changes are made to documents in the collection "Orders", 
+  the indexes that are defined to handle queries on "Orders" will be triggered to update the index with the new data.
+   * These behind-the-scenes processes remove a lot of burden from queries. Also, indexes need to process entire datasets just once, 
+     after which, they only process new data.  
+     Still, they utilize machine resources and this should be considered when defining indexes and queries.  
+
+
+{INFO: Auto and Static Indexes}
+
+* Indexes created by issuing a query are called `dynamic` or `Auto` indexes. 
+   * They can be easily identified. Their name starts with the `Auto/` prefix.
+   * If no [Auto-Index](../indexes/creating-and-deploying#auto-indexes) exists to satisfy a query, 
+     a new Auto-Index will be created and maintained automatically.
+* Indexes created explicitly by the user are called `static`.
+   * [To use a Static Index in a query](../indexes/querying/basics#example-iv---querying-a-specified-index), 
+     **you must specify the index in the query definition**. If you don't specify the index, 
+     RavenDB will look for an auto-index and potentially create a new one.  
+   * Static Indexes can be defined to do calculations, conversions, and various other processes behind the scenes, to prevent
+     doing these costly processes at query time (see [Using AbstractIndexCreationTask](../indexes/creating-and-deploying#using-abstractindexcreationtask), 
+     our [map-indexes](../indexes/map-indexes) article, [indexing multiple collections](../indexes/multi-map-indexes), 
+     and [map-reduce indexing](../indexes/map-reduce-indexes)).  
 
 {INFO/}
 
-{PANEL:**Static indexes**}
+* In this page:
+   * [Static indexes](../indexes/creating-and-deploying#static-indexes)
+      * [Using AbstractIndexCreationTask](../indexes/creating-and-deploying#using-abstractindexcreationtask)
+         * [Naming Convention](../indexes/creating-and-deploying#naming-convention)
+         * [Sending to Server](../indexes/creating-and-deploying#sending-to-server)
+         * [Creating an Index with Custom Configuration](../indexes/creating-and-deploying#creating-an-index-with-custom-configuration)
+         * [Using Assembly Scanner](../indexes/creating-and-deploying#using-assembly-scanner)
+         * [Example](../indexes/creating-and-deploying#example)
+      * [Using Maintenance Operations](../indexes/creating-and-deploying#using-maintenance-operations)
+         * [IndexDefinitionBuilder](../indexes/creating-and-deploying#indexdefinitionbuilder)
+   * [Auto-indexes](../indexes/creating-and-deploying#auto-indexes)
+      * [Naming Convention](../indexes/creating-and-deploying#naming-convention-1)
+      * [Auto Indexes and Indexing State](../indexes/creating-and-deploying#auto-indexes-and-indexing-state)
+
+{NOTE/}
+
+{PANEL: Static indexes}
 
 There are a couple of ways to create a `static index` and send it to the server. We can use [maintenance operations](../indexes/creating-and-deploying#using-maintenance-operations) or create a [custom class](../indexes/creating-and-deploying#using-abstractindexcreationtask). You can also [scan an assembly](../indexes/creating-and-deploying#using-assembly-scanner) and deploy all found indexes.
 

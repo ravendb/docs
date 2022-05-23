@@ -129,8 +129,12 @@ Indexes in RavenDB are split across the following multiple axes:
 
 * **Static Indexes**:  
   Created by the user (database administrator only) from the Studio or from the Client API.  
-  The index-shape (as defined in the index-definition) and the shape of the source document don't have to be the same,  
-  as the indexed-data can be a computed value. These computations are run during the indexing-process and not at query time.  
+  The index-shape (as defined in the index-definition) and the shape of the source document don't have to be the same, 
+  as the indexed-data can be a computed value. These computations are run as background indexing-processes to provide 
+  for fast results at query time.  
+   * [To query using a static index](../../../indexes/querying/basics#example-iv---querying-a-specified-index), 
+     the index must be specified in the query definition.
+
 {NOTE/}
 
 {NOTE: Map Indexes -vs- Map-Reduce Indexes}

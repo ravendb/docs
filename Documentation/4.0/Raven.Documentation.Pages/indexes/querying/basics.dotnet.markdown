@@ -1,10 +1,30 @@
 # Querying: Basics
+---
 
-Indexes are used by RavenDB to satisfy queries.
+{NOTE: }
 
-## Query-Flow
+* Queries can either be written in the [Session with LINQ syntax](../../client-api/session/querying/how-to-query), 
+  or in the [Studio with RQL](../../studio/database/queries/query-view).  
+  There are examples for both below.
 
-Each query in RavenDB must be expressed by [RQL](../../indexes/querying/what-is-rql), our query language. Each query must match an index in order to return the results. The full query flow is as follows:
+* Indexes are used by RavenDB to satisfy queries.
+
+* In this page:
+   * [Query-Flow](../../indexes/querying/basics#query-flow)
+   * [Querying Using LINQ](../../indexes/querying/basics#querying-using-linq)
+      * [Example I - Querying an Entire Collection](../../indexes/querying/basics#example-i---querying-an-entire-collection)
+      * [Example II - Filtering](../../indexes/querying/basics#example-ii---filtering)
+      * [Example III - Paging](../../indexes/querying/basics#example-iii---paging)
+      * [Example IV - Querying a Specified Index](../../indexes/querying/basics#example-iv---querying-a-specified-index)
+      * [Low-Level Query Access](../../indexes/querying/basics#low-level-query-access)
+
+{NOTE/}
+
+{PANEL: Query-Flow}
+
+Queries in RavenDB can be defined in Studio by [RQL](../../indexes/querying/what-is-rql), our query language, or in the [Session with LINQ syntax](../../client-api/session/querying/how-to-query). 
+Each query must match an index in order to return the results. If no index exists to satisfy the query, an Auto-Index will be created automatically.  
+The full query flow is as follows:
 
 1. `from index | collection` 
   - First step. When a query is issued, it locates the appropriate index. If our query specifies that index, the task is simple - use this index. Otherwise, a query analysis takes place and an auto-index is created.
@@ -23,15 +43,17 @@ Each query in RavenDB must be expressed by [RQL](../../indexes/querying/what-is-
   - If a query indicates that [projection](../../indexes/querying/projections) should be used, then all results that were not filtered out are processed by that projection. Fields defined in the projection are extracted from the index (if stored).
 
 4. `include` 
-  - If any [includes](../../client-api/how-to/handle-document-relationships#includes) are defined, then the results are being traversed to extract the IDs of potential documents to include with the results.
+  - If any [includes](../../client-api/how-to/handle-document-relationships#includes) are defined, then the results are being traversed to extract the IDs of potential related documents to include with the results.
 
 5. Return results.
 
-## Querying Using LINQ
+{PANEL/}
+
+{PANEL: Querying Using LINQ}
 
 RavenDB Client supports querying using LINQ. This functionality can be accessed using the session `Query` method, and is the most common and basic method for querying the database.
 
-### Example I
+### Example I - Querying an Entire Collection
 
 Let's execute our first query and return all the employees from the Northwind database. To do that, we need to have a [document store](../../client-api/what-is-a-document-store) and [opened session](../../client-api/session/opening-a-session) and specify a [collection](../../client-api/faq/what-is-a-collection) type that we want to query (in our case `Employees`) by passing `Employee` as a generic parameter to the `Query` method:
 
@@ -82,9 +104,16 @@ You can read more about paging [here](../../indexes/querying/paging).
 
 ### Example IV - Querying a Specified Index
 
-In the above examples, we **did not** specify an index that we want to query. RavenDB will try to locate an appropriate index or create a new one. You can read more about creating indexes [here](../../indexes/creating-and-deploying).
+In the above examples, we **did not** specify an index that we want to query. 
+If you don't specify an index, RavenDB will look for an appropriate auto-index or create a new one. 
+You can read more about creating indexes [here](../../indexes/creating-and-deploying).
 
-In order to specify an index, we need to pass it as a second generic parameter to the `Query` method or pass the index name as a parameter.
+**To query a static index, you must specify the index in the query definition.**
+
+In order to specify an index, we need to pass it as a second generic parameter to the `Query` method 
+or pass the index name as a parameter.
+
+In this example, the index name is `Employees_ByFirstName` if written for LINQ or `Employees/ByFirstName` if written for RQL.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync basics_0_3@Indexes\Querying\Basics.cs /}
@@ -129,6 +158,8 @@ where FirstName = 'Robert'
 
 {INFO There are some differences between `Query` and `DocumentQuery`. They are described in [this article](../../indexes/querying/query-vs-document-query). /}
 
+{PANEL/}
+
 ## Related Articles
 
 ### Indexes
@@ -139,9 +170,15 @@ where FirstName = 'Robert'
 
 - [Filtering](../../indexes/querying/filtering)
 - [Paging](../../indexes/querying/paging)
+- [Projections](../../indexes/querying/projections)
+- [Sorting](../../indexes/querying/sorting)
 
 ### Client API
 
 - [What is a Document Store](../../client-api/what-is-a-document-store)
 - [Opening a Session](../../client-api/session/opening-a-session)
 - [How to Handle Document Relationships](../../client-api/how-to/handle-document-relationships)
+
+### Studio
+
+- [Studio: Querying](../../studio/database/queries/query-view)
