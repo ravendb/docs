@@ -9,29 +9,28 @@ namespace Raven.Documentation.Samples.Indexes
     public class IndexingHierarchicalData
     {
         #region indexes_1
-        public class BlogPost
+        private class BlogPost
         {
             public string Author { get; set; }
-
             public string Title { get; set; }
-
             public string Text { get; set; }
 
+            // Blog post readers can leave comments
             public List<BlogPostComment> Comments { get; set; }
         }
 
         public class BlogPostComment
         {
             public string Author { get; set; }
-
             public string Text { get; set; }
 
+            // Comments can be left recursively
             public List<BlogPostComment> Comments { get; set; }
         }
         #endregion
 
         #region indexes_2
-        public class BlogPosts_ByCommentAuthor : AbstractIndexCreationTask<BlogPost>
+        private class BlogPosts_ByCommentAuthor : AbstractIndexCreationTask<BlogPost, BlogPosts_ByCommentAuthor.Result>
         {
             public class Result
             {
@@ -40,11 +39,12 @@ namespace Raven.Documentation.Samples.Indexes
 
             public BlogPosts_ByCommentAuthor()
             {
-                Map = posts => from post in posts
-                               select new Result
-                               {
-                                   Authors = Recurse(post, x => x.Comments).Select(x => x.Author)
-                               };
+                Map = blogposts => from blogpost in blogposts
+                                   let authors = Recurse(blogpost, x => x.Comments)
+                                   select new Result
+                                   {
+                                       Authors = authors.Select(x => x.Author)
+                                   };
             }
         }
         #endregion
@@ -60,8 +60,8 @@ namespace Raven.Documentation.Samples.Indexes
                         Name = "BlogPosts/ByCommentAuthor",
                         Maps =
                         {
-                            @"from post in docs.Posts
-                              from comment in Recurse(post, (Func<dynamic, dynamic>)(x => x.Comments))
+                            @"from blogpost in docs.blogposts
+                              from comment in Recurse(blogpost, (Func<dynamic, dynamic>)(x => x.Comments))
                               select new
                               {
                                   Author = comment.Author
@@ -75,7 +75,7 @@ namespace Raven.Documentation.Samples.Indexes
                     #region indexes_4
                     IList<BlogPost> results = session
                         .Query<BlogPosts_ByCommentAuthor.Result, BlogPosts_ByCommentAuthor>()
-                        .Where(x => x.Authors.Any(a => a == "Ayende Rahien"))
+                        .Where(x => x.Authors.Any(a => a == "John"))
                         .OfType<BlogPost>()
                         .ToList();
                     #endregion
@@ -87,7 +87,7 @@ namespace Raven.Documentation.Samples.Indexes
                     IList<BlogPost> results = session
                         .Advanced
                         .DocumentQuery<BlogPost, BlogPosts_ByCommentAuthor>()
-                        .WhereEquals("Authors", "Ayende Rahien")
+                        .WhereEquals("Authors", "John")
                         .ToList();
                     #endregion
                 }

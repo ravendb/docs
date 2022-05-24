@@ -495,9 +495,11 @@ namespace Raven.Documentation.Samples.Indexes
                 {
                     @"map('Posts', function (post) {
                         return recurse(post, x => x.Comments).map(function (comment) {
-                            return {
-                                Authors: comment.Author
-                            };
+                            if (comment.Author != null) {
+                                return {
+                                    Authors: comment.Author
+                                };
+                            }
                         });
                     });"
                 };
