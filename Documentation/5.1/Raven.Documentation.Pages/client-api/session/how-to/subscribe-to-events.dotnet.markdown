@@ -31,7 +31,6 @@ public class BeforeStoreEventArgs
     public string DocumentId;
     public object Entity;
     public IMetadataDictionary DocumentMetadata;
-    internal bool MetadataAccessed;
 }
 {CODE-BLOCK/}
 
@@ -71,7 +70,6 @@ public class BeforeDeleteEventArgs
     public string DocumentId;
     public object Entity;
     public IMetadataDictionary DocumentMetadata;
-    internal bool MetadataAccessed;
 }
 {CODE-BLOCK/}
 
