@@ -70,7 +70,6 @@ Index changes for all indexex can be observed using `ForAllIndexes` method.
 | **IndexDemotedToDisabled** | `256` |
 | **IndexMarkedAsErrored** | `512` |
 | **SideBySideReplace** | `1024` |
-| **Renamed** | `2048` |
 | **IndexPaused** | `4096` |
 | **LockModeChanged** | `8192` |
 | **PriorityChanged** | `16384` |
