@@ -57,9 +57,6 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
                                 case IndexChangeTypes.SideBySideReplace:
                                     //Do someting
                                     break;
-                                case IndexChangeTypes.Renamed:
-                                    //Do someting
-                                    break;
                                 case IndexChangeTypes.IndexPaused:
                                     //Do someting
                                     break;
