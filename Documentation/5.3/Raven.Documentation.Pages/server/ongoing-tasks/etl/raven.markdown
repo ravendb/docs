@@ -474,26 +474,28 @@ The functions in this section were created to allow developers this control.
 
 ### Identifiers change when destination collections are different
 
-If we load a document to the same collection, then the ID is preserved and no special approach is needed. Deletion in the source results in 
-sending a single delete command for a given ID.  
+If we load a document to the same collection as the source, then the ID is preserved and no special approach is needed. Deletion in the source results in 
+sending a single delete command in the destination for a given ID.  
   
 But, when we load documents to different collections, then the [ID](../../../server/ongoing-tasks/etl/raven#documents-identifiers) is different.  
-The source isn't aware of the new IDs created. This forces us to load a new document with an incremented ID instead of overwriting the existing one.  
+The source isn't aware of the new IDs created. This forces us to load new documents with incremented IDs instead of overwriting the fields in existing documents.  
 
 * Each updated version of the document gets a [server generated ID](../../../client-api/document-identifiers/working-with-document-identifiers#server-side-generated-ids)
   in which the number at the end is incremented with each version.  
-  e.g. `"...profile/0000000000000000019-B"` will become `".../profile/0000000000000000020-B"`
+  e.g. `"...profile/0000000000000000019-B"` will become `".../profile/0000000000000000020-B"`  
   The word before the number is the collection name and the letter after the number is the node.  
   In this case, the document's collection is "Profile", which is in a database in node "B", 
   and which has been updated via ETL 20 times.
 
 * If the ETL is defined to load the documents to more than one collection, 
   by default it will delete, and if it's not deleted in the source, it will replace all of the documents with the same prefix.
-   * For example: 
-     1. Document `employees/1-A` is processed by ETL and put into the `People` and `Sales` collections with IDs:  
-        `employees/1-A/people/0000000000000000001-A` and `employees/1-A/sales/0000000000000000001-A`. 
-     2. Deletion or modification of the `employees/1-A` document on the source side triggers sending a command that deletes **all** documents 
-        having the following prefix in their ID: `employees/1-A`.  
+   * For example:  
+     Document `employees/1-A` is processed by ETL and put into the `People` and `Sales` collections with IDs:  
+     `employees/1-A/people/0000000000000000001-A` and `employees/1-A/sales/0000000000000000001-A`.  
+     Deletion or modification of the `employees/1-A` document on the source side triggers sending a command that deletes **all** documents 
+     having the following prefix in their ID: `employees/1-A`.  
+
+---
 
 Deletions can be controlled by defining deletion behavior functions in the ETL script.
 
@@ -661,8 +663,8 @@ loadToproductsHistory ({
 
 function deleteDocumentsBehavior(docId, collection, deleted) {
     // Prevents document deletions from destination collection "productsHistory" if source document is deleted.
-    // If the source document information is updated (not deleted), 
-    // the script will delete then replace the destination document (with an incremented ID) to keep it current.
+    // If the source document information is updated (NOT deleted), the script will delete then
+    // replace the destination document (with an incremented ID) to keep it current.
     if (collection = "productsHistory" && deleted = true)
         return false; 
 }
