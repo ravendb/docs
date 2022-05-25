@@ -493,8 +493,8 @@ namespace Raven.Documentation.Samples.Indexes
             {
                 Maps = new HashSet<string>
                 {
-                    @"map('Posts', function (post) {
-                        return recurse(post, x => x.Comments).map(function (comment) {
+                    @"map('BlogPosts', function (searchblogpost) {
+                        return recurse(searchblogpost, x => x.Comments).map(function (comment) {
                             if (comment.Author != null) {
                                 return {
                                     Authors: comment.Author

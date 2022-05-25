@@ -60,7 +60,7 @@ namespace Raven.Documentation.Samples.Indexes
                         Name = "BlogPosts/ByCommentAuthor",
                         Maps =
                         {
-                            @"from blogpost in docs.blogposts
+                            @"from blogpost in docs.BlogPosts
                               from comment in Recurse(blogpost, (Func<dynamic, dynamic>)(x => x.Comments))
                               select new
                               {
