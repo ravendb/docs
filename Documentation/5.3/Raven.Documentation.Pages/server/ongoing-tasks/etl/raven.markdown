@@ -452,14 +452,17 @@ function loadTimeSeriesOfUsersBehavior(doc, ts)
 
 {PANEL: Deletions}
 
-If you want to control the way deletions are handled in the destination database, 
-you can change the default setting by adding the following configurable functions:
+Upon source document modifications, ETL is set by default to delete and replace the destination documents.  
 
+If you want to control the way deletions are handled in the destination database, 
+you can change the default settings with the configurable functions described in this section.
+
+* [Why documents are deleted by default](../../../server/ongoing-tasks/etl/raven#why-documents-are-deleted-by-default-in-the-destination-database)
 * [Collection specific function](../../../server/ongoing-tasks/etl/raven#deletions-collection-specific-function)
 * [Generic function](../../../server/ongoing-tasks/etl/raven#deletions-generic-function)
 * [Filtering deletions in the destination database](../../../server/ongoing-tasks/etl/raven#deletions-filtering-deletions-in-the-destination-database)
 
-## Why documents are deleted by default in the destination database
+## Deletions: Why documents are deleted by default in the destination database
 
 ### Preventing duplication
 
@@ -482,10 +485,11 @@ The source isn't aware of the new IDs created. This forces us to load new docume
 
 * Each updated version of the document gets a [server generated ID](../../../client-api/document-identifiers/working-with-document-identifiers#server-side-generated-ids)
   in which the number at the end is incremented with each version.  
-  e.g. `"...profile/0000000000000000019-B"` will become `".../profile/0000000000000000020-B"`  
-  The word before the number is the collection name and the letter after the number is the node.  
-  In this case, the document's collection is "Profile", which is in a database in node "B", 
-  and which has been updated via ETL 20 times.
+  * For example: 
+    `"...profile/0000000000000000019-B"` will become `".../profile/0000000000000000020-B"`  
+    The word before the number is the collection name and the letter after the number is the node.  
+    In this case, the document's collection is "Profile", which is in a database in node "B", 
+    and which has been updated via ETL 20 times.
 
 * If the ETL is defined to load the documents to more than one collection, 
   by default it will delete, and if it's not deleted in the source, it will replace all of the documents with the same prefix.
@@ -521,10 +525,10 @@ function deleteDocumentsOf<CollectionName>Behavior(docId, deleted) {
 method).  
 e.g. `function deleteDocumentsOfOrdersBehavior(docId, deleted) {return false;}`  
 
-| Parameter | Type | Description |
-| - | - | - |
-| **docId** | `string` | The identifier of a deleted document. |
-| **deleted** | `bool` | Optional and therefore doesn't affect existing code. If you don't include the `deleted` parameter, RavenDB will execute the function without checking if the document was deleted from the source database. <br/> If you include `deleted`, RavenDB will check if the document was indeed deleted or just updated. 
+| Parameter | Type | Description | Notes |
+| - | - | - | - |
+| **docId** | `string` | The identifier of a deleted document. |  |
+| **deleted** | `bool` | If you don't include the `deleted` parameter, RavenDB will execute the function without checking if the document was deleted from the source database. <br/> If you include `deleted`, RavenDB will check if the document was indeed deleted or just updated. | Optional |
 
 | Return Value | Description |
 | - | - |
@@ -594,7 +598,7 @@ By the time an ETL process runs a delete behavior function, a document is alread
 If you want to filter deletions, you need some way to store that information
 to be able to determine if a document should be deleted in the delete behavior function.
 
-#### Filtering out all deletions
+#### Filtering out all deletions:
 
 {CODE-BLOCK:javascript}
 loadToUsers(this);
@@ -604,7 +608,7 @@ function deleteDocumentsOfUsersBehavior(docId) {
 }
 {CODE-BLOCK/}
 
-#### Storing deletion info in an additional document
+#### Storing deletion info in an additional document:
 
 When you delete a document you can store a deletion marker document that will prevent the deletion by ETL. 
 In the below example, if `LocalOnlyDeletions/{docId}` exists then we skip this deletion during ETL. 
@@ -622,7 +626,7 @@ function deleteDocumentsOfUsersBehavior(docId) {
 }
 {CODE-BLOCK/}
 
-#### When ETL is set on the entire database, but you want to filter deletions by certain collections
+#### When ETL is set on the entire database, but you want to filter deletions by certain collections:
 
 If you define ETL for all documents, regardless of the collection they belong to, then the 
 generic function can filter deletions by collection name.
