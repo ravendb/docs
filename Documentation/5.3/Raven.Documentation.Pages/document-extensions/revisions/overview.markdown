@@ -181,7 +181,7 @@ Let's play with revisions a little to get a taste of its advantages.
    
      ![Create a Document](images\revisions_create-document.png "Create a Document")
 
-3. **Use Studio to inspect the new document's [Revisions tab](../../studio/database/document-extensions/revisions)**.  
+3. **Use Studio to inspect the new document's [Revisions tab](../../studio/database/document-extensions/revisions#revisions-tab)**.  
    Creating the document also created its first revision.  
    
      ![Revision for Document Creation](images\revisions_document-created.png "Revision for Document Creation")
@@ -195,9 +195,9 @@ Let's play with revisions a little to get a taste of its advantages.
    
 5. **Delete the document**.  
    Though you deleted the document, its **audit trail** is **not lost**: 
-   all revisions were moved to the Revisions Bin, including a new revision 
-   (called "Delete-Revision"), created to indicate that the document was 
-   deleted.  
+   all revisions were moved to the [Revisions Bin](../../studio/database/document-extensions/revisions#revisions-bin), 
+   including a new revision (called "Delete-Revision"), created to indicate 
+   that the document was deleted.  
 
       To see the "orphaned" revisions (whose parent document was deleted):  
        * Open the Studio `Documents > Revisions Bin` section  
@@ -312,6 +312,18 @@ public enum ForceRevisionStrategy
     {CODE-TAB:csharp:By_ID ForceRevisionCreationByID@DocumentExtensions\Revisions\Revisions.cs /}
     {CODE-TAB:csharp:By_Entity ForceRevisionCreationByEntity@DocumentExtensions\Revisions\Revisions.cs /}
     {CODE-TABS/}
+
+
+{NOTE: When the Revisions feature is disabled:}
+
+Deleting a document that owns a manually-created revision 
+will not move the revision to the revisions bin.  
+
+* A `delete revision` will Not be created.  
+* Manual revisions will not be kept in the revisions bin.  
+
+{NOTE/}
+
 
 {PANEL/}
 

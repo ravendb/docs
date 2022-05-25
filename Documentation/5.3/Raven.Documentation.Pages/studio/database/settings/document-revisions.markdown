@@ -209,7 +209,10 @@ created for any document collection.
 
 * To see these revisions, we open the document's 
   [Revisions tab](../../../studio/database/document-extensions/revisions#revisions-tab).  
-  The conflict state is indicated in each revision's `metadata`.  
+  The conflict state is indicated -  
+   * by each revision's **title** (i.e. "conflict revision" or "resolved revision")  
+   * by a **graphic symbol** next to the revision's change vector  
+   * in the revision's **metadata** (i.e. "Conflicted" or "Resolved")  
 
 
     ![1. Incoming Document in Conflict](images/revisions/conflict-revisions-1.png "1. Incoming Document in Conflict")
