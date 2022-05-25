@@ -65,7 +65,7 @@
          ![Patch Timeout](images/patch-view-timeout.png "Patch Timeout")  
 
     * c. **Disable creating new Auto-Indexes**  
-         If toggled ON, the patch command will not create an auto-index if there is no existing index that serves the patch. 
+         If toggled ON, the patch command will not create an auto-index if there is no existing index that serves the patch.  
          In that case, an exception will be thrown. 
          * Toggling this ON will not affect Auto-Index creation in future Studio patch requests.
            To disable all future Auto-Index creation from Studio patches, change the default setting in [Studio Configuration](../../../studio/database/settings/studio-configuration#disabling-auto-index-creation-on-studio-queries-or-patches)

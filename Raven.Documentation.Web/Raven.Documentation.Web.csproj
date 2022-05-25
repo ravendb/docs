@@ -258,6 +258,7 @@
     </None>
     <None Include="T4MVC.tt.hooks.t4" />
     <None Include="T4MVC.tt.settings.xml" />
+    <Content Include="patch-view-settings.png" />
     <Content Include="Views\Docs\DevControls.cshtml" />
     <Content Include="Views\Docs\Toc.cshtml" />
     <Content Include="Views\Docs\Doc.cshtml" />
