@@ -472,7 +472,7 @@ or to preserve a history of the document in the destination.
 
 The functions in this section were created to allow developers this control. 
 
-### Identifiers change when collections destination collection is different
+### Identifiers change when destination collections are different
 
 If we load a document to the same collection, then the ID is preserved and no special approach is needed. Deletion in the source results in 
 sending a single delete command for a given ID.  
