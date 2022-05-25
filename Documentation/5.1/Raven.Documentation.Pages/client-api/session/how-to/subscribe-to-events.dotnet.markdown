@@ -1,12 +1,36 @@
 # Session: How to Subscribe to Events
 
-The concept of events provides users with a mechanism to perform custom actions in response to operations taken in a session. 
+---
 
-The event is invoked when a particular action is executed on an entity or querying is performed.
+{NOTE: }
 
-{INFO:Subscribing to an event}
-Subscribing an event can be done in the `DocumentStore` object, which will be valid for all future sessions or subscribing in an already opened session with `session.Advanced` which will overwrite the existing event for the current session. 
-{INFO/}
+* **Events** allow users to perform custom actions in response to operations made in 
+  a `Document Store` or a `Session`.  
+
+* An event is invoked when the selected action is executed on an entity, or querying is performed.  
+
+* Subscribing to an event within a `Session` is valid only for this session.  
+  
+     E.g., to invoke an event after SaveChanges() is called by **this session** only, use -  
+     `session.Advanced.OnAfterSaveChanges += OnAfterSaveChangesEvent;`
+
+* Subscribing to an event at the `DocumentStore` level subscribes to this 
+  event in all subsequent sessions.  
+  
+      E.g., to invoke an event after SaveChanges() is called by **any subsequent session**, use -  
+      `store.OnAfterSaveChanges += OnAfterSaveChangesEvent;`
+
+* In this Page:  
+   * [OnBeforeStore](../../../client-api/session/how-to/subscribe-to-events#onbeforestore)  
+   * [OnBeforeDelete](../../../client-api/session/how-to/subscribe-to-events#onbeforedelete)  
+   * [OnAfterSaveChanges](../../../client-api/session/how-to/subscribe-to-events#onaftersavechanges)  
+   * [OnBeforeQuery](../../../client-api/session/how-to/subscribe-to-events#onbeforequery)  
+   * [OnBeforeConversionToDocument](../../../client-api/session/how-to/subscribe-to-events#onbeforeconversiontodocument)  
+   * [OnAfterConversionToDocument](../../../client-api/session/how-to/subscribe-to-events#onafterconversiontodocument)  
+   * [OnBeforeConversionToEntity](../../../client-api/session/how-to/subscribe-to-events#onbeforeconversiontoentity)  
+   * [OnAfterConversionToEntity](../../../client-api/session/how-to/subscribe-to-events#onafterconversiontoentity)  
+
+{NOTE/}
 
 {PANEL:OnBeforeStore}
 
