@@ -1,12 +1,22 @@
 # Authorization: Security Clearance and Permissions
 
-X.509 certificates are used for authentication - validating that users are who they say they are. Once a connection is authenticated, RavenDB uses the certificate for authorization as well. 
+* X.509 certificates are used for authentication - validating that users are who they say they are. 
+  Once a connection is authenticated, RavenDB uses the certificate for authorization as well. 
 
-Each certificate is associated with a security clearance and access permissions per database.
+* Each certificate is associated with a security clearance and access permissions per database.
 
-It is the administrator's responsibility to generate client certificates and assign permissions. Read more in the [Certificate Management](../authentication/certificate-management) section.
+* It is the administrator's responsibility to generate client certificates and assign permissions. 
+  Read more in the [Certificate Management](../authentication/certificate-management) page.
 
-A client certificate's security clearance can be one of the following:
+* A client certificate's security clearance can be one of the following: Cluster Admin, Operator, User.
+
+* In this page:
+   * [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin)
+   * [Operator](../../../server/security/authorization/security-clearance-and-permissions#operator)
+   * [User](../../../server/security/authorization/security-clearance-and-permissions#user)  
+      * [Admin](../../../server/security/authorization/security-clearance-and-permissions#section)  
+      * [Read/Write](../../../server/security/authorization/security-clearance-and-permissions#section-1) 
+      * [Read Only](../../../server/security/authorization/security-clearance-and-permissions#section-2)
 
 {PANEL:Cluster Admin}
 
@@ -27,7 +37,7 @@ The following operations are allowed **only** for `Cluster Admin` certificates:
 
 {PANEL:Operator}
 
-A client certificate with an `Operator` security clearance has admin access to all databases, 
+A client certificate with an `Operator` security clearance has admin access to all databases 
 but is unable to modify the cluster. It cannot perform operations such as 
 add/remove/promote/demote nodes from the cluster. This is useful in a hosted solution 
 (such as **RavenDB Cloud**). If you are running on your own machines, you'll typically ignore 
@@ -68,6 +78,8 @@ These access levels are, from highest to lowest:
 
 If no access level is defined for a particular database, the certificate doesn't grant access to that database at all.  
 
+---
+
 ### `Admin`
 
 The following operations are permitted at the `Admin` access level but not for `Read/Write` or `Read Only`:
@@ -82,18 +94,32 @@ The following operations are permitted at the `Admin` access level but not for `
 - Get transaction info
 - Perform SQL migration
 
+---
+
 ### `Read/Write`
 
-A `User` certificate with a `Read/Write` access level can perform all operations **except** for those listed above in the 'Admin' section.  
+A `User` certificate with a `Read/Write` access level can perform all operations **except** for those listed above in the 'Admin' and 'Operator'sections.  
+
+  * [JavaScript static indexes](../../../indexes/javascript-indexes) are permitted by default with Read/Write User certificates.  
+    To configure a server or database so that only Admin certificates will be able to deploy JavaScript static indexes,  
+    set [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../../server/configuration/indexing-configuration#indexing.static.requireadmintodeployjavascriptindexes) 
+    to `true`.
+
+---
 
 ### `Read Only`
 
-The `Read Only` access level **allows** clients to: 
+The `ReadOnly` access level **allows** clients to: 
 
 - Read data from a database, but not to write or modify data.  
-- Query the databases that are configured in the client certificate.  
-   * Auto-indexes are built as a normal result of queries.  
 - Be subscription workers to consume data subscriptions.  
+- Query the databases that are configured in the client certificate.  
+  {NOTE: }
+  [An Auto-index](../../../indexes/creating-and-deploying#auto-indexes) 
+  is built if there is no existing index that satisfies a query.  
+  {NOTE/}
+
+{INFO: Unauthorized actions for ReadOnly client certificates}
 
 The following operations are **forbidden**:  
 
@@ -101,7 +127,10 @@ The following operations are **forbidden**:
 - Changing any configurations or settings  
 - Creating or modifying [ongoing tasks](../../../server/ongoing-tasks/general-info)  
 - Defining [static indexes](../../../indexes/creating-and-deploying#static-indexes) (the database will create 
-[auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) as normal in response to queries)  
+[auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) if there is no existing index that satisfies a query.)
+
+
+{INFO/}
 
 Learn more about the `Read Only` access level [here](../../../studio/server/certificates/read-only-access-level).
 
@@ -111,9 +140,11 @@ Learn more about the `Read Only` access level [here](../../../studio/server/cert
 
 ### Security
 
-- [Overview](../../../server/security/authorization/security-clearance-and-permissions)
+- [Certificate Management](../../../server/security/authentication/certificate-management)
+- [Configuring Certificates via Powershell](../../../server/security/authentication/client-certificate-usage#example-ii---using-powershell-and-wget-in-windows)
 - [Common Errors and FAQ](../../../server/security/common-errors-and-faq)
 
 ### Studio
 
+- [Certificate Management](../../../studio/server/certificates/server-management-certificates-view)
 - [Studio: Read-Only Access Level](../../../studio/server/certificates/read-only-access-level)
