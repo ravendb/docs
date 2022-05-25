@@ -3,11 +3,17 @@
 
 {NOTE: }
 
-* Queries can either be written in the [Session with LINQ syntax](../../client-api/session/querying/how-to-query), 
+* Queries can either be written in the [Session with LINQ syntax](../../client-api/session/querying/how-to-query) 
   or in the [Studio with RQL](../../studio/database/queries/query-view).  
   There are examples for both below.
 
-* Indexes are used by RavenDB to satisfy queries.
+* Indexes are used by RavenDB to satisfy queries. 
+
+* To accelerate queries, RavenDB [indexes](../../indexes/creating-and-deploying) can process various calculations, filters and conversions behind the scenes 
+  so that the data is already processed and ready for queries.  
+  Furthermore, indexes only scan and process the entire specified dataset once.  
+  After the initial scan, they only need to process specific data as it is modified, added or deleted.
+   * For queries to use an index that has already processed the data, the index must be [called in the query](../../indexes/querying/basics#example-iv---querying-a-specified-index).
 
 * In this page:
    * [Query-Flow](../../indexes/querying/basics#query-flow)
@@ -22,12 +28,16 @@
 
 {PANEL: Query-Flow}
 
-Queries in RavenDB can be defined in Studio by [RQL](../../indexes/querying/what-is-rql), our query language, or in the [Session with LINQ syntax](../../client-api/session/querying/how-to-query). 
-Each query must match an index in order to return the results. If no index exists to satisfy the query, an Auto-Index will be created automatically.  
+Queries in RavenDB can be defined in Studio with [RQL](../../indexes/querying/what-is-rql), our query language, or in the [Session with LINQ syntax](../../client-api/session/querying/how-to-query). 
+Each query must match an index in order to return the results. If no index exists to satisfy the query and if a specific index isn't specified, 
+an Auto-Index will be created automatically.  
+
 The full query flow is as follows:
 
 1. `from index | collection` 
-  - First step. When a query is issued, it locates the appropriate index. If our query specifies that index, the task is simple - use this index. Otherwise, a query analysis takes place and an auto-index is created.
+  - First step. When a query is issued, it locates the appropriate index. 
+    If our query specifies that index, the task is simple - use this index. 
+    Otherwise, a query analysis takes place and an auto-index is created if no auto-index can already satisfy the query.
 
 2. `where` 
   - When we have our index, we scan it for records that match the query predicate.
@@ -43,9 +53,10 @@ The full query flow is as follows:
   - If a query indicates that [projection](../../indexes/querying/projections) should be used, then all results that were not filtered out are processed by that projection. Fields defined in the projection are extracted from the index (if stored).
 
 4. `include` 
-  - If any [includes](../../client-api/how-to/handle-document-relationships#includes) are defined, then the results are being traversed to extract the IDs of potential related documents to include with the results.
+  - If any [includes](../../client-api/how-to/handle-document-relationships#includes) are defined, then the query also extracts data from potential related documents to include with the results.
 
-5. Return results.
+5. (LINQ syntax) `ToList` or `ToListAsync`
+  - Return results.
 
 {PANEL/}
 
@@ -55,7 +66,10 @@ RavenDB Client supports querying using LINQ. This functionality can be accessed 
 
 ### Example I - Querying an Entire Collection
 
-Let's execute our first query and return all the employees from the Northwind database. To do that, we need to have a [document store](../../client-api/what-is-a-document-store) and [opened session](../../client-api/session/opening-a-session) and specify a [collection](../../client-api/faq/what-is-a-collection) type that we want to query (in our case `Employees`) by passing `Employee` as a generic parameter to the `Query` method:
+Let's execute our first query and return all the employees from the Northwind database. 
+To do that, we need to have a [document store](../../client-api/what-is-a-document-store) with an [open session](../../client-api/session/opening-a-session), 
+and specify a [collection](../../client-api/faq/what-is-a-collection) 
+that we want to query (in our case `Employees`) by passing `Employee` as a generic parameter to the `Query` method:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync basics_0_0@Indexes\Querying\Basics.cs /}
@@ -165,6 +179,7 @@ where FirstName = 'Robert'
 ### Indexes
 
 - [Indexing Basics](../../indexes/indexing-basics)
+- [Creating and Deploying Indexes](../../indexes/creating-and-deploying)
 
 ### Querying
 
@@ -182,3 +197,9 @@ where FirstName = 'Robert'
 ### Studio
 
 - [Studio: Querying](../../studio/database/queries/query-view)
+
+---
+
+### Code Walkthrough
+
+- [Scroll for Queries Section](https://demo.ravendb.net/)
