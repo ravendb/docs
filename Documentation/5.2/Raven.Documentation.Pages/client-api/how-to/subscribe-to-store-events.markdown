@@ -13,8 +13,15 @@
 * Subscribing to an event at the `DocumentStore` level subscribes to this 
   event in all subsequent sessions.  
 
+      E.g., to invoke an event after SaveChanges() is called by **any subsequent session**, use -  
+      `store.OnAfterSaveChanges += OnAfterSaveChangesEvent;`
+
 * Subscribing to an event in a `Session` is valid only for this session.  
-  Read more about `Session` events [here](../../client-api/session/how-to/subscribe-to-events).  
+
+     E.g., to invoke an event after SaveChanges() is called by **this session** only, use -  
+     `session.Advanced.OnAfterSaveChanges += OnAfterSaveChangesEvent;`
+
+     Read more about `Session` events [here](../../client-api/session/how-to/subscribe-to-events).  
 
 * In this page:  
    * [Store Events](../../client-api/how-to/subscribe-to-store-events#store-events)

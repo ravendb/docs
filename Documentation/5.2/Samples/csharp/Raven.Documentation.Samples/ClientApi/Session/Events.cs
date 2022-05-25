@@ -58,21 +58,27 @@ namespace Raven.Documentation.Samples.ClientApi.Session
         {
             using (var store = new DocumentStore())
             {
-                store.OnAfterSaveChanges += OnAfterSaveChangesEvent;
-                store.OnBeforeDelete += OnBeforeDeleteEvent;
-                store.OnBeforeQuery += OnBeforeQueryEvent;
-                store.OnBeforeConversionToDocument += OnBeforeConversionToDocument;
-                store.OnAfterConversionToDocument += OnAfterConversionToDocument;
-                store.OnBeforeConversionToEntity += OnBeforeConversionToEntity;
-                store.OnAfterConversionToEntity += OnAfterConversionToEntity;
-
-                #region store_session
-                // Subscribe to the event
-                store.OnBeforeStore += OnBeforeStoreEvent;
+                using (var session = store.OpenSession())
+                {
+                    // these are session events, related only to this session.
+                    // the equivalent store event for session.Advanced.OnAfterSaveChanges,
+                    // for example, would be store.OnAfterSaveChanges.
+                    session.Advanced.OnAfterSaveChanges += OnAfterSaveChangesEvent;
+                    session.Advanced.OnBeforeDelete += OnBeforeDeleteEvent;
+                    session.Advanced.OnBeforeQuery += OnBeforeQueryEvent;
+                    session.Advanced.OnBeforeConversionToDocument += OnBeforeConversionToDocument;
+                    session.Advanced.OnAfterConversionToDocument += OnAfterConversionToDocument;
+                    session.Advanced.OnBeforeConversionToEntity += OnBeforeConversionToEntity;
+                    session.Advanced.OnAfterConversionToEntity += OnAfterConversionToEntity;
+                }
 
                 // Open a session and store some entities
                 using (var session = store.OpenSession())
                 {
+                    #region store_session
+                    // Subscribe to the event
+                    session.Advanced.OnBeforeStore += OnBeforeStoreEvent;
+
                     session.Store(new Product
                     {
                         Name = "RavenDB v3.5",
@@ -85,16 +91,16 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                     });
 
                     session.SaveChanges(); // Here the method is invoked
+                    #endregion
                 }
-                #endregion
-
-                #region delete_session
-                // Subscribe to the event
-                store.OnBeforeDelete += OnBeforeDeleteEvent;
 
                 // Open a session and delete entity
                 using (var session = store.OpenSession())
                 {
+                    #region delete_session
+                    // Subscribe to the event
+                    session.Advanced.OnBeforeDelete += OnBeforeDeleteEvent;
+
                     var product = session.Load<Product>("products/1-A");
                     var product2 = session.Load<Product>("products/2-A");
 
@@ -105,8 +111,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 
                     session.Delete("products/2-A");
                     session.SaveChanges(); // NotSupportedException will be thrown
+                    #endregion
                 }
-                #endregion
             }
         }
 

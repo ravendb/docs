@@ -1,15 +1,39 @@
 # Session: Subscribing to Session Events
 
+---
+
+{NOTE: }
+
 * **Events** allow users to perform custom actions in response to operations made in 
   a `Document Store` or a `Session`.  
 
 * An event is invoked when the selected action is executed on an entity, or querying is performed.  
 
-* Subscribing to an event in a `Session` is valid only for this session.  
+* Subscribing to an event within a `Session` is valid only for this session.  
+  
+     E.g., to invoke an event after SaveChanges() is called by **this session** only, use -  
+     `session.Advanced.OnAfterSaveChanges += OnAfterSaveChangesEvent;`
 
 * Subscribing to an event at the `DocumentStore` level subscribes to this 
   event in all subsequent sessions.  
-  Read more about `DocumentStore` events [here](../../../client-api/how-to/subscribe-to-store-events).  
+  
+      E.g., to invoke an event after SaveChanges() is called by **any subsequent session**, use -  
+      `store.OnAfterSaveChanges += OnAfterSaveChangesEvent;`
+
+      Read more about `DocumentStore` events [here](../../../client-api/how-to/subscribe-to-store-events).  
+
+* In this Page:  
+   * [OnBeforeStore](../../../client-api/session/how-to/subscribe-to-events#onbeforestore)  
+   * [OnBeforeDelete](../../../client-api/session/how-to/subscribe-to-events#onbeforedelete)  
+   * [OnAfterSaveChanges](../../../client-api/session/how-to/subscribe-to-events#onaftersavechanges)  
+   * [OnBeforeQuery](../../../client-api/session/how-to/subscribe-to-events#onbeforequery)  
+   * [OnBeforeConversionToDocument](../../../client-api/session/how-to/subscribe-to-events#onbeforeconversiontodocument)  
+   * [OnAfterConversionToDocument](../../../client-api/session/how-to/subscribe-to-events#onafterconversiontodocument)  
+   * [OnBeforeConversionToEntity](../../../client-api/session/how-to/subscribe-to-events#onbeforeconversiontoentity)  
+   * [OnAfterConversionToEntity](../../../client-api/session/how-to/subscribe-to-events#onafterconversiontoentity)  
+   * [OnSessionDisposing](../../../client-api/session/how-to/subscribe-to-events#onsessiondisposing)  
+
+{NOTE/}
 
 {PANEL:OnBeforeStore}
 
@@ -34,7 +58,6 @@ public class BeforeStoreEventArgs
     public string DocumentId;
     public object Entity;
     public IMetadataDictionary DocumentMetadata;
-    internal bool MetadataAccessed;
 }
 {CODE-BLOCK/}
 
@@ -74,7 +97,6 @@ public class BeforeDeleteEventArgs
     public string DocumentId;
     public object Entity;
     public IMetadataDictionary DocumentMetadata;
-    internal bool MetadataAccessed;
 }
 {CODE-BLOCK/}
 
