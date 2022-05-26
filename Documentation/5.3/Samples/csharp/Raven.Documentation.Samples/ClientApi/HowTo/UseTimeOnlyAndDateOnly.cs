@@ -163,8 +163,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo.DateAndTimeOnlySample
             public DateAndTimeOnlyIndex()
             {
                 Map = dates => from date in dates
-                               // RavenDB doesn't look for DateOnly or TimeOnly as default types during indexing
-                               // so they need to be called explicitly.
                                select new IndexEntry() { DateOnly = date.DateOnly, TimeOnly = date.TimeOnly };
             }
 
