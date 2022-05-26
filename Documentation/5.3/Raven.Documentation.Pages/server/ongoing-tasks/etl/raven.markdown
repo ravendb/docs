@@ -485,15 +485,17 @@ The source isn't aware of the new IDs created. This forces us to load new docume
 
 * Each updated version of the document gets a [server generated ID](../../../client-api/document-identifiers/working-with-document-identifiers#server-side-generated-ids)
   in which the number at the end is incremented with each version.  
-  * For example: 
+
+    For example: 
     `"...profile/0000000000000000019-B"` will become `".../profile/0000000000000000020-B"`  
     The word before the number is the collection name and the letter after the number is the node.  
     In this case, the document's collection is "Profile", which is in a database in node "B", 
     and which has been updated via ETL 20 times.
 
 * If the ETL is defined to load the documents to more than one collection, 
-  by default it will delete, and if it's not deleted in the source, it will replace all of the documents with the same prefix.
-   * For example:  
+  by default it will delete, and if it's not deleted in the source, it will replace all of the documents with the same prefix.  
+
+     For example:  
      Document `employees/1-A` is processed by ETL and put into the `People` and `Sales` collections with IDs:  
      `employees/1-A/people/0000000000000000001-A` and `employees/1-A/sales/0000000000000000001-A`.  
      Deletion or modification of the `employees/1-A` document on the source side triggers sending a command that deletes **all** documents 
@@ -648,7 +650,7 @@ function deleteDocumentsBehavior(docId, collection, deleted) {
 | **bool** | If the returned value is `true`, the document will be deleted. |
 
 
-## ETL script with deletion behavior defined
+## Deletions Example: ETL script with deletion behavior defined
 
 The following example will check if the source document was deleted or just updated before 
 loading the transformed document. This function can be used if the destination collection is the same or different from the source.  
