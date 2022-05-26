@@ -42,23 +42,26 @@ These two new C# types are available from .NET 6.0+ (RavenDB 5.3+).
 
 {PANEL: Convert and Use Date/TimeOnly Without Affecting Your Existing Data}
 
-In RavenDB, we offer conversion of types in static indexes with the methods [AsDateOnly or AsTimeOnly](../../client-api/how-to/using-timeonly-and-dateonly#use--or--in-a-static-index-to-convert-strings-or-datetime).
+RavenDB offers conversion of types in static indexes with the methods [AsDateOnly or AsTimeOnly](../../client-api/how-to/using-timeonly-and-dateonly#use--or--in-a-static-index-to-convert-strings-or-datetime).
 
 * [Static indexes](../../indexes/indexing-basics) process new data in the background, 
-  including calculations and converstions to DateOnly/TimeOnly values, which can be used as ticks,  
+  including calculations and conversions to DateOnly/TimeOnly values, which can be used as ticks, 
   so that the data is ready at query time when you [query the index](../../indexes/querying/basics#example-iv---querying-a-specified-index).  
     * These indexes do all of the calculations on the entire dataset that you define the first time they run, and then they only need to 
       process changes in data. 
 
 {INFO: Ticks}
-If your data is in strings, to use ticks you must create a **static index** 
-that computes the conversion from strings to [DateOnly or TimeOnly](../../client-api/how-to/using-timeonly-and-dateonly#convert-and-use-date/timeonly-without-affecting-your-existing-data).  
+Ticks are faster to compute than other date/time formats because they are [simple numbers](https://docs.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-6.0) 
+that represent time since 1-1-0001 at midnight.
 
-An auto-index will not convert DateOnly or TimeOnly into ticks, but will index data as strings.  
-By defining a query that creates an auto-index which orders the strings you can also compare strings, 
-though comparing ticks is much faster.  
+If your data is in strings, to use ticks you must create a **static index** 
+that computes the conversion from strings to `DateOnly` or `TimeOnly`.  
 
 RavenDB automatically converts strings into ticks via `AsDateOnly` or `AsTimeOnly`.  
+
+An auto-index will not convert strings into ticks, but will index data as strings.  
+By defining a query that creates an auto-index which [orders](../../indexes/querying/sorting) the strings you can also compare strings, 
+though comparing ticks is faster.  
 {INFO/}
 
 ### Use `AsDateOnly` or `AsTimeOnly` in a static index to convert strings or DateTime
