@@ -461,6 +461,7 @@ you can change the default settings with the configurable functions described in
 * [Collection specific function](../../../server/ongoing-tasks/etl/raven#deletions-collection-specific-function)
 * [Generic function](../../../server/ongoing-tasks/etl/raven#deletions-generic-function)
 * [Filtering deletions in the destination database](../../../server/ongoing-tasks/etl/raven#deletions-filtering-deletions-in-the-destination-database)
+* [Deletions Example: ETL script with deletion behavior defined](../../../server/ongoing-tasks/etl/raven#deletions-example-etl-script-with-deletion-behavior-defined)
 
 ## Deletions: Why documents are deleted by default in the destination database
 
@@ -505,7 +506,7 @@ The source isn't aware of the new IDs created. This forces us to load new docume
 
 Deletions can be controlled by defining deletion behavior functions in the ETL script.
 
-* See a [sample ETL script with deletion behavior defined](../../../server/ongoing-tasks/etl/raven#etl-script-with-deletion-behavior-defined).
+* See a [sample ETL script with deletion behavior defined](../../../server/ongoing-tasks/etl/raven#deletions-example-etl-script-with-deletion-behavior-defined).
 
 ## Deletions: Collection specific function
 
@@ -546,7 +547,7 @@ trigger the command regardless of whether the source document was deleted.
    * If the source document was deleted, the destination will also be deleted.
 * If the method returns`false`, a 'historical' set of the document will accumulate in the destination collection every time 
   the source document is updated.  
-  The number at the end of the [ID will automatically increment](../../../server/ongoing-tasks/etl/raven#identifiers-change-when-collections-destination-collection-is-different) with every new version. 
+  The number at the end of the [ID will automatically increment](../../../server/ongoing-tasks/etl/raven#identifiers-change-when-destination-collections-are-different) with every new version. 
    * If the document was deleted from the source, the set of old versions of the document will remain in the destination 
      because the delete behavior returns `false`.
 
