@@ -19,6 +19,7 @@
 * In this page: 
    * [About DateOnly and TimeOnly](../../client-api/how-to/using-timeonly-and-dateonly#about-dateonly-and-timeonly) 
    * [Convert and Use Date/TimeOnly Without Affecting Your Existing Data](../../client-api/how-to/using-timeonly-and-dateonly#convert-and-use-date/timeonly-without-affecting-your-existing-data) 
+   * [Using already existing DateOnly or TimeOnly fields](../../client-api/how-to/using-timeonly-and-dateonly#using-already-existing-dateonly-or-timeonly-fields) 
 
 {NOTE/}
 
@@ -79,6 +80,11 @@ Strings are automatically converted to ticks for faster querying.
 
 {CODE IndexConvertsStringsWithAsDateOnlySample@ClientApi/HowTo/UseTimeOnlyAndDateOnly.cs /}
 
+{NOTE: }
+RavenDB doesn't look for DateOnly or TimeOnly types as default during indexing
+so the variables must be wrapped in AsDateDonly() or AsTimeOnly() explicitly.
+{NOTE/}
+
 Using the static index above, here a string in date format "2022-05-12" is saved, the index above converts it to `DateOnly`, then 
 the index is queried.  
 
@@ -94,18 +100,23 @@ Once the converted data is available in the static index, you can inexpensively 
 
 {CODE IndexConvertsDateTimeWithAsDateOnlySample@ClientApi/HowTo/UseTimeOnlyAndDateOnly.cs /}
 
+{NOTE: }
+RavenDB doesn't look for DateOnly or TimeOnly as default types during indexing
+so the variables must be wrapped in AsDateDonly() or AsTimeOnly() explicitly.
+{NOTE/}
 
 Using the index above, the following example saves `DateTime.Now`, the type is converted in the index, then 
 the index is queried. 
 
-{CODE AsDateOnlyStringToDateOnlyQuerySample@ClientApi/HowTo/UseTimeOnlyAndDateOnly.cs /}
+{CODE AsDateOnlyDateTimeToDateOnlyQuerySample@ClientApi/HowTo/UseTimeOnlyAndDateOnly.cs /}
 
 
 {PANEL/}
 
-{PANEL: Using already existing `DateOnly` or `TimeOnly` fields }
+{PANEL: Using already existing DateOnly or TimeOnly fields }
 
-The index must have a field that declares the type as DateOnly or TimeOnly. 
+RavenDB doesn't look for DateOnly or TimeOnly as default types during indexing 
+so the index must have a field that declares the type as DateOnly or TimeOnly. 
 
 {CODE DateAndTimeOnlyIndexSample@ClientApi/HowTo/UseTimeOnlyAndDateOnly.cs /}
 

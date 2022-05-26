@@ -19,13 +19,18 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo.DateAndTimeOnlySample
             {
                 // This map index converts strings that are in date format to DateOnly with AsDateOnly().
                 Map = items => from item in items
-                               select new DateOnlyItem { DateOnlyField = AsDateOnly(item.StringDateOnlyField) };
+                               // RavenDB doesn't look for DateOnly or TimeOnly as default types during indexing
+                               // so the variables must by wrapped in AsDateDonly() or AsTimeOnly() explicitly.
+                               where AsDateOnly(item.DateTimeValue) < AsDateOnly(item.DateOnlyValue).AddDays(-50)
+                                   select new DateOnlyItem { DateOnlyField = AsDateOnly(item.StringDateOnlyField) };
             }
         }
 
         public class StringItem
         {
             public string StringDateOnlyField { get; set; }
+            public object DateTimeValue { get; set; }
+            public object DateOnlyValue { get; set; }
         }
 
         public class DateOnlyItem
@@ -71,44 +76,51 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo.DateAndTimeOnlySample
             {
                 // This map index converts DateTime to DateOnly with AsDateOnly().
                 Map = items => from item in items
-                               select new DateOnlyItem { DateOnlyField = AsDateOnly(item.DateTimeField) };
+                                   // RavenDB doesn't look for DateOnly or TimeOnly as default types during indexing
+                                   // so the variables must by wrapped in AsDateDonly() or AsTimeOnly() explicitly.
+                                   where AsDateOnly(item.DateTimeValue) < AsDateOnly(item.DateOnlyValue).AddDays(-50)
+                                   select new DateOnlyItem { DateOnlyField = AsDateOnly(item.DateTimeField) };
             }
         }
 
         public class DateTimeItem
         {
             public DateTime? DateTimeField { get; set; }
+            public object DateTimeValue { get; set; }
+            public object DateOnlyValue { get; set; }
         }
         #endregion
 
 
 
         public void SampleUsingDateTimeAsDateOnlyConversion()
-        {
+            {
             using var store = new DocumentStore();
-            #region AsDateOnlyStringToDateOnlyQuerySample
+            #region AsDateOnlyDateTimeToDateOnlyQuerySample
             using (var session = store.OpenSession()) 
-        {
+            {
             // A DateTime value is saved
             session.Store(new DateTimeItem()
             {
                 DateTimeField = DateTime.Now
             });
             session.SaveChanges();
-        }
-        // The index above is called and we wait for the index to finish converting
-        new DateTimeAsDateOnlyConversion().Execute(store);
-        WaitForIndexing(store);
+            }
+            // The index above is called and we wait for the index to finish converting
+            new DateTimeAsDateOnlyConversion().Execute(store);
+            WaitForIndexing(store);
 
-        using (var session = store.OpenSession())
-        {
-            // Query the index
-            var today = DateOnly.FromDateTime(DateTime.Now);
-            var element = session.Query<DateOnlyItem, DateTimeAsDateOnlyConversion>()
-                .Where(item => item.DateOnlyField == today).As<DateTimeItem>().Single();
+            using (var session = store.OpenSession())
+            {
+                // Query the index
+                var today = DateOnly.FromDateTime(DateTime.Now);
+                var element = session.Query<DateOnlyItem, DateTimeAsDateOnlyConversion>()
+                    .Where(item => item.DateOnlyField == today)
+                    // This is an optional type relaxation for projections 
+                    .As<DateTimeItem>().Single();
+            }
+            #endregion
         }
-        #endregion
-    }
 
     public void QuerySampleForIndexWithDateTimeAndDateOnly()
         {
@@ -151,6 +163,8 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo.DateAndTimeOnlySample
             public DateAndTimeOnlyIndex()
             {
                 Map = dates => from date in dates
+                               // RavenDB doesn't look for DateOnly or TimeOnly as default types during indexing
+                               // so they need to be called explicitly.
                                select new IndexEntry() { DateOnly = date.DateOnly, TimeOnly = date.TimeOnly };
             }
 
