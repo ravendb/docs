@@ -457,7 +457,7 @@ Upon source document modifications, ETL is set by default to delete and replace 
 If you want to control the way deletions are handled in the destination database, 
 you can change the default settings with the configurable functions described in this section.
 
-* [Why documents are deleted by default](../../../server/ongoing-tasks/etl/raven#why-documents-are-deleted-by-default-in-the-destination-database)
+* [Why documents are deleted by default](../../../server/ongoing-tasks/etl/raven#deletions-why-documents-are-deleted-by-default-in-the-destination-database)
 * [Collection specific function](../../../server/ongoing-tasks/etl/raven#deletions-collection-specific-function)
 * [Generic function](../../../server/ongoing-tasks/etl/raven#deletions-generic-function)
 * [Filtering deletions in the destination database](../../../server/ongoing-tasks/etl/raven#deletions-filtering-deletions-in-the-destination-database)
