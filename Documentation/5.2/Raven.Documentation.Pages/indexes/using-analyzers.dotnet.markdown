@@ -31,25 +31,64 @@ For example, given this sample text:
 
 `The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.`  
 
+### Analyzers that remove common "Stop Words":
+
+{NOTE: }
+[Stop words](https://en.wikipedia.org/wiki/Stop_word) (most frequently used words, such as: _the, it, an, is, this_...) are often removed to 
+narrow search results by including only words that are used less frequently.
+
+If you want to include words such as IT (Information Technology), they will be recognized as one of the stop words 
+and removed from searches.  
+This can also be true for other acronyms such as WHO (World Health Organization).  
+To prevent excluding such acronyms, you can either be sure to spell out the entire title instead of abbreviating, 
+or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#analyzers-that-do-not-remove-common-stop-words).
+{NOTE/}
+
 * **StandardAnalyzer**, which is Lucene's default, will produce the following tokens:  
 
     `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dog]   [bob@hotmail.com]   [123432]`  
+
+    Removes common function ("stop") words
+    Separates with white spaces  
+    Converts to lower-case letters  
 
 * **StopAnalyzer** will work similarly, but will not perform light stemming and will only tokenize on white space:  
 
     `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`  
 
+    Removes numbers and symbols then separates tokens with these  
+    Removes common "stop" words (the, it, a, is, this, etc...)
+    Separates with white spaces  
+    Converts to lower-case letters  
+
+---
+
+### Analyzers that do not remove common "Stop Words"
+
 * **SimpleAnalyzer** will tokenize on all non-alpha characters and will make all the tokens lowercase:  
 
     `[the]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`  
+
+    Includes common stop words  
+    Removes numbers and symbols then separates tokens with them  
+    Separates with white spaces  
+    Converts to lower-case letters  
 
 * **WhitespaceAnalyzer** will just tokenize on white spaces:  
 
     `[The]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs,]   [Bob@hotmail.com]   [123432.]`  
 
+    Only separates with whitespaces  
+
 * **KeywordAnalyzer** will perform no tokenization, and will consider the whole text a stream as one token:  
 
-    `[The quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]` 
+    `[The quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`  
+
+    Useful in situations like IDs and codes where you do not want to separate into multiple tokens.  
+
+---
+
+### Analyzers that tokenize according to the defined number of characters
 
 * **NGramAnalyzer** will tokenize on predefined token lengths, 2-6 chars long, which are defined by `Indexing.Analyzers.NGram.MinGram` and `Indexing.Analyzers.NGram.MaxGram` configuration options:  
   
