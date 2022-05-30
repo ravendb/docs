@@ -54,24 +54,26 @@ There are two backup types: [Logical-backup](../../client-api/operations/mainten
 
 Backed-up data includes both database-level and cluster-level contents, as detailed below.  
 
-| Database-level data |
-| ----|
-| Documents |
-| Attachments |
-| Revisions |
-| Counters |
-| Tombstones |
-| Conflicts |
-| Subscriptions |
+| Database-level data | Notes |
+|---- | -------|
+| Documents | |
+| Attachments | |
+| Revisions | |
+| Counters | |
+| Time-Series | |
+| Change Vector data | Full Snapshots save Change Vector data. Restoring from a Logical Backup or Incremental Snapshot causes Change Vector data to restart.|
+| Tombstones | |
+| Conflicts | |
 
-| Cluster-level data | Note |
+
+| Cluster-level data | Notes |
 |---- | -------|
 | Database Record | |
 | Compare-exchange values | |
-| Change Vector data | Snapshots save Change Vector data. Restoring from a Logical Backup causes Change Vector data to restart.|
 | Identities | |
 | Indexes | Snapshots: Complete Indexes,  Logical-Backups: Index definitions only |
-| Ongoing Tasks configuration | 4.0 Snapshots only, 4.2 Logical-backups & Snapshots |
+| Ongoing Tasks configuration | Logical-backups & Snapshots |
+| Subscriptions | |
 
 {PANEL/}
 

@@ -36,7 +36,9 @@
 
 * During the restoration, RavenDB -  
    * Re-inserts all data into the database.  
-   * Re-indexes the data from backed up definitions.  
+   * Re-indexes the data from restored definitions.  
+     To save space, Logical Backup stores index definitions only, 
+     so during restoration the indexes must use the definitions to scan and process the dataset. 
 
 * See [backup contents](../../../../server/ongoing-tasks/backup-overview#backup-contents).
 
@@ -55,10 +57,12 @@
 
 ####Snapshot
 
-* A SnapShot is a compressed binary duplication of the full database, ongoing tasks, and journals 
-  [file structure](../../../../server/storage/directory-structure#storage--directory-structure) 
-  at a given point-in-time, including fully built indexes.  
-  Snapshot-backups are available for **Enterprise subscribers**.  
+* A Snapshot is a compressed binary duplication of the full database data structure. 
+  This includes the data file and the journals of all storages at a given point-in-time.  
+  Therefore it includes fully built indexes and ongoing tasks.  
+  See [file structure](../../../../server/storage/directory-structure#storage--directory-structure) for more info.
+
+* Snapshot-backups are available for **Enterprise subscribers**.  
 
 * During restoration -
    * Re-inserting data into the database is not required.  
@@ -70,7 +74,9 @@
 
 * Snapshot size is typically **larger** than that of a logical backup.  
 
-* Snapshot cannot backup data incrementally.  
+* If Incremental Snapshot backups are chosen, the first backup will be a full Snapshot, but the incremental backups, 
+  like Logical, will not update indexes or change vectors.   Document data will be up-to-date, but restoring from an 
+  Incremental Snapshot will still require some reindexing and the change vectors will also be affected. 
 
 * Code Sample:  
   {CODE backup_type_snapshot@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
