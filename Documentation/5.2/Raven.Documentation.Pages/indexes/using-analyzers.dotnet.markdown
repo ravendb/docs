@@ -164,7 +164,7 @@ name:
 
 {INFO: Analyzer Availability}
 The analyzer you are referencing must be available to the RavenDB server instance. See the different 
-methods of creating custom analyzers [below](../indexes/using-analyzers#creating-custom-analyzers).  
+methods of [creating custom analyzers](../indexes/using-analyzers#creating-custom-analyzers).  
 {INFO/}
 
 {PANEL/}
@@ -183,7 +183,7 @@ the server-wide analyzers with the same names.
 There are a few ways to create a custom analyzer and add it to your server:  
 1. [Using the Studio](../studio/database/settings/custom-analyzers)  
 2. Using the Client API  
-3. Adding it directly to RavenDB's binaries, [see below](../indexes/using-analyzers#adding-an-analyzer-to-the-binaries)  
+3. Adding it [directly to RavenDB's binaries](../indexes/using-analyzers#adding-an-analyzer-to-the-binaries)  
 
 ### Using the Client API
 
