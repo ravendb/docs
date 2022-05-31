@@ -9,7 +9,7 @@ Please also take a look at the automated [Setup Wizard](../../../start/installat
 authentication in a much easier and faster way with automatic certificate renewals.  
 
  * The Setup Wizard can process **certificates that you provide**  
- * Or the Wizard can give you a free, highly secure **certificate via Let's Encrypt**.  
+ * Or the Wizard can give you a free, highly secure **certificate via [Let's Encrypt](../../../server/security/authentication/lets-encrypt-certificates)**.  
  * We've developed default **automatic renewals** of certificates when setting up with the Setup Wizard **together** with Let's Encrypt.  
 
  If you choose manual setup and/or to provide your own certificate, **you are responsible for its periodic renewal**.  
@@ -48,7 +48,7 @@ See [Certificate Management](../../../server/security/authentication/certificate
 #### Certificate Requirements
 
 RavenDB will accept `.pfx` server certificates that contain the private key, are not expired, 
-and include a basic (`Key Usage`) field and optionally an enhanced (`Enhanced Key Usage`) field.  
+and include a basic (`Key Usage`) field and an enhanced (`Enhanced Key Usage`) field.  
 
 - `Key Usage`  
   Permissions granted by this field: **Digital Signature**, **Key Encipherment**  
@@ -64,8 +64,13 @@ and include a basic (`Key Usage`) field and optionally an enhanced (`Enhanced Ke
 
        ![Enhanced Key Usage](images/cert-enhanced-key-usage.png "Enhanced Key Usage")
 
-Certificates created during setup using Let's Encrypt are already provided with these properties and OIDs.  
-User-created certificates must be provided with them for RavenDB to accept and be able to use them. 
+{NOTE: }
+
+* Certificates created during setup using [Let's Encrypt](../../../server/security/authentication/lets-encrypt-certificates) 
+  are already provided with the above fields and OIDs.  
+* User-created certificates must be provided with these properties for RavenDB to accept and be able to use them. 
+
+{NOTE/}
 
 ---
 
