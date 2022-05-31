@@ -1,11 +1,27 @@
 # Configuration Options
 
-RavenDB is **Safe by Default** which means its set of options is configured for the best safety.  
-However, these options can be manually configured in order to accommodate different server behavior.
+---
+{NOTE: }
+RavenDB is **Safe by Default**, which means its default settings are configured for best safety.  
+You can change these settings, however, to divert from the default behavior.  
+
+* In this Page:  
+   * [Environment Variables](../../server/configuration/configuration-options#environment-variables)  
+   * [settings.json](../../server/configuration/configuration-options#settings.json)  
+   * [Command Line Arguments](../../server/configuration/configuration-options#command-line-arguments)  
+
+{NOTE/}
 
 {PANEL:Environment Variables}
 
-Configuration can be adjusted using environment variables. Server is going to pick up all environment variables preceded by `RAVEN_` prefix and apply their values to specified configuration keys. All period `.` characters in configuration keys should be replaced with an underscore character (`_`) when used in environment variables. 
+RavenDB's configuration can be adjusted using environment variables.  
+The server will retrieve all the environment variables that start with `RAVEN_` 
+and apply their values to the specified configuration keys.  
+
+{NOTE: }
+All the period (`.`) characters in configuration keys must be replaced with an 
+underscore character (`_`) when used in environment variables.  
+{NOTE/}
 
 ### Example
 
@@ -17,10 +33,14 @@ RAVEN_Certificate_Path=/config/raven-server.certificate.pfx
 
 {PANEL/}
 
-{PANEL:JSON}
+{PANEL:`settings.json`}
 
-The `settings.json` file which can be found in the same directory as the server executable can also be used to change the configuration of the server. 
-The file is read and applied on the server startup only. It is created when running the server for the first time from the `settings.default.json` file.
+Use the `settings.json` file to change the server configuration.  
+
+The file is created when running the server for the first time, duplicating the `settings.default.json` file.  
+Find it at the same directory as the server executable.  
+
+The file is read and applied only on server startup.  
 
 ### Example
 
@@ -31,11 +51,16 @@ The file is read and applied on the server startup only. It is created when runn
 }
 {CODE-BLOCK/}
 
-{NOTE Changes in `settings.json` override the environment variables settings. /}
+{NOTE: }
+`settings.json` configuration options **override** [environment variables](../../server/configuration/configuration-options#environment-variables) settings. 
+{NOTE/}
 
 {INFO:JSON Arrays}
 
-All configuration options that support multiple values (for example strings separated by `;`) can be configured via regular JSON array e.g. [`Security.WellKnownCertificates.Admin`](../../server/configuration/security-configuration#security.wellknowncertificates.admin)
+Configuration options that include multiple values (like strings separated by `;`) 
+can be configured using regular JSON arrays.  
+To set [`Security.WellKnownCertificates.Admin`](../../server/configuration/security-configuration#security.wellknowncertificates.admin), 
+for example, use -  
 
 {CODE-BLOCK:json}
 {
@@ -59,7 +84,11 @@ The server can be configured using command line arguments that can be passed to 
 ./Raven.Server --Setup.Mode=None
 {CODE-BLOCK/}
 
-{NOTE These command line arguments override the settings of environment variables and the `settings.json`. More details about Command Line Arguments can be found [here](../../server/configuration/command-line-arguments). /}
+{NOTE: }
+Command line arguments **override** [environment variables](../../server/configuration/configuration-options#environment-variables) 
+and [settings.json](../../server/configuration/configuration-options#settings.json) settings.  
+Find additional details about Command Line Arguments [here](../../server/configuration/command-line-arguments). 
+{NOTE/}
 
 {PANEL/}
 

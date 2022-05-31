@@ -103,7 +103,7 @@ Locate the VM's private and public IP addresses in the AWS EC2 Management Consol
 You have a few choices on how to run the RavenDB server. 
 We will use the [Setup Wizard](../../../start/installation/setup-wizard), but you can also configure things [manually](../../../start/installation/manual).
 
-Let's edit the [settings.json](../../../server/configuration/configuration-options#json) file so that we can perform the setup remotely using the browser.
+Let's edit the [settings.json](../../../server/configuration/configuration-options#settings.json) file so that we can perform the setup remotely using the browser.
 Notice that when we run the server for the first time, `settings.json` is created from `settings.default.json`. So if `settings.json` doesn't exist, edit `settings.default.json` instead.
 
 {CODE-BLOCK:bash}
@@ -201,7 +201,7 @@ Access the certificate view to see both the loaded server certificate and the ad
 
 Congratulations! You have a secure RavenDB server running on a simple EC2 machine. 
 
-Don't forget to delete the `Security.UnsecuredAccessAllowed` property from [settings.json](../../../server/configuration/configuration-options#json). It's not necessary anymore because access to the server now requires using a registered client certificate. 
+Don't forget to delete the `Security.UnsecuredAccessAllowed` property from [settings.json](../../../server/configuration/configuration-options#settings.json). It's not necessary anymore because access to the server now requires using a registered client certificate. 
 
 Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard) to construct a cluster during setup.
 

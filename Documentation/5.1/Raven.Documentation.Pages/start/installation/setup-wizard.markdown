@@ -139,7 +139,7 @@ All 3 nodes will run on the local machine:
 - Node B (https://b.raven.development.run) will listen to 127.0.0.2 on port 8080.
 - Node C (https://c.raven.development.run) will listen to 127.0.0.3 on port 8080.
 
-Each node will run in its own process and have its own data directory and [settings.json](../../server/configuration/configuration-options#json) file. 
+Each node will run in its own process and have its own data directory and [settings.json](../../server/configuration/configuration-options#settings.json) file. 
 You should have 3 separate RavenDB node folders.
 
 ### Example II - On separate machines for higher availability
@@ -420,7 +420,7 @@ All 3 nodes will run on the local machine:
 - Node B (https://b.ravendb.example.com) will listen to 127.0.0.2 on port 8080.
 - Node C (https://c.ravendb.example.com) will listen to 127.0.0.3 on port 8080.
 
-Each node will run in its own process and have its own data directory and [settings.json](../../server/configuration/configuration-options#json) file. 
+Each node will run in its own process and have its own data directory and [settings.json](../../server/configuration/configuration-options#settings.json) file. 
 
 ### Example II - On separate machines
 

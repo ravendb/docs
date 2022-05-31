@@ -71,7 +71,7 @@ and the specified data directory. You can setup RavenDB as a service using the `
 
 On Linux, you'll typically run RavenDB as a daemon. The `install-daemon.sh` can handle the daemon registration for you (Ubuntu only).
 
-In either case, you can configure RavenDB using the [settings.json](../../server/configuration/configuration-options#json) file. The most important configurations are the data directory and the 
+In either case, you can configure RavenDB using the [settings.json](../../server/configuration/configuration-options#settings.json) file. The most important configurations are the data directory and the 
 IPs and ports RavenDB will listen to. It is recommended that you'll pick the fastest drives for RavenDB's data directory, while the binaries
 for RavenDB can reside anywhere in the system.
 

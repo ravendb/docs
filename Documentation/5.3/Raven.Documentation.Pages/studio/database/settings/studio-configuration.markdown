@@ -8,7 +8,7 @@
 * Settings changed in this view do not change configurations in other scopes such as Client or Server API.
   * To disable the creation of Auto-Indexes in other scopes, set [Indexing.DisableQueryOptimizerGeneratedIndexes](../../../server/configuration/indexing-configuration#indexing.disablequeryoptimizergeneratedindexes) 
     to `true`:
-     * Server-wide - set it in the server's [settings.json](../../../server/configuration/configuration-options#json) file.
+     * Server-wide - set it in the server's [settings.json](../../../server/configuration/configuration-options#settings.json) file.
      * Per database - set it in the database's [Document Store](../../../client-api/operations/maintenance/configuration/database-settings-operation).
 
 In this page:

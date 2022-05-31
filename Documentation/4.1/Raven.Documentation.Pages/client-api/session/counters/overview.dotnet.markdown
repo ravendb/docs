@@ -157,7 +157,7 @@ When all Counters are removed from a document, the server automatically removes 
 ####Enabling the Counters Feature
 
 Counters management is an experimental feature and is disabled by default.  
-To activate it you need to edit RavenDB's [configuration file](../../../server/configuration/configuration-options#json) 
+To activate it you need to edit RavenDB's [configuration file](../../../server/configuration/configuration-options#settings.json) 
 and enable [experimental features](../../../server/configuration/core-configuration#features.availability).  
 
 ---

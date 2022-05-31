@@ -66,7 +66,7 @@ In special cases, throttled indexes' batches are processed without delay.
 
 ### Server-Wide Index Throttling
 
- Index Throttling can be set server-wide using a designated [configuration option](../server/configuration/configuration-options#json).  
+ Index Throttling can be set server-wide using a designated [configuration option](../server/configuration/configuration-options#settings.json).  
  Setting the server-wide configuration option will apply to all databases on a given node.  
 
 * Set the index throttling time interval in Milliseconds using the `Indexing.Throttling.TimeIntervalInMs` configuration option, e.g.:  
@@ -139,4 +139,4 @@ and [database](../indexes/index-throttling#index-throttling-per-database) settin
 - [Static Indexes](../indexes/creating-and-deploying#static-indexes)  
 
 ### Server
-- [Configuration Options](../server/configuration/configuration-options#json)  
+- [Configuration Options](../server/configuration/configuration-options#settings.json)  

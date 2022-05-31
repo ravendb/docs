@@ -6,7 +6,7 @@ All other capabilities and features are the same as C# indexes.
 
 {SAFE:Experimental}
 This is an experimental feature. 
-To enable it, add the following to your [`settings.json` file](../server/configuration/configuration-options#json):
+To enable it, add the following to your [`settings.json` file](../server/configuration/configuration-options#settings.json):
 {CODE-BLOCK:json}
 "Features.Availability": "Experimental"
 {CODE-BLOCK/}

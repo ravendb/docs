@@ -43,7 +43,7 @@
 
 ### Settings
 
-* PostgreSQL protocol support must be explicitly enabled in your [settings](../../server/configuration/configuration-options#json).  
+* PostgreSQL protocol support must be explicitly enabled in your [settings](../../server/configuration/configuration-options#settings.json).  
   Add this line to your server's `settings.json` file to enable the PostgreSQL protocol:  
   {CODE-BLOCK:json}
 "Integrations.PostgreSQL.Enabled": true
@@ -103,7 +103,7 @@ To allow access only for authorized clients -
 [Security Overview](../../server/security/overview)  
 
 **Settings**  
-[settings.json](../../server/configuration/configuration-options#json)  
+[settings.json](../../server/configuration/configuration-options#settings.json)  
 
 **Additional Links**  
 [Microsoft Power BI Download Page](https://powerbi.microsoft.com/en-us/downloads)  
