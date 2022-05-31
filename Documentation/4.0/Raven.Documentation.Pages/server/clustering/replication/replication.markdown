@@ -84,6 +84,12 @@ transaction and be sent in a different batch.
 ### Replication consistency can be achieved by -  
 
 * Using [Write Assurance](../../../client-api/session/saving-changes#waiting-for-replication---write-assurance).  
+* Not changing the default single-node-responsibility for writes on each database. For example, node A can be responsible for writes on a database called 
+  "Receipts", while node B can be responsible for "CustomerInformation", and so on.
+  By default, one node is responsible for all reads and writes.
+  You can configure [load balancing](../../../client-api/session/configuration/use-session-context-for-load-balancing) 
+  to fine-tune the settings to your needs.
+     * Learn more about [Scaling Distributed Work In RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/7-scaling-distributed-work-in-ravendb) 
 * Enabling [Revisions](../../../server/extensions/revisions).  
   When documents that own revisions are replicated, their revisions will be replicated with them.  
   
