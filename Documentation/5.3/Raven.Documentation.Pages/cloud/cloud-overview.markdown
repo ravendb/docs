@@ -316,7 +316,7 @@ Whenever configuration defaults differ in RavenDB Cloud, these configurations wi
 The factors to consider if adjusting the default max indexing batch size:
 
 * [Size of documents](https://ravendb.net/articles/dealing-with-large-documents-100-mb#:~:text=RavenDB%20can%20handle%20large%20documents,isn't%20a%20practical%20one.)
-* [Complexity of calculations](../studio/database/indexes/indexing-performance#common-indexing-issues) that static index does
+* [Complexity of calculations](../studio/database/indexes/indexing-performance#common-indexing-issues) that static indexes do
 * [IOPS number](../cloud/cloud-instances#a-production-cloud-cluster) (IOPS - Input/Output Operations Per Second - can be adjusted according to your neeeds.)
   !["Find IOPS Number"](images\configuration-see-iops.png "Find IOPS Number")  
    1. **Products**  
@@ -325,17 +325,17 @@ The factors to consider if adjusting the default max indexing batch size:
       Your current IOPS number is written here.  
       It can be adjusted by clicking "Change Storage". 
 
-#### Default Cloud Configuration 
+#### Default RavenDB Cloud Configuration 
 
-The default configuration sets batch sizes with the following adjustable formula:  
+The default cloud configuration sets batch sizes with the following adjustable formula:  
 
-`Indexing.MapBatchSize = max(Bits.PowerOf2(iops * 5), 1024);`
+**Indexing.MapBatchSize = max(PowerOf2(iops * 5), 1024);**
 
 * Explanation of configuration value:
-    * `max` = the larger of the two following options:
-    * `Bits.PowerOf2(iops * 5)` = the power of two that's larger than (machine's iops speed * 5)
-      e.g. in a machine with iops of 500...500 * 2 = 2,500, so the next power of two is 2 ** 12, which is 4,096 documents.  
-    * `1024` = number of documents  
+   * `max()` = returns the larger of two arguments:
+      * `PowerOf2(iops * 5)` = returns a number which is the power of two that's larger than the argument passed  
+         e.g. in a machine with IOPS of 500...500 * 2 = 2,500, so the next power of two is 2 ^ 12, which is 4,096 documents.  
+      * `1024` = number of documents  
 
 In this example, 4,096 is larger than 1024, so the maximum batch size will be 4,096 documents.
 
