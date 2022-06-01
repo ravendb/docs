@@ -151,6 +151,6 @@
   {
     "Path": "/graph",
     "Name": "Graph API",
-    "Mappings": []
+    "LastSupportedVersion": "5.3"
   }
 ]

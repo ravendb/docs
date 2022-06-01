@@ -1,5 +1,10 @@
 ﻿# Graph Querying: Overview  
 
+{WARNING: }
+The graph queries feature is available in RavenDB versions `4.2` to `5.x`.  
+The feature is not available in higher (`6.0` and on) versions.  
+{WARNING/}
+
 ---
 
 {NOTE: }
