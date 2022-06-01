@@ -1,0 +1,43 @@
+[
+  {
+    "Path": "overview.markdown",
+    "Name": "Overview",
+    "DiscussionId": "a36b4532-263d-4c47-ac40-0379de10bba1",
+    "Mappings": [
+        {
+            "Version": 5.2,
+            "Key": "client-api/session/revisions/what-are-revisions"
+        },
+        {
+            "Version": 5.1,
+            "Key": "client-api/session/revisions/what-are-revisions"
+        },
+        {
+            "Version": 5.0,
+            "Key": "client-api/session/revisions/what-are-revisions"
+        },
+        {
+            "Version": 4.2,
+            "Key": "client-api/session/revisions/what-are-revisions"
+        },
+        {
+            "Version": 4.1,
+            "Key": "client-api/session/revisions/what-are-revisions"
+        },
+        {
+            "Version": 4.0,
+            "Key": "client-api/session/revisions/what-are-revisions"
+        }
+    ]
+  },
+  {
+    "Path": "/session",
+    "Name": "Session",
+    "Mappings": []
+  },
+  {
+    "Path": "/operations",
+    "Name": "Operations",
+    "Mappings": []
+  }
+]

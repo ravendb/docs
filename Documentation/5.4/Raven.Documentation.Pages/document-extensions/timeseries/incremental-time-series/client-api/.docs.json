@@ -1,0 +1,20 @@
+[
+    {
+        "Path": "/session",
+        "Name": "Session",
+        "DiscussionId": "2bc22ef1-450e-4ae9-aa6f-56b0b47977d9",
+        "Mappings": []
+    },
+    {
+        "Path": "/operations",
+        "Name": "Operations",
+        "DiscussionId": "f23052eb-3c53-4984-a2cd-03a0ff9835d3",
+        "Mappings": []
+    },
+    {
+        "Path": "javascript-support.markdown",
+        "Name": "JavaScript Support",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    }
+]

@@ -1,0 +1,22 @@
+[
+    {
+        "Path": "/timeseries",
+        "Name": "Time Series",
+        "Mappings": []
+    },
+    {
+        "Path": "/counters",
+        "Name": "Counters",
+        "Mappings": []
+    },
+    {
+        "Path": "/attachments",
+        "Name": "Attachments",
+        "Mappings": []
+    },
+    {
+        "Path": "/revisions",
+        "Name": "Revisions",
+        "Mappings": []
+    }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "Path": "what-is-changes-api.markdown",
+    "Name": "What is Changes API",
+    "DiscussionId": "53a29b59-27d4-4f04-a773-c241f9bd37a5",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-to-document-changes.markdown",
+    "Name": "How to Subscribe to Document Changes",
+    "DiscussionId": "9c440e3a-ca3f-472d-bf16-ca8b69fe41b9",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-to-index-changes.markdown",
+    "Name": "How to Subscribe to Index Changes",
+    "DiscussionId": "45cc5772-a3de-4f24-9dce-7215758be8da",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-to-operation-changes.markdown",
+    "Name": "How to Subscribe to Operation Changes",
+    "DiscussionId": "c2ce2582-a46d-44cd-af33-70afdc41d3a2",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-to-counter-changes.markdown",
+    "Name": "How to Subscribe to Counter Changes",
+    "DiscussionId": "7214d8a7-6b54-4eb7-83e3-c1106f931ecd",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-to-time-series-changes.markdown",
+    "Name": "How to Subscribe to Time Series Changes",
+    "DiscussionId": "7214d8a7-6b54-4eb7-83e3-c1106f931ecd",
+    "Mappings": []
+  }
+]
