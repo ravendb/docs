@@ -236,7 +236,7 @@ The RavenDB Cloud allows you to upgrade from a **Basic** production instance to 
 
 ##Budget, Credits and Throttling
 Burstable instances are given a **budget** of CPU credits.  
-Credits are **consumed** when the instance uses computing and I/O resources, and are **accumulated**, up to a certain limit, when resources usage is low.  
+Credits are **consumed** when the instance uses computing and I/O resources, and are **accumulated**, up to a certain limit, when resource usage is low.  
 
 * **Burstable INSTANCES and throttling**  
   When an instance's budget is consumed, its services are throttled.  
@@ -264,7 +264,7 @@ If you are regularly warned or your product is actually throttled, consider [ups
 
 ####Throttling Warnings  
 Your instances will warn you when their credits are about to drain up, and inform you when throttling is performed.  
-They will also perform preemptive actions to lower resources usage.  
+They will also perform preemptive actions to lower resource usage.  
 ![Throttling Is Coming](images/throttling-001-nearly-exhausted-messages.png "Throttling Is Coming")  
 ![Throttling Is Here](images/throttling-002-indexing-paused.png "Throttling Is Here")  
 
@@ -284,7 +284,7 @@ E.g., `"MaxCredits": 8640.0` means your instance can accumulate an entitlement f
 
 In most cases, default configurations inherit from RavenDB On Premise [Client API Configurations](../client-api/configuration/conventions) 
 and [Server Configurations](../server/configuration/configuration-options).  
-See the left-side-menu for various configuration categories to find ClinetAPI and Server configurations, or use the search bar.  
+See the left-side menu for various configuration categories to find ClinetAPI and Server configurations, or use the search bar.  
 
 Whenever configuration defaults differ in RavenDB Cloud, these configurations will be discussed in this section.
 
