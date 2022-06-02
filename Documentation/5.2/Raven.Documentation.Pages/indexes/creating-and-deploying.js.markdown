@@ -1,14 +1,59 @@
 # Indexes: Creating and Deploying Indexes
+---
 
-**Indexes are used by the server to satisfy queries.** Whenever a user issues a query, RavenDB will use an existing index if it matches the query. If it doesn't, RavenDB will create a new one.
+{NOTE: }
 
-{INFO:Remember}
+* Indexes are used by the server to satisfy queries.  
+  They are at the heart of RavenDB's efficiency and should be understood before indexes and queries are defined in production.
 
-Indexes created by issuing a query are called `dynamic` or `Auto` indexes. They can be easily identified. Their name starts with `Auto/` prefix.
+* Static indexes can do a number of operations on the data behind the scenes so that queries that use this already processed data are as fast as possible.  
+  Indexes keep the processed data in a separate storage so that the raw data isn't affected.
 
-Indexes created explicitly by the user are called `static`.
+* Whenever a user issues a query _that doesn't specify an index_, RavenDB's Query Optimizer will try to find an 
+  existing auto-index that fulfills the query.  
+   * If one doesn't yet exist, RavenDB will either create an auto-index or optimize an existing one if it almost satisfies the query.
+
+* Indexes process data assigned to them as the data changes. For example, if changes are made to documents in the collection "Orders", 
+  the indexes that are defined to handle queries on "Orders" will be triggered to update the index with the new data.
+   * These behind-the-scenes processes remove a lot of burden from queries. Also, indexes need to process entire datasets just once, 
+     after which, they only process new data.  
+     Still, they utilize machine resources and this should be considered when defining indexes and queries.  
+
+
+{INFO: Auto and Static Indexes}
+
+* Indexes created by issuing a query are called `dynamic` or `Auto` indexes. 
+   * They can be easily identified. Their name starts with the `Auto/` prefix.
+   * If no [Auto-Index](../indexes/creating-and-deploying#auto-indexes) exists to satisfy a query, 
+     a new Auto-Index will be created and maintained automatically.
+* Indexes created explicitly by the user are called `static`.
+   * [To use a Static Index in a query](../indexes/querying/basics#example-iv---querying-a-specified-index), 
+     **you must specify the index in the query definition**. If you don't specify the index, 
+     RavenDB will look for an auto-index and potentially create a new one.  
+   * Static Indexes can be defined to do calculations, conversions, and various other processes behind the scenes, to prevent
+     doing these costly processes at query time (see [Using AbstractIndexCreationTask](../indexes/creating-and-deploying#using-abstractindexcreationtask), 
+     our [map-indexes](../indexes/map-indexes) article, [indexing multiple collections](../indexes/multi-map-indexes), 
+     and [map-reduce indexing](../indexes/map-reduce-indexes)).  
 
 {INFO/}
+
+* In this page:
+   * [Static indexes](../indexes/creating-and-deploying#static-indexes)
+      * [Using AbstractIndexCreationTask](../indexes/creating-and-deploying#using-abstractindexcreationtask)
+         * [Naming Convention](../indexes/creating-and-deploying#naming-convention)
+         * [Sending to Server](../indexes/creating-and-deploying#sending-to-server)
+         * [Creating an Index with Custom Configuration](../indexes/creating-and-deploying#creating-an-index-with-custom-configuration)
+         * [Using Assembly Scanner](../indexes/creating-and-deploying#using-assembly-scanner)
+         * [Example](../indexes/creating-and-deploying#example)
+      * [Using Maintenance Operations](../indexes/creating-and-deploying#using-maintenance-operations)
+         * [IndexDefinitionBuilder](../indexes/creating-and-deploying#indexdefinitionbuilder)
+   * [Auto-indexes](../indexes/creating-and-deploying#auto-indexes)
+      * [Naming Convention](../indexes/creating-and-deploying#naming-convention-1)
+      * [Auto Indexes and Indexing State](../indexes/creating-and-deploying#auto-indexes-and-indexing-state)
+   * [If Indexes Exhaust System Resources](../indexes/creating-and-deploying#if-indexes-exhaust-system-resources)
+
+
+{NOTE/}
 
 {PANEL:**Static indexes**}
 
@@ -117,18 +162,44 @@ Setting this configuration option to a high value may result in performance degr
 
 {PANEL/}
 
+{PANEL: If Indexes Exhaust System Resources}
+
+* Indexes process data assigned to them as the data changes. For example, if changes are made in the collection "Orders", the indexes that are 
+  defined to handle queries on "Orders" will be triggered to update.
+* These processes utilize machine resources.  
+  If indexing drains system resources, it usually means that either they were defined in a way that [causes inefficient processing](../studio/database/indexes/indexing-performance#common-indexing-issues), 
+  or that your [license](https://ravendb.net/buy), [cloud instance](../cloud/cloud-instances#a-production-cloud-cluster) 
+  or hardware must be optimized to satisfy your usage needs.  
+
+{PANEL/}
+
+
 ## Related Articles
 
 ### Indexes
 
-- [What are Indexes](../indexes/what-are-indexes)
-- [Indexing Basics](../indexes/indexing-basics)
+- [Indexing Basics](../../indexes/indexing-basics)
+- [Creating and Deploying Indexes](../../indexes/creating-and-deploying)
 
 ### Querying
 
-- [Basics](../indexes/querying/basics)
+- [Filtering](../../indexes/querying/filtering)
+- [Paging](../../indexes/querying/paging)
+- [Projections](../../indexes/querying/projections)
+- [Sorting](../../indexes/querying/sorting)
+
+### Client API
+
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [How to Handle Document Relationships](../../client-api/how-to/handle-document-relationships)
 
 ### Studio
 
-- [Indexes: Overview](../studio/database/indexes/indexes-overview#indexes-overview)
-- [Studio Index List View](../studio/database/indexes/indexes-list-view)
+- [Studio: Querying](../../studio/database/queries/query-view)
+
+---
+
+### Code Walkthrough
+
+- [Scroll for Queries Section](https://demo.ravendb.net/)
