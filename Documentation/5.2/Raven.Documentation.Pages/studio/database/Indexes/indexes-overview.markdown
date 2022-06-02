@@ -5,11 +5,12 @@
 
 * RavenDB uses **Indexes** to satisfy queries.  
 
-* Indexes allow for fast query results as the entire dataset is not re-scanned each time like traditional queries do.  
-  Also, indexes can perform various calculations, conversions, filtration and other processes behind the scenes so that queries do not have to. 
+* Indexes allow for fast query results as the entire dataset is not re-scanned each time like traditional queries.  
+  Also, indexes can perform various calculations, conversions, filtration and other processes behind the scenes so that queries do not have to.  
+  Indexes keep the processed data in a separate storage so that the raw data isn't affected.
 
 * Indexes are at the heart of RavenDB's efficiency and should be understood before indexes and queries are defined in production.  
-  Although they remove a lot of the burden from the queries, indexes utilize machine resources behind the scenes.  
+  Although they remove a lot of the burden from the queries, indexes utilize machine resources behind the scenes. 
   This should be considered when defining indexes and queries. 
 
 * Indexes can be created:

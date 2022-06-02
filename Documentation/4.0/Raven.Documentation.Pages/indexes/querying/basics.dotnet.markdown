@@ -11,6 +11,7 @@
 
 * To accelerate queries, RavenDB [indexes](../../indexes/creating-and-deploying) can process various calculations, filters and conversions behind the scenes 
   so that the data is already processed and ready for queries.  
+  Indexes keep the processed data in a separate storage so that the raw data isn't affected.  
   Furthermore, indexes only scan and process the entire specified dataset once.  
   After the initial scan, they only need to process specific data as it is modified, added or deleted.
    * For queries to use an index that has already processed the data, the index must be [called in the query](../../indexes/querying/basics#example-iv---querying-a-specified-index).
