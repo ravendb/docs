@@ -1,4 +1,5 @@
 # NoSQL Cloud Service: Overview
+---
 
 {NOTE: }
 
@@ -26,6 +27,9 @@ like adding or removing nodes, and run recurring tasks like backing up your data
       * [RavenDB Tiers: Free, Development and Production](../cloud/cloud-overview#ravendb-tiers)  
       * [Burstable vs. Reserved clusters](../cloud/cloud-overview#burstable-vs.-reserved-clusters)  
       * [Budget, Credits and Throttling](../cloud/cloud-overview#budget-credits-and-throttling)  
+  * [Cloud Configurations](../cloud/cloud-overview#cloud-configurations)
+      * [Setting Cloud Configuration via Studio](../cloud/cloud-overview#setting-cloud-configuration-via-studio)
+      * [Indexing](../cloud/cloud-overview#indexing)
 {NOTE/}
 
 ---
@@ -275,6 +279,69 @@ Note that the figures relate to CPU seconds; for CPU minutes, divide them by 60.
 E.g., `"MaxCredits": 8640.0` means your instance can accumulate an entitlement for up to 144 minutes of full CPU usage.  
 
 {PANEL/}
+
+{PANEL: Cloud Configurations}
+
+In most cases, default configurations inherit from RavenDB On Premise [Client API Configurations](../client-api/configuration/conventions) 
+and [Server Configurations](../server/configuration/configuration-options).  
+See the left-side-menu for various configuration categories to find ClinetAPI and Server configurations, or use the search bar.  
+
+Whenever configuration defaults differ in RavenDB Cloud, these configurations will be discussed in this section.
+
+#### Setting Cloud Configuration via Studio
+
+!["Setting Cloud Configuration via Studio"](images\configuration-setting-new-config.png "Setting Cloud Configuration via Studio")  
+
+1. **Indexes Tab**  
+   Click to see indexing options.
+2. **List of Indexes**  
+   Select to see the list of your current indexes.
+   You can only configure static indexes, not auto-indexes. 
+   Select the index for which you want to change the default settings.
+3. **Configuration**  
+   Scroll down and select the Configuration tab.
+4. **Add customized indexing configuration**  
+   Click to select configuration and change the value.  
+5. **Indexing Configuration Key**  
+   Paste or select the configuration key that you want to change.
+6. **Value**  
+   Enter the new value for this configuration.
+   * **Click Save** at the top of the interface when finished.
+
+## Indexing
+
+---
+
+### Max Batch Size
+
+The factors to consider if adjusting the default max indexing batch size:
+
+* [Size of documents](https://ravendb.net/articles/dealing-with-large-documents-100-mb#:~:text=RavenDB%20can%20handle%20large%20documents,isn't%20a%20practical%20one.)
+* [Complexity of calculations](../studio/database/indexes/indexing-performance#common-indexing-issues) that static indexes do
+* [IOPS number](../cloud/cloud-instances#a-production-cloud-cluster) (IOPS - Input/Output Operations Per Second - can be adjusted according to your neeeds.)
+  !["Find IOPS Number"](images\configuration-see-iops.png "Find IOPS Number")  
+   1. **Products**  
+      In the Cloud Portal, click the Products tab.
+   2. **IOPS**  
+      Your current IOPS number is written here.  
+      It can be adjusted by clicking "Change Storage". 
+
+#### Default RavenDB Cloud Configuration 
+
+The default cloud configuration sets batch sizes with the following adjustable formula:  
+
+**Indexing.MapBatchSize = max(PowerOf2(iops * 5), 1024);**
+
+* Explanation of configuration value:
+   * `max()` = returns the larger of two arguments:
+      * `PowerOf2(iops * 5)` = returns a number which is the power of two that's larger than the argument passed  
+         e.g. in a machine with IOPS of 500...500 * 2 = 2,500, so the next power of two is 2 ^ 12, which is 4,096 documents.  
+      * `1024` = number of documents  
+
+In this example, 4,096 is larger than 1024, so the maximum batch size will be 4,096 documents.
+
+{PANEL/}
+
 
 ##Related Articles
   
