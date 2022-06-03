@@ -6,7 +6,8 @@
 * Indexes are used by the server to satisfy queries.  
   They are at the heart of RavenDB's efficiency and should be understood before indexes and queries are defined in production.
 
-* They can do a number of operations on the data behind the scenes so that queries that use this already processed data are as fast as possible.  
+* Static indexes can do a number of operations on the data behind the scenes so that queries that use this already processed data are as fast as possible.  
+  Indexes keep the processed data in a separate storage so that the raw data isn't affected.
 
 * Whenever a user issues a query _that doesn't specify an index_, RavenDB's Query Optimizer will try to find an 
   existing auto-index that fulfills the query.  
@@ -174,3 +175,15 @@ Setting this configuration option to a high value may result in performance degr
 
 - [Indexes: Overview](../studio/database/indexes/indexes-overview#indexes-overview)
 - [Studio Index List View](../studio/database/indexes/indexes-list-view)
+
+---
+
+### Inside RavendDB 
+
+- [Working with Indexes](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/12-working-with-indexes)
+
+---
+
+### Code Walkthrough
+
+- [Scroll to see various indexing guides](https://demo.ravendb.net/)
