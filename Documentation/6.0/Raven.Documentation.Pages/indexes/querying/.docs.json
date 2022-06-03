@@ -153,10 +153,5 @@
         "Key": "client-api/querying/query-and-lucene-query"
       }
     ]
-  },
-  {
-    "Path": "/graph",
-    "Name": "Graph API",
-    "Mappings": []
   }
 ]

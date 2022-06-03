@@ -142,7 +142,7 @@ namespace Raven.Documentation.Samples.Indexes
                     #region indexing_related_documents_8
                     IList<Author> results = session
                         .Query<Authors_ByNameAndBooks.Result, Authors_ByNameAndBooks>()
-                        .Where(x => x.Name == "Andrzej Sapkowski" || x.Books.Contains("The Witcher"))
+                        .Where(x => x.AuthorName == "Andrzej Sapkowski" || x.BookNames.Contains("The Witcher"))
                         .OfType<Author>()
                         .ToList();
                     #endregion
