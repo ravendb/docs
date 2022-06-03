@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NodaTime" Version="3.0.0" />
-    <PackageReference Include="RavenDB.Client" Version="5.3.101-nightly-20220224-0402" />
+    <PackageReference Include="RavenDB.Client" Version="5.3.102" />
     <PackageReference Include="RavenDB.Embedded" Version="5.3.101-nightly-20220223-0401" />
     <PackageReference Include="RavenDB.TestDriver" Version="5.3.101-nightly-20220223-0401" />
     <PackageReference Include="System.Reactive.Core" Version="5.0.0" />
