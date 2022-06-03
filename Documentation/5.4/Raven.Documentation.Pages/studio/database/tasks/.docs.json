@@ -1,0 +1,52 @@
+[
+  {
+    "Path": "/import-data",
+    "Name": "Import Data",
+    "Mappings": []
+  },
+  {
+    "Path": "backup-task.markdown",
+    "Name": "Backups",
+    "DiscussionId": "546cb25b-d674-4653-9dd8-eb20f5672dda",
+    "Mappings": [
+        {
+            "Version": 5.0,
+            "Key": "studio/database/tasks/ongoing-tasks/backup-task"
+        },
+        {
+            "Version": 4.2,
+            "Key": "studio/database/tasks/ongoing-tasks/backup-task"
+        },
+        {
+            "Version": 4.1,
+            "Key": "studio/database/tasks/ongoing-tasks/backup-task"
+        },
+        {
+            "Version": 4.0,
+            "Key": "studio/database/tasks/ongoing-tasks/backup-task"
+        }
+    ]  
+  },
+  {
+    "Path": "export-database.markdown",
+    "Name": "Export Database",
+    "DiscussionId": "445ef753-9223-43ea-9ed5-49cf03dfcdaa",
+    "Mappings": []
+  },
+  {
+    "Path": "create-sample-data.markdown",
+    "Name": "Create Sample Data",
+    "DiscussionId": "19aa1428-00b1-4d50-97c8-895ee2dd1723",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/tasks"
+      }
+    ]
+  },
+  {
+    "Path": "/ongoing-tasks",
+    "Name": "Ongoing Tasks",
+    "Mappings": []
+  }
+]

@@ -1,0 +1,38 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "a6436d2c-c908-4468-98bf-8d9bae6242eb",
+        "Mappings": []
+    },
+    {
+        "Path": "external-replication-stats.markdown",
+        "Name": "External Replication Stats",
+        "DiscussionId": "a6436d2c-c908-4468-98bf-8d9bae6242eb",
+        "Mappings": []
+    },
+    {
+        "Path": "subscription-stats.markdown",
+        "Name": "Subscription Stats",
+        "DiscussionId": "a6436d2c-c908-4468-98bf-8d9bae6242eb",
+        "Mappings": []
+    },
+    {
+        "Path": "ravendb-etl-stats.markdown",
+        "Name": "RavenDB ETL Stats",
+        "DiscussionId": "a6436d2c-c908-4468-98bf-8d9bae6242eb",
+        "Mappings": []
+    },
+    {
+        "Path": "sql-etl-stats.markdown",
+        "Name": "SQL ETL Stats",
+        "DiscussionId": "a6436d2c-c908-4468-98bf-8d9bae6242eb",
+        "Mappings": []
+    },
+    {
+        "Path": "olap-etl-stats.markdown",
+        "Name": "OLAP ETL Stats",
+        "DiscussionId": "a6436d2c-c908-4468-98bf-8d9bae6242eb",
+        "Mappings": []
+    }
+]
