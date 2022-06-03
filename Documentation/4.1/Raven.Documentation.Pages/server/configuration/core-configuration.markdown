@@ -1,6 +1,6 @@
 # Configuration: Core
 
-[settings.json](../../server/configuration/configuration-options#json) variables change your server's behavior in various ways.  
+[settings.json](../../server/configuration/configuration-options#settings.json) variables change your server's behavior in various ways.  
 
 {NOTE: }
 RavenDB reads `settings.json` only during startup.  
@@ -196,7 +196,7 @@ The URLs which the server should contact when requesting certificates from using
 
 {PANEL:Features.Availability}
 
-This [settings.json](../../server/configuration/configuration-options#json) variable determines whether to run RavenDB with its standard 
+This [settings.json](../../server/configuration/configuration-options#settings.json) variable determines whether to run RavenDB with its standard 
 features set, or add to a set of experimental features.  
 Some features, like ones recently released, are considered **experimental**. They are disabled by default, you can enable 
 them by setting `Features.Availability` to `Experimental`.  

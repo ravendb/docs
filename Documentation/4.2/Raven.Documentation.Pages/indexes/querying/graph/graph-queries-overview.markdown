@@ -69,7 +69,7 @@ so you may easily try them out.
 ###Enabling Graph Querying
 
 Graph support is an experimental feature and is disabled by default.  
-To activate it you need to edit RavenDB's [configuration file](../../../server/configuration/configuration-options#json) 
+To activate it you need to edit RavenDB's [configuration file](../../../server/configuration/configuration-options#settings.json) 
 and enable [experimental features](../../../server/configuration/core-configuration#features.availability).  
 
 {NOTE/}

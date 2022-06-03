@@ -129,7 +129,7 @@ appearing:
 
 ### Configuration
 
-The RavenDB server uses a [settings.json](../server/configuration/configuration-options#json) file in each node `Server` folder to store the server-wide configuration options.  
+The RavenDB server uses a [settings.json](../server/configuration/configuration-options#settings.json) file in each node `Server` folder to store the server-wide configuration options.  
 When starting a server, RavenDB will look for the `settings.json` file in the node `Server` folder, so it must be located there.  
 The [Setup Wizard](../start/installation/setup-wizard) places it correctly automatically.  
 
@@ -170,7 +170,7 @@ For a list of IPs and ports already in use, run `netstat -a` in the command line
 
 RavenDB requires write permissions to the following locations:
 
-- The folder where RavenDB server is running (to update [settings.json](../server/configuration/configuration-options#json) by the [Setup Wizard](../start/installation/setup-wizard))
+- The folder where RavenDB server is running (to update [settings.json](../server/configuration/configuration-options#settings.json) by the [Setup Wizard](../start/installation/setup-wizard))
 - The data folder ([`DataDir`](../server/configuration/core-configuration#datadir) setting)
 - The logs folder ([`Logs.Path`](../server/configuration/logs-configuration#logs.path) setting)
 

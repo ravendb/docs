@@ -171,7 +171,7 @@ Indexing can be a taxing operation on CPU resources.
 There are a number of [configurations](../../../server/configuration/indexing-configuration) that efficiently use 
 batch stops to break up huge batch processes into smaller batches to prevent exhausting resources.  
 If a configuration is specific to an index, it can be [set in the Studio](../../../studio/database/indexes/create-map-index#configuration).  
-If it is a server-wide only configuration, it must be set in the server's [settings.json](../../../server/configuration/configuration-options#json).  
+If it is a server-wide only configuration, it must be set in the server's [settings.json](../../../server/configuration/configuration-options#settings.json).  
 
 While they prevent system exhaustion, batch stops also point to potential **opportunities to optimize** your indexes.  
  

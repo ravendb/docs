@@ -84,7 +84,7 @@ From the databases list view, click the **'New database'** button.
 
 * Note:  
 
-  * The `DataDir` folder can be set in the [settings.json](../../../../server/configuration/configuration-options#json) configuration file (e.g. "DataDir": "RavenData").  
+  * The `DataDir` folder can be set in the [settings.json](../../../../server/configuration/configuration-options#settings.json) configuration file (e.g. "DataDir": "RavenData").  
   * If `DataDir` is Not specified in the configuration file, then the database will be created under the RavenDB binaries folder  
     (where the RavenDB dlls are located).  
   * A path can't start with:  $home, '~' or 'appdrive:'

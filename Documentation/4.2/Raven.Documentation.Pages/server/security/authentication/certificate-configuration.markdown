@@ -1,48 +1,84 @@
 # Authentication: Manual Certificate Configuration
 
+---
+
+{NOTE: }
 This article explains how to set up authentication **manually** by storing your certificate locally, externally or with logic you create that is foreign to RavenDB. 
 
-{NOTE: } Please also take a look at the automated [Setup Wizard](../../../start/installation/setup-wizard) which lets you set up 
+Please also take a look at the automated [Setup Wizard](../../../start/installation/setup-wizard) which lets you set up 
 authentication in a much easier and faster way with automatic certificate renewals.  
 
- * The Setup Wizard can process *certificates that you provide* 
- * Or the Wizard can give you a free, highly secure *certificate via Let's Encrypt*.  
+ * The Setup Wizard can process **certificates that you provide**  
+ * Or the Wizard can give you a free, highly secure **certificate via [Let's Encrypt](../../../server/security/authentication/lets-encrypt-certificates)**.  
  * We've developed default **automatic renewals** of certificates when setting up with the Setup Wizard **together** with Let's Encrypt.  
 
- If you choose manual setup and/or to provide your own certificate, **you are responsible for its periodic renewal**. {NOTE/} 
+ If you choose manual setup and/or to provide your own certificate, **you are responsible for its periodic renewal**.  
+ 
+* In this page:
+   * [Prerequisites](../../../server/security/authentication/certificate-configuration#prerequisites)  
+   * [Standard Manual Setup With Certificate Stored Locally](../../../server/security/authentication/certificate-configuration#standard-manual-setup-with-certificate-stored-locally)  
+      * [Certificate Requirements](../../../server/security/authentication/certificate-configuration#certificate-requirements)  
+      * [Certificate Location](../../../server/security/authentication/certificate-configuration#certificate-location)  
+   * [With Logic Foreign to RavenDB or External Certificate Storage](../../../server/security/authentication/certificate-configuration#with-logic-foreign-to-ravendb-or-external-certificate-storage)  
+   * [Step-by-step Guide to Installing Certificate](../../../server/security/authentication/certificate-configuration#step-by-step-guide-to-installing-certificate)  
 
-In this page:
+{NOTE/}
 
-* [Standard Manual Setup With Certificate Stored Locally](../../../server/security/authentication/certificate-configuration#standard-manual-setup-with-certificate-stored-locally)  
-* [With Logic Foreign to RavenDB or External Certificate Storage](../../../server/security/authentication/certificate-configuration#with-logic-foreign-to-ravendb-or-external-certificate-storage)  
-* [Step-by-step Guide to Installing Certificate](../../../server/security/authentication/certificate-configuration#step-by-step-guide-to-installing-certificate)  
+{PANEL: Prerequisites}
 
 To enable authentication, either `Security.Certificate.Path` or `Security.Certificate.Load.Exec` must be set in [settings.json](../../configuration/configuration-options#json). 
  Please note that `Security.Certificate.Load.Exec` has replaced the old `Security.Certificate.Exec` as of 4.2 - [see FAQ](../../../server/security/common-errors-and-faq#automatic-cluster-certificate-renewal-following-migration-to-4.2).  
 
-{INFO: Important - Setting up client certificates}
+---
+
+#### Setting up Client Certificates
 When the server is manually set up with a server certificate for the first time, there are no client certificates registered in the server yet. 
 The first action an administrator will do is to [generate/register a new client certificate](../../../server/security/authentication/client-certificate-usage).  
-There are detailed instructions of the process below in steps 4 and 5.  
+Find detailed instructions of the process [below](../../../server/security/authentication/certificate-configuration#step-by-step-guide-to-installing-certificate).  
 
 You can set up various client certificates with different security clearance levels and database permissions. 
 See [Certificate Management](../../../server/security/authentication/certificate-management) for more about permissions.  
-{INFO/}
+
+{PANEL/}
 
 {PANEL: }
 
 ### Standard Manual Setup With Certificate Stored Locally
 
-In RavenDB, configuration values can be set using environment variables, command line arguments or using the [settings.json](../../configuration/configuration-options#json) 
- file. For more details, please read the [Configuration Options.](../../configuration/configuration-options)  
+#### Certificate Requirements
 
-RavenDB will accept `.pfx` server certificates which contain the private key, are not expired, and have the following fields:
+RavenDB will accept `.pfx` server certificates that contain the private key, are not expired, 
+and include a basic (`Key Usage`) field and an enhanced (`Enhanced Key Usage`) field.  
 
-- KeyUsage: DigitalSignature, KeyEncipherment
-- ExtendedKeyUsage: Client Authentication, Server Authentication
+- `Key Usage`  
+  Permissions granted by this field: **Digital Signature**, **Key Encipherment**  
+  
+      ![Key Usage](images/cert-key-usage.png "Key Usage")
 
-You must set up a `settings.json` file with your server and certificate settings inside each node's `Server` folder.
-Whenever your server starts, it will look for the `settings.json` in the `Server` folder, so it must be located there.
+- `Enhanced Key Usage`  
+  Permissions granted by this field: **Server Authentication**, **Client Authentication**  
+  
+      An `Enhanced Key Usage` field must include these two OIDs:  
+      **1.3.6.1.5.5.7.3.1** - Server Authentication  
+      **1.3.6.1.5.5.7.3.2** - Client Authentication  
+
+       ![Enhanced Key Usage](images/cert-enhanced-key-usage.png "Enhanced Key Usage")
+
+{NOTE: }
+
+* Certificates created during setup using [Let's Encrypt](../../../server/security/authentication/lets-encrypt-certificates) 
+  are already provided with the above fields and OIDs.  
+* User-created certificates must be provided with these properties for RavenDB to accept and be able to use them. 
+
+{NOTE/}
+
+---
+
+#### Certificate Location
+
+A [settings.json](../../configuration/configuration-options#settings.json) file must reside in each node's `Server` folder 
+and define the server and certificate settings. The server will retrieve this file and use its settings on startup.  
+Read more about RavenDB configuration options [here](../../configuration/configuration-options).  
 
 * **ServerUrl**  
  When setting up securely, you must also set the `ServerUrl` configuration option to an **HTTPS** address.  
@@ -85,8 +121,7 @@ The second way to enable authentication is to set `Security.Certificate.Load.Exe
 This option is useful when you want to protect your certificate (private key) with other solutions such as "Azure Key Vault", "HashiCorp Vault" 
 or even Hardware-Based Protection. RavenDB will invoke a process you specify, so you can write your own scripts / mini-programs and 
 apply the logic that you need.  
-
-> It creates a clean separation between RavenDB and the secret store in use.
+This creates a clean separation between RavenDB and the secret store in use.  
 
 RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
 

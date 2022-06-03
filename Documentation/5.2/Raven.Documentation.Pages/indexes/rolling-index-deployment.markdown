@@ -89,7 +89,7 @@ Nodes are assigned with the indexing of each database in a linear order, one nod
 
 ### Server-Wide Deployment Mode
 
- Deployment mode can be set server-wide using [configuration options](../server/configuration/configuration-options#json).  
+ Deployment mode can be set server-wide using [configuration options](../server/configuration/configuration-options#settings.json).  
  Setting the server-wide configuration option will apply to all databases on a given node.  
 
 * [Auto Indexes](../indexes/creating-and-deploying#auto-indexes) Deployment Mode  
@@ -173,4 +173,4 @@ and [database](../indexes/rolling-index-deployment#database-deployment-mode) set
 - [Static Indexes](../indexes/creating-and-deploying#static-indexes)  
 
 ### Server
-- [Configuration Options](../server/configuration/configuration-options#json)  
+- [Configuration Options](../server/configuration/configuration-options#settings.json)  

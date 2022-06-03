@@ -28,7 +28,7 @@ We recommend using multiple machines to improve [cluster availability via failov
 
 By default, when a server is started using `run.ps1` (or `run.sh` in Linux) script. It will open a browser with a [Setup Wizard](../../start/installation/setup-wizard) which will guide you through the server configuration process.  
 
-The setup is started because the default configuration file [settings.json](../../server/configuration/configuration-options#json) (found in the downloaded RavenDB Server package inside the **Server** folder) comes configured like this:
+The setup is started because the default configuration file [settings.json](../../server/configuration/configuration-options#settings.json) (found in the downloaded RavenDB Server package inside the **Server** folder) comes configured like this:
 
 {CODE-BLOCK:json}
 {
@@ -76,7 +76,7 @@ Read the [Manual Certificate Configuration](../../server/security/authentication
 
 ## Configuration
 
-Read the [Configuration Section](../../server/configuration/configuration-options) to learn more about using [settings.json](../../server/configuration/configuration-options#json) and see a list of configuration options.
+Read the [Configuration Section](../../server/configuration/configuration-options) to learn more about using [settings.json](../../server/configuration/configuration-options#settings.json) and see a list of configuration options.
 
 ## Related articles
 
