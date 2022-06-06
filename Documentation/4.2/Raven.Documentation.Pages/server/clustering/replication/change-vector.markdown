@@ -162,7 +162,7 @@ Note that if data is considered contained by a database it doesn't mean it is pr
 
 * [Snapshot backups](../../../client-api/operations/maintenance/backup/backup#snapshot) save [change vector data](../../../server/ongoing-tasks/backup-overview#backup-contents).
 * [Logical backups](../../../client-api/operations/maintenance/backup/backup#logical-backup) do not save change vector data.
-  Restoring a database from a logical backup will restart the document change vector's frequently [incrementing ETag](../../../server/clustering/replication/change-vector#what-are-change-vectors-constructed-from)
+  Restoring a database from a logical backup will renew the document change vector's frequently [incrementing ETag](../../../server/clustering/replication/change-vector#what-are-change-vectors-constructed-from)
   to it's original value.
 
 ## Related Articles
