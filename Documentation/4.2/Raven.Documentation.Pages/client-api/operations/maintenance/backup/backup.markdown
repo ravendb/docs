@@ -37,14 +37,14 @@
    * Re-inserts all data into the database.  
    * Re-indexes the data from restored definitions.  
      To save space, Logical Backup stores index definitions only, 
-     so during restoration the indexes must use the definitions to scan and process the dataset. 
+     During restoration, the dataset is scanned and indexed according to the definitions.
 
 * Restoration time is, therefore, **slower** than when restoring from a Snapshot.  
 
 * Backup file size is **significantly smaller** than that of a Snapshot.
 
 * In addition to full data backup, Logical Backups can be defined as **incremental**, 
-  frequently saving any changes made since the previous backup.
+  saving any changes made since the previous backup.
 
 * The following code sample defines a full-backup task that would be executed every 3 hours:  
   {CODE logical_full_backup_every_3_hours@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
@@ -54,12 +54,12 @@
 
 ####Snapshot
 
-* A Snapshot is a compressed binary duplication of the full database data structure. 
-  This includes the data file and the journals of all storages at a given point-in-time.  
+* A Snapshot is a compressed binary duplication of the full database structure. 
+  This includes the data file and the journals at a given point-in-time.  
   Therefore it includes fully built indexes and ongoing tasks.  
   See [file structure](../../../../server/storage/directory-structure#storage--directory-structure) for more info.
 
-* Snapshot-backups are available for **Enterprise subscribers**.  
+* Snapshot-backups are available only for **Enterprise subscribers**.  
 
 * During restoration -
    * Re-inserting data into the database is not required.  
@@ -69,9 +69,11 @@
 
 * Snapshot size is typically **larger** than that of a logical backup.  
 
-* If Incremental Snapshot backups are chosen, the first backup will be a full Snapshot, but the incremental backups, 
-  like Logical, will not update indexes or change vectors.   Document data will be up-to-date, but restoring from an 
-  Incremental Snapshot will still require some reindexing and the change vectors will also be affected. 
+* If Incremental Snapshot backups are used: 
+   * The first backup will be a full Snapshot, but the incremental backups, 
+     like Logical backup types, will not update indexes or [change vectors](../../../../server/clustering/replication/change-vector).   
+   * Document data will be up-to-date, but restoring from an 
+     Incremental Snapshot will still require some re-indexing and the change vectors will also be affected. 
 
 * Code Sample:  
   {CODE backup_type_snapshot@ClientApi\Operations\Maintenance\Backup\Backup.cs /}

@@ -8,15 +8,15 @@
 
 * The two principal reasons for backing up your database are -  
    * **Securing data** in case catastrophe strikes.  
-   * **Freezing data in chosen points-in-time** to revert to, (e.g. if a mistake was made in a patch or an upgrade).  
+   * **Freezing data in chosen points-in-time** to revert to retain access to it in various stages of its existence/development.  
 
 * RavenDB's Backup is an **Ongoing task**.  
    * Routinely backing up your data is a fundamental aspect of your database maintenance.  
-     Backup is therefore defined consistently as an [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) 
+     Backup is therefore provided not as a one-time operation, but as an  [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) 
      that runs in the background.  
      It is configured once and then executed periodically according to the defined schedule.  
 
-* Backup can be configured with [Client API](../../client-api/operations/maintenance/backup/backup) or in the [Studio](../../studio/database/tasks/backup-task).
+* You can create and configure backup tasks using the [Client API](../../client-api/operations/maintenance/backup/backup) or [Studio](../../studio/database/tasks/backup-task).
 
 * In this page:  
   * [Backup Type](../../server/ongoing-tasks/backup-overview#backup-type)  
@@ -35,15 +35,19 @@
 
 There are two backup types: [Logical-backup](../../client-api/operations/maintenance/backup/backup#logical-backup) (or simply "Backup") and [Snapshot](../../client-api/operations/maintenance/backup/backup#snapshot).  
 
-* **Logical Backup**  
-  A logical backup is a compressed JSON dump of database contents, including documents, index definitions, and [additional data](../../server/ongoing-tasks/backup-overview#backup-contents).  
-   * Incremental Backups, which frequently save only the changes made since the last backup to reduce tranfer costs, can be defined via Logical Backups.
-* **SnapShot**  
+#### Logical Backup  
+  A logical backup is a compressed JSON dump of database contents, including documents, index definitions, and [additional data](../../server/ongoing-tasks/backup-overview#backup-contents)
+  that can be stored in [full](../../server/ongoing-tasks/backup-overview#full-backup) and [incremental](../../server/ongoing-tasks/backup-overview#incremental-backup) backups. 
+
+   * During a database restore, indexes must re-scan the dataset according to their saved definitions.  
+     This can be time consuming in large datasets.  
+#### Snapshot  
   A snapshot is a binary image of the database contents, full indexes, and [additional data](../../server/ongoing-tasks/backup-overview#backup-contents) 
   at a given point in time.  
-   * Complete indexes are saved, which reduces restoration time but increases data transferred during backups.
-   * Cannot do [incremental backups](../../server/ongoing-tasks/backup-overview#backup-scope:-full-or-incremental) 
-     (the changes made since the last backup) with Snapshot because it is a complete image. 
+
+   * Restoration time is reduced because no re-indexing is needed, but more data is transferred during backups.  
+   * [Incremental Snapshot backups](../../server/ongoing-tasks/backup-overview#backup-scope:-full-or-incremental) 
+     (the changes made since the last backup) **do not incrementally update indexes or change vector data** after the initial complete Snapshot image. 
   {NOTE: }
   Snapshots are only available for _Enterprise subscribers_.  
   {NOTE/}
@@ -54,26 +58,25 @@ There are two backup types: [Logical-backup](../../client-api/operations/mainten
 
 Backed-up data includes both database-level and cluster-level contents, as detailed below.  
 
-| Database-level data | Notes |
-|---- | -------|
-| Documents | |
-| Attachments | |
-| Revisions | |
-| Counters | |
-| Time-Series | |
-| Change Vector data | Full Snapshots save Change Vector data. Restoring from a Logical Backup or Incremental Snapshot causes Change Vector data to restart.|
-| Tombstones | |
-| Conflicts | |
+| Database-level data | [Logical Backup](../../server/ongoing-tasks/backup-overview#logical-backup) | [Snapshot](../../server/ongoing-tasks/backup-overview#snapshot) |
+|---- | - | - |
+| [Documents](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling) | ✔ | ✔ |
+| [Attachments](../../document-extensions/attachments/what-are-attachments) | ✔ | ✔ |
+| [Counters](../../document-extensions/counters/overview) | ✔ | ✔ |
+| [Time-Series](../../document-extensions/timeseries/overview) | ✔ | ✔ |
+| [Change Vector data](../../server/clustering/replication/change-vector#after-restoring-a-database-from-backup) | Change Vector ETags restart to their original values | ✔ |
+| [Tombstones](../../glossary/tombstone) | ✔ | ✔ |
+| [Conflicts](../../server/clustering/replication/replication-conflicts) | ✔ | ✔ |
 
 
-| Cluster-level data | Notes |
-|---- | -------|
-| Database Record | |
-| Compare-exchange values | |
-| Identities | |
-| Indexes | Snapshots: Complete Indexes,  Logical-Backups: Index definitions only |
-| Ongoing Tasks configuration | Logical-backups & Snapshots |
-| Subscriptions | |
+| Cluster-level data | [Logical Backup](../../server/ongoing-tasks/backup-overview#logical-backup) | [Snapshot](../../server/ongoing-tasks/backup-overview#snapshot) |
+|---- | - | - |
+| [Database Record](../../studio/database/settings/database-record) | ✔ | ✔ |
+| [Compare-exchange values](../../client-api/operations/compare-exchange/overview) | ✔ | ✔ |
+| [Identities](../../client-api/document-identifiers/working-with-document-identifiers#identities) | ✔ | ✔ |
+| [Indexes](../../indexes/creating-and-deploying) | Index definitions are saved and used to rebuild indexes during database restoration | ✔ |
+| [Ongoing Tasks configuration](../../server/ongoing-tasks/general-info) | ✔ | ✔ |
+| [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions) | ✔ | ✔ |
 
 {PANEL/}
 
@@ -81,12 +84,14 @@ Backed-up data includes both database-level and cluster-level contents, as detai
 
 You can set the Backup task to create either **full** or **incremental** backups during its periodical executions.  
 
-* **Full Backup**  
+#### **Full Backup**  
   A full backup contains **all** current database contents and configuration.  
+
   * The creation of a full-backup file normally **takes longer** and **requires more storage space** than the creation of an incremental-backup file.  
 
-* **Incremental Backup**  
+#### **Incremental Backup**  
   An incremental backup contains only **the difference** between the current database data and the last backed-up data.  
+
   * An incremental-backup file is normally **faster to create** and **smaller** than a full-backup file.  
   * When an incremental-backup task is executed, it checks for the existence of a previous backup file.  
     If such a file doesn't exist, the first backup created will be a full backup.  

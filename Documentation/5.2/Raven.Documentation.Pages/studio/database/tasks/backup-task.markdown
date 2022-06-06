@@ -17,7 +17,7 @@
 * A backup is _not equivalent_ to replicating your data, as explained below in 
   [Backup -vs- Replication](../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)  
 
-* To see what data different backup types save, see the [backup overview article](../../../server/ongoing-tasks/backup-overview).
+* To check what data different backup types save, see the [backup overview article](../../../server/ongoing-tasks/backup-overview).
 
 * For a complete explanation of how backups work and a discussion of which options are best suited for different scenarios, see the [Backups and restores](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/17-backups-and-restores) chapter of the "Inside RavenDB" book.
 
