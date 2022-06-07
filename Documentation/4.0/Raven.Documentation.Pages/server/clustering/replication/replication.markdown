@@ -48,7 +48,8 @@ When a node goes down, the other nodes take over normal data updates.
 
 When it comes back online, it will automatically be updated by the other nodes with any changes made while it was down.  
 
-These changes will then trigger the ongoing tasks that it is responsible for, such as ETL or Backups, to be consistent with the updated data.
+These changes will then trigger the ongoing tasks that the now-refreshed node is responsible for, 
+such as indexing, ETL or Backups, to further process the updated data.
 
 {INFO: Why clusters should have at least 3 nodes} 
 
@@ -57,8 +58,8 @@ goes down, having at least two running nodes will maintain high availability and
 third node will be updated properly via replication when it is back online.  
 
 To ensure consistency across the cluster, [cluster-wide transactions](../../../server/clustering/cluster-transactions) 
-work most efficiently with odd numbers of nodes (3, 5, 7...) because they must get a transaction confirmation 
-from a majority of the nodes.  
+work most efficiently with odd numbers of nodes (3, 5, 7...) because they must get confirmations 
+from a majority of the nodes to complete every transaction.  
 If one goes down temporarily, the cluster must have at least 2 functional nodes to complete cluster-wide transactions.  
 {INFO/}
 
@@ -74,7 +75,8 @@ Each replication process has a _source_, _destination_, and a last confirmed `ET
 The data is sent in batches. When the _destination_ confirms getting the data, the last accepted `ETag` is then advanced and the next batch of data is sent. 
 
 {NOTE: Replication Failure} 
-In case of failure it will re-start with the [Initial Handshake Procedure](../../../server/clustering/replication/advanced-replication), which will make sure we will start replicating from the last accepted `ETag`.
+In case of failure, it will re-start with the [Initial Handshake Procedure](../../../server/clustering/replication/advanced-replication), 
+which will make sure we will start replicating from the last accepted `ETag`.
 {NOTE/}
 
 {PANEL/}
@@ -87,7 +89,7 @@ The boundary of a transaction is extended across multiple nodes.
 If there are several documents in the same transaction they will be sent in the same replication 
 batch to keep the data consistent.  
 
-However this doesn't always ensure the data consistency, since the same document can be modified in a different 
+However, this doesn't always ensure the data consistency since the same document can be modified in a different 
 transaction and be sent in a different batch.  
 
 ### Replication consistency can be achieved by -  
@@ -95,7 +97,7 @@ transaction and be sent in a different batch.
 * Using [Write Assurance](../../../client-api/session/saving-changes#waiting-for-replication---write-assurance).  
 * Not changing the default single-node-responsibility for writes and reads on each database. For example, node A can be responsible for writes on a database called 
   "Receipts", while node B can be responsible for "CustomerInformation", and so on.
-  By default, one node is responsible for all reads and writes.
+  By default, one node is responsible for all reads and writes on any database.
   You can configure [load balancing](../../../client-api/session/configuration/use-session-context-for-load-balancing) 
   to fine-tune the settings to your needs.
      * Learn more about [Scaling Distributed Work In RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/7-scaling-distributed-work-in-ravendb) 
