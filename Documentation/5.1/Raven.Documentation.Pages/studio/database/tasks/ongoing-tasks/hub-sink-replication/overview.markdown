@@ -118,7 +118,7 @@ can be useful in numerous cases, e.g. -
     * [Conflict resolver definitions](../../../../server/clustering/replication/replication-conflicts#conflict-resolution-script)  
     * [Compare-Exchange](../../../../client-api/operations/compare-exchange/overview)
     * [Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions)
-    * [Identities](../../server/kb/document-identifier-generation#identity)  
+    * [Identities](../../server/kb/document-identifier-generation#strategy--3)  
     * Ongoing tasks
       * [ETL](../../../../server/ongoing-tasks/etl/basics)
       * [Backup](../../../../studio/database/tasks/backup-task)
