@@ -76,7 +76,7 @@
 
 * If Incremental Snapshot backups are used: 
    * The first backup will be a full Snapshot, but the incremental backups, 
-     like Logical backup types, will not update indexes or [change vectors](../../../../server/clustering/replication/change-vector).   
+     like Logical backup types, are backed-up in JSON files. Therefore they will not update indexes or [change vectors](../../../../server/clustering/replication/change-vector).   
    * Document data will be up-to-date, but restoring from an 
      Incremental Snapshot will still require some re-indexing and the change vectors will also be affected. 
 

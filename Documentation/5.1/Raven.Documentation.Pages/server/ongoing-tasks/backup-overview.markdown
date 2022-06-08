@@ -8,15 +8,16 @@
 
 * The two principal reasons for backing up your database are -  
    * **Securing data** in case catastrophe strikes.  
-   * **Freezing data in chosen points-in-time** to revert to retain access to it in various stages of its existence/development.  
+   * **Freezing data in chosen points-in-time** to retain access to it in various stages of its existence/development.  
 
 * RavenDB's Backup is an **Ongoing task**.  
    * Routinely backing up your data is a fundamental aspect of your database maintenance.  
-     Backup is therefore provided not as a one-time operation, but as an  [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) 
+     Backup is therefore provided not as a one-time operation, but as an [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) 
      that runs in the background.  
      It is configured once and then executed periodically according to the defined schedule.  
 
-* You can create and configure backup tasks using the [Client API](../../client-api/operations/maintenance/backup/backup) or [Studio](../../studio/database/tasks/backup-task).
+* You can create and configure backup tasks using the [Client API](../../client-api/operations/maintenance/backup/backup) or 
+  in [Studio](../../studio/database/tasks/backup-task) navigate from **Tasks** -> **Backups** -> **Create a Periodic Backup**.
 
 * In this page:  
   * [Backup Type](../../server/ongoing-tasks/backup-overview#backup-type)  
@@ -39,7 +40,7 @@ There are two backup types: [Logical-backup](../../client-api/operations/mainten
   A logical backup is a compressed JSON dump of database contents, including documents, index definitions, and [additional data](../../server/ongoing-tasks/backup-overview#backup-contents)
   that can be stored in [full](../../server/ongoing-tasks/backup-overview#full-backup) and [incremental](../../server/ongoing-tasks/backup-overview#incremental-backup) backups. 
 
-   * During a database restore, indexes must re-scan the dataset according to their saved definitions.  
+   * After a database restore, indexes must re-scan the dataset according to the backed up definitions.  
      This can be time consuming in large datasets.  
 #### Snapshot  
   A snapshot is a binary image of the database contents, full indexes, and [additional data](../../server/ongoing-tasks/backup-overview#backup-contents) 
