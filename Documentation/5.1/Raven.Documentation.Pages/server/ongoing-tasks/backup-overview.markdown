@@ -64,7 +64,7 @@ Backed-up data includes both database-level and cluster-level contents, as detai
 | [Attachments](../../document-extensions/attachments/what-are-attachments) | ✔ | ✔ |
 | [Counters](../../document-extensions/counters/overview) | ✔ | ✔ |
 | [Time-Series](../../document-extensions/timeseries/overview) | ✔ | ✔ |
-| [Change Vector data](../../server/clustering/replication/change-vector#after-restoring-a-database-from-backup) | Change Vector ETags renew to their original values | ✔ |
+| [Change Vector data](../../server/clustering/replication/change-vector#after-restoring-a-database-from-backup) | Change Vector ETags renew to their original values upon restore | ✔ |
 | [Tombstones](../../glossary/tombstone) | ✔ | ✔ |
 | [Conflicts](../../server/clustering/replication/replication-conflicts) | ✔ | ✔ |
 
