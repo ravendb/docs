@@ -72,7 +72,7 @@
    * The first backup will be a full Snapshot.
    * The following backups will be incremental. 
    * The [incremental backups](../../../../client-api/operations/maintenance/backup/backup#incremental-backup) 
-     will be kept in [JSON format](../../../../client-api/operations/maintenance/backup/backup#incremental-backup).
+     will be kept in JSON format.
 
 
 * Code Sample:  
