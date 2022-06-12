@@ -40,7 +40,7 @@ There are two backup types: [Logical-backup](../../client-api/operations/mainten
   A logical backup is a compressed JSON dump of database contents, including documents, index definitions, and [additional data](../../server/ongoing-tasks/backup-overview#backup-contents)
   that can be stored in [full](../../server/ongoing-tasks/backup-overview#full-backup) and [incremental](../../server/ongoing-tasks/backup-overview#incremental-backup) backups. 
 
-   * After a database restore, indexes must re-scan the dataset according to the backed up definitions.  
+   * After a database restore, the dataset is re-indexed by the backed up index definitions.  
      This can be time consuming in large datasets.  
 #### Snapshot  
   A snapshot is a binary image of the database contents, full indexes, and [additional data](../../server/ongoing-tasks/backup-overview#backup-contents) 
