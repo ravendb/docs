@@ -74,11 +74,12 @@
 
 * Snapshot size is typically **larger** than that of a logical backup.  
 
-* If Incremental Snapshot backups are used: 
-   * The first backup will be a full Snapshot, but the incremental backups, 
-     like Logical backup types, are backed-up in JSON files. Therefore they will not update indexes or [change vectors](../../../../server/clustering/replication/change-vector).   
+* If Incremental backups are created for a snapshot:: 
+   * The first backup will be a full Snapshot.
+     The following incremental backups will be kept in [JSON format](../../../../client-api/operations/maintenance/backup/backup#incremental-backup). Therefore they will not update indexes or [change vectors](../../../../server/clustering/replication/change-vector).   
    * Document data will be up-to-date, but restoring from an 
-     Incremental Snapshot will still require some re-indexing and the change vectors will also be affected. 
+     Incremental Snapshot will still require some re-indexing and the [change vectors](../../../../server/clustering/replication/change-vector)
+     will be recreated upon restore. 
 
 * Code Sample:  
   {CODE backup_type_snapshot@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
@@ -129,9 +130,15 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
 
 ####Incremental-Backup
 
-* **File Format**  
+* **File Format and Notes About Contents**  
   An incremental-backup file is **always in JSON format**. 
-  It is so even when the full-backup it supplements is a binary snapshot.  
+  It is so even when the full-backup it is associated with is a binary snapshot.  
+  * An incremental backup stores index definitions (not full indexes).
+    After the backup is restored, the dataset is re-indexed by the index definitions.
+     * This initial re-indexing can be time consuming on large datasets.
+  * An incremental backup doesn't store [change vectors](../../../../server/clustering/replication/change-vector), 
+    which are used for concurrency control.
+
 
 * **Task Ownership**  
   The ownership of an incremental-backup task is granted dynamically by the cluster.  
