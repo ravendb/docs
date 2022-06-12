@@ -73,13 +73,12 @@
 
 * Snapshot size is typically **larger** than that of a logical backup.  
 
-* If Incremental backups are created for a snapshot:: 
+* If Incremental backups are created for a snapshot-type backup: 
    * The first backup will be a full Snapshot.
-     The following incremental backups will be kept in [JSON format](../../../../client-api/operations/maintenance/backup/backup#incremental-backup). Therefore they will not update indexes or [change vectors](../../../../server/clustering/replication/change-vector).   
-   * Document data will be up-to-date, but restoring from an 
-     Incremental Snapshot will still require some re-indexing and the [change vectors](../../../../server/clustering/replication/change-vector), 
-     which are used for concurrency control,
-     will be recreated from the beginning upon restore. 
+   * The following backups will be incremental. 
+   * The [incremental backups](../../../../client-api/operations/maintenance/backup/backup#incremental-backup) 
+     will be kept in [JSON format](../../../../client-api/operations/maintenance/backup/backup#incremental-backup)
+     but will not include updated index or change vector data..  
 
 * Code Sample:  
   {CODE backup_type_snapshot@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
@@ -131,13 +130,14 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
 ####Incremental-Backup
 
 * **File Format and Notes About Contents**  
-  An incremental-backup file is **always in JSON format**. 
-  It is so even when the full-backup it is associated with is a binary snapshot.  
+  * An incremental-backup file is **always in JSON format**. 
+    It is so even when the full-backup it is associated with is a binary snapshot.  
   * An incremental backup stores index definitions (not full indexes).  
     After the backup is restored, the dataset is re-indexed according to the index definitions.
-     * This initial re-indexing can be time-consuming on large datasets.
-  * An incremental backup doesn't store [change vectors](../../../../server/clustering/replication/change-vector), 
-    which are used for concurrency control.
+    {NOTE: }
+    This initial re-indexing can be time-consuming on large datasets.
+    {NOTE/}
+  * An incremental backup doesn't store [change vectors](../../../../server/clustering/replication/change-vector).
 
 
 * **Task Ownership**  

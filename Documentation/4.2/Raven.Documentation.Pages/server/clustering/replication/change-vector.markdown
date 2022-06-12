@@ -52,7 +52,7 @@ We would say that `X` <> `Y` (no order or conflict) if `X` has an entry with a h
 
 {PANEL/}
 
-## Concurrency Control & Change Vectors
+{PANEL: Concurrency Control & Change Vectors}
 
 RavenDB defines some simple rules to determine how to handle concurrent operations on the same document across the cluster. 
 It uses the document's change vector.
@@ -76,6 +76,8 @@ but can also be very useful for clients.
 
 In particular, the change vector is _guaranteed_ to change whenever the document changes and can be used as part of optimistic concurrency checks. A document modification can all specify an expected change vector for a document (with an empty change vector signifying that the document does not exists). In such a case, all operations in the 
 transaction will be aborted and no changes will be applied to any of the documents modified in the transaction.
+
+{PANEL/}
 
 {PANEL: Change Vector Comparisons}
 
