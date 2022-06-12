@@ -73,7 +73,6 @@
    * The following backups will be incremental. 
    * The [incremental backups](../../../../client-api/operations/maintenance/backup/backup#incremental-backup) 
      will be kept in [JSON format](../../../../client-api/operations/maintenance/backup/backup#incremental-backup).
-   * The incremental backups will not include updated index or change vector data.  
 
 
 * Code Sample:  
