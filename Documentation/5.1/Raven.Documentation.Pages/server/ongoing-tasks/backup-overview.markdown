@@ -65,7 +65,7 @@ Backed-up data includes both database-level and cluster-level contents, as detai
 | [Attachments](../../document-extensions/attachments/what-are-attachments) | ✔ | ✔ |
 | [Counters](../../document-extensions/counters/overview) | ✔ | ✔ |
 | [Time-Series](../../document-extensions/timeseries/overview) | ✔ | ✔ |
-| [Change Vector data](../../server/clustering/replication/change-vector#after-restoring-a-database-from-backup) | Change Vectors are not preserved, thus recreated upon restore | ✔ |
+| [Change Vector data](../../server/clustering/replication/change-vector#after-restoring-a-database-from-backup) | Change Vectors are not preserved, thus recreated from the beginning upon restore | ✔ |
 | [Tombstones](../../glossary/tombstone) | ✔ | ✔ |
 | [Conflicts](../../server/clustering/replication/replication-conflicts) | ✔ | ✔ |
 

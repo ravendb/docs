@@ -36,13 +36,12 @@
 
 * During the restoration, RavenDB -  
    * Re-inserts all data into the database.  
-   * Re-indexes the data from restored definitions.  
-     To save space, Logical Backup stores index definitions only, 
-     During restoration, the dataset is scanned and indexed according to the definitions.
+   * Inserts the saved index definitions. To save space, Logical Backup stores index definitions only.  
+     After restoration, the dataset is scanned and indexed according to the definitions.
 
 * See [backup contents](../../../../server/ongoing-tasks/backup-overview#backup-contents).
 
-* Restoration Time is, therefore, **slower** than when restoring from a Snapshot.  
+* Restoration time is therefore **slower** than when restoring from a Snapshot.  
 
 * Backup file size is **significantly smaller** than that of a Snapshot.
 
@@ -58,11 +57,11 @@
 ####Snapshot
 
 * A Snapshot is a compressed binary duplication of the full database structure. 
-  This includes the data file and the journals at a given point-in-time.  
+  This includes the data file and the journals at a given point in time.  
   Therefore it includes fully built indexes and ongoing tasks.  
   See [file structure](../../../../server/storage/directory-structure#storage--directory-structure) for more info.
 
-* Snapshot-backups are available only for **Enterprise subscribers**.  
+* Snapshot backups are available only for **Enterprise subscribers**.  
 
 * During restoration -
    * Re-inserting data into the database is not required.  
@@ -78,8 +77,9 @@
    * The first backup will be a full Snapshot.
      The following incremental backups will be kept in [JSON format](../../../../client-api/operations/maintenance/backup/backup#incremental-backup). Therefore they will not update indexes or [change vectors](../../../../server/clustering/replication/change-vector).   
    * Document data will be up-to-date, but restoring from an 
-     Incremental Snapshot will still require some re-indexing and the [change vectors](../../../../server/clustering/replication/change-vector)
-     will be recreated upon restore. 
+     Incremental Snapshot will still require some re-indexing and the [change vectors](../../../../server/clustering/replication/change-vector), 
+     which are used for concurrency control,
+     will be recreated from the beginning upon restore. 
 
 * Code Sample:  
   {CODE backup_type_snapshot@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
@@ -89,9 +89,9 @@
 ####Basic Comparison Between a Logical-Backup and a Snapshot:
 
   | Backup Type | Stored Format | Restoration speed | Size |
-  | ------ | ------ | ------ | - |
+  | ------ | ------ | --- | --- |
   | Snapshot | Compressed Binary Image | Fast | Larger than a logical-backup |
-  | Logical backup |  Compressed Textual Data | Slow | Smaller than a Snapshot |
+  | Logical backup |  Compressed Textual Data - JSON | Slow | Smaller than a Snapshot |
 
 {NOTE: Make sure your server has access to the local backup path.}
 Verify that RavenDB is allowed to store files in the path set in `LocalSettings.FolderPath`.  
@@ -133,9 +133,9 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
 * **File Format and Notes About Contents**  
   An incremental-backup file is **always in JSON format**. 
   It is so even when the full-backup it is associated with is a binary snapshot.  
-  * An incremental backup stores index definitions (not full indexes).
-    After the backup is restored, the dataset is re-indexed by the index definitions.
-     * This initial re-indexing can be time consuming on large datasets.
+  * An incremental backup stores index definitions (not full indexes).  
+    After the backup is restored, the dataset is re-indexed according to the index definitions.
+     * This initial re-indexing can be time-consuming on large datasets.
   * An incremental backup doesn't store [change vectors](../../../../server/clustering/replication/change-vector), 
     which are used for concurrency control.
 
