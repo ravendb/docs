@@ -14,7 +14,7 @@
         but still updates the others for failover purposes.  
       * Also, geo-distributed databases use [External Replication](../../../server/ongoing-tasks/external-replication) 
         or [Hub/Sink Replication](../../../server/ongoing-tasks/hub-sink-replication) to distribute work and reduce latency 
-        but should maintain [consistency boundaries](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system).  
+        but should maintain [consistency boundaries](../../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters). 
       * Read more about multiple geo-distributed clusters in [Inside RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/7-scaling-distributed-work-in-ravendb#multiple-clusters-multiple-data-centers).
 
 * The rest of this article will focus on **single-cluster replication**.  
@@ -98,8 +98,8 @@ transaction and be sent in a different batch.
 * Using [Write Assurance](../../../client-api/session/saving-changes#waiting-for-replication---write-assurance).  
 * Not disabling the default single-node-responsibility for writes and reads on each database. For example, node A 
   can be responsible for reads/writes on a database called 
-  "Receipts", while node B can be responsible for "CustomerInformation", and so on.
-  By default, one node is responsible for all reads and writes on any database.
+  "Receipts", while node B can be responsible for "CustomerInformation", and so on.  
+  By default, one node is responsible for all reads and writes on any database.  
   You can configure [load balancing](../../../client-api/session/configuration/use-session-context-for-load-balancing) 
   to fine-tune the settings to your needs.
 * Learn more about remaining consistent **in a geo-distributed system** in [Scaling Distributed Work In RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/7-scaling-distributed-work-in-ravendb) 

@@ -4,10 +4,10 @@
 {NOTE: }
 
 * Schedule an **External Replication Task** in order to have a _live_ replica of your data in another database:  
-  * In a separate RavenDB cluster [on local machines](../../../../start/getting-started) or [a cloud instance](../../../../cloud/cloud-overview), 
+  * In a separate RavenDB cluster [on local machines](../../start/getting-started) or [a cloud instance](../../../../cloud/cloud-overview), 
     which can be used as a failover if the source cluster is down.  
     Note: External Replication task **does _not_ create a backup** of your data and indexes.  
-    See more in [Backup -vs- Replication](../../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
+    See more in [Backup -vs- Replication](../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
   * In the same cluster if you want a live copy that won't be a client failover target.
 
 * "Live" means that the replica is up to date at all times. Any changes in the source database will be reflected in the replica once they occur.  
@@ -21,6 +21,7 @@
 In this page: 
 
 * [General Information about External Replication Task](../../server/ongoing-tasks/external-replication#general-information-about-external-replication-task)
+* [Maintaining Consistency Boundaries Between Clusters](../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters)
 * [Code Sample](../../server/ongoing-tasks/external-replication#code-sample)
 * [Step-by-Step Guide](../../server/ongoing-tasks/external-replication#step-by-step-guide)
 * [Definition](../../server/ongoing-tasks/external-replication#definition)  
@@ -63,6 +64,25 @@ To learn more, see [Data Ownership in a Distributed System](https://ayende.com/b
   * Two databases that have an External Replication task defined between them will detect and resolve document 
     [conflicts](../../server/clustering/replication/replication-conflicts) according to each database conflict resolution policy.  
   * It is recommended to have the same [policy configuration](../../server/clustering/replication/replication-conflicts#configuring-conflict-resolution-using-the-client) on both the source and the target databases.  
+
+{PANEL/}
+
+{PANEL: Maintaining Consistency Boundaries Between Clusters}
+
+[Consistency boundaries](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system)
+between clusters are crucial to preserve data integrity and model an efficient global system. The goal is to ensure that two clusters won't write on the 
+same document simultaneously and then replicate, which would cause conflicts. 
+
+{INFO: To maintain consistency boundaries between clusters}
+You can either:
+
+* Ensure that the node-tags are all unique. 
+   * e.g. (NYC-nodes A,B,C), (LDN-nodes D,E,F)  
+* Include the cluster names in the [identifiers](../../client-api/document-identifiers/working-with-document-identifiers). 
+   * e.g. (NYC/Customers/12345), (LDN/Customers/12345)  
+* Use a Globally Unique Identifier ([GUID](../../server/kb/document-identifier-generation#guid)).  
+* Use a unique field such as an email address.  
+{INFO/}
 
 {PANEL/}
 
