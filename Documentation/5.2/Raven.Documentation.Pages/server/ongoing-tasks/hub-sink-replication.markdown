@@ -94,8 +94,6 @@ between clusters are crucial to preserve data integrity and model an efficient g
 {INFO: To maintain consistency boundaries between clusters}
 You can establish document uniqueness by:
 
-* Ensuring that the node-tags are all unique. 
-   * e.g. (NYC-nodes A,B,C), (LDN-nodes D,E,F)  
 * Including the cluster names in the [identifiers](../../client-api/document-identifiers/working-with-document-identifiers). 
    * e.g. (NYC/Customers/12345), (LDN/Customers/12345)  
 * Using a Globally Unique Identifier ([GUID](../../server/kb/document-identifier-generation#guid)).  
