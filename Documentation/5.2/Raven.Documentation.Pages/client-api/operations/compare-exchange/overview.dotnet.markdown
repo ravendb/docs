@@ -5,6 +5,15 @@
 
 * **Compare-exchange** items are cluster-wide key/value pairs where the key is a unique identifier. 
 
+* **To Ensure ACID Transactions** RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
+  in cluster-wide transactions. When using cluster-wide transactions, you do not need to create or maintain compare-exchange items to preserve consistency.  
+  * Cluster-wide transactions present a [performance cost](../../../client-api/operations/compare-exchange/overview#performance-cost-of-cluster-wide-sessions) 
+    when compared to non-cluster-wide transactions. 
+    They prioritize consistency over performance to ensure ACIDity across the cluster.  
+
+* To [maintain consistency between globally distributed clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-an-external-cluster), 
+  documents created in each cluster should be owned and operated only by that cluster. 
+
 * Each compare-exchange item contains: 
   * A key which is a unique string across the cluster.  
   * A value which can be numbers, strings, arrays, or objects.  
@@ -18,13 +27,9 @@
   * The compare-exchange item is distributed to all nodes in a [cluster-wide transaction](../../../server/clustering/cluster-transactions)
     so that a consistent, unique key is guaranteed cluster-wide.  
 
-* **To Ensure ACID Transactions** RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
-  in cluster-wide transactions.  
-  * Cluster-wide transactions present a [performance cost](../../../client-api/operations/compare-exchange/overview#performance-cost-of-cluster-wide-sessions) when compared to non-cluster-wide transactions. 
-    They prioritize consistency over performance to ensure ACIDity across the cluster.  
-
-*In this page:  
+* In this page:  
  * [Using Compare-Exchange Items](../../../client-api/operations/compare-exchange/overview#using-compare-exchange-items)  
+ * [Why Compare-Exchange Items are Not Replicated to an External Cluster](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-an-external-cluster)  
  * [Transaction Scope for Compare-Exchange Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)  
  * [Creating a Key](../../../client-api/operations/compare-exchange/overview#creating-a-key)  
  * [Updating a Key](../../../client-api/operations/compare-exchange/overview#updating-a-key)  
@@ -42,7 +47,6 @@
 * Compare-exchange items can be used to coordinate work between sessions that are 
   trying to modify a shared resource (such as a document) at the same time.  
 
-  
 * You can use compare-exchange items in various situations to protect or reserve a resource.  
   (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).
   * If you create a compare-exchange key/value pair, you can decide what actions to implement when the Raft index increments. 
@@ -74,7 +78,8 @@
 
 
 {INFO: }
-####Performance cost of cluster-wide sessions  
+#### Performance cost of cluster-wide sessions  
+
 Cluster-wide transactions are more expensive than node-local transactions due to Raft concensus checks.  
 People prefer a cluster-wide transaction when they prioritize consistency over performance and availability.  
 It ensures ACIDity across the cluster.  
@@ -88,6 +93,32 @@ It ensures ACIDity across the cluster.
     * To distribute work, you can set different nodes to be responsible for different sets of data.  
       Learn more in the article [Scaling Distributed Work in RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/7-scaling-distributed-work-in-ravendb). 
 {INFO/}
+
+#### When to use cluster-wide sessions or local-node sessions
+
+Because local-node sessions are consistent by default, and due to the cost of raft concensus checks, we recommend using cluster-wide sessions 
+only for documents where immediate consistency is crucial AND you want every node to be able to read/write.  
+
+Local-node sessions have a default setting that one node is responsible for all reads/writes on a particular database. This ensures consistency. 
+The data is replicated to the other nodes in the database group for failover purposes, but only the responsible node will modify documents.
+
+If you are running on a distributed cluster and have to support transactions running on different nodes, you should use cluster-wide transactions.  
+
+You have the flexibility to program different sessions on the same document store to run cluster-wide or local-node as needed.  
+
+{PANEL/}
+
+{PANEL: Why Compare-Exchange Items are Not Replicated to an External Cluster }
+
+To [prevent consistency conflicts between clusters](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system), 
+each cluster should have sole ownership of documents created by clients that connect to it.  
+
+In geo-distributed systems, to avoid latency problems, a new cluster must be set up in each region.  
+But to achieve consistency, each transaction must achieve a majority concensus amongst the
+involved servers.  Trying to achieve concensus on each transaction between different clusters is unrealistic, 
+especially considering geographic latency.  
+
+One way to ensure consistency between clusters is if [documents created in each cluster are owned and operated only by that cluster](../../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters). 
 
 {PANEL/}
 
@@ -146,6 +177,17 @@ Updating a compare exchange key can be divided into 2 phases:
 
 {PANEL: Example I - Email Address Reservation}  
 
+{NOTE: }
+
+* **To Ensure ACID Transactions** RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
+  in cluster-wide transactions.  
+  There is no need to manually create or maintain Compare-Exchange items to ensure consistency across your cluster.
+
+* [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-an-external-cluster) to preserve consistency between clusters.  
+  In documents where immediate consistency is important, each cluster should be solely responsible for the documents created by it.
+
+{NOTE/}
+
 * Compare Exchange can be used to maintain uniqueness across users' email accounts.  
 
 * First try to reserve a new user email.  
@@ -170,6 +212,17 @@ from Users as s where id() == cmpxchg("emails/ayende@ayende.com")
 {PANEL/}
 
 {PANEL: Example II - Reserve a Shared Resource}  
+
+{NOTE: }
+
+* **To Ensure ACID Transactions** RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
+  in cluster-wide transactions.  
+  There is no need to manually create or maintain Compare-Exchange items to ensure consistency across your cluster.
+
+* [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-an-external-cluster) to preserve consistency between clusters.  
+  In documents where immediate consistency is important, each cluster should be solely responsible for the documents created by it.
+
+{NOTE/}
 
 * Use compare exchange for a shared resource reservation.  
 
