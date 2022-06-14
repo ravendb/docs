@@ -68,11 +68,11 @@
 
 * Snapshot size is typically **larger** than that of a logical backup.  
 
-* If Incremental backups are created for a snapshot-type backup: 
+* If Incremental backups are created for a Snapshot-type backup: 
    * The first backup will be a full Snapshot.
-   * The following backups will be incremental. 
-   * The [incremental backups](../../../../client-api/operations/maintenance/backup/backup#incremental-backup) 
-     will be kept in JSON format.
+   * The following backups will be Incremental. 
+   * [Incremental backups](../../../../client-api/operations/maintenance/backup/backup#incremental-backup) 
+     have different storage contents than Snapshots. 
 
 
 * Code Sample:  
