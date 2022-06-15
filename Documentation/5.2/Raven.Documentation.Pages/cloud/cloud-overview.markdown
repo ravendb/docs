@@ -296,6 +296,7 @@ RavenDB sets default configurations to be the safest and most efficient in most 
 
 If you want to change configurations, they must be set in Studio for cloud instances. 
 
+* [Database Configurations](../studio/database/settings/database-settings) (versions 5.2 and up)
 * [Indexing Configurations](../studio/database/indexes/create-map-index#configuration)
 
 {NOTE/}
@@ -309,7 +310,7 @@ If you want to change configurations, they must be set in Studio for cloud insta
 The factors to consider if adjusting the default max indexing batch size:
 
 * [Size of documents](https://ravendb.net/articles/dealing-with-large-documents-100-mb#:~:text=RavenDB%20can%20handle%20large%20documents,isn't%20a%20practical%20one.)
-* Complexity of calculations that static indexes do
+* [Complexity of calculations](../studio/database/indexes/indexing-performance#common-indexing-issues) that static indexes do
 * [IOPS number](../cloud/cloud-instances#a-production-cloud-cluster) (IOPS - Input/Output Operations Per Second - can be adjusted according to your neeeds.)
   !["Find IOPS Number"](images\configuration-see-iops.png "Find IOPS Number")  
    1. **Products**  
