@@ -109,10 +109,12 @@ If you are running on a [distributed cluster](https://ravendb.net/learn/inside-r
 and have to support ACID transactions where all nodes must have read/write permission, 
 you should use cluster-wide transactions. Be aware that doing so will prioritize consistency over performance.
 
+{NOTE: }
 You have the flexibility to program different sessions on the same document store so that you can run cluster-wide or node-local as needed.  
 There are also tools that provide flexibility such as [revisions](../../../document-extensions/revisions/overview) 
 and the ability to [model your documents](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling) 
 so that conflicts are prevented.
+{NOTE/}
 
 {PANEL/}
 
