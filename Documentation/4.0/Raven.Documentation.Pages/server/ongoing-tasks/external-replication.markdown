@@ -3,8 +3,8 @@
 
 {INFO: }
 
-* [Single cluster replication](../../server/clustering/replication/replication) is default between nodes in a cluster.  
-  Replication between different clusters is called **External Replication**. 
+* [Within-cluster replication](../../server/clustering/replication/replication) is default between nodes in a database group.  
+  Replication between different clusters or between two databases in the same cluster is called **External Replication**. 
 
 * In this page: 
    * [About External Replication](../../server/ongoing-tasks/external-replication#about-external-replication)

@@ -7,32 +7,29 @@
 
 * Replication can be used:
    * As a failover in case a server goes down.  
-   * To distribute work across servers.  
-      * To [maintain consistency](../../../server/clustering/replication/replication#maintaining-consistency-between-nodes), 
-        RavenDB uses single-node responsibility for writes and reads as default in non-cluster-wide transactions.  
-      * Distribution of work guarantees consistency when each node is responsible for a different database, 
-        but still updates the others for failover purposes.  
-      * Also, geo-distributed databases use [External Replication](../../../server/ongoing-tasks/external-replication) 
-        or [Hub/Sink Replication](../../../server/ongoing-tasks/hub-sink-replication) to distribute work and reduce latency 
-        but should maintain [consistency boundaries](../../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters). 
+   * To distribute work across nodes or clusters.
+      * Geo-distributed databases use one-way [External Replication](../../../server/ongoing-tasks/external-replication) 
+        or two-way [Hub/Sink Replication](../../../server/ongoing-tasks/hub-sink-replication) between different clusters 
+        to distribute work and reduce latency but should maintain [consistency boundaries](../../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters). 
       * Read more about multiple geo-distributed clusters in [Inside RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/7-scaling-distributed-work-in-ravendb#multiple-clusters-multiple-data-centers).
 
-* The rest of this article will focus on **single-cluster replication**.  
-  If you want to learn more about **replication between clusters**, see the articles about one-way [External Replication](../../../server/ongoing-tasks/external-replication) 
-  and two-way [Hub/Sink Replication](../../../server/ongoing-tasks/hub-sink-replication) where various filters can also be set.  
+* The rest of this article will focus on **within-cluster replication** in a single cluster.  
 
 * In this page: 
-   * [About Single-Cluster Replication](../../../server/clustering/replication/replication#about-single-cluster-replication)
+   * [About Within-Cluster Replication](../../../server/clustering/replication/replication#about-within-cluster-replication)
+      * [What is replicated](../../../server/clustering/replication/replication#how-replication-works)
+      * [To distribute work across nodes](../../../server/clustering/replication/replication#to-distribute-work-across-nodes)
       * [How Replication works](../../../server/clustering/replication/replication#how-replication-works)
    * [Maintaining Consistency Between Nodes](../../../server/clustering/replication/replication#maintaining-consistency-between-nodes)
 
 {NOTE/}
 
-{PANEL: About Single-Cluster Replication}
+{PANEL: About Within-Cluster Replication}
 
 {NOTE: }
 
-* What is replicated:
+#### What is replicated:
+
    * Documents 
    * Revisions 
    * Attachments 
@@ -41,28 +38,34 @@
 {NOTE/}
 
 Every database created in a cluster has a [Replication Factor](../../../server/clustering/distribution/distributed-database) 
-that sets which nodes will host this database and will keep each other updated via replication. 
+in which you determine how many replicas will exist and will keep each other updated via replication. 
+While creating it, you can also define which nodes will host this database.  
+
+A topology of nodes that host the same database with master-master replication is called a [database group](../../../studio/database/settings/manage-database-group). 
+
+{INFO: }
+#### To distribute work across nodes
+* To [maintain consistency](../../../server/clustering/replication/replication#maintaining-consistency-between-nodes), 
+  a [primary node](../../../client-api/session/configuration/use-session-context-for-load-balancing) is responsible for writes and reads as a default setting.  
+   * You can configure the [ReadBalanceBehavior](../../../client-api/configuration/load-balance-and-failover#conventions-load-balance--failover). 
+   * You can also set session-specific behavior for writes with [UseSessionContext](../../../client-api/session/configuration/use-session-context-for-load-balancing#loadbalancebehavior-usage).
+* Distribution of work guarantees consistency when each node is responsible for a different database, 
+  but still updates the others for failover purposes.  
+  e.g. - There won't be conflicts if only node A writes on the "Customers" database, while only node B writes on the "Invoices" database. 
+{INFO/}
 
 #### When nodes are down
 
 When a node goes down, the other nodes take over normal data updates.  
 
-When it comes back online, it will automatically be updated by the other nodes with any changes made while it was down.  
+When it comes back online, it will automatically be updated by the responsible node with any changes made while it was down.  
 
-These changes will then trigger the ongoing tasks that the now-refreshed node is responsible for, 
+These changes will then trigger the tasks that the now-refreshed node is responsible for, 
 such as indexing, ETL or Backups, to further process the updated data.
 
-{INFO: Why clusters should have at least 3 nodes} 
-
-It is highly recommended to have a cluster of at least 3 nodes on separate machines. If one 
-goes down, having at least two running nodes will maintain high availability and ensure that the 
-third node will be updated properly via replication when it is back online.  
-
-To ensure consistency across the cluster, [cluster-wide transactions](../../../server/clustering/cluster-transactions) 
-work most efficiently with odd numbers of nodes (3, 5, 7...) because they must get confirmations 
-from a majority of the nodes to complete every transaction.  
-If one goes down temporarily, the cluster must have at least 2 functional nodes to complete cluster-wide transactions.  
-{INFO/}
+We highly recommend setting each production database in a [group of 3, 5, or more nodes on separate machines](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/6-ravendb-clusters#an-overview-of-a-ravendb-cluster)
+to ensure [high-availability](https://en.wikipedia.org/wiki/High-availability_cluster), clean [raft-consensus](../../../https://ravendb.net/docs/article-page/5.3/csharp/glossary/raft-algorithm), 
+and enough available nodes to distribute the workload.  
 
 
 ## How Replication works
@@ -96,7 +99,7 @@ transaction and be sent in a different batch.
 ### Replication consistency can be achieved by -  
 
 * Using [Write Assurance](../../../client-api/session/saving-changes#waiting-for-replication---write-assurance).  
-* Not disabling the default single-node-responsibility for writes and reads on each database. For example, node A 
+* Not disabling the default single-node-responsibility for writes and reads. For example, node A 
   can be responsible for reads/writes on a database called 
   "Receipts", while node B can be responsible for "CustomerInformation", and so on.  
   By default, one node is responsible for all reads and writes on any database.  
@@ -134,10 +137,11 @@ transaction and be sent in a different batch.
 
 ## Related Articles  
 
-### Single-Cluster
+### Within-Cluster
 
 - [Replication Conflicts](../../../server/clustering/replication/replication-conflicts)
 - [Change Vector](../../../server/clustering/replication/change-vector)
+- [Load Balancing](../../../client-api/session/configuration/use-session-context-for-load-balancing)
 - [Advanced Replication Topics](../../../server/clustering/replication/advanced-replication)
 - [Using Embedded Instance](../../../server/clustering/replication/replication-and-embedded-instance)
 - [Cluster-Wide Transactions](../../../server/clustering/cluster-transactions)
