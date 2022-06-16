@@ -15,11 +15,11 @@
   documents created in each cluster should be owned and operated only by that cluster. 
 
 * Each compare-exchange item contains: 
-  * A key which is a unique string across the cluster.  
-  * A value which can be numbers, strings, arrays, or objects.  
+  * A key - A unique string across the cluster.  
+  * A value - Can be numbers, strings, arrays, or objects.  
     Any value that can be represented as JSON is valid.
   * Metadata  
-  * Raft index - A version number which is modified on each change.  
+  * Raft index - A version number that is modified on each change.  
     Any change to the value or metadata changes the Raft index.  
 
 * Creating and modifying a compare-exchange item is an atomic, thread-safe [compare-and-swap](https://en.wikipedia.org/wiki/Compare-and-swap) interlocked 
@@ -80,42 +80,50 @@
 {INFO: }
 #### Performance cost of cluster-wide sessions  
 
-Cluster-wide transactions are more expensive than node-local transactions due to Raft concensus checks.  
+Cluster-wide transactions are more expensive than node-local transactions due to Raft consensus checks. 
 People prefer a cluster-wide transaction when they prioritize consistency over performance and availability.  
 It ensures ACIDity across the cluster.  
 
-* One way to protect ACID transactions **without** using cluster-wide sessions is to ensure that one node is responsible for writing on a specific database.  
-    * RavenDB node-local transactions are ACID on the local node, but if two nodes write concurrently on the same document, [conlicts](../../../server/clustering/replication/replication-conflicts)
+* One way to protect ACID transactions **without** using cluster-wide sessions is to ensure that one node 
+  is responsible for writing on a specific database.  
+    * RavenDB node-local transactions are ACID on the local node, but if two nodes write concurrently on the same document, [conflicts](../../../server/clustering/replication/replication-conflicts)
       can occur. 
-    * By default to prevent conflicts, one node is responsible for all reads and writes.  
+    * By default to prevent conflicts, one primary node is responsible for all reads and writes.  
       You can configure [load balancing](../../../client-api/session/configuration/use-session-context-for-load-balancing)
       to fine-tune the settings to your needs.  
     * To distribute work, you can set different nodes to be responsible for different sets of data.  
       Learn more in the article [Scaling Distributed Work in RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/7-scaling-distributed-work-in-ravendb). 
 {INFO/}
 
-#### When to use cluster-wide sessions or local-node sessions
+#### When to use cluster-wide sessions or node-local sessions
 
-Because local-node sessions are consistent by default, and due to the cost of raft concensus checks, we recommend using cluster-wide sessions 
+Because local-node sessions are consistent by default, and due to the cost of raft consensus checks, we recommend using cluster-wide sessions 
 only for documents where immediate consistency is crucial AND you want every node to be able to read/write.  
 
-Local-node sessions have a default setting that one node is responsible for all reads/writes on a particular database. This ensures consistency. 
-The data is replicated to the other nodes in the database group for failover purposes, but only the responsible node will modify documents.
+Local-node sessions have a default setting that one node is responsible for all reads/writes on a particular database. 
+This ensures consistency. The data is replicated to the other nodes in the database group for failover purposes, 
+but only the primary node will modify documents.  
+If the primary node is down, another node will automatically be selected by the [cluster observer](../../../server/clustering/distribution/cluster-observer). 
 
-If you are running on a distributed cluster and have to support transactions running on different nodes, you should use cluster-wide transactions.  
+If you are running on a [distributed cluster](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/6-ravendb-clusters#transaction-atomicity-and-replication) 
+and have to support ACID transactions where all nodes must have read/write permission, 
+you should use cluster-wide transactions. Be aware that doing so will prioritize consistency over performance.
 
-You have the flexibility to program different sessions on the same document store to run cluster-wide or local-node as needed.  
+You have the flexibility to program different sessions on the same document store so that you can run cluster-wide or node-local as needed.  
+There are also tools that provide flexibility such as [revisions](../../../document-extensions/revisions/overview) 
+and the ability to [model your documents](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling) 
+so that conflicts are prevented.
 
 {PANEL/}
 
 {PANEL: Why Compare-Exchange Items are Not Replicated to an External Cluster }
 
-To [prevent consistency conflicts between clusters](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system), 
+To [prevent consistency conflicts between clusters and model an efficient global system](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system), 
 each cluster should have sole ownership of documents created by clients that connect to it.  
 
 In geo-distributed systems, to avoid latency problems, a new cluster must be set up in each region.  
-But to achieve consistency, each transaction must achieve a majority concensus amongst the
-involved servers.  Trying to achieve concensus on each transaction between different clusters is unrealistic, 
+But to achieve consistency, each transaction must achieve a majority consensus amongst the
+involved servers.  Trying to achieve consensus on each transaction between different clusters is unrealistic, 
 especially considering geographic latency.  
 
 One way to ensure consistency between clusters is if [documents created in each cluster are owned and operated only by that cluster](../../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters). 
@@ -130,7 +138,7 @@ to guarantee cluster-wide session ACID transactions.
 
 This article is about non-session-specific compare-exchange operations.
 
-* A non-session specific compare-exchange [operation](../../../client-api/operations/what-are-operations) (described below) 
+* A non-session-specific compare-exchange [operation](../../../client-api/operations/what-are-operations) (described below) 
   is performed on the [document store](../../../client-api/what-is-a-document-store) level.  
   It is therefore not part of the session transactions.  
 
