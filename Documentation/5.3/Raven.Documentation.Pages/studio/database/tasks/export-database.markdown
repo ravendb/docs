@@ -1,6 +1,7 @@
 ﻿# Export Database to a .ravendbdump file
 
 ---
+
 {NOTE: }
 
 * Use the **Export Database** view to export data from your database to a `.ravendbdump` file.  
@@ -37,7 +38,7 @@ and export it to a `.ravendbdump` file.
     * [Compare Exchange](../../../client-api/operations/compare-exchange/overview)  
     * [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)  
     * [Configuration and Ongoing Tasks](../../../studio/database/tasks/import-data/import-from-ravendb#customize-configuration-and-ongoing-tasks)  
-4. **Include Artufucuak Documents**  
+4. **Include Artificial Documents**  
    Enable to export [Artificial Documents](../../../studio/database/indexes/create-map-reduce-index#artificial-documents--vs--regular-documents).  
 5. **Include Conflicts**  
    Enable to export [Conflicts](../../../studio/database/documents/conflicts-view).  
