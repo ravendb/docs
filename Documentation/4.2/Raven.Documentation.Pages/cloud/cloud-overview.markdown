@@ -340,7 +340,7 @@ In this example, 4,096 is larger than 1024, so the maximum batch size will be 4,
 
 Type: `int`  
 MinValue: `128`  
-Configuration Key: Indexing.MapBatchSize  
+Configuration Key: `Indexing.MapBatchSize`  
 Value: Set number of documents per batch.  
 Change [indexing configurations in Studio](../studio/database/indexes/create-map-index#configuration)
 
