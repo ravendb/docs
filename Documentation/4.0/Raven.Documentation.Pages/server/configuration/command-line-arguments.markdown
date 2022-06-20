@@ -17,7 +17,7 @@ Running RavenDB using command line options provides the ability to setup both it
 
 ## Docker
 
-{INFO}
+{INFO: }
 
 If you are interested in hosting the server in a Docker container, please 
 read [our dedicated article](../../start/installation/running-in-docker-container).
