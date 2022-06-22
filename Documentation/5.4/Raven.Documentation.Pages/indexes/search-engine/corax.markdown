@@ -3,28 +3,36 @@
 
 {NOTE: }
 
-* **Corax** is RavenDB's native search engine, introduced in 
-  RavenDB version 5.4 as an in-house searching alternative for Lucene.  
-  Its main role it to query the database by indexes and user queries.  
+* **Corax** is RavenDB's native search engine, introduced in RavenDB 
+  version 5.4 as an in-house searching alternative for Lucene.  
+  Lucene remains available as well; you can use either Corax or 
+  Lucene as your search engine, as you prefer.  
 
-* Corax is currently an **experimental feature**, and you must   
-  explicitly [enable experimental features](../../indexes/search-engine/corax#enabling-corax) 
-  to use it.  
+    {INFO: }
+    Corax is still an **experimental feature**. 
+    To use it, you must 
+    [enable experimental features](../../indexes/search-engine/corax#enabling-corax) first.  
+    {INFO/}
 
-* You can select either Corax or Lucene as your default seaech engine.  
-  The default search engine can be selected separately for 
+* The main role of the database's search engine is to **satisfy incoming queries**.  
+  In RavenDB, the search engine achieves this by handling each query via an index.  
+  If no relevant index exists, the search engine will create one automatically.  
+  
+    The search engine is the main "moving part" of the indexing mechanism, 
+    that actually processes and indexes documents by index definitions.  
+
+* The search engine can be selected separately for 
   [auto](../../indexes/creating-and-deploying#auto-indexes) and 
   [static](../../indexes/creating-and-deploying#static-indexes) indexes.  
 
-* The search engine can also be selected per index, overriding the 
-  default settings for the specified index.  
+* The search engine can be selected per server, per database, and per index (for static indexes only).  
 
 * In this page:  
    * [Enabling Corax](../../indexes/search-engine/corax#enabling-corax)  
    * [Selest Search Engine](../../indexes/search-engine/corax#selest-search-engine)  
-      * [Select Search Engine Server-Wide](../../indexes/search-engine/corax#select-search-engine-server-wide)  
-      * [Select Search Engine Per Database](../../indexes/search-engine/corax#select-search-engine-per-database)  
-      * [Select Search Engine Per Index](../../indexes/search-engine/corax#select-search-engine-per-index)  
+      * [Server-Wide Search Engine](../../indexes/search-engine/corax#server-wide-search-engine)  
+      * [Per-Database Search Engine](../../indexes/search-engine/corax#per-database-search-engine)  
+      * [Per-index Search Engine](../../indexes/search-engine/corax#per-index-search-engine)  
    * [Supported Features](../../indexes/search-engine/corax#supported-features)  
 
 {NOTE/}
@@ -67,24 +75,28 @@ To use it, you must explicitly enable RavenDB's experimental features.
 {PANEL: Selest Search Engine}
 
 * You can select your preferred search engine in several scopes:  
-   * **Per server** (selecting the search engine for all databases on this server),  
-   * **Per-database** (overriding the per-server selection),  
-   * or **Per-index** (overriding the per-sever and per-database selections for a specific index).  
+   * [Server-wide](../../indexes/search-engine/corax#server-wide-search-engine), 
+     selecting which search engine will be used by all the databases hosted by this server.  
+   * [Per database](../../indexes/search-engine/corax#per-database-search-engine), 
+     overriding server-wide settings for a specific database.  
+   * [Per index](../../indexes/search-engine/corax#per-index-search-engine), 
+     overriding sever-wide and per-database settings.  
+     Per-index settings are available only for **static** indexes.  
 
 * Two configuration options are available:  
    * [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration#indexing.auto.searchenginetype)  
-     Use this option to select the search engine (either `Lucene`, `Corax`, or `None`) for **auto** indexes.  
+     Use this option to select the search engine (either `Lucene` or `Corax`) for **auto** indexes.  
      The search engine can be selected [server-wide](../../indexes/search-engine/corax#select-search-engine-server-wide) 
      or [per database](../../indexes/search-engine/corax#select-search-engine-per-database).  
    * [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration#indexing.static.searchenginetype)  
-     Use this option to select the search engine (either `Lucene`, `Corax`, or `None`) for **static** indexes.  
+     Use this option to select the search engine (either `Lucene` or `Corax`) for **static** indexes.  
      The search engine can be selected [server-wide](../../indexes/search-engine/corax#select-search-engine-server-wide), 
      [per database](../../indexes/search-engine/corax#select-search-engine-per-database), 
      or [per index](../../indexes/search-engine/corax#select-search-engine-per-index).  
 
 ---
 
-### Select Search Engine Server-Wide
+### Server-Wide Search Engine
 
 Select the search engine for all the databases that run on a given server 
 by modifying the server's [settings.json](../../server/configuration/configuration-options#settings.json).  
@@ -103,7 +115,7 @@ for the new settings to be read and applied.
 
 ---
 
-### Select Search Engine Per Database
+### Per-Database Search Engine
 
 To select the search engine that the database would use, modify the 
 relevant Database Record settings . You can easily do this via Studio:  
@@ -125,33 +137,48 @@ relevant Database Record settings . You can easily do this via Studio:
 
 ---
 
-### Select Search Engine Per Index
+### Per-index Search Engine
 
 You can also select the search engine that would be used by a specific index, 
 overriding any per-database and per-server settings.  
-This too can be easily done via Studio:  
 
-Open Studio's [Index List](../../studio/database/indexes/indexes-list-view) 
-view and select the index whose search engine you want to set.  
+* Select the search engine per-index **via Studio**:  
+  Open Studio's [Index List](../../studio/database/indexes/indexes-list-view) 
+  view and select the index whose search engine you want to set.  
 
-![Index Definition](images/corax-02_index-definition.png "Index Definition")
+      ![Index Definition](images/corax-02_index-definition.png "Index Definition")
 
-1. Open the index's **Configuration** tab.  
-2. Select the search engine you prefer for this index.  
-   ![Per-Index Search Engine](images/corax-03_index-definition_searcher-select.png "Per-Index Search Engine")
+      1. Open the index's **Configuration** tab.  
+      2. Select the search engine you prefer for this index.  
+         ![Per-Index Search Engine](images/corax-03_index-definition_searcher-select.png "Per-Index Search Engine")
+
+* Select the search engine per-index **using Code**:  
+
+     While defining an index using the API, use the `SearchEngineType` 
+     property to select the search engine that would run the index.  
+     Available values: `SearchEngineType.Lucene`, `SearchEngineType.Corax`.  
+
+      * You can pass the index `Execute` method the search engine type you prefer:  
+        {CODE:csharp index-definition_select-while-creating-index@Indexes/SearchEngines.cs /}  
+      * And use the preferred type in the actual index definition:  
+        {CODE:csharp index-definition_set-search-engine-type@Indexes/SearchEngines.cs /}  
 
 {PANEL/}
 
 {PANEL: Supported Features}
 
-Corax is an experimental feature, gradually expanded so support additional features.  
-Features that aren't currently supported will be added in time.  
+Corax is still under construction. It is fully operative with [Auto](../../indexes/creating-and-deploying#auto-indexes) 
+and [Static](../../indexes/creating-and-deploying#static-indexes) indexes, except for the following cases:  
 
-Currently supported:  
-
-* **Auto Indexes**: Fully supported  
-* **Static Indexes**: Supported except for [Dynamic Fields](../../indexes/using-dynamic-fields)  
-* **Querying**: Supported except for [Facets](../../indexes/querying/faceted-search)  
+* While indexing, Corax does not support:  
+  [Boosting](../../indexes/boosting)  
+  [Facets](../../indexes/querying/faceted-search)  
+* While querying, Corax does not support:  
+   [MoreLikeThis](../../indexes/querying/morelikethis)
+   [Facets](../../indexes/querying/faceted-search)
+   [Fuzzy Search](../../client-api/session/querying/how-to-use-fuzzy)
+* Corax doesn't support [Dynamic Fields](../../indexes/using-dynamic-fields) yet.  
+  As a result, many Javascript indexes are not supported since they use dynamic fields.  
 
 {PANEL/}
 

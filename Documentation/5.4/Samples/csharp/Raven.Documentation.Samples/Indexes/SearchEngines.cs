@@ -3,153 +3,60 @@ using System.Linq;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Operations.Indexes;
-using Raven.Documentation.Samples.Orders;
 
-
-namespace Raven.Documentation.Samples.Indexes
+namespace Raven.Documentation.Samples.SearchEngine
 {
-    public class Analyzers
+    public class SearchEngine
     {
-        private class SnowballAnalyzer
+        private class Product
         {
+            public Product(string name, string brand)
+            {
+                Name = name;
+                Brand = brand;
+            }
+
+            public string Id { get; set; }
+            public string Name { get; set; }
+            public string Brand { get; set; }
         }
 
-        #region analyzers_1
-        public class BlogPosts_ByTagsAndContent : AbstractIndexCreationTask<BlogPost>
+        #region index-definition_set-search-engine-type
+        private class Product_ByAvailability : AbstractIndexCreationTask<Product>
         {
-            public BlogPosts_ByTagsAndContent()
+            public Product_ByAvailability(SearchEngineType type)
             {
-                Map = posts => from post in posts
-                               select new
-                               {
-                                   post.Tags,
-                                   post.Content
-                               };
+                // Any Map/Reduce segments here
+                Map = products => from p in products
+                                  select new
+                                  {
+                                      p.Name,
+                                      p.Brand
+                                  };
 
-                Analyzers.Add(x => x.Tags, "SimpleAnalyzer");
-                Analyzers.Add(x => x.Content, typeof(SnowballAnalyzer).AssemblyQualifiedName);
+                // The preferred search engine type
+                SearchEngineType = type;
             }
         }
         #endregion
 
-        #region analyzers_3
-        public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+        public void indexAvailableProducts()
         {
-            public Employees_ByFirstAndLastName()
-            {
-                Map = employees => from employee in employees
-                                   select new
-                                   {
-                                       LastName = employee.LastName,
-                                       FirstName = employee.FirstName
-                                   };
+            var productId = "Products/1-A";
 
-                Indexes.Add(x => x.FirstName, FieldIndexing.Exact);
-            }
-        }
-        #endregion
-
-        #region analyzers_4
-        public class BlogPosts_ByContent : AbstractIndexCreationTask<BlogPost>
-        {
-            public BlogPosts_ByContent()
-            {
-                Map = posts => from post in posts
-                               select new
-                               {
-                                   Title = post.Title,
-                                   Content = post.Content
-                               };
-
-                Indexes.Add(x => x.Content, FieldIndexing.Search);
-            }
-        }
-        #endregion
-
-        #region analyzers_5
-        public class BlogPosts_ByTitle : AbstractIndexCreationTask<BlogPost>
-        {
-            public BlogPosts_ByTitle()
-            {
-                Map = posts => from post in posts
-                               select new
-                               {
-                                   Title = post.Title,
-                                   Content = post.Content
-                               };
-
-                Indexes.Add(x => x.Content, FieldIndexing.No);
-                Stores.Add(x => x.Content, FieldStorage.Yes);
-            }
-        }
-        #endregion
-
-        public Analyzers()
-        {
             using (var store = new DocumentStore())
             {
-                #region analyzers_2
-                store.Maintenance.Send(new PutIndexesOperation(new IndexDefinitionBuilder<BlogPost>("BlogPosts/ByTagsAndContent")
+                using (var session = store.OpenSession())
                 {
-                    Map = posts => from post in posts
-                                   select new
-                                   {
-                                       post.Tags,
-                                       post.Content
-                                   },
-                    Analyzers =
-                    {
-                        {x => x.Tags, "SimpleAnalyzer"},
-                        {x => x.Content, typeof(SnowballAnalyzer).AssemblyQualifiedName}
-                    }
-                }.ToIndexDefinition(store.Conventions)));
-                #endregion
+                    session.Store(new Product("prodName", "prodBrand"), productId);
+                    session.SaveChanges();
+                }
 
-                /*
-                #region analyzers_7
-                store.Maintenance.ForDatabase("MyDatabase").Send(new PutAnalyzersOperation(new AnalyzerDefinition
-                {
-                    Name = "MyAnalyzer", // The name must be same as the analyzer's class name
-                    Code = @"
-                        using System.IO;
-                        using Lucene.Net.Analysis; 
-                        using Lucene.Net.Analysis.Standard;
-
-                        namespace MyAnalyzer
-                        {
-                            public class MyAnalyzer : Lucene.Net.Analysis.Analyzer
-                            {
-                                public override TokenStream TokenStream(string fieldName, TextReader reader)
-                                {
-                                    throw new CodeOmitted();
-                                }
-                            }
-                        }"
-                }));
+                #region index-definition_select-while-creating-index
+                // set search engine type while creating the index
+                new Product_ByAvailability(SearchEngineType.Corax).Execute(store);
                 #endregion
-                */
             }
         }
     }
-
-    public class BlogPost
-    {
-        public string[] Tags { get; set; }
-        public string Content { get; set; }
-        public string Title { get; internal set; }
-    }
-
-    /*
-    #region analyzers_6
-    public class MyAnalyzer : Lucene.Net.Analysis.Analyzer
-    {
-        public override TokenStream TokenStream(string fieldName, TextReader reader)
-        {
-            throw new CodeOmitted();
-        }
-    }
-    #endregion
-    */
-
-
 }

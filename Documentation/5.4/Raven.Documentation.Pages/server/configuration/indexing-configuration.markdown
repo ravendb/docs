@@ -364,7 +364,6 @@ Select the search engine to be used with auto indexes.
   {CODE-BLOCK: csharp}
    public enum SearchEngineType
 {
-    None,
     Corax, 
     Lucene
 }
@@ -382,7 +381,6 @@ Select the search engine to be used with static indexes.
   {CODE-BLOCK: csharp}
    public enum SearchEngineType
 {
-    None,
     Corax, 
     Lucene
 }
