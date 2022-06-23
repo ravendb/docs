@@ -29,11 +29,12 @@
 
 * In this page:  
    * [Enabling Corax](../../indexes/search-engine/corax#enabling-corax)  
-   * [Selest Search Engine](../../indexes/search-engine/corax#selest-search-engine)  
-      * [Server-Wide Search Engine](../../indexes/search-engine/corax#server-wide-search-engine)  
-      * [Per-Database Search Engine](../../indexes/search-engine/corax#per-database-search-engine)  
-      * [Per-index Search Engine](../../indexes/search-engine/corax#per-index-search-engine)  
+   * [Selecting the Search Engine](../../indexes/search-engine/corax#selecting-the-search-engine)  
+      * [Server Wide](../../indexes/search-engine/corax#select-search-engine-server-wide)  
+      * [Per Database](../../indexes/search-engine/corax#select-search-engine-per-database)  
+      * [Per Index](../../indexes/search-engine/corax#select-search-engine-per-index)  
    * [Supported Features](../../indexes/search-engine/corax#supported-features)  
+      * [Unimplemented Methods](../../indexes/search-engine/corax#unimplemented-methods)  
 
 {NOTE/}
 
@@ -41,10 +42,10 @@
 
 {PANEL: Enabling Corax}
 
-Corax is an experimental feature, and is disabled by default.  
+Corax is an experimental feature and is disabled by default.  
 To use it, you must explicitly enable RavenDB's experimental features.  
 
-* To enable experimental features **when RavenDB is already installed**:  
+* To enable experimental features **when RavenDB is already installed** -  
   Edit RavenDB's [configuration file](../../server/configuration/configuration-options#settings.json) 
   and Enable [experimental features](../../server/configuration/core-configuration#features.availability).  
   
@@ -65,14 +66,14 @@ To use it, you must explicitly enable RavenDB's experimental features.
       {NOTE/}
 
 
-* To enable experimental features during [Setup](../../start/installation/setup-wizard):  
+* To enable experimental features during [Setup](../../start/installation/setup-wizard) -  
   check **Enable the following experimental features** in the **Welcome** page.  
 
     ![Enable Experimental Features](images/corax-01_setup-wizard.png "Enable Experimental Features")
 
 {PANEL/}
 
-{PANEL: Selest Search Engine}
+{PANEL: Selecting the Search Engine}
 
 * You can select your preferred search engine in several scopes:  
    * [Server-wide](../../indexes/search-engine/corax#server-wide-search-engine), 
@@ -80,7 +81,7 @@ To use it, you must explicitly enable RavenDB's experimental features.
    * [Per database](../../indexes/search-engine/corax#per-database-search-engine), 
      overriding server-wide settings for a specific database.  
    * [Per index](../../indexes/search-engine/corax#per-index-search-engine), 
-     overriding sever-wide and per-database settings.  
+     overriding server-wide and per-database settings.  
      Per-index settings are available only for **static** indexes.  
 
 * Two configuration options are available:  
@@ -96,11 +97,11 @@ To use it, you must explicitly enable RavenDB's experimental features.
 
 ---
 
-### Server-Wide Search Engine
+### Select Search Engine: Server Wide
 
-Select the search engine for all the databases that run on a given server 
-by modifying the server's [settings.json](../../server/configuration/configuration-options#settings.json).  
-E.g. add `settings.json` these lines:  
+Select the search engine for all the databases hosted by a server 
+by modifying the server's [settings.json](../../server/configuration/configuration-options#settings.json) file.  
+E.g. -  
 {CODE-BLOCK: csharp}
 {
     "Indexing.Auto.SearchEngineType": "Corax"
@@ -109,16 +110,15 @@ E.g. add `settings.json` these lines:
 {CODE-BLOCK/}
 
 {NOTE: }
-You must restart the server after making these changes, 
-for the new settings to be read and applied.  
+You must restart the server for the new settings to be read and applied.  
 {NOTE/}
 
 ---
 
-### Per-Database Search Engine
+### Select Search Engine: Per Database
 
 To select the search engine that the database would use, modify the 
-relevant Database Record settings . You can easily do this via Studio:  
+relevant Database Record settings. You can easily do this via Studio:  
 
 * Open Studio's [Database Settings](../../studio/database/settings/database-settings) 
   page, and enter `SearchEngine` in the search bar to find the search engine settings.  
@@ -130,55 +130,120 @@ relevant Database Record settings . You can easily do this via Studio:
 
      ![Corax Database Options](images/corax-05_database-settings_02.png "Corax Database Options")
 
-* Restart the database or the server for your changes to take effect.  
-  The updated database record will be read and applied upon restart.  
+* To apply the new settings either **disable and re-enable the database** or **restart the server**.  
 
      ![Default Search Engine](images/corax-06_database-settings_03.png "Default Search Engine")
 
 ---
 
-### Per-index Search Engine
+### Select Search Engine: Per index 
 
 You can also select the search engine that would be used by a specific index, 
 overriding any per-database and per-server settings.  
 
-* Select the search engine per-index **via Studio**:  
+#### Select Index Search Engine via Studio:  
+
+* **Indexes-List-View** > **Edit Index Definition**  
   Open Studio's [Index List](../../studio/database/indexes/indexes-list-view) 
   view and select the index whose search engine you want to set.  
 
-      ![Index Definition](images/corax-02_index-definition.png "Index Definition")
+    ![Index Definition](images/corax-02_index-definition.png "Index Definition")
+    1. Open the index' **Configuration** tab.  
+    2. Select the search engine you prefer for this index.  
+       ![Per-Index Search Engine](images/corax-03_index-definition_searcher-select.png "Per-Index Search Engine")
 
-      1. Open the index's **Configuration** tab.  
-      2. Select the search engine you prefer for this index.  
-         ![Per-Index Search Engine](images/corax-03_index-definition_searcher-select.png "Per-Index Search Engine")
+* The indexes list view will show the changed configuration.  
 
-* Select the search engine per-index **using Code**:  
+    ![Search Engine Changed](images/corax-02.5_search-engine-changed.png "Search Engine Changed")
 
-     While defining an index using the API, use the `SearchEngineType` 
-     property to select the search engine that would run the index.  
-     Available values: `SearchEngineType.Lucene`, `SearchEngineType.Corax`.  
+---
 
-      * You can pass the index `Execute` method the search engine type you prefer:  
-        {CODE:csharp index-definition_select-while-creating-index@Indexes/SearchEngines.cs /}  
-      * And use the preferred type in the actual index definition:  
-        {CODE:csharp index-definition_set-search-engine-type@Indexes/SearchEngines.cs /}  
+#### Select Index Search Engine using Code
+
+While defining an index using the API, use the `SearchEngineType` 
+property to select the search engine that would run the index.  
+Available values: `SearchEngineType.Lucene`, `SearchEngineType.Corax`.  
+
+* You can pass the search engine type you prefer:  
+  {CODE:csharp index-definition_select-while-creating-index@Indexes/SearchEngines.cs /}  
+* And set it in the index definition:  
+  {CODE:csharp index-definition_set-search-engine-type@Indexes/SearchEngines.cs /}  
 
 {PANEL/}
 
 {PANEL: Supported Features}
 
-Corax is still under construction. It is fully operative with [Auto](../../indexes/creating-and-deploying#auto-indexes) 
-and [Static](../../indexes/creating-and-deploying#static-indexes) indexes, except for the following cases:  
+Corax supports [Auto](../../indexes/creating-and-deploying#auto-indexes) 
+and [Static](../../indexes/creating-and-deploying#static-indexes) indexing.  
 
-* While indexing, Corax does not support:  
-  [Boosting](../../indexes/boosting)  
-  [Facets](../../indexes/querying/faceted-search)  
-* While querying, Corax does not support:  
-   [MoreLikeThis](../../indexes/querying/morelikethis)
-   [Facets](../../indexes/querying/faceted-search)
-   [Fuzzy Search](../../client-api/session/querying/how-to-use-fuzzy)
-* Corax doesn't support [Dynamic Fields](../../indexes/using-dynamic-fields) yet.  
+The feature is currently under construction, please find its full list 
+of supported and yet-unsupported features below.  
+
+* **While indexing**, Corax does **not** support:  
+   * [Boosting](../../indexes/boosting)  
+   * [Facets](../../indexes/querying/faceted-search)  
+   * [WKT shapes](../../indexes/indexing-spatial-data)  
+     (when spatial data is indexed, **spatial points** Are indexed while **WKT shapes** are Not indexed.)  
+* **While querying**, Corax does **not** support:  
+   * [MoreLikeThis](../../indexes/querying/morelikethis)  
+   * [Facets](../../indexes/querying/faceted-search)  
+   * [Fuzzy Search](../../client-api/session/querying/how-to-use-fuzzy)  
+* Corax does **not** support [Dynamic Fields](../../indexes/using-dynamic-fields) yet.  
   As a result, many Javascript indexes are not supported since they use dynamic fields.  
+
+| Query Term | Method / Keyword | Supported by Corax |
+| ---------- | ---------------- | ------------------ |
+| [WHERE](../../indexes/querying/what-is-rql#where) | | |
+| | id() | `yes` |
+| | [search()](../../indexes/querying/searching) | `yes` |
+| | cmpxchg() | **no** |
+| | boost() | `yes` |
+| | [regex()](../../client-api/session/querying/how-to-use-regex) | **no** |
+| | startsWith() | `yes` |
+| | endsWith() | `yes` |
+| | [lucene()](../../client-api/session/querying/document-query/how-to-use-lucene) | **no** |
+| | [exists()](../../client-api/session/querying/how-to-filter-by-field) | `yes` |
+| | exact() | `yes` |
+| | [intersect()](../../indexes/querying/intersection) | **no** |
+| | [spatial.within()](../../indexes/querying/spatial) <br> [spatial.contains()](../../indexes/querying/spatial) <br> [spatial.disjoint()](../../indexes/querying/spatial) <br> [spatial.intersects()](../../indexes/querying/spatial) | `yes` <br> `yes` <br> `yes` <br> `yes` |
+| | [moreLikeThis()](../../client-api/session/querying/how-to-use-morelikethis) | **no** |
+
+| Query Term | Method / Keyword | Supported by Corax |
+| ---------- | ---------------- | ------------------ |
+| [ORDER BY](../../indexes/querying/what-is-rql#order-by) | | |
+| | [ASC / ASCENDING](../../indexes/querying/sorting#basics) | `yes` |
+| | [DESC / DESCENDING](../../indexes/querying/sorting#basics) | `yes` |
+| | [AS](../../indexes/querying/sorting#basics) | `yes` |
+| | [string](../../indexes/querying/sorting#basics) | `yes` |
+| | [long](../../indexes/querying/sorting#basics) | `yes` |
+| | [double](../../indexes/querying/sorting#basics) | `yes` |
+| | [alphaNumeric](../../indexes/querying/sorting#alphanumeric-ordering) | `yes` |
+| | [random()](../../indexes/querying/sorting#random-ordering) | **no** |
+| | [score()](../../indexes/querying/sorting#ordering-by-score) | `yes` |
+| | [spatial.distance()](../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance) | `yes` |
+
+---
+
+### Unimplemented Methods
+
+Trying to use Corax with an unimplemented method (see 
+[Supported Features](../../indexes/search-engine/corax#supported-features) above) 
+will generate a `System.NotImplementedException` exception and end the search.  
+
+{INFO: }
+E.g. -  
+the following query uses the `intersect` method, which is currently not supported by Corax.  
+{CODE-BLOCK: SQL}
+from index 'Orders/ByCompany'
+where intersect(Count > 10, Total > 3)
+{CODE-BLOCK/}
+
+If you set Corax as the search engine for the `Orders/ByCompany` index 
+used by the above query, running the query will generate the following 
+exception and the search will stop.  
+  ![Method Not Implemented Exception](images/corax-07_exception-method-not-implemented.png "Method Not Implemented Exception")
+{INFO/}
+
 
 {PANEL/}
 
@@ -186,10 +251,16 @@ and [Static](../../indexes/creating-and-deploying#static-indexes) indexes, excep
 
 ### Indexes
 
-- [Boosting](../indexes/boosting)
+- [Auto Indexes](../../indexes/creating-and-deploying#auto-indexes)  
+- [Static Indexes](../../indexes/creating-and-deploying#static-indexes)  
+- [Boosting](../../indexes/boosting)
+- [Dynamic Fields](../../indexes/using-dynamic-fields)
 - [Storing Data in Index](../indexes/storing-data-in-index)
-- [Dynamic Fields](../indexes/using-dynamic-fields)
 
 ### Studio
-- [Custom Analyzers](../studio/database/settings/custom-analyzers)  
-- [Create Map Index](../studio/database/indexes/create-map-index)  
+- [Index List View](../../studio/database/indexes/indexes-list-view)  
+- [Database Settings](../../studio/database/settings/database-settings)  
+- [Custom Analyzers](../../studio/database/settings/custom-analyzers)  
+
+### Configuration
+- [Configuration Options](../../server/configuration/configuration-options)
