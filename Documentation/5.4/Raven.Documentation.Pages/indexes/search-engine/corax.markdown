@@ -19,7 +19,7 @@
   If no relevant index exists, the search engine will create one automatically.  
   
     The search engine is the main "moving part" of the indexing mechanism, 
-    that actually processes and indexes documents by index definitions.  
+    that processes and indexes documents by index definitions.  
 
 * The search engine can be selected separately for 
   [auto](../../indexes/creating-and-deploying#auto-indexes) and 
@@ -35,6 +35,7 @@
       * [Per Index](../../indexes/search-engine/corax#select-search-engine-per-index)  
    * [Supported Features](../../indexes/search-engine/corax#supported-features)  
       * [Unimplemented Methods](../../indexes/search-engine/corax#unimplemented-methods)  
+   * [Handling of Complex JSON Objects](../../indexes/search-engine/corax#handling-of-complex-json-objects)  
 
 {NOTE/}
 
@@ -244,6 +245,119 @@ exception and the search will stop.
   ![Method Not Implemented Exception](images/corax-07_exception-method-not-implemented.png "Method Not Implemented Exception")
 {INFO/}
 
+{PANEL/}
+
+{PANEL: Handling of Complex JSON Objects}
+
+Nested properties of complex JSON objects **cannot currently be indexed and searched by Corax**.  
+
+Consider, for example, the nested `Location` property of the following `orders` document:  
+{CODE-BLOCK: json}
+{
+    "Company": "companies/27-A",
+    "Employee": "employees/2-A",
+    "ShipTo": {
+        "City": "Torino",
+        "Country": "Italy",
+        "Location": {
+            "Latitude": 45.0907661,
+            "Longitude": 7.687425699999999
+        }
+    }
+}
+{CODE-BLOCK/}
+
+As seen above, `Location` is a key/value pair that contains not a simple 
+numeric value or a string, but a list of key/value pairs. Attempting to index 
+this field using Corax would fail with a `System.NotSupportedException` exception.  
+
+You can handle the indexing of complex JSON objects in several ways.  
+
+#### 1. Turn the nested field into a string
+
+You can use `ToString()` to index the complex property as a string.  
+
+{CODE-TABS}
+{CODE-TAB-BLOCK:sql:Not_Supported_By_Corax}
+from order in docs.Orders
+select new
+{
+    // this will fail for the above document when using Corax
+    Location = order.ShipTo.Location
+}
+{CODE-TAB-BLOCK/}
+{CODE-TAB-BLOCK:sql:Use_ToString()}
+from order in docs.Orders
+select new
+{
+    // handling the field as string will allow Corax to index it
+    Location = order.ShipTo.Location.ToString()
+}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+
+---
+
+#### 2. Index a Simple Property Contained in the Nested Field
+
+Index one of the simple key/value properties stored within the nested object.  
+In the `Location` field, for example, Location's `Latitude` and `Longitude`.  
+can serve us this way:  
+
+{CODE-BLOCK: json}
+from order in docs.Orders
+select new
+{
+    Latitude = order.ShipTo.Location.Latitude,
+    Longitude = order.ShipTo.Location.Longitude
+}
+{CODE-BLOCK/}
+
+---
+
+#### 3. Index the Document Using Lucene
+
+As long as Corax doesn't index complex JSON objects, you can always 
+select Lucene as your search engine when you need to index nested properties.  
+
+---
+
+#### 4. Disable the Indexing of the Nested Field
+
+You can use Corax as your search engine, but explicitly disable the indexing 
+of nested properties.  
+When you disable the **indexing** of a field this way, the field's contents 
+can still be **stored and projected**.  
+
+* To disable indexing for a specified field **via Studio**:  
+  ![Disable indexing of a Nested Field](images/corax-08_disable-indexing-of-nested-field.png "Disable indexing of a Nested Field ")
+   1. Open the index definition's **Fields** tab.  
+   2. Click **Add Field** to specify what field Corax shouldn't index.  
+   3. Enter the name of the field Corax should not index.  
+   4. Select **Yes** to allow Corax to store the field's contents.  
+      This is mandatory when indexing the field is disabled.  
+   5. Select **No** to disable indexing for the specified field.  
+
+* To disable indexing for a specified field **using Code**:  
+  {CODE:csharp index-definition_disable-indexing-for-specified-field@Indexes/SearchEngines.cs /}  
+
+---
+
+{NOTE: }
+If Corax finds a nested document property while indexing, it will throw 
+a `System.NotSupportedException` exception.  
+
+* If an auto index is used, the exception **will** be thrown.  
+  To avoid it, you can define a static index as described above or use 
+  Lucene as your search engine.  
+* If a static index is used, Corax will **not** attempt to index the 
+  nested field and will not throw the exception, only if the static 
+  index **explicitly exempts** it from indexing this field (as shown 
+  [above](../../indexes/search-engine/corax#disable-the-indexing-of-the-nested-field)).  
+
+{NOTE/}
+
 
 {PANEL/}
 
@@ -255,7 +369,7 @@ exception and the search will stop.
 - [Static Indexes](../../indexes/creating-and-deploying#static-indexes)  
 - [Boosting](../../indexes/boosting)
 - [Dynamic Fields](../../indexes/using-dynamic-fields)
-- [Storing Data in Index](../indexes/storing-data-in-index)
+- [Storing Data in Index](../../indexes/storing-data-in-index)
 
 ### Studio
 - [Index List View](../../studio/database/indexes/indexes-list-view)  

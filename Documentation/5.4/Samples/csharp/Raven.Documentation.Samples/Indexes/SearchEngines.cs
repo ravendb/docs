@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
@@ -58,5 +59,62 @@ namespace Raven.Documentation.Samples.SearchEngine
                 #endregion
             }
         }
+
+        public void indexOrderByLocation()
+        {
+            using (var store = new DocumentStore())
+            {
+
+                new Order_ByLocation(SearchEngineType.Corax).Execute(store);
+            }
+        }
+
+        #region index-definition_disable-indexing-for-specified-field
+        private class Order_ByLocation : AbstractIndexCreationTask<Order>
+        {
+            public Order_ByLocation(SearchEngineType type)
+            {
+                Map = orders => from o in orders
+                                select new
+                                {
+                                    o.ShipTo.Location
+                                };
+
+                SearchEngineType = type;
+
+                // Disable Indexing for this field
+                Index("Location", FieldIndexing.No);
+
+                // Enable storing the field's contents
+                // (this is mandatory if its indexing is disabled)
+                Store("Location", FieldStorage.Yes);
+            }
+        }
+        #endregion
+
+        public class Order
+        {
+            public string Id { get; set; }
+            public string Company { get; set; }
+            public string Employee { get; set; }
+            public DateTime OrderedAt { get; set; }
+            public DateTime RequireAt { get; set; }
+            public DateTime? ShippedAt { get; set; }
+            public Address ShipTo { get; set; }
+            public string ShipVia { get; set; }
+            public decimal Freight { get; set; }
+        }
+
+        public class Address
+        {
+            public string Id { get; set; }
+            public string Country { get; set; }
+            public string City { get; set; }
+            public string Street { get; set; }
+            public int ZipCode { get; set; }
+            public object Location { get; internal set; }
+        }
+
+
     }
 }
