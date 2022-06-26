@@ -175,7 +175,7 @@ It enables developers to control access levels by configuring client certificate
 
 {PANEL: Create and Configure Certificates}
 
-{PANEL:List of Registered Certificates} 
+### List of Registered Certificates 
 
 In the image below, the client certificates (HR, localcluster.client.certificate, Project Managers) have different **security clearance** and **database permissions** configurations.  
 This is done to give admins the ability to protect the contents of their databases by customizing permissions.  
@@ -203,11 +203,9 @@ Each client certificate contains the following:
    Configure which databases it can access (applicable for User-level) and its authorization clearance level.  
 7. **Delete Certificate**  
 
-{PANEL/}
-
 ---
 
-{PANEL: Generate Client Certificate} 
+### Generate Client Certificate 
 
 Using this view, you can generate client certificates directly via RavenDB.  
 Newly generated certificates will be added to the list of registered certificates.  
@@ -243,11 +241,9 @@ Expiration for client certificates is set to 5 years by default.
 
 {NOTE/}
 
-{PANEL/}
-
 ---
 
-{PANEL: Edit Certificate} 
+### Edit Certificate
 
 To edit existing certificates:
 
@@ -282,7 +278,7 @@ Expiration for client certificates is set to 5 years by default.
 
 {PANEL/}
 
-## Enabling Communication Between Servers: Importing and Exporting Certificates
+{PANEL: Enabling Communication Between Servers: Importing and Exporting Certificates}
 
 There are various situations where developers need to create a database with partial access to another server.  
 For example, a source server may contain sensitive information that should not be exposed to the public, but also contain databases that need to be exposed with limited access.  
@@ -312,16 +308,18 @@ b. **Upload** ([import](../../../server/security/authentication/certificate-mana
      [Import a client certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate) 
      that was exported from another server so that the two can communicate.  
 
-{PANEL:Export Server Certificates} 
+---
+
+### Export Server Certificates
 
 ![Figure 6. Export Server Certificates](images/export-server-certificates.png "Export Server Certificates")
 
 This option allows you to export the server certificate as a .pfx file. In the case of a cluster which contains several different server certificates, 
 a .pfx [collection](../../../server/security/authentication/certificate-management#certificate-collections) will be exported.
 
-{PANEL/}
+---
 
-{PANEL: Upload an Existing Certificate} 
+### Upload an Existing Certificate
 
 Click the **Client certificate** button, select **Upload client certificate** and you will see the following window.  
 
@@ -355,22 +353,19 @@ Expiration for client certificates is set to 5 years by default.
 
 {NOTE/}
 
+---
 
-{PANEL/}
-
-
-{PANEL: Certificate Collections} 
+### Certificate Collections
 
 `.pfx` files may contain a single certificate or a collection of certificates.
 
 When uploading a `.pfx` file with multiple certificates, RavenDB will add all of the certificates to the list of registered certificates as one entry 
 and will allow access to all these certificates explicitly by their thumbprint.
 
-{PANEL/}
 
 ---
 
-{PANEL: }
+### Generating Client Certificates Via Command Line Interface
 
 * RavenDB provides an intuitive certificates management GUI in the Studio.  
 
@@ -379,11 +374,9 @@ and will allow access to all these certificates explicitly by their thumbprint.
   - There are CLI-based means to [generate](../../../server/security/authentication/client-certificate-usage#example-i---using-the-ravendb-cli) and [configure client certificates in Windows](../../../server/security/authentication/client-certificate-usage#example-ii---using-powershell-and-wget-in-windows).  
   - [Linux](../../../server/security/authentication/client-certificate-usage#example-iii--using-curl-in-linux) developers can use this cURL command sample.  
 
-{PANEL/}
-
 ---
 
-{PANEL: Private Keys}
+### Private Keys
 
 It's important to note that RavenDB does _not_ keep track of the certificate's private key. Whether you generate a client certificate
 via RavenDB or upload an existing client certificate, the private key is not retained. If a certificate was lost, you'll
@@ -395,11 +388,9 @@ still trust this new certificate - provided that the new certificate is signed w
 same certificate authority. This is accomplished using a [public key pinning hash](../../../server/security/authentication/certificate-renewal-and-rotation#implicit-trust-by-public-key-pinning-hash).  
 {INFO/}
 
-{PANEL/}
-
 ---
 
-{PANEL: Client Certificate Chain of Trust} 
+### Client Certificate Chain of Trust
 
 As mentioned above, RavenDB generates client certificates by signing them using the server certificate. 
 A typical server certificate doesn't allow acting as an Intermediate Certificate Authority signing other certificates. 
