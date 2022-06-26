@@ -27,18 +27,23 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
             using (var session = store.OpenSession())
             {
                 #region put_sample
+                // Create a new document
                 var doc = new Category
                 {
                     Name = "My category",
                     Description = "My category description"
                 };
+                // Create metadata on the document
                 var docInfo = new DocumentInfo
                 {
                     Collection = "Categories"
                 };
+                // Convert your entity to a BlittableJsonReaderObject
                 var blittableDoc = session.Advanced.JsonConverter.ToBlittable(doc, docInfo);
 
+                // The Put command (including document ID, changeVector check is null, the document to store)
                 var command = new PutDocumentCommand("categories/999", null, blittableDoc);
+                // RequestExecuter sends the command to the server
                 session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
                 #endregion
             }
