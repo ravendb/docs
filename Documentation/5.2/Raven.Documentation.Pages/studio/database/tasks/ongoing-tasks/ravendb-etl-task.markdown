@@ -13,7 +13,8 @@
 
 * ETL is different from data replication. See [RavenDB ETL Task -vs- Replication Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--replication-task)  
 
-* In RavenDB ETL, [a certificate must be passed](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate-between-secure-clusters) from the source server to the destination so that the destination server trusts the source.  
+* In RavenDB ETL, [a certificate must be passed](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate-between-secure-clusters) 
+  from the source server to the destination so that the destination server trusts the source.  
 
 * In this page:  
   * [RavenDB ETL Task - Definition](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---definition)  
@@ -76,7 +77,8 @@
   * **Via API:**  
     See the code sample to learn how to [define a client certificate in the DocumentStore()](../../../../client-api/creating-document-store).  
      - To generate and configure a client certificate from the source server, see [CreateClientCertificateOperation](../../../../client-api/operations/server-wide/certificates/create-client-certificate)
-     - Learn the rationale needed to configure client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
+     - Set the [client certificate in the document store](../../../../client-api/setting-up-authentication-and-authorization)
+  * Learn the rationale needed to configure client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
 
 
 {PANEL/}

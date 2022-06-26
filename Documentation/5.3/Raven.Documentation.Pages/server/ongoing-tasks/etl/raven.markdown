@@ -15,6 +15,8 @@
 * Each script can be defined on the source database to trigger ETL from a single collection, 
   multiple selected collections or be applied to **all** documents regardless of the associated collection(s).  
 
+  * For the destination cluster to trust the source, you must [pass the certificate](../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates).
+
 * In this page:  
   * [Transformation Script Options](../../../server/ongoing-tasks/etl/raven#transformation-script-options)  
   * [Empty Script](../../../server/ongoing-tasks/etl/raven#empty-script)  

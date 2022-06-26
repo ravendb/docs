@@ -13,6 +13,10 @@
 
 * The script is executed per document once the document is created or modified.  
 
+* For the destination cluster to trust the source, you must: 
+   1. Download/export the cluster certificate from the source server  
+   2. Upload/import its client certificate (.pfx) into the destination
+
 * In this page:  
   * [Transformation Script Options](../../../server/ongoing-tasks/etl/raven#transformation-script-options)  
   * [Empty Script](../../../server/ongoing-tasks/etl/raven#empty-script)  
