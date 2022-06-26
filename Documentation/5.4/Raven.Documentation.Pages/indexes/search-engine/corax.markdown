@@ -345,16 +345,19 @@ can still be **stored and projected**.
 ---
 
 {NOTE: }
-If Corax finds a nested document property while indexing, it will throw 
-a `System.NotSupportedException` exception.  
+If Corax identifies a nested document property while indexing:  
 
-* If an auto index is used, the exception **will** be thrown.  
-  To avoid it, you can define a static index as described above or use 
-  Lucene as your search engine.  
-* If a static index is used, Corax will **not** attempt to index the 
-  nested field and will not throw the exception, only if the static 
-  index **explicitly exempts** it from indexing this field (as shown 
-  [above](../../indexes/search-engine/corax#disable-the-indexing-of-the-nested-field)).  
+* If an auto index exists for the document, Corax will throw 
+  a `System.NotSupportedException` exception to immediately 
+  notify the user that a search that makes no sense is attempted.  
+
+* If a static index is used and the index did not explicitly 
+  relate to this field, Corax will automatically exempt the 
+  field from indexing (by defining **Indexing: No** for this 
+  field as shown [above](../../indexes/search-engine/corax#disable-the-indexing-of-the-nested-field)).  
+  
+     If the static index explicitly set the Indexing flag in 
+     any other way but "no", Corax **will** throw the exception.  
 
 {NOTE/}
 
