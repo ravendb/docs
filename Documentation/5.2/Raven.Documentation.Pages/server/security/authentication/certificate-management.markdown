@@ -27,7 +27,7 @@ In this page:
   * [Private Keys](../../../server/security/authentication/certificate-management#private-keys)  
   * [Client Certificate Chain of Trust](../../../server/security/authentication/certificate-management#client-certificate-chain-of-trust)  
 
-{NOTE/ }
+{NOTE/}
 
 {PANEL: Studio Certificates Management View}
 
@@ -280,7 +280,7 @@ Expiration for client certificates is set to 5 years by default.
 {NOTE/}
 
 
-{PANEL/ }
+{PANEL/}
 
 ## Enabling Communication Between Servers: Importing and Exporting Certificates
 
@@ -356,7 +356,7 @@ Expiration for client certificates is set to 5 years by default.
 {NOTE/}
 
 
-{PANEL/ }
+{PANEL/}
 
 
 {PANEL: Certificate Collections} 
