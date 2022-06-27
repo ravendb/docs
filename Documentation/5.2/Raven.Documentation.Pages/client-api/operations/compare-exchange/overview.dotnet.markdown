@@ -103,14 +103,14 @@ only for documents where immediate consistency is crucial AND you want every nod
 Local-node sessions have a default setting that one node is responsible for all reads/writes on a particular database. 
 This ensures consistency. The data is replicated to the other nodes in the database group for failover purposes, 
 but only the primary node will modify documents.  
-If the primary node is down, another node will automatically be selected by the [cluster observer](../../../server/clustering/distribution/cluster-observer). 
+If the primary node is down, another node will automatically be selected to read and write by the [cluster observer](../../../server/clustering/distribution/cluster-observer). 
 
 If you are running on a [distributed cluster](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/6-ravendb-clusters#transaction-atomicity-and-replication) 
 and have to support ACID transactions where all nodes must have read/write permission, 
 you should use cluster-wide transactions. Be aware that doing so will prioritize consistency over performance.
 
 {NOTE: }
-You have the flexibility to program different sessions on the same document store so that you can run cluster-wide or node-local as needed.  
+You have the flexibility to program different sessions on the same document store so that you can run cluster-wide or node-local sessions as needed.  
 There are also tools that provide flexibility such as [revisions](../../../document-extensions/revisions/overview) 
 and the ability to [model your documents](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling) 
 so that conflicts are prevented.
@@ -121,14 +121,15 @@ so that conflicts are prevented.
 {PANEL: Why Compare-Exchange Items are Not Replicated to an External Cluster }
 
 To [prevent consistency conflicts between clusters and model an efficient global system](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system), 
-each cluster should have sole ownership of documents created by clients that connect to it.  
+each cluster should have sole ownership of documents created in it.  
 
-In geo-distributed systems, to avoid latency problems, a new cluster must be set up in each region.  
-But to achieve consistency, each transaction must achieve a majority consensus amongst the
-involved servers.  Trying to achieve consensus on each transaction between different clusters is unrealistic, 
+In geo-distributed systems, to avoid latency problems, a new cluster is usually set up in each region.  
+But to achieve strong consistency in a distributed system, each transaction must achieve a majority consensus amongst the
+involved servers.  Trying to achieve consensus on each transaction between different clusters is usually unrealistic, 
 especially considering geographic latency.  
 
 One way to ensure consistency between clusters is if [documents created in each cluster are owned and operated only by that cluster](../../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters). 
+This means that different clusters should not share compare-exchange items.  
 
 {PANEL/}
 
