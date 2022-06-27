@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="studio\database\Indexes\configuration-setting-new-config.snag" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="RavenDB.Client" Version="5.1.0-nightly-20200929-0713" />
   </ItemGroup>
 

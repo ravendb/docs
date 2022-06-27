@@ -282,9 +282,8 @@ E.g., `"MaxCredits": 8640.0` means your instance can accumulate an entitlement f
 
 {PANEL: Cloud-Specific Configuration Settings}
 
-In most cases, default configurations inherit from RavenDB On Premise [Client API Configurations](../client-api/configuration/conventions) 
+In most cases, default configurations inherit from RavenDB On-Premise [Client API Configurations](../client-api/configuration/conventions) 
 and [Server Configurations](../server/configuration/configuration-options).  
-See the left-side menu for various configuration categories to find ClinetAPI and Server configurations, or use the search bar.  
 
 Whenever configuration defaults differ in RavenDB Cloud, these configurations will be discussed in this section.
 
@@ -294,7 +293,7 @@ Whenever configuration defaults differ in RavenDB Cloud, these configurations wi
 
 RavenDB sets default configurations to be the safest and most efficient in most cases.  
 
-If you want to change configurations, they must be set in Studio for cloud instances. 
+If you want to change configurations for cloud instances, they must be set in Studio. 
 
 * [Indexing Configurations](../studio/database/indexes/create-map-index#configuration)
 
@@ -306,19 +305,21 @@ If you want to change configurations, they must be set in Studio for cloud insta
 
 ### Max Batch Size
 
-The factors to consider if adjusting the default max indexing batch size:
+The factors to consider when adjusting the max indexing batch size:
 
 * [Size of documents](https://ravendb.net/articles/dealing-with-large-documents-100-mb#:~:text=RavenDB%20can%20handle%20large%20documents,isn't%20a%20practical%20one.)
-* Complexity of calculations that static indexes do
-* [IOPS number](../cloud/cloud-instances#a-production-cloud-cluster) (IOPS - Input/Output Operations Per Second - can be adjusted according to your neeeds.)
+* The Complexity of calculations that static indexes do.
+* [IOPS number](../cloud/cloud-instances#a-production-cloud-cluster) (IOPS - Input/Output Operations Per Second - can be adjusted according to your needs.)
   !["Find IOPS Number"](images\configuration-see-iops.png "Find IOPS Number")  
    1. **Products**  
       In the Cloud Portal, click the Products tab.
    2. **IOPS**  
       Your current IOPS number is written here.  
+   3. **Change Storage**  
       It can be adjusted by clicking "Change Storage". 
 
-#### Default RavenDB Cloud-Specific Configuration 
+
+#### Default RavenDB Cloud-Specific Max Batch Size Configuration 
 
 {INFO: }
 
@@ -328,7 +329,8 @@ The default cloud configuration sets batch sizes with the following formula to a
 
 {INFO/}
 
-* Explanation of configuration value:
+Explanation of configuration value:
+
    * `max()` = returns the larger of two arguments:
       * `PowerOf2(iops * 5)` = returns a number which is the power of two that's larger than the argument passed  
          e.g. in a machine with IOPS of 500...500 * 5 = 2,500, so the next power of two is 2 ^ 12, which is 4,096 documents.  
@@ -341,7 +343,7 @@ In this example, 4,096 is larger than 1024, so the maximum batch size will be 4,
 Type: `int`  
 MinValue: `128`  
 Configuration Key: `Indexing.MapBatchSize`  
-Value: Set number of documents per batch.  
+Value: Set maximum number of documents per batch.  
 Change [indexing configurations in Studio](../studio/database/indexes/create-map-index#configuration)
 
 {PANEL/}
