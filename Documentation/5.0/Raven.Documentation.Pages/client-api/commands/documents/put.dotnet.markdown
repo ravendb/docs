@@ -1,16 +1,26 @@
 # Commands: Documents: Put
 
+---
+
+{NOTE: }
 **Put** is used to insert or update a document in a database.
+
+In this page: 
+
+* [Syntax](../../../client-api/commands/documents/put#syntax)
+* [Example](../../../client-api/commands/documents/put#example)
+
+{NOTE/}
 
 ## Syntax
 
 {CODE put_interface@ClientApi\Commands\Documents\Put.cs /}
 
-| Parameters | | |
+| Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **id** | string | unique ID under which document will be stored |
 | **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
-| **document** | BlittableJsonReaderObject | The document to store. You may use `session.Advanced.JsonConverter.ToBlittable(doc, docInfo);` to convert your entity to a `BlittableJsonReaderObject` |
+| **document** | BlittableJsonReaderObject | The document to store. You may use `session.Advanced.JsonConverter.ToBlittable(doc, docInfo);` to convert your entity to a `BlittableJsonReaderObject`. |
 
 ## Example
 
