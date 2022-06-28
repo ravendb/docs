@@ -18,9 +18,9 @@
    * [Database Global Change Vector](../../../server/clustering/replication/change-vector#database-global-change-vector)
    * [After Restoring a Database from Backup](../../../server/clustering/replication/change-vector#after-restoring-a-database-from-backup)
 
-   
-
 {NOTE/}
+
+---
 
 {PANEL: What are Change Vectors Constructed From?}
 

@@ -8,7 +8,7 @@
 * RavenDB's Backup task is an [Ongoing-Task](../../../../studio/database/tasks/ongoing-tasks/general-info) 
   designed to run periodically on a pre-defined schedule.  
   You can run it as a one-time operation as well, by using [Export](../../../../client-api/smuggler/what-is-smuggler#export) 
-  or executing a backup-task [immediately](../../../../client-api/operations/maintenance/backup/backup#initiate-immediate-backup-execution).  
+  or executing a backup task [immediately](../../../../client-api/operations/maintenance/backup/backup#initiate-immediate-backup-execution).  
 
 * In this page:  
   * [Backup Types](../../../../client-api/operations/maintenance/backup/backup#backup-types)  
@@ -38,9 +38,9 @@
    * Inserts the saved index definitions. To save space, Logical Backup stores index definitions only.  
      After restoration, the dataset is scanned and indexed according to the definitions.
 
-* Restoration time is therefore **slower** than when restoring from a Snapshot.  
+* Restoration time is, therefore, **slower** than when restoring from a Snapshot.  
 
-* Backup file size is **significantly smaller** than that of a Snapshot.
+* The backup file size is **significantly smaller** than that of a Snapshot.
 
 * In addition to full data backup, Logical Backups can be defined as **incremental**, 
   saving any changes made since the previous backup.
@@ -276,9 +276,9 @@ If needed, it can also be executed immediately.
    * An ACIDity of backed-up data, to keep its independence during restoration.  
      
 * **Remove old backup files regularly**.  
-  RavenDB does **not** remove old backup files automatically. 
-  As these files continue to aggregate, it is important that you take care of their regular removal.  
-  You can use services like crontab (a Linux scheduling procedure) to create an old-backups-removal routine.  
+  Set the [backup retention policy](../../../../client-api/operations/maintenance/backup/backup#backup-retention-policy)
+  to remove unneeded backup files so that they don't build up.  
+  While setting how many days to keep your backups, consider how much of a recent database history you would like to have access to.  
 
 * **Store backup files in a location other than your database's**.  
   Note that backup files are always stored in a local folder first (even when the final backup destination is remote).  

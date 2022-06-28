@@ -9,6 +9,7 @@ Restoring a database is done easily via the RavenDB Studio.
   * [New Database From Backup - Studio Databases View](../../../studio/database/create-new-database/from-backup#new-database-from-backup---studio-databases-view)  
   * [New Database From Backup - Studio Backups View](../../../studio/database/create-new-database/from-backup#new-database-from-backup---studio-backups-view)  
   * [Backup Source Configuration](../../../studio/database/create-new-database/from-backup#backup-source-configuration)  
+  * [Setting Up High Availability After Restoration](../../../studio/database/create-new-database/from-backup#setting-up-high-availability-after-restoration)
 
 {NOTE/}
 
@@ -66,7 +67,12 @@ Another way to access the New Database From Backup interface is via the Studio B
    * **Full** or **Incremental** types include index definitions from which the new indexes will be built.  
    
 {NOTE: }
- Note: The backup will be restored only to the current node after restore. This database can be added to other nodes using the "Add node" button in the [Manage group](../../../studio/database/settings/manage-database-group#database-group-topology---actions) Studio view.
+#### Setting Up High Availability After Restoration 
+
+The backup will be restored only on the current node after restoration.  
+To create a database group of at least 3 nodes this database can be added to other nodes 
+using the "Add node" button in the [Manage group](../../../studio/database/settings/manage-database-group#database-group-topology---actions) 
+Studio view.
 
 {NOTE/}
 {PANEL/}

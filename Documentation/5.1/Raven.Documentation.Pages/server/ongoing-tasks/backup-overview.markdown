@@ -8,7 +8,7 @@
 
 * The two principal reasons for backing up your database are -  
    * **Securing data** in case catastrophe strikes.  
-   * **Freezing data in chosen points-in-time** to retain access to it in various stages of its existence/development.  
+   * **Freezing data in chosen points in time** to retain access to it in various stages of its existence/development.  
 
 * RavenDB's Backup is an **Ongoing task**.  
    * Routinely backing up your data is a fundamental aspect of your database maintenance.  
@@ -40,8 +40,8 @@ There are two backup types: [Logical-backup](../../client-api/operations/mainten
   A logical backup is a compressed JSON dump of database contents, including documents, index definitions, and [additional data](../../server/ongoing-tasks/backup-overview#backup-contents)
   that can be stored in [full](../../server/ongoing-tasks/backup-overview#full-backup) and [incremental](../../server/ongoing-tasks/backup-overview#incremental-backup) backups. 
 
-   * After a database restore, the dataset is re-indexed by the backed up index definitions.  
-     This can be time consuming in large datasets.  
+   * After a database restore, the dataset is re-indexed by the backed-up index definitions.  
+     This can be time-consuming in large datasets.  
 #### Snapshot  
   A snapshot is a binary image of the database contents, full indexes, and [additional data](../../server/ongoing-tasks/backup-overview#backup-contents) 
   at a given point in time.  
@@ -101,7 +101,7 @@ You can set the Backup task to create either **full** or **incremental** backups
 * **A Typical Configuration**  
   A typical configuration would include quick incremental-backup runs that "fill the gaps" between full backups.  
   * For example -  
-    A **full-backup** task set to run **every 12 hours**,  
+    A **full-backup** task is set to run **every 12 hours**,  
     and an **incremental-backup** task that runs **every 30 minutes**.  
 
 {PANEL/}
@@ -180,7 +180,7 @@ In order to restore a database -
 * RavenDB will then restore the incremental-backups one by one, up to and including the last one.
   You can set `LastFileNameToRestore` to 
   [stop restoration](../../client-api/operations/maintenance/backup/restore#optional-settings) 
-  at a specific backup-file.
+  at a specific backup file.
 
 
 {PANEL/}
@@ -195,9 +195,9 @@ In order to restore a database -
 
 ###Studio  
 - [The Backup Task](../../studio/database/tasks/backup-task)  
-- [Create Database: From Backup](../../studio/server/databases/create-new-database/from-backup)  
-- [Create a Database: General Flow](../../studio/server/databases/create-new-database/general-flow)  
-- [Create a Database: Encrypted](../../studio/server/databases/create-new-database/encrypted)  
+- [Create Database: From Backup](../../studio/database/create-new-database/from-backup)  
+- [Create a Database: General Flow](../../studio/database/create-new-database/general-flow)  
+- [Create a Database: Encrypted](../../studio/database/create-new-database/encrypted)  
 
 ###Security  
 - [Database Encryption](../../server/security/encryption/database-encryption)  
