@@ -15,7 +15,7 @@ Hub whenever they are online.
 
 {INFO: }
 
-* Learn more about **Hub/Sink replication** [Here](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview).  
+* Learn more about **Hub/Sink replication** [in the Overview article](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview).  
 * You can use the Studio to define 
   [Hub](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task) 
   and [Sink](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task) 

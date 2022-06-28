@@ -3,8 +3,8 @@
 
 {NOTE: }
 
-* Schedule an **External Replication Task** in order to have a _live_ replica of your data in another database:  
-  * In a separate RavenDB cluster [on local machines](../../start/getting-started) or [a cloud instance](../../../../cloud/cloud-overview), 
+* Schedule an **External Replication Task** to have a _live_ replica of your data in another database:  
+  * In a separate RavenDB cluster [on local machines](../../start/getting-started) or [a cloud instance](../../cloud/cloud-overview), 
     which can be used as a failover if the source cluster is down.  
     Note: External Replication task **does _not_ create a backup** of your data and indexes.  
     See more in [Backup -vs- Replication](../../studio/database/tasks/backup-task#backup-task--vs--replication-task)

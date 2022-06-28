@@ -1,7 +1,7 @@
 # Ongoing Tasks: External Replication
 ---
 
-{INFO: }
+{NOTE: }
 
 * [Within-cluster replication](../../server/clustering/replication/replication) is default between nodes in a database group.  
   Replication between different clusters or between two databases in the same cluster is called **External Replication**. 
@@ -11,7 +11,9 @@
    * [Maintaining Consistency Boundaries Between Clusters](../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters)
    * [Delayed Replication](../../server/ongoing-tasks/external-replication#delayed-replication)
 
-{INFO/}
+{NOTE/}
+
+---
 
 {PANEL: About External Replication}
 
