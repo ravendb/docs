@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="server\configuration\licensing\**" />
+    <EmbeddedResource Remove="server\configuration\licensing\**" />
+    <None Remove="server\configuration\licensing\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="indexes\querying\graph\graph-queries-TBR.markdown" />
     <None Remove="indexes\querying\graph\graph-queries-vs-other-queries-TBD.markdown" />
     <None Remove="indexes\querying\graph\graph-recursive-TBR.markdown" />

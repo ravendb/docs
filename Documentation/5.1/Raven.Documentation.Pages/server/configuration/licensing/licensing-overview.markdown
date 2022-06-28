@@ -3,15 +3,15 @@
 
 {NOTE: }
 
-* There are four licensing options available for you to choose according to your needs.  
+* There are four licensing options available for you to choose from according to your needs.  
   See the [pricing page](https://ravendb.net/buy) for more info about which features are included in each license.  
-   * **Development** (fully-featured and temporary - must be upgraded before launch)
-   * **Community** (basic production grade)
-   * **Professional** (standard production grade)
-   * **Enterprise** (high-performance, fully-featured production grade)
+   * **Development** (fully featured and temporary - must be upgraded before launch)
+   * **Community** (basic production-grade)
+   * **Professional** (standard production-grade)
+   * **Enterprise** (high-performance, fully-featured production-grade)
    * [Cloud portal](../../../cloud/cloud-overview) for cloud-based servers
 
-* Your license code is sent to the email address that you chose when registering your license.  
+* Your license code is sent to the email address that you entered when registering your license.  
   It is in .json format.  
 
 * Licenses are activated and updated automatically unless: 
@@ -33,6 +33,8 @@ In this page:
 
 {NOTE/}
 
+---
+
 {PANEL: Activating Your License}
 
 Because licenses are activated and updated automatically by default, the following sections are only relevant if you 
@@ -52,7 +54,7 @@ You can either [activate via Studio](../../../studio/server/license-management#r
 
 * **License.Path**  
     Path to the license file (either **full** or **relative to the Server folder**).  
-    The file `license.json` is in each node's **...Cluster.Settings.zip** in wizard installs or possibly the**Server** folder if manually installed.  
+    The file `license.json` is in each node's **...Cluster.Settings.zip** in wizard installs or possibly the **Server** folder if manually installed.  
     E.g. (full) - `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
     E.g. (relative) - `"License.Path": "License\\license.json"`  
 
@@ -83,7 +85,7 @@ Copy the entire code block and either:
 
 If the default connection with RavenDB's [License Server](../../../studio/server/license-management#license-information) is active, 
 the license will update tonight.  
-To update it immidiately, you can [force the update in Studio](../../../studio/server/license-management#force-update).
+To update it immediately, you can [force the update in Studio](../../../studio/server/license-management#force-update).
 
 {INFO: Maintaining auto-renewal of Let's Encrypt certificate}
 If you set up with the [Setup Wizard](../../../start/installation/setup-wizard) and used a Let's Encrypt certificate, 
@@ -96,7 +98,7 @@ Otherwise, changing your license ID will cause a mismatch between the new one an
 
 {PANEL: Renewing Your License}
 
-By default, RavenDB automatically renews a license as long as it isn't cancelled.  
+By default, RavenDB automatically renews a license as long as it isn't canceled.  
 If the automatic renewal feature is turned off in the settings.json, you can renew your license with the same process 
 as [activating your license](../../../server/configuration/licensing/licensing-overview#activating-your-license).
 
@@ -113,7 +115,7 @@ If you've upgraded your license and want to work with the new features today, yo
 
 {PANEL: Offline Activation, Upgrade, and Renewal}
 
-If your sever is disconnected from the internet, RavenDB's default automatic renewal feature cannot trigger renewal.  
+If your server is disconnected from the internet, RavenDB's default automatic renewal feature cannot trigger renewal.  
 The feature must be disabled and the license must be manually placed, either directly in the settings.json 
 or in the license.json file.
 
@@ -121,7 +123,7 @@ or in the license.json file.
    In the [settings.json](../../../server/configuration/configuration-options#json) 
    (located in the installation package "Server" folder), add the following configuration 
    `"License.DisableAutoUpdateFromApi": "true"`.
-2. **Either set path to license file in settings.json or embed the license code directly into the settings.json.**  
+2. **Either set the path to the license file in settings.json or embed the license code directly into the settings.json.**  
    * File path option - `"License.Path": "path to your .json license file"`
    * Embed in settings.json - `"License": paste your license code including curly brackets here`.
    * See [examples here](../../../server/configuration/licensing/licensing-overview#activating-your-license).
@@ -132,8 +134,8 @@ or in the license.json file.
 
 ## Related Articles
 
-- [Studio : Licensing Management](../../studio/server/license-management)
-- [Configuration : License Options](../../server/configuration/license-configuration)
+- [Studio : Licensing Management](../../../studio/server/license-management)
+- [Configuration : License Options](../../../server/configuration/licensing/license-configuration)
 - [Configuring the settings.json](../../../server/configuration/configuration-options#json)
 
 
