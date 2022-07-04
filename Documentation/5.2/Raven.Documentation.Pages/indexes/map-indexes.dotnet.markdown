@@ -254,7 +254,7 @@ from index 'Companies_ByAddress_Country'
 
 ### Example II
 
-Imagine a seed company that needs to categorize their customers by latitude-based growing zones.  
+Imagine a seed company that needs to categorize its customers by latitude-based growing zones.  
 
 They can create a different index for each zone and filter their customers in the index with  
 `where (company.Address.Location.Latitude > 20 && company.Address.Location.Latitude < 50)` .
