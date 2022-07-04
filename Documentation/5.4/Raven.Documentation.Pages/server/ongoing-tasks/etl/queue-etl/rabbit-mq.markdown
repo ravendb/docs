@@ -3,7 +3,20 @@
 
 {NOTE: }
 
-* **Queue ETL** 
+* **RabbitMQ** exchanges are designed to disperse data to multiple queues, 
+  making for a flexible data channeling system that can ease the management 
+  of complex scenarios.  
+  For example, a RabbitMQ exchange can inform different bank departments 
+  of the same event via different queues so each department would handle 
+  the event from its own perspective of it.  
+
+* A RavenDB RabbitMQ ETL task Extracts data from RavenDB, Transforms it 
+  into a new JSON object, and Loads it to a RabbitMQ Exhange using the 
+  ClouodEvents library.  
+
+* This page explains how to create a RabbitMQ ETL task using code.  
+  [Learn here](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task) 
+  how to define a RabbitMQ ETL task using code.  
 
 * In this page:  
   * [](../../../../)  

@@ -3,22 +3,20 @@
 
 {NOTE: }
 
-* The message brokers currently supported by RavenDB's queue ETL are 
-  high-throughput, distributed messaging services. Messages are sent 
-  to these services by **producer** applications like RavenDB, and 
-  hosted by them until their retrieval by **consumer** applications.  
-
-* RavenDB takes the role of a **producer** application in this architecture.  
-  Its queue ETL tasks Extract specified documents from the database, Transform 
-  them to new objects by a custom script, and Load (push) them to the specified 
-  queue broker.  
-  
-* RavenDB currently supports two queue implementations: **Kafka** and **RabbitMQ**.  
-
-* To push documents to the queue brokers, RavenDB uses the `CloudEvents` library.  
+* Message brokers are high-throughput, distributed messaging services that 
+  host data they receive from **producer** applications and serve it to 
+  **consumer** applications via data queue/s the consumers are subscribed to. 
+  Data is added at the queue's tail, and retrieved by consumers when it 
+  reaches the queue's head.  
+* RavenDB functions as a producer in this architecture, via service-specific 
+  ETL tasks that Extract data from specified document collections, Transform 
+  it to new JSON objects, and Load the JSON objects to the message broker.  
+* To pass the produced JSON objects to the message broker, RavenDB packs 
+  them as CloudEvents messages using the [CloudEvents Library](https://cloudevents.io).  
+* Currently supported message brokers include **Apache Kafka** and **RabbitMQ**.  
 
 * In this page:  
-   * [Supported Brokers](../../../../server/ongoing-tasks/etl/queue-etl/overview#supported-brokers)  
+   * [Supported Message Brokers](../../../../server/ongoing-tasks/etl/queue-etl/overview#supported-message-brokers)  
    * [CloudEvents](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents)  
    * [Task Statistics](../../../../server/ongoing-tasks/etl/queue-etl/overview#task-statistics)  
 
@@ -26,9 +24,9 @@
 
 ---
 
-{PANEL: Supported Brokers}
+{PANEL: Supported Message Brokers}
 
-RavenDB can currently push messages to two types of queue brokers: Kafka and RabbitMQ.  
+Queue applications that RavenDB can currently produce data for include **Apache Kafka** and **RabbitMQ**.  
 
 ![Ongoing Tasks](images/overview_ongoing-tasks.png "Ongoing Tasks")
 
@@ -50,14 +48,11 @@ RavenDB can currently push messages to two types of queue brokers: Kafka and Rab
 
 {PANEL: CloudEvents}
 
-When the ETL task finishes to transform the data extracted from the database, 
-the result is always a JSON document that now needs to be transferred to the target.  
+After preparing a JSON object that needs to be sent to a message broker, 
+the ETL task wraps it as a CloudEvents message using the [CloudEvents Library](https://cloudevents.io).  
 
-However, to transfer documents to queue brokers, RavenDB formats the outgoing 
-documents as CloudEvents messages first, Using the [CloudEvents Library](https://cloudevents.io).  
-
-To do that, RavenDB adds each JSON doc 
-[required attributes](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#required-attributes)
+To do that, the JSON object is provided with additional 
+[required attributes](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#required-attributes) 
 Like [id](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#id),
 [source](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#source-1),
 [specversion](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#specversion), 
@@ -67,9 +62,8 @@ And [type](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#typ
 
 {PANEL: Task Statistics}
 
-You can see various statistics related to the extraction, transformation and 
-loading of your data from RavenDB to the target queue broker, using Studio'
-s [ongoing tasks stats](../../../../studio/database/stats/ongoing-tasks-stats/overview) view.  
+Use Studio's [ongoing tasks stats](../../../../studio/database/stats/ongoing-tasks-stats/overview) view 
+to see various statistics related to data extraction, transformation, and loading to the target broker.  
 
 ![Queue Brokers Stats](images/overview_stats.png "Ongoing Tasks")
 

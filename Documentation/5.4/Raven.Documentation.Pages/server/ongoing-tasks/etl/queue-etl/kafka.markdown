@@ -3,13 +3,16 @@
 
 {NOTE: }
 
-* **Apache Kafka** is a distributed messaging service that can safely store 
-  messages produced by clients and speedily stream the messages to consumer 
-  clients. The streamed data can be used for analytics and various other needs.  
-  
-* Kafka ETL tasks can be created via Studio or using code to transform RavenDB 
-  documents and push them to Kafka nodes.  
+* **Apache Kafka** is a high-performance message broker, suited to serve 
+  consumers in big data environments.  
 
+* A RavenDB Kafka ETL task Extracts data from RavenDB, Transforms it 
+  into a new JSON object, and Loads it into Kafka topics using the 
+  ClouodEvents library.  
+
+* This page explains how to create a Kafka ETL task using code.  
+  [Learn here](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task) 
+  how to define a Kafka ETL task using code.  
 
 * In this page:  
   * [](../../../../)  

@@ -51,5 +51,72 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                 #endregion
             }
         }
+
+        // Add Kafka ETL Task
+        public void AddKafkaEtlTask()
+        {
+            using (var store = new DocumentStore())
+            {
+                // Create a document
+                using (var session = store.OpenSession())
+                {
+                    #region add_kafka_etl-task
+                    // use PutConnectionStringOperation to add connection string
+                    var res = store.Maintenance.Send(
+                        new PutConnectionStringOperation<QueueConnectionString>(new QueueConnectionString
+                        {
+                            Name = "KafkaConStr",
+                            BrokerType = QueueBrokerType.Kafka,
+                            KafkaConnectionSettings = new KafkaConnectionSettings() { BootstrapServers = "localhost:9092" }
+                        }));
+
+                    // create transformation script
+                    Transformation transformation = new Transformation
+                    {
+                        Name = "scriptName",
+                        Collections = { "Orders" },
+                        Script = @"var orderData = {
+    Id: id(this), // property with RavenDB document ID
+    OrderLinesCount: this.Lines.length,
+    TotalCost: 0
+};
+
+for (var i = 0; i < this.Lines.length; i++) {
+    var line = this.Lines[i];
+    var cost = (line.Quantity * line.PricePerUnit) * ( 1 - line.Discount);
+    orderData.TotalCost += cost;
+}
+
+loadToOrders(orderData, {  // load to the 'Orders' Topic with optional params
+    Id: id(this),
+    PartitionKey: id(this),
+    Type: 'com.github.users',
+    Source: '/registrations/direct-signup'
+});",
+                        ApplyToAllDocuments = false
+                    };
+
+                    // use AddEtlOperation to add ETL task 
+                    AddEtlOperation<QueueConnectionString> operation = new AddEtlOperation<QueueConnectionString>(
+                    new QueueEtlConfiguration()
+                    {
+                        Name = "KafkaEtlTaskName",
+                        ConnectionStringName = "KafkaConStr",
+                        Transforms =
+                            {
+                            transformation
+                            },
+                        Queues = { new EtlQueue() { Name = "Orders" } },
+                        BrokerType = QueueBrokerType.Kafka
+                    });
+                    store.Maintenance.Send(operation);
+                    
+                    #endregion
+                }
+            }
+        }
+
+
+
     }
 }
