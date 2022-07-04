@@ -4,6 +4,7 @@ using System.Linq;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Documentation.Samples.Orders;
+using Raven.Documentation.Samples;
 
 namespace Raven.Documentation.Samples.Indexes
 {
@@ -171,6 +172,60 @@ namespace Raven.Documentation.Samples.Indexes
             }
         }
         #endregion
+
+
+        #region indexes_1_6
+        public class Companies_ByAddress_Country : AbstractIndexCreationTask<Company>
+        {
+            public class Result
+            {
+                public string City { get; set; }
+                public string Company { get; set; } 
+                public string Phone { get; set; }
+            }
+
+            public Companies_ByAddress_Country()
+            {
+                Map = companies => from company in companies
+                                where company.Address.Country == "USA"
+                                select new Result
+                                {
+                                    Company = company.Name,
+                                    City = company.Address.City,
+                                    Phone = company.Phone
+                                };
+            }
+        }
+        #endregion
+
+        #region indexes_1_7
+        public class Companies_ByAddress_Latitude : AbstractIndexCreationTask<Company>
+        {
+            public class Result
+            {
+                public double latitude { get; set; }
+                public double longitude { get; set; }
+                public string companyName { get; set; }
+                public string companyAddress { get; set; }
+                public string companyPhone { get; set; }
+            }
+
+            public Companies_ByAddress_Latitude()
+            {
+                Map = companies => from company in companies
+                                   where (company.Address.Location.Latitude > 20 && company.Address.Location.Latitude < 50)
+                                   select new
+                                   {
+                                       latitude = company.Address.Location.Latitude,
+                                       longitude = company.Address.Location.Latitude,
+                                       companyName = company.Name,
+                                       companyAddress = company.Address,
+                                       companyPhone = company.Phone
+                                   };
+            }
+        }
+        #endregion
+
 
         /*
         #region javaScriptindexes_1_0
@@ -475,6 +530,27 @@ namespace Raven.Documentation.Samples.Indexes
                         .ToList();
                     #endregion
                 }
+
+                using (var session = store.OpenSession())
+                {
+                    #region indexes_query_1_6
+                    IList<Order> orders = session
+                        .Query<Companies_ByAddress_Country.Result, Companies_ByAddress_Country>()
+                        .OfType<Order>()
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region indexes_query_1_7
+                    IList<Company> orders = session
+                        .Query<Companies_ByAddress_Latitude.Result, Companies_ByAddress_Latitude>()
+                        .OfType<Company>()
+                        .ToList();
+                    #endregion
+                }
+
             }
         }
     }

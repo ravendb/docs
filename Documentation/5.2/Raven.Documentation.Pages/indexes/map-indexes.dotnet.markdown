@@ -1,22 +1,32 @@
 # Indexes: Map Indexes
+---
+
+{NOTE: }
 
 `Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. They indicate which documents can be searched by which fields. 
 
-These **mapping functions** are **LINQ-based functions** or  **JavaScript function** (when using JavaScript indexes)  and can be considered the **core** of indexes.
+These **mapping functions** are **LINQ-based functions** or  **JavaScript functions** (when using JavaScript indexes)  and can be considered the **core** of indexes.
 
-## What Can be Indexed
+### What Can be Indexed
 
 You can:
 
-- [index single fields](../indexes/map-indexes#indexing-single-fields)
-- [combine multiple fields](../indexes/map-indexes#combining-multiple-fields-together) together
-- [index partial field data](../indexes/map-indexes#indexing-partial-field-data)
-- [index nested data](../indexes/map-indexes#indexing-nested-data)
-- [index fields from related documents](../indexes/indexing-related-documents)
-- [index fields from multiple collections](../indexes/indexing-polymorphic-data#multi-map-indexes)
-- [configure whether to index a document if the specified fields are `null`](../indexes/map-indexes#indexing-missing-fields)
+- [Index single fields](../indexes/map-indexes#index-single-fields)
+- [Combine multiple fields](../indexes/map-indexes#combine-multiple-fields)
+- [Index partial field data](../indexes/map-indexes#index-partial-field-data)
+- [Filter data within fields](../indexes/map-indexes#filter-data-within-fields)
+- [Index nested data](../indexes/map-indexes#index-nested-data)
+- [Index fields from related documents](../indexes/indexing-related-documents)
+- [Index multiple collections](../indexes/indexing-polymorphic-data#multi-map-indexes)
+- [Aggregate data with Map-Reduce](../indexes/map-reduce-indexes)
+- [Run calculations and store the results in the index to reduce query time](https://demo.ravendb.net/demos/csharp/static-indexes/store-fields-in-index)
+- [Configure whether to index a document if the specified fields are `null`](../indexes/map-indexes#configure-whether-to-index-a-document-if-the-specified-fields-are-null)
 
-## Indexing Single Fields
+{NOTE/}
+
+---
+
+{PANEL: Index single fields}
 
 Let's create an index that will help us search for `Employees` by their `FirstName`, `LastName`, or both.
 
@@ -41,7 +51,10 @@ You might notice that we're passing `Employee` as a generic parameter to `Abstra
 {CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_2@Indexes/JavaScript.cs /}
 {CODE-TABS/}
 
-- The final step is to [deploy it](../indexes/creating-and-deploying) to the server and issue a query using the session [Query](../client-api/session/querying/how-to-query) method:
+- The final step is to [deploy it](../indexes/creating-and-deploying) to the server 
+  and issue a query using the session [Query](../client-api/session/querying/how-to-query) method.  
+  To query an index, the name of the index must be called by the query.  
+  If the index isn't called, RavenDB will either use or create an [auto index](../indexes/creating-and-deploying#auto-indexes).
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query indexes_4@Indexes/Map.cs /}
@@ -125,7 +138,9 @@ The part you should pay attention to is `docs.Employees`. This syntax indicates 
 
 {WARNING/}
 
-## Combining Multiple Fields Together
+{PANEL/}
+
+{PANEL: Combine multiple fields}
 
 Since each index contains a LINQ function, you can combine multiple fields into one.
 
@@ -151,9 +166,9 @@ where FullName = 'Robert King'
 {INFO: Information}
 
 In this example, the index field `Query` combines all values from various Employee fields into one. 
-The default Analyzer on fields is changed to enable `Full Text Search` operations. The matches no longer need to be exact.
+The default Analyzer on fields is changed to enable `Full-Text Search` operations. The matches no longer need to be exact.
 
-You can read more about analyzers and `Full Text Search` [here](../indexes/using-analyzers).
+You can read more about analyzers and `Full-Text Search` [here](../indexes/using-analyzers).
 
 {INFO/}
 
@@ -173,7 +188,9 @@ where search(Query, 'John Doe')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Indexing Partial Field Data
+{PANEL/}
+
+{PANEL: Index partial field data}
 
 Imagine that you would like to return all employees that were born in a specific year. You can do it by indexing `Birthday` from `Employee` in the following way:  
 
@@ -211,7 +228,52 @@ where YearOfBirth = 1963
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Indexing Nested Data
+{PANEL/}
+
+{PANEL: Filter data within fields}
+
+In some cases, you may want to decrease the burden from the queries by including `where` in the index definition
+to further filter what the index will return. This will minimize the values that queries must scan.
+
+### Example I
+
+For logic that has to do with special import rules that only apply to the USA  
+`where` can be used to filter the Companies collection `Address.Country` field.  
+Thus, we only index documents `where company.Address.Country == "USA"` . 
+
+Index definition (LINQ Syntax):
+{CODE indexes_1_6@Indexes\Map.cs /}
+
+Query the index:
+{CODE-TABS}
+{CODE-TAB:csharp:Query indexes_query_1_6@Indexes\Map.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Companies_ByAddress_Country'
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+### Example II
+
+Imagine a seed company that needs to categorize their customers by latitude-based growing zones.  
+
+They can create a different index for each zone and filter their customers in the index with  
+`where (company.Address.Location.Latitude > 20 && company.Address.Location.Latitude < 50)` .
+
+Index definition (LINQ Syntax):
+{CODE indexes_1_7@Indexes\Map.cs /}
+
+Query the index:
+{CODE-TABS}
+{CODE-TAB:csharp:Query indexes_query_1_7@Indexes\Map.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Companies_ByAddress_Latitude'
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}  
+
+
+{PANEL: Index nested data}
 
 If your document contains nested data, e.g. `Employee` contains `Address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `Country`:  
 
@@ -233,11 +295,27 @@ where Country = 'USA'
 
 If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../indexes/indexing-related-documents).
 
-## Indexing Multiple Collections
+{PANEL/}
+
+{PANEL: Index fields from related documents}
+
+Read the article dedicated to [indexing related documents](../indexes/indexing-related-documents).
+
+{PANEL/}
+
+{PANEL: Aggregate data with Map-Reduce}
+
+Read the article dedicated to [Map-Reduce indexes](../indexes/map-reduce-indexes).
+
+{PANEL/}
+
+{PANEL: Index multiple collections}
 
 Read the article dedicated to `Multi-Map` indexes [here](../indexes/indexing-polymorphic-data#multi-map-indexes).
 
-## Indexing Missing Fields
+{PANEL/}
+
+{PANEL: Configure whether to index a document if the specified fields are `null`}
 
 By default, indexes will not index a document that contains none of the specified fields. This behavior can be changed 
 using the [Indexing.IndexEmptyEntries](../server/configuration/indexing-configuration#indexing.indexemptyentries) 
@@ -245,6 +323,8 @@ configuration option.
 
 The option [Indexing.IndexMissingFieldsAsNull](../server/configuration/indexing-configuration#indexing.indexmissingfieldsasnull) 
 determines whether missing fields in documents are indexed with the value `null`, or not indexed at all.  
+
+{PANEL/}
 
 ## Related Articles
 
@@ -258,3 +338,14 @@ determines whether missing fields in documents are indexed with the value `null`
 
 ### Studio
 - [Create Map Index](../studio/database/indexes/create-map-index)
+
+---
+
+### Code Walkthrough
+
+- [Static Indexes Overview](https://demo.ravendb.net/demos/csharp/static-indexes/static-indexes-overview)
+- [Map Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-index)
+- [Map-Reduce Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-reduce-index)
+- [Project Index Results](https://demo.ravendb.net/demos/csharp/static-indexes/project-index-results)
+- [Store Fields in Index](https://demo.ravendb.net/demos/csharp/static-indexes/store-fields-in-index)
+
