@@ -104,7 +104,7 @@ loadToOrders(orderData, {  // load to the 'Orders' Topic with optional params
                         ConnectionStringName = "KafkaConStr",
                         Transforms =
                             {
-                            transformation
+                                transformation
                             },
                         Queues = { new EtlQueue() { Name = "Orders" } },
                         BrokerType = QueueBrokerType.Kafka
@@ -116,7 +116,69 @@ loadToOrders(orderData, {  // load to the 'Orders' Topic with optional params
             }
         }
 
+        // Add RabbitMq ETL task
+        public void AddRabbitmqEtlTask()
+        {
+            using (var store = new DocumentStore())
+            {
+                // Create a document
+                using (var session = store.OpenSession())
+                {
+                    #region add_rabbitmq_etl-task
+                    // use PutConnectionStringOperation to add connection string
+                    var res = store.Maintenance.Send(
+                        new PutConnectionStringOperation<QueueConnectionString>(new QueueConnectionString
+                        {
+                            Name = "RabbitMqConStr",
+                            BrokerType = QueueBrokerType.RabbitMq,
+                            RabbitMqConnectionSettings = new RabbitMqConnectionSettings() { ConnectionString = "amqp://guest:guest@localhost:5672/" }
+                        }));
 
+                    // create transformation script
+                    Transformation transformation = new Transformation
+                    {
+                        Name = "scriptName",
+                        Collections = { "Orders" },
+                        Script = @"var orderData = {
+    Id: id(this), 
+    OrderLinesCount: this.Lines.length,
+    TotalCost: 0
+};
 
+for (var i = 0; i < this.Lines.length; i++) {
+    var line = this.Lines[i];
+    var cost = (line.Quantity * line.PricePerUnit) * ( 1 - line.Discount);
+    orderData.TotalCost += cost;
+}
+
+loadToOrders(orderData, `routingKey`, {  
+    Id: id(this),
+    PartitionKey: id(this),
+    Type: 'com.github.users',
+    Source: '/registrations/direct-signup'
+});",
+                        ApplyToAllDocuments = false
+                    };
+
+                    // use AddEtlOperation to add ETL task 
+                    AddEtlOperation<QueueConnectionString> operation = new AddEtlOperation<QueueConnectionString>(
+                    new QueueEtlConfiguration()
+                    {
+                        Name = "RabbitMqEtlTaskName",
+                        ConnectionStringName = "RabbitMqConStr",
+                        Transforms =
+                            {
+                                transformation
+                            },
+                        Queues = { new EtlQueue() { Name = "Orders" } },
+                        BrokerType = QueueBrokerType.RabbitMq,
+                        SkipAutomaticQueueDeclaration = false
+                    });
+                    store.Maintenance.Send(operation);
+
+                    #endregion
+                }
+            }
+        }
     }
 }
