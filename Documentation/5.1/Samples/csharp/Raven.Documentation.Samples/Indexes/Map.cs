@@ -534,9 +534,9 @@ namespace Raven.Documentation.Samples.Indexes
                 using (var session = store.OpenSession())
                 {
                     #region indexes_query_1_6
-                    IList<Order> orders = session
+                    IList<Company> company = session
                         .Query<Companies_ByAddress_Country.Result, Companies_ByAddress_Country>()
-                        .OfType<Order>()
+                        .OfType<Company>()
                         .ToList();
                     #endregion
                 }
