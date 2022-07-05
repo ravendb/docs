@@ -14,7 +14,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
     {
         private interface IFoo
         {
-            #region queue-broker-type
+            #region QueueBrokerType
             public enum QueueBrokerType
             {
                 None,
@@ -30,24 +30,30 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
             using (var store = new DocumentStore())
             {
                 #region add_rabbitMQ_connection-string
-                var res = store.Maintenance.Send(new PutConnectionStringOperation<QueueConnectionString>(new QueueConnectionString
-                {
-                    Name = "RabbitMqConStr",
-                    BrokerType = QueueBrokerType.RabbitMq,
-                    RabbitMqConnectionSettings = new RabbitMqConnectionSettings() { ConnectionString = "amqp://guest:guest@localhost:5672/" }
-                }));
+                var res = store.Maintenance.Send(
+                    new PutConnectionStringOperation<QueueConnectionString>(
+                        new QueueConnectionString
+                        {
+                            Name = "RabbitMqConStr",
+                            BrokerType = QueueBrokerType.RabbitMq,
+                            RabbitMqConnectionSettings = new RabbitMqConnectionSettings() 
+                                { ConnectionString = "amqp://guest:guest@localhost:49154" }
+                        }));
                 #endregion
             }
 
             using (var store = new DocumentStore())
             {
                 #region add_kafka_connection-string
-                var res = store.Maintenance.Send(new PutConnectionStringOperation<QueueConnectionString>(new QueueConnectionString
-                {
-                    Name = "KafkaConStr",
-                    BrokerType = QueueBrokerType.Kafka,
-                    KafkaConnectionSettings = new KafkaConnectionSettings() { BootstrapServers = "localhost:29092" }
-                }));
+                var res = store.Maintenance.Send(
+                    new PutConnectionStringOperation<QueueConnectionString>(
+                        new QueueConnectionString
+                        {
+                            Name = "KafkaConStr",
+                            BrokerType = QueueBrokerType.Kafka,
+                            KafkaConnectionSettings = new KafkaConnectionSettings() 
+                                { BootstrapServers = "localhost:9092" }
+                        }));
                 #endregion
             }
         }
@@ -63,12 +69,13 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                     #region add_kafka_etl-task
                     // use PutConnectionStringOperation to add connection string
                     var res = store.Maintenance.Send(
-                        new PutConnectionStringOperation<QueueConnectionString>(new QueueConnectionString
-                        {
-                            Name = "KafkaConStr",
-                            BrokerType = QueueBrokerType.Kafka,
-                            KafkaConnectionSettings = new KafkaConnectionSettings() { BootstrapServers = "localhost:9092" }
-                        }));
+                        new PutConnectionStringOperation<QueueConnectionString>(
+                            new QueueConnectionString
+                            {
+                                Name = "KafkaConStr",
+                                BrokerType = QueueBrokerType.Kafka,
+                                KafkaConnectionSettings = new KafkaConnectionSettings() { BootstrapServers = "localhost:9092" }
+                            }));
 
                     // create transformation script
                     Transformation transformation = new Transformation
@@ -127,12 +134,13 @@ loadToOrders(orderData, {  // load to the 'Orders' Topic with optional params
                     #region add_rabbitmq_etl-task
                     // use PutConnectionStringOperation to add connection string
                     var res = store.Maintenance.Send(
-                        new PutConnectionStringOperation<QueueConnectionString>(new QueueConnectionString
-                        {
-                            Name = "RabbitMqConStr",
-                            BrokerType = QueueBrokerType.RabbitMq,
-                            RabbitMqConnectionSettings = new RabbitMqConnectionSettings() { ConnectionString = "amqp://guest:guest@localhost:5672/" }
-                        }));
+                        new PutConnectionStringOperation<QueueConnectionString>(
+                            new QueueConnectionString
+                            {
+                                Name = "RabbitMqConStr",
+                                BrokerType = QueueBrokerType.RabbitMq,
+                                RabbitMqConnectionSettings = new RabbitMqConnectionSettings() { ConnectionString = "amqp://guest:guest@localhost:49154" }
+                            }));
 
                     // create transformation script
                     Transformation transformation = new Transformation
@@ -179,6 +187,34 @@ loadToOrders(orderData, `routingKey`, {
                     #endregion
                 }
             }
+        }
+
+        private class Definition
+        {
+            #region QueueConnectionString
+            public class QueueConnectionString : ConnectionString
+            {
+                public QueueBrokerType BrokerType { get; set; }
+                // Configure if a Kafka connection string is needed
+                public KafkaConnectionSettings KafkaConnectionSettings { get; set; }
+                // Configure if a RabbitMq connection string is needed
+                public RabbitMqConnectionSettings RabbitMqConnectionSettings { get; set; }
+            }
+            #endregion
+
+            public  abstract class ConnectionString
+            {
+                public string Name { get; set; }
+            }
+
+            #region EtlQueue
+            public class EtlQueue
+            {
+                public string Name { get; set; }
+                public bool DeleteProcessedDocuments { get; set; }
+            }
+            #endregion
+
         }
     }
 }

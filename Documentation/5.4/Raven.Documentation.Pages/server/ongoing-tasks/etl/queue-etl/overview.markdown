@@ -5,15 +5,14 @@
 
 * Message brokers are high-throughput, distributed messaging services that 
   host data they receive from **producer** applications and serve it to 
-  **consumer** applications via data queue/s the consumers are subscribed to. 
-  Data is added at the queue's tail, and retrieved by consumers when it 
-  reaches the queue's head.  
-* RavenDB functions as a producer in this architecture, via service-specific 
-  ETL tasks that Extract data from specified document collections, Transform 
-  it to new JSON objects, and Load the JSON objects to the message broker.  
-* To pass the produced JSON objects to the message broker, RavenDB packs 
-  them as CloudEvents messages using the [CloudEvents Library](https://cloudevents.io).  
-* Currently supported message brokers include **Apache Kafka** and **RabbitMQ**.  
+  **consumer** clients via FIFO data queue/s. 
+* RavenDB takes the role of a Producer in this architecture, via ETL tasks that -  
+   * Extract data from specified document collections.  
+   * Transform the data to new JSON objects.  
+   * Load the JSON objects to the message broker.  
+* RavenDB wraps JSON objects as CloudEvents messages prioer to loading them 
+  to the designated broker, using the [CloudEvents Library](https://cloudevents.io).  
+* Supported message brokers currently include **Apache Kafka** and **RabbitMQ**.  
 
 * In this page:  
    * [Supported Message Brokers](../../../../server/ongoing-tasks/etl/queue-etl/overview#supported-message-brokers)  
