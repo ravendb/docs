@@ -1,8 +1,29 @@
 # Querying: Filtering
+---
+
+{NOTE: }
 
 One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition. There are couple of ways to do this and they all depend on the querying approach you want to use ([Query](../../client-api/session/querying/how-to-query) from basic session operations, [DocumentQuery](../../client-api/session/querying/document-query/what-is-document-query) from advanced session operations, or directly using [RQL](../../indexes/querying/what-is-rql)).  
 
 The following examples demonstrate how to add simple conditions to a query using all of those methods.
+
+* In this page:
+   * [Where](../../)
+   * [Where - Numeric Property](../../)
+   * [Where - Nested Property](../../)
+   * [Where + Any](../../)
+   * [Where + In](../../)
+   * [Where + ContainsAny](../../)
+   * [Where + ContainsAll](../../)
+   * [Where - StartsWith](../../)
+   * [Where - EndsWith](../../)
+   * [Where - Identifier Property](../../)
+   * [Where - Exists](../../)
+   * [](../../)
+
+{NOTE/}
+
+---
 
 ## Where
 
@@ -169,6 +190,11 @@ where startsWith(id(), 'orders/1')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+## Where - Exists
+
+To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field).  
+
+To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field)
 
 ## Remarks
 

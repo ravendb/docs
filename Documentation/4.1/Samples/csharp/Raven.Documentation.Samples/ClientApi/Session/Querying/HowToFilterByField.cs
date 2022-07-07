@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
+using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
@@ -44,6 +45,22 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .ToListAsync();
                     #endregion
                 }
+
+                using (var session = store.OpenSession())
+                {
+                    #region whereNotexists_1
+                    List<Order> results = session
+                        .Advanced
+                        .DocumentQuery<Order>()
+                        .WhereExists("Company")
+                        .AndAlso()
+                        .Not
+                        .WhereExists("Employee")
+                        .ToList();
+                    #endregion
+                }
+
+
             }
 
             using (var store = new DocumentStore())
