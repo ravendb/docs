@@ -10,7 +10,7 @@
    * Extract data from specified document collections.  
    * Transform the data to new JSON objects.  
    * Load the JSON objects to the message broker.  
-* RavenDB wraps JSON objects as CloudEvents messages prioer to loading them 
+* RavenDB wraps JSON objects as CloudEvents messages prior to loading them 
   to the designated broker, using the [CloudEvents Library](https://cloudevents.io).  
 * Supported message brokers currently include **Apache Kafka** and **RabbitMQ**.  
 

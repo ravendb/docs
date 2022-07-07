@@ -74,7 +74,7 @@
    to connect a secure Kafka server.  
 
 6. **Test Connection**  
-   Click after defining the the connection string, to test the connection to 
+   Click after defining the connection string, to test the connection to 
    the Kafka topic.  
 
      ![Successful Connection](images/queue/kafka_successful-connection.png "Successful Connection")

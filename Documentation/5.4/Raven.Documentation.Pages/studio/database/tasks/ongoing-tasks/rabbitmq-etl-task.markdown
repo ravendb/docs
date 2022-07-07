@@ -76,7 +76,7 @@
       {NOTE/}
 
 6. **Test Connection**  
-   Click after defining the the connection string, to test the connection to 
+   Click after defining the connection string, to test the connection to 
    the RabbitMQ exchange.  
 
      ![Successful Connection](images/queue/rabbitmq_successful-connection.png "Successful Connection")

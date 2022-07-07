@@ -83,23 +83,23 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                         Name = "scriptName",
                         Collections = { "Orders" },
                         Script = @"var orderData = {
-    Id: id(this), // property with RavenDB document ID
-    OrderLinesCount: this.Lines.length,
-    TotalCost: 0
-};
+                                    Id: id(this),
+                                    OrderLinesCount: this.Lines.length,
+                                    TotalCost: 0
+                                };
 
-for (var i = 0; i < this.Lines.length; i++) {
-    var line = this.Lines[i];
-    var cost = (line.Quantity * line.PricePerUnit) * ( 1 - line.Discount);
-    orderData.TotalCost += cost;
-}
+                                for (var i = 0; i < this.Lines.length; i++) {
+                                    var line = this.Lines[i];
+                                    var cost = (line.Quantity * line.PricePerUnit) * ( 1 - line.Discount);
+                                    orderData.TotalCost += cost;
+                                }
 
-loadToOrders(orderData, {  // load to the 'Orders' Topic with optional params
-    Id: id(this),
-    PartitionKey: id(this),
-    Type: 'com.github.users',
-    Source: '/registrations/direct-signup'
-});",
+                                loadToOrders(orderData, {
+                                    Id: id(this),
+                                    PartitionKey: id(this),
+                                    Type: 'com.github.users',
+                                    Source: '/registrations/direct-signup'
+                                });",
                         ApplyToAllDocuments = false
                     };
 
@@ -148,23 +148,23 @@ loadToOrders(orderData, {  // load to the 'Orders' Topic with optional params
                         Name = "scriptName",
                         Collections = { "Orders" },
                         Script = @"var orderData = {
-    Id: id(this), 
-    OrderLinesCount: this.Lines.length,
-    TotalCost: 0
-};
+                                    Id: id(this), 
+                                    OrderLinesCount: this.Lines.length,
+                                    TotalCost: 0
+                                };
 
-for (var i = 0; i < this.Lines.length; i++) {
-    var line = this.Lines[i];
-    var cost = (line.Quantity * line.PricePerUnit) * ( 1 - line.Discount);
-    orderData.TotalCost += cost;
-}
+                                for (var i = 0; i < this.Lines.length; i++) {
+                                    var line = this.Lines[i];
+                                    var cost = (line.Quantity * line.PricePerUnit) * ( 1 - line.Discount);
+                                    orderData.TotalCost += cost;
+                                }
 
-loadToOrders(orderData, `routingKey`, {  
-    Id: id(this),
-    PartitionKey: id(this),
-    Type: 'com.github.users',
-    Source: '/registrations/direct-signup'
-});",
+                                loadToOrders(orderData, `routingKey`, {  
+                                    Id: id(this),
+                                    PartitionKey: id(this),
+                                    Type: 'com.github.users',
+                                    Source: '/registrations/direct-signup'
+                                });",
                         ApplyToAllDocuments = false
                     };
 
@@ -215,6 +215,15 @@ loadToOrders(orderData, `routingKey`, {
             }
             #endregion
 
+            #region CloudEventAttributes
+            public class CloudEventAttributes
+            {
+                public string Id { get; set; }
+                public string Type { get; set; }
+                public string Source { get; set; }
+                public string PartitionKey { get; set; }
+            }
+            #endregion
         }
     }
 }
