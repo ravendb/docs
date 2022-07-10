@@ -10,5 +10,11 @@
     "Name": "Counters",
     "DiscussionId": "f586c6e4-3a7c-4985-90e0-197629ff2c8b",
     "Mappings": []
+  },
+  {
+    "Path": "attachments.markdown",
+    "Name": "Attachments",
+    "DiscussionId": "f586c6e4-3a7c-4985-90e0-197629ff2c8b",
+    "Mappings": []
   }
 ]

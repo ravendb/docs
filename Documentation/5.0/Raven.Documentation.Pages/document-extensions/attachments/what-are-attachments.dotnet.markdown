@@ -81,3 +81,14 @@ as there will be a change to the document's metadata, as shown in example #2.
 - [Storing](../../document-extensions/attachments/storing)
 - [Loading](../../document-extensions/attachments/loading)
 - [Deleting](../../document-extensions/attachments/deleting)
+- [Copying, Moving, & Renaming](../../document-extensions/attachments/copying-moving-renaming)
+- [Indexing](../../document-extensions/attachments/indexing)
+- [Bulk Insert](../../document-extensions/attachments/bulk-insert)
+
+---
+
+### Code Walkthrough
+
+- [Store Attachment](https://demo.ravendb.net/demos/csharp/attachments/store-attachment)
+- [Load Attachment](https://demo.ravendb.net/demos/csharp/attachments/load-attachment)
+- [Index Attachment Details](https://demo.ravendb.net/demos/csharp/attachments/index-attachment-details)
