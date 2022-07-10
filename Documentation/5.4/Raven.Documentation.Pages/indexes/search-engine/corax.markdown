@@ -50,7 +50,7 @@ To use it, you must explicitly enable RavenDB's experimental features.
   Edit RavenDB's [configuration file](../../server/configuration/configuration-options#settings.json) 
   and Enable [experimental features](../../server/configuration/core-configuration#features.availability).  
   
-      E.g. set [settings.json](../../server/configuration/configuration-options#settings.json) to:  
+      E.g. set `settings.json` to:  
       {CODE-BLOCK: csharp}
       {
         "ServerUrl": "http://127.0.0.1:8080",
@@ -77,24 +77,21 @@ To use it, you must explicitly enable RavenDB's experimental features.
 {PANEL: Selecting the Search Engine}
 
 * You can select your preferred search engine in several scopes:  
-   * [Server-wide](../../indexes/search-engine/corax#server-wide-search-engine), 
+   * [Server-wide](../../indexes/search-engine/corax#select-search-engine-server-wide), 
      selecting which search engine will be used by all the databases hosted by this server.  
-   * [Per database](../../indexes/search-engine/corax#per-database-search-engine), 
+   * [Per database](../../indexes/search-engine/corax#select-search-engine-per-database), 
      overriding server-wide settings for a specific database.  
-   * [Per index](../../indexes/search-engine/corax#per-index-search-engine), 
+   * [Per index](../../indexes/search-engine/corax#select-search-engine-per-index), 
      overriding server-wide and per-database settings.  
      Per-index settings are available only for **static** indexes.  
 
 * Two configuration options are available:  
    * [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration#indexing.auto.searchenginetype)  
      Use this option to select the search engine (either `Lucene` or `Corax`) for **auto** indexes.  
-     The search engine can be selected [server-wide](../../indexes/search-engine/corax#select-search-engine-server-wide) 
-     or [per database](../../indexes/search-engine/corax#select-search-engine-per-database).  
+     The search engine can be selected **server-wide** or **per database**.  
    * [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration#indexing.static.searchenginetype)  
      Use this option to select the search engine (either `Lucene` or `Corax`) for **static** indexes.  
-     The search engine can be selected [server-wide](../../indexes/search-engine/corax#select-search-engine-server-wide), 
-     [per database](../../indexes/search-engine/corax#select-search-engine-per-database), 
-     or [per index](../../indexes/search-engine/corax#select-search-engine-per-index).  
+     The search engine can be selected **server-wide**, **per database**, or **per index**.  
 
 ---
 
@@ -182,15 +179,15 @@ of supported and yet-unsupported features below.
 
 * **While indexing**, Corax does **not** support:  
    * [Boosting](../../indexes/boosting)  
-   * [Facets](../../indexes/querying/faceted-search)  
    * [WKT shapes](../../indexes/indexing-spatial-data)  
      (when spatial data is indexed, **spatial points** Are indexed while **WKT shapes** are Not indexed.)  
 * **While querying**, Corax does **not** support:  
    * [MoreLikeThis](../../indexes/querying/morelikethis)  
    * [Facets](../../indexes/querying/faceted-search)  
    * [Fuzzy Search](../../client-api/session/querying/how-to-use-fuzzy)  
+   * Searching by [Regex](../../client-api/session/querying/how-to-use-regex)  
 * Corax does **not** support [Dynamic Fields](../../indexes/using-dynamic-fields) yet.  
-  As a result, many Javascript indexes are not supported since they use dynamic fields.  
+  As a result, the many Javascript indexes that use dynamic fields are not supported.  
 
 | Query Term | Method / Keyword | Supported by Corax |
 | ---------- | ---------------- | ------------------ |
@@ -249,9 +246,8 @@ exception and the search will stop.
 
 {PANEL: Handling of Complex JSON Objects}
 
-Nested properties of complex JSON objects **cannot currently be indexed and searched by Corax**.  
-
-Consider, for example, the nested `Location` property of the following `orders` document:  
+Complex JSON properties **cannot currently be indexed and searched by Corax**.  
+Consider, for example, the following `orders` document:  
 {CODE-BLOCK: json}
 {
     "Company": "companies/27-A",
@@ -267,13 +263,57 @@ Consider, for example, the nested `Location` property of the following `orders` 
 }
 {CODE-BLOCK/}
 
-As seen above, `Location` is a key/value pair that contains not a simple 
-numeric value or a string, but a list of key/value pairs. Attempting to index 
-this field using Corax would fail with a `System.NotSupportedException` exception.  
+As the `Location` property of the document above contains not a simple numeric value 
+or string but a list of key/value pairs, attempting to index this field using Corax 
+[would fail](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing).  
 
-You can handle the indexing of complex JSON objects in several ways.  
+There are several ways to handle the indexing of complex JSON objects:  
 
-#### 1. Turn the nested field into a string
+#### 1. Index a Simple Property Contained in the Complex Field
+
+Index one of the simple key/value properties stored within the nested object.  
+In the `Location` field, for example, Location's `Latitude` and `Longitude`.  
+can serve us this way:  
+
+{CODE-BLOCK: json}
+from order in docs.Orders
+select new
+{
+    Latitude = order.ShipTo.Location.Latitude,
+    Longitude = order.ShipTo.Location.Longitude
+}
+{CODE-BLOCK/}
+
+---
+
+#### 2. Index the Document Using Lucene
+
+As long as Corax doesn't index complex JSON objects, you can always 
+select Lucene as your search engine when you need to index nested properties.  
+
+---
+
+#### 3. Disable the Indexing of the Complex Field
+
+You can use Corax as your search engine, but explicitly disable the indexing 
+of complex objects.  
+When you disable the **indexing** of a field this way, the field's contents 
+can still be **stored and projected**.  
+
+* To disable indexing for a specified field **via Studio**:  
+  ![Disable indexing of a Nested Field](images/corax-08_disable-indexing-of-nested-field.png "Disable indexing of a Nested Field ")
+   1. Open the index definition's **Fields** tab.  
+   2. Click **Add Field** to specify what field Corax shouldn't index.  
+   3. Enter the name of the field Corax should not index.  
+   4. Can only be set to **Yes** when Corax is used since Corax always stores fields.  
+   5. Select **No** to disable indexing for the specified field.  
+
+* To disable indexing for a specified field **using Code**:  
+  {CODE:csharp index-definition_disable-indexing-for-specified-field@Indexes/SearchEngines.cs /}  
+
+---
+
+#### 4. Turn the complex property into a string
 
 You can use `ToString()` to index the complex property as a string.  
 
@@ -296,71 +336,28 @@ select new
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-
----
-
-#### 2. Index a Simple Property Contained in the Nested Field
-
-Index one of the simple key/value properties stored within the nested object.  
-In the `Location` field, for example, Location's `Latitude` and `Longitude`.  
-can serve us this way:  
-
-{CODE-BLOCK: json}
-from order in docs.Orders
-select new
-{
-    Latitude = order.ShipTo.Location.Latitude,
-    Longitude = order.ShipTo.Location.Longitude
-}
-{CODE-BLOCK/}
-
----
-
-#### 3. Index the Document Using Lucene
-
-As long as Corax doesn't index complex JSON objects, you can always 
-select Lucene as your search engine when you need to index nested properties.  
-
----
-
-#### 4. Disable the Indexing of the Nested Field
-
-You can use Corax as your search engine, but explicitly disable the indexing 
-of nested properties.  
-When you disable the **indexing** of a field this way, the field's contents 
-can still be **stored and projected**.  
-
-* To disable indexing for a specified field **via Studio**:  
-  ![Disable indexing of a Nested Field](images/corax-08_disable-indexing-of-nested-field.png "Disable indexing of a Nested Field ")
-   1. Open the index definition's **Fields** tab.  
-   2. Click **Add Field** to specify what field Corax shouldn't index.  
-   3. Enter the name of the field Corax should not index.  
-   4. Select **Yes** to allow Corax to store the field's contents.  
-      This is mandatory when indexing the field is disabled.  
-   5. Select **No** to disable indexing for the specified field.  
-
-* To disable indexing for a specified field **using Code**:  
-  {CODE:csharp index-definition_disable-indexing-for-specified-field@Indexes/SearchEngines.cs /}  
-
----
-
 {NOTE: }
-If Corax identifies a nested document property while indexing:  
-
-* If an auto index exists for the document, Corax will throw 
-  a `System.NotSupportedException` exception to immediately 
-  notify the user that a search that makes no sense is attempted.  
-
-* If a static index is used and the index did not explicitly 
-  relate to this field, Corax will automatically exempt the 
-  field from indexing (by defining **Indexing: No** for this 
-  field as shown [above](../../indexes/search-engine/corax#disable-the-indexing-of-the-nested-field)).  
-  
-     If the static index explicitly set the Indexing flag in 
-     any other way but "no", Corax **will** throw the exception.  
-
+Using `ToString` will serialize all the properties of the complex property into 
+a single string, including names, values, brackets, and so on.  
+The produced string is **not** a good feed for analyzers and is not commonly used for searches.  
+It does, however, make sense in some cases to **project** such a string.  
 {NOTE/}
 
+---
+
+#### If Corax Encounters a Complex Property While Indexing:  
+
+* If an auto index exists for the document, Corax will throw 
+  `System.NotSupportedException` to notify the user that a search 
+  that makes no sense has been attempted.  
+
+* If a static index is used and it doesn't explicitly relate 
+  to the complex field, Corax will automatically exempt the 
+  field from indexing (by defining **Indexing: No** for this 
+  field as shown [above](../../indexes/search-engine/corax#disable-the-indexing-of-the-complex-field)).  
+  
+     If the static index explicitly sets the Indexing flag in 
+     any other way but "no", Corax **will** throw the exception.  
 
 {PANEL/}
 
