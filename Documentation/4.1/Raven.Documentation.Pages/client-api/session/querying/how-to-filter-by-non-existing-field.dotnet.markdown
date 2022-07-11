@@ -5,7 +5,13 @@
 {NOTE: }
 
 * To find documents that do not have a specified field, create an [Auto-Index](../../../indexes/creating-and-deploying#auto-indexes) 
-  via a query that calls `WhereExists("a field that exists in all documents").AndAlso().Not.WhereExists("a field that doesn't exist in some documents")`.  
+  via a query that calls 
+    ```
+    WhereExists("a field that exists in all documents")  
+    .AndAlso()  
+    .Not  
+    .WhereExists("a field that doesn't exist in some documents")  
+    ```
 
 * The query that creates the auto index must specify a field that exists in every document **and** the field that is missing in some documents.  
   See [RQL example for usage in Studio](../../../client-api/session/querying/how-to-filter-by-non-existing-field#example).
@@ -57,7 +63,7 @@ where exists("field that exists in all documents in this collection") and not ex
 2. **Query**  
    Select to open the Studio query interface.
 3. **Code text editor**  
-   Write the query according to the [RQL Syntax](../../../client-api/session/querying/how-to-filter-by-non-existing-field#rql-syntax) described above.  
+   Write the query according to the [RQL Syntax](../../../client-api/session/querying/how-to-filter-by-non-existing-field#syntax) described above.  
 4. **Run Code**  
    Click or press ctrl+enter to run the query.
 5. **Index used**  
