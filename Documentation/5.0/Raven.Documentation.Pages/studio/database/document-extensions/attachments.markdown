@@ -8,12 +8,13 @@
 
 * Each document can have numerous attachments of various types associated with it.  
 
+* Adding or deleting attachments changes the document metadata, thus triggering any tasks that respond to document changes
+  such as revisions, ETL, or indexing.
+
 * The attachments' names (e.g. video.mp4), content type (e.g. image/png), and other info such as DateTime, hash, and size 
-  [can be stored in the document metadata via API](../../../document-extensions/attachments/what-are-attachments#example-ii).  
-   * Referencing them in the metadata allows you to query attachments like documents by specifying
+  [can be stored in the document metadata](../../../document-extensions/attachments/what-are-attachments#example-ii) via [API](../../../studio/database/document-extensions/attachments#api---attachments).  
+   * Referencing them in the metadata allows you to query attachments like like you would query documents by specifying
      the document ID and the attachment name.  
-   * Adding or deleting attachments changes the document metadata, thus triggering any tasks that respond to document changes
-     such as revisions, ETL, or indexing.
 
 * In this page:  
    * [Add or Delete Attachments via Studio](../../../studio/database/document-extensions/attachments#add-or-delete-attachments-via-studio)
