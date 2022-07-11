@@ -116,16 +116,16 @@
 #### 3. Indexed Data
 
 * The resulting output of 'step 2' (the indexing process) is also referred to as an Index.  
-  It is the **indexed data** on which queries can operate on to get documents result.  
+  Queries operate on **indexed data** to get documents result.  
 
 * Note: The full document is _not_ stored in the index - only the document ID.  
   Upon a query match, we load the document itself from the document storage.  
 
 * **Index Entry**  
-  _Index-Entries_ are all of the document fields that are requested to be indexed, as defined in the index-definition.  
+  _Index-Entries_ are all of the document fields that are requested to be indexed, as defined in the index definition.  
 
 * **Term**  
-  The index-entries values are broken into _Terms_ according to the specified analyzer used in the index-definition.  
+  The index-entries values are broken into _Terms_ according to the specified analyzer used in the index definition.  
   _Term_ is the actual indexed value that is stored in the index.  
 
 * **Stored Data**  
@@ -153,8 +153,8 @@ Indexes in RavenDB are split across the following multiple axes:
 * **Static Indexes**:  
   [Created by the user](../../../indexes/creating-and-deploying) 
   (database administrator only) from the Studio or from the Client API.  
-  The index-shape (as defined in the index-definition) and the shape of the source document don't have to be the same, 
-  as the indexed-data can be a computed value. These computations are run as background indexing processes to provide 
+  The index shape (as defined in the index definition) and the shape of the source document don't have to be the same, 
+  as the indexed data can be a computed value. These computations are run as background indexing processes to provide 
   fast query results when querying the index.  
    * [To query a static index](../../../indexes/querying/basics#example-iv---querying-a-specified-index), 
      the index must be specified in the query definition.
@@ -203,19 +203,19 @@ See [Create Map Index](../../../studio/database/indexes/create-map-index) to lea
 * **Spatial**  
   Allow geographical querying on longitude and latitude values or WKT values provided from the document.  
   Customize the spatial indexing strategy.  
-  Learn more in: [Indexing Spatial Data](../../../indexes/indexing-spatial-data)
+  Learn more in [Indexing Spatial Data](../../../indexes/indexing-spatial-data)
 
 * **Store Field**  
-  Field can be stored within the indexed-data.  
-  This allows retrieving the value from the indexed-data at query time, instead of loading the original document.  
-  Learn more in: [Storing Data in Index](../../../indexes/storing-data-in-index)
+  Field can be stored within the indexed data.  
+  This allows retrieving the value from the indexed data at query time, instead of loading the original document.  
+  Learn more in [Storing Data in Index](../../../indexes/storing-data-in-index)
 {PANEL/}
 
 {PANEL: Modifying Index Definition}
 
 * Only an index that is not set as 'Locked' can actually be modified.  
 
-* When the index-definition has changed in a way that invalidates the previous indexing results,  
+* When the index definition has changed in a way that invalidates the previous indexing results,  
   the modification is handled in a **side-by-side** manner.  
   e.g. A mapping function change will invalidate previous results, while a change in priority will not.  
 
@@ -238,9 +238,9 @@ See [Create Map Index](../../../studio/database/indexes/create-map-index) to lea
 
 * Once an index is created against any node in the [Database Group](../../../studio/database/settings/manage-database-group), 
   RavenDB will make sure that its definition is replicated to all the database's nodes. 
-  The indexing-process will occur separately on each node.  
+  The indexing process will occur separately on each node.  
 
-* Note: The [External Replication](../../../studio/database/tasks/ongoing-tasks/external-replication-task) ongoing-task does NOT replicate indexes.  
+* Note: The [External Replication](../../../studio/database/tasks/ongoing-tasks/external-replication-task) ongoing task does NOT replicate indexes.  
 
 * In a multiple-nodes cluster, indexing can be configured to occur either in _Rolling deployment Mode_ 
   (one node at a time if machine resources are limited) 
@@ -262,14 +262,13 @@ See [Create Map Index](../../../studio/database/indexes/create-map-index) to lea
 
 There are some situations where you would like to stop indexing, make some changes, then start indexing again.  
 
-After toggling enable or disable indexing, **you must disable then enable the database to finish implementing** 
-the start or stop operations.  Until you disable and enable the database, the indexing state will remain as it was 
-before, even if you toggled the indexing state.
+After toggling start or stop indexing, **you must disable then enable the database to finish implementing** 
+the start or stop indexing operations.  The indexing state will only change after you disable and enable the database.
 
 {NOTE: API}
 You can use [API Operations to stop](../../../client-api/operations/maintenance/indexes/stop-indexing) 
 and [start indexing](../../../client-api/operations/maintenance/indexes/start-indexing) 
-instead of using the studio.  
+instead of using Studio.  
 {NOTE/}
 
 1. [Stop indexing](../../../studio/database/indexes/indexes-overview#stop-indexing)
@@ -287,12 +286,12 @@ instead of using the studio.
 ![Stop Indexing](images/index-stop-indexing.png "Stop Indexing")
 
   1. **Databases**  
-     Select "Databases" tab.
+     Select the "Databases" tab.
   2. **Checkboxes**  
      Tick the checkboxes **in each database** for which you want to disable indexing.  
   3. **Disable**  
      Click "Disable indexing" in each selected database.  
-     [Disable and Enable Database](../../../studio/database/indexes/indexes-overview#disable-and-enable-database)
+     [Disable and Enable the Database](../../../studio/database/indexes/indexes-overview#disable-and-enable-database)
      to finish the operation.  
 
 #### Disable and Enable Database
@@ -307,8 +306,8 @@ instead of using the studio.
      Click "Disable".  
      Click "Enable".  
      
-  Indexing in the databases selected should be disabled.  
-  Indexing will only start again after you [start sndexing](../../../studio/database/indexes/indexes-overview#start-indexing)
+  The start or stop indexing operation should now be complete.  
+  Indexing will only start again after you [start indexing](../../../studio/database/indexes/indexes-overview#start-indexing)
   in each database that you want to restart, and then you [disable and enable the selected databases again to complete the operation](../../../studio/database/indexes/indexes-overview#disable-and-enable-database).
 
 
@@ -320,7 +319,7 @@ instead of using the studio.
    Stay in the same "Databases" tab.
 2. **Disable**  menu button  
    Click "Enable indexing".  
-   * [Disable and enable database](../../../studio/database/indexes/indexes-overview#disable-and-enable-database) to complete the operation.
+   * [Disable and enable the database](../../../studio/database/indexes/indexes-overview#disable-and-enable-database) to complete the operation.
 
 {PANEL/}
 

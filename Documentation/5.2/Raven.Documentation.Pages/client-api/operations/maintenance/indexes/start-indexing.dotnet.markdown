@@ -3,12 +3,12 @@
 
 {NOTE: }
 
-* **StartIndexingOperation** is used to resume indexing for entire database.  
+* **StartIndexingOperation** is used to resume indexing for the entire database after indexing has been [stopped](../../../../client-api/operations/maintenance/indexes/stop-indexing).  
 
 * You must [restart the database](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation) 
   with `ToggleDatabasesStateOperation` to implement the operation after using `StartIndexingOperation` ([see example](../../../../client-api/operations/maintenance/indexes/start-indexing#example)).
 
-* Use [StartIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index) to start a single index.
+* Use [StartIndexOperation](../../../../client-api/operations/maintenance/indexes/start-index) to start a single index.
 
 {NOTE/}
 

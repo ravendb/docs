@@ -3,7 +3,8 @@
 
 {NOTE: }
 
-* **StopIndexingOperation** is used to resume indexing for entire database.  
+* **StopIndexingOperation** is used to stop indexing for the entire database.  
+  To resume indexing after it has been stopped, see [How to Start Indexing](../../../../client-api/operations/maintenance/indexes/start-indexing).
 
 * You must [restart the database](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation) 
   with `ToggleDatabasesStateOperation` to implement the operation after using `StopIndexingOperation` ([see example](../../../../client-api/operations/maintenance/indexes/stop-indexing#example)).
