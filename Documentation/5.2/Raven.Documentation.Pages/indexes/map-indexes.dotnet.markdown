@@ -232,8 +232,10 @@ where YearOfBirth = 1963
 
 {PANEL: Filter data within fields}
 
-In some cases, you may want to decrease the burden from the queries by including `where` in the index definition
-to further filter what the index will return. This will minimize the values that queries must scan.
+In the examples above, `where` is used in the query to filter the results.  
+If you consistently want to filter with the same filtering conditions, 
+you can use `where` in the index definition to narrow the index terms that the query must scan. This can save 
+query-time but narrows the terms available to query.
 
 ### Example I
 
