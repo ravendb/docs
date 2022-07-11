@@ -2,16 +2,16 @@
 ---
 
 {NOTE: }
-The HiLo algorithm is an efficient solution used by [a session](../../session/what-is-a-session-and-how-does-it-work) 
-to generate numeric parts of identifiers. 
-It is responsible for providing numeric values that are combined with collection names and node tags **to 
-create unique identifiers** like `orders/10-A`, `products/93-B`, etc. 
+* The HiLo algorithm is an efficient solution used by [a session](../../session/what-is-a-session-and-how-does-it-work) 
+  to generate numeric parts of identifiers. 
+  It is responsible for providing numeric values that are combined with collection names and node tags **to 
+  create unique identifiers** like `orders/10-A`, `products/93-B`, etc. 
 
-See various approaches to [work with document identifiers](../../client-api/document-identifiers/working-with-document-identifiers).  
+* See various approaches to [work with document identifiers](../../client-api/document-identifiers/working-with-document-identifiers).  
 
-To ensure that the HiLo algorithm is used to create the ID, include `myGenerator.Next()` as the second parameter of the 
-`Session.Store()` method for creating a new document:  
-`Session.Store(the collection name, myGenerator.Next())`  
+* To ensure that the HiLo algorithm is used to create the ID, include `myGenerator.Next()` as the second parameter of the 
+  `Session.Store()` method for creating a new document:  
+  `Session.Store(the collection name, myGenerator.Next())`  
 
 * In this page:
    * [How the HiLo Algorithm Determines the Numeric Value](../../client-api/document-identifiers/hilo-algorithm#how-the-hilo-algorithm-determines-the-numeric-value)
@@ -43,7 +43,8 @@ These documents have a very simple construction:
 The `Max` property means the maximum possible number that has already been used by any client to create the identifier for a given collection. 
 It is used as follows:
 
-1. The client asks the server for a range of numbers that it can use to create a document (32 is the initial capacity, the actual range size is calculated based on the frequency of getting HiLo by the client.)
+1. The client asks the server for a range of numbers that it can use to create a document (32 is the initial capacity. 
+   The actual range size is calculated based on the frequency of getting HiLo by the client.)
 2. Then, the server checks the HiLo file to see what is the last number it sent to any client for this collection.
 3. The client will get from the server the min and the max values it can use (33 - 64 in our case).
 4. Then, the client generates a range object from the values it got from the server to generate identifiers.

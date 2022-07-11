@@ -22,8 +22,8 @@ namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
 
                 session.SaveChanges();
             }
-
-            store.Dispose(); // returning unused range [last=1, max=32]
+            // returning unused range [last=1, max=32]
+            store.Dispose(); 
 
             #endregion
 
