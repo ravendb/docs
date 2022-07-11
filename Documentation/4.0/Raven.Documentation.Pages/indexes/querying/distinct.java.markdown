@@ -27,7 +27,7 @@ select distinct ShipTo.Country
 
 ## Paging with the Distinct Keyword
 
-The following approach must be used when calling the `distinct()` method while paging.  
+A special approach must be used when calling the `distinct()` method while paging.  
 Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results).  
 
 ## Counting
@@ -50,7 +50,11 @@ Learn how to use the alternative approach efficiently in the article [Implementi
 
 #### Map-Reduce Index Sample:
 
+Index definition:
+
 {CODE:java distinct_3_1@Indexes\Querying\Distinct.java /}
+
+Query the index:
 
 {CODE:java distinct_3_2@Indexes\Querying\Distinct.java /}
 
