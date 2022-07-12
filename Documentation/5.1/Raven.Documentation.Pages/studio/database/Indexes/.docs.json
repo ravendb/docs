@@ -34,5 +34,11 @@
     "Name": "Map-Reduce Visualizer",
     "DiscussionId": "4ac7b114-eeeb-4af5-8317-ca4144ee48e1",
     "Mappings": []
+  },
+  {
+    "Path": "cloud-settings.markdown",
+    "Name": "Settings",
+    "DiscussionId": "0533554b-605e-450d-92bf-a6752764498a",
+    "Mappings": []
   }
 ]

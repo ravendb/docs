@@ -27,9 +27,9 @@ like adding or removing nodes, and run recurring tasks like backing up your data
       * [RavenDB Tiers: Free, Development and Production](../cloud/cloud-overview#ravendb-tiers)  
       * [Burstable vs. Reserved clusters](../cloud/cloud-overview#burstable-vs.-reserved-clusters)  
       * [Budget, Credits and Throttling](../cloud/cloud-overview#budget-credits-and-throttling)  
-  * [Cloud-Specific Configuration Settings](../cloud/cloud-overview#cloud-specific-configuration-settings)
-      * [Setting Cloud Configuration via Studio](../cloud/cloud-overview#setting-cloud-specific-configuration-via-studio)
-      * [Indexing](../cloud/cloud-overview#indexing)
+  * [RavenDB Studio - Graphic User Interface](../cloud/cloud-overview#ravendb-studio---graphic-user-interface)
+      * [Accessing RavenDB Cloud Studio](../cloud/cloud-overview#accessing-ravendb-cloud-studio)
+      * [What you can do with RavenDB Studio](../cloud/cloud-overview#what-you-can-do-with-ravendb-studio)
 {NOTE/}
 
 ---
@@ -280,73 +280,50 @@ E.g., `"MaxCredits": 8640.0` means your instance can accumulate an entitlement f
 
 {PANEL/}
 
-{PANEL: Cloud-Specific Configuration Settings}
+{PANEL: RavenDB Studio - Graphic User Interface}
 
-In most cases, default configurations inherit from RavenDB On-Premise [Client API Configurations](../client-api/configuration/conventions) 
-and [Server Configurations](../server/configuration/configuration-options).  
+RavenDB provides a built-in [GUI to monitor and manage](../studio/overview) your cloud instances.  
 
-Whenever configuration defaults differ in RavenDB Cloud, these configurations will be discussed in this section.
+### Accessing RavenDB Cloud Studio
 
-{NOTE: }
+![Access Cloud Studio](images/studio-access-cloud-studio.png "Access Cloud Studio")
 
-#### Setting Cloud-Specific Configuration via Studio
-
-RavenDB sets default configurations to be the safest and most efficient in most cases.  
-
-If you want to change configurations for cloud instances, they must be set in Studio. 
-
-* [Indexing Configurations](../studio/database/indexes/create-map-index#configuration)
-
-{NOTE/}
-
-## Indexing
-
+1. **Products**  
+   Navigate to the cloud portal "Products" tab to see your cloud instances.
+2. **URLS**  
+   Click on each node's URL only if you have already downloaded and installed the required certificate 
+   that gives your browser permission to access your cloud instance.  
+3. **Download Certificate**  
+   Click to download the certificate and follow the step-by-step guide to installing the certificate.  
+4. **Open Studio**  
+   Click "Open Studio" here or in the step-by-step certificate installation guide.  
+   You'll need to select the correct certificate.  
+   Choose the certificate with the name of your cloud instance.  
+   The example image above shows the certificate name after the node-tag "a." in the URL - "free.serez".  
+   Choosing the wrong certificate will result in a recurring [error](../server/security/common-errors-and-faq#authentication-issues) 
+   when trying to access the Studio.  
+   
 ---
 
-### Max Batch Size
+### What you can do with RavenDB Studio
 
-The factors to consider when adjusting the max indexing batch size:
+* [Your RavenDB servers](../studio/server/server-dashboard)  
+   * Manage your cluster topology.
+   * Manage certificates.
+   * Manage your license and support plan options.
+   * Customize search analysers.
+   * Access debug tools, logs, and metrics.
+* [Your RavenDB databases](../studio/overview#manage-your-databases)  
+   * Create or delete databases.
+   * Create and edit indexes.
+   * Run queries and patches.
+   * Set backups, replication, ETL, and other ongoing tasks.
+   * Manage documents and their extensions.
+   * Adjust settings.
 
-* [Size of documents](https://ravendb.net/articles/dealing-with-large-documents-100-mb#:~:text=RavenDB%20can%20handle%20large%20documents,isn't%20a%20practical%20one.)
-* The Complexity of calculations that static indexes do.
-* [IOPS number](../cloud/cloud-instances#a-production-cloud-cluster) (IOPS - Input/Output Operations Per Second - can be adjusted according to your needs.)
-  !["Find IOPS Number"](images\configuration-see-iops.png "Find IOPS Number")  
-   1. **Products**  
-      In the Cloud Portal, click the Products tab.
-   2. **IOPS**  
-      Your current IOPS number is written here.  
-   3. **Change Storage**  
-      It can be adjusted by clicking "Change Storage". 
-
-
-#### Default RavenDB Cloud-Specific Max Batch Size Configuration 
-
-{INFO: }
-
-The default cloud configuration sets batch sizes with the following formula to automatically find the ideal batch size:  
-
-**Indexing.MapBatchSize = max(PowerOf2(iops * 5), 1024);**
-
-{INFO/}
-
-Explanation of configuration value:
-
-   * `max()` = returns the larger of two arguments:
-      * `PowerOf2(iops * 5)` = returns a number which is the power of two that's larger than the argument passed  
-         e.g. in a machine with IOPS of 500...500 * 5 = 2,500, so the next power of two is 2 ^ 12, which is 4,096 documents.  
-      * `1024` = number of documents  
-
-In this example, 4,096 is larger than 1024, so the maximum batch size will be 4,096 documents.
-
-#### Overriding the Default Setting
-
-Type: `int`  
-MinValue: `128`  
-Configuration Key: `Indexing.MapBatchSize`  
-Value: Set maximum number of documents per batch.  
-Change [indexing configurations in Studio](../studio/database/indexes/create-map-index#configuration)
 
 {PANEL/}
+
 
 
 ##Related Articles

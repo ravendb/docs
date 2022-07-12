@@ -24,6 +24,11 @@ Open the [Management Studio](../studio/overview) of each server.
 Each server's Studio is available at it [Portal](../cloud/portal/cloud-portal#cloud-portal)'s 
 [Product tab](../cloud/portal/cloud-portal-products-tab#cloud-account-portal-products).  
 
+Learn how to [install the certificate and access RavenDB Cloud Studio](../cloud/cloud-overview#ravendb-studio---graphic-user-interface) if this is your first time using Cloud Studio.
+
+If you have already installed the certificate and accessed Studio, 
+click the URLs in the Products tab to open a Studio GUI for each node.  
+
 !["Server URLs"](images\migration-001-urls.png "Server URLs")
 
 ---
