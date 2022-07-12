@@ -97,7 +97,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                                 loadToOrders(orderData, {
                                     Id: id(this),
                                     PartitionKey: id(this),
-                                    Type: 'com.github.users',
+                                    Type: 'special-promotion',
                                     Source: '/registrations/direct-signup'
                                 });",
                         ApplyToAllDocuments = false
@@ -119,6 +119,83 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                     store.Maintenance.Send(operation);
                     
                     #endregion
+                }
+            }
+        }
+
+
+        // Add Kafka ETL Task (delete processed docs from RavenDB)
+        public void AddKafkaEtlTaskDeleteProcessedDocuments()
+        {
+            using (var store = new DocumentStore())
+            {
+                // Create a document
+                using (var session = store.OpenSession())
+                {
+                    // use PutConnectionStringOperation to add connection string
+                    var res = store.Maintenance.Send(
+                        new PutConnectionStringOperation<QueueConnectionString>(
+                            new QueueConnectionString
+                            {
+                                Name = "KafkaConStr",
+                                BrokerType = QueueBrokerType.Kafka,
+                                KafkaConnectionSettings = new KafkaConnectionSettings() { BootstrapServers = "localhost:9092" }
+                            }));
+
+                    // create transformation script
+                    Transformation transformation = new Transformation
+                    {
+                        Name = "scriptName",
+                        Collections = { "Orders" },
+                        Script = @"var orderData = {
+                                    Id: id(this),
+                                    OrderLinesCount: this.Lines.length,
+                                    TotalCost: 0
+                                };
+
+                                for (var i = 0; i < this.Lines.length; i++) {
+                                    var line = this.Lines[i];
+                                    var cost = (line.Quantity * line.PricePerUnit) * ( 1 - line.Discount);
+                                    orderData.TotalCost += cost;
+                                }
+
+                                loadToOrders(orderData, {
+                                    Id: id(this),
+                                    PartitionKey: id(this),
+                                    Type: 'special-promotion',
+                                    Source: '/registrations/direct-signup'
+                                });",
+                        ApplyToAllDocuments = false
+                    };
+
+                    // use AddEtlOperation to add ETL task 
+                    AddEtlOperation<QueueConnectionString> operation = new AddEtlOperation<QueueConnectionString>(
+                    #region kafka_EtlQueue
+                    new QueueEtlConfiguration()
+                    {
+                        Name = "KafkaEtlTaskName",
+                        ConnectionStringName = "KafkaConStr",
+                        Transforms =
+                            {
+                                transformation
+                            },
+                        // Only define if you want to delete documents from RavenDB after they are processed.
+                        Queues =  
+                            new List<EtlQueue>() 
+                            {
+                                new()
+                                {
+                                    // Documents that were processed by the transformation script will be
+                                    // deleted from RavenDB after the message is loaded to the Orders queue.
+                                    Name = "Orders",
+                                    DeleteProcessedDocuments = true
+                                }
+                            },
+                        BrokerType = QueueBrokerType.Kafka
+                    });
+                     #endregion
+                    store.Maintenance.Send(operation);
+
                 }
             }
         }
@@ -162,7 +239,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                                 loadToOrders(orderData, `routingKey`, {  
                                     Id: id(this),
                                     PartitionKey: id(this),
-                                    Type: 'com.github.users',
+                                    Type: 'special-promotion',
                                     Source: '/registrations/direct-signup'
                                 });",
                         ApplyToAllDocuments = false
@@ -189,6 +266,84 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
             }
         }
 
+
+        // Add RabbitMQ ETL Task (delete processed docs from RavenDB)
+        public void AddRabbitmqEtlTaskDeleteProcessedDocuments()
+        {
+            using (var store = new DocumentStore())
+            {
+                // Create a document
+                using (var session = store.OpenSession())
+                {
+                    // use PutConnectionStringOperation to add connection string
+                    var res = store.Maintenance.Send(
+                        new PutConnectionStringOperation<QueueConnectionString>(
+                            new QueueConnectionString
+                            {
+                                Name = "RabbitMqConStr",
+                                BrokerType = QueueBrokerType.RabbitMq,
+                                RabbitMqConnectionSettings = new RabbitMqConnectionSettings() { ConnectionString = "amqp://guest:guest@localhost:49154" }
+                            }));
+
+                    // create transformation script
+                    Transformation transformation = new Transformation
+                    {
+                        Name = "scriptName",
+                        Collections = { "Orders" },
+                        Script = @"var orderData = {
+                                    Id: id(this), 
+                                    OrderLinesCount: this.Lines.length,
+                                    TotalCost: 0
+                                };
+
+                                for (var i = 0; i < this.Lines.length; i++) {
+                                    var line = this.Lines[i];
+                                    var cost = (line.Quantity * line.PricePerUnit) * ( 1 - line.Discount);
+                                    orderData.TotalCost += cost;
+                                }
+
+                                loadToOrders(orderData, `routingKey`, {  
+                                    Id: id(this),
+                                    PartitionKey: id(this),
+                                    Type: 'special-promotion',
+                                    Source: '/registrations/direct-signup'
+                                });",
+                        ApplyToAllDocuments = false
+                    };
+
+                    // use AddEtlOperation to add ETL task 
+                    AddEtlOperation<QueueConnectionString> operation = new AddEtlOperation<QueueConnectionString>(
+                    #region rabbitmq_EtlQueue
+                    new QueueEtlConfiguration()
+                    {
+                        Name = "RabbitMqEtlTaskName",
+                        ConnectionStringName = "RabbitMqConStr",
+                        Transforms =
+                            {
+                                transformation
+                            },
+                        // Only define if you want to delete documents from RavenDB after they are processed.
+                        Queues =
+                            new List<EtlQueue>()
+                            {
+                                new()
+                                {
+                                    // Documents that were processed by the transformation script will be
+                                    // deleted from RavenDB after the message is loaded to the Orders queue.
+                                    Name = "Orders",
+                                    DeleteProcessedDocuments = true
+                                }
+                            },
+                        BrokerType = QueueBrokerType.RabbitMq,
+                        SkipAutomaticQueueDeclaration = false
+                    });
+                    #endregion
+                    store.Maintenance.Send(operation);
+                }
+            }
+        }
+
+
         private class Definition
         {
             #region QueueConnectionString
@@ -207,7 +362,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                 public string Name { get; set; }
             }
 
-            #region EtlQueue
+            #region EtlQueueDefinition
             public class EtlQueue
             {
                 public string Name { get; set; }

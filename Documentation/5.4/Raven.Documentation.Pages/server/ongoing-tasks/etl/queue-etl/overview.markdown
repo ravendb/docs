@@ -51,11 +51,13 @@ After preparing a JSON object that needs to be sent to a message broker,
 the ETL task wraps it as a CloudEvents message using the [CloudEvents Library](https://cloudevents.io).  
 
 To do that, the JSON object is provided with additional 
-[required attributes](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#required-attributes) 
-Like [id](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#id),
-[source](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#source-1),
-[specversion](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#specversion), 
-And [type](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#type).  
+[required attributes](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#required-attributes), including:  
+
+| Attribute | Type | Description | Default Value |
+|:-------------|:-------------|:-------------:|:-------------|
+| **Id** | `string` | [Event Identifier](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#id) | The document's **change vector** |
+| **Type** | `string` | [Event Type](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#type) | **"ravendb.etl.put"** |
+| **Source** | `string` | [Event Context](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#source-1) | `<ravendb-node-url>/<database-name>/<etl-task-name>` |
 
 {PANEL/}
 

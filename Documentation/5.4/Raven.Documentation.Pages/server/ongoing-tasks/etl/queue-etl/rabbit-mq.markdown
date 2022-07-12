@@ -12,38 +12,39 @@
 
 * You can create a RavenDB RabbitMQ ETL task to Extract data from the 
   database, Transform it by your custom script, and Load the resulting 
-  JSON object to a RabbitMQ exchange as a ClouodEvents message.  
+  JSON object to a RabbitMQ exchange as a CloudEvents message.  
 
 * In this page:  
   * [Transformation Script](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#transformation-script)  
      * [Additional Cloud Event Attributes](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#additional-cloud-event-attributes)  
   * [Data Delivery](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#data-delivery)  
      * [What is Transferred](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#what-is-transferred)  
-     * [How Are Messages Consumed](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#how-are-messages-consumed)  
+     * [How Are Messages Produced and Consumed](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#how-are-messages-produced-and-consumed)  
   * [Client API](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#client-api)  
      * [Add a RabbitMQ Connection String](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#add-a-rabbitmq-connection-string)  
      * [Add a RabbitMQ ETL Task](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#add-a-rabbitmq-etl-task)  
-
+     * [Delete Processed Documents](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#delete-processed-documents)  
 {NOTE/}
 
 ---
 
 {PANEL: Transformation Script}
 
-The basic characteristics of a RabbitMQ ETL task's transformation script 
-are similar to those of all other ETL types.  
-The script defines what data to _Extract_ from the database, 
-how to _Transform_ this data, and which RabbitMQ queue to Load it to.  
-Learn about ETL transformation scripts [here](../../../../server/ongoing-tasks/etl/basics).  
+The [basic characteristics](../../../../server/ongoing-tasks/etl/basics) of a RabbitMQ ETL script 
+are similar to those of the other ETL types.  
+The script defines what data to **Extract** from the database, how to **Transform** this data, and 
+which queue/s to **Load** it to.  
 
-Objects are **Loaded** to the specified RabbitMQ exchange using the 
-[loadTo\\<Exchange\\>()](../../../../server/ongoing-tasks/etl/basics#transform) command.  
+To load the data to RabbitMQ, use the [loadTo\\<Exchange\\>](../../../../server/ongoing-tasks/etl/basics#transform) 
+command as follows:  
+`loadTo<Exchange>(obj, routingKey, {attributes})`  
 
-* `Exchange` is the name of the RabbitMQ exchange to which the data is transferred.  
-* [A Routing Key and Additional attributes](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#additional-cloud-event-attributes) 
-  can also be specified.  
+* **Exchange**: the RabbitMQ exchange name  
+* **obj**: the object to transfer  
+* **routingKey**: a key by which binding is made between the RabbitMQ exchange and target queue/s  
+* **attributes**: [Additional attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents)  
 
-E.g., the following script defines an `orderData` object and loads it to the `orders` exchange:  
+For example:  
 
 {CODE-BLOCK: JavaScript}
 // Create an OrderData JSON object
@@ -60,38 +61,35 @@ for (var i = 0; i < this.Lines.length; i++) {
         orderData.TotalCost += cost;
     }
 
-// Load the orderData object to the Orders queue (create the queue if it doesn't exist)
-loadToOrders(orderData, `routingKey`, {  
+// Exchange name: Orders
+// Loaded object name: orderData
+// Routing key: admin 
+// Attributes: Id, PartitionKey, Type, Source
+loadToOrders(orderData, `admin`, {  
         Id: id(this),
         PartitionKey: id(this),
-        Type: 'com.github.users',
+        Type: 'special-promotion',
         Source: '/registrations/direct-signup'
     });
 {CODE-BLOCK/}
 
 ---
 
-#### Additional Cloud Event Attributes
+### Partial `loadTo` Syntax
 
-As `loadTo` is called to wrap the JSON document in a CloudEvents message and load it to 
-the RabbitMQ exchange, a few **cloud event attributes** are added to the message by default.  
-You can explicitly set these attributes with your own values.  
+Partial `loadTo` syntaxes are valid, including:  
 
-`loadTo<Exchange>({attributes}, routingKey)`  
+* Ommitted exchange name, as in: `loadTo('', orderData, 'admin')`  
+  In this case a default, pre-defined, direct exchange will be used, 
+  with a queue name similar to the routing key and the messages 
+  delivered directly to the queue.  
 
-* `Exchange` is the name of the RabbitMQ exchange to which the data is transferred.  
-  Omit the exchange to use the default value. E.g. -  
-  {CODE-BLOCK: JavaScript}
-  loadTo({Name: 'Factory-22'})
-  {CODE-BLOCK/}
-* `attributes`: A list of key/value attributes  
-  Read more about available attributes [here](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#required-attributes).  
-* `routingKey`: A key specifying where to route the messages to  
-  E.g., the command below uses the `Orders` exchange, explicitly sets the Name attribute, 
-  and routes messages to `admins`.  
-  {CODE-BLOCK: JavaScript}
-  loadToOrders({Name: 'Factory-22'}, `admins`)
-  {CODE-BLOCK/}
+* Ommitted routing key, as in: `loadToOrders(orderData)`  
+  Note that in the lack of routing keys messages delivery will 
+  depend upon the type of exchange you use.  
+
+* Ommitted attributes (Id, Type, Source..)  
+  No attributes are mandatory, they can all be ommitted.  
 
 {PANEL/}
 
@@ -110,7 +108,7 @@ You can explicitly set these attributes with your own values.
 
 ---
 
-#### How Are Messages Consumed  
+#### How Are Messages Produced and Consumed  
 
 The ETL task will send the CloudEvents messages it produces to a RabbitMQ **exchange** 
 by the address provided in your [connection string](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#add-a-rabbitmq-connection-string).  
@@ -121,6 +119,34 @@ available for consumers.
 
 Read more about RabbitMQ in the platform's [official documentation](https://www.rabbitmq.com/) 
 or a variety of other sources.  
+
+---
+
+#### Idempotence
+
+RavenDB is an **idempotent producer**, that will **not** typically send duplicates 
+messages to its queues' consumers.  
+
+It **is** possible, however, that duplicate messages will be sent to the exchange.  
+
+It is therefore the consumer's own responsibility to verify the uniqueness of the 
+messages it processes.  
+
+{INFO: }
+Consider, for example, the following scenario, in which duplicate messages may be 
+sent by RavenDB and enqueued by the RabbitMQ exchange.  
+
+* The RavenDB node responsible for the ETL task, failed while sending messages.  
+* Another RavenDB node was assigned with the ETL task.  
+  This node is considered a **new producer** by the exchange.  
+  Confirmation messages sent by the exchange to the former producer, weren't 
+  received by the new producer.  
+* Being a transactional server, RavenDB now resends the entire transaction that 
+  was cut short by the failure of the previous node.  
+* The messages that were previously received by the exchange, are now resent 
+  by RavenDB, received by the exchange and enqueued again.  
+
+{INFO/}
 
 {PANEL/}
 
@@ -176,12 +202,29 @@ To create the ETL task:
     | **Name** | `string` | The ETL task name |
     | **ConnectionStringName** | `string` | The registered connection string name |
     | **Transforms** | `List<Transformation>[]` | You transformation script |
-    | **Queues** | `List<EtlQueue>` | A list of used RavenDB collections / RabbitMQ queues |
+    | **Queues** | `List<EtlQueue>` | Optional actions to take when a document is processed, see [Delete Processed Documents](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#delete-processed-documents) below.  |
     | **BrokerType** | `QueueBrokerType` | Set to `QueueBrokerType.RabbitMq` to define a RabbitMQ ETL task |
     | **SkipAutomaticQueueDeclaration** | `bool` | Set to `true` to skip automatic queue declaration <br> Use this option when you prefer to define Exchanges, Queues & Bindings manually. |
 
-    `EtlQueue`
-    {CODE EtlQueue@Server\OngoingTasks\ETL\Queue\Queue.cs /}
+---
+
+### Delete Processed Documents
+
+You can include an optional `EtlQueue` property in the ETL configuration to 
+trigger additional actions.  
+An action that you can trigger this way, is the **deletion of RavenDB documents** 
+once they've been processed by the ETL task.  
+
+`EtlQueue`
+{CODE EtlQueueDefinition@Server\OngoingTasks\ETL\Queue\Queue.cs /}
+
+| Property | Type | Description |
+|:-------------|:-------------|:-------------|
+| **Name** | `string` | Queue name |
+| **DeleteProcessedDocuments** | `bool` | if `true`, delete processed documents from RavenDB |
+
+**Code Sample**:  
+{CODE rabbitmq_EtlQueue@Server\OngoingTasks\ETL\Queue\Queue.cs /}
 
 {PANEL/}
 

@@ -13,17 +13,18 @@
 
 * You can create a RavenDB Kafka ETL task to Extract data from the 
   database, Transform it by your custom script, and Load the resulting 
-  JSON object to a Kafka destination as a ClouodEvents message.  
+  JSON object to a Kafka destination as a CloudEvents message.  
 
 * In this page:  
   * [Transformation Script](../../../../server/ongoing-tasks/etl/queue-etl/kafka#transformation-script)  
      * [Additional Cloud Event Attributes](../../../../server/ongoing-tasks/etl/queue-etl/kafka#additional-cloud-event-attributes)  
   * [Data Delivery](../../../../server/ongoing-tasks/etl/queue-etl/kafka#data-delivery)  
      * [What is Transferred](../../../../server/ongoing-tasks/etl/queue-etl/kafka#what-is-transferred)  
-     * [How Are Messages Consumed](../../../../server/ongoing-tasks/etl/queue-etl/kafka#how-are-messages-consumed)  
+     * [How Are Messages Produced and Consumed](../../../../server/ongoing-tasks/etl/queue-etl/kafka#how-are-messages-produced-and-consumed)  
   * [Client API](../../../../server/ongoing-tasks/etl/queue-etl/kafka#client-api)  
      * [Add a Kafka Connection String](../../../../server/ongoing-tasks/etl/queue-etl/kafka#add-a-kafka-connection-string)  
      * [Add a Kafka ETL Task](../../../../server/ongoing-tasks/etl/queue-etl/kafka#add-a-kafka-etl-task)  
+     * [Delete Processed Documents](../../../../server/ongoing-tasks/etl/queue-etl/kafka#delete-processed-documents)  
 
 {NOTE/}
 
@@ -46,7 +47,7 @@ Objects are **Loaded** to the specified Kafka topic using the
   can also be specified.  
 
 E.g., the following transformation script defines an `orderData` object and 
-loads it to the `orders` topic:  
+loads it to the `Orders` topic:  
 
 {CODE-BLOCK: JavaScript}
 // Create an OrderData JSON object
@@ -68,7 +69,7 @@ for (var i = 0; i < this.Lines.length; i++) {
 loadToOrders(orderData, {  
         Id: id(this),
         PartitionKey: id(this),
-        Type: 'com.github.users',
+        Type: 'special-promotion',
         Source: '/registrations/direct-signup'
     })
      {CODE-BLOCK/}
@@ -93,17 +94,12 @@ E.g. -
 // optionally modify cloud event attributes 
 loadToOrders(orderData, {  
         Id: id(this),
-        Type: 'com.github.users',
+        Type: '/promotion-campaigns/summer-sale',
         Source: '/registrations/direct-signup'
     })
      {CODE-BLOCK/}
 
-
-| Attribute | Type | Description |
-|:-------------|:-------------|:-------------|
-| **Id** | `string` | [Event Identifier](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#id) |
-| **Type** | `string` | [Event Type](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#type) |
-| **Source** | `string` | [Event Context](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#source-1) |
+* Read about the `Id`, `Type`, and `Source` attributes [here](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents).  
 
 {PANEL/}
 
@@ -123,13 +119,13 @@ loadToOrders(orderData, {
 
 ---
 
-### How Are Messages Consumed  
+### How Are Messages Produced and Consumed  
 
 The ETL task will send the CloudEvents messages it produces to Kafka **broker/s** 
 by your [connection string](../../../../server/ongoing-tasks/etl/queue-etl/kafka#add-a-kafka-connection-string).  
 
-Each message will then be sent to the topics defined for it in the transformation script, 
-and pushed to the tail of the topic's queue. the enqueued message will advance in the queue 
+Each message will then be sent to each topic defined for it in the transformation script, 
+and pushed to the tail of the topic's queue. The enqueued message will advance in the queue 
 as preceding messages are pulled, and finally reach the queue's head and become available 
 for consumers.  
 
@@ -190,12 +186,29 @@ To create the ETL task:
     |:-------------|:-------------|:-------------|
     | **Name** | `string` | The ETL task name |
     | **ConnectionStringName** | `string` | The registered connection string name |
-    | **Transforms** | `List<Transformation>[]` | You transformation script |
-    | **Queues** | `List<EtlQueue>` | A list of used RavenDB collections / Kafka queues |
+    | **Transforms** | `List<Transformation>[]` | Your transformation script |
+    | **Queues** | `List<EtlQueue>` | Optional actions to take when a document is processed, see [Delete Processed Documents](../../../../server/ongoing-tasks/etl/queue-etl/kafka#delete-processed-documents) below.  |
     | **BrokerType** | `QueueBrokerType` | Set to `QueueBrokerType.Kafka` to define a Kafka ETL task |
 
-    `EtlQueue`
-    {CODE EtlQueue@Server\OngoingTasks\ETL\Queue\Queue.cs /}
+---
+
+### Delete Processed Documents
+
+You can include an optional `EtlQueue` property in the ETL configuration to 
+trigger additional actions.  
+An action that you can trigger this way, is the **deletion of RavenDB documents** 
+once they've been processed by the ETL task.  
+
+`EtlQueue`
+{CODE EtlQueueDefinition@Server\OngoingTasks\ETL\Queue\Queue.cs /}
+
+| Property | Type | Description |
+|:-------------|:-------------|:-------------|
+| **Name** | `string` | Queue name |
+| **DeleteProcessedDocuments** | `bool` | if `true`, delete processed documents from RavenDB |
+
+**Code Sample**:  
+{CODE kafka_EtlQueue@Server\OngoingTasks\ETL\Queue\Queue.cs /}
 
 {PANEL/}
 
