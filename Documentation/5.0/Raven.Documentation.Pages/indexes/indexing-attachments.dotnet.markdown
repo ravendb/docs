@@ -1,9 +1,12 @@
 # Indexes: Indexing Attachments
 
-The `AttachmentsFor` method returns a list of 
-[attachments](../document-extensions/attachments/what-are-attachments) 
-in a given document as well as basic information like `Name` or `Size` 
-about each of them.
+* The `AttachmentsFor` method returns a list of 
+  [attachments](../document-extensions/attachments/what-are-attachments) 
+  in a given document as well as basic information like `Name` or `Size` 
+  about each of them.
+
+* For a more thorough explanation including syntax, please read our 
+  [Document Extensions article on indexing attachments](../document-extensions/attachments/indexing). 
 
 {CODE-TABS}
 {CODE-TAB:csharp:AttachmentsFor syntax@Indexes\IndexingAttachments.cs /}

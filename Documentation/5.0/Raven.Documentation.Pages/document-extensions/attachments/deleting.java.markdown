@@ -1,6 +1,8 @@
 # Attachments: Deleting Attachments
 
-**Delete** from `session.advanced().attachments()` is used to remove an attachment from a document.
+* **Delete** from `session.Advanced.Attachments` is used to remove an attachment from a document.
+
+* If revisions are active, [deleting an attachment will create a new revision](../../document-extensions/revisions/revisions-and-other-features#revisions-creation-2).
 
 ## Syntax
 

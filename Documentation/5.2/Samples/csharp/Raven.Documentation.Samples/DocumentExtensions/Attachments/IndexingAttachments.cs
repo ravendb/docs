@@ -82,13 +82,14 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
 
         #region LoadAtt_index_LINQ
-        private class Companies_With_Attachments : AbstractIndexCreationTask<Company>
+        private class Companies_ByAttachmentDetails : AbstractIndexCreationTask<Company>
         {
 
-            public Companies_With_Attachments()
+            public Companies_ByAttachmentDetails()
             {
                 Map = companies => from company in companies
-                                   let attachment = LoadAttachment(company, company.ExternalId)
+                                   // be sure to include the property "AttachmentName" to "Company" in Northwind
+                                   let attachment = LoadAttachment(company, company.AttachmentName)
                                    select new
                                    {
                                        CompanyName = company.Name,
@@ -110,7 +111,7 @@ namespace Raven.Documentation.Samples.Indexes
                 Maps = new HashSet<string>
                 {
                     @"map('Companies', function (company) {
-                        var attachment = loadAttachment(company, company.ExternalId);
+                        var attachment = loadAttachment(company, company.AttachmentName);
                         return {
                             CompanyName: company.Name,
                             AttachmentName: attachment.Name,
@@ -126,9 +127,9 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
 
         #region LoadAtts_index_LINQ
-        private class Companies_With_All_Attachments : AbstractIndexCreationTask<Company>
+        private class Companies_ByAllAttachmentsDetails : AbstractIndexCreationTask<Company>
         {
-            public Companies_With_All_Attachments()
+            public Companies_ByAllAttachmentsDetails()
             {
                 Map = companies => from company in companies
                                    let attachments = LoadAttachments(company)
@@ -143,9 +144,9 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
 
         #region LoadAtts_index_JS
-        private class Companies_With_All_Attachments_JS : AbstractJavaScriptIndexCreationTask
+        private class Companies_ByAllAttachmentsDetails_JS : AbstractJavaScriptIndexCreationTask
         {
-            public Companies_With_All_Attachments_JS()
+            public Companies_ByAllAttachmentsDetails_JS()
             {
                 Maps = new HashSet<string>
                 {

@@ -1,10 +1,10 @@
 # Attachments: Loading Attachments
 
-There are a few methods that allow you to download attachments from a database:   
+There are a few methods that allow you to load attachments from a database:   
 
-**session.Advanced.Attachments.Get** can be used to download an attachment or multiple attachments.  
-**session.Advanced.Attachments.GetNames** can be used to download all attachment names that are attached to a document.  
-**session.Advanced.Attachments.GetRevision** can be used to download an attachment of a revision document.  
+**session.Advanced.Attachments.Get** can be used to load an attachment or multiple attachments.  
+**session.Advanced.Attachments.GetNames** can be used to load all attachment names that are attached to a document.  
+**session.Advanced.Attachments.GetRevision** can be used to load an attachment of a revision document.  
 **session.Advanced.Attachments.Exists** can be used to determine if an attachment exists on a document.  
 
 ## Syntax
@@ -14,14 +14,14 @@ There are a few methods that allow you to download attachments from a database:
 {CODE-TAB:csharp:Async GetSyntaxAsync@DocumentExtensions\Attachments\Attachments.cs /}
 {CODE-TABS/}
 
-## Example I
+## Example I - Load attachments using the names of the attachments
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync GetAttachment@DocumentExtensions\Attachments\Attachments.cs /}
 {CODE-TAB:csharp:Async GetAttachmentAsync@DocumentExtensions\Attachments\Attachments.cs /}
 {CODE-TABS/}
 
-## Example II
+## Example II - Load attachments using the references in their parent document
 Here, we load multiple string attachments we previously created for a document. We then 
 go through them, and decode each attachment to its original text.  
 {CODE-TABS}
