@@ -16,10 +16,11 @@
 
 * In this page:  
   * [Transformation Script](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#transformation-script)  
-     * [Alternative `loadTo` Syntaxes](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#alternative--syntaxes)  
+     * [Alternative Syntaxes](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#alternative-syntaxes)  
   * [Data Delivery](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#data-delivery)  
      * [What is Transferred](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#what-is-transferred)  
      * [How Are Messages Produced and Consumed](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#how-are-messages-produced-and-consumed)  
+     * [Message Duplication](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#message-duplication)  
   * [Client API](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#client-api)  
      * [Add a RabbitMQ Connection String](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#add-a-rabbitmq-connection-string)  
      * [Add a RabbitMQ ETL Task](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#add-a-rabbitmq-etl-task)  
@@ -47,7 +48,7 @@ command as follows:
   A message attribute that the exchange checks when it decides how to route the 
   message to queues (depending on the exchange type)  
 * **attributes**:  
-  [Additional attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents)  
+  [Optional attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents)  
 
 For example:  
 
@@ -68,9 +69,9 @@ for (var i = 0; i < this.Lines.length; i++) {
 
 // Exchange name: Orders
 // Loaded object name: orderData
-// Routing key: admin 
+// Routing key: users 
 // Attributes: Id, PartitionKey, Type, Source
-loadToOrders(orderData, `admin`, {  
+loadToOrders(orderData, `users`, {  
     Id: id(this),
     PartitionKey: id(this),
     Type: 'special-promotion',
@@ -80,21 +81,21 @@ loadToOrders(orderData, `admin`, {
 
 ---
 
-### Alternative `loadTo` Syntaxes
+### Alternative Syntaxes
 
 Alternative supported syntaxes include:  
 
 * The exchange name can be provided separately, as a string:  
   `loadTo('exchange-name', obj, 'routing-key', { attributes })`  
-  E.g. -  `loadTo('Orders', orderData, 'admin')`
+  E.g. -  `loadTo('Orders', orderData, 'users')`
   
     Using this syntax, you can replace the exchange name with 
-    an **empty string**, as in: `loadTo('', orderData, 'admin')`  
+    an **empty string**, as in: `loadTo('', orderData, 'users')`  
     When an empty string is sent this way the message is pushed 
     directly to queues, using a default exchange (pre-defined 
     by the broker).  
-    In the above example, `loadTo('', orderData, 'admin')`, the 
-    message is pushed directly to the `admin` queue.  
+    In the above example, `loadTo('', orderData, 'users')`, the 
+    message is pushed directly to the `users` queue.  
 
 * The routing key can be omitted, as in: `loadToOrders(orderData)`  
   In the lack of a routing key messages delivery will depend 
@@ -122,15 +123,16 @@ Alternative supported syntaxes include:
 
 #### How Are Messages Produced and Consumed  
 
-The ETL task will send the JSON messages it produces to a RabbitMQ **exchange** 
-by the address provided in your [connection string](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#add-a-rabbitmq-connection-string).  
+The ETL task will use the address provided in your 
+[connection string](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#add-a-rabbitmq-connection-string), 
+and send the JSON messages it produces to a RabbitMQ **exchange**.  
 
 Each message will then be pushed to the tail of the queue assigned to it in the transformation script, 
 advance in the queue as preceding messages are pulled, and finally reach the queue's head and become 
 available for consumers.  
 
 {INFO: }
-RavenDB publishes messages to RabbitMQ using transactions and batches, 
+RavenDB publishes messages to RabbitMQ using **transactions and batches**, 
 creating a batch of messages and opening a transaction to the exchange for the batch.  
 {INFO/}
 
@@ -143,7 +145,7 @@ or a variety of other sources.
 
 #### Message Duplication
 
-It **is** possible that duplicate messages will be sent to the topic.  
+It **is** possible that duplicate messages will be sent to the exchange.  
 
 If, for example, the RavenDB node responsible for the ETL task fails while 
 sending messages, the new responsible node may resend some of the messages 

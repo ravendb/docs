@@ -94,7 +94,7 @@ Clicking the Advanced button will display per-exchange options.
 In it, you'll find the option to delete documents from RavenDB 
 while they were processed by the selected queue.  
 
-![Options Per Queue - Delete Processed Documents](images/queue/rabbitmq_options-per-topic.png "Options Per Queue - Delete Processed Documents")
+![Options Per Queue - Delete Processed Documents](images/queue/rabbitmq_options-per-queue.png "Options Per Queue - Delete Processed Documents")
 
 1. **The Exchange**  
    `loadToOrders` is the script instruction to transfer documents to the `Orders` Exchange.  
@@ -132,7 +132,7 @@ while they were processed by the selected queue.
    * Make sure that one of the properties of the document object 
      is given the value `id(this)`. This property will contain the 
      RavenDB document ID.  
-   * Use the `loadTo\<ExchangeName\>` method to pass the document object 
+   * Use the `loadTo<ExchangeName>` method to pass the document object 
      to the RabbitMQ destination.  
 
 3. **Syntax**  

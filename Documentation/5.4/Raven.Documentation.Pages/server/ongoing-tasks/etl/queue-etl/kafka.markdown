@@ -39,14 +39,14 @@ which Kafka topic to **Load** it to.
 
 To load the data to a Kafka topic use the [loadTo\\<Topic\\>](../../../../server/ongoing-tasks/etl/basics#transform) 
 command as follows:  
-`loadTo\\<Topic\\>(obj, {attributes})`  
+`loadTo<Topic>(obj, {attributes})`  
 
 * **Topic**:  
   The Kafka topic name  
 * **obj**:  
   The object to transfer  
 * **attributes**:  
-  [Additional attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents)  
+  [Optional attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents)  
 
 For example:  
 
@@ -104,8 +104,7 @@ advance in the queue as preceding messages are pulled, and finally reach the que
 available for consumers.  
 
 {INFO: }
-RavenDB publishes messages to Kafka using transactions and batches, 
-creating a batch of messages and opening a transaction to the broker for the batch.  
+RavenDB publishes messages to Kafka using **transactions**.  
 {INFO/}
 
 {NOTE: }

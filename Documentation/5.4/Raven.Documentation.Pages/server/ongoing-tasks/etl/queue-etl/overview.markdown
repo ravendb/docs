@@ -51,13 +51,25 @@ After preparing a JSON object that needs to be sent to a message broker,
 the ETL task wraps it as a CloudEvents message using the [CloudEvents Library](https://cloudevents.io).  
 
 To do that, the JSON object is provided with additional 
-[required attributes](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#required-attributes), including:  
+[required attributes](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#required-attributes), 
+added as headers to the message, including:  
 
 | Attribute | Type | Description | Default Value |
 |:-------------|:-------------|:-------------:|:-------------|
-| **Id** | `string` | [Event Identifier](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#id) | The document's **change vector** |
+| **Id** | `string` | [Event Identifier](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#id) | Document **Change Vector** |
 | **Type** | `string` | [Event Type](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#type) | **"ravendb.etl.put"** |
 | **Source** | `string` | [Event Context](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#source-1) | `<ravendb-node-url>/<database-name>/<etl-task-name>` |
+
+---
+
+#### Optional Attributes
+
+The optional **partitionkey** attribute can also be added. 
+It is currently only implemented by [Kafka](../../../../server/ongoing-tasks/etl/queue-etl/kafka).  
+
+| Optional Attribute | Type | Description | Default Value |
+|:-------------|:-------------|:-------------:|:-------------|
+| **partitionkey** | `string` | [events relationship/grouping definition](https://github.com/cloudevents/spec/blob/main/cloudevents/extensions/partitioning.md#partitionkey) | **Document ID** |
 
 {PANEL/}
 
@@ -75,17 +87,13 @@ to see various statistics related to data extraction, transformation, and loadin
 
 ## Related Articles
 
-### ETL
+### Server
 
 - [ETL Basics](../../../../server/ongoing-tasks/etl/basics)
-- [SQL ETL Task](../../../../server/ongoing-tasks/etl/sql)
-
-### Client API
-
-- [How to Add ETL](../../../../client-api/operations/maintenance/etl/add-etl)
-- [How to Update ETL](../../../../client-api/operations/maintenance/etl/update-etl)
-- [How to Reset ETL](../../../../client-api/operations/maintenance/etl/reset-etl)
+- [RabbitMQ ETL](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq)
+- [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka)
 
 ### Studio
 
-- [Define RavenDB ETL Task in Studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
+- [Studio: Kafka ETL Task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task)
+- [Studio: RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task)

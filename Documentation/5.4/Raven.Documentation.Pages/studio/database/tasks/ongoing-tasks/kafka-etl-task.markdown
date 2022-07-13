@@ -147,7 +147,7 @@ while they were processed by the selected topic.
    * Make sure that one of the properties of the document object 
      is given the value `id(this)`. This property will contain the 
      RavenDB document ID.  
-   * Use the `loadTo\<TopicName\>` method to pass the document object 
+   * Use the `loadTo<TopicName>` method to pass the document object 
      to the Kafka destination.  
 
 3. **Syntax**  
