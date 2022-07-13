@@ -16,7 +16,7 @@
 
 * In this page:  
   * [Transformation Script](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#transformation-script)  
-     * [Additional Cloud Event Attributes](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#additional-cloud-event-attributes)  
+     * [Alternative `loadTo` Syntaxes](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#alternative--syntaxes)  
   * [Data Delivery](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#data-delivery)  
      * [What is Transferred](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#what-is-transferred)  
      * [How Are Messages Produced and Consumed](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#how-are-messages-produced-and-consumed)  
@@ -39,57 +39,69 @@ To load the data to RabbitMQ, use the [loadTo\\<Exchange\\>](../../../../server/
 command as follows:  
 `loadTo<Exchange>(obj, routingKey, {attributes})`  
 
-* **Exchange**: the RabbitMQ exchange name  
-* **obj**: the object to transfer  
-* **routingKey**: a key by which binding is made between the RabbitMQ exchange and target queue/s  
-* **attributes**: [Additional attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents)  
+* **Exchange**:  
+  The RabbitMQ exchange name  
+* **obj**:  
+  The object to transfer  
+* **routingKey**:  
+  A message attribute that the exchange checks when it decides how to route the 
+  message to queues (depending on the exchange type)  
+* **attributes**:  
+  [Additional attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents)  
 
 For example:  
 
 {CODE-BLOCK: JavaScript}
 // Create an OrderData JSON object
 var orderData = {
-        Id: id(this), 
-        OrderLinesCount: this.Lines.length,
-        TotalCost: 0
-    };
+    Id: id(this), 
+    OrderLinesCount: this.Lines.length,
+    TotalCost: 0
+};
 
 // Update orderData's TotalCost field
 for (var i = 0; i < this.Lines.length; i++) {
-        var line = this.Lines[i];
-        var cost = (line.Quantity * line.PricePerUnit) * ( 1 - line.Discount);
-        orderData.TotalCost += cost;
-    }
+    var line = this.Lines[i];
+    var cost = (line.Quantity * line.PricePerUnit) * ( 1 - line.Discount);
+    orderData.TotalCost += cost;
+}
 
 // Exchange name: Orders
 // Loaded object name: orderData
 // Routing key: admin 
 // Attributes: Id, PartitionKey, Type, Source
 loadToOrders(orderData, `admin`, {  
-        Id: id(this),
-        PartitionKey: id(this),
-        Type: 'special-promotion',
-        Source: '/registrations/direct-signup'
-    });
+    Id: id(this),
+    PartitionKey: id(this),
+    Type: 'special-promotion',
+    Source: '/promotion-campaigns/summer-sale'
+});
 {CODE-BLOCK/}
 
 ---
 
-### Partial `loadTo` Syntax
+### Alternative `loadTo` Syntaxes
 
-Partial `loadTo` syntaxes are valid, including:  
+Alternative supported syntaxes include:  
 
-* Ommitted exchange name, as in: `loadTo('', orderData, 'admin')`  
-  In this case a default, pre-defined, direct exchange will be used, 
-  with a queue name similar to the routing key and the messages 
-  delivered directly to the queue.  
+* The exchange name can be provided separately, as a string:  
+  `loadTo('exchange-name', obj, 'routing-key', { attributes })`  
+  E.g. -  `loadTo('Orders', orderData, 'admin')`
+  
+    Using this syntax, you can replace the exchange name with 
+    an **empty string**, as in: `loadTo('', orderData, 'admin')`  
+    When an empty string is sent this way the message is pushed 
+    directly to queues, using a default exchange (pre-defined 
+    by the broker).  
+    In the above example, `loadTo('', orderData, 'admin')`, the 
+    message is pushed directly to the `admin` queue.  
 
-* Ommitted routing key, as in: `loadToOrders(orderData)`  
-  Note that in the lack of routing keys messages delivery will 
-  depend upon the type of exchange you use.  
+* The routing key can be omitted, as in: `loadToOrders(orderData)`  
+  In the lack of a routing key messages delivery will depend 
+  upon the type of exchange you use.  
 
-* Ommitted attributes (Id, Type, Source..)  
-  No attributes are mandatory, they can all be ommitted.  
+* Additional attributes (like the Cloudevents-specific `Id`, 
+  `Type`, and `Source` attributes) can be omitted.  
 
 {PANEL/}
 
@@ -102,7 +114,7 @@ Partial `loadTo` syntaxes are valid, including:
   A RabbitMQ ETL task transfers **documents only**.  
   Document extensions like attachments, counters, or time series, will not be transferred.  
 
-* **As CloudEvents Messages**  
+* **As JSON Messages**  
   JSON objects produced by the task's transformation script are wrapped 
   and delivered as [CloudEvents Messages](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents).  
 
@@ -110,43 +122,36 @@ Partial `loadTo` syntaxes are valid, including:
 
 #### How Are Messages Produced and Consumed  
 
-The ETL task will send the CloudEvents messages it produces to a RabbitMQ **exchange** 
+The ETL task will send the JSON messages it produces to a RabbitMQ **exchange** 
 by the address provided in your [connection string](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#add-a-rabbitmq-connection-string).  
 
-The message will then be pushed to the tail of the queue defined for it in the transformation script, 
+Each message will then be pushed to the tail of the queue assigned to it in the transformation script, 
 advance in the queue as preceding messages are pulled, and finally reach the queue's head and become 
 available for consumers.  
 
+{INFO: }
+RavenDB publishes messages to RabbitMQ using transactions and batches, 
+creating a batch of messages and opening a transaction to the exchange for the batch.  
+{INFO/}
+
+{NOTE: }
 Read more about RabbitMQ in the platform's [official documentation](https://www.rabbitmq.com/) 
 or a variety of other sources.  
+{NOTE/}
 
 ---
 
-#### Idempotence
+#### Message Duplication
 
-RavenDB is an **idempotent producer**, that will **not** typically send duplicates 
-messages to its queues' consumers.  
+It **is** possible that duplicate messages will be sent to the topic.  
 
-It **is** possible, however, that duplicate messages will be sent to the exchange.  
+If, for example, the RavenDB node responsible for the ETL task fails while 
+sending messages, the new responsible node may resend some of the messages 
+that were already enqueued.  
 
-It is therefore the consumer's own responsibility to verify the uniqueness of the 
-messages it processes.  
-
-{INFO: }
-Consider, for example, the following scenario, in which duplicate messages may be 
-sent by RavenDB and enqueued by the RabbitMQ exchange.  
-
-* The RavenDB node responsible for the ETL task, failed while sending messages.  
-* Another RavenDB node was assigned with the ETL task.  
-  This node is considered a **new producer** by the exchange.  
-  Confirmation messages sent by the exchange to the former producer, weren't 
-  received by the new producer.  
-* Being a transactional server, RavenDB now resends the entire transaction that 
-  was cut short by the failure of the previous node.  
-* The messages that were previously received by the exchange, are now resent 
-  by RavenDB, received by the exchange and enqueued again.  
-
-{INFO/}
+It is therefore **the consumer's own responsibility** (if processing each 
+message only once is important to it) to verify the uniqueness of each consumed 
+message.  
 
 {PANEL/}
 
@@ -161,7 +166,7 @@ how to define a RabbitMQ ETL task using Studio.
 #### Add a RabbitMQ Connection String
 
 Prior to defining an ETL task, add a **connection string** that the task 
-will use to connect the RabbitMQ exchange.  
+will use to connect RabbitMQ.  
 
 To create the connection string:  
 
@@ -180,7 +185,6 @@ To create the connection string:
     |:-------------|:-------------|:-------------|
     | **Name** | `string` | Connection string name |
     | **BrokerType** | `QueueBrokerType` | Set to `QueueBrokerType.RabbitMq` for a Kafka connection string |
-    | **KafkaConnectionSettings** | `KafkaConnectionSettings[]` | Leave undefined when defining a RabbitMQ connection string |
     | **RabbitMqConnectionSettings** | `RabbitMqConnectionSettings` | A single string that specifies the RabbitMQ exchange connection details |
 
 ---
@@ -206,6 +210,10 @@ To create the ETL task:
     | **BrokerType** | `QueueBrokerType` | Set to `QueueBrokerType.RabbitMq` to define a RabbitMQ ETL task |
     | **SkipAutomaticQueueDeclaration** | `bool` | Set to `true` to skip automatic queue declaration <br> Use this option when you prefer to define Exchanges, Queues & Bindings manually. |
 
+{INFO: }
+By default we define exchanges on our own with **Fanout** type so the routing keys are ignored.
+{INFO/}
+
 ---
 
 ### Delete Processed Documents
@@ -230,17 +238,13 @@ once they've been processed by the ETL task.
 
 ## Related Articles
 
-### ETL
+### Server
 
 - [ETL Basics](../../../../server/ongoing-tasks/etl/basics)
-- [SQL ETL Task](../../../../server/ongoing-tasks/etl/sql)
-
-### Client API
-
-- [How to Add ETL](../../../../client-api/operations/maintenance/etl/add-etl)
-- [How to Update ETL](../../../../client-api/operations/maintenance/etl/update-etl)
-- [How to Reset ETL](../../../../client-api/operations/maintenance/etl/reset-etl)
+- [Queue ETL Overview](../../../../server/ongoing-tasks/etl/queue-etl/overview)
+- [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka)
 
 ### Studio
 
-- [Define RavenDB ETL Task in Studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
+- [Studio: RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task)
+- [Studio: Kafka ETL Task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task)

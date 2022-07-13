@@ -72,6 +72,8 @@
    An optional Key/Value dictionary.
    This option can be used, for example, to provide the additional fields required 
    to connect a secure Kafka server.  
+   
+     ![Connection to Secure Server](images/queue/kafka_connection-string_connection-options.png "Connection to Secure Server")
 
 6. **Test Connection**  
    Click after defining the connection string, to test the connection to 
@@ -87,14 +89,14 @@ If RavenDB has been set up **securely**, another option will show up: **Use Rave
 
 ![Use RavenDB Certificate](images/queue/kafka_use-ravenDB-certificate.png "Use RavenDB Certificate")
 
-If you enable this option, RavenDB will export to the target machine/s the 
-cluster-wide certificate that was defined during setup, and secure its connection 
-with them.  
+If enabled, RavenDB will export to the target machine/s the cluster-wide 
+certificate defined during setup, and secure its connection with them.  
 
 * If you do that, you will no longer need to define your security options manually 
   (using [Add new connection option](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task#define-kafka-etl-task)).  
-* **Note**, however, that  you still need to register RavenDB's exported certificate 
-  on the target machine/s for the process to complete.  
+* **Note**, however, that to complete the process you still need to register RavenDB's 
+  exported certificate in [Kafka's truststore](https://kafka.apache.org/documentation/streams/developer-guide/security.html) 
+  on the target machine/s.  
 
 {PANEL/}
 
@@ -113,13 +115,13 @@ while they were processed by the selected topic.
 2. **Add Topic Options**  
    Click to add a per-topic option.  
 3. **Collection/Topic Name**  
-   This is the name of the RavenDB collection from which documents are extracted, 
-   as well as the name of the Kafka topic to which the documents are pushed.  
+   This is the name of the Kafka topic to which the documents are pushed.  
 4. **Delete Processed Documents**  
    Enabling this option will remove from the RavenDB collection documents that 
    were processed and pushed to the Kafka topic.  
    {WARNING: }
     Enabling this option will **remove processed documents** from the database.  
+    The documents will be deleted after the messages are pushed.  
    {WARNING/}
 
 
@@ -177,17 +179,13 @@ while they were processed by the selected topic.
 
 ## Related Articles
 
-### ETL
+### Server
 
 - [ETL Basics](../../../../server/ongoing-tasks/etl/basics)
-- [SQL ETL Task](../../../../server/ongoing-tasks/etl/sql)
-
-### Client API
-
-- [How to Add ETL](../../../../client-api/operations/maintenance/etl/add-etl)
-- [How to Update ETL](../../../../client-api/operations/maintenance/etl/update-etl)
-- [How to Reset ETL](../../../../client-api/operations/maintenance/etl/reset-etl)
+- [Queue ETL Overview](../../../../server/ongoing-tasks/etl/queue-etl/overview)
+- [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka)
+- [RabbitMQ ETL](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq)
 
 ### Studio
 
-- [Define RavenDB ETL Task in Studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
+- [Studio: RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task)

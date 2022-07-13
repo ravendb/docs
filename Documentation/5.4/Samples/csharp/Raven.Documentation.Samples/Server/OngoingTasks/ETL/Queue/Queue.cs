@@ -98,7 +98,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                                     Id: id(this),
                                     PartitionKey: id(this),
                                     Type: 'special-promotion',
-                                    Source: '/registrations/direct-signup'
+                                    Source: '/promotion-campaigns/summer-sale'
                                 });",
                         ApplyToAllDocuments = false
                     };
@@ -163,7 +163,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                                     Id: id(this),
                                     PartitionKey: id(this),
                                     Type: 'special-promotion',
-                                    Source: '/registrations/direct-signup'
+                                    Source: '/promotion-campaigns/summer-sale'
                                 });",
                         ApplyToAllDocuments = false
                     };
@@ -240,7 +240,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                                     Id: id(this),
                                     PartitionKey: id(this),
                                     Type: 'special-promotion',
-                                    Source: '/registrations/direct-signup'
+                                    Source: '/promotion-campaigns/summer-sale'
                                 });",
                         ApplyToAllDocuments = false
                     };
@@ -306,7 +306,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                                     Id: id(this),
                                     PartitionKey: id(this),
                                     Type: 'special-promotion',
-                                    Source: '/registrations/direct-signup'
+                                    Source: '/promotion-campaigns/summer-sale'
                                 });",
                         ApplyToAllDocuments = false
                     };

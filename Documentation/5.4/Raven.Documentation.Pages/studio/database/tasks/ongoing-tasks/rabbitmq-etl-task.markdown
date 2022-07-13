@@ -17,7 +17,7 @@
 * In this page:  
   * [Open RabbitMQ ETL Task View](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task#open-rabbitmq-etl-task-view)  
   * [Define RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task#define-rabbitmq-etl-task)  
-  * [Options Per Queue](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task#options-per-queue)  
+  * [Options Per Exchange](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task#options-per-exchange)  
   * [Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task#edit-transformation-script)  
 
 {NOTE/}
@@ -61,7 +61,11 @@
   * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)).  
 
 4. **Skip Automatic Exchange/Queue Declaration**  
-   
+   When enabled:  
+    * We declare the exchange and queue using the same name.  
+    * We bind The exchange and queue using a default (empty) routing key.  
+    * The declared exchange's type is **Fanout**.  
+
 5. **Create new RabbitMQ connection String**  
     * Select an existing connection string from the list or create a new one.  
     * The connection string defines the location of the destination RabbitMQ exchange/queue.  
@@ -69,9 +73,8 @@
     * **Connection String**  
       This is a single string that includes all the options required to connect the 
       RabbitMQ server.  
+      E.g. -  `amqp://<username>:<password>@<URL>:<portnumber>`  
       {NOTE: }
-       If the RabbitMQ target is local, for example, the connection string's format would be:  
-       `amqp://<username>:<password>@<URL>:<portnumber>`  
        Learn more about RabbitMQ connection strings [here](https://www.rabbitmq.com/uri-spec.html).  
       {NOTE/}
 
@@ -83,28 +86,28 @@
 
 {PANEL/}  
 
-{PANEL: Options Per Queue}
+{PANEL: Options Per Exchange}
 
 ![Click for Advanced Options](images/queue/rabbitmq_click-for-advanced-options.png "Click for Advanced Options")
 
-Clicking the Advanced button will display per-queue options.  
+Clicking the Advanced button will display per-exchange options.  
 In it, you'll find the option to delete documents from RavenDB 
 while they were processed by the selected queue.  
 
 ![Options Per Queue - Delete Processed Documents](images/queue/rabbitmq_options-per-topic.png "Options Per Queue - Delete Processed Documents")
 
-1. **The Exchange/Queue**  
-   `loadToOrders` is the script instruction to transfer documents to the `Orders` Exchange/Queue.  
+1. **The Exchange**  
+   `loadToOrders` is the script instruction to transfer documents to the `Orders` Exchange.  
 2. **Add Queue Options**  
    Click to add a per-queue option.  
-3. **Collection/Queue Name**  
-   This is the name of the RavenDB collection from which documents are extracted, 
-   as well as the name of the RabbitMQ exchange the documents are loaded to.  
+3. **Queue Name**  
+   This is the name of the RabbitMQ exchange the documents are loaded to.  
 4. **Delete Processed Documents**  
    Enabling this option will remove from the RavenDB collection documents that 
    were processed and loaded to the RabbitMQ exchange.  
    {WARNING: }
     Enabling this option will **remove processed documents** from the database.  
+    The documents will be deleted after the messages are pushed.  
    {WARNING/}
 
 {PANEL/}
@@ -161,17 +164,13 @@ while they were processed by the selected queue.
 
 ## Related Articles
 
-### ETL
+### Server
 
 - [ETL Basics](../../../../server/ongoing-tasks/etl/basics)
-- [SQL ETL Task](../../../../server/ongoing-tasks/etl/sql)
-
-### Client API
-
-- [How to Add ETL](../../../../client-api/operations/maintenance/etl/add-etl)
-- [How to Update ETL](../../../../client-api/operations/maintenance/etl/update-etl)
-- [How to Reset ETL](../../../../client-api/operations/maintenance/etl/reset-etl)
+- [Queue ETL Overview](../../../../server/ongoing-tasks/etl/queue-etl/overview)
+- [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka)
+- [RabbitMQ ETL](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq)
 
 ### Studio
 
-- [Define RavenDB ETL Task in Studio](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
+- [Studio: Kafka ETL Task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task)
