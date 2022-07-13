@@ -192,7 +192,8 @@ where search(Query, 'John Doe')
 
 {PANEL: Index partial field data}
 
-Imagine that you would like to return all employees that were born in a specific year. You can do it by indexing `Birthday` from `Employee` in the following way:  
+Imagine that you would like to return all employees that were born in a specific year. 
+You can do it by indexing `Birthday` from `Employee`, then specify the year in `Birthday` as you query the index:  
 
 Index definition:  
 {CODE-TABS}
@@ -234,8 +235,9 @@ where YearOfBirth = 1963
 
 In the examples above, `where` is used in the query to filter the results.  
 If you consistently want to filter with the same filtering conditions, 
-you can use `where` in the index definition to narrow the index terms that the query must scan. This can save 
-query-time but narrows the terms available to query.
+you can use `where` in the index definition to narrow the index terms that the query must scan.  
+
+This can save query-time but narrows the terms available to query.
 
 ### Example I
 
@@ -313,7 +315,7 @@ Read the article dedicated to [Map-Reduce indexes](../indexes/map-reduce-indexes
 
 {PANEL: Index multiple collections}
 
-Read the article dedicated to `Multi-Map` indexes [here](../indexes/indexing-polymorphic-data#multi-map-indexes).
+Read the article dedicated to [Multi-Map indexes](../indexes/indexing-polymorphic-data#multi-map-indexes).
 
 {PANEL/}
 

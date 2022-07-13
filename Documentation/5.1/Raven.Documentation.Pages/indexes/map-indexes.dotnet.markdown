@@ -235,8 +235,9 @@ where YearOfBirth = 1963
 
 In the examples above, `where` is used in the query to filter the results.  
 If you consistently want to filter with the same filtering conditions, 
-you can use `where` in the index definition to narrow the index terms that the query must scan. This can save 
-query-time but narrows the terms available to query.
+you can use `where` in the index definition to narrow the index terms that the query must scan.  
+
+This can save query-time but narrows the terms available to query.
 
 ### Example I
 
