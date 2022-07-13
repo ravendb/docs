@@ -59,7 +59,7 @@ For the API documentation article, see [Indexing Attachments](../../../document-
    This is the name of the index that must be explicitly [called in the query](../../../studio/database/document-extensions/attachments#query-definition) 
    to query this index.
 2. **Map Index Definition**  
-   Define the index by selecting details to make available for the queries.  
+   Index is defined by selecting details to make available for the queries.  
    * See the [Code Walkthrough](https://demo.ravendb.net/demos/csharp/attachments/index-attachment-details#) 
      to copy and play with the code sample used in this example.  
    * See our Studio [Map-Index article](../../../studio/database/indexes/create-map-index) 
@@ -74,8 +74,10 @@ For the API documentation article, see [Indexing Attachments](../../../document-
 1. **Query Definition**  
    Notice that to use the index defined above, you must call `from index` and the index name.  
    The `where` keyword enables you to filter the results. 
-   * Note that [RQL is used in Studio](../../../indexes/querying/what-is-rql).  
+     {NOTE: }
+     [RQL is used to query in Studio](../../../indexes/querying/what-is-rql).  
      For more information about querying see the article [Querying Basics](../../../indexes/querying/basics).  
+     {NOTE/}
 2. **Results**  
    This area shows the index used for the query and lists the documents that match the query definition.  
    Learn more about [querying in Studio](../../../studio/database/queries/query-view).
