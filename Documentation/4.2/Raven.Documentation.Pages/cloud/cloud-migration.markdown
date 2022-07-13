@@ -74,7 +74,7 @@ Choose which data to migrate, and click **Migrate Database**.
 {PANEL: Import From File}
   
 Another option is to [export a database](../studio/database/tasks/export-database) from the source server in the 
-**.ravenDBDump** format, and upload it to another database using the 
+`.ravenDBDump` format, and upload it to another database using the 
 [import data from file](../studio/database/tasks/import-data/import-data-file) operation.  
 This option doesn't require passing certificates:  
 {NOTE: Encryption}

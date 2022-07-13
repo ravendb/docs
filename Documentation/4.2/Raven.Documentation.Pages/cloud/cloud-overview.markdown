@@ -311,7 +311,7 @@ RavenDB provides a built-in [GUI to monitor and manage](../studio/overview) your
    * Manage your cluster topology.
    * Manage certificates.
    * Manage your license and support plan options.
-   * Customize search analysers.
+   * Customize search analyzers.
    * Access debug tools, logs, and metrics.
 * [Your RavenDB databases](../studio/overview#manage-your-databases)  
    * Create or delete databases.
