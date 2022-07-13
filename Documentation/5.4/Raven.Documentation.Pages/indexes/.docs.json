@@ -200,6 +200,10 @@
         ]
     },
     {
+        "Path": "/search-engine",
+        "Name": "Search Engine"
+    },
+    {
         "Path": "using-analyzers.markdown",
         "Name": "Analyzers",
         "DiscussionId": "24f00d9e-6992-4540-992c-8a3c8cbfa014",
