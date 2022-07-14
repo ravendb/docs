@@ -97,7 +97,7 @@ loadToEmployees({
 
 ### Documents Identifiers
 
-* The documents generated in the destination database are given an id according to the collection name specified in the `loadTo` method.  
+* The documents generated in the destination database are given an ID according to the collection name specified in the `loadTo` method.  
 
 * If the specified collection is the _same_ as the original one then the document is loaded to the _same_ collection and the original identifier is preserved.  
 
