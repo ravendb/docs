@@ -457,7 +457,7 @@ function loadTimeSeriesOfUsersBehavior(doc, ts)
 
 {PANEL: Deletions}
 
-Upon source document modifications, ETL is set by default to delete and replace the destination documents.  
+Upon source document modifications, ETL is set to delete and replace the destination documents by default.  
 
 If you want to control the way deletions are handled in the destination database, 
 you can change the default settings with the configurable functions described in this section.

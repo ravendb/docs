@@ -15,8 +15,9 @@
 * Each script can be defined on the source database to trigger ETL from a single collection, 
   multiple selected collections or be applied to **all** documents regardless of the associated collection(s).  
 
-* For the destination cluster to trust the source, you must [pass the .pfx certificate from the source to the destination cluster](../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates).
-
+* For the destination cluster to trust the source, you must: 
+    1. Download/export the server certificate from the source server.  
+    2. Upload/import its client certificate (.pfx) into the destination.
 
 * In this page:  
   * [Transformation Script Options](../../../server/ongoing-tasks/etl/raven#transformation-script-options)  
@@ -347,7 +348,7 @@ but it sets the value using a _put_ command.
 
 {PANEL: Deletions}
 
-Upon source document modifications, ETL is set by default to delete and replace the destination documents.  
+Upon source document modifications, ETL is set to delete and replace the destination documents by default.  
 
 If you want to control the way deletions are handled in the destination database, 
 you can change the default settings with the configurable functions described in this section.
