@@ -28,5 +28,9 @@
         "Name": "Elasticsearch ETL",
         "DiscussionId": "5367e101-fc9a-49a0-8eb7-ac556a1aee19",
         "Mappings": []
+    },
+    {
+        "Path": "/queue-etl",
+        "Name": "Queue ETL"
     }
 ]

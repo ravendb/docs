@@ -24,6 +24,12 @@
         "Mappings": []
     },
     {
+        "Path": "ravendb-etl-task.markdown",
+        "Name": "RavenDB ETL Task",
+        "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
+        "Mappings": []
+    },
+    {
         "Path": "olap-etl-task.markdown",
         "Name": "OLAP ETL Task",
         "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
@@ -32,6 +38,18 @@
     {
         "Path": "elasticsearch-etl-task.markdown",
         "Name": "Elasticsearch ETL Task",
+        "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
+        "Mappings": []
+    },
+    {
+        "Path": "kafka-etl-task.markdown",
+        "Name": "Kafka ETL Task",
+        "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
+        "Mappings": []
+    },
+    {
+        "Path": "rabbitmq-etl-task.markdown",
+        "Name": "RabbitMQ ETL Task",
         "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
         "Mappings": []
     }
