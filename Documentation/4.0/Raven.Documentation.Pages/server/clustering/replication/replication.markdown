@@ -24,6 +24,8 @@
 
 {NOTE/}
 
+---
+
 {PANEL: About Within-Cluster Replication}
 
 {NOTE: }

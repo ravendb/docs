@@ -17,6 +17,41 @@
 
 {PANEL: About External Replication}
 
+**What is being replicated:**  
+
+ * All database documents and related data:  
+   * Attachments
+   * Revisions
+   * Counters
+   * Time Series
+
+**What is _not_ being replicated:**  
+
+  * Server and cluster level features:  
+    * Indexes
+    * Conflict resolver definitions
+    * Compare-Exchange
+    * Subscriptions
+    * Identities
+    * Ongoing tasks
+      * ETL
+      * Backup
+      * Hub/Sink Replication
+
+{NOTE: Why are cluster-level features not replicated?}
+To provide for architecture that prevents conflicts between clusters, especially when ACID transactions are important, 
+RavenDB is designed so that data ownership is at the cluster level.  
+To learn more, see [Data Ownership in a Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system).
+{NOTE/}
+
+---
+
+**Conflicts:**  
+
+  * Two databases that have an External Replication task defined between them will detect and resolve document 
+    [conflicts](../../server/clustering/replication/replication-conflicts) according to each database conflict resolution policy.  
+  * It is recommended to have the same [policy configuration](../../server/clustering/replication/replication-conflicts#configuring-conflict-resolution-using-the-client) on both the source and the target databases.  
+
 We call the task of replicating between two different database groups _external replication_.  
 There is actually no difference in the implementation of an _external replication_ and a regular replication process.  
 The reason we define them differently is because of the default behavior of a cluster to setup well connected _database groups_.  
@@ -29,7 +64,7 @@ This may be limiting if you wish to design your own replication topology and _ex
 [Consistency boundaries](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system)
 between clusters are crucial to preserve data integrity and model an efficient global system.  
 
-**Be sure to create business logic which ensures that two clusters don't write on the same document.** 
+* Be sure to create business logic which ensures that **two clusters don't write on the same document.**  
 
 {INFO: To maintain consistency boundaries between clusters}
 You can establish document uniqueness by:
