@@ -29,11 +29,13 @@ In this page:
 
 {NOTE/}
 
+---
+
 {PANEL: Studio Certificates Management View}
 
 ![Figure 1. Studio Certificates Management View](images/studio-certificates-overview.png "Studio Certificates Management View")
 
-1. Click **Manage Server** tab.
+1. Click the **Manage Server** tab.
 2. Select **Certificates**.
 3. **Client certificate**  
    ![Client Certificate Button Options](images/client-certificate-button-options.png "Client Certificate Button Options")
@@ -78,7 +80,7 @@ does not really exist within RavenDB in this manner. Instead, cluster admins or 
 * [Operator](../../../server/security/authorization/security-clearance-and-permissions#operator)  
   Admin access to databases, but not to modify the cluster.  
 * [User](../../../server/security/authorization/security-clearance-and-permissions#user)  
-  Lowest levels of priveleges. 
+  Lowest levels of privileges. 
   * "User" certificates are configured to specify which databases people can access with each certificate.  
   * ["User" authorization levels](../../../server/security/authentication/certificate-management#setting-user-access-levels) are also configured per database.  
 
@@ -92,7 +94,7 @@ and operations allowed are never simple enough to be able to express them as an 
 processes, the state of the system, etc. 
 
 **How can authorization levels efficiently handle complex systems?**  By customizing access via client certificates.  For example, an employee may request a vacation day, but the employee
-is not permitted to approve their own vacations. The HR manager, on the other hand, may approve the vacation.  
+is not permitted to approve their own vacation. The HR manager, on the other hand, may approve the vacation.  
 
 From the point of view of RavenDB, the act of editing a vacation request document or approving it looks very much the same, it's a simple document edit.
 The way that a typical business system looks at those operations is often much more complicated. Perhaps the HR manager is given a client certificate with read/write permission to edit documents on the HR database, 
@@ -160,7 +162,7 @@ With this clearance, you can set a different access level to each database. The 
 
 {NOTE: }
 
-This approach is similar to HR Manager and customers in the example given [above](../../../server/security/authentication/certificate-management#authorization-levels-in-client-certificates). 
+This approach is similar to the HR Manager and Customers certificates in the example given [above](../../../server/security/authentication/certificate-management#authorization-levels-in-client-certificates). 
 It enables developers to control access levels by configuring client certificates.  
 
 {NOTE/}
@@ -330,7 +332,7 @@ When uploading an existing certificate .pfx file, you must configure the certifi
 1. **Name**  
    Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
 2. **Security Clearance**  
-   Set authorization level for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) to choose appropriate level.  
+   Set authorization level for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) to choose the appropriate level.  
 3. **Certificate file**  
    Upload the `.pfx` certificate file from the destination server installation folder.  
 4. **Certificate Passphrase**  
