@@ -5,8 +5,10 @@
 
 * RavenDB uses indexes to facilitate fast queries powered by [**Lucene**](http://lucene.apache.org/), the full-text search engine.  
 
-* The indexing of a single document starts from creating Lucene's **Document** according to an index definition. Lucene processes it by breaking it into fields and splitting all the text from each field into *tokens* (or *terms*) in a process called *tokenization*. Those tokens will be stored in the index, and later will be searched upon.  
-The tokenization process uses an object called an **Analyzer**.  
+* The indexing of a single document starts from creating Lucene's **Document** according to an index definition. 
+  Lucene processes it by breaking it into fields and splitting all the text from each field into *tokens* (or *terms*) 
+  in a process called *tokenization*. Those tokens will be stored in the index, and later will be searched upon.  
+  The tokenization process uses an object called an **Analyzer**.  
 
 * The indexing process and its results can be controlled by various field options and by the Analyzers.  
 
@@ -25,31 +27,76 @@ The tokenization process uses an object called an **Analyzer**.
 
 {PANEL: Understanding Analyzers}
 
-Lucene offers several Analyzers out of the box, and new ones can be created easily. Various Analyzers differ in the way they split the text stream ("tokenize"), and in the way they process those tokens in post-tokenization.  
+Lucene offers several Analyzers out of the box, and new ones can be [created](../indexes/using-analyzers#creating-custom-analyzers).  
 
-For example, given this sample text:  
+Various Analyzers differ in the way they split the text stream ("tokenize"), 
+and in the way they process those tokens in post-tokenization.  
+
+The examples below will use this sample text:  
 
 `The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.`  
+
+### Analyzers that remove common "Stop Words":
+
+{NOTE: }
+[Stop words](https://en.wikipedia.org/wiki/Stop_word) (e.g. the, it, a, is, this, who, that...) are often removed to 
+narrow search results by including only words that are used less frequently.
+
+If you want to include words such as IT (Information Technology), be aware that these analyzers will recognize IT as 
+one of the stop words and remove it from searches. 
+This can affect other acronyms such as WHO (World Health Organization) or names such as "The Who" or "The IT Crowd".  
+
+To prevent excluding such stop words, you can either spell out the entire title instead of abbreviating it 
+or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#analyzers-that-do-not-remove-common-stop-words).
+{NOTE/}
 
 * **StandardAnalyzer**, which is Lucene's default, will produce the following tokens:  
 
     `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dog]   [bob@hotmail.com]   [123432]`  
 
+    Removes common "stop" words  
+    Separates with white spaces  
+    Converts to lower-case letters so that searches aren't case sensitive  
+
 * **StopAnalyzer** will work similarly, but will not perform light stemming and will only tokenize on white space:  
 
     `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`  
+
+    Removes numbers and symbols then separates tokens with these  
+    Removes common "stop" words  
+    Separates with white spaces  
+    Converts to lower-case letters  
+
+---
+
+### Analyzers that do not remove common "Stop Words"
 
 * **SimpleAnalyzer** will tokenize on all non-alpha characters and will make all the tokens lowercase:  
 
     `[the]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`  
 
+    Includes common stop words  
+    Removes numbers and symbols then separates tokens with them  
+    Separates with white spaces  
+    Converts to lower-case letters so that searches aren't case sensitive 
+
 * **WhitespaceAnalyzer** will just tokenize on white spaces:  
 
     `[The]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs,]   [Bob@hotmail.com]   [123432.]`  
 
+    Only separates with whitespaces  
+    This analyzer preserves upper/lower cases in text, which means that searches will be case-sensitive.
+
 * **KeywordAnalyzer** will perform no tokenization, and will consider the whole text a stream as one token:  
 
-    `[The quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]` 
+    `[The quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`  
+
+    This analyzer preserves upper/lower cases in text for case-sensitive searches.
+    Useful in situations like IDs and codes where you do not want to separate into multiple tokens.  
+
+---
+
+### Analyzers that tokenize according to the defined number of characters
 
 * **NGramAnalyzer** will tokenize on predefined token lengths, 2-6 chars long, which are defined by `Indexing.Analyzers.NGram.MinGram` and `Indexing.Analyzers.NGram.MaxGram` configuration options:  
   
@@ -75,7 +122,7 @@ You can choose other analyzers to serve as your default analyzers by modifying t
 
 For regular text fields, RavenDB uses a custom analyzer called `LowerCaseKeywordAnalyzer`. Its implementation 
 behaves like Lucene's `KeywordAnalyzer`, but it also performs case normalization by converting all characters 
-to lower case. That is - RavenDB stores the entire text field as a single token, in a lower cased form. Given 
+to lower case. That is - RavenDB stores the entire text field as a single token, in a lowercased form. Given 
 the same sample text above, `LowerCaseKeywordAnalyzer` will produce a single token:  
 
 `[the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`  
@@ -117,7 +164,7 @@ name:
 
 {INFO: Analyzer Availability}
 The analyzer you are referencing must be available to the RavenDB server instance. See the different 
-methods of creating custom analyzers [below](../indexes/using-analyzers#creating-custom-analyzers).  
+methods of [creating custom analyzers](../indexes/using-analyzers#creating-custom-analyzers).  
 {INFO/}
 
 {PANEL/}
@@ -136,7 +183,7 @@ the server-wide analyzers with the same names.
 There are a few ways to create a custom analyzer and add it to your server:  
 1. [Using the Studio](../studio/database/settings/custom-analyzers)  
 2. Using the Client API  
-3. Adding it directly to RavenDB's binaries, [see below](../indexes/using-analyzers#adding-an-analyzer-to-the-binaries)  
+3. Adding it [directly to RavenDB's binaries](../indexes/using-analyzers#adding-an-analyzer-to-the-binaries)  
 
 ### Using the Client API
 
@@ -197,7 +244,7 @@ versions older than 5.2.
 
 {PANEL: Manipulating Field Indexing Behavior}
 
-By default, each indexed field is analyzed using the '`LowerCaseKeywordAnalyzer`' which indexes a field as a single, lower cased term.  
+By default, each indexed field is analyzed using the '`LowerCaseKeywordAnalyzer`' which indexes a field as a single, lowercased term.  
 
 This behavior can be changed by setting the `FieldIndexing` option for a particular field. The possible values are:  
 
@@ -211,7 +258,7 @@ the `KeywordAnalyzer` behind the scenes.
 
 {CODE analyzers_3@Indexes\Analyzers.cs /}
 
-`FieldIndexing.Search` allows performing full text search operations against the field using the 'StandardAnalyzer' 
+`FieldIndexing.Search` allows performing full-text search operations against the field using the 'StandardAnalyzer' 
 by default:  
 
 {CODE analyzers_4@Indexes\Analyzers.cs /}
