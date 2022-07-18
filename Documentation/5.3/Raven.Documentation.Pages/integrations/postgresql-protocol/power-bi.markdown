@@ -1,4 +1,7 @@
 ﻿# PostgreSQL Protocol: Power BI
+---
+
+{NOTE: }
 
 * The [Power BI](https://en.wikipedia.org/wiki/Microsoft_Power_BI) Desktop and 
   Online services can use RavenDB as a PostgreSQL server and retrieve data from it.  
@@ -7,15 +10,12 @@
    * Easily select RavenDB collections and retrieve chosen data.  
    * Query RavenDB using [RQL](../../indexes/querying/what-is-rql).  
 
----
-
-{NOTE: }
-
 * In this page:  
-  * [Using RavenDB From Power BI Desktop](../../integrations/postgresql-protocol/power-bi#using-ravendb-from-power-bi-desktop)  
-     * [Connect to RavenDB](../../integrations/postgresql-protocol/power-bi#connect-to-ravendb)  
-     * [Retrieve Collections Data](../../integrations/postgresql-protocol/power-bi#retrieve-collections-data)  
-     * [Query RavenDB Using RQL](../../integrations/postgresql-protocol/power-bi#query-ravendb-using-rql)  
+   * [Using RavenDB From Power BI Desktop](../../integrations/postgresql-protocol/power-bi#using-ravendb-from-power-bi-desktop)  
+      * [Connect to RavenDB](../../integrations/postgresql-protocol/power-bi#connect-to-ravendb)  
+      * [Retrieve Collections Data](../../integrations/postgresql-protocol/power-bi#retrieve-collections-data)  
+      * [Query RavenDB Using RQL](../../integrations/postgresql-protocol/power-bi#query-ravendb-using-rql)  
+
 {NOTE/}
 
 ---
@@ -42,7 +42,7 @@
 
 * **Server**  
   Enter RavenDB's **URL** and **PostgreSQL port number**.  
-   * Enter the URL and port number in the form: **URL:Port**  
+   * Enter the URL and port number in the form: **Hostname:Port**  
      E.g. - **`a.ravenpostgresql.development.run:5433`**  
    * Do **not** include the "https://" prefix in the URL.  
    * RavenDB's PostgreSQL port number is by default 5433, and is [configurable](../../integrations/postgresql-protocol/overview#postgresql-port).  
@@ -110,7 +110,7 @@ to import into Power BI just the data you're looking for.
       * RavenDB will throw the following exception if an erroneous query is likely 
         to have been split:  
         **Unhandled query (Are you using ; in your query? That is likely causing 
-        the postgres client to split the query and results in partial queries)**
+        the Postgres client to split the query and results in partial queries)**
      {WARNING/}  
       
       * Click **OK**.  
