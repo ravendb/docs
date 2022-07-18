@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* Backups save your data at a specific point in time, and allow you to 
+* Backups save your data at a specific point in time and allow you to 
   [restore](../../../studio/database/create-new-database/from-backup) 
   your database from that point. Learn more in [Backup Overview](../../../server/ongoing-tasks/backup-overview).  
 
@@ -16,6 +16,8 @@
 
 * A backup is _not equivalent_ to replicating your data, as explained below in 
   [Backup -vs- Replication](../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)  
+
+* To check what data different backup types save, see the [backup overview article](../../../server/ongoing-tasks/backup-overview).
 
 * For a complete explanation of how backups work and a discussion of which options are best suited for different scenarios, see the [Backups and restores](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/17-backups-and-restores) chapter of the "Inside RavenDB" book.
 
@@ -51,7 +53,7 @@
     To [restore a database](../../../studio/database/create-new-database/from-backup) from a previously created backup.
  5. **Go to Server Wide Tasks View** to [back up all of the databases](../../../studio/server/server-wide-backup) on this server.  
  6. **Database Group Topology**  
-    You can see all active server-wide and database specific periodic backups.  
+    You can see all active server-wide and database-specific periodic backups.  
 
 
 
@@ -71,9 +73,9 @@
     * [Backup Now](../../../studio/database/tasks/backup-task#periodic-backup-details) (e.g. before software updates) can be triggered in the 'View Details' interface.
  3. **Edit** this database backup task. To edit server/node-wide backup tasks, see button #5.  
  4. **Delete** this periodic backup task.  
- 5. **Go to server-wide backups view** to [back up all databases on the server](../../../studio/server/server-wide-backup).  
+ 5. **Go to the server-wide backups view** to [back up all databases on the server](../../../studio/server/server-wide-backup).  
  6. **Database Group Topology**  
-    This shows all active server-wide and database specific periodic backups.  
+    This shows all active server-wide and database-specific periodic backups.  
   
 ---
 
@@ -85,7 +87,7 @@
  1. **Task Name** (Optional)  
 
   * Choose a name of your choice  
-  * If no name is given then RavenDB server will create one for you based on the defined destination  
+  * If no name is given then the RavenDB server will create one for you based on the defined destination  
 
 
  2. **Backup Task Type**:  
@@ -161,7 +163,7 @@ Old backups are deleted after the defined time period during the next scheduled 
 ![Backup Retention Policy](images/backup-task-2_5.png "Backup Retention Policy")
 
  1. Enable / disable the retention policy. If disabled, the backups are stored indefinitely, which may use a lot of storage.  
-    **We recommend enabling** so that deletion of obsolete backups can be scheduled.  
+    **We recommend enabling** it so that the deletion of obsolete backups can be scheduled.  
  2. Select the retention period.  
 
 {INFO: }
@@ -183,7 +185,7 @@ Backups can be encrypted.  Make sure that you save the encryption key well.
   - Use the current encryption key. You don't need to set and save a new key with this option.  
   - Create a new encryption key for backups. You can only do this on 'Backup' type backups. 
 
-  ![Create New Encryption Key for Backup](images/create-new-encryption-key-for-backup.png "Create New Encryption Key for Backup")
+  ![Create New Encryption Key for the Backup](images/create-new-encryption-key-for-backup.png "Create New Encryption Key for the Backup")
 
   1. The new encryption key.  Click the 'refresh' arrow to randomly create a different key.
   2. Options to save the key.
@@ -236,20 +238,20 @@ Make sure to save the destinations and credentials information so that your team
 
 1. **Backup Task Details**:  
 
-  *  **Task Status**  
-   Active / Not Active / Not on Node  
-  *  **Destinations**  
-   List of all backup destinations defined  
-  *  **Last Full Backup**  
-   The last time a Full Backup was done 
+   * **Task Status**  
+     Active / Not Active / Not on Node  
+   * **Destinations**  
+     List of all backup destinations defined  
+   * **Last Full Backup**  
+     The last time a Full Backup was done 
      (Snapshot / Backup type - depending on task definition)  
-  *  **Last Incremental Backup**  
-   The last time an Incremental Backup was done  
-  *  **Next Estimated Backup**  
-   Time for next backup  
+   * **Last Incremental Backup**  
+     The last time an Incremental Backup was done  
+   * **Next Estimated Backup**  
+     Time for next backup  
      (Full Backup / Incremental Backup / Snapshot - depending on task definition)  
-  *  **Retention Policy**  
-   Backups older than this period will be deleted during next backup.  
+   * **Retention Policy**  
+     Backups older than this period will be deleted during the next backup.  
 
 2. **Backup Now**:  
    In addition to the scheduled time defined, you can backup your data now.  
@@ -280,8 +282,8 @@ If you've selected 'manual backup', the following screen will open.
 ![Manual Backup Creation](images/manual-backup.png "Manual Backup Creation")
 
 1. **Backup Type**.
-    * Snapshot saves the entire database and its indexes.
-    * Backup saves the data, but only index definitions.
+    * "Snapshot" saves the entire database and its indexes.
+    * "Backup" saves the data, but only index definitions.
 2. **Encryption** - See [Backup Encryption](../../../studio/database/tasks/backup-task#backup-encryption).
 3. **Destination** for backup to be stored. 
 
@@ -349,7 +351,7 @@ There are also some important differences:
     * Protect you from various cyber attacks  
 
  * A backup keeps an exact state of the database at a specific point in time and can be restored.  
-    * A new database can be [created from a Backup](../../../studio/server/databases/create-new-database/from-backup)  
+    * A new database can be [created from a Backup](../../../studio/database/create-new-database/from-backup)  
     * This can be done with both 'Backup' & 'Snapshot' types  
 
 {PANEL/}

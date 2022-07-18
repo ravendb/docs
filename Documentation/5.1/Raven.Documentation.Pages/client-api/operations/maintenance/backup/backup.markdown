@@ -8,7 +8,7 @@
 * RavenDB's Backup task is an [Ongoing-Task](../../../../studio/database/tasks/ongoing-tasks/general-info) 
   designed to run periodically on a pre-defined schedule.  
   You can run it as a one-time operation as well, by using [Export](../../../../client-api/smuggler/what-is-smuggler#export) 
-  or executing a backup-task [immediately](../../../../client-api/operations/maintenance/backup/backup#initiate-immediate-backup-execution).  
+  or executing a backup task [immediately](../../../../client-api/operations/maintenance/backup/backup#initiate-immediate-backup-execution).  
 
 * In this page:  
   * [Backup Types](../../../../client-api/operations/maintenance/backup/backup#backup-types)  
@@ -31,15 +31,22 @@
 
 ####Logical-Backup  
 
-* Data is backed-up in [compressed](../../../../server/ongoing-tasks/backup-overview#compression) JSON files.  
+* Data, index definitions, and ongoing tasks are backed-up in [compressed](../../../../server/ongoing-tasks/backup-overview#compression) 
+  JSON files.  
 
 * During the restoration, RavenDB -  
    * Re-inserts all data into the database.  
-   * Re-indexes the data.  
+   * Inserts the saved index definitions. To save space, Logical Backup stores index definitions only.  
+     After restoration, the dataset is scanned and indexed according to the definitions.
 
-* Restoration Time is, therefore, **slower** than that required when restoring a Snapshot.  
+* See [backup contents](../../../../server/ongoing-tasks/backup-overview#backup-contents).
 
-* Backup file size is **significantly smaller** than that of a Snapshot.  
+* Restoration time is, therefore, **slower** than when restoring from a Snapshot.  
+
+* The backup file size is **significantly smaller** than that of a Snapshot.
+
+* In addition to full data backup, Logical Backups can be defined as **incremental**, 
+  saving any changes made since the previous backup.
 
 * The following code sample defines a full-backup task that would be executed every 3 hours:  
   {CODE logical_full_backup_every_3_hours@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
@@ -49,15 +56,28 @@
 
 ####Snapshot
 
-* A SnapShot is a compressed binary duplication of the [database and journals](../../../../server/storage/directory-structure#storage--directory-structure) file structure at a given point-in-time.  
-  Snapshot-backups are available only for **Enterprise subscribers**.  
+* A Snapshot is a compressed binary duplication of the full database structure. 
+  This includes the data file and the journals at a given point in time.  
+  Therefore it includes fully built indexes and ongoing tasks.  
+  See [file structure](../../../../server/storage/directory-structure#storage--directory-structure) for more info.
+
+* Snapshot backups are available only for **Enterprise subscribers**.  
+
 * During restoration -
    * Re-inserting data into the database is not required.  
    * Re-indexing is not required.  
 
+* See [backup contents](../../../../server/ongoing-tasks/backup-overview#backup-contents).
+
 * Restoration is typically **faster** than that of a logical backup.  
 
 * Snapshot size is typically **larger** than that of a logical backup.  
+
+* If Incremental backups are created for a Snapshot-type backup: 
+   * The first backup will be a full Snapshot.
+   * The following backups will be Incremental. 
+   * [Incremental backups](../../../../client-api/operations/maintenance/backup/backup#incremental-backup) 
+     have different storage contents than Snapshots. 
 
 * Code Sample:  
   {CODE backup_type_snapshot@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
@@ -67,9 +87,9 @@
 ####Basic Comparison Between a Logical-Backup and a Snapshot:
 
   | Backup Type | Stored Format | Restoration speed | Size |
-  | ------ | ------ | ------ | - |
+  | ------ | ------ | --- | --- |
   | Snapshot | Compressed Binary Image | Fast | Larger than a logical-backup |
-  | Logical backup |  Compressed Textual Data | Slow | Smaller than a Snapshot |
+  | Logical backup |  Compressed Textual Data - JSON | Slow | Smaller than a Snapshot |
 
 {NOTE: Make sure your server has access to the local backup path.}
 Verify that RavenDB is allowed to store files in the path set in `LocalSettings.FolderPath`.  
@@ -108,9 +128,16 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
 
 ####Incremental-Backup
 
-* **File Format**  
-  An incremental-backup file is **always in JSON format**. 
-  It is so even when the full-backup it supplements is a binary snapshot.  
+* **File Format and Notes About Contents**  
+  * An incremental-backup file is **always in JSON format**. 
+    It is so even when the full-backup it is associated with is a binary snapshot.  
+  * An incremental backup stores index definitions (not full indexes).  
+    After the backup is restored, the dataset is re-indexed according to the index definitions.
+    {NOTE: }
+    This initial re-indexing can be time-consuming on large datasets.
+    {NOTE/}
+  * An incremental backup doesn't store [change vectors](../../../../server/clustering/replication/change-vector).
+
 
 * **Task Ownership**  
   The ownership of an incremental-backup task is granted dynamically by the cluster.  
@@ -149,7 +176,7 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
   {CODE backup_remote_destinations@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
  
  {INFO: Tip}
-    Use AWS [IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_access-management.html) (Identity and Access Management) 
+    Use AWS [IAM](https://aws.amazon.com/iam/) (Identity and Access Management) 
     to restrict users access while they create backups.  
     E.g. -  
     {CODE-BLOCK:json}
@@ -263,9 +290,9 @@ If needed, it can also be executed immediately.
    * An ACIDity of backed-up data, to keep its independence during restoration.  
      
 * **Remove old backup files regularly**.  
-  RavenDB does **not** remove old backup files automatically. 
-  As these files continue to aggregate, it is important that you take care of their regular removal.  
-  You can use services like crontab (a Linux scheduling procedure) to create an old-backups-removal routine.  
+  Set the [backup retention policy](../../../../client-api/operations/maintenance/backup/backup#backup-retention-policy)
+  to remove unneeded backup files so that they don't build up.  
+  While setting how many days to keep your backups, consider how much of a recent database history you would like to have access to.  
 
 * **Store backup files in a location other than your database's**.  
   Note that backup files are always stored in a local folder first (even when the final backup destination is remote).  
@@ -286,9 +313,9 @@ If needed, it can also be executed immediately.
 
 ###Studio  
 - [The Backup Task](../../../../studio/database/tasks/backup-task)  
-- [Create Database: from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
-- [Create a Database: General Flow](../../../../studio/server/databases/create-new-database/general-flow)  
-- [Create a Database: Encrypted](../../../../studio/server/databases/create-new-database/encrypted)  
+- [Create Database: from Backup](../../../../studio/database/create-new-database/from-backup)  
+- [Create a Database: General Flow](../../../../studio/database/create-new-database/general-flow)  
+- [Create a Database: Encrypted](../../../../studio/database/create-new-database/encrypted)  
 
 ###Security  
 - [Database Encryption](../../../../server/security/encryption/database-encryption)  
