@@ -5,10 +5,11 @@
 
 * Document extensions are data entities associated with documents.  
 
-* Document extensions are stored separately from their parent documents and are referenced in the parent documents' meta-data.
-  Separate storage ensures that most modifications of an extension don't change the parent document,
-  thus reducing trips to the server and activation of tasks such as ETL that are triggered by document changes.
-   * Actions such as creating or deleting an extension do change the parent documents' meta-data.
+* Document extensions are stored separately to make sure that **modifying** an extension value (e.g. a counter 
+  or a time series entry) will not modify its parent document.
+
+* **Creating or deleting** an extension changes the parent documents' meta-data. 
+  This document change triggers trips to the server as well as tasks such as indexing, ETL, and External Replication.  
 
 * In this page:  
    * [The Document Extensions](../document-extensions/overview-extensions#the-document-extensions)  
@@ -38,9 +39,6 @@
 
 
 {PANEL: Studio Document Extension Views}
-
-* [Seeing which types of extensions are added to sets of documents](../document-extensions/overview-extensions#seeing-which-types-of-extensions-are-added-to-sets-of-documents)  
-* [Managing extensions in specific documents](../document-extensions/overview-extensions#managing-extensions-in-specific-documents)  
 
 #### Document Extensions Flags
 
