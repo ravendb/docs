@@ -32,29 +32,34 @@ You may need to create a list of all of the documents that don't have these fiel
 
 The following query will create an auto-index for this purpose and list the documents that do not have the specified field.  
 
-You can then write a patch to add the field or change the metadata to move these into a collection of older documents.
+You can then write a [patch](../../../client-api/operations/patching/set-based) to add the field.
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE-TABS}
-{CODE-TAB:csharp:LINQ whereNotexists_1@ClientApi\Session\Querying\HowToFilterByField.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from "collection name" 
-where exists("field that exists in all documents in this collection") and not exists("field that does not exist in some documents")
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
+
+{CODE whereNotexists_signature@ClientApi\Session\Querying\HowToFilterByField.cs /}
 
 | Parameters | Type | Description |
 | -- | - | -- |
-| **collection name** | string | The name of the collection that you want to scan. |
-| **field that exists** | string | A field in this collection that exists in every document (such as ID, or Name). |
-| **field that does not exist (after `.Not`)**| string | The field that is missing in some of the documents. |
+| **T** | string | The name of the collection that you want to scan. |
+| **fieldName that exists** | string | A field in this collection that exists in every document (such as ID, or Name). |
+| **fieldName2 that does not exist (after `.Not`)**| string | The field that is missing in some of the documents. |
 
 {PANEL/}
 
 {PANEL: Example}
+
+{CODE-TABS}
+{CODE-TAB:csharp:LINQ whereNotexists_1@ClientApi\Session\Querying\HowToFilterByField.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Orders" 
+where exists("Company") and not exists("Employee")
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+#### How to use Studio to filter by non-existing field:
 
 ![List Documents Without a Specified Field](images/non-existing-field-studio-rql.png "List Documents Without a Specified Field")
 
@@ -63,14 +68,15 @@ where exists("field that exists in all documents in this collection") and not ex
 2. **Query**  
    Select to open the Studio query interface.
 3. **Code text editor**  
-   Write the query according to the [RQL Syntax](../../../client-api/session/querying/how-to-filter-by-non-existing-field#syntax) described above.  
+   Write the query according to the [RQL example](../../../client-api/session/querying/how-to-filter-by-non-existing-field#example) described above.  
 4. **Run Code**  
    Click or press ctrl+enter to run the query.
 5. **Index used**  
    This is the name of the auto-index created for this query.  
    You can click it to see the Studio indexing tools available for this index.  
 6. **Results**  
-   This is the list of documents that do not have the specified field.  
+   This is the list of documents that do not have the specified field.
+   (The field "Employee" was explicitly removed from these Northwind documents for this example.)
 
 {PANEL/}
 

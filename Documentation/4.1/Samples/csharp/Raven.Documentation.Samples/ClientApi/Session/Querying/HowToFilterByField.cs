@@ -60,6 +60,20 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     #endregion
                 }
 
+                using (var session = store.OpenSession())
+                {
+                    #region whereNotexists_signature
+                    List<T> results = session
+                        .Advanced
+                        .DocumentQuery<T>()
+                        .WhereExists("fieldName")
+                        .AndAlso()
+                        .Not
+                        .WhereExists("fieldName2")
+                        .ToList();
+                    #endregion
+                }
+
 
             }
 
@@ -130,5 +144,9 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             public double Latitude { get; set; }
             public double Longitude { get; set; }
         }
+    }
+
+    internal class T
+    {
     }
 }
