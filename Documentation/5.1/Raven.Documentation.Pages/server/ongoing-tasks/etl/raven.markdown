@@ -16,17 +16,17 @@
   multiple selected collections or be applied to **all** documents regardless of the associated collection(s).  
 
 * For the destination cluster to trust the source, you must: 
-    1. Download/export the server certificate from the source server.  
-    2. Upload/import its client certificate (.pfx) into the destination.
+   1. Download/export the server certificate from the source server.  
+   2. Upload/import its client certificate (.pfx) into the destination.
 
 * In this page:  
-  * [Transformation Script Options](../../../server/ongoing-tasks/etl/raven#transformation-script-options)  
-  * [Empty Script](../../../server/ongoing-tasks/etl/raven#empty-script)  
-  * [Attachments](../../../server/ongoing-tasks/etl/raven#attachments) 
-  * [Counters](../../../server/ongoing-tasks/etl/raven#counters)  
-  * [Time Series](../../../server/ongoing-tasks/etl/raven#time-series)  
-  * [Revisions](../../../server/ongoing-tasks/etl/raven#revisions)  
-  * [Deletions](../../../server/ongoing-tasks/etl/raven#deletions)  
+   * [Transformation Script Options](../../../server/ongoing-tasks/etl/raven#transformation-script-options)  
+   * [Empty Script](../../../server/ongoing-tasks/etl/raven#empty-script)  
+   * [Attachments](../../../server/ongoing-tasks/etl/raven#attachments) 
+   * [Counters](../../../server/ongoing-tasks/etl/raven#counters)  
+   * [Time Series](../../../server/ongoing-tasks/etl/raven#time-series)  
+   * [Revisions](../../../server/ongoing-tasks/etl/raven#revisions)  
+   * [Deletions](../../../server/ongoing-tasks/etl/raven#deletions)  
 {NOTE/}
 
 ---
