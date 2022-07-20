@@ -7,7 +7,7 @@
   * In a separate RavenDB cluster [on local machines](../../start/getting-started) or [a cloud instance](../../cloud/cloud-overview), 
     which can be used as a failover if the source cluster is down.  
     {INFO: }
-    External Replication task **does _not_ create a backup** of your data and indexes.  
+    The External Replication task **does _not_ create a backup** of your data and indexes.  
     See more in [Backup -vs- Replication](../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
     {INFO/}
   * In the same cluster if you want a live copy that won't be a client failover target.
@@ -66,7 +66,7 @@ To learn more, see [Data Ownership in a Distributed System](https://ayende.com/b
 **Conflicts:**  
 
   * Two databases that have an External Replication task defined between them will detect and resolve document 
-    [conflicts](../../server/clustering/replication/replication-conflicts) according to each database conflict resolution policy.  
+    [conflicts](../../server/clustering/replication/replication-conflicts) according to each database's conflict resolution policy.  
   * It is recommended to have the same [policy configuration](../../server/clustering/replication/replication-conflicts#configuring-conflict-resolution-using-the-client) on both the source and the target databases.  
 
 {PANEL/}
@@ -99,7 +99,7 @@ The required elements of an External Replication task are:
 * The destination server needs the [certificate from the source server](../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
   so that it will trust the source.
 * The [connection string](../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-raven-connection-string) 
-  with destination server URL and any other details needed to access the destination server.
+  with the destination server URL and any other details needed to access the destination server.
 * The following properties in the `ExternalReplication` object:
   * **ConnectionStringName**  
     The connection string name.  
@@ -111,9 +111,9 @@ The required elements of an External Replication task are:
 Optional elements include the following properties in the `ExternalReplication` object:
 
 * **MentorNode**  
-  Preferred responsible node in source server.
+  The preferred responsible node in the source server.
 * **DelayReplicationFor**  
-  Amount of time to delay replication.  
+  The amount of time to delay replication.  
   The following sample shows a 30-minute delay.  Delay can also be set by days, hours, and seconds.  
 
 {CODE ExternalReplicationWithMentorAndDelay@Server\OngoingTasks\ExternalReplicationSamples.cs /}
@@ -135,7 +135,7 @@ To create an external replication task via the RavenDB Studio, see the [Step-by-
 
 To learn how to define an external replication task via code, see [code sample](../../server/ongoing-tasks/external-replication#code-sample).  
 
-You can also configure external eplication tasks [via RavenDB Studio](../../studio/database/tasks/ongoing-tasks/external-replication-task#definition).  
+You can also configure external replication tasks [via RavenDB Studio](../../studio/database/tasks/ongoing-tasks/external-replication-task#definition).  
 
 {PANEL/}
 
@@ -148,7 +148,7 @@ You can also configure external eplication tasks [via RavenDB Studio](../../stud
     thus, a new Ongoing External Replication Task ***cannot*** be scheduled.  
 
   * If an External Replication Task was _already_ defined and active when the cluster went down,  
-    then the task will _not_ be active, no replication will take place.
+    then the task will _not_ be active and no replication will take place.
 
 * **When the node responsible for the external replication task is down**  
 
