@@ -6,7 +6,7 @@
 * **RavenDB ETL Task** creates an [ETL](../../../server/ongoing-tasks/etl/basics) 
   process for a given database when the destination is another RavenDB database.  
 
-* The script is executed per document whenever the document is created, modified and/or deleted.  
+* The script is executed per document whenever the document is created, modified, and/or deleted.  
 
 * It can be defined in code or using the [Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task).  
 
@@ -14,6 +14,8 @@
 
 * Each script can be defined on the source database to trigger ETL from a single collection, 
   multiple selected collections or be applied to **all** documents regardless of the associated collection(s).  
+
+* For the destination cluster to trust the source, you must [pass the .pfx certificate from the source to the destination cluster](../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates).
 
 * In this page:  
   * [Transformation Script Options](../../../server/ongoing-tasks/etl/raven#transformation-script-options)  
@@ -25,6 +27,8 @@
   * [Deletions](../../../server/ongoing-tasks/etl/raven#deletions)  
 
 {NOTE/}
+
+---
 
 ![Figure 1. Configure RavenDB ETL task](images/raven-etl-setup.png "RavenDB ETL in Studio")
 
@@ -69,7 +73,7 @@ loadToEmployees(this);
 
 {NOTE: }
 
-The following is an example of a RavenDB ETL script processing documents from `Employees` collection:
+The following is an example of a RavenDB ETL script processing documents from the `Employees` collection:
 
 {CODE-BLOCK:javascript}
 
@@ -93,11 +97,11 @@ loadToEmployees({
 
 ### Documents Identifiers
 
-* The documents generated in the destination database are given an id according to the collection name specified in the `loadTo` method.  
+* The documents generated in the destination database are given an ID according to the collection name specified in the `loadTo` method.  
 
 * If the specified collection is the _same_ as the original one then the document is loaded to the _same_ collection and the original identifier is preserved.  
 
-* For example, the following ETL script defined in `Employees` collection will keep the same identifiers in the target database:  
+* For example, the following ETL script defined in the `Employees` collection will keep the same identifiers in the target database:  
 
 {CODE-BLOCK:javascript}
 // original identifier will be preserved
@@ -186,7 +190,7 @@ loadToEmployees(this);
 
 {NOTE: Sending attachments together with documents}
 
-* Attachment is sent along with a transformed document if it's explicitly defined in the script by using `addAttachment()` method. By default, attachment name is preserved.
+* Attachment is sent along with a transformed document if it's explicitly defined in the script by using `addAttachment()` method. By default, the attachment name is preserved.
 * The script below sends _all_ attachments of a current document by taking advantage of `getAttachments()` function, loads each of them during transformation, and adds them to
 a document that will be sent to the 'Users' collection on the destination database.
 
@@ -204,7 +208,7 @@ for (var i = 0; i < attachments.length; i++) {
 {NOTE: Changing attachment name}
 
 * If `addAttachment()` is called with two arguments, the first one can indicate a new name for an attachment. In the below example attachment `photo`
-will be sent and stored under `picture` name.
+will be sent and stored under the `picture` name.
 * To check the existence of an attachment `hasAttachment()` function is used
 
 {CODE-BLOCK:javascript}
@@ -266,15 +270,15 @@ function loadCountersOf<CollectionName>Behavior(docId, counterName) {
 }
 {CODE-BLOCK/}
 
-* `<CollectionName>` needs to be substituted by a real collection name that the ETL script is working on (same convention as for `loadTo` method)
+* `<CollectionName>` needs to be substituted by a real collection name that the ETL script is working on (same convention as for the `loadTo` method)
 
 * The first parameter is the identifier of a document. The second one is the name of a modified counter for that doc.
 
-* If function returns `true` then a change value is propagated to a destination.
+* If the function returns `true` then a change value is propagated to a destination.
 
 #### Example
 
-* The following script is defined on `Products` collection:
+* The following script is defined on the `Products` collection:
 
 {CODE-BLOCK:javascript}
 
@@ -311,7 +315,7 @@ var person = loadToPeople({ Name: this.Name + ' ' + this.LastName });
 person.addCounter(loadCounter('likes'));
 {CODE-BLOCK/}
 
-* The above example indicates that `likes` counter will be sent together with a document. It uses the following functions to accomplish that:
+* The above example indicates that the `likes` counter will be sent together with a document. It uses the following functions to accomplish that:
   - `loadCounter(name)` returns a reference to a counter that is meant be passed to `addCounter()`
   - `<doc>.addCounter(counterRef)` adds a counter to a document that will be sent in the process, `<doc>` is a reference returned by `loadTo<CollectionName>()`
 
@@ -327,7 +331,8 @@ It means that incremented counter value won't be sent until a document is modifi
 
 {NOTE: Counter value override by ETL}
 
-Counters sent by the ETL process always _override_ the existing value on the destination. ETL doesn't send _increment_ counter command but it sets the value using _put_ command.
+Counters sent by the ETL process always _override_ the existing value on the destination. ETL doesn't send an _increment_ counter command 
+but it sets the value using a _put_ command.
 
 {NOTE/}
 
@@ -351,7 +356,7 @@ that has changed: if only one time-series entry is modified, only the segment th
 entry belongs to is evaluated.  
 * Changes to time-series trigger ETL on both the time-series itself and on the document 
 it extends.  
-* The function returns either a boolean, or an object with two `Date` values that 
+* The function returns either a boolean or an object with two `Date` values that 
 specify the range of time-series entries to load.  
 * The time-series behavior function can _only_ be applied to time-series whose source 
 collection and target collection have the same name. Loading a time-series from an 
@@ -380,7 +385,7 @@ function loadTimeSeriesOf<collection name>Behavior(docId, timeSeriesName) {
 
 #### Example
 
-* The following script is defined on `Companies` collection. The behavior function loads 
+* The following script is defined in the `Companies` collection. The behavior function loads 
 each document in the collection into the script context using `load(docId)`, then filters 
 by the document's `Address.Country` property as well as the time series' name. This 
 sends only stock price data for French companies.  
@@ -452,7 +457,7 @@ function loadTimeSeriesOfUsersBehavior(doc, ts)
 
 {PANEL: Deletions}
 
-Upon source document modifications, ETL is set by default to delete and replace the destination documents.  
+Upon source document modifications, ETL is set to delete and replace the destination documents by default.  
 
 If you want to control the way deletions are handled in the destination database, 
 you can change the default settings with the configurable functions described in this section.
@@ -545,7 +550,7 @@ trigger the command regardless of whether the source document was deleted.
   if a source document was updated, but not deleted,  
   it will be deleted in the destination before the updated document with a new ID is loaded to replace the previous one.  
    * If the source document was deleted, the destination will also be deleted.
-* If the method returns`false`, a 'historical' set of the document will accumulate in the destination collection every time 
+* If the method returns `false`, a 'historical' set of the document will accumulate in the destination collection every time 
   the source document is updated.  
   The number at the end of the [ID will automatically increment](../../../server/ongoing-tasks/etl/raven#identifiers-change-when-destination-collections-are-different) with every new version. 
    * If the document was deleted from the source, the set of old versions of the document will remain in the destination 
