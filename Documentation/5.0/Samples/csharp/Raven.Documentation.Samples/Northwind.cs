@@ -15,6 +15,7 @@ namespace Raven.Documentation.Samples
             public Address Address { get; set; }
             public string Phone { get; set; }
             public string Fax { get; set; }
+            public string AttachmentName { get; set; }
         }
 
         public class Address

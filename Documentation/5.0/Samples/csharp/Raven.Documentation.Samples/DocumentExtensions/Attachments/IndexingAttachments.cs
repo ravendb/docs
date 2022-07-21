@@ -111,10 +111,6 @@ namespace Raven.Documentation.Samples.Indexes
         #region LoadAtt_index_LINQ
         private class Companies_ByAttachmentDetails : AbstractIndexCreationTask<Company>
         {
-            //public class Result
-            //{
-            //    public string[] AttachmentName { get; set; }
-            //}
             public Companies_ByAttachmentDetails()
             {
                 Map = companies => from company in companies
