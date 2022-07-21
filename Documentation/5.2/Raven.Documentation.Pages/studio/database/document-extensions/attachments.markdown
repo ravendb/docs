@@ -30,7 +30,7 @@
 ![Add or Delete Attachments via Studio](images/attachments/add-or-delete-attachments-via-studio.png "Add or Delete Attachments via Studio")
 
 1. **"HasAttachments"**  
-   @metadata flag in the .json document is a reference to the attachments that are stored separately.  
+   The @metadata flag in the .json document is a reference to the attachments that are stored separately.  
 2. **Attachments**  
    Select this document extensions tab to search for, add, or delete attachments.  
    The tab displays the number of attachments referenced by this document.  
@@ -59,7 +59,7 @@ For the API documentation article, see [Indexing Attachments](../../../document-
    This is the name of the index that must be explicitly [called in the query](../../../studio/database/document-extensions/attachments#query-definition) 
    to query this index.
 2. **Map Index Definition**  
-   Index is defined by selecting details to make available for the queries.  
+   The index is defined by selecting details to make available for the queries.  
    * See the [Code Walkthrough](https://demo.ravendb.net/demos/csharp/attachments/index-attachment-details#) 
      to copy and play with the code sample used in this example.  
    * See our Studio [Map-Index article](../../../studio/database/indexes/create-map-index) 
