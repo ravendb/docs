@@ -3,11 +3,13 @@
 
 {NOTE: }
 
-* Schedule an **External Replication Task** in order to have a _live_ replica of your data in another database:  
-  * In a separate RavenDB cluster [on local machines](../../../../start/getting-started) or [a cloud instance](../../../../cloud/cloud-overview), 
+* Schedule an **External Replication Task** to have a _live_ replica of your data in another database:  
+  * In a separate RavenDB cluster [on local machines](../../start/getting-started) or [a cloud instance](../../cloud/cloud-overview), 
     which can be used as a failover if the source cluster is down.  
-    Note: External Replication task **does _not_ create a backup** of your data and indexes.  
-    See more in [Backup -vs- Replication](../../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
+    {INFO: }
+    The External Replication task **does _not_ create a backup** of your data and indexes.  
+    See more in [Backup -vs- Replication](../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
+    {INFO/}
   * In the same cluster if you want a live copy that won't be a client failover target.
 
 * "Live" means that the replica is up to date at all times. Any changes in the source database will be reflected in the replica once they occur.  
@@ -21,6 +23,7 @@
 In this page: 
 
 * [General Information about External Replication Task](../../server/ongoing-tasks/external-replication#general-information-about-external-replication-task)
+* [Maintaining Consistency Boundaries Between Clusters](../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters)
 * [Code Sample](../../server/ongoing-tasks/external-replication#code-sample)
 * [Step-by-Step Guide](../../server/ongoing-tasks/external-replication#step-by-step-guide)
 * [Definition](../../server/ongoing-tasks/external-replication#definition)  
@@ -29,13 +32,15 @@ In this page:
 
 {NOTE/}
 
+---
+
 {PANEL: General Information about External Replication Task}
 
 **What is being replicated:**  
 
  * All database documents and related data:  
    * [Attachments](../../document-extensions/attachments/what-are-attachments)  
-   * [Revisions](../../server/extensions/revisions)  
+   * [Revisions](../../document-extensions/revisions/overview)  
    * [Counters](../../document-extensions/counters/overview)
    * [Time Series](../../document-extensions/timeseries/overview)
 
@@ -61,8 +66,28 @@ To learn more, see [Data Ownership in a Distributed System](https://ayende.com/b
 **Conflicts:**  
 
   * Two databases that have an External Replication task defined between them will detect and resolve document 
-    [conflicts](../../server/clustering/replication/replication-conflicts) according to each database conflict resolution policy.  
+    [conflicts](../../server/clustering/replication/replication-conflicts) according to each database's conflict resolution policy.  
   * It is recommended to have the same [policy configuration](../../server/clustering/replication/replication-conflicts#configuring-conflict-resolution-using-the-client) on both the source and the target databases.  
+
+{PANEL/}
+
+{PANEL: Maintaining Consistency Boundaries Between Clusters}
+
+[Consistency boundaries](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system)
+between clusters are crucial to preserve data integrity and model an efficient global system.  
+
+* Be sure to create business logic which ensures that **two clusters don't write on the same document.**  
+
+{INFO: To maintain consistency boundaries between clusters}
+You can establish document uniqueness by:
+
+* Ensuring that the node-tags are all unique. 
+   * e.g. (NYC-nodes A,B,C), (LDN-nodes D,E,F)  
+* Including the cluster names in the [identifiers](../../client-api/document-identifiers/working-with-document-identifiers). 
+   * e.g. (NYC/Customers/12345), (LDN/Customers/12345)  
+* Using a Globally Unique Identifier ([GUID](../../server/kb/document-identifier-generation#guid)).  
+* Using a unique field such as an email address.  
+{INFO/}
 
 {PANEL/}
 
@@ -74,7 +99,7 @@ The required elements of an External Replication task are:
 * The destination server needs the [certificate from the source server](../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
   so that it will trust the source.
 * The [connection string](../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-raven-connection-string) 
-  with destination server URL and any other details needed to access the destination server.
+  with the destination server URL and any other details needed to access the destination server.
 * The following properties in the `ExternalReplication` object:
   * **ConnectionStringName**  
     The connection string name.  
@@ -86,9 +111,9 @@ The required elements of an External Replication task are:
 Optional elements include the following properties in the `ExternalReplication` object:
 
 * **MentorNode**  
-  Preferred responsible node in source server.
+  The preferred responsible node in the source server.
 * **DelayReplicationFor**  
-  Amount of time to delay replication.  
+  The amount of time to delay replication.  
   The following sample shows a 30-minute delay.  Delay can also be set by days, hours, and seconds.  
 
 {CODE ExternalReplicationWithMentorAndDelay@Server\OngoingTasks\ExternalReplicationSamples.cs /}
@@ -123,7 +148,7 @@ You can also configure external eplication tasks [via RavenDB Studio](../../stud
     thus, a new Ongoing External Replication Task ***cannot*** be scheduled.  
 
   * If an External Replication Task was _already_ defined and active when the cluster went down,  
-    then the task will _not_ be active, no replication will take place.
+    then the task will _not_ be active and no replication will take place.
 
 * **When the node responsible for the external replication task is down**  
 
@@ -147,7 +172,7 @@ _Delayed replication_ works just like normal replication but instead of sending 
 it waits `X` amount of time. 
 Having a delayed instance of a database allows you to "go back in time" and undo contamination to your data 
 due to a faulty patch script or other human errors.  
-While you can and should always use backup for those cases, having a live database makes it super fast to failover 
+While you can and should always use backup for those cases, having a live database makes it quick to failover 
 to prevent business losses while you repair the faulty databases.  
 
 * To set delayed replication, see "3. **Set Replication Delay Time**" in the [definition instructions](../../studio/database/tasks/ongoing-tasks/external-replication-task#definition).  

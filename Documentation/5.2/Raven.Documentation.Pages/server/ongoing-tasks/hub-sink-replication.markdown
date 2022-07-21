@@ -15,7 +15,7 @@ Hub whenever they are online.
 
 {INFO: }
 
-* Learn more about **Hub/Sink replication** [Here](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview).  
+* Learn more about **Hub/Sink replication** [in the Overview article](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview).  
 * You can use the Studio to define 
   [Hub](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task) 
   and [Sink](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task) 
@@ -25,6 +25,7 @@ Hub whenever they are online.
 
 * In this page:  
    * [What is and is not replicated?](../../server/ongoing-tasks/hub-sink-replication#what-is-and-is-not-replicated?)  
+   * [Maintaining Consistency Boundaries Between Clusters](../../server/ongoing-tasks/hub-sink-replication#maintaining-consistency-boundaries-between-clusters)  
    * [Defining Replication Tasks](../../server/ongoing-tasks/hub-sink-replication#defining-replication-tasks)  
      * [Defining a Replication Hub](../../server/ongoing-tasks/hub-sink-replication#defining-a-replication-hub)  
      * [Defining a Hub Access](../../server/ongoing-tasks/hub-sink-replication#defining-a-hub-access)  
@@ -83,6 +84,23 @@ It is also best to ensure that each cluster defines policies, configurations, an
 
 {PANEL/}
 
+{PANEL: Maintaining Consistency Boundaries Between Clusters}
+
+[Consistency boundaries](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system)
+between clusters are crucial to preserve data integrity and model an efficient global system.  
+
+* Be sure to create business logic which ensures that **two clusters don't write on the same document.**  
+
+{INFO: To maintain consistency boundaries between clusters}
+You can establish document uniqueness by:
+
+* Including the cluster names in the [identifiers](../../client-api/document-identifiers/working-with-document-identifiers). 
+   * e.g. (NYC/Customers/12345), (LDN/Customers/12345)  
+* Using a Globally Unique Identifier ([GUID](../../server/kb/document-identifier-generation#guid)).  
+* Using a unique field such as an email address.  
+{INFO/}
+
+{PANEL/}
 
 
 {PANEL: Defining Replication Tasks}
