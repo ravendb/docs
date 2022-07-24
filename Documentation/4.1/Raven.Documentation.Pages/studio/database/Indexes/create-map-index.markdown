@@ -30,9 +30,9 @@
    **Clone** - Clone this index (available for an already saved index)  
    **Delete** - Delete this index (available for an already saved index)  
 
-3. Options avaliable for an already saved index:  
+3. Options available for an already saved index:  
    **Copy C#** - Click to view and copy the C# class that defines the index as set in the Studio.  
-   **Query** - Click to go the the Query View and query this index.  
+   **Query** - Click to go to the Query View and query this index.  
    **Terms** - Click to see the index terms, see [below](../../../studio/database/indexes/create-map-index#index-entries-&-terms).  
 
 4. **The Map Function** of the index.  

@@ -49,7 +49,7 @@ Some of the key reasons for running RavenDB on the cloud are -
 
 {PANEL: Your Account}
 
-Your cloud-RavenDB account gathers your products' information, your own details, and your contracts and 
+Your cloud-RavenDB account gathers your products' information, your details, and your contracts and 
 billing data. We create your account and send you a link to its [Portal](../cloud/portal/cloud-portal) 
 as soon as you finish registering, so you can immediately start creating and handling your 
 [cloud products](../cloud/portal/cloud-portal-products-tab).  
@@ -102,7 +102,7 @@ and allow the wizard to walk you through the 4 simple stages of the registration
 #### 4. Summary  
   !["Registration: Link"](images\registration-005-summary.png "Registration: Link")  
 
-  - Verify your choices, confirm you're not a robot and click the **Sign-up** button to register your cloud account.  
+  - Verify your choices, confirm you're not a robot, and click the **Sign-up** button to register your cloud account.  
 
 ---
 
@@ -123,7 +123,7 @@ To access your account, click [https://cloud.ravendb.net/user/login](https://clo
 #### Login  
   !["Login"](images\registration-006-login.png "Login")  
 
-  - Enter the same email address you provided during registration, confirm you're not a robot and 
+  - Enter the same email address you provided during registration, confirm you're not a robot, and 
     click the **Send Magic Link** button  
 
   
@@ -149,8 +149,8 @@ To access your account, click [https://cloud.ravendb.net/user/login](https://clo
 #### Cloud Instances  
 
 A cloud instance is a RavenDB server, allocated for you on a cloud provider like AWS or Azure.  
-Your cloud instances are fully managed by RavenDB Cloud, including security, monitoring, backups and patches.  
-You get operator-level access to your RavenDB instances, and can perform most admin operations on your own.  
+Your cloud instances are fully managed by RavenDB Cloud, including security, monitoring, backups, and patches.  
+You get operator-level access to your RavenDB instances and can perform most admin operations on your own.  
 
 ---
 
@@ -219,7 +219,7 @@ these are the workhorses of the RavenDB Cloud.
 ---
 
 ####Burstable Instances  
-Free instances, Development instances and low-end ("basic") Production clusters are operated by 
+Free instances, Development instances, and low-end ("basic") Production clusters are operated by 
 "burstable" CPUs. Such clusters are suitable for small to medium production loads but are limited 
 in the total amount of resources that they can consume.  
 RavenDB's burstable instance allows you to consume more resources for a short amount of time but will 
@@ -263,7 +263,7 @@ If you are regularly warned or your product is actually throttled, consider [ups
 ---
 
 ####Throttling Warnings  
-Your instances will warn you when their credits are about to drain up, and inform you when throttling is performed.  
+Your instances will warn you when their credits are about to finish, and inform you when throttling is performed.  
 They will also perform preemptive actions to lower resource usage.  
 ![Throttling Is Coming](images/throttling-001-nearly-exhausted-messages.png "Throttling Is Coming")  
 ![Throttling Is Here](images/throttling-002-indexing-paused.png "Throttling Is Here")  

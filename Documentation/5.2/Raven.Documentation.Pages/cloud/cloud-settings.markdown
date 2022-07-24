@@ -36,7 +36,7 @@ To learn how to access the RavenDB Cloud Studio interface, see the [Studio secti
 ---
 
 ### Max Batch Size
-Indexing is done in batches to make it possible to adjust the number of documents that an index processes at a time.  
+Indexing is done in batches which makes it possible to adjust the number of documents that an index processes at a time.  
 Adjusting the `Indexing.MapBatchSize` configuration can be done to prevent exhausting system resources.  
 If an index processes a collection in a few batches, it will continue each new batch where the previous batch stopped.  
 
@@ -44,7 +44,7 @@ The factors to consider when adjusting the max indexing batch size:
 
 * [Size of documents](https://ravendb.net/articles/dealing-with-large-documents-100-mb#:~:text=RavenDB%20can%20handle%20large%20documents,isn't%20a%20practical%20one.)
 * [The Complexity of calculations](../studio/database/indexes/indexing-performance#common-indexing-issues) that static indexes do.
-* [IOPS](../cloud/cloud-settings#changing-the-iops-number) - Input/Output Operations Per Second
+* [IOPS](../cloud/cloud-settings#changing-the-cloud-instance-iops-number) - Input/Output Operations Per Second
 
 #### Cloud Indexing Batch Size 
 

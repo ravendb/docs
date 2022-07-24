@@ -108,7 +108,7 @@
                           The Analyzer is set in the _'Indexing'_ dropdown. The default analyzer is a simple case-insensitive analyzer.  
 
   * `Highlighting` - Set to _'Yes'_ to enable [Highlighting](../../../indexes/querying/highlighting). Requires 
-                     Storage to be set to 'Yes'. In the advanced options Indexing needs to be set to 'Search' and 
+                     Storage to be set to 'Yes'. In the advanced options, Indexing needs to be set to 'Search' and 
                      Term Vector set to 'WithPositionsAndOffsets'.  
 
   * `Suggestions` -  Setting _'Suggestions'_ will allow you to query what the user probably meant to ask about. i.e. spelling errors.  
