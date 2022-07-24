@@ -58,6 +58,12 @@ public string GetContentAsString(Encoding encoding);
 public string GetContentAsString(); // Default: UTF-8
 {CODE-BLOCK/}
 
+
+
+{PANEL/}
+
+{PANEL: Examples}
+
 {INFO: Applications for Attachment Content: Machine Learning}
 Access to the attachment content opens the door to many different 
 applications, including many that can be integrated directly into 
@@ -69,10 +75,6 @@ added to an index using the [additional sources](../../indexes/extending-indexes
 feature. The resulting index allows filtering and querying based on 
 image content.  
 {INFO/}
-
-{PANEL/}
-
-{PANEL: Examples}
 
 #### Indexes with `AttachmentsFor()`
 
