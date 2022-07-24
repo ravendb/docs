@@ -13,7 +13,8 @@
 
 * ETL is different from data replication. See [RavenDB ETL Task -vs- Replication Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--replication-task)  
 
-* In RavenDB ETL, [a certificate must be passed](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate-between-secure-clusters) from the source server to the destination so that the destination server trusts the source.  
+* In RavenDB ETL, [a certificate must be passed](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate-between-secure-clusters) 
+  from the source server to the destination so that the destination server trusts the source.  
 
 * In this page:  
   * [RavenDB ETL Task - Definition](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---definition)  
@@ -71,8 +72,8 @@
   This step must be done if connecting *to another cluster* so that the destination cluster trusts the source.  
 
   * **Via RavenDB Studio:**  
-  Navigate from the "Manage Server" tab (left side) > "Certificates" to open the [Certificate Management view](../../../../server/security/authentication/certificate-management).  
-     - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates).  
+  Navigate from the "Manage Server" tab (left side) > "Certificates" to open the [Certificate Management view](../../../../server/security/authentication/certificate-management#studio-certificates-management-view).  
+     - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates).  
   * **Via API:**  
   See the code sample to learn how to [define a client certificate in the DocumentStore](../../../../client-api/creating-document-store).  
      - To generate and configure a client certificate from the source server, see [CreateClientCertificateOperation](../../../../client-api/operations/server-wide/certificates/create-client-certificate)

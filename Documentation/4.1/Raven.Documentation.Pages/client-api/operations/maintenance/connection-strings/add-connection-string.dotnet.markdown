@@ -31,7 +31,7 @@ In this page:
 {PANEL: Add a Raven Connection String}
 
 {NOTE: Secure servers}
- To [connect secure RavenDB servers](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
+ To [connect secure RavenDB servers](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates) 
  you need to 
 
   1. Export the server certificate from the source server. 

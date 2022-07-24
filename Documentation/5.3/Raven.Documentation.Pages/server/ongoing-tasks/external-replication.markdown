@@ -71,7 +71,7 @@ To learn more, see [Data Ownership in a Distributed System](https://ayende.com/b
 The required elements of an External Replication task are:
 
 * The `UpdateExternalReplicationOperation()` method.
-* The destination server needs the [certificate from the source server](../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates) 
+* The destination server needs the [certificate from the source server](../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates) 
   so that it will trust the source.
 * The [connection string](../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-raven-connection-string) 
   with destination server URL and any other details needed to access the destination server.
@@ -167,7 +167,7 @@ to prevent business losses while you repair the faulty databases.
 
 - [How Replication Works](../../server/clustering/replication/replication)  
 - [Replication Conflicts](../../server/clustering/replication/replication-conflicts#configuring-conflict-resolution-using-the-client)  
-- [Certificates Management](../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates)  
+- [Certificates Management](../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates)  
 - [Hub/Sink Replication](../../server/ongoing-tasks/hub-sink-replication)  
 - [Client Certificate Usage](../../server/security/authentication/client-certificate-usage)  
 
