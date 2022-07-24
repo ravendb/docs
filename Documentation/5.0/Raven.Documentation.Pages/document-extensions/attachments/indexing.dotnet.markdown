@@ -103,6 +103,8 @@ image content.
 {CODE-TAB:csharp:DocumentQuery query3@DocumentExtensions\Attachments\IndexingAttachments.cs /}
 {CODE-TABS/}
 
+{PANEL/}
+
 
 ## Related Articles
 
