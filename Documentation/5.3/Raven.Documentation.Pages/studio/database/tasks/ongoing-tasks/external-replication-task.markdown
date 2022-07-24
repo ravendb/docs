@@ -58,7 +58,7 @@ To provide for architecture that prevents conflicts between clusters, especially
 RavenDB is designed so that data ownership is at the cluster level.  
 To learn more, see [Data Ownership in a Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system).
 
-It is also best to ensure that each cluster defines policies, configurations, and ongoing tasks that are relevant for it.  
+It is also best to ensure that each cluster defines policies, configurations, and ongoing tasks that are relevant to it.  
 {NOTE/}
 
 **Conflicts:**  
@@ -98,8 +98,8 @@ It is also best to ensure that each cluster defines policies, configurations, an
      - Connection String  
   * **Save**  
      - Click "Save" to activate the External Replication task.  
-     - Check the target database to see if data has transferred. This can take at least about 20-30 seconds, depending on the dataset size.  
-     - If the data did not transfer properly, check the notifications (top-right of studio) 
+     - Check the target database to see if data has been transferred. This can take at least about 20-30 seconds, depending on the dataset size.  
+     - If the data did not transfer properly, check the notifications (top-right of Studio) 
        in the responsible node to see if there were any errors.  
 
 
@@ -124,11 +124,11 @@ f. Click **External Replication** to access the following interface.
 
 2. **Task Name** (Optional)  
    * Choose a name of your choice  
-   * If no name is given then RavenDB server will create one for you based on the defined connection string  
+   * If no name is given then the RavenDB server will create one for you based on the defined connection string  
 
 3. **Set Replication Delay Time** (Optional)  
    * If a delay time is set then data will be replicated only after this time period has passed for each data change.  
-   * Having a delayed instance of a database allows you to "go back in time" and undo contamination to your data due to an attack, faulty patch script or other human errors.  
+   * Having a delayed instance of a database allows you to "go back in time" and undo contamination to your data due to an attack, faulty patch script, or other human errors.  
      * This doesn't replace the need to [safely backup your databases](../../../../studio/database/tasks/backup-task), but it does provide a way to stay online while repairing.  
 
 4. **Set Preferred Responsible Node** (Optional)  
