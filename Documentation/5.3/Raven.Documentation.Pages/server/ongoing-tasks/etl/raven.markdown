@@ -15,7 +15,8 @@
 * Each script can be defined on the source database to trigger ETL from a single collection, 
   multiple selected collections or be applied to **all** documents regardless of the associated collection(s).  
 
-* For the destination cluster to trust the source, you must [pass the .pfx certificate from the source to the destination cluster](../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates).
+* For the destination cluster to trust the source, you must [pass the .pfx certificate from the source to the destination cluster](../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates)
+  if you are running secure servers.
 
 * In this page:  
   * [Transformation Script Options](../../../server/ongoing-tasks/etl/raven#transformation-script-options)  

@@ -15,7 +15,7 @@
 * Each script can be defined on the source database to trigger ETL from a single collection, 
   multiple selected collections or be applied to **all** documents regardless of the associated collection(s).  
 
-* For the destination cluster to trust the source, you must: 
+* In secure servers, for the destination cluster to trust the source, you must: 
     1. Download/export the server certificate from the source server.  
     2. Upload/import its client certificate (.pfx) into the destination.
 
