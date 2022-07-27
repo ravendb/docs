@@ -35,7 +35,17 @@
 
 {PANEL: Transformation Script Options}
 
-{NOTE: Loading Documents}
+* [Loading Documents](../../../server/ongoing-tasks/etl/raven#loading-documents)
+* [Documents Identifiers](../../../server/ongoing-tasks/etl/raven#documents-identifiers)
+* [Filtering](../../../server/ongoing-tasks/etl/raven#filtering)
+* [Loading Data from Other Documents](../../../server/ongoing-tasks/etl/raven#loading-data-from-other-documents)
+* [Accessing Metadata](../../../server/ongoing-tasks/etl/raven#accessing-metadata)
+* [Creating Multiple Documents from a Single Document](../../../server/ongoing-tasks/etl/raven#creating-multiple-documents-from-a-single-document)
+
+---
+
+### Loading Documents
+
 
 * To load data to the destination database you must call the `loadTo<CollectionName>()` method and pass a JS object.  
 
@@ -70,9 +80,8 @@ delete this.LastName;
 
 loadToEmployees(this);
 {CODE-BLOCK/}
-{NOTE/}
 
-{NOTE: }
+#### Example: loadTo Method
 
 The following is an example of a RavenDB ETL script processing documents from the `Employees` collection:
 
@@ -95,6 +104,8 @@ loadToEmployees({
     Manager: managerName
 });
 {CODE-BLOCK/}
+
+---
 
 ### Documents Identifiers
 
@@ -120,11 +131,11 @@ loadToPeople({ ... });
 * In addition, ETL appends the symbol `/` to the requested id so that the target database will [generate identifiers on its side](../../../client-api/document-identifiers/working-with-document-identifiers#server-side-generated-ids).  
   As a result, documents in the `People` collection in the target database will have identifiers such as: `employees/1-A/people/0000000000000000001-A`.
 
-{NOTE/}
+---
 
-{NOTE: Filtering}
+### Filtering
 
-* Documents can be filtered from the ETL by calling the `loadTo` method only for documents that match some condition:
+Documents can be filtered from the ETL by calling the `loadTo` method only for documents that match some condition:
 
 {CODE-BLOCK:javascript}
 if (this.Active) {
@@ -132,30 +143,33 @@ if (this.Active) {
     loadToEmployees({ ... });
 }
 {CODE-BLOCK/}
-{NOTE/}
 
-{NOTE: Loading Data from Other Documents}
+---
 
-* The `load` method loads a document with the specified ID into the script context so it can be transformed.  
+### Loading Data from Other Documents
+
+The `load` method loads a document with the specified ID into the script context so it can be transformed.  
 
 {CODE-BLOCK:javascript}
 // this.ReportsTo has some document ID
 var manager = load(this.ReportsTo);
 {CODE-BLOCK/}
-{NOTE/}
 
-{NOTE: Accessing Metadata}
+---
 
-* The metadata can be accessed in the following way:
+### Accessing Metadata
+
+The metadata can be accessed in the following way:
 
 {CODE-BLOCK:javascript}
 var value = this['@metadata']['custom-metadata-key'];
 {CODE-BLOCK/}
-{NOTE/}
 
-{NOTE: Creating Multiple Documents from a Single Document}
+---
 
-* The `loadTo` method can be called multiple times in a single script.  
+### Creating Multiple Documents from a Single Document
+
+The `loadTo` method can be called multiple times in a single script.  
   That allows you to split a single source document into multiple documents on the destination database:
 
 {CODE-BLOCK:javascript}
@@ -172,7 +186,7 @@ delete this.Address;
 // documents will be created in the `Employees` collection
 loadToEmployees(this);
 {CODE-BLOCK/}
-{NOTE/}
+
 {PANEL/}
 
 {PANEL: Empty Script}
@@ -189,7 +203,17 @@ loadToEmployees(this);
    - `loadAttachment(name)` returns a reference to an attachment that is meant be passed to `addAttachment()`
    - `<doc>.addAttachment([name,] attachmentRef)` adds an attachment to a document that will be sent in the process, `<doc>` is a reference returned by `loadTo<CollectionName>()`
 
-{NOTE: Sending attachments together with documents}
+---
+
+* [Sending attachments together with documents](../../../server/ongoing-tasks/etl/raven#sending-attachments-together-with-documents)
+* [Changing attachment name](../../../server/ongoing-tasks/etl/raven#changing-attachment-name)
+* [Loading non-existent attachment](../../../server/ongoing-tasks/etl/raven#loading-non-existent-attachment)
+* [Accessing attachments from metadata](../../../server/ongoing-tasks/etl/raven#accessing-attachments-from-metadata)
+
+---
+
+### Sending attachments together with documents
+
 
 * Attachment is sent along with a transformed document if it's explicitly defined in the script by using `addAttachment()` method. By default, the attachment name is preserved.
 * The script below sends _all_ attachments of a current document by taking advantage of `getAttachments()` function, loads each of them during transformation, and adds them to
@@ -204,9 +228,10 @@ for (var i = 0; i < attachments.length; i++) {
     doc.addAttachment(loadAttachment(attachments[i].Name));
 }
 {CODE-BLOCK/}
-{NOTE/}
 
-{NOTE: Changing attachment name}
+---
+
+### Changing attachment name
 
 * If `addAttachment()` is called with two arguments, the first one can indicate a new name for an attachment. In the below example attachment `photo`
 will be sent and stored under the `picture` name.
@@ -221,17 +246,21 @@ if (hasAttachment('photo')) {
   employee.addAttachment('picture', loadAttachment('photo'));
 }
 {CODE-BLOCK/}
-{NOTE/}
 
-{NOTE: Loading non-existent attachment}
+---
 
-* Function `loadAttachment()` returns `null` if a document doesn't have an attachment with a given name. Passing such reference to `addAttachment()` will be no-op and no error will be thrown.
+### Loading non-existent attachment
 
-{NOTE/}
+Function `loadAttachment()` returns `null` if a document doesn't have an attachment with a given name. Passing such reference to `addAttachment()` will be no-op and no error will be thrown.
 
-{NOTE: Accessing attachments from metadata}
 
-* The collection of attachments of the currently transformed document can be accessed either by `getAttachments()` helper function or directly from document metadata:
+---
+
+### Accessing attachments from metadata
+
+The collection of attachments of the currently transformed document can be accessed either by `getAttachments()` helper function or directly from document metadata:
+
+
 
 {CODE-BLOCK:javascript}
 var attachments = this['@metadata']['@attachments'];
@@ -245,13 +274,22 @@ var attachments = this['@metadata']['@attachments'];
 
 * Counters are sent automatically when you send a _full_ collection to the destination using an _empty_ script.
 * If a script is defined RavenDB doesn't send counters by default.
-* To indicate that a counter should also be sent, the behavior function needs to be defined in the script which decides if the counter should be sent if it's modified
-(e.g. by increment operation). If the relevant function doesn't exist, a counter isn't loaded.
+* To indicate that a counter should also be sent, the [behavior function](../../../server/ongoing-tasks/etl/raven#counter-behavior-function) 
+  needs to be defined in the script which decides if the counter should be sent if it's modified
+  (e.g. by increment operation). If the relevant function doesn't exist, a counter isn't loaded.
 * The reason that counters require special functions is that incrementing a counter _doesn't_ modify the change vector of a related document so the document _isn't_ processed
-by ETL on a change in the counter.
+  by ETL on a change in the counter.
 * Another option of sending a counter is to explicitly add it in a script to a loaded document.
 
-{NOTE: Counter behavior function}
+
+---
+
+* [Counter behavior function](../../../server/ongoing-tasks/etl/raven#counter-behavior-function)
+* [Adding counter explicitly in a script](../../../server/ongoing-tasks/etl/raven#adding-counter-explicitly-in-a-script)
+
+---
+
+### Counter behavior function
 
 * Every time a counter of a document from a collection that ETL script is defined on is modified then the behavior function is called to check
 if the counter should be loaded to a destination database.
@@ -263,7 +301,7 @@ a script is defined on `Products` collection and it loads documents to `Products
 
 {INFO/}
 
-* The function is defined in the script and should have the following signature:
+The function is defined in the script and should have the following signature:
 
 {CODE-BLOCK:javascript}
 function loadCountersOf<CollectionName>Behavior(docId, counterName) {
@@ -271,13 +309,17 @@ function loadCountersOf<CollectionName>Behavior(docId, counterName) {
 }
 {CODE-BLOCK/}
 
-* `<CollectionName>` needs to be substituted by a real collection name that the ETL script is working on (same convention as for the `loadTo` method)
+| Parameter | Type | Description |
+| - | - | - |
+| **docId** | `string` | The identifier of a deleted document. |
+| **<CollectionName>** | `string` | The collection that the ETL script is working on. |
+| **counterName** | `string` | The name of the modified counter for that doc. |
 
-* The first parameter is the identifier of a document. The second one is the name of a modified counter for that doc.
+| Return | Description |
+| - | - |
+| **bool** | If the function returns `true` then a change value is propagated to a destination. |
 
-* If the function returns `true` then a change value is propagated to a destination.
-
-#### Example
+#### Example: Modifying a Counter Named "downloads"
 
 * The following script is defined on the `Products` collection:
 
@@ -297,19 +339,18 @@ function loadCountersOfProductsBehavior(docId, counterName) {
 }
 
 {CODE-BLOCK/}
-{NOTE/}
 
-{NOTE: }
-####Adding counter explicitly in a script
+---
 
-* The usage of counter behavior functions is limited to dealing with counters of documents 
+###Adding counter explicitly in a script
+
+Counter behavior functions typically handle counters of documents 
   that are loaded to the same collection. If a transformation script for `Employees`
   collection specifies that they are loaded to the `People` collection in a target database, 
   then due to document ID generation strategy by ETL process (see [Documents Identifiers](../../../server/ongoing-tasks/etl/raven#documents-identifiers)),
-  the counters won't be sent as the final ID of a loaded document isn't known on the source side.  
+  the counters won't be sent because the final ID of a loaded document isn't known on the source side.  
   
   You can use special functions in the script code to deal with counters on documents that are loaded into different collections:
-
 
 {CODE-BLOCK:javascript}
 var person = loadToPeople({ Name: this.Name + ' ' + this.LastName });
@@ -329,12 +370,10 @@ It means that incremented counter value won't be sent until a document is modifi
 {INFO/}
 
 
-{NOTE/}
-
 {NOTE: Counter value override by ETL}
 
-Counters sent by the ETL process always _override_ the existing value on the destination. ETL doesn't send an _increment_ counter command 
-but it sets the value using a _put_ command.
+Counters sent by the ETL process always _override_ the existing value on the destination. ETL doesn't send an `increment` counter command 
+but it **sets the value using a** `put` command.
 
 {NOTE/}
 
@@ -342,7 +381,8 @@ but it sets the value using a _put_ command.
 
 {PANEL: Revisions}
 
-* Revisions are _not_ sent by the ETL process.  
+Revisions are _not_ sent by the ETL process.  
+
   But, if revisions are configured on the destination database, then when the target document is overwritten by the ETL process a revision will be created as expected.  
 {PANEL/}
 
@@ -381,7 +421,7 @@ function deleteDocumentsOf<CollectionName>Behavior(docId) {
 
 {NOTE: Generic function for deletion handling}
 
-Another option is the usage of generic function for deletion handling:
+Another option is the usage of a generic function for deletion handling:
 
 {CODE-BLOCK:javascript}
 function deleteDocumentsBehavior(docId, collection) {
@@ -396,7 +436,7 @@ function deleteDocumentsBehavior(docId, collection) {
 
    - A document deletion is propagated to a destination only if the function returns `true`.
 
-   - By the time that ETL process runs a delete behavior function, a document is already deleted. If you want to filter deletions, you need some way to store that information
+   - By the time the ETL process runs a delete behavior function, a document is already deleted. If you want to filter deletions, you need some way to store that information
    in order to be able to determine if a document should be deleted in the delete behavior function.
 
 
@@ -412,7 +452,7 @@ function deleteDocumentsOfUsersBehavior(docId) {
 
 #### Example - storing deletion info in additional document
 
-* When you delete a document you can store a deletion marker document that will prevent from propagating the deletion by ETL. In the below example if `LocalOnlyDeletions/{docId}`
+* When you delete a document you can store a deletion marker document that will prevent propagating the deletion by ETL. In the below example if `LocalOnlyDeletions/{docId}`
 exists then we skip this deletion during ETL. You can add `@expires` tag to the metadata when storing the marker document, so it would be automatically cleanup after a certain time
 by [the expiration extension](../../../server/extensions/expiration).
 
