@@ -459,158 +459,59 @@ function loadTimeSeriesOfUsersBehavior(doc, ts)
 
 {PANEL: Deletions}
 
-Upon source document modifications, ETL is set to delete and replace the destination documents by default.  
+* As described above, the identifiers created for the sent documents can be different from the original source documents identifiers.  
+  The source isn't aware of the new IDs created so documents deletion requires a special approach.  
 
-If you want to control the way deletions are handled in the destination database, 
-you can change the default settings with the configurable functions described in this section.
+* In order to remove the matching documents on the destination side, the deletion of a document sends a command to remove documents that have an ID with a _well-known prefix_.  
 
-* [Why documents are deleted by default](../../../server/ongoing-tasks/etl/raven#deletions-why-documents-are-deleted-by-default-in-the-destination-database)
-* [Collection specific function](../../../server/ongoing-tasks/etl/raven#deletions-collection-specific-function)
-* [Generic function](../../../server/ongoing-tasks/etl/raven#deletions-generic-function)
-* [Filtering deletions in the destination database](../../../server/ongoing-tasks/etl/raven#deletions-filtering-deletions-in-the-destination-database)
-* [Deletions Example: ETL script with deletion behavior defined](../../../server/ongoing-tasks/etl/raven#deletions-example-etl-script-with-deletion-behavior-defined)
+* For example: 
+  1. Document `employees/1-A` is processed by ETL and put into `People` collection with ID:  
+     `employees/1-A/people/0000000000000000001-A`.  
+  2. Deletion of the `employees/1-A` document on the source side triggers sending a command that deletes documents having the following prefix in their ID: `employees/1-A/people/`.  
 
-## Deletions: Why documents are deleted by default in the destination database
+* If you output multiple documents from a single document then multiple delete commands will be sent, one for each prefix containing the destination collection name.  
 
-### Preventing duplication
+* When documents are sent to the same collection and IDs don't change then deletion on the source results in sending a single delete command for a given ID.  
 
-To prevent duplication, we delete the documents in the destination by default before loading the 
-updated documents that replace the deleted ones.  
-If the document is deleted in the source, RavenDB also deletes it in the destination by default.
+* Deletions can be filtered by defining deletion behavior functions in the script.
 
-Some developers prefer to control the deletes so that, for example, a delete in the source will not cause a delete in the destination, 
-or to preserve a history of the document in the destination.  
+{NOTE: Collection specific function deletion handling}
 
-The functions in this section were created to allow developers this control. 
-
-### Identifiers change when destination collections are different
-
-If we load a document to the same collection as the source, then the ID is preserved and no special approach is needed. Deletion in the source results in 
-sending a single delete command in the destination for a given ID.  
-  
-But, when we load documents to different collections, then the [ID](../../../server/ongoing-tasks/etl/raven#documents-identifiers) is different.  
-The source isn't aware of the new IDs created. This forces us to load new documents with incremented IDs instead of overwriting the fields in existing documents.  
-
-* Each updated version of the document gets a [server generated ID](../../../client-api/document-identifiers/working-with-document-identifiers#server-side-generated-ids)
-  in which the number at the end is incremented with each version.  
-
-    For example: 
-    `"...profile/0000000000000000019-B"` will become `".../profile/0000000000000000020-B"`  
-    The word before the number is the collection name and the letter after the number is the node.  
-    In this case, the document's collection is "Profile", which is in a database in node "B", 
-    and which has been updated via ETL 20 times.
-
-* If the ETL is defined to load the documents to more than one collection, 
-  by default it will delete, and if it's not deleted in the source, it will replace all of the documents with the same prefix.  
-
-     For example:  
-     Document `employees/1-A` is processed by ETL and put into the `People` and `Sales` collections with IDs:  
-     `employees/1-A/people/0000000000000000001-A` and `employees/1-A/sales/0000000000000000001-A`.  
-     Deletion or modification of the `employees/1-A` document on the source side triggers sending a command that deletes **all** documents 
-     having the following prefix in their ID: `employees/1-A`.  
-
----
-
-Deletions can be controlled by defining deletion behavior functions in the ETL script.
-
-* See a [sample ETL script with deletion behavior defined](../../../server/ongoing-tasks/etl/raven#deletions-example-etl-script-with-deletion-behavior-defined).
-
-## Deletions: Collection specific function
-
-To define deletion handling when the source and destination collections are the same, use the following sample. 
+In order to define deletion handling for a specific collection use the following signature:
 
 {CODE-BLOCK:javascript}
-function deleteDocumentsOf<CollectionName>Behavior(docId, deleted) {
-    // If any document in the specified source collection is modified but is not deleted,  
-    // then the ETL will not send a delete command to the destination, thus saving a history of it.  
-    if (deleted == false) 
-    return false; 
-    // If the source document was deleted, the destination will also be deleted 
-    // including all of it's version history. 
-    else return true;
+function deleteDocumentsOf<CollectionName>Behavior(docId) {
+   return [true | false]; 
 }
 {CODE-BLOCK/}
 
-`<CollectionName>` needs to be substituted by a real collection name that the ETL script is working on (same convention as for [loadTo](../../../server/ongoing-tasks/etl/raven#transformation-script-options) 
-method).  
-e.g. `function deleteDocumentsOfOrdersBehavior(docId, deleted) {return false;}`  
+   - `<CollectionName>` needs to be substituted by a real collection name that ETL script is working on (same convention as for `loadTo` method)
+   - The first parameter is the identifier of a deleted document.
 
-| Parameter | Type | Description | Notes |
-| - | - | - | - |
-| **docId** | `string` | The identifier of a deleted document. |  |
-| **deleted** | `bool` | If you don't include the `deleted` parameter, RavenDB will execute the function without checking if the document was deleted from the source database. <br/> If you include `deleted`, RavenDB will check if the document was indeed deleted or just updated. | Optional |
+{NOTE/}
 
-| Return Value | Description |
-| - | - |
-| **true** | The document will be deleted from the destination database. |
-| **false** | The document will not be deleted from the destination database. |
+{NOTE: Generic function for deletion handling}
 
-Leaving out the `deleted` parameter will not allow you to check if the source document was deleted and will 
-trigger the command regardless of whether the source document was deleted.  
-
-* This means that if the method returns `true` and  
-  if a source document was updated, but not deleted,  
-  it will be deleted in the destination before the updated document with a new ID is loaded to replace the previous one.  
-   * If the source document was deleted, the destination will also be deleted.
-* If the method returns `false`, a 'historical' set of the document will accumulate in the destination collection every time 
-  the source document is updated.  
-  The number at the end of the [ID will automatically increment](../../../server/ongoing-tasks/etl/raven#identifiers-change-when-destination-collections-are-different) with every new version. 
-   * If the document was deleted from the source, the set of old versions of the document will remain in the destination 
-     because the delete behavior returns `false`.
-
-
-## Deletions: Generic function
-
-There is also a generic function to control deletion on different collections.
+Another option is the usage of generic function for deletion handling:
 
 {CODE-BLOCK:javascript}
-function deleteDocumentsBehavior(docId, collection, deleted) {
-    // If any document in the specified source collection is modified but is not deleted,  
-    // then the ETL will not send a delete command to the destination collection "Users"
-    // (the old document versions will remain and a new version will be stored with an incremented ID)
-    if (collection == "Users" && deleted == false) 
-        return false; 
-    // If the source document was deleted, delete the entire set of versions from the destination.
-    else return true;
-
+function deleteDocumentsBehavior(docId, collection) {
+   return [true | false]; 
 }
 {CODE-BLOCK/}
 
-| Parameter | Type | Description |
-| - | - | - |
-| **docId** | `string` | The identifier of a deleted document. |
-| **collection** | `string` | The name of a collection. |
-| **deleted** | `bool` | Optional and therefore doesn't affect existing code. If you don't include the `deleted` parameter, RavenDB will execute the function without checking if the document was deleted from the source database. <br/> If you include `deleted`, RavenDB will check if the document was indeed deleted or just updated. 
+   - The first parameter is the identifier of a deleted document.
+   - The second parameter is the name of a collection.
 
-| Return Value | Description |
-| - | - |
-| **true** | The document will be deleted from the destination database. |
-| **false** | The document will not be deleted from the destination database. |
+{NOTE/}
 
-Leaving out the `deleted` parameter will not allow you to check if the source document was deleted and will 
-trigger the command regardless of whether the source document was deleted.  
+   - A document deletion is propagated to a destination only if the function returns `true`.
 
-* This means that if the method returns `true` and  
-  if a source document was updated, but not deleted,  
-  it will be deleted in the destination before the updated document with an incremented ID is loaded to replace the previous one.  
-   * If the source document was deleted, the destination will also be deleted.
-* If the method returns `false`, a 'historical' set of the document will accumulate in the destination collection every time 
-  the source document is updated.  
-  The number at the end of the ID will automatically increment with every new version. 
-   * If the document was deleted from the source, the set of old versions of the document will remain in the destination 
-     because the delete behavior returns `false`.
+   - By the time that ETL process runs a delete behavior function, a document is already deleted. If you want to filter deletions, you need some way to store that information
+   in order to be able to determine if a document should be deleted in the delete behavior function.
 
 
-## Deletions: Filtering deletions in the destination database
-
-You can further specify the desired deletion behavior by adding filters.
-
-By the time an ETL process runs a delete behavior function, a document is already deleted. 
-If you want to filter deletions, you need some way to store that information
-to be able to determine if a document should be deleted in the delete behavior function.
-
-#### Filtering out all deletions:
-
+#### Example - filtering out all deletions
 
 {CODE-BLOCK:javascript}
 loadToUsers(this);
@@ -620,12 +521,10 @@ function deleteDocumentsOfUsersBehavior(docId) {
 }
 {CODE-BLOCK/}
 
-#### Storing deletion info in an additional document:
+#### Example - storing deletion info in additional document
 
-When you delete a document you can store a deletion marker document that will prevent the deletion by ETL. 
-In the below example, if `LocalOnlyDeletions/{docId}` exists then we skip this deletion during ETL. 
-You can add the `@expires` tag to the metadata when storing the marker document, 
-so it would be automatically cleaned up after a certain time
+* When you delete a document you can store a deletion marker document that will prevent from propagating the deletion by ETL. In the below example if `LocalOnlyDeletions/{docId}`
+exists then we skip this deletion during ETL. You can add `@expires` tag to the metadata when storing the marker document, so it would be automatically cleanup after a certain time
 by [the expiration extension](../../../server/extensions/expiration).
 
 {CODE-BLOCK:javascript}
@@ -648,53 +547,6 @@ function deleteDocumentsBehavior(docId, collection) {
 }
 {CODE-BLOCK/}
 
-#### When ETL is set on the entire database, but you want to filter deletions by certain collections:
-
-If you define ETL for all documents, regardless of the collection they belong to, then the 
-generic function can filter deletions by collection name.
-
-{CODE-BLOCK:javascript}
-function deleteDocumentsBehavior(docId, collection, deleted) {
-    return 'Users' != collection;
-}
-{CODE-BLOCK/}
-
-| Parameter | Type | Description |
-| - | - | - |
-| **docId** | `string` | The identifier of a deleted document. |
-| **collection** | `string` | The name of a collection. |
-| **deleted** | `bool` | Optional and therefore doesn't affect existing code. If you don't include the `deleted` parameter, RavenDB will execute the function without checking if the document was deleted from the source database. <br/> If you include `deleted`, RavenDB will check if the document was indeed deleted or just updated.  If you set `return true` and the document was deleted in the source database, it will also delete the document in the destination database.  |
-
-| Return | Description |
-| - | - |
-| **bool** | If the returned value is `true`, the document will be deleted. |
-
-
-## Deletions Example: ETL script with deletion behavior defined
-
-The following example will check if the source document was deleted or just updated before 
-loading the transformed document. This function can be used if the destination collection is the same or different from the source.  
-
-Any modification to a source document where an ETL is defined on its collection will trigger an ETL operation.
-
-{CODE-BLOCK:javascript}
-
-// Define ETL to destination collection "productsHistory".
-// Defined to update only the name of the item, a link to order the product, and the supplier's phone number
-loadToproductsHistory ({
-    Name: this.Name + "updated data.."
-    SupplierOrderLink: this.SupplierOrderLink + "updated data.."
-    SupplierPhone: this.SupplierPhone + "updated data.."
-});
-
-function deleteDocumentsBehavior(docId, collection, deleted) {
-    // Prevents document deletions from destination collection "productsHistory" if source document is deleted.
-    // If the source document information is updated (NOT deleted), the script will delete then
-    // replace the destination document (with an incremented ID) to keep it current.
-    if (collection = "productsHistory" && deleted = true)
-        return false; 
-}
-{CODE-BLOCK/}
 {PANEL/}
 
 ## Related Articles
