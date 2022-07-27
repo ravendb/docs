@@ -709,8 +709,8 @@ Any modification to a source document where an ETL is defined on its collection 
 // Define ETL to destination collection "productsHistory".
 // Defined to update only the name of the item, a link to order the product, and the supplier's phone number
 loadToproductsHistory ({
-    Name: this.Name + "updated data.."
-    SupplierOrderLink: this.SupplierOrderLink + "updated data.."
+    Name: this.Name + "updated data..",
+    SupplierOrderLink: this.SupplierOrderLink + "updated data..",
     SupplierPhone: this.SupplierPhone + "updated data.."
 });
 
@@ -718,7 +718,7 @@ function deleteDocumentsBehavior(docId, collection, deleted) {
     // Prevents document deletions from destination collection "productsHistory" if source document is deleted.
     // If the source document information is updated (NOT deleted), the script will delete then
     // replace the destination document (with an incremented ID) to keep it current.
-    if (collection = "productsHistory" && deleted = true)
+    if (collection = "productsHistory" && deleted === true)
         return false; 
 }
 {CODE-BLOCK/}
