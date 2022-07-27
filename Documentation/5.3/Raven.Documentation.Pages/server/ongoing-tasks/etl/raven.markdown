@@ -716,10 +716,12 @@ loadToproductsHistory ({
 
 function deleteDocumentsBehavior(docId, collection, deleted) {
     // Prevents document deletions from destination collection "productsHistory" if source document is deleted.
-    // If the source document information is updated (NOT deleted), the script will delete then
-    // replace the destination document (with an incremented ID) to keep it current.
     if (collection = "productsHistory" && deleted === true)
         return false; 
+    // If the source document information is updated (NOT deleted), the script will delete then
+    // replace the destination document (with an incremented ID) to keep it current.
+    if (collection = "productsHistory" && deleted === false)
+        return true; 
 }
 {CODE-BLOCK/}
 
