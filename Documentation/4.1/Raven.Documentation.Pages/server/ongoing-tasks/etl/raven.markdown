@@ -55,7 +55,7 @@
 
 * All results created in a single ETL run will be sent in a single batch and processed transactionally in the destination.
 
-* For example, if you want to write data to the `Employees` collection you need to call the following method in the script body:
+   * For example, if you want to write data to the `Employees` collection you need to call the following method in the script body:
 
 {CODE-BLOCK:javascript}
 loadToEmployees({ ... });
@@ -112,8 +112,7 @@ loadToEmployees({
 * The documents generated in the destination database are given an ID according to the collection name specified in the `loadTo` method.  
 
 * If the specified collection is the _same_ as the original one then the document is loaded to the _same_ collection and the original identifier is preserved.  
-
-* For example, the following ETL script defined in the `Employees` collection will keep the same identifiers in the target database:  
+   * For example, the following ETL script defined in the `Employees` collection will keep the same identifiers in the target database:  
 
 {CODE-BLOCK:javascript}
 // original identifier will be preserved
@@ -233,7 +232,7 @@ for (var i = 0; i < attachments.length; i++) {
 
 ### Changing attachment name
 
-* If `addAttachment()` is called with two arguments, the first one can indicate a new name for an attachment. In the below example attachment `photo`
+* If `addAttachment()` is called with two arguments, the first one can indicate a new name for an attachment. In the example below, attachment `photo`
 will be sent and stored under the `picture` name.
 * To check the existence of an attachment `hasAttachment()` function is used
 
@@ -265,8 +264,6 @@ The collection of attachments of the currently transformed document can be acces
 {CODE-BLOCK:javascript}
 var attachments = this['@metadata']['@attachments'];
 {CODE-BLOCK/}
-
-{NOTE/}
 
 {PANEL/}
 
@@ -383,7 +380,7 @@ but it **sets the value using a** `put` command.
 
 Revisions are _not_ sent by the ETL process.  
 
-  But, if revisions are configured on the destination database, then when the target document is overwritten by the ETL process a revision will be created as expected.  
+But, if revisions are configured on the destination database, then when the target document is overwritten by the ETL process a revision will be created as expected.  
 {PANEL/}
 
 {PANEL: Deletions}
@@ -403,8 +400,12 @@ Revisions are _not_ sent by the ETL process.
 * When documents are sent to the same collection and IDs don't change then deletion on the source results in sending a single delete command for a given ID.  
 
 * Deletions can be filtered by defining deletion behavior functions in the script.
+   * [Collection specific function deletion handling](../../../server/ongoing-tasks/etl/raven#collection-specific-function-deletion-handling)
+   * [Generic function for deletion handling](../../../server/ongoing-tasks/etl/raven#generic-function-for-deletion-handling)
 
-{NOTE: Collection specific function deletion handling}
+---
+
+### Collection specific function deletion handling
 
 In order to define deletion handling for a specific collection use the following signature:
 
@@ -417,9 +418,10 @@ function deleteDocumentsOf<CollectionName>Behavior(docId) {
    - `<CollectionName>` needs to be substituted by a real collection name that ETL script is working on (same convention as for `loadTo` method)
    - The first parameter is the identifier of a deleted document.
 
-{NOTE/}
 
-{NOTE: Generic function for deletion handling}
+---
+
+### Generic function for deletion handling
 
 Another option is the usage of a generic function for deletion handling:
 
@@ -432,15 +434,23 @@ function deleteDocumentsBehavior(docId, collection) {
    - The first parameter is the identifier of a deleted document.
    - The second parameter is the name of a collection.
 
-{NOTE/}
-
    - A document deletion is propagated to a destination only if the function returns `true`.
 
-   - By the time the ETL process runs a delete behavior function, a document is already deleted. If you want to filter deletions, you need some way to store that information
-   in order to be able to determine if a document should be deleted in the delete behavior function.
 
+## Deletions: Filtering deletions in the destination database
 
-#### Example - filtering out all deletions
+You can further specify the desired deletion behavior by adding filters.
+
+By the time an ETL process runs a delete behavior function, the original document is already deleted from the source. 
+It is no longer available. 
+You may want the ETL to set up an archive of documents that were deleted from the source, 
+or save a part of deleted documents in a separate document for later use.
+
+Following are three examples of ways to save documents for later use when they are deleted from the source database:  
+
+--- 
+
+#### Example - preventing deletions in the destination database
 
 {CODE-BLOCK:javascript}
 loadToUsers(this);
@@ -450,11 +460,15 @@ function deleteDocumentsOfUsersBehavior(docId) {
 }
 {CODE-BLOCK/}
 
-#### Example - storing deletion info in additional document
+---
 
-* When you delete a document you can store a deletion marker document that will prevent propagating the deletion by ETL. In the below example if `LocalOnlyDeletions/{docId}`
-exists then we skip this deletion during ETL. You can add `@expires` tag to the metadata when storing the marker document, so it would be automatically cleanup after a certain time
-by [the expiration extension](../../../server/extensions/expiration).
+#### Example - storing deletion info in an additional auxiliary document
+
+When you delete a document you can store a deletion marker document that will prevent propagating the deletion by ETL.  
+
+* In the below example if `LocalOnlyDeletions/{docId}` exists then we skip this deletion during ETL.  
+* You can add `@expires` tag to the metadata when storing the marker document, so it would be automatically cleaned up after a certain time
+  by [the expiration extension](../../../server/extensions/expiration#setting-the-document-expiration-time).
 
 {CODE-BLOCK:javascript}
 loadToUsers(this);
@@ -466,9 +480,9 @@ function deleteDocumentsOfUsersBehavior(docId) {
 }
 {CODE-BLOCK/}
 
-#### Example - filtering deletions using generic function
+#### Example - filtering deletions using the generic function
 
-- If you define ETL for all documents, regardless a collection they belong to, then the generic function might become very handy to filter out deletions using a collection name
+If you define ETL for all documents, regardless a collection they belong to, then the generic function can be used to filter out deletions by specifying a collection name
 
 {CODE-BLOCK:javascript}
 function deleteDocumentsBehavior(docId, collection) {
