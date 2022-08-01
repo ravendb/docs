@@ -33,12 +33,16 @@ To learn how to access the RavenDB Cloud Studio interface, see the [Studio secti
 
 {PANEL: Indexing Settings}
 
----
-
 ### Max Batch Size
-Indexing is done in batches which makes it possible to adjust the number of documents that an index processes at a time.  
-Adjusting the `Indexing.MapBatchSize` configuration can be done to prevent exhausting system resources.  
-If an index processes a collection in a few batches, it will continue each new batch where the previous batch stopped.  
+
+Indexing is done in batches so that we can adjust the number of documents that an index processes at a time.  
+
+* Indexing is done in batches to make it possible to adjust the number of documents that an index processes at a time.  
+   * e.g. An index that processes 1,000,000 documents might exhaust memory and other system resources 
+     if the index is set to process them all at once.  
+     Instead, the index can be set to process the documents in batches of 10,000. 
+* To prevent exhausting system resources, you can adjust the `Indexing.MapBatchSize` configuration setting.  
+* If an index processes a collection in a few batches, it will continue processing each new batch where the previous batch stopped.  
 
 The factors to consider when adjusting the max indexing batch size:
 
@@ -48,17 +52,17 @@ The factors to consider when adjusting the max indexing batch size:
 
 #### Cloud Indexing Batch Size 
 
-* RavenDB sets batch sizes with the following formula:  
-   * `Indexing.MapBatchSize = max(PowerOf2(iops * 5), 1024);`
-      * Explanation of the configuration value:
-              {NOTE: In an instance with IOPS of 500}
-               * `max()` = returns the larger of two arguments:
-                  * `PowerOf2(iops * 5)` = The power of two that's larger than the argument passed  
-                    500 * 5 = 2,500. The next power of two after 2,500 is 2 ^ 12, which is 4,096 documents.  
-                  * `1024` = minimum number of documents  
+* RavenDB Cloud sets batch sizes with the following default formula:  
+  `Indexing.MapBatchSize = max(PowerOf2(iops * 5), 1024);`  
+  Explanation of the configuration value:
+    {NOTE: In an instance with IOPS of 500}
+    * `max()` = returns the larger of two arguments:
+        * `PowerOf2(iops * 5)` = The power of two that's larger than the argument passed  
+        500 * 5 = 2,500. The next power of two after 2,500 is 2 ^ 12, which is 4,096 documents.  
+        * `1024` = minimum number of documents  
                
-                  In this example, 4,096 is larger than 1024, so the maximum batch size will be 4,096 documents.
-               {NOTE/}
+        In this example, 4,096 is larger than 1024, so the maximum batch size will be 4,096 documents.
+    {NOTE/}
 
 ---
 

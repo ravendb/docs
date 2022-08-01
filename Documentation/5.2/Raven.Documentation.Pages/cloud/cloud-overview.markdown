@@ -69,7 +69,7 @@ and allow the wizard to walk you through the 4 simple stages of the registration
 ---
 
 #### 1. E-Mail  
-  !["Registration: Email Address"](images\registration-001-email.png "Registration: Email Address")  
+  !["Registration: Email Address"](images\registration-001-email.png "Registration: Email Address")
 
    - Provide your email address  
    - Read the **terms & conditions** and the **privacy policy**, and click the **accept** checkbox if you accept them.  
@@ -78,7 +78,7 @@ and allow the wizard to walk you through the 4 simple stages of the registration
 ---
 
 #### 2. Domain  
-  !["Registration: Domain Name"](images\registration-002-domain.png "Registration: Domain Name")  
+  !["Registration: Domain Name"](images\registration-002-domain.png "Registration: Domain Name")
 
    - Enter an unoccupied domain name of your choice, that would be used for your cloud products.  
      The domain name is typically your organization or project name and will be used in all your products' URLs.
@@ -90,8 +90,8 @@ and allow the wizard to walk you through the 4 simple stages of the registration
 ---
 
 #### 3. Billing  
-  !["Registration: Billing"](images\registration-003-billing.png "Registration: Billing")  
-  !["Registration: Billing"](images\registration-004-payment.png "Registration: Billing")  
+  !["Registration: Billing"](images\registration-003-billing.png "Registration: Billing")
+  !["Registration: Billing"](images\registration-004-payment.png "Registration: Billing")
 
   - Enter your billing and payment information and click the **Next** button  
     -or-  
@@ -100,7 +100,7 @@ and allow the wizard to walk you through the 4 simple stages of the registration
 ---
 
 #### 4. Summary  
-  !["Registration: Link"](images\registration-005-summary.png "Registration: Link")  
+  !["Registration: Link"](images\registration-005-summary.png "Registration: Link")
 
   - Verify your choices, confirm you're not a robot, and click the **Sign-up** button to register your cloud account.  
 
@@ -121,7 +121,7 @@ To access your account, click [https://cloud.ravendb.net/user/login](https://clo
 ---
 
 #### Login  
-  !["Login"](images\registration-006-login.png "Login")  
+  !["Login"](images\registration-006-login.png "Login")
 
   - Enter the same email address you provided during registration, confirm you're not a robot, and 
     click the **Send Magic Link** button  
@@ -265,8 +265,8 @@ If you are regularly warned or your product is actually throttled, consider [ups
 ####Throttling Warnings  
 Your instances will warn you when their credits are about to finish, and inform you when throttling is performed.  
 They will also perform preemptive actions to lower resource usage.  
-![Throttling Is Coming](images/throttling-001-nearly-exhausted-messages.png "Throttling Is Coming")  
-![Throttling Is Here](images/throttling-002-indexing-paused.png "Throttling Is Here")  
+![Throttling Is Coming](images/throttling-001-nearly-exhausted-messages.png "Throttling Is Coming")
+![Throttling Is Here](images/throttling-002-indexing-paused.png "Throttling Is Here")
 
 ---
 
@@ -274,7 +274,7 @@ They will also perform preemptive actions to lower resource usage.
 A single credit represents using 100% of the CPU for a full minute out of an hour.  
 
 You can view what's currently in your instance's budget, by adding `/debug/cpu-credits` to its URL.  
-![Current Budget](images/throttling-003-remaining-credits.png "Current Budget")  
+![Current Budget](images/throttling-003-remaining-credits.png "Current Budget")
 Note that the figures relate to CPU seconds; for CPU minutes, divide them by 60.  
 E.g., `"MaxCredits": 8640.0` means your instance can accumulate an entitlement for up to 144 minutes of full CPU usage.  
 
@@ -322,6 +322,8 @@ RavenDB provides a built-in [GUI to monitor and manage](../studio/overview) your
    * Set backups, replication, ETL, and other ongoing tasks.
    * Manage documents and their extensions.
    * Adjust settings.
+      * Occasionally, cloud instance settings are different than general RavenDB defaults.  
+        See [cloud-specific settings](../cloud/cloud-settings).
 
 
 {PANEL/}
@@ -331,9 +333,11 @@ RavenDB provides a built-in [GUI to monitor and manage](../studio/overview) your
 
 ##Related Articles
   
-[Portal](../cloud/portal/cloud-portal)  
+* [Portal](../cloud/portal/cloud-portal)  
+* [Cloud Instance Settings](../cloud/cloud-settings)
   
 **Links**  
-[Register]( https://cloud.ravendb.net/user/register)  
-[Login]( https://cloud.ravendb.net/user/login)  
+
+* [Register]( https://cloud.ravendb.net/user/register)  
+* [Login]( https://cloud.ravendb.net/user/login)  
   

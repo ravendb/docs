@@ -118,7 +118,7 @@
 
 {PANEL: Configuration}
 
-!["Setting Configuration via Studio"](images\configuration-setting-new-config.png "Setting Configuration via Studio")  
+!["Setting Configuration via Studio"](images\configuration-setting-new-config.png "Setting Configuration via Studio")
 
 1. **Indexes Tab**  
    Click to see indexing options.

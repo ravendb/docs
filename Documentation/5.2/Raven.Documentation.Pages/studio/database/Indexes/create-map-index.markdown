@@ -27,7 +27,7 @@
    **Clone** - Clone this index (available for an already saved index).  
    **Index History** - Open the [Index History Dialog](../../../studio/database/indexes/index-history#index-history-dialog).  
 
-2. Options avaliable for an already saved index:  
+2. Options available for an already saved index:  
    **Copy C#** - Click to view and copy the C# class that defines the index as set in the Studio.  
    **Query** - Click to go the the Query View and query this index.  
    **Terms** - Click to see the index terms, see [below](../../../studio/database/indexes/create-map-index#index-fields-&-terms).  
@@ -147,7 +147,7 @@
 
 {PANEL: Configuration}
 
-!["Setting Configuration via Studio"](images\configuration-setting-new-config.png "Setting Configuration via Studio")  
+!["Setting Configuration via Studio"](images\configuration-setting-new-config.png "Setting Configuration via Studio")
 
 1. **Indexes Tab**  
    Click to see indexing options.
