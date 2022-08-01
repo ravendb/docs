@@ -8,7 +8,7 @@ The `Distinct` method allows you to remove duplicates from the result. Items are
 * In this page:
    * [Sample Query with Distinct Method](../../indexes/querying/distinct#sample-query-with-the-distinct-method)
    * [Paging with the Distinct Method](../../indexes/querying/distinct#paging-with-the-distinct-method)
-   * [Counting](../../indexes/querying/distinct#counting)
+   * [Count](../../indexes/querying/distinct#count)
    * [Performance Cost and an Alternative Approach](../../indexes/querying/distinct#performance-cost-and-an-alternative-approach)
 
 {NOTE/}
@@ -32,9 +32,10 @@ A special approach must be used when calling the `distinct()` method while pagin
 Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results).  
 
 
-## Counting
+## Count
 
-RavenDB supports returning counts when the distinct operation is used.
+To ensure that queries do not count duplicate items, 
+RavenDB supports using the `Distinct()` operation in combination with the `Count()` operation.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query distinct_2_1@Indexes\Querying\Distinct.cs /}
@@ -45,9 +46,9 @@ RavenDB supports returning counts when the distinct operation is used.
 
 ### Performance Cost and an Alternative Approach
 
-Please keep in mind that this operation might not be efficient for large sets of data due to the need to scan all of the index results in order to find all the unique values.
+Please keep in mind that `Distinct()` might not be efficient for large sets of data due to the need to scan all of the index results in order to find all the unique values.
 
-The same result might be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes) index that aggregates data by the field where you want a distinct value. 
+You can also ensure that queries do not count duplicate items by creating a [Map-Reduce](../../indexes/map-reduce-indexes) index that aggregates data by the field where you want a distinct value. 
 [Indexes](../../indexes/creating-and-deploying) need to process entire datasets just once, after which they only process any new data. 
 Queries process all of the data assigned to them each time they are activated.
 
