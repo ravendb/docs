@@ -44,8 +44,8 @@ You can then write a [patch](../../../client-api/operations/patching/set-based) 
 | Parameters | Type | Description |
 | -- | - | -- |
 | **T** | string | The name of the collection that you want to scan. |
-| **fieldName that exists** | string | A field in this collection that exists in every document (such as ID, or Name). |
-| **fieldName2 that does not exist (after `.Not`)**| string | The field that is missing in some of the documents. |
+| **fieldName** | string | A field in this collection that exists in every document (such as ID, or Name). |
+| **fieldName2 (after `.Not`)**| string | The field that is missing in some of the documents. |
 
 {PANEL/}
 
