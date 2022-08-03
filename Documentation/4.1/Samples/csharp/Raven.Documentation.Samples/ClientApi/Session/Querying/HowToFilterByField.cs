@@ -126,7 +126,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 
         class HowToFilterByNonExistingField
         {
-            public async void Examples<T, TIndexCreator>(string fieldName) where TIndexCreator : AbstractIndexCreationTask
+            public async void Examples<T, TIndexCreator>(string fieldName) where TIndexCreator : AbstractIndexCreationTask, new()
             {
                 using (var store = new DocumentStore())
                 {
@@ -167,7 +167,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                             .Advanced
                             .DocumentQuery<T, TIndexCreator>()
                             .Not
-                            .WhereExists("fieldName")
+                            .WhereExists(fieldName)
                             .ToList();
                         #endregion
                     }
