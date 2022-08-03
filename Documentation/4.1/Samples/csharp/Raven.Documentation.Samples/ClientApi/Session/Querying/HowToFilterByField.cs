@@ -126,7 +126,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 
         class HowToFilterByNonExistingField
         {
-            public async void Examples()
+            public async void Examples<T, TIndexCreator>(string fieldName) where TIndexCreator : AbstractIndexCreationTask
             {
                 using (var store = new DocumentStore())
                 {
@@ -155,11 +155,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                             .Advanced
                             .DocumentQuery<T>()
                             .Not
-                            .WhereExists("missing field")
+                            .WhereExists("fieldName")
                             .ToList();
                         #endregion
                     }
-                    /*
+                    
                     using (var session = store.OpenSession())
                     {
                         #region whereNotexists_StaticSignature
@@ -167,10 +167,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                             .Advanced
                             .DocumentQuery<T, TIndexCreator>()
                             .Not
-                            .WhereExists("missing field")
+                            .WhereExists("fieldName")
                             .ToList();
                         #endregion
-                    } */
+                    }
                 }
             }
 

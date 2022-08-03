@@ -7,7 +7,8 @@
 
 * There are situations where over time new fields are added to documents.  
   You may need to create a list of all of the documents that don't have these fields.  
-   * You can then write a [patch](../../../client-api/operations/patching/set-based) to add the missing fields.
+   * You can then write a [patch](../../../client-api/operations/patching/set-based#update-by-static-index-query-result) 
+     to add the missing fields.
 
 * To find documents with a missing field you can either:
    * [Query a Static Index](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-a-static-index)  
@@ -86,25 +87,25 @@ Then we use the keywords `not exists()` and specify the field that does not exis
 ### Example: A query that creates an Auto-Index
 
 The following query will create an auto-index on the field that is missing in some documents of a specified collection.  
-It then list the documents that do not have the specified field.  
+It then lists the documents that do not have the specified field.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:LINQ whereNotexists_1@ClientApi\Session\Querying\HowToFilterByField.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Orders" 
 where true and not exists("Freight")
-// `not` cannot come immediately after `where`, thus we use `where true`.
+// `not` cannot be used immediately after `where`, thus we use `where true`.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Syntax
+### LINQ Query Syntax
 
 {CODE whereNotexists_signature@ClientApi\Session\Querying\HowToFilterByField.cs /}
 
 | Parameters | Type | Description |
 | -- | - | -- |
-| **T** | string | The name of the collection that you want to scan. |
-| **missing field**| string | The field that is missing in some of the documents. |
+| **T** | string | The type of object that you want to search. |
+| **fieldName**| string | The field that is missing in some of the documents. |
 
 
 {PANEL/}
@@ -119,7 +120,7 @@ where true and not exists("Freight")
 2. **Query**  
    Select to open the Studio query interface.
 3. **Code text editor**  
-   Write the query according to the [RQL example](../../../client-api/session/querying/how-to-filter-by-non-existing-field#example) described above.  
+   Write the query according to the [RQL example](../../../client-api/session/querying/how-to-filter-by-non-existing-field#example-a-query-that-creates-an-auto-index) described above.  
 4. **Run Code**  
    Click or press ctrl+enter to run the query.
 5. **Index used**  
