@@ -13,7 +13,7 @@
 * To find documents with a missing field you can either:
    * [Query a Static Index](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-a-static-index)  
    * [Query the collection to create an Auto Index](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-the-collection-to-create-an-auto-index) 
-   * [Use Studio to filter by non-existing field](../../../client-api/session/querying/how-to-filter-by-non-existing-field#how-to-use-studio-to-filter-by-non-existing-field)  
+   * [Use Studio to filter by non-existing field](../../../client-api/session/querying/how-to-filter-by-non-existing-field#use-studio-to-filter-by-non-existing-field)  
 
 
 {NOTE/}
@@ -25,7 +25,7 @@
 You can search for documents with missing fields by using a static index if it indexes the field which is 
 suspected to be missing in some of the documents.  
 
-The index definition must also index a field that exists in every document (such as `Id`) so that it will include every document in the collection.  
+The index definition must also index a field that exists in every document (such as `Id`) so that all documents will be indexed.  
 
 * For example, if you want to find documents that are missing the field `Freight` in the `Orders` collection,  
   query an index that indexes the fields `Freight` and `Id`. 
@@ -39,7 +39,7 @@ In our example, we are looking for documents that are missing the field `Freight
 
 #### First we need an index that includes `Freight` and a field that exists in every document
 
-We index the missing field `Freight` and the field `Id`, which exists in every document. 
+We index the missing field `Freight` and the field `Id`, which exists in every document.  
 This way, the index includes all of the documents in the collection, 
 including those that are missing the specified field.
 
@@ -47,17 +47,17 @@ including those that are missing the specified field.
 
 #### Then we query the index to find documents where the field does not exist
 
-SYNTAX
+LINQ SYNTAX:
 
 {CODE whereNotexists_StaticSignature@ClientApi\Session\Querying\HowToFilterByField.cs /}
 
 | Parameters | Type | Description |
 | -- | - | -- |
-| **T** | string | The type of object that you want to search. |
+| **T** | string | An object in a collection (singular of the collection name - e.g. Order from the collection Orders). |
 | **TIndexCreator** | string | The name of the index that you want to use. |
 | **fieldName**| string | The field that is missing in some of the documents. |
 
-QUERY SAMPLE CODE
+SAMPLE QUERY:
 
 Query the index `Orders_ByFreight` and filter documents where `freight` does not exist.  
 
@@ -79,15 +79,16 @@ where true and not exists("Freight")
 
 {PANEL: Query the Collection to Create an Auto-Index}
 
-Another option is to query the collection, which creates an auto-index to satisfy the query.  
-By including a filter in the query with the keyword `where`,  
-we first make sure that our index includes all documents in that collection.  
-Then we use the keywords `not exists()` and specify the field that does not exist in some of the documents.
+Another option is to query the collection for the missing field.  
+This will either create a new auto-index or add the new field to an existing auto-index if it indexes the same collection.  
+
+See the example and query syntax descriptions below:
 
 ### Example: A query that creates an Auto-Index
 
-The following query will create an auto-index on the field that is missing in some documents of a specified collection.  
-It then lists the documents that do not have the specified field.  
+The following query will create an auto-index on the "Freight" field 
+that is missing in some documents in the Orders collection.  
+The query result will contain all documents that do not have this field.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:LINQ whereNotexists_1@ClientApi\Session\Querying\HowToFilterByField.cs /}
@@ -98,36 +99,36 @@ where true and not exists("Freight")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### LINQ Query Syntax
+#### LINQ Query Syntax
 
 {CODE whereNotexists_signature@ClientApi\Session\Querying\HowToFilterByField.cs /}
 
 | Parameters | Type | Description |
 | -- | - | -- |
-| **T** | string | The type of object that you want to search. |
-| **fieldName**| string | The field that is missing in some of the documents. |
+| **T** | string | An object in a collection (singular of the collection name - e.g. Order from the collection Orders). |
+| **fieldName** | string | The field that is missing in some of the documents. |
 
 
 {PANEL/}
 
 
-{PANEL: How to use Studio to filter by non-existing field}
+{PANEL: Use Studio to filter by non-existing field}
 
 ![List Documents Without a Specified Field](images/non-existing-field-studio-rql.png "List Documents Without a Specified Field")
 
 1. **Indexes**  
-   Click to see Studio indexing tools.
+   Click to see the indexing menu items.
 2. **Query**  
-   Select to open the Studio query interface.
-3. **Code text editor**  
+   Select to open the Query view.
+3. **Query editor**  
    Write the query according to the [RQL example](../../../client-api/session/querying/how-to-filter-by-non-existing-field#example-a-query-that-creates-an-auto-index) described above.  
-4. **Run Code**  
+4. **Run Query**  
    Click or press ctrl+enter to run the query.
 5. **Index used**  
    This is the name of the auto-index created for this query.  
-   You can click it to see the Studio indexing tools available for this index.  
+   You can click it to see the available Studio options for this index.  
 6. **Results**  
-   This is the list of documents that do not have the specified field.
+   This is the list of documents that do not have the specified field.  
    (The field "Freight" was explicitly removed from these Northwind documents for this example.)
 
 {PANEL/}

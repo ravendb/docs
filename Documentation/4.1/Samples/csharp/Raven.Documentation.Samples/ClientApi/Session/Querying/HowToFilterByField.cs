@@ -55,7 +55,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Advanced
                         .DocumentQuery<Order>()
                         .Not
-                        .WhereExists("Employee")
+                        .WhereExists("Freight")
                         .ToList();
                     #endregion
                 }
@@ -216,19 +216,18 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         using (var session = store.OpenSession())
                         {
                             #region QuerywhereNotexists_example
-                            // Create a list of documents in `results` from Order
                             List<Order> results = session
                                 .Advanced
-                                // Call the static index 
+                                // Query the static index 
                                 .DocumentQuery<Order, Orders_ByFreight>()
-                                // Make sure that the index has finished before listing the results
+                                // Verify that the index is not stale (optional)
                                 .WaitForNonStaleResults(TimeSpan.MaxValue)
                                 // Negate the next method
                                 .Not
                                 // Specify the field that is suspected to be missing
                                 .WhereExists(x => x.Freight)
                                 .ToList();
-                            // `results` will contain the list of incomplete documents.
+                                // `results` will contain the list of incomplete documents.
                             #endregion
                         }
                     }
