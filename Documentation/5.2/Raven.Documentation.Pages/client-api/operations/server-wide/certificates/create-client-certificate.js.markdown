@@ -52,5 +52,5 @@
 - [How to put client certificate?](../../../../client-api/operations/server-wide/certificates/put-client-certificate)  
 
 **Server Articles**:  
-- [Certificates Management](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates)  
+- [Certificates Management](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates)  
 - [Client Certificate Usage](../../../../server/security/authentication/client-certificate-usage)  

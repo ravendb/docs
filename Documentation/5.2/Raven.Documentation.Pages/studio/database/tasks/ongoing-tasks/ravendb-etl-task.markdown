@@ -72,7 +72,7 @@
 
   * **Via RavenDB Studio:**  
     Navigate from the "Manage Server" tab (left side) > "Certificates" to open the [Certificate Management](../../../../server/security/authentication/certificate-management) view.  
-     - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates).  
+     - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates).  
   * **Via API:**  
     See the code sample to learn how to [define a client certificate in the DocumentStore()](../../../../client-api/creating-document-store).  
      - To generate and configure a client certificate from the source server, see [CreateClientCertificateOperation](../../../../client-api/operations/server-wide/certificates/create-client-certificate)

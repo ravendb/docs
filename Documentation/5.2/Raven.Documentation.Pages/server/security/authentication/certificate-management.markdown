@@ -20,7 +20,7 @@ In this page:
   * [List of Registered Certificates](../../../server/security/authentication/certificate-management#list-of-registered-certificates)  
   * [Generate Client Certificate](../../../server/security/authentication/certificate-management#generate-client-certificate)  
   * [Edit Certificate](../../../server/security/authentication/certificate-management#edit-certificate)  
-* [Enabling Communication Between Servers: Importing and Exporting Certificates](../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates)  
+* [Enabling Communication Between Servers: Importing and Exporting Certificates](../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates)  
   * [Export Server Certificates](../../../server/security/authentication/certificate-management#export-server-certificates)  
   * [Upload an Existing Certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate)  
   * [Certificate Collections](../../../server/security/authentication/certificate-management#certificate-collections)  

@@ -9,7 +9,7 @@ In this page:
 
 * [Certificates Management Studio View](../../../studio/server/certificates/server-management-certificates-view#studio-certificates-management-view)  
 * [Configuring Certificates: Database and Access Permissions](../../../studio/server/certificates/server-management-certificates-view#configuring-certificates-database-and-access-permissions)  
-* [Enabling Communication Between Servers: Importing and Exporting Certificates](../../../studio/server/certificates/server-management-certificates-view#enabling-communication-between-servers-importing-and-exporting-certificates)  
+* [Enabling Communication Between Servers: Importing and Exporting Certificates](../../../studio/server/certificates/server-management-certificates-view#enabling-communication-between-servers:-importing-and-exporting-certificates)  
 
 ## Studio Certificates Management View
 

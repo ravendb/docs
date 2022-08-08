@@ -75,7 +75,7 @@ It is also best to ensure that each cluster defines policies, configurations, an
   This step must be done if replicating *to a separate secure cluster* so that the destination cluster trusts the source.  
   * **Via RavenDB Studio:**  
     Navigate from the "Manage Server" tab (left side) > "Certificates" to open the [Certificate Management](../../../../server/security/authentication/certificate-management) view.  
-     - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates).  
+     - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates).  
   * **Via API:**  
     See the code sample to learn how to [define a client certificate in the DocumentStore()](../../../../client-api/creating-document-store).  
      * To generate and configure a client certificate from the source server:  
@@ -212,7 +212,7 @@ f. Click **External Replication** to access the following interface.
 ### Server Articles
 
 - [Replication Conflicts](../../../../server/clustering/replication/replication-conflicts#configuring-conflict-resolution-using-the-client)
-- [Certificates Management](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates)
+- [Certificates Management](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates)
 - [External Replication](../../../../server/ongoing-tasks/external-replication)
 - [Client Certificate Usage](../../../../server/security/authentication/client-certificate-usage)
 
