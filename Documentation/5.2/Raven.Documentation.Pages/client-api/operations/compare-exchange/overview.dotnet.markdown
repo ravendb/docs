@@ -29,6 +29,7 @@
 
 * In this page:  
  * [Using Compare-Exchange Items](../../../client-api/operations/compare-exchange/overview#using-compare-exchange-items)  
+ * [When to use cluster-wide sessions or node-local sessions](../../../client-api/operations/compare-exchange/overview#when-to-use-cluster-wide-sessions-or-node-local-sessions)  
  * [Why Compare-Exchange Items are Not Replicated to an External Cluster](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-an-external-cluster)  
  * [Transaction Scope for Compare-Exchange Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)  
  * [Creating a Key](../../../client-api/operations/compare-exchange/overview#creating-a-key)  
@@ -84,9 +85,9 @@ Cluster-wide transactions are more expensive than node-local transactions due to
 People prefer a cluster-wide transaction when they prioritize consistency over performance and availability.  
 It ensures ACIDity across the cluster.  
 
-* One way to protect ACID transactions **without** using cluster-wide sessions is to ensure that one node 
-  is responsible for writing on a specific database.  
-    * RavenDB node-local transactions are ACID on the local node, but if two nodes write concurrently on the same document, [conflicts](../../../server/clustering/replication/replication-conflicts)
+* One way to protect transactions **without** using cluster-wide sessions is to ensure that one node 
+  is responsible for writing on a specific database. Conflicts can occur rarely, but performance is greatly improved. 
+    * RavenDB node-local transactions are usually ACID on the local node, but if two nodes write concurrently on the same document, [conflicts](../../../server/clustering/replication/replication-conflicts)
       can occur. 
     * By default to prevent conflicts, one primary node is responsible for all reads and writes.  
       You can configure [load balancing](../../../client-api/session/configuration/use-session-context-for-load-balancing)
@@ -95,23 +96,34 @@ It ensures ACIDity across the cluster.
       Learn more in the article [Scaling Distributed Work in RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/7-scaling-distributed-work-in-ravendb). 
 {INFO/}
 
+---
+
 #### When to use cluster-wide sessions or node-local sessions
 
-Because local-node sessions are consistent by default, and due to the cost of raft consensus checks, we recommend using cluster-wide sessions 
-only for documents where immediate consistency is crucial AND you want every node to be able to read/write.  
+[Node-local (non-cluster-wide) sessions](../../../client-api/session/what-is-a-session-and-how-does-it-work) 
+are much faster and less expensive than cluster-wide sessions.  
 
-Local-node sessions have a default setting that one node is responsible for all reads/writes on a particular database. 
-This ensures consistency. The data is replicated to the other nodes in the database group for failover purposes, 
-but only the primary node will modify documents.  
-If the primary node is down, another node will automatically be selected to read and write by the [cluster observer](../../../server/clustering/distribution/cluster-observer). 
-
-If you are running on a [distributed cluster](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/6-ravendb-clusters#transaction-atomicity-and-replication) 
-and have to support ACID transactions where all nodes must have read/write permission, 
-you should use cluster-wide transactions. Be aware that doing so will prioritize consistency over performance.
+**If conflict-free, safe ACID transactions are a must**, [cluster-wide sessions](../../../client-api/session/cluster-transaction) 
+guarantee ACID transactions via Atomic Guards and their Raft consensus checks.
 
 {NOTE: }
-You have the flexibility to program different sessions on the same document store so that you can run cluster-wide or node-local sessions as needed.  
-There are also tools that provide flexibility such as [revisions](../../../document-extensions/revisions/overview) 
+Your business logic can run both types of sessions as the situation requires.  
+{NOTE/}
+
+* **Node-local sessions** have a default setting that one node is responsible for all reads/writes on a particular database. 
+  Node-local transactions are almost always consistent, though if the primary node has to failover, there is a chance of a conflict occurring.  
+   * Many situations can handle conflicts and you can program [conflict resolution](../../../server/clustering/replication/replication-conflicts) 
+     scripts or use other conflict resolution strategies via Studio and also [in the client](../../../client-api/cluster/document-conflicts-in-client-side#modifying-conflict-resolution-from-the-client-side).
+   * Because of the higher performance and lower cost of node-local sessions, we recommend using them in situations where 
+     occasional conflicts, and the conflict resolution process, are acceptable.  
+
+* **Cluster-wide sessions** have ACID guarantees for conflict-free transactions.
+   * Because of the performance cost of raft consensus checks, we recommend using cluster-wide sessions  
+     for transactions where immediate consistency is crucial  
+     or if you need every node to be able to read/write on the same database.  
+
+{NOTE: }
+There are also tools that provide flexibility such as [revisions](../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration) 
 and the ability to [model your documents](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling) 
 so that conflicts are prevented.
 {NOTE/}
@@ -129,7 +141,12 @@ involved servers.  Trying to achieve consensus on each transaction between diffe
 especially considering geographic latency.  
 
 One way to ensure consistency between clusters is if [documents created in each cluster are owned and operated only by that cluster](../../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters). 
-This means that different clusters should not share compare-exchange items.  
+This means that different clusters should not share compare-exchange items because they don't manage the same documents.  
+For example, "NYC-Orders123-B" is a different document than "LDN-Orders123-B". To prevent conflicts and model an efficient system, 
+each document should only be written on by the cluster that made it. 
+You can replicate or ETL to another cluster for record-keeping or data analysis.  
+The rule of thumb for documents created by another cluster - you can look, but don't touch.
+
 
 {PANEL/}
 
@@ -166,7 +183,7 @@ Provide the following when saving a **key**:
 | ------------- | ---- |
 | **Key** | A string under which _Value_ is saved, unique in the database scope across the cluster. This string can be up to 512 bytes. |
 | **Value** | The Value that is associated with the _Key_. <br/>Can be a number, string, boolean, array, or any JSON formatted object. |
-| **Index** | The _Index_ number is indicating the version of _Value_.<br/>The _Index_ is used for the concurrency control, similar to documents Etags. |
+| **Index** | The _Index_ number is indicating the version of _Value_.<br/>The _Index_ is used for concurrency control, similar to documents Etags. |
 
 * When creating a _new_ 'Compare Exchange **Key**', the index should be set to `0`.  
 
@@ -191,7 +208,7 @@ Updating a compare exchange key can be divided into 2 phases:
 {NOTE: }
 
 * **To Ensure ACID Transactions** RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
-  in cluster-wide transactions.  
+  in [cluster-wide transactions](../../../client-api/session/cluster-transaction).  
   There is no need to manually create or maintain Compare-Exchange items to ensure consistency across your cluster.
 
 * [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-an-external-cluster) to preserve consistency between clusters.  
@@ -201,7 +218,7 @@ Updating a compare exchange key can be divided into 2 phases:
 
 * Compare Exchange can be used to maintain uniqueness across users' email accounts.  
 
-* First try to reserve a new user email.  
+* First, try to reserve a new user email.  
   If the email is successfully reserved then save the user account document.  
 
 {CODE email@Server\CompareExchange.cs /}  
@@ -227,7 +244,7 @@ from Users as s where id() == cmpxchg("emails/ayende@ayende.com")
 {NOTE: }
 
 * **To Ensure ACID Transactions** RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
-  in cluster-wide transactions.  
+  in [cluster-wide transactions](../../../client-api/session/cluster-transaction).  
   There is no need to manually create or maintain Compare-Exchange items to ensure consistency across your cluster.
 
 * [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-an-external-cluster) to preserve consistency between clusters.  
@@ -251,10 +268,17 @@ from Users as s where id() == cmpxchg("emails/ayende@ayende.com")
 - [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
 - [Delete a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
 - [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards)
+- [Resolving Document Conflicts](../../../client-api/cluster/document-conflicts-in-client-side)
+
 
 ### Studio
 
 - [Compare Exchange View](../../../studio/database/documents/compare-exchange-view)  
+
+### Server
+
+- [Conflict Resolution](../../../server/clustering/replication/replication-conflicts)
+- [Cluster-Wide Transactions](../../../server/clustering/cluster-transactions)
 
 ---
 
@@ -262,4 +286,11 @@ from Users as s where id() == cmpxchg("emails/ayende@ayende.com")
 
 - [Create CmpXchg Item](https://demo.ravendb.net/demos/csharp/compare-exchange/create-compare-exchange)  
 - [Index CmpXchg Values](https://demo.ravendb.net/demos/csharp/compare-exchange/index-compare-exchange)  
+
+---
+
+## Ayende @ Rahien Blog
+
+- [Consistency in a Globally Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system)
+
 
