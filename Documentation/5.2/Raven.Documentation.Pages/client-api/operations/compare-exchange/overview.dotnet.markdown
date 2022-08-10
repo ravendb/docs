@@ -218,7 +218,8 @@ Updating a compare exchange key can be divided into 2 phases:
   in [cluster-wide transactions](../../../client-api/session/cluster-transaction).  
   There is no need to manually create or maintain Compare-Exchange items to ensure consistency across your cluster.
 
-* [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-an-external-cluster) to preserve consistency between clusters.  
+* [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters)
+  to preserve consistency between clusters.  
   In documents where immediate consistency is important, each cluster should be solely responsible for the documents created by it.
 
 {NOTE/}
@@ -254,7 +255,8 @@ from Users as s where id() == cmpxchg("emails/ayende@ayende.com")
   in [cluster-wide transactions](../../../client-api/session/cluster-transaction).  
   There is no need to manually create or maintain Compare-Exchange items to ensure consistency across your cluster.
 
-* [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-an-external-cluster) to preserve consistency between clusters.  
+* [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters)
+  to preserve consistency between clusters.  
   In documents where immediate consistency is important, each cluster should be solely responsible for the documents created by it.
 
 {NOTE/}
