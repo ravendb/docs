@@ -11,8 +11,9 @@
     when compared to non-cluster-wide transactions. 
     They prioritize consistency over performance to ensure ACIDity across the cluster.  
 
-* To [maintain consistency between globally distributed clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-an-external-cluster), 
+* To [maintain consistency between globally distributed clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters), 
   documents created in each cluster should be owned and operated only by that cluster. 
+  Thus, because they are associated with documents, compare-exchange items are not replicated externally to other clusters.
 
 * Each compare-exchange item contains: 
   * A key - A unique string across the cluster.  
@@ -30,7 +31,7 @@
 * In this page:  
  * [Using Compare-Exchange Items](../../../client-api/operations/compare-exchange/overview#using-compare-exchange-items)  
  * [When to use cluster-wide sessions or node-local sessions](../../../client-api/operations/compare-exchange/overview#when-to-use-cluster-wide-sessions-or-node-local-sessions)  
- * [Why Compare-Exchange Items are Not Replicated to an External Cluster](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-an-external-cluster)  
+ * [Why Compare-Exchange Items are Not Replicated to External Clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters)  
  * [Transaction Scope for Compare-Exchange Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)  
  * [Creating a Key](../../../client-api/operations/compare-exchange/overview#creating-a-key)  
  * [Updating a Key](../../../client-api/operations/compare-exchange/overview#updating-a-key)  
@@ -110,7 +111,7 @@ guarantee ACID transactions via Atomic Guards and their Raft consensus checks.
 Your business logic can run both types of sessions as the situation requires.  
 {NOTE/}
 
-* **Node-local sessions** have a default setting that one node is responsible for all reads/writes on a particular database. 
+* **Node-local sessions** are significantly faster and have a default setting that one node is responsible for all reads/writes on a particular database. 
   Node-local transactions are almost always consistent, though if the primary node has to failover, there is a chance of a conflict occurring.  
    * Many situations can handle conflicts and you can program [conflict resolution](../../../server/clustering/replication/replication-conflicts) 
      scripts or use other conflict resolution strategies via Studio and also [in the client](../../../client-api/cluster/document-conflicts-in-client-side#modifying-conflict-resolution-from-the-client-side).
@@ -130,7 +131,7 @@ so that conflicts are prevented.
 
 {PANEL/}
 
-{PANEL: Why Compare-Exchange Items are Not Replicated to an External Cluster }
+{PANEL: Why Compare-Exchange Items are Not Replicated to External Clusters }
 
 To [prevent consistency conflicts between clusters and model an efficient global system](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system), 
 each cluster should have sole ownership of documents created in it.  
@@ -140,12 +141,18 @@ But to achieve strong consistency in a distributed system, each transaction must
 involved servers.  Trying to achieve consensus on each transaction between different clusters is usually unrealistic, 
 especially considering geographic latency.  
 
+{WARNING: }
+If multiple clusters are set to modify the same document and then replicate it to each other, 
+there will likely be frequent conflicts.
+{WARNING/}
+
 One way to ensure consistency between clusters is if [documents created in each cluster are owned and operated only by that cluster](../../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters). 
 This means that different clusters should not share compare-exchange items because they don't manage the same documents.  
 For example, "NYC-Orders123-B" is a different document than "LDN-Orders123-B". To prevent conflicts and model an efficient system, 
-each document should only be written on by the cluster that made it. 
+each document should only be modified by the cluster that made it.  
 You can replicate or ETL to another cluster for record-keeping or data analysis.  
-The rule of thumb for documents created by another cluster - you can look, but don't touch.
+
+**The rule of thumb for documents created by another cluster - you can look, but don't touch.**
 
 
 {PANEL/}
