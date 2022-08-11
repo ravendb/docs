@@ -155,6 +155,50 @@
 
 {PANEL: Add or Edit Time Series Configuration}
 
+Many applications continuously store massive amounts of time series data.  
+Rollup and retention policies help you manage the amount of data in storage by 
+setting how close you want to zoom in and out in different time frames.  
+[See Heart Clinic Example.](../../../studio/database/settings/time-series-settings#heart-clinic-example)
+
+**Rollup Policies**  
+Rollup aggregates the current data to summarize it and zoom out 
+to a bigger picture with lower resolution that uses less storage space.  
+
+You can set different levels of resolution by adding new policies that further aggregate 
+the previously aggregated data.  
+
+**Retention Policies**  
+Set the amount of time that time series data is kept before being deleted.  
+You can set a different retention policy for each rollup 
+so that you can delete the previous data after it has been summarized.
+
+{NOTE: }
+#### Heart Clinic Example  
+Imagine a heart clinic whose raw data shows their patients' heart rates every minute. 
+Here are the different levels of resolution that they want to see:  
+
+!["Heart Clinic Example"](images/time-series-settings-10_HeartDoctorExample.png "Heart Clinic Example")
+
+ * Raw Data  
+   Tracks heart rate every minute.  
+   Set to delete after the data is aggregated.  
+
+ * DailySummary  
+   They may want to know a person's average heartbeat 
+   every 15 minutes in a day to see a summary graph of daily activity levels. 
+   They want to keep these daily activity summaries for a week.  
+
+ * Month  
+   Zooming out, they need to know the average heartbeat every 3 hours, 
+   and they want to keep the 3-hour summaries info for a month.  
+   They can still zoom back in to see the daily summaries because each day is retained for a week. 
+
+ * Long-term  
+   After this, they only need to know their daily averages to see long-term trends.  
+   They can always zoom into the latest Week, Day, and 20 Minute workout graphs.  
+
+{NOTE/}
+
 !["Add or Edit Time Series Configuration"](images/time-series-settings-05_add-or-edit-configuration.png "Add or Edit Time Series Configuration")
 
 1. **Edit Configuration**  
@@ -165,7 +209,7 @@
    Select the collection that this time series configuration is for.  
 4. **Enable Retention - Raw Data**  
    Toggle to set a retention policy for raw time series entries.  
-   !["Set Retention Policy"](images/time-series-settings-06_retention.png "Set Retention Policy")  
+   !["Set Retention Policy"](images/time-series-settings-06_retention.png "Set Retention Policy")
     * **(a) Enable Retention**  
       Enable to set a retention time period for **raw data** of all time series in the selected collection.  
     * **(b) Retention Time**  
@@ -180,7 +224,7 @@
    {NOTE/}
    In the above image, the rollup policy aggregates the **raw data** 
    of the selected collection's time series, into **new** rollup time series.  
-   !["Set Rollup Policy"](images/time-series-settings-07_rollup.png "Set Rollup Policy")  
+   !["Set Rollup Policy"](images/time-series-settings-07_rollup.png "Set Rollup Policy")
     * **(a) Policy Name**  
       Enter rollup policy Name  
     * **(b) Aggregation Time**  
@@ -195,14 +239,14 @@
       {NOTE/}
 
 6. **Add Named Values**  
-   !["Named Values"](images/time-series-settings-08_named-values.png "Named Values")  
+   !["Named Values"](images/time-series-settings-08_named-values.png "Named Values")
     * **(a) Time Series Name**  
       Enter the name of the time series whose values you want to name.  
     * **(b) Value Name**  
       Enter the name you want to give this value.  
     * **(c) Add Name**  
       Click to define an additional value name.  
-7. **Add**  
+7. **Add/Update**  
    Click **OK** to add this configuration to the configuration list.  
    {WARNING: }
    Note: Any modifications made in this view will **Not** be saved until 
@@ -211,7 +255,7 @@
 8. **Cancel**  
    Click to cancel.  
 9. **Save**  
-   Save all the modifications made in this view.  
+   Remember to also **click Save** when you're finished.
 
 {PANEL/}
 
@@ -223,7 +267,7 @@
 * In a time series configuration, a rollup policy's source data 
   is determined by the policy's position.  
    * The **first** rollup policy aggregates **raw data** from 
-     time series of the selected collection.  
+     the time series of the selected collection.  
    * The **second** rollup policy aggregates data **from 
      the first rollup time series**.  
    * And so on: each additional rollup policy aggregates data from the 
