@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="client-api\document-identifiers\hilo-algorithm.dotnet.markdown" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="RavenDB.Client" Version="5.0.14" />
   </ItemGroup>
 

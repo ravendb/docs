@@ -71,7 +71,12 @@ The `Max` property means the maximum possible number that has been used by any c
 
 When the document store is disposed, the client sends to the server the last value it used to create an identifier and the max value he got from the server.
 
-If the max value in the server-side is equal to the max value of the client and the last used value by the client is smaller or equal to the max of the server-side, the server will update the `Max` value to the last used value by the client.
+If the max value in the server-side is equal to the max value of the client and 
+the last used value by the client is smaller or equal to the max of the server-side, 
+the server will update the `Max` value to the last used value by the client.
+
+(`store.Dispose()` is used in this example to demonstrate what happens when a range is released.  
+In normal use, the `store` should only be disposed when the application is closed.)
 
 {CODE return_hilo_1@ClientApi\DocumentIdentifiers\HiloAlgorithm.cs /}
 

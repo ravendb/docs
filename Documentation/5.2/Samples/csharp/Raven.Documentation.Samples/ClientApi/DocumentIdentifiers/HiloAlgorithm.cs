@@ -47,9 +47,9 @@ namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
 
         public async Task Generate_HiLo_Ids()
         {
-            #region manual_hilo_sample
             var store = new DocumentStore();
 
+            #region manual_hilo_sample
             using (var session = store.OpenSession())
             {
                 // The following uses the overload GenerateNextIdFor(string database, string collectionName);
@@ -71,8 +71,6 @@ namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
 
                 session.SaveChanges();
             }
-            
-            store.Dispose();
             #endregion
 
             /*

@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ClientApi\document-identifiers\**" />
+    <EmbeddedResource Remove="ClientApi\document-identifiers\**" />
+    <None Remove="ClientApi\document-identifiers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="NodaTime" Version="3.0.0" />
     <PackageReference Include="RavenDB.Client" Version="5.4.0-nightly-20220701-0359" />
     <PackageReference Include="RavenDB.Embedded" Version="5.4.0-nightly-20220701-0359" />
