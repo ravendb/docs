@@ -24,18 +24,21 @@
 
 {PANEL: How the HiLo Algorithm Works in RavenDB}
 
-#### Generating unique IDs efficiently
+### Generating unique IDs efficiently
 
+**The client creates IDs from a range of unique numbers that it gets from the server.**  
 The HiLo algorithm is efficient because the client can automatically generate unique document IDs 
 without checking with the server or cluster each time a new document is created to ensure that the new ID is unique. 
-The client uses the HiLo algorithm to do this by getting and reserving a range of available numbers. 
-For example, the first client or node to generate documents on a collection will reserve the numbers 1-32. 
-The next one will reserve numbers 33-64, and so on.  
+The client uses the HiLo algorithm to do this by getting and reserving a range of available numbers then the 
+client creates IDs with these. For example, the first client or node to generate documents on a collection will reserve 
+the numbers 1-32. The next one will reserve numbers 33-64, and so on.  
 
-To further ensure that no two nodes generate a document with the same ID, a node-tag is added to the number. 
+**The client adds a node-tag to the ID.**  
+To further ensure that no two nodes generate a document with the same ID, a node-tag is added to the number and collection. 
 This is an added measure so that if two nodes B and C are working with the same range of numbers, 
-the IDs generated will be `orders/54-B` and `orders/54-C`. This situation is unlikely because as long as the nodes can communicate when requesting 
-a range of numbers, they will receive a different range of numbers. The node-tag is added just-in-case.  
+the IDs generated will be `orders/54-B` and `orders/54-C`. This situation is rare because as long as the nodes can communicate 
+when requesting a range of numbers, they will receive a different range of numbers. 
+The node-tag is added to ensure unique IDs across the cluster.  
 
 Thus, with minimal trips to the server, the client is able to determine to which collection an entity belongs, 
 and automatically assign it a number with a node-tag to ensure that the ID is unique across the cluster.
@@ -55,10 +58,11 @@ To ensure that multiple clients can generate the identifiers simultaneously, the
 
 The `Max` property means the maximum possible number that has been used by any client to create the identifier for a given collection. It is used as follows:
 
-1. The client asks the server for a range of numbers that he can use to create document (32 is the initial capacity, the actual range size is calculated based on the frequency of getting HiLo by the client.)
-2. Then, the server checks the HiLo file to see what is the last number he sent to any client for this collection.
-3. The client will get from the server the min and the max values he can use (33 - 64 in our case).
-4. Then, the client generates a range object from the values he got from the server to generate identifiers.
+1. The client asks the server for a range of numbers that it can use to create a document. 
+   (32 is the initial capacity but the actual range size is calculated based on the frequency of getting HiLo by the client.)
+2. Then, the server checks the HiLo file to see what is the last "Max" number it sent to any client for this collection.
+3. The client will get the min and the max values it can use from the server (33 - 64 in our case).
+4. Then, the client generates a range object from the values it got from the server to generate identifiers.
 5. When the client reaches the max limit, it will repeat the process.
 
 {PANEL/}
@@ -94,10 +98,10 @@ The manual generator does not guarantee unique IDs across a cluster because ther
 RavenDB's default generator includes the collection name, unique number, and node tag to ensure that
 the ID is unique across the cluster.  
 
-{INFO: }
-[We can only guarantee unique IDs when you use our generators.](../../client-api/document-identifiers/working-with-document-identifiers)  
+{WARNING: }
+[We can only guarantee unique IDs when you use RavenDB's generators.](../../client-api/document-identifiers/working-with-document-identifiers)  
 If you manually create an ID generator, you are responsible to ensure that the IDs are unique. 
-{INFO/}
+{WARNING/}
 
 #### Syntax
 
@@ -105,30 +109,30 @@ If you manually create an ID generator, you are responsible to ensure that the I
 
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
-| **database** | `string` | The database to write onto. Writing `null` will write onto the default database set in the document store. |
+| **database** | `string` | The database to write onto. <br/> `null` will create the Id for the default database set in the document store. |
 | **collectionName** | `string` | The collection that the document will be added to. |
-| **entity** | `object` | An entity that there is a collection of. It is the singular of the collection name. If collection = "Orders", then entity = "Order". |
-| **type** | `Type` | The type of object that there is a collection of. |
+| **entity** | `object` | An instance of the specified collection. |
+| **type** | `Type` | The collection entity type. It is usually the singular of the collection name. <br/> For example, collection = "Orders", then entity = "Order". |
 
 #### Examples: Manual HiLo Generators
 
-The following example uses the HiLo algorithm so that the client gets a unique range of numbers 
+The following examples use the HiLo algorithm where the client gets a unique range of numbers 
 from the server, then uses these numbers to generate IDs with minimal calls to the server.  
 
-It provides the number, without the node tag.  
+It provides the next unique number without the node tag.  
 
 {CODE manual_hilo_sample@ClientApi\DocumentIdentifiers\HiloAlgorithm.cs /}
 
 {INFO: Unique IDs across the cluster}
-This manual generator sample is sufficient if you are using only one server, but if you want to ensure unique IDs across the cluster, 
+This manual generator sample is sufficient if you are using only one server. If you want to ensure unique IDs across the cluster, 
 we recommend either using [our default generator](../../client-api/document-identifiers/working-with-document-identifiers#autogenerated-ids) 
 or a cluster-wide Identities generator.  
 
-The [cluster-wide Identities generator](../../client-api/document-identifiers/working-with-document-identifiers#identities) 
-guarantees a unique ID across the cluster.  
-It is more costly than our default HiLo generator because it requires a request from the server for _each ID_  
+You may also consider using the [cluster-wide Identities generator](../../client-api/document-identifiers/working-with-document-identifiers#identities), 
+which guarantees a unique ID across the cluster.  
+It is more costly than our default HiLo generator because it requires a request from the server for _each ID_,  
 and the server needs to do a Raft consensus check 
-to ensure that every node in the cluster agree that the ID is unique, then returns the ID to the client.
+to ensure that the other nodes in the cluster agree that the ID is unique, then returns the ID to the client.
 {INFO/}
 
 {PANEL/}
@@ -155,6 +159,12 @@ to ensure that every node in the cluster agree that the ID is unique, then retur
 
 ---
 
+### Code Walkthrough
+
+- [Create a Document](https://demo.ravendb.net/demos/csharp/basics/create-document)
+
+---
+
 ### Inside RavenDB
 
--[Client-side identifier generation (HiLo)](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/2-zero-to-ravendb#client-side-identifier-generation-hilo)
+- [Client-side identifier generation (HiLo)](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/2-zero-to-ravendb#client-side-identifier-generation-hilo)

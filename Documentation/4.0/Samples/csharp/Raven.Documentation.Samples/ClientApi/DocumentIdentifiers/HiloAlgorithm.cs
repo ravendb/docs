@@ -1,6 +1,8 @@
 ﻿using Raven.Client.Documents;
 using Raven.Documentation.Samples.Orders;
 using Raven.Documentation.Samples.Indexes.Querying;
+using System.Threading.Tasks;
+
 
 namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
 {
@@ -22,8 +24,8 @@ namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
 
                 session.SaveChanges();
             }
-
-            store.Dispose(); // returning unused range [last=1, max=32]
+            // Release the range when it is no longer relevant
+            store.Dispose(); 
 
             #endregion
 
