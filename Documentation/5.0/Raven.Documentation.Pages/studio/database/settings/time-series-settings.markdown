@@ -20,12 +20,9 @@
       A retention period defines how long time series entries are kept.  
       An entry that exceeds this period will be removed.  
 
-
-
-
-
 * In this page:  
   * [Time Series Settings View](../../../studio/database/settings/time-series-settings#time-series-settings-view)  
+  * [Rationale for Configuring Time Series](../../../studio/database/settings/time-series-settings#rationale-for-configuring-time-series)  
   * [Defined Time Series Configurations](../../../studio/database/settings/time-series-settings#defined-time-series-configurations)  
   * [Add or Edit Time Series Configuration](../../../studio/database/settings/time-series-settings#add-or-edit-time-series-configuration)  
   * [Rollup Policies for Rollup Time Series](../../../studio/database/settings/time-series-settings#rollup-policies-for-rollup-time-series)  
@@ -69,6 +66,54 @@
     * Click a defined configuration **Edit** button to edit an existing configuration.  
 6. **Save**  
    Click to save the time series configurations.  
+
+{PANEL/}
+
+{PANEL: Rationale for Configuring Time Series}
+
+Many applications continuously store massive amounts of time series data.  
+Rollup and retention policies help you manage the amount of data in storage by 
+setting how close you want to zoom in and out in different time frames.  
+[See Heart Clinic Example.](../../../studio/database/settings/time-series-settings#heart-clinic-example)
+
+**Rollup Policies**  
+Rollup aggregates the current data to summarize it and zoom out 
+to a bigger picture with a lower resolution that uses less storage space.  
+
+You can set different levels of resolution by adding new policies that further aggregate 
+the previously aggregated data.  
+
+**Retention Policies**  
+Set the amount of time that time series data is kept before being deleted.  
+You can set a different retention policy for each rollup 
+so that you can delete the previous data after it has been summarized.
+
+{NOTE: }
+#### Heart Clinic Example  
+Imagine a heart clinic whose raw data shows their patients' heart rates every minute. 
+Here are the different levels of resolution that they want to see:  
+
+!["Heart Clinic Example"](images/time-series-settings-10_HeartDoctorExample.png "Heart Clinic Example")
+
+ * Raw Data  
+   Tracks heart rate every minute.  
+   Set to delete after 20 minutes when the data has already aggregated.  
+
+ * DailySummary  
+   They may want to know a person's average heart rate 
+   every 15 minutes in a day to see a summary graph of daily activity levels. 
+   They want to keep these daily activity summaries for a week.  
+
+ * Month  
+   Zooming out, they need to know the average heart rate every 3 hours, 
+   and they want to keep the 3-hour summaries info for a month.  
+   They can still zoom back in to see the daily summaries because each day is retained for a week. 
+
+ * Long-term  
+   After this, they only need to know their daily averages to see long-term trends.  
+   They can always zoom into the latest Week, Day, and 20 Minute graphs.  
+
+{NOTE/}
 
 {PANEL/}
 
@@ -155,49 +200,7 @@
 
 {PANEL: Add or Edit Time Series Configuration}
 
-Many applications continuously store massive amounts of time series data.  
-Rollup and retention policies help you manage the amount of data in storage by 
-setting how close you want to zoom in and out in different time frames.  
-[See Heart Clinic Example.](../../../studio/database/settings/time-series-settings#heart-clinic-example)
 
-**Rollup Policies**  
-Rollup aggregates the current data to summarize it and zoom out 
-to a bigger picture with lower resolution that uses less storage space.  
-
-You can set different levels of resolution by adding new policies that further aggregate 
-the previously aggregated data.  
-
-**Retention Policies**  
-Set the amount of time that time series data is kept before being deleted.  
-You can set a different retention policy for each rollup 
-so that you can delete the previous data after it has been summarized.
-
-{NOTE: }
-#### Heart Clinic Example  
-Imagine a heart clinic whose raw data shows their patients' heart rates every minute. 
-Here are the different levels of resolution that they want to see:  
-
-!["Heart Clinic Example"](images/time-series-settings-10_HeartDoctorExample.png "Heart Clinic Example")
-
- * Raw Data  
-   Tracks heart rate every minute.  
-   Set to delete after the data is aggregated.  
-
- * DailySummary  
-   They may want to know a person's average heartbeat 
-   every 15 minutes in a day to see a summary graph of daily activity levels. 
-   They want to keep these daily activity summaries for a week.  
-
- * Month  
-   Zooming out, they need to know the average heartbeat every 3 hours, 
-   and they want to keep the 3-hour summaries info for a month.  
-   They can still zoom back in to see the daily summaries because each day is retained for a week. 
-
- * Long-term  
-   After this, they only need to know their daily averages to see long-term trends.  
-   They can always zoom into the latest Week, Day, and 20 Minute workout graphs.  
-
-{NOTE/}
 
 !["Add or Edit Time Series Configuration"](images/time-series-settings-05_add-or-edit-configuration.png "Add or Edit Time Series Configuration")
 
@@ -211,7 +214,7 @@ Here are the different levels of resolution that they want to see:
    Toggle to set a retention policy for raw time series entries.  
    !["Set Retention Policy"](images/time-series-settings-06_retention.png "Set Retention Policy")
     * **(a) Enable Retention**  
-      Enable to set a retention time period for **raw data** of all time series in the selected collection.  
+      Enable setting a retention time period for **raw data** of all time series in the selected collection.  
     * **(b) Retention Time**  
       Set the retention time.  
       In the example above, raw time series entries older than 1 hour will be removed.  
@@ -232,7 +235,7 @@ Here are the different levels of resolution that they want to see:
       In the above example, every 10 minutes of raw time series data will be aggregated  
       into a single entry of the new rollup time series.  
     * **(c) Enable Retention**  
-      Enable to set a retention time period for the new rollup time series entries.
+      Enable setting a retention time period for the new rollup time series entries.
       {NOTE: }
       The **aggregation time** cannot exceed the **retention period** 
       defined for the origin time series.  
@@ -247,9 +250,9 @@ Here are the different levels of resolution that they want to see:
     * **(c) Add Name**  
       Click to define an additional value name.  
 7. **Add/Update**  
-   Click **OK** to add this configuration to the configuration list.  
+   Click **Add** or **Update** to add this configuration to the configuration list.  
    {WARNING: }
-   Note: Any modifications made in this view will **Not** be saved until 
+   Note: Any modifications made in this view will **not** be saved until 
    you click the **Save** button (9).  
    {WARNING/}
 8. **Cancel**  
@@ -290,13 +293,13 @@ Here are the different levels of resolution that they want to see:
 2. **Rollup Time Series for Raw Data**  
    The `ByMinute` rollup policy aggregates raw data from time series 
    in the `Companies` collection.  
-   Every minute of raw time series data, is aggregated into 
+   Every minute of raw time series data is aggregated into 
    a single entry of the new rollup time series.  
 
 3. **Rollup Time Series for Rollup Time Series**  
    The `30Mins` rollup policy aggregates data from the rollup time series 
    that was created by the `ByMinute` policy.  
-   Every 30 minutes of data from the `ByMinute` rollup time series, 
+   Every 30 minutes of data from the `ByMinute` rollup time series 
    are aggregated into a single entry of the new `30Mins` rollup time series.  
 
 {PANEL/}
