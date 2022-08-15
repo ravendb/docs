@@ -5,11 +5,11 @@
 
 * Document extensions are data entities associated with documents.  
 
-* Document extensions are stored separately to make sure that **modifying** an extension value (e.g. a counter 
+* Document extensions are stored separately so that **modifying** an extension value (e.g. a counter 
   or a time series entry) will not modify its parent document.
 
-* **Creating or deleting** an extension changes the parent documents' meta-data. 
-  This document change triggers trips to the server as well as tasks such as indexing, ETL, and External Replication.  
+* **Creating or deleting** an extension changes the parent document's meta-data. 
+  This document change may trigger indexing, ETL tasks, and various other operations.  
 
 * In this page:  
    * [The Document Extensions](../document-extensions/overview-extensions#the-document-extensions)  
@@ -26,7 +26,7 @@
   for various counting tasks.
 
 * [Attachments](../document-extensions/attachments/what-are-attachments)  
-  Attachments are images, PDF files, videos, and other types of binary streams that are associated with parent documents.
+  Attachments are binary streams (videos, images, PDF, etc.) that can be bound to an existing document.
 
 * [Time Series](../document-extensions/timeseries/overview)  
   Time series are vectors of data that collect values over time, store the values consecutively across the cluster,
