@@ -55,30 +55,27 @@
 * All results created in a single ETL run will be sent in a single batch and processed transactionally in the destination.
 
    * For example, if you want to write data to the `Employees` collection you need to call the following method in the script body:
-
-{CODE-BLOCK:javascript}
-loadToEmployees({ ... });
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    loadToEmployees({ ... });
+    {CODE-BLOCK/}
 
 * The method parameter must be a JS object. You can create it as follows:
-
-{CODE-BLOCK:javascript}
-loadToEmployees({
-    Name: this.FirstName + " " + this.LastName
-});
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    loadToEmployees({
+        Name: this.FirstName + " " + this.LastName
+    });
+    {CODE-BLOCK/}
 
 * Or simply transform the current document object and pass it:
+    {CODE-BLOCK:javascript}
+    this.Name = this.FirstName + " " + this.LastName;
 
-{CODE-BLOCK:javascript}
-this.Name = this.FirstName + " " + this.LastName;
+    delete this.Address;
+    delete this.FirstName;
+    delete this.LastName;
 
-delete this.Address;
-delete this.FirstName;
-delete this.LastName;
-
-loadToEmployees(this);
-{CODE-BLOCK/}
+    loadToEmployees(this);
+    {CODE-BLOCK/}
 
 #### Example: loadTo Method
 
@@ -112,19 +109,17 @@ loadToEmployees({
 
 * If the specified collection is the _same_ as the original one then the document is loaded to the _same_ collection and the original identifier is preserved.  
    * For example, the following ETL script defined in the `Employees` collection will keep the same identifiers in the target database:  
-
-{CODE-BLOCK:javascript}
-// original identifier will be preserved
-loadToEmployees({ ... });
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    // original identifier will be preserved
+    loadToEmployees({ ... });
+    {CODE-BLOCK/}
 
 * If the 'loadTo' method indicates a _different_ target collection, e.g. `People`,  
   then the employee documents will get new identifiers that combine the original ID and the new collection name in the destination database.  
-
-{CODE-BLOCK:javascript}
-// new identifier will be generated
-loadToPeople({ ... });
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    // new identifier will be generated
+    loadToPeople({ ... });
+    {CODE-BLOCK/}
 
 * In addition, ETL appends the symbol `/` to the requested id so that the target database will [generate identifiers on its side](../../../client-api/document-identifiers/working-with-document-identifiers#server-side-generated-ids). 
   As a result, documents in the `People` collection in the target database will have identifiers such as: `employees/1-A/people/0000000000000000001-A`.
@@ -215,16 +210,15 @@ loadToEmployees(this);
 * Attachment is sent along with a transformed document if it's explicitly defined in the script by using `addAttachment()` method. By default, the attachment name is preserved.
 * The script below sends _all_ attachments of a current document by taking advantage of `getAttachments()` function, loads each of them during transformation, and adds them to
   a document that will be sent to the 'Users' collection on the destination database.
+    {CODE-BLOCK:javascript}
+    var doc = loadToUsers(this);
 
-{CODE-BLOCK:javascript}
-var doc = loadToUsers(this);
+    var attachments = getAttachments();
 
-var attachments = getAttachments();
-
-for (var i = 0; i < attachments.length; i++) {
-    doc.addAttachment(loadAttachment(attachments[i].Name));
-}
-{CODE-BLOCK/}
+    for (var i = 0; i < attachments.length; i++) {
+        doc.addAttachment(loadAttachment(attachments[i].Name));
+    }
+    {CODE-BLOCK/}
 
 ---
 
@@ -233,16 +227,15 @@ for (var i = 0; i < attachments.length; i++) {
 * If `addAttachment()` is called with two arguments, the first one can indicate a new name for an attachment. In the below example attachment `photo`
   will be sent and stored under the `picture` name.
 * To check the existence of an attachment `hasAttachment()` function is used
+    {CODE-BLOCK:javascript}
+    var employee = loadToEmployees({
+        Name: this.FirstName + " " + this.LastName
+    });
 
-{CODE-BLOCK:javascript}
-var employee = loadToEmployees({
-    Name: this.FirstName + " " + this.LastName
-});
-
-if (hasAttachment('photo')) {
-  employee.addAttachment('picture', loadAttachment('photo'));
-}
-{CODE-BLOCK/}
+    if (hasAttachment('photo')) {
+      employee.addAttachment('picture', loadAttachment('photo'));
+    }
+    {CODE-BLOCK/}
 
 ---
 
@@ -313,7 +306,7 @@ function loadCountersOf<CollectionName>Behavior(docId, counterName) {
 
 #### Example: Modifying a Counter Named "downloads"
 
-* The following script is defined on the `Products` collection:
+The following script is defined on the `Products` collection:
 
 {CODE-BLOCK:javascript}
 
@@ -344,11 +337,11 @@ Counter behavior functions typically handle counters of documents
   
   You can use special functions in the script code to deal with counters on documents that are loaded into different collections:
 
-{CODE-BLOCK:javascript}
-var person = loadToPeople({ Name: this.Name + ' ' + this.LastName });
+    {CODE-BLOCK:javascript}
+    var person = loadToPeople({ Name: this.Name + ' ' + this.LastName });
 
-person.addCounter(loadCounter('likes'));
-{CODE-BLOCK/}
+    person.addCounter(loadCounter('likes'));
+    {CODE-BLOCK/}
 
 * The above example indicates that the `likes` counter will be sent together with a document. It uses the following functions to accomplish that:
   - `loadCounter(name)` returns a reference to a counter that is meant be passed to `addCounter()`
@@ -398,13 +391,12 @@ collection and target collection have the same name. Loading a time-series from 
 Employees collection on the server-side to a Users collection at the target database 
 is not possible using the load behavior function.  
 * The function should be defined with the following signature:  
-
-{CODE-BLOCK:java}
-function loadTimeSeriesOf<collection name>Behavior(docId, timeSeriesName) {
-   return [ true | false | <span of time> ];
-}
-//"span of time" refers to this type: { string?: from, string?: to }
-{CODE-BLOCK/}
+    {CODE-BLOCK:java}
+    function loadTimeSeriesOf<collection name>Behavior(docId, timeSeriesName) {
+       return [ true | false | <span of time> ];
+    }
+    //"span of time" refers to this type: { string?: from, string?: to }
+    {CODE-BLOCK/}
 
 | Parameter | Type | Description |
 | - | - | - |
@@ -420,21 +412,20 @@ function loadTimeSeriesOf<collection name>Behavior(docId, timeSeriesName) {
 
 #### Example
 
-* The following script is defined in the `Companies` collection. The behavior function loads 
+The following script is defined in the `Companies` collection. The behavior function loads 
 each document in the collection into the script context using `load(docId)`, then filters 
 by the document's `Address.Country` property as well as the time series' name. This 
 sends only stock price data for French companies.  
+    {CODE-BLOCK:javascript}
+    loadToCompanies(this);
 
-{CODE-BLOCK:javascript}
-loadToCompanies(this);
+    function loadTimeSeriesOfCompaniesBehavior(docId, timeSeriesName) {
+       var company = load(docId);
 
-function loadTimeSeriesOfCompaniesBehavior(docId, timeSeriesName) {
-   var company = load(docId);
-
-   if (company.Address.Country == 'France' && timeSeriesName = 'StockPrices')
-        return true;
-}
-{CODE-BLOCK/}
+       if (company.Address.Country == 'France' && timeSeriesName = 'StockPrices')
+            return true;
+    }
+    {CODE-BLOCK/}
 
 ---
 
@@ -443,14 +434,13 @@ function loadTimeSeriesOfCompaniesBehavior(docId, timeSeriesName) {
 * Time series can be loaded into the script context using `loadTimeSeries()`.  
 * Once a time series is loaded into the script, it can be added to a document using 
 `AddTimeSeries()`.  
+    {CODE-BLOCK:javascript}
+    var employee = loadToEmployees({
+        Name: this.Name + ' ' + this.LastName
+    });
 
-{CODE-BLOCK:javascript}
-var employee = loadToEmployees({
-    Name: this.Name + ' ' + this.LastName
-});
-
-employee.addTimeSeries(loadTimeSeries('StockPrices'));
-{CODE-BLOCK/}
+    employee.addTimeSeries(loadTimeSeries('StockPrices'));
+    {CODE-BLOCK/}
 
 {WARNING: }
 When using `addTimeSeries`, `addAttachment`, and\or `addCounter`, ETL deletes and 
@@ -673,21 +663,21 @@ function deleteDocumentsOfUsersBehavior(docId) {
 
 #### Storing deletion info in an additional document:
 
-* When you delete a document you can store a deletion marker document that will prevent propagating the deletion by ETL.  
-   * In the below example if the auxiliary document `LocalOnlyDeletions/{docId}` exists then we skip this deletion during ETL. 
-     The auxiliary document can be created to protect certain documents from deletion in the destination database.
-   * You can add `@expires` tag to the metadata when storing the marker document, so it would be automatically cleaned up after a certain time
-     by [the expiration extension](../../../server/extensions/expiration#setting-the-document-expiration-time).
+When you delete a document you can store a deletion marker document that will prevent propagating the deletion by ETL.  
 
-{CODE-BLOCK:javascript}
-loadToUsers(this);
+ * In the below example if the auxiliary document `LocalOnlyDeletions/{docId}` exists then we skip this deletion during ETL. 
+   The auxiliary document can be created to protect certain documents from deletion in the destination database.
+ * You can add `@expires` tag to the metadata when storing the marker document, so it would be automatically cleaned up after a certain time
+   by [the expiration extension](../../../server/extensions/expiration#setting-the-document-expiration-time).
+    {CODE-BLOCK:javascript}
+    loadToUsers(this);
 
-function deleteDocumentsOfUsersBehavior(docId) {
-    var localOnlyDeletion = load('LocalOnlyDeletions/' + docId);
+    function deleteDocumentsOfUsersBehavior(docId) {
+        var localOnlyDeletion = load('LocalOnlyDeletions/' + docId);
 
-    return !localOnlyDeletion;
-}
-{CODE-BLOCK/}
+        return !localOnlyDeletion;
+    }
+    {CODE-BLOCK/}
 
 #### When ETL is set on the entire database, but you want to filter deletions by certain collections:
 

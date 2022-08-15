@@ -56,54 +56,50 @@
 * All results created in a single ETL run will be sent in a single batch and processed transactionally in the destination.
 
    * For example, if you want to write data to the `Employees` collection you need to call the following method in the script body:
-
-{CODE-BLOCK:javascript}
-loadToEmployees({ ... });
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    loadToEmployees({ ... });
+    {CODE-BLOCK/}
 
 * The method parameter must be a JS object. You can create it as follows:
-
-{CODE-BLOCK:javascript}
-loadToEmployees({
-    Name: this.FirstName + " " + this.LastName
-});
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    loadToEmployees({
+        Name: this.FirstName + " " + this.LastName
+    });
+    {CODE-BLOCK/}
 
 * Or simply transform the current document object and pass it:
+    {CODE-BLOCK:javascript}
+    this.Name = this.FirstName + " " + this.LastName;
 
-{CODE-BLOCK:javascript}
-this.Name = this.FirstName + " " + this.LastName;
+    delete this.Address;
+    delete this.FirstName;
+    delete this.LastName;
 
-delete this.Address;
-delete this.FirstName;
-delete this.LastName;
-
-loadToEmployees(this);
-{CODE-BLOCK/}
+    loadToEmployees(this);
+    {CODE-BLOCK/}
 
 #### Example: loadTo Method
 
 The following is an example of a RavenDB ETL script processing documents from the `Employees` collection:
+    {CODE-BLOCK:javascript}
 
-{CODE-BLOCK:javascript}
+    var managerName = null;
 
-var managerName = null;
+    if (this.ReportsTo !== null)
+    {
+        var manager = load(this.ReportsTo);
+        managerName = manager.FirstName + " " + manager.LastName;
+    }
 
-if (this.ReportsTo !== null)
-{
-    var manager = load(this.ReportsTo);
-    managerName = manager.FirstName + " " + manager.LastName;
-}
-
-// load documents to `Employees` collection in the destination
-loadToEmployees({
-    // the loaded documents will have these fields:
-    Name: this.FirstName + " " + this.LastName,
-    Title: this.Title,
-    BornOn: new Date(this.Birthday).getFullYear(),
-    Manager: managerName
-});
-{CODE-BLOCK/}
+    // load documents to `Employees` collection in the destination
+    loadToEmployees({
+        // the loaded documents will have these fields:
+        Name: this.FirstName + " " + this.LastName,
+        Title: this.Title,
+        BornOn: new Date(this.Birthday).getFullYear(),
+        Manager: managerName
+    });
+    {CODE-BLOCK/}
 
 ---
 
@@ -113,19 +109,17 @@ loadToEmployees({
 
 * If the specified collection is the _same_ as the original one then the document is loaded to the _same_ collection and the original identifier is preserved.  
    * For example, the following ETL script defined in the `Employees` collection will keep the same identifiers in the target database:  
-
-{CODE-BLOCK:javascript}
-// original identifier will be preserved
-loadToEmployees({ ... });
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    // original identifier will be preserved
+    loadToEmployees({ ... });
+    {CODE-BLOCK/}
 
 * If the 'loadTo' method indicates a _different_ target collection, e.g. `People`,  
   then the employee documents will get new identifiers that combine the original ID and the new collection name in the destination database.  
-
-{CODE-BLOCK:javascript}
-// new identifier will be generated
-loadToPeople({ ... });
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    // new identifier will be generated
+    loadToPeople({ ... });
+    {CODE-BLOCK/}
 
 * In addition, ETL appends the symbol `/` to the requested id so that the target database will [generate identifiers on its side](../../../client-api/document-identifiers/working-with-document-identifiers#server-side-generated-ids).  
   As a result, documents in the `People` collection in the target database will have identifiers such as: `employees/1-A/people/0000000000000000001-A`.
@@ -135,34 +129,31 @@ loadToPeople({ ... });
 ### Filtering
 
 Documents can be filtered from the ETL by calling the `loadTo` method only for documents that match some condition:
-
-{CODE-BLOCK:javascript}
-if (this.Active) {
-    // load only active users
-    loadToEmployees({ ... });
-}
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    if (this.Active) {
+        // load only active users
+        loadToEmployees({ ... });
+    }
+    {CODE-BLOCK/}
 
 ---
 
 ### Loading Data from Other Documents
 
 The `load` method loads a document with the specified ID into the script context so it can be transformed.  
-
-{CODE-BLOCK:javascript}
-// this.ReportsTo has some document ID
-var manager = load(this.ReportsTo);
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    // this.ReportsTo has some document ID
+    var manager = load(this.ReportsTo);
+    {CODE-BLOCK/}
 
 ---
 
 ### Accessing Metadata
 
 The metadata can be accessed in the following way:
-
-{CODE-BLOCK:javascript}
-var value = this['@metadata']['custom-metadata-key'];
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    var value = this['@metadata']['custom-metadata-key'];
+    {CODE-BLOCK/}
 
 ---
 
@@ -170,21 +161,20 @@ var value = this['@metadata']['custom-metadata-key'];
 
 The `loadTo` method can be called multiple times in a single script.  
   That allows you to split a single source document into multiple documents on the destination database:
+    {CODE-BLOCK:javascript}
 
-{CODE-BLOCK:javascript}
+    // documents will be created in `Addresses` collection
+    loadToAddresses({
+        City: this.Address.City ,
+        Country: this.Address.Country ,
+        Address: this.Address.Line1
+    });
 
-// documents will be created in `Addresses` collection
-loadToAddresses({
-    City: this.Address.City ,
-    Country: this.Address.Country ,
-    Address: this.Address.Line1
-});
+    delete this.Address;
 
-delete this.Address;
-
-// documents will be created in the `Employees` collection
-loadToEmployees(this);
-{CODE-BLOCK/}
+    // documents will be created in the `Employees` collection
+    loadToEmployees(this);
+    {CODE-BLOCK/}
 
 {PANEL/}
 
@@ -217,16 +207,15 @@ loadToEmployees(this);
 * Attachment is sent along with a transformed document if it's explicitly defined in the script by using `addAttachment()` method. By default, the attachment name is preserved.
 * The script below sends _all_ attachments of a current document by taking advantage of `getAttachments()` function, loads each of them during transformation, and adds them to
 a document that will be sent to the 'Users' collection on the destination database.
+    {CODE-BLOCK:javascript}
+    var doc = loadToUsers(this);
 
-{CODE-BLOCK:javascript}
-var doc = loadToUsers(this);
+    var attachments = getAttachments();
 
-var attachments = getAttachments();
-
-for (var i = 0; i < attachments.length; i++) {
-    doc.addAttachment(loadAttachment(attachments[i].Name));
-}
-{CODE-BLOCK/}
+    for (var i = 0; i < attachments.length; i++) {
+        doc.addAttachment(loadAttachment(attachments[i].Name));
+    }
+    {CODE-BLOCK/}
 
 ---
 
@@ -235,16 +224,15 @@ for (var i = 0; i < attachments.length; i++) {
 * If `addAttachment()` is called with two arguments, the first one can indicate a new name for an attachment. In the example below, attachment `photo`
 will be sent and stored under the `picture` name.
 * To check the existence of an attachment `hasAttachment()` function is used
+    {CODE-BLOCK:javascript}
+    var employee = loadToEmployees({
+        Name: this.FirstName + " " + this.LastName
+    });
 
-{CODE-BLOCK:javascript}
-var employee = loadToEmployees({
-    Name: this.FirstName + " " + this.LastName
-});
-
-if (hasAttachment('photo')) {
-  employee.addAttachment('picture', loadAttachment('photo'));
-}
-{CODE-BLOCK/}
+    if (hasAttachment('photo')) {
+      employee.addAttachment('picture', loadAttachment('photo'));
+    }
+    {CODE-BLOCK/}
 
 ---
 
@@ -258,12 +246,9 @@ Function `loadAttachment()` returns `null` if a document doesn't have an attachm
 ### Accessing attachments from metadata
 
 The collection of attachments of the currently transformed document can be accessed either by `getAttachments()` helper function or directly from document metadata:
-
-
-
-{CODE-BLOCK:javascript}
-var attachments = this['@metadata']['@attachments'];
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    var attachments = this['@metadata']['@attachments'];
+    {CODE-BLOCK/}
 
 {PANEL/}
 
@@ -299,12 +284,11 @@ a script is defined on `Products` collection and it loads documents to `Products
 {INFO/}
 
 The function is defined in the script and should have the following signature:
-
-{CODE-BLOCK:javascript}
-function loadCountersOf<CollectionName>Behavior(docId, counterName) {
-   return [true | false]; 
-}
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    function loadCountersOf<CollectionName>Behavior(docId, counterName) {
+       return [true | false]; 
+    }
+    {CODE-BLOCK/}
 
 | Parameter | Type | Description |
 | - | - | - |
@@ -319,23 +303,22 @@ function loadCountersOf<CollectionName>Behavior(docId, counterName) {
 #### Example: Modifying a Counter Named "downloads"
 
 * The following script is defined on the `Products` collection:
+    {CODE-BLOCK:javascript}
 
-{CODE-BLOCK:javascript}
+    if (this.Category == 'software') {
+        loadToProducts({
+            ProductName: this.Name
+        });
+    }
 
-if (this.Category == 'software') {
-    loadToProducts({
-        ProductName: this.Name
-    });
-}
+    function loadCountersOfProductsBehavior(docId, counterName) {
+       var doc = load(docId);
 
-function loadCountersOfProductsBehavior(docId, counterName) {
-   var doc = load(docId);
+       if (doc.Category == 'software' && counterName = 'downloads')
+            return true;
+    }
 
-   if (doc.Category == 'software' && counterName = 'downloads')
-        return true;
-}
-
-{CODE-BLOCK/}
+    {CODE-BLOCK/}
 
 ---
 
@@ -349,11 +332,11 @@ Counter behavior functions typically handle counters of documents
   
   You can use special functions in the script code to deal with counters on documents that are loaded into different collections:
 
-{CODE-BLOCK:javascript}
-var person = loadToPeople({ Name: this.Name + ' ' + this.LastName });
+    {CODE-BLOCK:javascript}
+    var person = loadToPeople({ Name: this.Name + ' ' + this.LastName });
 
-person.addCounter(loadCounter('likes'));
-{CODE-BLOCK/}
+    person.addCounter(loadCounter('likes'));
+    {CODE-BLOCK/}
 
 * The above example indicates that the `likes` counter will be sent together with a document. It uses the following functions to accomplish that:
   - `loadCounter(name)` returns a reference to a counter that is meant be passed to `addCounter()`
@@ -409,11 +392,11 @@ But, if revisions are configured on the destination database, then when the targ
 
 In order to define deletion handling for a specific collection use the following signature:
 
-{CODE-BLOCK:javascript}
-function deleteDocumentsOf<CollectionName>Behavior(docId) {
-   return [true | false]; 
-}
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    function deleteDocumentsOf<CollectionName>Behavior(docId) {
+       return [true | false]; 
+    }
+    {CODE-BLOCK/}
 
    - `<CollectionName>` needs to be substituted by a real collection name that ETL script is working on (same convention as for `loadTo` method)
    - The first parameter is the identifier of a deleted document.
@@ -425,11 +408,11 @@ function deleteDocumentsOf<CollectionName>Behavior(docId) {
 
 Another option is the usage of a generic function for deletion handling:
 
-{CODE-BLOCK:javascript}
-function deleteDocumentsBehavior(docId, collection) {
-   return [true | false]; 
-}
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    function deleteDocumentsBehavior(docId, collection) {
+       return [true | false]; 
+    }
+    {CODE-BLOCK/}
 
    - The first parameter is the identifier of a deleted document.
    - The second parameter is the name of a collection.
@@ -469,26 +452,24 @@ When you delete a document you can store a deletion marker document that will pr
 * In the below example if `LocalOnlyDeletions/{docId}` exists then we skip this deletion during ETL.  
 * You can add `@expires` tag to the metadata when storing the marker document, so it would be automatically cleaned up after a certain time
   by [the expiration extension](../../../server/extensions/expiration#setting-the-document-expiration-time).
+    {CODE-BLOCK:javascript}
+    loadToUsers(this);
 
-{CODE-BLOCK:javascript}
-loadToUsers(this);
+    function deleteDocumentsOfUsersBehavior(docId) {
+        var localOnlyDeletion = load('LocalOnlyDeletions/' + docId);
 
-function deleteDocumentsOfUsersBehavior(docId) {
-    var localOnlyDeletion = load('LocalOnlyDeletions/' + docId);
-
-    return !localOnlyDeletion;
-}
-{CODE-BLOCK/}
+        return !localOnlyDeletion;
+    }
+    {CODE-BLOCK/}
 
 #### Example - filtering deletions using the generic function
 
 If you define ETL for all documents, regardless a collection they belong to, then the generic function can be used to filter out deletions by specifying a collection name
-
-{CODE-BLOCK:javascript}
-function deleteDocumentsBehavior(docId, collection) {
-    return 'Users' != collection;
-}
-{CODE-BLOCK/}
+    {CODE-BLOCK:javascript}
+    function deleteDocumentsBehavior(docId, collection) {
+        return 'Users' != collection;
+    }
+    {CODE-BLOCK/}
 
 {PANEL/}
 
