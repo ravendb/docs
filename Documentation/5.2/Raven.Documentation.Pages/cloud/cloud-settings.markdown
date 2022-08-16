@@ -37,12 +37,14 @@ To learn how to access the RavenDB Cloud Studio interface, see the [Studio secti
 
 When heavy-duty indexing is done on a large dataset, there are ways to prevent exhausting memory and other system resources. 
 
-* Indexing is done in batches so that we can calibrate the number of documents that an index processes 
-  in accordance with available system resources.  
-   * e.g. An index that processes 1,000,000 documents might exhaust memory and other system resources 
-     if the index is set to process them all in one batch.  
-     Instead, the index can be set to process the documents in batches of 10,000. 
-* If an index processes a collection in multiple batches, it will continue processing each new batch where the previous batch stopped.  
+* Indexing is done in batches so that we can calibrate the number of documents that are processed per batch
+  in accordance with available system resources. 
+  Additionally, batching creates pauses which free resources so that RavenDB can quickly serve its clients 
+  before it continues building the index.
+   * e.g. Processing 1,000,000 documents might exhaust memory and other system resources 
+     if the configuration is set to process them all in one batch.  
+     Instead, the index can be set to process the documents in batches of 10,000 to save system resources for other tasks. 
+* If RavenDB is indexing documents in multiple batches, it will continue processing each new batch where the previous batch stopped.  
 * To calibrate your indexing batch size, you can adjust the `Indexing.MapBatchSize` configuration setting.  
 
 The factors to consider when adjusting the max indexing batch size:
