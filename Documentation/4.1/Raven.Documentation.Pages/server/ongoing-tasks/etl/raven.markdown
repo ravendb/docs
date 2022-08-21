@@ -105,19 +105,31 @@ The following is an example of a RavenDB ETL script processing documents from th
 
 ### Documents Identifiers
 
-* The documents generated in the destination database are given an ID according to the collection name specified in the `loadTo` method.  
+The documents generated in the destination database are given an ID according to the collection name specified in the `loadTo` method.  
 
-* If the specified collection is the _same_ as the original one then the document is loaded to the _same_ collection and the original identifier is preserved.  
+**If the specified destination collection is the _same_ as the source** 
+then the document is loaded to the _same_ collection and the original identifier is preserved.  
+
    * For example, the following ETL script defined in the `Employees` collection will keep the same identifiers in the target database:  
     {CODE-BLOCK:javascript}
-    // original identifier will be preserved
+    // original ID will be preserved
     loadToEmployees({ ... });
     {CODE-BLOCK/}
 
-* If the 'loadTo' method indicates a _different_ target collection, e.g. `People`,  
+**If the 'loadTo' method indicates a _different_ destination collection**, e.g. `People`,  
   then the employee documents will get new identifiers that combine the original ID and the new collection name in the destination database.  
+
+  This forces us to load new documents with incremented IDs instead of overwriting the fields in existing documents.  
+
+  By default, RavenDB deletes the old document version in the destination.  
+  This can be changed by changing the [deletions behavior](../../../server/ongoing-tasks/etl/raven#deletions). 
+
+  RavenDB has to create a new, updated document in the destination with an [incremented server-made identity](../../../server/ongoing-tasks/etl/raven#documents-identifiers).
+  
+  * For example, if the source collection is `Employees` while the destination collection is `People`:
     {CODE-BLOCK:javascript}
-    // new identifier will be generated
+    // a new document with a new, incremented identifier will be generated in destination 
+    // by default, the old version will be deleted
     loadToPeople({ ... });
     {CODE-BLOCK/}
 

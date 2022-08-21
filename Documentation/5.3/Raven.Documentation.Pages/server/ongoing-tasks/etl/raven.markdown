@@ -105,19 +105,31 @@ loadToEmployees({
 
 ### Documents Identifiers
 
-* The documents generated in the destination database are given an ID according to the collection name specified in the `loadTo` method.  
+The documents generated in the destination database are given an ID according to the collection name specified in the `loadTo` method.  
 
-* If the specified collection is the _same_ as the original one then the document is loaded to the _same_ collection and the original identifier is preserved.  
+**If the specified destination collection is the _same_ as the source** 
+then the document is loaded to the _same_ collection and the original identifier is preserved.  
+
    * For example, the following ETL script defined in the `Employees` collection will keep the same identifiers in the target database:  
     {CODE-BLOCK:javascript}
-    // original identifier will be preserved
+    // original ID will be preserved
     loadToEmployees({ ... });
     {CODE-BLOCK/}
 
-* If the 'loadTo' method indicates a _different_ target collection, e.g. `People`,  
+**If the 'loadTo' method indicates a _different_ destination collection**, e.g. `People`,  
   then the employee documents will get new identifiers that combine the original ID and the new collection name in the destination database.  
+
+  This forces us to load new documents with incremented IDs instead of overwriting the fields in existing documents.  
+
+  By default, RavenDB deletes the old document version in the destination.  
+  This can be changed by changing the [deletions behavior](../../../server/ongoing-tasks/etl/raven#deletions). 
+
+  RavenDB has to create a new, updated document in the destination with an [incremented server-made identity](../../../server/ongoing-tasks/etl/raven#documents-identifiers).
+  
+  * For example, if the source collection is `Employees` while the destination collection is `People`:
     {CODE-BLOCK:javascript}
-    // new identifier will be generated
+    // a new document with a new, incremented identifier will be generated in destination 
+    // by default, the old version will be deleted
     loadToPeople({ ... });
     {CODE-BLOCK/}
 
@@ -493,7 +505,7 @@ If you want to control the way deletions are handled in the destination database
 you can change the default settings with the configurable functions described in this section.
 
 * [Why documents are deleted by default](../../../server/ongoing-tasks/etl/raven#deletions-why-documents-are-deleted-by-default-in-the-destination-database)
-* [Identifiers change when destination collections are different](../../../server/ongoing-tasks/etl/raven#identifiers-change-when-destination-collections-are-different)
+* [When destination collections are different](../../../server/ongoing-tasks/etl/raven#when-destination-collections-are-different)
 * [Collection specific function](../../../server/ongoing-tasks/etl/raven#deletions-collection-specific-function)
 * [Generic function](../../../server/ongoing-tasks/etl/raven#deletions-generic-function)
 * [Filtering deletions in the destination database](../../../server/ongoing-tasks/etl/raven#deletions-filtering-deletions-in-the-destination-database)
@@ -512,14 +524,14 @@ or to preserve a history of the document in the destination.
 
 The functions in this section were created to allow developers this control. 
 
-### Identifiers change when destination collections are different
+### When destination collections are different
 
-If we load a document to the same collection as the source, then the ID is preserved and no special approach is needed. Deletion in the source results in 
-sending a single delete command in the destination for a given ID.  
-If documents are updated and not deleted in the source, they will simply be updated in the destination. 
-  
-But, when we load documents to different collections, then the [ID](../../../server/ongoing-tasks/etl/raven#documents-identifiers) is different.  
-The source isn't aware of the new IDs created. This forces us to load new documents with incremented IDs instead of overwriting the fields in existing documents.  
+**If we ETL to a different collection than the source**,  
+the source isn't aware of the new IDs created. 
+This forces us to load new documents with incremented IDs instead of overwriting the fields in existing documents.  
+RavenDB has to create a new, updated document in the destination with an [incremented server-made identity](../../../server/ongoing-tasks/etl/raven#documents-identifiers).  
+You can then choose if you want to delete the old version in the destination by selecting 
+`return false` in the transform script function [deleteDocumentsBehavior](../../../server/ongoing-tasks/etl/raven#deletions-generic-function). 
 
 * Each updated version of the document gets a [server generated ID](../../../client-api/document-identifiers/working-with-document-identifiers#server-side-generated-ids)
   in which the number at the end is incremented with each version.  
@@ -538,6 +550,11 @@ The source isn't aware of the new IDs created. This forces us to load new docume
      `employees/1-A/people/0000000000000000001-A` and `employees/1-A/sales/0000000000000000001-A`.  
      Deletion or modification of the `employees/1-A` document on the source side triggers sending a command that deletes **all** documents 
      having the following prefix in their ID: `employees/1-A`.  
+
+**If we load a document to the same collection as the source**,  
+then the ID is preserved and no special approach is needed. Deletion in the source results in 
+sending a single delete command in the destination for a given ID.  
+If documents are updated and not deleted in the source, they will simply be updated in the destination with no change to the destination document ID. 
 
 ---
 
@@ -573,12 +590,13 @@ e.g. `function deleteDocumentsOfOrdersBehavior(docId, deleted) {return false;}`
 ### Example - Collection Specific Deletion Behavior Function
 
 To define deletion handling when the source and destination collections are the same, use the following sample. 
+If you ETL to a different collection than the source, there is a different deletion behavior in the destination.
 
 {CODE-BLOCK:javascript}
 function deleteDocumentsOfproductsHistoryBehavior(docId, deleted) {
     // If any document in the specified source collection is modified but is not deleted,  
     // then the ETL will not send a delete command to the destination.  
-    if (deleted == false) 
+    if (deleted === false) 
     return false; 
     // If the source document was deleted, the destination will also be deleted 
     else return true;
@@ -597,7 +615,7 @@ There is also a generic function to control deletion on different collections.
 {CODE-BLOCK:javascript}
 function deleteDocumentsBehavior(docId, collection, deleted) {
 
-    if (collection == "Users" && deleted == false) 
+    if (collection === "string" && deleted === <bool>) 
         return <bool>; 
 }
 {CODE-BLOCK/}
@@ -620,7 +638,7 @@ trigger the command regardless of whether the source document was deleted.
 
 ### Example - Generic deletions behavior function
 
-[If the source and destination collection names are different](../../../server/ongoing-tasks/etl/raven#identifiers-change-when-destination-collections-are-different)  
+[If the source and destination collection names are different](../../../server/ongoing-tasks/etl/raven#when-destination-collections-are-different)  
 and deletions behavior is set to false,  
 each document change will load a new document with an incremented document identity, thus saving a history.  
 
@@ -633,7 +651,7 @@ function deleteDocumentsBehavior(docId, collection, deleted) {
     // then the ETL will not send a delete command to the destination collection "Products".
     // (If collection names were different, the old document versions would remain 
     // and a new version would be stored with an incremented ID, thus saving a history of document versions.)
-    if (collection == "Products" && deleted == false) 
+    if (collection === "Products" && deleted === false) 
         return false; 
     // If the source document was deleted, delete the entire set of versions from the destination.
     else return true;
@@ -706,7 +724,7 @@ function deleteDocumentsBehavior(docId, collection, deleted) {
 The following example will check if the source document was deleted or just updated before 
 loading the transformed document. This function can be used if the destination collection is the same or different from the source.  
 
-> [In this example, the source and destination collection names are different](../../../server/ongoing-tasks/etl/raven#identifiers-change-when-destination-collections-are-different) 
+> [In this example, the source and destination collection names are different](../../../server/ongoing-tasks/etl/raven#when-destination-collections-are-different) 
 and deletions behavior is set to false if the source is deleted, 
 so source deletions won't delete the destination document, thus saving a history of documents even if they're deleted in the source.  
 
@@ -730,13 +748,13 @@ loadToproductsHistory ({
 
 function deleteDocumentsBehavior(docId, collection, deleted) {
     // Prevents document deletions from destination collection "productsHistory" if source document is deleted.
-    if (collection == "productsHistory" && deleted === true)
+    if (collection === "productsHistory" && deleted === true)
         return false; 
     // If the source document information is updated (NOT deleted), 
     // and the source and destination collection names are different, like in this example, 
     // the script will delete then replace the destination document 
     // (with an incremented ID) to keep it current.
-    if (collection == "productsHistory" && deleted === false)
+    if (collection === "productsHistory" && deleted === false)
         return true; 
 }
 {CODE-BLOCK/}
