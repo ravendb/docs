@@ -1,8 +1,20 @@
 # Configuration: Cluster
+---
+
+{NOTE: Nodes must usually have identical cluster configurations.}
+Configuration mismatches tend to cause interaction problems between nodes.
+
+If you must set cluster configurations differently in separate nodes, we recommend first testing it 
+in a development environment to see that each node interacts properly with the others.
+{NOTE/}
+
+---
 
 {PANEL:Cluster.ElectionTimeoutInMs}
 
 Timeout in which the node expects to receive a heartbeat from the leader, in milliseconds.
+
+Each node in a cluster must have the same configuration.
 
 - **Type**: `int`
 - **Default**: `300`
@@ -94,8 +106,137 @@ TCP connection read/write timeout in milliseconds.
 
 Set hard/soft delete for a database that was removed by the observer from the cluster topology in order to maintain the replication factor.
 
+Each node in a cluster must have the same configuration.
+
 - **Type**: `bool`
 - **Default**: `true`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Cluster.MaximalAllowedClusterVersion}
+
+EXPERT: If exceeded, clamp the cluster to the specified version.  
+
+Each node in a cluster must have the same configuration.
+
+- **Type**: `int?`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Cluster.LogHistoryMaxEntries}
+
+EXPERT: Maximum number of log entires to keep in the history log table.  
+
+Each node in a cluster must have the same configuration.
+
+- **Type**: `int`
+- **Default**: `2048`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Cluster.DisableAtomicDocumentWrites}
+
+EXPERT: Disable automatic atomic writes with cluster write transactions.  
+If set to 'true', will only consider explicitly added compare exchange values 
+to validate cluster wide transactions.  
+
+Each node in a cluster must have the same configuration.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
+{PANEL:Cluster.MaxSizeOfSingleRaftCommandInMb}
+
+EXPERT: The maximum allowed size allowed for a single raft command (in megabytes).
+
+Each node in a cluster must have the same configuration.
+
+- **Type**: `Size?`
+- SizeUnit(SizeUnit.Megabytes)
+- **Default**: `128`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Cluster.MaxChangeVectorDistance}
+
+Excceding the allowed change vector distance between two nodes, will move the lagged node to rehab.
+
+- **Type**: `long`
+- **Default**: `10_000`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Cluster.CompareExchangeExpiredDeleteFrequencyInSec}
+
+Time (in seconds) between expired compare exchange cleanup.
+
+- **Type**: `TimeSetting`
+- TimeUnit(TimeUnit.Seconds)
+- **Default**: `60`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Cluster.CompareExchangeTombstonesCleanupIntervalInMin}
+
+Time (in minutes) between compare exchange tombstones cleanup.
+
+- **Type**: `TimeSetting`
+- TimeUnit(TimeUnit.Minutes)
+- **Default**: `10`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Cluster.TcpReceiveBufferSizeInBytes}
+
+Tcp connection receive buffer size in bytes.
+
+- **Type**: `Size`
+- SizeUnit(SizeUnit.Bytes)
+- **Default**: `32 * 1024`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Cluster.TcpSendBufferSizeInBytes}
+
+Tcp connection send buffer size in bytes.
+
+- **Type**: `Size`
+- SizeUnit(SizeUnit.Bytes)
+- **Default**: `32 * 1024`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Cluster.TimeBeforeRotatingPreferredNodeInSec}
+
+The grace time we give to the preferred node before we move it to the end of the members list.
+
+- **Type**: `TimeSetting`
+- TimeUnit(TimeUnit.Seconds)
+- **Default**: `5`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Cluster.TimeBeforeMovingToRehabInSec}
+
+The grace time we give to a node before it will be moved to rehab.
+
+- **Type**: `TimeSetting`
+- TimeUnit(TimeUnit.Seconds)
+- **Default**: `60`
 - **Scope**: Server-wide only
 
 {PANEL/}
