@@ -48,11 +48,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                     // Only the specified indexes will compact.
                     Indexes = new[] { "Orders/Totals", "Orders/ByCompany" } 
                 };
-                // Use 'ForNode(<node tag>)' to specify on which node to compact.
-                // To compact on all nodes, the command must be sent to each node separately.
+                // You can use 'ForNode(<nodeTag>)' to specify on which node to compact.
+                // If ForNode() is not used, RavenDB will operate by default on the preferred node.
                 Operation operation = store.Maintenance.Server.ForNode("A")
                     .Send(new CompactDatabaseOperation(settings));
                 operation.WaitForCompletion();
+
+                // To compact on all nodes, the above command must be sent to each node separately.
                 #endregion
             }
             using (var store = new DocumentStore())
@@ -69,11 +71,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                     // 'indexNames' contains all of the index names.
                     Indexes = indexNames
                 };
-                // Use 'ForNode(<node tag>)' to specify on which node to compact.
-                // To compact on all nodes, the command must be sent to each node separately.
+                // You can use 'ForNode(<nodeTag>)' to specify on which node to compact.
+                // If ForNode() is not used, RavenDB will operate by default on the preferred node.
                 Operation operation = store.Maintenance.Server.ForNode("A")
                     .Send(new CompactDatabaseOperation(settings));
                 operation.WaitForCompletion();
+
+                // To compact on all nodes, the above command must be sent to each node separately.
                 #endregion
             }
         }
