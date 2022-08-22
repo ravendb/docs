@@ -38,7 +38,7 @@ and during this operation, **the database will be offline**.
 `DatabaseName` is a mandatory parameter.  
 You must also specify `Documents` and/or `Indexes`.
 
-| Parameters | | |
+| Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **DatabaseName** | string | Name of a database to compact |
 | **Documents** | bool | Indicates if documents should be compacted |
