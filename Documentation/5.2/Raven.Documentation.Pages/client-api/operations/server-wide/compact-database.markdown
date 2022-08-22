@@ -35,6 +35,9 @@ and during this operation, **the database will be offline**.
 
 {CODE compact_2@ClientApi\Operations\Server\Compact.cs /}
 
+`DatabaseName` is a mandatory parameter.  
+You must also specify `Documents` and/or `Indexes`.
+
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **DatabaseName** | string | Name of a database to compact |
