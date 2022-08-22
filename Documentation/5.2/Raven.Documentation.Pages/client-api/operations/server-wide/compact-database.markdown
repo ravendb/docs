@@ -43,7 +43,8 @@ and during this operation, **the database will be offline**.
 
 ## Example I - Compact specific indexes
 
-Specific indexes are listed in `CompactSettings` in this example.
+The following example shows how to compact only specific indexes.
+Documents are set to be compacted in this example.
 
 {CODE compact_3@ClientApi\Operations\Server\Compact.cs /}
 
