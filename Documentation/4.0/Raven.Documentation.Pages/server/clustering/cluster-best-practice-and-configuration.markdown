@@ -14,7 +14,7 @@ For ACID guarantees, a majority of the nodes must agree on every transaction, so
 
 {NOTE/}
 
-{NOTE: Nodes must usually have identical cluster configurations.}
+{NOTE: Nodes usually must have identical cluster configurations.}
 Configuration mismatches tend to cause interaction problems between nodes.
 
 If you must set cluster configurations differently in separate nodes, we recommend first testing it 
