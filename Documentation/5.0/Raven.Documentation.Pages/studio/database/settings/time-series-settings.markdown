@@ -214,7 +214,7 @@ Here are the different levels of resolution that they want to see:
    Toggle to set a retention policy for raw time series entries.  
    !["Set Retention Policy"](images/time-series-settings-06_retention.png "Set Retention Policy")
     * **(a) Enable Retention**  
-      Enable setting a retention time period for **raw data** of all time series in the selected collection.  
+      Toggle to set a retention time period for **raw data** of all time series in the selected collection.  
     * **(b) Retention Time**  
       Set the retention time.  
       In the example above, raw time series entries older than 1 hour will be removed.  
@@ -235,7 +235,7 @@ Here are the different levels of resolution that they want to see:
       In the above example, every 10 minutes of raw time series data will be aggregated  
       into a single entry of the new rollup time series.  
     * **(c) Enable Retention**  
-      Enable setting a retention time period for the new rollup time series entries.
+      Toggle to set a retention time period for the new rollup time series entries.
       {NOTE: }
       The **aggregation time** cannot exceed the **retention period** 
       defined for the origin time series.  
