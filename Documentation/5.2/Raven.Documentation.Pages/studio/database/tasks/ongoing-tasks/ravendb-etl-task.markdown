@@ -106,7 +106,7 @@
     thus, a new Ongoing RavenDB ETL Task ***cannot*** be scheduled.  
 
   * If a RavenDB ETL Task was _already_ defined and active when the cluster went down,  
-    then the task will not be active, so ETL will take place.  
+    then the task will not be active, so ETL will not take place.  
 
 * **When the node responsible for the ETL task is down:**  
 
@@ -132,10 +132,11 @@
       This means that [as long as the destination collection is the same as the source](../../../../server/ongoing-tasks/etl/raven#deletions), 
       any modifications done to the data sent by ETL on the destination database side are lost when overwriting occurs.  
 
-    * If you need to modify the ETL'ed data in the destination side, you should create a companion document on the destination database instead of modifying the data sent directly.  
-      The rule is:  With data sent by ETL, you can look but not touch.  
+    * If you need to modify the data that's transferred to the destination side, 
+      you should create a companion document in the destination database instead of modifying the data sent directly.  
+      The rule is:  **With ETL destination documents, you can look but not touch.**  
 
-    * On the other hand, Data that is replicated with RavenDB's [External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) does _not_ overwrite existing documents.  
+    * On the other hand, data that is replicated with RavenDB's [External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) does _not_ overwrite existing documents.  
       Conflicts are created and handled according to the destination database policy defined.  
       This means that you _can_ change the replicated data on the destination database and conflicts will be solved.  
 
