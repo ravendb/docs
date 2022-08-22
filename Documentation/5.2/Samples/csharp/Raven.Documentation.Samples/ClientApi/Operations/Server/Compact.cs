@@ -40,7 +40,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             using (var store = new DocumentStore())
             {
                 #region compact_3
-                // Specify indexes to compact.
                 CompactSettings settings = new CompactSettings
                 {
                     DatabaseName = "Northwind",
@@ -49,7 +48,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                     // Only the specified indexes will compact.
                     Indexes = new[] { "Orders/Totals", "Orders/ByCompany" } 
                 };
-                // Use 'ForNode("node tag")' to specify on which node to compact.
+                // Use 'ForNode(<node tag>)' to specify on which node to compact.
                 // To compact on all nodes, the command must be sent to each node separately.
                 Operation operation = store.Maintenance.Server.ForNode("A")
                     .Send(new CompactDatabaseOperation(settings));
@@ -59,8 +58,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             using (var store = new DocumentStore())
             {
                 #region compact_4
-                // To compact all indexes in the database 
-                // get all index names.
+                // get all index names in the database.
                 string[] indexNames = store.Maintenance.Send(new GetIndexNamesOperation(0, int.MaxValue));
 
                 CompactSettings settings = new CompactSettings
@@ -71,8 +69,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                     // 'indexNames' contains all of the index names.
                     Indexes = indexNames
                 };
-                // Compact entire database: documents + all indexes.
-                // Use 'ForNode("node tag")' to specify on which node to compact.
+                // Use 'ForNode(<node tag>)' to specify on which node to compact.
                 // To compact on all nodes, the command must be sent to each node separately.
                 Operation operation = store.Maintenance.Server.ForNode("A")
                     .Send(new CompactDatabaseOperation(settings));

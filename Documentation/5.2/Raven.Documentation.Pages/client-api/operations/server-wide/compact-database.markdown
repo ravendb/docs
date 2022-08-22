@@ -1,29 +1,33 @@
 # Operations: Server: How to Compact a Database
 
-* Use the `CompactDatabaseOperation` to compact a database.  
-  {INFO: The operation compacts on one node.}
-     The command must be sent to each node separately by using `ForNode("node tag")`.  
-     [See example I](../../../client-api/operations/server-wide/compact-database#example-i---compact-specific-indexes) 
-     or [example II](../../../client-api/operations/server-wide/compact-database#example-ii---compact-all-indexes) below.
-  {INFO/}
-* Compaction removes empty gaps that still occupy space after deletes.
+* The compaction operation removes empty gaps on the disk that still occupy space after deletes.
+
 * You can choose what should be compacted: documents and/or listed indexes.  
-  [See example I](../../../client-api/operations/server-wide/compact-database#example-i---compact-specific-indexes) 
-  and [example II](../../../client-api/operations/server-wide/compact-database#example-ii---compact-all-indexes) below.
-* Compaction can also be done in the Studio database statistics [Storage Report](../../../studio/database/settings/documents-compression#database-storage-report).
-   * In Studio, compaction will be done only on the node that is being viewed.  
-     See the info bar at the bottom of the Studio interface to see which node you're viewing.
+  [See Example I - Compact specific indexes](../../../client-api/operations/server-wide/compact-database#example-i---compact-specific-indexes) 
+  and [Example II- Compact all indexes](../../../client-api/operations/server-wide/compact-database#example-ii---compact-all-indexes) below.
+
+* The operation compacts on one node.  
+  If you wish to compact all nodes in the database group, the command must be sent to each node separately  
+  by using `ForNode("node tag")`.  [See example I](../../../client-api/operations/server-wide/compact-database#example-i---compact-specific-indexes) 
+  or [example II](../../../client-api/operations/server-wide/compact-database#example-ii---compact-all-indexes) below.
+
+* Compaction triggers [documents compression](../../../server/storage/documents-compression) 
+  on all collections that are configured for compression.  
+  Without using CompactDatabaseOperation, only new or modified documents become compressed.
+  
+* **From Client API:**
+  Use the `CompactDatabaseOperation` to select the collections and compact them.  
+  To compact on more than one node, the command must be sent to each node by specifying `ForNode("node tag")`. 
+
+* **From Studio:**
+  Compaction can be triggered from the [Storage Report](../../../studio/database/settings/documents-compression#database-storage-report) view.  
+  The operation will compact the database only on the node being viewed.  
+  See the info bar at the bottom of the Studio interface to see which node you're viewing.
 
 {WARNING: The database will be offline during compaction.}
 The compacting operation is executed **asynchronously**, 
 and during this operation, **the database will be offline**.  
 {WARNING/}
-
-{INFO: Compaction triggers compression on all collections configured for compression.}
-If [documents compression](../../../server/storage/documents-compression) is set on any collection, 
-all documents in that collection will be compressed upon compaction.  
-Without using CompactDatabaseOperation, only documents that are created or modified become compressed.
-{INFO/}
 
 * In this page:
    * [Syntax](../../../client-api/operations/server-wide/compact-database#syntax)
@@ -45,10 +49,14 @@ Without using CompactDatabaseOperation, only documents that are created or modif
 
 ## Example I - Compact specific indexes
 
+Specific indexes are listed in `CompactSettings` in this example.
+
 {CODE compact_3@ClientApi\Operations\Server\Compact.cs /}
 
 
 ## Example II - Compact all indexes
+
+The following example shows how compact all of the indexes and documents in the database. 
 
 {CODE compact_4@ClientApi\Operations\Server\Compact.cs /}
 
@@ -69,7 +77,16 @@ Without using CompactDatabaseOperation, only documents that are created or modif
 
 ## Related Articles
 
-- [How to **create** database?](../../../client-api/operations/server-wide/create-database) 
-- [How to get database **statistics**?](../../../client-api/operations/maintenance/get-statistics)
-- [How to start **restore** operation?](../../../client-api/operations/server-wide/restore-backup)
+**Database**
 
+- [How to create database?](../../../client-api/operations/server-wide/create-database) 
+- [How to get database statistics](../../../client-api/operations/maintenance/get-statistics)
+- [How to restore a database from backup](../../../client-api/operations/server-wide/restore-backup)
+
+**Compression**
+
+- [Documents Compression](../../../server/storage/documents-compression)
+
+**Studio**
+
+- [Storage Report](../../../studio/database/settings/documents-compression#database-storage-report)
