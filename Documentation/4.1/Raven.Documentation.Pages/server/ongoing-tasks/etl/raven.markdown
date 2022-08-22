@@ -117,14 +117,14 @@ then the document is loaded to the _same_ collection and the original identifier
     {CODE-BLOCK/}
 
 **If the 'loadTo' method indicates a _different_ destination collection**, e.g. `People`,  
-  then the employee documents will get new identifiers that combine the original ID and the new collection name in the destination database.  
+  then the `Employees` documents will get new identifiers that combine the original ID and the new collection name in the destination database.  
 
   This forces us to load new documents with incremented IDs instead of overwriting the fields in existing documents.  
 
   By default, RavenDB deletes the old document version in the destination.  
   This can be changed by changing the [deletions behavior](../../../server/ongoing-tasks/etl/raven#deletions). 
 
-  RavenDB has to create a new, updated document in the destination with an [incremented server-made identity](../../../server/ongoing-tasks/etl/raven#documents-identifiers).
+  RavenDB has to create a new, updated document in the destination with an [incremented server-made identity](../../../client-api/document-identifiers/working-with-document-identifiers#server-side-generated-ids).
   
   * For example, if the source collection is `Employees` while the destination collection is `People`:
     {CODE-BLOCK:javascript}
@@ -133,8 +133,8 @@ then the document is loaded to the _same_ collection and the original identifier
     loadToPeople({ ... });
     {CODE-BLOCK/}
 
-* In addition, ETL appends the symbol `/` to the requested id so that the target database will [generate identifiers on its side](../../../client-api/document-identifiers/working-with-document-identifiers#server-side-generated-ids).  
-  As a result, documents in the `People` collection in the target database will have identifiers such as: `employees/1-A/people/0000000000000000001-A`.
+* In addition, ETL appends the symbol `/` to the requested id so that the target database will [generate identifiers on its side](../../../client-api/document-identifiers/working-with-document-identifiers#server-side-generated-ids). 
+  As a result, documents in the `People` collection in the target database will have identifiers such as: `employees/1-A/people/00000000000000000024-A`.
 
 ---
 
