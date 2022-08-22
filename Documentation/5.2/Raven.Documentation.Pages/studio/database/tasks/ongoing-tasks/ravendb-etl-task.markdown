@@ -134,7 +134,8 @@
 
     * If you need to modify the data that's transferred to the destination side, 
       you should create a companion document in the destination database instead of modifying the data sent directly.  
-      The rule is:  **With ETL destination documents, you can look but not touch.**  
+      **If you modify a document that is loaded by ETL, your modifications will be lost** when the ETL process deletes and loads the updated document in the destination server.  
+      The rule is:  With ETL destination documents, you can look but don't touch.  
 
     * On the other hand, data that is replicated with RavenDB's [External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) does _not_ overwrite existing documents.  
       Conflicts are created and handled according to the destination database policy defined.  
