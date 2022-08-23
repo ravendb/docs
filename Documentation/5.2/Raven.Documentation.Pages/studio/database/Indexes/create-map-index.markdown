@@ -27,7 +27,7 @@
    **Clone** - Clone this index (available for an already saved index).  
    **Index History** - Open the [Index History Dialog](../../../studio/database/indexes/index-history#index-history-dialog).  
 
-2. Options avaliable for an already saved index:  
+2. Options available for an already saved index:  
    **Copy C#** - Click to view and copy the C# class that defines the index as set in the Studio.  
    **Query** - Click to go the the Query View and query this index.  
    **Terms** - Click to see the index terms, see [below](../../../studio/database/indexes/create-map-index#index-fields-&-terms).  
@@ -108,7 +108,7 @@
                           The Analyzer is set in the _'Indexing'_ dropdown. The default analyzer is a simple case-insensitive analyzer.  
 
   * `Highlighting` - Set to _'Yes'_ to enable [Highlighting](../../../indexes/querying/highlighting). Requires 
-                     Storage to be set to 'Yes'. In the advanced options Indexing needs to be set to 'Search' and 
+                     Storage to be set to 'Yes'. In the advanced options, Indexing needs to be set to 'Search' and 
                      Term Vector set to 'WithPositionsAndOffsets'.  
 
   * `Suggestions` -  Setting _'Suggestions'_ will allow you to query what the user probably meant to ask about. i.e. spelling errors.  
@@ -147,10 +147,24 @@
 
 {PANEL: Configuration}
 
-![Figure 4. Configuration](images/create-map-index-4.png "Figure-4: Configuration")
+!["Setting Configuration via Studio"](images\configuration-setting-new-config.png "Setting Configuration via Studio")
 
-* Set values for specific index configuration options.  
-* Learn more about each option in: [Configuration: Indexing](../../../server/configuration/indexing-configuration).  
+1. **Indexes Tab**  
+   Click to see indexing options.
+2. **List of Indexes**  
+   Select to see the list of your current indexes.
+   You can only configure static indexes, not auto-indexes. 
+   Select the index for which you want to change the default settings.
+3. **Configuration**  
+   Scroll down and select the Configuration tab.
+4. **Add customized indexing configuration**  
+   Click to select configuration and change the value.  
+5. **Indexing Configuration Key**  
+   Paste or select the configuration key that you want to change.
+6. **Value**  
+   Enter the new value for this configuration.
+   * **Click Save** at the top of the interface when finished.
+
 {PANEL/}
 
 {PANEL: Additional Assemblies}

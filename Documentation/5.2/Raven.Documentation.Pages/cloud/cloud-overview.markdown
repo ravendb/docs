@@ -313,7 +313,9 @@ RavenDB provides a built-in [GUI to monitor and manage](../studio/overview) your
    * Manage your license and support plan options.
    * Customize search analyzers.
    * Access debug tools, logs, and metrics.
-* [Your RavenDB databases](../studio/overview#manage-your-databases)  
+* [Your RavenDB clusters](../studio/cluster/cluster-dashboard/cluster-dashboard-overview)  
+   * You can see real-time statistics about your cluster with moveable widgets in the cluster dashboard.
+* [Your RavenDB databases](../studio/database/databases-list-view)  
    * Create or delete databases.
    * Create and edit indexes.
    * Run queries and patches.
@@ -322,7 +324,6 @@ RavenDB provides a built-in [GUI to monitor and manage](../studio/overview) your
    * Adjust settings.
       * Occasionally, cloud instance settings are different than general RavenDB defaults.  
         See [cloud-specific settings](../cloud/cloud-settings).
-
 
 
 {PANEL/}
