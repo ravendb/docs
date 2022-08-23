@@ -13,7 +13,8 @@
 
 * ETL is different from data replication. See [RavenDB ETL Task -vs- Replication Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--replication-task)  
 
-* In RavenDB ETL, [a certificate must be passed](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate-between-secure-clusters) from the source server to the destination so that the destination server trusts the source.  
+* In RavenDB ETL, [a certificate must be passed](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate-between-secure-clusters) 
+  from the source server to the destination so that the destination server trusts the source.  
 
 * In this page:  
   * [RavenDB ETL Task - Definition](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---definition)  
@@ -32,7 +33,7 @@
 
 1. **Task Name** (Optional)  
    * Choose a name of your choice  
-   * If no name is given then RavenDB server will create one for you based on the defined connection string  
+   * If no name is given then the RavenDB server will create one for you based on the defined connection string  
 
 2. **Preferred Node** (Optional)  
   * Select a preferred mentor node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be the responsible node for this RavenDB ETL Task  
@@ -40,7 +41,7 @@
 
 3. **Connection String**  
    * Select an existing connection string from the list or create a new one  
-   * The connection string defines the destination database and its database group server nodes URLs  
+   * The connection string defines the destination database and its database group server node URLs  
 
 {PANEL/}
 
@@ -62,21 +63,21 @@
    When checking this option RavenDB will start the ETL process for this script from _scratch_ ("beginning of time"),  
    rather than apply the update only to new or updated documents.  
 
-5. Select the collections for the ETL task - **or** - apply to all collections  
+5. Select the collections for the ETL task - **or** - apply the script to all collections  
 {PANEL/}
 
 {PANEL: Passing Certificate Between Secure Clusters}
 
 **Pass Certificate from Source Cluster to Destination Cluster**  
-  This step must be done if connecting *to a another cluster* so that the destination cluster trusts the source.  
+  This step must be done if connecting *to another cluster* so that the destination cluster trusts the source.  
 
   * **Via RavenDB Studio:**  
-    Navigate from the "Manage Server" tab (left side) > "Certificates" to open the [Certificate Management](../../../../server/security/authentication/certificate-management) view.  
-     - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers-importing-and-exporting-certificates).  
+  Navigate from the "Manage Server" tab (left side) > "Certificates" to open the [Certificate Management view](../../../../server/security/authentication/certificate-management#studio-certificates-management-view).  
+     - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates).  
   * **Via API:**  
-    See the code sample to learn how to [define a client certificate in the DocumentStore()](../../../../client-api/creating-document-store).  
+  See the code sample to learn how to [define a client certificate in the DocumentStore](../../../../client-api/creating-document-store).  
      - To generate and configure a client certificate from the source server, see [CreateClientCertificateOperation](../../../../client-api/operations/server-wide/certificates/create-client-certificate)
-     - Learn the rationale needed to configure client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
+* Learn the rationale needed to configure client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
 
 
 {PANEL/}
@@ -91,7 +92,7 @@
    *  Destination Database - The destination database to which the data is being sent  
    *  Actual Destination URL - The server URL to which the data is actually being sent,  
       the one that is currently used out of the available _Topology Discovery URLs_  
-   *  Topology Discovery URLs - List of the available destination Database Group servers URLs  
+   *  Topology Discovery URLs - List of the available destination Database Group server URLs  
 
 2. **Graph view**:  
    Graph view of the responsible node for the External Replication Task  
@@ -105,7 +106,7 @@
     thus, a new Ongoing RavenDB ETL Task ***cannot*** be scheduled.  
 
   * If a RavenDB ETL Task was _already_ defined and active when the cluster went down,  
-    then the task will not be active, data will not be ETL'ed.  
+    then the task will not be active, so ETL will not take place.  
 
 * **When the node responsible for the ETL task is down:**  
 
@@ -125,21 +126,24 @@
 1. **Data ownership**:  
 
     * When a RavenDB node performs an **ETL** to another node it is _not_ replicating the data, it is _writing_ it.  
-      In other words, we always _overwrite_ whatever exists on the other side, there is no [conflicts handling](../../../../studio/database/settings/conflict-resolution).  
+      In other words, we always _overwrite_ whatever exists on the other side, there is no [conflict handling](../../../../studio/database/settings/conflict-resolution).  
 
     * The source database for the ETL process is the owner of the data.  
-      This means that any modifications done to the ETL'ed data on the destination database side are lost when overwriting occurs.  
+      This means that [as long as the destination collection is the same as the source](../../../../server/ongoing-tasks/etl/raven#deletions), 
+      any modifications done to the data sent by ETL on the destination database side are lost when overwriting occurs.  
 
-    * If you need to modify the ETL'ed data in the destination side, you should create a companion document on the destination database instead of modifying the ETL'ed data directly.  
-      The rule is: For ETL'ed data, you can look but not touch...  
+    * If you need to modify the data that's transferred to the destination side, 
+      you should create a companion document in the destination database instead of modifying the data sent directly.  
+      **If you modify a document that is loaded by ETL, your modifications will be lost** when the ETL process deletes and loads the updated document in the destination server.  
+      The rule is:  With ETL destination documents, you can look but don't touch.  
 
-    * On the other hand, Data that is replicated with RavenDB's [External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) does _not_ overwrite existing documents.  
+    * On the other hand, data that is replicated with RavenDB's [External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) does _not_ overwrite existing documents.  
       Conflicts are created and handled according to the destination database policy defined.  
       This means that you _can_ change the replicated data on the destination database and conflicts will be solved.  
 
 2. **Data content**:  
 
-    * With replication Task, _all_ documents contained in the database are replicated to the destination database _without_ any content modification.  
+    * With the replication Task, _all_ documents contained in the database are replicated to the destination database _without_ any content modification.  
 
     * Whereas in ETL, the document content sent can be filtered and modified with the supplied transformation script.  
       In addition, partial data can be sent as specific collections can be selected.  
