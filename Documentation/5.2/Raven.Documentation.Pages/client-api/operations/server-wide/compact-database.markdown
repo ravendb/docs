@@ -8,14 +8,17 @@
   If you wish to compact all nodes in the database group, the command must be sent to each node separately.  
 
 * **From Client API:**
-  Use the `CompactDatabaseOperation` to select the collections and compact them.  
-  To compact on more than one node, the command must be sent to each node by specifying `ForNode("node tag")`. 
+  Use the `CompactDatabaseOperation`.  
+  To compact on more than one node, the command must be sent to each node by specifying `ForNode(<nodeTag>)`. 
 
 * **From Studio:**
   Compaction can be triggered from the [Storage Report](../../../studio/database/settings/documents-compression#database-storage-report) view.  
   The operation will compact the database only on the node being viewed (node info is in the Studio footer).  
 
-
+{WARNING: The database will be offline during compaction.}
+The compacting operation is executed **asynchronously**, 
+and during this operation, **the database will be offline**.  
+{WARNING/}
 
 * In this page:
    * [Syntax](../../../client-api/operations/server-wide/compact-database#syntax)
@@ -23,11 +26,6 @@
    * [Example II - Compact all indexes](../../../client-api/operations/server-wide/compact-database#example-ii---compact-all-indexes)
    * [Example III - Compact a database that is external to the store](../../../client-api/operations/server-wide/compact-database#example-iii)
    * [Compaction Triggers Documents Compression](../../../client-api/operations/server-wide/compact-database#compaction-triggers-documents-compression)
-
-{WARNING: The database will be offline during compaction.}
-The compacting operation is executed **asynchronously**, 
-and during this operation, **the database will be offline**.  
-{WARNING/}
 
 ## Syntax
 
@@ -47,14 +45,14 @@ You must also specify `Documents` and/or `Indexes`.
 ## Example I - Compact specific indexes
 
 The following example shows how to compact only specific indexes.
-Documents are set to be compacted in this example.
+Documents are also set to be compacted.
 
 {CODE compact_3@ClientApi\Operations\Server\Compact.cs /}
 
 
 ## Example II - Compact all indexes
 
-The following example shows how compact all of the indexes and documents in the database. 
+The following example shows how to compact all of the indexes and documents in the database. 
 
 {CODE compact_4@ClientApi\Operations\Server\Compact.cs /}
 
@@ -76,7 +74,7 @@ The following example shows how compact all of the indexes and documents in the 
 {PANEL: Compaction Triggers Documents Compression}
 
 Compaction triggers [documents compression](../../../server/storage/documents-compression) 
-on all collections that are configured for compression.  
+on all existing documents in the collections that are configured for compression.  
 
 If compression is defined on a collection, and if you don't trigger compaction,  
 only new or modified documents will be compressed.

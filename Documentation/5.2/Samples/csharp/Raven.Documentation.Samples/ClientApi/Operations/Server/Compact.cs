@@ -60,7 +60,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             using (var store = new DocumentStore())
             {
                 #region compact_4
-                // get all index names in the database.
+                // Get all index names in the database.
                 string[] indexNames = store.Maintenance.Send(new GetIndexNamesOperation(0, int.MaxValue));
 
                 CompactSettings settings = new CompactSettings
