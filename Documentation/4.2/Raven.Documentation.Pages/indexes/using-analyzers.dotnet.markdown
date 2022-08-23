@@ -1,47 +1,120 @@
 # Indexes: Analyzers
+---
 
-RavenDB uses indexes to facilitate fast queries powered by [**Lucene**](http://lucene.apache.org/), the full-text search engine.
+{NOTE: }
 
-The indexing of a single document starts from creating Lucene's **Document** according an index definition. Lucene processes it by breaking it into **fields** and splitting all the text
-from each **Field** into tokens (**Terms**) in a process called **Tokenization**. Those tokens will be stored in the index, and later will be searched upon.
-The **Tokenization** process uses an object called an Analyzer underneath.
+* RavenDB uses indexes to facilitate fast queries powered by [**Lucene**](http://lucene.apache.org/), the full-text search engine.  
 
-The indexing process and its results can be controlled by various field options and Analyzers.
+* The indexing of a single document starts from creating Lucene's **Document** according to an index definition. 
+  Lucene processes it by breaking it into fields and splitting all the text from each field into *tokens* (or *terms*) 
+  in a process called *tokenization*. Those tokens will be stored in the index, and later will be searched upon.  
+  The tokenization process uses an object called an **Analyzer**.  
 
-## Understanding Analyzers
+* The indexing process and its results can be controlled by various field options and by the Analyzers.  
 
-Lucene offers several out of the box Analyzers, and the new ones can be created easily. Various analyzers differ in the way they split the text stream ("tokenize"), and in the way they process those tokens in post-tokenization.
+* In this page:  
+  * [Understanding Analyzers](../indexes/using-analyzers#understanding-analyzers)  
+  * [RavenDB's Default Analyzers](../indexes/using-analyzers#ravendb)  
+  * [Full-Text Search](../indexes/using-analyzers#full-text-search)  
+  * [Selecting an Analyzer for a Field](../indexes/using-analyzers#selecting-an-analyzer-for-a-field)  
+  * [Creating Custom Analyzers](../indexes/using-analyzers#creating-custom-analyzers)  
+  * [Manipulating Field Indexing Behavior](../indexes/using-analyzers#manipulating-field-indexing-behavior)  
+  * [Ordering When a Field is Searchable](../indexes/using-analyzers#ordering-when-a-field-is-searchable)  
 
-For example, given this sample text:
+{NOTE/}
 
-`The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.`
+---
 
-* **StandardAnalyzer**, which is Lucene's default, will produce the following tokens:
+{PANEL: Understanding Analyzers}
 
-    `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dog]   [bob@hotmail.com]   [123432]`
+Lucene offers several Analyzers out of the box, and new ones can be [created](../indexes/using-analyzers#creating-custom-analyzers).  
 
-* **StopAnalyzer** will work similarly, but will not perform light stemming and will only tokenize on white space:
+Various Analyzers differ in the way they split the text stream ("tokenize"), 
+and in the way they process those tokens in post-tokenization.  
 
-    `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`
+The examples below will use this sample text:  
 
-* **SimpleAnalyzer** will tokenize on all non-alpha characters and will make all the tokens lowercase:
+`The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.`  
 
-    `[the]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`
+### Analyzers that remove common "Stop Words":
 
-* **WhitespaceAnalyzer** will just tokenize on white spaces:
+{NOTE: }
+[Stop words](https://en.wikipedia.org/wiki/Stop_word) (e.g. the, it, a, is, this, who, that...) are often removed to 
+narrow search results by including only words that are used less frequently.
 
-    `[The]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs,]   [Bob@hotmail.com]   [123432.]`
+If you want to include words such as IT (Information Technology), be aware that these analyzers will recognize IT as 
+one of the stop words and remove it from searches. 
+This can affect other acronyms such as WHO (World Health Organization) or names such as "The Who" or "The IT Crowd".  
 
-* **KeywordAnalyzer** will perform no tokenization, and will consider the whole text a stream as one token:
+To prevent excluding acronyms, you can either spell out the entire title instead of abbreviating it 
+or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#analyzers-that-do-not-remove-common-stop-words).
+{NOTE/}
 
-    `[The quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`
+* **StandardAnalyzer**, which is Lucene's default, will produce the following tokens:  
 
-* **NGramAnalyzer** will tokenize on pre define token lengths, 2-6 chars long, which are defined by `Indexing.Analyzers.NGram.MinGram` and `Indexing.Analyzers.NGram.MaxGram` configuration options:  
+    `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dog]   [bob@hotmail.com]   [123432]`  
+
+    Removes common "stop" words  
+    Separates with white spaces and punctuation that is followed by white space  
+    Converts to lower-case letters so that searches aren't case sensitive  
+    Email addresses are one token - a dot that is not followed by a whitespace is considered part of the token.  
+    Numbers with hyphen/dash are not separated at the hyphen.  
+
+
+* **StopAnalyzer** will work similarly, but will not perform light stemming and will only tokenize on white space:  
+
+    `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`  
+
+    Removes numbers and symbols, then separates tokens with these.  
+    This means that email and web addresses are separated.  
+    Removes common "stop" words  
+    Separates with white spaces  
+    Converts to lower-case letters so that searches aren't case sensitive  
+
+---
+
+### Analyzers that do not remove common "Stop Words"
+
+* **SimpleAnalyzer** will tokenize on all non-alpha characters and will make all the tokens lowercase:  
+
+    `[the]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`  
+
+    Includes common stop words  
+    Removes numbers and symbols, then separates tokens with them.  
+    This means that email and web addresses are separated.  
+    Separates with white spaces  
+    Converts to lower-case letters so that searches aren't case sensitive  
+
+* **WhitespaceAnalyzer** will just tokenize on white spaces:  
+
+    `[The]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs,]   [Bob@hotmail.com]   [123432.]`  
+
+    Only separates with whitespaces  
+    This analyzer preserves upper/lower cases in text, which means that searches will be case-sensitive.  
+    Email and web addresses, phone numbers, and other such forms of ID are kept whole
+
+* **KeywordAnalyzer** will perform no tokenization, and will consider the whole text a stream as one token:  
+
+    `[The quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`  
+
+    This analyzer preserves upper/lower cases in text for case-sensitive searches.  
+    Useful in situations like IDs and codes where you do not want to separate into multiple tokens.  
+
+---
+
+### Analyzers that tokenize according to the defined number of characters
+
+* **NGramAnalyzer** will tokenize on predefined token lengths, 2-6 chars long, which are defined by `Indexing.Analyzers.NGram.MinGram` and `Indexing.Analyzers.NGram.MaxGram` configuration options:  
   
    `[.c]  [.co]  [.com]  [12]  [123]  [1234]  [12343]  [123432]  [23]  [234]  [2343]  [23432]  [32]  [34]  [343]  [3432]  [43]  [432]  [@h]  [@ho]  [@hot]  [@hotm]  [@hotma]  [ai]  [ail]  [ail.]  [ail.c]  [ail.co]  [az]  [azy]  [b@]  [b@h]  [b@ho]  [b@hot]  [b@hotm]  [bo]  [bob]  [bob@]  [bob@h]  [bob@ho]  [br]  [bro]  [brow]  [brown]  [ck]  [co]  [com]  [do]  [dog]  [dogs]  [ed]  [er]  [fo]  [fox]  [gs]  [ho]  [hot]  [hotm]  [hotma]  [hotmai]  [ic]  [ick]  [il]  [il.]  [il.c]  [il.co]  [il.com]  [ju]  [jum]  [jump]  [jumpe]  [jumped]  [l.]  [l.c]  [l.co]  [l.com]  [la]  [laz]  [lazy]  [ma]  [mai]  [mail]  [mail.]  [mail.c]  [mp]  [mpe]  [mped]  [ob]  [ob@]  [ob@h]  [ob@ho]  [ob@hot]  [og]  [ogs]  [om]  [ot]  [otm]  [otma]  [otmai]  [otmail]  [ov]  [ove]  [over]  [ow]  [own]  [ox]  [pe]  [ped]  [qu]  [qui]  [quic]  [quick]  [ro]  [row]  [rown]  [tm]  [tma]  [tmai]  [tmail]  [tmail.]  [ui]  [uic]  [uick]  [um]  [ump]  [umpe]  [umped]  [ve]  [ver]  [wn]  [zy]`  
+
    You can override NGram analyzer default token lengths by configuring `Indexing.Analyzers.NGram.MinGram` and `Indexing.Analyzers.NGram.MaxGram` per index e.g. setting them to 3 and 4 accordingly will generate:  
+
    `[.co]  [.com]  [123]  [1234]  [234]  [2343]  [343]  [3432]  [432]  [@ho]  [@hot]  [ail]  [ail.]  [azy]  [b@h]  [b@ho]  [bob]  [bob@]  [bro]  [brow]  [com]  [dog]  [dogs]  [fox]  [hot]  [hotm]  [ick]  [il.]  [il.c]  [jum]  [jump]  [l.c]  [l.co]  [laz]  [lazy]  [mai]  [mail]  [mpe]  [mped]  [ob@]  [ob@h]  [ogs]  [otm]  [otma]  [ove]  [over]  [own]  [ped]  [qui]  [quic]  [row]  [rown]  [tma]  [tmai]  [uic]  [uick]  [ump]  [umpe]  [ver]  `  
-## RavenDB Default Analyzer
+
+{PANEL/}
+
+{PANEL: RavenDB's Default Analyzers}
 
 By default, RavenDB uses the custom analyzer called `LowerCaseKeywordAnalyzer` for all indexed content. Its implementation behaves like Lucene's KeywordAnalyzer, but it also performs case normalization by converting all characters to lower case. 
 
@@ -51,7 +124,9 @@ RavenDB stores the entire term as a single token, in a lower cased form. Given t
 
 This default analyzer allows you to perform exact searches which is exactly what you would expect. However, it doesn't allow you to perform full-text searches. For that purposes, a different analyzer should be used.
 
-## Full-Text Search
+{PANEL/}
+
+{PANEL: Full-Text Search}
 
 To allow full-text search on the text fields, you can use the analyzers provided out of the box with Lucene. These are available as part of the Lucene library which ships with RavenDB.
 
@@ -60,7 +135,10 @@ For most cases, Lucene's `StandardAnalyzer` would be your analyzer of choice. As
 For languages other than English, or if you need a custom analysis process, you can roll your own `Analyzer`. It is quite simple and may be already available as a contrib package for Lucene. 
 There are also `Collation analyzers` available (you can read more about them [here](../indexes/sorting-and-collation#collation)).
 
-## Using Non-Default Analyzer
+
+{PANEL/}
+
+{PANEL: Selecting an Analyzer for a Field}
 
 To make a document property indexed using a specific Analyzer, all you need to do is to match it with the name of the property:
 
@@ -71,7 +149,10 @@ To make a document property indexed using a specific Analyzer, all you need to d
 
 {INFO The analyzer you are referencing to has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the RavenDB working directory (where `Raven.Server` executable is located), and use their fully qualified type name (including the assembly name). /}
 
-## Creating Own Analyzer
+
+{PANEL/}
+
+{PANEL: Creating Custom Analyzers}
 
 You can create a custom analyzer on your own and deploy it to RavenDB server. To do that pefrom the following steps:
 
@@ -81,7 +162,9 @@ You can create a custom analyzer on your own and deploy it to RavenDB server. To
 
 {CODE analyzers_6@Indexes\Analyzers.cs /}
 
-## Manipulating Field Indexing Behavior
+{PANEL/}
+
+{PANEL: Manipulating Field Indexing Behavior}
 
 By default, each indexed field is analyzed using the `LowerCaseKeywordAnalyzer` which indexes a field as a single, lower cased term.
 
@@ -97,9 +180,13 @@ If you want to disable indexing on a particular field, use the `FieldIndexing.No
 
 {CODE analyzers_5@Indexes\Analyzers.cs /}
 
-## Ordering When Field is Searchable
+{PANEL/}
+
+{PANEL: Ordering When a Field is Searchable}
 
 When field is marked as `Search` sorting must be done using additional field. More [here](../indexes/querying/sorting#ordering-when-a-field-is-searchable).
+
+{PANEL/}
 
 ## Related Articles
 
@@ -108,3 +195,7 @@ When field is marked as `Search` sorting must be done using additional field. Mo
 - [Boosting](../indexes/boosting)
 - [Storing Data in Index](../indexes/storing-data-in-index)
 - [Dynamic Fields](../indexes/using-dynamic-fields)
+
+### Studio
+- [Custom Analyzers](../studio/database/settings/custom-analyzers)  
+- [Create Map Index](../studio/database/indexes/create-map-index)  
