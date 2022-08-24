@@ -4,8 +4,9 @@
 
 {NOTE: }
 
-* [Within-cluster replication](../../server/clustering/replication/replication) is default between nodes in a database group.  
-  Replication between different clusters or between two databases in the same cluster is called **External Replication**. 
+* [Replication within the cluster](../../server/clustering/replication/replication) automatically syncs data between nodes in a database group.  
+  
+* **External Replication** is the replication of data between different clusters or between two databases in the same cluster.
 
 * In this page: 
    * [About External Replication](../../server/ongoing-tasks/external-replication#about-external-replication)
@@ -70,10 +71,10 @@ between clusters are crucial to preserve data integrity and model an efficient g
 {INFO: To maintain consistency boundaries between clusters}
 You can establish document uniqueness by:
 
-* Ensuring that the node-tags are all unique. 
-   * e.g. (NYC-nodes A,B,C), (LDN-nodes D,E,F)  
-* Including the cluster names in the [identifiers](../../client-api/document-identifiers/working-with-document-identifiers). 
-   * e.g. (NYC/Customers/12345), (LDN/Customers/12345)  
+* Ensuring that the node-tags are all unique.  
+  e.g. (NYC-nodes A,B,C), (LDN-nodes D,E,F)  
+* Including the cluster names in the [identifiers](../../client-api/document-identifiers/working-with-document-identifiers).  
+  e.g. (NYC/Customers/12345), (LDN/Customers/12345)  
 * Using a Globally Unique Identifier ([GUID](../../server/kb/document-identifier-generation#guid)).  
 * Using a unique field such as an email address.  
 {INFO/}

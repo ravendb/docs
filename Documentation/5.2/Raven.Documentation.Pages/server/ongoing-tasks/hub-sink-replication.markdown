@@ -15,7 +15,7 @@ Hub whenever they are online.
 
 {INFO: }
 
-* Learn more about **Hub/Sink replication** [in the Overview article](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview).  
+* Learn more about **Hub/Sink replication** [here](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview).  
 * You can use the Studio to define 
   [Hub](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task) 
   and [Sink](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task) 
@@ -94,8 +94,8 @@ between clusters are crucial to preserve data integrity and model an efficient g
 {INFO: To maintain consistency boundaries between clusters}
 You can establish document uniqueness by:
 
-* Including the cluster names in the [identifiers](../../client-api/document-identifiers/working-with-document-identifiers). 
-   * e.g. (NYC/Customers/12345), (LDN/Customers/12345)  
+* Including the cluster names in the [identifiers](../../client-api/document-identifiers/working-with-document-identifiers).  
+  e.g. (NYC/Customers/12345), (LDN/Customers/12345)  
 * Using a Globally Unique Identifier ([GUID](../../server/kb/document-identifier-generation#guid)).  
 * Using a unique field such as an email address.  
 {INFO/}
