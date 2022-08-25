@@ -114,6 +114,17 @@ where true and not exists("Freight")
 
 {PANEL: Use Studio to filter by non-existing field}
 
+You can also use Studio to find missing fields with an RQL query such as:  
+
+```
+from "Orders"  
+where exists("Company") and not exists("Freight")
+```
+
+Like the [LINQ syntax examples above](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-a-static-index), 
+we must first call a field that exists in every document in the collection 
+and then the field that does not exist in some of them.
+
 ![List Documents Without a Specified Field](images/non-existing-field-studio-rql.png "List Documents Without a Specified Field")
 
 1. **Indexes**  
