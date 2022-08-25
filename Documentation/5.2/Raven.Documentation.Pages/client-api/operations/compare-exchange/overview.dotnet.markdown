@@ -11,9 +11,26 @@
     when compared to non-cluster-wide transactions. 
     They prioritize consistency over performance to ensure ACIDity across the cluster.  
 
-* To [maintain consistency between globally distributed clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters), 
-  documents created in each cluster should be owned and operated only by that cluster. 
-  Thus, because they are associated with documents, compare-exchange items are not replicated externally to other clusters.
+* Compare-exchange items are [not replicated externally](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters) to other clusters.
+
+* In this page:  
+ * [What Compare Exchange Items Are](../../../client-api/operations/compare-exchange/overview#what-compare-exchange-items-are)  
+ * [Using Compare-Exchange Items](../../../client-api/operations/compare-exchange/overview#using-compare-exchange-items)  
+ * [When to Use Cluster-Wide Sessions or Node-Local Sessions](../../../client-api/operations/compare-exchange/overview#when-to-use-cluster-wide-sessions-or-node-local-sessions)  
+ * [Why Compare-Exchange Items are Not Replicated to External Clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters)  
+ * [Transaction Scope for Compare-Exchange Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)  
+ * [Creating a Key](../../../client-api/operations/compare-exchange/overview#creating-a-key)  
+ * [Updating a Key](../../../client-api/operations/compare-exchange/overview#updating-a-key)  
+ * [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)  
+ * [Example II- Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview#example-ii---reserve-a-shared-resource)  
+
+{NOTE/}
+
+---
+
+{PANEL: What Compare Exchange Items Are}
+
+Compare Exchange items are key/value pairs that allow you to perform cluster-wide interlocked distributed operations.
 
 * Each compare-exchange item contains: 
   * A key - A unique string across the cluster.  
@@ -28,19 +45,7 @@
   * The compare-exchange item is distributed to all nodes in a [cluster-wide transaction](../../../server/clustering/cluster-transactions)
     so that a consistent, unique key is guaranteed cluster-wide.  
 
-* In this page:  
- * [Using Compare-Exchange Items](../../../client-api/operations/compare-exchange/overview#using-compare-exchange-items)  
- * [When to use cluster-wide sessions or node-local sessions](../../../client-api/operations/compare-exchange/overview#when-to-use-cluster-wide-sessions-or-node-local-sessions)  
- * [Why Compare-Exchange Items are Not Replicated to External Clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters)  
- * [Transaction Scope for Compare-Exchange Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)  
- * [Creating a Key](../../../client-api/operations/compare-exchange/overview#creating-a-key)  
- * [Updating a Key](../../../client-api/operations/compare-exchange/overview#updating-a-key)  
- * [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)  
- * [Example II- Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview#example-ii---reserve-a-shared-resource)  
-
-{NOTE/}
-
----
+{PANEL/}
 
 {PANEL: Using Compare-Exchange Items}
 
@@ -99,7 +104,7 @@ It ensures ACIDity across the cluster.
 
 ---
 
-#### When to use cluster-wide sessions or node-local sessions
+#### When to Use Cluster-Wide Sessions or Node-Local Sessions
 
 [Node-local (non-cluster-wide) sessions](../../../client-api/session/what-is-a-session-and-how-does-it-work) 
 are much faster and less expensive than cluster-wide sessions.  
@@ -120,8 +125,9 @@ Your business logic can run both types of sessions as the situation requires.
 
 * **Cluster-wide sessions** have ACID guarantees for conflict-free transactions.
    * Because of the performance cost of raft consensus checks, we recommend using cluster-wide sessions  
-     for transactions where immediate consistency is crucial  
-     or if you need every node to be able to read/write on the same database.  
+     for transactions where immediate consistency is crucial.  
+   * You can also set the session transaction mode to cluster-wide if you need every node to be able to read and write on the same database, 
+     instead of the primary node handling all reads and writes in node-local sessions. 
 
 {NOTE: }
 There are also tools that provide flexibility such as [revisions](../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration) 
@@ -133,8 +139,8 @@ so that conflicts are prevented.
 
 {PANEL: Why Compare-Exchange Items are Not Replicated to External Clusters }
 
-To [prevent consistency conflicts between clusters and model an efficient global system](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system), 
-each cluster should have sole ownership of documents created in it.  
+[To prevent consistency conflicts between clusters](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system) 
+and model an efficient global system, each cluster should have sole ownership of documents created in it.  
 
 In geo-distributed systems, to avoid latency problems, a new cluster is usually set up in each region.  
 But to achieve strong consistency in a distributed system, each transaction must achieve a majority consensus amongst the
@@ -146,14 +152,11 @@ If multiple clusters are set to modify the same document and then replicate it t
 there will likely be frequent conflicts.
 {WARNING/}
 
-One way to ensure consistency between clusters is if [documents created in each cluster are owned and operated only by that cluster](../../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters). 
-This means that different clusters should not share compare-exchange items because they don't manage the same documents.  
-For example, "NYC-Orders123-B" is a different document than "LDN-Orders123-B". To prevent conflicts and model an efficient system, 
-each document should only be modified by the cluster that made it.  
-You can replicate or ETL to another cluster for record-keeping or data analysis.  
+To ensure consistency between clusters, documents created in each cluster are owned and operated only by that cluster.  
+Learn how to protect document uniqueness and [local ownership in a global system](../../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters) 
+in our article on External Replication. 
 
 **The rule of thumb for documents created by another cluster - you can look, but don't touch.**
-
 
 {PANEL/}
 
@@ -185,6 +188,8 @@ This article is about non-session-specific compare-exchange operations.
 {PANEL: Creating a Key}
 
 Provide the following when saving a **key**:
+
+{CODE put_0@ClientApi\Operations\CompareExchange.cs /}
 
 | Parameter | Description |
 | ------------- | ---- |
