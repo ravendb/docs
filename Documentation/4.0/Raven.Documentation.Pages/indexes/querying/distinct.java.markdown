@@ -37,9 +37,7 @@ RavenDB supports using the `Distinct()` operation in combination with the `Count
 
 {CODE:java distinct_2_1@Indexes\Querying\Distinct.java /}
 
-{INFO: }
-
-### Performance Cost and an Alternative Approach
+## Performance Cost and an Alternative Approach
 
 Please keep in mind that this operation might not be efficient for large sets of data due to the need to scan all of the index results in order to find all the unique values.
 
@@ -59,7 +57,6 @@ Query the index:
 
 {CODE:java distinct_3_2@Indexes\Querying\Distinct.java /}
 
-{INFO/}
 
 ## Related Articles
 

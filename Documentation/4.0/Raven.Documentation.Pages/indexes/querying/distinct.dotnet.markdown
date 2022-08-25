@@ -42,9 +42,7 @@ RavenDB supports using the `Distinct()` operation in combination with the `Count
 {CODE-TAB:csharp:DocumentQuery distinct_2_2@Indexes\Querying\Distinct.cs /}
 {CODE-TABS/}
 
-{INFO: }
-
-### Performance Cost and an Alternative Approach
+## Performance Cost and an Alternative Approach
 
 Please keep in mind that `Distinct()` might not be efficient for large sets of data due to the need to scan all of the index results in order to find all the unique values.
 
@@ -66,8 +64,6 @@ Query the index:
 {CODE-TAB:csharp:Query distinct_3_2@Indexes\Querying\Distinct.cs /}
 {CODE-TAB:csharp:DocumentQuery distinct_3_3@Indexes\Querying\Distinct.cs /}
 {CODE-TABS/}
-
-{INFO/}
 
 ## Related Articles
 

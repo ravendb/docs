@@ -37,9 +37,7 @@ RavenDB supports using the `Distinct()` operation in combination with the `Count
 
 {CODE:nodejs distinct_2_1@indexes\querying\distinct.js /}
 
-{INFO: }
-
-### Performance Cost and an Alternative Approach
+## Performance Cost and an Alternative Approach
 
 Please keep in mind that this operation might not be efficient for large sets of data due to the need to scan all of the index results in order to find all the unique values.
 
@@ -58,8 +56,6 @@ Index definition:
 Query the index:
 
 {CODE:nodejs distinct_3_2@indexes\querying\distinct.js /}
-
-{INFO/}
 
 ## Related Articles
 
