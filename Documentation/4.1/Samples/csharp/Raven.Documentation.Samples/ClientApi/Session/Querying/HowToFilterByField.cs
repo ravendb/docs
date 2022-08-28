@@ -67,7 +67,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Advanced
                         .DocumentQuery<T>()
                         .Not
-                        .WhereExists("missing field")
+                        .WhereExists("missingFieldName")
                         .ToList();
                     #endregion
                 }
@@ -126,7 +126,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 
         class HowToFilterByNonExistingField
         {
-            public async void Examples<T, TIndexCreator>(string fieldName) where TIndexCreator : AbstractIndexCreationTask, new()
+            public async void Examples<T, TIndexCreator>(string missingFieldName) where TIndexCreator : AbstractIndexCreationTask, new()
             {
                 using (var store = new DocumentStore())
                 {
@@ -167,7 +167,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                             .Advanced
                             .DocumentQuery<T, TIndexCreator>()
                             .Not
-                            .WhereExists(fieldName)
+                            .WhereExists(missingFieldName)
                             .ToList();
                         #endregion
                     }

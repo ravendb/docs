@@ -47,6 +47,19 @@ including those that are missing the specified field.
 
 #### Then we query the index to find documents where the field does not exist
 
+SAMPLE QUERY:
+
+Query the index `Orders_ByFreight` and filter documents where `freight` does not exist.  
+
+{CODE-TABS}
+{CODE-TAB:csharp:LINQ QuerywhereNotexists_example@ClientApi\Session\Querying\HowToFilterByField.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Orders/ByFreight"
+where true and not exists("Freight")
+// `not` cannot come immediately after `where`, thus we use `where true`.
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
 LINQ SYNTAX:
 
 {CODE whereNotexists_StaticSignature@ClientApi\Session\Querying\HowToFilterByField.cs /}
@@ -55,24 +68,7 @@ LINQ SYNTAX:
 | -- | - | -- |
 | **T** | string | An object in a collection (singular of the collection name - e.g. Order from the collection Orders). |
 | **TIndexCreator** | string | The name of the index that you want to use. |
-| **fieldName**| string | The field that is missing in some of the documents. |
-
-SAMPLE QUERY:
-
-Query the index `Orders_ByFreight` and filter documents where `freight` does not exist.  
-
-{CODE-TABS}
-{CODE-TAB:csharp:LINQ QuerywhereNotexists_example@ClientApi\Session\Querying\HowToFilterByField.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from "Orders" 
-where true and not exists("Freight")
-// `not` cannot come immediately after `where`, thus we use `where true`.
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-
-
-
+| **missingFieldName**| string | The field that is missing in some of the documents. |
 
 
 {PANEL/}
@@ -121,6 +117,7 @@ from "Orders"
 where exists("Company") and not exists("Freight")
 ```
 
+In Studio we always use [RQL](../../../indexes/querying/what-is-rql) syntax.  
 Like the [LINQ syntax examples above](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-a-static-index), 
 we must first call a field that exists in every document in the collection 
 and then the field that does not exist in some of them.
@@ -128,7 +125,7 @@ and then the field that does not exist in some of them.
 ![List Documents Without a Specified Field](images/non-existing-field-studio-rql.png "List Documents Without a Specified Field")
 
 1. **Indexes**  
-   Click to see the indexing menu items.
+   Click to see the Indexes menu items.
 2. **Query**  
    Select to open the Query view.
 3. **Query editor**  
@@ -155,3 +152,11 @@ and then the field that does not exist in some of them.
 
 - [Querying: Filtering](../../../indexes/querying/filtering)
 - [Query vs DocumentQuery](../../../indexes/querying/query-vs-document-query)
+- [RQL - Raven Query Language](../../../indexes/querying/what-is-rql)
+
+---
+
+### Code Walkthrough
+
+- [Queries - Filtering Results - Basics](https://demo.ravendb.net/demos/csharp/queries/filtering-results-basics)
+- [Queries - Filtering with Multiple Conditions](https://demo.ravendb.net/demos/csharp/queries/filtering-results-multiple-conditions)

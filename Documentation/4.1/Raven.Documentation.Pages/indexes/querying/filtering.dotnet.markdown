@@ -8,7 +8,7 @@ There are a couple of ways to do this and they all depend on the querying approa
 
 * [Query](../../client-api/session/querying/how-to-query) from basic session operations
 * [DocumentQuery](../../client-api/session/querying/document-query/what-is-document-query) from `advanced` session operations 
-* [RQL](../../indexes/querying/what-is-rql)) - Raven Query Language 
+* [RQL](../../indexes/querying/what-is-rql) - Raven Query Language 
 
 The following examples demonstrate how to add various filtering conditions to a query.
 
@@ -169,12 +169,12 @@ where endsWith(Name, 'ra')
 
 ## Where - Identifier Property
 
-Once a property used in `Where` clause is recognized as an identity property of a given entity type 
+Once a property used in the `Where` clause is recognized as an identity property of a given entity type 
 (according to [`FindIdentityProperty` convention](../../client-api/configuration/identifier-generation/global#findidentityproperty))
-and there aren't any other fields involved then such a query, it is called a "collection query". 
+and there aren't any other fields involved in the query, then it is called a "collection query". 
 Simple collection queries that ask about documents with given IDs or where identifiers start with a given prefix
 and don't require any additional handling like ordering, full-text searching, etc, are handled directly by the storage engine. 
-It means that querying by ID doesn't use an auto-index and has no extra cost. In terms of efficiency, it is the same as
+It means that querying by ID doesn't create an auto-index and has no extra cost. In terms of efficiency, it is the same as
 loading documents with [`session.Load`](../../client-api/session/loading-entities) usage.
 
 
@@ -200,7 +200,7 @@ where startsWith(id(), 'orders/1')
 
 To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field).  
 
-To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field)
+To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field).
 
 ## Remarks
 
