@@ -102,7 +102,7 @@ where true and not exists("Freight")
 | Parameters | Type | Description |
 | -- | - | -- |
 | **T** | string | An object in a collection (singular of the collection name - e.g. Order from the collection Orders). |
-| **fieldName** | string | The field that is missing in some of the documents. |
+| **missingFieldName** | string | The field that is missing in some of the documents. |
 
 
 {PANEL/}

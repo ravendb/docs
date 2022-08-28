@@ -167,7 +167,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                             .Advanced
                             .DocumentQuery<T, TIndexCreator>()
                             .Not
-                            .WhereExists(missingFieldName)
+                            .WhereExists("missingFieldName")
                             .ToList();
                         #endregion
                     }
