@@ -11,7 +11,9 @@
 
 * This article discusses replication between databases **within the same cluster**.
 
-* Read more about **replication to other clusters** in [External Replication](../../../server/ongoing-tasks/external-replication).
+* Read more about **replication to other clusters here**:
+   * [External Replication](../../../server/ongoing-tasks/external-replication)
+   * [Hub/Sink Replication](../../../server/ongoing-tasks/hub-sink-replication)
 
 * In this page: 
    * [Replication Within the Cluster](../../../server/clustering/replication/replication#replication-within-the-cluster)
