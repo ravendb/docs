@@ -54,10 +54,10 @@ A topology of nodes that host the same database with master-master replication i
      which determines to which nodes the client will send read requests. 
    * You can also set session-specific behavior for writes with [UseSessionContext](../../../client-api/session/configuration/use-session-context-for-load-balancing#loadbalancebehavior-usage), 
      which allows you to set read and write request behavior.  
-      * **Changing the default write request behavior can cause frequent conflicts** whenever two nodes write on the same document concurrently.  
+     **Changing the default write request behavior can cause frequent conflicts** whenever two nodes write on the same document concurrently.  
 * Distribution of work offers guaranteed consistency **when each node is responsible for a different database** 
   while updating the other nodes in a database group for failover purposes.  
-  * e.g. There won't be conflicts if only node A writes on the "Customers" database, while only node B writes on the "Invoices" database. 
+  e.g. There won't be conflicts if only node A writes on the "Customers" database, while only node B writes on the "Invoices" database. 
 {INFO/}
 
 #### When nodes are down
