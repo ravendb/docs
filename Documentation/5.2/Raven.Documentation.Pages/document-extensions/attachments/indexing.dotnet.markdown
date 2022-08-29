@@ -11,6 +11,10 @@
 * In this page:  
   * [Syntax](../../document-extensions/attachments/indexing#syntax)  
   * [Examples](../../document-extensions/attachments/indexing#examples)  
+     * [I - Indexes with `AttachmentsFor()`](../../document-extensions/attachments/indexing#i---indexes-with-)  
+     * [II - Indexes with `LoadAttachment()`](../../document-extensions/attachments/indexing#ii---indexes-with-)  
+     * [III - Indexes with `LoadAttachments()`](../../document-extensions/attachments/indexing#iii---indexes-with-)  
+     * [IV - Querying the Index](../../document-extensions/attachments/indexing#iv---querying-the-index)  
 
 {NOTE/}
 
@@ -18,7 +22,7 @@
 
 {PANEL: Syntax}
 
-### Using AttachmentsFor()
+### Using `AttachmentsFor()`
 
 The `AttachmentsFor` method returns information about each attachment that extends 
 a specified document, including their names, sizes, and content type.  
@@ -30,7 +34,9 @@ a specified document, including their names, sizes, and content type.
 
 The `AttachmentsFor` method is available in `AbstractIndexCreationTask`.
 
-### Using LoadAttachment()/LoadAttachments()
+---
+
+### Using `LoadAttachment()`/`LoadAttachments()`
 
 `LoadAttachment()` loads an attachment to the index by document and attachment name.  
 `LoadAttachments()` loads all the attachments of a given document.  
@@ -42,7 +48,9 @@ The `AttachmentsFor` method is available in `AbstractIndexCreationTask`.
 | **doc** | A server-side document, an entity | The document whose attachments you want to load |
 | **name** | `string` | The name of the attachment you want to load |
 
-#### GetContentAs Methods
+---
+
+#### `GetContentAs` Methods
 
 To access the attachment content itself, use `GetContentAsStream()`. To 
 convert the content into a `string`, use `GetContentAsString()` with 
@@ -56,44 +64,47 @@ public string GetContentAsString(Encoding encoding);
 public string GetContentAsString(); // Default: UTF-8
 {CODE-BLOCK/}
 
+{PANEL/}
+
 {INFO: Applications for Attachment Content: Machine Learning}
 Access to the attachment content opens the door to many different 
-applications, including many that can be integrated directly into 
-RavenDB.  
+applications.  
 
-In this [blog post](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb), 
-Oren Eini demonstrates how machine learning image recognition can be 
-added to an index using the [additional sources](../../indexes/extending-indexes) 
-feature. The resulting index allows filtering and querying based on 
-image content.  
+For example, [see how](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb) 
+machine learning image recognition can be added to an index using the [additional sources](../../indexes/extending-indexes#including-additional-sources-from-client-code) 
+feature. The resulting index allows filtering and querying based on image content.  
 {INFO/}
-
-{PANEL/}
 
 {PANEL: Examples}
 
-#### Indexes with `AttachmentsFor()`
+#### I - Indexes with `AttachmentsFor()`
 
 {CODE-TABS}
 {CODE-TAB:csharp:LINQ-syntax AttFor_index_LINQ@DocumentExtensions\Attachments\IndexingAttachments.cs /}
 {CODE-TAB:csharp:JavaScript-syntax AttFor_index_JS@DocumentExtensions\Attachments\IndexingAttachments.cs /}
 {CODE-TABS/}
 
-#### Indexes with `LoadAttachment()`
+---
+
+#### II - Indexes with `LoadAttachment()`
 
 {CODE-TABS}
 {CODE-TAB:csharp:LINQ-syntax LoadAtt_index_LINQ@DocumentExtensions\Attachments\IndexingAttachments.cs /}
 {CODE-TAB:csharp:JavaScript-syntax LoadAtt_index_JS@DocumentExtensions\Attachments\IndexingAttachments.cs /}
 {CODE-TABS/}
 
-#### Indexes with `LoadAttachments()`
+---
+
+#### III - Indexes with `LoadAttachments()`
 
 {CODE-TABS}
 {CODE-TAB:csharp:LINQ-syntax LoadAtts_index_LINQ@DocumentExtensions\Attachments\IndexingAttachments.cs /}
 {CODE-TAB:csharp:JavaScript-syntax LoadAtts_index_JS@DocumentExtensions\Attachments\IndexingAttachments.cs /}
 {CODE-TABS/}
 
-#### Querying the Index
+---
+
+#### IV - Querying the Index
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync query1@DocumentExtensions\Attachments\IndexingAttachments.cs /}
@@ -113,3 +124,14 @@ image content.
 ### Indexes
 
 - [What are Indexes](../../indexes/what-are-indexes)
+
+### Studio
+
+- [Studio - Attachments](../../studio/database/document-extensions/attachments)
+
+---
+
+### Code Walkthrough
+
+- [Index Attachment Details](https://demo.ravendb.net/demos/csharp/attachments/index-attachment-details)
+
