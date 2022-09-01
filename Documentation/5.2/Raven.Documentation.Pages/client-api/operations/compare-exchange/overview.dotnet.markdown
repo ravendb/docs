@@ -42,7 +42,7 @@ Compare Exchange items are key/value pairs that allow you to perform cluster-wid
 
 * Creating and modifying a compare-exchange item is an atomic, thread-safe [compare-and-swap](https://en.wikipedia.org/wiki/Compare-and-swap) interlocked 
   compare-exchange operation.
-  * The compare-exchange item is distributed to all nodes in a [cluster-wide transaction](../../../server/clustering/cluster-transactions)
+  * The compare-exchange item is distributed to all nodes through the [Raft algorithm](../../../glossary/raft-algorithm)
     so that a consistent, unique key is guaranteed cluster-wide.  
 
 {PANEL/}
