@@ -62,15 +62,15 @@ namespace Raven.Documentation.Samples.Indexes
             {
                 Maps = new HashSet<string>
                 {
-                    @"map('Products', function (p) {
-                        return {
-                            _: p.Attributes.foreach(x => createField(x.Name, x.Value, { 
-                                   indexing: 'Exact',
-                                   storage: true,
-                                   termVector: null
-                               })
-                        };
-                    })",
+                    @"map('Employees', function (employee) {
+                          return {
+                           _: Object.keys(employee).map(key => createField(key, employee[key], {
+                                  indexing: 'Search',
+                                  storage: true,
+                                  termVector: null
+                              }))
+                          }
+                      })"
                 };
             }
         }
