@@ -9,7 +9,6 @@ Use `CreateField()` to index dynamic fields which can be created on the fly.
    * [About Indexing Dynamic Fields](../indexes/using-dynamic-fields#about-indexing-dynamic-fields)
    * [CSharp Example](../indexes/using-dynamic-fields#csharp-example)
    * [CSharp Syntax](../indexes/using-dynamic-fields#csharp-syntax)
-   * [JavaScript Index Example](../indexes/using-dynamic-fields#javascript-index-example)
 
 {NOTE/}
 
@@ -78,18 +77,6 @@ The signatures are:
 | **Indexing** | `FieldIndexing?` | More information about analyzers in index can be found [here](../indexes/using-analyzers). |
 | **Storage** | `FieldStorage?` | More information about storing data in index can be found [here](../indexes/storing-data-in-index). |
 | **TermVector** | `FieldTermVector?` | More information about term vectors in index can be found [here](../indexes/using-term-vectors). |
-
-{PANEL/}
-
-{PANEL: JavaScript Index Example}
-
-For Node.JS, see the dedicated article by selecting Node.JS at the top of the article. 
-
-A JavaScript index in a C#/.NET environment using the [JavaScript](../indexes/javascript-indexes) version of CreateFields - `createField(name, value, options)`:
-
-{CODE dynamic_fields_JS_index@Indexes\DynamicFields.cs /}
-
-{PANEL/}
 
 
 ## Related Articles

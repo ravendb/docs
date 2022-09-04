@@ -83,9 +83,9 @@ The signatures are:
 
 {PANEL: JavaScript Index Example}
 
-For Node.JS, see the dedicated article by selecting Node.JS at the top of the article. 
+For Node.JS, see the dedicated article by selecting Node.JS in the language button at the top of the article. 
 
-A JavaScript index in a C#/.NET environment using the [JavaScript](../indexes/javascript-indexes) version of CreateFields - `createField(name, value, options)`:
+The following is a JavaScript index in a C#/.NET environment using the [JavaScript](../indexes/javascript-indexes) version of CreateFields - `createField(name, value, options)`:
 
 {CODE dynamic_fields_JS_index@Indexes\DynamicFields.cs /}
 
