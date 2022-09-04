@@ -22,7 +22,7 @@ RavenDB exposes an indexing API for creating fields dynamically.
 
 {INFO All types of values are supported by dynamically created fields. They can be numbers, dates, etc. /}
 
-With this feature, you can search for documents using fields which are created on the fly. 
+With this feature, you can search for documents using fields that are created on the fly. 
 
 ### CSharp Example
 
@@ -32,7 +32,7 @@ For example, consider a `Product` object that is declared as follows:
 
 Properties such as color or size are added only to some products, while other ones can have the weight and volume defined. 
 Since `Attribute` has string fields, they can specify very different properties of products.
-In order to query on fields which aren't known at index creation time, we introduced the ability to create them dynamically during indexing.
+In order to query on fields that aren't known at index creation time, we introduced the ability to create them dynamically during indexing.
 
 The following index can be created to index each attribute value under its name as a separate field:
 
@@ -74,9 +74,9 @@ The signatures are:
 
 | CreateFieldOptions | | |
 | ------------- | ------------- | ----- |
-| **Indexing** | `FieldIndexing?` | More information about analyzers in index can be found [here](../indexes/using-analyzers). |
-| **Storage** | `FieldStorage?` | More information about storing data in index can be found [here](../indexes/storing-data-in-index). |
-| **TermVector** | `FieldTermVector?` | More information about term vectors in index can be found [here](../indexes/using-term-vectors). |
+| **Indexing** | `FieldIndexing?` | Learn about [using analyzers](../indexes/using-analyzers) in the index. |
+| **Storage** | `FieldStorage?` | Learn about [storing data](../indexes/storing-data-in-index) in the index. |
+| **TermVector** | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors) in the index. |
 
 {PANEL/}
 
