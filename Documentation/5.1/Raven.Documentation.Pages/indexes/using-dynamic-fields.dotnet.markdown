@@ -78,6 +78,7 @@ The signatures are:
 | **Storage** | `FieldStorage?` | More information about storing data in index can be found [here](../indexes/storing-data-in-index). |
 | **TermVector** | `FieldTermVector?` | More information about term vectors in index can be found [here](../indexes/using-term-vectors). |
 
+{PANEL/}
 
 ## Related Articles
 
