@@ -23,6 +23,7 @@
  * [Updating a Key](../../../client-api/operations/compare-exchange/overview#updating-a-key)  
  * [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)  
  * [Example II- Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview#example-ii---reserve-a-shared-resource)  
+ * [Example III - Ensuring Unique Values with Reference Documents](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-with-reference-documents)  
 
 {NOTE/}
 
@@ -77,11 +78,11 @@ Compare Exchange items are key/value pairs that allow you to perform cluster-wid
 * Every time a document in a cluster-wide session is modified, RavenDB automatically creates 
   or uses an associated compare-exchange item called [Atomic Guard](../../../client-api/operations/compare-exchange/atomic-guards).  
   * Whenever one session changes and saves a document, the Atomic Guard version changes. 
-    If other sessions loaded the document before the version changed, they will not be able to modify it.  
+    If other sessions load the document before the version changed, they will not be able to modify it.  
   * A `ConcurrencyException` will be thrown if the Atomic Guard version was modified by another session.  
 * **If a ConcurrencyException is thrown**:  
   To ensure [atomicity](https://en.wikipedia.org/wiki/ACID#Atomicity), if even one session transaction fails, the entire [session will roll back](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching).  
-  Be sure that your business logic is written so that **if a concurrency exception is thrown**, your code will re-execute the entire session.  
+  Be sure that your business logic is written so that if a concurrency exception is thrown, your code will re-execute the entire session.  
 
 
 {INFO: }
@@ -119,7 +120,8 @@ Your business logic can run both types of sessions as the situation requires.
 * **Node-local sessions** are significantly faster and have a default setting that one node is responsible for all reads/writes on a particular database. 
   Node-local transactions are almost always consistent, though if the primary node has to failover, there is a chance of a conflict occurring.  
    * Many situations can handle conflicts and you can program [conflict resolution](../../../server/clustering/replication/replication-conflicts) 
-     scripts or use other conflict resolution strategies via Studio and also [in the client](../../../client-api/cluster/document-conflicts-in-client-side#modifying-conflict-resolution-from-the-client-side).
+     scripts or use other conflict resolution strategies via [Studio](../../../studio/database/settings/conflict-resolution) 
+     and also [in the client](../../../client-api/cluster/document-conflicts-in-client-side#modifying-conflict-resolution-from-the-client-side).
    * Because of the higher performance and lower cost of node-local sessions, we recommend using them in situations where 
      occasional conflicts, and the conflict resolution process, are acceptable.  
 
@@ -219,20 +221,20 @@ Updating a compare exchange key can be divided into 2 phases:
 
 {NOTE: }
 
-* **To Ensure ACID Transactions** RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
+* **To Ensure ACID transactions** RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
   in [cluster-wide transactions](../../../client-api/session/cluster-transaction).  
   There is no need to manually create or maintain Compare-Exchange items to ensure consistency across your cluster.
 
-* [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters)
-  to preserve consistency between clusters.  
-  In documents where immediate consistency is important, each cluster should be solely responsible for the documents created by it.
+* Compare Exchange can be used to maintain the uniqueness of a value **inside a single cluster**.  
+  [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters)
+  because each cluster should be solely responsible for the documents created by it.
+   * To establish uniqueness in a globally distributed system, see [Example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-with-reference-documents).
 
 {NOTE/}
 
-* Compare Exchange can be used to maintain uniqueness across users' email accounts.  
-
-* First, try to reserve a new user email.  
-  If the email is successfully reserved then save the user account document.  
+In the following example, we try to reserve a new user email.  
+Compare exchange is used to ensure that the email is unique in the database on this cluster.  
+If the email is successfully reserved, then we save the new user account document.  
 
 {CODE email@Server\CompareExchange.cs /}  
 
@@ -240,37 +242,64 @@ Updating a compare exchange key can be divided into 2 phases:
 
 * The `User` object is saved as a document, hence it can be indexed, queried, etc.  
 
-* If `session.SaveChanges` fails, the email reservation is _not_ rolled back automatically. It is your responsibility to do so.  
+* This compare exchange item was [created as an operation](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)
+  rather than with a [cluster-wide session](../../../client-api/session/cluster-transaction).  
+  Thus, if `session.SaveChanges` fails, then the email reservation is _not_ rolled back automatically. It is your responsibility to do so.  
 
 * The compare exchange value that was saved can be accessed from `RQL` in a query:  
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync query_cmpxchg@Server\CompareExchange.cs /}  
-{CODE-TAB-BLOCK:sql:RQL}
-from Users as s where id() == cmpxchg("emails/ayende@ayende.com")  
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-{PANEL/}
+    {CODE-TABS}
+    {CODE-TAB:csharp:Sync query_cmpxchg@Server\CompareExchange.cs /}  
+    {CODE-TAB-BLOCK:sql:RQL}
+    from Users as s where id() == cmpxchg("emails/ayende@ayende.com")  
+    {CODE-TAB-BLOCK/}
+    {CODE-TABS/}
+    {PANEL/}
 
 {PANEL: Example II - Reserve a Shared Resource}  
 
 {NOTE: }
 
-* **To Ensure ACID Transactions** RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
+* **To Ensure ACID transactions** RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
   in [cluster-wide transactions](../../../client-api/session/cluster-transaction).  
   There is no need to manually create or maintain Compare-Exchange items to ensure consistency across your cluster.
 
-* [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters)
-  to preserve consistency between clusters.  
-  In documents where immediate consistency is important, each cluster should be solely responsible for the documents created by it.
+* Compare Exchange can be used to reserve a shared resource **inside a single cluster**.  
+  [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters)
+  because each cluster should be solely responsible for the documents created by it.
+   * To reserve a resource in a globally distributed system, see [Example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-with-reference-documents).
 
 {NOTE/}
 
-* Use compare exchange for a shared resource reservation.  
+In the following example, we use compare exchange to reserve a shared resource.  
 
-* The code also checks for clients who never release resources (i.e. due to failure) by using timeout.  
+The code also checks for clients who never release resources (i.e. due to failure) by using timeout.  
 
 {CODE shared_resource@Server\CompareExchange.cs /}
+
+{PANEL/}
+
+{PANEL: Example III - Ensuring Unique Values with Reference Documents}  
+
+To reduce latency in a global system, various clusters can use [External Replication](../../../server/ongoing-tasks/external-replication) 
+to house the same database locally.  
+
+To prevent two clusters from creating duplicate user IDs, **one primary cluster should have sole responsibility to create new users**. 
+This sole responsibility could also be valuable to prevent duplicates of other objects that must be unique.  
+
+What if this primary cluster goes down?  
+While RavenDB has automatic failover for nodes within a cluster, there may be a situation where an entire data center goes offline. 
+In this situation, you can set up a manual failover to another cluster.  
+
+But, how can that secondary cluster create unique IDs that the primary cluster can use when it is back online?  
+
+One effective solution is to **create reference documents where the IDs are a unique field**, such as an email address or phone number.  
+These documents will then be externally replicated between clusters.  
+
+{NOTE: }
+Sessions which handle fields that must be unique should be set to [TransactionMode.ClusterWide](../../../client-api/session/cluster-transaction).  
+{NOTE/}
+
+{CODE create_uniqueness_control_documents@Server\CompareExchange.cs /}
 {PANEL/}
 
 ## Related Articles

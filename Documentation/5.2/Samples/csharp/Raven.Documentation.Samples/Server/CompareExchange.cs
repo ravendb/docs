@@ -7,6 +7,9 @@ using Raven.Client.Documents.Operations.CompareExchange;
 using Raven.Client.Documents.Session;
 using Raven.Client.Documents.Queries;
 using Raven.Client.Documents.Linq;
+using Raven.Documentation.Samples.Orders;
+using Raven.Client.Exceptions;
+
 
 namespace Raven.Documentation.Samples.Server
 {
@@ -140,5 +143,71 @@ namespace Raven.Documentation.Samples.Server
         }
 
         #endregion
+
+        #region create_uniqueness_control_documents
+        public class CompanyReference
+        {
+            public string Id;
+            public string CompanyId;
+        }
+
+        Company newCompany = new Company
+        {
+            Name = "companyName",
+            Phone = "phoneNumber",
+            Contact = new Contact
+            {
+                Name = "contactName",
+                Title = "contactTitle"
+            },
+        };
+
+        void CreateCompanyWithUniquePhone(Company newCompany)
+        {   
+            // Open a cluster-wide session in your document store
+            using var session = DocumentStoreHolder.Store.OpenSession(
+                    new SessionOptions { TransactionMode = TransactionMode.ClusterWide }
+                );
+
+            // Check if a reference document exists where the ID is a unique value such as an email or phone
+            var existing = session.Load<CompanyReference>("phones/" + newCompany.Phone);
+
+            if (existing != null)
+            {
+                var msg = $"The phone '{newCompany.Phone}' is already associated with: {existing.CompanyId}";
+                throw new ConcurrencyException(msg);
+            }
+            // If this unique value doesn't already exist, store the new entity
+            session.Store(newCompany);
+            // Create a reference document where the ID is a unique value for future checks
+            session.Store(new CompanyReference { CompanyId = newCompany.Id }, "phones/" + newCompany.Phone);
+
+            // May fail if called concurrently with the same phone number
+            session.SaveChanges(); 
+        }
+
+
+        #endregion
+    }
+
+    public static class DocumentStoreHolder
+    {
+        private static readonly Lazy<IDocumentStore> LazyStore =
+            new Lazy<IDocumentStore>(() =>
+            {
+                var store = new DocumentStore
+                {
+                    Urls = new[] { "https://a.15-8-22-serez.development.run" },
+                    Database = "Northwind",
+                    Certificate = new X509Certificate2(@"C:\Users\shachar\Desktop\CurrentServers\15-8-22\A\Server\cluster.server.certificate.15-8-22-serez.pfx")
+                };
+
+                return store.Initialize();
+            });
+
+        public static IDocumentStore Store =>
+            LazyStore.Value;
+
+
     }
 }
