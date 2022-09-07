@@ -145,45 +145,54 @@ namespace Raven.Documentation.Samples.Server
         #endregion
 
         #region create_uniqueness_control_documents
-        public class CompanyReference
+        class Program
         {
-            public string Id;
-            public string CompanyId;
-        }
-
-        Company newCompany = new Company
-        {
-            Name = "companyName",
-            Phone = "phoneNumber",
-            Contact = new Contact
+            public class CompanyReference
             {
-                Name = "contactName",
-                Title = "contactTitle"
-            },
-        };
-
-        void CreateCompanyWithUniquePhone(Company newCompany)
-        {   
-            // Open a cluster-wide session in your document store
-            using var session = DocumentStoreHolder.Store.OpenSession(
-                    new SessionOptions { TransactionMode = TransactionMode.ClusterWide }
-                );
-
-            // Check if a reference document exists where the ID is a unique value such as an email or phone
-            var existing = session.Load<CompanyReference>("phones/" + newCompany.Phone);
-
-            if (existing != null)
-            {
-                var msg = $"The phone '{newCompany.Phone}' is already associated with: {existing.CompanyId}";
-                throw new ConcurrencyException(msg);
+                public string Id;
+                public string CompanyId;
             }
-            // If this unique value doesn't already exist, store the new entity
-            session.Store(newCompany);
-            // Create a reference document where the ID is a unique value for future checks
-            session.Store(new CompanyReference { CompanyId = newCompany.Id }, "phones/" + newCompany.Phone);
 
-            // May fail if called concurrently with the same phone number
-            session.SaveChanges(); 
+            static void Main(string[] args)
+            {   
+                // A new document in the "Companies" collection with automatic HiLo ID 
+                Company newCompany = new Company
+                {
+                    Name = "companyName",
+                    Phone = "phoneNumber",
+                    Contact = new Contact
+                    {
+                        Name = "contactName",
+                        Title = "contactTitle"
+                    },
+                };
+
+                void CreateCompanyWithUniquePhone(Company newCompany)
+                {
+                    // Open a cluster-wide session in your document store
+                    using var session = DocumentStoreHolder.Store.OpenSession(
+                            new SessionOptions { TransactionMode = TransactionMode.ClusterWide }
+                        );
+
+                    // Check if a reference document exists where the ID is a unique value such as an email or phone
+                    var existing = session.Load<CompanyReference>("phones/" + newCompany.Phone);
+
+                    if (existing != null)
+                    {
+                        var msg = $"The phone '{newCompany.Phone}' already exists in company ID: {existing.CompanyId}";
+                        throw new ConcurrencyException(msg);
+                    }
+                    // If this unique value doesn't already exist, store the new entity
+                    session.Store(newCompany);
+                    // Create a reference document where the ID is a unique value for future checks
+                    session.Store(new CompanyReference { CompanyId = newCompany.Id }, "phones/" + newCompany.Phone);
+
+                    // May fail if called concurrently with the same phone number
+                    session.SaveChanges();
+                }
+
+            }
+
         }
 
 

@@ -142,7 +142,7 @@ so that conflicts are prevented.
 {PANEL: Why Compare-Exchange Items are Not Replicated to External Clusters }
 
 [To prevent consistency conflicts between clusters](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system) 
-and model an efficient global system, each cluster should have sole ownership of documents created in it.  
+and model an efficient multi-cluster system, each cluster should have sole ownership of documents created in it.  
 
 In geo-distributed systems, to avoid latency problems, a new cluster is usually set up in each region.  
 But to achieve strong consistency in a distributed system, each transaction must achieve a majority consensus amongst the
@@ -228,7 +228,7 @@ Updating a compare exchange key can be divided into 2 phases:
 * Compare Exchange can be used to maintain the uniqueness of a value **inside a single cluster**.  
   [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters)
   because each cluster should be solely responsible for the documents created by it.
-   * To establish uniqueness in a globally distributed system, see [Example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-with-reference-documents).
+   * To establish uniqueness in a multi-clustered distributed system, see [Example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-with-reference-documents).
 
 {NOTE/}
 
@@ -266,7 +266,7 @@ If the email is successfully reserved, then we save the new user account documen
 * Compare Exchange can be used to reserve a shared resource **inside a single cluster**.  
   [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters)
   because each cluster should be solely responsible for the documents created by it.
-   * To reserve a resource in a globally distributed system, see [Example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-with-reference-documents).
+   * To reserve a resource in a multi-clustered distributed system, see [Example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-with-reference-documents).
 
 {NOTE/}
 
