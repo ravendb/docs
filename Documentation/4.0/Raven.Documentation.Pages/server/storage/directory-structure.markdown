@@ -1,33 +1,96 @@
 # Storage: Directory Structure
 
-{PANEL:RavenDB Data}
+---
 
-RavenDB keeps all data in a location specified in [`DataDir`](../../server/configuration/core-configuration#datadir) setting. 
-The structure of RavenDB data directories are as follows:
+{NOTE: }
 
-* _{DataDir}_
+* RavenDB keeps all data under the location specified by the [DataDir](../../server/configuration/core-configuration#datadir) configuration value.
+
+* In this page:
+    * [On-disk Data Structure](../../server/storage/directory-structure#on-disk-data-structure)
+    * [Voron Storage Environment](../../server/storage/directory-structure#voron-storage-environment)
+{NOTE/}
+
+---
+
+{PANEL: On-disk Data Structure}
+
+* The on-disk structure of RavenDB data directories is as follows:
+
+{NOTE: }
+
+* __<data-dir>__
   * `Databases`
-      * _<database-name>_
+      * __<database-name>__
           * `Confguration`
               * `Journals`
               * `Temp`
+              * Raven.voron
           * `Indexes`
-              * _<index-name>_
+              * __<index-name>__
                   * `Journals`
                   * `Temp`
-              * _...more indexes..._
+                  * Raven.voron
+              * __...more indexes__
           * `Journals`
           * `Temp`
-      * _...more databases..._
+          * Raven.voron
+      * __...more databases__
   * `System`
       * `Journals`
       * `Temp`
+      * Raven.voron
 
-The main directory has a `Databases` folder, which contains subdirectories per each database, and a `System` folder where server-wide data are stored (e.g. database records, cluster data).
+{NOTE/}
 
-The database is composed of such data items as documents, indexes, and configuration. Each of them is a separate [Voron](../../server/storage/storage-engine) storage environment.
-The data is persisted in a `Raven.voron` file and `.journal` files which are located in the `Journals` directory. In addition, temporary files are put into the `Temp` folder.
+* The main <data-dir> contains:
 
+  *  **Databases folder**  
+     Contains subdirectories with data per database.  
+  *  **System folder**  
+     Stores cluster data & server-wide data such as shared resources needed by all cluster nodes,  
+     e.g. the Database Record.  
+
+* The System folder, the Database folders, and their inner folders (the Configuration folder and each Index folder) are each a separate **Voron storage environment**.
+
+{PANEL/}
+
+{PANEL: Voron Storage Environment}
+
+* Each Voron storage environment is composed of:  
+
+{NOTE: }
+__Temp Folder__
+
+* Holds temporary scratch & compression <em>*.buffers</em> files.
+* These are small memory-mapped files that keep concurrent versions of the data for running transactions, storing data copies.
+* When a transaction is written from these files to the journal file it is considered committed.
+{NOTE /}
+
+{NOTE: }
+__Journals Folder__  
+
+* Contains Write-Ahead Journal files (WAJ) that are used in the hot path of a transaction commit.  
+* From the journals, transactions will be flushed to the Voron data file where they are persisted.  
+
+---
+
+* Entries written to these files use unbuffered sequential writes and direct I/O to ensure a direct write that bypasses all caches.  
+* Writes to the journals happen immediately, have high priority, and take precedence over writes to the Voron data file.  
+
+---
+
+* Data is cleared from the journals once it is successfully stored in the data.  
+* The journal's transactions take part in database recovery - info is used to recover up to the same point you were at before failure.  
+{NOTE /}
+
+{NOTE: }
+__Raven.voron file__
+
+* This file contains the persisted data on disk.  
+* It is a memory-mapped data file using buffered writes with random reads and writes.
+{NOTE /}
+ 
 {PANEL/}
 
 ## Related Articles

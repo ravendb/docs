@@ -4,7 +4,12 @@ The following configuration options allow you configure [the storage engine](../
 
 {PANEL:Storage.TempPath}
 
-You can use this setting to specify a different path to temporary files. By default, it is empty, which means that temporary files will be created at same location as data file under the `Temp` directory.
+Use this setting to specify a different path for the **database temporary files**.  
+By default, temporary files are created under the `Temp` directory at the same location as _Raven.voron_ data file.  
+<br>
+To specify a different path for the **indexes temporary files** go to [Indexing.TempPath](../../server/configuration/indexing-configuration#indexing.temppath).  
+Learn more about RavenDB directory structure [here](../../server/storage/directory-structure).  
+<br>
 
 - **Type**: `string`
 - **Default**: `null`

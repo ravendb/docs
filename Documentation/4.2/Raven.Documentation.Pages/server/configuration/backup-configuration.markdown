@@ -9,6 +9,7 @@
 * Another relevant server configuration option can be found [here](../../server/configuration/server-configuration#server.cpucredits.exhaustionbackupdelayinmin).
 
 * In this page:  
+    * [Backup.TempPath](../../server/configuration/backup-configuration#backup.temppath)  
     * [Backup.LocalRootPath](../../server/configuration/backup-configuration#backup.localrootpath)  
     * [Backup.AllowedDestinations](../../server/configuration/backup-configuration#backup.alloweddestinations)  
     * [Backup.AllowedAwsRegions](../../server/configuration/backup-configuration#backup.allowedawsregions)  
@@ -19,6 +20,18 @@
 {NOTE/}
 
 ---
+
+{PANEL:Backup.TempPath}
+
+Use this setting to specify a different path to the temporary backup files.  
+By default, backup temporary files are written under the Database directory or under [Storage.TempPath](../../server/configuration/storage-configuration) if defined.  
+Learn more about RavenDB directory structure [here](../../server/storage/directory-structure).
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
 
 {PANEL:Backup.LocalRootPath}
 

@@ -1,111 +1,131 @@
-# Storage: Customizing RavenDB Data Files Locations
+# Customizing Data Files Locations
 
-##  Storing RavenDB data files in different devices, by customizing their locations.
+---
 
-{PANEL: Overview}
+{NOTE: }
 
-{NOTE: Motivation:}
+* The structure of [RavenDB directories](../../server/storage/directory-structure) **cannot** be changed. However:  
+    * Path for temporary files can be customized.
+    * Data files can be stored in different locations,  
+      by defining junction points (Windows) or mount points (Linux).  
+    * A script can be used to automate the different location definitions.  
 
-* Avoiding traffic jams.
-
-* Better concurrency.
-
-* Directing each file or directory (e.g. `Raven.voron` file, `Journals`, etc.) to a data storage according to its speed, durability, etc.
-
-{NOTE/}
-
-{NOTE: Main components:}
-
-* **Journals** - files for unbuffered, sequential writes, typically write only (except for recovery operations).  
-`Journals` are also in the critical path for commit operations, since a commit is not confirmed until the write is done.
-
-* **Raven.voron files** - memory mapped, buffered files with random reads and writes.  
-Write operations are async, but slow devices may cause slow downs (especially on reads).
+* In this page:
+    * [Why store data on different devices](../../server/storage/customizing-raven-data-files-locations#why-store-data-on-different-devices)
+    * [Configuring temp files location](../../server/storage/customizing-raven-data-files-locations#configuring-temp-files-location)
+    * [Configuring data files location](../../server/storage/customizing-raven-data-files-locations#configuring-data-files-location)
+    * [Automate storage definitions](../../server/stroage/customizing-raven-data-files-locations#automate-storage-definitions)
+        * [Script - General example](../../server/storage/customizing-raven-data-files-locations#script---general-example)
+        * [Script - Point Indexes to a different location](../../server/storage/customizing-raven-data-files-locations#script---point-indexes-to-a-different-location)
 
 {NOTE/}
 
-Each database includes a `Journals`, a `Temp` and an `Indexes` folder, and a `Raven.voron` data file.  
-Each index folder has its own `Journals` and `Temp` folders, and a `Raven.voron` file.  
-All these components (`Journals`, `Raven.voron`, etc.) operate concurrently with each other and can be stored on different devices.  
-It allows you to organize the files based on their usage pattern and the performance of the different devices you own. 
+---
+
+{PANEL: Why store data on different devices}
+
+* A file or directory can be redirected to a different storage location according to its speed, durability, etc.  
+* This allows organizing the files based on their usage pattern and the performance of the different devices you own.  
+  i.e. slow devices may cause a slow down when reading from _Raven.voron_.  
+* [Voron components](../../server/storage/directory-structure#voron-storage-environment) operate concurrently.  
+  Storing them to different locations can help avoid traffic jams and achieve better concurrency.  
 
 {PANEL/}
 
-{PANEL: Practice}
+{PANEL: Configuring temp files location}
 
-[The structure of the RavenDB directories](directory-structure) cannot be changed. An exception is locations of temporary files for [documents](../../server/configuration/storage-configuration#storage.temppath) and [indexes](../../server/configuration/indexing-configuration#indexing.temppath), that can be changed by setting the [Storage.TempPath](../../server/configuration/storage-configuration#storage.temppath) configuration option.  
+* **Databases temporary files**  
+  By default, all databases' temporary files are written to the `Temp` folder under each Database directory.  
+  Customize the files path by setting configuration option [Storage.TempPath](../..//server/configuration/storage-configuration#storage.temppath) in your _settings.json_ file.  
 
-However, you can store any RavenDB data files or directories in whatever location you choose, by defining junction points (Windows) or mount points (Linux).
+* **Indexes temporary files**  
+  By default, all indexes' temporary files are written to the `Temp` folder under each Index directory.  
+  Customize the files path by setting configuration option [Indexing.TempPath](../../server/configuration/indexing-configuration#indexing.temppath) in your _settings.json_ file.  
 
-{NOTE: Example - Moving Journals}
+* **Backup temporary files**  
+  By default, backup temporary files are written under the `Database` directory or under `Storage.TempPath` if defined.  
+  Customize the files path by setting configuration option [Backup.TempPath](../../server/configuration/todo..) in your _settings.json_ file.
+
+{PANEL/}
+
+{PANEL: Configuring data files location}
+
+* You can store RavenDB data files in any directory of your choice.  
+  This is done by defining __junction points__ (Windows) or __mount points__ (Linux).
+
+* If data already exists in the directory, and you want to define the junction / mount point,  
+  you need to create a backup of the data first and copy it back into the directory after executing the command.
+
+* The database must be offline when moving the database folder itself to a new point.  
+
+
+{NOTE: }
+__Example - Moving Journals__
 
 A common practice is to store the journals on a very fast drive to achieve better write performance.
 The following command will point the `Journals` directory of the _Northwind_ database to a path on a different drive.
 
-#### Windows
-
 {CODE-BLOCK:powershell}
+# Windows:
 C:\RavenDB\Server\RavenData\Databases\Northwind>mklink /J Journals E:\Journals\Northwind
 {CODE-BLOCK/}
 
-#### Linux
-
 {CODE-BLOCK:bash}
- ln -s ~/RavenDB/Server/RavenData/Databases/Northwind/Journals /mnt/FastDrive/Databases/Northwind/Journals
- {CODE-BLOCK/}
+# Linux:
+ln -s ~/RavenDB/Server/RavenData/Databases/Northwind/Journals /mnt/FastDrive/Databases/Northwind/Journals
+{CODE-BLOCK/}
 
 {NOTE/}
 
-{NOTE: Example - Moving Indexes}
+{NOTE: }
+__Example - Moving Indexes__
 
-If you want to store the data of _all_ indexes of the _Northwind_ database in the custom location, you can use the following command:
+If you want to store the data of all indexes of the _Northwind_ database in the custom location,
+you can use the following command to to point the `Indexes` directory to a new location:
 
-#### Windows
-
-{CODE-BLOCK:powershell}
+{CODE-BLOCK: powershell}
+# Windows:
 C:\RavenDB\Server\RavenData\Databases\Northwind>mklink /J Indexes D:\Indexes\Northwind
 {CODE-BLOCK/}
 
-{INFO Creation of junction / mount points requires the database to be offline /}
-
-{INFO If data already exists in the directory, and you want to define the junction (Windows) or mount (Linux) point, you need to create a backup of the data first, and copy it back into the directory after executing the command. /}
-
-#### Linux
-
-{CODE-BLOCK:bash}
+{CODE-BLOCK: bash}
+# Linux:
 ln -s ~/RavenDB/Server/RavenData/Databases/Northwind/Indexes /mnt/FastDrive/Databases/Northwind/Indexes 
 {CODE-BLOCK/}
 
-{INFO Start RavenDB server _after_ creating soft link to a faster drive mount point: /}
-
 {NOTE/}
-
 {PANEL/}
 
-{PANEL: Automation}
+{PANEL: Automate storage definitions}
 
-To help you automate the process, we have added the [Storage.OnDirectoryInitialize.Exec](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec) extension point.
-Whenever RavenDB creates or opens a directory, it will invoke a process of your choice.
-It allows you to create a script with your own logic, defining juction points as needed.
+To help automate the process, we have added the [Storage.OnDirectoryInitialize.Exec](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec) configuration option.  
+Whenever RavenDB __creates a directory__, it will invoke the process that is defined within that configuration.  
+This allows you to create a script with your own logic, defining junction/mount points as needed.
 
-RavenDB will invoke the process with [optional user arguments](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec.arguments) followed by:  
+RavenDB will invoke the process with [optional user arguments](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec.arguments) followed by:
 
-* The environment type (System, Database, Index, Configuration, Compaction)
-* The database name
-* Path of the `DataDir` directory
-* Path of the `Temp` directory
-* Path of the `Journals` directory
+  * The environment type (System, Database, Index, Configuration, Compaction)
+  * The database name
+  * Path of the `DataDir` directory
+  * Path of the `Temp` directory
+  * Path of the `Journals` directory
 
-Let's look at an example which demonstrates how the mechanism works.  
-Here is a very simple powershell script which will append a line to a text file every time it is called. The path of the output text file is supplied as a user argument.
+{NOTE: }
+#### Script - General example
+
+The following example shows a simple powershell script.  
+It will append a line to a text file every time it is called.  
+The path of the output text file is supplied as a user argument.  
 
 {CODE-BLOCK:powershell}
+# script.ps1
+
 param([string]$userArg ,[string]$type, [string]$name, [string]$dataPath, [string]$tempPath, [string]$journalPath)
 Add-Content $userArg "$type $name $dataPath $tempPath $journalPath\r\n"
 exit 0
 {CODE-BLOCK/}
 
-We supply this script to RavenDB via the [Storage.OnDirectoryInitialize.Exec](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec) configuration option:
+Add the script and its user arguments to the _settings.json_ file as follows:
 
 {CODE-BLOCK:json}
 {
@@ -117,21 +137,81 @@ We supply this script to RavenDB via the [Storage.OnDirectoryInitialize.Exec](..
 }
 {CODE-BLOCK/}
 
-When launching the RavenDB server and creating the `Northwind` sample data, the script is invoked 6 times.  
+When launching RavenDB server, creating `Northwind` database with the Northwind sample data,  
+the script is invoked per each directory that RavenDB creates.  
 Following the example above, the content of outFile.txt will be:
 
 {CODE-BLOCK:plain}
 {
-System System C:\Raven4\Server\System C:\Raven4\Server\System\Temp C:\Raven4\Server\System\Journals\r\n
-Configuration Northwind C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Configuration C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Configuration\Temp C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Configuration\Journals\r\n
-Database Northwind C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Temp C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Journals\r\n
-Index Northwind C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Orders_ByCompany C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Orders_ByCompany\Temp C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Orders_ByCompany\Journals\r\n
-Index Northwind C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Product_Search C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Product_Search\Temp C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Product_Search\Journals\r\n
-Index Northwind C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Orders_Totals C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Orders_Totals\Temp C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Orders_Totals\Journals\r\n
+System System C:\RavenDB\Server\System C:\RavenDB\Server\System\Temp C:\RavenDB\Server\System\Journals\r\n
+Configuration Northwind C:\RavenDB\Server\Databases\Northwind\Configuration C:\RavenDB\Server\Databases\Northwind\Configuration\Temp C:\RavenDB\Server\Databases\Northwind\Configuration\Journals\r\n
+Database Northwind C:\RavenDB\Server\Databases\Northwind C:\RavenDB\Server\Databases\Northwind\Temp C:\RavenDB\Server\Databases\Northwind\Journals\r\n
+Index Northwind C:\RavenDB\Server\Databases\Northwind\Indexes\Orders_ByCompany C:\RavenDB\Server\Databases\Northwind\Indexes\Orders_ByCompany\Temp C:\RavenDB\Server\Databases\Northwind\Indexes\Orders_ByCompany\Journals\r\n
+Index Northwind C:\RavenDB\Server\Databases\Northwind\Indexes\Product_Search C:\RavenDB\Server\Databases\Northwind\Indexes\Product_Search\Temp C:\RavenDB\Server\Databases\Northwind\Indexes\Product_Search\Journals\r\n
+// ... + more lines per index folder created
 }
 {CODE-BLOCK/}
 
+{NOTE/}
 
+{NOTE: }
+#### Script - Point Indexes to a different location
+
+The following example shows a bash script.  
+The script is invoked per each directory that RavenDB creates.  
+
+If the environment type is other than 'Database' the script will exit.  
+Else, the script will soft link a new location for the `Indexes` directory.
+
+The Indexes directory will continue to reside under the Database directory (See [Directory Structure](../../server/storage/directory-structure)).
+However, after the script is run, the Indexes directory will point to the new location where all indexes' data will be written.  
+
+{CODE-BLOCK:bash}
+#!/bin/bash
+# bash ./your-script USER_ARGS Database DB_NAME BASE_PATH TEMP_PATH JOURNALS_PATH
+
+RDB_DATA_DIR="$RAVENDB_DATA_DIR"
+INDEXES_TARGET_DIR="$RAVENDB_INDEXES_TARGET_DIR"
+
+DIR_TYPE="$1"
+DB_NAME="$2"
+
+if [ "$DIR_TYPE" != 'Database' ]; then
+exit 0
+fi
+
+INDEXES_SOURCE_DIR_NAME="${RDB_DATA_DIR}/Databases/${DB_NAME}/Indexes"
+INDEXES_TARGET_DIR_NAME="${INDEXES_TARGET_DIR}/${DB_NAME}/Indexes"
+
+
+if [ -d "$INDEXES_SOURCE_DIR_NAME" ] && [ ! -L "$INDEXES_SOURCE_DIR_NAME" ]; then
+# If Indexes directory exists then exit - need manual handling
+echo "FATAL: Directory $INDEXES_SOURCE_DIR_NAME already exists."
+exit 1
+fi
+
+if [ -L "$INDEXES_SOURCE_DIR_NAME" ]; then
+exit 0
+fi
+
+mkdir -p "$INDEXES_TARGET_DIR_NAME"
+
+ln -s "$INDEXES_SOURCE_DIR_NAME" "$INDEXES_TARGET_DIR_NAME"
+{CODE-BLOCK/}
+
+Add the script and its user arguments to the _settings.json_ file as follows:
+
+{CODE-BLOCK:json}
+{
+"Setup.Mode": "None",
+"ServerUrl": "http://127.0.0.1:8080",
+"License.Eula.Accepted": true,
+"Storage.OnDirectoryInitialize.Exec" :"bash",
+"Storage.OnDirectoryInitialize.Exec.Arguments" :"c:\\example\\your-script.sh"
+}
+{CODE-BLOCK/}
+
+{NOTE/}
 
 {PANEL/}
 
