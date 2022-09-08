@@ -54,9 +54,9 @@ Knowing the version is important because documentation, feature-sets, and patche
      Notifies you if there is an active connection with RavenDB's automatic update License Server.
      If you aren't connected, it is usually either because a firewall is blocking the connection or your server is running offline.
      ![Automatic Update License Server Connection](images/license-server.png "Automatic Update License Server Connection")
-   * [Replace License](../../studio/server/license-management#replace-license) - Copy the new license code from the email and paste it here. 
+   * [Replace License](../../studio/server/license-management#replace-license) - Copy the new license key from the email and paste it here. 
    * [Force Update](../../studio/server/license-management#force-update) - Force immediate update of license to use new features today. 
-   * [Renew License](../../studio/server/license-management#renew-license) - Copy the new license code from the email and paste it here. 
+   * [Renew License](../../studio/server/license-management#renew-license) - Copy the new license key from the email and paste it here. 
 
 #### 4. **Support Plan**  
 Specifies which support options you have with your current support plan.  
@@ -78,7 +78,7 @@ In order to register an instance of RavenDB with a license, you can:
 1. **About**  
    Navigate to the _About_ page in Studio 
 2. **Register**  
-   Click the _Register_ button, copy/paste your license code from the email and click submit.
+   Click the _Register_ button, copy/paste your license key from the email and click submit.
 
 * Use the following [configuration](../../server/configuration/license-configuration) options:
    * **License**  
@@ -100,7 +100,7 @@ In order to register an instance of RavenDB with a license, you can:
 
 {PANEL: Replace License} 
 
-To replace license, copy the new license code block from the email, click _REPLACE LICENSE_, and submit a new one.
+To replace license, copy the new license key from the email, click _REPLACE LICENSE_, and submit a new one.
 
 ![Replace License](images/manage-license-2.png "Replace License")
 
@@ -118,13 +118,21 @@ After [changing your license](https://ravendb.net/buy), in order to update the l
 
 {PANEL: Renew License}
 
-If your server is connected to the automatic update [License Server](../../studio/server/license-management#license-information),
-your license will automatically update as long as it hasn't been canceled.
-
-If you aren't connected to the License Server, copy the entire license code block from the license renewal email and paste it into 
-the **Renew License** interface. 
+This button is only visible for **Developer** and **Community** licenses.  
+These must be renewed explicitly when there are less than 30 days remaining on your current license.  
 
 ![Renew License](images/manage-license-4.png "Renew License")
+
+To renew, click the button and follow the instructions in the Studio interface.
+
+### Professional and Enterprise Licenses
+
+With **Professional** and **Enterprise** licenses, if your server is connected to the automatic update [License Server](../../studio/server/license-management#license-information),
+your license will automatically update as long as it hasn't been canceled.
+
+If you aren't connected to the License Server, copy the entire license key from the license renewal email and follow the instructions for
+[offline activation of a license](../../server/configuration/licensing/licensing-overview#offline-activation,-upgrade,-and-renewal). 
+
 
 {PANEL/}
 
