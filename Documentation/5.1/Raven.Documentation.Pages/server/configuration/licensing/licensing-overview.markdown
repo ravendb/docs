@@ -37,7 +37,9 @@
 See the [pricing page](https://ravendb.net/buy) for more info about which features are included in each license.  
 
 * **Development** (fully featured and temporary - must be upgraded before launch)  
-   * Developer licenses last for 6 months.  
+   * Developer licenses last for 6 months.
+   * The certificate lasts for 3 months, but can be renewed in the [Studio Certificates Management View](../../../studio/server/certificates/server-management-certificates-view#studio-certificates-management-view)
+     by navigating in Studio from the **Manage Server** tab --> **Certificates** --> **Server Certificate** section.
 * **Community** (basic production-grade)
    * Community licenses last for a year and can be extended every year.
 * **Professional** (standard production-grade)
