@@ -76,10 +76,10 @@ To learn more, see [Data Ownership in a Distributed System](https://ayende.com/b
 [Consistency boundaries](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system)
 between clusters are crucial to preserve data integrity and model an efficient global system.  
 
-* Be sure to create business logic which ensures that **two clusters don't write on the same document.**  
+### Ensuring that two clusters don't write on the same document  
 
 {INFO: To maintain consistency boundaries between clusters}
-You can establish document uniqueness by:
+You can ensure document ID uniqueness by:
 
 * Ensuring that the node-tags are all unique.  
   e.g. (NYC-nodes A,B,C), (LDN-nodes D,E,F)  
