@@ -62,8 +62,10 @@
 {NOTE: }
 __Temp Folder__
 
-* Holds temporary scratch & compression <em>*.buffers</em> files.
-* These are small memory-mapped files that keep concurrent versions of the data for running transactions, storing data copies.
+* Holds temporary scratch & compression <em>*.buffers</em> files.  
+* These are small memory-mapped files that keep separate data versions for concurrent running transactions.  
+* Data modified by a transaction is copied into the scratch space - modifications are made on a copy of the data.  
+* Compression files are used to compress the transaction data just before writing it to the journal.  
 * When a transaction is written from these files to the journal file it is considered committed.
 {NOTE /}
 
