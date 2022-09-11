@@ -145,7 +145,10 @@ namespace Raven.Documentation.Samples.Server
         #endregion
 
         #region create_uniqueness_control_documents
-        class Program
+        // When you create documents that must not duplicate another record
+        // you can create reference documents with a unique value such as phone or email as the IDs.
+        // Then you can check if that value is already part of another document.
+        class UniquePhoneReference
         {
             public class CompanyReference
             {
@@ -154,8 +157,8 @@ namespace Raven.Documentation.Samples.Server
             }
 
             static void Main(string[] args)
-            {   
-                // A new document in the "Companies" collection with automatic HiLo ID 
+            {
+                // A company document class that must be created with a unique 'Phone' field
                 Company newCompany = new Company
                 {
                     Name = "companyName",
@@ -174,28 +177,24 @@ namespace Raven.Documentation.Samples.Server
                             new SessionOptions { TransactionMode = TransactionMode.ClusterWide }
                         );
 
-                    // Check if a reference document exists where the ID is a unique value such as an email or phone
-                    var existing = session.Load<CompanyReference>("phones/" + newCompany.Phone);
-
-                    if (existing != null)
+                    // Check whether the new company phone is already in use by another company
+                    // by checking if there is already a reference document that has the new phone in its ID
+                    var phoneReferenceDocument = session.Load<CompanyReference>("phones/" + newCompany.Phone);
+                    if (phoneReferenceDocument != null)
                     {
-                        var msg = $"The phone '{newCompany.Phone}' already exists in company ID: {existing.CompanyId}";
+                        var msg = $"Phone '{newCompany.Phone}' already exists in ID: {phoneReferenceDocument.CompanyId}";
                         throw new ConcurrencyException(msg);
                     }
-                    // If this unique value doesn't already exist, store the new entity
+                    // If the new phone number doesn't already exist, store the new entity
                     session.Store(newCompany);
-                    // Create a reference document where the ID is a unique value for future checks
+                    // Store a new reference document with the new phone value in its ID for future checks.
                     session.Store(new CompanyReference { CompanyId = newCompany.Id }, "phones/" + newCompany.Phone);
 
                     // May fail if called concurrently with the same phone number
                     session.SaveChanges();
                 }
-
             }
-
         }
-
-
         #endregion
     }
 

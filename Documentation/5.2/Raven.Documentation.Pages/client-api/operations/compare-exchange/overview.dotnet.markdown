@@ -11,19 +11,19 @@
     when compared to non-cluster-wide transactions. 
     They prioritize consistency over performance to ensure ACIDity across the cluster.  
 
-* Compare-exchange items are [not replicated externally](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters) to other clusters.
+* Compare-exchange items are [not replicated externally](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters) to other databases.
 
 * In this page:  
  * [What Compare Exchange Items Are](../../../client-api/operations/compare-exchange/overview#what-compare-exchange-items-are)  
  * [Using Compare-Exchange Items](../../../client-api/operations/compare-exchange/overview#using-compare-exchange-items)  
  * [When to Use Cluster-Wide Sessions or Node-Local Sessions](../../../client-api/operations/compare-exchange/overview#when-to-use-cluster-wide-sessions-or-node-local-sessions)  
- * [Why Compare-Exchange Items are Not Replicated to External Clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters)  
+ * [Why Compare-Exchange Items are Not Replicated to External Databases](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases)  
  * [Transaction Scope for Compare-Exchange Operations](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)  
  * [Creating a Key](../../../client-api/operations/compare-exchange/overview#creating-a-key)  
  * [Updating a Key](../../../client-api/operations/compare-exchange/overview#updating-a-key)  
  * [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)  
  * [Example II- Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview#example-ii---reserve-a-shared-resource)  
- * [Example III - Ensuring Unique Values with Reference Documents](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-with-reference-documents)  
+ * [Example III - Ensuring Unique Values without Using Compare Exchange](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange)  
 
 {NOTE/}
 
@@ -34,17 +34,17 @@
 Compare Exchange items are key/value pairs that allow you to perform cluster-wide interlocked distributed operations.
 
 * Each compare-exchange item contains: 
-  * A key - A unique string across the cluster.  
-  * A value - Can be numbers, strings, arrays, or objects.  
+  * **A key** - A unique string across the cluster.  
+  * **A value** - Can be numbers, strings, arrays, or objects.  
     Any value that can be represented as JSON is valid.
-  * Metadata  
-  * Raft index - A version number that is modified on each change.  
+  * **Metadata**  
+  * **Raft index** - A version number that is modified on each change.  
     Any change to the value or metadata changes the Raft index.  
 
 * Creating and modifying a compare-exchange item is an atomic, thread-safe [compare-and-swap](https://en.wikipedia.org/wiki/Compare-and-swap) interlocked 
   compare-exchange operation.
   * The compare-exchange item is distributed to all nodes through the [Raft algorithm](../../../glossary/raft-algorithm)
-    so that a consistent, unique key is guaranteed cluster-wide.  
+    so that a consistent, unique key is guaranteed to all nodes in the cluster that are in the same database-group.  
 
 {PANEL/}
 
@@ -77,7 +77,7 @@ Compare Exchange items are key/value pairs that allow you to perform cluster-wid
 
 * Every time a document in a cluster-wide session is modified, RavenDB automatically creates 
   or uses an associated compare-exchange item called [Atomic Guard](../../../client-api/operations/compare-exchange/atomic-guards).  
-  * Whenever one session changes and saves a document, the Atomic Guard version changes. 
+  * Whenever one session changes and saves a document, the Atomic Guard version changes.  
     If other sessions load the document before the version changed, they will not be able to modify it.  
   * A `ConcurrencyException` will be thrown if the Atomic Guard version was modified by another session.  
 * **If a ConcurrencyException is thrown**:  
@@ -139,26 +139,20 @@ so that conflicts are prevented.
 
 {PANEL/}
 
-{PANEL: Why Compare-Exchange Items are Not Replicated to External Clusters }
+{PANEL: Why Compare-Exchange Items are Not Replicated to External Databases }
 
-[To prevent consistency conflicts between clusters](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system) 
-and model an efficient multi-cluster system, each cluster should have sole ownership of documents created in it.  
+1. Due to latency, clients on one side can make decisions on compare exchange values that would no longer be valid if compare-exchange items were replicated.
+2. Each cluster defines its policies and configurations, including conflict resolution.  
+   If two databases that reside on different clusters have two-way external replication between them, 
+   conflicts would occur frequently if the compare exchange items were replicated.  
+   
+Read [Consistency in a Globally Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system) 
+to learn more about why global database modeling is more efficient when each cluster maintains sole responsibility to modify documents
+that it creates.  This logic includes compare exchange items that are associated with them.  
 
-In geo-distributed systems, to avoid latency problems, a new cluster is usually set up in each region.  
-But to achieve strong consistency in a distributed system, each transaction must achieve a majority consensus amongst the
-involved servers.  Trying to achieve consensus on each transaction between different clusters is usually unrealistic, 
-especially considering geographic latency.  
-
-{WARNING: }
-If multiple clusters are set to modify the same document and then replicate it to each other, 
-there will likely be frequent conflicts.
-{WARNING/}
-
-To ensure consistency between clusters, documents created in each cluster are owned and operated only by that cluster.  
-Learn how to protect document uniqueness and [local ownership in a global system](../../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters) 
-in our article on External Replication. 
-
-**The rule of thumb for documents created by another cluster - you can look, but don't touch.**
+{NOTE: How to prevent duplicate records between clusters with two-way replication}
+See [Example III - Ensuring Unique Values without Using Compare Exchange](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange).
+{NOTE/}
 
 {PANEL/}
 
@@ -225,16 +219,15 @@ Updating a compare exchange key can be divided into 2 phases:
   in [cluster-wide transactions](../../../client-api/session/cluster-transaction).  
   There is no need to manually create or maintain Compare-Exchange items to ensure consistency across your cluster.
 
-* Compare Exchange can be used to maintain the uniqueness of a value **inside a single cluster**.  
+* Compare Exchange can be used to maintain the uniqueness of a value **on one database inside a single cluster**.  
   [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters)
-  because each cluster should be solely responsible for the documents created by it.
    * To establish uniqueness in a multi-clustered distributed system, see [Example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-with-reference-documents).
 
 {NOTE/}
 
-In the following example, we try to reserve a new user email.  
-Compare exchange is used to ensure that the email is unique in the database on this cluster.  
-If the email is successfully reserved, then we save the new user account document.  
+The following example shows how to use compare exchange to create documents 
+with unique values. The scope is within the database group on a single cluster.  
+To establish uniqueness without using compare exchange see [example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-with-reference-documents).
 
 {CODE email@Server\CompareExchange.cs /}  
 
@@ -264,9 +257,6 @@ If the email is successfully reserved, then we save the new user account documen
   There is no need to manually create or maintain Compare-Exchange items to ensure consistency across your cluster.
 
 * Compare Exchange can be used to reserve a shared resource **inside a single cluster**.  
-  [Compare-Exchange items are not replicated to other clusters](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-clusters)
-  because each cluster should be solely responsible for the documents created by it.
-   * To reserve a resource in a multi-clustered distributed system, see [Example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-with-reference-documents).
 
 {NOTE/}
 
@@ -278,25 +268,20 @@ The code also checks for clients who never release resources (i.e. due to failur
 
 {PANEL/}
 
-{PANEL: Example III - Ensuring Unique Values with Reference Documents}  
+{PANEL: Example III - Ensuring Unique Values without Using Compare Exchange}  
 
-To reduce latency in a global system, various clusters can use [External Replication](../../../server/ongoing-tasks/external-replication) 
-to house the same database locally.  
+Unique values can also be ensured without using compare exchange.
 
-To prevent two clusters from creating duplicate user IDs, **one primary cluster should have sole responsibility to create new users**. 
-This sole responsibility could also be valuable to prevent duplicates of other objects that must be unique.  
+The below example shows how to achieve that by using **reference documents**.
+The reference documents' IDs will contain the unique values instead of the compare exchange items.
 
-What if this primary cluster goes down?  
-While RavenDB has automatic failover for nodes within a cluster, there may be a situation where an entire data center goes offline. 
-In this situation, you can set up a manual failover to another cluster.  
-
-But, how can that secondary cluster create unique IDs that the primary cluster can use when it is back online?  
-
-One effective solution is to **create reference documents where the IDs are a unique field**, such as an email address or phone number.  
-These documents will then be externally replicated between clusters.  
+Using reference documents is especially useful when [External Replication](../../../server/ongoing-tasks/external-replication) 
+is defined between 2 databases that need to be synced with unique values. 
+The reference documents will replicate to the destination database, 
+as opposed to compare exchange items, which are not externally replicated.
 
 {NOTE: }
-Sessions which handle fields that must be unique should be set to [TransactionMode.ClusterWide](../../../client-api/session/cluster-transaction).  
+Sessions which process fields that must be unique should be set to [TransactionMode.ClusterWide](../../../client-api/session/cluster-transaction).  
 {NOTE/}
 
 {CODE create_uniqueness_control_documents@Server\CompareExchange.cs /}
