@@ -1,22 +1,31 @@
 # Operations: Server: How to Compact a Database
 
-* Use the CompactDatabaseOperation to compact a database.  
-* Compaction removes empty gaps that still occupy space after deletes.
-* You can choose what should be compacted: documents and/or listed indexes.  
-* Compaction can also be done in the Studio database statistics [Storage Report](../../../studio/database/settings/documents-compression#database-storage-report)
+* The compaction operation removes empty gaps on the disk that still occupy space after deletes.
 
-{WARNING: }
+* You can choose what should be compacted: documents and/or listed indexes.  
+
+* The operation compacts on one node.  
+  If you wish to compact all nodes in the database group, the command must be sent to each node separately.  
+
+* **From Client API:**
+  Use the `CompactDatabaseOperation`.  
+  To compact on more than one node, the command must be sent to each node by specifying `ForNode(<nodeTag>)`. 
+
+* **From Studio:**
+  Compaction can be triggered from the [Storage Report](../../../studio/database/settings/documents-compression#database-storage-report) view.  
+  The operation will compact the database only on the node being viewed (node info is in the Studio footer).  
+
+{WARNING: The database will be offline during compaction.}
 The compacting operation is executed **asynchronously**, 
-and during this operation **the database will be offline**.  
+and during this operation, **the database will be offline**.  
 {WARNING/}
 
-{INFO: Compaction triggers compression on all collections configured for compression}
-If [documents compression](../../../server/storage/documents-compression) is set on any collection, 
-all documents in that collection will be compressed upon compaction.  
-Without using CompactDatabaseOperation, only documents that are created or modified become compressed.
-{INFO/}
-
-
+* In this page:
+   * [Syntax](../../../client-api/operations/server-wide/compact-database#syntax)
+   * [Example I - Compact specific indexes](../../../client-api/operations/server-wide/compact-database#example-i---compact-specific-indexes)
+   * [Example II - Compact all indexes](../../../client-api/operations/server-wide/compact-database#example-ii---compact-all-indexes)
+   * [Example III - Compact a database that is external to the store](../../../client-api/operations/server-wide/compact-database#example-iii)
+   * [Compaction Triggers Documents Compression](../../../client-api/operations/server-wide/compact-database#compaction-triggers-documents-compression)
 
 ## Syntax
 
@@ -24,23 +33,31 @@ Without using CompactDatabaseOperation, only documents that are created or modif
 
 {CODE compact_2@ClientApi\Operations\Server\Compact.cs /}
 
-| Parameters | | |
+`DatabaseName` is a mandatory parameter.  
+You must also specify `Documents` and/or `Indexes`.
+
+| Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **DatabaseName** | string | Name of a database to compact |
 | **Documents** | bool | Indicates if documents should be compacted |
 | **Indexes** | string[] | List of index names to compact |
 
-## Example I
+## Example I - Compact specific indexes
+
+The following example shows how to compact only specific indexes.
+Documents are also set to be compacted.
 
 {CODE compact_3@ClientApi\Operations\Server\Compact.cs /}
 
 
-## Example II
+## Example II - Compact all indexes
+
+The following example shows how to compact all of the indexes and documents in the database. 
 
 {CODE compact_4@ClientApi\Operations\Server\Compact.cs /}
 
 
-## Example III
+## Example III - Compact a database that is external to the store
 
 * CompactDatabaseOperation automatically runs **on the store's database**.  
   If we try to compact **a different database**, the process will succeed only if the database 
@@ -54,9 +71,29 @@ Without using CompactDatabaseOperation, only documents that are created or modif
   its name to CompactDatabaseOperation as in the following example.  
   {CODE compact_5@ClientApi\Operations\Server\Compact.cs /}
 
+{PANEL: Compaction Triggers Documents Compression}
+
+Compaction triggers [documents compression](../../../server/storage/documents-compression) 
+on all existing documents in the collections that are configured for compression.  
+
+If compression is defined on a collection, and if you don't trigger compaction,  
+only new or modified documents will be compressed.
+
+
+{PANEL/}
+
 ## Related Articles
 
-- [How to **create** database?](../../../client-api/operations/server-wide/create-database) 
-- [How to get database **statistics**?](../../../client-api/operations/maintenance/get-statistics)
-- [How to start **restore** operation?](../../../client-api/operations/server-wide/restore-backup)
+**Database**
 
+- [How to create database?](../../../client-api/operations/server-wide/create-database) 
+- [How to get database statistics](../../../client-api/operations/maintenance/get-statistics)
+- [How to restore a database from backup](../../../client-api/operations/server-wide/restore-backup)
+
+**Compression**
+
+- [Documents Compression](../../../server/storage/documents-compression)
+
+**Studio**
+
+- [Storage Report](../../../studio/database/settings/documents-compression#database-storage-report)

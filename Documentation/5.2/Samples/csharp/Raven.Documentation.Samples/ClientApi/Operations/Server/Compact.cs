@@ -43,28 +43,41 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                 CompactSettings settings = new CompactSettings
                 {
                     DatabaseName = "Northwind",
+                    // If true, the documents will also be compacted.
                     Documents = true,
-                    Indexes = new[] { "Orders/Totals", "Orders/ByCompany" }
+                    // Only the specified indexes will compact.
+                    Indexes = new[] { "Orders/Totals", "Orders/ByCompany" } 
                 };
-                Operation operation = store.Maintenance.Server.Send(new CompactDatabaseOperation(settings));
+                // You can use 'ForNode(<nodeTag>)' to specify on which node to compact.
+                // If ForNode() is not used, RavenDB will operate by default on the preferred node.
+                Operation operation = store.Maintenance.Server.ForNode("A")
+                    .Send(new CompactDatabaseOperation(settings));
                 operation.WaitForCompletion();
+
+                // To compact on all nodes, the above command must be sent to each node separately.
                 #endregion
             }
             using (var store = new DocumentStore())
             {
                 #region compact_4
-                // get all index names
+                // Get all index names in the database.
                 string[] indexNames = store.Maintenance.Send(new GetIndexNamesOperation(0, int.MaxValue));
 
                 CompactSettings settings = new CompactSettings
                 {
                     DatabaseName = "Northwind",
+                    // If true, documents will also be compacted.
                     Documents = true,
+                    // 'indexNames' contains all of the index names.
                     Indexes = indexNames
                 };
-                // compact entire database: documents + all indexes
-                Operation operation = store.Maintenance.Server.Send(new CompactDatabaseOperation(settings));
+                // You can use 'ForNode(<nodeTag>)' to specify on which node to compact.
+                // If ForNode() is not used, RavenDB will operate by default on the preferred node.
+                Operation operation = store.Maintenance.Server.ForNode("A")
+                    .Send(new CompactDatabaseOperation(settings));
                 operation.WaitForCompletion();
+
+                // To compact on all nodes, the above command must be sent to each node separately.
                 #endregion
             }
         }
@@ -92,11 +105,12 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             }
         }
 
-        // To compact a database other than the store's database, we need to explicitly provide 
-        // its name to the store's Request Executor.  
+
         private static void locateDB()
         {
             #region compact_5
+            // To compact a database other than the store's database, we need to explicitly provide 
+            // its name to the store's Request Executor.  
             using (var store = new DocumentStore
             {
                 Urls = new[] { "http://localhost:8080" },
