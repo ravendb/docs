@@ -133,7 +133,7 @@ Add the script and its user arguments to the _settings.json_ file as follows:
     "ServerUrl": "http://127.0.0.1:8080",
     "License.Eula.Accepted": true,
     "Storage.OnDirectoryInitialize.Exec" :"powershell",
-    "Storage.OnDirectoryInitialize.Exec.Arguments" :"c:\\example\\script.ps1 c:\\example\\outFile.txt"
+    "Storage.OnDirectoryInitialize.Exec.Arguments" :"c:\\scripts\\script.ps1 c:\\scripts\\outFile.txt"
 }
 {CODE-BLOCK/}
 
@@ -207,7 +207,7 @@ Add the script and its user arguments to the _settings.json_ file as follows:
 "ServerUrl": "http://127.0.0.1:8080",
 "License.Eula.Accepted": true,
 "Storage.OnDirectoryInitialize.Exec" :"bash",
-"Storage.OnDirectoryInitialize.Exec.Arguments" :"c:\\example\\your-script.sh"
+"Storage.OnDirectoryInitialize.Exec.Arguments" :"/scripts/your-script.sh"
 }
 {CODE-BLOCK/}
 
