@@ -150,7 +150,7 @@ namespace Raven.Documentation.Samples.Server
         // Then you can check if that value is already part of another document.
         class UniquePhoneReference
         {
-            public class CompanyReference
+            public class PhoneReference
             {
                 public string Id;
                 public string CompanyId;
@@ -177,18 +177,18 @@ namespace Raven.Documentation.Samples.Server
                             new SessionOptions { TransactionMode = TransactionMode.ClusterWide }
                         );
 
-                    // Check whether the new company phone is already in use by another company
-                    // by checking if there is already a reference document that has the new phone in its ID
-                    var phoneReferenceDocument = session.Load<CompanyReference>("phones/" + newCompany.Phone);
-                    if (phoneReferenceDocument != null)
+                    // Check whether the new company phone already exists
+                    // by checking if there is already a reference document that has the new phone in its ID.
+                    var phoneRefDocument = session.Load<PhoneReference>("phones/" + newCompany.Phone);
+                    if (phoneRefDocument != null)
                     {
-                        var msg = $"Phone '{newCompany.Phone}' already exists in ID: {phoneReferenceDocument.CompanyId}";
+                        var msg = $"Phone '{newCompany.Phone}' already exists in ID: {phoneRefDocument.CompanyId}";
                         throw new ConcurrencyException(msg);
                     }
                     // If the new phone number doesn't already exist, store the new entity
                     session.Store(newCompany);
                     // Store a new reference document with the new phone value in its ID for future checks.
-                    session.Store(new CompanyReference { CompanyId = newCompany.Id }, "phones/" + newCompany.Phone);
+                    session.Store(new PhoneReference { CompanyId = newCompany.Id }, "phones/" + newCompany.Phone);
 
                     // May fail if called concurrently with the same phone number
                     session.SaveChanges();
