@@ -1,11 +1,11 @@
 # Configuration: Cluster
 ---
 
-{NOTE: Nodes usually must have identical cluster configurations.}
+{NOTE: Nodes in a cluster usually must have identical cluster configurations.}
 Configuration mismatches tend to cause interaction problems between nodes.
 
-If you must set cluster configurations differently in separate nodes, we recommend first testing it 
-in a development environment to see that each node interacts properly with the others.
+If you must set cluster configurations differently in separate nodes,  
+**we recommend first testing it** in a development environment to see that each node interacts properly with the others.
 {NOTE/}
 
 ---
@@ -13,8 +13,6 @@ in a development environment to see that each node interacts properly with the o
 {PANEL:Cluster.ElectionTimeoutInMs}
 
 Timeout in which the node expects to receive a heartbeat from the leader, in milliseconds.
-
-Each node in a cluster must have the same configuration.
 
 - **Type**: `int`
 - **Default**: `300`
@@ -106,8 +104,6 @@ TCP connection read/write timeout in milliseconds.
 
 Set hard/soft delete for a database that was removed by the observer from the cluster topology in order to maintain the replication factor.
 
-Each node in a cluster must have the same configuration.
-
 - **Type**: `bool`
 - **Default**: `true`
 - **Scope**: Server-wide only
@@ -118,8 +114,6 @@ Each node in a cluster must have the same configuration.
 
 EXPERT: If exceeded, clamp the cluster to the specified version.  
 
-Each node in a cluster must have the same configuration.
-
 - **Type**: `int?`
 - **Default**: `null`
 - **Scope**: Server-wide only
@@ -129,8 +123,6 @@ Each node in a cluster must have the same configuration.
 {PANEL:Cluster.LogHistoryMaxEntries}
 
 EXPERT: Maximum number of log entires to keep in the history log table.  
-
-Each node in a cluster must have the same configuration.
 
 - **Type**: `int`
 - **Default**: `2048`
@@ -144,8 +136,6 @@ EXPERT: Disable automatic atomic writes with cluster write transactions.
 If set to 'true', will only consider explicitly added compare exchange values 
 to validate cluster wide transactions.  
 
-Each node in a cluster must have the same configuration.
-
 - **Type**: `bool`
 - **Default**: `false`
 - **Scope**: Server-wide or per database
@@ -155,8 +145,6 @@ Each node in a cluster must have the same configuration.
 {PANEL:Cluster.MaxSizeOfSingleRaftCommandInMb}
 
 EXPERT: The maximum allowed size allowed for a single raft command (in megabytes).
-
-Each node in a cluster must have the same configuration.
 
 - **Type**: `Size?`
 - SizeUnit(SizeUnit.Megabytes)
@@ -199,7 +187,7 @@ Time (in minutes) between compare exchange tombstones cleanup.
 
 {PANEL:Cluster.TcpReceiveBufferSizeInBytes}
 
-Tcp connection receive buffer size in bytes.
+TCP connection receive buffer size in bytes.
 
 - **Type**: `Size`
 - SizeUnit(SizeUnit.Bytes)
@@ -210,7 +198,7 @@ Tcp connection receive buffer size in bytes.
 
 {PANEL:Cluster.TcpSendBufferSizeInBytes}
 
-Tcp connection send buffer size in bytes.
+TCP connection send buffer size in bytes.
 
 - **Type**: `Size`
 - SizeUnit(SizeUnit.Bytes)

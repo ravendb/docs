@@ -90,14 +90,6 @@ The `Rehab` node is actually deleted only when it is re-connected to the cluster
 _and_ only after it has finished sending all its new documents that it may have (while it was disconnected) to the other nodes in the _Database Group_.  
 {WARNING/}
 
-{NOTE: Nodes usually must have identical cluster configurations.}
-  
-Configuration mismatches tend to cause interaction problems between nodes.
-
-If you must set cluster configurations differently in separate nodes, we recommend first testing it 
-in a development environment to see that each node interacts properly with the others.
-{NOTE/}
-
 The _Dynamic Database Distribution_ feature can be toggled on and off with the following request:
 
 | URL | Method | URL Params |
