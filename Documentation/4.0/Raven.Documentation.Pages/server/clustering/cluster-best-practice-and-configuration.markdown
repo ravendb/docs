@@ -6,7 +6,7 @@
 
 * In this page:
    * [Clusters should have an odd number of at least 3 nodes](../../server/clustering/cluster-best-practice-and-configuration#clusters-should-have-an-odd-number-of-at-least-3-nodes)
-   * [Nodes in a cluster usually must have identical cluster configurations](../../server/clustering/cluster-best-practice-and-configuration#nodes-in-a-cluster-usually-must-have-identical-cluster-configurations)
+   * [Avoid different cluster configurations among the cluster's nodes](../../server/clustering/cluster-best-practice-and-configuration#avoid-different-cluster-configurations-among-the-clusters-nodes)
 
 {NOTE/}
 
@@ -23,10 +23,10 @@ Will not have the ability to automatically failover to another node if it goes d
 This means that it is not highly available.  
 
 **A two nodes cluster:**  
-Also not recommended since the cluster must have a majority of nodes to operate, 
-and in this case, if one of the nodes is down or partitioned, no [Raft](../../glossary/raft-algorithm) 
+Also not recommended since the cluster must have a consensus among the majority of nodes to operate. 
+With a two-node cluster, if one of the nodes is down or partitioned, no [Raft](../../glossary/raft-algorithm) 
 command will be committed,  
-although any _database_ on the surviving node will still be responsive to the user.  
+although any database on the surviving node will still be responsive to the user.  
 
 **Odd number of 3 or more nodes:**  
 For ACID guarantees, a majority of the nodes must agree on every [cluster-wide transaction](../../server/clustering/cluster-transactions), 
@@ -36,12 +36,12 @@ so having an odd number of nodes makes achieving the majority easier.
 
 {PANEL: }
 
-### Nodes in a cluster usually must have identical cluster configurations
+### Avoid different cluster configurations among the cluster's nodes
 
 Configuration mismatches tend to cause interaction problems between nodes.
 
-If you must set different [cluster configurations](../../server/configuration/cluster-configuration) in separate nodes,  
-**test the configuration** in a development environment to see that each node interacts properly with the others.
+If you set different [cluster configurations](../../server/configuration/cluster-configuration) in separate nodes,  
+**test the configuration** in a development environment to see if each node interacts properly with the others.
 {PANEL/}
 
 ## Related articles 
