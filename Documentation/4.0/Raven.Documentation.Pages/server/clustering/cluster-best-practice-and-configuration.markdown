@@ -23,10 +23,10 @@ Will not have the ability to automatically failover to another node if it goes d
 This means that it is not highly available.  
 
 **A two nodes cluster:**  
-Also not recommended since the cluster must have a consensus among the majority of nodes to operate. 
-With a two-node cluster, if one of the nodes is down or partitioned, no [Raft](../../glossary/raft-algorithm) 
-command will be committed,  
-although any database on the surviving node will still be responsive to the user.  
+Also not recommended since the cluster must have a consensus among the majority of nodes to operate.
+With a two-node cluster, if one of the nodes is down or partitioned, the other node is not considered a 'majority'
+and thus no [Raft](../../glossary/raft-algorithm) 
+command will be created, although any database on the surviving node will still be responsive to the user.  
 
 **Odd number of 3 or more nodes:**  
 For ACID guarantees, a majority of the nodes must agree on every [cluster-wide transaction](../../server/clustering/cluster-transactions), 
@@ -40,7 +40,7 @@ so having an odd number of nodes makes achieving the majority easier.
 
 Configuration mismatches tend to cause interaction problems between nodes.
 
-If you set different [cluster configurations](../../server/configuration/cluster-configuration) in separate nodes,  
+If you must set [cluster configurations](../../server/configuration/cluster-configuration) differently in separate nodes,  
 **test the configuration** in a development environment to see if each node interacts properly with the others.
 {PANEL/}
 

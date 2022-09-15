@@ -1,11 +1,11 @@
 # Configuration: Cluster
 ---
 
-{NOTE: Nodes in a cluster usually must have identical cluster configurations.}
+{NOTE: Avoid different cluster configurations among the cluster's nodes}
 Configuration mismatches tend to cause interaction problems between nodes.
 
 If you must set cluster configurations differently in separate nodes,  
-**we recommend first testing it** in a development environment to see that each node interacts properly with the others.
+**test the configuration** in a development environment to see if each node interacts properly with the others.
 {NOTE/}
 
 ---
