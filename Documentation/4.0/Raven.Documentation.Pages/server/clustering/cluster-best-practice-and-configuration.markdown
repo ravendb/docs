@@ -23,7 +23,7 @@ Will not have the ability to automatically failover to another node if it goes d
 This means that it is not highly available.  
 
 **A two nodes cluster:**  
-Also not recommended since the cluster must have a consensus among the majority of nodes to operate.
+Also not recommended since the cluster must have a consensus among the majority of nodes to operate.  
 With a two-node cluster, if one of the nodes is down or partitioned, the other node is not considered a 'majority'
 and thus no [Raft](../../glossary/raft-algorithm) 
 command will be created, although any database on the surviving node will still be responsive to the user.  
