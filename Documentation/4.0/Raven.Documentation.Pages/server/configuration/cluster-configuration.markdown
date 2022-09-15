@@ -5,7 +5,7 @@
 Configuration mismatches tend to cause interaction problems between nodes.
 
 If you must set cluster configurations differently in separate nodes,  
-**test the configuration** in a development environment to see if each node interacts properly with the others.
+**we recommend first testing it** in a development environment to see if each node interacts properly with the others.
 {NOTE/}
 
 ---
