@@ -99,17 +99,26 @@ ln -s /mnt/FastDrive/Databases/Northwind/Indexes ~/RavenDB/Server/RavenData/Data
 {PANEL: Automate storage definitions}
 
 * To help automate the process, we have added the [on directory initialize](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec) configuration option.  
-  Whenever RavenDB __creates a directory__, it will invoke the process that is defined within that configuration.  
+  Whenever RavenDB __creates a directory__, it will invoke the process that is defined within that configuration.
+
+* The process is called just before the directory is created.  
   This allows you to create a script with your own logic, defining junction/mount points as needed.  
 
-* RavenDB will invoke the process with the following params:  
+---
 
-  * User arguments - optional params, supplied by the [optional user arguments](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec.arguments) configuration option
-  * The environment type (System, Database, Index, Configuration, Compaction)
-  * The database name
-  * Path of the `DataDir` directory
-  * Path of the `Temp` directory
-  * Path of the `Journals` directory
+* RavenDB will invoke the process with the following params:
+
+    * Params passed by the user: 
+        * User arguments - optional params, set in the [optional user arguments](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec.arguments) configuration option
+  
+    * Params passed by RavenDB:
+        * The environment type (System, Database, Index, Configuration, Compaction)
+        * The database name
+        * Path of the `DataDir` directory
+        * Path of the `Temp` directory
+        * Path of the `Journals` directory
+
+---
 
 {NOTE: }
 #### Script example - Basic usage
