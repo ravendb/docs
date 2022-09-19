@@ -16,7 +16,7 @@
 
 * In this page: 
    * [Overview](../../../server/clustering/replication/replication#overview)
-   * [What is Replicated](../../../server/clustering/replication/replication#what-is-replicated)
+   * [What is Replicated](../../../server/clustering/replication/replication#what-is-replicated:)
    * [How Replication Works](../../../server/clustering/replication/replication#how-replication-works)
    * [Maintaining Data Consistency](../../../server/clustering/replication/replication#maintaining-data-consistency)
    * [Maintaining High Availability If Nodes Go Down](../../../server/clustering/replication/replication#maintaining-data-consistency)
@@ -56,7 +56,7 @@
   * Counters
   * Time Series
 
-**Server level features are not replicated.** 
+**Server level features are not replicated.**  
 Consistency between nodes is achieved on the cluster by using the [Raft Protocol](../../../server/clustering/rachis/what-is-rachis).
 
 * Index definitions and index data
@@ -104,12 +104,14 @@ Consistency between nodes is achieved on the cluster by using the [Raft Protocol
 RavenDB guarantees that modifications made in the same transaction will always be replicated to the other database
 instances in a single batch and won't be broken into separate batches.
 
-#### Cluster or Local Transactions Can Be Set In Each Session As Needed
+#### Cluster-wide or Single-node Transactions Can Be Set In Each Session As Needed
 
-You can set each session as either a [cluster-wide or local-node session](LINKTONEWRDOC-2271CWv.LNarticle) as needed.  
+You can set each session as either a [cluster-wide or single-node session](LINKTONEWRDOC-2271CWv.LNarticle) as needed.  
 In some transactions, the performance cost of the cluster-wide Raft check is worthwhile.  
-Local node transactions are much faster, but can have rare conflicts. The [conflict resolution](../../../server/clustering/replication/replication-conflicts) 
+Single node transactions are much faster, but can have rare conflicts. The [conflict resolution](../../../server/clustering/replication/replication-conflicts) 
 logic can be defined per collection to ensure consistency according to the type of transaction done with documents in that collection.
+
+---
 
 ### Cluster-Wide Transactions
 
@@ -119,14 +121,16 @@ Such a transaction will either be persisted on all database group nodes or will 
 
 After a cluster consensus is reached, the Raft command to be executed is propagated to all nodes.
 When the command is executed locally on a node, if the items that are persisted are of the [type that replicates](../../../server/clustering/replication/replication#what-is-replicated), 
-then the node will replicate them to the other nodes by the replication process.
+then the node will replicate them to the other nodes via the replication process.
 
-A node that receives such replication will accept this write unless it already committed it through a raft
-command it received before as well.
+A node that receives such replication will accept this write unless it has already committed it through a raft
+command it received before.
+
+---
 
 ### Single Node Transactions
 
-In local node sessions, the primary node modifies documents.  
+In single node sessions, the primary node modifies documents.  
 It then replicates the modifications to the other nodes in the database group for high availability.  
 
 #### Write Assurance
@@ -142,7 +146,7 @@ If this configuration is not modified, then all write requests will go through t
 Data will be consistent as the same copies will replicate to all other nodes.
 To modify this default read/write topology set [LoadBalanceBehavior](../../../client-api/session/configuration/use-session-context-for-load-balancing).
 
-#### Keeping Transaction Boundaries in Local Node Transactions
+#### Keeping Transaction Boundaries in Single Node Transactions
 
 If there are several documents modifications in the same transaction they will be sent in the same replication
 batch, keeping the transaction boundary on the destination as well.
