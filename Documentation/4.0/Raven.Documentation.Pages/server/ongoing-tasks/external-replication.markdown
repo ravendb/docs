@@ -10,7 +10,7 @@
 
 * In this page: 
    * [About External Replication](../../server/ongoing-tasks/external-replication#about-external-replication)
-   * [Maintaining Consistency Boundaries Between Clusters](../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters)
+   * [Preventing Conflicts Between Clusters](../../server/ongoing-tasks/external-replication#preventing-conflicts-between-clusters)
    * [Delayed Replication](../../server/ongoing-tasks/external-replication#delayed-replication)
 
 {NOTE/}
@@ -61,14 +61,20 @@ This may be limiting if you wish to design your own replication topology and _ex
 
 {PANEL/}
 
-{PANEL: Maintaining Consistency Boundaries Between Clusters}
+{PANEL: Preventing Conflicts Between Clusters}
 
 [Consistency boundaries](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system)
 between clusters are crucial to preserve data integrity and model an efficient global system.  
 
-### Ensuring that two clusters don't write on the same document  
+One way to prevent conflicts is to ensure that only one server modifies a document.  
 
-{INFO: To maintain consistency boundaries between clusters}
+#### To ensure that two clusters don't write on the same document  
+
+Following are a few ways to provide unique IDs across all of your clusters.  
+
+Some of these approaches also make the source cluster clear in the ID so that you can set up logic 
+that prevents multiple servers from modifying the same document.
+
 You can ensure document ID uniqueness by:
 
 * Ensuring that the node-tags are all unique.  
@@ -76,8 +82,8 @@ You can ensure document ID uniqueness by:
 * Including the cluster names in the [identifiers](../../client-api/document-identifiers/working-with-document-identifiers).  
   e.g. (NYC/Customers/12345), (LDN/Customers/12345)  
 * Using a Globally Unique Identifier ([GUID](../../server/kb/document-identifier-generation#guid)).  
-* Using a unique field such as an email address.  
-{INFO/}
+* [Using a unique field](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange) 
+  (such as an email address) in the ID is a global way to prevent duplication.  
 
 {PANEL/}
 

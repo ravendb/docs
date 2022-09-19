@@ -6,24 +6,22 @@
 * Schedule an **External Replication Task** to have a _live_ replica of your data in another database:  
   * In a separate RavenDB cluster [on local machines](../../start/getting-started) or [a cloud instance](../../cloud/cloud-overview), 
     which can be used as a failover if the source cluster is down.  
-    {INFO: }
     The External Replication task **does _not_ create a backup** of your data and indexes.  
     See more in [Backup -vs- Replication](../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
-    {INFO/}
   * In the same cluster if you want a live copy that won't be a client failover target.
 
 * "Live" means that the replica is up to date at all times. Any changes in the source database will be reflected in the replica once they occur.  
 
-* This ongoing task replicates one-way - from the source to the destination.
+* This ongoing task replicates one-way - from the source to the destination.  It can be set from both sides to replicate two-way.
 
-* For additional functionality such as filtration and two-way replication consider [Hub/Sink Replication](../../server/ongoing-tasks/hub-sink-replication).  
+* For additional functionality such as filtration and two-way, filtered replication consider [Hub/Sink Replication](../../server/ongoing-tasks/hub-sink-replication).  
 
 * To replicate between two separate, secure RavenDB servers, you need to [pass a client certificate](../../server/ongoing-tasks/external-replication#step-by-step-guide) from the source server to the destination.
 
 In this page: 
 
 * [General Information about External Replication Task](../../server/ongoing-tasks/external-replication#general-information-about-external-replication-task)
-* [Maintaining Consistency Boundaries Between Clusters](../../server/ongoing-tasks/external-replication#maintaining-consistency-boundaries-between-clusters)
+* [Preventing Conflicts Between Clusters](../../server/ongoing-tasks/external-replication#preventing-conflicts-between-clusters)
 * [Code Sample](../../server/ongoing-tasks/external-replication#code-sample)
 * [Step-by-Step Guide](../../server/ongoing-tasks/external-replication#step-by-step-guide)
 * [Definition](../../server/ongoing-tasks/external-replication#definition)  
@@ -71,14 +69,20 @@ To learn more, see [Data Ownership in a Distributed System](https://ayende.com/b
 
 {PANEL/}
 
-{PANEL: Maintaining Consistency Boundaries Between Clusters}
+{PANEL: Preventing Conflicts Between Clusters}
 
 [Consistency boundaries](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system)
 between clusters are crucial to preserve data integrity and model an efficient global system.  
 
-### Ensuring that two clusters don't write on the same document  
+One way to prevent conflicts is to ensure that only one server modifies a document.  
 
-{INFO: To maintain consistency boundaries between clusters}
+#### To ensure that two clusters don't write on the same document  
+
+Following are a few ways to provide unique IDs across all of your clusters.  
+
+Some of these approaches also make the source cluster clear in the ID so that you can set up logic 
+that prevents multiple servers from modifying the same document.
+
 You can ensure document ID uniqueness by:
 
 * Ensuring that the node-tags are all unique.  
@@ -86,8 +90,8 @@ You can ensure document ID uniqueness by:
 * Including the cluster names in the [identifiers](../../client-api/document-identifiers/working-with-document-identifiers).  
   e.g. (NYC/Customers/12345), (LDN/Customers/12345)  
 * Using a Globally Unique Identifier ([GUID](../../server/kb/document-identifier-generation#guid)).  
-* Using a unique field such as an email address.  
-{INFO/}
+* [Using a unique field](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange) 
+  (such as an email address) in the ID is a global way to prevent duplication.  
 
 {PANEL/}
 
@@ -135,7 +139,7 @@ To create an external replication task via the RavenDB Studio, see the [Step-by-
 
 To learn how to define an external replication task via code, see [code sample](../../server/ongoing-tasks/external-replication#code-sample).  
 
-You can also configure external eplication tasks [via RavenDB Studio](../../studio/database/tasks/ongoing-tasks/external-replication-task#definition).  
+You can also configure external replication tasks [via RavenDB Studio](../../studio/database/tasks/ongoing-tasks/external-replication-task#definition).  
 
 {PANEL/}
 

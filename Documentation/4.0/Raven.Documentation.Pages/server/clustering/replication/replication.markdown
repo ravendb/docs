@@ -3,128 +3,163 @@
 
 {NOTE: }
 
-* Replication in RavenDB is the ongoing process of transferring data from one database to another.  
+* Replication in RavenDB is the continuous process of transferring data from one node to another within a database group.  
 
-* Replication can be used:
-   * As a failover, if a server goes down.  
-   * To distribute work across nodes or clusters.
+* Replication is a default behavior between nodes in a database group.  
+  It is done to provide high availability.
 
-* This article discusses replication between databases **within the same cluster**.
+* This article discusses internal data replication within a [Database Group](../../../studio/database/settings/manage-database-group), 
+  among nodes of the same cluster.
 
-* Read more about **replication to other clusters** in [External Replication](../../../server/ongoing-tasks/external-replication).
+* For replication between different databases or clusters, refer to [External Replication](../../../server/ongoing-tasks/external-replication)
+  and [Hub/Sink Replication](../../../server/ongoing-tasks/hub-sink-replication).
 
 * In this page: 
-   * [Replication Within the Cluster](../../../server/clustering/replication/replication#replication-within-the-cluster)
-      * [What is replicated](../../../server/clustering/replication/replication#what-is-replicated)
-      * [To distribute work across nodes](../../../server/clustering/replication/replication#to-distribute-work-across-nodes)
-      * [How Replication works](../../../server/clustering/replication/replication#how-replication-works)
-   * [Maintaining Consistency Between Nodes](../../../server/clustering/replication/replication#maintaining-consistency-between-nodes)
+   * [Overview](../../../server/clustering/replication/replication#overview)
+   * [What is Replicated](../../../server/clustering/replication/replication#what-is-replicated)
+   * [How Replication Works](../../../server/clustering/replication/replication#how-replication-works)
+   * [Maintaining Data Consistency](../../../server/clustering/replication/replication#maintaining-data-consistency)
+   * [Maintaining High Availability If Nodes Go Down](../../../server/clustering/replication/replication#maintaining-data-consistency)
 
 {NOTE/}
 
 ---
 
-{PANEL: Replication Within the Cluster}
+{PANEL: Overview}
 
-{NOTE: }
+* You can keep multiple instances of your database on different nodes in the cluster.  
+  The group of nodes in the cluster that contains the same database is called a [Database Group](../../../studio/database/settings/manage-database-group).
 
-#### What is replicated:
+* The number of nodes in the Database Group is referred to as the database [Replication Factor](../../../server/clustering/distribution/distributed-database#replication-factor).
+
+* RavenDB uses master-to-master replication to keep the database data in-sync across the Database Group nodes.  
+  This guarantees the availability of your cluster as reads & writes can be done on any of the nodes.  
+  By default, each database group has a designated [primary node](../../../server/clustering/replication/replication#distributing-workload-among-nodes) 
+  that handles all reads and writes to preserve ACID transactions. [If this primary node goes down](../../../server/clustering/replication/replication#maintaining-high-availability-if-nodes-go-down), 
+  another node instantly and automatically takes over the workload.
+
+* Data that is modified on one node is automatically replicated to all other database instances.  
+
+* Replication may involve occasional conflicts if a node does not wait for cluster consensus via [cluster-wide sessions](../../../server/clustering/cluster-transactions).  
+  Without cluster-wide sessions, a write is always accepted, even if it will create a conflict.  
+   * Conflicts are resolved according to the defined [Conflict Resolution](../../../server/clustering/replication/replication-conflicts) policy.
+
+{PANEL/}
+
+{PANEL: What is Replicated:}
 
   * Documents 
   * Revisions 
   * Attachments 
   * Conflicts  
+  * Tombstones
+  * Counters
+  * Time Series
 
-{NOTE/}
+**Server level features are not replicated.** 
+Consistency between nodes is achieved on the cluster by using the [Raft Protocol](../../../server/clustering/rachis/what-is-rachis).
 
-Every database created in a cluster has a [Replication Factor](../../../server/clustering/distribution/distributed-database) 
-that determines how many replicas will exist. 
-While creating the database, you can also define which nodes will host this database.  
-
-A topology of nodes that host the same database with master-master replication is called a [database group](../../../studio/database/settings/manage-database-group). 
-
-{INFO: }
-#### To distribute work across nodes
-* To [maintain consistency](../../../server/clustering/replication/replication#maintaining-consistency-between-nodes) 
-  a [primary node](../../../client-api/session/configuration/use-session-context-for-load-balancing) 
-  is responsible for writes and reads as a default setting.  
-   * You can configure the [ReadBalanceBehavior](../../../client-api/configuration/load-balance-and-failover#conventions-load-balance--failover), 
-     which determines to which nodes the client will send read requests. 
-   * You can also set session-specific behavior for writes with [UseSessionContext](../../../client-api/session/configuration/use-session-context-for-load-balancing#loadbalancebehavior-usage), 
-     which allows you to set read and write request behavior.  
-     **Changing the default write request behavior can cause frequent conflicts** whenever two nodes write on the same document concurrently.  
-* Distribution of work offers guaranteed consistency **when each node is responsible for a different database** 
-  while updating the other nodes in a database group for failover purposes.  
-  e.g. There won't be conflicts if only node A writes on the "Customers" database, while only node B writes on the "Invoices" database. 
-{INFO/}
-
-#### When nodes are down
-
-When a node goes down, the [Cluster Oberver](../../../server/clustering/distribution/cluster-observer)
-selects another node to fulfill all of the tasks which were assigned to the node that went down. 
-This includes reads, writes, and ongoing tasks such ETL, Backup, and/or External Replication.  
-
-When back online, the node will be updated by the Responsible Node with any changes made to the data while it was down. 
-The now online node will update its indexes with any changes in the data.  
-Any ongoing tasks for which it was explicitly set as the preferred node 
-will be returned to the now-online node. 
-
-If [Dynamic Database Distribution](../../../server/clustering/distribution/distributed-database#dynamic-database-distribution) 
-was not explicitly toggled off, and if the fallen node does not come online (in 15 minutes by default), 
-the Cluster Observer will select another available node to replace the fallen node in the database group to preserve the Replication Factor.
-
-{INFO: }
-We highly recommend setting each production database in a [group of 3, 5, or more odd-numbered nodes on separate machines](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/6-ravendb-clusters#an-overview-of-a-ravendb-cluster)
-to ensure [high availability](https://en.wikipedia.org/wiki/High-availability_cluster), clean [Raft consensus](../../../glossary/raft-algorithm), 
-and enough available nodes to distribute the workload.  
-{INFO/}
-
-## How Replication works
-
-The replication process sends data over a TCP connection in the order in which the documents were modified, from the oldest to the newest.   
-
-Every document has an [ETag](../../../glossary/etag), 
-which is local to each node and is incremented on _every_ document modification.  
-An ETag is the local-node portion of the cluster's [Change Vector](../../../server/clustering/replication/change-vector).   
-
-Each replication process has a _source_, a _destination_, and a last confirmed `Change Vector` which is used by the cluster for [concurrency control](../../../server/clustering/replication/change-vector#concurrency-control-at-the-cluster).   
-
-The data is sent in batches. When the _destination_ node confirms getting the data, each document's last accepted `ETag` 
-is then incremented and the next batch of data is sent.  
-When the documents' local ETags are modified, the Change Vectors are modified accordingly.  
-
-{NOTE: Replication Failure} 
-The [Handshake Procedure](../../../server/clustering/replication/advanced-replication) ensures that the source and destination 
-are in sync as to the current state of a document while it is being modified. 
-In case of failure, replication will re-start with the Initial Handshake Procedure, 
-which will make sure we will start replicating from the last accepted `ETag`.
-{NOTE/}
+* Index definitions and index data
+* Ongoing tasks definitions
+* Compare-exchange items
+* Identities
+* Conflict resolution scripts
 
 {PANEL/}
 
-{PANEL: Maintaining Consistency Between Nodes}
+{PANEL: How Replication Works}
 
-### Replication Transaction Boundary
+* Each database instance holds a TCP connection to each of the other database instances in the group.  
+  Whenever there is a 'write' on one instance, it will be sent to all the others immediately over this connection.
 
-The boundary of a transaction is extended across multiple nodes.  
-If there are several documents in the same transaction they will be sent in the same replication 
-batch to keep the data consistent.  
+* This is done in an async manner.  
+  If the database instance is unable to replicate the data, it will still accept that 'write action' and send it later.
 
-However, this doesn't always ensure data consistency since the same document can be modified in a different 
-transaction and be sent in a different batch.  
+* The replication process sends the data over a TCP connection in the order in which the documents were modified, from the oldest to the newest.   
 
-### Replication consistency can be achieved by -  
+* Each replication process has a _source_, a _destination_, and a last confirmed `Change Vector` which is used by the cluster for [concurrency control](../../../server/clustering/replication/change-vector#concurrency-control-at-the-cluster).   
 
-* Using a [Write Assurance](../../../client-api/session/saving-changes#waiting-for-replication---write-assurance)
-  which waits until the transactions are replicated before completing the `session.SaveChanges` procedure.  
-* Not disabling the default [primary-node responsibility](../../../server/clustering/replication/replication#to-distribute-work-across-nodes) 
-  for writes and reads.  
-* Using [cluster-wide sessions](../../../server/clustering/cluster-transactions) 
-  if you need every node to be able to read and write.  
-  Cluster-wide transactions ensure strong consistency, but the required Raft consensus checks for each transaction slow performance.  
-* Enabling [Revisions](../../../server/extensions/revisions).  
-  When documents that own revisions are replicated, their revisions will be replicated with them.  
-     {INFO: Let's see how the replication of revisions helps data consistency.}
+* Every database item has an [ETag](../../../glossary/etag), 
+  which is local to the database instance on each node.  
+  This ETag is incremented on _every_ item modification. The modified item receives the next consecutive number.  
+  The order by which the documents are replicated is set by this Etag, from low to high.  
+  The ETag is also part of the item's [Change Vector](../../../server/clustering/replication/change-vector).   
+
+* The data is sent in batches from the source to the destination.  
+  The destination database records the ETag of the last item that it has received in the batch.  
+  Upon the next [replication-handshake](../../../server/clustering/replication/advanced-replication) 
+  that last-accepted ETag is passed to the source so that the source will
+  know from where to continue sending the next batch.
+
+* In case of a replication failure, when sending the next batch, replication will start from the item 
+  that has this last-accepted Etag, which is known from the previous successful batch.
+
+
+{PANEL/}
+
+{PANEL: Maintaining Data Consistency}
+
+#### Transactions Atomicity
+
+RavenDB guarantees that modifications made in the same transaction will always be replicated to the other database
+instances in a single batch and won't be broken into separate batches.
+
+#### Cluster or Local Transactions Can Be Set In Each Session As Needed
+
+You can set each session as either a [cluster-wide or local-node session](LINKTONEWRDOC-2271CWv.LNarticle) as needed.  
+In some transactions, the performance cost of the cluster-wide Raft check is worthwhile.  
+Local node transactions are much faster, but can have rare conflicts. The [conflict resolution](../../../server/clustering/replication/replication-conflicts) 
+logic can be defined per collection to ensure consistency according to the type of transaction done with documents in that collection.
+
+### Cluster-Wide Transactions
+
+Using [Cluster-Wide Transactions](../../../server/clustering/cluster-transactions), which is implemented by the [Raft Protocol](../../../server/clustering/rachis/consensus-operations#consensus-operations), 
+ensures strong consistency and has a performance cost.  
+Such a transaction will either be persisted on all database group nodes or will be rolled back on all upon failure.
+
+After a cluster consensus is reached, the Raft command to be executed is propagated to all nodes.
+When the command is executed locally on a node, if the items that are persisted are of the [type that replicates](../../../server/clustering/replication/replication#what-is-replicated), 
+then the node will replicate them to the other nodes by the replication process.
+
+A node that receives such replication will accept this write unless it already committed it through a raft
+command it received before as well.
+
+### Single Node Transactions
+
+In local node sessions, the primary node modifies documents.  
+It then replicates the modifications to the other nodes in the database group for high availability.  
+
+#### Write Assurance
+
+With Single-Node sessions you can use the Write-Assurance method
+which will ensure that the data will be replicated to the specified number of nodes.
+
+#### Single-Writer
+
+By default to prevent conflicts, all of the clients will 'talk' (send read/write requests) to the first node in the database group topology,
+which is called the preferred/primary node.
+If this configuration is not modified, then all write requests will go through this node.
+Data will be consistent as the same copies will replicate to all other nodes.
+To modify this default read/write topology set [LoadBalanceBehavior](../../../client-api/session/configuration/use-session-context-for-load-balancing).
+
+#### Keeping Transaction Boundaries in Local Node Transactions
+
+If there are several documents modifications in the same transaction they will be sent in the same replication
+batch, keeping the transaction boundary on the destination as well.
+
+However, when a document is modified in two separate transactions 
+and if replication of the 1st transaction has not yet occurred, 
+then that document will not be sent when the 1st transaction is replicated, 
+it will be sent with the 2nd transaction.
+
+To fix that, either:
+
+* Use the same transaction  
+  Ensure that documents you care about are updated in the same transaction, and so will be sent in the same batch.
+* Enable Revisions  
+  When a revision is created for a document it is written as part of the same transaction as the document.  
+  The revision is then replicated along with the document in the same indivisible batch.  
+     {INFO: How revisions replication can help data consistency}
      Consider a scenario in which two documents, `Users/1` and `Users/2`, 
      are **created in the same transaction**, and then `Users/2` is **modified 
      in a different transaction**.  
@@ -151,6 +186,17 @@ transaction and be sent in a different batch.
        a live `Users/2` document.  
 
      {INFO/}
+
+{PANEL/}
+
+{PANEL: Maintaining High Availability If Nodes Go Down}
+
+When a node goes down, the [Cluster Oberver](../../../server/clustering/distribution/cluster-observer)
+selects another node to fulfill all of the tasks which were assigned to the node that went down. 
+This includes reads, writes, and ongoing tasks such ETL, Backup, and/or External Replication.  
+
+The section on  [Dynamic Database Distribution](../../../server/clustering/distribution/distributed-database#dynamic-database-distribution) 
+explains the different steps and default timing for handling nodes that go down.
 
 {PANEL/}
 

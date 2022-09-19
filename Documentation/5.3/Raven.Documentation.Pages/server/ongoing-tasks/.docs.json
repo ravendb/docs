@@ -20,6 +20,12 @@
         ]
     },
     {
+        "Path": "external-replication.markdown",
+        "Name": "External Replication",
+        "DiscussionId": "70d71f23-2b91-4c03-9171-115aa91d18fa",
+        "Mappings": []
+    },
+    {
         "Path": "backup-overview.markdown",
         "Name": "Backup Overview",
         "DiscussionId": "70d71f23-2b91-4c03-9171-115aa91d18fa",
