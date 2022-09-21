@@ -145,9 +145,12 @@ namespace Raven.Documentation.Samples.Server
         #endregion
 
         #region create_uniqueness_control_documents
-        // When you create documents that must not duplicate another record
-        // you can create reference documents with a unique value such as phone or email as the IDs.
-        // Then you can check if that value is already part of another document.
+        // When you need documents that must contain a unique value such as a phone or email,
+        // you can create reference documents that will have that unique value in their IDs.
+        // Then whenever you want know if a value already exists,
+        // all you need to do is check whether a reference document with such ID exists.
+
+        // The reference document class
         class UniquePhoneReference
         {
             public class PhoneReference
@@ -185,6 +188,7 @@ namespace Raven.Documentation.Samples.Server
                         var msg = $"Phone '{newCompany.Phone}' already exists in ID: {phoneRefDocument.CompanyId}";
                         throw new ConcurrencyException(msg);
                     }
+
                     // If the new phone number doesn't already exist, store the new entity
                     session.Store(newCompany);
                     // Store a new reference document with the new phone value in its ID for future checks.

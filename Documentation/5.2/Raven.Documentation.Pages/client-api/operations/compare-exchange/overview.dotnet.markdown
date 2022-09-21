@@ -3,13 +3,15 @@
 
 {NOTE: }
 
-* **Compare-exchange** items are cluster-wide key/value pairs where the key is a unique identifier. 
+* Compare Exchange items are key/value pairs where the key serves a unique value across your database. 
 
-* **To Ensure ACID Transactions** in cluster-wide transactions, RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards).  
-   When using cluster-wide transactions, you do not need to create or maintain compare-exchange items to preserve consistency.  
-  * Cluster-wide transactions present a [performance cost](../../../client-api/operations/compare-exchange/overview#performance-cost-of-cluster-wide-sessions) 
-    when compared to non-cluster-wide transactions. 
-    They prioritize consistency over performance to ensure ACIDity across the cluster.  
+* Compare-exchange operations require cluster consensus to ensure consistency across all nodes.  
+  Once a consensus is reached, the compare-exchange items are distributed through the Raft algorithm to all nodes in the database group
+
+* When creating documents using a cluster-wide session RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards),  
+   which are compare-exchange items that guarantee ACID transactions.  
+   Cluster-wide transactions prioritize consistency over performance -  
+   Learn more in [Cluster-wide sessions vs Single-node sessions](../../../client-api/operations/compare-exchange/overview#when-to-use-cluster-wide-sessions-or-node-local-sessions)
 
 * Compare-exchange items are [not replicated externally](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.
 
@@ -19,9 +21,8 @@
  * [Using Compare-Exchange Items](../../../client-api/operations/compare-exchange/overview#using-compare-exchange-items)  
  * [When to Use Cluster-Wide Sessions or Node-Local Sessions](../../../client-api/operations/compare-exchange/overview#when-to-use-cluster-wide-sessions-or-node-local-sessions)  
  * [Why Compare-Exchange Items are Not Replicated to External Databases](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases)  
- * [Compare Exchange Persistence in Various Failure Scenarios](../../../client-api/operations/compare-exchange/overview#compare-exchange-persistence-in-various-failure-scenarios)  
  * [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)  
- * [Example II- Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview#example-ii---reserve-a-shared-resource)  
+ * [Example II - Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview#example-ii---reserve-a-shared-resource)  
  * [Example III - Ensuring Unique Values without Using Compare Exchange](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange)  
 
 {NOTE/}
@@ -49,20 +50,27 @@ Compare Exchange items are key/value pairs that allow you to perform cluster-wid
   
 Compare exchange items are created and managed with any of the following approaches:
 
-* [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards)  
-  To guarantee ACIDity across the cluster, RavenDB automatically creates and maintains Atomic Guards in 
-  cluster-wide sessions.  (As of RavenDB version 5.2)
+* **Atomic Guards**  
+  To guarantee ACIDity across the cluster, RavenDB automatically creates and maintains [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
+  in cluster-wide sessions.  (As of RavenDB version 5.2)
 
-* [Document Store Operations](../../../client-api/operations/compare-exchange/put-compare-exchange-value)  
-  When created via operations, compare-exchange items are created on one node, then replicated to all other nodes in the cluster's database group. 
-  This can be done within or outside a session.
+* **Document Store Operations**  
+  You can manage a compare-exchange item as an [operation on the document store](../../../client-api/operations/compare-exchange/put-compare-exchange-value).  
+  This can be done within or outside of a session (cluster-wide or single-node session).
+   * When inside a Cluster-wide session:  
+     If the compare-exchange operation fails, the item is not created on any of the nodes.
+   * When inside a Single-node session:  
+     If the session fails the compare-exchange operation can still succeed  
+     because store operations do not rely on the success of the session.  
+     You will need to delete the compare-exchange item explicitly if you don't want it to persist.
 
-* [Cluster-Wide Sessions](../../../client-api/session/cluster-transaction)  
-  In cluster-wide sessions, once a consensus is reached, compare-exchange items are distributed through 
-  the Raft algorithm to all nodes in the database group in a cluster-wide transaction.
+* **Cluster-Wide Sessions**  
+  You can manage a compare-exchange item from inside a [Cluster-Wide session](../../../client-api/session/cluster-transaction).  
+  If the session fails, the compare-exchange item creation also fails.  
+  None of the nodes in the group will have the new compare-exchange item.
 
-* [Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)  
-  Compare-exchange items are created one at a time in Studio, on one node at a time.  They are then replicated automatically to all nodes in the cluster's database group.
+* **Studio**  
+  Compare-exchange items can be created from the [Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view) as well.
 
 {PANEL/}
 
@@ -73,9 +81,11 @@ Compare exchange items are created and managed with any of the following approac
 * Compare-exchange items can be used to coordinate work between sessions that are 
   trying to modify a shared resource (such as a document) at the same time.  
 
-* You can use compare-exchange items in various situations to protect or reserve a resource.  
-  (see [API Compare-exchange examples](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)).
-  * If you create a compare-exchange key/value pair, you can decide what actions to implement when the Raft index increments. 
+* You can use compare-exchange items in various situations to reserve a unique resource.  
+   * [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)  
+   * [Example II - Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview#example-ii---reserve-a-shared-resource)  
+
+  * If you create a compare-exchange item, you can decide what actions to implement when the Raft index increments. 
     The Raft index increments as a result of a change in the compare-exchange value or metadata.  
 
 ---
@@ -152,7 +162,7 @@ so that conflicts are prevented.
   Read [Consistency in a Globally Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system) 
   to learn more about why global database modeling is more efficient this way.
    
-* When creating a compare-exchange item in a cluster-wide transaction, a Raft consensus is required from the nodes in the database group.
+* When creating a compare-exchange item a Raft consensus is required from the nodes in the database group.
   Externally replicating such data is problematic as the target database may reside within a cluster that is in an
   unstable state where Raft decisions cannot be made. In such a state, the compare-exchange item will not be persisted in the target database.
 
@@ -160,24 +170,8 @@ so that conflicts are prevented.
   Change-Vector. Compare-exchange conflicts cannot be handled properly as they do not have a similar
   mechanism to resolve conflicts.
 
-* See [Example III - Ensuring Unique Values without Using Compare Exchange](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange) 
+* To ensure unique values between two databases without using compare-exchange items see [Example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange) 
   for similar functionality that can be externally replicated.
-
-{PANEL/}
-
-{PANEL: Compare Exchange Persistence in Various Failure Scenarios}
-
-* Using the [Session Method](../../../client-api/session/cluster-transaction):  
-  If the session fails, the compare-exchange pair creation also fails.  
-  None of the nodes in the group will have the new compare-exchange pair.
-
-* Using the [Document Store operation](../../../client-api/operations/compare-exchange/put-compare-exchange-value):    
-  If the operation fails, the compare-exchange pair is not created.
-
-* Using the [Document Store operation within a session context](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation):  
-  If the session fails, the compare-exchange operation can still succeed  
-  because store operations do not rely on the success of the session.  
-  You will need to delete the compare-exchange pair explicitly.
 
 {PANEL/}
 
@@ -186,7 +180,7 @@ so that conflicts are prevented.
 The following example shows how to use compare-exchange to create documents with unique values.  
 The scope is within the database group on a single cluster. 
 
-Compare-exchange items are not externally replicated to other clusters.  
+Compare-exchange items are not externally replicated to other databases.  
 To establish uniqueness without using compare-exchange see [example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange).
 
 {CODE email@Server\CompareExchange.cs /}  
@@ -210,7 +204,8 @@ To establish uniqueness without using compare-exchange see [example III](../../.
 
 {PANEL: Example II - Reserve a Shared Resource}  
 
-In the following example, we use compare-exchange to reserve a shared resource **inside a single cluster**.  
+In the following example, we use compare-exchange to reserve a shared resource.  
+The scope is within the database group on a single cluster.
 
 The code also checks for clients who never release resources (i.e. due to failure) by using timeout.  
 
