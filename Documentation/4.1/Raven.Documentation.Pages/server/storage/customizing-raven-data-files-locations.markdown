@@ -178,8 +178,9 @@ The link will point to the new location set by variable $INDEXES_TARGET_DIR_NAME
 #!/bin/bash
 # bash ./your-script USER_ARGS Database DB_NAME BASE_PATH TEMP_PATH JOURNALS_PATH
 
-RDB_DATA_DIR="$RAVENDB_DATA_DIR"
-INDEXES_TARGET_DIR="$RAVENDB_INDEXES_TARGET_DIR"
+# Use directory names as defined on your machine
+RDB_DATA_DIR="/Server/RavenData"
+INDEXES_TARGET_DIR="/mnt/ravendb-indexes"
 
 DIR_TYPE="$1"
 DB_NAME="$2"
