@@ -32,13 +32,13 @@ Disable indexing.
 
 {PANEL:Indexing.TempPath}
 
-Temporary path for indexing files.
+Use this setting to specify a different path for the indexes' temporary files.  
+By default, temporary files are created under the `Temp` directory inside the index data directory.  
+Learn more about RavenDB directory structure [here](../../server/storage/directory-structure).
 
 - **Type**: `string`
 - **Default**: `null`
 - **Scope**: Server-wide or per database
-
-If not set, or set to null - use 'Temp' folder inside the index data directory
 
 {PANEL/}
 
