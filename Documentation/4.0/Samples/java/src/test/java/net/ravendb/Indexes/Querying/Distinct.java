@@ -55,6 +55,7 @@ public class Distinct {
 
             try (IDocumentSession session = store.openSession()) {
                 //region distinct_2_1
+                // results will contain the number of unique countries
                 int numberOfCountries = session
                     .query(Order.class)
                     .selectFields(String.class, "ShipTo.Country")

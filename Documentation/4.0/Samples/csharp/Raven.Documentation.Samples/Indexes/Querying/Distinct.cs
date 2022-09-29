@@ -9,26 +9,33 @@ namespace Raven.Documentation.Samples.Indexes.Querying
     public class Distinct
     {
         #region distinct_3_1
-        public class Order_Countries : AbstractIndexCreationTask<Order, Order_Countries.Result>
+        // Define static index
+        public class Employees_ByCountry : AbstractIndexCreationTask<Employee, Employees_ByCountry.IndexEntry>
         {
-            public class Result
+            public class IndexEntry
             {
                 public string Country { get; set; }
+                public int CountryCount { get; set; }
             }
 
-            public Order_Countries()
+            public Employees_ByCountry()
             {
-                Map = orders => from o in orders
-                                select new Result
-                                {
-                                    Country = o.ShipTo.Country
-                                };
+                // The Map phase indexes the country listed in each employee document
+                // CountryCount is assigned with 1, which will be aggregated in the Reduce phase
+                Map = employees => from employee in employees
+                                   select new IndexEntry
+                                   {
+                                       Country = employee.Address.Country,
+                                       CountryCount = 1
+                                   };
 
-                Reduce = results => from r in results
-                                    group r by r.Country into g
-                                    select new Result
+                // The Reduce phase will group the country results and aggregate the CountryCount
+                Reduce = results => from result in results
+                                    group result by result.Country into g
+                                    select new IndexEntry
                                     {
-                                        Country = g.Key
+                                        Country = g.Key,
+                                        CountryCount = g.Sum(x => x.CountryCount)
                                     };
             }
         }
@@ -68,6 +75,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 using (var session = store.OpenSession())
                 {
                     #region distinct_2_1
+                    // results will contain the number of unique countries
                     var numberOfCountries = session
                         .Query<Order>()
                         .Select(x => x.ShipTo.Country)
@@ -79,6 +87,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 using (var session = store.OpenSession())
                 {
                     #region distinct_2_2
+                    // results will contain the number of unique countries
                     var numberOfCountries = session
                         .Advanced
                         .DocumentQuery<Order>()
@@ -91,19 +100,22 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 using (var session = store.OpenSession())
                 {
                     #region distinct_3_2
-                    var numberOfCountries = session
-                        .Query<Order_Countries.Result, Order_Countries>()
-                        .Count();
+                    // The query calls the map-reduce index defined above
+                    var queryResult = session.Query<Employees_ByCountry.IndexEntry, Employees_ByCountry>()
+                          .FirstOrDefault(x => x.Country == "UK");
+
+                    var numberOfEmployeesFromCountry = queryResult?.CountryCount ?? 0;
                     #endregion
                 }
 
                 using (var session = store.OpenSession())
                 {
                     #region distinct_3_3
-                    var numberOfCountries = session
-                        .Advanced
-                        .DocumentQuery<Order_Countries.Result, Order_Countries>()
-                        .Count();
+                    // The query calls the map-reduce index defined above
+                    var queryResult = session.Advanced.DocumentQuery<Employees_ByCountry.IndexEntry, Employees_ByCountry>()
+                        .WhereEquals("Country", "UK").FirstOrDefault();
+
+                    var numberOfEmployeesFromCountry = queryResult?.CountryCount ?? 0;
                     #endregion
                 }
             }

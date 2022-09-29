@@ -38,6 +38,7 @@ async function distinct() {
 
         {
             //region distinct_2_1
+            // results will contain the number of unique countries
             const numberOfCountries = await session
                 .query(Order)
                 .selectFields("ShipTo.Country")
