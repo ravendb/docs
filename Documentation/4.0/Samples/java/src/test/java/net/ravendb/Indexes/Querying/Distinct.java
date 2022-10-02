@@ -10,29 +10,41 @@ import java.util.List;
 public class Distinct {
 
     //region distinct_3_1
-    public static class Order_Countries extends AbstractIndexCreationTask {
-        public static class Result {
-            private String country;
+    public static class Employees_ByCountry extends AbstractIndexCreationTask {
 
-            public String getCountry() {
-                return country;
-            }
+    public Employees_ByCountry() {
+        map = "docs.Employees.Select(employee => new { " +
+              "    Country = employee.Address.Country, " +
+              "    CountryCount = 1 " +
+              "})";
 
-            public void setCountry(String country) {
-                this.country = country;
-            }
+        reduce = "results.GroupBy(result => result.Country).Select(g => new { " +
+                 "    Country = g.Key, " +
+                 "    CountryCount = Enumerable.Sum(g, x => x.CountryCount) " +
+                 "})";
+    }
+
+    public static class Result {
+        private String country;
+        private int countryCount;
+
+        public String getCountry() {
+            return country;
         }
 
-        public Order_Countries() {
-            map = "docs.Orders.Select(o => new {" +
-                "    Country = o.ShipTo.Country" +
-                "})";
+        public void setCountry(String country) {
+            this.country = country;
+        }
 
-            reduce = "results.GroupBy(r => r.Country).Select(g => new {" +
-                "    Country = g.Key" +
-                "})";
+        public int getCountryCount() {
+            return countryCount;
+        }
+
+        public void setCountryCount(int countryCount) {
+            this.countryCount = countryCount;
         }
     }
+}
     //endregion
 
     private static class Order {
@@ -64,11 +76,15 @@ public class Distinct {
                 //endregion
             }
 
-            try (IDocumentSession session = store.openSession()) {
+
                 //region distinct_3_2
-                int numberOfCountries = session
-                    .query(Order_Countries.Result.class, Order_Countries.class)
-                    .count();
+                try (IDocumentSession session = DocumentStoreHolder.store.openSession()) {
+                    Employees_ByCountry.Result queryResult = session.query(Employees_ByCountry.Result.class, Employees_ByCountry.class)
+                        .whereEquals("Country", country)
+                        .firstOrDefault();
+
+                    int numberOfEmployeesFromCountry = queryResult != null ? queryResult.getCountryCount() : 0;
+                }
                 //endregion
             }
         }

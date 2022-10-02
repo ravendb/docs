@@ -4,18 +4,24 @@ const store = new DocumentStore();
 const session = store.openSession();
 
 //region distinct_3_1
-class Order_Countries extends AbstractIndexCreationTask {
+class Employees_ByCountry extends AbstractJavaScriptIndexCreationTask {
+
     constructor() {
         super();
 
-        this.map = `docs.Orders.Select(o => new {    
-                Country = o.ShipTo.Country
-            })`;
+        this.map("Employees", employee => {
+            return {
+                country: employee.Address.Country,
+                countryCount: 1
+            }
+        });
 
-        this.reduce = `results.GroupBy(r => r.Country)
-            .Select(g => new {    
-                Country = g.Key
-            })`;
+        this.reduce(results => results.groupBy(x => x.country).aggregate(g => {
+            return {
+                country: g.key,
+                countryCount: g.values.reduce((p, c) => p + c.countryCount, 0)
+            }
+        }));
     }
 }
 //endregion
@@ -49,9 +55,12 @@ async function distinct() {
 
         {
             //region distinct_3_2
-            const numberOfCountries = await session
-                .query({ indexName: "Order/Countries" })
-                .count();
+            const session = documentStore.openSession();
+            const queryResult = await session.query({ indexName: 'Employees/ByCountry' })
+                .whereEquals('country', country)
+                .firstOrNull();
+
+            const numberOfEmployeesFromCountry = queryResult != null ? queryResult.countryCount : 0;
             //endregion
         }
  
