@@ -18,6 +18,7 @@
 * In this page:
 
     * [Indexing documents fields KEYS](../indexes/using-dynamic-fields#indexing-documents-fields-keys)
+        * [Example - index any field under object](../indexes/using-dynamic-fields#example---index-any-field-under-object)
         * [Example - index any field](../indexes/using-dynamic-fields#example---index-any-field)
     * [Indexing documents fields VALUES](../indexes/using-dynamic-fields#indexing-documents-fields-values)
         * [Example - basic](../indexes/using-dynamic-fields#example---basic)
@@ -30,33 +31,25 @@
 {PANEL: Indexing documents fields KEYS}
 
 {NOTE: }
-#### Example - index any field
+#### Example - index any field under object
 
 ---
 
 The following allows you to:
 
-* Define an index on a collection __without__ needing any common structure between the indexed documents.
-* After index is deployed, any new field added to the document will be indexed as well.
-
-{INFO: }
-
-* The below example indexes any field, but only under the 'Attributes' object from the document.
-* It is possible to create dynamic-index-fields for all fields in your documents.  
-  Consider if that is a true necessity, as indexing every single field can end up costing time and disk space.
-
-{INFO/}
+* Index any field that is under the some object from the document.  
+* After index is deployed, any new field added to the this object will be indexed as well.
 
 ---
 
 __The document__:
-{CODE dynamic_fields_1@Indexes\DynamicFields.cs /}
+{CODE:csharp dynamic_fields_1@Indexes\DynamicFields.cs /}
 
 {CODE-BLOCK:json}
 // Sample document content
 {
     "Attributes": {
-        "Color": "Red"
+        "Color": "Red",
         "Size": 42
     }
 }
@@ -93,6 +86,67 @@ from index 'Products/ByAttribute' where Size = 42
 
 {NOTE/}
 
+{NOTE: }
+#### Example - index any field
+
+---
+
+The following allows you to:
+
+* Define an index on a collection __without__ needing any common structure between the indexed documents.
+* After index is deployed, any new field added to the document will be indexed as well.
+
+{INFO: }
+
+Consider if that is a true necessity, as indexing every single field can end up costing time and disk space.
+
+{INFO/}
+
+---
+
+__The document__:
+{CODE:csharp dynamic_fields_4@Indexes\DynamicFields.cs /}
+
+{CODE-BLOCK:json}
+// Sample document content
+    {
+        "FirstName": "John",
+        "LastName": "Doe",
+        "Title": "Engineer",
+        // ...
+}
+{CODE-BLOCK/}
+
+__The index__:
+
+* The following index will index any field from the document,  
+  a dynamic-index-field will be created for each field.  
+  New fields added to the document after index creation time will be dynamically indexed as well.
+
+* The actual dynamic-index-field name on which you can query will be the field __key__.  
+  e.g. Keys `FirstName` & `LastName` will become the actual dynamic-index-fields.
+
+{CODE-TABS}
+{CODE-TAB:csharp:JavaScript-index dynamic_fields_5_JS@Indexes\DynamicFields.cs /}
+{CODE-TABS/}
+
+__The query__:
+
+* You can now query the generated dynamic-index fields.  
+  Property `_` is Not queryable, it is only used in the index definition syntax.
+
+* To get all documents with some 'LastName' use:
+
+{CODE-TABS}
+{CODE-TAB:csharp:DocumentQuery dynamic_fields_6@Indexes\DynamicFields.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+// 'LastName' is a dynamic-index-field that was indexed from the Attributes object
+from index 'Products/ByAnyField' where LastName = "Doe"
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
 {PANEL/}
 
 {PANEL: Indexing documents fields VALUES}
@@ -111,12 +165,12 @@ This example shows:
 ---
 
 __The document__:
-{CODE dynamic_fields_4@Indexes\DynamicFields.cs /}
+{CODE:csharp dynamic_fields_7@Indexes\DynamicFields.cs /}
 
 {CODE-BLOCK:json}
 // Sample document content
 {
-    "ProductType": "Electronics"
+    "ProductType": "Electronics",
     "PricePerUnit": 23
 }
 {CODE-BLOCK/}
@@ -129,8 +183,8 @@ __The index__:
   e.g. Field value `Electronics` will be the dynamic-index-field.
 
 {CODE-TABS}
-{CODE-TAB:csharp:LINQ-index dynamic_fields_5@Indexes\DynamicFields.cs /}
-{CODE-TAB:csharp:JavaScript-index dynamic_fields_5_JS@Indexes\DynamicFields.cs /}
+{CODE-TAB:csharp:LINQ-index dynamic_fields_8@Indexes\DynamicFields.cs /}
+{CODE-TAB:csharp:JavaScript-index dynamic_fields_8_JS@Indexes\DynamicFields.cs /}
 {CODE-TABS/}
 
 __The query__:
@@ -138,7 +192,7 @@ __The query__:
 * To get all documents of some product type having a specific price per unit use:
 
 {CODE-TABS}
-{CODE-TAB:csharp:DocumentQuery dynamic_fields_6@Indexes\DynamicFields.cs /}
+{CODE-TAB:csharp:DocumentQuery dynamic_fields_9@Indexes\DynamicFields.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 // 'Electronics' is the dynamic-index-field that was indexed from document field 'ProductType'
 from index 'Products/ByName' where Electronics = 23
@@ -160,7 +214,7 @@ The following allows you to:
 ---
 
 __The document__:
-{CODE dynamic_fields_7@Indexes\DynamicFields.cs /}
+{CODE:csharp dynamic_fields_10@Indexes\DynamicFields.cs /}
 
 {CODE-BLOCK:json}
 // Sample document content
@@ -168,15 +222,15 @@ __The document__:
     "Name": "Product-A",
     "Attributes": [
         {  
-            "PropName": "Color"
+            "PropName": "Color",
             "PropValue": "Blue"
         },
         {
-            "PropName": "Width"
+            "PropName": "Width",
             "PropValue": "10"
         },
         {
-            "PropName": "Length"
+            "PropName": "Length",
             "PropValue": "20"
         },
         ...
@@ -193,8 +247,8 @@ __The index__:
   e.g. 'PropName' value `Width` will be a dynamic-index-field.
 
 {CODE-TABS}
-{CODE-TAB:csharp:LINQ-index dynamic_fields_8@Indexes\DynamicFields.cs /}
-{CODE-TAB:csharp:JavaScript-index dynamic_fields_8_JS@Indexes\DynamicFields.cs /}
+{CODE-TAB:csharp:LINQ-index dynamic_fields_11@Indexes\DynamicFields.cs /}
+{CODE-TAB:csharp:JavaScript-index dynamic_fields_11_JS@Indexes\DynamicFields.cs /}
 {CODE-TABS/}
 
 __The query__:
@@ -202,7 +256,7 @@ __The query__:
 * To get all documents matching a specific attribute property use:
 
 {CODE-TABS}
-{CODE-TAB:csharp:DocumentQuery dynamic_fields_9@Indexes\DynamicFields.cs /}
+{CODE-TAB:csharp:DocumentQuery dynamic_fields_12@Indexes\DynamicFields.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 // 'Width' is a dynamic-index-field that was indexed from the Attributes list
 from index 'Attributes/ByName' where Width = 10
@@ -214,7 +268,7 @@ from index 'Attributes/ByName' where Width = 10
 
 {PANEL: CreateField syntax}
 
-{CODE syntax@Indexes\DynamicFields.cs /}
+{CODE:csharp syntax@Indexes\DynamicFields.cs /}
 
 | Parameters       |                      |                                                                                                                                                                                    |
 |------------------|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

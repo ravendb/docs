@@ -35,27 +35,19 @@
 
 The following allows you to:  
 
-* Define an index on a collection __without__ needing any common structure between the indexed documents.  
-* After index is deployed, any new field added to the document will be indexed as well.
-
-{INFO: }
-
-* The below example indexes any field, but only under the 'Attributes' object from the document.  
-* It is possible to create dynamic-index-fields for all fields in your documents.  
-  Consider if that is a true necessity, as indexing every single field can end up costing time and disk space.
-
-{INFO/}
+* Index any field that is under the 'Attributes' object from the document.  
+* After index is deployed, any new field added to the this object will be indexed as well.
 
 ---
 
 __The document__:
-{CODE dynamic_fields_1@Indexes\DynamicFields.cs /}
+{CODE:csharp dynamic_fields_1@Indexes\DynamicFields.cs /}
 
 {CODE-BLOCK:json}
 // Sample document content
 {
     "Attributes": {
-        "Color": "Red"
+        "Color": "Red",
         "Size": 42
     }
 }
@@ -70,7 +62,7 @@ __The index__:
 * The actual dynamic-index-field name on which you can query will be the attribute field __key__.  
   e.g. Keys `Color` & `Size` will become the actual dynamic-index-fields.  
 
-{CODE dynamic_fields_2@Indexes\DynamicFields.cs /}
+{CODE:csharp dynamic_fields_2@Indexes\DynamicFields.cs /}
 
 __The query__:
 
@@ -107,12 +99,12 @@ This example shows:
 ---
 
 __The document__:
-{CODE dynamic_fields_4@Indexes\DynamicFields.cs /}
+{CODE:csharp dynamic_fields_4@Indexes\DynamicFields.cs /}
 
 {CODE-BLOCK:json}
 // Sample document content
 {
-    "ProductType": "Electronics"
+    "ProductType": "Electronics",
     "PricePerUnit": 23
 }
 {CODE-BLOCK/}
@@ -124,7 +116,7 @@ __The index__:
 * This value will be the dynamic-index-field name on which you can query.  
   e.g. Field value `Electronics` will be the dynamic-index-field.
 
-{CODE dynamic_fields_5@Indexes\DynamicFields.cs /}
+{CODE:csharp dynamic_fields_5@Indexes\DynamicFields.cs /}
 
 __The query__:
 
@@ -153,7 +145,7 @@ The following allows you to:
 ---
 
 __The document__:
-{CODE dynamic_fields_7@Indexes\DynamicFields.cs /}
+{CODE:csharp dynamic_fields_7@Indexes\DynamicFields.cs /}
 
 {CODE-BLOCK:json}
 // Sample document content
@@ -161,15 +153,15 @@ __The document__:
     "Name": "Product-A",
     "Attributes": [
        {  
-           "PropName": "Color"
+           "PropName": "Color",
            "PropValue": "Blue"
        },
        {
-           "PropName": "Width"
+           "PropName": "Width",
            "PropValue": "10"
        },
        {
-           "PropName": "Length"
+           "PropName": "Length",
            "PropValue": "20"
        },
        ...
@@ -185,7 +177,7 @@ __The index__:
 * The actual dynamic-index-field name on which you can query will be the item's PropName __value__.  
   e.g. 'PropName' value `Width` will be a dynamic-index-field.
 
-{CODE dynamic_fields_8@Indexes\DynamicFields.cs /}
+{CODE:csharp dynamic_fields_8@Indexes\DynamicFields.cs /}
 
 __The query__:
 
@@ -204,7 +196,7 @@ from index 'Attributes/ByName' where Width = 10
 
 {PANEL: CreateField syntax}
 
-{CODE syntax@Indexes\DynamicFields.cs /}
+{CODE:csharp syntax@Indexes\DynamicFields.cs /}
 
 | Parameters       |                      |                                                                                                                                                                                    |
 |------------------|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

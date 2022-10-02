@@ -17,7 +17,7 @@ namespace Raven.Documentation.Samples.Indexes
             object CreateField(string name, object value, CreateFieldOptions options);
             #endregion
         }
-        
+
         #region dynamic_fields_1
         public class Product_1
         {
@@ -81,6 +81,43 @@ namespace Raven.Documentation.Samples.Indexes
         public class Product_2
         {
             public string Id { get; set; }
+
+            // All KEYS in the document will be dynamically indexed 
+            // Fields added to the document after index creation time will also get indexed
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string Title { get; set; }
+            // ...
+        }
+        #endregion
+        
+        #region dynamic_fields_5_JS
+        public class Products_ByAnyField_JS : AbstractJavaScriptIndexCreationTask
+        {
+            public class IndexEntry
+            {
+                public object _ { get; set; }
+            }
+
+            public Products_ByAnyField_JS()
+            {
+                Maps = new HashSet<string>
+                {
+                    @"map('Product_2s', function (p) {
+                          return {
+                              // this will index EVERY FIELD under the top level of the document
+                              _: Object.keys(p).map(key => createField(key, p[key]))
+                          }
+                      })"
+                };
+            }
+        }
+        #endregion
+        
+        #region dynamic_fields_7
+        public class Product_3
+        {
+            public string Id { get; set; }
             
             // The VALUE of ProductType will be dynamically indexed
             public string ProductType { get; set; }
@@ -88,8 +125,8 @@ namespace Raven.Documentation.Samples.Indexes
         }
         #endregion
         
-        #region dynamic_fields_5
-        public class Products_ByName : AbstractIndexCreationTask<Product_2>
+        #region dynamic_fields_8
+        public class Products_ByName : AbstractIndexCreationTask<Product_3>
         {
             public class IndexEntry
             {
@@ -112,14 +149,14 @@ namespace Raven.Documentation.Samples.Indexes
         }
         #endregion
         
-        #region dynamic_fields_5_JS
+        #region dynamic_fields_8_JS
         public class Products_ByName_JS : AbstractJavaScriptIndexCreationTask
         {
             public Products_ByName_JS()
             {
                 Maps = new HashSet<string>
                 {
-                    @"map('Product_2s', function (p) {
+                    @"map('Product_3s', function (p) {
                         return {
                             _: createField(p.ProductType, p.PricePerUnit, {
                                   indexing: 'Search',
@@ -133,8 +170,8 @@ namespace Raven.Documentation.Samples.Indexes
         }
         #endregion
 
-        #region dynamic_fields_7
-        public class Product_3
+        #region dynamic_fields_10
+        public class Product_4
         {
             public string Id { get; set; }
             public string Name { get; set; }
@@ -150,8 +187,8 @@ namespace Raven.Documentation.Samples.Indexes
         }
         #endregion
         
-        #region dynamic_fields_8
-        public class Attributes_ByName : AbstractIndexCreationTask<Product_3>
+        #region dynamic_fields_11
+        public class Attributes_ByName : AbstractIndexCreationTask<Product_4>
         {
             public class IndexEntry
             {
@@ -178,14 +215,14 @@ namespace Raven.Documentation.Samples.Indexes
         }
         #endregion
         
-        #region dynamic_fields_8_JS
+        #region dynamic_fields_11_JS
         public class Attributes_ByName_JS : AbstractJavaScriptIndexCreationTask
         {
             public Attributes_ByName_JS()
             {
                 Maps = new HashSet<string>
                 {
-                    @"map('Product_3s', function (p) {
+                    @"map('Product_4s', function (p) {
                         return {
                             _: p.Attributes.map(item => createField(item.PropName, item.PropValue, {
                                 indexing: 'Search',
@@ -221,9 +258,9 @@ namespace Raven.Documentation.Samples.Indexes
                     #region dynamic_fields_6
                     IList<Product_2> matchingDocuments = session
                         .Advanced
-                        .DocumentQuery<Product_2, Products_ByName>()
-                         // 'Electronics' is the dynamic-index-field that was indexed from document field 'ProductType'
-                        .WhereEquals("Electronics", 23)
+                        .DocumentQuery<Product_2, Products_ByAnyField_JS>()
+                        // 'LastName' is a dynamic-index-field that was indexed from the document
+                        .WhereEquals("LastName", "Doe")
                         .ToList();
                     #endregion
                 }
@@ -233,7 +270,19 @@ namespace Raven.Documentation.Samples.Indexes
                     #region dynamic_fields_9
                     IList<Product_3> matchingDocuments = session
                         .Advanced
-                        .DocumentQuery<Product_3, Attributes_ByName>()
+                        .DocumentQuery<Product_3, Products_ByName>()
+                         // 'Electronics' is the dynamic-index-field that was indexed from document field 'ProductType'
+                        .WhereEquals("Electronics", 23)
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region dynamic_fields_12
+                    IList<Product_4> matchingDocuments = session
+                        .Advanced
+                        .DocumentQuery<Product_4, Attributes_ByName>()
                         // 'Width' is a dynamic-index-field that was indexed from the Attributes list
                         .WhereEquals("Width", 10)
                         .ToList();
