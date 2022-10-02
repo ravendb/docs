@@ -6,8 +6,8 @@
 
 * RavenDB uses indexes to facilitate fast queries powered by [**Lucene**](http://lucene.apache.org/), the full-text search engine.  
 
-* The indexing of a single document starts from creating Lucene's **Document** according to an index definition. 
-  Lucene processes it by breaking it into fields and splitting all the text from each field into *tokens* (or *terms*) 
+* The indexing of a single document starts from creating Lucene's Document according to an index definition. 
+  Lucene processes it by breaking it into fields and splitting all the text from each field into **tokens** (or **terms**) 
   in a process called *tokenization*. Those tokens will be stored in the index, and later will be searched upon.  
   The tokenization process uses an object called an **Analyzer**.  
 
@@ -15,10 +15,10 @@
 
 * In this page:  
   * [Understanding Analyzers](../indexes/using-analyzers#understanding-analyzers)  
-  * [RavenDB's Default Analyzers](../indexes/using-analyzers#ravendb)  
   * [Full-Text Search](../indexes/using-analyzers#full-text-search)  
   * [Selecting an Analyzer for a Field](../indexes/using-analyzers#selecting-an-analyzer-for-a-field)  
   * [Creating Custom Analyzers](../indexes/using-analyzers#creating-custom-analyzers)  
+  * [RavenDB's Default Analyzers](../indexes/using-analyzers#ravendb)  
   * [Manipulating Field Indexing Behavior](../indexes/using-analyzers#manipulating-field-indexing-behavior)  
   * [Ordering When a Field is Searchable](../indexes/using-analyzers#ordering-when-a-field-is-searchable)  
 
@@ -28,12 +28,13 @@
 
 {PANEL: Understanding Analyzers}
 
-Lucene offers several Analyzers out of the box, and new ones can be [created](../indexes/using-analyzers#creating-custom-analyzers).  
+Lucene offers several Analyzers out of the box.  
+New [customized analyzers](../indexes/using-analyzers#creating-custom-analyzers) can also be created.  
 
 Various Analyzers differ in the way they split the text stream ("tokenize"), 
 and in the way they process those tokens in post-tokenization.  
 
-The examples below will use this sample text:  
+The examples below use the following text:
 
 
 `The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.`  
@@ -56,11 +57,11 @@ or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#a
 
     `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dog]   [bob@hotmail.com]   [123432]`  
 
-    Removes common "stop" words  
-    Separates with white spaces and punctuation that is followed by white space  
-    Converts to lower-case letters so that searches aren't case sensitive  
-    Email addresses are one token - a dot that is not followed by a whitespace is considered part of the token.  
-    Numbers with hyphen/dash are not separated at the hyphen.  
+    Removes common "stop words".
+    Separates on whitespace and punctuation that is followed by whitespace - a dot that is not followed by whitespace is considered part of the token.
+    Converts to lower-case letters so that searches aren't case-sensitive.
+    Email addresses and internet hostnames are one token.
+    Splits words at hyphens, unless there's a number in the token, in which case the whole token is interpreted as a product number and is not split.
 
 
 * **StopAnalyzer** will work similarly, but will not perform light stemming and will only tokenize on white space:  
@@ -69,9 +70,9 @@ or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#a
 
     Removes numbers and symbols, then separates tokens with these.  
     This means that email and web addresses are separated.  
-    Removes common "stop" words  
-    Separates with white spaces  
-    Converts to lower-case letters so that searches aren't case sensitive  
+    Removes common "stop words".  
+    Separates on white spaces.  
+    Converts to lower-case letters so that searches aren't case sensitive.  
 
 ---
 
@@ -81,27 +82,25 @@ or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#a
 
     `[the]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`  
 
-    Includes common stop words  
-    Removes numbers and symbols, then separates tokens with them.  
+    Includes common "stop words".  
+    Removes numbers and symbols and separates tokens with them.  
     This means that email and web addresses are separated.  
-    Separates with white spaces  
-    Converts to lower-case letters so that searches aren't case sensitive  
+    Separates on white spaces.  
+    Converts to lower-case letters so that searches aren't case sensitive.  
 
 * **WhitespaceAnalyzer** will just tokenize on white spaces:  
 
     `[The]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs,]   [Bob@hotmail.com]   [123432.]`  
 
-    Only separates with whitespaces  
-    This analyzer preserves upper/lower cases in text, which means that searches will be case-sensitive.  
-    Email and web addresses, phone numbers, and other such forms of ID are kept whole
+    Only separates on whitespaces.  
+    Preserves upper/lower cases in text, which means that searches will be case-sensitive.  
+    Email and web addresses, phone numbers, and other such forms of ID are kept whole.
 
-* **KeywordAnalyzer** will perform no tokenization, and will consider the whole text a stream as one token:  
+* **KeywordAnalyzer** will perform no tokenization, and will consider the whole text as one token:  
 
     `[The quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]` 
 
-* **NGramAnalyzer** will tokenize on pre define token lengths, 2-6 chars long, which are defined by `Indexing.Analyzers.NGram.MinGram` and `Indexing.Analyzers.NGram.MaxGram` configuration options:  
-  
-    This analyzer preserves upper/lower cases in text for case-sensitive searches.  
+    Preserves upper/lower cases in text for case-sensitive searches.
     Useful in situations like IDs and codes where you do not want to separate into multiple tokens.  
 
 ---
@@ -118,17 +117,6 @@ or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#a
 
 {PANEL/}
 
-{PANEL: RavenDB's Default Analyzers}
-
-
-By default, RavenDB uses a custom analyzer called `LowerCaseKeywordAnalyzer` for all indexed content. Its implementation behaves like Lucene's KeywordAnalyzer, but it also performs case normalization by converting all characters to lower case. That is - RavenDB stores the entire term as a single token, in a lower cased form. Given the same sample text above, `LowerCaseKeywordAnalyzer` will produce a single token:  
-
-`[the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`  
-
-This default analyzer allows you to match exact and complete text values. To perform full-text searches, set a different analyzer.  
-
-{PANEL/}
-
 {PANEL: Full-Text Search}
 
 To allow full-text search on the text fields, you can use the analyzers provided out of the box with Lucene. These are available as part of the Lucene library which ships with RavenDB.  
@@ -142,14 +130,18 @@ There are also `Collation analyzers` available (you can read more about them [he
 
 {PANEL: Selecting an Analyzer for a Field}
 
-To make a document property indexed using a specific Analyzer, all you need to do is to match it with the name of the property:  
+To index a document field using a specific analyzer, all you need to do is to match it with the field's 
+name:  
 
 {CODE-TABS}
 {CODE-TAB:csharp:AbstractIndexCreationTask analyzers_1@Indexes\Analyzers.cs /}
 {CODE-TAB:csharp:Operation analyzers_2@Indexes\Analyzers.cs /}
 {CODE-TABS/}
 
-{INFO The analyzer you are referencing to has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the RavenDB working directory (where `Raven.Server` executable is located), and use their fully qualified type name (including the assembly name). /}
+{INFO: Customized analyzers availability} 
+
+The analyzer you are referencing to has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the RavenDB working directory (where `Raven.Server` executable is located), and use their fully qualified type name (including the assembly name).
+{INFO/}
 
 {PANEL/}
 
@@ -165,19 +157,63 @@ You can create a custom analyzer on your own and deploy it to RavenDB server. To
 
 {PANEL/}
 
+
+{PANEL: RavenDB's Default Analyzers}
+
+RavenDB has three default analyzers that it uses to index text when no other analyzer was specified:  
+
+* **Default Analyzer** - `LowerCaseKeywordAnalyzer`  
+* **Default Exact Analyzer** - `KeywordAnalyzer`  
+* **Default Search Analyzer** - `RavenStandardAnalyzer`  
+
+You can choose other analyzers to serve as your default analyzers by modifying the [indexing configuration](../server/configuration/indexing-configuration#indexing.analyzers.default).  
+
+**Default Analyzer**
+
+For regular text fields, RavenDB uses a custom analyzer called `LowerCaseKeywordAnalyzer`. Its implementation 
+behaves like Lucene's `KeywordAnalyzer`, but it also performs case normalization by converting all characters 
+to lower case. That is - RavenDB stores the entire text field as a single token, in a lowercased form. Given 
+the same sample text above, `LowerCaseKeywordAnalyzer` will produce a single token:  
+
+`[the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`  
+
+**Default Exact Analyzer**
+
+For 'exact case' text fields, RavenDB uses Lucene's `KeywordAnalyzer`, which treats the entire text field as one 
+token and does not change the case of the original text. To make an index store text with the exact case, see the 
+section on changing field indexing behavior [below](../indexes/using-analyzers#manipulating-field-indexing-behavior).  
+
+**Default Search Analyzer**
+
+For full-text search text fields, RavenDB uses `RavenStandardAnalyzer`, which is just an optimized version of 
+Lucene's `StandardAnalyzer`. To make an index that allows full-text search, see the section on changing field 
+indexing behavior [below](../indexes/using-analyzers#manipulating-field-indexing-behavior).  
+
+{PANEL/}
+
 {PANEL: Manipulating Field Indexing Behavior}
 
-By default, each indexed field is analyzed using the `LowerCaseKeywordAnalyzer` which indexes a field as a single, lower cased term.  
+By default, each indexed field is analyzed using the '`LowerCaseKeywordAnalyzer`' which indexes a field as a single, lowercased term.  
 
-This behavior can be changed by turning off the field analysis (setting the `FieldIndexing` option for this field to `Exact`). This causes all the properties to be treated as a single token and the matches must be exact (case sensitive), using the `KeywordAnalyzer` behind the scenes.  
+This behavior can be changed by setting the `FieldIndexing` option for a particular field. The possible values are:  
+
+* `FieldIndexing.Exact`
+* `FieldIndexing.Search`
+* `FieldIndexing.No`
+
+Setting the `FieldIndexing` option for this field to `Exact` turns off the field analysis. This causes all the 
+properties to be treated as a single token and the matches must be exact (case sensitive), using 
+the `KeywordAnalyzer` behind the scenes.  
 
 {CODE analyzers_3@Indexes\Analyzers.cs /}
 
-`FieldIndexing.Search` allows performing full text search operations against the field:  
+`FieldIndexing.Search` allows performing full-text search operations against the field using the 'StandardAnalyzer' 
+by default:  
 
 {CODE analyzers_4@Indexes\Analyzers.cs /}
 
-If you want to disable indexing on a particular field, use the `FieldIndexing.No` option. This can be useful when you want to [store](../indexes/storing-data-in-index) field data in the index, but don't want to make it available for querying, however it will available for extraction by projections:  
+If you want to disable indexing on a particular field, use the `FieldIndexing.No` option. This can be useful when you want to [store field data in the index](../indexes/storing-data-in-index), but don't want to make it available for querying. However, it will still be available 
+for extraction by projections:  
 
 {CODE analyzers_5@Indexes\Analyzers.cs /}
 
@@ -185,7 +221,7 @@ If you want to disable indexing on a particular field, use the `FieldIndexing.No
 
 {PANEL: Ordering When a Field is Searchable}
 
-When field is marked as `Search` sorting must be done using additional field. More [here](../indexes/querying/sorting#ordering-when-a-field-is-searchable).  
+When a field is marked as `Search`, sorting must be done using an additional field. More [here](../indexes/querying/sorting#ordering-when-a-field-is-searchable).  
 
 {PANEL/}
 

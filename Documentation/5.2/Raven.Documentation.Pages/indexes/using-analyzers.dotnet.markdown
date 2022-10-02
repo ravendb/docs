@@ -5,8 +5,8 @@
 
 * RavenDB uses indexes to facilitate fast queries powered by [**Lucene**](http://lucene.apache.org/), the full-text search engine.  
 
-* The indexing of a single document starts from creating Lucene's **Document** according to an index definition. 
-  Lucene processes it by breaking it into fields and splitting all the text from each field into *tokens* (or *terms*) 
+* The indexing of a single document starts from creating Lucene's Document according to an index definition. 
+  Lucene processes it by breaking it into fields and splitting all the text from each field into **tokens** (or **terms**) 
   in a process called *tokenization*. Those tokens will be stored in the index, and later will be searched upon.  
   The tokenization process uses an object called an **Analyzer**.  
 
@@ -14,10 +14,10 @@
 
 * In this page:  
   * [Understanding Analyzers](../indexes/using-analyzers#understanding-analyzers)  
-  * [RavenDB's Default Analyzers](../indexes/using-analyzers#ravendb)  
   * [Full-Text Search](../indexes/using-analyzers#full-text-search)  
   * [Selecting an Analyzer for a Field](../indexes/using-analyzers#selecting-an-analyzer-for-a-field)  
   * [Creating Custom Analyzers](../indexes/using-analyzers#creating-custom-analyzers)  
+  * [RavenDB's Default Analyzers](../indexes/using-analyzers#ravendb)  
   * [Manipulating Field Indexing Behavior](../indexes/using-analyzers#manipulating-field-indexing-behavior)  
   * [Ordering When a Field is Searchable](../indexes/using-analyzers#ordering-when-a-field-is-searchable)  
 
@@ -27,12 +27,13 @@
 
 {PANEL: Understanding Analyzers}
 
-Lucene offers several Analyzers out of the box, and new ones can be [created](../indexes/using-analyzers#creating-custom-analyzers).  
+Lucene offers several Analyzers out of the box.  
+New [customized analyzers](../indexes/using-analyzers#creating-custom-analyzers) can also be created.  
 
 Various Analyzers differ in the way they split the text stream ("tokenize"), 
 and in the way they process those tokens in post-tokenization.  
 
-The examples below will use this sample text:  
+The examples below use the following text:
 
 `The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.`  
 
@@ -54,11 +55,11 @@ or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#a
 
     `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dog]   [bob@hotmail.com]   [123432]`  
 
-    Removes common "stop" words  
-    Separates with white spaces and punctuation that is followed by white space  
-    Converts to lower-case letters so that searches aren't case sensitive  
-    Email addresses are one token - a dot that is not followed by a whitespace is considered part of the token.  
-    Numbers with hyphen/dash are not separated at the hyphen.  
+    Removes common "stop words".
+    Separates on whitespace and punctuation that is followed by whitespace - a dot that is not followed by whitespace is considered part of the token.
+    Converts to lower-case letters so that searches aren't case-sensitive.
+    Email addresses and internet hostnames are one token.
+    Splits words at hyphens, unless there's a number in the token, in which case the whole token is interpreted as a product number and is not split.
 
 
 * **StopAnalyzer** will work similarly, but will not perform light stemming and will only tokenize on white space:  
@@ -67,9 +68,9 @@ or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#a
 
     Removes numbers and symbols, then separates tokens with these.  
     This means that email and web addresses are separated.  
-    Removes common "stop" words  
-    Separates with white spaces  
-    Converts to lower-case letters so that searches aren't case sensitive  
+    Removes common "stop words".  
+    Separates on white spaces.  
+    Converts to lower-case letters so that searches aren't case sensitive.  
 
 ---
 
@@ -79,25 +80,25 @@ or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#a
 
     `[the]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`  
 
-    Includes common stop words  
-    Removes numbers and symbols, then separates tokens with them.  
+    Includes common "stop words".  
+    Removes numbers and symbols and separates tokens with them.  
     This means that email and web addresses are separated.  
-    Separates with white spaces  
-    Converts to lower-case letters so that searches aren't case sensitive 
+    Separates on white spaces.  
+    Converts to lower-case letters so that searches aren't case sensitive. 
 
 * **WhitespaceAnalyzer** will just tokenize on white spaces:  
 
     `[The]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs,]   [Bob@hotmail.com]   [123432.]`  
 
-    Only separates with whitespaces  
-    This analyzer preserves upper/lower cases in text, which means that searches will be case-sensitive.  
-    Email and web addresses, phone numbers, and other such forms of ID are kept whole
+    Only separates on whitespaces.  
+    Preserves upper/lower cases in text, which means that searches will be case-sensitive.  
+    Email and web addresses, phone numbers, and other such forms of ID are kept whole.
 
-* **KeywordAnalyzer** will perform no tokenization, and will consider the whole text a stream as one token:  
+* **KeywordAnalyzer** will perform no tokenization, and will consider the whole text as one token:  
 
     `[The quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`  
 
-    This analyzer preserves upper/lower cases in text for case-sensitive searches.
+    Preserves upper/lower cases in text for case-sensitive searches.
     Useful in situations like IDs and codes where you do not want to separate into multiple tokens.  
 
 ---
@@ -111,39 +112,6 @@ or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#a
    You can override NGram analyzer default token lengths by configuring `Indexing.Analyzers.NGram.MinGram` and `Indexing.Analyzers.NGram.MaxGram` per index e.g. setting them to 3 and 4 accordingly will generate:  
 
    `[.co]  [.com]  [123]  [1234]  [234]  [2343]  [343]  [3432]  [432]  [@ho]  [@hot]  [ail]  [ail.]  [azy]  [b@h]  [b@ho]  [bob]  [bob@]  [bro]  [brow]  [com]  [dog]  [dogs]  [fox]  [hot]  [hotm]  [ick]  [il.]  [il.c]  [jum]  [jump]  [l.c]  [l.co]  [laz]  [lazy]  [mai]  [mail]  [mpe]  [mped]  [ob@]  [ob@h]  [ogs]  [otm]  [otma]  [ove]  [over]  [own]  [ped]  [qui]  [quic]  [row]  [rown]  [tma]  [tmai]  [uic]  [uick]  [ump]  [umpe]  [ver]  `  
-
-{PANEL/}
-
-{PANEL: RavenDB's Default Analyzers}
-
-RavenDB has three default analyzers that it uses to index text when no other analyzer was specified:  
-
-* **Default Analyzer** - `LowerCaseKeywordAnalyzer`  
-* **Default Exact Analyzer** - `KeywordAnalyzer`  
-* **Default Search Analyzer** - `RavenStandardAnalyzer`  
-
-You can choose other analyzers to serve as your default analyzers by modifying the [indexing configuration](../server/configuration/indexing-configuration#indexing.analyzers.default).  
-
-**Default Analyzer**
-
-For regular text fields, RavenDB uses a custom analyzer called `LowerCaseKeywordAnalyzer`. Its implementation 
-behaves like Lucene's `KeywordAnalyzer`, but it also performs case normalization by converting all characters 
-to lower case. That is - RavenDB stores the entire text field as a single token, in a lowercased form. Given 
-the same sample text above, `LowerCaseKeywordAnalyzer` will produce a single token:  
-
-`[the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`  
-
-**Default Exact Analyzer**
-
-For 'exact case' text fields, RavenDB uses Lucene's `KeywordAnalyzer`, which treats the entire text field as one 
-token and does not change the case of the original text. To make an index store text with the exact case, see the 
-section on changing field indexing behavior [below](../indexes/using-analyzers#manipulating-field-indexing-behavior).  
-
-**Default Search Analyzer**
-
-For full-text search text fields, RavenDB uses `RavenStandardAnalyzer`, which is just an optimized version of 
-Lucene's `StandardAnalyzer`. To make an index that allows full-text search, see the section on changing field 
-indexing behavior [below](../indexes/using-analyzers#manipulating-field-indexing-behavior).  
 
 {PANEL/}
 
@@ -168,7 +136,7 @@ name:
 {CODE-TAB:csharp:Operation analyzers_2@Indexes\Analyzers.cs /}
 {CODE-TABS/}
 
-{INFO: Analyzer Availability}
+{INFO: Customized Analyzer Availability}
 The analyzer you are referencing must be available to the RavenDB server instance. See the different 
 methods of [creating custom analyzers](../indexes/using-analyzers#creating-custom-analyzers).  
 {INFO/}
@@ -245,6 +213,39 @@ Another way of adding custom analyzers to RavenDB is to place them next to Raven
 compatible with .NET Core 2.0 (e.g. .NET Standard 2.0 assembly). The fully qualified name needs to be specified for an 
 indexing field that is going to be tokenized by the analyzer. This is the only way to add custom analyzers in RavenDB 
 versions older than 5.2.  
+
+{PANEL/}
+
+{PANEL: RavenDB's Default Analyzers}
+
+RavenDB has three default analyzers that it uses to index text when no other analyzer was specified:  
+
+* **Default Analyzer** - `LowerCaseKeywordAnalyzer`  
+* **Default Exact Analyzer** - `KeywordAnalyzer`  
+* **Default Search Analyzer** - `RavenStandardAnalyzer`  
+
+You can choose other analyzers to serve as your default analyzers by modifying the [indexing configuration](../server/configuration/indexing-configuration#indexing.analyzers.default).  
+
+**Default Analyzer**
+
+For regular text fields, RavenDB uses a custom analyzer called `LowerCaseKeywordAnalyzer`. Its implementation 
+behaves like Lucene's `KeywordAnalyzer`, but it also performs case normalization by converting all characters 
+to lower case. That is - RavenDB stores the entire text field as a single token, in a lowercased form. Given 
+the same sample text above, `LowerCaseKeywordAnalyzer` will produce a single token:  
+
+`[the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`  
+
+**Default Exact Analyzer**
+
+For 'exact case' text fields, RavenDB uses Lucene's `KeywordAnalyzer`, which treats the entire text field as one 
+token and does not change the case of the original text. To make an index store text with the exact case, see the 
+section on changing field indexing behavior [below](../indexes/using-analyzers#manipulating-field-indexing-behavior).  
+
+**Default Search Analyzer**
+
+For full-text search text fields, RavenDB uses `RavenStandardAnalyzer`, which is just an optimized version of 
+Lucene's `StandardAnalyzer`. To make an index that allows full-text search, see the section on changing field 
+indexing behavior [below](../indexes/using-analyzers#manipulating-field-indexing-behavior).  
 
 {PANEL/}
 
