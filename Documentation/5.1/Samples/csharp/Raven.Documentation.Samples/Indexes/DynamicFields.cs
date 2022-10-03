@@ -30,7 +30,7 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
         
         #region dynamic_fields_2
-        public class Products_ByAttribute : AbstractIndexCreationTask<Product_1>
+        public class Products_ByAttributeKey : AbstractIndexCreationTask<Product_1>
         {
             public class IndexEntry
             {
@@ -40,10 +40,10 @@ namespace Raven.Documentation.Samples.Indexes
                 public object _ { get; set; }
             }
 
-            public Products_ByAttribute()
+            public Products_ByAttributeKey()
             {
                 Map = products => from p in products
-                    select new Products_ByAttribute.IndexEntry
+                    select new Products_ByAttributeKey.IndexEntry
                     {
                         // Define the dynamic-index-field
                         // Call 'CreateField' to generate dynamic-index-fields from the Attributes object keys
@@ -68,17 +68,17 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
         
         #region dynamic_fields_5
-        public class Products_ByName : AbstractIndexCreationTask<Product_2>
+        public class Products_ByProductType : AbstractIndexCreationTask<Product_2>
         {
             public class IndexEntry
             {
                 public object _ { get; set; }
             }
 
-            public Products_ByName()
+            public Products_ByProductType()
             {
                 Map = products => from p in products
-                    select new Products_ByName.IndexEntry
+                    select new Products_ByProductType.IndexEntry
                     {
                         // Define the dynamic-index-field
                         // Call 'CreateField' to generate dynamic-index-fields
@@ -145,7 +145,7 @@ namespace Raven.Documentation.Samples.Indexes
                     #region dynamic_fields_3
                     IList<Product_1> matchingDocuments = session
                         .Advanced
-                        .DocumentQuery<Product_1, Products_ByAttribute>()
+                        .DocumentQuery<Product_1, Products_ByAttributeKey>()
                          // 'Size' is a dynamic-index-field that was indexed from the Attributes object
                         .WhereEquals("Size", 42)
                         .ToList();
@@ -157,7 +157,7 @@ namespace Raven.Documentation.Samples.Indexes
                     #region dynamic_fields_6
                     IList<Product_2> matchingDocuments = session
                         .Advanced
-                        .DocumentQuery<Product_2, Products_ByName>()
+                        .DocumentQuery<Product_2, Products_ByProductType>()
                          // 'Electronics' is the dynamic-index-field that was indexed from document field 'ProductType'
                         .WhereEquals("Electronics", 23)
                         .ToList();

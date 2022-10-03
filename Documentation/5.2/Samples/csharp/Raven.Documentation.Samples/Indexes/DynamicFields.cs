@@ -10,11 +10,11 @@ namespace Raven.Documentation.Samples.Indexes
         private interface IFoo
         {
             #region syntax
-            object CreateField(string name, object value);
+            object CreateField(string fieldName, object fieldValue);
 
-            object CreateField(string name, object value, bool stored, bool analyzed);
+            object CreateField(string fieldName, object fieldValue, bool stored, bool analyzed);
 
-            object CreateField(string name, object value, CreateFieldOptions options);
+            object CreateField(string fieldName, object fieldValue, CreateFieldOptions options);
             #endregion
         }
 
@@ -30,7 +30,7 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
         
         #region dynamic_fields_2
-        public class Products_ByAttribute : AbstractIndexCreationTask<Product_1>
+        public class Products_ByAttributeKey : AbstractIndexCreationTask<Product_1>
         {
             public class IndexEntry
             {
@@ -40,10 +40,10 @@ namespace Raven.Documentation.Samples.Indexes
                 public object _ { get; set; }
             }
 
-            public Products_ByAttribute()
+            public Products_ByAttributeKey()
             {
                 Map = products => from p in products
-                    select new Products_ByAttribute.IndexEntry
+                    select new Products_ByAttributeKey.IndexEntry
                     {
                         // Define the dynamic-index-field
                         // Call 'CreateField' to generate dynamic-index-fields from the Attributes object keys
@@ -57,19 +57,16 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
 
         #region dynamic_fields_2_JS
-        public class Products_ByAttribute_JS : AbstractJavaScriptIndexCreationTask
+        public class Products_ByAttributeKey_JS : AbstractJavaScriptIndexCreationTask
         {
-            public Products_ByAttribute_JS()
+            public Products_ByAttributeKey_JS()
             {
                 Maps = new HashSet<string>
                 {
                     @"map('Product_1s', function (p) {
                         return {
-                            _: Object.keys(p.Attributes).map(key => createField(key, p.Attributes[key], {
-                                indexing: 'Search',
-                                storage: true,
-                                termVector: null
-                            }))
+                            _: Object.keys(p.Attributes).map(key => createField(key, p.Attributes[key],
+                                { indexing: 'Search', storage: true, termVector: null }))
                         };
                     })"
                 };
@@ -101,14 +98,15 @@ namespace Raven.Documentation.Samples.Indexes
 
             public Products_ByAnyField_JS()
             {
+                // this will index EVERY FIELD under the top level of the document
                 Maps = new HashSet<string>
                 {
                     @"map('Product_2s', function (p) {
                           return {
-                              // this will index EVERY FIELD under the top level of the document
-                              _: Object.keys(p).map(key => createField(key, p[key]))
+                              _: Object.keys(p).map(key => createField(key, p[key],
+                                  { indexing: 'Search', storage: true, termVector: null }))
                           }
-                      })"
+                     })"
                 };
             }
         }
@@ -126,17 +124,17 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
         
         #region dynamic_fields_8
-        public class Products_ByName : AbstractIndexCreationTask<Product_3>
+        public class Products_ByProductType : AbstractIndexCreationTask<Product_3>
         {
             public class IndexEntry
             {
                 public object _ { get; set; }
             }
 
-            public Products_ByName()
+            public Products_ByProductType()
             {
                 Map = products => from p in products
-                    select new Products_ByName.IndexEntry
+                    select new Products_ByProductType.IndexEntry
                     {
                         // Define the dynamic-index-field
                         // Call 'CreateField' to generate dynamic-index-fields
@@ -158,11 +156,8 @@ namespace Raven.Documentation.Samples.Indexes
                 {
                     @"map('Product_3s', function (p) {
                         return {
-                            _: createField(p.ProductType, p.PricePerUnit, {
-                                  indexing: 'Search',
-                                  storage: true,
-                                  termVector: null
-                            })
+                            _: createField(p.ProductType, p.PricePerUnit,
+                                { indexing: 'Search', storage: true, termVector: null })
                         };
                     })"
                 };
@@ -224,11 +219,8 @@ namespace Raven.Documentation.Samples.Indexes
                 {
                     @"map('Product_4s', function (p) {
                         return {
-                            _: p.Attributes.map(item => createField(item.PropName, item.PropValue, {
-                                indexing: 'Search',
-                                storage: true,
-                                termVector: null
-                            })),
+                            _: p.Attributes.map(item => createField(item.PropName, item.PropValue,
+                                { indexing: 'Search', storage: true, termVector: null })),
                            Name: p.Name
                         };
                     })"
@@ -246,7 +238,7 @@ namespace Raven.Documentation.Samples.Indexes
                     #region dynamic_fields_3
                     IList<Product_1> matchingDocuments = session
                         .Advanced
-                        .DocumentQuery<Product_1, Products_ByAttribute>()
+                        .DocumentQuery<Product_1, Products_ByAttributeKey>()
                          // 'Size' is a dynamic-index-field that was indexed from the Attributes object
                         .WhereEquals("Size", 42)
                         .ToList();
@@ -270,7 +262,7 @@ namespace Raven.Documentation.Samples.Indexes
                     #region dynamic_fields_9
                     IList<Product_3> matchingDocuments = session
                         .Advanced
-                        .DocumentQuery<Product_3, Products_ByName>()
+                        .DocumentQuery<Product_3, Products_ByProductType>()
                          // 'Electronics' is the dynamic-index-field that was indexed from document field 'ProductType'
                         .WhereEquals("Electronics", 23)
                         .ToList();

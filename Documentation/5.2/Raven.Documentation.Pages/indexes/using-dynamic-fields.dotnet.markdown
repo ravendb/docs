@@ -80,7 +80,7 @@ __The query__:
 {CODE-TAB:csharp:DocumentQuery dynamic_fields_3@Indexes\DynamicFields.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 // 'Size' is a dynamic-index-field that was indexed from the Attributes object
-from index 'Products/ByAttribute' where Size = 42
+from index 'Products/ByAttributeKey' where Size = 42
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -141,7 +141,7 @@ __The query__:
 {CODE-TAB:csharp:DocumentQuery dynamic_fields_6@Indexes\DynamicFields.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 // 'LastName' is a dynamic-index-field that was indexed from the Attributes object
-from index 'Products/ByAnyField' where LastName = "Doe"
+from index 'Products/ByAnyField/JS' where LastName = "Doe"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -177,7 +177,7 @@ __The document__:
 
 __The index__:
 
-* The following index will index the value of document field 'ProductType'.
+* The following index will index the __value__ of document field 'ProductType'.
 
 * This value will be the dynamic-index-field name on which you can query.  
   e.g. Field value `Electronics` will be the dynamic-index-field.
@@ -195,7 +195,7 @@ __The query__:
 {CODE-TAB:csharp:DocumentQuery dynamic_fields_9@Indexes\DynamicFields.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 // 'Electronics' is the dynamic-index-field that was indexed from document field 'ProductType'
-from index 'Products/ByName' where Electronics = 23
+from index 'Products/ByProductType' where Electronics = 23
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -208,7 +208,7 @@ from index 'Products/ByName' where Electronics = 23
 
 The following allows you to:
 
-* Index values from items in a list
+* Index __values__ from items in a list
 * After index is deployed, any item added this list in the document will be dynamically indexed as well.
 
 ---
@@ -219,7 +219,7 @@ __The document__:
 {CODE-BLOCK:json}
 // Sample document content
 {
-    "Name": "Product-A",
+    "Name": "SomeName",
     "Attributes": [
         {  
             "PropName": "Color",
@@ -267,6 +267,8 @@ from index 'Attributes/ByName' where Width = 10
 {PANEL/}
 
 {PANEL: CreateField syntax}
+
+#### Syntax for LINQ-index:
 
 {CODE:csharp syntax@Indexes\DynamicFields.cs /}
 
