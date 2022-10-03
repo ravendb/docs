@@ -40,12 +40,6 @@ The index can have more fields defined, just like in any other ordinary index.
 | **Indexing** | `FieldIndexing?` | More information about analyzers in index can be found [here](../indexes/using-analyzers). |
 | **TermVector** | `FieldTermVector?` | More information about term vectors in index can be found [here](../indexes/using-term-vectors). |
 
-## Examples
-
-JavaScript index using the JavaScript version of CreateFields - `createField(name, value, options)`:
-
-{CODE:nodejs dynamic_fields_JS_index@indexes\dynamicFields.js /}
-
 #### Querying
 
 Looking for products by attributes with the usage of such a defined index is supported as if it were real object properties:
