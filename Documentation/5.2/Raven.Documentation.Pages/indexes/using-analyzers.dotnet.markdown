@@ -7,7 +7,7 @@
 
 * The indexing of a single document starts from creating Lucene's Document according to an index definition. 
   Lucene processes it by breaking it into fields and splitting all the text from each field into **tokens** (or **terms**) 
-  in a process called *tokenization*. Those tokens will be stored in the index, and later will be searched upon.  
+  in a process called *tokenization*. These tokens/terms will be kept in the index, and later can be searched upon.  
   The tokenization process uses an object called an **Analyzer**.  
 
 * The indexing process and its results can be controlled by various field options and by the Analyzers.  
@@ -30,7 +30,7 @@
 Lucene offers several Analyzers out of the box.  
 New [customized analyzers](../indexes/using-analyzers#creating-custom-analyzers) can also be created.  
 
-Various Analyzers differ in the way they split the text stream ("tokenize"), 
+Various Analyzers differ in the way they split the text stream ("tokenize"),  
 and in the way they process those tokens in post-tokenization.  
 
 The examples below use the following text:
@@ -55,10 +55,10 @@ or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#a
 
     `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dog]   [bob@hotmail.com]   [123432]`  
 
-    Removes common "stop words".
-    Separates on whitespace and punctuation that is followed by whitespace - a dot that is not followed by whitespace is considered part of the token.
-    Converts to lower-case letters so that searches aren't case-sensitive.
-    Email addresses and internet hostnames are one token.
+    Removes common "stop words".  
+    Separates on whitespace and punctuation that is followed by whitespace - a dot that is not followed by whitespace is considered part of the token.  
+    Converts to lower-case letters so that searches aren't case-sensitive.  
+    Email addresses and internet hostnames are one token.  
     Splits words at hyphens, unless there's a number in the token, in which case the whole token is interpreted as a product number and is not split.
 
 
@@ -66,7 +66,7 @@ or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#a
 
     `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`  
 
-    Removes numbers and symbols, then separates tokens with these.  
+    Removes numbers and symbols and separates tokens with them.  
     This means that email and web addresses are separated.  
     Removes common "stop words".  
     Separates on white spaces.  
@@ -98,7 +98,7 @@ or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#a
 
     `[The quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`  
 
-    Preserves upper/lower cases in text for case-sensitive searches.
+    Preserves upper/lower cases in text for case-sensitive searches.  
     Useful in situations like IDs and codes where you do not want to separate into multiple tokens.  
 
 ---
@@ -117,11 +117,12 @@ or use an [analyzer that doesn't remove stop words](../indexes/using-analyzers#a
 
 {PANEL: Full-Text Search}
 
-To allow full-text search on the text fields, you can use the analyzers provided out of the box with Lucene. These are available as part of the Lucene library which ships with RavenDB.  
+To allow full-text search on the text fields, you can use the analyzers provided out of the box with Lucene.  
+These are available as part of the Lucene library which ships with RavenDB.  
 
 For most cases, Lucene's `StandardAnalyzer` would be your analyzer of choice. As shown above, this analyzer is aware of e-mail and network addresses when tokenizing. It normalizes cases, filters out common English words, and does some basic English stemming as well.  
 
-For languages other than English, or if you need a custom analysis process, you can roll your own `Analyzer`. It is quite simple and may already be available as a contrib package for Lucene. 
+For languages other than English, or if you need a custom analysis process, you can roll your own `Analyzer`. It is quite simple and may already be available as a contrib package for Lucene.  
 There are also `Collation analyzers` available (you can read more about them [here](../indexes/sorting-and-collation#collation)).  
 
 {PANEL/}
@@ -137,8 +138,8 @@ name:
 {CODE-TABS/}
 
 {INFO: Customized Analyzer Availability}
-The analyzer you are referencing must be available to the RavenDB server instance. See the different 
-methods of [creating custom analyzers](../indexes/using-analyzers#creating-custom-analyzers).  
+The analyzer you are referencing must be available to the RavenDB server instance.  
+See the different methods of [creating custom analyzers](../indexes/using-analyzers#creating-custom-analyzers).  
 {INFO/}
 
 {PANEL/}
@@ -251,7 +252,7 @@ indexing behavior [below](../indexes/using-analyzers#manipulating-field-indexing
 
 {PANEL: Manipulating Field Indexing Behavior}
 
-By default, each indexed field is analyzed using the '`LowerCaseKeywordAnalyzer`' which indexes a field as a single, lowercased term.  
+By default, each indexed field is analyzed using the `LowerCaseKeywordAnalyzer` which indexes a field as a single, lowercased term.  
 
 This behavior can be changed by setting the `FieldIndexing` option for a particular field. The possible values are:  
 
@@ -265,7 +266,7 @@ the `KeywordAnalyzer` behind the scenes.
 
 {CODE analyzers_3@Indexes\Analyzers.cs /}
 
-`FieldIndexing.Search` allows performing full-text search operations against the field using the 'StandardAnalyzer' 
+`FieldIndexing.Search` allows performing full-text search operations against the field using the `StandardAnalyzer` 
 by default:  
 
 {CODE analyzers_4@Indexes\Analyzers.cs /}
