@@ -57,18 +57,22 @@ namespace Raven.Documentation.Samples.Server
                 }
                 #endregion
 
-                #region query_cmpxchg
+
                 using (IDocumentSession session = store.OpenSession())
                 {
+                    #region query_cmpxchg
                     var query = from u in session.Query<User>()
                                 where u.Id == RavenQuery.CmpXchg<string>("emails/ayende@ayende.com")
                                 select u;
+                    #endregion
 
+                    #region document_query_cmpxchg
                     var q = session.Advanced
                         .DocumentQuery<User>()
                         .WhereEquals("Id", CmpXchg.Value("emails/ayende@ayende.com"));
+                    #endregion
                 }
-                #endregion
+
             }
         }
 
@@ -145,7 +149,7 @@ namespace Raven.Documentation.Samples.Server
         #endregion
 
         #region create_uniqueness_control_documents
-        // When you need documents that must contain a unique value such as a phone or email,
+        // When you need documents that must contain a unique value such as a phone or email, etc,
         // you can create reference documents that will have that unique value in their IDs.
         // Then whenever you want know if a value already exists,
         // all you need to do is check whether a reference document with such ID exists.

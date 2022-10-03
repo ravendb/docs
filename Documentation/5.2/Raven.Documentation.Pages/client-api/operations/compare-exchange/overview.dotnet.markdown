@@ -11,7 +11,6 @@
 * When creating documents using a cluster-wide session RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards),  
    which are compare-exchange items that guarantee ACID transactions.  
    Cluster-wide transactions prioritize consistency over performance -  
-   Learn more in [Cluster-wide sessions vs Single-node sessions](../../../client-api/operations/compare-exchange/overview#when-to-use-cluster-wide-sessions-or-node-local-sessions)
 
 * Compare-exchange items are [not replicated externally](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.
 
@@ -31,7 +30,7 @@
 
 {PANEL: What Compare Exchange Items Are}
 
-Compare Exchange items are key/value pairs that allow you to perform cluster-wide interlocked distributed operations.
+Compare Exchange items are key/value pairs where the key servers a unique value across your database.
 
 * Each compare-exchange item contains: 
   * **A key** - A unique string across the cluster.  
@@ -55,13 +54,13 @@ Compare exchange items are created and managed with any of the following approac
   in cluster-wide sessions.  (As of RavenDB version 5.2)
 
 * **Document Store Operations**  
-  You can manage a compare-exchange item as an [operation on the document store](../../../client-api/operations/compare-exchange/put-compare-exchange-value).  
+  You can manage a compare-exchange item as an [Operation on the document store](../../../client-api/operations/compare-exchange/put-compare-exchange-value).  
   This can be done within or outside of a session (cluster-wide or single-node session).
    * When inside a Cluster-wide session:  
-     If the compare-exchange operation fails, the item is not created on any of the nodes.
+     If the session fails, the item is not created on any of the nodes.
    * When inside a Single-node session:  
      If the session fails the compare-exchange operation can still succeed  
-     because store operations do not rely on the success of the session.  
+     because store Operations do not rely on the success of the session.  
      You will need to delete the compare-exchange item explicitly if you don't want it to persist.
 
 * **Cluster-Wide Sessions**  
@@ -85,8 +84,8 @@ Compare exchange items are created and managed with any of the following approac
    * [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)  
    * [Example II - Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview#example-ii---reserve-a-shared-resource)  
 
-  * If you create a compare-exchange item, you can decide what actions to implement when the Raft index increments. 
-    The Raft index increments as a result of a change in the compare-exchange value or metadata.  
+* If you create a compare-exchange item, you can decide what actions to implement when the compare-exchange [value changes](../client-api/operations/compare-exchange/put-compare-exchange-value#example-ii---update-an-existing-key).  
+  
 
 ---
 
@@ -98,7 +97,7 @@ Compare exchange items are created and managed with any of the following approac
     If other sessions load the document before the version changed, they will not be able to modify it.  
   * A `ConcurrencyException` will be thrown if the Atomic Guard version was modified by another session.  
 * **If a ConcurrencyException is thrown**:  
-  To ensure [atomicity](https://en.wikipedia.org/wiki/ACID#Atomicity), if even one session transaction fails, the entire [session will roll back](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching).  
+  To ensure [atomicity](https://en.wikipedia.org/wiki/ACID#Atomicity), if even one action within a session fails, the entire [session will roll back](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching).  
   Be sure that your business logic is written so that if a concurrency exception is thrown, your code will re-execute the entire session.  
 
 
@@ -111,7 +110,7 @@ It ensures ACIDity across the cluster.
 
 * One way to protect transactions **without** using cluster-wide sessions is to ensure that one node 
   is responsible for writing on a specific database. Conflicts can occur rarely, but performance is greatly improved. 
-    * RavenDB node-local transactions are usually ACID on the local node, but if two nodes write concurrently on the same document, [conflicts](../../../server/clustering/replication/replication-conflicts)
+    * RavenDB single-node transactions are usually ACID on the local node, but if two nodes were to write concurrently on the same document, [conflicts](../../../server/clustering/replication/replication-conflicts)
       can occur. 
     * By default to prevent conflicts, one primary node is responsible for all reads and writes.  
       You can configure [load balancing](../../../client-api/session/configuration/use-session-context-for-load-balancing)
@@ -189,13 +188,15 @@ To establish uniqueness without using compare-exchange see [example III](../../.
 
 * The `User` object is saved as a document, hence it can be indexed, queried, etc.  
 
-* This compare-exchange item was [created as an operation](../../../client-api/operations/compare-exchange/overview#transaction-scope-for-compare-exchange-operations)
+* This compare-exchange item was [created as an operation](../../../client-api/operations/compare-exchange/overview#how-to-create-and-manage-compare-exchange-items)
   rather than with a [cluster-wide session](../../../client-api/session/cluster-transaction).  
-  Thus, if `session.SaveChanges` fails, then the email reservation is _not_ rolled back automatically. It is your responsibility to do so.  
+  Thus, if `session.SaveChanges` fails, then the email reservation is _not_ rolled back automatically.  
+  It is your responsibility to do so.  
 
-* The compare-exchange value that was saved can be accessed from `RQL` in a query:  
+* The compare-exchange value that was saved can be accessed in a query using CmpXchg:  
     {CODE-TABS}
-    {CODE-TAB:csharp:Sync query_cmpxchg@Server\CompareExchange.cs /}  
+    {CODE-TAB:csharp:Query-LINQ query_cmpxchg@Server\CompareExchange.cs /}  
+    {CODE-TAB:csharp:Document-Query document_query_cmpxchg@Server\CompareExchange.cs /}  
     {CODE-TAB-BLOCK:sql:RQL}
     from Users as s where id() == cmpxchg("emails/ayende@ayende.com")  
     {CODE-TAB-BLOCK/}
