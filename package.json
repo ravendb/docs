@@ -3,10 +3,15 @@
         "lint": "powershell scripts/lintNodejsCodeSamples.ps1"
     },
     "dependencies": {
-        "ravendb": "4.0.5"
+        "ravendb": "^5.2.5"
     },
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "type": "module",
     "devDependencies": {
-        "eslint": "^5.9.0",
-        "eslint-plugin-import": "^2.14.0"
+        "eslint": "^5.16.0",
+        "eslint-plugin-import": "^2.26.0",
+        "mocha": "^10.0.0"
     }
 }
