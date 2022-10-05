@@ -117,7 +117,7 @@ public class DynamicFields {
             
             // For each element in this list, the VALUE of property 'propName' will be dynamically indexed
             // e.g. Color, Width, Length (in ex. below) will become dynamic-index-fields
-            private ArrayList<Attribute> attributes;
+            private List<Attribute> attributes;
             
             // get + set implementation ...
         }
@@ -162,8 +162,7 @@ public class DynamicFields {
             try (IDocumentSession session = store.openSession()) {
                 //region dynamic_fields_6
                 List<Product_2> matchingDocuments = session
-                    .advanced()
-                    .documentQuery(Product_2.class, Products_ByAnyField_JS.class)
+                    .query(Product_2.class, Products_ByAnyField_JS.class)
                     .whereEquals("lastName", "Doe")
                     .toList();
                 //endregion
@@ -172,8 +171,7 @@ public class DynamicFields {
             try (IDocumentSession session = store.openSession()) {
                 //region dynamic_fields_9
                 List<Product_3> matchingDocuments = session
-                    .advanced()
-                    .documentQuery(Product_3.class, Products_ByProductType.class)
+                    .query(Product_3.class, Products_ByProductType.class)
                     .whereEquals("Electronics", 23)
                     .toList();
                 //endregion
@@ -181,8 +179,7 @@ public class DynamicFields {
             try (IDocumentSession session = store.openSession()) {
                    //region dynamic_fields_12
                    List<Product_4> matchingDocuments = session
-                       .advanced()
-                       .documentQuery(Product_4.class, Attributes_ByName.class)
+                       .query(Product_4.class, Attributes_ByName.class)
                        .whereEquals("Width", 10)
                        .toList();
                    //endregion
