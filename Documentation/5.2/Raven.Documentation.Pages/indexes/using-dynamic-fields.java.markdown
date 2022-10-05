@@ -104,6 +104,7 @@ Consider if that is a true necessity, as indexing every single field can end up 
 ---
 
 __The document__:
+
 {CODE:java dynamic_fields_4@Indexes\DynamicFields.java /}
 
 {CODE-BLOCK:json}
@@ -131,15 +132,12 @@ __The index__:
 
 __The query__:
 
-* You can now query the generated dynamic-index fields.  
-  Property `_` is Not queryable, it is only used in the index definition syntax.
-
 * To get all documents with some 'lastName' use:
 
 {CODE-TABS}
 {CODE-TAB:java:DocumentQuery dynamic_fields_6@Indexes\DynamicFields.java /}
 {CODE-TAB-BLOCK:sql:RQL}
-// 'lastName' is a dynamic-index-field that was indexed from the attributes object
+// 'lastName' is a dynamic-index-field that was indexed from the document
 from index 'Products/ByAnyField/JS' where lastName = "Doe"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -267,7 +265,11 @@ from index 'Attributes/ByName' where Width = 10
 
 #### Syntax for LINQ-index:
 
-{CODE:java syntax@Indexes\DynamicFields.java /}
+{CODE:csharp syntax@Indexes\DynamicFields.cs /}
+
+#### Syntax for JavaScript-index:
+
+{CODE:nodejs syntax_JS@Indexes\DynamicFields.js /}
 
 | Parameters       |                      |                                                                                                                                                                                    |
 |------------------|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -279,8 +281,8 @@ from index 'Attributes/ByName' where Width = 10
 
 | CreateFieldOptions |                    |                                                                            |
 |--------------------|--------------------|----------------------------------------------------------------------------|
-| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers) in the index.    |
 | **Storage**        | `FieldStorage?`    | Learn about [storing data](../indexes/storing-data-in-index) in the index. |
+| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers) in the index.    |
 | **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors) in the index.    |
 
 {INFO: }

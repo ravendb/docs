@@ -98,6 +98,7 @@ namespace Raven.Documentation.Samples.Indexes
             public string Name { get; set; }
             
             // For each element in this list, the VALUE of property 'PropName' will be dynamically indexed
+            // e.g. Color, Width, Length (in ex. below) will become dynamic-index-fields
             public List<Attribute> Attributes { get; set; }
         }
 

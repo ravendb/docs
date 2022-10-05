@@ -132,15 +132,12 @@ __The index__:
 
 __The query__:
 
-* You can now query the generated dynamic-index fields.  
-  Property `_` is Not queryable, it is only used in the index definition syntax.
-
 * To get all documents with some 'LastName' use:
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery dynamic_fields_6@Indexes\DynamicFields.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-// 'LastName' is a dynamic-index-field that was indexed from the Attributes object
+// 'LastName' is a dynamic-index-field that was indexed from the document
 from index 'Products/ByAnyField/JS' where LastName = "Doe"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -272,6 +269,10 @@ from index 'Attributes/ByName' where Width = 10
 
 {CODE:csharp syntax@Indexes\DynamicFields.cs /}
 
+#### Syntax for JavaScript-index:
+
+{CODE:nodejs syntax_JS@Indexes\DynamicFields.js /}
+
 | Parameters       |                      |                                                                                                                                                                                    |
 |------------------|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **fieldName**    | `string`             | Name of the dynamic-index-field                                                                                                                                                    |
@@ -282,8 +283,8 @@ from index 'Attributes/ByName' where Width = 10
 
 | CreateFieldOptions |                    |                                                                            |
 |--------------------|--------------------|----------------------------------------------------------------------------|
-| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers) in the index.    |
 | **Storage**        | `FieldStorage?`    | Learn about [storing data](../indexes/storing-data-in-index) in the index. |
+| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers) in the index.    |
 | **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors) in the index.    |
 
 {INFO: }

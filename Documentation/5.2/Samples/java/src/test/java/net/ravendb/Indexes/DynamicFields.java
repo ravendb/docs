@@ -31,6 +31,11 @@ public class DynamicFields {
         {        
             public Products_ByAttributeKey_JS()
             {
+               // Call 'createField' to generate dynamic-index-fields from the attributes object keys
+               // Using '_' is just a convention. Any other string can be used instead of '_'
+               
+               // The actual field name will be the key
+               // The actual field terms will be derived from p.attributes[key]
                setMaps(Sets.newHashSet(
                    "map('Product_1s', function (p) { " +
                    "    return { " +
@@ -64,6 +69,7 @@ public class DynamicFields {
         {
             public Products_ByAnyField_JS()
             {
+               // this will index EVERY FIELD under the top level of the document
                setMaps(Sets.newHashSet(
                    "map('Employees', function (p) { " +
                    "    return { " +
@@ -94,6 +100,8 @@ public class DynamicFields {
         {
             public Products_ByProductType()
             {
+                // The field name will be the value of document field 'productType'
+                // The field terms will be derived from document field 'pricePerUnit'
                 map = "docs.Product_3s.Select(p => new { " +
                       "    _ = this.CreateField(p.productType, p.pricePerUnit) " +
                       "})";
@@ -108,6 +116,7 @@ public class DynamicFields {
             private String name;
             
             // For each element in this list, the VALUE of property 'propName' will be dynamically indexed
+            // e.g. Color, Width, Length (in ex. below) will become dynamic-index-fields
             private ArrayList<Attribute> attributes;
             
             // get + set implementation ...
@@ -127,6 +136,9 @@ public class DynamicFields {
         {
             public Attributes_ByName()
             {
+                // For each attribute item, the field name will be the value of field 'propName'
+                // The field terms will be derived from field 'propValue'
+                // A regualr-index-field (Name) is defined as well
                 map = "docs.Product_4s.Select(p => new { " +
                       "    _ = p.attributes.Select(item => this.CreateField(item.propName, item.propValue)), " +
                       "    Name = p.name " +
@@ -177,12 +189,4 @@ public class DynamicFields {
             }
         }
     }
-
-    //region syntax
-    object CreateField(String fieldName, object fieldValue);
-
-    object CreateField(String fieldName, object fieldValue, bool stored, bool analyzed);
-
-    object CreateField(String fieldName, object fieldValue, CreateFieldOptions options);
-    //endregion
 }

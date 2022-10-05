@@ -148,9 +148,9 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
         
         #region dynamic_fields_8_JS
-        public class Products_ByName_JS : AbstractJavaScriptIndexCreationTask
+        public class Products_ByProductType_JS : AbstractJavaScriptIndexCreationTask
         {
-            public Products_ByName_JS()
+            public Products_ByProductType_JS()
             {
                 Maps = new HashSet<string>
                 {
@@ -172,6 +172,7 @@ namespace Raven.Documentation.Samples.Indexes
             public string Name { get; set; }
             
             // For each element in this list, the VALUE of property 'PropName' will be dynamically indexed
+            // e.g. Color, Width, Length (in ex. below) will become dynamic-index-fields
             public List<Attribute> Attributes { get; set; }
         }
 

@@ -1,12 +1,27 @@
 # Indexes: Dynamic Fields
 
-While strongly typed entities are well processed by LINQ expressions, some scenarios demand the use of dynamic properties. 
+{NOTE: }
 
-To support searching in object graphs they cannot have the entire structure declared upfront. 
+* In RavenDB different documents can have different shapes.  
+  Documents are schemaless - new fields can be added or removed as needed.
+
+* For such dynamic data, you can define indexes with __dynamic-index-fields__.
+
+* This allows querying the index on fields that aren't yet known at index creation time,  
+  which is very useful when working on highly dynamic systems.
+
+* Any value type can be indexed, string, number, date, etc.
+
+* An index definition can contain both dynamic-index-fields and regular-index-fields.
+
+{NOTE/}
+
+---
 
 RavenDB exposes an indexing API for creating fields dynamically.
 
-With this feature, you can search for documents using fields which are created on the fly. For example, consider a `Product` object that is declared as follows:
+With this feature, you can search for documents using fields which are created on the fly.  
+For example, consider a `Product` object that is declared as follows:
 
 {CODE:java dynamic_fields_1@Indexes\DynamicFields.java /}
 
