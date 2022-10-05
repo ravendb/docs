@@ -208,14 +208,14 @@ from index 'Attributes/ByName' where Width = 10
 
 | CreateFieldOptions |                    |                                                                            |
 |--------------------|--------------------|----------------------------------------------------------------------------|
-| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers) in the index.    |
 | **Storage**        | `FieldStorage?`    | Learn about [storing data](../indexes/storing-data-in-index) in the index. |
+| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers) in the index.    |
 | **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors) in the index.    |
 
 {INFO: }
 
 * All above examples have used the character `_` in the dynamic-index-field definition.  
-  However, using it is just a convention. Any other string can be used instead.
+  However, using `_` is just a convention. Any other string can be used instead.
 
 * This property is Not queryable, it is only used in the index definition syntax.  
   The actual dynamic-index-fields that are generated are defined by the `CreateField` method.
