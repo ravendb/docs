@@ -152,8 +152,7 @@ public class DynamicFields {
             try (IDocumentSession session = store.openSession()) {
                 //region dynamic_fields_3
                 List<Product_1> matchingDocuments = session
-                    .advanced()
-                    .documentQuery(Product_1.class, Products_ByAttributeKey_JS.class)
+                    .query(Product_1.class, Products_ByAttributeKey_JS.class)
                     .whereEquals("size", 42)
                     .toList();
                 //endregion
