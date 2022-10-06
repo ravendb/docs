@@ -180,7 +180,7 @@ The following example shows how to use compare-exchange to create documents with
 The scope is within the database group on a single cluster. 
 
 Compare-exchange items are not externally replicated to other databases.  
-To establish uniqueness without using compare-exchange see [example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange).
+To establish uniqueness without using compare-exchange see [Example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange).
 
 {CODE email@Server\CompareExchange.cs /}  
 
