@@ -26,7 +26,10 @@ namespace Raven.Documentation.Samples.Indexes
                                    post.Content
                                };
 
+                // Field Tags will be tokenized by the SimpleAnalyzer
                 Analyzers.Add(x => x.Tags, "SimpleAnalyzer");
+
+                // Field Content will be tokenized by the custom analyzer SnowballAnalyzer
                 Analyzers.Add(x => x.Content, typeof(SnowballAnalyzer).AssemblyQualifiedName);
             }
         }
