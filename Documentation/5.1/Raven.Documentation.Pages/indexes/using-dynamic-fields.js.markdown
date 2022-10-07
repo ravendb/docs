@@ -1,10 +1,27 @@
 # Indexes: Dynamic Fields
 
-To support searching in object graphs they cannot have the entire structure declared upfront. 
+{NOTE: }
+
+* In RavenDB different documents can have different shapes.  
+  Documents are schemaless - new fields can be added or removed as needed.
+
+* For such dynamic data, you can define indexes with __dynamic-index-fields__.
+
+* This allows querying the index on fields that aren't yet known at index creation time,  
+  which is very useful when working on highly dynamic systems.
+
+* Any value type can be indexed, string, number, date, etc.
+
+* An index definition can contain both dynamic-index-fields and regular-index-fields.
+
+{NOTE/}
+
+---
 
 RavenDB exposes an indexing API for creating fields dynamically.
 
-With this feature, you can search for documents using fields which are created on the fly. For example, consider a `Product` object that is declared as follows:
+With this feature, you can search for documents using fields which are created on the fly.  
+For example, consider a `Product` object that is declared as follows:
 
 {CODE:nodejs dynamic_fields_1@indexes\dynamicFields.js /}
 
@@ -39,12 +56,6 @@ The index can have more fields defined, just like in any other ordinary index.
 | **Storage** | `FieldStorage?` | More information about storing data in index can be found [here](../indexes/storing-data-in-index). |
 | **Indexing** | `FieldIndexing?` | More information about analyzers in index can be found [here](../indexes/using-analyzers). |
 | **TermVector** | `FieldTermVector?` | More information about term vectors in index can be found [here](../indexes/using-term-vectors). |
-
-## Examples
-
-JavaScript index using the JavaScript version of CreateFields - `createField(name, value, options)`:
-
-{CODE:nodejs dynamic_fields_JS_index@indexes\dynamicFields.js /}
 
 #### Querying
 

@@ -60,20 +60,3 @@ class CreateFields {
     CreateField(name, value, options);
 //endregion
 }
-
-//region dynamic_fields_JS_index
-class CreateFieldItems_JavaScript  extends AbstractJavaScriptIndexCreationTask {
-
-    constructor() {
-        super();
-
-        this.map = `docs.Products.Select(p => new {     
-            _ = p.attributes.foreach(x => createField(x.Name, x.Value, { 
-                    indexing: 'Exact',
-                    storage: true,
-                    termVector: null
-                }))
-        })`;
-    }
-}
-//endregion
