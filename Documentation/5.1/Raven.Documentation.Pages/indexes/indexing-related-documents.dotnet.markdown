@@ -3,91 +3,159 @@
 
 {NOTE: }
 
-* To extend indexing capabilities and simplify many scenarios, we have introduced the possibility to 
-  index related documents with `LoadDocument`.
+* As described in [modeling considerations in RavenDB](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling#summary),  
+  it is recommended for documents to be: independent, isolated, and coherent.  
+  However, to accommodate varied models, __documents can reference other documents__.  
 
-* [Include( )](../client-api/session/loading-entities#load-with-includes) 
-  is an alternative session CRUD method that can pull data from related documents while reducing expensive trips to the server.  
+* The related data from a referenced (related) document can be indexed,  
+  this will allow querying the collection by the indexed related data.
 
-* People who are accustomed to relational models but want the agility and efficiency of document-based models 
-  should understand that [documents are most effective when they generally stand on their own](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling) 
-  and [relations are harmless exceptions](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/10-static-indexes-and-other-advanced-options#indexing-referenced-data) to the rule.
-
-{INFO: Important} 
-The indexes will be updated automatically whenever related documents change. 
-{INFO/}
-
-{WARNING: Linking Many Documents to a Constantly Changing Document}
-`LoadDocument` can be a useful way to enable rapid querying of related documents by having 
-an index do the work behind the scenes.  
-
-However, it has a performance cost if you frequently modify documents that are referenced by many other documents. 
-Referencing frequently changed documents will repeatedly trigger background indexing on every related document. 
-This can tax system resources and cause slow, stale indexing.  
-Consider using [Include( )](../client-api/session/loading-entities#load-with-includes) instead.  
-{WARNING/}
+* The related documents that are loaded in the index definition are tracked for changes.
 
 * In this page:
-   * [Example I](../indexes/indexing-related-documents#example-i)
-   * [Example II](../indexes/indexing-related-documents#example-ii)
 
+   * [What are related documents](../indexes/indexing-related-documents#what-are-related-documents)<br/><br/>
+   * [Index related documents](../indexes/indexing-related-documents#index-related-documents)
+     * [Example I - basic](../indexes/indexing-related-documents#example-i---basic)
+     * [Example II - list](../indexes/indexing-related-documents#example-ii---list)
+     * [Tracking implications](../indexes/indexing-related-documents#tracking-implications)
+   * [Document changes that cause re-indexing](../indexes/indexing-related-documents#document-changes-that-cause-re-indexing)
+   * [LoadDocument Syntax](../indexes/indexing-related-documents#loaddocument-syntax)
+  
 {NOTE/}
 
-{PANEL: Example I}
+{PANEL: What are related documents}
 
-Let's consider a simple `Product - Category` scenario where you want to look for a `Product` by `Category Name`.
+* Whenever a document references another document, the referenced document is called a __Related Document__.  
 
-![Product-Category Link in JSON Documents](images/products-categories-link.png "Product-Category Link in JSON Documents")
+* In the image below, document `products/34-A` references documents `categories/1-A` & `suppliers/16-A`,  
+  which are considered Related Documents.
 
-Without `LoadDocument`, you would have to create a fairly complex Multi-Map-Reduce index.  
-This is why the `LoadDocument` function was introduced.
+![Referencing related documents](images/index-related-documents.png "Referencing related documents")
+
+{PANEL/}
+
+{PANEL: Index related documents}
+
+{NOTE: }
+#### Example I - basic
+
+---
+
+__What is tracked__:
+
+* Both the documents from the __indexed collection__ and the __indexed related documents__ are tracked for changes.  
+  Re-indexing will be triggered per any change in either collection.  
+  (See changes that cause re-indexing [here](../indexes/indexing-related-documents#document-changes-that-cause-re-indexing)).
+
+__The index__:
+
+* Following the above `Product - Category` relationship from the Northwind sample database,  
+  an index defined on the Products collection can index data from the related Category document.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Linq-syntax indexing_related_documents_2@Indexes\IndexingRelatedDocuments.cs /}
-{CODE-TAB:csharp:Operation indexing_related_documents_3@Indexes\IndexingRelatedDocuments.cs /}
-{CODE-TAB:csharp:JavaScript indexing_related_documents_2@Indexes\JavaScript.cs /}
-{CODE-TAB-BLOCK:csharp:Studio-syntax}
-docs.Products.Select(product =>
-new{CategoryName = (this.LoadDocument(
-    product.Category, "Categories")).Name
-    })
-{CODE-TAB-BLOCK/}
+{CODE-TAB:csharp:LINQ-index indexing_related_documents_1@Indexes\IndexingRelatedDocuments.cs /}
+{CODE-TAB:csharp:JavaScript-index indexing_related_documents_1_JS@Indexes\IndexingRelatedDocuments.cs /}
 {CODE-TABS/}
 
-To see how this code works with Northwind sample data, you can [create sample data for a playground server](../studio/database/tasks/create-sample-data) 
-or see the [Code Walkthrough](https://demo.ravendb.net/demos/csharp/related-documents/index-related-documents).  
-Now we can query the index to search for products using the `CategoryName` as a parameter:
+__The query__:
+ 
+* We can now query the index for Product documents by `CategoryName`,  
+  i.e. get all matching Products that reference a Category that has the specified name term.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync-Linq-syntax indexing_related_documents_7@Indexes\IndexingRelatedDocuments.cs /}
-{CODE-TAB:csharp:Async-Linq-syntax indexing_related_documents_AsyncQuery_Products-Beverages@Indexes\IndexingRelatedDocuments.cs /}
+{CODE-TAB:csharp:Query(sync) indexing_related_documents_2@Indexes\IndexingRelatedDocuments.cs /}
+{CODE-TAB:csharp:Query(async) indexing_related_documents_2_async@Indexes\IndexingRelatedDocuments.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-// Note that the naming separator character "_" in the index definition name becomes "/" in RQL
 from index "Products/ByCategoryName"
 where CategoryName == "Beverages"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{PANEL/}
+{NOTE/}
 
-{PANEL: Example II}
+{NOTE: }
+#### Example II - list
 
-Our next scenario will show us how indexing more complex relationships is also straightforward.  
-Let's consider the following case where we'll want to query two related documents:
+---
 
-{CODE indexing_related_documents_4@Indexes\IndexingRelatedDocuments.cs /}
+__The documents__:
 
-To create an index with `Author Name` and list of `Book Names`, we need do the following:
+{CODE indexing_related_documents_3@Indexes\IndexingRelatedDocuments.cs /}
+
+__The index__:
+
+* This index will index all names of the related Book documents.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Linq-syntax indexing_related_documents_5@Indexes\IndexingRelatedDocuments.cs /}
-{CODE-TAB:csharp:Operation indexing_related_documents_6@Indexes\IndexingRelatedDocuments.cs /}
-{CODE-TAB:csharp:JavaScript indexing_related_documents_5@Indexes\JavaScript.cs /}
+{CODE-TAB:csharp:LINQ-index indexing_related_documents_4@Indexes\IndexingRelatedDocuments.cs /}
+{CODE-TAB:csharp:JavaScript-index indexing_related_documents_4_JS@Indexes\IndexingRelatedDocuments.cs /}
 {CODE-TABS/}
 
-We can now query the index by specifying fields from related documents. 
+__The query__:
 
-{CODE indexing_related_documents_8@Indexes\IndexingRelatedDocuments.cs /}
+* We can now query the index for Author documents by a book's name,  
+  i.e. get all Authors that have the specified book's name in their list.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query(sync) indexing_related_documents_5@Indexes\IndexingRelatedDocuments.cs /}
+{CODE-TAB:csharp:Query(async) indexing_related_documents_5_async@Indexes\IndexingRelatedDocuments.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+// Get all authors that have books with title: "The Witcher"
+from index "Authors/ByBooks"
+where BookNames = "The Witcher"
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{INFO: }
+#### Tracking implications
+
+* Indexing related data with tracking can be a useful way to query documents by their related data.  
+  However, that may come with performance costs.
+
+* __Re-indexing__ will be triggered whenever any document in the collection that is referenced by `LoadDocument` is changed. 
+  Even when indexing just a single field from the related document, any change to any other field will cause re-indexing. 
+  (See changes that cause re-indexing [here](../indexes/indexing-related-documents#document-changes-that-cause-re-indexing)).
+
+* Frequent re-indexing will increase CPU usage and reduce performance.  
+  The index may be in a non-stable state for prolonged periods, and results may be stale.
+
+* Tracking indexed related data is more useful when the indexed related collection is known not to change much.
+
+{INFO/}
+
+{PANEL/}
+
+{PANEL: Document changes that cause re-indexing}
+
+* The following changes done to a document will trigger re-indexing:  
+
+    * Any modification to any document field (not just to the indexed fields)
+    * Adding/Deleting an attachment
+    * Creating a new Time series (modifying existing will not trigger)
+    * Creating a new Counter (modifying existing will not trigger)
+
+* Any such change done either on any document in the __indexed collection__ or in the  __indexed related documents__ will trigger re-indexing.
+
+{PANEL/}
+
+{PANEL: LoadDocument syntax}
+
+#### Syntax for LINQ-index:
+
+{CODE:csharp syntax@Indexes\IndexingRelatedDocuments.cs /}
+
+#### Syntax for JavaScript-index:
+
+{CODE:nodejs syntax_JS@Indexes\IndexingRelatedDocuments.js /}
+
+| Parameters                |                       |                                        |
+|---------------------------|-----------------------|----------------------------------------|
+| **relatedDocumentId**     | `string`              | ID of the related document to load     |
+| **relatedCollectionName** | `string`              | The related collection name            |
+| **relatedDocumentIds**    | `IEnumerable<string>` | A list of related document IDs to load |
 
 {PANEL/}
 
@@ -104,10 +172,6 @@ We can now query the index by specifying fields from related documents.
 
 - [Basics](../indexes/querying/basics)
 
-### Session
-
-- [Loading Entities with Include](../client-api/session/loading-entities#load-with-includes) 
-
 ---
 
 ## Code Walkthrough
@@ -119,6 +183,5 @@ We can now query the index by specifying fields from related documents.
 ## Inside RavenDB
 
 - [Document Modeling](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling)
-- [Session CRUD Operations - Include](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/2-zero-to-ravendb#includes)
 - [Indexing Referenced Data](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/10-static-indexes-and-other-advanced-options#indexing-referenced-data)
 

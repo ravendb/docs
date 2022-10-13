@@ -11,6 +11,12 @@ const session = store.openSession();
 
 class Product { }
 
+class Syntax {
+    //region syntax_JS
+    load(relatedDocumentId, relatedCollectionName);
+    //endregion
+}
+
 //region indexing_related_documents_4
 class Book {
     constructor(id, name) {

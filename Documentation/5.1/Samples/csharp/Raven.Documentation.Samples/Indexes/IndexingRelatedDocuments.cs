@@ -2,38 +2,37 @@
 using System.Linq;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
-using Raven.Client.Documents.Operations.Indexes;
-using Raven.Documentation.Samples.Indexes.Foo;
+using Raven.Documentation.Samples.Indexes.IndexingRelatedDocuments;
 using Raven.Documentation.Samples.Orders;
 using Raven.Client.Documents.Linq;
 
 namespace Raven.Documentation.Samples.Indexes
 {
-    namespace Foo
+    namespace Syntax
     {
-        #region indexing_related_documents_4
-        public class Book
+        public class LoadDocumentSyntax
         {
-            public string Id { get; set; }
+            private interface ILoadDocument
+            {
+                #region syntax
+                T LoadDocument<T>(string relatedDocumentId);
+                
+                T LoadDocument<T>(string relatedDocumentId, string relatedCollectionName);
 
-            public string Name { get; set; }
+                T[] LoadDocument<T>(IEnumerable<string> relatedDocumentIds);
+
+                T[] LoadDocument<T>(IEnumerable<string> relatedDocumentIds, string relatedCollectionName);
+                #endregion
+            }
         }
-
-        public class Author
-        {
-            public string Id { get; set; }
-
-            public string Name { get; set; }
-
-            public IList<string> BookIds { get; set; }
-        }
-
-        #endregion
-
-        #region indexing_related_documents_2
+    }
+    
+    namespace IndexingRelatedDocuments
+    {
+        #region indexing_related_documents_1
         public class Products_ByCategoryName : AbstractIndexCreationTask<Product>
         {
-            public class Result
+            public class IndexEntry
             {
                 public string CategoryName { get; set; }
             }
@@ -41,66 +40,124 @@ namespace Raven.Documentation.Samples.Indexes
             public Products_ByCategoryName()
             {
                 Map = products => from product in products
-                                  select new Result
-                                  {
-                                      CategoryName = LoadDocument<Category>(product.Category).Name
-                                  };
+                    
+                    // Call LoadDocument to load the related Category document
+                    // The document ID to load is specified by 'product.Category'
+                    let category = LoadDocument<Category>(product.Category)
+                    
+                    select new IndexEntry
+                    {
+                        // Index the Name field from the related Category document
+                        CategoryName = category.Name
+                    };
+                        
+                    // Since NoTracking was Not specified,
+                    // then any change to either Products or Categories will trigger reindexing 
             }
         }
         #endregion
-
-        #region indexing_related_documents_5
-        public class Authors_ByNameAndBooks : AbstractIndexCreationTask<Author>
+        
+        #region indexing_related_documents_1_JS
+        public class Products_ByCategoryName_JS : AbstractJavaScriptIndexCreationTask
         {
-            public class Result
+            public Products_ByCategoryName_JS()
             {
-                public string AuthorName { get; set; }
+                Maps = new HashSet<string>()
+                {
+                    // Call method 'load' to load the related Category document
+                    // The document ID to load is specified by 'product.Category'
+                    // The Name field from the related Category document will be indexed
+                    
+                    @"map('products', function(product) {
+                        let category = load(product.Category, 'Categories')
+                        return {
+                            CategoryName: category.Name
+                        };
+                    })"
+                    
+                    // Since noTracking was Not specified,
+                    // then any change to either Products or Categories will trigger reindexing 
+                };
+            }
+        }
+        #endregion
+        
+        #region indexing_related_documents_3
+        // The referencing document
+        public class Author
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+            
+            // Referencing a list of related document IDs
+            public List<string> BookIds { get; set; }
+        }
+        
+        // The related document
+        public class Book
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+        }
 
+        #endregion
+
+        #region indexing_related_documents_4
+        public class Authors_ByBooks : AbstractIndexCreationTask<Author>
+        {
+            public class IndexEntry
+            {
                 public IEnumerable<string> BookNames { get; set; }
             }
 
-            public Authors_ByNameAndBooks()
+            public Authors_ByBooks()
             {
                 Map = authors => from author in authors
-                                 select new Result
-                                 {
-                                     AuthorName = author.Name,
-                                     BookNames = author.BookIds.Select(x => LoadDocument<Book>(x).Name)
-                                 };
+                    select new IndexEntry
+                    {
+                        // For each Book ID, call LoadDocument and index the book's name
+                        BookNames = author.BookIds.Select(x => LoadDocument<Book>(x).Name)
+                    };
+                
+                // Since NoTracking was Not specified,
+                // then any change to either Authors or Books will trigger reindexing 
+            }
+        }
+        #endregion
+        
+        #region indexing_related_documents_4_JS
+        public class Authors_ByBooks_JS : AbstractJavaScriptIndexCreationTask
+        {
+            public Authors_ByBooks_JS()
+            {
+                Maps = new HashSet<string>()
+                {
+                    // For each Book ID, call 'load' and index the book's name
+                    @"map('Author', function(author) {
+                        return {
+                            Books: author.BooksIds.map(x => load(x, 'Books').Name)
+                        }
+                    })"
+                    
+                    // Since NoTracking was Not specified,
+                    // then any change to either Authors or Books will trigger reindexing 
+                };
             }
         }
         #endregion
     }
 
-    public class IndexingRelatedDocuments
+    public class IndexingRelatedDocumentsQueries
     {
-        public async void Sample()
+        public async void Queries()
         {
             using (var store = new DocumentStore())
             {
-                #region indexing_related_documents_3
-                store.Maintenance.Send(new PutIndexesOperation
-                (
-                    new IndexDefinition
-                    {
-                        Name = "Products/ByCategoryName",
-                        Maps =
-                        {
-                            @"from product in products
-                            select new
-                            {
-                                CategoryName = LoadDocument(product.Category, ""Categories"").Name
-                            }"
-                        }
-                    }
-                ));
-                #endregion
-
                 using (var session = store.OpenSession())
                 {
-                    #region indexing_related_documents_7
-                    IList<Product> results = session
-                        .Query<Products_ByCategoryName.Result, Products_ByCategoryName>()
+                    #region indexing_related_documents_2
+                    IList<Product> matchingProducts = session
+                        .Query<Products_ByCategoryName.IndexEntry, Products_ByCategoryName>()
                         .Where(x => x.CategoryName == "Beverages")
                         .OfType<Product>()
                         .ToList();
@@ -109,42 +166,36 @@ namespace Raven.Documentation.Samples.Indexes
 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
-                    #region indexing_related_documents_AsyncQuery_Products-Beverages
-                    IList<Product> results = await asyncSession
-                        .Query<Products_ByCategoryName.Result, Products_ByCategoryName>()
+                    #region indexing_related_documents_2_async
+                    IList<Product> matchingProducts = await asyncSession
+                        .Query<Products_ByCategoryName.IndexEntry, Products_ByCategoryName>()
                         .Where(x => x.CategoryName == "Beverages")
                         .OfType<Product>()
                         .ToListAsync();
                     #endregion
                 }
 
-                #region indexing_related_documents_6
-                store.Maintenance.Send(new PutIndexesOperation
-                (
-                    new IndexDefinition
-                    {
-                        Name = "Authors/ByNameAndBooks",
-                        Maps =
-                        {
-                            @"from author in docs.Authors
-                            select new
-                            {
-                                Name = author.Name,
-                                Books = author.BookIds.Select(x => LoadDocument(x, ""Books"").Id)
-                            }"
-                        }
-                    }
-                ));
-                #endregion
-
                 using (var session = store.OpenSession())
                 {
-                    #region indexing_related_documents_8
-                    IList<Author> results = session
-                        .Query<Authors_ByNameAndBooks.Result, Authors_ByNameAndBooks>()
-                        .Where(x => x.AuthorName == "Andrzej Sapkowski" || x.BookNames.Contains("The Witcher"))
+                    #region indexing_related_documents_5
+                    // Get all authors that have books with title: "The Witcher"
+                    IList<Author> matchingAuthors = session
+                        .Query<Authors_ByBooks.IndexEntry, Authors_ByBooks>()
+                        .Where(x => x.BookNames.Contains("The Witcher"))
                         .OfType<Author>()
                         .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region indexing_related_documents_5_async
+                    // Get all authors that have books with title: "The Witcher"
+                    IList<Author> matchingAuthors = await asyncSession
+                        .Query<Authors_ByBooks.IndexEntry, Authors_ByBooks>()
+                        .Where(x => x.BookNames.Contains("The Witcher"))
+                        .OfType<Author>()
+                        .ToListAsync();
                     #endregion
                 }
             }
