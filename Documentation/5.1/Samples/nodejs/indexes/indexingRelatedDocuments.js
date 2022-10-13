@@ -13,7 +13,7 @@ class Product { }
 
 class Syntax {
     //region syntax_JS
-    load(relatedDocumentId, relatedCollectionName);
+    object load(relatedDocumentId, relatedCollectionName);
     //endregion
 }
 

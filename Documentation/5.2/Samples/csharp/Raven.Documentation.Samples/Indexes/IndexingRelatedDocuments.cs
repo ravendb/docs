@@ -158,8 +158,7 @@ namespace Raven.Documentation.Samples.Indexes
             {
                 Map = products => from product in products
                     
-                    // Call NoTracking.LoadDocument to load the related Category document
-                    // The loaded related document will Not be tracked
+                    // Call NoTracking.LoadDocument to load the related Category document w/o tracking
                     let category = NoTracking.LoadDocument<Category>(product.Category)
                     
                     select new IndexEntry
@@ -181,8 +180,7 @@ namespace Raven.Documentation.Samples.Indexes
             {
                 Maps = new HashSet<string>()
                 {
-                    // Call method 'noTracking.load' to load the related Category document
-                    // The loaded related document will Not be tracked
+                    // Call 'noTracking.load' to load the related Category document w/o tracking
                     
                     @"map('products', function(product) {
                         let category = noTracking.load(product.Category, 'Categories')
@@ -191,7 +189,7 @@ namespace Raven.Documentation.Samples.Indexes
                         };
                     })"
                     
-                    // Since NoTracking is used -
+                    // Since noTracking is used -
                     // then only the changes to Products will trigger reindexing
                 };
             }

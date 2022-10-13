@@ -51,8 +51,7 @@ namespace Raven.Documentation.Samples.Indexes
                         CategoryName = category.Name
                     };
                         
-                    // Since NoTracking was Not specified,
-                    // then any change to either Products or Categories will trigger reindexing 
+                    // Any change to either Products or Categories will trigger reindexing 
             }
         }
         #endregion
@@ -75,8 +74,7 @@ namespace Raven.Documentation.Samples.Indexes
                         };
                     })"
                     
-                    // Since noTracking was Not specified,
-                    // then any change to either Products or Categories will trigger reindexing 
+                    // Any change to either Products or Categories will trigger reindexing 
                 };
             }
         }
@@ -119,8 +117,7 @@ namespace Raven.Documentation.Samples.Indexes
                         BookNames = author.BookIds.Select(x => LoadDocument<Book>(x).Name)
                     };
                 
-                // Since NoTracking was Not specified,
-                // then any change to either Authors or Books will trigger reindexing 
+                // Any change to either Authors or Books will trigger reindexing 
             }
         }
         #endregion
@@ -139,8 +136,7 @@ namespace Raven.Documentation.Samples.Indexes
                         }
                     })"
                     
-                    // Since NoTracking was Not specified,
-                    // then any change to either Authors or Books will trigger reindexing 
+                    // Any change to either Authors or Books will trigger reindexing 
                 };
             }
         }

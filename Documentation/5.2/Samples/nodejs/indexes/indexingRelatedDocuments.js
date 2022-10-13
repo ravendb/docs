@@ -13,107 +13,168 @@ class Product { }
 
 class Syntax {
     //region syntax_JS
-    load(relatedDocumentId, relatedCollectionName);
+    object load(relatedDocumentId, relatedCollectionName);
     //endregion
 }
 
-//region indexing_related_documents_4
+//region indexing_related_documents_1
+class Products_ByCategoryName extends AbstractCsharpIndexCreationTask {
+    constructor() {
+        super();
+        
+        // Call LoadDocument to load the related Category document
+        // The document ID to load is specified by 'product.Category'
+        // The Name field from the related Category document will be indexed
+        
+        this.map = `docs.Products.Select(product => new {
+            CategoryName = (this.LoadDocument(product.Category, "Categories")).Name 
+        })`;
+
+        // Since NoTracking was Not specified,
+        // then any change to either Products or Categories will trigger reindexing 
+    }
+}
+//endregion
+
+//region indexing_related_documents_1_JS
+class Products_ByCategoryName_JS extends AbstractJavaScriptIndexCreationTask {
+    constructor () {
+        super();
+
+        const { load } = this.mapUtils();
+
+        this.map("Products", product => {
+            return {
+                // Call method 'load' to load the related Category document
+                // The document ID to load is specified by 'product.Category'
+                // The Name field from the related Category document will be indexed                
+                categoryName: load(product.Category, "Categories").Name
+
+                // Since NoTracking was Not specified,
+                // then any change to either Products or Categories will trigger reindexing
+            };
+        });
+    }
+}
+//endregion
+
+//region indexing_related_documents_3
+// The referencing document
+class Author {
+    constructor(id, name, bookIds) {
+        this.id = id;
+        this.name = name;
+        
+        // Referencing a list of related document IDs
+        this.bookIds = bookIds;
+    }
+}
+// The related document
 class Book {
     constructor(id, name) {
         this.id = id;
         this.name = name;
     }
 }
-
-class Author {
-    constructor(id, name, bookIds) {
-        this.id = id;
-        this.name = name;
-        this.bookIds = bookIds;
-    }
-}
 //endregion
 
-//region indexing_related_documents_2
-class Products_ByCategoryName extends AbstractCsharpIndexCreationTask {
+//region indexing_related_documents_4
+class Authors_ByBooks extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
 
-        this.map = `docs.Products.Select(product => new {     
-            CategoryName = (this.LoadDocument(product.Category, "Categories")).Name 
+        // For each Book ID, call LoadDocument and index the book's name
+        this.map = `docs.Authors.Select(author => new {
+            BookNames = author.bookIds.Select(x => (this.LoadDocument(x, "Books")).name) 
         })`;
+
+        // Since NoTracking was Not specified,
+        // then any change to either Authors or Books will trigger reindexing
     }
 }
 //endregion
 
-//region indexing_related_documents_5
-class Authors_ByNameAndBooks extends AbstractCsharpIndexCreationTask {
+//region indexing_related_documents_4_JS
+class Authors_ByBooks_JS extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
 
-        this.map = `docs.Authors.Select(author => new {     
-            name = author.name,     
-            books = author.bookIds.Select(x => (this.LoadDocument(x, "Books")).name) 
-        })`;
+        const { load } = this.mapUtils();
 
+        this.map("Authors", author => {
+            return {
+                // For each Book ID, call 'load' and index the book's name
+                BookNames: author.bookIds.map(x => load(x, "Books").name)
+
+                // Since NoTracking was Not specified,
+                // then any change to either Products or Categories will trigger reindexing
+            };
+        });
     }
 }
 //endregion
 
-async function example() {
-    {
-        //region indexing_related_documents_3
-        const indexDefinition = new IndexDefinition();
-        indexDefinition.name = "Products/ByCategoryName";
-        indexDefinition.maps = new Set([
-            `from product in products    
-             select new {        
-                 CategoryName = LoadDocument(product.Category, "Categories").name    
-            }`]);
+//region indexing_related_documents_6
+class Products_ByCategoryName_NoTracking extends AbstractCsharpIndexCreationTask {
+    constructor() {
+        super();
 
-        await store.maintenance.send(new PutIndexesOperation(indexDefinition));
-        //endregion
+        // Call NoTracking.LoadDocument to load the related Category document w/o tracking
+        this.map = `docs.Products.Select(product => new {
+            CategoryName = (this.NoTracking.LoadDocument(product.Category, "Categories")).Name 
+        })`;
 
-
-        {
-            //region indexing_related_documents_7
-            const results = session
-                .query({ indexName: "Products/ByCategoryName" })
-                .whereEquals("CategoryName", "Beverages")
-                .ofType(Product)
-                .all();
-            //endregion
-        }
+        // Since NoTracking is used -
+        // then only the changes to Products will trigger reindexing
     }
+}
+//endregion
 
-    {
-        //region indexing_related_documents_6
-        const indexDefinition = new IndexDefinition();
-        indexDefinition.name = "Authors/ByNameAndBooks";
-        indexDefinition.maps = new Set([
-            `from author in docs.Authors      
-             select new 
-             {          
-                 name = author.name,          
-                 books = author.bookIds.Select(x => LoadDocument(x, "Books").id)      
-             }`
-        ]);
+//region indexing_related_documents_6_JS
+class Products_ByCategoryName_NoTracking_JS extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
 
-        await store.maintenance.send(new PutIndexesOperation(indexDefinition));
-        //endregion
+        const { load } = this.mapUtils();
 
-        {
-            //region indexing_related_documents_8
-            const results = await session
-                .query({ indexName: "Authors/ByNameAndBooks" })
-                .whereEquals("name", "Andrzej Sapkowski")
-                .whereEquals("books", "The Witcher")
-                .ofType(Author)
-                .all();
-            //endregion
-        }
+        this.map("Products", product => {
+            return {
+                // Call 'noTracking.load' to load the related Category document w/o tracking
+                categoryName: noTracking.load(product.Category, "Categories").Name
+            };
+        });
+        
+        // Since noTracking is used -
+        // then only the changes to Products will trigger reindexing
     }
+}
+//endregion
 
+async function Queries() {
+    {
+        //region indexing_related_documents_2
+        const matchingProducts = await session
+            .query({indexName: "Products/ByCategoryName"})
+            .whereEquals("CategoryName", "Beverages")
+            .all();
+        //endregion
+    }
+    {
+        //region indexing_related_documents_5
+        const matchingProducts = await session
+            .query({indexName: "Authors/ByBooks"})
+            .whereEquals("BookNames", "The Witcher")
+            .all();
+        //endregion
+    }
+    {
+        //region indexing_related_documents_7
+        const matchingProducts = await session
+            .query({indexName: "Products/ByCategoryName/NoTracking"})
+            .whereEquals("CategoryName", "Beverages")
+            .all();
+        //endregion
+    }
 }
 
 
