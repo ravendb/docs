@@ -135,7 +135,7 @@ class Products_ByCategoryName_NoTracking_JS extends AbstractJavaScriptIndexCreat
     constructor() {
         super();
 
-        const { load } = this.mapUtils();
+        const { noTracking } = this.mapUtils();
 
         this.map("Products", product => {
             return {
