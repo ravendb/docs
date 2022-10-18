@@ -149,10 +149,9 @@ namespace Raven.Documentation.Samples.Server
         #endregion
 
         #region create_uniqueness_control_documents
-        // When you create documents that must contain a unique value such as a phone or email, etc,
+        // When you create documents that must contain a unique value such as a phone or email, etc.,
         // you can create reference documents that will have that unique value in their IDs.
-        // Then whenever you want know if a value already exists,
-        // all you need to do is check whether a reference document with such ID exists.
+        // To know if a value already exists, all you need to do is check whether a reference document with such ID exists.
 
         // The reference document class
         class UniquePhoneReference
