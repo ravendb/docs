@@ -13,11 +13,15 @@ public class Distinct {
     public static class Employees_ByCountry extends AbstractIndexCreationTask {
 
     public Employees_ByCountry() {
+
+        // The map phase indexes the country listed in each employee document
+        // CountryCount is assigned with 1, which will be aggregated in the reduce phase
         map = "docs.Employees.Select(employee => new { " +
               "    Country = employee.Address.Country, " +
               "    CountryCount = 1 " +
               "})";
 
+        // The reduce phase will group the Country results and aggregate the CountryCount
         reduce = "results.GroupBy(result => result.Country).Select(g => new { " +
                  "    Country = g.Key, " +
                  "    CountryCount = Enumerable.Sum(g, x => x.CountryCount) " +

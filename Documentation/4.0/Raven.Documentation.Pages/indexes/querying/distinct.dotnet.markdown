@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-The `Distinct` method allows you to remove duplicates from the result.  
+The `Distinct` method allows you to remove duplicates from query results.  
 Items are compared based on the fields listed in the `select` section of the query. 
 
 * In this page:
@@ -16,7 +16,7 @@ Items are compared based on the fields listed in the `select` section of the que
 
 ---
 
-### Sample Query with Distinct
+{PANEL: Sample Query with Distinct}
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query distinct_1_1@Indexes\Querying\Distinct.cs /}
@@ -27,16 +27,19 @@ select distinct ShipTo.Country
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Paging with Distinct
+{PANEL/} 
+
+{PANEL:  Paging with Distinct}
 
 A special approach must be used when calling `distinct()` while paging.  
 Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results).  
 
+{PANEL/}
 
-## Count with Distinct
+{PANEL: Count with Distinct}
 
 Use `Count()` in combination with `Distinct()` to get the number of unique items.  
-Similar to ToList(), Count() executes the query on the server-side.
+Similar to ToList(), Count() triggers query execution on the server-side.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query distinct_2_1@Indexes\Querying\Distinct.cs /}
@@ -52,7 +55,6 @@ Please keep in mind that using `Count()` with `Distinct()` might not be efficien
 * This is more efficient since computations are done during indexing time and not at query time.  
   The entire dataset is [Indexed](../../indexes/creating-and-deploying) 
   once, whereafter the aggregated value is always kept up to date as indexing will occur only for new/modified data.  
-  Queries, on the other hand, process all of the data assigned to them each time they are activated.
 
 ### Map-Reduce Index Sample:
 
@@ -72,8 +74,9 @@ Query the index:
 ### Combining Faceted Queries with Map-Reduce
 
 Faceted queries can be used together with a map-reduce index as another alternative approach.  
-See [Implementing a count(distinct) query in RavenDB](https://ravendb.net/articles/implementing-a-countdistinct-query-in-ravendb).
+See the article "[Implementing a count(distinct) query in RavenDB](https://ravendb.net/articles/implementing-a-countdistinct-query-in-ravendb)" for an example.
 
+{PANEL/} 
 
 ## Related Articles
 

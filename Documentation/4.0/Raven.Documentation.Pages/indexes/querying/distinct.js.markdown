@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-The `distinct()` method allows you to remove duplicates from the result.  
+The `distinct()` method allows you to remove duplicates from query results.  
 Items are compared based on the fields listed in the `select` section of the query. 
 
 * In this page:
@@ -16,7 +16,7 @@ Items are compared based on the fields listed in the `select` section of the que
 
 ---
 
-### Sample Query with Distinct
+{PANEL: Sample Query with Distinct}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Node.js distinct_1_1@indexes\querying\distinct.js /}
@@ -26,14 +26,20 @@ select distinct ShipTo.Country
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Paging with Distinct
+{PANEL/} 
+
+{PANEL:  Paging with Distinct}
 
 A special approach must be used when calling `distinct()` while paging.  
 Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results).  
 
-## Count with Distinct
+{PANEL/}
+
+{PANEL: Count with Distinct}
 
 Use `count()` in combination with `distinct()` to get the number of unique items.
+Similar to toList(), count() triggers query execution on the server-side.
+
 
 {CODE:nodejs distinct_2_1@indexes\querying\distinct.js /}
 
@@ -46,7 +52,6 @@ Please keep in mind that using `count()` with `distinct()` might not be efficien
 * This is more efficient since computations are done during indexing time and not at query time.  
   The entire dataset is [Indexed](../../indexes/creating-and-deploying) 
   once, whereafter the aggregated value is always kept up to date as indexing will occur only for new/modified data.  
-  Queries, on the other hand, process all of the data assigned to them each time they are activated.
 
 ### Map-Reduce Index Sample:
 
@@ -62,6 +67,8 @@ Query the index:
 
 Faceted queries can be used together with a map-reduce index as another alternative approach.  
 See a C# example for [Implementing a count(distinct) query in RavenDB](https://ravendb.net/articles/implementing-a-countdistinct-query-in-ravendb).
+
+{PANEL/} 
 
 
 ## Related Articles

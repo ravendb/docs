@@ -9,6 +9,8 @@ class Employees_ByCountry extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
 
+        // The map phase indexes the country listed in each employee document
+        // countryCount is assigned with 1, which will be aggregated in the reduce phase
         this.map("Employees", employee => {
             return {
                 country: employee.Address.Country,
@@ -16,6 +18,7 @@ class Employees_ByCountry extends AbstractJavaScriptIndexCreationTask {
             }
         });
 
+        // The reduce phase will group the country results and aggregate the countryCount
         this.reduce(results => results.groupBy(x => x.country).aggregate(g => {
             return {
                 country: g.key,

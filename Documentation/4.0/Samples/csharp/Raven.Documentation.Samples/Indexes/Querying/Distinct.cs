@@ -111,7 +111,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 using (var session = store.OpenSession())
                 {
                     #region distinct_3_3
-                    // The query calls the map-reduce index defined above
+                    // Query the map-reduce index defined above
                     var queryResult = session.Advanced.DocumentQuery<Employees_ByCountry.IndexEntry, Employees_ByCountry>()
                         .WhereEquals("Country", "UK").FirstOrDefault();
 
