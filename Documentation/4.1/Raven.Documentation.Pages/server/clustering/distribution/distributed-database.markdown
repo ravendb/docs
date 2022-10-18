@@ -104,5 +104,6 @@ It is on the development roadmap to be implemented in a future version. Track it
 {PANEL/}
 
 ## Related articles 
+
 - [Client API - Create Database](../../../client-api/operations/server-wide/create-database)  
 - [Create Database via Studio](../../../studio/server/databases/create-new-database/general-flow)  
