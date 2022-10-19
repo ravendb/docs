@@ -82,6 +82,7 @@ public class Distinct {
 
 
                 //region distinct_3_2
+                // Query the map-reduce index defined above
                 try (IDocumentSession session = DocumentStoreHolder.store.openSession()) {
                     Employees_ByCountry.Result queryResult = session.query(Employees_ByCountry.Result.class, Employees_ByCountry.class)
                         .whereEquals("Country", country)

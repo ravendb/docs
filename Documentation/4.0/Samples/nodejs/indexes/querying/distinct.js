@@ -58,6 +58,7 @@ async function distinct() {
 
         {
             //region distinct_3_2
+            // Query the map - reduce index defined above
             const session = documentStore.openSession();
             const queryResult = await session.query({ indexName: 'Employees/ByCountry' })
                 .whereEquals('country', country)
