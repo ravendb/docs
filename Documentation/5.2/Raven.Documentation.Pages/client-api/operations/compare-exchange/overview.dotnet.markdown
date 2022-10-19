@@ -35,8 +35,13 @@ Compare Exchange items are key/value pairs where the key servers a unique value 
   * **A key** - A unique string across the cluster.  
   * **A value** - Can be numbers, strings, arrays, or objects.  
     Any value that can be represented as JSON is valid.
-  * **Metadata** - Like document metadata, it is written in JSON format where the key is prefixed with the `@` character.  
-    eg. "@expires": "2021-02-26T13:09:37.4040256Z" 
+  * **Metadata** - Data that is associated with the item's value.  
+    Can be numbers, strings, arrays, or objects.  
+    Any value that can be represented as JSON is valid.  
+     * Similar to [Document Expiration](../../../server/extensions/expiration), 
+	   the metadata can be used to set the Compare Exchange item expiration.  
+       Set `@expires` field to schedule expiration.  
+       e.g. `{ "@expires": "2021-02-26T13:09:37.4040256Z" }`
   * **Raft index** - A version number that is modified on each change.  
     Any change to the value or metadata changes the Raft index.  
 
@@ -56,7 +61,7 @@ Compare exchange items are created and managed with any of the following approac
 * **Document Store Operations**  
   You can manage a compare-exchange item as an [Operation on the document store](../../../client-api/operations/compare-exchange/put-compare-exchange-value).  
   This can be done within or outside of a session (cluster-wide or single-node session).
-   * When inside a session:
+   * When inside a session:  
      If the session fails, the compare-exchange operation can still succeed
      because store Operations do not rely on the success of the session.  
      You will need to delete the compare-exchange item explicitly upon session failure if you don't want the compare-exchange item to persist.
@@ -95,6 +100,7 @@ Compare exchange items are created and managed with any of the following approac
   To ensure [atomicity](https://en.wikipedia.org/wiki/ACID#Atomicity), if even one action within a session fails, the entire [session will roll back](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching).  
   Be sure that your business logic is written so that if a concurrency exception is thrown, your code will re-execute the entire session.  
 
+{PANEL/}
 
 {PANEL: Why Compare-Exchange Items are Not Replicated to External Databases }
 
@@ -110,8 +116,7 @@ Compare exchange items are created and managed with any of the following approac
   Change-Vector. Compare-exchange conflicts cannot be handled properly as they do not have a similar
   mechanism to resolve conflicts.
 
-* To ensure unique values between two databases without using compare-exchange items see [Example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange) 
-  for similar functionality that can be externally replicated.
+* To ensure unique values between two databases without using compare-exchange items see [Example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange).
 
 {PANEL/}
 
