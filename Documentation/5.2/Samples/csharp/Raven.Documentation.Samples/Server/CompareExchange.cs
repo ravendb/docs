@@ -7,6 +7,9 @@ using Raven.Client.Documents.Operations.CompareExchange;
 using Raven.Client.Documents.Session;
 using Raven.Client.Documents.Queries;
 using Raven.Client.Documents.Linq;
+using Raven.Documentation.Samples.Orders;
+using Raven.Client.Exceptions;
+
 
 namespace Raven.Documentation.Samples.Server
 {
@@ -54,18 +57,22 @@ namespace Raven.Documentation.Samples.Server
                 }
                 #endregion
 
-                #region query_cmpxchg
+
                 using (IDocumentSession session = store.OpenSession())
                 {
+                    #region query_cmpxchg
                     var query = from u in session.Query<User>()
                                 where u.Id == RavenQuery.CmpXchg<string>("emails/ayende@ayende.com")
                                 select u;
+                    #endregion
 
+                    #region document_query_cmpxchg
                     var q = session.Advanced
                         .DocumentQuery<User>()
                         .WhereEquals("Id", CmpXchg.Value("emails/ayende@ayende.com"));
+                    #endregion
                 }
-                #endregion
+
             }
         }
 
@@ -140,5 +147,82 @@ namespace Raven.Documentation.Samples.Server
         }
 
         #endregion
+
+        #region create_uniqueness_control_documents
+        // When you create documents that must contain a unique value such as a phone or email, etc.,
+        // you can create reference documents that will have that unique value in their IDs.
+        // To know if a value already exists, all you need to do is check whether a reference document with such ID exists.
+
+        // The reference document class
+        class UniquePhoneReference
+        {
+            public class PhoneReference
+            {
+                public string Id;
+                public string CompanyId;
+            }
+
+            static void Main(string[] args)
+            {
+                // A company document class that must be created with a unique 'Phone' field
+                Company newCompany = new Company
+                {
+                    Name = "companyName",
+                    Phone = "phoneNumber",
+                    Contact = new Contact
+                    {
+                        Name = "contactName",
+                        Title = "contactTitle"
+                    },
+                };
+
+                void CreateCompanyWithUniquePhone(Company newCompany)
+                {
+                    // Open a cluster-wide session in your document store
+                    using var session = DocumentStoreHolder.Store.OpenSession(
+                            new SessionOptions { TransactionMode = TransactionMode.ClusterWide }
+                        );
+
+                    // Check whether the new company phone already exists
+                    // by checking if there is already a reference document that has the new phone in its ID.
+                    var phoneRefDocument = session.Load<PhoneReference>("phones/" + newCompany.Phone);
+                    if (phoneRefDocument != null)
+                    {
+                        var msg = $"Phone '{newCompany.Phone}' already exists in ID: {phoneRefDocument.CompanyId}";
+                        throw new ConcurrencyException(msg);
+                    }
+
+                    // If the new phone number doesn't already exist, store the new entity
+                    session.Store(newCompany);
+                    // Store a new reference document with the new phone value in its ID for future checks.
+                    session.Store(new PhoneReference { CompanyId = newCompany.Id }, "phones/" + newCompany.Phone);
+
+                    // May fail if called concurrently with the same phone number
+                    session.SaveChanges();
+                }
+            }
+        }
+        #endregion
+    }
+
+    public static class DocumentStoreHolder
+    {
+        private static readonly Lazy<IDocumentStore> LazyStore =
+            new Lazy<IDocumentStore>(() =>
+            {
+                var store = new DocumentStore
+                {
+                    Urls = new[] { "https://a.15-8-22-serez.development.run" },
+                    Database = "Northwind",
+                    Certificate = new X509Certificate2(@"C:\Users\shachar\Desktop\CurrentServers\15-8-22\A\Server\cluster.server.certificate.15-8-22-serez.pfx")
+                };
+
+                return store.Initialize();
+            });
+
+        public static IDocumentStore Store =>
+            LazyStore.Value;
+
+
     }
 }
