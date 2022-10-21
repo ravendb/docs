@@ -1,6 +1,22 @@
 # Querying: Distinct
+---
 
-The `distinct()` method allows you to remove duplicates from the result. Items are compared based on the fields listed in the `select` section of the query. 
+{NOTE: }
+
+The `distinct()` method allows you to remove duplicates from query results.  
+Items are compared based on the fields listed in the `select` section of the query. 
+
+* In this page:
+   * [Sample Query with Distinct](../../indexes/querying/distinct#sample-query-with-distinct)
+   * [Paging with Distinct](../../indexes/querying/distinct#paging-with-distinct)
+   * [Count with Distinct](../../indexes/querying/distinct#count-with-distinct)
+      * [Performance Cost and an Alternative Approach](../../indexes/querying/distinct#performance-cost-and-an-alternative-approach)
+
+{NOTE/}
+
+---
+
+{PANEL: Sample Query with Distinct}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Node.js distinct_1_1@indexes\querying\distinct.js /}
@@ -10,30 +26,64 @@ select distinct ShipTo.Country
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Paging 
+{PANEL/} 
 
-Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results). This kind of paging is required when using a distinct keyword.
+{PANEL:  Paging with Distinct}
 
-## Count
+A special approach must be used when calling `distinct()` while paging.  
+Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results).  
 
-RavenDB supports returning counts when the distinct operation is used.
+{PANEL/}
+
+{PANEL: Count with Distinct}
+
+Use `count()` in combination with `distinct()` to get the number of unique items.
+Similar to toList(), count() triggers query execution on the server-side.
+
 
 {CODE:nodejs distinct_2_1@indexes\querying\distinct.js /}
 
-{INFO:Performance}
+## Performance Cost and an Alternative Approach
 
-Please keep in mind that this operation might not be efficient for large sets of data due to the need to scan all of the index results in order to find all the unique values.
+Please keep in mind that using `count()` with `distinct()` might not be efficient for large sets of data due to the need to scan all of the index results in order to find all the unique values.
 
-The same result might be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes) index that aggregates data by the field where you want a distinct value of. e.g.
+* Getting the distinct items' count can also be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes) index 
+  that will aggregate data by the field for which distinct count results are needed.
+* This is more efficient since computations are done during indexing time and not at query time.  
+  The entire dataset is [Indexed](../../indexes/creating-and-deploying) 
+  once, whereafter the aggregated value is always kept up to date as indexing will occur only for new/modified data.  
+
+### Map-Reduce Index Sample:
+
+Index definition:
 
 {CODE:nodejs distinct_3_1@indexes\querying\distinct.js /}
 
+Query the index:
+
 {CODE:nodejs distinct_3_2@indexes\querying\distinct.js /}
 
-{INFO/}
+### Combining Faceted Queries with Map-Reduce
+
+Faceted queries can be used together with a map-reduce index as another alternative approach.  
+See a C# example for [Implementing a count(distinct) query in RavenDB](https://ravendb.net/articles/implementing-a-countdistinct-query-in-ravendb).
+
+{PANEL/} 
+
 
 ## Related Articles
 
 ### Querying
 
 - [Paging](../../indexes/querying/paging)
+
+### Indexing
+
+- [Map-Reduce Indexes](../../indexes/map-reduce-indexes)
+
+---
+
+### Code Walkthrough
+
+- [Map-Reduce Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-reduce-index)
+- [Paging Query Results](https://demo.ravendb.net/demos/csharp/queries/paging-query-results)

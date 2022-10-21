@@ -1,6 +1,22 @@
 # Querying: Distinct
+---
 
-The `Distinct` method allows you to remove duplicates from the result. Items are compared based on the fields listed in the `select` section of the query. 
+{NOTE: }
+
+The `Distinct` method allows you to remove duplicates from query results.  
+Items are compared based on the fields listed in the `select` section of the query. 
+
+* In this page:
+   * [Sample Query with Distinct](../../indexes/querying/distinct#sample-query-with-distinct)
+   * [Paging with Distinct](../../indexes/querying/distinct#paging-with-distinct)
+   * [Count with Distinct](../../indexes/querying/distinct#count-with-distinct)
+      * [Performance Cost and Alternative Approaches](../../indexes/querying/distinct#performance-cost-and-alternative-approaches)
+
+{NOTE/}
+
+---
+
+{PANEL: Sample Query with Distinct}
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query distinct_1_1@Indexes\Querying\Distinct.cs /}
@@ -11,36 +27,70 @@ select distinct ShipTo.Country
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Paging 
+{PANEL/} 
 
-Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results). This kind of paging is required when using a distinct keyword.
+{PANEL:  Paging with Distinct}
 
-## Count
+A special approach must be used when calling `distinct()` while paging.  
+Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results).  
 
-RavenDB supports returning counts when the distinct operation is used.
+{PANEL/}
+
+{PANEL: Count with Distinct}
+
+Use `Count()` in combination with `Distinct()` to get the number of unique items.  
+Similar to ToList(), Count() triggers query execution on the server-side.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query distinct_2_1@Indexes\Querying\Distinct.cs /}
 {CODE-TAB:csharp:DocumentQuery distinct_2_2@Indexes\Querying\Distinct.cs /}
 {CODE-TABS/}
 
-{INFO:Performance}
+## Performance Cost And Alternative Approaches
 
-Please keep in mind that this operation might not be efficient for large sets of data due to the need to scan all of the index results in order to find all the unique values.
+Please keep in mind that using `Count()` with `Distinct()` might not be efficient for large sets of data due to the need to scan all of the index results in order to find all the unique values.
 
-The same result might be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes) index that aggregates data by the field where you want a distinct value of. e.g.
+* Getting the distinct items' count can also be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes) index 
+  that will aggregate data by the field for which distinct count results are needed.
+* This is more efficient since computations are done during indexing time and not at query time.  
+  The entire dataset is [Indexed](../../indexes/creating-and-deploying) 
+  once, whereafter the aggregated value is always kept up to date as indexing will occur only for new/modified data.  
+
+### Map-Reduce Index Sample:
+
+Index definition:
 
 {CODE:csharp distinct_3_1@Indexes\Querying\Distinct.cs /}
+
+Query the index:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query distinct_3_2@Indexes\Querying\Distinct.cs /}
 {CODE-TAB:csharp:DocumentQuery distinct_3_3@Indexes\Querying\Distinct.cs /}
 {CODE-TABS/}
 
-{INFO/}
+---
+
+### Combining Faceted Queries with Map-Reduce
+
+Faceted queries can be used together with a map-reduce index as another alternative approach.  
+See the article "[Implementing a count(distinct) query in RavenDB](https://ravendb.net/articles/implementing-a-countdistinct-query-in-ravendb)" for an example.
+
+{PANEL/} 
 
 ## Related Articles
 
 ### Querying
 
 - [Paging](../../indexes/querying/paging)
+
+### Indexing
+
+- [Map-Reduce Indexes](../../indexes/map-reduce-indexes)
+
+---
+
+### Code Walkthrough
+
+- [Map-Reduce Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-reduce-index)
+- [Paging Query Results](https://demo.ravendb.net/demos/csharp/queries/paging-query-results)

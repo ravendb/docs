@@ -10,29 +10,45 @@ import java.util.List;
 public class Distinct {
 
     //region distinct_3_1
-    public static class Order_Countries extends AbstractIndexCreationTask {
-        public static class Result {
-            private String country;
+    public static class Employees_ByCountry extends AbstractIndexCreationTask {
 
-            public String getCountry() {
-                return country;
-            }
+    public Employees_ByCountry() {
 
-            public void setCountry(String country) {
-                this.country = country;
-            }
+        // The map phase indexes the country listed in each employee document
+        // CountryCount is assigned with 1, which will be aggregated in the reduce phase
+        map = "docs.Employees.Select(employee => new { " +
+              "    Country = employee.Address.Country, " +
+              "    CountryCount = 1 " +
+              "})";
+
+        // The reduce phase will group the Country results and aggregate the CountryCount
+        reduce = "results.GroupBy(result => result.Country).Select(g => new { " +
+                 "    Country = g.Key, " +
+                 "    CountryCount = Enumerable.Sum(g, x => x.CountryCount) " +
+                 "})";
+    }
+
+    public static class Result {
+        private String country;
+        private int countryCount;
+
+        public String getCountry() {
+            return country;
         }
 
-        public Order_Countries() {
-            map = "docs.Orders.Select(o => new {" +
-                "    Country = o.ShipTo.Country" +
-                "})";
+        public void setCountry(String country) {
+            this.country = country;
+        }
 
-            reduce = "results.GroupBy(r => r.Country).Select(g => new {" +
-                "    Country = g.Key" +
-                "})";
+        public int getCountryCount() {
+            return countryCount;
+        }
+
+        public void setCountryCount(int countryCount) {
+            this.countryCount = countryCount;
         }
     }
+}
     //endregion
 
     private static class Order {
@@ -55,6 +71,7 @@ public class Distinct {
 
             try (IDocumentSession session = store.openSession()) {
                 //region distinct_2_1
+                // results will contain the number of unique countries
                 int numberOfCountries = session
                     .query(Order.class)
                     .selectFields(String.class, "ShipTo.Country")
@@ -63,11 +80,16 @@ public class Distinct {
                 //endregion
             }
 
-            try (IDocumentSession session = store.openSession()) {
+
                 //region distinct_3_2
-                int numberOfCountries = session
-                    .query(Order_Countries.Result.class, Order_Countries.class)
-                    .count();
+                // Query the map-reduce index defined above
+                try (IDocumentSession session = DocumentStoreHolder.store.openSession()) {
+                    Employees_ByCountry.Result queryResult = session.query(Employees_ByCountry.Result.class, Employees_ByCountry.class)
+                        .whereEquals("Country", country)
+                        .firstOrDefault();
+
+                    int numberOfEmployeesFromCountry = queryResult != null ? queryResult.getCountryCount() : 0;
+                }
                 //endregion
             }
         }
