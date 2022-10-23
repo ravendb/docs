@@ -17,7 +17,7 @@
 Compare exchange key/value pairs can be created and managed explicitly in your code.  
 Starting from RavenDB 5.2, they can also be created and managed automatically by RavenDB.  
 Compare exchange entries that are automatically administered by RavenDB are called 
-**Atomic Guards**, read more about them [here](../../../client-api/operations/compare-exchange/atomic-guards).  
+**Atomic Guards**, read more about them [here](../../../client-api/session/cluster-transaction/atomic-guards).  
 {INFO/}
 
 
@@ -109,4 +109,4 @@ from Users as s where id() == cmpxchg("emails/ayende@ayende.com")
 - [Get Compare-Exchange Values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
 - [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
 - [Delete a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
-- [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards)
+- [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards)

@@ -77,9 +77,8 @@
         ]
     },
     {
-        "Path": "cluster-transaction.markdown",
+        "Path": "/cluster-transaction",
         "Name": "Cluster Transaction",
-        "DiscussionId": "090e0a5f-ec2b-4fb0-8a51-0c9d7fe96ce3",
         "Mappings": []
     },
     {

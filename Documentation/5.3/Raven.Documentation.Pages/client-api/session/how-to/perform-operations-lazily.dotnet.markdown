@@ -100,7 +100,7 @@ can also be used lazily.
 ### `GetCompareExchangeValue`
 
 Use `GetCompareExchangeValue` to retrieve Compare Exchange values.  
-Learn [here](../../../client-api/session/cluster-transaction#get-compare-exchange-lazily) 
+Learn [here](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange) 
 how to use this method lazily.  
 
 {PANEL/}
@@ -120,4 +120,4 @@ To execute **all** pending lazy operations at once, use the
 ### Session
 
 - [How to Perform Queries Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
-- [Cluster Transaction - Overview](../../../client-api/session/cluster-transaction)
+- [Cluster Transaction - Overview](../../../client-api/session/cluster-transaction/overview)

@@ -75,7 +75,7 @@ The Cluster transaction feature enables RavneDB to perform consistent cluster-wi
    Compare exchange key/value pairs can be created and managed explicitly in your code.  
    Starting from RavenDB 5.2, they can also be created and managed automatically by RavenDB.  
    Compare exchange entries that are automatically administered by RavenDB are called 
-   **Atomic Guards**, read more about them [here](../../client-api/operations/compare-exchange/atomic-guards).  
+   **Atomic Guards**, read more about them [here](../../client-api/session/cluster-transaction/atomic-guards).  
    {INFO/}
 2. Store/Delete operations on documents, which are executed by the database nodes after the transaction has been accepted.
 
@@ -200,7 +200,7 @@ Parameters
 
 ### Client API
 - [Compare Exchange: Overview](../../client-api/operations/compare-exchange/overview)
-- [Atomic Guards](../../client-api/operations/compare-exchange/atomic-guards)
+- [Atomic Guards](../../client-api/session/cluster-transaction/atomic-guards)
 
 ### Session
 - [Cluster-Wide Session](../../client-api/session/cluster-transaction#open-cluster-wide-session)
