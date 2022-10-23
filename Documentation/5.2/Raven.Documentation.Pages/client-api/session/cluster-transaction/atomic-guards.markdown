@@ -1,4 +1,4 @@
-﻿# Compare Exchange: Atomic Guards
+﻿# Cluster Transaction - Atomic Guards
 ---
 
 {NOTE: }
@@ -77,7 +77,7 @@ In the code sample below, for example, an atomic guard is automatically
 created upon the creation of a new document, and then used when two sessions 
 compete on changing the document.  
 
-{CODE:csharp atomic-guards-enabled@ClientApi/Session/ClusterTransactions/AtomicGuards.cs /}
+{CODE:csharp atomic-guards-enabled@ClientApi/Session/ClusterTransaction/AtomicGuards.cs /}
 
 If you [examine](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view) 
 the compare exchange entries list after running the above sample, you'll see the atomic guard that 
@@ -96,7 +96,7 @@ To **disable** the automatic usage of atomic guards in a session, set the sessio
 `DisableAtomicDocumentWritesInClusterWideTransaction` configuration option to `true`.  
 
 In the sample below, the session uses **no atomic guards**.  
-{CODE:csharp atomic-guards-disabled@ClientApi/Session/ClusterTransactions/AtomicGuards.cs /}
+{CODE:csharp atomic-guards-disabled@ClientApi/Session/ClusterTransaction/AtomicGuards.cs /}
 
 {WARNING: Warning}
 

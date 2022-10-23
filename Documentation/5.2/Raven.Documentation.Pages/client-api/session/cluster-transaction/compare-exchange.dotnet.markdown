@@ -24,8 +24,8 @@
 __Example__
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync new_compare_exchange_sync@ClientApi\Session\ClusterTransactions\CompareExchange.cs /}
-{CODE-TAB:csharp:Async new_compare_exchange_async@ClientApi\Session\ClusterTransactions\CompareExchange.cs /}
+{CODE-TAB:csharp:Sync new_compare_exchange_sync@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
+{CODE-TAB:csharp:Async new_compare_exchange_async@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
 {CODE-TABS/}
 
 * `SaveChanges()` throws a `ConcurrencyException` if the key already exists.
@@ -37,8 +37,8 @@ __Example__
 __Syntax__
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync methods_3_sync@ClientApi\Session\ClusterTransactions\CompareExchange.cs /}
-{CODE-TAB:csharp:Async methods_async_3@ClientApi\Session\ClusterTransactions\CompareExchange.cs /}
+{CODE-TAB:csharp:Sync methods_3_sync@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
+{CODE-TAB:csharp:Async methods_async_3@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
 {CODE-TABS/}
 
 | Parameters   | Type     | Description                                                        |
@@ -69,8 +69,8 @@ __The CompareExchangeValue__
 __Get single value__
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync methods_1_sync@ClientApi\Session\ClusterTransactions\CompareExchange.cs /}
-{CODE-TAB:csharp:Async methods_async_1@ClientApi\Session\ClusterTransactions\CompareExchange.cs /}
+{CODE-TAB:csharp:Sync methods_1_sync@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
+{CODE-TAB:csharp:Async methods_async_1@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
 {CODE-TABS/}
 
 | Parameters | Type | Description |
@@ -87,8 +87,8 @@ __Get single value__
 __Get multiple values__
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync methods_2_sync@ClientApi\Session\ClusterTransactions\CompareExchange.cs /}
-{CODE-TAB:csharp:Async methods_async_2@ClientApi\Session\ClusterTransactions\CompareExchange.cs /}
+{CODE-TAB:csharp:Sync methods_2_sync@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
+{CODE-TAB:csharp:Async methods_async_2@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
 {CODE-TABS/}
 
 | Parameters | Type | Description |
@@ -104,8 +104,8 @@ __Get multiple values__
 __Get compare-exchange lazily__
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync methods_sync_lazy_1@ClientApi\Session\ClusterTransactions\CompareExchange.cs /}
-{CODE-TAB:csharp:Async methods_async_lazy_1@ClientApi\Session\ClusterTransactions\CompareExchange.cs /}
+{CODE-TAB:csharp:Sync methods_sync_lazy_1@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
+{CODE-TAB:csharp:Async methods_async_lazy_1@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
 {CODE-TABS/}
 
 | Parameters | Type | Description |
@@ -125,8 +125,8 @@ __Get compare-exchange lazily__
 {NOTE: }
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync methods_4_sync@ClientApi\Session\ClusterTransactions\CompareExchange.cs /}
-{CODE-TAB:csharp:Async methods_async_4@ClientApi\Session\ClusterTransactions\CompareExchange.cs /}
+{CODE-TAB:csharp:Sync methods_4_sync@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
+{CODE-TAB:csharp:Async methods_async_4@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
 {CODE-TABS/}
 
 | Parameters | Type | Description |

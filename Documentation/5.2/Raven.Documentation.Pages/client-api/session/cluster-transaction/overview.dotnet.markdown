@@ -23,8 +23,8 @@
   by explicitly setting the `TransactionMode` to `TransactionMode.ClusterWide`.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync open_cluster_session_sync@ClientApi\Session\ClusterTransactions\ClusterTransactions.cs /}
-{CODE-TAB:csharp:Async open_cluster_session_async@ClientApi\Session\ClusterTransactions\ClusterTransactions.cs /}
+{CODE-TAB:csharp:Sync open_cluster_session_sync@ClientApi\Session\ClusterTransaction\Overview.cs /}
+{CODE-TAB:csharp:Async open_cluster_session_async@ClientApi\Session\ClusterTransaction\Overview.cs /}
 {CODE-TABS/}
 
 * Similar to the single-node session,  
