@@ -1,10 +1,6 @@
 import { DocumentStore } from "ravendb";
 
 const store = new DocumentStore();
-const session = store.openSession();
-
-const documentStore = new DocumentStore();
-const session = documentStore.openSession();
 
 async function openClusterWideSession() {
 

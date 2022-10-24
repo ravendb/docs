@@ -73,9 +73,9 @@ __Get single value__
 {CODE-TAB:csharp:Async methods_async_1@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
 {CODE-TABS/}
 
-| Parameters | Type | Description |
-| ------------- | ------------- | ----- |
-| **key** | `string` | The key to retrieve |
+| Parameters   | Type     | Description         |
+|--------------|----------|---------------------|
+| **key**      | `string` | The key to retrieve |
 
 | Return Value | Description |
 | ------------- | ----- |
@@ -91,9 +91,9 @@ __Get multiple values__
 {CODE-TAB:csharp:Async methods_async_2@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
 {CODE-TABS/}
 
-| Parameters | Type | Description |
-| ------------- | ------------- | ----- |
-| **keys** | `string[]` | Array of keys to retrieve |
+| Parameters   | Type       | Description               |
+|--------------|------------|---------------------------|
+| **keys**     | `string[]` | Array of keys to retrieve |
 
 | Return Value | Description |
 | ------------- | ----- |
@@ -108,10 +108,10 @@ __Get compare-exchange lazily__
 {CODE-TAB:csharp:Async methods_async_lazy_1@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
 {CODE-TABS/}
 
-| Parameters | Type | Description |
-| ------------- | ------------- | ----- |
-| **key** | `string` | The key to retrieve |
-| **keys** | `string[]` | Array of keys to retrieve |
+| Parameters  | Type       | Description               |
+|-------------|------------|---------------------------|
+| **key**     | `string`   | The key to retrieve       |
+| **keys**    | `string[]` | Array of keys to retrieve |
 
 | Return Value | Description |
 | ------------- | ----- |
@@ -129,10 +129,11 @@ __Get compare-exchange lazily__
 {CODE-TAB:csharp:Async methods_async_4@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
 {CODE-TABS/}
 
-| Parameters | Type | Description |
-| ------------- | ------------- | ----- |
-| **key** | `string` | The key to save with the associate value |
-| **index** | `long` | Index for concurrency control |
+| Parameters | Type                      | Description                                    |
+|------------|---------------------------|------------------------------------------------|
+| **key**    | `string`                  | The key of the compare-exchange item to delete |
+| **index**  | `long`                    | The index of this compare-exchange item        |
+| **item**   | `CompareExchangeValue<T>` | The compare-exchange item to delete            |
 
 {NOTE/}
 {PANEL/}

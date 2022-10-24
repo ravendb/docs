@@ -1,92 +1,53 @@
-import { DocumentStore, AbstractIndexCreationTask } from "ravendb";
-
-let documentType, indexName, collection, options;
+import { DocumentStore } from "ravendb";
 
 const documentStore = new DocumentStore();
-const session = documentStore.openSession();
 
-class Employees_ByName extends AbstractIndexCreationTask {}
-class Employee {}
+class Syntax {
+    //region create_compare_exchange
+    session.advanced.clusterTransaction.createCompareExchangeValue(key, item);
+    //endregion
 
-//region query_1_0
-session.query(documentType);
-session.query(options);
-//endregion
+    //region get_compare_exchange_1
+    await session.advanced.clusterTransaction.getCompareExchangeValue(key);
+    //endregion
+
+    //region get_compare_exchange_2
+    await session.advanced.clusterTransaction.getCompareExchangeValues(keys);
+    //endregion
+
+    //region get_compare_exchange_3
+    // Single item
+    const lazyItem = session.advanced.clusterTransaction.lazily.getCompareExchangeValue(key);
+    const item = await lazyItem.getValue();
+
+    // Multiple items
+    const lazyItems = session.advanced.clusterTransaction.lazily.getCompareExchangeValues(keys);
+    const items = await lazyItems.getValue();
+    //endregion
+
+    //region delete_compare_exchange
+    // Delete by key & index
+    session.advanced.clusterTransaction.deleteCompareExchangeValue(key, index);
+    
+    // Delete by compare-exchange item
+    session.advanced.clusterTransaction.deleteCompareExchangeValue(item);
+    //endregion
+}
+
 
 async function examples() {
     {
-        //region query_1_1
-        // load all entities from 'Employees' collection
-        const employees = await session.query(Employee)
-            .all();
-
-        // or without passing type
-        const employees2 = await session.query({ collection: "Employees" })
-            .all();
-
+        //region create_compare_exchange_example
+        // The session must be first opened with cluster-wide mode
+        const session = documentStore.openSession({
+            transactionMode: "ClusterWide"
+        });
+        
+        session.advanced.clusterTransaction.createCompareExchangeValue(
+            "Best NoSQL Transactional Database", "RavenDB"  // key, value
+        );
+        
+        await session.saveChanges();
         //endregion
     }
-
-    {
-        //region query_1_2
-        // load all entities from 'Employees' collection
-        // where FirstName equals 'Robert'
-        const employees = await session.query({ collection: "Employees" })
-            .whereEquals("FirstName", "Robert")
-            .all();
-        //endregion
-    }
-
-    {
-        //region query_1_4
-        // load all entities from 'Employees' collection
-        // where firstName equals 'Robert'
-        // using 'Employees/ByName' index
-        const employees = await session.query({ indexName: "Employees/ByName" })
-            .whereEquals("FirstName", "Robert")
-            .all();
-        //endregion
-    }
-
-    {
-        //region query_1_6
-        // load all employees hired between
-        // 1/1/2002 and 12/31/2002
-        const employees = await session.advanced.documentQuery(Employee)
-            .whereBetween("HiredAt",
-                new Date("2002-01-01"), new Date("2002-12-31"))
-            .all();
-        //endregion
-    }
-
-    {
-        //region query_1_7
-        // load all entities from 'Employees' collection
-        // where FirstName equals 'Robert
-        const employees = await session.advanced
-            .rawQuery("from Employees where FirstName = 'Robert'")
-            .all();
-        //endregion
-    }
-
-    //region query_1_8
-    class Pet {
-        constructor(name) {
-            this.name = name;
-        }
-    }
-
-    class Person {
-        constructor(name, pet) {
-            this.name = name;
-            this.pet = pet;
-        }
-    }
-
-    documentStore.conventions.registerEntityType(Person);
-    documentStore.conventions.registerEntityType(Pet);
-    // ...
-
-    documentStore.initialize();
-    //endregion
 }

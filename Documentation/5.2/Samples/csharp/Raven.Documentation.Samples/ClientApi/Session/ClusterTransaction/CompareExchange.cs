@@ -24,6 +24,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.CompareExchange
                         key: "Best NoSQL Transactional Database",
                         value: "RavenDB"
                     );
+                    
                     await session.SaveChangesAsync();
                     #endregion
 
@@ -43,6 +44,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.CompareExchange
                     var keys = new[] {"key"};
                     var index = 0L;
                     var value = default(T);
+                    var item = await session.Advanced.ClusterTransaction.GetCompareExchangeValueAsync<T>(key);
 
                     #region methods_async_1
                     await session.Advanced.ClusterTransaction.GetCompareExchangeValueAsync<T>(key);
@@ -53,11 +55,15 @@ namespace Raven.Documentation.Samples.ClientApi.Session.CompareExchange
                     #endregion
 
                     #region methods_async_3
-                    session.Advanced.ClusterTransaction.CreateCompareExchangeValue(key, value);
+                    session.Advanced.ClusterTransaction.CreateCompareExchangeValue<T>(key, value);
                     #endregion
 
                     #region methods_async_4
+                    // Delete by key & index
                     session.Advanced.ClusterTransaction.DeleteCompareExchangeValue(key, index);
+                    
+                    // Delete by compare-exchange item
+                    session.Advanced.ClusterTransaction.DeleteCompareExchangeValue<T>(item);
                     #endregion
 
                     //#region methods_async_5
@@ -90,6 +96,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.CompareExchange
                         key: "Best NoSQL Transactional Database",
                         value: "RavenDB"
                     );
+                    
                     session.SaveChanges();
                     #endregion
 
@@ -110,7 +117,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.CompareExchange
                     var keys = new[] { "key" };
                     var index = 0L;
                     var value = default(T);
-
+                    var item = session.Advanced.ClusterTransaction.GetCompareExchangeValue<T>(key);
+                    
                     #region methods_1_sync
                     session.Advanced.ClusterTransaction.GetCompareExchangeValue<T>(key);
                     #endregion
@@ -120,11 +128,15 @@ namespace Raven.Documentation.Samples.ClientApi.Session.CompareExchange
                     #endregion
 
                     #region methods_3_sync
-                    session.Advanced.ClusterTransaction.CreateCompareExchangeValue(key, value);
+                    session.Advanced.ClusterTransaction.CreateCompareExchangeValue<T>(key, value);
                     #endregion
 
                     #region methods_4_sync
+                    // Delete by key & index
                     session.Advanced.ClusterTransaction.DeleteCompareExchangeValue(key, index);
+                    
+                    // Delete by compare-exchange item
+                    session.Advanced.ClusterTransaction.DeleteCompareExchangeValue<T>(item);
                     #endregion
 
                     //#region methods_5_sync
