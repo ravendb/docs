@@ -119,8 +119,8 @@ where BookNames = "The Witcher"
   Even when indexing just a single field from the related document, any change to any other field will cause re-indexing. 
   (See changes that cause re-indexing [here](../indexes/indexing-related-documents#document-changes-that-cause-re-indexing)).
 
-* Frequent re-indexing will increase CPU usage and reduce performance.  
-  The index may be in a non-stable state for prolonged periods, and results may be stale.
+* Frequent re-indexing will increase CPU usage and reduce performance,  
+  and index results may be stale for prolonged periods.
 
 * Tracking indexed related data is more useful when the indexed related collection is known not to change much.
 
