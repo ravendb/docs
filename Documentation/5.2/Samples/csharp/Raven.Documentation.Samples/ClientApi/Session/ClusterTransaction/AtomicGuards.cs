@@ -17,17 +17,19 @@ namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
             }.Initialize();
 
             #region atomic-guards-enabled
-            using (var session = store.OpenAsyncSession
-                   (new SessionOptions
-                    // A cluster-wide session is opened.
-                    {TransactionMode = TransactionMode.ClusterWide}))
+
+            using (var session = store.OpenAsyncSession(new SessionOptions
+                   {
+                       // Open a cluster-wide session
+                       TransactionMode = TransactionMode.ClusterWide
+                   }))
             {
                 await session.StoreAsync(new User(), "users/johndoe");
                 await session.SaveChangesAsync();
-                // An atomic guard is now automatically created for the new document "users/johndoe".
+                // An atomic-guard is now automatically created for the new document "users/johndoe".
             }
 
-            // Two cluster-wide sessions are opened.
+            // Open two more cluster-wide sessions
             using (var session1 = store.OpenAsyncSession(
                    new SessionOptions 
                    {TransactionMode = TransactionMode.ClusterWide}))
@@ -35,7 +37,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
                    new SessionOptions 
                    {TransactionMode = TransactionMode.ClusterWide}))
             {
-                // Two sessions will load the same document at the same time.
+                // The two sessions will load the same document at the same time
                 var loadedUser1 = await session1.LoadAsync<User>("users/johndoe");
                 loadedUser1.Name = "jindoe";
 
@@ -43,12 +45,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
                 loadedUser2.Name = "jandoe";
 
                 // Session1 will save changes first, which triggers a change in the 
-                // version number of the associated Atomic Guard.
+                // version number of the associated atomic-guard.
                 await session1.SaveChangesAsync();
 
-                // Session2.SaveChanges() will be rejected with a ConcurrencyException
-                // since session1 already changed the Atomic Guard version.  
-                // Session2 is expecting the version that it had when it loaded the document.
+                // session2.saveChanges() will be rejected with ConcurrencyException
+                // since session1 already changed the atomic-guard version,
+                // and session2 saveChanges uses the document version that it had when it loaded the document.
                 await session2.SaveChangesAsync();
             }
             #endregion
@@ -67,13 +69,16 @@ namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
 
 
             #region atomic-guards-disabled
-            using (var session = store.OpenAsyncSession
-                   (new SessionOptions
-                    {TransactionMode = TransactionMode.ClusterWide,
-                       // no atomic guards will be used in this session
-                       DisableAtomicDocumentWritesInClusterWideTransaction = true}))
+            using (var session = store.OpenAsyncSession(new SessionOptions
+                   {
+                       TransactionMode = TransactionMode.ClusterWide,
+                       // Disable atomic-guards
+                       DisableAtomicDocumentWritesInClusterWideTransaction = true
+                   }))
             {
                 await session.StoreAsync(new User(), "users/johndoe");
+
+                // No atomic-guard will be created upon saveChanges
                 await session.SaveChangesAsync();
             }
             #endregion
