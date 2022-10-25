@@ -55,7 +55,7 @@ The Atomic-Guards are managed as follows:
       they will not be able to modify it if trying to save after the first session already saved it,  
       and a `ConcurrencyException` will be thrown.
 
-    * If the session `SaveChanges()` fails, the entire session is rolled-back and the Atomic-Guard is not created.  
+    * If the session `saveChanges()` fails, the entire session is rolled-back and the Atomic-Guard is not created.  
       Be sure that your business logic is written so that if a concurrency exception is thrown, your code will re-execute the entire session.
 
 {PANEL/}

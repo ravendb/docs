@@ -5,9 +5,9 @@ const documentStore = new DocumentStore();
 async function examples() {
     {
         //region atomic-guards-enabled
-        let user = {
-            firstName: 'John',
-            lastName: 'Doe'
+        const user = {
+            firstName: "John",
+            lastName: "Doe"
         };
         
         // Open a cluster-wide session
@@ -28,10 +28,10 @@ async function examples() {
         });
 
         // The two sessions will load the same document at the same time
-        const loadedUser1  = await session1.load("users/johndoe");
+        const loadedUser1 = await session1.load("users/johndoe");
         loadedUser1.name = "jindoe";
 
-        const loadedUser2  = await session2.load("users/johndoe");
+        const loadedUser2 = await session2.load("users/johndoe");
         loadedUser2.name = "jandoe";
         
         // session1 will save changes first, which triggers a change in the 
