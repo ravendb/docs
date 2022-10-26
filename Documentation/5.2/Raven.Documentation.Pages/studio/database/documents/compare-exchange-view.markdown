@@ -14,7 +14,7 @@
     To guarantee ACIDity across the cluster, 
     as of RavenDB 5.2, we automatically create and maintain Atomic Guard CmpXchg items in cluster-wide sessions.  
   * [API Operations](../../../client-api/operations/compare-exchange/overview)
-  * [Session - Cluster Transaction](../../../client-api/session/cluster-transaction)
+  * [Session - Cluster Transaction](../../../client-api/session/cluster-transaction/overview)
   * Using the [RavenDB Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
 
 * In this page:

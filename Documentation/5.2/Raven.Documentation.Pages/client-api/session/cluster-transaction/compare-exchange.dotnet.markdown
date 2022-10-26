@@ -11,9 +11,9 @@
   the session __must be opened as a [cluster-wide session](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)__.
 
 * In this page:
-    * [Create compare-exchange](../../../client-api/session/cluster-transaction#compare-exchange#create-compare-exchange)
-    * [Get compare-exchange](../../../client-api/session/cluster-transaction#compare-exchange#get-compare-exchange)
-    * [Delete compare-exchange](../../../client-api/session/cluster-transaction#compare-exchange#delete-compare-exchange)
+    * [Create compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#create-compare-exchange)
+    * [Get compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange)
+    * [Delete compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#delete-compare-exchange)
 {NOTE/}
 
 ---

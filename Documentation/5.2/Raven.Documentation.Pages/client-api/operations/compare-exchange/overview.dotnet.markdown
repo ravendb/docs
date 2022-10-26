@@ -47,7 +47,7 @@ Compare Exchange items are key/value pairs where the key servers a unique value 
 
 {PANEL/}
 
-{PANEL: Create and Managing Compare-Exchange Items}
+{PANEL: Creating and Managing Compare-Exchange Items}
   
 Compare exchange items are created and managed with any of the following approaches:
 
@@ -66,7 +66,7 @@ Compare exchange items are created and managed with any of the following approac
 
 
 * **Atomic Guards**  
-  When creating documents using a cluster-wide session RavenDB automatically creates [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards.markdown),  
+  When creating documents using a cluster-wide session RavenDB automatically creates [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards),  
   which are compare-exchange items that guarantee ACID transactions.  
   See [Cluster-wide vs. Single-node](../../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction) for a session comparision overview.
 
@@ -108,7 +108,7 @@ To establish uniqueness without using compare-exchange see [Example III](../../.
 * The `User` object is saved as a document, hence it can be indexed, queried, etc.  
 
 * This compare-exchange item was [created as an operation](../../../client-api/operations/compare-exchange/put-compare-exchange-value)
-  rather than with a [cluster-wide session](../../../client-api/session/cluster-transaction).  
+  rather than with a [cluster-wide session](../../../client-api/session/cluster-transaction/overview).  
   Thus, if `session.SaveChanges` fails, then the email reservation is _not_ rolled back automatically.  
   It is your responsibility to do so.  
 
@@ -146,7 +146,7 @@ The reference documents will replicate to the destination database,
 as opposed to compare-exchange items, which are not externally replicated.
 
 {NOTE: }
-Sessions which process fields that must be unique should be set to [TransactionMode.ClusterWide](../../../client-api/session/cluster-transaction).  
+Sessions which process fields that must be unique should be set to [TransactionMode.ClusterWide](../../../client-api/session/cluster-transaction/overview).  
 {NOTE/}
 
 {CODE create_uniqueness_control_documents@Server\CompareExchange.cs /}

@@ -194,7 +194,7 @@ Parameters
 - [Compare Exchange: Overview](../../client-api/operations/compare-exchange/overview)
 
 ### Session
-- [Cluster-Wide Session](../../client-api/session/cluster-transaction#open-cluster-wide-session)
+- [Cluster-Wide Session](../../client-api/session/cluster-transaction/overview)
 
 ### Server
 - [Cluster-Wide Transactions ACIDity](../../server/clustering/cluster-transactions#cluster-transaction-properties)
