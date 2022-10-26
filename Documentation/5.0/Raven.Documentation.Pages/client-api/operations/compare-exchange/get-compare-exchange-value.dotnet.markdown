@@ -30,10 +30,10 @@
 | **Index** | long |  The version number of the _Value_ that is stored for the specified _Key_ |
 
 {INFO: Session Interface and Lazy Get}
-You can also get compare exchange values through the [session cluster transactions](../../../client-api/session/cluster-transaction) 
+You can also get compare exchange values through the [session cluster transactions](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange) 
 at `session.Advanced.ClusterTransaction`.  
 
-This method also exposes methods getting compare exchange [lazily](../../../client-api/session/cluster-transaction#get-compare-exchange-lazily).  
+This method also exposes methods getting compare exchange [lazily](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange).  
 {INFO/}
 
 {PANEL/}
@@ -57,4 +57,4 @@ This method also exposes methods getting compare exchange [lazily](../../../clie
 
 ### Session
 
-- [Cluster Transaction - Overview](../../../client-api/session/cluster-transaction)
+- [Cluster Transaction - Overview](../../../client-api/session/cluster-transaction/overview)

@@ -1,0 +1,30 @@
+[
+  {
+    "Path": "overview.markdown",
+    "Name": "Overview",
+    "DiscussionId": "07d0b272-4823-4a00-adef-3029563fc974",
+    "Mappings": [
+      {
+        "Version": 5.0,
+        "Key": "client-api/session/cluster-transaction"
+      }
+    ]
+  },
+  {
+    "Path": "compare-exchange.markdown",
+    "Name": "Compare Exchange",
+    "DiscussionId": "751ffcbb-f46f-4f11-982c-ae2e27937429",
+    "Mappings": [
+      {
+        "Version": 5.0,
+        "Key": "client-api/session/cluster-transaction"
+      }
+    ]
+  },
+  {
+      "Path": "atomic-guards.markdown",
+      "Name": "Atomic Guards",
+      "DiscussionId": "42e13e99-2dfb-4f8c-9cde-f0a2cbfccfe0",
+      "Mappings": []
+  }
+]

@@ -1,0 +1,134 @@
+# Compare Exchange in Cluster-Wide Session
+
+---
+
+{NOTE: }
+
+* Compare-Exchange items can be created and managed on the advanced session (`session.advanced`)  
+  Other options are listed in this [compare-exchange overview](../../../client-api/operations/compare-exchange/overview#how-to-create-and-manage-compare-exchange-items).
+
+* When working with compare-exchange items from the session,  
+  the session __must be opened as a [cluster-wide session](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)__.
+
+* In this page:
+    * [Create compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#create-compare-exchange)
+    * [Get compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange)
+    * [Delete compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#delete-compare-exchange)
+      {NOTE/}
+
+---
+
+{PANEL: Create compare-exchange}
+
+{NOTE: }
+__Example__
+
+{CODE:nodejs create_compare_exchange_example@ClientApi\Session\ClusterTransaction\CompareExchange.js /}
+
+* An `InvalidOperationException` exception is thrown when:
+  * The session was Not opened as __cluster-wide__.
+  * The key already exists in the database.
+
+{NOTE/}
+
+{NOTE: }
+__Syntax__
+
+{CODE:nodejs create_compare_exchange@ClientApi\Session\ClusterTransaction\CompareExchange.js /}
+
+| Parameters   | Type      | Description                                                        |
+|--------------|-----------|--------------------------------------------------------------------|
+| **key**      | `string`  | The compare-exchange item key. This string can be up to 512 bytes. |
+| **value**    | `object`  | The associated value to store for the key                          |
+
+| Return value | Description                               |
+|---------------|-------------------------------------------|
+| `object`      | The new compare-exchange item is returned |
+{NOTE/}
+
+{NOTE: }
+__The compare exchange object returned__
+
+| Parameters   | Type     | Description                                                        |
+|--------------|----------|--------------------------------------------------------------------|
+| **key**      | `string` | The compare-exchange item key. This string can be up to 512 bytes. |
+| **value**    | `object` | The value associated with the key                                  |
+| **index**    | `number` | Index for concurrency control                                      |
+
+{NOTE/}
+{PANEL/}
+
+{PANEL: Get compare-exchange}
+
+{NOTE: }
+__Get single value__
+
+{CODE:nodejs get_compare_exchange_1@ClientApi\Session\ClusterTransaction\CompareExchange.js /}
+
+| Parameters   | Type     | Description                    |
+|--------------|----------|--------------------------------|
+| **key**      | `string` | The key to retrieve            |
+
+| Return value | Description                                                                     |
+|---------------|---------------------------------------------------------------------------------|
+| `object`      | The compare-exchange item is returned.<br> Returns `null` if key doesn't exist. |
+
+[key: string]: CompareExchangeValue<T>;
+
+{NOTE/}
+
+{NOTE: }
+__Get multiple values__
+
+{CODE:nodejs get_compare_exchange_2@ClientApi\Session\ClusterTransaction\CompareExchange.js /}
+
+| Parameters  | Type        | Description               |
+|-------------|-------------|---------------------------|
+| **keys**    | `string[]`  | Array of keys to retrieve |
+
+| Return value            | Description                                                |
+|--------------------------|------------------------------------------------------------|
+| `Record<string, object>` | If a key doesn't exists the associate value will be `null` |
+{NOTE/}
+
+{NOTE: }
+__Get compare-exchange lazily__
+
+{CODE:nodejs get_compare_exchange_3@ClientApi\Session\ClusterTransaction\CompareExchange.js /}
+
+| Parameters   | Type       | Description               |
+|--------------|------------|---------------------------|
+| **key**      | `string`   | The key to retrieve       |
+| **keys**     | `string[]` | Array of keys to retrieve |
+
+| Return value - after calling `getValue` | Description                                                                        |
+|-----------------------------------------|------------------------------------------------------------------------------------|
+| `object`                                | For single item:<br>If the key doesn't exist it will return `null`                 |
+| `Record<string, object>`                | For multiple items:<br>If a key doesn't exists the associate value will be `null`  |
+{NOTE/}
+{PANEL/}
+
+{PANEL: Delete compare-exchange}
+
+{NOTE: }
+
+{CODE:nodejs delete_compare_exchange@ClientApi\Session\ClusterTransaction\CompareExchange.js /}
+
+| Parameters | Type     | Description                                    |
+|------------|----------|------------------------------------------------|
+| **key**    | `string` | The key of the compare-exchange item to delete |
+| **index**  | `number` | The index of this compare-exchange item        |
+| **item**   | `object` | The compare-exchange item to delete            |
+
+{NOTE/}
+{PANEL/}
+
+## Related Articles
+
+### Compare-Exchange Operations
+
+- [Compare Exchange: Overview](../../../client-api/operations/compare-exchange/overview)
+- [Get a Compare-Exchange Value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
+- [Get Compare-Exchange Values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+- [Delete a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)

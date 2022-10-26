@@ -11,12 +11,6 @@
     ]
   },
   {
-    "Path": "atomic-guards.markdown",
-    "Name": "Atomic Guards",
-    "DiscussionId": "42e13e99-2dfb-4f8c-9cde-f0a2cbfccfe0",
-    "Mappings": []
-  },
-  {
     "Path": "put-compare-exchange-value.markdown",
     "Name": "Put Compare Exchange Value",
     "DiscussionId": "3e3b377d-5975-45f9-8ab9-f6f46c207fa9",

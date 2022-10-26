@@ -3,25 +3,22 @@
 
 {NOTE: }
 
-* Compare Exchange items are key/value pairs where the key serves a unique value across your database. 
+* Compare Exchange items are __key/value pairs__ where the key is unique across your database. 
 
 * Compare-exchange operations require cluster consensus to ensure consistency across all nodes.  
   Once a consensus is reached, the compare-exchange items are distributed through the Raft algorithm to all nodes in the database group.
 
-* When creating documents using a cluster-wide session RavenDB automatically creates [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards),  
-   which are compare-exchange items that guarantee ACID transactions.  
-   Cluster-wide transactions prioritize consistency over performance.  
+* Compare-exchange items can be used to coordinate work between sessions that are trying to modify a shared resource (such as a document) at the same time.
 
 * Compare-exchange items are [not replicated externally](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases) to other databases.
 
 * In this page:  
- * [What Compare Exchange Items Are](../../../client-api/operations/compare-exchange/overview#what-compare-exchange-items-are)  
- * [How to Create and Manage Compare-Exchange Items](../../../client-api/operations/compare-exchange/overview#how-to-create-and-manage-compare-exchange-items)  
- * [Using Compare-Exchange Items](../../../client-api/operations/compare-exchange/overview#using-compare-exchange-items)  
- * [Why Compare-Exchange Items are Not Replicated to External Databases](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases)  
- * [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)  
- * [Example II - Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview#example-ii---reserve-a-shared-resource)  
- * [Example III - Ensuring Unique Values without Using Compare Exchange](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange)  
+* [What Compare Exchange Items Are](../../../client-api/operations/compare-exchange/overview#what-compare-exchange-items-are)  
+* [Creating and Managing Compare-Exchange Items](../../../client-api/operations/compare-exchange/overview#creating-and-managing-compare-exchange-items)  
+* [Why Compare-Exchange Items are Not Replicated to External Databases](../../../client-api/operations/compare-exchange/overview#why-compare-exchange-items-are-not-replicated-to-external-databases)  
+* [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)  
+* [Example II - Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview#example-ii---reserve-a-shared-resource)  
+* [Example III - Ensuring Unique Values without Using Compare Exchange](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange)  
 
 {NOTE/}
 
@@ -50,13 +47,9 @@ Compare Exchange items are key/value pairs where the key servers a unique value 
 
 {PANEL/}
 
-{PANEL: How to Create and Manage Compare-Exchange Items}
+{PANEL: Creating and Managing Compare-Exchange Items}
   
 Compare exchange items are created and managed with any of the following approaches:
-
-* **Atomic Guards**  
-  To guarantee ACIDity across the cluster, RavenDB automatically creates and maintains [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards) 
-  in cluster-wide sessions.  (As of RavenDB version 5.2)
 
 * **Document Store Operations**  
   You can manage a compare-exchange item as an [Operation on the document store](../../../client-api/operations/compare-exchange/put-compare-exchange-value).  
@@ -67,38 +60,18 @@ Compare exchange items are created and managed with any of the following approac
      You will need to delete the compare-exchange item explicitly upon session failure if you don't want the compare-exchange item to persist.
 
 * **Cluster-Wide Sessions**  
-  You can manage a compare-exchange item from inside a [Cluster-Wide session](../../../client-api/session/cluster-transaction).  
+  You can manage a compare-exchange item from inside a [Cluster-Wide session](../../../client-api/session/cluster-transaction/compare-exchange).  
   If the session fails, the compare-exchange item creation also fails.  
   None of the nodes in the group will have the new compare-exchange item.
 
+
+* **Atomic Guards**  
+  When creating documents using a cluster-wide session RavenDB automatically creates [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards),  
+  which are compare-exchange items that guarantee ACID transactions.  
+  See [Cluster-wide vs. Single-node](../../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction) for a session comparision overview.
+
 * **Studio**  
   Compare-exchange items can be created from the [Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view) as well.
-
-{PANEL/}
-
-{PANEL: Using Compare-Exchange Items}
-
-#### Why use compare-exchange items
-
-* Compare-exchange items can be used to coordinate work between sessions that are 
-  trying to modify a shared resource (such as a document) at the same time.  
-
-* You can use compare-exchange items in various situations to reserve a unique resource.  
-   * [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)  
-   * [Example II - Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview#example-ii---reserve-a-shared-resource)  
-
----
-
-#### How Atomic Guard items work when protecting shared documents in cluster-wide sessions
-
-* Every time a document in a cluster-wide session is modified, RavenDB automatically creates 
-  or uses an associated compare-exchange item called [Atomic Guard](../../../client-api/operations/compare-exchange/atomic-guards).  
-  * Whenever one session changes and saves a document, the Atomic Guard version changes.  
-    If other sessions load the document before the version changed, they will not be able to modify it.  
-  * A `ConcurrencyException` will be thrown if the Atomic Guard version was modified by another session.  
-* **If a ConcurrencyException is thrown**:  
-  To ensure [atomicity](https://en.wikipedia.org/wiki/ACID#Atomicity), if even one action within a session fails, the entire [session will roll back](../../../client-api/session/what-is-a-session-and-how-does-it-work#batching).  
-  Be sure that your business logic is written so that if a concurrency exception is thrown, your code will re-execute the entire session.  
 
 {PANEL/}
 
@@ -135,7 +108,7 @@ To establish uniqueness without using compare-exchange see [Example III](../../.
 * The `User` object is saved as a document, hence it can be indexed, queried, etc.  
 
 * This compare-exchange item was [created as an operation](../../../client-api/operations/compare-exchange/put-compare-exchange-value)
-  rather than with a [cluster-wide session](../../../client-api/session/cluster-transaction).  
+  rather than with a [cluster-wide session](../../../client-api/session/cluster-transaction/overview).  
   Thus, if `session.SaveChanges` fails, then the email reservation is _not_ rolled back automatically.  
   It is your responsibility to do so.  
 
@@ -173,7 +146,7 @@ The reference documents will replicate to the destination database,
 as opposed to compare-exchange items, which are not externally replicated.
 
 {NOTE: }
-Sessions which process fields that must be unique should be set to [TransactionMode.ClusterWide](../../../client-api/session/cluster-transaction).  
+Sessions which process fields that must be unique should be set to [TransactionMode.ClusterWide](../../../client-api/session/cluster-transaction/overview).  
 {NOTE/}
 
 {CODE create_uniqueness_control_documents@Server\CompareExchange.cs /}
@@ -187,7 +160,7 @@ Sessions which process fields that must be unique should be set to [TransactionM
 - [Get Compare-Exchange Values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
 - [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
 - [Delete a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
-- [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards)
+- [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards)
 - [Resolving Document Conflicts](../../../client-api/cluster/document-conflicts-in-client-side)
 
 

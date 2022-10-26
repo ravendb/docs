@@ -1,0 +1,13 @@
+{
+    "scripts": {
+        "lint": "eslint ."
+    },
+    "dependencies": {
+        "ravendb": "^5.2.7"
+    },
+    "type": "module",
+    "devDependencies": {
+        "eslint": "^5.9.0",
+        "eslint-plugin-import": "^2.14.0"
+    }
+}

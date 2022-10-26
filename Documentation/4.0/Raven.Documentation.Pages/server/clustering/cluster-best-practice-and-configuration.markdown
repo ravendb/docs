@@ -54,8 +54,7 @@ If you must set [cluster configurations](../../server/configuration/cluster-conf
 ### Consistency
 
 - [Cluster-Wide Transactions](../../server/clustering/cluster-transactions)
-- [Session - Cluster-Wide](../../client-api/session/cluster-transaction)
-- [Atomic Guards](../../client-api/operations/compare-exchange/atomic-guards)
+- [Session - Cluster-Wide](../../client-api/session/cluster-transaction/overview)
 - [Compare Exchange](../../client-api/operations/compare-exchange/overview)
 
 ### Availability

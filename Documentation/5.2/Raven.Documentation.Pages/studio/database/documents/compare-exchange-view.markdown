@@ -10,11 +10,11 @@
   trying to modify a shared resource (such as a document) at the same time.
 
 * Compare exchange items are created and managed by either of the following:
-  * RavenDB [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards)  
+  * RavenDB [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards)  
     To guarantee ACIDity across the cluster, 
     as of RavenDB 5.2, we automatically create and maintain Atomic Guard CmpXchg items in cluster-wide sessions.  
   * [API Operations](../../../client-api/operations/compare-exchange/overview)
-  * [Session - Cluster Transaction](../../../client-api/session/cluster-transaction)
+  * [Session - Cluster Transaction](../../../client-api/session/cluster-transaction/overview)
   * Using the [RavenDB Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
 
 * In this page:
@@ -41,7 +41,7 @@
        A unique identifier that is reserved across the cluster.  
        Enter any string of your choice.  
         {INFO: Atomic Guards}
-        If keys start with "rvn-atomic", they are [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards).  
+        If keys start with "rvn-atomic", they are [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards).  
         They are created and maintained automatically to guarantee ACID cluster-wide transactions.  
         **Do not remove or edit these** as this will disable ACID guarantees.  
         
@@ -75,7 +75,7 @@
 ### Client API
 
 - [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview)  
-- [Atomic Guards](../../../client-api/operations/compare-exchange/atomic-guards)  
+- [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards)  
 
 ### Server
 
