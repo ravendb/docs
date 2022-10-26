@@ -6,16 +6,16 @@ async function updateDocuments() {
     {
         //region sample_document
         // Sample company document structure
-        class address {
+        class Address {
             constructor(code) {
                 this.postalCode = code;
             }
         }
 
-        class company {
+        class Company {
             constructor(name, code) {
                 this.name = name;
-                this.address = new address(code);
+                this.address = new Address(code);
             }
         }
         //endregion
@@ -39,12 +39,12 @@ async function updateDocuments() {
         const session = documentStore.openSession();
 
         // Query: find companies with the specified postalCode
-        const matchingCompanies = await session.query({collection: "companies"})
+        const matchingCompanies = await session.query({collection: "Companies"})
             .whereEquals("address.postalCode", "12345")
             .all();
 
         // Update the postalCode for the resulting company documents
-        matchingCompanies.forEach(c => c.address.postalCode = "TheNewPostalCode")
+        matchingCompanies.forEach(c => c.address.postalCode = "TheNewPostalCode");
 
         // Apply changes
         await session.saveChanges();
