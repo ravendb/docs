@@ -403,53 +403,6 @@ namespace Raven.Documentation.Samples.Indexes
         }
         #endregion
 
-        #region indexing_related_documents_2
-        public class Products_ByCategoryName : AbstractJavaScriptIndexCreationTask
-        {
-            public class Result
-            {
-                public string CategoryName { get; set; }
-            }
-
-            public Products_ByCategoryName()
-            {
-                Maps = new HashSet<string>()
-                {
-                    @"map('products', function(product ){
-                        return {
-                            CategoryName : load(product .Category, 'Categories').Name,
-                        }
-                    })"
-                };
-            }
-        }
-        #endregion
-
-        #region indexing_related_documents_5
-        public class Authors_ByNameAndBookNames : AbstractJavaScriptIndexCreationTask
-        {
-            public class Result
-            {
-                public string Name { get; set; }
-
-                public IList<string> Books { get; set; }
-            }
-
-            public Authors_ByNameAndBookNames()
-            {
-                Maps = new HashSet<string>()
-                {
-                    @"map('Author', function(a){
-                        return {
-                            Name: a.Name,
-                            Books: a.BooksIds.forEach(x => load(x, 'Book').Name)
-                        }
-                    })"
-                };
-            }
-        }
-        #endregion
-
         #region indexes_2
         public class BlogPosts_ByCommentAuthor : AbstractJavaScriptIndexCreationTask
         {

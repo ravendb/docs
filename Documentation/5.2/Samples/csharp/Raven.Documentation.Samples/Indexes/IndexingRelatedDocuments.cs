@@ -51,7 +51,8 @@ namespace Raven.Documentation.Samples.Indexes
                         CategoryName = category.Name
                     };
                         
-                    // Any change to either Products or Categories will trigger reindexing 
+                    // Since NoTracking was Not specified,
+                    // then any change to either Products or Categories will trigger reindexing 
             }
         }
         #endregion
@@ -74,7 +75,8 @@ namespace Raven.Documentation.Samples.Indexes
                         };
                     })"
                     
-                    // Any change to either Products or Categories will trigger reindexing 
+                    // Since noTracking was Not specified,
+                    // then any change to either Products or Categories will trigger reindexing 
                 };
             }
         }
@@ -117,7 +119,8 @@ namespace Raven.Documentation.Samples.Indexes
                         BookNames = author.BookIds.Select(x => LoadDocument<Book>(x).Name)
                     };
                 
-                // Any change to either Authors or Books will trigger reindexing 
+                // Since NoTracking was Not specified,
+                // then any change to either Authors or Books will trigger reindexing 
             }
         }
         #endregion
@@ -136,7 +139,58 @@ namespace Raven.Documentation.Samples.Indexes
                         }
                     })"
                     
-                    // Any change to either Authors or Books will trigger reindexing 
+                    // Since NoTracking was Not specified,
+                    // then any change to either Authors or Books will trigger reindexing 
+                };
+            }
+        }
+        #endregion
+        
+        #region indexing_related_documents_6
+        public class Products_ByCategoryName_NoTracking : AbstractIndexCreationTask<Product>
+        {
+            public class IndexEntry
+            {
+                public string CategoryName { get; set; }
+            }
+
+            public Products_ByCategoryName_NoTracking()
+            {
+                Map = products => from product in products
+                    
+                    // Call NoTracking.LoadDocument to load the related Category document w/o tracking
+                    let category = NoTracking.LoadDocument<Category>(product.Category)
+                    
+                    select new IndexEntry
+                    {
+                        // Index the Name field from the related Category document
+                        CategoryName = category.Name
+                    };
+                        
+                    // Since NoTracking is used -
+                    // then only the changes to Products will trigger reindexing 
+            }
+        }
+        #endregion
+        
+        #region indexing_related_documents_6_JS
+        public class Products_ByCategoryName_NoTracking_JS : AbstractJavaScriptIndexCreationTask
+        {
+            public Products_ByCategoryName_NoTracking_JS()
+            {
+                Maps = new HashSet<string>()
+                {
+                    // Call 'noTracking.load' to load the related Category document w/o tracking
+                    
+                    @"map('products', function(product) {
+                        let category = noTracking.load(product.Category, 'Categories')
+                        return {
+                            CategoryName: category.Name
+                        };
+                    })"
+                    
+                    // Since noTracking is used -
+                    // then only the changes to Products will trigger reindexing
                 };
             }
         }
@@ -191,6 +245,28 @@ namespace Raven.Documentation.Samples.Indexes
                         .Query<Authors_ByBooks.IndexEntry, Authors_ByBooks>()
                         .Where(x => x.BookNames.Contains("The Witcher"))
                         .OfType<Author>()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region indexing_related_documents_7
+                    IList<Product> matchingProducts = session
+                        .Query<Products_ByCategoryName_NoTracking.IndexEntry, Products_ByCategoryName_NoTracking>()
+                        .Where(x => x.CategoryName == "Beverages")
+                        .OfType<Product>()
+                        .ToList();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region indexing_related_documents_7_async
+                    IList<Product> matchingProducts = await asyncSession
+                        .Query<Products_ByCategoryName_NoTracking.IndexEntry, Products_ByCategoryName_NoTracking>()
+                        .Where(x => x.CategoryName == "Beverages")
+                        .OfType<Product>()
                         .ToListAsync();
                     #endregion
                 }
