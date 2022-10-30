@@ -64,6 +64,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.UpdateDocuments
                 using (var session = store.OpenSession())
                 {
                     // Load a company document
+                    // The entity loaded from the document will be added to the Session's entities map
                     Company company = session.Load<Company>("companies/1-A");
 
                     // Update the company's PostalCode
@@ -78,6 +79,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.UpdateDocuments
                 using (var session = store.OpenSession())
                 {
                     // Query: find companies with the specified PostalCode
+                    // The entities loaded from the matching documents will be added to the Session's entities map
                     IRavenQueryable<Company> query = session.Query<Company>()
                         .Where(c => c.Address.PostalCode == "12345");
 
@@ -132,6 +134,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.UpdateDocuments
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     // Load a document
+                    // The entity loaded from the document will be added to the Session's entities map
                     Company company = await asyncSession.LoadAsync<Company>("companies/KitchenAppliances");
 
                     // Update the company's PostalCode
@@ -146,6 +149,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.UpdateDocuments
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     // Query: find companies with the specified PostalCode
+                    // The entities loaded from the matching documents will be added to the Session's entities map
                     IRavenQueryable<Company> query = asyncSession.Query<Company>()
                         .Where(c => c.Address.PostalCode == "12345");
 

@@ -25,6 +25,7 @@ async function updateDocuments() {
         const session = documentStore.openSession();
 
         // Load a company document
+        // The entity loaded from the document will be added to the Session's entities map
         const company = await session.load("companies/1-A");
 
         // Update the company's postalCode
@@ -39,6 +40,7 @@ async function updateDocuments() {
         const session = documentStore.openSession();
 
         // Query: find companies with the specified postalCode
+        // The entities loaded from the matching documents will be added to the Session's entities map
         const matchingCompanies = await session.query({collection: "Companies"})
             .whereEquals("address.postalCode", "12345")
             .all();

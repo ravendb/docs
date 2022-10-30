@@ -1,12 +1,12 @@
-# Session: Update Documents
+# Update Entities
 ---
 
 {NOTE: }
 
-* To update documents:
+* To modify existing documents:
 
     * __Retrieve__ documents from the database using [Load](../../client-api/session/loading-entities#load) or by a [Query](../../client-api/session/querying/how-to-query#session.query).  
-      The entities loaded from the documents are added to an internal entities map which the Session manages.
+      The entities loaded from the documents are added to the internal entities map that the Session manages.
   
     * __Edit__ the properties you wish to change.  
       The session will track all changes made to the loaded entities.
