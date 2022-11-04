@@ -1,4 +1,4 @@
-﻿# Replication
+﻿# Replication Overview
 ---
 
 {NOTE: }
@@ -35,10 +35,10 @@
   __Delays__: There are no delays, data is immediately replicated.
 
 * This replication keeps the database data in sync across the database-group nodes.  
-  The data is highly available as reads & writes can be done on any of the nodes.  
+  The data is highly available as _reads & writes_ can be done on any of the nodes.  
 
 * You can _write_ to any node in the database group,  
-  that write will be recorded and automatically replicated to all other nodes in the database-group.
+  that _write_ will be recorded and automatically replicated to all other nodes in the database-group.
 
 ---
 
@@ -88,7 +88,7 @@ __The following database-items are replicated__:
 __Content replicated__:
 
 * The content of the replicated items data is Not changed.  
-* If content change is required then you can define [ETL tasks](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--replication-task) that use transformation scripts.
+* If content change is required then consider using [ETL tasks](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--replication-task) that use transformation scripts.
 {NOTE/}
 
 ---
@@ -135,7 +135,7 @@ __The following cluster-level features are Not replicated__:
 
 * The data is sent in batches from the source to the destination.  
   Once the batch is processed successfully on the destination side,  
-  the destination records the ETag of the last item it had received in that batch (last-accepted-ETag).
+  the destination records the ETag of the last item it had received in that batch ( __last-accepted-ETag__ ).
 
 * The destination sends a response back to the source with that last-accepted-ETag  
   so that the source will know where to continue sending the next batch from.
@@ -177,9 +177,9 @@ __Transaction boundaries in single-node transactions__
   batch, keeping the transaction boundary on the destination as well.
 
 * However, when a document is modified in two separate transactions,  
-  and if replication of the 1st transaction has not yet occurred,  
-  then that document will Not be sent when the 1st transaction is replicated,  
-  it will be sent with the 2nd transaction.
+  and if replication of the __1st__ transaction has not yet occurred,  
+  then that document will Not be sent when the __1st__ transaction is replicated,  
+  it will be sent with the __2nd__ transaction.
 
 * If you care about all the modifications that were done then enable revisions:  
   When a revision is created for a document it is written as part of the same transaction as the document.  
@@ -190,9 +190,8 @@ __Transaction boundaries in single-node transactions__
 
 #### How revisions replication help data consistency
 
-  Consider a scenario in which two documents, `Users/1` and `Users/2`,
-  are **created in the same transaction**, and then `Users/2` is **modified
-  in a different transaction**.
+  Consider a scenario in which two documents, `Users/1` and `Users/2`, are **created in the same transaction**,  
+  and then `Users/2` is **modified in a different transaction**.
 
   * **How will `Users/1` and `Users/2` be replicated?**  
       When RavenDB creates replication batches, it keeps the
