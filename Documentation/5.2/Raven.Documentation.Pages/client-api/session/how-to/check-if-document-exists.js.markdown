@@ -3,12 +3,12 @@
 ---
 
 {NOTE: }
-
+ 
 * To check whether the database contains a certain document,  
-  use method `exists()` from the `advanced` session operations.
+  use the method `exists()` from the `advanced` session operations.
 
-* Calling _'exists'_ does Not [load](../../../client-api/session/loading-entities) the document from the server or cause the session to
-  track it.
+* Calling _'exists'_ does not [load](../../../client-api/session/loading-entities) the document entity to the session,  
+  and the session will not track it.
 
 * In this page:
     * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists#check-if-document-exists)
@@ -19,13 +19,13 @@
 
 {PANEL: Check if document exists}
 
-{CODE:nodejs exists_2@ClientApi\Session\HowTo\exists.js /}
+{CODE:nodejs exists@ClientApi\Session\HowTo\documentExists.js /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE:nodejs exists_1@ClientApi\Session\HowTo\exists.js /}
+{CODE:nodejs syntax@ClientApi\Session\HowTo\documentExists.js /}
 
 | Parameter | Type | Description |
 | - | - | - |

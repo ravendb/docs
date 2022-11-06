@@ -4,14 +4,13 @@ const documentStore = new DocumentStore();
 const session = documentStore.openSession();
 
 {
-    let id;
-    //region exists_1
+    //region syntax
     session.advanced.exists(id);
     //endregion
 }
 
 async function sample() {
-    //region exists_2
+    //region exists
     const exists = await session.advanced.exists("employees/1-A");
     if (exists) {
         // document 'employees/1-A exists

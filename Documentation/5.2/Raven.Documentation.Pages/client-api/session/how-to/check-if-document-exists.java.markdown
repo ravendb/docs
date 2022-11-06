@@ -6,8 +6,7 @@
 
 * To check whether the database contains a certain document, use the method `exists()` from the `advanced` session operations.  
 
-* This does not [load](../../../client-api/session/loading-entities) the document from the server or cause the session to 
-track it.  
+* This does not [load](../../../client-api/session/loading-entities) the document from the server or cause the session to track it.  
 
 * In this page:  
   * [Syntax](../../../client-api/session/how-to/check-if-document-exists#syntax)  
@@ -18,7 +17,7 @@ track it.
 
 {PANEL: Syntax}
 
-{CODE:java exists_1@ClientApi\Session\HowTo\Exists.java /}
+{CODE:java exists_1@ClientApi\Session\HowTo\DocumentExists.java /}
 
 | Parameter | Type | Description |
 | - | - | - |
@@ -32,7 +31,7 @@ track it.
 
 {PANEL: Example}
 
-{CODE:java exists_2@ClientApi\Session\HowTo\Exists.java /}
+{CODE:java exists_2@ClientApi\Session\HowTo\DocumentExists.java /}
 
 {PANEL/}
 

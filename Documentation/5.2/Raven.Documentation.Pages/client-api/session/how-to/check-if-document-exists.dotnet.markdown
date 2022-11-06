@@ -5,10 +5,10 @@
 {NOTE: }
 
 * To check whether the database contains a certain document,  
-  use method `Exists()` from the `Advanced` session operations.  
+  use the method `Exists()` from the `Advanced` session operations.  
 
-* Calling _'Exists'_ does Not [Load](../../../client-api/session/loading-entities) the document from the server or cause the session to 
-track it.  
+* Calling _'Exists'_ does not [Load](../../../client-api/session/loading-entities) the document entity to the session,  
+  and the session will not track it. 
 
 * In this page:
     * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists#check-if-document-exists)
@@ -20,8 +20,8 @@ track it.
 {PANEL: Check if document exists}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync exists_2@ClientApi\Session\HowTo\Exists.cs /}
-{CODE-TAB:csharp:Async exists_2_async@ClientApi\Session\HowTo\Exists.cs /}
+{CODE-TAB:csharp:Sync exists_2@ClientApi\Session\HowTo\DocumentExists.cs /}
+{CODE-TAB:csharp:Async exists_2_async@ClientApi\Session\HowTo\DocumentExists.cs /}
 {CODE-TABS/}
 
 {PANEL/}
@@ -29,8 +29,8 @@ track it.
 {PANEL: Syntax}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync exists_1@ClientApi\Session\HowTo\Exists.cs /}
-{CODE-TAB:csharp:Async exists_1_async@ClientApi\Session\HowTo\Exists.cs /}
+{CODE-TAB:csharp:Sync exists_1@ClientApi\Session\HowTo\DocumentExists.cs /}
+{CODE-TAB:csharp:Async exists_1_async@ClientApi\Session\HowTo\DocumentExists.cs /}
 {CODE-TABS/}
 
 | Parameter | Type | Description |
