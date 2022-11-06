@@ -34,7 +34,7 @@
   __Conflicts__: Handled by the database resolution policy, which is the same for all the database instances.  
   __Delays__: There are no delays, data is immediately replicated.
 
-* This replication keeps the database data in sync across the database-group nodes.  
+* __Usage__: This replication keeps the database data in sync across the database-group nodes.  
   The data is highly available as _reads & writes_ can be done on any of the nodes.  
 
 * You can _write_ to any node in the database group,  
@@ -51,7 +51,7 @@
   __Conflicts__: Handled as defined by the destination database resolution policy.  
   __Delays__: Replication can be delayed as defined within the external-replication task.  
 
-* This replication allows you to have a live database replica in another cluster,  
+* __Usage__:  This replication allows you to have a live database replica in another cluster,  
   which can be used as a failover target.
 
 * It is possible to define two such tasks on separate clusters that will replicate to one another.  
@@ -67,7 +67,7 @@
   __Conflicts__: Handled as defined by the destination database resolution policy.  
   __Delays__: Replication can be delayed as defined within the Hub/Sink tasks.  
   
-* Data is replicated between the Hub and all Sinks connected to that Hub.  
+* __Usage__:  Data is replicated between the Hub and all Sinks connected to that Hub.  
   The connection is always triggered by the Sink.
 
 {PANEL/}
