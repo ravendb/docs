@@ -23,8 +23,8 @@ async function explain() {
     // Define an object that will receive the explanations results
     let explanationsResults;
 
-    const productResults = await session.query({ collection: "Products" })
-         // Call IncludeExplanations, pass a callback with 'explanationsResults' as a param,
+    const results = await session.query({ collection: "Products" })
+         // Call includeExplanations, pass a callback with 'explanationsResults' as a param,
          // it will be filled with the explenations results when query returns 
         .includeExplanations(e => explanationsResults = e)
          // Define query criteria

@@ -9,7 +9,7 @@
  
 * By default, getting the timings in queries is turned off.
 
-* __To get the query timings__ include a call to `Timings`.
+* __To get the query timings__ include a call to `timings`.
 
 * In this page:
     * [Include timings in query](../../../../client-api/session/querying/debugging/query-timings#include-timings-in-query)
@@ -22,10 +22,7 @@
 {PANEL: Include timings in query}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query-sync timing_1@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.cs /}
-{CODE-TAB:csharp:Query-async timing_3@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.cs /}
-{CODE-TAB:csharp:DocumentQuery-sync timing_2@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.cs /}
-{CODE-TAB:csharp:DocumentQuery-async timing_4@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.cs /}
+{CODE-TAB:nodejs:Query timing@ClientApi\Session\Querying\Debugging\includeQueryTimings.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Products
 where search(Name, 'Syrup') or search(Name, 'Lager')
@@ -47,15 +44,15 @@ include timings()
 
 {PANEL: Syntax}
 
-{CODE syntax@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.cs /}
+{CODE:nodejs syntax@ClientApi\Session\Querying\Debugging\includeQueryTimings.js /}
 
 | Parameters | Data type | Description |
 | - | - | - |
-| __timings__ | `QueryTimings` | An _out_ param that will be filled with the timings results |
+| __timingsCallback__ | `(timingsCallback) => void` | <ul><li>A callback function passing a `QueryTimings` object to the query.</li><li>This object will be filled with the timings results when query returns.</li></ul> |
 
 | `QueryTimings` | | |
 | - | - | - |
-| __DurationInMs__ | `long` | Total duration |
-| __Timings__ | `IDictionary<string, QueryTimings>` | Dictionary with `QueryTimings` info per time part |
+| __durationInMs__ | `number` | Total duration |
+| __timings__ | `Record<string, QueryTimings>` | Dictionary with `QueryTimings` info per time part |
 
 {PANEL/}
