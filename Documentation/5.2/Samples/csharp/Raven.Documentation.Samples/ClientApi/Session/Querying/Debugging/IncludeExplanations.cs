@@ -33,13 +33,13 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Debugging
                 using (var session = store.OpenSession())
                 {
                     #region explain
-                    // Query with a `DocumentQuery`
+                    // Query with `DocumentQuery`
                     var results = session.Advanced.DocumentQuery<Product>()
                         
                          // Call IncludeExplanations, provide an out param for the explanations results
                         .IncludeExplanations(out Explanations explanations)
-                         // Define the search criteria
-                         // Search for docs containing Syrup -or- Lager in their Name field
+                         // Define query criteria
+                         // i.e. search for docs containing Syrup -or- Lager in their Name field
                         .Search(x => x.Name, "Syrup Lager")
                          // Execute the query
                         .ToList();
@@ -50,17 +50,17 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Debugging
                     #endregion
                 }
 
-                using (var session = store.OpenAsyncSession())
+                using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region explain_async
-                    // Query with a `AsyncDocumentQuery`
-                    var results = await session.Advanced.AsyncDocumentQuery<Product>()
+                    // Query with `AsyncDocumentQuery`
+                    var results = await asyncSession.Advanced.AsyncDocumentQuery<Product>()
                         
                          // Call IncludeExplanations, provide an out param for the explanations results
                         .IncludeExplanations(out Explanations explanations)
-                         // Define the search criteria
-                         // Search for docs containing Syrup -or- Lager in their Name field
-                         .Search(x => x.Name, "Syrup Lager")
+                         // Define query criteria
+                         // i.e. search for docs containing Syrup -or- Lager in their Name field
+                        .Search(x => x.Name, "Syrup Lager")
                          // Execute the query
                         .ToListAsync();
 

@@ -27,8 +27,8 @@ async function explain() {
          // Call IncludeExplanations, pass a callback with 'explanationsResults' as a param,
          // it will be filled with the explenations results when query returns 
         .includeExplanations(e => explanationsResults = e)
-         // Define the search criteria
-         // Search for docs containing Syrup -or- Lager in their Name field
+         // Define query criteria
+         // i.e. search for docs containing Syrup -or- Lager in their Name field
         .search("Name", "Syrup Lager")
          // Execute the query
         .all();

@@ -1,6 +1,5 @@
 # How to Include Query Explanations
 
-
 ---
 
 {NOTE: }
@@ -37,7 +36,8 @@ include explanations()
 
 {PANEL: View explanations}
 
-* The detailed explanations can be viewed from the __Query view__ in the Studio:  
+* The detailed explanations can be viewed from the __Query view__ in the Studio.  
+* Running a query with `include explanations()` will show an additional __Explanations Tab__.
 
 ![Figure 1. Explanations in the Studio](images/include-explanations-1.png "Include explanations")
 
@@ -55,14 +55,8 @@ include explanations()
 | - | - | - |
 | __explanations__ | `Explanations` | An _out_ param that will be filled with the explanations results |
 
-{CODE syntax_2@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
-
-| Parameters | Data type | Description |
+| `Explanations` | |
 | - | - |
-| __docId__ | `string` | Resulting document ID for which to get score details |
-
-| Return Value | |
-|- | - |
-| `string[]` | A list with all explanations |
+| `string[] GetExplanations(string docId)` | <ul><li>Pass the resulting document ID for which to get score details.</li><li>Returns a list with all explanations.</li></ul> |
 
 {PANEL/}

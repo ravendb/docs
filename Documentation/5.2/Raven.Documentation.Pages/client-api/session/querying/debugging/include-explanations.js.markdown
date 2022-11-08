@@ -1,6 +1,5 @@
 # How to Include Query Explanations
 
-
 ---
 
 {NOTE: }
@@ -35,7 +34,8 @@ include explanations()
 
 {PANEL: View explanations}
 
-* The detailed explanations can be viewed from the __Query view__ in the Studio:  
+* The detailed explanations can be viewed from the __Query view__ in the Studio.  
+* Running a query with `include explanations()` will show an additional __Explanations Tab__.
 
 ![Figure 1. Explanations in the Studio](images/include-explanations-1.png "Include explanations")
 
