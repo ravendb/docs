@@ -75,6 +75,12 @@
         "Mappings": []
     },
     {
+        "Path": "get-entity-counters.markdown",
+        "Name": "...get entity counters",
+        "DiscussionId": "50a16426-4005-439b-8677-952ff194e073",
+        "Mappings": []
+    },
+    {
         "Path": "get-current-session-node.markdown",
         "Name": "...get current session node",
         "DiscussionId": "26d3278f-adfb-4262-9977-75359f912e63",
