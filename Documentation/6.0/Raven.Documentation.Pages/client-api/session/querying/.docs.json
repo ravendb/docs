@@ -163,5 +163,22 @@
         "Name": "How to Query With Exact Match",
         "DiscussionId": "b1c0918f-5fc3-4991-809d-c9014da73caf",
         "Mappings": []
+    },
+    {
+        "Path": "how-to-use-fuzzy.markdown",
+        "Name": "How to Use Fuzzy",
+        "DiscussionId": "cd7b4952-968a-4d66-a6c3-d08217efbf96",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-perform-proximity-search.markdown",
+        "Name": "How to Perform Proximity Search",
+        "DiscussionId": "c01f1b7c-038a-4663-a48b-b5401794bf96",
+        "Mappings": []
+    },
+    {
+        "Path": "/debugging",
+        "Name": "Debugging",
+        "Mappings": []
     }
 ]
