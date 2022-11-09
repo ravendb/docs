@@ -48,7 +48,7 @@ include timings()
 
 | Parameters | Data type | Description |
 | - | - | - |
-| __timingsCallback__ | `(timingsCallback) => void` | <ul><li>A callback function passing a `QueryTimings` object to the query.</li><li>This object will be filled with the timings results when query returns.</li></ul> |
+| __timingsCallback__ | `(timingsCallback) => void` | <ul><li>A callback function with an output parameter.</li><li>The parameter passed to the callback will be filled with the `QueryTimings` object when query returns.</li></ul> |
 
 | `QueryTimings` | | |
 | - | - | - |

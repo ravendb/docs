@@ -10,7 +10,6 @@ const session = documentStore.openSession();
 
     //region syntax_2
     class Explanations {
-        private _explanations;
         get explanations(): {
             [key: string]: string[]; // An explanations list per document ID key
         };
@@ -24,8 +23,8 @@ async function explain() {
     let explanationsResults;
 
     const results = await session.query({ collection: "Products" })
-         // Call includeExplanations, pass a callback with 'explanationsResults' as a param,
-         // it will be filled with the explenations results when query returns 
+         // Call includeExplanations, pass a callback function
+         // Output param 'explanationsResults' will be filled with explenations results when query returns 
         .includeExplanations(e => explanationsResults = e)
          // Define query criteria
          // i.e. search for docs containing Syrup -or- Lager in their Name field

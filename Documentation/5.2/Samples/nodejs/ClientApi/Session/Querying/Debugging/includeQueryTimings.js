@@ -22,8 +22,8 @@ async function timings() {
     let timingsResults;
 
     const results = await session.query({ collection: "Products" })
-        // Call timings, pass a callback with 'timingsResults' as a param,
-        // it will be filled with the timings details when query returns 
+        // Call timings, pass a callback function
+        // Output param 'timingsResults' will be filled with the timings details when query returns 
         .timings(t => timingsResults = t)
         // Define query criteria
         // i.e. search for docs containing Syrup -or- Lager in their Name field

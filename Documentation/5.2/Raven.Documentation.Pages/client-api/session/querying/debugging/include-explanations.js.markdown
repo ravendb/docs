@@ -51,7 +51,7 @@ include explanations()
 
 | Parameters | Data type | Description |
 | - | - | - |
-| __explanationsCallback__ | `(explanationsResults) => void` | <ul><li>A callback function passing an `Explanations` object to the query.</li><li>This object will be filled with the explanations results when query returns.</li></ul> |
+| __explanationsCallback__ | `(explanationsResults) => void` | <ul><li>A callback function with an output parameter.</li><li>The parameter passed to the callback will be filled with the `Explanations` object when query returns.</li></ul> |
 
 <small> __The Explanations object__: </small>
 {CODE:nodejs syntax_2@ClientApi\Session\Querying\Debugging\includeExplanations.js /}
