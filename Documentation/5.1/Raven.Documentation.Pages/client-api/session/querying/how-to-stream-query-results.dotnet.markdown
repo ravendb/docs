@@ -17,7 +17,7 @@
 * The stream results are a __snapshot of the data__ at the time when the query is computed by the server.  
   Results that match the query after it was already processed are not streamed to the client.
 
-* Streaming query results does not support using [include](../../../client-api/how-to/handle-document-relationships#includes).  
+* Streaming query results does not support using [include](../../../client-api/session/loading-entities#load-with-includes).  
   Learn how to __stream related documents__ here [below](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents).  
 
 * To stream query results, use the `Stream` method from the `Advanced` session operations.
@@ -59,7 +59,7 @@
 {CODE-TABS}
 {CODE-TAB:csharp:Sync stream_4@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TAB:csharp:Async stream_4_async@ClientApi\Session\Querying\HowToStream.cs /}
-{CODE-TAB:csharp:ProjectedClass class_1@ClientApi\Session\Querying\HowToStream.cs /}
+{CODE-TAB:csharp:ProjectedClass stream_4_class@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TABS/}
 
 {PANEL/}
@@ -69,6 +69,7 @@
 {CODE-TABS}
 {CODE-TAB:csharp:Sync stream_5@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TAB:csharp:Async stream_5_async@ClientApi\Session\Querying\HowToStream.cs /}
+{CODE-TAB:csharp:Index stream_5_index@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TABS/}
 
 {PANEL/}
@@ -78,7 +79,7 @@
 #### Why streaming query results does not support 'include':
 
 * A document can reference [related documents](../../../indexes/indexing-related-documents#what-are-related-documents).  
-* An [include](..) clause in a non-streamed query loads these related documents to the session  
+* An [include](../../../client-api/session/loading-entities#load-with-includes) clause in a non-streamed query loads these related documents to the session  
   so that they can be accessed without an additional query to the server.
 * Those included documents are sent to the client at the end of the query results.  
   This does not mesh well with streaming, which is designed to allow transferring massive amounts of data,  
@@ -102,7 +103,7 @@
 {CODE-TABS}
 {CODE-TAB:csharp:Sync stream_6@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TAB:csharp:Async stream_6_async@ClientApi\Session\Querying\HowToStream.cs /}
-{CODE-TAB:csharp:ProjectedClass class_2@ClientApi\Session\Querying\HowToStream.cs /}
+{CODE-TAB:csharp:ProjectedClass stream_6_class@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TABS/}
 
 {PANEL/}
