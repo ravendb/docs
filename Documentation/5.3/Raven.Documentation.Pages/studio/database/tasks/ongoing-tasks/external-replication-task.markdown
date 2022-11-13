@@ -135,7 +135,7 @@ f. Click **External Replication** to access the following interface.
   * Select a preferred mentor node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be the responsible node for this External Replication Task  
   * If not selected, then the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties))  
 
-5. **Create a new RavendDB connection string**  
+5. **Create a new RavenDB connection string**  
   * Select a connection string from the pre-defined list -or- create a new connection string to be used.  
   * The connection string defines the external database and its server URL to replicate to.  
     ![External Replication: Connection String](images/external-replication-connection-string.png "External Replication: Connection String")

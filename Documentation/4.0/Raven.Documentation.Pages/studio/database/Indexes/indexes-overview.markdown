@@ -237,7 +237,7 @@ Additional settings can be specified per field in the index-entry definition, co
 
 ---
 
-### Inside RavendDB 
+### Inside RavenDB 
 
 - [Working with Indexes](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/12-working-with-indexes)
 

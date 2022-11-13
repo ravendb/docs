@@ -19,7 +19,7 @@ storage.
 
 {PANEL: Configure Documents Compression}
 
-RavendDB will compress documents for selected collections, when storing those documents.  
+RavenDB will compress documents for selected collections, when storing those documents.  
 The compression will be applied to:  
 
 * Newly created documents  

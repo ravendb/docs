@@ -337,7 +337,7 @@ instead of using Studio.
 
 ---
 
-### Inside RavendDB 
+### Inside RavenDB 
 
 - [Working with Indexes](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/12-working-with-indexes)
 
