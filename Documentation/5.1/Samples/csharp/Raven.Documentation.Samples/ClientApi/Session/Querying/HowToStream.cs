@@ -15,17 +15,21 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
         private interface IFoo
         {
             #region syntax
+            // Stream by query:
             IEnumerator<StreamResult<T>> Stream<T>(IQueryable<T> query);
-
             IEnumerator<StreamResult<T>> Stream<T>(IQueryable<T> query, out StreamQueryStatistics streamQueryStats);
 
             IEnumerator<StreamResult<T>> Stream<T>(IDocumentQuery<T> query);
-
             IEnumerator<StreamResult<T>> Stream<T>(IDocumentQuery<T> query, out StreamQueryStatistics streamQueryStats);
 
             IEnumerator<StreamResult<T>> Stream<T>(IRawDocumentQuery<T> query);
-
             IEnumerator<StreamResult<T>> Stream<T>(IRawDocumentQuery<T> query, out StreamQueryStatistics streamQueryStats);
+            #endregion
+            
+            #region syntax_2
+            // Stream by prefix:
+            IEnumerator<StreamResult<T>> Stream<T>(string startsWith, string matches = null,
+                int start = 0, int pageSize = int.MaxValue, string startAfter = null);
             #endregion
         }
 
@@ -370,6 +374,52 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                             Order theOrderDoc = projection.Order;
                             Company theRelatedCompanyDoc = projection.Company;
                             Employee theRelatedEmployeeDoc = projection.Employee;
+                        }
+                    }
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region stream_7
+                    string idPrefix = "Orders/";
+                    string matches = "*25-A|77?-A";
+
+                    // Filter streamed results by the passing 'prefix' and an optional 'matches' string
+                    IEnumerator<StreamResult<Order>> streamResults = session.Advanced.Stream<Order>(idPrefix, matches);
+
+                    while (streamResults.MoveNext())
+                    {
+                        // Documents that will be returned are only those matching the following:
+                        // * Document ID starts with "Orders/"
+                        // * The rest of the ID (after prefix) must match the 'matches' string
+                        // e.g. "Orders/325-A" or Orders/772-A", etc.
+                        
+                        StreamResult<Order> currentResult = streamResults.Current;
+                        Order order = currentResult.Document;
+                    }
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region stream_7_async
+                    string idPrefix = "Orders/";
+                    string matches = "*25-A|77?-A";
+                    
+                    // Filter streamed results by the passing 'prefix' and an optional 'matches' string
+                    await using (IAsyncEnumerator<StreamResult<Order>> streamResults =
+                                 await asyncSession.Advanced.StreamAsync<Order>(idPrefix, matches))
+                    {
+                        while (await streamResults.MoveNextAsync())
+                        {
+                            // Documents that will be returned are only those matching the following:
+                            // * Document ID starts with "Orders/"
+                            // * The rest of the ID (after prefix) must match the 'matches' string
+                            // e.g. "Orders/325-A" or Orders/772-A", etc.
+
+                            StreamResult<Order> currentResult = streamResults.Current;
+                            Order order = currentResult.Document;
                         }
                     }
                     #endregion

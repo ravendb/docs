@@ -4,37 +4,46 @@
 
 {NOTE: }
 
-* RavenDB supports streaming queries for both dynamic queries and static index queries.  
-  __Streaming query results__ is useful when processing a large number of results.  
+* RavenDB supports __streaming data__ from the server to the client.  
+  Streaming is useful when processing a large number of results.
 
-* Neither the client nor the server holds the full query response in memory.   
+* The data streamed can be a result of a dynamic query, a static index query,  
+  or just filtered by a prefix.  
+
+* Neither the client nor the server holds the full response in memory.   
   Instead, as soon as the server has a __single result__, it sends it to the client,  
   Thus, your application can start processing results before the server sends them all.
 
-* The results of a streaming query are __not tracked__ by the session.  
+* The stream results are __not tracked__ by the session.  
   Changes made to them will not be sent to the server when _SaveChanges_ is called.
 
 * The stream results are a __snapshot of the data__ at the time when the query is computed by the server.  
   Results that match the query after it was already processed are not streamed to the client.
 
 * Streaming query results does not support using [include](../../../client-api/session/loading-entities#load-with-includes).  
-  Learn how to __stream related documents__ here [below](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents).  
+  Learn how to __stream related documents__ here [below](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents).
 
-* To stream query results, use the `Stream` method from the `Advanced` session operations.
+* To stream results, use the `Stream` method from the `Advanced` session operations.
 
 * In this page:
-    * [Stream a dynamic query](../../../client-api/session/querying/how-to-stream-query-results#stream-a-dynamic-query)
-    * [Stream a dynamic raw query](../../../client-api/session/querying/how-to-stream-query-results#stream-a-dynamic-raw-query)
-    * [Stream a projected query](../../../client-api/session/querying/how-to-stream-query-results#stream-a-projected-query)
-    * [Stream an index query](../../../client-api/session/querying/how-to-stream-query-results#stream-an-index-query)
-    * [Stream related documents](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents)
-    * [Syntax](../../../client-api/session/querying/how-to-stream-query-results#syntax)
-  
+    * [Stream by query](../../../client-api/session/querying/how-to-stream-query-results#stream-by-query)
+        * [Stream a dynamic query](../../../client-api/session/querying/how-to-stream-query-results#stream-a-dynamic-query)
+        * [Stream a dynamic raw query](../../../client-api/session/querying/how-to-stream-query-results#stream-a-dynamic-raw-query)
+        * [Stream a projected query](../../../client-api/session/querying/how-to-stream-query-results#stream-a-projected-query)
+        * [Stream an index query](../../../client-api/session/querying/how-to-stream-query-results#stream-an-index-query)
+        * [Stream related documents](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents)
+        * [By query syntax](../../../client-api/session/querying/how-to-stream-query-results#by-query-syntax)
+    * [Stream by prefix](../../../client-api/session/querying/how-to-stream-query-results#stream-by-prefix)
+        * [Stream results by prefix](../../../client-api/session/querying/how-to-stream-query-results#stream-results-by-prefix)
+        * [By prefix syntax](../../../client-api/session/querying/how-to-stream-query-results#by-prefix-syntax)
+
 {NOTE/}
 
 ---
+{PANEL: Stream by query}
 
-{PANEL: Stream a dynamic query}
+{NOTE: }
+#### Stream a dynamic query
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query-Sync stream_1@ClientApi\Session\Querying\HowToStream.cs /}
@@ -43,18 +52,20 @@
 {CODE-TAB:csharp:DocumentQuery-Async stream_2_async@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TABS/}
 
-{PANEL/}
+{NOTE/}
 
-{PANEL: Stream a dynamic raw query}
+{NOTE: }
+#### Stream a dynamic raw query
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync stream_3@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TAB:csharp:Async stream_3_async@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TABS/}
 
-{PANEL/}
+{NOTE/}
 
-{PANEL: Stream a projected query}
+{NOTE: }
+#### Stream a projected query
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync stream_4@ClientApi\Session\Querying\HowToStream.cs /}
@@ -62,9 +73,10 @@
 {CODE-TAB:csharp:ProjectedClass stream_4_class@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TABS/}
 
-{PANEL/}
+{NOTE/}
 
-{PANEL: Stream an index query}
+{NOTE: }
+#### Stream an index query
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync stream_5@ClientApi\Session\Querying\HowToStream.cs /}
@@ -72,30 +84,33 @@
 {CODE-TAB:csharp:Index stream_5_index@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TABS/}
 
-{PANEL/}
+{NOTE/}
 
-{PANEL: Stream related documents}
+{NOTE: }
+#### Stream related documents
 
-#### Why streaming query results does not support 'include':
+---
 
-* A document can reference [related documents](../../../indexes/indexing-related-documents#what-are-related-documents).  
+__Why streaming query results does not support 'include'__:
+
+* A document can reference [related documents](../../../indexes/indexing-related-documents#what-are-related-documents).
 * An [include](../../../client-api/session/loading-entities#load-with-includes) clause in a non-streamed query loads these related documents to the session  
   so that they can be accessed without an additional query to the server.
 * Those included documents are sent to the client at the end of the query results.  
   This does not mesh well with streaming, which is designed to allow transferring massive amounts of data,  
   possibly over a significant amount of time.
 
-#### How to stream related documents:
+__How to stream related documents__:
 
 * Instead of using _include_, define the query so that it will return a [projection](../../../indexes/querying/projections).
 * The projected query results will not be just the documents from the queried collection.  
   Instead, each result will be an entity containing the related document entities in addition to the original queried document.
 * On the client side, you need to define a class that matches the projected query result.
 
-#### Example:
+__Example__:
 
 * The below example uses RawQuery.  
-  However, the same logic can be applied to a Query, DocumentQuery, or when querying an index.  
+  However, the same logic can be applied to a Query, DocumentQuery, or when querying an index.
 * Note:  
   The projected class in the example contains the full related documents.  
   However, you can project just the needed properties from the related documents.
@@ -106,13 +121,16 @@
 {CODE-TAB:csharp:ProjectedClass stream_6_class@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TABS/}
 
+{NOTE/}
+
 {PANEL/}
 
-{PANEL: Syntax}
+{NOTE: }
+#### By query syntax
 
 {CODE syntax@ClientApi\Session\Querying\HowToStream.cs /}
 
-| Parameters | | |
+| Parameters | type | description |
 | - | - | - |
 | **query** | [IQueryable](../../../client-api/session/querying/how-to-query#session.query), [IDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery) | The query for which to stream results |
 | `out` **streamQueryStats** | [StreamQueryStatistics](../../../glossary/stream-query-statistics) | Information about performed query |
@@ -121,6 +139,43 @@
 | - | - |
 | IEnumerator<[StreamResult&lt;T&gt;](../../../glossary/stream-result)> | Enumerator with resulting entities |
 
+{NOTE/}
+
+{PANEL: Stream by prefix}
+
+{NOTE: }
+####  Stream results by prefix
+
+---
+
+* Streamed data can also be filtered by an __ID prefix__ and by other __filtering options__, see syntax below.
+* Note: No auto-index is created when streaming results by a prefix.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync stream_7@ClientApi\Session\Querying\HowToStream.cs /}
+{CODE-TAB:csharp:Async stream_7_async@ClientApi\Session\Querying\HowToStream.cs /}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+#### By prefix syntax
+
+{CODE syntax_2@ClientApi\Session\Querying\HowToStream.cs /}
+
+| Parameters | type | description |
+| - | - | - |
+| **startsWith** | `string` | Stream documents with this ID prefix |
+| **matches** | `string` | Filter the ID part that comes after the specified prefix.<br>Use '?' for any character, '*' any characters.<br>Use '&#124;' to separate rules. |
+| **start** | `int` | Number of documents to skip |
+| **pageSize** | `int` | Maximum number of documents to retrieve |
+| **startAfter** | `string` | Skip fetching documents until a this ID is found.<br>Only return documents after this ID (default: null). |
+
+| Return Value | |
+| - | - |
+| IEnumerator<[StreamResult&lt;T&gt;](../../../glossary/stream-result)> | Enumerator with resulting entities |
+
+{NOTE/}
 {PANEL/}
 
 ## Related Articles
@@ -134,6 +189,3 @@
 ### Inside RavenDB
 
 - [Streaming data](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/4-deep-dive-into-the-ravendb-client-api#streaming-data)
-
-
-

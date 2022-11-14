@@ -6,9 +6,14 @@ const session = documentStore.openSession();
 let query, statsCallback, callback;
 
 {
-    //region syntax
+     //region syntax_1
      await session.advanced.stream(query, [statsCallback]);
-    //endregion
+     //endregion
+    
+     //region syntax_2
+     await session.advanced.stream(idPrefix);
+     await session.advanced.stream(idPrefix, options);
+     //endregion
 }
 
 async function streamingExamples() {
@@ -140,6 +145,55 @@ async function streamingExamples() {
         });
         
         // Handle stats & stream events as described in the dynamic query example above.
+        //endregion
+    }
+    {
+        //region stream_6
+        const idPrefix = "Order";
+        
+        // Filter streamed results by passing an ID prefix
+        const streamResults = await session.advanced.stream(idPrefix);
+
+        queryStream.on("data", resultItem => {
+            // Only documents with ID that starts with 'Order' 
+            const resultDocument = resultItem.document;
+        });
+
+        queryStream.on("end", () => {
+            // Stream ended, no more data
+        });
+
+        queryStream.on("error", err => {
+            // Handle errors
+        });
+        //endregion
+    }
+    {
+        //region stream_7
+        const idPrefix = "Orders/";
+        const options = {
+            matches: "*25-A|77?-A"
+        }
+
+        // Filter streamed results by ID prefix and by options
+        const streamResults = await session.advanced.stream(idPrefix, options);
+
+        queryStream.on("data", resultItem => {
+            // Documents that will be returned are only those matching the following:
+            // * Document ID starts with "Orders/"
+            // * The rest of the ID (after prefix) must match the 'matches' string
+            // e.g. "Orders/325-A" or Orders/772-A", etc.
+            
+            const resultDocument = resultItem.document;
+        });
+
+        queryStream.on("end", () => {
+            // Stream ended, no more data
+        });
+
+        queryStream.on("error", err => {
+            // Handle errors
+        });
         //endregion
     }
 }
