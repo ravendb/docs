@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Commands;
 using Raven.Client.Documents.Indexes;
+using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.Session;
-using Raven.Client.Util;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.Querying
@@ -14,25 +14,22 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
     {
         private interface IFoo
         {
-            #region stream_1
+            #region syntax
+            // Stream by query:
             IEnumerator<StreamResult<T>> Stream<T>(IQueryable<T> query);
-
-            IEnumerator<StreamResult<T>> Stream<T>(
-                IQueryable<T> query,
-                out StreamQueryStatistics streamQueryStats);
+            IEnumerator<StreamResult<T>> Stream<T>(IQueryable<T> query, out StreamQueryStatistics streamQueryStats);
 
             IEnumerator<StreamResult<T>> Stream<T>(IDocumentQuery<T> query);
-
-            IEnumerator<StreamResult<T>> Stream<T>(
-                IDocumentQuery<T> query,
-                out StreamQueryStatistics streamQueryStats);
+            IEnumerator<StreamResult<T>> Stream<T>(IDocumentQuery<T> query, out StreamQueryStatistics streamQueryStats);
 
             IEnumerator<StreamResult<T>> Stream<T>(IRawDocumentQuery<T> query);
-
-            IEnumerator<StreamResult<T>> Stream<T>(
-                IRawDocumentQuery<T> query,
-                out StreamQueryStatistics streamQueryStats);
-
+            IEnumerator<StreamResult<T>> Stream<T>(IRawDocumentQuery<T> query, out StreamQueryStatistics streamQueryStats);
+            #endregion
+            
+            #region syntax_2
+            // Stream by prefix:
+            IEnumerator<StreamResult<T>> Stream<T>(string startsWith, string matches = null,
+                int start = 0, int pageSize = int.MaxValue, string startAfter = null);
             #endregion
         }
 
@@ -42,16 +39,110 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             {
                 using (var session = store.OpenSession())
                 {
-                    #region stream_2
-                    IQueryable<Employee> query = session
-                        .Query<Employee, Employees_ByFirstName>()
+                    #region stream_1
+                    // Define a query on a collection
+                    IRavenQueryable<Employee> query = session
+                        .Query<Employee>()
                         .Where(x => x.FirstName == "Robert");
+                    
+                    // Call 'Stream' to execute the query
+                    // Optionally, pass an 'out param' for getting the query stats
+                    IEnumerator<StreamResult<Employee>> streamResults = 
+                        session.Advanced.Stream(query, out StreamQueryStatistics streamQueryStats);
 
-                    IEnumerator<StreamResult<Employee>> results = session.Advanced.Stream(query);
-
-                    while (results.MoveNext())
+                    // Read from the stream
+                    while (streamResults.MoveNext())
                     {
-                        StreamResult<Employee> employee = results.Current;
+                        // Process the received result
+                        StreamResult<Employee> currentResult = streamResults.Current;
+                        
+                        // Get the document from the result
+                        // This entity will Not be tracked by the session
+                        Employee employee = currentResult.Document;
+                        
+                        // The currentResult item also provides the following:
+                        var employeeId  = currentResult.Id;
+                        var documentMetadata = currentResult.Metadata;
+                        var documentChangeVector = currentResult.ChangeVector;
+
+                        // Can get info from the stats, i.e. get number of total results
+                        int totalResults = streamQueryStats.TotalResults;
+                        // Get the Auto-Index that was used/created with this dynamic query
+                        string indexUsed = streamQueryStats.IndexName;
+                    }
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region stream_1_async
+                    // Define a query on a collection
+                    IRavenQueryable<Employee> query = asyncSession
+                        .Query<Employee>()
+                        .Where(x => x.FirstName == "Robert");
+                    
+                    // Call 'StreamAsync' to execute the query
+                    // Optionally, pass an 'out param' for getting the query stats
+                    await using (IAsyncEnumerator<StreamResult<Employee>> streamResults = 
+                                 await asyncSession.Advanced.StreamAsync(query, out StreamQueryStatistics streamQueryStats))
+                    {
+                        // Read from the stream
+                        while (await streamResults.MoveNextAsync())
+                        {
+                            // Process the received result
+                            StreamResult<Employee> currentResult = streamResults.Current;
+                            
+                            // Get the document from the result
+                            // This entity will Not be tracked by the session
+                            Employee employee = currentResult.Document;
+                            
+                            // The currentResult item also provides the following:
+                            var employeeId  = currentResult.Id;
+                            var documentMetadata = currentResult.Metadata;
+                            var documentChangeVector = currentResult.ChangeVector;
+                            
+                            // Can get info from the stats, i.e. get number of total results
+                            int totalResults = streamQueryStats.TotalResults;
+                            // Get the Auto-Index that was used/created with this dynamic query
+                            string indexUsed = streamQueryStats.IndexName;
+                        }
+                    }
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region stream_2
+                    // Define a document query on a collection
+                    IDocumentQuery<Employee> query = session
+                        .Advanced
+                        .DocumentQuery<Employee>()
+                        .WhereEquals(x => x.FirstName, "Robert");
+                    
+                    // Call 'Stream' to execute the query
+                    // Optionally, add an out param for getting the query stats
+                    IEnumerator<StreamResult<Employee>> streamResults = 
+                        session.Advanced.Stream(query, out StreamQueryStatistics streamQueryStats);
+
+                    // Read from the stream
+                    while (streamResults.MoveNext())
+                    {
+                        // Process the received result
+                        StreamResult<Employee> currentResult = streamResults.Current;
+                        
+                        // Get the document from the result
+                        // This entity will Not be tracked by the session
+                        Employee employee = currentResult.Document;
+                            
+                        // The currentResult item also provides the following:
+                        var employeeId  = currentResult.Id;
+                        var documentMetadata = currentResult.Metadata;
+                        var documentChangeVector = currentResult.ChangeVector;
+                        
+                        // Can get info from the stats, i.e. get number of total results
+                        int totalResults = streamQueryStats.TotalResults;
+                        // Get the Auto-Index that was used/created with this dynamic query
+                        string indexUsed = streamQueryStats.IndexName;
                     }
                     #endregion
                 }
@@ -59,34 +150,56 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region stream_2_async
-                    IQueryable<Employee> query = asyncSession
-                        .Query<Employee, Employees_ByFirstName>()
-                        .Where(x => x.FirstName == "Robert");
-
-                    IAsyncEnumerator<StreamResult<Employee>> results = await asyncSession.Advanced.StreamAsync(query);
-
-                    while (await results.MoveNextAsync())
+                    // Define a document query on a collection
+                    IAsyncDocumentQuery<Employee> query = asyncSession
+                        .Advanced
+                        .AsyncDocumentQuery<Employee>()
+                        .WhereEquals(x => x.FirstName, "Robert");
+                    
+                    // Call 'StreamAsync' to execute the query
+                    // Optionally, add an out param for getting the query stats
+                    await using (IAsyncEnumerator<StreamResult<Employee>> streamResults =
+                                 await asyncSession.Advanced.StreamAsync(query, out StreamQueryStatistics streamQueryStats))
                     {
-                        StreamResult<Employee> employee = results.Current;
+                        // Read from the stream
+                        while (await streamResults.MoveNextAsync())
+                        {
+                            // Process the received result
+                            StreamResult<Employee> currentResult = streamResults.Current;
+                            
+                            // Get the document from the result
+                            // This entity will Not be tracked by the session
+                            Employee employee = currentResult.Document;
+                            
+                            // The currentResult item also provides the following:
+                            var employeeId  = currentResult.Id;
+                            var documentMetadata = currentResult.Metadata;
+                            var documentChangeVector = currentResult.ChangeVector;
+                            
+                            // Can get info from the stats, i.e. get number of total results
+                            int totalResults = streamQueryStats.TotalResults;
+                            // Get the Auto-Index that was used/created with this dynamic query
+                            string indexUsed = streamQueryStats.IndexName;
+                        }
                     }
                     #endregion
                 }
 
-
                 using (var session = store.OpenSession())
                 {
                     #region stream_3
-                    IDocumentQuery<Employee> query = session
+                    // Define a raw query using RQL
+                    IRawDocumentQuery<Employee> query = session
                         .Advanced
-                        .DocumentQuery<Employee>()
-                        .WhereEquals(x => x.FirstName, "Robert");
+                        .RawQuery<Employee>("from Employees where FirstName = 'Robert'");
 
-                    StreamQueryStatistics streamQueryStats;
-                    IEnumerator<StreamResult<Employee>> results = session.Advanced.Stream(query, out streamQueryStats);
+                    // Call 'Stream' to execute the query
+                    IEnumerator<StreamResult<Employee>> streamResults = session.Advanced.Stream(query);
 
-                    while (results.MoveNext())
+                    while (streamResults.MoveNext())
                     {
-                        StreamResult<Employee> employee = results.Current;
+                        StreamResult<Employee> currentResult = streamResults.Current;
+                        Employee employee = streamResults.Current.Document;
                     }
                     #endregion
                 }
@@ -94,32 +207,40 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region stream_3_async
-                    IAsyncDocumentQuery<Employee> query = asyncSession
+                    // Define a raw query using RQL
+                    IAsyncRawDocumentQuery<Employee> query = asyncSession
                         .Advanced
-                        .AsyncDocumentQuery<Employee>()
-                        .WhereEquals(x => x.FirstName, "Robert");
+                        .AsyncRawQuery<Employee>("from Employees where FirstName = 'Robert'");
 
-                    IAsyncEnumerator<StreamResult<Employee>> results = await asyncSession.Advanced.StreamAsync(query);
-
-                    while (await results.MoveNextAsync())
+                    // Call 'StreamAsync' to execute the query
+                    await using (IAsyncEnumerator<StreamResult<Employee>> streamResults =
+                                 await asyncSession.Advanced.StreamAsync(query))
                     {
-                        StreamResult<Employee> employee = results.Current;
+                        while (await streamResults.MoveNextAsync())
+                        {
+                            StreamResult<Employee> currentResult = streamResults.Current;
+                            Employee employee = streamResults.Current.Document;
+                        }
                     }
                     #endregion
                 }
-
+                
                 using (var session = store.OpenSession())
                 {
                     #region stream_4
-                    IRawDocumentQuery<Employee> query = session
-                        .Advanced
-                        .RawQuery<Employee>("from Employees where FirstName = 'Robert'");
+                    // Define a query with projected results
+                    // Each query result is not an Emplyee document but an entity of type 'NameProjection'.
+                    IRavenQueryable<NameProjection> query = session
+                        .Query<Employee>()
+                        .ProjectInto<NameProjection>();
 
-                    IEnumerator<StreamResult<Employee>> results = session.Advanced.Stream(query);
+                    // Call 'Stream' to execute the query
+                    IEnumerator<StreamResult<NameProjection>> streamResults = session.Advanced.Stream(query);
 
-                    while (results.MoveNext())
+                    while (streamResults.MoveNext())
                     {
-                        StreamResult<Employee> employee = results.Current;
+                        StreamResult<NameProjection> currentResult = streamResults.Current;
+                        NameProjection employeeName = streamResults.Current.Document;
                     }
                     #endregion
                 }
@@ -127,63 +248,179 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region stream_4_async
-                    IAsyncRawDocumentQuery<Employee> query = asyncSession
-                        .Advanced
-                        .AsyncRawQuery<Employee>("from Employees where FirstName = 'Robert'");
+                    // Define a query with projected results
+                    // Each query result is not an Employee document but an entity of type 'NameProjection'.
+                    IRavenQueryable<NameProjection> query = asyncSession
+                        .Query<Employee>()
+                        .ProjectInto<NameProjection>();
 
-                    IAsyncEnumerator<StreamResult<Employee>> results = await asyncSession.Advanced.StreamAsync(query);
-
-                    while (await results.MoveNextAsync())
+                    // Call 'StreamAsync' to execute the query
+                    await using (IAsyncEnumerator<StreamResult<NameProjection>> streamResults =
+                                 await asyncSession.Advanced.StreamAsync(query))
                     {
-                        StreamResult<Employee> employee = results.Current;
+                        while (await streamResults.MoveNextAsync())
+                        {
+                            StreamResult<NameProjection> currentResult = streamResults.Current;
+                            NameProjection employeeName = streamResults.Current.Document;
+                        }
                     }
                     #endregion
                 }
 
                 using (var session = store.OpenSession())
                 {
-                    #region includes
-                    IRawDocumentQuery<MyProjection> query = session
-                        .Advanced
-                        .RawQuery<MyProjection>(@"from Orders as o 
-                                                where o.ShipTo.City = 'London'
-                                                load o.Company as c, o.Employee as e
-                                                select {
-                                                    order: o,
-                                                    company: c,
-                                                    employee: e
-                                                }");
+                    #region stream_5
+                    // Define a query on an index
+                    IQueryable<Employee> query = session.Query<Employee, Employees_ByFirstName>()
+                        .Where(employee => employee.FirstName == "Robert");
 
+                    // Call 'Stream' to execute the query
+                    IEnumerator<StreamResult<Employee>> streamResults = session.Advanced.Stream(query);
 
-                    IEnumerator<StreamResult<MyProjection>> results = session.Advanced.Stream(query);
-
-                    while (results.MoveNext())
+                    while (streamResults.MoveNext())
                     {
-                        StreamResult<MyProjection> projection = results.Current;
+                        StreamResult<Employee> currentResult = streamResults.Current;
+                        Employee employee = streamResults.Current.Document;
+                    }
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region stream_5_async
+                    // Define a query on an index
+                    IQueryable<Employee> query = asyncSession.Query<Employee, Employees_ByFirstName>()
+                        .Where(employee => employee.FirstName == "Robert");
+
+                    // Call 'StreamAsync' to execute the query
+                    await using (IAsyncEnumerator<StreamResult<Employee>> streamResults =
+                                 await asyncSession.Advanced.StreamAsync(query))
+                    {
+                        while (await streamResults.MoveNextAsync())
+                        {
+                            StreamResult<Employee> currentResult = streamResults.Current;
+                            Employee employee = streamResults.Current.Document;
+                        }
+                    }
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region stream_6
+                    // Define a query with a 'select' clause to project the results.
+                    
+                    // The related Company & Employee documents are 'loaded',
+                    // and returned in the projection together with the Order document itself.
+                    
+                    // Each query result is not an Order document but an entity of type 'AllDocsProjection'.
+                    
+                    IRawDocumentQuery<AllDocsProjection> query = session
+                        .Advanced
+                        .RawQuery<AllDocsProjection>(@"from Orders as o 
+                                                       where o.ShipTo.City = 'London'
+                                                       load o.Company as c, o.Employee as e
+                                                       select {
+                                                           Order: o,
+                                                           Company: c,
+                                                           Employee: e
+                                                       }");
+
+                    // Call 'Stream' to execute the query
+                    IEnumerator<StreamResult<AllDocsProjection>> streamResults = session.Advanced.Stream(query);
+
+                    while (streamResults.MoveNext())
+                    {
+                        StreamResult<AllDocsProjection> currentResult = streamResults.Current;
+                        AllDocsProjection projection = streamResults.Current.Document;
+                        
+                        Order theOrderDoc = projection.Order;
+                        Company theRelatedCompanyDoc = projection.Company;
+                        Employee theRelatedEmployeeDoc = projection.Employee;
                     }
                     #endregion
                 }
 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
-                    #region includes_async
-                    IAsyncRawDocumentQuery<MyProjection> query = asyncSession
+                    #region stream_6_async
+                    // Define a query with a 'select' clause to project the results.
+                    
+                    // The related Company & Employee documents are 'loaded',
+                    // and returned in the projection together with the Order document itself.
+                    
+                    // Each query result is not an Order document but an entity of type 'AllDocsProjection'.
+                    
+                    IAsyncRawDocumentQuery<AllDocsProjection> query = asyncSession
                         .Advanced
-                        .AsyncRawQuery<MyProjection>(@"from Orders as o 
+                        .AsyncRawQuery<AllDocsProjection>(@"from Orders as o 
                                                        where o.ShipTo.City = 'London'
                                                        load o.Company as c, o.Employee as e
                                                        select {
-                                                           order: o,
-                                                           company: c,
-                                                           employee: e
+                                                           Order: o,
+                                                           Company: c,
+                                                           Employee: e
                                                        }");
 
-
-                    IAsyncEnumerator<StreamResult<MyProjection>> results = await asyncSession.Advanced.StreamAsync(query);
-
-                    while (await results.MoveNextAsync())
+                    // Call 'StreamAsync' to execute the query
+                    await using (IAsyncEnumerator<StreamResult<AllDocsProjection>> streamResults =
+                                 await asyncSession.Advanced.StreamAsync(query))
                     {
-                        StreamResult<MyProjection> projection = results.Current;
+                        while (await streamResults.MoveNextAsync())
+                        {
+                            StreamResult<AllDocsProjection> currentResult = streamResults.Current;
+                            AllDocsProjection projection = streamResults.Current.Document;
+                            
+                            Order theOrderDoc = projection.Order;
+                            Company theRelatedCompanyDoc = projection.Company;
+                            Employee theRelatedEmployeeDoc = projection.Employee;
+                        }
+                    }
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region stream_7
+                    string idPrefix = "Orders/";
+                    string matches = "*25-A|77?-A";
+
+                    // Filter streamed results by the passing 'prefix' and an optional 'matches' string
+                    IEnumerator<StreamResult<Order>> streamResults = session.Advanced.Stream<Order>(idPrefix, matches);
+
+                    while (streamResults.MoveNext())
+                    {
+                        // Documents that will be returned are only those matching the following:
+                        // * Document ID starts with "Orders/"
+                        // * The rest of the ID (after prefix) must match the 'matches' string
+                        // e.g. "Orders/325-A" or Orders/772-A", etc.
+                        
+                        StreamResult<Order> currentResult = streamResults.Current;
+                        Order order = currentResult.Document;
+                    }
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region stream_7_async
+                    string idPrefix = "Orders/";
+                    string matches = "*25-A|77?-A";
+                    
+                    // Filter streamed results by the passing 'prefix' and an optional 'matches' string
+                    await using (IAsyncEnumerator<StreamResult<Order>> streamResults =
+                                 await asyncSession.Advanced.StreamAsync<Order>(idPrefix, matches))
+                    {
+                        while (await streamResults.MoveNextAsync())
+                        {
+                            // Documents that will be returned are only those matching the following:
+                            // * Document ID starts with "Orders/"
+                            // * The rest of the ID (after prefix) must match the 'matches' string
+                            // e.g. "Orders/325-A" or Orders/772-A", etc.
+
+                            StreamResult<Order> currentResult = streamResults.Current;
+                            Order order = currentResult.Document;
+                        }
                     }
                     #endregion
                 }
@@ -191,24 +428,37 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
         }
     }
 
+    #region stream_5_index
+    // The index:
     public class Employees_ByFirstName : AbstractIndexCreationTask<Employee>
     {
         public Employees_ByFirstName()
         {
             Map = employees => from employee in employees
-                               select new
-                               {
-                                   employee.FirstName
-                               };
+                select new
+                {
+                    FirstName = employee.FirstName
+                };
         }
     }
+    #endregion
 
-    #region class
-    public class MyProjection
+    #region stream_4_class
+    // Each query result will be of this class type
+    public class NameProjection
     {
-        public Order order { get; set; }
-        public Employee employee { get; set; }
-        public Company company { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+    #endregion
+    
+    #region stream_6_class
+    // Each query result will be of this class type
+    public class AllDocsProjection
+    {
+        public Order Order { get; set; }
+        public Employee Employee { get; set; }
+        public Company Company { get; set; }
     }
     #endregion
 }

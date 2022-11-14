@@ -1,95 +1,215 @@
 import { DocumentStore, AbstractIndexCreationTask } from "ravendb";
 
-let query, statsCallback, callback;
-
 const documentStore = new DocumentStore();
 const session = documentStore.openSession();
 
+let query, statsCallback, callback;
+
 {
-    //region stream_1
-    session.advanced.stream(query, [statsCallback]);
-    //endregion
+     //region syntax_1
+     await session.advanced.stream(query, [statsCallback]);
+     //endregion
+    
+     //region syntax_2
+     await session.advanced.stream(idPrefix);
+     await session.advanced.stream(idPrefix, options);
+     //endregion
 }
 
-async function examples() {
+async function streamingExamples() {
+    {
+        //region stream_1
+        // Define a query on a collection
+        const query = session.query({ collection: "employees" })
+            .whereEquals('FirstName', 'Robert');
+
+        // Call stream() to execute the query, it returns a Node.js ReadableStream.
+        // Parms: pass the query and an optional callback for getting the query stats.
+        let streamQueryStats;
+        const queryStream = await session.advanced.stream(query, s => streamQueryStats = s);
+
+        // Two options to get query stats:
+        // * Pass a callback to stream() with an 'out param' that will be filled with query stats.
+        //   This param can then be accessed in the 'end' event.
+        // * Or: Use an event listener, listen to the 'stats' event, as described below.
+
+        // Handle stream events with callback functions:        
+
+        // Process the item received:
+        queryStream.on("data", resultItem => {
+            // Get the employee entity from the result item.
+            // Note: This entity will Not be tracked by the session.
+            const employee = resultItem.document;
+
+            // The resultItem also provides the following:
+            const employeeId = resultItem.id;
+            const documentMetadata = resultItem.metadata;
+            const documentChangeVector = resultItem.changeVector;
+        });
+        
+        // Can get query stats by using an event listener:
+        queryStream.once("stats", queryStats => {
+            // Get number of total results
+            const totalResults = queryStats.totalResults;
+            // Get the Auto-Index that was used/created with this dynamic query
+            const indexUsed = queryStats.indexName;
+        });
+
+        // Stream emits an 'end' event when there is no more data to read:
+        queryStream.on("end", () => {            
+            // Get info from 'streamQueryStats', the stats object
+            const totalResults = streamQueryStats.totalResults;
+            const indexUsed = streamQueryStats.indexName;
+        });
+
+        queryStream.on("error", err => {
+            // Handle errors
+        });
+        //endregion
+    }
     {
         //region stream_2
-        const query = session
-            .query({ indexName: "Employees/ByFirstName" })
-            .whereEquals("FirstName", "Robert");
-
-        // stream() returns Node.js Readable 
-        const stream = await session.advanced.stream(query);
-
-        stream.on("data", data => {
-            // Employee { FirstName: "Robert", LastName: "Smith" id: "employees/1-A" }
-        });
-
-        stream.on("error", err => {
-            // handle errors
-        });
-
-        stream.on("end", () => {
-            // stream ended
-        });
-        //endregion
-    }
-
-    {
-        //region stream_3
-        const query = session.advanced
-            .documentQuery(Employee)
-            .whereEquals("FirstName", "Robert");
-
-        let streamStats;
-        const stream = await session.advanced
-            .stream(query, stats => streamStats = stats);
-
-        stream.on("data", data => {
-            // Employee { FirstName: "Robert", LastName: "Smith" id: "employees/1-A" }
-        });
-
-        stream.on("error", err => {
-            // handle errors
-        });
-
-        stream.on("end", () => {
-            // stream ended
-        });
-        //endregion
-    }
-
-    {
-        //region stream_4
+        // Define a raw query using RQL
         const rawQuery = session.advanced
             .rawQuery("from Employees where FirstName = 'Robert'");
 
-        const stream = session.advanced.stream(rawQuery);
+        // Call stream() to execute the query
+        const queryStream = await session.advanced.stream(rawQuery);
 
-        stream.on("data", data => {
-            // Employee { FirstName: "Robert", LastName: "Smith" id: "employees/1-A" }
+        // Handle stats & stream events as described in the dynamic query example above.
+        //endregion
+    }
+    {
+        //region stream_3
+        // Define a query with projected results
+        // Each query result is not an Employee document but an entity containing selected fields only.
+        const projectedQuery = session.query({collection: 'employees'})
+            .selectFields(['FirstName', 'LastName']);
+       
+        // Call stream() to execute the query
+        const queryStream = await session.advanced.stream(projectedQuery);
+
+        queryStream.on("data", resultItem => {
+            // entity contains only the projected fields
+            const employeeName = resultItem.document;
         });
 
-        stream.on("error", err => {
-            // handle errors
+        // Handle stats & stream events as described in the dynamic query example above.
+        //endregion
+    }
+    {
+        //region stream_4
+        // Define a query on an index
+        const query = session.query({ indexName: "Employees/ByFirstName" })
+            .whereEquals("FirstName", "Robert");
+
+        // Call stream() to execute the query
+        const queryStream = await session.advanced.stream(query);
+
+        // Can get info about the index used from the stats
+        queryStream.once("stats", queryStats => {
+            const indexUsed = queryStats.indexName;
+            const isIndexStale = queryStats.stale;
+            const lastTimeIndexWasUpdated = queryStats.indexTimestamp;
+        });
+        
+        // Handle stats & stream events as described in the dynamic query example above.
+        //endregion
+    }
+    {
+        //region stream_5
+        // Define a query with a 'select' clause to project the results.
+        
+        // The related Company & Employee documents are 'loaded',
+        // and returned in the projection together with the Order document itself.
+        
+        // Each query result is not an Order document
+        // but an entity containing the document & the related documents. 
+        const rawQuery = session.advanced
+            .rawQuery(`from Orders as o
+                       where o.ShipTo.City = 'London'
+                       load o.Company as c, o.Employee as e
+                       select {
+                           order: o,
+                           company: c,
+                           employee: e
+                       }`);
+
+        // Call stream() to execute the query
+        const queryStream = await session.advanced.stream(rawQuery);
+
+        queryStream.on("data", resultItem => {
+            const theOrderDocument = resultItem.document.order;
+            const theCompanyDocument = resultItem.document.company;
+            const theEmployeeDocument = resultItem.document.employee;
+        });
+        
+        // Handle stats & stream events as described in the dynamic query example above.
+        //endregion
+    }
+    {
+        //region stream_6
+        const idPrefix = "Order";
+        
+        // Filter streamed results by passing an ID prefix
+        const streamResults = await session.advanced.stream(idPrefix);
+
+        queryStream.on("data", resultItem => {
+            // Only documents with ID that starts with 'Order' 
+            const resultDocument = resultItem.document;
         });
 
-        stream.on("end", () => {
-            // stream ended
+        queryStream.on("end", () => {
+            // Stream ended, no more data
         });
 
+        queryStream.on("error", err => {
+            // Handle errors
+        });
+        //endregion
+    }
+    {
+        //region stream_7
+        const idPrefix = "Orders/";
+        const options = {
+            matches: "*25-A|77?-A"
+        }
+
+        // Filter streamed results by ID prefix and by options
+        const streamResults = await session.advanced.stream(idPrefix, options);
+
+        queryStream.on("data", resultItem => {
+            // Documents that will be returned are only those matching the following:
+            // * Document ID starts with "Orders/"
+            // * The rest of the ID (after prefix) must match the 'matches' string
+            // e.g. "Orders/325-A" or Orders/772-A", etc.
+            
+            const resultDocument = resultItem.document;
+        });
+
+        queryStream.on("end", () => {
+            // Stream ended, no more data
+        });
+
+        queryStream.on("error", err => {
+            // Handle errors
+        });
         //endregion
     }
 }
 
-class Employee {}
+//region stream_4_index
+// The index:
+class Employees_ByFirstName extends AbstractJavaScriptIndexCreationTask {
 
-class Employees_ByFirstName extends AbstractIndexCreationTask {
-    constructor() {
+    constructor () {
         super();
-        this.map = `from employee in docs.Employees 
-                select new { 
-                   employee.FirstName 
-                }`;
+
+        this.map("Employees", employee => {
+            return {
+                firstName: employee.FirstName
+            }
+        });
     }
 }
+//endregion
