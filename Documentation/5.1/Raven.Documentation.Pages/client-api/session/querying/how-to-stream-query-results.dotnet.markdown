@@ -169,7 +169,7 @@ __Example__:
 | **matches** | `string` | Filter the ID part that comes after the specified prefix.<br>Use '?' for any character, '*' any characters.<br>Use '&#124;' to separate rules. |
 | **start** | `int` | Number of documents to skip |
 | **pageSize** | `int` | Maximum number of documents to retrieve |
-| **startAfter** | `string` | Skip fetching documents until a this ID is found.<br>Only return documents after this ID (default: null). |
+| **startAfter** | `string` | Skip fetching documents until this ID is found.<br>Only return documents after this ID (default: null). |
 
 | Return Value | |
 | - | - |

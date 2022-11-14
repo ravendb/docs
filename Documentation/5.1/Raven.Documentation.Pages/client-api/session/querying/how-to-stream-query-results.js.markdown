@@ -168,7 +168,7 @@ __Example__:
 | __start__ | `number` | Number of documents to skip |
 | __pageSize__ | `number` | Maximum number of documents to retrieve |
 | __exclude__ | `strring` | Maximum number of documents to retrieve |
-| __startAfter__ | `string` | Skip fetching documents until a this ID is found.<br>Only return documents after this ID (default: null). |
+| __startAfter__ | `string` | Skip fetching documents until this ID is found.<br>Only return documents after this ID (default: null). |
 
 {NOTE/}
 {PANEL/}
