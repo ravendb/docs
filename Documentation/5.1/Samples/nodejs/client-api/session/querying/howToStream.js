@@ -83,7 +83,7 @@ async function streamingExamples() {
         //region stream_3
         // Define a query with projected results
         // Each query result is not an Employee document but an entity containing selected fields only.
-        const projectedQuery =session.query({collection: 'employees'})
+        const projectedQuery = session.query({collection: 'employees'})
             .selectFields(['FirstName', 'LastName']);
        
         // Call stream() to execute the query
