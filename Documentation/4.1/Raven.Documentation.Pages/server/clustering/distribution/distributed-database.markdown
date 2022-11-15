@@ -54,7 +54,7 @@ Each `Database Node` can be in one of the following states:
 
 {NOTE: States Flow}
 In general, all nodes in a newly created database are in a `Member` state.  
-When adding a new `Database Node` to an already existing database group, a [Mentor Node](../../../server/clustering/distribution/highly-available-tasks#mentor-node) 
+When adding a new `Database Node` to an already existing database group, a [Mentor Node](../../../server/clustering/distribution/highly-available-tasks#responsible-node) 
 is selected in order to update it.  
 The new node will be in a `Promotable` state until it receives _and_ indexes all the documents from the mentor node.  
 {NOTE/}
@@ -81,7 +81,7 @@ If any of the `Database Nodes` is down or partitioned, the [Cluster Observer](..
 2. If the node is for [Cluster.TimeBeforeAddingReplicaInSec](../../../server/configuration/cluster-configuration#cluster.timebeforeaddingreplicainsec) (default: 900 seconds) still in `Rehab`,  
    a new database node will be automatically added to the database group to replace the `Rehab` node.
 
-3. If the `Rehab` node is online again, it will be assigned with a [Mentor Node](../../../server/clustering/distribution/highly-available-tasks#mentor-node) to update him with the recent changes.
+3. If the `Rehab` node is online again, it will be assigned with a [Mentor Node](../../../server/clustering/distribution/highly-available-tasks#responsible-node) to update him with the recent changes.
 
 4. The first node to be up-to-date stays, while the other is deleted.
 
