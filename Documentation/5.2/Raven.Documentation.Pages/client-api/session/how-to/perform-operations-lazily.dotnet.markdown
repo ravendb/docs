@@ -96,7 +96,6 @@
 
 {PANEL: Execute all pending lazy operations}
 
-[//]: # (* To execute **all** pending lazy operations at once, use the `ExecuteAllPendingLazyOperations` method.  )
 * Use `ExecuteAllPendingLazyOperations` to execute **all** pending lazy operations at once. 
 
 {CODE lazy_ExecuteAllPendingLazyOperations@ClientApi\Session\HowTo\Lazy.cs /}

@@ -96,7 +96,6 @@
 
 {PANEL: Execute all pending lazy operations}
 
-[//]: # (* To execute **all** pending lazy operations at once, use the `ExecuteAllPendingLazyOperations` method.  )
 * Use `executeAllPendingLazyOperations` to execute **all** pending lazy operations at once. 
 
 {CODE:nodejs lazy_executeAllPendingLazyOperations@ClientApi\Session\HowTo\lazy.js /}

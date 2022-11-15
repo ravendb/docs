@@ -56,7 +56,7 @@ async function lazyExamples() {
             const session1 = documentStore.openSession();
 
             const employee = new Employee();
-            session1.store(employee, "employees/1-A");
+            await session1.store(employee, "employees/1-A");
             await session.saveChanges();
             
             // Get the tracked entity change-vector
