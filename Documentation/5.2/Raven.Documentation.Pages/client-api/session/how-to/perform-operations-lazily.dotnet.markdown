@@ -27,7 +27,7 @@
 <a id="loadEntities" /> __Load entities__
 
 * [Load](../../../client-api/session/loading-entities#load) loads a document entity from the database into the session.  
-  Loading entities can be executed lazily.   
+  Loading entities can be executed __lazily__.   
 
 {CODE lazy_Load@ClientApi\Session\HowTo\Lazy.cs /}
 {NOTE/}
@@ -36,7 +36,7 @@
 <a id="loadWithInclude" /> __Load entities with include__
 
 * [Load with include](../../../client-api/session/loading-entities#load-with-includes) loads both the document and the specified related document.    
-  Loading entities with include can be executed lazily.
+  Loading entities with include can be executed __lazily__.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Lazy-load-with-include lazy_LoadWithInclude@ClientApi\Session\HowTo\Lazy.cs /}
@@ -48,7 +48,7 @@
 <a id="loadStartingWith" /> __Load entities starting with__
 
 * [LoadStartingWith](../../../client-api/session/loading-entities#loadstartingwith) loads entities whose ID starts with the specified prefix.  
-  Loading entities with a common prefix can be executed lazily.
+  Loading entities with a common prefix can be executed __lazily__.
 
 {CODE lazy_LoadStartingWith@ClientApi\Session\HowTo\Lazy.cs /}
 {NOTE/}
@@ -62,7 +62,7 @@
   * If the entity is Not already loaded to the session:  
     the document will be loaded from the server only if the change-vector provided to the method is older than the one in the server
     (i.e. if the document in the server is newer).
-  * Loading entities conditionally can be executed lazily.  
+  * Loading entities conditionally can be executed __lazily__.  
 
 {CODE lazy_ConditionalLoad@ClientApi\Session\HowTo\Lazy.cs /}
 {NOTE/}
@@ -70,8 +70,8 @@
 {NOTE: }
 <a id="runQuery" /> __Run query__
 
-* A Query can be executing a lazily.  
-  Learn more about running queries lazily in [Lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily).
+* A Query can be executing a __lazily__.  
+  Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily).
 
 {CODE lazy_Query@ClientApi\Session\HowTo\Lazy.cs /}
 {NOTE/}
@@ -79,7 +79,7 @@
 {NOTE: }
 <a id="getRevisons" /> __Get revisions__
 
-* All methods for [getting revisions](../../../client-api/session/revisions/loading#revisions-loading-revisions) and their metadata can be executed lazily.
+* All methods for [getting revisions](../../../client-api/session/revisions/loading#revisions-loading-revisions) and their metadata can be executed __lazily__.
 
 {CODE lazy_Revisions@ClientApi\Session\HowTo\Lazy.cs /}
 {NOTE/}
@@ -87,7 +87,7 @@
 {NOTE: }
 <a id="getCompareExchange" /> __Get compare-exchange value__
 
-* [Getting compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange) values can be executed lazily.
+* [Getting compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange) values can be executed __lazily__.
 
 {CODE lazy_CompareExchange@ClientApi\Session\HowTo\Lazy.cs /}
 {NOTE/}

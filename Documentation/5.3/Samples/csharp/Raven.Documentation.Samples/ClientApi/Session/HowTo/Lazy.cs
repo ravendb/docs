@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.CompareExchange;
+using Raven.Client.Documents.Session;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
@@ -61,27 +62,26 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 
                     var employees = lazyEmployees.Value; // 'Load' operation is executed here
                     // The employee entities are now loaded & tracked by the session
-                    
-                    int employeesCount = employees.Count;
                     #endregion
                 }
                 
                 #region lazy_ConditionalLoad
-                // Create document and get the change-vector:
+                // Create document and get its change-vector:
                 string changeVector; 
-                using (var session = store.OpenSession())
+                using (var session1 = store.OpenSession())
                 {
                     Employee employee = new Employee();
-                    session.Store(employee, "employees/1-A");
-                    session.SaveChanges();
+                    session1.Store(employee, "employees/1-A");
+                    session1.SaveChanges();
+                    
                     // Get the tracked entity change-vector
-                    changeVector = session.Advanced.GetChangeVectorFor(employee);
+                    changeVector = session1.Advanced.GetChangeVectorFor(employee);
                 }
                 
                 // Conditionally lazy-load the document:
-                using (var session = store.OpenSession())
+                using (var session2 = store.OpenSession())
                 {
-                    var lazyEmployee = session
+                    var lazyEmployee = session2
                          // Add a call to Lazily 
                         .Advanced.Lazily
                          // Document will Not be loaded from the database here, no server call is made
@@ -89,6 +89,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 
                     var loadedItem = lazyEmployee.Value; // 'ConditionalLoad' operation is executed here
                     Employee employee = loadedItem.Entity;
+                    
                     // If ConditionalLoad has actually fetched the document from the server (logic described above)
                     // then the employee entity is now loaded & tracked by the session
                     
@@ -106,49 +107,49 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                         .Lazily();
 
                     IEnumerable<Employee> employees = lazyEmployees.Value; // Query is executed here
+                    
+                    // Note: Since query results are not projected,
+                    // then the resulting employee entities will be tracked by the session.
                     #endregion
                 }
 
                 using (var session = store.OpenSession())
                 {
-                    #region lazy_Revisions
-                    // Request to get a revision lazily: 
+                    #region lazy_Revisions 
                     var lazyRevisions = session
                          // Add a call to Lazily 
                         .Advanced.Revisions.Lazily
-                         // Revisions will not be fetched here, no server call is made
+                         // Revisions will Not be fetched here, no server call is made
                         .GetFor<Employee>("employees/1-A");
                     
-                         // Apply the same usage for the other 2 methods:
+                         // Usage is the same for the other get revisions methods:
                          // .Get()
                          // .GetMetadataFor()
 
-                    List<Employee> revisionsLazyResult = lazyRevisions.Value; // Getting revisions is executed here
+                    List<Employee> revisions = lazyRevisions.Value; // Getting revisions is executed here
                     #endregion
                 }
                 
                 #region lazy_CompareExchange
-                // Create compare-exchange value:
-                using (var session = store.OpenSession())
+                using (var session =
+                       store.OpenSession(new SessionOptions { TransactionMode = TransactionMode.ClusterWide }))
                 {
+                    // Create compare-exchange value:
                     session.Advanced.ClusterTransaction
                         .CreateCompareExchangeValue(key: "someKey", value: "someValue");
                     session.SaveChanges();
-                }
-                
-                // Get the compare-exchange value lazily: 
-                using (var session = store.OpenSession())
-                {
+
+                    // Get the compare-exchange value lazily: 
                     var lazyCmpXchg = session
                         // Add a call to Lazily 
                         .Advanced.ClusterTransaction.Lazily
-                        // Compare-exchange values will not be fetched here, no server call is made
+                        // Compare-exchange values will Not be fetched here, no server call is made
                         .GetCompareExchangeValue<string>("someKey");
                     
-                        // Apply the same usage for the other method:
-                        // .GetCompareExchangeValues()
+                    // Usage is the same for the other method:
+                    // .GetCompareExchangeValues()
 
-                    CompareExchangeValue<string> cmpXchgValue = 
+                    CompareExchangeValue<string> cmpXchgValue =
                         lazyCmpXchg.Value; // Getting compare-exchange value is executed here
                 }
                 #endregion
@@ -157,20 +158,17 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                 {
                     #region lazy_ExecuteAllPendingLazyOperations
                     // Define multiple lazy requests
-                    Lazy<User> LazyUser1 =
-                        session.Advanced.Lazily.Load<User>("users/1-A");
-                    Lazy<User> LazyUser2 =
-                        session.Advanced.Lazily.Load<User>("users/2-A");
-                    Lazy<IEnumerable<Employee>> LazyEmployees =
-                        session.Query<Employee>().Lazily();
+                    Lazy<User> lazyUser1 = session.Advanced.Lazily.Load<User>("users/1-A");
+                    Lazy<User> lazyUser2 = session.Advanced.Lazily.Load<User>("users/2-A");
+                    Lazy<IEnumerable<Employee>> lazyEmployees = session.Query<Employee>().Lazily();
 
                     // Execute all pending lazy operations
                     session.Advanced.Eagerly.ExecuteAllPendingLazyOperations();
                     
                     // All values are now available
-                    User user1 = LazyUser1.Value;
-                    User user2 = LazyUser2.Value;
-                    IEnumerable<Employee> employees = LazyEmployees.Value;
+                    User user1 = lazyUser1.Value;
+                    User user2 = lazyUser2.Value;
+                    IEnumerable<Employee> employees = lazyEmployees.Value;
                     #endregion
                 }
             }
