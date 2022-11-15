@@ -1,116 +1,104 @@
-# Session: How to Perform Operations Lazily
+# How to Perform Operations Lazily
 
 ---
 
 {NOTE: }
 
-* **Performing an operation lazily** allows you to defer the execution of the operation 
-  until it is needed.  
+* **Defining a lazy operation** allows deferring the execution of the operation until it is needed.  
 
-* Operations that can be executed lazily include: Loading documents and included documents, 
-  Retrieving revisions, Getting compare exchange values and related data, and various 
-  other operations specified below.  
+* Multiple pending lazy operations can be executed together, see below. 
 
-* You can execute **all** pending lazy operations using 
-  [ExecuteAllPendingLazyOperations](../../../client-api/session/how-to/perform-operations-lazily#executing-all-pending-lazy-operations).  
-
-* In this page:  
-   * [Lazy Operations](../../../client-api/session/how-to/perform-operations-lazily#lazy-operations)  
-      * [Load](../../../client-api/session/how-to/perform-operations-lazily#section)  
-      * [Load with Include](../../../client-api/session/how-to/perform-operations-lazily#with-)  
-      * [Query](../../../client-api/session/how-to/perform-operations-lazily#section-1)  
-      * [LoadStartingWith](../../../client-api/session/how-to/perform-operations-lazily#section-2)  
-      * [ConditionalLoad](../../../client-api/session/how-to/perform-operations-lazily#section-3)  
-      * [Revisions](../../../client-api/session/how-to/perform-operations-lazily#revisions)  
-      * [GetCompareExchangeValue](../../../client-api/session/how-to/perform-operations-lazily#section-4)  
-   * [Executing All Pending Lazy Operations](../../../client-api/session/how-to/perform-operations-lazily#executing-all-pending-lazy-operations)  
+* In this page:
+   * [Operations that can be executed lazily](../../../client-api/session/how-to/perform-operations-lazily#operations-that-can-be-executed-lazily)  
+      * [Load entities](../../../client-api/session/how-to/perform-operations-lazily#loadEntities)  
+      * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily#loadWithInclude)  
+      * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily#loadStartingWith)
+      * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily#conditionalLoad)
+      * [Run query](../../../client-api/session/how-to/perform-operations-lazily#runQuery)
+      * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily#getRevisons)  
+      * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily#getCompareExchange)     
+   * [Execute all pending lazy operations](../../../client-api/session/how-to/perform-operations-lazily#execute-all-pending-lazy-operations)  
 
 {NOTE/}
 
-{PANEL: Lazy Operations}
+{PANEL: Operations that can be executed lazily}
 
-Operations that can be executed lazily include:
+{NOTE: }
+<a id="loadEntities" /> __Load entities__
 
----
+* [Load](../../../client-api/session/loading-entities#load) loads a document entity from the database into the session.  
+  Loading entities can be executed lazily.   
 
-### `Load`
-You can load entities lazily using the [Load](../../../client-api/session/loading-entities#load) method.  
-
-#### Example
 {CODE lazy_Load@ClientApi\Session\HowTo\Lazy.cs /}
+{NOTE/}
 
----
+{NOTE: }
+<a id="loadWithInclude" /> __Load entities with include__
 
-### `Load` with `Include`
-You can [load entities witn includes](../../../client-api/session/loading-entities#load-with-includes) lazily.  
+* [Load with include](../../../client-api/session/loading-entities#load-with-includes) loads both the document and the specified related document.    
+  Loading entities with include can be executed lazily.
 
-#### Example
-{CODE lazy_UserDefinition@ClientApi\Session\HowTo\Lazy.cs /}
-{CODE lazy_LoadWithIncludes@ClientApi\Session\HowTo\Lazy.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Lazy-load-with-include lazy_LoadWithInclude@ClientApi\Session\HowTo\Lazy.cs /}
+{CODE-TAB:csharp:The-document lazy_productClass@ClientApi\Session\HowTo\Lazy.cs /}
+{CODE-TABS/}
+{NOTE/}
 
----
+{NOTE: }
+<a id="loadStartingWith" /> __Load entities starting with__
 
-### `Query`
+* [LoadStartingWith](../../../client-api/session/loading-entities#loadstartingwith) loads entities whose ID starts with the specified prefix.  
+  Loading entities with a common prefix can be executed lazily.
 
-Learn more [here](../../../client-api/session/querying/how-to-perform-queries-lazily) 
-about running queries lazily.  
-
-#### Example
-{CODE lazy_Query@ClientApi\Session\HowTo\Lazy.cs /}
-
----
-
-### `LoadStartingWith`
-`LoadStartingWith` loads entities whose ID starts with a specified prefix. 
-Learn more about it [here](../../../client-api/session/loading-entities#loadstartingwith).  
-Use `LoadStartingWith` lazily as shown in the example below.  
-
-#### Example
 {CODE lazy_LoadStartingWith@ClientApi\Session\HowTo\Lazy.cs /}
+{NOTE/}
 
----
+{NOTE: }
+<a id="conditionalLoad" /> __Conditional load__
 
-### `ConditionalLoad`
-`ConditionalLoad` loads only documents whose change vector has changed since 
-the last load.  
-Learn more about it [here](../../../client-api/session/loading-entities#conditionalload).  
-Use `ConditionalLoad` lazily as shown in the example below.  
+* [ConditionalLoad](../../../client-api/session/loading-entities#conditionalload) logic is: 
+  * If the entity is already loaded to the session:  
+    no server call is made, the tracked entity is returned.    
+  * If the entity is Not already loaded to the session:  
+    the document will be loaded from the server only if the change-vector provided to the method is older than the one in the server
+    (i.e. if the document in the server is newer).
+  * Loading entities conditionally can be executed lazily.  
 
-#### Example
 {CODE lazy_ConditionalLoad@ClientApi\Session\HowTo\Lazy.cs /}
+{NOTE/}
 
----
+{NOTE: }
+<a id="runQuery" /> __Run query__
 
-### Revisions
-[Document Revisions](../../../client-api/session/revisions/what-are-revisions) 
-and data related to them can be loaded using several methods. Each of these methods 
-can also be used lazily.  
+* A Query can be executing a lazily.  
+  Learn more about running queries lazily in [Lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily).
 
-| Revision_Method | Lazy_Version    |
-| --------------- | --------------- |
-| [Get](../../../client-api/session/revisions/loading#get) | `session.Advanced.Revisions.Lazily.Get` |
-| [GetFor](../../../client-api/session/revisions/loading#getfor) | `session.Advanced.Revisions.Lazily.GetFor` |
-| [GetMetadataFor](../../../client-api/session/revisions/loading#getmetadatafor) | `session.Advanced.Revisions.Lazily.GetMetadataFor` |
+{CODE lazy_Query@ClientApi\Session\HowTo\Lazy.cs /}
+{NOTE/}
 
-#### Example
+{NOTE: }
+<a id="getRevisons" /> __Get revisions__
+
+* All methods for [getting revisions](../../../client-api/session/revisions/loading#revisions-loading-revisions) and their metadata can be executed lazily.
+
 {CODE lazy_Revisions@ClientApi\Session\HowTo\Lazy.cs /}
+{NOTE/}
 
----
+{NOTE: }
+<a id="getCompareExchange" /> __Get compare-exchange value__
 
-### `GetCompareExchangeValue`
+* [Getting compare-exchange](../../../client-api/session/cluster-transaction#get-compare-exchange-lazily) values can be executed lazily.
 
-Use `GetCompareExchangeValue` to retrieve Compare Exchange values.  
-Learn [here](../../../client-api/session/cluster-transaction#get-compare-exchange-lazily) 
-how to use this method lazily.  
+{CODE lazy_CompareExchange@ClientApi\Session\HowTo\Lazy.cs /}
+{NOTE/}
 
 {PANEL/}
 
-{PANEL: Executing All Pending Lazy Operations}
+{PANEL: Execute all pending lazy operations}
 
-To execute **all** pending lazy operations at once, use the 
-`session.Advanced.Eagerly.ExecuteAllPendingLazyOperations` method.  
+[//]: # (* To execute **all** pending lazy operations at once, use the `ExecuteAllPendingLazyOperations` method.  )
+* Use `ExecuteAllPendingLazyOperations` to execute **all** pending lazy operations at once. 
 
-#### Example
 {CODE lazy_ExecuteAllPendingLazyOperations@ClientApi\Session\HowTo\Lazy.cs /}
 
 {PANEL/}
