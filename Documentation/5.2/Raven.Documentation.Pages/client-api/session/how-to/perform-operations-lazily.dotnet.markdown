@@ -79,7 +79,7 @@
 {NOTE: }
 <a id="getRevisons" /> __Get revisions__
 
-* All methods for [getting revisions](../../../document-extensions/revisions/client-api/session/loading) and their metadata can be executed __lazily__.
+* All methods for [getting revisions](../../../client-api/session/revisions/loading#revisions-loading-revisions) and their metadata can be executed __lazily__.
 
 {CODE lazy_Revisions@ClientApi\Session\HowTo\Lazy.cs /}
 {NOTE/}

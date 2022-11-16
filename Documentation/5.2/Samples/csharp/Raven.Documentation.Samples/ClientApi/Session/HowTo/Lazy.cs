@@ -146,8 +146,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                         // Compare-exchange values will Not be fetched here, no server call is made
                         .GetCompareExchangeValue<string>("someKey");
                     
-                        // Usage is the same for the other method:
-                        // .GetCompareExchangeValues()
+                    // Usage is the same for the other method:
+                    // .GetCompareExchangeValues()
 
                     CompareExchangeValue<string> cmpXchgValue =
                         lazyCmpXchg.Value; // Getting compare-exchange value is executed here

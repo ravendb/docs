@@ -26,37 +26,37 @@
 {NOTE: }
 <a id="loadEntities" /> __Load entities__
 
-* [Load](../../../client-api/session/loading-entities#load) loads a document entity from the database into the session.  
+* ['load'](../../../client-api/session/loading-entities#load) loads a document entity from the database into the session.  
   Loading entities can be executed __lazily__.   
 
-{CODE lazy_Load@ClientApi\Session\HowTo\Lazy.cs /}
+{CODE:nodejs lazy_load@client-api\Session\HowTo\lazy.js /}
 {NOTE/}
 
 {NOTE: }
 <a id="loadWithInclude" /> __Load entities with include__
 
-* [Load with include](../../../client-api/session/loading-entities#load-with-includes) loads both the document and the specified related document.    
+* ['load' with include](../../../client-api/session/loading-entities#load-with-includes) loads both the document and the specified related document.    
   Loading entities with include can be executed __lazily__.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Lazy-load-with-include lazy_LoadWithInclude@ClientApi\Session\HowTo\Lazy.cs /}
-{CODE-TAB:csharp:The-document lazy_productClass@ClientApi\Session\HowTo\Lazy.cs /}
+{CODE-TAB:nodejs:Lazy-load-with-include lazy_loadWithInclude@client-api\Session\HowTo\lazy.js /}
+{CODE-TAB:nodejs:Sample-document lazy_productClass@client-api\Session\HowTo\lazy.js /}
 {CODE-TABS/}
 {NOTE/}
 
 {NOTE: }
 <a id="loadStartingWith" /> __Load entities starting with__
 
-* [LoadStartingWith](../../../client-api/session/loading-entities#loadstartingwith) loads entities whose ID starts with the specified prefix.  
+* ['loadStartingWith'](../../../client-api/session/loading-entities#loadstartingwith) loads entities whose ID starts with the specified prefix.  
   Loading entities with a common prefix can be executed __lazily__.
 
-{CODE lazy_LoadStartingWith@ClientApi\Session\HowTo\Lazy.cs /}
+{CODE:nodejs lazy_loadStartingWith@client-api\Session\HowTo\lazy.js /}
 {NOTE/}
 
 {NOTE: }
 <a id="conditionalLoad" /> __Conditional load__
 
-* [ConditionalLoad](../../../client-api/session/loading-entities#conditionalload) logic is: 
+* ['conditionalLoad'](../../../client-api/session/loading-entities#conditionalload) logic is: 
   * If the entity is already loaded to the session:  
     no server call is made, the tracked entity is returned.    
   * If the entity is Not already loaded to the session:  
@@ -64,7 +64,7 @@
     (i.e. if the document in the server is newer).
   * Loading entities conditionally can be executed __lazily__.  
 
-{CODE lazy_ConditionalLoad@ClientApi\Session\HowTo\Lazy.cs /}
+{CODE:nodejs lazy_conditionalLoad@client-api\Session\HowTo\lazy.js /}
 {NOTE/}
 
 {NOTE: }
@@ -73,7 +73,7 @@
 * A Query can be executing a __lazily__.  
   Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily).
 
-{CODE lazy_Query@ClientApi\Session\HowTo\Lazy.cs /}
+{CODE:nodejs lazy_query@client-api\Session\HowTo\lazy.js /}
 {NOTE/}
 
 {NOTE: }
@@ -81,7 +81,7 @@
 
 * All methods for [getting revisions](../../../document-extensions/revisions/client-api/session/loading) and their metadata can be executed __lazily__.
 
-{CODE lazy_Revisions@ClientApi\Session\HowTo\Lazy.cs /}
+{CODE:nodejs lazy_revisions@client-api\Session\HowTo\lazy.js /}
 {NOTE/}
 
 {NOTE: }
@@ -89,16 +89,16 @@
 
 * [Getting compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange) values can be executed __lazily__.
 
-{CODE lazy_CompareExchange@ClientApi\Session\HowTo\Lazy.cs /}
+{CODE:nodejs lazy_compareExchange@client-api\Session\HowTo\lazy.js /}
 {NOTE/}
 
 {PANEL/}
 
 {PANEL: Execute all pending lazy operations}
 
-* Use `ExecuteAllPendingLazyOperations` to execute **all** pending lazy operations at once. 
+* Use `executeAllPendingLazyOperations` to execute **all** pending lazy operations at once. 
 
-{CODE lazy_ExecuteAllPendingLazyOperations@ClientApi\Session\HowTo\Lazy.cs /}
+{CODE:nodejs lazy_executeAllPendingLazyOperations@client-api\Session\HowTo\lazy.js /}
 
 {PANEL/}
 
