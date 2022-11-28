@@ -10,8 +10,6 @@
   along with any other changes/operations made on the session.  
   Thus, all deferred commands are __executed as part of the session's SaveChanges transaction__.
 
-* When SaveChanges is done, the session state will be updated appropriately for all actions.
-
 * In this page:   
     * [Defer commands example](../../../client-api/session/how-to/defer-operations#defer-commands-example)  
     * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations#commands-that-can-be-deferred)

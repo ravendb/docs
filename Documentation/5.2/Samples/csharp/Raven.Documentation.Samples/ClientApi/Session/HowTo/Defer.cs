@@ -33,7 +33,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                         // Patch document
                         new PatchCommandData("products/999-A", null, new PatchRequest
                                 {
-                                    Script = $@"this.Supplier = 'suppliers/2-A';"
+                                    Script = "this.Supplier = 'suppliers/2-A';"
                                 },
                                 null),
                         
