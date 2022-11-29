@@ -29,9 +29,9 @@
 The following commands implement the `ICommandData` interface and can be deferred:
 
 - PutCommandDataBase
-- DeleteCommandData]
+- DeleteCommandData
 - DeletePrefixedCommandData
-- PatchCommandData]
+- PatchCommandData
 - BatchPatchCommandData
 - PutAttachmentCommandData
 - DeleteAttachmentCommandData
