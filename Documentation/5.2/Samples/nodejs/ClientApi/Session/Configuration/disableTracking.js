@@ -55,10 +55,10 @@ async function whatIsSessionUsingAwait() {
 
         const session = customStore.openSession();
 
-        let employee1 = new Employee();
+        const employee1 = new Employee();
         employee1.firstName = "Alice";
 
-        let employee2 = new Employee();
+        const employee2 = new Employee();
         employee2.firstName = "Bob";
 
         await session.store(employee1, "employees/1-A"); // This entity will be tracked
