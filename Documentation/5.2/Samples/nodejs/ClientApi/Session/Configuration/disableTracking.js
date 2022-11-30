@@ -41,7 +41,27 @@ async function whatIsSessionUsingAwait() {
         //endregion
     }
     {
+        const documentStore = new DocumentStore();
         //region disable_tracking_3
+        const session = documentStore.openSession();
+
+        // Define a query
+        const employeesResults = await session.query({ collection: "employees" })
+            .whereEquals("FirstName", "Robert")
+             // Set noTracking, all resulting entities will not be tracked
+            .noTracking()
+            .all();
+
+        // The following modification will not be tracked for saveChanges
+        const firstEmployee = employeesResults[0];
+        firstEmployee.lastName = "NewName";
+
+        // Change to 'firstEmployee' will not be persisted
+        session.saveChanges();
+        //endregion
+    }
+    {
+        //region disable_tracking_4
         const customStore = new DocumentStore();
         
         // Define the 'ignore' convention on your document store

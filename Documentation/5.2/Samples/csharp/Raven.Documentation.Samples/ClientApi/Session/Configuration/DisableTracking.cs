@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
@@ -54,6 +56,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Configuration
                     
                     // The following change will be ignored for SaveChanges
                     product.UnitsInStock += 1;
+                    
                     await asyncSession.SaveChangesAsync();
                     #endregion
                 }
@@ -73,9 +76,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Configuration
                     
                     // Entities instances are not the same
                     Assert.NotEqual(employee1, employee2);
-                    
-                    // Calling SaveChanges will throw an exception
-                    session.SaveChanges();
                 }
                 #endregion
 
@@ -94,14 +94,87 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Configuration
 
                     // Entities instances are not the same
                     Assert.NotEqual(employee1, employee2);
+                }
+                #endregion
+                
+                #region disable_tracking_3
+                using (IDocumentSession session = store.OpenSession())
+                {
+                    // Define a query
+                    List<Employee> employeesResults = session.Query<Employee>()
+                        // Set NoTracking, all resulting entities will not be tracked
+                        .Customize(x => x.NoTracking())
+                        .Where(x => x.FirstName == "Robert")
+                        .ToList();
+
+                    // The following modification will not be tracked for SaveChanges
+                    Employee firstEmployee = employeesResults[0];
+                    firstEmployee.LastName = "NewName";
                     
-                    // Calling SaveChangesAsync will throw an exception
-                    asyncSession.SaveChangesAsync();
+                    // Change to 'firstEmployee' will not be persisted
+                    session.SaveChanges();
+                }
+                #endregion
+
+                #region disable_tracking_3_async
+                using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
+                {
+                    // Define a query
+                    List<Employee> employeesResults = asyncSession.Query<Employee>()
+                        // Set NoTracking, all resulting entities will not be tracked
+                        .Customize(x => x.NoTracking())
+                        .Where(x => x.FirstName == "Robert")
+                        .ToList();
+
+                    // The following modification will not be tracked for SaveChanges
+                    Employee firstEmployee = employeesResults[0];
+                    firstEmployee.LastName = "NewName";
+                    
+                    // Change to 'firstEmployee' will not be persisted
+                    await asyncSession.SaveChangesAsync();
+                }
+                #endregion
+                
+                #region disable_tracking_3_documentQuery
+                using (IDocumentSession session = store.OpenSession())
+                {
+                    // Define a query
+                    List<Employee> employeesResults = session.Advanced.DocumentQuery<Employee>()
+                        // Set NoTracking, all resulting entities will not be tracked
+                        .NoTracking()
+                        .Where(x => x.FirstName == "Robert")
+                        .ToList();
+
+                    // The following modification will not be tracked for SaveChanges
+                    Employee firstEmployee = employeesResults[0];
+                    firstEmployee.LastName = "NewName";
+                    
+                    // Change to 'firstEmployee' will not be persisted
+                    session.SaveChanges();
+                }
+                #endregion
+                
+                #region disable_tracking_3_documentQuery_async
+                using (IAsyncDocumentSession asyncSession = store.OpenAsyncSession())
+                {
+                    // Define a query
+                    List<Employee> employeesResults = asyncSession.Advanced.AsyncDocumentQuery<Employee>()
+                        // Set NoTracking, all resulting entities will not be tracked
+                        .NoTracking()
+                        .Where(x => x.FirstName == "Robert")
+                        .ToList();
+
+                    // The following modification will not be tracked for SaveChanges
+                    Employee firstEmployee = employeesResults[0];
+                    firstEmployee.LastName = "NewName";
+                    
+                    // Change to 'firstEmployee' will not be persisted
+                    await asyncSession.SaveChangesAsync();
                 }
                 #endregion
             }
 
-            #region disable_tracking_3
+            #region disable_tracking_4
             using (var store = new DocumentStore()
             {
                 // Define the 'ignore' convention on your document store

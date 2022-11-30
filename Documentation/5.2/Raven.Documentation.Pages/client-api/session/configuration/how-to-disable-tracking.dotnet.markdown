@@ -10,6 +10,7 @@
 * __Tracking can be disabled__ by any of the following:  
     * [Disable tracking a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-a-specific-entity-in-session)
     * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
+    * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
     * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions)
 {NOTE/}
 
@@ -44,11 +45,24 @@ __Syntax__
 * Tracking can be disabled for all entities in the session's options.  
 * When tracking is disabled for the session:  
   * Method `Store` will Not be available (an exception will be thrown if used).
-  * Calling `Load` will generate a call to the server and create a new entity instance.  
+  * Calling `Load` or `Query` will generate a call to the server and create new entities instances.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync disable_tracking_2@ClientApi\Session\Configuration\DisableTracking.cs /}
 {CODE-TAB:csharp:Async disable_tracking_2_async@ClientApi\Session\Configuration\DisableTracking.cs /}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Disable tracking query results}
+
+* Tracking can be disabled for all entities resulting from a query.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query-Sync disable_tracking_3@ClientApi\Session\Configuration\DisableTracking.cs /}
+{CODE-TAB:csharp:Query-Async disable_tracking_3_async@ClientApi\Session\Configuration\DisableTracking.cs /}
+{CODE-TAB:csharp:DocumentQuery-Sync disable_tracking_3_documentQuery@ClientApi\Session\Configuration\DisableTracking.cs /}
+{CODE-TAB:csharp:DocumentQuery-Async disable_tracking_3_documentQuery_async@ClientApi\Session\Configuration\DisableTracking.cs /}
 {CODE-TABS/}
 
 {PANEL/}
@@ -61,7 +75,7 @@ __Syntax__
 
 __Example__
 
-{CODE:csharp disable_tracking_3@ClientApi\Session\Configuration\DisableTracking.cs /}
+{CODE:csharp disable_tracking_4@ClientApi\Session\Configuration\DisableTracking.cs /}
 
 __Syntax__
 

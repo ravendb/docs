@@ -10,6 +10,7 @@
 * __Tracking can be disabled__ by any of the following:  
     * [Disable tracking a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-a-specific-entity-in-session)
     * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
+    * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
     * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions)
 {NOTE/}
 
@@ -41,9 +42,17 @@ __Syntax__
 * Tracking can be disabled for all entities in the session's options.  
 * When tracking is disabled for the session:  
   * Method `store` will Not be available (an exception will be thrown if used).
-  * Calling `load` will generate a call to the server and create a new entity instance.
+  * Calling `load` or `query` will generate a call to the server and create new entities instances.
 
 {CODE:nodejs disable_tracking_2@ClientApi\Session\Configuration\disableTracking.js /}
+
+{PANEL/}
+
+{PANEL: Disable tracking query results}
+
+* Tracking can be disabled for all entities resulting from a query.
+
+{CODE:nodejs disable_tracking_3@ClientApi\Session\Configuration\disableTracking.js /}
 
 {PANEL/}
 
@@ -55,7 +64,7 @@ __Syntax__
 
 __Example__
 
-{CODE:nodejs disable_tracking_3@ClientApi\Session\Configuration\disableTracking.js /}
+{CODE:nodejs disable_tracking_4@ClientApi\Session\Configuration\disableTracking.js /}
 
 __Syntax__
 
