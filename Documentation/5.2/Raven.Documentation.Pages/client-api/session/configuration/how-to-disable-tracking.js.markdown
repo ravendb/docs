@@ -40,7 +40,7 @@ __Syntax__
 
 * Tracking can be disabled for all entities in the session's options.  
 * When tracking is disabled for the session:  
-  * Methods `store` & `saveChanges` will Not be available (an exception will be thrown if used).
+  * Method `store` will Not be available (an exception will be thrown if used).
   * Calling `load` will generate a call to the server and create a new entity instance.
 
 {CODE:nodejs disable_tracking_2@ClientApi\Session\Configuration\disableTracking.js /}

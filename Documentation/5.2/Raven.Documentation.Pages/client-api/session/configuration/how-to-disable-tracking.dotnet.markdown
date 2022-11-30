@@ -43,7 +43,7 @@ __Syntax__
 
 * Tracking can be disabled for all entities in the session's options.  
 * When tracking is disabled for the session:  
-  * Methods `Store` & `SaveChanges` will Not be available (an exception will be thrown if used).  
+  * Method `Store` will Not be available (an exception will be thrown if used).
   * Calling `Load` will generate a call to the server and create a new entity instance.  
 
 {CODE-TABS}
