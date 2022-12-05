@@ -113,8 +113,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance
         public bool Is64Bit { get; set; }      // Indicates if process is 64-bit
         public string Pager { get; set; }
         public DateTime? LastIndexingTime { get; set; } // Last time of indexing an item
-        public Size SizeOnDisk { get; set; }            // Database size 
-        public Size TempBuffersSizeOnDisk { get; set; } // Temp buffers size
+        public Size SizeOnDisk { get; set; }            // Database size on disk
+        public Size TempBuffersSizeOnDisk { get; set; } // Temp buffers size on disk
         public int NumberOfTransactionMergerQueueOperations { get; set; }
     }
     #endregion
