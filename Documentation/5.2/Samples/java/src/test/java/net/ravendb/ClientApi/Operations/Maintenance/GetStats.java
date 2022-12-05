@@ -21,6 +21,7 @@ public class GetStats {
     
         try (IDocumentStore store = new DocumentStore()) {
             //region stats_1
+            // Pass an instance of class `GetCollectionStatisticsOperation` to the store 
             CollectionStatistics stats
                 = store.maintenance().send(new GetCollectionStatisticsOperation());
             //endregion
@@ -28,6 +29,7 @@ public class GetStats {
         
         try (IDocumentStore store = new DocumentStore()) {
             //region stats_2
+            // Pass an instance of class `GetDetailedCollectionStatisticsOperation` to the store 
             DetailedCollectionStatistics stats
                 = store.maintenance().send(new GetDetailedCollectionStatisticsOperation());
             //endregion
@@ -35,6 +37,7 @@ public class GetStats {
         
         try (IDocumentStore store = new DocumentStore()) {
             //region stats_3
+            // Pass an instance of class `GetStatisticsOperation` to the store 
             DatabaseStatistics stats
                 = store.maintenance().send(new GetStatisticsOperation());
             //endregion
@@ -42,6 +45,7 @@ public class GetStats {
     
         try (IDocumentStore store = new DocumentStore()) {
             //region stats_4
+            // Pass an instance of class `GetDetailedStatisticsOperation` to the store 
             DetailedDatabaseStatistics stats
                 = store.maintenance().send(new GetDetailedStatisticsOperation());
             //endregion
@@ -51,6 +55,7 @@ public class GetStats {
     /*
     //region stats_1_results
     public class CollectionStatistics {
+    // Collection stats results:
         // Total # of documents in all collections
         int CountOfDocuments;
         // Total # of conflicts
@@ -63,6 +68,7 @@ public class GetStats {
     
     /*
     //region stats_2_results
+    // Detailed collection stats results:
     public class DetailedCollectionStatistics  {
         // Total # of documents in all collections
         long CountOfDocuments;
@@ -86,6 +92,7 @@ public class GetStats {
     
     /*
     //region stats_3_results
+    // Database stats results:
     public class DatabaseStatistics {
         Long LastDocEtag;       // Last document etag in database
         Long LastDatabaseEtag;  // Last database etag
@@ -117,6 +124,7 @@ public class GetStats {
     
     /*
     //region stats_4_results
+    // Detailed database stats results:
     public class DetailedDatabaseStatistics extends DatabaseStatistics {
         // Total # of identities in database
         long CountOfIdentities;

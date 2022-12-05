@@ -47,6 +47,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance
   
     /*
     #region stats_1_results
+    // Collection stats results:
     public class CollectionStatistics
     {
         // Total # of documents in all collections
@@ -97,24 +98,25 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance
         public long CountOfDocuments { get; set; }  // Total # of documents in database
         public long CountOfRevisionDocuments { get; set; }  // Total # of revision documents in database
         public long CountOfDocumentsConflicts { get; set; } // Total # of documents conflicts in database
-        public long CountOfTombstones { get; set; }  // Total # of tombstones in database
-        public long CountOfConflicts { get; set; }   // Total # of conflicts in database
-        public long CountOfAttachments { get; set; } // Total # of attachments in database
+        public long CountOfTombstones { get; set; }         // Total # of tombstones in database
+        public long CountOfConflicts { get; set; }          // Total # of conflicts in database
+        public long CountOfAttachments { get; set; }        // Total # of attachments in database
         public long CountOfUniqueAttachments { get; set; }  // Total # of unique attachments in database
         public long CountOfCounterEntries { get; set; }     // Total # of counter-group entries in database
         public long CountOfTimeSeriesSegments { get; set; } // Total # of time-series segments in database
         
         // List of stale index names in database
         public string[] StaleIndexes => Indexes?.Where(x => x.IsStale).Select(x => x.Name).ToArray();
-        public IndexInformation[] Indexes { get; set; }  // Statistics for each index in database
+        // Statistics for each index in database
+        public IndexInformation[] Indexes { get; set; }
         
         public string DatabaseChangeVector { get; set; } // Global change vector of the database
-        public string DatabaseId { get; set; } // Database identifier
-        public bool Is64Bit { get; set; }      // Indicates if process is 64-bit
+        public string DatabaseId { get; set; }           // Database identifier
+        public bool Is64Bit { get; set; }                // Indicates if process is 64-bit
         public string Pager { get; set; }
-        public DateTime? LastIndexingTime { get; set; } // Last time of indexing an item
-        public Size SizeOnDisk { get; set; }            // Database size on disk
-        public Size TempBuffersSizeOnDisk { get; set; } // Temp buffers size on disk
+        public DateTime? LastIndexingTime { get; set; }  // Last time of indexing an item
+        public Size SizeOnDisk { get; set; }             // Database size on disk
+        public Size TempBuffersSizeOnDisk { get; set; }  // Temp buffers size on disk
         public int NumberOfTransactionMergerQueueOperations { get; set; }
     }
     #endregion
