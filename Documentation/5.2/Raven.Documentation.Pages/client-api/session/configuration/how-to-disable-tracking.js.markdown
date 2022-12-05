@@ -59,7 +59,7 @@ __Syntax__
 {PANEL: Customize tracking in conventions}
 
 * You can further customize and fine-tune which entities will not be tracked  
-  by configuring the `ShouldIgnoreEntityChanges` convention method on the document store.
+  by configuring the `shouldIgnoreEntityChanges` convention method on the document store.
 * This customization rule will apply to all sessions opened for this document store.
 
 __Example__
