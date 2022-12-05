@@ -87,7 +87,7 @@ only new or modified documents will be compressed.
 **Database**
 
 - [How to create database?](../../../client-api/operations/server-wide/create-database) 
-- [How to get database statistics](../../../client-api/operations/maintenance/get-statistics)
+- [How to get database statistics](../../../client-api/operations/maintenance/get-stats)
 - [How to restore a database from backup](../../../client-api/operations/server-wide/restore-backup)
 
 **Compression**
