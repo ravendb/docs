@@ -31,7 +31,7 @@ To register RavenDB as a Service on Windows OS, run PowerShell with administrato
 Navigate to the RavenDB package root and execute:  
 
 {CODE-BLOCK:powershell}
-`.\setup-as-service.ps1`
+.\setup-as-service.ps1
 {CODE-BLOCK/}
 
 If you receive the following error:  
@@ -44,7 +44,7 @@ If you receive the following error:
 Alternatively, navigate to the node **Server** folder and execute the following command:  
 
 {CODE-BLOCK:powershell}
-`.\rvn.exe windows-service register --service-name RavenDB`
+.\rvn.exe windows-service register --service-name RavenDB
 {CODE-BLOCK/}
 
 If you want to run the service under a non-default user (**Local Service** is default) then execute the following command:
