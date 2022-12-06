@@ -113,7 +113,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance
         public string DatabaseChangeVector { get; set; } // Global change vector of the database
         public string DatabaseId { get; set; }           // Database identifier
         public bool Is64Bit { get; set; }                // Indicates if process is 64-bit
-        public string Pager { get; set; }
+        public string Pager { get; set; }                // Component handling the memory-mapped files
         public DateTime? LastIndexingTime { get; set; }  // Last time of indexing an item
         public Size SizeOnDisk { get; set; }             // Database size on disk
         public Size TempBuffersSizeOnDisk { get; set; }  // Temp buffers size on disk

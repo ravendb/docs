@@ -113,7 +113,7 @@ public class GetStats {
         String DatabaseChangeVector;    // Global change vector of the database
         String DatabaseId;              // Database identifier
         boolean Is64Bit;                // Indicates if process is 64-bit
-        String Pager;
+        String Pager;                   // Component handling the memory-mapped files
         Date LastIndexingTime;          // Last time of indexing an item
         Size SizeOnDisk;                // Database size on disk
         Size TempBuffersSizeOnDisk;     // Temp buffers size on disk

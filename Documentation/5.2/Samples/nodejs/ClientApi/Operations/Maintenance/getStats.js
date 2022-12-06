@@ -86,7 +86,7 @@ interface DatabaseStatistics {
     databaseChangeVector;  // Global change vector of the database
     databaseId;            // Database identifier
     is64Bit;               // Indicates if process is 64-bit 
-    pager;                
+    pager;                 // Component handling the memory-mapped files
     lastIndexingTime;      // Last time of indexing an item
     sizeOnDisk;            // Database size on disk
     tempBuffersSizeOnDisk; // Temp buffers size on disk
