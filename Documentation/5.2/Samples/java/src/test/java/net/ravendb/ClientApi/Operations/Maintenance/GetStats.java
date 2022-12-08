@@ -22,32 +22,40 @@ public class GetStats {
         try (IDocumentStore store = new DocumentStore()) {
             //region stats_1
             // Pass an instance of class `GetCollectionStatisticsOperation` to the store 
-            CollectionStatistics stats
-                = store.maintenance().send(new GetCollectionStatisticsOperation());
+            CollectionStatistics stats =
+                store.maintenance().send(new GetCollectionStatisticsOperation());
             //endregion
         }
         
         try (IDocumentStore store = new DocumentStore()) {
             //region stats_2
             // Pass an instance of class `GetDetailedCollectionStatisticsOperation` to the store 
-            DetailedCollectionStatistics stats
-                = store.maintenance().send(new GetDetailedCollectionStatisticsOperation());
+            DetailedCollectionStatistics stats =
+                store.maintenance().send(new GetDetailedCollectionStatisticsOperation());
             //endregion
         }
         
         try (IDocumentStore store = new DocumentStore()) {
             //region stats_3
             // Pass an instance of class `GetStatisticsOperation` to the store 
-            DatabaseStatistics stats
-                = store.maintenance().send(new GetStatisticsOperation());
+            DatabaseStatistics stats =
+                store.maintenance().send(new GetStatisticsOperation());
             //endregion
         }
     
         try (IDocumentStore store = new DocumentStore()) {
             //region stats_4
             // Pass an instance of class `GetDetailedStatisticsOperation` to the store 
-            DetailedDatabaseStatistics stats
-                = store.maintenance().send(new GetDetailedStatisticsOperation());
+            DetailedDatabaseStatistics stats =
+                store.maintenance().send(new GetDetailedStatisticsOperation());
+            //endregion
+        }
+        
+        try (IDocumentStore store = new DocumentStore()) {
+            //region stats_5
+            // Get stats for 'AnotherDatabase':
+            DatabaseStatistics stats =
+                store.maintenance().forDatabase("AnotherDatabase").send(new GetStatisticsOperation());
             //endregion
         }
     }

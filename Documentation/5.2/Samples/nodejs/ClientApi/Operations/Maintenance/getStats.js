@@ -28,6 +28,13 @@ async function getStats() {
         const stats = await store.maintenance.send(new GetDetailedStatisticsOperation());
         //endregion
     }
+    {
+        //region stats_5
+        // Get stats for 'AnotherDatabase':
+        const stats = 
+            await store.maintenance.forDatabase("AnotherDatabase").send(new GetStatisticsOperation());
+        //endregion
+    }
 }
 
 //region stats_1_results

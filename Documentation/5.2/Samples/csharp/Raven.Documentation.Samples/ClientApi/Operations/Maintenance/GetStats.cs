@@ -42,6 +42,15 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance
                     store.Maintenance.Send(new GetDetailedStatisticsOperation());
                 #endregion
             }
+            
+            using (var store = new DocumentStore())
+            {
+                #region stats_5
+                // Get stats for 'AnotherDatabase':
+                DatabaseStatistics stats =
+                    store.Maintenance.ForDatabase("AnotherDatabase").Send(new GetStatisticsOperation());
+                #endregion
+            }
         }
     }
   
