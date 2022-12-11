@@ -6,17 +6,17 @@
 
 * By default, all operations work on the default database defined in the [Document Store](../../../client-api/creating-document-store).
 
-* To operate on a different database, use the `ForDatabase` method.  
+* __To operate on a different database__, use the `ForDatabase` method.  
   (An exception is thrown if that database doesn't exist on the server).
 
 * In this page:
-    * [Common operations](../../../client-api/operations/how-to/switch-operations-to-a-different-database#common-operations)
-    * [Maintenance operations](../../../client-api/operations/how-to/switch-operations-to-a-different-database#maintenance-operations)
+    * [Common operations - ForDatabase](../../../client-api/operations/how-to/switch-operations-to-a-different-database#common-operations---fordatabase)
+    * [Maintenance operations - ForDatabase](../../../client-api/operations/how-to/switch-operations-to-a-different-database#maintenance-operations---fordatabase)
 {NOTE/}
 
 ---
 
-{PANEL: Common operations}
+{PANEL: Common operations - ForDatabase}
 
 {CODE for_database_1@ClientApi\Operations\HowTo\SwitchOperationsToDifferentDatabase.cs /}
 
@@ -34,7 +34,7 @@ __Syntax__:
 
 {PANEL/}
 
-{PANEL: Maintenance operations}
+{PANEL: Maintenance operations - ForDatabase}
 
 {CODE for_database_2@ClientApi\Operations\HowTo\SwitchOperationsToDifferentDatabase.cs /}
 

@@ -24,14 +24,16 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
         public void SwitchOperationToDifferentDatabase()
         {
             #region for_database_1
+            // Define default database on the store
             var documentStore = new DocumentStore
             {
-                Database = "DefaultDB" // Define default database on the store
+                Urls = new[] { "yourServerURL" },
+                Database = "DefaultDB"
             }.Initialize();
             
             using (documentStore)
             {
-                // Get operation executor for another database
+                // Use 'ForDatabase', get operation executor for another database
                 OperationExecutor opExecutor = documentStore.Operations.ForDatabase("AnotherDB");
                 
                 // Send the operation, e.g. 'GetRevisionsOperation' will be executed on "AnotherDB"
@@ -48,17 +50,19 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
         public void SwitchMaintenanceOperationToDifferentDatabase()
         {
             #region for_database_2
+            // Define default database on the store
             var documentStore = new DocumentStore
             {
-                Database = "DefaultDB" // Define default database on the store
+                Urls = new[] { "yourServerURL" },
+                Database = "DefaultDB"
             }.Initialize();
             
             using (documentStore = new DocumentStore())
             {
-                // Get maintenance operation executor for another database
+                // Use 'ForDatabase', get maintenance operation executor for another database
                 MaintenanceOperationExecutor opExecutor = documentStore.Maintenance.ForDatabase("AnotherDB");
                 
-                // Send the operation, e.g. get database stats for "AnotherDB"
+                // Send the maintenance operation, e.g. get database stats for "AnotherDB"
                 var statsForAnotherDB =
                     opExecutor.Send(new GetStatisticsOperation());
                 

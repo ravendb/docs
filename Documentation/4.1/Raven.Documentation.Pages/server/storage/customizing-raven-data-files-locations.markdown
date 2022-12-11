@@ -36,7 +36,7 @@
 
 * **Databases temporary files**  
   By default, all databases' temporary files are written to the `Temp` folder under each Database directory.  
-  Customize the files path by setting configuration option [Storage.TempPath](../..//server/configuration/storage-configuration#storage.temppath) in your _settings.json_ file.  
+  Customize the files path by setting configuration option [Storage.TempPath](../../server/configuration/storage-configuration#storage.temppath) in your _settings.json_ file.  
 
 * **Indexes temporary files**  
   By default, all indexes' temporary files are written to the `Temp` folder under each Index directory.  
