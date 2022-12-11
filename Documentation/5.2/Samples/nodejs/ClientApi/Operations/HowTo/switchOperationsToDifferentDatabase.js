@@ -32,11 +32,11 @@ async function addDatabaseNode() {
 
         // Send the maintenance operation, e.g. get database stats for "AnotherDB"
         const statsForAnotherDB =
-            opExecutor.send(new GetStatisticsOperation());
+            await opExecutor.send(new GetStatisticsOperation());
 
         // Without 'forDatabase', the stats are retrieved for "DefaultDB"
         const statsForDefaultDB =
-            documentStore.maintenance.send(new GetStatisticsOperation());
+            await documentStore.maintenance.send(new GetStatisticsOperation());
         //endregion
     }
 }

@@ -3,7 +3,7 @@ using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Operations.Revisions;
 using Raven.Documentation.Samples.Orders;
 
-namespace Raven.Documentation.Samples.ClientApi.Operations
+namespace Raven.Documentation.Samples.ClientApi.Operations.HowTo
 {
     public class SwitchOperationsToDifferentDatabase
     {

@@ -18,6 +18,8 @@
 
 {PANEL: Common operations - forDatabase}
 
+* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations#the-following-operations-are-available).
+
 {CODE:nodejs for_database_1@ClientApi\Operations\HowTo\switchOperationsToDifferentDatabase.js /}
 
 __Syntax__:
@@ -26,7 +28,7 @@ __Syntax__:
 
 | Parameters | Type | Description |
 | - | - | - |
-| **databaseName** | string | Name of a database to operate on |
+| **databaseName** | string | Name of the database to operate on |
 
 | Return Value | |
 | - | - |
@@ -36,6 +38,8 @@ __Syntax__:
 
 {PANEL: Maintenance operations - forDatabase}
 
+* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations#the-following-maintenance-operations-are-available).
+
 {CODE:nodejs for_database_2@ClientApi\Operations\HowTo\switchOperationsToDifferentDatabase.js /}
 
 __Syntax__:
@@ -44,7 +48,7 @@ __Syntax__:
 
 | Parameters | Type | Description |
 | - | - | - |
-| **databaseName** | string | Name of a database to operate on |
+| **databaseName** | string | Name of the database to operate on |
 
 | Return Value | |
 | - | - |
