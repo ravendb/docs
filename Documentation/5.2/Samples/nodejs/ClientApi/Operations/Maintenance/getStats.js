@@ -38,79 +38,79 @@ async function getStats() {
 }
 
 //region stats_1_results
-// Collection stats results:
-interface CollectionStatistics {
+// Object with following props is returned:
+{
     // Total # of documents in all collections
-    countOfDocuments;
+    countOfDocuments,
     // Total # of conflicts
-    countOfConflicts;
+    countOfConflicts,
     // Dictionary with total # of documents per collection
-    collections;
+    collections
 }
 //endregion
 
 //region stats_2_results
-// Detailed collection stats results:
-interface DetailedCollectionStatistics {
+// Object with following props is returned:
+{
     // Total # of documents in all collections
-    countOfDocuments;
+    countOfDocuments,
     // Total # of conflicts
-    countOfConflicts;
-    // Dictionary with collection details per collection
-    collections;
+    countOfConflicts,
+    // Dictionary with 'collection details per collection'
+    collections,
 }
 
-// Details per collection
-interface CollectionDetails {
-    name;
-    countOfDocuments;
-    size;
-    documentsSize;
-    tombstonesSize;
-    revisionsSize;
+// 'Collection details per collection' object props:
+{
+    name,
+    countOfDocuments,
+    size,
+    documentsSize,
+    tombstonesSize,
+    revisionsSize
 }
 //endregion
 
 //region stats_3_results
-// Database stats results:
-interface DatabaseStatistics {
-    lastDocEtag;      // Last document etag in database
-    lastDatabaseEtag; // Last database etag
+// Object with following props is returned:
+{
+    lastDocEtag,      // Last document etag in database
+    lastDatabaseEtag, // Last database etag
     
-    countOfIndexes;            // Total # of indexes in database
-    countOfDocuments;          // Total # of documents in database
-    countOfRevisionDocuments;  // Total # of revision documents in database
-    countOfDocumentsConflicts; // Total # of documents conflicts in database 
-    countOfTombstones;         // Total # of tombstones in database
-    countOfConflicts;          // Total # of conflicts in database
-    countOfAttachments;        // Total # of attachments in database
-    countOfUniqueAttachments;  // Total # of unique attachments in database
-    countOfCounterEntries;     // Total # of counter-group entries in database
-    countOfTimeSeriesSegments; // Total # of time-series segments in database
+    countOfIndexes,            // Total # of indexes in database
+    countOfDocuments,          // Total # of documents in database
+    countOfRevisionDocuments,  // Total # of revision documents in database
+    countOfDocumentsConflicts, // Total # of documents conflicts in database 
+    countOfTombstones,         // Total # of tombstones in database
+    countOfConflicts,          // Total # of conflicts in database
+    countOfAttachments,        // Total # of attachments in database
+    countOfUniqueAttachments,  // Total # of unique attachments in database
+    countOfCounterEntries,     // Total # of counter-group entries in database
+    countOfTimeSeriesSegments, // Total # of time-series segments in database
     
-    indexes; // Statistics for each index in database (array of IndexInformation) 
+    indexes, // Statistics for each index in database (array of IndexInformation) 
 
-    databaseChangeVector;  // Global change vector of the database
-    databaseId;            // Database identifier
-    is64Bit;               // Indicates if process is 64-bit 
-    pager;                 // Component handling the memory-mapped files
-    lastIndexingTime;      // Last time of indexing an item
-    sizeOnDisk;            // Database size on disk
-    tempBuffersSizeOnDisk; // Temp buffers size on disk
-    numberOfTransactionMergerQueueOperations;
+    databaseChangeVector,  // Global change vector of the database
+    databaseId,            // Database identifier
+    is64Bit,               // Indicates if process is 64-bit 
+    pager,                 // Component handling the memory-mapped files
+    lastIndexingTime,      // Last time of indexing an item
+    sizeOnDisk,            // Database size on disk
+    tempBuffersSizeOnDisk, // Temp buffers size on disk
+    numberOfTransactionMergerQueueOperations
 }
 //endregion
 
 //region stats_4_results
-// Detailed database stats results:
-interface DetailedDatabaseStatistics extends DatabaseStatistics {
+// Resulting object contains all database stats props from above and the following in addition:
+{
     // Total # of identities in database
-    countOfIdentities;
+    countOfIdentities,
     // Total # of compare-exchange items in database
-    countOfCompareExchange;
+    countOfCompareExchange,
     // Total # of cmpXchg tombstones in database
-    countOfCompareExchangeTombstones;
+    countOfCompareExchangeTombstones,
     // Total # of TS deleted ranges values in database
-    countOfTimeSeriesDeletedRanges;
+    countOfTimeSeriesDeletedRanges
 }
 //endregion

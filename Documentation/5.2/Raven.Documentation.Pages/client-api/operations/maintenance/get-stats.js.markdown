@@ -25,7 +25,7 @@ Use `GetCollectionStatisticsOperation` to get __collection stats__.
 {CODE:nodejs stats_1@ClientApi\Operations\Maintenance\getStats.js /}
 {NOTE/}
 {NOTE: }
-Stats are returned in the `CollectionStatistics` object.
+Collection stats results:
 {CODE:nodejs stats_1_results@ClientApi\Operations\Maintenance\getStats.js /}
 {NOTE/}
 {PANEL/}
@@ -36,7 +36,7 @@ Use `GetDetailedCollectionStatisticsOperation` to get __detailed collection stat
 {CODE:nodejs stats_2@ClientApi\Operations\Maintenance\getStats.js /}
 {NOTE/}
 {NOTE: }
-Stats are returned in the `DetailedCollectionStatistics` object.
+Detailed collection stats results:
 {CODE:nodejs stats_2_results@ClientApi\Operations\Maintenance\getStats.js /}
 {NOTE/}
 {PANEL/}
@@ -47,7 +47,7 @@ Use `GetStatisticsOperation` to get __database stats__.
 {CODE:nodejs stats_3@ClientApi\Operations\Maintenance\getStats.js /}
 {NOTE/}
 {NOTE: }
-Stats are returned in the `DatabaseStatistics` object.
+Database stats results:
 {CODE:nodejs stats_3_results@ClientApi\Operations\Maintenance\getStats.js /}
 {NOTE/}
 {PANEL/}
@@ -58,7 +58,7 @@ Use `GetDetailedStatisticsOperation` to get __detailed database stats__.
 {CODE:nodejs stats_4@ClientApi\Operations\Maintenance\getStats.js /}
 {NOTE/}
 {NOTE: }
-Stats are returned in the `DetailedDatabaseStatistics` object.
+Detailed database stats results:
 {CODE:nodejs stats_4_results@ClientApi\Operations\Maintenance\getStats.js /}
 {NOTE/}
 {PANEL/}
@@ -68,9 +68,11 @@ Stats are returned in the `DetailedDatabaseStatistics` object.
 
 * By default, you get stats for the database defined in your Document Store.
 * Use `forDatabase` to get database & collection stats for another database.
-* 'ForDatabase' can be used with __any__ of the above stats options.
+* 'forDatabase' can be used with __any__ of the above stats options.
  
 {CODE:nodejs stats_5@ClientApi\Operations\Maintenance\getStats.js /}
+
+* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database).
 
 {NOTE/}
 {PANEL/}

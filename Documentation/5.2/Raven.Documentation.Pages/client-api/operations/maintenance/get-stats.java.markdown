@@ -72,6 +72,8 @@ Stats are returned in the `DetailedDatabaseStatistics` object.
  
 {CODE:java stats_5@ClientApi\Operations\Maintenance\GetStats.java /}
 
+* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database).
+
 {NOTE/}
 {PANEL/}
 
