@@ -249,22 +249,25 @@ Learn how to handle this issue [here](../../server/security/authentication/solve
 
 {PANEL: Authentication Issues}
 
-* [Authentication Error Occurred in Chrome or Edge](../../server/security/common-errors-and-faq#authentication-error-occurred-in-chrome-or-edge)
-* [RavenDB is running as a service in Windows and Chrome doesn't use the client certificate from the OS store](../../server/security/common-errors-and-faq#ravendb-is-running-as-a-service-in-windows-and-chrome-doesnt-use-the-client-certificate-from-the-os-store)
-* [Authentication Error Occurred in Firefox](../../server/security/common-errors-and-faq#authentication-error-occurred-in-firefox)
-* [Cannot Import the Client Certificate to Firefox](../../server/security/common-errors-and-faq#cannot-import-the-client-certificate-to-firefox)
-* [Getting the full error using PowerShell](../../server/security/common-errors-and-faq#getting-the-full-error-using-powershell)
-* [Not using TLS](../../server/security/common-errors-and-faq#not-using-tls)
-* [How to regain access to a server when you have physical access but no client certificate](../../server/security/common-errors-and-faq#how-to-regain-access-to-a-server-when-you-have-physical-access-but-no-client-certificate)
-* [Certificate is not recognized when setting up on Azure App Services](../../server/security/common-errors-and-faq#certificate-is-not-recognized-when-setting-up-on-azure-app-services)
-* [Automatic cluster certificate renewal following migration to 4.2](../../server/security/common-errors-and-faq#automatic-cluster-certificate-renewal-following-migration-to-4.2)
+* [Authentication Error Occurred using Edge](../../server/security/common-errors-and-faq#authentication-error-occurred-using-edge)  
+* [Authentication Error Occurred using Chrome](../../server/security/common-errors-and-faq#authentication-error-occurred-using-chrome)  
+* [RavenDB is running as a service in Windows and Chrome doesn't use the client certificate from the OS store](../../server/security/common-errors-and-faq#ravendb-is-running-as-a-service-in-windows-and-chrome-doesnt-use-the-client-certificate-from-the-os-store)  
+* [Authentication Error Occurred in Firefox](../../server/security/common-errors-and-faq#authentication-error-occurred-in-firefox)  
+* [Cannot Import the Client Certificate to Firefox](../../server/security/common-errors-and-faq#cannot-import-the-client-certificate-to-firefox)  
+* [Getting the full error using PowerShell](../../server/security/common-errors-and-faq#getting-the-full-error-using-powershell)  
+* [Not using TLS](../../server/security/common-errors-and-faq#not-using-tls)  
+* [How to regain access to a server when you have physical access but no client certificate](../../server/security/common-errors-and-faq#how-to-regain-access-to-a-server-when-you-have-physical-access-but-no-client-certificate)  
+* [Certificate is not recognized when setting up on Azure App Services](../../server/security/common-errors-and-faq#certificate-is-not-recognized-when-setting-up-on-azure-app-services)  
+* [Automatic cluster certificate renewal following migration to 4.2](../../server/security/common-errors-and-faq#automatic-cluster-certificate-renewal-following-migration-to-4.2)  
 
 ---
 
-### Authentication Error Occurred in Chrome or Edge
+### Authentication Error Occurred using Edge
 
-You cannot access the Studio using Chrome or Edge even though you have finished the setup wizard successfully and 
-you also checked the box saying "Automatically register the admin client certificate in this (local) OS".
+You cannot access Studio using Edge, though during 
+[setup](../../start/installation/setup-wizard#configuring-the-server-addresses) you checked 
+the "Automatically register the admin client certificate in this (local) OS" checkbox 
+and the setup wizard ended successfully.  
 
 ![Figure 1. Authentication Error](images/1.png)
 
@@ -273,25 +276,30 @@ There were problems authenticating the request:
 This server requires client certificate for authentication, but none was provided by the client.
 {CODE-BLOCK/}
 
-1. The first solution is to close **all instances** of the browser and restart it.
-2. If that didn't work, register the client certificate in the OS store.  
-   In Windows, double click the .pfx certificate and click next all the way for default settings or set a different path and/or a password.  
-   In Linux, import it directly to the browser.  
-3. When the browser asks which certificate to use, if there are a few options and the wrong one was previously chosen for this server, you can either:
- * Remove the certificate from the browser's memory (In Chrome, Settings -> Privacy and security -> Manage certificates), 
-   then reinstall the .pfx certificate with the process described above.
- * Open an incognito tab (ctrl + shift + N in Chrome) and paste the server URL into the address bar, then select the correct certificate name.  
-4. In case none of the above works, you have an option to bring your own certificate and have RavenDB trust it. 
-   It can be any client certificate that works in your OS and browser, even if it wasn't generated by RavenDB. 
+1. Try closing **all instances** of the browser and restarting it.  
+2. If clearing the cache didn't help, manually register the client certificate in the OS store.  
+    * Under Windows:  
+      Double-click the .pfx certificate.  
+      Repeat clicking `next` for the default settings or provide your own settings.  
+    * Under Linux:  
+      Import the certificate directly to the browser.  
+3. If the browser has presented several certificates and you selected the wrong one, you can -  
+    * Either remove the certificate from the browser's memory and reinstall the .pfx certificate as described above  
+    * Or open an incognito tab and paste the server URL into the address bar.  
+4. In case none of the above works, you can use your own certificate and have RavenDB trust it. 
+   You can use any client certificate that works under your OS and browser, even if it wasn't generated by RavenDB.  
    See [trusting an existing certificate](../../server/administration/cli#trustclientcert).  
 
-**If you are running in Windows 7 or Windows Server 2008 or older**:  
-The first thing to try is to install the **SERVER** certificate to the OS where your server is running, close **all instances** of the browser and restart it.
+---
 
-If the issue persists, please visit this page which explains the problem:
-[Trusted Issuers List](https://support.microsoft.com/en-us/topic/failed-tls-connection-between-unified-communications-peers-generates-an-schannel-warning-9079a7df-1756-bf4d-20c7-42981a50f8df)
+####If your browser runs under Windows 7 or Windows Server 2008 or older**:  
+The first thing to try would be installing the **SERVER** certificate to the OS 
+where your server is running, closing **all instances** of the browser and restarting it.  
 
-Follow the instructions for method 3: "Configure Schannel to no longer send the list of trusted root certificate authorities during the TLS/SSL handshake process". Set the following registry entry to false:
+If the issue persists, please also visit the 
+[Trusted Issuers List](https://support.microsoft.com/en-us/topic/failed-tls-connection-between-unified-communications-peers-generates-an-schannel-warning-9079a7df-1756-bf4d-20c7-42981a50f8df) 
+and follow method 3 (**Configure Schannel to no longer send the list of trusted root certification authorities during the TLS/SSL handshake process**) 
+to set the following registry entry to false:
 
 {CODE-BLOCK:plain}
 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL
@@ -302,12 +310,57 @@ Value data: 0 (False)
 
 ---
 
+### Authentication Error Occurred using Chrome
+
+You cannot access Studio using Chrome, though during 
+[setup](../../start/installation/setup-wizard#configuring-the-server-addresses) you checked 
+the "Automatically register the admin client certificate in this (local) OS" checkbox 
+and the setup wizard ended successfully.  
+
+![Figure 1. Authentication Error](images/1.png)
+
+{CODE-BLOCK:plain}
+There were problems authenticating the request:
+This server requires client certificate for authentication, but none was provided by the client.
+{CODE-BLOCK/}
+
+1. Try closing **all instances** of the browser and restarting it.  
+2. If clearing the cache didn't help, manually register the client certificate.  
+   * Chrome versions **earlier than 105** look for certificates registered **with the OS**.  
+     Windows users can register a certificate with the OS by double-clicking its .pfx file and repeatedly clicking `next` 
+     for the default settings (or providing custom settings).  
+     Linux users can import the certificate directly to the browser.  
+   * Chrome versions **105 and on** look for certificates registered with the browser's [root store](https://blog.chromium.org/2022/09/announcing-launch-of-chrome-root-program.html).  
+     A failure to locate the certificate may be the result of registering it with the OS rather than with the browser.  
+       {NOTE: }
+       This failure typically occures when [self-signed certificates](../../server/security/authentication/certificate-configuration) 
+       are used rather than with let's encrypt certificates issued during setup, since 
+       let's encrypt certificates are automatically installed in the Chrome root store. 
+       {NOTE/}
+     To import a certificate to chrome's root store use the browser's settings:  
+     **Settings** > **Privacy and Security** > **Security** > **Manage device certificates**  
+     When a "Certificates" window opens, click **Import** and select your PFX certificate.  
+     ![Import Certificate](images/import-certificate.png)  
+3. If the browser has presented several certificates and you selected the wrong one, you can -  
+    * Either remove the certificate from the browser's memory (Settings -> Privacy and security -> Security > Manage device certificates) 
+      and reinstall the .pfx certificate as described above,  
+    * Or open an incognito tab (ctrl + shift + N) and paste the server URL into the address bar.  
+4. In case none of the above works, you can use your own certificate and have RavenDB trust it. 
+   You can use any client certificate that works under your OS and browser, even if it wasn't generated by RavenDB.  
+   See [trusting an existing certificate](../../server/administration/cli#trustclientcert).  
+
+---
+
 ### RavenDB is running as a service in Windows and Chrome doesn't use the client certificate from the OS store
 
-That is because the certificate was installed to the OS by the service user (during setup) but Chrome can't access it because 
-it's running as another user (or as Administrator).  
-The solution is to import the certificate manually to Chrome (In Chrome, Settings -> Privacy and security -> Security -> Manage certificates) 
-or to install the .pfx certificate again to the OS store, this time with the same user as Chrome.
+Your RavenDB service may run under a certain user, for which the certificate was installed, while you 
+are currently using a different user for which no certificate was installed.  
+Or you may have registered the certificate with the OS, but are using a Chrome version higher than 105 that 
+looks for the certificate not at the OS root but at the Chrome root store.  
+
+To solve these issues:
+Using a user that the service is available for, install or import the certificate PFX 
+[as described above](../../server/security/common-errors-and-faq#authentication-error-occurred-using-chrome).  
 
 ---
 
@@ -487,6 +540,10 @@ To figure out what the new limit should be, look at the exception thrown by Rave
 {PANEL/}
 
 ## Related Articles
+
+### Certificates
+
+- [Manual Certificate Configuration](../../server/security/authentication/certificate-configuration)
 
 ### Installation
 
