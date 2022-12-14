@@ -83,27 +83,19 @@ curl -X POST -H "Content-Type: application/json" -d '{"Name": "cluster.admin.cli
 
 ## Using Client Certificates
 
-Once you have the admin client certificate you can access the server/cluster by using the Studio, the Client API or any other client. 
+Once you have the admin client certificate you can access the server/cluster by using the Studio, 
+the Client API or any other client. 
 
 {NOTE: }
-Running [Studio](../../../studio/overview) to manage RavenDB requires a **client certificate**.  
-Studio is accessed using a browser like Edge, Firefox, or Chrome.  
-While Edge uses certificates that are **registered with the OS**, Firefox and Chrome (version 
-105 and up) use certificates that are registered with the [browser's root store](https://blog.chromium.org/2022/09/announcing-launch-of-chrome-root-program.html).  
-This means that if you are a Firefox or a Chrome user, you need to make sure that 
-your RavenDB client certificate for Studio is properly registered with the browser 
-store, so Studio will be able to locate the certificate and use it to access the server.
-
-* Let's encrypt certificates, that can be generated while running the 
-  setup wizard, are automatically registered with the browser root store.  
-* Other certificates need to be 
-  [explicitly imported](../../../server/security/common-errors-and-faq#authentication-error-occurred-using-chrome) 
-  to the browser's store.  
-
+[Read Here](../../../studio/overview#accessing-studio-after-setup) 
+about gaining management access to RavenDB after setup.  
 {NOTE/}
 
-It is recommended to generate additional certificates with reduced access rights for applications and users.
-Wiring a certificate in the RavenDB Client is described in the [setting up authentication and authorization](../../../client-api/setting-up-authentication-and-authorization) section of the Client API.
+It is recommended to generate additional certificates with reduced access rights for applications 
+and users.  
+Wiring a certificate in the RavenDB Client is described in the 
+[setting up authentication and authorization](../../../client-api/setting-up-authentication-and-authorization) 
+section of the Client API.
 
 ## Related articles
 
