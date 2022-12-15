@@ -1,55 +1,63 @@
 [
-  {
-    "Path": "get-collection-statistics.markdown",
-    "Name": "Get Collection Statistics",
-    "DiscussionId": "43588db5-317b-4d2c-afb6-5db073dca55c",
-    "Mappings": []
-  },
-  {
-    "Path": "get-statistics.markdown",
-    "Name": "Get Statistics",
-    "DiscussionId": "eca4335e-f435-4687-91db-43a41ea08aab",
-    "Mappings": [
-      {
-        "Version": 3.5,
-        "Key": "client-api/commands/how-to/get-database-and-server-statistics"
-      }
-    ]
-  },
-  {
-    "Path": "get-detailed-statistics.markdown",
-    "Name": "Get Detailed Statistics",
-    "DiscussionId": "fdcda5ce-8793-4b3c-a008-5ec906e7c234",
-    "Mappings": []
-  },
-  {
-    "Path": "/configuration",
-    "Name": "Configuration",
-    "Mappings": []
-  },
-  {
-    "Path": "/identities",
-    "Name": "Identities",
-    "Mappings": []
-  },
-  {
-    "Path": "/indexes",
-    "Name": "Indexes",
-    "Mappings": []
-  },
-  {
-    "Path": "/etl",
-    "Name": "ETL",
-    "Mappings": []
-  },
-  {
-    "Path": "/connection-strings",
-    "Name": "Connection strings",
-    "Mappings": []
-  },
-  {
-    "Path": "/backup",
-    "Name": "Backup",
-    "Mappings": []
-  }
+    {
+        "Path": "get-collection-statistics.markdown",
+        "Name": "Get Collection Statistics",
+        "DiscussionId": "43588db5-317b-4d2c-afb6-5db073dca55c",
+        "Mappings": [],
+        "LastSupportedVersion": "5.1"
+    },
+    {
+        "Path": "get-statistics.markdown",
+        "Name": "Get Statistics",
+        "DiscussionId": "eca4335e-f435-4687-91db-43a41ea08aab",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/how-to/get-database-and-server-statistics"
+            }
+        ],
+        "LastSupportedVersion": "5.1"
+    },
+    {
+        "Path": "get-detailed-statistics.markdown",
+        "Name": "Get Detailed Statistics",
+        "DiscussionId": "fdcda5ce-8793-4b3c-a008-5ec906e7c234",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/operations/maintenance/get-stats"
+            }
+        ],
+        "LastSupportedVersion": "5.1"
+    },
+    {
+        "Path": "/configuration",
+        "Name": "Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "/identities",
+        "Name": "Identities",
+        "Mappings": []
+    },
+    {
+        "Path": "/indexes",
+        "Name": "Indexes",
+        "Mappings": []
+    },
+    {
+        "Path": "/backup",
+        "Name": "Backup",
+        "Mappings": []
+    },
+    {
+        "Path": "/etl",
+        "Name": "ETL",
+        "Mappings": []
+    },
+    {
+        "Path": "/connection-strings",
+        "Name": "Connection strings",
+        "Mappings": []
+    }
 ]
