@@ -83,10 +83,19 @@ curl -X POST -H "Content-Type: application/json" -d '{"Name": "cluster.admin.cli
 
 ## Using Client Certificates
 
-Once you have the admin client certificate you can access the server/cluster by using the Studio, the Client API or any other client. 
+Once you have the admin client certificate you can access the server/cluster by using the Studio, 
+the Client API or any other client. 
 
-It is recommended to generate additional certificates with reduced access rights for applications and users.
-Wiring a certificate in the RavenDB Client is described in the [setting up authentication and authorization](../../../client-api/setting-up-authentication-and-authorization) section of the Client API.
+{NOTE: }
+[Read Here](../../../studio/overview#accessing-studio-after-setup) 
+about gaining management access to RavenDB after setup.  
+{NOTE/}
+
+It is recommended to generate additional certificates with reduced access rights for applications 
+and users.  
+Wiring a certificate in the RavenDB Client is described in the 
+[setting up authentication and authorization](../../../client-api/setting-up-authentication-and-authorization) 
+section of the Client API.
 
 ## Related articles
 

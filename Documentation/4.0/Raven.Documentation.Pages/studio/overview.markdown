@@ -12,10 +12,40 @@
 * The Studio can be accessed on any RavenDB server regardless of how it is deployed.  
 
 * In this page:  
+  * [Accessing Studio After Setup](../studio/overview#accessing-studio-after-setup)  
   * [Manage Your RavenDB Server](../studio/overview#manage-your-ravendb-server)  
   * [Manage Your Databases](../studio/overview#manage-your-databases)  
   * [Header and Footer Area](../studio/overview#header-and-footer-area)  
 {NOTE/}
+
+---
+{PANEL: Accessing Studio After Setup}
+
+Studio can be operated using a browser, to connect and manage RavenDB.  
+This requires the browser to own a **client certificate** with admin privileges.  
+Trying to connect RavenDB without a certificate 
+[will fail](../server/security/common-errors-and-faq#authentication-error-occurred-using-edge).  
+
+The three popular browsers are looking for certificates in different locations.  
+**Edge** looks for certificates in the OS root store.  
+**Firefox** looks for certificates in the browser's root store.  
+**Chrome** (version 105 and up) looks for certificates in the [browser's root store](https://blog.chromium.org/2022/09/announcing-launch-of-chrome-root-program.html).  
+
+It is therefore important to install your certificate where your browser would be 
+able to find it.  
+
+* You can generate your certificate [during setup](../start/installation/setup-wizard#secure-setup-with-a-free-let).  
+  The Let's Encrypt certificates that are generated this way are automatically registered 
+  where all three browsers can find them.  
+
+* You can also obtain your certificate [elsewhere](../start/installation/setup-wizard#secure-setup-with-your-own-certificate).  
+  If you use a self-signed certificate, you must make sure it is properly registered 
+  where your browser can find it.  
+  To register such certificate for Firefox or Chrome, you may need to 
+  [explicitly import the certificate](../server/security/common-errors-and-faq#authentication-error-occurred-using-chrome) 
+  into the browser's root store.  
+
+{PANEL/}
 
 ---
 
