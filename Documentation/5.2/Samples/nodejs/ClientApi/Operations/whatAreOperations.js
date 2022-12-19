@@ -4,7 +4,7 @@ const documentStore = new DocumentStore();
 
 async function operations() {
     //region operations_ex
-    // Define operation, i.e. get all counters info for a document
+    // Define operation, e.g. get all counters info for a document
     const getCountersOp = new GetCountersOperation("products/1-A");
 
     // Execute the operation by passing the operation to operations.send
@@ -15,21 +15,21 @@ async function operations() {
     //endregion
 
     //region maintenance_ex
-    // Define operation, i.e. stop an index 
+    // Define operation, e.g. stop an index 
     const stopIndexOp = new StopIndexOperation("Orders/ByCompany");
 
     // Execute the operation by passing the operation to maintenance.send
     await documentStore.maintenance.send(stopIndexOp);
 
     // This specific operation returns void
-    // You can send another operation to veify the index running status
+    // You can send another operation to verify the index running status
     const indexStatsOp = new GetIndexStatisticsOperation("Orders/ByCompany");
     const indexStats = await documentStore.maintenance.send(indexStatsOp);
     const status = indexStats.status; // will be "Paused"
     //endregion
 
     //region server_ex
-    // Define operation, i.e. get the server build number
+    // Define operation, e.g. get the server build number
     const getBuildNumberOp = new GetBuildNumberOperation();
 
     // Execute the operation by passing the operation to maintenance.server.send
@@ -40,7 +40,7 @@ async function operations() {
     //endregion
 
     //region wait_ex
-    // Define operation, i.e. delete all discontinued products 
+    // Define operation, e.g. delete all discontinued products 
     // Note: This operation implements: 'IOperation<OperationIdResult>'
     const deleteByQueryOp = new DeleteByQueryOperation("from Products where Discontinued = true");
 

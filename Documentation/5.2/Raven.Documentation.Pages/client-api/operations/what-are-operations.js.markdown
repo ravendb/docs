@@ -28,7 +28,7 @@
 
 {PANEL: Why use operations}
 
-* Operations provide __management functionality__ that is Not available in the context of the session, i.e.:  
+* Operations provide __management functionality__ that is Not available in the context of the session, e.g.:  
   create/delete a database, execute administrative tasks, assign permissions, change server configuration, etc.
 
 * Some operations (e.g. _PatchOperation_) can also be carried out via the session (e.g. _session.advanced.patch()_).  
@@ -49,9 +49,8 @@
   By default, operations work on the default database defined in the DocumentStore.  
   However, common operations & maintenance operations can operate on a different database by using the [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) method.  
 * __Transaction scope__:  
-  Most operations execute as a single-node transaction which then replicates to the other nodes in the database-group.  
-  Some operations such as _RestoreBackupOperation_ are server-wide and execute on all nodes.  
-  See the specific operation description for the details. 
+  Operations execute as a single-node transaction.  
+  If needed, data will then replicate to the other nodes in the database-group.
 * __Background operations__:  
   Some operations may take a long time to complete and can be awaited for completion.   
   Learn more [below](../../client-api/operations/what-are-operations#wait-for-completion).
@@ -248,19 +247,23 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesPolicyOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesValueNamesOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RemoveTimeSeriesPolicyOperation
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RemoveTimeSeriesPolicyOperation  
+
+* __Revisions__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRevisionsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteRevisionsOperation  
+
+* __Sorters__:   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutSortersOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteSorterOperation  
 
 * __Misc__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureExpirationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRefreshOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRevisionsOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteRevisionsOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDocumentsCompressionConfigurationOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutSortersOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteSorterOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DatabaseHealthCheckOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetOperationStateOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CreateSampleDataOperation
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CreateSampleDataOperation  
 
 {NOTE/}
 {PANEL/}
@@ -342,25 +345,31 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideBackupConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationsOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RestoreBackupOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RestoreBackupOperation
+
+* __Server-wide analyzers__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideAnalyzersOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideAnalyzerOperation
+
+* __Server-wide sorters__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideSortersOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideSorterOperation
 
 * __Logs & debug__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetLogsConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetLogsConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetClusterDebugInfoPackageOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetBuildNumberOperation](../../client-api/operations/server-wide/get-build-number)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideOperationStateOperation
+
+* __Traffic watch__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutTrafficWatchConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTrafficWatchConfigurationOperation
 
 * __Misc__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideAnalyzersOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideAnalyzerOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideSortersOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideSorterOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutTrafficWatchConfigurationOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTrafficWatchConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRevisionsForConflictsOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ModifyConflictSolverOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OfflineMigrationOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideOperationStateOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OfflineMigrationOperation
 
 {NOTE/}
 {PANEL/}
