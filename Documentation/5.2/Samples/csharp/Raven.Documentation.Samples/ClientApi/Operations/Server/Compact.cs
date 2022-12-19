@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Operations.Indexes;
@@ -12,7 +13,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
         private interface IFoo
         {
             /*
-            #region syntax_1
+            #region syntax
             public CompactDatabaseOperation(CompactSettings compactSettings)
             #endregion
             */
@@ -39,7 +40,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                 
                 // Execute compaction by passing the operation to Maintenance.Server.Send
                 Operation operation = documentStore.Maintenance.Server.Send(compactOp);
-                // Wait for operation to complete
+                
+                // Wait for operation to complete, during compaction the database is offline
                 operation.WaitForCompletion();
                 #endregion
             }
@@ -109,7 +111,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             {
                 #region compact_3
                 // Get all member nodes in the database-group using the 'GetDatabaseRecordOperation' operation
-                var allMemberNodes =
+                List<string> allMemberNodes =
                     documentStore.Maintenance.Server.Send(new GetDatabaseRecordOperation("Northwind"))
                         .Topology.Members;
 
@@ -129,7 +131,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                     // Define the compact operation, pass the settings
                     IServerOperation<OperationIdResult> compactOp = new CompactDatabaseOperation(settings);
                     
-                    // Execute the operation
+                    // Execute the operation on a specific node
                     // Use `ForNode` to specify the node to operate on
                     Operation operation = documentStore.Maintenance.Server.ForNode(nodeTag).Send(compactOp);
                     // Wait for operation to complete
@@ -160,7 +162,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                 
                 // Execute compaction by passing the operation to Maintenance.Server.SendAsync
                 Operation operation = await documentStore.Maintenance.Server.SendAsync(compactOp);
-                // Wait for operation to complete
+                
+                // Wait for operation to complete, during compaction the database is offline
                 await operation.WaitForCompletionAsync().ConfigureAwait(false);
                 #endregion
             }
@@ -230,7 +233,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             {
                 #region compact_3_async
                 // Get all member nodes in the database-group using the 'GetDatabaseRecordOperation' operation
-                var allMemberNodes =
+                List<string> allMemberNodes =
                     documentStore.Maintenance.Server.Send(new GetDatabaseRecordOperation("Northwind"))
                         .Topology.Members;
 
@@ -250,7 +253,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                     // Define the compact operation, pass the settings
                     IServerOperation<OperationIdResult> compactOp = new CompactDatabaseOperation(settings);
                     
-                    // Execute the operation
+                    // Execute the operation on a specific node
                     // Use `ForNode` to specify the node to operate on
                     Operation operation = await documentStore.Maintenance.Server.ForNode(nodeTag).SendAsync(compactOp);
                     // Wait for operation to complete

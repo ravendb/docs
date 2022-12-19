@@ -15,10 +15,10 @@
 
 * **Target node**:  
   By default, the operation will be executed on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance-and-failover).  
-  The operation can be executed on a specific node by using the [ForNode](../../../client-api/operations/how-to/switch-operations-to-different-node) method.  
+  The operation can be executed on a specific node by using the [forNode](../../../client-api/operations/how-to/switch-operations-to-different-node) method.  
 
 * **Target database**:  
-  The database to compact is specified in `CompactSettings` (see examples below).  
+  The database to compact is specified in `CompactSettings` (see examples below). // todo.. this is interface ??  
   An exception is thrown if the specified database doesn't exist on the server node.  
 
 * In this page:  
@@ -43,10 +43,7 @@
 
 * The following example will compact only documents for the specified database.  
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync compact_0@ClientApi\Operations\Server\Compact.cs /}
-{CODE-TAB:csharp:Async compact_0_async@ClientApi\Operations\Server\Compact.cs /}
-{CODE-TABS/}
+{CODE:nodejs compact_0@ClientApi\Operations\Server\compact.js /}
 
 {NOTE/}
 
@@ -56,10 +53,7 @@
 
 * The following example will compact only specific indexes.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync compact_1@ClientApi\Operations\Server\Compact.cs /}
-{CODE-TAB:csharp:Async compact_1_async@ClientApi\Operations\Server\Compact.cs /}
-{CODE-TABS/}
+{CODE:nodejs compact_1@ClientApi\Operations\Server\compact.js /}
 
 {NOTE/}
 
@@ -69,10 +63,7 @@
 
 * The following example will compact all indexes and documents.  
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync compact_2@ClientApi\Operations\Server\Compact.cs /}
-{CODE-TAB:csharp:Async compact_2_async@ClientApi\Operations\Server\Compact.cs /}
-{CODE-TABS/}
+{CODE:nodejs compact_2@ClientApi\Operations\Server\compact.js /}
 
 {NOTE/}
 
@@ -82,12 +73,9 @@
 
 * By default, an operation executes on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance-and-failover).  
 * The following example will compact the database on all [member](../../../server/clustering/rachis/cluster-topology#nodes-states-and-types) nodes from its database-group topology.  
-  `ForNode` is used to execute the operation on a specific node.   
+  `forNode` is used to execute the operation on a specific node.   
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync compact_3@ClientApi\Operations\Server\Compact.cs /}
-{CODE-TAB:csharp:Async compact_3_async@ClientApi\Operations\Server\Compact.cs /}
-{CODE-TABS/}
+{CODE:nodejs compact_3@ClientApi\Operations\Server\compact.js /}
  
 {NOTE/}
 {PANEL/}
@@ -125,18 +113,17 @@
 
 {PANEL: Syntax}
 
-{CODE:csharp syntax@ClientApi\Operations\Server\Compact.cs /}
+{CODE:nodejs syntax@ClientApi\Operations\Server\compact.js /}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **compactSettings** | `CompactSettings`  | Settings for the compact operation |
+| **compactSettings** | object  | Settings for the compact operation.<br>See object fields below. |
 
-| `CompactSettings` | | |
+| compactSettings fields | | |
 | - | - | - |
-| **DatabaseName** | string | Name of database to compact. Mandatory param. |
-| **Documents** | bool | Indicates if documents should be compacted. Optional param. |
-| **Indexes** | string[] | List of index names to compact. Optional param. |
-| **SkipOptimizeIndexes** | bool | `true` - Skip Lucene's index optimization while compacting<br>`false` - Lucene's index optimization will take place while compacting |
+| **databaseName** | string | Name of database to compact. Mandatory param. |
+| **documents** | boolean | Indicates if documents should be compacted. Optional param. |
+| **indexes** | string[] | List of index names to compact. Optional param. |
 | | | __Note__: Either _Documents_ or _Indexes_ (or both) must be specified |
 
 {PANEL/}
