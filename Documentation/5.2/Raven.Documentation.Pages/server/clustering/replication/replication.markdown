@@ -15,6 +15,9 @@
 
 * In this page:  
     * [Replication types](../../../server/clustering/replication/replication#replication-types)  
+      * [Internal replication](../../../server/clustering/replication/replication#internal-replication)
+      * [External replication](../../../server/clustering/replication/replication#external-replication)
+      * [Hub/Sink replication](../../../server/clustering/replication/replication#hubsink-replication)
     * [What is replicated](../../../server/clustering/replication/replication#what-is-replicated)  
     * [How replication works](../../../server/clustering/replication/replication#how-replication-works)  
     * [Replication & transaction boundary](../../../server/clustering/replication/replication#replication-&-transaction-boundary)  
