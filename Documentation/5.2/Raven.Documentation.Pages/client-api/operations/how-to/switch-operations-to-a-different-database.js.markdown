@@ -18,7 +18,7 @@
 
 {PANEL: Common operations - forDatabase}
 
-* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations#the-following-operations-are-available).
+* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations#common-operations).
 
 {CODE:nodejs for_database_1@ClientApi\Operations\HowTo\switchOperationsToDifferentDatabase.js /}
 
@@ -38,7 +38,7 @@ __Syntax__:
 
 {PANEL: Maintenance operations - forDatabase}
 
-* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations#the-following-maintenance-operations-are-available).
+* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations#maintenance-operations).
 
 {CODE:nodejs for_database_2@ClientApi\Operations\HowTo\switchOperationsToDifferentDatabase.js /}
 

@@ -8,18 +8,18 @@
   all client requests will access the server node that is defined by the client configuration.  
   (Learn more in: [readBalanceBehavior](../../../client-api/configuration/load-balance-and-failover) & [loadBalanceBehavior](../../../client-api/session/configuration/use-session-context-for-load-balancing)).
 
-* __Maintenance server operations__ can be executed on a specific node by using the `forNode` method.  
+* However, __server maintenance operations__ can be executed on a specific node by using the `forNode` method.  
   (An exception is thrown if that node is not available).
 
 * In this page:
-    * [Maintenance server operations - forNode](../../../client-api/operations/how-to/switch-operations-to-different-node#maintenance-server-operations---fornode)
+    * [Server maintenance operations - forNode](../../../client-api/operations/how-to/switch-operations-to-different-node#server-maintenance-operations---fornode)
 {NOTE/}
 
 ---
 
-{PANEL: Maintenance server operations - forNode}
+{PANEL: Server maintenance operations - forNode}
 
-* For reference, all maintenance server operations are listed [here](../../../client-api/operations/what-are-operations#the-following-server-wide-operations-are-available).
+* For reference, all server maintenance operations are listed [here](../../../client-api/operations/what-are-operations#server-maintenance-operations).
 
 {CODE:nodejs for_node_1@ClientApi\Operations\HowTo\switchOperationsToDifferentNode.js /}
 

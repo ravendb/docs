@@ -279,7 +279,7 @@ __Send syntax__:
 * These operations include server management and configuration operations.  
   See all available operations [below](../../client-api/operations/what-are-operations#server-list).
 
-* To execute a server maintenance operation request,  
+* To execute a server-maintenance operation request,  
   use the `send` method on the `maintenance.server` property in the DocumentStore.   
 
 __Example__:
@@ -298,7 +298,7 @@ __Send syntax__:
 
 {NOTE: }
 
-<span id="server-list"> __The following server maintenance operations are available:__ </span>
+<span id="server-list"> __The following server-maintenance operations are available:__ </span>
 
 ---
 

@@ -197,7 +197,7 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexesStatisticsOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexingStatusOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexStalenessOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexNamesOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexNamesOperation](../../client-api/operations/maintenance/indexes/get-index-names)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexOperation](../../client-api/operations/maintenance/indexes/start-index)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexingOperation](../../client-api/operations/maintenance/indexes/start-indexing)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexOperation](../../client-api/operations/maintenance/indexes/stop-index)   
@@ -292,7 +292,7 @@ __Send syntax__:
 * These operations include server management and configuration operations.  
   See all available operations [below](../../client-api/operations/what-are-operations#server-list).
 
-* To execute a server maintenance operation request,  
+* To execute a server-maintenance operation request,  
   use the `Send` method on the `Maintenance.Server` property in the DocumentStore.
 
 __Example__:
@@ -317,7 +317,7 @@ __Send syntax__:
 
 {NOTE: }
 
-<span id="server-list"> __The following server maintenance operations are available:__ </span>
+<span id="server-list"> __The following server-maintenance operations are available:__ </span>
 
 ---
 

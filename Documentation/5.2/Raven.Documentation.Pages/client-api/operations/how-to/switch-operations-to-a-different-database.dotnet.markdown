@@ -18,7 +18,7 @@
 
 {PANEL: Common operations - ForDatabase}
 
-* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations#the-following-operations-are-available).
+* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations#common-operations).
 
 {CODE for_database_1@ClientApi\Operations\HowTo\SwitchOperationsToDifferentDatabase.cs /}
 
@@ -38,7 +38,7 @@ __Syntax__:
 
 {PANEL: Maintenance operations - ForDatabase}
 
-* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations#the-following-maintenance-operations-are-available).
+* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations#maintenance-operations).
 
 {CODE for_database_2@ClientApi\Operations\HowTo\SwitchOperationsToDifferentDatabase.cs /}
 
