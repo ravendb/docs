@@ -8,7 +8,7 @@ async function operations() {
     const getCountersOp = new GetCountersOperation("products/1-A");
 
     // Execute the operation by passing the operation to operations.send
-    const allCountersResult = await documentStore.Operations.Send(getCountersOp);
+    const allCountersResult = await documentStore.operations.send(getCountersOp);
 
     // Access the operation result
     const numberOfCounters = allCountersResult.counters.length;
