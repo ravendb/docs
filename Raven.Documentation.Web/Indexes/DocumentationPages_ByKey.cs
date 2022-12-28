@@ -63,6 +63,9 @@ namespace Raven.Documentation.Web.Indexes
 
             private static Language[] ConvertLanguages(string[] languages)
             {
+
+                languages = languages.Where(lang => lang != "Python").ToArray(); // temp fix for RDoc-2346
+
                 return languages
                     .Select(language => (Language)Enum.Parse(typeof(Language), language, ignoreCase: true))
                     .ToArray();

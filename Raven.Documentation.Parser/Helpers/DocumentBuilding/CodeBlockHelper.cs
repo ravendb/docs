@@ -131,9 +131,10 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
                 case Language.NodeJs:
                     content = ExtractSectionFromFile(section, Path.Combine(samplesDirectory, file));
                     break;
-                case Language.Python:
-                    content = ExtractSectionFromPythonFile(section, Path.Combine(samplesDirectory, file));
-                    break;
+                // temporary removed for RDoc-2346
+                // case Language.Python:
+                //     content = ExtractSectionFromPythonFile(section, Path.Combine(samplesDirectory, file));
+                //     break;
                 default:
                     throw new NotSupportedException(language.ToString());
             }
@@ -152,6 +153,12 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
                 var languageAndTitle = match.Groups[1].Value.Trim();
                 var parts = languageAndTitle.Split(':');
                 var languageAsString = parts[0];
+
+                if (languageAsString == "python") // temp fix for RDoc-2346
+                {
+                    return "";
+                }
+
                 var title = parts.Length > 1 ? parts[1] : null;
                 var value = match.Groups[2].Value.Trim();
                 tabs.Add(GenerateCodeTabFromFile(languageAsString, title, value, documentationVersion, options));
@@ -163,6 +170,12 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
                 var languageAndTitle = match.Groups[1].Value.Trim();
                 var parts = languageAndTitle.Split(':');
                 var languageAsString = parts[0];
+
+                if (languageAsString == "python") // temp fix for RDoc-2346
+                {
+                    return "";
+                }
+
                 var title = parts.Length > 1 ? parts[1] : null;
                 var value = match.Groups[2].Value.Trim();
                 tabs.Add(GenerateCodeTabBlock(languageAsString, title, value));
@@ -222,9 +235,10 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
                 case Language.NodeJs:
                     content = ExtractSectionFromFile(section, Path.Combine(samplesDirectory, file));
                     break;
-                case Language.Python:
-                    content = ExtractSectionFromPythonFile(section, Path.Combine(samplesDirectory, file));
-                    break;
+                // temporary removed for RDoc-2346
+                // case Language.Python:
+                //     content = ExtractSectionFromPythonFile(section, Path.Combine(samplesDirectory, file));
+                //     break;
                 default:
                     throw new NotSupportedException(language.ToString());
             }
@@ -339,8 +353,9 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
                 case Language.Http:
                 case Language.NodeJs:
                     return "language-javascript";
-                case Language.Python:
-                    return "language-python";
+                // temporary removed for RDoc-2346
+                // case Language.Python:
+                //     return "language-python";
                 default:
                     throw new NotSupportedException(language.ToString());
             }
@@ -399,8 +414,9 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
                     return "Node.js";
                 case Language.Http:
                     return "HTTP";
-                case Language.Python:
-                    return "Python";
+                // temporary removed for RDoc-2346
+                // case Language.Python:
+                //     return "Python";
                 default:
                     throw new NotSupportedException(language.ToString());
             }
