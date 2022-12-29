@@ -181,8 +181,9 @@ namespace Raven.Documentation.Web.Core.ViewModels
                     return "java";
                 case Language.Http:
                     return "http";
-                case Language.Python:
-                    return "python";
+                // temporary removed for RDoc-2346
+                // case Language.Python:
+                //     return "python";
                 default:
                     return "general";
             }
