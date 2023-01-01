@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* When creating a database, you specify the number of replicas for that database.  
+* When creating a database, you can specify the number of replicas for that database.  
   This determines the number of database instances in the database-group.
 
 * __The number of replicas can be dynamically increased__ even after the database is up and running,  
@@ -12,7 +12,7 @@
 
 * The nodes added must already exist in the [cluster topology](../../../server/clustering/rachis/cluster-topology).
 
-* Once the new node is added to the group,  
+* Once a new node is added to the database-group,  
   the cluster assigns a mentor node (from the existing database-group nodes) to update the new node.
 
 * In this page:
@@ -50,7 +50,7 @@
 | **databaseName** | string | Name of a database for which to add the node. |
 | **nodeTag** | string | Tag of node to add.<br>Default: If not passed then a random node from the existing cluster topology will be added. |
 
-| Return Value<br>`DatabasePutResult` | | |
+| Object returned by send operation has: | | |
 | - | - | - |
 | raftCommandIndex | number | Index of raft command that was executed |
 | name | string | Database name |

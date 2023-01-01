@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* When creating a database, you specify the number of replicas for that database.  
+* When creating a database, you can specify the number of replicas for that database.  
   This determines the number of database instances in the database-group.
 
 * __The number of replicas can be dynamically increased__ even after the database is up and running,  
@@ -12,7 +12,7 @@
 
 * The nodes added must already exist in the [cluster topology](../../../server/clustering/rachis/cluster-topology).
 
-* Once the new node is added to the group,  
+* Once a new node is added to the database-group,  
   the cluster assigns a mentor node (from the existing database-group nodes) to update the new node.
 
 * In this page:
@@ -28,7 +28,10 @@
 * Use `AddDatabaseNodeOperation` to add another database-instance to the database-group.
 * The node added will be a random node from the existing cluster nodes.   
 
-{CODE add_1@ClientApi\Operations\Server\AddDatabaseNode.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync add_1@ClientApi\Operations\Server\AddDatabaseNode.cs /}
+{CODE-TAB:csharp:Async add_1_async@ClientApi\Operations\Server\AddDatabaseNode.cs /}
+{CODE-TABS/}
 
 {PANEL/}
 
@@ -37,7 +40,10 @@
 * You can specify the node tag to add.  
 * This node must already exist in the cluster topology.
 
-{CODE add_2@ClientApi\Operations\Server\AddDatabaseNode.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync add_2@ClientApi\Operations\Server\AddDatabaseNode.cs /}
+{CODE-TAB:csharp:Async add_2_async@ClientApi\Operations\Server\AddDatabaseNode.cs /}
+{CODE-TABS/}
 
 {PANEL/}
 
@@ -50,7 +56,7 @@
 | **databaseName** | string | Name of a database for which to add the node. |
 | **nodeTag** | string | Tag of node to add.<br>Default: a random node from the existing cluster topology will be added. |
 
-| Return Value<br>`DatabasePutResult` | | |
+| Object returned by Send operation:<br>`DatabasePutResult` | | |
 | - | - | - |
 | RaftCommandIndex | long | Index of raft command that was executed |
 | Name | string | Database name |
