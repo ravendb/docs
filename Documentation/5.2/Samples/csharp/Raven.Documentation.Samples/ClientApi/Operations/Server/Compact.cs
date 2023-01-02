@@ -1,6 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Operations.Indexes;
 using Raven.Client.ServerWide;
@@ -8,137 +8,259 @@ using Raven.Client.ServerWide.Operations;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Server
 {
-
     public class Compact
     {
         private interface IFoo
         {
             /*
-            #region compact_1
+            #region syntax
             public CompactDatabaseOperation(CompactSettings compactSettings)
             #endregion
             */
         }
 
-        private class Foo
-        {
-            #region compact_2
-            public class CompactSettings
-            {
-                public string DatabaseName { get; set; }
-
-                public bool Documents { get; set; }
-
-                public string[] Indexes { get; set; }
-            }
-            #endregion
-        }
-
         public Compact()
         {
+            using (var documentStore = new DocumentStore())
+            {
+                #region compact_0
+                // Define the compact settings
+                CompactSettings settings = new CompactSettings
+                {
+                    // Database to compact
+                    DatabaseName = "Northwind",
 
-            using (var store = new DocumentStore())
+                    // Set 'Documents' to true to compact all documents in database
+                    // Indexes are not set and will not be compacted
+                    Documents = true
+                };
+                
+                // Define the compact operation, pass the settings
+                IServerOperation<OperationIdResult> compactOp = new CompactDatabaseOperation(settings);
+                
+                // Execute compaction by passing the operation to Maintenance.Server.Send
+                Operation operation = documentStore.Maintenance.Server.Send(compactOp);
+                
+                // Wait for operation to complete, during compaction the database is offline
+                operation.WaitForCompletion();
+                #endregion
+            }
+            
+            using (var documentStore = new DocumentStore())
+            {
+                #region compact_1
+                // Define the compact settings
+                CompactSettings settings = new CompactSettings
+                {
+                    // Database to compact
+                    DatabaseName = "Northwind",
+                    
+                    // Setting 'Documents' to false will compact only the specified indexes
+                    Documents = false,
+                    
+                    // Specify which indexes to compact
+                    Indexes = new[] { "Orders/Totals", "Orders/ByCompany" }, 
+                    
+                    // Optimize indexes is Lucene's feature to gain disk space and efficiency
+                    // Set whether to skip this optimization when compacting the indexes
+                    SkipOptimizeIndexes = false
+                };
+                
+                // Define the compact operation, pass the settings
+                IServerOperation<OperationIdResult> compactOp = new CompactDatabaseOperation(settings);
+
+                // Execute compaction by passing the operation to Maintenance.Server.Send
+                Operation operation = documentStore.Maintenance.Server.Send(compactOp);
+                // Wait for operation to complete
+                operation.WaitForCompletion();
+                #endregion
+            }
+            
+            using (var documentStore = new DocumentStore())
+            {
+                #region compact_2
+                // Get all indexes names in the database using the 'GetIndexNamesOperation' operation
+                // Use 'ForDatabase' if the target database is different than the default database defined on the store
+                string[] allIndexNames =
+                    documentStore.Maintenance.ForDatabase("Northwind")
+                        .Send(new GetIndexNamesOperation(0, int.MaxValue));
+                
+                // Define the compact settings
+                CompactSettings settings = new CompactSettings
+                {
+                    DatabaseName = "Northwind", // Database to compact
+                    
+                    Documents = true,           // Compact all documents
+
+                    Indexes = allIndexNames,    // All indexes will be compacted
+                    
+                    SkipOptimizeIndexes = true  // Skip Lucene's indexes optimization
+                };
+                
+                // Define the compact operation, pass the settings
+                IServerOperation<OperationIdResult> compactOp = new CompactDatabaseOperation(settings);
+                
+                // Execute compaction by passing the operation to Maintenance.Server.Send
+                Operation operation = documentStore.Maintenance.Server.Send(compactOp);
+                // Wait for operation to complete
+                operation.WaitForCompletion();
+                #endregion
+            }
+            
+            using (var documentStore = new DocumentStore())
             {
                 #region compact_3
+                // Get all member nodes in the database-group using the 'GetDatabaseRecordOperation' operation
+                List<string> allMemberNodes =
+                    documentStore.Maintenance.Server.Send(new GetDatabaseRecordOperation("Northwind"))
+                        .Topology.Members;
+
+                // Define the compact settings as needed
                 CompactSettings settings = new CompactSettings
                 {
+                    // Database to compact
                     DatabaseName = "Northwind",
-                    // If true, the documents will also be compacted.
-                    Documents = true,
-                    // Only the specified indexes will compact.
-                    Indexes = new[] { "Orders/Totals", "Orders/ByCompany" } 
-                };
-                // You can use 'ForNode(<nodeTag>)' to specify on which node to compact.
-                // If ForNode() is not used, RavenDB will operate by default on the preferred node.
-                Operation operation = store.Maintenance.Server.ForNode("A")
-                    .Send(new CompactDatabaseOperation(settings));
-                operation.WaitForCompletion();
-
-                // To compact on all nodes, the above command must be sent to each node separately.
-                #endregion
-            }
-            using (var store = new DocumentStore())
-            {
-                #region compact_4
-                // Get all index names in the database.
-                string[] indexNames = store.Maintenance.Send(new GetIndexNamesOperation(0, int.MaxValue));
-
-                CompactSettings settings = new CompactSettings
-                {
-                    DatabaseName = "Northwind",
-                    // If true, documents will also be compacted.
-                    Documents = true,
-                    // 'indexNames' contains all of the index names.
-                    Indexes = indexNames
-                };
-                // You can use 'ForNode(<nodeTag>)' to specify on which node to compact.
-                // If ForNode() is not used, RavenDB will operate by default on the preferred node.
-                Operation operation = store.Maintenance.Server.ForNode("A")
-                    .Send(new CompactDatabaseOperation(settings));
-                operation.WaitForCompletion();
-
-                // To compact on all nodes, the above command must be sent to each node separately.
-                #endregion
-            }
-        }
-
-        // CompactDatabaseOperation automatically runs on the store's database.  
-        // If we try to compact a different database that doesn't reside on the 
-        // first online node, CompactDatabaseOperation won't find it and fail.  
-        private static void WillNotWork()
-        {
-            using (var store = new DocumentStore
-            {
-                Urls = new[] { "http://localhost:8080" },
-                Database = "Northwind"
-            }.Initialize())
-            {
-                var compactOperation = new CompactDatabaseOperation(new Raven.Client.ServerWide.CompactSettings
-                {
-                    DatabaseName = "NonDefaultDB",
+                    
+                    //Compact all documents in database
                     Documents = true
-                });
+                };
 
-                var reqEx = store.GetRequestExecutor();
-
-                store.Maintenance.Server.Send(compactOperation);
+                // Execute the compact operation on each member node
+                foreach (string nodeTag in allMemberNodes)
+                {
+                    // Define the compact operation, pass the settings
+                    IServerOperation<OperationIdResult> compactOp = new CompactDatabaseOperation(settings);
+                    
+                    // Execute the operation on a specific node
+                    // Use `ForNode` to specify the node to operate on
+                    Operation operation = documentStore.Maintenance.Server.ForNode(nodeTag).Send(compactOp);
+                    // Wait for operation to complete
+                    operation.WaitForCompletion();
+                }
+                #endregion
             }
         }
 
-
-        private static void locateDB()
+        public async Task CompactAsync()
         {
-            #region compact_5
-            // To compact a database other than the store's database, we need to explicitly provide 
-            // its name to the store's Request Executor.  
-            using (var store = new DocumentStore
+            using (var documentStore = new DocumentStore())
             {
-                Urls = new[] { "http://localhost:8080" },
-                Database = "sampleDB" // the store's database
-            }.Initialize())
-            {
-                store.GetRequestExecutor().GetPreferredNode().Wait();
-
-                const string DBToCompact = "NonDefaultDB"; // the database we want to compact
-                string[] indexNames = store.Maintenance.Send(new GetIndexNamesOperation(0, int.MaxValue));
-
-                var compactOperation = new CompactDatabaseOperation(new Raven.Client.ServerWide.CompactSettings
+                #region compact_0_async
+                // Define the compact settings
+                CompactSettings settings = new CompactSettings
                 {
-                    DatabaseName = DBToCompact,
-                    Documents = true,
-                    Indexes = indexNames
-                });
+                    // Database to compact
+                    DatabaseName = "Northwind",
 
-                // Get request executor for our DB
-                var reqEx = store.GetRequestExecutor(DBToCompact);
-
-                using (reqEx.ContextPool.AllocateOperationContext(out var context))
-                {
-                    var compactCommand = compactOperation.GetCommand(store.Conventions, context);
-                    reqEx.Execute(compactCommand, context);
-                }
+                    // Set 'Documents' to true to compact all documents in database
+                    // Indexes are not set and will not be compacted
+                    Documents = true
+                };
+                
+                // Define the compact operation, pass the settings
+                IServerOperation<OperationIdResult> compactOp = new CompactDatabaseOperation(settings);
+                
+                // Execute compaction by passing the operation to Maintenance.Server.SendAsync
+                Operation operation = await documentStore.Maintenance.Server.SendAsync(compactOp);
+                
+                // Wait for operation to complete, during compaction the database is offline
+                await operation.WaitForCompletionAsync().ConfigureAwait(false);
+                #endregion
             }
-            #endregion
+            
+            using (var documentStore = new DocumentStore())
+            {
+                #region compact_1_async
+                // Define the compact settings
+                CompactSettings settings = new CompactSettings
+                {
+                    // Database to compact
+                    DatabaseName = "Northwind",
+                    
+                    // Setting 'Documents' to false will compact only the specified indexes
+                    Documents = false,
+                    
+                    // Specify which indexes to compact
+                    Indexes = new[] { "Orders/Totals", "Orders/ByCompany" }, 
+                    
+                    // Optimize indexes is Lucene's feature to gain disk space and efficiency
+                    // Set whether to skip this optimization when compacting the indexes
+                    SkipOptimizeIndexes = false
+                };
+                
+                // Define the compact operation, pass the settings
+                IServerOperation<OperationIdResult> compactOp = new CompactDatabaseOperation(settings);
+
+                // Execute compaction by passing the operation to Maintenance.Server.SendAsync
+                Operation operation = await documentStore.Maintenance.Server.SendAsync(compactOp);
+                // Wait for operation to complete
+                await operation.WaitForCompletionAsync().ConfigureAwait(false);
+                #endregion
+            }
+            
+            using (var documentStore = new DocumentStore())
+            {
+                #region compact_2_async
+                // Get all indexes names in the database using the 'GetIndexNamesOperation' operation
+                // Use 'ForDatabase' if the target database is different than the default database defined on the store
+                string[] allIndexNames =
+                    documentStore.Maintenance.ForDatabase("Northwind")
+                        .Send(new GetIndexNamesOperation(0, int.MaxValue));
+                
+                // Define the compact settings
+                CompactSettings settings = new CompactSettings
+                {
+                    DatabaseName = "Northwind", // Database to compact
+                    
+                    Documents = true,           // Compact all documents
+
+                    Indexes = allIndexNames,    // All indexes will be compacted
+                    
+                    SkipOptimizeIndexes = true  // Skip Lucene's indexes optimization
+                };
+                
+                // Define the compact operation, pass the settings
+                IServerOperation<OperationIdResult> compactOp = new CompactDatabaseOperation(settings);
+                
+                // Execute compaction by passing the operation to Maintenance.Server.SendAsync
+                Operation operation = await documentStore.Maintenance.Server.SendAsync(compactOp);
+                // Wait for operation to complete
+                await operation.WaitForCompletionAsync();
+                #endregion
+            }
+            
+            using (var documentStore = new DocumentStore())
+            {
+                #region compact_3_async
+                // Get all member nodes in the database-group using the 'GetDatabaseRecordOperation' operation
+                List<string> allMemberNodes =
+                    documentStore.Maintenance.Server.Send(new GetDatabaseRecordOperation("Northwind"))
+                        .Topology.Members;
+
+                // Define the compact settings as needed
+                CompactSettings settings = new CompactSettings
+                {
+                    // Database to compact
+                    DatabaseName = "Northwind",
+                    
+                    //Compact all documents in database
+                    Documents = true
+                };
+
+                // Execute the compact operation on each member node
+                foreach (string nodeTag in allMemberNodes)
+                {
+                    // Define the compact operation, pass the settings
+                    IServerOperation<OperationIdResult> compactOp = new CompactDatabaseOperation(settings);
+                    
+                    // Execute the operation on a specific node
+                    // Use `ForNode` to specify the node to operate on
+                    Operation operation = await documentStore.Maintenance.Server.ForNode(nodeTag).SendAsync(compactOp);
+                    // Wait for operation to complete
+                    await operation.WaitForCompletionAsync();
+                }
+                #endregion
+            }
         }
     }
 }
