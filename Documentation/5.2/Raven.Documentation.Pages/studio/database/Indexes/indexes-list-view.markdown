@@ -47,15 +47,19 @@
 * `Paused`  
    * New data is not being indexed.  
    * Queries will be stale as new data is not indexed.  
-   * The indexing process will resume upon setting _'Resume'_ or when the server is _restarted_.  
+   * The indexing process will resume upon either of the following:  
+     * Setting _'Resume indexing'_  
+     * Restarting the server  
+     * Reloading the database (by disabling-enabling the database).  
 
 * `Disabled`  
    * New data is not being indexed.  
    * Queries will be stale as new data is not indexed.  
-   * The indexing process will _not_ automatically resume upon a server restart, but only when setting _'Enable'_.  
+   * The indexing process will resume only when setting _'Enable indexing'_.  
+     It will _not_ automatically resume upon restarting the server or reloading the database.  
 
 * `Idle`  
-   * An auto-index becomes idle when the time difference between its last-query-time and
+   * An __auto-index__ becomes idle when the time difference between its last-query-time and
      the most recent time the database was queried on (with any other index) is greater than a configurable threshold (30 min by default).  
      This is done in order to avoid marking indexes as idle for databases that were offline for a long period of time -  
      not having new data to index and not queried in general, as well as for databases that were just restored from a snapshot or a backup.  
@@ -107,7 +111,7 @@
 #### 3. >
 
 * **State**  
-  _Disable_ index or set as _Paused_. See states explanation above (under the figure-1).  
+  _Disable_ index or set as _Paused_. See states explanation above (under Figure-1).  
 * **Priority**  
   Set the indexing-process thread priority as RavenDB prioritizes requests-processing over [Indexing](../../../server/administration/index-administration#priority) by default.  
 * **Mode**  
