@@ -1,23 +1,26 @@
 ﻿# Sharding: Overview
 
-* **Sharding** is the distribution of a database's content between autonomous **Shards**.  
-  It is supported by RavenDB 6.0 and on.  
+* **Sharding**, supported by RavenDB from version 6.0 and on, 
+  is the distribution of a database's content between autonomous 
+  **Shards**.  
 
-* In most cases, sharding is implemented to allow efficient usage and management of 
-  exceptionally large databases (i.e. of a 10 terrabytes database).  
+* In most cases, sharding is implemented to allow efficient usage 
+  and management of exceptionally large databases (i.e. a 10 terrabytes DB).  
 
-* Sharding is managed solely by RavenDB server. No special adaptation is required from 
-  clients when accessing a sharding-capable server or a sharded database.  
+* Sharding is managed by RavenDB server, no special adaptation is 
+  required from clients when accessing a sharding-capable server 
+  or a sharded database.  
     * The client API is **unchanged** under a sharded database.  
-    * Particular modifications in RavenDB features under a sharded database are documented 
-      in detail in feature-specific articles.  
+    * Particular modifications in RavenDB features under a sharded 
+      database are documented in detail in feature-specific articles.  
 
-* Each [Shard](../sharding/overview#shards) hosts and manages a **unique subset** of the 
-  database content.  
+* Each [Shard](../sharding/overview#shards) hosts and manages 
+  a **unique subset** of the database content.  
   Documents are sorted between shards by their **document ID**.  
 
 * Each RavenDB shard is hosted by at least one cluster node.  
-  Shards can be replicated over miultiple nodes to increase their accessability.  
+  Shards can be replicated over multiple nodes to increase data 
+  accessibility.  
 
 ---
 
@@ -25,7 +28,8 @@
 
 * In this page:  
   * [Sharding](../sharding/overview#sharding)  
-     * [When Should I Use Sharding?](../sharding/overview#when-should-i-use-sharding)  
+     * [Client-Server Communication](../sharding/overview#client-server-communication)  
+     * [When Should Sharding Be Used?](../sharding/overview#when-should-sharding-be-used)  
   * [Shards](../sharding/overview#shards)  
      * [Shard Replication](../sharding/overview#shard-replication)  
   * [Buckets](../sharding/overview#buckets)  
@@ -47,7 +51,7 @@ storing and managing it may become too demanding for any single node.
 System performance may suffer as resources like RAM, CPU, and storage are 
 exhausted, routine chores like indexing and backup become massive tasks, 
 responsiveness to client requests and queries slows down, and the system's 
-throughput spreads thin, serving an ever-growing number of clients.  
+throughput spreads thin serving an ever-growing number of clients.  
 
 As the volume of stored data grows, the database can be scaled out by 
 splitting it to [shards](../sharding/overview#shards), allowing it to be 
@@ -58,17 +62,30 @@ of each shard in check and maintaining its high performance and throughput.
 
 ---
 
-### When Should I Use Sharding?
+### Client-Server Communication
+
+As a client approaches a sharded cluster, the node it connects becomes the 
+**session facilitator** and manages all the communication between the client 
+and the shards containing the documents it requires access to.  
+The client remains unaware of this process and uses the same API as if 
+the cluster wasn't sharded.  
+The additional communication between the client and the facilitator and 
+between the facilitator and the shards does, however, present an overhead 
+over the usage of a non-sharded cluster.  
+
+---
+
+### When Should Sharding Be Used?
 
 While sharding solves many issues related to the storage and management 
-of high-volume databases, its implementation does present an overhead that 
-outweighs its benefits when the database is smaller than 250GB or so 
-(assuming the node can still comfortably handle this volume).  
+of high-volume databases, the overhead it presents outweighs its benefits 
+when the database is smaller than 250GB or so (assuming the node can still 
+comfortably handle this volume).  
 
 {NOTE: }
 We recommend that you plan ahead for a transition to a sharded database when 
-your database size is in the vicinity of 250GB. You should probably be well 
-after the transition when it reaches 500GB.  
+your database size is in the vicinity of 250GB, so the transition is already well 
+established when it reaches 500GB.  
 {NOTE/}
 
 {NOTE: }
