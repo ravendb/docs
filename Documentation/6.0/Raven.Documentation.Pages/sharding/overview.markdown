@@ -5,10 +5,10 @@
   **Shards**.  
 
 * In most cases, sharding is implemented to allow efficient usage 
-  and management of exceptionally large databases (i.e. a 10 terrabytes DB).  
+  and management of exceptionally large databases (i.e. a 10-terabyte DB).  
 
-* Sharding is managed by RavenDB server, no special adaptation is 
-  required from clients when accessing a sharding-capable server 
+* Sharding is managed by the RavenDB server, no special adaptation 
+  is required from clients when accessing a sharding-capable server 
   or a sharded database.  
     * The client API is **unchanged** under a sharded database.  
     * Particular modifications in RavenDB features under a sharded 
@@ -64,13 +64,13 @@ of each shard in check and maintaining its high performance and throughput.
 
 ### Client-Server Communication
 
-As a client approaches a sharded cluster, the node it connects becomes the 
-**session facilitator** and manages all the communication between the client 
+As a client approaches a sharded database, the node it connects becomes the 
+**session orchestrator** and manages all the communication between the client 
 and the shards containing the documents it requires access to.  
 The client remains unaware of this process and uses the same API as if 
 the cluster wasn't sharded.  
-The additional communication between the client and the facilitator and 
-between the facilitator and the shards does, however, present an overhead 
+The additional communication between the client and the orchestrator and 
+between the orchestrator and the shards does, however, present an overhead 
 over the usage of a non-sharded cluster.  
 
 ---
@@ -79,20 +79,27 @@ over the usage of a non-sharded cluster.
 
 While sharding solves many issues related to the storage and management 
 of high-volume databases, the overhead it presents outweighs its benefits 
-when the database is smaller than 250GB or so (assuming the node can still 
-comfortably handle this volume).  
+when the database size still poses no problem. We can postpone the transit 
+to a sharded database when, for example, the database size is 100 GB, the 
+server is well equipped and would comfortably handle a much larger volume, 
+and no dramatic increase is expected in the number of potential users 
+any time soon.  
 
 {NOTE: }
 We recommend that you plan ahead for a transition to a sharded database when 
-your database size is in the vicinity of 250GB, so the transition is already well 
-established when it reaches 500GB.  
+your database size is in the vicinity of 250 GB, so the transition is already well 
+established when it reaches 500 GB.  
 {NOTE/}
 
 {NOTE: }
+RavenDB 6.0 and above can **migrate** its database to a sharded database 
+via [external replication](../server/ongoing-tasks/external-replication) 
+or [export & import](../studio/database/tasks/export-database) operations.  
 
-* A database of a version under 6.0 cannot currently be migrated to a sharded database.  
-* An unsharded database cannot currently be turned to a sharded database,  
-  and a sharded database cannot currently be turned to an unsharded database.
+You cannot, however, upgrade a non-sharded database into a sharded one.  
+To upgrade RavenDB to 6.0 and migrate the database data you will need 
+to upgrade the server, create a new, sharded database, and replicate or 
+export the data into it.  
 {NOTE/}
 
 {PANEL/}
@@ -101,22 +108,24 @@ established when it reaches 500GB.
 
 {PANEL: Shards}
 
-While each cluster node of an Unsharded database handles a full replica 
-of the entire database, each node of a Sharded database, aka **Shard**, 
-is assigned with a **subset** of the entire database contents.  
+While each cluster node of a non-sharded database handles a full replica 
+of the entire database, each **shard** is assigned with a **subset** of the 
+entire database content.  
 {NOTE: }
-Take for example a 3-shards database, in which shard **A** is populated with 
-documents `Users/1`..`Users/2000`, shard **B** with documents `Users/2001`..`Users/4000`, 
-and shard **C** with documents `Users/4001`..`Users/6000`.  
-A client requesting this database for `Users/3000`, will be routed by 
-the cluster to shard **B** and served by it.  
+Take, for example, a 3-shards database, in which shard **1** is populated with 
+documents `Users/1`..`Users/2000`, shard **2** with documents `Users/2001`..`Users/4000`, 
+and shard **3** with documents `Users/4001`..`Users/6000`.  
+A client that connects this database to retrieve `Users/3000` and `Users/5000` 
+would be served by an automatically-appointed [orchestrator node](../sharding/overview#client-server-communication) 
+that would seamlessly retrieve `Users/3000` from shard **2** and `Users/5000` from 
+shard **3** and hand them to the client.  
 {NOTE/}
 
 ---
 
 ### Shard Replication 
 
-Similarly to unsharded databases, shards can be **replicated** by cluster nodes 
+Similarly to non-sharded databases, shards can be **replicated** by cluster nodes 
 to ensure the continuous availability of all shards in case of a node failure, 
 provide multiple access points, and load-balance the traffic between shard replicas.  
 
@@ -185,7 +194,7 @@ the suffix ID, and store the document in this bucket.
 E.g. - 
 Original document ID: `Users/70`  
 The document you want Users/70 to share a bucket with: `Users/4`  
-Rename `Users/1` to: `Users/70$Users/4`
+Rename `Users/70` to: `Users/70$Users/4`
 {NOTE/}
 
 !["Forcing Documents to Share a Bucket"](images/force-docs-to-share-bucket.png "Forcing Documents to Share a Bucket")
@@ -200,11 +209,10 @@ of the shards is overpopulated and others are underpopulated.
 
 {PANEL: Resharding}
 
-**Resharding** is a continuous, automatic process in which buckets are 
-reallocated by the cluster from one shard to another to maintain a balanced 
-database, in which shards handle about the same volume of data.  
-Resharding is performed gradually, at a steady pace, to make sure that 
-the shards' performance is unhurt.  
+**Resharding** is a process in which the content of a bucket 
+(e.g. bucket 100000 in shard **1**) is reallocated to another 
+bucket (e.g. bucket 350000 in shard **2**) to maintain a balanced 
+database in which all shards handle about the same volume of data.  
 
 {PANEL/}
 
@@ -214,9 +222,9 @@ the shards' performance is unhurt.
 
 * A sharded database can be created via API or using Studio.  
 
-* A RavenDB cluster can run sharded and unsharded databases in parallel.  
+* A RavenDB cluster can run sharded and non-sharded databases in parallel.  
 
-* Sharding is enabled by the database license, no further steps are required.
+* RavenDB (6.0 and on) supports sharding by default, no further steps are required to enable the feature.
 {NOTE/}
 
 To create a sharded database via API, use [CreateDatabaseOperation](../client-api/operations/server-wide/create-database) as follows.  
