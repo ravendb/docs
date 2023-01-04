@@ -26,7 +26,7 @@
 
 {PANEL: Enable index - single node}
 
-* With this option, the index will be enabled on the [preferred node](../../../../client-api/configuration/load-balance-and-failover#preferred-node) only.  
+* With this option, the index will be enabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only.  
   The preferred node is simply the first node in the [database group topology](../../../../studio/database/settings/manage-database-group).
 
 * Note: When enabling an index from the [Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions),  

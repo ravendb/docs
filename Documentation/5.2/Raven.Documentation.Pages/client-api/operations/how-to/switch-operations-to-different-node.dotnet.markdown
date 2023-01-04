@@ -6,7 +6,7 @@
 
 * By default, when working with multiple nodes,  
   all client requests will access the server node that is defined by the client configuration.  
-  (Learn more in: [ReadBalanceBehavior](../../../client-api/configuration/load-balance-and-failover) & [LoadBalanceBehavior](../../../client-api/session/configuration/use-session-context-for-load-balancing)).
+  (Learn more in: [Load balancing client requests](../../../client-api/configuration/load-balance/overview)).
 
 * However, __server maintenance operations__ can be executed on a specific node by using the `ForNode` method.  
   (An exception is thrown if that node is not available).

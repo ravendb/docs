@@ -161,7 +161,7 @@ Default: 15 Seconds.
 
 - [Querying](../../client-api/configuration/querying)
 - [Serialization](../../client-api/configuration/serialization)
-- [Load Balance & Failover](../../client-api/configuration/load-balance-and-failover)
+- [Load Balancing Client Requests](../../client-api/configuration/load-balance/overview)
 
 ### Document Identifiers
 

@@ -44,7 +44,7 @@
   The RavenCommand creates the HTTP request message to be sent to the relevant server endpoint.  
   The DocumentStore `OperationExecutor` sends the request and processes the results.
 * __Target node__:  
-  By default, the operation will be executed on the server node that is defined by the [client configuration](../../client-api/configuration/load-balance-and-failover).  
+  By default, the operation will be executed on the server node that is defined by the [client configuration](../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
   However, server-maintenance operations can be executed on a specific node by using the [ForNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
 * __Target database__:  
   By default, operations work on the default database defined in the DocumentStore.  

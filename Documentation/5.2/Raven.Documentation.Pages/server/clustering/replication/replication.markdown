@@ -226,7 +226,7 @@ __Transaction boundaries in single-node transactions__
 
 - [Replication Conflicts](../../../server/clustering/replication/replication-conflicts)
 - [Change Vector](../../../server/clustering/replication/change-vector)
-- [Load Balancing](../../../client-api/session/configuration/use-session-context-for-load-balancing)
+- [Load Balancing Client Requests](../../../client-api/configuration/load-balance/overview)
 - [Advanced Replication Topics](../../../server/clustering/replication/advanced-replication)
 - [Using Embedded Instance](../../../server/clustering/replication/replication-and-embedded-instance)
 - [Cluster-Wide Transactions](../../../server/clustering/cluster-transactions)

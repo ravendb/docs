@@ -50,6 +50,12 @@
         "Path": "use-session-context-for-load-balancing.markdown",
         "Name": "Use Session Context for Load Balancing",
         "DiscussionId": "a1765e03-347e-44bb-9637-046fb7a08235",
-        "Mappings": []
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/configuration/load-balance/load-balance-behavior"
+            }
+        ]
     }
 ]
