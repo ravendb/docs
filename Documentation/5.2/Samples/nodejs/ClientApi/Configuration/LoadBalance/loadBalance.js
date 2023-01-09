@@ -17,11 +17,11 @@ async function loadBalance() {
         // Assign a method that sets the default context string
         // This string will be used for sessions that do Not provide a context string
         // A sample getDefaultContext method is defined below
-        store.conventions.loadBalancerPerSessionContextSelector = getDefaultContext;
+        documentStore.conventions.loadBalancerPerSessionContextSelector = getDefaultContext;
         
         // Set a seed
         // The seed is 0 by default, provide any number to override
-        store.conventions.loadBalancerContextSeed = 5
+        documentStore.conventions.loadBalancerContextSeed = 5
         
         documentStore.initialize();
         //endregion
@@ -70,7 +70,7 @@ async function loadBalance() {
             //   * either as a convention on the document store
             //   * or pass it to 'setContext' method on the session
 
-            // Configuration will be in effect when Disabled is set to false
+            // Configuration will be in effect when 'disabled' is set to false
             disabled: false
         };
 
@@ -107,7 +107,7 @@ async function loadBalance() {
             //   * either as a convention on the document store
             //   * or pass it to 'setContext' method on the session
 
-            // Configuration will be in effect when Disabled is set to false
+            // Configuration will be in effect when 'disabled' is set to false
             disabled: false
         };
 
