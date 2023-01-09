@@ -1,0 +1,36 @@
+[
+    {
+        "Path": "basics.markdown",
+        "Name": "ETL Basics",
+        "DiscussionId": "9fa63465-a71a-438a-91b9-ad607c967a58",
+        "Mappings": []
+    },
+    {
+        "Path": "raven.markdown",
+        "Name": "RavenDB ETL",
+        "DiscussionId": "e9b385e9-1ef8-4a33-9e5c-1fea767b827d",
+        "Mappings": []
+    },
+    {
+        "Path": "sql.markdown",
+        "Name": "SQL ETL",
+        "DiscussionId": "7b98f435-e20d-4d1b-bad7-1c777f196179",
+        "Mappings": []
+    },
+    {
+        "Path": "olap.markdown",
+        "Name": "OLAP ETL",
+        "DiscussionId": "5367e101-fc9a-49a0-8eb7-ac556a1aee19",
+        "Mappings": []
+    },
+    {
+        "Path": "elasticsearch.markdown",
+        "Name": "Elasticsearch ETL",
+        "DiscussionId": "5367e101-fc9a-49a0-8eb7-ac556a1aee19",
+        "Mappings": []
+    },
+    {
+        "Path": "/queue-etl",
+        "Name": "Queue ETL"
+    }
+]

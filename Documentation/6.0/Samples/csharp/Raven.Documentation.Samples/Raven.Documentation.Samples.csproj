@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.0.0" />
+    <PackageReference Include="RavenDB.Client" Version="5.4.5" />
+    <PackageReference Include="RavenDB.Embedded" Version="5.4.5" />
+    <PackageReference Include="RavenDB.TestDriver" Version="5.4.5" />
+    <PackageReference Include="System.Reactive.Core" Version="5.0.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+  </ItemGroup>
+
+</Project>

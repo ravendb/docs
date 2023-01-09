@@ -1,0 +1,20 @@
+[
+    {
+        "Path": "single-document.markdown",
+        "Name": "Single Document",
+        "DiscussionId": "266993c6-424b-4e53-9935-4262643c1ed5",
+        "Mappings": []
+    },
+    {
+        "Path": "set-based.markdown",
+        "Name": "Set Based",
+        "DiscussionId": "1102c7f4-8511-40a3-8ad4-70d7d5ef5698",
+        "Mappings": []
+    },
+    {
+        "Path": "json-patch-syntax.markdown",
+        "Name": "JSON Patch Syntax",
+        "DiscussionId": "1102c7f4-8511-40a3-8ad4-70d7d5ef5698",
+        "Mappings": []
+    }
+]
