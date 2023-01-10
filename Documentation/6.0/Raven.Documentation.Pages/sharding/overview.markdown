@@ -1,5 +1,7 @@
 ﻿# Sharding: Overview
+---
 
+{NOTE: }
 * **Sharding**, supported by RavenDB from version 6.0 and on, 
   is the distribution of a database's content between autonomous 
   **Shards**.  
@@ -21,10 +23,6 @@
 * Each RavenDB shard is hosted by at least one cluster node.  
   Shards can be replicated over multiple nodes to increase data 
   accessibility.  
-
----
-
-{NOTE: }
 
 * In this page:  
   * [Sharding](../sharding/overview#sharding)  
