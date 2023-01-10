@@ -77,6 +77,9 @@ namespace Raven.Documentation.Parser.Data
         [Prefix("cloud")]
         Cloud,
 
+        [Prefix("sharding")]
+        Sharding,
+
         [Prefix("document-extensions")]
         [Description("Document Extensions")]
         DocumentExtensions
