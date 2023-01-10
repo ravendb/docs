@@ -68,10 +68,10 @@ As a client approaches a sharded database, the node it connects becomes the
 **session orchestrator** and manages all the communication between the client 
 and the shards containing the documents it requires access to.  
 The client remains unaware of this process and uses the same API as if 
-the cluster wasn't sharded.  
+the database wasn't sharded.  
 The additional communication between the client and the orchestrator and 
 between the orchestrator and the shards does, however, present an overhead 
-over the usage of a non-sharded cluster.  
+over the usage of a non-sharded database.  
 
 ---
 
