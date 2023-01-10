@@ -18,7 +18,7 @@
 * Disabling an index is a __persistent operation__:  
   * The index will remain disabled even after restarting the server or after disabling/enabling the database.  
   * To enable back the index use [enable index operation](../../../../client-api/operations/maintenance/indexes/enable-index).  
-  * To only pause indexing and resume after a restart go to: [stop index operation](../../../../client-api/operations/maintenance/indexes/stop-index).   
+  * To only pause the index and resume after a restart go to: [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index).   
 
 * Disabling/enabling an index can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) in the Studio. 
 
@@ -37,7 +37,7 @@
   The preferred node is simply the first node in the [database group topology](../../../../studio/database/settings/manage-database-group).
 
 * Note: When disabling an index from the [Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions),  
-  you can disable it on the local node the browser is opened on, even if it is Not the preferred node.
+  the index will be disabled on the local node the browser is opened on, even if it is Not the preferred node.
 
 {CODE:nodejs disable_1@ClientApi\Operations\Maintenance\Indexes\disableIndex.js /}
 {PANEL/}
@@ -74,4 +74,4 @@
 
 - [What are operations](../../../../client-api/operations/what-are-operations)
 - [How to Enable Index](../../../../client-api/operations/maintenance/indexes/enable-index)
-- [How to Stop Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+- [How to Pause Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)

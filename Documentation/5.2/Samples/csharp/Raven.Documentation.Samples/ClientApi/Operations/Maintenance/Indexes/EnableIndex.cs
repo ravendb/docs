@@ -22,6 +22,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
             using (var store = new DocumentStore())
             {
                 #region enable_1
+                // Define the enable index operation
                 // Use this overload to enable on a single node
                 var enableIndexOp = new EnableIndexOperation("Orders/Totals");
 
@@ -36,6 +37,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
             using (var store = new DocumentStore())
             {
                 #region enable_2
+                // Define the enable index operation
                 // Pass 'true' to enable the index on all nodes in the database-group
                 var enableIndexOp = new EnableIndexOperation("Orders/Totals", true);
 
@@ -53,6 +55,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
             using (var store = new DocumentStore())
             {
                 #region enable_1_async
+                // Define the enable index operation
                 // Use this overload to enable on a single node
                 var enableIndexOp = new EnableIndexOperation("Orders/Totals");
 
@@ -67,6 +70,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
             using (var store = new DocumentStore())
             {
                 #region enable_2_async
+                // Define the enable index operation
                 // Pass 'true' to enable the index on all nodes in the database-group
                 var enableIndexOp = new EnableIndexOperation("Orders/Totals", true);
 

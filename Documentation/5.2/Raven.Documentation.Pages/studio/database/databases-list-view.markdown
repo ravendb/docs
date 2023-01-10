@@ -99,15 +99,25 @@
 ![Figure 4. More Actions](images/database-actions-3.png "More Actions")
 
 1. **Pause indexing**      
-   All indexes on this database will stop indexing.
-   Indexing will resume upon a restart to the server.  
+   All indexes on this database will pause indexing.  
+   Indexing will be paused only on the __local node__ the browser is opened on.  
+   Indexing will __resume__ with either of the following:  
+     * Click this button again ("Resume indexing")  
+     * Restart the server.  
+     * Reload the database (by disabling and then enabling the database state).  
+     * Resume indexing from the client code. See [resume indexing](../../client-api/operations/maintenance/indexes/start-indexing).  
 
 2. **Disable indexing**     
-   All indexes on this database will stop indexing.  
-   Indexing will **not** resume upon a restart to the server.  
+   * Click 'Disable indexing' to disable all indexes on this database, on all nodes.  
+   * After clicking, __for the change to be in effect__, the database must be re-loaded by either:  
+      * Restart the server, or  
+      * Disable/enable the database  
+   * Indexing will remain __disabled__ after restarting the server or after disabling/enabling the database.  
+   * To __enable__ indexing back click this button again ("Enable indexing").  
+     And again, the database must be reloaded for the change to be in effect.  
 
 3. **Compact database**   
-   Physically compact the database on disk.
+   Physically compact the database on disk.  
 {PANEL/}
 
 {PANEL: Remote Database}

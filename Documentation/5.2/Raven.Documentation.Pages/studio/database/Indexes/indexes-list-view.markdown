@@ -51,12 +51,14 @@
      * Setting _'Resume indexing'_  
      * Restarting the server  
      * Reloading the database (by disabling-enabling the database).  
+     * Resume indexing from the client code. See [resume index](../../../client-api/operations/maintenance/indexes/start-index).
 
 * `Disabled`  
    * New data is not being indexed.  
    * Queries will be stale as new data is not indexed.  
    * The indexing process will resume only when setting _'Enable indexing'_.  
-     It will _not_ automatically resume upon restarting the server or reloading the database.  
+     It will Not automatically resume upon restarting the server or reloading the database.  
+   * Can also resume indexing from the client code. See [enable index](../../../client-api/operations/maintenance/indexes/enable-index).
 
 * `Idle`  
    * An __auto-index__ becomes idle when the time difference between its last-query-time and
@@ -111,7 +113,9 @@
 #### 3. >
 
 * **State**  
-  _Disable_ index or set as _Paused_. See states explanation above (under Figure-1).  
+  _Disable_ index or set as _Paused_.  
+  The index will stop indexing on the local node the browser is opened on.  
+  See states explanation above (under Figure-1).  
 * **Priority**  
   Set the indexing-process thread priority as RavenDB prioritizes requests-processing over [Indexing](../../../server/administration/index-administration#priority) by default.  
 * **Mode**  
@@ -129,8 +133,13 @@
 
 #### 5. Pause Indexing until Restart
 
-* Setting this will pause **all** indexing in the database.  
-* Indexing will resume only when selecting this button again (Resume Indexing) or upon a server restart.  
+* Setting this will pause indexing for **all** indexes in the current database.  
+* Indexing will be paused only on the __local node__ the browser is opened on.  
+* Indexing will resume with either of the following:  
+  * Click this button again ("Resume indexing")  
+  * Restart the server  
+  * Reload the database (by disabling and then enabling the database state)  
+  * Resume indexing from the client code. See [resume indexing](../../../client-api/operations/maintenance/indexes/start-indexing)
 
 {PANEL/}
 

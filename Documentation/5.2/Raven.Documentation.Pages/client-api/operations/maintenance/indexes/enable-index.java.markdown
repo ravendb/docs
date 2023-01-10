@@ -29,4 +29,4 @@ The **EnableIndexOperation** is used to turn on the indexing for a given index.
 ### Operations
 
 - [How to Disable Index](../../../../client-api/operations/maintenance/indexes/disable-index)
-- [How to Stop Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+- [How to Pause Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)

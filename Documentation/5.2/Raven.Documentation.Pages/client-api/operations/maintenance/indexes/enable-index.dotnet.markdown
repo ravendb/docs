@@ -30,7 +30,7 @@
   The preferred node is simply the first node in the [database group topology](../../../../studio/database/settings/manage-database-group).
 
 * Note: When enabling an index from the [Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions),  
-  you can enable it on the local node the browser is opened on, even if it is Not the preferred node.
+  the index will be enabled on the local node the browser is opened on, even if it is Not the preferred node.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync enable_1@ClientApi\Operations\Maintenance\Indexes\EnableIndex.cs /}
@@ -74,4 +74,4 @@
 
 - [What are operations](../../../../client-api/operations/what-are-operations)
 - [How to Disable Index](../../../../client-api/operations/maintenance/indexes/disable-index)
-- [How to Stop Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+- [How to Pause Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
