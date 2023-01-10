@@ -65,5 +65,11 @@
     "Name": "System Configuration Recommendations",
     "DiscussionId": "05780903-e868-4ff3-84f6-044bf20b6103",
     "Mappings": []
+  },
+  {
+    "Path": "/gnu-linux",
+    "Name": "GNU/Linux",
+    "DiscussionId": "05780903-e868-4ff3-84f6-044bf20b6103",
+    "Mappings": []
   }
 ]

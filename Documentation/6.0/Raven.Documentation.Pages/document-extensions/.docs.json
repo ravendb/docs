@@ -19,5 +19,10 @@
         "Path": "/attachments",
         "Name": "Attachments",
         "Mappings": []
+    },
+    {
+        "Path": "/revisions",
+        "Name": "Revisions",
+        "Mappings": []
     }
 ]
