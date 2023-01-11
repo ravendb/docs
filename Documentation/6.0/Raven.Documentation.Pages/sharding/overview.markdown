@@ -2,6 +2,7 @@
 ---
 
 {NOTE: }
+
 * **Sharding**, supported by RavenDB from version 6.0 and on, 
   is the distribution of a database's content between autonomous 
   **Shards**.  
@@ -52,7 +53,7 @@ responsiveness to client requests and queries slows down, and the system's
 throughput spreads thin serving an ever-growing number of clients.  
 
 As the volume of stored data grows, the database can be scaled out by 
-splitting it to [shards](../sharding/overview#shards), allowing it to be 
+splitting it into [shards](../sharding/overview#shards), allowing it to be 
 handled by multiple nodes and presenting practically no limit to its growth.  
 The size of the overall database, comprised of all shards, can reach in 
 this fashion dozens of terabytes and more while keeping the resources 
@@ -107,7 +108,7 @@ export the data into it.
 {PANEL: Shards}
 
 While each cluster node of a non-sharded database handles a full replica 
-of the entire database, each **shard** is assigned with a **subset** of the 
+of the entire database, each **shard** is assigned a **subset** of the 
 entire database content.  
 {NOTE: }
 Take, for example, a 3-shards database, in which shard **1** is populated with 
@@ -207,10 +208,23 @@ of the shards is overpopulated and others are underpopulated.
 
 {PANEL: Resharding}
 
-**Resharding** is a process in which the content of a bucket 
-(e.g. bucket 100000 in shard **1**) is reallocated to another 
-bucket (e.g. bucket 350000 in shard **2**) to maintain a balanced 
-database in which all shards handle about the same volume of data.  
+**Resharding** is the reallocation of documents from one shard 
+to another, to maintain a balanced database in which all shards 
+handle about the same volume of data.  
+
+The resharding process moves all the documents that belong to a 
+certain bucket to a different shard, and then associates the bucket 
+with the new shard.  
+{NOTE: }
+  E.g.,
+
+  1. Bucket `100,000` was initially associated with shard **1**.  
+     Therefore, all documents added to this bucket have been stored in shard **1**.  
+  2. Resharding bucket `100,000` to shard **2** will:  
+      * Move all the documents that belong to this bucket to shard **2**.  
+      * Associate bucket `100,000` with shard **2**.  
+        From now on, any new document added to this bucket will be stored in shard **2**.  
+{NOTE/}
 
 {PANEL/}
 
