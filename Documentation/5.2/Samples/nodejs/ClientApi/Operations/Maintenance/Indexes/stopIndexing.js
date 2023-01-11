@@ -13,9 +13,9 @@ async function pauseIndexing() {
         await store.maintenance.send(pauseIndexingOp);
 
         // At this point:
-        // All indexes in the default database will be 'paused' on the preferred node only
+        // All indexes in the default database will be 'paused' on the preferred node
         
-        // Can verify indexing status by sending the GetIndexingStatusOperation
+        // Can verify indexing status on the preferred node by sending the GetIndexingStatusOperation
         const indexingStatus = await store.maintenance.send(new GetIndexingStatusOperation());
         assert.strictEqual(indexingStatus.status, "Paused");
         //endregion
@@ -24,7 +24,7 @@ async function pauseIndexing() {
 
 {
     //region syntax
-    // class name has "Stop". but this is ok, this is the "Pause" operation
+    // class name has "Stop", but this is ok, this is the "Pause" operation
     const pauseIndexingOp = new StopIndexingOperation();
     //endregion
 

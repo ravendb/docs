@@ -6,56 +6,56 @@ using Xunit;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
 {
-    public class StopIndexing
+    public class StartIndexing
     {
         private interface IFoo
         {
             /*
             #region syntax
-            // class name has "Stop", but this is ok, this is the "Pause" operation
-            public StopIndexingOperation()
+            // class name has "Start", but this is ok, this is the "Resume" operation
+            public StartIndexingOperation()
             #endregion
             */
         }
 
-        public StopIndexing()
+        public StartIndexing()
         {
             using (var store = new DocumentStore())
             {
-                #region pause_indexing
-                // Define the pause indexing operation 
-                var pauseIndexingOp = new StopIndexingOperation();
-
+                #region resume_indexing
+                // Define the resume indexing operation
+                var resumeIndexingOp = new StartIndexingOperation();
+                
                 // Execute the operation by passing it to Maintenance.Send
-                store.Maintenance.Send(pauseIndexingOp);
+                store.Maintenance.Send(resumeIndexingOp);
 
-                // At this point:
-                // All indexes in the default database will be 'paused' on the preferred node
-        
+                // At this point,
+                // you can be sure that all indexes on the preferred node are 'running'
+                        
                 // Can verify indexing status on the preferred node by sending the GetIndexingStatusOperation
                 var indexingStatus = store.Maintenance.Send(new GetIndexingStatusOperation());
-                Assert.Equal(IndexRunningStatus.Paused, indexingStatus.Status);
+                Assert.Equal(IndexRunningStatus.Running, indexingStatus.Status);
                 #endregion
             }
         }
         
-        public async Task StopIndexingAsync()
+        public async Task StartIndexingAsync()
         {
             using (var store = new DocumentStore())
             {
-                #region pause_indexing_async
-                // Define the pause indexing operation 
-                var pauseIndexingOp = new StopIndexingOperation();
-
+                #region resume_indexing_async
+                // Define the resume indexing operation
+                var resumeIndexingOp = new StartIndexingOperation();
+                
                 // Execute the operation by passing it to Maintenance.Send
-                await store.Maintenance.SendAsync(pauseIndexingOp);
+                await store.Maintenance.SendAsync(resumeIndexingOp);
 
-                // At this point:
-                // All indexes in the default database will be 'paused' on the preferred node
-        
+                // At this point,
+                // you can be sure that all indexes on the preferred node are 'running'
+                        
                 // Can verify indexing status on the preferred node by sending the GetIndexingStatusOperation
                 var indexingStatus = await store.Maintenance.SendAsync(new GetIndexingStatusOperation());
-                Assert.Equal(IndexRunningStatus.Paused, indexingStatus.Status);
+                Assert.Equal(IndexRunningStatus.Running, indexingStatus.Status);
                 #endregion
             }
         }
