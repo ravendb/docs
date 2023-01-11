@@ -208,22 +208,22 @@ of the shards is overpopulated and others are underpopulated.
 
 {PANEL: Resharding}
 
-**Resharding** is the reallocation of documents from one shard 
+**Resharding** is the reallocation of data from one shard 
 to another, to maintain a balanced database in which all shards 
 handle about the same volume of data.  
 
-The resharding process moves all the documents that belong to a 
-certain bucket to a different shard, and then associates the bucket 
-with the new shard.  
+The resharding process moves all the data related to a certain 
+bucket, including documents, document extensions, tombstones, etc., 
+to a different shard, and then associates the bucket with the new shard.  
 {NOTE: }
   E.g.,
 
   1. Bucket `100,000` was initially associated with shard **1**.  
-     Therefore, all documents added to this bucket have been stored in shard **1**.  
+     Therefore, all data added to this bucket has been stored in shard **1**.  
   2. Resharding bucket `100,000` to shard **2** will:  
-      * Move all the documents that belong to this bucket to shard **2**.  
+      * Move all the data that belong to this bucket to shard **2**.  
       * Associate bucket `100,000` with shard **2**.  
-        From now on, any new document added to this bucket will be stored in shard **2**.  
+        From now on, any data added to this bucket will be stored in shard **2**.  
 {NOTE/}
 
 {PANEL/}
