@@ -75,7 +75,7 @@ async function loadBalance() {
         };
 
         // Define the put configuration operation for the DEFAULT database
-        const putConfigurationOp = new PutClientConfigurationOperation(configurationToSave));
+        const putConfigurationOp = new PutClientConfigurationOperation(configurationToSave);
 
         // Execute the operation by passing it to maintenance.send
         await documentStore.maintenance.send(putConfigurationOp);
@@ -112,7 +112,7 @@ async function loadBalance() {
         };
 
         // Define the put configuration operation for ALL databases
-        const putConfigurationOp = new PutServerWideClientConfigurationOperation(configurationToSave));
+        const putConfigurationOp = new PutServerWideClientConfigurationOperation(configurationToSave);
 
         // Execute the operation by passing it to maintenance.server.send
         await documentStore.maintenance.server.send(putConfigurationOp);
