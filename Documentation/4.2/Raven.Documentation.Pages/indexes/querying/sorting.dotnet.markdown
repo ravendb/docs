@@ -148,8 +148,8 @@ order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1
 ## Creating a Custom Sorter
 
 Lucene also allows you to create your own custom sorters. Create a sorter that inherits from the Lucene class 
-[FieldComparator](https://lucene.apache.org/core/3_0_3/api/core/org/apache/lucene/search/FieldComparator.html), and send it to the 
-server using a `PutSortersOperation`:  
+[FieldComparator](https://lucenenet.apache.org/docs/3.0.3/df/d91/class_lucene_1_1_net_1_1_search_1_1_field_comparator.html), and send it to the 
+server using the `PutSortersOperation`:  
 
 {CODE-TABS}
 {CODE-TAB:csharp:PutSortersOperation custom_1@Indexes/Querying/Sorting.cs/}
