@@ -5,8 +5,8 @@
 
 * Use `StopIndexingOperation` to __pause indexing__ for ALL indexes in the database.  
 
-* To pause only a specific index use [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index).  
- 
+* To pause only a specific index use the [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index).
+
 * In this page:
   * [Overview](../../../../client-api/operations/maintenance/indexes/stop-indexing#overview)
   * [Pause indexing example](../../../../client-api/operations/maintenance/indexes/stop-indexing#pause-indexing-example)
@@ -71,13 +71,13 @@ __How to resume indexing__:
 
 {PANEL: Pause indexing example}
 
-{CODE:nodejs pause_indexing@ClientApi\Operations\Maintenance\Indexes\stopIndexing.js /}
+{CODE:nodejs pause_indexing@ClientApi\Operations\Maintenance\Indexes\pauseIndexing.js /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE:nodejs syntax@ClientApi\Operations\Maintenance\Indexes\stopIndexing.js /}
+{CODE:nodejs syntax@ClientApi\Operations\Maintenance\Indexes\pauseIndexing.js /}
 
 {PANEL/}
 

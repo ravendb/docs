@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
 {
-    public class StartIndexing
+    public class ResumeIndexing
     {
         private interface IFoo
         {
@@ -18,7 +18,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
             */
         }
 
-        public StartIndexing()
+        public ResumeIndexing()
         {
             using (var store = new DocumentStore())
             {
@@ -32,14 +32,14 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 // At this point,
                 // you can be sure that all indexes on the preferred node are 'running'
                         
-                // Can verify indexing status on the preferred node by sending the GetIndexingStatusOperation
+                // Can verify indexing status on the preferred node by sending GetIndexingStatusOperation
                 var indexingStatus = store.Maintenance.Send(new GetIndexingStatusOperation());
                 Assert.Equal(IndexRunningStatus.Running, indexingStatus.Status);
                 #endregion
             }
         }
         
-        public async Task StartIndexingAsync()
+        public async Task ResumeIndexingAsync()
         {
             using (var store = new DocumentStore())
             {
@@ -47,13 +47,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 // Define the resume indexing operation
                 var resumeIndexingOp = new StartIndexingOperation();
                 
-                // Execute the operation by passing it to Maintenance.Send
+                // Execute the operation by passing it to Maintenance.SendAsync
                 await store.Maintenance.SendAsync(resumeIndexingOp);
 
                 // At this point,
                 // you can be sure that all indexes on the preferred node are 'running'
                         
-                // Can verify indexing status on the preferred node by sending the GetIndexingStatusOperation
+                // Can verify indexing status on the preferred node by sending GetIndexingStatusOperation
                 var indexingStatus = await store.Maintenance.SendAsync(new GetIndexingStatusOperation());
                 Assert.Equal(IndexRunningStatus.Running, indexingStatus.Status);
                 #endregion

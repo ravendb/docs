@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* After indexing has been paused with [Pause indexing operation](../../../../client-api/operations/maintenance/indexes/stop-indexing),  
+* After indexing has been paused with [pause indexing operation](../../../../client-api/operations/maintenance/indexes/stop-indexing),  
   use `StartIndexingOperation` to __resume indexing__ for ALL indexes in the database.  
   (Calling 'StartIndexOperation' on a single index will have no effect).
 
@@ -24,15 +24,15 @@
 {PANEL: Resume indexing example}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync resume_indexing@ClientApi\Operations\Maintenance\Indexes\StartIndexing.cs /}
-{CODE-TAB:csharp:Async resume_indexing_async@ClientApi\Operations\Maintenance\Indexes\StartIndexing.cs /}
+{CODE-TAB:csharp:Sync resume_indexing@ClientApi\Operations\Maintenance\Indexes\ResumeIndexing.cs /}
+{CODE-TAB:csharp:Async resume_indexing_async@ClientApi\Operations\Maintenance\Indexes\ResumeIndexing.cs /}
 {CODE-TABS/}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE syntax@ClientApi\Operations\Maintenance\Indexes\StartIndexing.cs /}
+{CODE syntax@ClientApi\Operations\Maintenance\Indexes\ResumeIndexing.cs /}
 
 {PANEL/}
 
@@ -51,3 +51,8 @@
 
 - [How to Disable Index](../../../../client-api/operations/maintenance/indexes/disable-index)
 - [How to Pause Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+
+### Studio
+
+- [Resume index from Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)
+- [Resume indexing from Studio](../../../../studio/database/databases-list-view#more-actions)

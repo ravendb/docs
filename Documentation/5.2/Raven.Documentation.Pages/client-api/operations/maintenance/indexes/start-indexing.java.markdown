@@ -1,14 +1,14 @@
-# Start Indexing Operation
+# Resume Indexing Operation
 
 **StartIndexingOperation** is used to resume indexing for entire database. 
 
 ### Syntax
 
-{CODE:java start_1@ClientApi\Operations\Maintenance\Indexes\StartIndexing.java /}
+{CODE:java start_1@ClientApi\Operations\Maintenance\Indexes\ResumeIndexing.java /}
 
 ### Example
 
-{CODE:java start_2@ClientApi\Operations\Maintenance\Indexes\StartIndexing.java /}
+{CODE:java start_2@ClientApi\Operations\Maintenance\Indexes\ResumeIndexing.java /}
 
 ## Related Articles
 

@@ -8,11 +8,11 @@ Use [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/s
 
 ### Syntax
 
-{CODE:java stop_1@ClientApi\Operations\Maintenance\Indexes\StopIndexing.java /}
+{CODE:java stop_1@ClientApi\Operations\Maintenance\Indexes\PauseIndexing.java /}
 
 ### Example
 
-{CODE:java stop_2@ClientApi\Operations\Maintenance\Indexes\StopIndexing.java /}
+{CODE:java stop_2@ClientApi\Operations\Maintenance\Indexes\PauseIndexing.java /}
 
 ## Related Articles
 

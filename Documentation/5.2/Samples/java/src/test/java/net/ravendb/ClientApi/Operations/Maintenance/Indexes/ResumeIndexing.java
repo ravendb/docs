@@ -2,22 +2,22 @@ package net.ravendb.ClientApi.Operations.Indexes;
 
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
-import net.ravendb.client.documents.operations.indexes.StopIndexingOperation;
+import net.ravendb.client.documents.operations.indexes.StartIndexingOperation;
 
-public class StopIndexing {
+public class ResumeIndexing {
 
     private interface IFoo {
         /*
-        //region stop_1
-        public StopIndexingOperation()
+        //region start_1
+        public StartIndexingOperation()
         //endregion
         */
     }
 
-    public StopIndexing() {
+    public ResumeIndexing() {
         try (IDocumentStore store = new DocumentStore()) {
-            //region stop_2
-            store.maintenance().send(new StopIndexingOperation());
+            //region start_2
+            store.maintenance().send(new StartIndexingOperation());
             //endregion
         }
     }
