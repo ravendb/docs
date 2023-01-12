@@ -14,7 +14,7 @@
   To compact all database-group nodes, the command must be sent to each node separately.  
 
 * **Target node**:  
-  By default, the operation will be executed on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance-and-failover).  
+  By default, the operation will be executed on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
   The operation can be executed on a specific node by using the [forNode](../../../client-api/operations/how-to/switch-operations-to-different-node) method.  
 
 * **Target database**:  
@@ -71,7 +71,7 @@
 
 #### Compact on other nodes
 
-* By default, an operation executes on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance-and-failover).  
+* By default, an operation executes on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
 * The following example will compact the database on all [member](../../../server/clustering/rachis/cluster-topology#nodes-states-and-types) nodes from its database-group topology.  
   `forNode` is used to execute the operation on a specific node.   
 

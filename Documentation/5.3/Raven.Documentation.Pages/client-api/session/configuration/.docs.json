@@ -45,11 +45,5 @@
         "Name": "How to Disable Caching",
         "DiscussionId": "a1765e03-347e-44bb-9637-046fb7a08235",
         "Mappings": []
-    },
-    {
-        "Path": "use-session-context-for-load-balancing.markdown",
-        "Name": "Use Session Context for Load Balancing",
-        "DiscussionId": "a1765e03-347e-44bb-9637-046fb7a08235",
-        "Mappings": []
     }
 ]
