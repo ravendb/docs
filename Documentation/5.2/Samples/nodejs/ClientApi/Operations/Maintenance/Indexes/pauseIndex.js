@@ -5,8 +5,7 @@ const documentStore = new DocumentStore();
 
 async function pauseIndex() {
     {
-        //region pause_index 
-
+        //region pause_index
         // Define the pause index operation, pass the index name 
         const pauseIndexOp = new StopIndexOperation("Orders/Totals");
 

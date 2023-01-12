@@ -5,8 +5,7 @@ const documentStore = new DocumentStore();
 
 async function resumeIndex() {
     {
-        //region resume_index 
-
+        //region resume_index
         // Define the resume index operation, pass the index name 
         const resumeIndexOp = new StartIndexOperation("Orders/Totals");
 
