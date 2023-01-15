@@ -32,7 +32,6 @@
    * [Modifying Index Definition](../../../studio/database/indexes/indexes-overview#modifying-index-definition)
    * [Indexes in the Cluster](../../../studio/database/indexes/indexes-overview#indexes-in-the-cluster)
    * [Indexing Errors](../../../studio/database/indexes/indexes-overview#indexing-errors)
-   * [Stopping and Starting Indexing](../../../studio/database/indexes/indexes-overview#stopping-and-starting-indexing)
 {NOTE/}
 
 ---
@@ -257,72 +256,6 @@ See [Create Map Index](../../../studio/database/indexes/create-map-index) to lea
 
 * See more in [Index List View - Errors](../../../studio/database/indexes/indexes-list-view#index-list-view---errors).  
 {PANEL/}
-
-{PANEL: Stopping and Starting Indexing}
-
-There are some situations where you would like to stop indexing, make some changes, then start indexing again.  
-
-After toggling start or stop indexing, **you must disable then enable the database to finish implementing** 
-the start or stop indexing operations.  The indexing state will only change after you disable and enable the database.
-
-{NOTE: API}
-You can use [API Operations to stop](../../../client-api/operations/maintenance/indexes/stop-indexing) 
-and [start indexing](../../../client-api/operations/maintenance/indexes/start-indexing) 
-instead of using Studio.  
-{NOTE/}
-
-1. [Stop indexing](../../../studio/database/indexes/indexes-overview#stop-indexing)
-   * [Disable and Enable Database(s)](../../../studio/database/indexes/indexes-overview#disable-and-enable-database)
-     to complete the operation.  
-   * Check to make sure that indexing has stopped on this database before doing any actions that require you to stop indexing.  
-2. [Start Indexing](../../../studio/database/indexes/indexes-overview#start-indexing)
-   * [Disable and Enable Database(s)](../../../studio/database/indexes/indexes-overview#disable-and-enable-database)
-     to complete the operation.  
-   * Check to make sure that indexing has started on this database.  
-
-
-#### Stop indexing
-
-![Stop Indexing](images/index-stop-indexing.png "Stop Indexing")
-
-  1. **Databases**  
-     Select the "Databases" tab.
-  2. **Checkboxes**  
-     Tick the checkboxes **in each database** for which you want to disable indexing.  
-  3. **Disable**  
-     Click "Disable indexing" in each selected database.  
-     [Disable and Enable the Database](../../../studio/database/indexes/indexes-overview#disable-and-enable-database)
-     to finish the operation.  
-
-#### Disable and Enable Database
-
-![Disable-Enable Database](images/index-enable-disable-database.png "Disable-Enable Database")
-
-  1. **Databases**  
-     Stay in the same "Databases" tab.
-  2. **Checkboxes**  
-     Make sure the checkboxes are ticked in each database that you want to disable and then enable.  
-  3. **Set state**  
-     Click "Disable".  
-     Click "Enable".  
-     
-  The start or stop indexing operation should now be complete.  
-  Indexing will only start again after you [start indexing](../../../studio/database/indexes/indexes-overview#start-indexing)
-  in each database that you want to restart, and then you [disable and enable the selected databases again to complete the operation](../../../studio/database/indexes/indexes-overview#disable-and-enable-database).
-
-
-#### Start Indexing
-
-![Indexes Start Indexing](images/index-start-indexing.png "Indexes Start Indexing")
-
-1. **Databases**  
-   Stay in the same "Databases" tab.
-2. **Disable**  menu button  
-   Click "Enable indexing".  
-   * [Disable and enable the database](../../../studio/database/indexes/indexes-overview#disable-and-enable-database) to complete the operation.
-
-{PANEL/}
-
 
 ## Related Articles
 
