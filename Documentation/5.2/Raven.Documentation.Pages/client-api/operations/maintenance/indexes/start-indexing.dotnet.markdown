@@ -1,26 +1,40 @@
-# Operations: How to Start Indexing
+# Resume Indexing Operation
 ---
 
 {NOTE: }
 
-* **StartIndexingOperation** is used to resume indexing for the entire database after indexing has been [stopped](../../../../client-api/operations/maintenance/indexes/stop-indexing).  
+* After indexing has been paused with [pause indexing operation](../../../../client-api/operations/maintenance/indexes/stop-indexing),  
+  use `StartIndexingOperation` to __resume indexing__ for ALL indexes in the database.  
+  (Calling 'StartIndexOperation' on a single index will have no effect).
 
-* You must [restart the database](../../../../client-api/operations/maintenance/configuration/database-settings-operation#toggledatabasesstateoperation) 
-  with `ToggleDatabasesStateOperation` to implement the operation after using `StartIndexingOperation` ([see example](../../../../client-api/operations/maintenance/indexes/start-indexing#example)).
+* When resuming indexing from the __client__:  
+  Indexing is resumed on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.  
 
-* Use [StartIndexOperation](../../../../client-api/operations/maintenance/indexes/start-index) to start a single index.
+* When resuming indexing from the __Studio__ (from the [database list view](../../../../studio/database/databases-list-view#more-actions)):  
+  Indexing is resumed on the local node the browser is opened on, even if it is Not the preferred node.  
+
+* In this page:
+  * [Resume indexing example](../../../../client-api/operations/maintenance/indexes/start-indexing#resume-indexing-example)
+  * [Syntax](../../../../client-api/operations/maintenance/indexes/start-indexing#syntax)
 
 {NOTE/}
 
 ---
 
-### Syntax
+{PANEL: Resume indexing example}
 
-{CODE start_1@ClientApi\Operations\Indexes\StartIndexing.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync resume_indexing@ClientApi\Operations\Maintenance\Indexes\ResumeIndexing.cs /}
+{CODE-TAB:csharp:Async resume_indexing_async@ClientApi\Operations\Maintenance\Indexes\ResumeIndexing.cs /}
+{CODE-TABS/}
 
-### Example
+{PANEL/}
 
-{CODE start_2@ClientApi\Operations\Indexes\StartIndexing.cs /}
+{PANEL: Syntax}
+
+{CODE syntax@ClientApi\Operations\Maintenance\Indexes\ResumeIndexing.cs /}
+
+{PANEL/}
 
 ## Related Articles
 
@@ -36,4 +50,9 @@
 ### Operations
 
 - [How to Disable Index](../../../../client-api/operations/maintenance/indexes/disable-index)
-- [How to Stop Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+- [How to Pause Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+
+### Studio
+
+- [Resume index from Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)
+- [Resume indexing from Studio](../../../../studio/database/databases-list-view#more-actions)

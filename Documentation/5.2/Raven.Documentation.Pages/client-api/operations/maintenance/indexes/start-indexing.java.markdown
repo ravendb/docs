@@ -1,19 +1,14 @@
-# Enable Index Operation
+# Resume Indexing Operation
 
-The **EnableIndexOperation** is used to turn on the indexing for a given index.
+**StartIndexingOperation** is used to resume indexing for entire database. 
 
+### Syntax
 
-## Syntax
+{CODE:java start_1@ClientApi\Operations\Maintenance\Indexes\ResumeIndexing.java /}
 
-{CODE:java enable_1@ClientApi\Operations\Maintenance\Indexes\EnableIndex.java /}
+### Example
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **indexName** | String | name of an index to enable indexing |
-
-## Example
-
-{CODE:java enable_2@ClientApi\Operations\Maintenance\Indexes\EnableIndex.java /}
+{CODE:java start_2@ClientApi\Operations\Maintenance\Indexes\ResumeIndexing.java /}
 
 ## Related Articles
 

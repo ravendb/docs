@@ -22,6 +22,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
             using (var store = new DocumentStore())
             {
                 #region disable_1
+                // Define the disable index operation
                 // Use this overload to disable on a single node
                 var disableIndexOp = new DisableIndexOperation("Orders/Totals");
                 
@@ -36,6 +37,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
             using (var store = new DocumentStore())
             {
                 #region disable_2
+                // Define the disable index operation
                 // Pass 'true' to disable the index on all nodes in the database-group
                 var disableIndexOp = new DisableIndexOperation("Orders/Totals", true);
                 
@@ -53,6 +55,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
             using (var store = new DocumentStore())
             {
                 #region disable_1_async
+                // Define the disable index operation
                 // Use this overload to disable on a single node
                 var disableIndexOp = new DisableIndexOperation("Orders/Totals");
                 
@@ -67,6 +70,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
             using (var store = new DocumentStore())
             {
                 #region disable_2_async
+                // Define the disable index operation
                 // Pass 'true' to disable the index on all nodes in the database-group
                 var disableIndexOp = new DisableIndexOperation("Orders/Totals", true);
                 
