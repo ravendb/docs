@@ -168,7 +168,7 @@
 1. The **License** widget displays your license **Type**, **Expiration** 
    date and remaining period, and **Support Type**.  
 2. **License Details**  
-   Click to open the [About view](../../../studio/server/license-management) which contains information about your 
+   Click to open the [About view](../../../start/licensing/licensing-overview) which contains information about your 
    License and Support plan.  
 
 {PANEL/}
