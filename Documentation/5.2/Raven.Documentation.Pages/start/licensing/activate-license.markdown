@@ -26,8 +26,8 @@ add either of the following [license configuration](../../server/configuration/l
 {NOTE: }
 __"License"__  
 
-  * Embed the full license key directly, e.g.:  
-    `"License": { paste your license key including curly brackets here }`.  
+  * Embed the full license key as a string, e.g.:  
+    `"License": "{ paste your license key including curly brackets here }"`.  
 
   * When `License` is specified, it overrides the `License.Path` configuration.  
 {NOTE/}
@@ -55,7 +55,8 @@ Note: _settings.json_ configuration options override environment variables setti
 {NOTE: }
 __RAVEN_LICENSE__
 
-  * Set the full license key in the RAVEN_LICENSE environment variable.
+  * Set the full license key in the RAVEN_LICENSE environment variable.  
+    (Enter the JSON object, not as a string).  
 
   * If RAVEN_LICENSE is set, it overrides the RAVEN_LICENSE_PATH environment variable.  
 {NOTE/}
