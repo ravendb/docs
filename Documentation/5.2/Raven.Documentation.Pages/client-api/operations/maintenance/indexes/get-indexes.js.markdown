@@ -26,8 +26,8 @@
 
 | Parameters | Type | Description |
 | - | - | - |
-| __start__ | int | Number of indexes to skip |
-| __pageSize__ | int | Number of indexes to retrieve |
+| __start__ | number | Number of indexes to skip |
+| __pageSize__ | number | Number of indexes to retrieve |
 
 | Return value of `store.maintenance.send(getIndexesOp)` | |
 | - | - |

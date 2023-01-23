@@ -38,7 +38,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 // Execute the operation by passing it to Maintenance.Send
                 IndexDefinition[] indexes = store.Maintenance.Send(getIndexesOp);
                 
-                // Access an index definition
+                // Access an index definition from the resulting list
                 var name = indexes[0].Name;
                 var state = indexes[0].State;
                 var lockMode = indexes[0].LockMode;
@@ -77,7 +77,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 // Execute the operation by passing it to Maintenance.SendAsync
                 IndexDefinition[] indexes = await store.Maintenance.SendAsync(getIndexesOp);
                 
-                // Access an index definition
+                // Access an index definition from the resulting list
                 var name = indexes[0].Name;
                 var state = indexes[0].State;
                 var lockMode = indexes[0].LockMode;

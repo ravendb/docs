@@ -27,7 +27,7 @@ async function getIndex() {
         // Execute the operation by passing it to maintenance.send
         const indexes = await store.maintenance.send(getIndexesOp);
 
-        // Access an index definition
+        // Access an index definition from the resulting list
         const name = indexes[0].name;
         const state = indexes[0].state;
         const lockMode = indexes[0].lockMode;
