@@ -20,8 +20,10 @@
 
 {PANEL: Activate license from settings.json}
 
-To activate the license from _settings.json_,  
-add either of the following [license configuration](../../server/configuration/license-configuration) options to your _settings.json_ file:  
+* To activate the license from _settings.json_,   
+  add either of the below [license configuration](../../server/configuration/license-configuration) options to your [settings.json](../../server/configuration/configuration-options#settings.json) file.  
+* Note: If this is the first time you run RavenDB, and the _settings.json_ file does not exist yet,  
+  then manually copy file **_settings.default.json_** to **_settings.json_** and make your changes there.  
 
 {NOTE: }
 __"License"__  
@@ -49,8 +51,8 @@ __"License.Path"__
 
 {PANEL: Activate license from environment variables}
 
-You can set either of the following environment variables with your license info.  
-Note: _settings.json_ configuration options override environment variables settings.  
+* You can set either of the following environment variables with your license info.  
+* Note: _settings.json_ configuration options override environment variables settings.  
 
 {NOTE: }
 __RAVEN_LICENSE__
