@@ -87,7 +87,7 @@ Using `PutIndexesOperation` with an IndexDefinition created from an __IndexDefin
 | - |- | - |
 | **indexesToAdd** | `params IndexDefinition[]` | Definitions of indexes to deploy |
 
-[//]: # (__The IndexDefinition class__)
+<a id="indexDefinition" />
 
 | `IndexDefinition` | | |
 | - | - | - |
