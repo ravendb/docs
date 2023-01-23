@@ -8,7 +8,7 @@
   to see if there are any updates made to your current license that need to be applied.  
   This is done for all license types.  
 
-* The update will be applied provided that:  
+* This automatic update will be applied provided that:  
   * You have an active connection to RavenDB's License Server.  
   * Both [DisableAutoUpdate](../../server/configuration/license-configuration#license.disableautoupdate) and [DisableAutoUpdateFromApi](../../server/configuration/license-configuration#license.disableautoupdatefromapi) are set to false.  
 

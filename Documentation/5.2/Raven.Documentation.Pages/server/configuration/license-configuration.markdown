@@ -2,7 +2,7 @@
 
 {PANEL:License}
 
-The full license string for RavenDB.  
+The full license key (as a string) for RavenDB.  
 If `License` is specified, it overrides the `License.Path` configuration.
 
 - **Type**: `string`
@@ -92,7 +92,7 @@ Disable all updates of the license, from string, from path and from the License 
 
 EXPERT ONLY.  
 Disable automatic updates of the license from the License Server (api.ravendb.net).  
-Can still update the license from the settings.json or from the environment variables.  
+Can still update the license from _settings.json_ or from environment variables.  
 
 - **Type**: `bool`
 - **Default**: `false`
