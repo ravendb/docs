@@ -16,23 +16,20 @@
 
 {PANEL: Get indexes example}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync get_indexes@ClientApi\Operations\Maintenance\Indexes\GetIndex.cs /}
-{CODE-TAB:csharp:Async get_indexes_async@ClientApi\Operations\Maintenance\Indexes\GetIndex.cs /}
-{CODE-TABS/}
+{CODE:nodejs get_indexes@ClientApi\Operations\Maintenance\Indexes\getIndex.js /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE get_indexes_syntax@ClientApi\Operations\Maintenance\Indexes\GetIndex.cs /}
+{CODE:nodejs get_indexes_syntax@ClientApi\Operations\Maintenance\Indexes\getIndex.js /}
 
 | Parameters | Type | Description |
 | - | - | - |
 | __start__ | int | Number of indexes to skip |
 | __pageSize__ | int | Number of indexes to retrieve |
 
-| Return value of `store.Maintenance.Send(getIndexesOp)` | |
+| Return value of `store.maintenance.send(getIndexesOp)` | |
 | - | - |
 | `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexDefinition) |
 

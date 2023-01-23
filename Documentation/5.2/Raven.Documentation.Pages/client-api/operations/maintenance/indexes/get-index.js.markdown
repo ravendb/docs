@@ -16,22 +16,19 @@
 
 {PANEL: Get index example}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync get_index@ClientApi\Operations\Maintenance\Indexes\GetIndex.cs /}
-{CODE-TAB:csharp:Async get_index_async@ClientApi\Operations\Maintenance\Indexes\GetIndex.cs /}
-{CODE-TABS/}
+{CODE:nodejs get_index@ClientApi\Operations\Maintenance\Indexes\getIndex.js /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE get_index_syntax@ClientApi\Operations\Maintenance\Indexes\GetIndex.cs /}
+{CODE:nodejs get_index_syntax@ClientApi\Operations\Maintenance\Indexes\getIndex.js /}
 
 | Parameters | Type | Description |
 | - | - | - |
 | __indexName__ | string | Name of index to get |
 
-| Return value of `store.Maintenance.Send(getIndexOp)` | |
+| Return value of `store.maintenance.send(getIndexOp)` | |
 |- | - |
 | `IndexDefinition` | An instance of class [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexDefinition) |
 
