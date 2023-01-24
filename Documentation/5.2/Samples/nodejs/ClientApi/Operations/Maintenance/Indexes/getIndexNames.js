@@ -11,6 +11,8 @@ async function getIndexNames() {
 
         // Execute the operation by passing it to maintenance.send
         const indexNames = await store.maintenance.send(getIndexNamesOp);
+
+        // indexNames will contain the first 10 indexes, alphabetically ordered
         //endregion
     }
 }

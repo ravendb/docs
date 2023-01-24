@@ -17,6 +17,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 
                 // Execute the operation by passing it to Maintenance.Send
                 string[] indexNames = store.Maintenance.Send(getIndexNamesOp);
+                
+                // indexNames will contain the first 10 indexes, alphabetically ordered
                 #endregion
             }
         }
@@ -32,6 +34,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 
                 // Execute the operation by passing it to Maintenance.SendAsync
                 string[] indexNames = await store.Maintenance.SendAsync(getIndexNamesOp);
+                
+                // indexNames will contain the first 10 indexes, alphabetically ordered
                 #endregion
             }
         }

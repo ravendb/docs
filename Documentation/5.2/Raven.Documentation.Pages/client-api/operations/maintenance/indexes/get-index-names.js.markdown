@@ -31,7 +31,7 @@
 
 | Return Value of `store.maintenance.send(getIndexNamesOp)` | |
 | - | - |
-| `string[]` | A list of index names |
+| `string[]` | A list of index names alphabetically ordered |
 
 {PANEL/}
 

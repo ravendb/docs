@@ -34,7 +34,7 @@
 
 | Return Value of `store.Maintenance.Send(getIndexNamesOp)` | |
 | - | - |
-| `string[]` | A list of index names |
+| `string[]` | A list of index names alphabetically ordered |
 
 {PANEL/}
 
