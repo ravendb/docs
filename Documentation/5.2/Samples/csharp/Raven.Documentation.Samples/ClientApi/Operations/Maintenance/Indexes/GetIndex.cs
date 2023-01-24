@@ -38,6 +38,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 // Execute the operation by passing it to Maintenance.Send
                 IndexDefinition[] indexes = store.Maintenance.Send(getIndexesOp);
                 
+                // indexes will contain the first 10 indexes, alphabetically ordered by index name
                 // Access an index definition from the resulting list
                 var name = indexes[0].Name;
                 var state = indexes[0].State;
@@ -77,6 +78,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 // Execute the operation by passing it to Maintenance.SendAsync
                 IndexDefinition[] indexes = await store.Maintenance.SendAsync(getIndexesOp);
                 
+                // indexes will contain the first 10 indexes, alphabetically ordered by index name
                 // Access an index definition from the resulting list
                 var name = indexes[0].Name;
                 var state = indexes[0].State;

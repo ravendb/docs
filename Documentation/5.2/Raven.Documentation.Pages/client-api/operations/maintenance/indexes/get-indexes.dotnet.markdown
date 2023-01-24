@@ -34,7 +34,7 @@
 
 | Return value of `store.Maintenance.Send(getIndexesOp)` | |
 | - | - |
-| `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexDefinition) |
+| `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexDefinition) <br> ordered alphabetically by index name |
 
 {PANEL/}
 
