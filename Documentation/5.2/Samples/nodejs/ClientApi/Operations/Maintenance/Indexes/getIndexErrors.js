@@ -2,7 +2,7 @@
 
 const documentStore = new DocumentStore();
 
-async function pauseIndex() {
+async function getIndexErrors() {
     {
         //region get_errors_all
         // Define the get index errors operation
@@ -37,17 +37,27 @@ async function pauseIndex() {
     //region syntax_2
     // An 'index errors' object:
     {
-        name, // index name
-        errors // list of 'error objects' for this index
+        name,  // Index name
+        errors // List of 'error objects' for this index
     }
+    //endregion
     
+    //region syntax_3
     // An 'error object':
     {
-        error,     // the error message
-        timestamp, // Time of error
-        document,  // document in which error occured
-        action     // Area where error occured:
-                   // e.g. Map/Reduce/Analyzer/Memory/etc.
+        // The error message
+        error,
+            
+        // Time of error
+        timestamp,
+
+        // If Action is 'Map'    - field will contain the document ID
+        // If Action is 'Reduce' - field will contain the Reduce key value
+        // For all other Actions - field will be null    
+        document,
+
+        // Area where error has occurred, e.g. Map/Reduce/Analyzer/Memory/etc.
+        action
     }
     //endregion
 }

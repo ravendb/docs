@@ -39,10 +39,11 @@
 
 | Return value of `store.maintenance.send(getIndexErrorsOp)`| |
 | - | - |
-| __object[]__ |  List of 'index errors' objects.<br>An exception is thrown if any of the specified indexes do not exist. |
+| __object[]__ |  List of 'index errors' objects - see definition below.<br>An exception is thrown if any of the specified indexes do not exist. |
 
 {NOTE: }
 {CODE:nodejs syntax_2@ClientApi\Operations\Maintenance\Indexes\getIndexErrors.js /}
+{CODE:nodejs syntax_3@ClientApi\Operations\Maintenance\Indexes\getIndexErrors.js /}
 {NOTE/}
 
 {PANEL/}

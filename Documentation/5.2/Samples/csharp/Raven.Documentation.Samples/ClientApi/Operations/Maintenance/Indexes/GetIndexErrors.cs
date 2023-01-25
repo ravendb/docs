@@ -86,19 +86,27 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
             #region syntax_2
             public class IndexErrors
             {
-                public string Name { get; set; }            // index name
-                public IndexingError[] Errors { get; set; } // list of errors for this index
+                public string Name { get; set; }            // Index name
+                public IndexingError[] Errors { get; set; } // List of errors for this index
             }
             #endregion
 
             #region syntax_3
             public class IndexingError
             {
-                public string Error { get; set; }       // The error message
-                public DateTime Timestamp { get; set; } // Time of error
-                public string Document { get; set; }    // Document in which error occured
-                public string Action { get; set; }      // Area where error occurred:
-                                                        // e.g. Map/Reduce/Analyzer/Memory/etc.
+                // The error message
+                public string Error { get; set; }
+                
+                // Time of error
+                public DateTime Timestamp { get; set; }
+                
+                // If Action is 'Map'    - field will contain the document ID
+                // If Action is 'Reduce' - field will contain the Reduce key value
+                // For all other Actions - field will be null 
+                public string Document { get; set; }
+                
+                // Area where error has occurred, e.g. Map/Reduce/Analyzer/Memory/etc.
+                public string Action { get; set; }      
             }
             #endregion
         }
