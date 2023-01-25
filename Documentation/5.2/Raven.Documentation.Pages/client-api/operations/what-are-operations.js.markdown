@@ -191,6 +191,7 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexingOperation](../../client-api/operations/maintenance/indexes/stop-indexing)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetIndexOperation](../../client-api/operations/maintenance/indexes/reset-index)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexOperation](../../client-api/operations/maintenance/indexes/delete-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexErrorsOperation](../../client-api/operations/maintenance/indexes/delete-index-errors)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DisableIndexOperation](../../client-api/operations/maintenance/indexes/disable-index)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [EnableIndexOperation](../../client-api/operations/maintenance/indexes/enable-index)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [IndexHasChangedOperation](../../client-api/operations/maintenance/indexes/index-has-changed)   
