@@ -1,0 +1,65 @@
+# Get Index Errors Operation
+
+---
+
+{NOTE: }
+
+* Use `GetIndexErrorsOperation` to return errors encountered during indexing.
+
+* To clear index errors see [delete index errors](../../../../client-api/operations/maintenance/indexes/delete-index-errors).
+
+* In this page:
+    * [Get errors for all indexes](../../../../client-api/operations/maintenance/indexes/get-index-errors#get-errors-for-all-indexes)
+    * [Get errors for specific indexes](../../../../client-api/operations/maintenance/indexes/get-index-errors#get-errors-for-specific-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-errors#syntax)
+
+{NOTE/}
+
+---
+
+{PANEL: Get errors for all indexes}
+
+{CODE:nodejs get_errors_all@ClientApi\Operations\Maintenance\Indexes\getIndexErrors.js /}
+
+{PANEL/}
+
+{PANEL: Get errors for specific indexes}
+
+{CODE:nodejs get_errors_specific@ClientApi\Operations\Maintenance\Indexes\getIndexErrors.js /}
+
+{PANEL/}
+
+{PANEL: Syntax}
+
+{CODE:nodejs syntax_1@ClientApi\Operations\Maintenance\Indexes\getIndexErrors.js /}
+
+| Parameters | Type | Description |
+| - | - | - |
+| __indexNames__ | string[] | List of index names for which to get errors |
+
+| Return value of `store.maintenance.send(getIndexErrorsOp)`| |
+| - | - |
+| __object[]__ |  List of 'index errors' objects.<br>An exception is thrown if any of the specified indexes do not exist. |
+
+{NOTE: }
+{CODE:nodejs syntax_2@ClientApi\Operations\Maintenance\Indexes\getIndexErrors.js /}
+{NOTE/}
+
+{PANEL/}
+
+## Related Articles
+
+### Indexes
+
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Debugging Index Errors](../../../../indexes/troubleshooting/debugging-index-errors)
+
+### Server
+
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+
+- [How to Reset Index](../../../../client-api/operations/maintenance/indexes/reset-index)
+- [Delete index errors](../../../../client-api/operations/maintenance/indexes/delete-index-errors)
