@@ -184,7 +184,7 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexesStatisticsOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexingStatusOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexStalenessOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexNamesOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexNamesOperation](../../client-api/operations/maintenance/indexes/get-index-names)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexOperation](../../client-api/operations/maintenance/indexes/start-index)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexingOperation](../../client-api/operations/maintenance/indexes/start-indexing)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexOperation](../../client-api/operations/maintenance/indexes/stop-index)   
