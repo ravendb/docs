@@ -6,6 +6,8 @@
 
 * Use `DeleteIndexErrorsOperation` to delete indexing errors.  
 
+* The operation will be executed only on the server node that is defined by the current [client-configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).
+
 * Deleting the errors will only __clear the index errors__.  
   An index with an 'Error state' will Not be set back to 'Normal state'.  
 

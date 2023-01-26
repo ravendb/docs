@@ -4,7 +4,9 @@
 
 {NOTE: }
 
-* Use `GetIndexErrorsOperation` to return errors encountered during indexing.
+* Use `GetIndexErrorsOperation` to get errors encountered during indexing.
+
+* The index errors will be retrieved only from the server node defined by the current [client-configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).
 
 * To clear index errors see [delete index errors](../../../../client-api/operations/maintenance/indexes/delete-index-errors).
 
