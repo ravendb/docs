@@ -12,7 +12,7 @@
   (An exception is thrown if that node is not available).
 
 * In this page:
-    * [Server maintenance operations - forNode](../../../client-api/operations/how-to/switch-operations-to-different-node#server-maintenance-operations---fornode)
+    * [Server maintenance operations - forNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node#server-maintenance-operations---fornode)
 {NOTE/}
 
 ---
