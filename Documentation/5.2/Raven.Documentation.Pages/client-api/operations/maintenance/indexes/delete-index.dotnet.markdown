@@ -6,6 +6,8 @@
 
 * Use `DeleteIndexOperation` to remove an index from the database.
 
+* The index will be deleted from all the database-group nodes.
+
 * In this page:
     * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index#delete-index-example)
     * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index#syntax)
