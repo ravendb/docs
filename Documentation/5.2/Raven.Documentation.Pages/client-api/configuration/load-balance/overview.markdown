@@ -58,7 +58,7 @@ The client uses the following logic (from top to bottom) to determine which node
 
 * Use the __specified node__:   
   A client can explicitly specify the target node when executing a [server-maintenance operation](../../../client-api/operations/what-are-operations#server-maintenance-operations).  
-  Learn more in [switch operation to a different node](../../../client-api/operations/how-to/switch-operations-to-different-node).  
+  Learn more in [switch operation to a different node](../../../client-api/operations/how-to/switch-operations-to-a-different-node).  
 
 ---
 

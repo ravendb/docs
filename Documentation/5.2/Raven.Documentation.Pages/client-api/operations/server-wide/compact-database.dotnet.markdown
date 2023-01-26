@@ -15,7 +15,7 @@
 
 * **Target node**:  
   By default, the operation will be executed on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
-  The operation can be executed on a specific node by using the [ForNode](../../../client-api/operations/how-to/switch-operations-to-different-node) method.  
+  The operation can be executed on a specific node by using the [ForNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
 
 * **Target database**:  
   The database to compact is specified in `CompactSettings` (see examples below).  
@@ -148,7 +148,7 @@
 - [How to create database?](../../../client-api/operations/server-wide/create-database) 
 - [How to get database statistics](../../../client-api/operations/maintenance/get-stats)
 - [How to restore a database from backup](../../../client-api/operations/server-wide/restore-backup)
-- [Switch operation to different node](../../../client-api/operations/how-to/switch-operations-to-different-node)
+- [Switch operation to different node](../../../client-api/operations/how-to/switch-operations-to-a-different-node)
 
 **Compression**
 
