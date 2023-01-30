@@ -50,6 +50,11 @@
         ]
     },
     {
+        "Path": "delete-index-errors.markdown",
+        "Name": "Delete Index Errors",
+        "DiscussionId": "aeb3d404-213f-4946-87d2-b47c4aefc0db"
+    },
+    {
         "Path": "disable-index.markdown",
         "Name": "Disable Index",
         "DiscussionId": "e2327eb5-51aa-4425-bf49-ba08d1ce4125",
