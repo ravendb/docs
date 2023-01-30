@@ -65,6 +65,8 @@ Using `PutIndexesOperation` with __IndexDefinition__ allows the following:
 | - |- | - |
 | **indexesToAdd** | `...IndexDefinition[]` | Definitions of indexes to deploy |
 
+<a id="indexDefinition" />
+
 | `IndexDefinition` | | |
 | - | - | - |
 | name | string | Name of the index, a unique identifier |
