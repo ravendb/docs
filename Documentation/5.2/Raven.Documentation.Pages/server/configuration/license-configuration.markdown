@@ -14,7 +14,8 @@ If `License` is specified, it overrides the `License.Path` configuration.
 {PANEL:License.Path}
 
 Path to the license.json file.  
-Either a full path, or a relative path to the Server directory.  
+Either the full path to the license file,  
+or a relative path to the license file from the Server directory.  
 
 - **Type**: `string`
 - **Default**: `license.json`
@@ -92,7 +93,13 @@ Disable all updates of the license, from string, from path and from the License 
 
 EXPERT ONLY.  
 Disable automatic updates of the license from the License Server (api.ravendb.net).  
-Can still update the license from _settings.json_ or from environment variables.  
+Can still update the license by either:  
+
+* [Setting the settings.json file](../../start/licensing/activate-license#activate-license-from-settings.json)
+* [Setting the environment variables](../../start/licensing/activate-license#activate-license-from-environment-variables)
+* Replacing the _license.json_ file on disk
+
+---
 
 - **Type**: `bool`
 - **Default**: `false`
@@ -103,7 +110,7 @@ Can still update the license from _settings.json_ or from environment variables.
 {PANEL:License.DisableLicenseSupportCheck}
 
 EXPERT ONLY.  
-Disable checking the support options for the license.
+Disable checking the license support options from the License Server (api.ravendb.net).
 
 - **Type**: `bool`
 - **Default**: `false`

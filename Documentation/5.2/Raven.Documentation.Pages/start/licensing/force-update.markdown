@@ -9,11 +9,12 @@
   This is done for all license types.  
 
 * This automatic update will be applied provided that:  
-  * You have an active connection to RavenDB's License Server.  
+  * You have an active connection to RavenDB's License Server (api.ravendb.net).  
   * Both [DisableAutoUpdate](../../server/configuration/license-configuration#license.disableautoupdate) and [DisableAutoUpdateFromApi](../../server/configuration/license-configuration#license.disableautoupdatefromapi) are set to false.  
 
 * If changes were made to your current license and you want to __apply immediately__,    
   then you can __force the update from Studio__.  
+  This action also requires an active connection to the [License Server](../../start/licensing/licensing-overview#license-server).
 
 * In this page:
     * [Force license update from Studio](../../start/licensing/force-update#force-license-update-from-studio)
@@ -32,6 +33,7 @@
 2. __Force Update__  
    Click the _FORCE UPDATE_ button.  
    This will update your current license immediately.  
+   This action requires an active connection to the [License Server](../../start/licensing/licensing-overview#license-server).
 
 {PANEL/}
 
