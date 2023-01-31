@@ -29,17 +29,17 @@
 
 {PANEL: Lock modes}
 
-* `Unlock` - when lock mode is set to _'Unlock'_:  
+* __Unlocked__ - when lock mode is set to `Unlock`:  
   * Any change to the index definition will be applied.  
   * If the new index definition differs from the one stored on the server,  
     the index will be updated and the data will be re-indexed using the new index definition.  
  
-* `LockedIgnore` - when lock mode is set to _'LockedIgnore'_:  
+* __Locked (ignore)__ - when lock mode is set to `LockedIgnore`:  
   * Index definition changes will Not be applied.  
   * Modifying the index definition will return successfully and no error will be raised,  
     however, no change will be made to the index definition on the server.
  
-* `LockedError` - when lock mode is set to _'LockedError'_:  
+* __Locked (error)__ - when lock mode is set to `LockedError`:  
   * Index definitions changes will Not be applied.  
   * An exception will be thrown upon trying to modify the index.  
 
@@ -90,7 +90,7 @@ Consider the following scenario:
 | Parameters | Type | Description |
 |- | - | - |
 | __indexName__ | string | Index name for which to set lock mode |
-| __mode__ | `Unlock` / `LockedIgnore` / `LockedError` | Lock mode to set |
+| __mode__ | `"Unlock"` / `"LockedIgnore"` / `"LockedError"` | Lock mode to set |
 | __parameters__ | parameters object | List of indexes + lock mode to set |
 
 {CODE:nodejs syntax_2@ClientApi\Operations\Maintenance\Indexes\setLockMode.js /}

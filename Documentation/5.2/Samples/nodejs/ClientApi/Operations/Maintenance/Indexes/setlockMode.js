@@ -1,5 +1,5 @@
 ﻿import { DocumentStore } from "ravendb";
-גלי עשת
+
 const documentStore = new DocumentStore();
 
 async function setLockMode() {
@@ -15,7 +15,8 @@ async function setLockMode() {
         // Lock mode is now set to 'LockedIgnore'
         // Any modifications done now to the index will Not be applied, and will Not throw
         //endregion
-
+    }
+    {
         //region set_lock_multiple
         // Define the index list and the new lock mode:
         const indexes = {
