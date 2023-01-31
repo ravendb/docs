@@ -91,18 +91,6 @@
         "Mappings": []
     },
     {
-        "Path": "get-index-errors.markdown",
-        "Name": "Get Index Errors",
-        "DiscussionId": "b48cab12-31d7-4602-b324-03026545fa05",
-        "Mappings": []
-    },
-    {
-        "Path": "get-index-names.markdown",
-        "Name": "Get Index Names",
-        "DiscussionId": "d08a3764-4501-4db4-b1a6-5441ccc46754",
-        "Mappings": []
-    },
-    {
         "Path": "get-index.markdown",
         "Name": "Get Index",
         "DiscussionId": "1832ba8f-4142-4637-979f-820681ddcd1c",
@@ -115,8 +103,20 @@
         "Mappings": []
     },
     {
+        "Path": "get-index-errors.markdown",
+        "Name": "Get Index Errors",
+        "DiscussionId": "b48cab12-31d7-4602-b324-03026545fa05",
+        "Mappings": []
+    },
+    {
+        "Path": "get-index-names.markdown",
+        "Name": "Get Index Names",
+        "DiscussionId": "d08a3764-4501-4db4-b1a6-5441ccc46754",
+        "Mappings": []
+    },
+    {
         "Path": "get-terms.markdown",
-        "Name": "Get Terms",
+        "Name": "Get Index Terms",
         "DiscussionId": "2033ba99-3ba9-48fe-9751-a918cf9ab652",
         "Mappings": [
             {
