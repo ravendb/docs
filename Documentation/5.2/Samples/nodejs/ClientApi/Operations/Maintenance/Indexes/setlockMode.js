@@ -19,13 +19,13 @@ async function setLockMode() {
     {
         //region set_lock_multiple
         // Define the index list and the new lock mode:
-        const indexes = {
+        const parameters = {
             indexNames: ["Orders/Totals", "Orders/ByCompany"],
             mode: "LockedError"
         }
 
-        // Define the set lock mode operation, pass the indexes param
-        const setLockModeOp = new SetIndexesLockOperation(indexes);
+        // Define the set lock mode operation, pass the parameters
+        const setLockModeOp = new SetIndexesLockOperation(parameters);
 
         // Execute the operation by passing it to maintenance.send
         await store.maintenance.send(setLockModeOp);

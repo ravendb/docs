@@ -28,13 +28,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
             {
                 #region set_lock_multiple
                 // Define the index list and the new lock mode:
-                var indexes = new SetIndexesLockOperation.Parameters {
+                var parameters = new SetIndexesLockOperation.Parameters {
                     IndexNames = new[] {"Orders/Totals", "Orders/ByCompany"}, 
                     Mode = IndexLockMode.LockedError
                 };
                     
-                // Define the set lock mode operation, pass the indexes param
-                var setLockModeOp = new SetIndexesLockOperation(indexes);
+                // Define the set lock mode operation, pass the parameters
+                var setLockModeOp = new SetIndexesLockOperation(parameters);
                 
                 // Execute the operation by passing it to Maintenance.Send
                 store.Maintenance.Send(setLockModeOp);
@@ -66,13 +66,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 {
                     #region set_lock_multiple_async
                     // Define the index list and the new lock mode:
-                    var indexes = new SetIndexesLockOperation.Parameters {
+                    var parameters = new SetIndexesLockOperation.Parameters {
                         IndexNames = new[] {"Orders/Totals", "Orders/ByCompany"}, 
                         Mode = IndexLockMode.LockedError
                     };
                     
-                    // Define the set lock mode operation, pass the indexes param
-                    var setLockModeOp = new SetIndexesLockOperation(indexes);
+                    // Define the set lock mode operation, pass the parameters
+                    var setLockModeOp = new SetIndexesLockOperation(parameters);
                 
                     // Execute the operation by passing it to Maintenance.SendAsync
                     await store.Maintenance.SendAsync(setLockModeOp);
