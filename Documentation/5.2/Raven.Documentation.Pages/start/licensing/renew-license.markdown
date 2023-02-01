@@ -25,26 +25,33 @@
 
 {NOTE: }
 __Automatic renewal__:  
+
+---
 If your server has an active connection to RavenDB's [License Server](../../start/licensing/licensing-overview#license-server),  
 and if the [DisableAutoUpdate](../../server/configuration/license-configuration#license.disableautoupdate) configuration is Not set to true,  
-then these licenses will be automatically renewed.  
+then these commercial licenses will be automatically renewed.  
 {NOTE/}
 
 {NOTE: }
 __Manual (offline) renewal__:  
-If the connection to the License Server is unavailable, proceed with the following steps:  
 
-* Contact [customer service](https://ravendb.net/contact) to extend your license (license ID will stay the same).  
-  A license renewal email will be sent to you.   
+---
+If the connection to the License Server is unavailable, contact [customer service](https://ravendb.net/contact) to extend your license.  
+A license renewal email will be sent to you (the license ID will stay the __same__).  
+Copy the new license key from the mail and proceed with one of the following options.  
+
+__Either__:  
+
+* Replace the existing license key with the new one from the Studio, as described [here](../../start/licensing/replace-license#replace-license-from-studio).
+
+__Or__:  
 
 * Set [DisableAutoUpdateFromApi](../../server/configuration/license-configuration#license.disableautoupdatefromapi) to true.
 
-* Copy the new license key from the mail and set it in either of the following ways:  
-    * Activate the new license from your _settings.json_ file. See details [here](../../start/licensing/activate-license#activate-license-from-settings.json).  
-    * Activate the new license from your environment variables. See details [here](../../start/licensing/activate-license#activate-license-from-environment-variables).  
+* Activate the new license key using the [configuration keys](../../start/licensing/activate-license#activate-license-with-configuration-keys).
 
 * Restart your server.  
-{NOTE/}
+  {NOTE/}
 
 {PANEL/}
 

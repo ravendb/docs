@@ -1,93 +1,122 @@
-# Configuration Options
+# Configuration Overview
 
 ---
-{NOTE: }
-RavenDB is **Safe by Default**, which means its default settings are configured for best safety.  
-You can change these settings, however, to divert from the default behavior.  
 
-* In this Page:  
-   * [Environment Variables](../../server/configuration/configuration-options#environment-variables)  
+{NOTE: }
+
+* RavenDB comes with default settings that are configured for best results.  
+  If needed, you can customize the default configuration to suit your specific needs.  
+
+* Any __configuration key__ can be modified by either of the following options: 
+   * [Environment variables](../../server/configuration/configuration-options#environment-variables)  
    * [settings.json](../../server/configuration/configuration-options#settings.json)  
-   * [Command Line Arguments](../../server/configuration/configuration-options#command-line-arguments)  
+   * [Command line arguments](../../server/configuration/configuration-options#command-line-arguments)  
 
 {NOTE/}
 
-{PANEL:Environment Variables}
-
-RavenDB's configuration can be adjusted using environment variables.  
-The server will retrieve all the environment variables that start with `RAVEN_` 
-and apply their values to the specified configuration keys.  
+{PANEL: Environment variables}
 
 {NOTE: }
-All the period (`.`) characters in configuration keys must be replaced with an 
-underscore character (`_`) when used in environment variables.  
+
+* To set a configuration key as an environment variable:  
+
+  * Add the prefix `RAVEN_` to the configuration key name  
+  * Replace all period characters (`.`) with the underscore character (`_`)  
+
+* The server will retrieve these environment variables and apply their values. 
+
 {NOTE/}
 
-### Example
+{NOTE: }
+
+__Example__: 
+
+* To set configuration key [Security.Certificate.Path](../../server/configuration/security-configuration#security.certificate.path) from an environment variable,  
+  add the environment variable `RAVEN_Security_Certificate_Path`.
 
 {CODE-BLOCK:plain}
-RAVEN_Setup_Mode=None
-RAVEN_DataDir=RavenData
-RAVEN_Certificate_Path=/config/raven-server.certificate.pfx
+// In Windows PowerShell:
+$Env:RAVEN_Security_Certificate_Path=/config/raven-server.certificate.pfx
+
+// This will set the path to your .pfx certificate file
 {CODE-BLOCK/}
+
+{NOTE/}
 
 {PANEL/}
 
-{PANEL:`settings.json`}
+{PANEL: settings.json}
 
-Use the `settings.json` file to change the server configuration.  
-
-The file is created when running the server for the first time, duplicating the `settings.default.json` file.  
-Find it at the same directory as the server executable.  
-
-The file is read and applied only on server startup.  
-
-### Example
-
-{CODE-BLOCK:json}
-{
-    "ServerUrl": "http://127.0.0.1:8080",
-    "Setup.Mode": "None"
-}
-{CODE-BLOCK/}
+{INFO: }
+_settings.json_ configuration values **override** their matching [environment variables](../../server/configuration/configuration-options#environment-variables) values.
+{INFO/}
 
 {NOTE: }
-`settings.json` configuration options **override** [environment variables](../../server/configuration/configuration-options#environment-variables) settings. 
+
+* The `settings.json` file is created by RavenDB when running the server for the first time,  
+  duplicating the `settings.default.json` file located in the same directory as the server executable.
+
+* If you want to apply configuration keys to _settings.json_ prior to running the server for the first time,  
+  you can manually copy _settings.default.json_ to _settings.json_ and make your changes there.
+
+* The file is read and applied only on server startup.
+
+* To set a configuration key from _settings.json_ simply add the key and its value to the file.
+
 {NOTE/}
 
-{INFO:JSON Arrays}
+{NOTE: }
 
-Configuration options that include multiple values (like strings separated by `;`) 
-can be configured using regular JSON arrays.  
-To set [`Security.WellKnownCertificates.Admin`](../../server/configuration/security-configuration#security.wellknowncertificates.admin), 
-for example, use -  
+__Example__:
 
 {CODE-BLOCK:json}
 {
     "ServerUrl": "http://127.0.0.1:8080",
     "Setup.Mode": "None",
+    "License.Path": "D:\\RavenDB\\Server\\license.json"
+}
+{CODE-BLOCK/}
+
+__JSON Arrays__
+
+Configuration options that include multiple values (like strings separated by `;`)  
+can be configured using regular JSON arrays.  
+For example, to set [Security.WellKnownCertificates.Admin](../../server/configuration/security-configuration#security.wellknowncertificates.admin) use: 
+
+{CODE-BLOCK:json}
+{
     "Security.WellKnownCertificates.Admin" : [ "297430d6d2ce259772e4eccf97863a4dfe6b048c", "e6a3b45b062d509b3382282d196efe97d5956ccb" ]
 }
 {CODE-BLOCK/}
 
-{INFO/}
+{NOTE/}
 
 {PANEL/}
 
-{PANEL:Command Line Arguments}
+{PANEL: Command line arguments}
 
-The server can be configured using command line arguments that can be passed to the console application (or while running as a deamon).
+{INFO: }
+Command line arguments configuration values **override** their matching  
+[environment variables](../../server/configuration/configuration-options#environment-variables) and [settings.json](../../server/configuration/configuration-options#settings.json) values.  
+{INFO/}
 
-### Example:
+{NOTE: }
+
+* The server can be configured using command line arguments that are passed to the console application  
+  (or while running as a daemon).
+
+* Find additional details about Command Line Arguments [here](../../server/configuration/command-line-arguments).  
+
+{NOTE/}
+
+{NOTE: }
+
+__Example__:
 
 {CODE-BLOCK:bash}
 ./Raven.Server --Setup.Mode=None
 {CODE-BLOCK/}
 
-{NOTE: }
-Command line arguments **override** [environment variables](../../server/configuration/configuration-options#environment-variables) 
-and [settings.json](../../server/configuration/configuration-options#settings.json) settings.  
-Find additional details about Command Line Arguments [here](../../server/configuration/command-line-arguments). 
 {NOTE/}
 
 {PANEL/}

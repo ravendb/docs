@@ -10,65 +10,22 @@
   There are a few ways to __activate your license__, see below.  
 
 * In this page:
-    * [Activate license from settings.json](../../start/licensing/activate-license#activate-license-from-settings.json)
-    * [Activate license from environment variables](../..//start/licensing/activate-license#activate-license-from-environment-variables)
-    * [Activate license from Studio](../../start/licensing/activate-license#activate-license-from-studio)
+
+  * [Activate license with configuration keys]()
+  * [Activate license from Studio](../../start/licensing/activate-license#activate-license-from-studio)
 
 {NOTE/}
 
 ---
 
-{PANEL: Activate license from settings.json}
+{PANEL: Activate license with configuration keys}
 
-* To activate the license from _settings.json_,   
-  add either of the below [license configuration](../../server/configuration/license-configuration) options to your [settings.json](../../server/configuration/configuration-options#settings.json) file.  
-* Note: If this is the first time you run RavenDB, and the _settings.json_ file does Not exist yet,  
-  then manually copy file **_settings.default.json_** to **_settings.json_** and make your changes there.  
+* You can activate the license using either one of the following configuration keys:  
+  * [License](../../server/configuration/license-configuration#license)  
+  * [License.Path](../../server/configuration/license-configuration#license.path)  
 
-{NOTE: }
-__"License"__  
-
-  * Embed the full license key as a string, e.g.:  
-    `"License": "{ paste your license key including curly brackets here }"`.  
-
-  * When `License` is specified, it overrides the `License.Path` configuration.  
-{NOTE/}
-
-{NOTE: }
-__"License.Path"__  
-
-  * Save the license key to a `license.json` file.  
-
-  * Provide the path to this file:  
-    * Either the __full__ path to the license file, e.g.:  
-      `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
-    * Or, a __relative__ path to the license file from the Server folder  
-      `"License.Path": "License\\license.json"`  
-      (where 'License' folder is under the 'Server' folder)  
-{NOTE/}
-
-{PANEL/}
-
-{PANEL: Activate license from environment variables}
-
-* You can set either of the following [environment variables](../../server/configuration/configuration-options#environment-variables) with your license info.  
-* Note: _settings.json_ configuration options override environment variables settings.  
-
-{NOTE: }
-__RAVEN_LICENSE__
-
-  * Set the full license key in the RAVEN_LICENSE environment variable.  
-    (Enter the JSON object, not as a string).  
-
-  * If RAVEN_LICENSE is set, it overrides the RAVEN_LICENSE_PATH environment variable.  
-{NOTE/}
-
-{NOTE: }
-__RAVEN_LICENSE_PATH__  
-
-  * Provide a path to the `license.json` file.
-  * Set either the __full__ path or a __relative__ path to the Server folder.  
-{NOTE/}
+* These configuration keys can be set in _setting.json_ or as environment variables.  
+  Learn more in [configuration overview](../../server/configuration/configuration-options).
 
 {PANEL/}
 

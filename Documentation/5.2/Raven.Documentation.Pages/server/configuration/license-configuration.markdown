@@ -2,8 +2,14 @@
 
 {PANEL:License}
 
-The full license key (as a string) for RavenDB.  
-If `License` is specified, it overrides the `License.Path` configuration.
+* When using this configuration key in _settings.json_ embed the license key as a __string__, e.g.:  
+  `"License": "{ paste your license key including curly brackets here }"`.  
+
+* When using this configuration key as an [environment variable](../../server/configuration/configuration-options#environment-variables) embed the JSON license key __object__.  
+
+* If `License` is specified, it overrides the `License.Path` configuration.  
+ 
+---
 
 - **Type**: `string`
 - **Default**: `null`
@@ -13,9 +19,17 @@ If `License` is specified, it overrides the `License.Path` configuration.
 
 {PANEL:License.Path}
 
-Path to the license.json file.  
-Either the full path to the license file,  
-or a relative path to the license file from the Server directory.  
+Save the license key to a `license.json` file.  
+Provide the path to this file in the 'License.Path' configuration key:
+
+  * Either the __full__ path to the license file, e.g.:  
+    `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
+
+  * Or, a __relative__ path to the license file from the Server folder, e.g.:  
+    `"License.Path": "License\\license.json"`  
+    (where 'License' folder is under the 'Server' folder)
+
+---
 
 - **Type**: `string`
 - **Default**: `license.json`
@@ -95,8 +109,8 @@ EXPERT ONLY.
 Disable automatic updates of the license from the License Server (api.ravendb.net).  
 Can still update the license by either:  
 
-* [Setting the settings.json file](../../start/licensing/activate-license#activate-license-from-settings.json)
-* [Setting the environment variables](../../start/licensing/activate-license#activate-license-from-environment-variables)
+* Setting the [License](../../server/configuration/license-configuration#license) configuration
+* Setting the [License.Path](../../server/configuration/license-configuration#license.path) configuration
 * Replacing the _license.json_ file on disk
 
 ---
