@@ -17,13 +17,13 @@ async function setPriority() {
     {
         //region set_priority_multiple
         // Define the index list and the new priority:
-        const indexes = {
+        const parameters = {
             indexNames: ["Orders/Totals", "Orders/ByCompany"],
             priority: "Low"
         }
 
-        // Define the set priority operation, pass the indexes param
-        const setPriorityOp = new SetIndexesPriorityOperation(indexes);
+        // Define the set priority operation, pass the parameters
+        const setPriorityOp = new SetIndexesPriorityOperation(parameters);
 
         // Execute the operation by passing it to maintenance.send
         await store.maintenance.send(setPriorityOp);

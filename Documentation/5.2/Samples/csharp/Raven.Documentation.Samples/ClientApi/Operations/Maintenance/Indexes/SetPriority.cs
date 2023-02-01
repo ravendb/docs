@@ -24,14 +24,14 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 {
                     #region set_priority_multiple
                     // Define the index list and the new priority:
-                    var indexes = new SetIndexesPriorityOperation.Parameters
+                    var parameters = new SetIndexesPriorityOperation.Parameters
                     {
                         IndexNames = new[] {"Orders/Totals", "Orders/ByCompany"},
                         Priority = IndexPriority.Low
                     };
 
-                    // Define the set priority operation, pass the indexes param
-                    var setPriorityOp = new SetIndexesPriorityOperation(indexes);
+                    // Define the set priority operation, pass the parameters
+                    var setPriorityOp = new SetIndexesPriorityOperation(parameters);
 
                     // Execute the operation by passing it to Maintenance.Send
                     store.Maintenance.Send(setPriorityOp);
@@ -57,14 +57,14 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 {
                     #region set_priority_multiple_async
                     // Define the index list and the new priority:
-                    var indexes = new SetIndexesPriorityOperation.Parameters 
+                    var parameters = new SetIndexesPriorityOperation.Parameters 
                     {
                         IndexNames = new[] {"Orders/Totals", "Orders/ByCompany"}, 
                         Priority = IndexPriority.Low
                     };
                 
-                    // Define the set priority operation, pass the indexes param
-                    var setPriorityOp = new SetIndexesPriorityOperation(indexes);
+                    // Define the set priority operation, pass the parameters
+                    var setPriorityOp = new SetIndexesPriorityOperation(parameters);
 
                     // Execute the operation by passing it to Maintenance.SendAsync
                     await store.Maintenance.SendAsync(setPriorityOp);
