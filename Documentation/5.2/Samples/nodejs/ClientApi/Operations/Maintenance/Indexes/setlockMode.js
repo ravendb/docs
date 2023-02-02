@@ -10,6 +10,7 @@ async function setLockMode() {
         const setLockModeOp = new SetIndexesLockOperation("Orders/Totals", "LockedIgnore");
 
         // Execute the operation by passing it to maintenance.send
+        // An exception will be thrown if index does not exist
         await store.maintenance.send(setLockModeOp);
 
         // Lock mode is now set to 'LockedIgnore'
@@ -28,6 +29,7 @@ async function setLockMode() {
         const setLockModeOp = new SetIndexesLockOperation(parameters);
 
         // Execute the operation by passing it to maintenance.send
+        // An exception will be thrown if any of the specified indexes do not exist
         await store.maintenance.send(setLockModeOp);
 
         // Lock mode is now set to 'LockedError' on both indexes

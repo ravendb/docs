@@ -10,7 +10,7 @@
 * __Indexes scope__:  
   The lock mode can be set only for static-indexes, not for auto-indexes.
 
-* __Operation scope__:  
+* __Nodes scope__:  
   The lock mode will be updated on all nodes in the database group.
 
 * Setting the lock mode can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) in the Studio.  
@@ -90,8 +90,8 @@ Consider the following scenario:
 | Parameters | Type | Description |
 |- | - | - |
 | __indexName__ | string | Index name for which to set lock mode |
-| __mode__ | `"Unlock"` / `"LockedIgnore"` / `"LockedError"` | Lock mode to set |
-| __parameters__ | parameters object | List of indexes + lock mode to set |
+| __mode__ | `"Unlock"` /<br> `"LockedIgnore"` /<br> `"LockedError"` | Lock mode to set |
+| __parameters__ | parameters object | List of indexes + lock mode to set.<br>An exception is thrown if any of the specified indexes do not exist. |
 
 {CODE:nodejs syntax_2@ClientApi\Operations\Maintenance\Indexes\setLockMode.js /}
 

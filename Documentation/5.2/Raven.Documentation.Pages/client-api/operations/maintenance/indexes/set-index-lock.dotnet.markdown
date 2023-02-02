@@ -10,7 +10,7 @@
 * __Indexes scope__:  
   The lock mode can be set only for static-indexes, not for auto-indexes.
 
-* __Operation scope__:  
+* __Nodes scope__:  
   The lock mode will be updated on all nodes in the database group.
 
 * Setting the lock mode can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) in the Studio.  
@@ -97,7 +97,7 @@ Consider the following scenario:
 |- | - | - |
 | __indexName__ | string | Index name for which to set lock mode |
 | __mode__ | `IndexLockMode` | Lock mode to set |
-| __parameters__ | `SetIndexesLockOperation.Parameters` | List of indexes + Lock mode to set |
+| __parameters__ | `SetIndexesLockOperation.Parameters` | List of indexes + Lock mode to set.<br>An exception is thrown if any of the specified indexes do not exist. |
 
 {CODE syntax_2@ClientApi\Operations\Maintenance\Indexes\SetLockMode.cs /}
 

@@ -17,6 +17,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 var setLockModeOp = new SetIndexesLockOperation("Orders/Totals", IndexLockMode.LockedIgnore);
 
                 // Execute the operation by passing it to Maintenance.Send
+                // An exception will be thrown if index does not exist
                 store.Maintenance.Send(setLockModeOp);
                 
                 // Lock mode is now set to 'LockedIgnore'
@@ -37,6 +38,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 var setLockModeOp = new SetIndexesLockOperation(parameters);
                 
                 // Execute the operation by passing it to Maintenance.Send
+                // An exception will be thrown if any of the specified indexes do not exist
                 store.Maintenance.Send(setLockModeOp);
                 
                 // Lock mode is now set to 'LockedError' on both indexes
@@ -56,6 +58,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                     var setLockModeOp = new SetIndexesLockOperation("Orders/Totals", IndexLockMode.LockedIgnore);
 
                     // Execute the operation by passing it to Maintenance.SendAsync
+                    // An exception will be thrown if index does not exist
                     await store.Maintenance.SendAsync(setLockModeOp);
                     
                     // Lock mode is now set to 'LockedIgnore'
@@ -75,6 +78,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                     var setLockModeOp = new SetIndexesLockOperation(parameters);
                 
                     // Execute the operation by passing it to Maintenance.SendAsync
+                    // An exception will be thrown if any of the specified indexes do not exist
                     await store.Maintenance.SendAsync(setLockModeOp);
                     
                     // Lock mode is now set to 'LockedError' on both indexes
