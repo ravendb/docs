@@ -14,7 +14,7 @@
 * __Indexes scope__:  
   Index priority can be set for both static and auto indexes.  
 
-* __Operation scope__:  
+* __Nodes scope__:  
   The priority will be updated on all nodes in the database group.
 
 * Setting the priority can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) in the Studio.  
@@ -47,8 +47,8 @@
 | Parameters | | |
 | - | - | - |
 | **indexName** | string | Index name for which to change priority |
-| **priority** | `"Low"` / `"Normal"` / `"High"` | Priority to set |
-| **parameters** | parameters object | List of indexes + Priority to set |
+| **priority** | `"Low"` /<br> `"Normal"` /<br> `"High"` | Priority to set |
+| **parameters** | parameters object | List of indexes + Priority to set.<br>An exception is thrown if any of the specified indexes do not exist. |
 
 {CODE:nodejs syntax_2@ClientApi\Operations\Maintenance\Indexes\setPriority.js /}
 

@@ -10,6 +10,7 @@ async function setPriority() {
         const setPriorityOp = new SetIndexesPriorityOperation("Orders/Totals", "High");
 
         // Execute the operation by passing it to maintenance.send
+        // An exception will be thrown if index does not exist
         await store.maintenance.send(setPriorityOp);
         //endregion
 
@@ -26,6 +27,7 @@ async function setPriority() {
         const setPriorityOp = new SetIndexesPriorityOperation(parameters);
 
         // Execute the operation by passing it to maintenance.send
+        // An exception will be thrown if any of the specified indexes do not exist
         await store.maintenance.send(setPriorityOp);
         //endregion
     }

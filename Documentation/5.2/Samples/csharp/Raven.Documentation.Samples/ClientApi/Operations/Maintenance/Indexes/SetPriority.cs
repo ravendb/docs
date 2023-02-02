@@ -18,6 +18,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                     var setPriorityOp = new SetIndexesPriorityOperation("Orders/Totals", IndexPriority.High);
 
                     // Execute the operation by passing it to Maintenance.Send
+                    // An exception will be thrown if index does not exist
                     store.Maintenance.Send(setPriorityOp);
                     #endregion
                 }
@@ -34,6 +35,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                     var setPriorityOp = new SetIndexesPriorityOperation(parameters);
 
                     // Execute the operation by passing it to Maintenance.Send
+                    // An exception will be thrown if any of the specified indexes do not exist
                     store.Maintenance.Send(setPriorityOp);
                     #endregion
                 }
@@ -51,6 +53,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                     var setPriorityOp = new SetIndexesPriorityOperation("Orders/Totals", IndexPriority.High);
                 
                     // Execute the operation by passing it to Maintenance.SendAsync
+                    // An exception will be thrown if index does not exist
                     await store.Maintenance.SendAsync(setPriorityOp);
                     #endregion
                 }
@@ -67,6 +70,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                     var setPriorityOp = new SetIndexesPriorityOperation(parameters);
 
                     // Execute the operation by passing it to Maintenance.SendAsync
+                    // An exception will be thrown if any of the specified indexes do not exist
                     await store.Maintenance.SendAsync(setPriorityOp);
                     #endregion
                 }
