@@ -23,10 +23,10 @@
 
 __On which node the index is paused__:
 
-* When pausing the index from the client:  
+* When pausing the index from the __client__:  
   The index will be paused on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.
 
-* When pausing the index from the Studio (from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)):  
+* When pausing the index from the __Studio__ (from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)):  
   The index will be paused on the local node the browser is opened on, even if it is Not the preferred node.
 
 {NOTE/}
@@ -40,9 +40,6 @@ __When index is paused on a node__:
 
 * You can query the index,  
   but results may be stale when querying the node where the index is paused.
-
-* You can modify the index definition of a paused index.  
-  Once index is resumed, re-indexing will be triggered on the node.
 
 {NOTE/}
 
@@ -60,6 +57,12 @@ __How to resume the index__:
     * The database is re-loaded (by disabling and then enabling the database state).  
       Toggling the database state can be done from [database list view](../../../../studio/database/databases-list-view#database-actions) in Studio,  
       or from the client by sending the [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state).
+
+* [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index) a paused index will also resume the normal operation of the index  
+  on the local node where the reset action was performed.  
+
+* Modifying the index definition will resume the normal operation of the index  
+  on all nodes where it is paused.
 
 {NOTE/}
 

@@ -22,10 +22,10 @@
 
 __On which node indexing is paused__:
 
-* When pausing indexing from the client:  
+* When pausing indexing from the __client__:  
   Indexing will be paused on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.  
 
-* When pausing indexing from the Studio (from the [database list view](../../../../studio/database/databases-list-view#more-actions)):  
+* When pausing indexing from the __Studio__ (from the [database list view](../../../../studio/database/databases-list-view#more-actions)):  
   Indexing will be paused on the local node the browser is opened on, even if it is Not the preferred node.
 
 {NOTE/}
@@ -35,16 +35,17 @@ __On which node indexing is paused__:
  __When indexing is paused on a node__:
  
 * No indexing will take place on the node where indexing has paused.  
-  However, new data will be indexed on other database-group nodes where indexing is not paused.
+  New data will be indexed on other database-group nodes where indexing is not paused.
 
 * You can query any index,  
   but results may be stale when querying the node where indexing has paused.
  
 * New indexes can be created in the database,  
-  however, they will also be in a 'pause' state on the node where you paused indexing.
+  however, they will also be in a 'pause' state on the node where you paused indexing,  
+  until indexing is resumed on the node.  
 
-* Paused indexes definitions can be modified.  
-  Once indexing is resumed, re-indexing will be triggered.
+* When [resetting](../../../../client-api/operations/maintenance/indexes/reset-index) indexes, or editing index definitions, then re-indexing on the node  
+  where indexing has paused will only be triggered when indexing is resumed on the node.
 
 {NOTE/}
 
@@ -56,7 +57,7 @@ __How to resume indexing__:
 
 * To resume indexing for all indexes from the Studio - go to the [database list view](../../../../studio/database/databases-list-view#more-actions).  
 
-* Pausing indexing is Not a persistent operation.  
+* Pausing indexing is __Not a persistent operation__.  
   This means that all paused indexes will resume upon either of the following:
     * The server is restarted.
     * The database is re-loaded (by disabling and then enabling the database state).  

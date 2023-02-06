@@ -106,7 +106,10 @@
    * Static-index: View and edit the index definition.  
    * Auto-Index: View only.  
 * **Reset Index**  
-  Click to reset the index. All documents matched by the index definition will be re-indexed.  
+  Click to reset the index.  
+  All documents matched by the index definition will be re-indexed.  
+  Resetting the index will resume/enable the normal operation of a paused/disabled index on this node.  
+  
 * **Delete**  
   Click to delete the index.  
 
