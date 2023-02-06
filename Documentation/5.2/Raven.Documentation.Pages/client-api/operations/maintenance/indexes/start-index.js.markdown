@@ -10,7 +10,7 @@
 * When resuming the index from the __client__:  
   The index is resumed on the preferred node only, and Not on all the database-group nodes.
 
-* When resuming indexing from the __Studio__ (from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)):  
+* When resuming the index from the __Studio__ (from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)):  
   The index is resumed on the local node the browser is opened on, even if it is Not the preferred node.
 
 * In this page:
