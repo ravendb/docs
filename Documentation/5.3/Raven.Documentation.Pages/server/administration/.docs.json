@@ -17,12 +17,6 @@
     "Mappings": []
   },
   {
-    "Path": "index-administration.markdown",
-    "Name": "Index Administration",
-    "DiscussionId": "f59449f5-7a21-4210-8a45-0ca90870cc53",
-    "Mappings": []
-  },
-  {
     "Path": "monitoring.markdown",
     "Name": "Monitoring and Telegraf Plugin",
     "DiscussionId": "f59c124a-b94a-4380-bff2-dcb1782ef1f6",

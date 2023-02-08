@@ -51,7 +51,7 @@ __How to resume the index__:
 
 * To resume the index from the Studio - go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions).
 
-* Pausing the index is Not a persistent operation.  
+* Pausing the index is __Not a persistent operation__.  
   This means the paused index will resume upon either of the following:
     * The server is restarted.
     * The database is re-loaded (by disabling and then enabling the database state).  
@@ -93,10 +93,7 @@ __How to resume the index__:
 
 - [What are Indexes](../../../../indexes/what-are-indexes)
 - [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
-
-### Server
-
-- [Index Administration](../../../../server/administration/index-administration)
+- [Index Administration](../../../../indexes/index-administration)
 
 ### Operations
 

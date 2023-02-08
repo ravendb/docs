@@ -62,10 +62,7 @@
 - [What are Indexes](../../../../indexes/what-are-indexes)
 - [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
 - [Debugging Index Errors](../../../../indexes/troubleshooting/debugging-index-errors)
-
-### Server
-
-- [Index Administration](../../../../server/administration/index-administration)
+- [Index Administration](../../../../indexes/index-administration)
 
 ### Operations
 
