@@ -1,6 +1,14 @@
 # Set Index Priority Operation
 
-**SetIndexesPriorityOperation**  allows you to change an index priority for a given index or indexes.
+**SetIndexesPriorityOperation**  allows you to change an index priority for a given index or indexes.  
+
+Setting the priority will affect the indexing thread priority at the operating system level:  
+
+| Priority value | Indexing thread priority<br> at OS level | |
+| - | - | - |
+| __Low__ | Lowest | <ul><li>Having the `Lowest` priority at the OS level, indexes will run only when there's a capacity for them, when the system is not occupied with higher-priority tasks.</li><li>Requests to the database will complete faster.<br>Use when querying the server is more important to you than indexing.</li></ul> |
+| __Normal__ (default) | Below normal | <ul><li>Requests to the database are still preferred over the indexing process.</li><li>The indexing thread priority at the OS level is `Below normal`<br>while Requests processes have a `Normal` priority.</li></ul> |
+| __High__ | Normal | <ul><li>Requests and Indexing will have the same priority at the OS level.</li></ul> |
 
 ## Syntax
 
