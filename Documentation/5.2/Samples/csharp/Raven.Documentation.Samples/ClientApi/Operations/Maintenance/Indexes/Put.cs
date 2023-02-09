@@ -48,11 +48,18 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                                 Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
                             }"
                     },
-
-                    // Can provide other index definitions available on the IndexDefinition class, e.g.:
+                    
+                    // Reduce = ...,
+                    
+                    // Can provide other index definitions available on the IndexDefinition class
+                    // Override the default values, e.g.:
                     DeploymentMode = IndexDeploymentMode.Rolling,
                     Priority = IndexPriority.High,
-                    // Reduce = ..., see all options in syntax below
+                    Configuration = new IndexConfiguration
+                    {
+                        { "Indexing.IndexMissingFieldsAsNull", "true" }
+                    }
+                    // See all available properties in syntax below
                 };
 
                 // Define the put indexes operation, pass the index definition
@@ -87,11 +94,18 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                               };
                         });"
                     },
+                    
+                    // Reduce = ...,
                    
-                    // Can provide other index definitions available on the IndexDefinition class, e.g.:
+                    // Can provide other index definitions available on the IndexDefinition class
+                    // Override the default values, e.g.:
                     DeploymentMode = IndexDeploymentMode.Rolling,
                     Priority = IndexPriority.High,
-                    // Reduce = ..., see all options in syntax below
+                    Configuration = new IndexConfiguration
+                    {
+                        { "Indexing.IndexMissingFieldsAsNull", "true" }
+                    }
+                    // See all available properties in syntax below
                 };
 
                 // Define the put indexes operation, pass the index definition
@@ -175,10 +189,17 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                             }"
                     },
 
-                    // Can provide other index definitions available on the IndexDefinition class, e.g.:
+                    // Reduce = ...,
+                   
+                    // Can provide other index definitions available on the IndexDefinition class
+                    // Override the default values, e.g.:
                     DeploymentMode = IndexDeploymentMode.Rolling,
                     Priority = IndexPriority.High,
-                    // Reduce = ..., see all options in syntax below
+                    Configuration = new IndexConfiguration
+                    {
+                        { "Indexing.IndexMissingFieldsAsNull", "true" }
+                    }
+                    // See all available properties in syntax below
                 };
 
                 // Define the put indexes operation, pass the index definition

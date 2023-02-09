@@ -97,7 +97,7 @@
 * The "per-index" configuration key can be set from:
   * The [configuration tab](../studio/database/indexes/create-map-index#configuration) in the Edit Index view in the Studio.  
   * The [index class constructor](../indexes/creating-and-deploying#creating-an-index-with-custom-configuration) when defining an index.  
-  * The [index definition](../indexes/creating-and-deploying#using-maintenance-operations) when sending a [putIndexesOperation](../client-api/operations/maintenance/indexes/put-indexes).
+  * The [index definition](../client-api/operations/maintenance/indexes/put-indexes#put-indexes-operation-with-indexdefinition) when sending a [putIndexesOperation](../client-api/operations/maintenance/indexes/put-indexes).
 
 __Expert configuration options:__
 
