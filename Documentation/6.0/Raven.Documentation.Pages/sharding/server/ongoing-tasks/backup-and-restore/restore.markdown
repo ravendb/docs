@@ -3,14 +3,20 @@
 
 {NOTE: }
 
-* Logical backups made for the shards of a sharded database can be 
-  collected and **restored** into a sharded or a non-sharded database.  
-  
-* A snapshot made for a single shard can be **restored** to a new 
-  **non-sharded** database.  
-
-* `.ravendbdump` files created by exporting shard databases 
-  can be **imported** into a new sharded or non-sharded database.  
+* A sharded database's backup is made of a set of backup files that were 
+  created by the database's shards.  
+* To restore a sharded database, we need to provide 
+  [RestoreBackupOperation](../../../../client-api/operations/maintenance/backup/restore) 
+  with the locations of the backup files.  
+* We must restore the database in order: first shard, second shard, 
+  and so on. Failing to do so will create a functional database but 
+  documents will be misplaced in the wrong buckets and shards.  
+* Backup files may be restored from shard machines that stored them 
+  locally, or from remote locations like an AWS S3 bucket or an Azure 
+  destination.  
+* A backed up sharded database can be restored in part or in full, 
+  to a sharded or a non-sharded database.  
+* `.ravendbdump` and backup files can be imported into a sharded database.  
 
 * In this page:  
   * [Restore](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#restore)  
@@ -26,9 +32,9 @@
 
 {PANEL: Restore}
 
-To restore a sharded database, provide the restore operation 
-with the shards backup files in the original order in which 
-they were backed up.  
+To restore a sharded database, provide 
+[RestoreBackupOperation](../../../../client-api/operations/maintenance/backup/restore) 
+with paths to the locations of the backup files, in the original shards order.  
 
 #### Restoring a Database: Configuration and Execution
 
@@ -69,7 +75,7 @@ This is the restore operation configuration.
     | **DisableOngoingTasks** <br> (Optional -<br> omit for default) | `boolean` | `true` - disable ongoing tasks when Restore is complete. <br> `false` - enable ongoing tasks when Restore is complete. <br> **Default: `false` (Ongoing tasks will run when Restore is complete).**|
     | **SkipIndexes** <br> (Optional -<br> omit for default) | `boolean` | `true` to disable indexes import, <br> `false` to enable indexes import. <br> **Default: `false` restore all indexes.**|
     | **Type** | `RestoreType` | Restore from local or cloud storage <br> {CODE restore_RestoreType@Sharding\Server\OngoingTasks\BackupAndRestore.cs /} |
-    | **ShardRestoreSettings** | `ShardedRestoreSettings` | a list of `SingleShardRestoreSetting` instances defining the shard files to restore <br> {CODE restore_ShardedRestoreSettings@Sharding\Server\OngoingTasks\BackupAndRestore.cs /} |
+    | **ShardRestoreSettings** | `ShardedRestoreSettings` | a dictionary of `SingleShardRestoreSetting` instances defining the shard files to restore <br> {CODE restore_ShardedRestoreSettings@Sharding\Server\OngoingTasks\BackupAndRestore.cs /} |
     | **BackupEncryptionSettings** | `BackupEncryptionSettings` | [Backup Encryption Settings](../../../../client-api/operations/maintenance/backup/encrypted-backup#choosing-encryption-mode--key) |
   
     {WARNING: }
@@ -84,11 +90,14 @@ This is the restore operation configuration.
 
 {PANEL: Import}
 
-`.ravendbdump` files [Exported](../../../../studio/database/tasks/export-database) 
-from shard databases can be 
-[imported](../../../../studio/database/tasks/import-data/import-data-file#import-data-from-.ravendbdump-file) 
-into a new database to create a full or a partial replica of the original database.  
+`.ravendbdump` files, as well as full and incremental backups, 
+can be imported into a sharded database using 
+[studio](../../../../studio/database/tasks/import-data/import-data-file) 
+or [smuggler](../../../../client-api/smuggler/what-is-smuggler#import).  
 
+This is helpful, for example, when we wan to create a new database 
+out of a single shard, or to restore only a part of a database.  
+  
 {PANEL/}
 
 ## Related articles

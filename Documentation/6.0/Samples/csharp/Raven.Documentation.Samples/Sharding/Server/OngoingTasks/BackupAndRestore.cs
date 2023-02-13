@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.Backups;
+using Raven.Client.Documents.Operations.Backups.Sharding;
 using Raven.Client.ServerWide;
 using Raven.Client.ServerWide.Operations;
 
@@ -127,15 +128,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                         FolderPath = @"E:\RavenBackups"
                     },
 
-                    //FTP Backup settings
-                    FtpSettings = new FtpSettings
-                    {
-                        Url = "192.168.10.4",
-                        Port = 8080,
-                        UserName = "John",
-                        Password = "JohnDoe38"
-                    },
-
                     //Azure Backup settings
                     AzureSettings = new AzureSettings
                     {
@@ -152,31 +144,16 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                         AwsSecretKey = "your secret key here",
                         AwsRegionName = "OPTIONAL",
                         BucketName = "john-bucket"
-                    },
-
-                    //Amazon Glacier settings.
-                    GlacierSettings = new GlacierSettings
-                    {
-                        AwsAccessKey = "your access key here",
-                        AwsSecretKey = "your secret key here",
-                        AwsRegionName = "OPTIONAL",
-                        VaultName = "john-glacier",
-                        RemoteFolderName = "john/backups"
-                    },
-
-                    //Google Cloud Backup settings
-                    GoogleCloudSettings = new GoogleCloudSettings
-                    {
-                        BucketName = "RavenBucket",
-                        RemoteFolderName = "BackupFolder",
-                        GoogleCredentialsJson = "GoogleCredentialsJson"
                     }
-
                 };
+
                 var operation = new UpdatePeriodicBackupOperation(config);
                 var result = await docStore.Maintenance.SendAsync(operation);
                 #endregion
             }
+            
+            
+            
             
             using (var docStore = new DocumentStore
             {
@@ -241,6 +218,41 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 var backupStatus = new GetPeriodicBackupStatusOperation(result.TaskId);
                 #endregion
             }
+
+            #region SingleShardRestoreSetting
+            var shard0 = new SingleShardRestoreSetting
+            {
+                ShardNumber = 0,
+                NodeTag = "A",
+                FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
+            };
+
+            var shard1 = new SingleShardRestoreSetting
+            {
+                ShardNumber = 1,
+                NodeTag = "B",
+                FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$1-B-backup"
+            };
+            var shard2 = new SingleShardRestoreSetting
+            {
+                ShardNumber = 2,
+                NodeTag = "C",
+                FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$2-C-backup"
+            };
+            #endregion
+
+            var setit = new ShardedRestoreSettings
+            {
+                
+            };
+
+            var restoreOperation = new RestoreBackupOperation(new RestoreBackupConfiguration
+            {
+                DatabaseName = "Books",
+                ShardRestoreSettings = setit
+                
+            });
+
 
 
             using (var docStore = new DocumentStore
