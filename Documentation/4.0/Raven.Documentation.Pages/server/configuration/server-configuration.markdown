@@ -40,7 +40,9 @@ EXPERT: The process affinity mask.
 
 {PANEL:Server.IndexingAffinityMask}
 
-EXPERT: The affinity mask to be used for indexing. Overrides the Server.NumberOfUnusedCoresByIndexes value. Should only be used if you also set `Server.ProcessAffinityMask`.
+EXPERT: The affinity mask to be used for indexing.  
+Overrides the `Server.NumberOfUnusedCoresByIndexes` value.  
+Should only be used if you also set `Server.ProcessAffinityMask`.
 
 - **Type**: `long`
 - **Default**: `null`
@@ -50,7 +52,8 @@ EXPERT: The affinity mask to be used for indexing. Overrides the Server.NumberOf
 
 {PANEL:Server.NumberOfUnusedCoresByIndexes}
 
-EXPERT: The numbers of cores that will be NOT running indexing. Defaults to 1 core that is kept for all other tasks and will not be used for indexing.
+EXPERT: The numbers of cores that will NOT be running indexing.  
+Defaults to 1 core that is kept for all other tasks and will not be used for indexing.
 
 - **Type**: `int`
 - **Default**: `1`
@@ -60,8 +63,8 @@ EXPERT: The numbers of cores that will be NOT running indexing. Defaults to 1 co
 
 {PANEL:Server.CpuCredits.ExhaustionBackupDelayInMin}
 
-**EXPERT:** When CPU credits are exhausted, backup tasks are canceled. This value 
-determines how many minutes the server will wait before retrying the backup task.  
+EXPERT: When CPU credits are exhausted, backup tasks are canceled.  
+This value determines how many minutes the server will wait before retrying the backup task.  
 
 - **Type**: `TimeSetting`  
 - **TimeUnit**: `TimeUnit.Minutes`  

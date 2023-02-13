@@ -28,7 +28,4 @@ The **GetTermsOperation** will retrieve stored terms for a field of an index.
 
 - [What are Indexes](../../../../indexes/what-are-indexes)
 - [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
-
-### Server
-
-- [Index Administration](../../../../server/administration/index-administration)
+- [Index Administration](../../../../indexes/index-administration)

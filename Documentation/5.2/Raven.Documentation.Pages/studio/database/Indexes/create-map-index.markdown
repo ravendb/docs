@@ -152,18 +152,19 @@
 1. **Indexes Tab**  
    Click to see indexing options.
 2. **List of Indexes**  
-   Select to see the list of your current indexes.
-   You can only configure static indexes, not auto-indexes. 
-   Select the index for which you want to change the default settings.
+   Select to see the list of your current indexes.  
+   You can only configure static-indexes, not auto-indexes.  
+   Select the index for which you want to customize the default configuration.  
 3. **Configuration**  
-   Scroll down and select the Configuration tab.
+   Scroll down and select the Configuration tab.  
 4. **Add customized indexing configuration**  
-   Click to select configuration and change the value.  
+   Click to add a configuration key.  
 5. **Indexing Configuration Key**  
-   Paste or select the configuration key that you want to change.
+   Paste or select the configuration key that you want to set.  
+   You can set any [indexing configuration](../../../server/configuration/indexing-configuration) that has a __"per-index"__ scope.
 6. **Value**  
-   Enter the new value for this configuration.
-   * **Click Save** at the top of the interface when finished.
+   Enter the new value for this configuration key.  
+   Click **Save** at the top of the interface when done.  
 
 {PANEL/}
 

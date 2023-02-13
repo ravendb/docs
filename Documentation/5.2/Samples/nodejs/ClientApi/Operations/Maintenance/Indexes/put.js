@@ -26,11 +26,17 @@ async function getStats() {
                     Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
                 }`
         ]);
+        
+         // indexDefinition.reduce = ...
 
-        // Can provide other index definitions available on the IndexDefinition class, e.g.:
+        // Can provide other index definitions available on the IndexDefinition class
+        // Override the default values, e.g.:
         indexDefinition.deploymentMode = "Rolling";
         indexDefinition.priority = "High";
-        // indexDefinition.reduce = ..., see all options in syntax below
+        indexDefinition.configuration = {
+            "Indexing.IndexMissingFieldsAsNull": "true"
+        };
+        // See all available properties in syntax below
         
         // Define the put indexes operation, pass the index definition
         // Note: multiple index definitions can be passed, see syntax below
@@ -62,10 +68,16 @@ async function getStats() {
             });`
         ]);
 
-        // Can provide other index definitions available on the IndexDefinition class, e.g.:
+        // indexDefinition.reduce = ...
+
+        // Can provide other index definitions available on the IndexDefinition class
+        // Override the default values, e.g.:
         indexDefinition.deploymentMode = "Rolling";
         indexDefinition.priority = "High";
-        // indexDefinition.reduce = ..., see all options in syntax below
+        indexDefinition.configuration = {
+            "Indexing.IndexMissingFieldsAsNull": "true"
+        };
+        // See all available properties in syntax below
 
         // Define the put indexes operation, pass the index definition
         // Note: multiple index definitions can be passed, see syntax below

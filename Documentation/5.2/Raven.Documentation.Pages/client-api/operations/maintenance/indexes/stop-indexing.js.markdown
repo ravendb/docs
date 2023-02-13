@@ -88,10 +88,7 @@ __How to resume indexing__:
 
 - [What are Indexes](../../../../indexes/what-are-indexes)
 - [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
-
-### Server
-
-- [Index Administration](../../../../server/administration/index-administration)
+- [Index Administration](../../../../indexes/index-administration)
 
 ### Operations
 

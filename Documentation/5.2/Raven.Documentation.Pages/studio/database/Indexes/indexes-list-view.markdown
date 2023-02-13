@@ -120,10 +120,10 @@
   The index will stop indexing on the local node the browser is opened on.  
   See states explanation above (under Figure-1).  
 * **Priority**  
-  Set the indexing-process thread priority as RavenDB prioritizes requests-processing over [Indexing](../../../server/administration/index-administration#priority) by default.  
+  Set the indexing-process thread priority as RavenDB prioritizes requests-processing over indexing by default.  
 * **Mode**  
-  Set modifications behavior:  
-   * Unlocked - Changes to the index definitions will be applied. See [Side by Side Indexing](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing)  
+  Set modifications behavior (static-indexes only):  
+   * Unlocked - Changes to the index definitions will be applied. See [Side by Side Indexing](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing).  
    * Locked - Index definitions changes will not be applied! No Error will be raised.  
    * Locked(Error) - Index definitions changes will not be applied! An error is raised upon trying to modify.  
 
@@ -142,7 +142,7 @@
   * Click this button again ("Resume indexing")  
   * Restart the server  
   * Reload the database (by disabling and then enabling the database state)  
-  * Resume indexing from the client code. See [resume indexing](../../../client-api/operations/maintenance/indexes/start-indexing)
+  * Resume indexing from the client code. See [resume indexing](../../../client-api/operations/maintenance/indexes/start-indexing).
 
 {PANEL/}
 
@@ -232,7 +232,8 @@
 ### Indexes
 - [What are Indexes](../../../indexes/what-are-indexes)
 - [Indexing Basics](../../../indexes/indexing-basics)
-- 
+- [Index Administration](../../../indexes/index-administration)
+
 ### Studio
 - [Indexes Overview](../../../studio/database/indexes/indexes-overview#indexes-overview)
 - [Index History](../../../studio/database/indexes/index-history)
