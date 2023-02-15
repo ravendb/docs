@@ -174,7 +174,7 @@ The backup task that we define here is defined similarly to how we would define
 a backup task for a non-sharded database. As part of a sharded database, however, 
 this task will be re-defined automatically by the orchestrator for each shard.  
 
-{CODE backup_remote_destinations@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
+f{CODE backup_remote_destinations@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
 
 {PANEL/}
 
