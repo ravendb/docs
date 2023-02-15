@@ -114,6 +114,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
 
                 };
             }
+
             using (var docStore = new DocumentStore
             {
                 Urls = new[] { "http://127.0.0.1:8080" },
@@ -151,10 +152,113 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 var result = await docStore.Maintenance.SendAsync(operation);
                 #endregion
             }
-            
-            
-            
-            
+
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "Products"
+            }.Initialize())
+            {
+                #region restore_local-settings
+                // Create a dictionary for shard settings
+                var restoreSettings = new ShardedRestoreSettings
+                {
+                    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+                };
+
+                // first shard
+                restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+                {
+                    ShardNumber = 1,
+                    NodeTag = "A",
+                    FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$1-A-backup"
+                });
+
+                // second shard
+                restoreSettings.Shards.Add(1, new SingleShardRestoreSetting
+                {
+                    ShardNumber = 2,
+                    NodeTag = "B",
+                    FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$2-B-backup"
+                });
+
+                // third shard
+                restoreSettings.Shards.Add(2, new SingleShardRestoreSetting
+                {
+                    ShardNumber = 3,
+                    NodeTag = "C",
+                    FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$3-C-backup",
+                });
+
+                var restoreBackupOperation = new RestoreBackupOperation(new RestoreBackupConfiguration
+                {
+                    // Database Name
+                    DatabaseName = "Books",
+                    // Paths to backup files
+                    ShardRestoreSettings = restoreSettings
+                });
+                #endregion
+            }
+
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "Products"
+            }.Initialize())
+            {
+                #region restore_s3-settings
+                // Create a shards dictionary
+                // Add and set shards so they are restores in the same order they
+                // were in when the backup was made.  
+                var restoreSettings = new ShardedRestoreSettings
+                {
+                    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+                };
+
+                // first shard
+                restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+                {
+                    ShardNumber = 1,
+                    NodeTag = "A",
+                    
+                    FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$1-A-backup"
+                });
+
+                // second shard
+                restoreSettings.Shards.Add(1, new SingleShardRestoreSetting
+                {
+                    ShardNumber = 2,
+                    NodeTag = "B",
+                    FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$2-B-backup"
+                });
+
+                // third shard
+                restoreSettings.Shards.Add(2, new SingleShardRestoreSetting
+                {
+                    ShardNumber = 3,
+                    NodeTag = "C",
+                    FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$3-C-backup",
+
+                });
+
+                var restoreBackupOperation = new RestoreBackupOperation(new RestoreFromS3Configuration
+                {
+                    // Database Name
+                    DatabaseName = "Books",
+                    // Paths to backup files
+                    ShardRestoreSettings = restoreSettings,
+                    // S3 Bucket settings
+                    Settings = new S3Settings 
+                    {
+                        AwsAccessKey = "your access key here",
+                        AwsSecretKey = "your secret key here",
+                        AwsRegionName = "OPTIONAL",
+                        BucketName = "your bucket name here" 
+                    } 
+                });
+                #endregion
+            }
+
             using (var docStore = new DocumentStore
             {
                 Urls = new[] { "http://127.0.0.1:8080" },
@@ -204,6 +308,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                         AccountKey = "key"
                     }
                 };
+                
                 #region initiate_immediate_backup_execution
                 //Create a new backup task
                 var operation = new UpdatePeriodicBackupOperation(config);
@@ -211,7 +316,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
 
                 //Run the backup task immediately
                 await docStore.Maintenance.SendAsync(new StartBackupOperation(true, result.TaskId));
-                    #endregion
+                #endregion
 
                 #region get_backup_execution_results
                 //Pass the the ongoing backup task ID to GetPeriodicBackupStatusOperation  
@@ -240,20 +345,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$2-C-backup"
             };
             #endregion
-
-            var setit = new ShardedRestoreSettings
-            {
-                
-            };
-
-            var restoreOperation = new RestoreBackupOperation(new RestoreBackupConfiguration
-            {
-                DatabaseName = "Books",
-                ShardRestoreSettings = setit
-                
-            });
-
-
 
             using (var docStore = new DocumentStore
             {
@@ -366,8 +457,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
 
                     public bool SkipIndexes { get; set; }
 
-                    protected abstract RestoreType Type { get; }
-
                     public ShardedRestoreSettings ShardRestoreSettings { get; set; }
 
                     public BackupEncryptionSettings BackupEncryptionSettings { get; set; }
@@ -385,8 +474,11 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 #region restore_SingleShardRestoreSetting
                 public class SingleShardRestoreSetting
                 {
+                    // Shard number 
                     public int ShardNumber { get; set; }
+                    // Node tag
                     public string NodeTag { get; set; }
+                    // Backup file/s folder name
                     public string FolderName { get; set; }
                 }
                 #endregion

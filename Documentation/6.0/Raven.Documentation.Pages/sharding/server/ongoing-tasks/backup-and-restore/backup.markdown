@@ -88,7 +88,7 @@ Fine a code example [here](../../../../sharding/server/ongoing-tasks/backup-and-
   Backups can also be kept remotely. All shards will transfer 
   the backup files to a common location, using one of the currently 
   supported platforms:  
-   * Azure Storage  
+   * Azure Blobs  
    * Amazon S3  
 
     Restoring backup files that were stored remotely requires 
