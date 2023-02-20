@@ -13,9 +13,9 @@
    [original order](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#restore):  
    the backup of shard 1, for example, must be restored as shard 1.
    {WARNING/}
-* Backup files can be restored from local shard storage or from 
-  remote locations like an S3 Bucket or an Azure Blob.  
-* A backed up sharded database can be restored in part or in full, 
+* Backup files can be restored from local shard node storage or from 
+  a [remote location](../../../../sharding/server/ongoing-tasks/backup-and-restore/backup#backup-storage-local-and-remote).  
+* A backed-up sharded database can be restored in part or in full, 
   to a sharded or a non-sharded database.  
 * Only [logical](../../../../server/ongoing-tasks/backup-overview#logical-backup) 
   backups are supported. 
@@ -29,7 +29,7 @@
 * In this page:  
   * [Restore](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#restore)  
      * [Set Paths to Backup Files Locations](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#set-paths-to-backup-files-locations)  
-     * [Define a Restore Configuiration](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#define-a-restore-configuiration)  
+     * [Define a Restore Configuration](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#define-a-restore-configuration)  
          * [`RestoreBackupConfigurationBase`](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#section)
      * [Run `RestoreBackupOperation` with the Restore Configuration](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#run--with-the-restore-configuration)  
      * [Examples](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#examples)  
@@ -44,13 +44,14 @@
 To restore a sharded database, we need to:  
 
 ## Set Paths to Backup Files Locations
-When a shard stores a backup file, it may store it locally (on the shard 
-machine's storage) or remotely (on an S3 Bucket or an Azure Blob).  
+When a shard stores a backup file, it may store it locally (on the 
+shard node's storage) or remotely (supported platforms currently include 
+S3 Buckets, Azure Blobs, and Google cloud).  
   
 To restore the backup files, we need to provide the restore process with 
-paths to the files' locations.  
-The paths, and additional data regarding the backups, are provided in 
-a dictionary of `SingleShardRestoreSetting` objects.  
+each shard's backup folder location.  
+The shards' backup folder locations, and additional data regarding the backups, 
+are provided in a dictionary of `SingleShardRestoreSetting` objects.  
 
 `SingleShardRestoreSetting`  
 {CODE restore_SingleShardRestoreSetting@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
@@ -59,37 +60,37 @@ a dictionary of `SingleShardRestoreSetting` objects.
 
     | Parameter | Value | Functionality |
     | ------------- | ------------- | ----- |
-    | **ShardNumber** | `int` | The original shard number, that should normally also be the restored shard's number. |
-    | **NodeTag** | `string` | The original node the shard resided on, that should normally also be the restored shard's node. |
+    | **ShardNumber** | `int` | The shard number that will be given to the restored shard. <br> should normally be similar to the original shard number. |
+    | **NodeTag** | `string` | The node to restore the shard on. <br> It is the user's responsibility to place the backup file on that node. |
     | **FolderName** | `string` | The name of the folder that holds the backup file/s. |
 
     {WARNING: }
     When setting **ShardNumber**, please make sure that all shards are 
-    given the same numbers they had when they were backed up.  
-    E.g., a backup of shard 1 must be restored as shard 1 (`ShardNumber` = 1).  
+    given the same numbers they had when they were backed-up.  
+    E.g., a backup of shard 1 must be restored as shard 1: `ShardNumber = 1`  
     
     Giving restored shards numbers other than those they had originally 
     will place buckets on the wrong shards and cause mapping errors.  
     {WARNING/}
 
     {WARNING: }
-    When setting **NodeTag** for shards whose backups were stored locally, 
-    please make sure they are given the same node tags they had when they 
-    were backed up.  
-    E.g., a backup of a shard locally-stored on node B, must be restored 
-    to node B (`NodeTag = "B"`). 
+    When restoring locally-stored backup files, it is the user's 
+    responsibility to place the backup file on the shard node 
+    that the backup is planned to be restored to.  
+    E.g., if you want to restore a backup file to node B:  
     
-    Using node tags other than the original ones for locally-stored shards 
-    may cause data retrieval errors, misidentification of documents, etc.  
+    * Copy the backup file to node B's backup folder.  
+    * Set the shard's `SingleShardRestoreSetting.NodeTag` to "B".  
+    * Run the restore operation.  
     {WARNING/}
 
-## Define a Restore Configuiration
+## Define a Restore Configuration
 To restore the database, we pass the 
 [Restore Operation](../../../../client-api/operations/maintenance/backup/restore#restoring-a-database:-configuration-and-execution) 
 a **configuration object**.  
 
 * The configuration object inherits properties from the `RestoreBackupConfigurationBase` class 
-  ([discussed below](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#section)), 
+  ([discussed below](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#section)) 
   and defines additional sharding-specific settings.  
 
 * We choose what configuration object to pass the restore operation, by 
@@ -100,8 +101,9 @@ a **configuration object**.
     | Configuration Object | Backup Location | Additional Properties |
     | -------------------- | --------------- | --------------------- |
     | `RestoreBackupConfiguration` | Local shard storage | None (see [example](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#examples)) |
-    | `RestoreFromS3Configuration` | AWS S3 Buckets | S3Settings (see S3 [example](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#examples)) |
-    | `RestoreFromAzureConfiguration` | MS Azure Blobs | AzureSettings (see Azure [example](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#examples)) |
+    | `RestoreFromS3Configuration` | AWS S3 Bucket | `S3Settings` (see S3 [example](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#examples)) |
+    | `RestoreFromAzureConfiguration` | MS Azure Blob | `AzureSettings` (see Azure [example](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#examples)) |
+    | `RestoreFromGoogleCloudConfiguration` | Google Cloud Bucket | `GoogleCloudSettings` (see Google Cloud [example](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#examples)) |
 
 ---
 
@@ -134,19 +136,22 @@ to restore the database.
 {CODE restore_RestoreBackupOperation@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
 
 * Instead of `RestoreBackupConfigurationBase`, use the configuration object 
-  you prepared: `RestoreBackupConfiguration` for locally-stored backups, 
-  `RestoreFromS3Configuration` to restore from S3, or `RestoreFromAzureConfiguration` 
-  to restore from Azure.  
+  you [prepared](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#define-a-restore-configuration):  
+   * `RestoreBackupConfiguration` for locally-stored backups  
+   * `RestoreFromS3Configuration` to restore from S3  
+   * `RestoreFromAzureConfiguration` to restore from Azure  
+   * `RestoreFromGoogleCloudConfiguration` to restore from Google Cloud  
 
 ## Examples
 
 Here are examples for restoring a sharded database using 
-backups stored locally, on S3 buckets, or on Azure blobs.  
+backup files stored locally and remotely.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Local_Storage restore_local-settings@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
 {CODE-TAB:csharp:S3_Bucket restore_s3-settings@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
 {CODE-TAB:csharp:Azure_Blob restore_azure-settings@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
+{CODE-TAB:csharp:Google_Cloud restore_google-cloud-settings@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
 {CODE-TABS/}
 
 {PANEL/}
@@ -158,7 +163,7 @@ can be imported into a sharded database using
 [studio](../../../../studio/database/tasks/import-data/import-data-file) 
 or [smuggler](../../../../client-api/smuggler/what-is-smuggler#import).  
 
-This is helpful, for example, when we wan to create a new database 
+This is helpful, for example, when we want to create a new database 
 out of a single shard, or to restore only a part of a database.  
   
 {PANEL/}

@@ -48,13 +48,21 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                         AccountKey = "key"
                     },
 
-                    //Amazon S3 bucket settings.
+                    //Amazon S3 bucket settings
                     S3Settings = new S3Settings
                     {
                         AwsAccessKey = "your access key here",
                         AwsSecretKey = "your secret key here",
                         AwsRegionName = "OPTIONAL",
                         BucketName = "john-bucket"
+                    },
+
+                    // Google Cloud bucket settings
+                    GoogleCloudSettings = new GoogleCloudSettings
+                    {
+                        BucketName = "your bucket name here",
+                        RemoteFolderName = "remoteFolder",
+                        GoogleCredentialsJson = "your credentials here"
                     }
                 };
 
@@ -84,10 +92,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                     // the same number it had when it was backed up.
                     ShardNumber = 0,
                     // Node Tag
-                    // Please make sure that each shard is restored
-                    // to the same node it was backed-up by.
                     NodeTag = "A",
-                    FolderName = "d:/backups/shard0-backup-folder"
+                    FolderName = "E:/RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
                 });
 
                 // Second shard
@@ -95,7 +101,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 {
                     ShardNumber = 1,
                     NodeTag = "B",
-                    FolderName = "d:/backups/shard1-backup-folder"
+                    FolderName = "E:/RavenBackups/2023-02-12-09-52-27.ravendb-Books$1-B-backup"
                 });
 
                 // Third shard
@@ -103,7 +109,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 {
                     ShardNumber = 2,
                     NodeTag = "C",
-                    FolderName = "d:/backups/shard2-backup-folder",
+                    FolderName = "E:/RavenBackups/2023-02-12-09-52-27.ravendb-Books$2-C-backup",
                 });
 
                 var restoreBackupOperation = new RestoreBackupOperation(new RestoreBackupConfiguration
@@ -113,6 +119,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                     // Paths to backup files
                     ShardRestoreSettings = restoreSettings
                 });
+
+                var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
                 #endregion
             }
 
@@ -137,7 +145,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                     // the same number it had when it was backed up.
                     ShardNumber = 0,
                     NodeTag = "A",
-                    FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
+                    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
                 });
 
                 // Second shard
@@ -145,7 +153,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 {
                     ShardNumber = 1,
                     NodeTag = "B",
-                    FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$1-B-backup"
+                    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$1-B-backup"
                 });
 
                 // Third shard
@@ -153,8 +161,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 {
                     ShardNumber = 2,
                     NodeTag = "C",
-                    FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$2-C-backup",
-
+                    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$2-C-backup",
                 });
 
                 var restoreBackupOperation = new RestoreBackupOperation(new RestoreFromS3Configuration
@@ -173,6 +180,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                         AwsSecretKey = "your secret key here",
                     } 
                 });
+
+                var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
                 #endregion
             }
 
@@ -197,7 +206,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                     // the same number it had when it was backed up.
                     ShardNumber = 0,
                     NodeTag = "A",
-                    FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
+                    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
                 });
 
                 // Second shard
@@ -205,7 +214,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 {
                     ShardNumber = 1,
                     NodeTag = "B",
-                    FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$1-B-backup"
+                    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$1-B-backup"
                 });
 
                 // Third shard
@@ -213,8 +222,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 {
                     ShardNumber = 2,
                     NodeTag = "C",
-                    FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$2-C-backup",
-
+                    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$2-C-backup",
                 });
 
                 var restoreBackupOperation = new RestoreBackupOperation(new RestoreFromAzureConfiguration
@@ -232,6 +240,67 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                         AccountKey = "your account key here",
                     }
                   });
+
+                var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
+                #endregion
+            }
+
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "Products"
+            }.Initialize())
+            {
+                #region restore_google-cloud-settings
+                // Create a dictionary with paths to shard backups
+                var restoreSettings = new ShardedRestoreSettings
+                {
+                    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+                };
+
+                // First shard
+                restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+                {
+                    // Shard Number
+                    // Please make sure that each shard is given 
+                    // the same number it had when it was backed up.
+                    ShardNumber = 0,
+                    NodeTag = "A",
+                    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
+                });
+
+                // Second shard
+                restoreSettings.Shards.Add(1, new SingleShardRestoreSetting
+                {
+                    ShardNumber = 1,
+                    NodeTag = "B",
+                    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$1-B-backup"
+                });
+
+                // Third shard
+                restoreSettings.Shards.Add(2, new SingleShardRestoreSetting
+                {
+                    ShardNumber = 2,
+                    NodeTag = "C",
+                    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$2-C-backup",
+                });
+
+                var restoreBackupOperation = new RestoreBackupOperation(new RestoreFromGoogleCloudConfiguration
+                {
+                    // Database Name
+                    DatabaseName = "Books",
+                    // Paths to backup files
+                    ShardRestoreSettings = restoreSettings,
+                    // Google Cloud settings
+                    Settings = new GoogleCloudSettings
+                    {
+                        BucketName = "your bucket name here",
+                        RemoteFolderName = "", // Replaced by restoreSettings.Shards.FolderName 
+                        GoogleCredentialsJson = "your credentials here"
+                    }
+                });
+
+                var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
                 #endregion
             }
 
@@ -240,20 +309,20 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
             {
                 ShardNumber = 0,
                 NodeTag = "A",
-                FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
+                FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
             };
 
             var shard1 = new SingleShardRestoreSetting
             {
                 ShardNumber = 1,
                 NodeTag = "B",
-                FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$1-B-backup"
+                FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$1-B-backup"
             };
             var shard2 = new SingleShardRestoreSetting
             {
                 ShardNumber = 2,
                 NodeTag = "C",
-                FolderName = "backups/2023-02-12-09-52-27.ravendb-Books$2-C-backup"
+                FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$2-C-backup"
             };
             #endregion
         }
@@ -303,7 +372,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                     public int ShardNumber { get; set; }
                     // Node tag
                     public string NodeTag { get; set; }
-                    // Backup file/s folder name
+                    // Folder name
                     public string FolderName { get; set; }
                 }
                 #endregion
