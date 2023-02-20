@@ -68,12 +68,12 @@ manageable proportions no matter what the overall database size is.
 * Each shard hosts a unique part of the database, so no single node 
   can create a backup of the entire database.  
 * After a user defines a backup task, RavenDB automatically creates 
-  one local backup task per shard, based on the user-defined task.  
+  one backup task per shard, based on the user-defined task.  
   This operation is automatic and requires no additional actions 
   from the user.  
 * Each shard appoints [one of its nodes](../../../../sharding/overview#shard-replication) 
   responsible for the execution of the shard's backup task.  
-* Each local shard backup task can keep the shard's database 
+* Each shard backup task can keep the shard's database 
   locally (on the shard machine), and/or remotely (on one 
   or more cloud destinations).  
 * A backup task can store backups on multiple destinations, 

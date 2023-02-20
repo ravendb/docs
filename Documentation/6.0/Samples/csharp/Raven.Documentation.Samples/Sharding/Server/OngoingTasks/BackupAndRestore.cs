@@ -36,7 +36,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 {
                     LocalSettings = new LocalSettings
                     {
-                        FolderPath = @"E:\RavenBackups"
+                        FolderPath = @"E:/RavenBackups"
                     },
 
                     //Azure Backup settings

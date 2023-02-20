@@ -24,7 +24,7 @@
 * `.ravendbdump` files (exported from RavenDB databases) and 
   backup files can also be 
   [imported](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#import) 
-  into a sharded database.  
+  into a database (sharded or non-sharded).  
 
 * In this page:  
   * [Restore](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#restore)  
@@ -61,27 +61,26 @@ are provided in a dictionary of `SingleShardRestoreSetting` objects.
     | Parameter | Value | Functionality |
     | ------------- | ------------- | ----- |
     | **ShardNumber** | `int` | The shard number that will be given to the restored shard. <br> should normally be similar to the original shard number. |
-    | **NodeTag** | `string` | The node to restore the shard on. <br> It is the user's responsibility to place the backup file on that node. |
+    | **NodeTag** | `string` | The node to restore the shard on. |
     | **FolderName** | `string` | The name of the folder that holds the backup file/s. |
 
     {WARNING: }
     When setting **ShardNumber**, please make sure that all shards are 
     given the same numbers they had when they were backed-up.  
-    E.g., a backup of shard 1 must be restored as shard 1: `ShardNumber = 1`  
-    
-    Giving restored shards numbers other than those they had originally 
+    Giving a restored shard a number different than its original number 
     will place buckets on the wrong shards and cause mapping errors.  
+
+    E.g., a backup of shard 1 must be restored as shard 1: `ShardNumber = 1`  
     {WARNING/}
 
     {WARNING: }
-    When restoring locally-stored backup files, it is the user's 
-    responsibility to place the backup file on the shard node 
-    that the backup is planned to be restored to.  
-    E.g., if you want to restore a backup file to node B:  
-    
-    * Copy the backup file to node B's backup folder.  
-    * Set the shard's `SingleShardRestoreSetting.NodeTag` to "B".  
-    * Run the restore operation.  
+    When restoring a local shard backup, make sure that the backup file 
+    resides on the node that the shard's `NodeTag` property is set to, 
+    so the restore process can find the file.  
+
+    E.g., if a backup file that's been produced by node `A` is now 
+    restored to node `B` (`NodeTag = "B"`), place the backup file in 
+    the backup folder of node `B` before initiating the restore operation.  
     {WARNING/}
 
 ## Define a Restore Configuration
@@ -159,7 +158,7 @@ backup files stored locally and remotely.
 {PANEL: Import}
 
 `.ravendbdump` files, as well as full and incremental backups, 
-can be imported into a sharded database using 
+can be imported into a sharded or a non-sharded database using 
 [studio](../../../../studio/database/tasks/import-data/import-data-file) 
 or [smuggler](../../../../client-api/smuggler/what-is-smuggler#import).  
 
