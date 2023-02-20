@@ -175,14 +175,14 @@ Sessions which process fields that must be unique should be set to [TransactionM
 
 ---
 
-## Code Walkthrough
+### Code Walkthrough
 
 - [Create CmpXchg Item](https://demo.ravendb.net/demos/csharp/compare-exchange/create-compare-exchange)  
 - [Index CmpXchg Values](https://demo.ravendb.net/demos/csharp/compare-exchange/index-compare-exchange)  
 
 ---
 
-## Ayende @ Rahien Blog
+### Ayende @ Rahien Blog
 
 - [Consistency in a Globally Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system)
 
