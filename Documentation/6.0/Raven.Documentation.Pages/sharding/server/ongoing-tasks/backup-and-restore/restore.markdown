@@ -23,7 +23,7 @@
   backups cannot be created or restored for sharded databases.  
 * `.ravendbdump` files (exported from RavenDB databases) and 
   backup files can also be 
-  [imported](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#import) 
+  [imported](../../../../sharding/client-api/smuggler/import-and-export#import) 
   into a database (sharded or non-sharded).  
 
 * In this page:  
@@ -33,7 +33,6 @@
          * [`RestoreBackupConfigurationBase`](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#section)
      * [Run `RestoreBackupOperation` with the Restore Configuration](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#run--with-the-restore-configuration)  
      * [Examples](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#examples)  
-  * [Import](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#import)  
 
 {NOTE/}
 
@@ -153,18 +152,6 @@ backup files stored locally and remotely.
 {CODE-TAB:csharp:Google_Cloud restore_google-cloud-settings@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
 {CODE-TABS/}
 
-{PANEL/}
-
-{PANEL: Import}
-
-`.ravendbdump` files, as well as full and incremental backups, 
-can be imported into a sharded or a non-sharded database using 
-[studio](../../../../studio/database/tasks/import-data/import-data-file) 
-or [smuggler](../../../../client-api/smuggler/what-is-smuggler#import).  
-
-This is helpful, for example, when we want to create a new database 
-out of a single shard, or to restore only a part of a database.  
-  
 {PANEL/}
 
 ## Related articles

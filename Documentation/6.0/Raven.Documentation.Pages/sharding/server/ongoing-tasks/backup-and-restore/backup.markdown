@@ -114,16 +114,15 @@ Find a code example [here](../../../../sharding/server/ongoing-tasks/backup-and-
 
 ## Backup Files Extension and Structure
 
-* `.ravendbdump` is the extension given to files when a database 
-  is exported using [Studio](../../../../studio/database/tasks/export-database) 
-  or [Smuggler](../../../../client-api/smuggler/what-is-smuggler).  
-* Backup files use different extensions to indicate the backup type 
-  (e.g. `.ravendb-full-backup` for a full-backup file), but their 
-  structure is similar to that of `.ravendbdump` files.  
-* It **is** therefore possible to import backup files, including those 
-  created for a sharded database, into a sharded database using 
-  [studio](../../../../studio/database/tasks/import-data/import-data-file) 
-  or [smuggler](../../../../client-api/smuggler/what-is-smuggler#import).  
+backup files use the same internal structure as the `.ravendbdump` 
+files that [Studio](../../../../studio/database/tasks/export-database) 
+and [Smuggler](../../../../client-api/smuggler/what-is-smuggler) 
+create when exporting data.  
+It is therefore possible to import backup files using 
+[studio](../../../../studio/database/tasks/import-data/import-data-file) 
+and [smuggler](../../../../client-api/smuggler/what-is-smuggler#import).  
+Read more about this feature [here](../../../../sharding/client-api/smuggler/import-and-export#import).  
+
 
 {NOTE: }
 Backed-up data includes both 

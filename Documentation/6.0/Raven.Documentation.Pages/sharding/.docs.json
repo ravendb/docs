@@ -9,5 +9,10 @@
         "Path": "/server",
         "Name": "Server",
         "Mappings": []
+    },
+    {
+        "Path": "/client-api",
+        "Name": "Client API",
+        "Mappings": []
     }
 ]
