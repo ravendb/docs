@@ -121,7 +121,7 @@
 2. **Purge revisions on document delete**  
    Enable if you want document revisions to be deleted when their parent document is deleted.
 
-3. **Limit # of revisions to keep**  
+3. **Limit # of revisions to keep** <a id="limit-revisions" />  
    ![Limit By Number](images/revisions/define-default-settings_limit-by-number.png "Limit By Number")  
    Enable to limit the number of revisions that will be kept in the revisions storage per document.  
    Upon revision creation (when the parent document is modified), if the number of revisions exceeds this limit  

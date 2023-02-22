@@ -84,17 +84,19 @@ The Revisions configuration is comprised of **Default Settings** and/or
   collection that a collection-specific configuration is not defined for.  
   {NOTE/}
 
+---
+
 #### Defining a Revisions Configuration
 
-You can apply a Revisions configuration using Studio or the API.  
+You can apply a Revisions configuration using Studio or the Client API.  
 
-* Via Studio:
+* Via Studio:  
    * Manage the Revisions configuration via Studio using the Studio Settings 
      [Document Revisions](../../studio/database/settings/document-revisions) 
      page.  
    * Inspect and manage the revisions created for each document using Studio's 
      Document View [Revisions tab](../../studio/database/document-extensions/revisions#revisions-tab).  
-* Via API:
+* Via Client API:  
   [Read here](../../document-extensions/revisions/client-api/operations/configure-revisions) 
   how to define and apply a Revisions configuration using the `ConfigureRevisionsOperation`
   Store operation.  
