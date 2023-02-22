@@ -177,7 +177,7 @@ While they prevent system exhaustion, batch stops also point to potential **oppo
  
 Batch stops break up processes into smaller batches when  
 
-  - An index is processing a [dataset that is too large](../../../studio/database/indexes/indexing-performance#resource-overload) for your system resources.  
+  - An index is processing a [dataset that is too large](../../../studio/database/indexes/indexing-performance#resource-exhaustion) for your system resources.  
   - The index definition requires a complex Linq process (in Java - Stream API process) that can exhaust your resources.  
   - [Low memory](../../../studio/database/indexes/indexing-performance#low-memory) resources for indexing process on local machines or burstable cloud instances.  
   - [Too many concurrent index processes](../../../studio/database/indexes/indexing-performance#concurrent-processing-of-too-many-indexes) are exhausting your system resources.  

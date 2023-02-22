@@ -10,8 +10,8 @@
   can retrieve and restore them.  
    {WARNING: }
    Shards must be restored in their 
-   [original order](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#restore):  
-   the backup of shard 1, for example, must be restored as shard 1.
+   [original order](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#restore).  
+   The backup of shard 1, for example, must be restored as shard 1.
    {WARNING/}
 * Backup files can be restored from local shard node storage or from 
   a [remote location](../../../../sharding/server/ongoing-tasks/backup-and-restore/backup#backup-storage-local-and-remote).  
@@ -163,7 +163,10 @@ backup files stored locally and remotely.
 
 **Server**  
 [External Replication](../../../../server/ongoing-tasks/external-replication)  
+[Logical Backup](../../../../server/ongoing-tasks/backup-overview#logical-backup)  
+[Snapshot Backup](../../../../server/ongoing-tasks/backup-overview#snapshot)  
 
 **Studio**  
-[Export Database](../../../../studio/database/tasks/export-database)  
-[Import](../../../../studio/database/tasks/import-data/import-data-file)  
+[Export Data](../../../../studio/database/tasks/export-database)  
+[Import Data](../../../../studio/database/tasks/import-data/import-data-file)  
+
