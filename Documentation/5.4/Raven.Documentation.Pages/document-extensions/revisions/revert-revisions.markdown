@@ -102,8 +102,9 @@
 * Revisions are ordered in the _revisions storage_ by their change-vector, and Not by creation time.
 
 * When reverting the database (or selected collections) to some previous date,  
-  RavenDB will iterate through the revisions table, starting from the most recent revision,  
-  and search for revisions that should be restored.
+  RavenDB will iterate through the revisions, starting from the most recent revision,  
+  and search for revisions that should be restored.  
+  For each revision found - its matching document will be reverted to that revision.  
 
 * To avoid conducting unnecessarily long searches or revert to revisions that are too old  
   RavenDB sets a limit to this search.  
@@ -115,63 +116,57 @@
 
 __Example__:  
 
-* Point in Time to revert to: `15.2.2023 02:00`  
-  The latest revisions prior to this Point in Time should be restored.
+* __Point in Time__ to revert to: `15.2.2023 02:00`  
+  Documents will be reverted to their latest revision that was created prior to this Point in Time.  
 
-* Time Window: `4 days`  
-  We will stop the search in the revision table once we hit a revision with creation time prior to:  
+* __Time Window__: `4 days`  
+  We will stop the search the revisions once we hit a revision with creation time prior to:  
   `11.2.2023 02:00`  
 
-* A sample revisions table:  
-   * The table contains revisions of all documents, it is not just revisions of a single document.
+* __Sample revisions__:  
+   * The list below contains revisions of all documents, it is not just revisions of a single document.
    * The revisions are Not ordered by creation time, the order is set by their change-vector.
 
 | Revision | Creation time | |
 | - | - | - |
 | 1)  `Users/1` | 20.2.2023 01:00 | |
-| 2)  `Users/2` | 19.2.2023 01:00 | |
-| 3)  `Users/5` | 19.2.2023 01:00 | |
-| 4)  `Users/3` | 14.2.2023 01:00 | => Document Users/3 stays with this revision content |
-| 5)  `Users/4` | 17.2.2023 01:00 | => Will be moved to Revisions Bin |
-| 6)  `Users/1` | 18.2.2023 01:00 | |
-| 7)  `Users/2` | 14.2.2023 01:00 | => Will be restored to the current document |
-| 8)  `Users/1` | 13.2.2023 01:00 | => Will be restored to the current document |
-| 9)  `Users/5` | 11.2.2023 01:00 | => Will be restored to the current document + <br>STOP the search for more Users/5 revisions |
-| 10) `Users/5` | 11.2.2023 03:00 | |
-| 11) `Users/9` | 10.2.2023 01:00 | => Not restored + <br>STOP the search in this table |
-| 12) `Users/6` | 11.2.2023 01:00 | |
+| 2)  `Users/5` | 19.2.2023 01:00 | |
+| 3)  `Users/3` | 14.2.2023 01:00 | => Document Users/3 stays with this revision content |
+| 4)  `Users/4` | 17.2.2023 01:00 | => Document Users/4 will be moved to Revisions Bin |
+| 5)  `Users/1` | 18.2.2023 01:00 | |
+| 6)  `Users/1` | 13.2.2023 01:00 | => Document Users/1 will be reverted to this revision |
+| 7)  `Users/5` | 11.2.2023 01:00 | => Document Users/5 will be reverted to this revision + <br>STOP the search for more Users/5 revisions |
+| 8) `Users/5` | 11.2.2023 03:00 | |
+| 9) `Users/9` | 10.2.2023 01:00 | => Document Users/9 will Not be reverted to this revision + <br>STOP the search in this list |
+| 10) `Users/6` | 11.2.2023 01:00 | |
+| . . . | | |
 
 * (line 1)  
-  We iterate on the table starting from `Users/1` revision created on 20.2.2023 01:00.  
+  We iterate on the revisions starting from `Users/1` revision created on `20.2.2023 01:00`.  
   We search for a relevant revision by iterating on all `Users/1` revisions.  
-  The revision that will be restored for `Users/1` is the one from 13.2.2023 01:00 (line 8)   
-  since it is the latest one prior to 15.2.2023 02:00.
+  The revision that will be restored for `Users/1` is the one from `13.2.2023 01:00` (line 6)   
+  since it is the latest one prior to `15.2.2023 02:00`.
 
 * (line 2)  
-  Next, we search for a relevant revision for `Users/2` by iterating on all `Users/2` revisions.  
-  The revision that will be restored is the one from 14.2.2023 01:00 (line 7),  
-  since it is the latest one prior to 15.2.2023 02:00.  
+  Next, we search for a relevant revision by iterating on all `Users/5` revisions.  
+  The revision that will be restored is the one from `11.2.2023 01:00` (line 7)  
+  since it is the latest one prior to `15.2.2023 02:00`.  
+  The search for `Users/5` revisions will now STOP,  
+  since we found a revision that was created prior to `11.2.2023 02:00`.  
+  The following revision for `Users/5` from `11.2.2023 03:00` (line 8) is Not restored.  
 
 * (line 3)  
-  Next, we search for a relevant revision by iterating on all `Users/5` revisions.  
-  The revision that will be restored is the one from 11.2.2023 01:00 (line 9)  
-  since it is the latest one prior to 15.2.2023 02:00.  
-  The search for `Users/5` revisions will now STOP,  
-  since we found a revision that was created prior to 11.2.2023 02:00.  
-  The following revision for `Users/5` from 11.2.2023 03:00 (line 10) is Not restored.  
+  Next, document `Users/3` is Not modified, since it wasn't modified after `15.2.2023 02:00`.
 
-* (line 4)  
-  Next, document `Users/3` is Not modified, since it wasn't modified after 15.2.2023 02:00.
-
-* (line 5)   
-  Next, `Users/4` has NO revisions prior to 15.2.2023 02:00,  
+* (line 4)   
+  Next, `Users/4` has NO revisions prior to `15.2.2023 02:00`,  
   which means it was created AFTER this Point in Time,  
   so this document is moved to the Revisions Bin.
 
-* (line 11)   
-  Next, we reach `Users/9` revision created on 10.2.2023 01:00, which is PRIOR to 11.2.2023 02:00.  
-  The search on this table will now STOP.  
-  No further revisions will be taken into account, not even `Users/6` revision created on 11.2.2023 01:00.
+* (line 9)   
+  Next, we reach `Users/9` revision created on `10.2.2023 01:00`, which is PRIOR to `11.2.2023 02:00`.  
+  The search on this list will now STOP.  
+  No further revisions will be taken into account, not even `Users/6` revision created on `11.2.2023 01:00`.
 
 {NOTE/}
 
@@ -195,7 +190,7 @@ __Example__:
     the attachments are restored to their state when the revision was created.  
   * __Counters__  
     When a document is reverted to a revision that owns counters,  
-    the counters are restored to functionality along with their values.
+    the counters are restored to functionality along with their values from that revision.
 
 {INFO/}
 
