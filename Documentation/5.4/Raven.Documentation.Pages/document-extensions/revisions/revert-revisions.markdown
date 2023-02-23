@@ -17,6 +17,7 @@
    * [Revert](../../document-extensions/revisions/revert-revisions#revert)
      * [Point in time](../../document-extensions/revisions/revert-revisions#point-in-time)
      * [Time Window](../../document-extensions/revisions/revert-revisions#time-window)
+     * [Content reverted](../../document-extensions/revisions/revert-revisions#content-reverted)
 
 {NOTE/}
 
@@ -94,17 +95,6 @@
 
     {NOTE/}
 
----
-
-{INFO: }
-
-* When reverting a document to one of its revisions, RavenDB actually creates a new revision for the document.  
-  The content of this new revision is a copy of the historical revision content, and it becomes the current version of the document.  
-    
-* Database items other than documents, such as ongoing tasks, indexes, and compare-exchange, are Not reverted by this process.
-
-{INFO/}
-
 {PANEL/}
 
 {PANEL: Time window}
@@ -151,7 +141,6 @@ __Example__:
 | 11) `Users/9` | 10.2.2023 01:00 | => Not restored + <br>STOP the search in this table |
 | 12) `Users/6` | 11.2.2023 01:00 | |
 
-
 * (line 1)  
   We iterate on the table starting from `Users/1` revision created on 20.2.2023 01:00.  
   We search for a relevant revision by iterating on all `Users/1` revisions.  
@@ -188,6 +177,29 @@ __Example__:
 
 {PANEL/}
 
+{PANEL: Content reverted}
+
+{INFO: }
+
+* When reverting a document to one of its revisions, RavenDB actually creates a new revision for the document.  
+  The content of this new revision is a copy of the historical revision content, and it becomes the current version of the document.
+
+* Database items other than documents, such as ongoing tasks, indexes, and compare-exchange,  
+  are Not reverted by this process.
+
+* Document extensions:  
+  * __Time series__  
+    Time series data is Not reverted. Learn more [here](../../document-extensions/revisions/revisions-and-other-features#reverted-data-1).  
+  * __Attachments__   
+    When a document is reverted to a revision that owns attachments,  
+    the attachments are restored to their state when the revision was created.  
+  * __Counters__  
+    When a document is reverted to a revision that owns counters,  
+    the counters are restored to functionality along with their values.
+
+{INFO/}
+
+{PANEL/}
 
 ## Related Articles
 
