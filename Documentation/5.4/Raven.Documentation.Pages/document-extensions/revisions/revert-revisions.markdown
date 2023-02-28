@@ -120,7 +120,7 @@ __Example__:
   Documents will be reverted to their latest revision that was created prior to this Point in Time.  
 
 * __Time Window__: `4 days`  
-  We will stop the search the revisions once we hit a revision with creation time prior to:  
+  We will stop searching the revisions once we hit a revision with creation time prior to:  
   `11.2.2023 02:00`  
 
 * __Sample revisions__:  
@@ -143,16 +143,15 @@ __Example__:
 
 * (line 1)  
   We iterate on the revisions starting from `Users/1` revision created on `20.2.2023 01:00`.  
-  We search for a relevant revision by iterating on all `Users/1` revisions.  
+  We search for a relevant revision for document `Users/1` by iterating on all `Users/1` revisions.   
   The revision that will be restored for `Users/1` is the one from `13.2.2023 01:00` (line 6)   
   since it is the latest one prior to `15.2.2023 02:00`.
 
 * (line 2)  
-  Next, we search for a relevant revision by iterating on all `Users/5` revisions.  
-  The revision that will be restored is the one from `11.2.2023 01:00` (line 7)  
-  since it is the latest one prior to `15.2.2023 02:00`.  
-  The search for `Users/5` revisions will now STOP,  
-  since we found a revision that was created prior to `11.2.2023 02:00`.  
+  Next, we search for a relevant revision for document `Users/5` by iterating on all `Users/5` revisions,  
+  and we reach line 7.  
+  Here the search for `Users/5` revisions will STOP since this revision was created prior to `11.2.2023 02:00`.  
+  We will revert the document to this revision since it is the latest one prior to `15.2.2023 02:00`.  
   The following revision for `Users/5` from `11.2.2023 03:00` (line 8) is Not restored.  
 
 * (line 3)  
