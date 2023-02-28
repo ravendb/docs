@@ -2,6 +2,38 @@
 
 This repository contains documentation for [RavenDB](https://ravendb.net/docs).
 
+Want to contribute?
+-------------------
+
+You will need:
+
+- Visual Studio 2022
+- .NET Framework 4.7.1 Developer Pack
+- .NET Core 2.1
+- RavenDB 4.2
+
+### Setup
+
+1. Clone and build the solution.
+1. Ensure your local RavenDB is up and running (e.g. `http://localhost:8080`)
+    - It needs to be unauthenticated
+    - If you need to change the URL, edit `Raven.Documentation.Web/web.config` and set the `RavenUrl` setting
+    - Take care not to commit this back to source control
+    - You can use a Docker version of RavenDB if you are already running an instance
+      for other work.
+          - `docker run -p 8080:8080 ravendb/ravendb:4.2-ubuntu-latest`
+          - Adjust forward port as necessary to not conflict
+
+### Rebuilding Docs
+
+Run the `Raven.Documentation.Cli` project to rebuild and parse the documentation.
+
+### Running Docs
+
+1. Set the `Raven.Documentation.Web` as the Startup Project
+1. Run the project (Ctrl-F5 to start without debugging)
+1. In the bottom right, click "Development Tools" and then "Generate Documentation for {version}" (or for all versions)
+
 Found a bug?
 ------------
 Please create an issue at our [YouTrack](https://issues.hibernatingrhinos.com/issues/RDoc).
