@@ -18,7 +18,7 @@ For more comprehensive changes or additions, you will need:
 
 - Visual Studio 2022
 - .NET Framework 4.7.1 Developer Pack
-- .NET Core 2.1
+- .NET Core 2.0 & 2.1
 - RavenDB 4.2
 
 ### Setup
