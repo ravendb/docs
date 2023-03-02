@@ -78,8 +78,8 @@ In this example we create a Conflict Revisions configuration that
 when their parent documents are deleted or their age exceeds 45 days.  
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync conflict-revisions-configuration_sync@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
-{CODE-TAB:csharp:Async conflict-revisions-configuration_async@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
+{CODE-TAB:csharp:Sync conflict-revisions-configuration_sync@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisionsForConflicts.cs /}
+{CODE-TAB:csharp:Async conflict-revisions-configuration_async@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisionsForConflicts.cs /}
 {CODE-TABS/}
 
 {PANEL/}
