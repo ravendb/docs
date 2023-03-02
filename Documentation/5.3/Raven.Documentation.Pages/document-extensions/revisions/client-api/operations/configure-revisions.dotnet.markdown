@@ -1,162 +1,81 @@
-﻿# Revisions: Configuring Revisions
+﻿# Configure Revisions Operation
 
 ---
 
 {NOTE: }
 
-* Use the [ConfigureRevisionsOperation](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section) 
-  Store operation to apply a [Revisions configuration](../../../../document-extensions/revisions/overview#revisions-configuration) 
-  to the database.  
+* Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../studio/database/settings/document-revisions#revisions-configuration) to the database:  
+  * __Default configuration__ - applies to all document collections.  
+  * __Collection-specific configurations__ - override the default settings for these collections.  
+  * To apply a configuration for conflict document revisions see [configure conflict revisions](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration).  
 
-* A Revisions configuration includes Default settings and/or Collection-specific configurations.  
-   * The **default settings** apply to all database collections.  
-   * **Collection-specific configurations** override the default settings for the collections 
-     they are applied to.  
+* The configuration passed to this operation will __REPLACE__ the current revisions configuration in the database.  
+  To __MODIFY__ existing configuration, fetch the current configuration from the database record first.  
 
-* Default settings and Collection-specific configurations are defined in 
-  [RevisionsCollectionConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-2) 
-  objects.  
+* After applying the configuration,  
+  revisions are created and purged for a document whenever the document is created, modified, or deleted.  
 
-* All `RevisionsCollectionConfiguration` objects are gathered in a single 
-  [RevisionsConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-1) 
-  object.  
-  There is one `RevisionsConfiguration` object per database, stored in the database record.  
+* To create a revision when there is no configuration defined (or enabled) see: [force revision creation](../../../../document-extensions/revisions/overview#force-revision-creation)
 
-* The `RevisionsConfiguration` object is passed to the 
-  [ConfigureRevisionsOperation](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section) 
-  Store operation and applied to the database when the operation is executed, **replacing** the current 
-  Revisions configuration in the database record.  
+* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database).  
+  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database).  
 
 * In this page:  
- * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions#syntax)  
-     * [`ConfigureRevisionsOperation`](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section)  
-     * [`RevisionsConfiguration`](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-1)  
-     * [`RevisionsCollectionConfiguration`](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-2)  
- * [Usage Flow](../../../../document-extensions/revisions/client-api/operations/configure-revisions#usage-flow)  
- * [Examples](../../../../document-extensions/revisions/client-api/operations/configure-revisions#examples)  
-     * [Example I - Replace Existing Configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#example-i---replace-existing-configuration)  
-     * [Example II - Modify Existing Configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#example-ii---modify-existing-configuration)  
+  * [Replace configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#replace-configuration)  
+  * [Modify configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#modify-configuration)  
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions#syntax)  
 
 {NOTE/}
 
 ---
 
+{PANEL: Replace configuration}
+
+* In this example, we create a new `RevisionsConfiguration` for the database.  
+  If revisions configuration already exists in the database - it will be __replaced__.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync replace_configuration@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
+{CODE-TAB:csharp:Async replace_configuration_async@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Modify configuration}
+
+* In this example, we fetch the existing revisions configuration from the database record and __modify__ it.   
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync modify_configuration@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
+{CODE-TAB:csharp:Async modify_configuration_async@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
+{CODE-TABS/}
+
+{PANEL/}
+
 {PANEL: Syntax}
 
-### `ConfigureRevisionsOperation`
-
-The `ConfigureRevisionsOperation` Store operation is used to apply your Revisions configurations.  
-{CODE:csharp ConfigureRevisionsOperation_definition@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisionsDefinitions.cs /}
+{CODE:csharp syntax_1@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
 
 | Parameter | Type | Description |
 | - | - | - |
-| **configuration** | `RevisionsConfiguration` | The Revisions configuration to apply |
+| __configuration__ | `RevisionsConfiguration` | The revisions configuration to apply |
 
----
+{CODE:csharp syntax_2@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
 
-### `RevisionsConfiguration`
+| Property | Type | Description |
+| - | - | - |
+| __Default__ | `RevisionsCollectionConfiguration` | Optional default settings that apply to any collection Not specified in `Collections`. |
+| __Collections__ | `Dictionary<string, RevisionsCollectionConfiguration>` | A Dictionary of collection-specific configurations<br>The `keys` are the collection names<br>The `values` are the corresponding configurations.<br>Overrides the default settings for the collections defined. |
 
-This object contains the default settings that apply to all collections, 
-and a Dictionary of collection-specific configurations that override the default 
-settings for the collections they are defined for.  
-{CODE:csharp RevisionsConfiguration_definition@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisionsDefinitions.cs /}
+{CODE:csharp syntax_3@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
 
-* **Properties**  
-
-    | Property | Type | Description |
-    | - | - | - |
-    | **Default** | `RevisionsCollectionConfiguration` | Optional default settings that apply to any collection not specified in `Collections` |
-    | **Collections** | `Dictionary<string, RevisionsCollectionConfiguration>` | A Dictionary of collection-specific configurations, where - <br> The `keys` are collection names. <br> The `values` are the corresponding configurations. |
-
----
-
-### `RevisionsCollectionConfiguration`
-
-This object contains a collection-specific Revisions configuration.  
-It can also be used to define the default settings for all database collections.  
-{CODE:csharp RevisionsCollectionConfiguration_definition@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisionsDefinitions.cs /}
-
-* **Properties**  
-
-    | Configuration Option | Type | Description | Default |
-    | - | - | - | - |
-    | **MinimumRevisionsToKeep** | `long` | Limit the Number of revisions to keep per document. <br> `null` = no limit | `null` |
-    | **MinimumRevisionAgeToKeep** | [TimeSpan](https://docs.microsoft.com/en-us/dotnet/api/system.timespan) | Limit the Age of revisions kept per document. <br> `null` = no age limit | `null` |
-    | **Disabled** | `bool` | If `true`, disable revisions Creation and Purging | `false` |
-    | **PurgeOnDelete** | `bool` | If `true`, deleting a document will also delete its revisions | `false` |
-    | **MaximumRevisionsToDeleteUponDocumentUpdate** | `long` | The maximum number of revisions to delete upon document update. <br> `null` = no limit | `null` |
- 
-    {INFO: }
-    
-    * Revisions will be purged if they exceeds **either** `MinimumRevisionsToKeep` **or** `MinimumRevisionAgeToKeep`.  
-    * After applying the configuration, revisions are Created and Purged for a document when the document 
-      is created, modified, or deleted.  
-    * Use `MaximumRevisionsToDeleteUponDocumentUpdate` to limit the number of revisions that RavenDB 
-      is allowed to purge each time a document is updated, e.g. when many documents have many revisions 
-      pending purging and you prefer that the server would purge them gradually.  
-     {INFO/}
-
-{PANEL/}
-
-
-{PANEL: Usage Flow}
-
-To apply a Revisions configuration to all and/or specific collections, follow these steps:  
-
-1. Create a [RevisionsCollectionConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-2) 
-   object for every collection you want to set Revisions for.  
-2. If you want to define default settings, create a 
-   `RevisionsCollectionConfiguration` object for them.  
-3. Add all the `RevisionsCollectionConfiguration` objects you created to a 
-   [RevisionsConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section-1) 
-   object.  
-4. Pass the `RevisionsConfiguration` object to the 
-   [ConfigureRevisionsOperation](../../../../document-extensions/revisions/client-api/operations/configure-revisions#section) 
-   Store operation.  
-   Executing the operation will replace the Revisions configuration in the database record.  
-   {WARNING: }
-    If you want to **modify** the existing configuration rather than replace it,  
-    retrieve the current configuration and edit it 
-    [as shown here](../../../../document-extensions/revisions/client-api/operations/configure-revisions#example-ii---modify-existing-configuration).  
-    {WARNING/}
-
-{PANEL/}
-
-{PANEL: Examples}
-
-### Example I - Replace Existing Configuration
-
-In this example, we **replace** the existing Revisions configuration 
-(if there is one) with our own, applying default settings and two 
-collection-specific configurations.  
-
-{INFO: }
-Note that the configuration is applied to the Document Store's [default database](../../../../client-api/setting-up-default-database).  
-To configure a different database, use the 
-[`ForDatabase()` method](../../../../client-api/operations/how-to/switch-operations-to-a-different-database).  
-{INFO/}
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync configure-revisions_sync@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
-{CODE-TAB:csharp:Async configure-revisions_async@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
-{CODE-TABS/}
-
----
-
-### Example II - Modify Existing Configuration
-
-In this example, we **modify** the existing Revisions configuration 
-default settings and collection-specific configurations.  
-
-We retrieve the existing configuration from the database record, 
-and check its contents.  
-If no configuration is found, we define a new configuration.  
-If a configuration is already defined, we modify the existing configuration.  
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync update-existing-configuration_sync@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
-{CODE-TAB:csharp:Async update-existing-configuration_async@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
-{CODE-TABS/}
+| Property | Type | Description |
+| - | - | - |
+| __MinimumRevisionsToKeep__ | `long` | <ul><li>This number of revisions will be kept per document.</li><li>Older revisions exceeding this number will be purged upon the next document modification.<li> __Default__ : `null` = no limit </li></ul> |
+| __MinimumRevisionAgeToKeep__ | `TimeSpan` | <ul><li>Limit the number of revisions kept per document by their age.</li><li>Revisions that are older than this time will be purged upon the next document modification.</li><li> __Default__ : `null` = no age limit</li><ul> |
+| __MaximumRevisionsToDeleteUponDocumentUpdate__ | `long` | <ul><li>The maximum number of revisions to delete upon each document modification.</li><li> __Default__ : `null` = no limit,<br> all revisions that pend purging will be deleted.</li></ul> |
+| __PurgeOnDelete__ | `bool` | <ul><li>`false` ( __Default__ ) - Revisions of a deleted document are moved to the [Revisions Bin](../../../../studio/database/document-extensions/revisions#revisions-bin).</li><li>`true` - When a document is deleted all its revisions are also deleted.</li></ul> |
+| __Disabled__ | `bool` | <ul><li>`false` ( __Default__ ) - Revisions will be created and purged according to the configuration.</li><li>`true` - No revisions will be created or purged.</li></ul> |
 
 {PANEL/}
 
