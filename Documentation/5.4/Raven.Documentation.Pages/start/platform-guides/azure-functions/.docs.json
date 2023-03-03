@@ -5,6 +5,11 @@
         "DiscussionId": "6f6ba11a-478d-4217-97b2-4371ebc3e094"
     },
     {
+        "Path": "deployment.markdown",
+        "Name": "Deployment Considerations",
+        "DiscussionId": "0c8d203e-8006-47c8-a1e5-2cdd05df069e"
+    },
+    {
         "Path": "troubleshooting.markdown",
         "Name": "Troubleshooting",
         "DiscussionId": "b06a6af6-169d-4b8d-82a1-3552e4513ca2"
