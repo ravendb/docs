@@ -4,11 +4,5 @@
         "Name": "PostgreSQL Protocol",
         "DiscussionId": "2d5c1bed-9313-4947-9625-56fc86e08b14",
         "Mappings": []
-    },
-    {
-        "Path": "/cloudflare-workers",
-        "Name": "Cloudflare Workers",
-        "DiscussionId": "6c35efa3-2812-4696-99a0-171d39afe825",
-        "Mappings": []
     }
 ]

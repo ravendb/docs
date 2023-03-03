@@ -54,5 +54,11 @@
         "Path": "/installation",
         "Name": "Installation",
         "Mappings": []
+    },
+    {
+        "Path": "/platform-guides",
+        "Name": "Platform Guides",
+        "DiscussionId": "138288bb-7859-4668-8d43-b938d1f19652",
+        "Mappings": []
     }
 ]
