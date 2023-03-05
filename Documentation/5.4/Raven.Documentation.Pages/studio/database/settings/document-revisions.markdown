@@ -86,12 +86,14 @@
 2. **Conflicting Document Defaults**  
    This pre-defined revisions configuration is for conflicting documents only.  
    When enabled, a revision is created for each conflicting item.  
-   A revision is also created for the conflict resolution document.   
-   When a collection-specific configuration is defined, it overrides these defaults.  
+   A revision is also created for the conflict resolution document.      
     * The Conflicting Document Defaults configuration cannot be removed.  
     * You can [modify](../../../studio/database/settings/document-revisions#edit-conflicting-document-defaults) this configuration,  
       or disable it if not interested in tracking document conflicts using revisions.  
-   
+    * When "Document Defaults configuration" is defined, it __overrides__ these conflict defaults.  
+    * When a "Collection-specific configuration" is defined,  
+      it also __overrides__ these conflict defaults for the collection defined.  
+
 3. **Collections**  
    These are optional collection-specific configurations whose settings override the Document Defaults  
    and the Conflicting Document Defaults for the collections they are defined for.  
