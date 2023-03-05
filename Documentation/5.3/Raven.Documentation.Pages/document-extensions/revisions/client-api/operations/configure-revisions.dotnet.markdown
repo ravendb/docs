@@ -69,6 +69,8 @@
 
 {CODE:csharp syntax_3@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
 
+<a id="revisions-collection-configuration-object" />
+
 | Property | Type | Description |
 | - | - | - |
 | __MinimumRevisionsToKeep__ | `long` | <ul><li>This number of revisions will be kept per document.</li><li>Older revisions exceeding this number will be purged upon the next document modification.<li> __Default__ : `null` = no limit </li></ul> |

@@ -63,6 +63,8 @@
 
 {CODE:nodejs syntax_3@document-extensions\revisions\client-api\operations\configureRevisions.js /}
 
+<a id="revisions-collection-configuration-object" />
+
 | Property | Type | Description |
 | - | - | - |
 | __minimumRevisionsToKeep__ | `number` | <ul><li>This number of revisions will be kept per document.</li><li>Older revisions exceeding this number will be purged upon the next document modification.<li> __Default__ : `null` = no limit </li></ul> |
