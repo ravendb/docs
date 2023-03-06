@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.Revisions;
