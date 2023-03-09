@@ -11,7 +11,7 @@ Learn more about [how Microsoft Azure Functions work][az-funcs].
 For a walkthrough and demo of getting started with Azure Functions, see [TBD](#).
 {NOTE/}
 
-In this guide, you will learn how to deploy a C# Azure Function using the [RavenDB Azure Functions C# template][template] that is connected to your RavenDB database. This guide assumes you are familiar with Node.js development techniques and the basics of Azure Function apps.
+In this guide, you will learn how to deploy a C# Azure Function using the [RavenDB Azure Functions C# template][template] that is connected to your RavenDB database. This guide assumes you are familiar with .NET development techniques and the basics of Azure Function apps.
 
 On this page:
 
@@ -215,7 +215,7 @@ You can also inject an `IDocumentStore` to get a reference to the current store 
 
 ### Example: Loading a user
 
-{CODE-BLOCK:javascript}
+{CODE-BLOCK:csharp}
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
