@@ -54,5 +54,10 @@
         "Path": "/installation",
         "Name": "Installation",
         "Mappings": []
+    },
+    {
+        "Path": "/platform-guides",
+        "Name": "Platform Guides",
+        "Mappings": []
     }
 ]
