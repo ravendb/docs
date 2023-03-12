@@ -10,29 +10,29 @@
   can retrieve and restore them.  
    {WARNING: }
    Shards must be restored in their 
-   [original order](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#restore).  
+   [original order](../../sharding/backup-and-restore/restore#restore).  
    The backup of shard 1, for example, must be restored as shard 1.
    {WARNING/}
 * Backup files can be restored from local shard node storage or from 
-  a [remote location](../../../../sharding/server/ongoing-tasks/backup-and-restore/backup#backup-storage-local-and-remote).  
+  a [remote location](../../sharding/backup-and-restore/backup#backup-storage-local-and-remote).  
 * A backed-up sharded database can be restored in part or in full, 
   to a sharded or a non-sharded database.  
-* Only [logical](../../../../server/ongoing-tasks/backup-overview#logical-backup) 
+* Only [logical](../../server/ongoing-tasks/backup-overview#logical-backup) 
   backups are supported. 
-  [Snapshot](../../../../server/ongoing-tasks/backup-overview#snapshot) 
+  [Snapshot](../../server/ongoing-tasks/backup-overview#snapshot) 
   backups cannot be created or restored for sharded databases.  
 * `.ravendbdump` files (exported from RavenDB databases) and 
   backup files can also be 
-  [imported](../../../../sharding/client-api/smuggler/import-and-export#import) 
+  [imported](../../sharding/import-and-export#import) 
   into a database (sharded or non-sharded).  
 
 * In this page:  
-  * [Restore](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#restore)  
-     * [Set Paths to Backup Files Locations](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#set-paths-to-backup-files-locations)  
-     * [Define a Restore Configuration](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#define-a-restore-configuration)  
-         * [`RestoreBackupConfigurationBase`](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#section)
-     * [Run `RestoreBackupOperation` with the Restore Configuration](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#run--with-the-restore-configuration)  
-     * [Examples](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#examples)  
+  * [Restore](../../sharding/backup-and-restore/restore#restore)  
+     * [Set Paths to Backup Files Locations](../../sharding/backup-and-restore/restore#set-paths-to-backup-files-locations)  
+     * [Define a Restore Configuration](../../sharding/backup-and-restore/restore#define-a-restore-configuration)  
+         * [`RestoreBackupConfigurationBase`](../../sharding/backup-and-restore/restore#section)
+     * [Run `RestoreBackupOperation` with the Restore Configuration](../../sharding/backup-and-restore/restore#run--with-the-restore-configuration)  
+     * [Examples](../../sharding/backup-and-restore/restore#examples)  
 
 {NOTE/}
 
@@ -53,7 +53,7 @@ The shards' backup folder locations, and additional data regarding the backups,
 are provided in a dictionary of `SingleShardRestoreSetting` objects.  
 
 `SingleShardRestoreSetting`  
-{CODE restore_SingleShardRestoreSetting@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
+{CODE restore_SingleShardRestoreSetting@Sharding\ShardingBackupAndRestore.cs /}
 
 * Parameters:
 
@@ -84,11 +84,11 @@ are provided in a dictionary of `SingleShardRestoreSetting` objects.
 
 ## Define a Restore Configuration
 To restore the database, we pass the 
-[Restore Operation](../../../../client-api/operations/maintenance/backup/restore#restoring-a-database:-configuration-and-execution) 
+[Restore Operation](../../client-api/operations/maintenance/backup/restore#restoring-a-database:-configuration-and-execution) 
 a **configuration object**.  
 
 * The configuration object inherits properties from the `RestoreBackupConfigurationBase` class 
-  ([discussed below](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#section)) 
+  ([discussed below](../../sharding/backup-and-restore/restore#section)) 
   and defines additional sharding-specific settings.  
 
 * We choose what configuration object to pass the restore operation, by 
@@ -98,30 +98,30 @@ a **configuration object**.
   
     | Configuration Object | Backup Location | Additional Properties |
     | -------------------- | --------------- | --------------------- |
-    | `RestoreBackupConfiguration` | Local shard storage | None (see [example](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#examples)) |
-    | `RestoreFromS3Configuration` | AWS S3 Bucket | `S3Settings` (see S3 [example](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#examples)) |
-    | `RestoreFromAzureConfiguration` | MS Azure Blob | `AzureSettings` (see Azure [example](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#examples)) |
-    | `RestoreFromGoogleCloudConfiguration` | Google Cloud Bucket | `GoogleCloudSettings` (see Google Cloud [example](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#examples)) |
+    | `RestoreBackupConfiguration` | Local shard storage | None (see [example](../../sharding/backup-and-restore/restore#examples)) |
+    | `RestoreFromS3Configuration` | AWS S3 Bucket | `S3Settings` (see S3 [example](../../sharding/backup-and-restore/restore#examples)) |
+    | `RestoreFromAzureConfiguration` | MS Azure Blob | `AzureSettings` (see Azure [example](../../sharding/backup-and-restore/restore#examples)) |
+    | `RestoreFromGoogleCloudConfiguration` | Google Cloud Bucket | `GoogleCloudSettings` (see Google Cloud [example](../../sharding/backup-and-restore/restore#examples)) |
 
 ---
 
 ### `RestoreBackupConfigurationBase`
 `RestoreBackupConfigurationBase` is a parent class to all the configuration types 
 mentioned above, allowing you to set backups **encryption settings** among other options.  
-{CODE restore_RestoreBackupConfigurationBase@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
+{CODE restore_RestoreBackupConfigurationBase@Sharding\ShardingBackupAndRestore.cs /}
 
 * Parameters:
 
     | Parameter | Value | Functionality |
     | ------------- | ------------- | ----- |
     | **DatabaseName** | `string` | Name for the new database. |
-    | **LastFileNameToRestore** <br> (Optional -<br> omit for default) | `string` | [Last incremental backup file](../../../../server/ongoing-tasks/backup-overview#restoration-procedure) to restore. <br> **Default behavior: Restore all backup files in the folder.** |
+    | **LastFileNameToRestore** <br> (Optional -<br> omit for default) | `string` | [Last incremental backup file](../../server/ongoing-tasks/backup-overview#restoration-procedure) to restore. <br> **Default behavior: Restore all backup files in the folder.** |
     | **DataDirectory** <br> (Optional -<br> omit for default) | `string` | The new database data directory. <br> **Default folder: Under the "Databases" folder, <br> in a folder that carries the restored database's name.** |
     | **EncryptionKey** <br> (Optional -<br> omit for default) | `string` | A key for an encrypted database. <br> **Default behavior: Try to restore as if DB is unencrypted.**|
     | **DisableOngoingTasks** <br> (Optional -<br> omit for default) | `boolean` | `true` - disable ongoing tasks when Restore is complete. <br> `false` - enable ongoing tasks when Restore is complete. <br> **Default: `false` (Ongoing tasks will run when Restore is complete).**|
     | **SkipIndexes** <br> (Optional -<br> omit for default) | `boolean` | `true` to disable indexes import, <br> `false` to enable indexes import. <br> **Default: `false` restore all indexes.**|
-    | **ShardRestoreSettings** | `ShardedRestoreSettings` | a dictionary of `SingleShardRestoreSetting` instances defining <br> paths to backup locations <br> {CODE restore_ShardedRestoreSettings@Sharding\Server\OngoingTasks\BackupAndRestore.cs /} |
-    | **BackupEncryptionSettings** | `BackupEncryptionSettings` | [Backup Encryption Settings](../../../../client-api/operations/maintenance/backup/encrypted-backup#choosing-encryption-mode--key) |
+    | **ShardRestoreSettings** | `ShardedRestoreSettings` | a dictionary of `SingleShardRestoreSetting` instances defining <br> paths to backup locations <br> {CODE restore_ShardedRestoreSettings@Sharding\ShardingBackupAndRestore.cs /} |
+    | **BackupEncryptionSettings** | `BackupEncryptionSettings` | [Backup Encryption Settings](../../client-api/operations/maintenance/backup/encrypted-backup#choosing-encryption-mode--key) |
          
     {NOTE: }
     Verify that RavenDB has full access to the backup locations and database files.  
@@ -131,10 +131,10 @@ mentioned above, allowing you to set backups **encryption settings** among other
 ## Run `RestoreBackupOperation` with the Restore Configuration
 Pass the configuration object you defined to the `RestoreBackupOperation` store operation 
 to restore the database.  
-{CODE restore_RestoreBackupOperation@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
+{CODE restore_RestoreBackupOperation@Sharding\ShardingBackupAndRestore.cs /}
 
 * Instead of `RestoreBackupConfigurationBase`, use the configuration object 
-  you [prepared](../../../../sharding/server/ongoing-tasks/backup-and-restore/restore#define-a-restore-configuration):  
+  you [prepared](../../sharding/backup-and-restore/restore#define-a-restore-configuration):  
    * `RestoreBackupConfiguration` for locally-stored backups  
    * `RestoreFromS3Configuration` to restore from S3  
    * `RestoreFromAzureConfiguration` to restore from Azure  
@@ -146,10 +146,10 @@ Here are examples for restoring a sharded database using
 backup files stored locally and remotely.  
 
 {CODE-TABS}
-{CODE-TAB:csharp:Local_Storage restore_local-settings@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
-{CODE-TAB:csharp:S3_Bucket restore_s3-settings@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
-{CODE-TAB:csharp:Azure_Blob restore_azure-settings@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
-{CODE-TAB:csharp:Google_Cloud restore_google-cloud-settings@Sharding\Server\OngoingTasks\BackupAndRestore.cs /}
+{CODE-TAB:csharp:Local_Storage restore_local-settings@Sharding\ShardingBackupAndRestore.cs /}
+{CODE-TAB:csharp:S3_Bucket restore_s3-settings@Sharding\ShardingBackupAndRestore.cs /}
+{CODE-TAB:csharp:Azure_Blob restore_azure-settings@Sharding\ShardingBackupAndRestore.cs /}
+{CODE-TAB:csharp:Google_Cloud restore_google-cloud-settings@Sharding\ShardingBackupAndRestore.cs /}
 {CODE-TABS/}
 
 {PANEL/}
@@ -157,16 +157,16 @@ backup files stored locally and remotely.
 ## Related articles
 
 **Client API**  
-[Create Database](../../../../client-api/operations/server-wide/create-database)  
-[Smuggler Import](../../../../client-api/smuggler/what-is-smuggler#import)  
-[RestoreBackupOperation](../../../../client-api/operations/maintenance/backup/restore#restoring-a-database:-configuration-and-execution)  
+[Create Database](../../client-api/operations/server-wide/create-database)  
+[Smuggler Import](../../client-api/smuggler/what-is-smuggler#import)  
+[RestoreBackupOperation](../../client-api/operations/maintenance/backup/restore#restoring-a-database:-configuration-and-execution)  
 
 **Server**  
-[External Replication](../../../../server/ongoing-tasks/external-replication)  
-[Logical Backup](../../../../server/ongoing-tasks/backup-overview#logical-backup)  
-[Snapshot Backup](../../../../server/ongoing-tasks/backup-overview#snapshot)  
+[External Replication](../../server/ongoing-tasks/external-replication)  
+[Logical Backup](../../server/ongoing-tasks/backup-overview#logical-backup)  
+[Snapshot Backup](../../server/ongoing-tasks/backup-overview#snapshot)  
 
 **Studio**  
-[Export Data](../../../../studio/database/tasks/export-database)  
-[Import Data](../../../../studio/database/tasks/import-data/import-data-file)  
+[Export Data](../../studio/database/tasks/export-database)  
+[Import Data](../../studio/database/tasks/import-data/import-data-file)  
 

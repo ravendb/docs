@@ -131,7 +131,7 @@ provide multiple access points, and load-balance the traffic between shard repli
 The number of nodes a shard is replicated to is determined by 
 the **Shard Replication Factor**.  
 
-!["Shard Replication"](images/sharding-replication-factor.png "Shard Replication")
+!["Shard Replication"](images/overview_sharding-replication-factor.png "Shard Replication")
 
 * In the image above, a 3-shards database is hosted by a 5-nodes cluster (where 
   two of the nodes, **D** and **E**, are unused by this database).  
@@ -153,7 +153,7 @@ The number of buckets allocated for the whole database is fixed, always remainin
 Each shard is assigned with a range of buckets from this overall portion, in which 
 documents can be stored.  
 
-!["Buckets Allocation"](images/buckets-allocation.png "Buckets Allocation")
+!["Buckets Allocation"](images/overview_buckets-allocation.png "Buckets Allocation")
 
 ---
 
@@ -164,7 +164,7 @@ A hash algorithm is executed over each document ID. The resulting
 hash code, a number between 0 and 1,048,576, is the number of the 
 bucket in which the document is stored.  
 
-!["Buckets Population"](images/buckets-population.png "Buckets Population")
+!["Buckets Population"](images/overview_buckets-population.png "Buckets Population")
 
 As buckets are spread among different shards, the bucket number 
 allocated for a document also determines which shard the document 
@@ -196,7 +196,7 @@ The document you want Users/70 to share a bucket with: `Users/4`
 Rename `Users/70` to: `Users/70$Users/4`
 {NOTE/}
 
-!["Forcing Documents to Share a Bucket"](images/force-docs-to-share-bucket.png "Forcing Documents to Share a Bucket")
+!["Forcing Documents to Share a Bucket"](images/overview_force-docs-to-share-bucket.png "Forcing Documents to Share a Bucket")
 
 {WARNING: }
 Be careful not to force the storage of too many documents in the same bucket 

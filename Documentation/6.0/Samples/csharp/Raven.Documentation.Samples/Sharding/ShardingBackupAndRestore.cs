@@ -87,12 +87,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 // First shard
                 restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
                 {
-                    // Shard Number
+                    // Shard Number - which shard to restore to.
                     // Please make sure that each shard is given 
                     // the same number it had when it was backed up.
                     ShardNumber = 0,
-                    // Node Tag
+                    // Node Tag - which node to restore to
                     NodeTag = "A",
+                    // Backups Folder Name
                     FolderName = "E:/RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
                 });
 
@@ -140,11 +141,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 // First shard
                 restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
                 {
-                    // Shard Number
+                    // Shard Number - which shard to restore to.
                     // Please make sure that each shard is given 
                     // the same number it had when it was backed up.
                     ShardNumber = 0,
+                    // Node Tag - which node to restore to
                     NodeTag = "A",
+                    // Backups Folder Name
                     FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
                 });
 
@@ -201,11 +204,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 // First shard
                 restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
                 {
-                    // Shard Number
+                    // Shard Number - which shard to restore to.
                     // Please make sure that each shard is given 
                     // the same number it had when it was backed up.
                     ShardNumber = 0,
+                    // Node Tag - which node to restore to
                     NodeTag = "A",
+                    // Backups Folder Name
                     FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
                 });
 
@@ -261,11 +266,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 // First shard
                 restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
                 {
-                    // Shard Number
+                    // Shard Number - which shard to restore to.
                     // Please make sure that each shard is given 
                     // the same number it had when it was backed up.
                     ShardNumber = 0,
+                    // Node Tag - which node to restore to
                     NodeTag = "A",
+                    // Backups Folder Name
                     FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
                 });
 
