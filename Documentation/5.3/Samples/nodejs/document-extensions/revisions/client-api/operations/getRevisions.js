@@ -27,7 +27,7 @@ async function getRevisions() {
         {
             // Execute the get revisions operation
             // Pass parameters with document id, start & page size
-            const revisions = await documentStore.pperations.send(
+            const revisions = await documentStore.operations.send(
                 new GetRevisionsOperation("Companies/1-A", parameters));
             
             {
