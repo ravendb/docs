@@ -14,6 +14,10 @@
   is required from clients when accessing a sharding-capable server 
   or a sharded database.  
     * The client API is **unchanged** under a sharded database.  
+      Clients of RavenDB versions older than 6.0 (that do not 
+      provide sharding) can seamlessly connect a sharded database,
+      without making any adaptations or even knowing that the 
+      database they connect is sharded.  
     * Particular modifications in RavenDB features under a sharded 
       database are documented in detail in feature-specific articles.  
 
@@ -150,7 +154,7 @@ The number of documents and the amount of data stored in each bucket may vary.
 
 The number of buckets allocated for the whole database is fixed, always remaining 
 **1,048,576** (1024 times 1024).  
-Each shard is assigned with a range of buckets from this overall portion, in which 
+Each shard is assigned a range of buckets from this overall portion, in which 
 documents can be stored.  
 
 !["Buckets Allocation"](images/overview_buckets-allocation.png "Buckets Allocation")
