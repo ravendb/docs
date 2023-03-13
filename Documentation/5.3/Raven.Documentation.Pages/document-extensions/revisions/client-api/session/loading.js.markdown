@@ -7,7 +7,7 @@
 * Using the Advanced Session methods you can __retrieve revisions and their metadata__  
   from the database for the specified document.  
 
-* These methods can also be executed lazily, see [get revisions lazily](../../../../client-api/session/how-to/perform-operations-lazily#getRevisons).
+* These methods can also be executed lazily, see [get revisions lazily](../../../../client-api/session/how-to/perform-operations-lazily#getRevisions).
 
 * In this page:
 
