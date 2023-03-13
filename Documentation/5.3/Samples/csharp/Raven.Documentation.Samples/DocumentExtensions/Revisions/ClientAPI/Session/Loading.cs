@@ -19,6 +19,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                 {
                     #region example_1_sync
                     // Get revisions for document 'orders/1-A'
+                    // Revisions will be ordered by most recent revision first
                     List<Order> orderRevisions = session
                         .Advanced
                         .Revisions
@@ -30,6 +31,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                 {
                     #region example_1_async
                     // Get revisions for document 'orders/1-A'
+                    // Revisions will be ordered by most recent revision first
                     List<Order> orderRevisions = await asyncSession
                         .Advanced
                         .Revisions
@@ -79,48 +81,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
             {
                 using (var session = store.OpenSession())
                 {
-                    #region example_3.1_sync
-                    // Get revisions metadata 
-                    List<MetadataAsDictionary> revisionsMetadata = session
-                        .Advanced
-                        .Revisions
-                        .GetMetadataFor("orders/1-A", start: 0, pageSize: 25);
-
-                    // Get the revision by its change vector
-                    var changeVector = revisionsMetadata[0].GetString(Constants.Documents.Metadata.ChangeVector);
-                    
-                    Order revision = session
-                        .Advanced
-                        .Revisions
-                        .Get<Order>(changeVector);
-                    #endregion
-                }
-
-                using (var asyncSession = store.OpenAsyncSession())
-                {
-                    #region example_3.1_async
-                    // Get revisions metadata 
-                    List<MetadataAsDictionary> revisionsMetadata = await asyncSession
-                        .Advanced
-                        .Revisions
-                        .GetMetadataForAsync("orders/1-A", start: 0, pageSize: 25);
-
-                    // Get the revision by its change vector
-                    var changeVector = revisionsMetadata[0].GetString(Constants.Documents.Metadata.ChangeVector);
-                    
-                    Order revision = await asyncSession
-                        .Advanced
-                        .Revisions
-                        .GetAsync<Order>(changeVector);
-                    #endregion
-                }
-            }
-
-            using (var store = new DocumentStore())
-            {
-                using (var session = store.OpenSession())
-                {
-                    #region example_3.2_sync
+                    #region example_3_sync
                     // Get a revision by its creation time
                     Order revisionFromLastYear = session
                         .Advanced
@@ -133,7 +94,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
-                    #region example_3.2_async
+                    #region example_3_async
                     // Get a revision by its creation time
                     Order revisionFromLastYear = await asyncSession
                         .Advanced
@@ -141,6 +102,49 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                         // If no revision was created at the specified time,
                         // then the first revision that precedes it will be returned
                         .GetAsync<Order>("orders/1-A", DateTime.Now.AddYears(-1));
+                    #endregion
+                }
+            }
+
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region example_4_sync
+                    // Get revisions metadata 
+                    List<MetadataAsDictionary> revisionsMetadata = session
+                        .Advanced
+                        .Revisions
+                        .GetMetadataFor("orders/1-A", start: 0, pageSize: 25);
+
+                    // Get the change-vector from the metadata
+                    var changeVector = revisionsMetadata[0].GetString(Constants.Documents.Metadata.ChangeVector);
+                    
+                    // Get the revision by its change-vector
+                    Order revision = session
+                        .Advanced
+                        .Revisions
+                        .Get<Order>(changeVector);
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region example_4_async
+                    // Get revisions metadata 
+                    List<MetadataAsDictionary> revisionsMetadata = await asyncSession
+                        .Advanced
+                        .Revisions
+                        .GetMetadataForAsync("orders/1-A", start: 0, pageSize: 25);
+
+                    // Get the change-vector from the metadata
+                    var changeVector = revisionsMetadata[0].GetString(Constants.Documents.Metadata.ChangeVector);
+                    
+                    // Get the revision by its change-vector
+                    Order revision = await asyncSession
+                        .Advanced
+                        .Revisions
+                        .GetAsync<Order>(changeVector);
                     #endregion
                 }
             }
@@ -157,16 +161,15 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
             #endregion
 
             #region syntax_3
+            T Get<T>(string id, DateTime date);
+            #endregion
+            
+            #region syntax_4
             // Get a revision by its change vector
             T Get<T>(string changeVector);
 
             // Get multiple revisions by their change vectors
             Dictionary<string, T> Get<T>(IEnumerable<string> changeVectors);
-
-            // Get a revision by its creation time
-            // If no revision was created at the specified time,
-            // then the first revision that precedes it will be returned
-            T Get<T>(string id, DateTime date);
             #endregion
         }
     }

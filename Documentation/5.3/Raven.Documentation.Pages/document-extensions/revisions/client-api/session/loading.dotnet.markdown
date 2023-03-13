@@ -5,7 +5,7 @@
 {NOTE: }
 
 * Using the Advanced Session methods you can __retrieve revisions and their metadata__  
-  from the database for the specified document:  
+  from the database for the specified document.  
 
 * These methods can also be executed lazily, see [get revisions lazily](../../../../client-api/session/how-to/perform-operations-lazily#getRevisons).   
   
@@ -15,7 +15,9 @@
 
   * [Get revisions metadata](../../../../document-extensions/revisions/client-api/session/loading#get-revisions-metadata)  
 
-  * [Get revisions by change vector or by creation time](../../../../document-extensions/revisions/client-api/session/loading#get-revisions-by-change-vector-or-by-creation-time)  
+  * [Get revisions by creation time](../../../../document-extensions/revisions/client-api/session/loading#get-revisions-by-creation-time)  
+  
+  * [Get revisions by change vector](../../../../document-extensions/revisions/client-api/session/loading#get-revisions-by-change-vector)  
 
 
 {NOTE/}
@@ -42,8 +44,8 @@ __Syntax__:
 | Parameters | Type | Description |
 | - | - |- |
 | **id** | `string` | Document ID for which to retrieve revisions |
-| **start** | `int` | First revision to retrieve |
-| **pageSize** | `int` | Number of revisions to retrieve per page |
+| **start** | `int` | First revision to retrieve, used for paging |
+| **pageSize** | `int` | Number of revisions to retrieve per results page |
 
 {PANEL/}
 
@@ -67,31 +69,22 @@ __Syntax__:
 | Parameters | Type | Description |
 | - | - |- |
 | **id** | `string` | Document ID for which to retrieve revisions' metadata |
-| **start** | `int` | First revision to retrieve metadata for |
-| **pageSize** | `int` | Number of revisions to retrieve per page |
+| **start** | `int` | First revision to retrieve metadata for, used for paging |
+| **pageSize** | `int` | Number of revisions to retrieve per results page |
 
 {PANEL/}
 
-{PANEL: Get revisions by change vector or by creation time}
+{PANEL: Get revisions by creation time}
 
-* Use `Get` to:  
-  * Retrieve a revision or multiple revisions by their **change vectors**  
-  * Retrieve a revision by its **creation time**  
+* Use `Get` to retrieve a revision by its **creation time**.
 
 ---
 
-__By change vector__:
+__Example__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync example_3.1_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
-{CODE-TAB:csharp:Async example_3.1_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
-{CODE-TABS/}
-
-__By creation time__:  
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync example_3.2_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
-{CODE-TAB:csharp:Async example_3.2_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+{CODE-TAB:csharp:Sync example_3_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+{CODE-TAB:csharp:Async example_3_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
 {CODE-TABS/}
 
 ---
@@ -102,10 +95,32 @@ __Syntax__:
 
 | Parameter | Type | Description |
 | - | - | - |
-| **changeVector** | `string` | A revision's change vector |
-| **changeVectors**| `IEnumerable<string>` | revisions' change vectors |
-| **date**| `DateTime ` | A revision's creation time |
 | **id** | `string` | Document ID for which to retrieve the revision by creation time |
+| **date** | `DateTime ` | The revision's creation time |
+
+{PANEL/}
+
+{PANEL: Get revisions by change vector}
+
+* Use `Get` to retrieve a revision or multiple revisions by their **change vectors**.  
+
+---
+
+__Example__:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync example_4_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+{CODE-TAB:csharp:Async example_4_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+{CODE-TABS/}
+
+__Syntax__:
+
+{CODE syntax_4@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+
+| Parameter | Type | Description |
+| - | - | - |
+| **changeVector** | `string` | The revision's change vector |
+| **changeVectors** | `IEnumerable<string>` | Change vectors of multiple revisions |
 
 {PANEL/}
 

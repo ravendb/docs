@@ -1,71 +1,129 @@
-# Revisions: Loading Revisions
+# Get Revisions
 
-There are a few methods that allow you to download revisions from a database:   
+---
 
-- **session.advanced.revisions.getFor()** 
-    - can be used to return all previous revisions for a specified document   
-- **session.advanced.revisions.getMetadataFor()**
-    - can be used to return metadata of all previous revisions for a specified document  
-- **session.advanced.revisions.get()**
-    - can be used to retrieve a revision(s) using a change vector(s)  
+{NOTE: }
 
-{PANEL:getFor}
+* Using the Advanced Session methods you can __retrieve revisions and their metadata__  
+  from the database for the specified document.  
 
-### Syntax
+* These methods can also be executed lazily, see [get revisions lazily](../../../../client-api/session/how-to/perform-operations-lazily#getRevisons).
+
+* In this page:
+
+    * [Get all revisions](../../../../document-extensions/revisions/client-api/session/loading#get-all-revisions)  
+
+    * [Get revisions metadata](../../../../document-extensions/revisions/client-api/session/loading#get-revisions-metadata)  
+
+    * [Get revisions by creation time](../../../../document-extensions/revisions/client-api/session/loading#get-revisions-by-creation-time)  
+   
+    * [Get revisions by change vector](../../../../document-extensions/revisions/client-api/session/loading#get-revisions-by-change-vector)  
+
+{NOTE/}
+
+---
+
+{PANEL: Get all revisions}
+
+* Use `getFor` to retrieve all of the revisions currently kept for the specified document.
+
+---
+
+__Example__:
+
+{CODE:nodejs example_1@document-extensions\revisions\client-api\session\loading.js /}
+
+__Syntax__:
 
 {CODE:nodejs syntax_1@document-extensions\revisions\client-api\session\loading.js /}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **id** | string | document ID for which the revisions will be returned for |
-| **options** | object | |
-| &nbsp;&nbsp;*start* | number | used for paging - results start page  |
-| &nbsp;&nbsp;*pageSize* | number | used for paging - size of the results page |
-| &nbsp;&nbsp;*documentType* | class | type of results |
-| **callback** | error-first callback | results callback |
+| Parameters | Type | Description |
+| - | - |- |
+| **id** | string | Document ID for which to retrieve revisions |
+| **options** | options object | Used for paging |
 
-### Example
+{CODE:nodejs syntax_5@document-extensions\revisions\client-api\session\loading.js /}
 
-{CODE:nodejs example_1_sync@document-extensions\revisions\client-api\session\loading.js /}
+| Return value | |
+| - | - |
+| `Promise` | A `Promise` resolving to the document's revisions. <br>Revisions will be ordered by most recent revision first. |
 
 {PANEL/}
 
-{PANEL:getMetadataFor}
+{PANEL: Get revisions metadata}
 
-### Syntax
+* Use `getMetadataFor` to retrieve the metadata for all the revisions currently kept for the specified document.
 
-{CODE:nodejs syntax_2@document-extensions\revisions\client-api\session\loading.js /}
+---
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **id** | string | document ID for which the revisions will be returned for |
-| **options** | object | |
-| &nbsp;&nbsp;*start* | number | used for paging - results start page  |
-| &nbsp;&nbsp;*pageSize* | number | used for paging - size of the results page |
-| &nbsp;&nbsp;*documentType* | class | type of results |
-| **callback** | error-first callback | results callback |
+__Example__:
 
-### Example
+{CODE:nodejs example_2@document-extensions\revisions\client-api\session\loading.js /}
 
-{CODE:nodejs example_2_sync@document-extensions\revisions\client-api\session\loading.js /}
+__Syntax__:
+
+{CODE:nodejs syntax_1@document-extensions\revisions\client-api\session\loading.js /}
+
+| Parameters | Type | Description |
+| - | - |- |
+| **id** | string | Document ID for which to retrieve revisions' metadata |
+| **options** | options object | Used for paging |
+
+{CODE:nodejs syntax_5@document-extensions\revisions\client-api\session\loading.js /}
+
+| Return value | |
+| - | - |
+| `Promise` | A `Promise` resolving to a list of the revisions metadata. |
 
 {PANEL/}
 
-{PANEL:get}
+{PANEL: Get revisions by creation time}
 
-### Syntax
+* Use `get` to retrieve a revision by its **creation time**.
+
+---
+
+__Example__:
+
+{CODE:nodejs example_3@document-extensions\revisions\client-api\session\loading.js /}
+
+__Syntax__:
 
 {CODE:nodejs syntax_3@document-extensions\revisions\client-api\session\loading.js /}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **changeVector** or **changeVectors**| string or string[] | one or many revision change vectors |
-| **documentType** | class | type of results |
-| **callback** | error-first callback | results callback |
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | string | Document ID for which to retrieve the revision by creation time |
+| **date** | string | The revision's creation time |
 
-### Example
+| Return value | |
+| - | - |
+| `Promise` | A `Promise` resolving to the revision.<br>If no revision was created at the specified time, then the first revision that precedes it will be returned. |
 
-{CODE:nodejs example_3_sync@document-extensions\revisions\client-api\session\loading.js /}
+{PANEL/}
+
+{PANEL: Get revisions by change vector}
+
+* Use `get` to retrieve a revision or multiple revisions by their **change vectors**.
+
+---
+
+__Example__:
+
+{CODE:nodejs example_4@document-extensions\revisions\client-api\session\loading.js /}
+
+__Syntax__:
+
+{CODE:nodejs syntax_4@document-extensions\revisions\client-api\session\loading.js /}
+
+| Parameter | Type | Description |
+| - | - | - |
+| **changeVector** | string | The revision's change vector |
+| **changeVectors** | string[] | Change vectors of multiple revisions |
+
+| Return value | |
+| - | - |
+| `Promise` | A `Promise` resolving to the matching revision(s). |
 
 {PANEL/}
 
@@ -73,18 +131,18 @@ There are a few methods that allow you to download revisions from a database:
 
 ### Document Extensions
 
-* [Document Revisions Overview](../../../../document-extensions/revisions/overview)  
-* [Revert Revisions](../../../../document-extensions/revisions/revert-revisions)  
-* [Revisions and Other Features](../../../../document-extensions/revisions/revisions-and-other-features)  
+* [Document Revisions Overview](../../../../document-extensions/revisions/overview)
+* [Revert Revisions](../../../../document-extensions/revisions/revert-revisions)
+* [Revisions and Other Features](../../../../document-extensions/revisions/revisions-and-other-features)
 
 ### Client API
 
-* [Revisions: API Overview](../../../../document-extensions/revisions/client-api/overview)  
-* [Operations: Configuring Revisions](../../../../document-extensions/revisions/client-api/operations/configure-revisions)  
-* [Session: Including Revisions](../../../../document-extensions/revisions/client-api/session/including)  
-* [Session: Counting Revisions](../../../../document-extensions/revisions/client-api/session/counting)  
+* [Revisions: API Overview](../../../../document-extensions/revisions/client-api/overview)
+* [Operations: Configuring Revisions](../../../../document-extensions/revisions/client-api/operations/configure-revisions)
+* [Session: Including Revisions](../../../../document-extensions/revisions/client-api/session/including)
+* [Session: Counting Revisions](../../../../document-extensions/revisions/client-api/session/counting)
 
 ### Studio
 
-* [Settings: Document Revisions](../../../../studio/database/settings/document-revisions)  
+* [Settings: Document Revisions](../../../../studio/database/settings/document-revisions)
 * [Document Extensions: Revisions](../../../../studio/database/document-extensions/revisions)  
