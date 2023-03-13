@@ -1,17 +1,16 @@
-# Revisions API Overview
+# Revisions Client API Overview
 
 ---
 
 {NOTE: }
 
-* The Revisions client API includes a set of session methods and store operations 
-  that you can use to [configure](../../../document-extensions/revisions/overview#revisions-configuration), 
-  manage and use document revisions.  
-* Learn about revisions here: [Docuument Revisions Overview](../../../document-extensions/revisions/overview)  
+* For a general revisions overview see: [Revisions Overview](../../../document-extensions/revisions/overview).  
 
-* In this page:  
-  * [Revisions Store Operations](../../../document-extensions/revisions/client-api/overview#revisions-store-operations)  
-  * [Revisions Session methods](../../../document-extensions/revisions/client-api/overview#revisions-session-methods)  
+* Document revisions can be managed from the [Studio](../../../studio/database/settings/document-revisions) or from the __Client API__.  
+
+* From the __Client API__, revisions can be configured and managed by:  
+    * [Store Operations](../../../document-extensions/revisions/client-api/overview#revisions-store-operations)  
+    * [Session Methods](../../../document-extensions/revisions/client-api/overview#revisions-session-methods)  
 
 {NOTE/}
 
@@ -19,38 +18,39 @@
 
 {PANEL: Revisions Store Operations}
 
-* [Creating a Revisions Configuration](../../../document-extensions/revisions/client-api/operations/configure-revisions)  
-   * [ConfigureRevisionsOperation](../../../document-extensions/revisions/client-api/operations/configure-revisions#section)  
-     Use this operation to apply a 
-     [Revisions configuration](../../../document-extensions/revisions/overview#revisions-configuration) 
-     to your database.  
-* [Conflict Revisions Configuration](../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration)  
-  Use this operation to manage the creation and purging of revisions for conflicting documents.  
-* [Getting and Counting Revisions](../../../document-extensions/revisions/client-api/operations/get-revisions)  
-   * [GetRevisionsOperation](../../../document-extensions/revisions/client-api/operations/get-revisions#getrevisionsoperation)  
-     Use this operation to Get and Count Revisions.  
+* [ConfigureRevisionsOperation](../../../document-extensions/revisions/client-api/operations/configure-revisions) - apply a revision configuration
+* [ConfigureRevisionsForConflictsOperation](../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration) - manage conflicting documents revisions
+* [GetRevisionsOperation](../../../document-extensions/revisions/client-api/operations/get-revisions) - get revisions
 
 {PANEL/}
 
 {PANEL: Revisions Session methods}
 
-* [Loading revisions and their metadata](../../../document-extensions/revisions/client-api/session/loading)  
-   * [GetFor](../../../document-extensions/revisions/client-api/session/loading#getfor)  
-     Use this method to retrieve all the revisions that are kept for a specified document.  
-   * [GetMetadataFor](../../../document-extensions/revisions/client-api/session/loading#getmetadatafor)  
-     Use this method to retrieve metadata for all revisions kept for a specified document.  
-   * [Get](../../../document-extensions/revisions/client-api/session/loading#get)  
-     Use this method to retrieve revisions by change vector or creation time.  
-   * Read [here](../../../client-api/session/how-to/perform-operations-lazily#revisions) 
-     about the **lazy versions** of `GetFor`, `GetMetadataFor`, and `Get`.  
-* [Counting Revisions](../../../document-extensions/revisions/client-api/session/counting)  
-   * [GetCountFor](../../../document-extensions/revisions/client-api/session/counting#getcountfor)  
-     Use this method to count the revisions kept for a document.  
-* [Including revisions](../../../document-extensions/revisions/client-api/session/including)  
-   * [IncludeRevisions](../../../document-extensions/revisions/client-api/session/including#section)  
-     Use this method to include document revisions when retrieving documents via `Session.Load` or `Session.Query`.  
-   * [RawQuery](../../../document-extensions/revisions/client-api/session/including#including-revisions-with-session.advanced.rawquery)  
-     Learn here how to include revisions with documents retrieved via raw queries.  
+* __Get revisions__:  
+
+  * [GetFor](../../../document-extensions/revisions/client-api/session/loading#getfor) - retrieve all revisions kept for a document.
+  * [GetMetadataFor](../../../document-extensions/revisions/client-api/session/loading#getmetadatafor) - retrieve metadata for all revisions kept for a document.
+  * [Get](../../../document-extensions/revisions/client-api/session/loading#get) - retrieve revisions by change vector or creation time.
+  * Read [here](../../../client-api/session/how-to/perform-operations-lazily#getRevisions) about __lazy versions__ of `GetFor`, `GetMetadataFor`, and `Get`.
+
+---
+
+* __Include revisions__:  
+
+  * [IncludeRevisions](../../../document-extensions/revisions/client-api/session/including#section) - include revisions when retrieving documents via `Session.Load` or `Session.Query`.  
+  * [RawQuery](../../../document-extensions/revisions/client-api/session/including#including-revisions-with-session.advanced.rawquery) - Learn how to include revisions when retrieving documents via raw queries.
+
+---
+
+* __Count revisions__:  
+
+  * [GetCountFor](../../../document-extensions/revisions/client-api/session/counting#getcountfor) - get the number of revisions kept for a document.  
+
+---
+
+* __Force revision creation__:
+
+    * [ForceRevisionCreationFor](../../../document-extensions/revisions/overview#force-revision-creation-via-api) - create a revision even if revision configuration is disabled.
 
 {PANEL/}
 
