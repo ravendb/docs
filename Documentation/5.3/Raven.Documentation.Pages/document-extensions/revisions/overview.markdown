@@ -25,7 +25,7 @@
     a backup file, or conduct a full-scale audit of your data.  
     {INFO/}
 
-* Revisions and their configuration can be managed via API methods or using Studio.  
+* Revisions and their configuration can be managed via Client API methods or using Studio.  
 
 * In this page:  
   * [Revisions Configuration](../../document-extensions/revisions/overview#revisions-configuration)  
@@ -53,7 +53,7 @@ The Revisions configuration enables or disables the creation and purging
 of revisions for documents, and optionally limits the number of revisions 
 kept per document.  
 
-There is a single Revisions configuration per database, stored in the database record.  
+The revision configurations are stored in the database record.  
 
 {NOTE: Conflict Revisions}
 Revisions created for **conflicting documents** are a special case, that is 
@@ -77,24 +77,26 @@ The Revisions configuration is comprised of **Default Settings** and/or
 
 * The **default settings** apply to all the documents that a collection-specific 
   configuration is not defined for.  
-* **Collection-specific** configurations apply only to documents of the collections 
-  they are defined for, overriding the default settings for these collections.  
+* **Collection-specific** configurations apply only to documents of the collections they are defined for,  
+  overriding the default settings for these collections.  
   {NOTE: }
   If you apply no default settings, Revisions will be **disabled** for any 
   collection that a collection-specific configuration is not defined for.  
   {NOTE/}
 
+---
+
 #### Defining a Revisions Configuration
 
-You can apply a Revisions configuration using Studio or the API.  
+You can apply a Revisions configuration using Studio or the Client API.  
 
-* Via Studio:
+* Via Studio:  
    * Manage the Revisions configuration via Studio using the Studio Settings 
      [Document Revisions](../../studio/database/settings/document-revisions) 
      page.  
    * Inspect and manage the revisions created for each document using Studio's 
      Document View [Revisions tab](../../studio/database/document-extensions/revisions#revisions-tab).  
-* Via API:
+* Via Client API:  
   [Read here](../../document-extensions/revisions/client-api/operations/configure-revisions) 
   how to define and apply a Revisions configuration using the `ConfigureRevisionsOperation`
   Store operation.  
@@ -106,14 +108,14 @@ You can apply a Revisions configuration using Studio or the API.
 A Revisions configuration defines -  
 
 * _Whether to Enable or Disable Revisions_.  
-   * If the Revisions feature is **Enabled** for a collection, creating, modifying, 
-     or deleting any document from this collection will trigger the automatic creation 
+   * If the Revisions feature is **Enabled** for a collection,  
+     creating, modifying, or deleting any document from this collection will trigger the automatic creation  
      of a new document revision and optionally the Purging of existing revisions for 
      the document.  
-   * If the Revisions feature is **Disabled** for a collection, RavenDB will **not** 
-     automatically Create or Purge revisions for documents of this collection.  
+   * If the Revisions feature is **Disabled** for a collection,  
+     RavenDB will **not** automatically Create or Purge revisions for documents of this collection.  
 * _Whether to Limit the number of revisions that can be kept per document_.  
-  RavenDB will only purge revisions if they exceed the limits you set here.  
+  RavenDB will only purge revisions if they exceed the limits you set.
 * [Learn more here](../../document-extensions/revisions/client-api/operations/configure-revisions#section-2) 
   about the available configuration options.  
 
@@ -195,7 +197,7 @@ Let's play with revisions a little to get a taste of its advantages.
    
 5. **Delete the document**.  
    Though you deleted the document, its **audit trail** is **not lost**: 
-   all revisions were moved to the [Revisions Bin](../../studio/database/document-extensions/revisions#revisions-bin), 
+   all revisions were moved to the [Revisions Bin](../../studio/database/document-extensions/revisions#revisions-bin),  
    including a new revision (called "Delete-Revision"), created to indicate 
    that the document was deleted.  
 
@@ -205,7 +207,9 @@ Let's play with revisions a little to get a taste of its advantages.
     
       ![Revisions Bin](images\revisions_revisions-bin.png "Revisions Bin")
 
-6. **Create a document with the same ID as the document you deleted**.  
+6. **Restore the document**.  
+   To restore the document after deleting it from one of its revisions,  
+   create a document with the same ID as the document you deleted.  
    The revisions of the deleted document will be **restored** from the 
    revisions bin and added to the new document. Opening the document's 
    Revisions tab will display the whole audit trail, including the 
@@ -220,13 +224,12 @@ Let's play with revisions a little to get a taste of its advantages.
 
 ### Revisions Documents Storage  
 
-* The creation of a document revision stores a full version of the modified document 
-  in the revisions storage, in the same **blittable JSON document** format as that of 
-  regular documents.  
+* The creation of a document revision stores a full version of the modified document in the revisions storage,  
+  in the same **blittable JSON document** format as that of regular documents.  
 
 * **Revisions Compression**  
-   * individual fields are compressed as they are compressed in regular documents: any text 
-     field of more than 128 bytes is compressed.  
+   * individual fields are compressed as they are compressed in regular documents:  
+     any text field of more than 128 bytes is compressed.  
    * Revisions are compressed by default.  
      Learn [here](../../server/configuration/database-configuration#databases.compression.compressrevisionsdefault) 
      how to toggle this database option on and off.  
@@ -244,18 +247,17 @@ Read [here](../../document-extensions/revisions/revisions-and-other-features#rev
 
 {PANEL: Force Revision Creation}
 
-So far we've discussed the automatic creation of revisions when the feature is enabled. 
-But you can also **force the creation** of a document revision, whether the feature is 
-enabled or not.  
-This is useful when, for example, you choose to disable Revisions but 
-still want to create a revision for a specific document, e.g. to take a snapshot of the 
-document as a precaution before editing it.  
+So far we've discussed the automatic creation of revisions when the feature is enabled.  
+But you can also **force the creation** of a document revision, whether the feature is enabled or not.  
+This is useful when you choose to disable Revisions but still want to create a revision for a specific document,  
+e.g. to take a snapshot of the document as a precaution before editing it.  
 
 * You can force the creation of a revision via Studio or using the 
   [ForceRevisionCreationFor](../../document-extensions/revisions/overview#force-revision-creation-via-api) 
   API method.  
 * A revision **will** be created even if the Revisions feature is disabled for the document's collection.  
-* A revision **will** be created even if the document was not modified (unless the document has revisions and the latest revision contains the current document contents).  
+* A revision **will** be created even if the document was not modified  
+  (unless the document has revisions and the latest revision contains the current document contents).  
 
 ---
 
