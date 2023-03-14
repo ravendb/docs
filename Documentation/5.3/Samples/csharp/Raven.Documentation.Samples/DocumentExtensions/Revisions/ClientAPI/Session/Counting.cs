@@ -1,40 +1,37 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Raven.Client;
+﻿using System.Threading.Tasks;
 using Raven.Client.Documents;
-using Raven.Client.Json;
-using Raven.Documentation.Samples.Orders;
 
-namespace Raven.Documentation.Samples.ClientApi.Session.Revisions
+namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Session
 {
-    public class Loading
+    public class getCount
     {
-        private interface IFoo
-        {
-            #region syntax
-            long GetCountFor(string id);
-            #endregion
-        }
-
         public async Task Samples()
         {
             using (var store = new DocumentStore())
             {
-                var CompanyProfile = new Company { Name = "Persian Rugs" };
                 using (var session = store.OpenSession())
                 {
-                    #region example_sync
-                    var revisionsCount = session.Advanced.Revisions.GetCountFor(CompanyProfile.Id);
+                    #region getCount
+                    // Get the number of revisions for document 'companies/1-A"
+                    var revisionsCount = session.Advanced.Revisions.GetCountFor("companies/1-A");
                     #endregion
                 }
 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
-                    #region example_async
-                    var revisionsCount = await asyncSession.Advanced.Revisions.GetCountForAsync(CompanyProfile.Id);
+                    #region getCount_async
+                    // Get the number of revisions for document 'companies/1-A"
+                    var revisionsCount = await asyncSession.Advanced.Revisions.GetCountForAsync("companies/1-A");
                     #endregion
                 }
             }
+        }
+        
+        private interface IFoo
+        {
+            #region syntax
+            long GetCountFor(string id);
+            #endregion
         }
     }
 }

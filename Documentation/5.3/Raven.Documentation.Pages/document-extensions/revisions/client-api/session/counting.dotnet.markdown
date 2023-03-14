@@ -1,39 +1,39 @@
-# Revisions: Counting Revisions
+# Count Revisions
 
 ---
 
 {NOTE: }
 
-* A document's revisions can be counted using the `session.Advanced.Revisions.GetCountFor` method.  
+* You can get the number of revisions a document has by using the advance session method `GetCountFor`.
 
 * In this page:  
-   * [`GetCountFor`](../../../../document-extensions/revisions/client-api/session/counting#getcountfor)  
-   * [Usage Sample](../../../../document-extensions/revisions/client-api/session/counting#usage-sample)  
+   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/get-revisions-count)
+   * [syntax](../../../../document-extensions/revisions/client-api/session/counting#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL: `GetCountFor`}
+{PANEL: Get revisions count}
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync getCount@DocumentExtensions\Revisions\ClientAPI\Session\Counting.cs /}
+{CODE-TAB:csharp:Async getCount_async@DocumentExtensions\Revisions\ClientAPI\Session\Counting.cs /}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Syntax}
 
 {CODE syntax@DocumentExtensions\Revisions\ClientAPI\Session\Counting.cs /}
 
 | Parameter | Type | Description |
-| ------------- | ------------- | ------------- |
-| **id** | string | ID of the document whose revisions are counted |
+| - | - | - |
+| **id** | string | Document ID for which revisions are counted |
 
-* **Return Value**: `long`  
-  The number of revisions for this document  
-
-{PANEL/}
-
-{PANEL: Usage Sample}
-
-Get the number of revisions created for a document:
-{CODE-TABS}
-{CODE-TAB:csharp:Sync example_sync@DocumentExtensions\Revisions\ClientAPI\Session\Counting.cs /}
-{CODE-TAB:csharp:Async example_async@DocumentExtensions\Revisions\ClientAPI\Session\Counting.cs /}
-{CODE-TABS/}
+| Return value | |
+| - | - |
+| `long` | The number of revisions for the specified document |
 
 {PANEL/}
 
