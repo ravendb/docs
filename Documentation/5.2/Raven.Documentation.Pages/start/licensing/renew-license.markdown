@@ -50,7 +50,7 @@ __Or__:
 
 * Activate the new license key using the [configuration keys](../../start/licensing/activate-license#activate-license-with-configuration-keys).
 
-* Restart your server.  
+* Restart your server (needed only if any configuration key was changed).  
   {NOTE/}
 
 {PANEL/}
