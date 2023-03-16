@@ -1,4 +1,4 @@
-﻿# Revisions: Configuring Revisions
+﻿# Configure Revisions Operation
 
 ---
 

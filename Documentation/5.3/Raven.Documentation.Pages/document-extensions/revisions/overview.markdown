@@ -171,7 +171,7 @@ Let's play with revisions a little to get a taste of its advantages.
 
 1. **Enable Revisions** so we can experiment with the feature.  
    The Revisions feature can be enabled using [Studio](../../studio/database/settings/document-revisions) 
-   or the [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions#syntax) 
+   or the [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions) 
    Store operation.  
    
      ![Enable Revisions for the Users Collection](images\revisions_enable-revisions.png "Enable Revisions for the Users Collection")
