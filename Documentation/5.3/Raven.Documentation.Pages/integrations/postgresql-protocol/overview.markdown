@@ -5,7 +5,7 @@
   retrieve data from a RavenDB database.  
 
 * To use RavenDB as a PostgreSQL server you need -  
-   * a [license](../../studio/server/license-management) that enables the PostgreSQL Protocol.  
+   * a [license](../../start/licensing/licensing-overview) that enables the PostgreSQL Protocol.  
    * To explicitly enable PostgreSQL in your [settings](../../server/configuration/configuration-options).  
 
 * [Installing](../../start/installation/setup-wizard) RavenDB as 
@@ -37,7 +37,7 @@
 
      !["PostgreSQL and Power BI support"](images/about-license.png "PostgreSQL and Power BI support")
 
-* If your current license doesn't include the PostgreSQL support, acquire [one that does](../../studio/server/license-management).  
+* If your current license doesn't include the PostgreSQL support, acquire [one that does](https://ravendb.net/buy).  
 
 ---
 

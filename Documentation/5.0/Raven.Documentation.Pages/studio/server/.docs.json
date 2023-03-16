@@ -15,7 +15,13 @@
         "Path": "license-management.markdown",
         "Name": "License Management",
         "DiscussionId": "4af8df66-b4b6-4125-b6f4-b338e3d2d331",
-        "Mappings": []
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "start/licensing/licensing-overview"
+            }
+        ]
     },
     {
         "Path": "server-wide-backup.markdown",
