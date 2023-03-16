@@ -50,7 +50,7 @@ to functionality along with their values.
 ---
 
 ### Code Sample
-Use [GetMetadataFor](../../document-extensions/revisions/client-api/session/loading#getmetadatafor) 
+Use [GetMetadataFor](../../document-extensions/revisions/client-api/session/loading#get-revisions-metadata) 
 to get a document's revisions metadata, and extract counters' data from the metadata.
 {CODE revisions-and-other-features_counters@DocumentExtensions\Revisions\ClientAPI\Session\RevisionsAndOtherFeatures.cs /}
 

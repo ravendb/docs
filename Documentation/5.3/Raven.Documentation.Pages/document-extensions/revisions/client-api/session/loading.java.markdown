@@ -1,6 +1,6 @@
-# Revisions: Loading Revisions
+# Get Revisions
 
-There are a few methods that allow you to download revisions from a database:   
+There are a few methods that allow you to retrieve revisions from a database:   
 
 - **session.advanced().revisions().getFor** 
     - can be used to return all previous revisions for a specified document   

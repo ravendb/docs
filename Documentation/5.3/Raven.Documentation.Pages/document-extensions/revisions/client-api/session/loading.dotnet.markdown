@@ -1,116 +1,126 @@
-# Revisions: Loading Revisions
+# Get Revisions
 
 ---
 
 {NOTE: }
 
-You can retrieve revisions and their metadata from the database using these Session methods:  
+* Using the Advanced Session methods you can __retrieve revisions and their metadata__  
+  from the database for the specified document.  
 
-* `session.Advanced.Revisions.GetFor`  
-  Retrieves all the revisions currently kept for a specified document  
-* `session.Advanced.Revisions.GetMetadataFor`  
-  Retrieves the metadata for all the revisions currently kept for a specified document  
-* `session.Advanced.Revisions.Get`  
-  Retrieves a revision or multiple revisions by their change vectors  
-  Retrieves a revision by its creation time  
-
+* These methods can also be executed lazily, see [get revisions lazily](../../../../client-api/session/how-to/perform-operations-lazily#getRevisions).   
+  
 * In this page:  
-  * [`GetFor`](../../../../document-extensions/revisions/client-api/session/loading#getfor)  
-  * [`GetMetadataFor`](../../../../document-extensions/revisions/client-api/session/loading#getmetadatafor)  
-  * [`Get`](../../../../document-extensions/revisions/client-api/session/loading#get)  
+  
+  * [Get all revisions](../../../../document-extensions/revisions/client-api/session/loading#get-all-revisions)  
+
+  * [Get revisions metadata](../../../../document-extensions/revisions/client-api/session/loading#get-revisions-metadata)  
+
+  * [Get revisions by creation time](../../../../document-extensions/revisions/client-api/session/loading#get-revisions-by-creation-time)  
+  
+  * [Get revisions by change vector](../../../../document-extensions/revisions/client-api/session/loading#get-revisions-by-change-vector)  
+
 
 {NOTE/}
 
 ---
 
-{PANEL: `GetFor`}
+{PANEL: Get all revisions}
 
-Use `GetFor` to retrieve all of the revisions currently kept for a specified document.  
+* Use `GetFor` to retrieve all of the revisions currently kept for the specified document.
 
-### Syntax
+---
 
-{CODE syntax_1@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **id** | string | ID of the document whose revisions are retrieved |
-| **start** | int | First revision to retrieve |
-| **pageSize** | int | How many revisions to retrieve per page |
-
-#### Example
+__Example__:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync example_1_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
 {CODE-TAB:csharp:Async example_1_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
 {CODE-TABS/}
 
+__Syntax__:
+
+{CODE syntax_1@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+
+| Parameters | Type | Description |
+| - | - |- |
+| **id** | `string` | Document ID for which to retrieve revisions |
+| **start** | `int` | First revision to retrieve, used for paging |
+| **pageSize** | `int` | Number of revisions to retrieve per results page |
+
 {PANEL/}
 
-{PANEL: `GetMetadataFor`}
+{PANEL: Get revisions metadata}
 
-Use `GetMetadataFor` to retrieve the metadata for all the revisions currently kept 
-for a specified document.  
+* Use `GetMetadataFor` to retrieve the metadata for all the revisions currently kept for the specified document.
 
-### Syntax
+---
 
-{CODE syntax_2@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **id** | string | ID of the document whose revisions' metadata is retrieved |
-| **start** | int | First revision to retrieve metadata for |
-| **pageSize** | int | how many revisions to retrieve per page |
-
-#### Example
+__Example__:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync example_2_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
 {CODE-TAB:csharp:Async example_2_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
 {CODE-TABS/}
 
+__Syntax__:
+
+{CODE syntax_2@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+
+| Parameters | Type | Description |
+| - | - |- |
+| **id** | `string` | Document ID for which to retrieve revisions' metadata |
+| **start** | `int` | First revision to retrieve metadata for, used for paging |
+| **pageSize** | `int` | Number of revisions to retrieve per results page |
+
 {PANEL/}
 
-{PANEL: `Get`}
+{PANEL: Get revisions by creation time}
 
-Use `Get` to -  
+* Use `Get` to retrieve a revision by its **creation time**.
 
-* Retrieve a revision or multiple revisions by their **change vectors**  
-* Retrieve a revision by its **creation time**  
+---
 
-### Syntax
+__Example__:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync example_3_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+{CODE-TAB:csharp:Async example_3_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+{CODE-TABS/}
+
+---
+
+__Syntax__:
 
 {CODE syntax_3@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
 
 | Parameter | Type | Description |
-| ------------- | ------------- | ----- |
-| **changeVector** | `string` | a revision's change vectors |
-| **changeVectors**| `IEnumerable<string>` | revisions' change vectors |
-| **date**| `DateTime ` | a revision's creation time |
+| - | - | - |
+| **id** | `string` | Document ID for which to retrieve the revision by creation time |
+| **date** | `DateTime ` | The revision's creation time |
 
-#### Example I
-Get a revision by its change vector  
+{PANEL/}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync example_3.1_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
-{CODE-TAB:csharp:Async example_3.1_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
-{CODE-TABS/}
+{PANEL: Get revisions by change vector}
 
-#### Example II
-Get the metadata kept for a document's revisions, use it to find a revision's 
-change vector, and retrieve the revision using the change vector.  
+* Use `Get` to retrieve a revision or multiple revisions by their **change vectors**.  
+
+---
+
+__Example__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync example_3.2_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
-{CODE-TAB:csharp:Async example_3.2_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+{CODE-TAB:csharp:Sync example_4_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+{CODE-TAB:csharp:Async example_4_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
 {CODE-TABS/}
 
-#### Example III
-Get a revision by its creation time  
+__Syntax__:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync example_3.3_sync@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
-{CODE-TAB:csharp:Async example_3.3_async@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
-{CODE-TABS/}
+{CODE syntax_4@DocumentExtensions\Revisions\ClientAPI\Session\Loading.cs /}
+
+| Parameter | Type | Description |
+| - | - | - |
+| **changeVector** | `string` | The revision's change vector |
+| **changeVectors** | `IEnumerable<string>` | Change vectors of multiple revisions |
 
 {PANEL/}
 

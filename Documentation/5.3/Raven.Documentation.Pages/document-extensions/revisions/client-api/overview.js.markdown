@@ -28,9 +28,9 @@
 
 * __Get revisions__:
 
-    * [getFor](../../../document-extensions/revisions/client-api/session/loading#getfor) - retrieve all revisions kept for a document.
-    * [getMetadataFor](../../../document-extensions/revisions/client-api/session/loading#getmetadatafor) - retrieve metadata for all revisions kept for a document.
-    * [get](../../../document-extensions/revisions/client-api/session/loading#get) - retrieve revisions by change vector or creation time.
+    * [getFor](../../../document-extensions/revisions/client-api/session/loading#get-all-revisions) - retrieve all revisions kept for a document.
+    * [getMetadataFor](../../../document-extensions/revisions/client-api/session/loading#get-revisions-metadata) - retrieve metadata for all revisions kept for a document.
+    * [get](../../../document-extensions/revisions/client-api/session/loading#get-revisions-by-creation-time) - retrieve revisions by change vector or creation time.
     * Read [here](../../../client-api/session/how-to/perform-operations-lazily#getRevisions) about __lazy versions__ of `getFor`, `getMetadataFor`, and `get`.
 
 ---
