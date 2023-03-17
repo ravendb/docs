@@ -3,24 +3,88 @@
 
 {NOTE: }
 
-* 
+* Indexing a sharded database is performed locally, per shard.  
+  There is no multi-shard indexing process.  
+* Indexes use the same syntax in sharded and non-sharded databases.  
+* Most indexing features supported by non-sharded databases 
+  are also supported by sharded databases. Unsupported features are listed below.  
 
 * In this page:  
-  * [](../sharding/indexing#)  
-  * [](../sharding/indexing#)  
-  * [](../sharding/indexing#)  
+  * [Indexing](../sharding/indexing#indexing)  
+  * [Map Reduce Indexes on a Sharded Database](../sharding/indexing#map-reduce-indexes-on-a-sharded-database)  
+  * [Unsupported Indexing Features](../sharding/indexing#unsupported-indexing-features)  
 
 {NOTE/}
 
 ---
 
-{PANEL: }
+{PANEL: Indexing}
+
+Indexing and indexes under each shard are basically similar to indexing 
+and indexes on a non-sharded database.  
+As each shard holds and manages a unique dataset, indexing is performed 
+per-shard and indexes are stored only on the shard that created and uses them.  
+
+## Map Reduce Indexes on a Sharded Database
+
+A map reduce index will reduce the query results **twice**.  
+First, the results will be reduced by each shard.  
+Then, the results will be collected by the orchestrator from 
+all shards and reduced again.  
+
+{NOTE: }
+Note that this behavior is different from the behavior of 
+map reduce indexes in non-sharded databases, and may yield 
+different results.  
+Learn more about this topic [here](../sharding/querying#orderby-in-a-map-reduce-index).  
+{NOTE/}
+
+## Unsupported Indexing Features
+
+Unsupported or yet-unimplemented indexing features include: 
+
+* **Rolling index deploymeny**  
+  [Rolling index deploymeny](../indexes/rolling-index-deployment) 
+  is not supported on a sharded database.  
+* **Loading documents from other shards**  
+  Loading a document during indexing is possible only if the document 
+  resides on the indexed shard.  
+  Consider the below index, for example, that attempts to load a document.  
+  If the requested document is stored on a different shard, the load operation 
+  will be ignored.  
+  {CODE-BLOCK:csharp}
+  Map = products => from product in products
+                          select new Result
+                          {
+                              CategoryName = LoadDocument<Category>(product.Category).Name
+                          };
+  {CODE-BLOCK/}
+  {NOTE: }
+  You can make sure that documents share a bucket and a shard, and can 
+  therefore locate and load each other, using the 
+  [$ syntax](../sharding/overview#forcing-documents-to-share-a-bucket).  
+  {NOTE/}
+* **Map-Reduce Output Documents**  
+  Using [OutputReduceToCollection](../indexes/map-reduce-indexes#map-reduce-output-documents) 
+  to output the results of a map reduce index to a collection 
+  is not supported on a sharded database.  
+* [Custom Sorters](../indexes/querying/sorting#creating-a-custom-sorter) 
+  are not supported on a sharded database.  
+
+
+
 
 {PANEL/}
 
 ## Related articles
 
-**AAA**  
-[BBB](../)  
-[BBB](../)  
+**Indexing**  
+[Map-Reduce Indexes](../indexes/map-reduce-indexes)  
+[Indexing Basics](../indexes/indexing-basics)  
+[Rolling index deploymeny](../indexes/rolling-index-deployment)  
+[Map-Reduce Output Documents](../indexes/map-reduce-indexes#map-reduce-output-documents)  
+
+**Sharding**  
+[Force Docs Share a Bucket](../sharding/overview#forcing-documents-to-share-a-bucket)  
+[Sharding: Querying](../sharding/querying)  
 
