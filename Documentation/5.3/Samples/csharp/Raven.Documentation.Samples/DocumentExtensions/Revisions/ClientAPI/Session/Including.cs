@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Raven.Client;
 using Raven.Client.Documents;
+using Raven.Client.Json;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Session
@@ -73,7 +74,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                     // Get a revision by its creation time for a document from the query results
                     // It will be retrieved from the SESSION - no additional trip to the server is made
                     var revision = session
-                        .Advanced.Revisions.Get<Order>( orderDocuments[0].Id , creationTime);
+                        .Advanced.Revisions.Get<Order>(orderDocuments[0].Id, creationTime);
                     #endregion
                 }
 
@@ -119,21 +120,8 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                     // Get a revision by its creation time for a document from the query results
                     // It will be retrieved from the SESSION - no additional trip to the server is made
                     var revision = session
-                        .Advanced.Revisions.Get<Order>( orderDocuments[0].Id , creationTime);
+                        .Advanced.Revisions.Get<Order>(orderDocuments[0].Id, creationTime);
                     #endregion
-                }
-
-                string changeVector;
-                using (var session = store.OpenSession())
-                {
-                    var metadatas = session.Advanced.Revisions.GetMetadataFor("orders/1-A");
-
-                    changeVector = metadatas.First()
-                        .GetString(Constants.Documents.Metadata.ChangeVector);
-
-                    session.Advanced
-                        .Patch<Contract, string>("orders/1-A", x => x.RevisionChangeVector, changeVector);
-                    session.SaveChanges();
                 }
                 
                 using (var session = store.OpenSession())
@@ -142,7 +130,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                     // Query for documents with Raw Query:
                     var orderDocuments = session.Advanced
                          // Use 'include revisions' in the RQL   
-                        .RawQuery<Contract>("from Orders where ShipTo.Country = 'Canada' include revisions($p0, $p1)")
+                        .RawQuery<Contract>("from Contracts include revisions($p0, $p1)")
                          // Pass the path to the document properties containing the change vectors
                         .AddParameter("p0", "RevisionChangeVector")
                         .AddParameter("p1", "RevisionChangeVectors")
@@ -158,6 +146,26 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                         .Advanced.Revisions.Get<Contract>(orderDocuments[0].RevisionChangeVectors);
                     #endregion
                 }
+
+                #region include_7
+                using (var session = store.OpenSession())
+                {
+                    // Get the revisions' metadata for document 'contracts/1-A'
+                    List<MetadataAsDictionary> contractRevisionsMetadata =
+                        session.Advanced.Revisions.GetMetadataFor("contracts/1-A");
+
+                    // Get a change vector from the metadata
+                    string changeVector = 
+                        contractRevisionsMetadata.First().GetString(Constants.Documents.Metadata.ChangeVector);
+
+                    // Patch the document - add the revision change vector to a specific document property
+                    session.Advanced
+                        .Patch<Contract, string>("contracts/1-A", x => x.RevisionChangeVector, changeVector);
+
+                    // Save your changes
+                    session.SaveChanges();
+                }
+                #endregion
             }
         }
 
@@ -269,7 +277,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                     // Get a revision by its creation time for a document from the query results
                     // It will be retrieved from the SESSION - no additional trip to the server is made
                     var revision = await asyncSession
-                        .Advanced.Revisions.GetAsync<Order>( orderDocuments[0].Id , creationTime);
+                        .Advanced.Revisions.GetAsync<Order>(orderDocuments[0].Id, creationTime);
                     #endregion
                 }
                 
@@ -279,7 +287,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                     // Query for documents with Raw Query:
                     var orderDocuments = await asyncSession.Advanced
                         // Use 'include revisions' in the RQL   
-                        .AsyncRawQuery<Contract>("from Orders where ShipTo.Country = 'Canada' include revisions($p0, $p1)")
+                        .AsyncRawQuery<Contract>("from Contracts include revisions($p0, $p1)")
                         // Pass the path to the document properties containing the change vectors
                         .AddParameter("p0", "RevisionChangeVector")
                         .AddParameter("p1", "RevisionChangeVectors")
@@ -295,6 +303,26 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                         .Advanced.Revisions.GetAsync<Contract>(orderDocuments[0].RevisionChangeVectors);
                     #endregion
                 }
+                
+                #region include_7_async
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    // Get the revisions' metadata for document 'contracts/1-A'
+                    List<MetadataAsDictionary> contractRevisionsMetadata =  
+                        await asyncSession.Advanced.Revisions.GetMetadataForAsync("contracts/1-A");
+
+                    // Get a change vector from the metadata
+                    string changeVector = 
+                        contractRevisionsMetadata.First().GetString(Constants.Documents.Metadata.ChangeVector);
+
+                    // Patch the document - add the revision change vector to a specific document property
+                    asyncSession.Advanced
+                        .Patch<Contract, string>("contracts/1-A", x => x.RevisionChangeVector, changeVector);
+
+                    // Save your changes
+                    await asyncSession.SaveChangesAsync();
+                }
+                #endregion
             }
         }
         

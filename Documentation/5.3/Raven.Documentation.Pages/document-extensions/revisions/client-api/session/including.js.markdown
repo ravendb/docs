@@ -4,13 +4,13 @@
 
 {NOTE: }
 
-* Document revisions can be [included](../../../../client-api/how-to/handle-document-relationships#includes) in results when:  
-  * __Making a query__ (`Session.Query` / `Session.Advanced.RawQuery`)
-  * __Loading a document__ (`Session.Load`) from the server  
+* Document revisions can be included in results when:
+    * __Making a query__ (`session.query` / `session.advanced.rawQuery`)
+    * __Loading a document__ (`session.load`) from the server
 
 * The revisions to include can be specified by:
-  * __Creation time__
-  * __Change vector__
+    * __Creation time__
+    * __Change vector__
 
 * In this page:
   * [Overview:](../../../../document-extensions/revisions/client-api/session/including#overview)
@@ -75,8 +75,8 @@
 * To include single or multiple document revisions by their change vectors:   
 
   * When modifying the document, store its updated change vector in a property in the document.  
-    Can be done by [patching](../../../../document-extensions/revisions/client-api/session/including#patching-the-revision-change-vector) the document from the Client API or from the Studio.  
-  
+    Can be done by [patching](../../../../document-extensions/revisions/client-api/session/including#patching-the-revision-change-vector) the document from the Client API or from the Studio.
+
   * Specify the __path__ to this property when including the revisions, see examples below.  
   
   * e.g.:  
@@ -93,22 +93,16 @@
 
 __Include a revision by Time__
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync include_1@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
-{CODE-TAB:csharp:Async include_1_async@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
-{CODE-TABS/}
+{CODE:nodejs include_1@document-extensions\revisions\client-api\session\including.js /}
 
 ---
 
 __Include revisions by Change Vector__
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync include_2@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
-{CODE-TAB:csharp:Async include_2_async@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
-{CODE-TABS/}
+{CODE:nodejs include_2@document-extensions\revisions\client-api\session\including.js /}
 
 <a id="sample-document" />
-{CODE sample_document@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
+{CODE:nodejs sample_document@document-extensions\revisions\client-api\session\including.js /}
 
 {PANEL/}
 
@@ -116,19 +110,13 @@ __Include revisions by Change Vector__
 
 __Include revisions by Time__
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync include_3@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
-{CODE-TAB:csharp:Async include_3_async@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
-{CODE-TABS/}
+{CODE:nodejs include_3@document-extensions\revisions\client-api\session\including.js /}
 
 ---
 
 __Include revisions by Change Vector__
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync include_4@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
-{CODE-TAB:csharp:Async include_4_async@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
-{CODE-TABS/}
+{CODE:nodejs include_4@document-extensions\revisions\client-api\session\including.js /}
 
 * See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including#sample-document). 
 
@@ -136,10 +124,10 @@ __Include revisions by Change Vector__
 
 {PANEL: Include revisions when making a Raw Query}
 
-* Use `include revisions` in your RQL when making a raw query.   
+* Use `include revisions` in your RQL when making a raw query.  
 
 * Pass either the revision creation time or the path to the document property containing the change vector(s),  
-  RavenDB will figure out the parameter type passed and include the revisions accordingly.  
+  RavenDB will figure out the parameter type passed and include the revisions accordingly.    
 
 * Aliases (e.g. `from Users as U`) are Not supported by raw queries that include revisions.
 
@@ -147,19 +135,13 @@ __Include revisions by Change Vector__
 
 __Include revisions by Time__
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync include_5@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
-{CODE-TAB:csharp:Async include_5_async@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
-{CODE-TABS/}
+{CODE:nodejs include_5@document-extensions\revisions\client-api\session\including.js /}
 
 ---
 
 __Include revisions by Change Vector__
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync include_6@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
-{CODE-TAB:csharp:Async include_6_async@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
-{CODE-TABS/}
+{CODE:nodejs include_6@document-extensions\revisions\client-api\session\including.js /}
 
 * See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including#sample-document).
 
@@ -167,31 +149,27 @@ __Include revisions by Change Vector__
 
 {PANEL: Syntax}
 
-{CODE syntax@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
+{CODE:nodejs syntax@document-extensions\revisions\client-api\session\including.js /}
 
 | Parameters | Type | Description |
 | - | - | - |
-| __before__ | `DateTime` | <ul><li>Creation time of the revision to be included.</li><li>Pass local time or UTC.<br>The server will convert the param to UTC.</li><li>If no revision was created at this time then the first revision that precedes it is returned.</li></ul> |
-| __path__ | `Expression<Func<T, string>>` | <ul><li>The path to the document property that contains<br> __a single change vector__ of the revision to be included.</li></ul> |
-| __path__ | `Expression<Func<T, IEnumerable<string>>>` | <ul><li>The path to the document property that contains<br> __an array of change vectors__ of the revisions to be included.</li></ul> |
+| __before__ | `string` | <ul><li>Creation time of the revision to be included.</li><li>Pass local time or UTC.<br>The server will convert the param to UTC.</li><li>If no revision was created at this time then the first revision that precedes it is returned.</li></ul> |
+| __path__ | `string` | <ul><li>The path to the document property that contains <br> __a single change vector__ or __an array of change vectors__ <br>of the revisions to be included.</li></ul> |
 
 | Return value | |
 | - | - |
-| `TBuilder` | <ul><li>When __loading__ a document:<br>A builder object that is used to build the include part in the Load request.</il><li>When __querying__ for a document:<br>A builder object that is used to build the include part in the Query RQL expression.</li><li>Can be used in chaining.</li></ul> |
+| `object` | <ul><li>When __loading__ a document:<br>A builder object that is used to build the include part in the Load request.</il><li>When __querying__ for a document:<br>A builder object that is used to build the include part in the Query RQL expression.</li><li>Can be used in chaining.</li></ul> |
 
 {PANEL/}
 
 {PANEL: Patching the revision change vector}
 
 * To include revisions when making a query or a raw query,  
-  you need to specify the path to the document property that contains the revision change vector(s).  
+  you need to specify the path to the document property that contains the revision change vector(s).
 
-* The below example shows how to get and patch a revision change vector to a document property.  
+* The below example shows how to get and patch a revision change vector to a document property.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync include_7@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
-{CODE-TAB:csharp:Async include_7_async@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
-{CODE-TABS/}
+{CODE:nodejs include_7@document-extensions\revisions\client-api\session\including.js /}
 
 * See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including#sample-document).
 
