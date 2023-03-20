@@ -20,24 +20,18 @@
 
 {PANEL: Indexing}
 
-Indexing and indexes under each shard are basically similar to indexing 
-and indexes on a non-sharded database.  
+Indexing under each shard is basically similar to indexing on a non-sharded database.  
 As each shard holds and manages a unique dataset, indexing is performed 
 per-shard and indexes are stored only on the shard that created and uses them.  
 
 ## Map Reduce Indexes on a Sharded Database
 
-A map reduce index will reduce the query results **twice**.  
-First, the results will be reduced by each shard.  
-Then, the results will be collected by the orchestrator from 
-all shards and reduced again.  
-
-{NOTE: }
-Note that this behavior is different from the behavior of 
-map reduce indexes in non-sharded databases, and may yield 
-different results.  
+When a map reduce index is used, the query results are reduced **twice**:  
+The first reduction is made per-shard, when the query is executed on each 
+shard and the shard reduces the retrieved results by the index.  
+The second reduction is made by the orchestrator over all query results 
+after it collects them from all shards.  
 Learn more about this topic [here](../sharding/querying#orderby-in-a-map-reduce-index).  
-{NOTE/}
 
 ## Unsupported Indexing Features
 
@@ -48,7 +42,7 @@ Unsupported or yet-unimplemented indexing features include:
   is not supported on a sharded database.  
 * **Loading documents from other shards**  
   Loading a document during indexing is possible only if the document 
-  resides on the indexed shard.  
+  resides on the shard.  
   Consider the below index, for example, that attempts to load a document.  
   If the requested document is stored on a different shard, the load operation 
   will be ignored.  

@@ -9,17 +9,26 @@
   Please read below about unsupported or altered features.  
 
 * In this page:  
-  * [Filtering Results on a Sharded Database](../sharding/querying#filtering-results-on-a-sharded-database)  
   * [Querying Map Reduce Indexes](../sharding/querying#querying-map-reduce-indexes)  
-  * [Projection](../sharding/querying#projection)  
-  * [OrderBy in a Map Reduce Index](../sharding/querying#orderby-in-a-map-reduce-index)  
+     * [Filtering Results on a Sharded Database](../sharding/querying#filtering-results-on-a-sharded-database)  
+     * [Projection](../sharding/querying#projection)  
+     * [OrderBy in a Map Reduce Index](../sharding/querying#orderby-in-a-map-reduce-index)  
+  * [Include](../sharding/querying#include)  
   * [Unsupported Querying Features](../sharding/querying#unsupported-querying-features)  
   
 {NOTE/}
 
 ---
 
-{PANEL: Filtering Results on a Sharded Database}
+{PANEL: Querying Map Reduce Indexes}
+
+When a map reduce index is used, the query results are reduced **twice**:  
+The first reduction is made per-shard, when the query is executed on each 
+shard and the shard reduces the retrieved results by the index.  
+The second reduction is made by the orchestrator over all query results 
+after it collects them from all shards.  
+
+## Filtering Results on a Sharded Database
 
 Query results can be filtered either on each shard, or on the orchestrator 
 machine after the results are collected by it from all shards.  
@@ -32,7 +41,7 @@ machine after the results are collected by it from all shards.
                   .ToList();
   {CODE-BLOCK/}
   In the sample above:  
-    * Only documents whose `Sum` is greater than 30 are retrievedfrom the shards.  
+    * Only documents whose `Sum` is greater than 30 are retrieved from the shards.  
 
 * Use [Filter](../indexes/querying/exploration-queries#filter) 
   to filter the results **on the orchestrator** machine after it retrieves 
@@ -47,14 +56,6 @@ machine after the results are collected by it from all shards.
     * When the documents arrive at the orchestrator machine those with values not 
       greater than 30 are filtered out.  
 
-{PANEL/}
-
-{PANEL: Querying Map Reduce Indexes}
-
-Map reduce indexes will reduce the query results **twice**: first on each shard, 
-and then again by the orchestrator after it collects the results from the shards.  
-As described below, this may change queries behavior and results.  
-
 ## Projection
 
 [Loading a document within a map-reduce projection](../indexes/querying/projections#example-viii---projection-using-a-loaded-document) 
@@ -65,8 +66,8 @@ A `NotSupportedInShardingException` exception will be thrown, specifying
 "Loading a document inside a projection from a map-reduce index isn't supported".  
 
 Unlike map-reduce index projections, projections of queries that use no index 
-and projections of map indexes **can** load a document, providing that the document 
-is [on this shard](../sharding/querying#unsupported-querying-features).  
+and projections of map indexes **can** load a document, 
+[providing that the document is on this shard](../sharding/querying#unsupported-querying-features).  
 
 | Projection | Can load Document | Conditions |
 | ---------- | ----------------- | ---------- |
@@ -118,7 +119,7 @@ Reduce = results => from result in results
                         .ToList();
   {CODE-BLOCK/}
   
-* The third query sorts the results **not** by a reduce key but by by 
+* The third query sorts the results **not** by a reduce key but by 
   a field that computes a sum from retrieved values.  
   This will retrieve **all** the results from all shards regardless of 
   the set limit, perform the computation over them all, and only then 
@@ -139,6 +140,18 @@ Reduce = results => from result in results
 
 {PANEL/}
 
+{PANEL: Include}
+
+**Including** documents by a query or an index **will** work even 
+if the included entity resides on another shard: if the requested 
+document is not found on the current shard it will be searched on 
+other shards and if found loaded from the shard that holds it.  
+
+Note that this process will cost the extra travel to the shard 
+that the requested document is on.  
+
+{PANEL/}
+
 {PANEL: Unsupported Querying Features}
 
 Querying features that are unsupported or yet unimplemented on sharded 
@@ -147,8 +160,10 @@ databases include:
 * **Loading a document that resides on another shard**  
   An [index](../sharding/indexing#unsupported-indexing-features) 
   or a query can only load a document if it resides on the same shard.  
-  If the requested document is stored on a different shard, the load 
-  operation will be ignored.  
+  If the requested document is stored on a different shard:  
+   * The result will be `null`  
+   * If the document resides on another shard RavenDB will **not** 
+     load it.  
 * **Loading a document within a map-reduce projection**  
   Read more about this topic [above](../sharding/querying#projection).  
 * **Streaming Map-Reduce results**  
