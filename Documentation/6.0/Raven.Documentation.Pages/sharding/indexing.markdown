@@ -11,7 +11,7 @@
 
 * In this page:  
   * [Indexing](../sharding/indexing#indexing)  
-  * [Map Reduce Indexes on a Sharded Database](../sharding/indexing#map-reduce-indexes-on-a-sharded-database)  
+  * [Map Reduce Indexes in a Sharded Database](../sharding/indexing#map-reduce-indexes-in-a-sharded-database)  
   * [Unsupported Indexing Features](../sharding/indexing#unsupported-indexing-features)  
 
 {NOTE/}
@@ -24,14 +24,23 @@ Indexing under each shard is basically similar to indexing on a non-sharded data
 As each shard holds and manages a unique dataset, indexing is performed 
 per-shard and indexes are stored only on the shard that created and uses them.  
 
-## Map Reduce Indexes on a Sharded Database
+## Map Reduce Indexes in a Sharded Database
 
-When a map reduce index is used, the query results are reduced **twice**:  
-The first reduction is made per-shard, when the query is executed on each 
-shard and the shard reduces the retrieved results by the index.  
-The second reduction is made by the orchestrator over all query results 
-after it collects them from all shards.  
-Learn more about this topic [here](../sharding/querying#orderby-in-a-map-reduce-index).  
+When map reduce queries are executed over a sharded database, the results are 
+reduced both by each shard during indexation, and by the orchestor as the query 
+is executed.  
+
+1. **Reduction by each shard during indexation**  
+   Similarly to non-sharded databases, when shards index their data they reduce 
+   the results by map reduce indexes to minimize storage space and speed up response 
+   time when the data is requested.  
+2. **Reduction by the orchestrator during the query**  
+   After the orchestrator has collected query results from all shards, it reduces 
+   the entire dataset again before returning it to the client.  
+  
+{NOTE: }
+Learn about **querying map reduce indexes** in a sharded database [here](../sharding/querying#orderby-in-a-map-reduce-index).  
+{NOTE/}
 
 ## Unsupported Indexing Features
 
@@ -39,7 +48,7 @@ Unsupported or yet-unimplemented indexing features include:
 
 * **Rolling index deploymeny**  
   [Rolling index deploymeny](../indexes/rolling-index-deployment) 
-  is not supported on a sharded database.  
+  is not supported in a Sharded Database.  
 * **Loading documents from other shards**  
   Loading a document during indexing is possible only if the document 
   resides on the shard.  
@@ -61,9 +70,9 @@ Unsupported or yet-unimplemented indexing features include:
 * **Map-Reduce Output Documents**  
   Using [OutputReduceToCollection](../indexes/map-reduce-indexes#map-reduce-output-documents) 
   to output the results of a map reduce index to a collection 
-  is not supported on a sharded database.  
+  is not supported in a Sharded Database.  
 * [Custom Sorters](../indexes/querying/sorting#creating-a-custom-sorter) 
-  are not supported on a sharded database.  
+  are not supported in a Sharded Database.  
 
 
 

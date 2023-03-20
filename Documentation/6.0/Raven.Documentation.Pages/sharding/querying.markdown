@@ -1,4 +1,4 @@
-﻿# Sharding: Querying
+﻿# Sharding: Querying in a Sharded Database
 ---
 
 {NOTE: }
@@ -10,7 +10,7 @@
 
 * In this page:  
   * [Querying Map Reduce Indexes](../sharding/querying#querying-map-reduce-indexes)  
-     * [Filtering Results on a Sharded Database](../sharding/querying#filtering-results-on-a-sharded-database)  
+     * [Filtering Results in a Sharded Database](../sharding/querying#filtering-results-in-a-sharded-database)  
      * [Projection](../sharding/querying#projection)  
      * [OrderBy in a Map Reduce Index](../sharding/querying#orderby-in-a-map-reduce-index)  
   * [Include](../sharding/querying#include)  
@@ -22,13 +22,13 @@
 
 {PANEL: Querying Map Reduce Indexes}
 
-When a map reduce index is used, the query results are reduced **twice**:  
-The first reduction is made per-shard, when the query is executed on each 
-shard and the shard reduces the retrieved results by the index.  
-The second reduction is made by the orchestrator over all query results 
-after it collects them from all shards.  
+* When [map reduce queries are executed over a sharded database](../sharding/indexing#map-reduce-indexes-in-a-sharded-database) 
+  the results are reduced both by each shard during indexation **and** by 
+  the orchestrator over the entire dataset after the results are collected from 
+  all shards.  
+* Read more below about querying map reduce indexes in a sharded database.  
 
-## Filtering Results on a Sharded Database
+## Filtering Results in a Sharded Database
 
 Query results can be filtered either on each shard, or on the orchestrator 
 machine after the results are collected by it from all shards.  
@@ -59,7 +59,7 @@ machine after the results are collected by it from all shards.
 ## Projection
 
 [Loading a document within a map-reduce projection](../indexes/querying/projections#example-viii---projection-using-a-loaded-document) 
-is **not supported** on a sharded database.  
+is **not supported** in a Sharded Database.  
   
 Database response to an attempt to load a document from a map reduce projection:  
 A `NotSupportedInShardingException` exception will be thrown, specifying 
@@ -168,7 +168,7 @@ databases include:
   Read more about this topic [above](../sharding/querying#projection).  
 * **Streaming Map-Reduce results**  
   [Streaming](../client-api/session/querying/how-to-stream-query-results#stream-an-index-query) 
-  map-reduce results is not supported on a sharded database.  
+  map-reduce results is not supported in a Sharded Database.  
 * **Using `limit` with `PatchByQueryOperation` or `DeleteByQueryOperation`**  
   Attempting to set a `limit` when executing 
   [PatchByQueryOperation](../client-api/operations/patching/set-based#sending-a-patch-request) 
@@ -176,7 +176,7 @@ databases include:
   will throw a `NotSupportedInShardingException` exception, 
   specifying "Query with limit is not supported in patch / delete by query operation".  
 * [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis)  
-  This method is not supported on a sharded database.  
+  This method is not supported in a Sharded Database.  
 
 {PANEL/}
 
