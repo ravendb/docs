@@ -62,7 +62,7 @@ __Example__:
 
 __Syntax__:
 
-{CODE:nodejs syntax_1@document-extensions\revisions\client-api\session\loading.js /}
+{CODE:nodejs syntax_2@document-extensions\revisions\client-api\session\loading.js /}
 
 | Parameters | Type | Description |
 | - | - |- |

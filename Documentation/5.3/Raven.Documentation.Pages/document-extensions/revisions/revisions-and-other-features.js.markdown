@@ -32,7 +32,7 @@ __Revisions creation__
   * A new counter is __created__ on the document.  
   * A counter is __deleted__ from the document.
     
-* A revision will Not be created upon modifying the value of an existing [counter](../../document-extensions/counters/overview).
+* A revision will Not be created upon modifying the value of an existing counter.
 
 {NOTE/}
 
@@ -77,13 +77,10 @@ __Reverted data__
 
 __Extract counters data from revisions__  
 
-* Use [GetMetadataFor](../../document-extensions/revisions/client-api/session/loading#get-revisions-metadata) to get the revisions metadata for a specified document,  
+* Use [getMetadataFor](../../document-extensions/revisions/client-api/session/loading#get-revisions-metadata) to get the revisions metadata for a specified document,  
   and then extract the counters' data.  
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync extract_counters@DocumentExtensions\Revisions\ClientAPI\Session\RevisionsAndOtherFeatures.cs /}
-{CODE-TAB:csharp:Async extract_counters_async@DocumentExtensions\Revisions\ClientAPI\Session\RevisionsAndOtherFeatures.cs /}
-{CODE-TABS/}
+{CODE:nodejs extract_counters@document-extensions\revisions\client-api\session\revisionsAndOtherFeatures.js /}
 
 {NOTE/}
 
