@@ -67,11 +67,11 @@ of each shard in check and maintaining its high performance and throughput.
 
 ### Client-Server Communication
 
-As a client approaches a sharded database, the node it connects becomes the 
-**session orchestrator** and manages all the communication between the client 
-and the shards containing the documents it requires access to.  
-The client remains unaware of this process and uses the same API as if 
-the database wasn't sharded.  
+As a client connects a sharded database, it is appointed a RavenDB server 
+that functions as an **orchestrator** and mediates all the communication 
+between the client and the database shards.  
+The client remains unaware of this process and uses the same API used by 
+non-sharded databases to load documents, query, and so on.  
 The additional communication between the client and the orchestrator and 
 between the orchestrator and the shards does, however, present an overhead 
 over the usage of a non-sharded database.  
