@@ -10,10 +10,10 @@
 
 * In this page:  
   * [Querying in a Sharded Database](../sharding/querying#querying-in-a-sharded-database)  
-  * [Querying Map Reduce Indexes](../sharding/querying#querying-map-reduce-indexes)  
+  * [Querying Map-Reduce Indexes](../sharding/querying#querying-map-reduce-indexes)  
      * [Filtering Results in a Sharded Database](../sharding/querying#filtering-results-in-a-sharded-database)  
      * [Projection](../sharding/querying#projection)  
-     * [OrderBy in a Map Reduce Index](../sharding/querying#orderby-in-a-map-reduce-index)  
+     * [OrderBy in a Map-Reduce Index](../sharding/querying#orderby-in-a-map-reduce-index)  
      * [`where` vs `filter` Recommendations](../sharding/querying#vs--recommendations)  
   * [Include](../sharding/querying#include)  
   * [Unsupported Querying Features](../sharding/querying#unsupported-querying-features)  
@@ -29,8 +29,8 @@ is similar to querying a non-sharded database: query syntax is the
 same, and the same results can be expected to be returned in the 
 same format.  
 
-Here is a simplified version of what actually takes place when we 
-send a query to a sharded database:  
+To allow this comfort, the database performs the following 
+steps when we send a query to a sharded database:  
 
 * The query is received by a RavenDB server that was appointed 
   [orchestrator](../sharding/overview#client-server-communication) 
@@ -41,9 +41,9 @@ send a query to a sharded database:
   When the data is retrieved, the shard transfers it to the orchestrator.  
 * The orchestrator combines the data it received from all shards into 
   a single dataset, and may perform additional operations over it.  
-  E.g., running a [map reduce query](../sharding/querying#querying-map-reduce-indexes) 
+  E.g., running a [map-reduce query](../sharding/querying#querying-map-reduce-indexes) 
   would retrieve from the shards data that has already been reduced by 
-  map reduce indexes, but once the orchestrator gets all the data it will 
+  map-reduce indexes, but once the orchestrator gets all the data it will 
   reduce the full dataset once again.  
 * Finally, the orchestrator returns the combined dataset to the client.  
 * The client remains unaware that it has just communicated with 
@@ -55,12 +55,12 @@ send a query to a sharded database:
 
 {PANEL/}
 
-{PANEL: Querying Map Reduce Indexes}
+{PANEL: Querying Map-Reduce Indexes}
 
-* [Map reduce indexes on a sharded database](../sharding/indexing#map-reduce-indexes-in-a-sharded-database) 
+* [Map-reduce indexes on a sharded database](../sharding/indexing#map-reduce-indexes-in-a-sharded-database) 
   are used to reduce data both over each shard during indexation, and on 
   the orchestrator machine each time a query uses them.  
-* Read more below about querying map reduce indexes in a sharded database.  
+* Read more below about querying map-reduce indexes in a sharded database.  
 
 ## Filtering Results in a Sharded Database
 
@@ -91,8 +91,8 @@ where TotalSales >= 5000
   filtering is applied **per-shard**, over each shard's database.  
   
      This presents us with the following problem:  
-     The filtering that runs on each shard takes into account only the sales that were 
-     recorded on that shard.  
+     The filtering that runs on each shard takes into account only the data present 
+     on that shard.  
      If a certain product was sold 4000 times on each shard, the query demonstrated 
      above will filter this product out on each shard, even though its total sales 
      far exceed 5000.  
@@ -120,18 +120,19 @@ retrieved from the database but is still on the server.
 
 * When a query that includes a `filter` clause is sent to a 
   **sharded database**:  
-   * The `filter` clause is ommitted from the query.  
+   * The `filter` clause is omitted from the query.  
      All data is retrieved from the shards to the orchestrator.  
    * The `filter` clause is executed on the orchestrator machine 
      over the entire downloaded dataset.  
    
-  **On the cons side**, a huge amount of data may be retrieved from 
+  **On the Cons side**, a huge amount of data may be retrieved from 
   the database and then scanned by the filtering condition.  
 
-  **On the pros side**, this mechanism allows us to perform queries 
-  like the one we had a problem with when we used [where](../sharding/querying#section).  
-  The below query will indeed return all the products that 
-  were sold at least 5000 times, no matter how their sales 
+  **On the Pros side**, this mechanism allows us to filter data using 
+  [computational fields](../sharding/querying#orderby-in-a-map-reduce-index) 
+  as we do over a non-sharded database.  
+  The below query, for example, will indeed return all the products 
+  that were sold at least 5000 times, no matter how their sales 
   are divided between the shards.  
      {CODE-BLOCK:JSON}
      from index 'Products/Sales'
@@ -149,7 +150,7 @@ filter TotalSales >= 5000
 [Loading a document within a map-reduce projection](../indexes/querying/projections#example-viii---projection-using-a-loaded-document) 
 is **not supported** in a Sharded Database.  
   
-Database response to an attempt to load a document from a map reduce projection:  
+Database response to an attempt to load a document from a map-reduce projection:  
 A `NotSupportedInShardingException` exception will be thrown, specifying 
 "Loading a document inside a projection from a map-reduce index isn't supported".  
 
@@ -163,18 +164,18 @@ and projections of map indexes **can** load a document,
 | Map Index Projection | Yes | The document is on this shard |
 | Map-Reduce Index Projection | No |  |
 
-## OrderBy in a Map Reduce Index
+## OrderBy in a Map-Reduce Index
 
 Simlarly to its behavior under a non-sharded database, 
 [OrderBy](../indexes/querying/sorting) is used in an index or a query to 
 sort the retrieved dataset by a given order.  
 
-But under a sharded database, when `OrderBy` is used in a map reduce 
+But under a sharded database, when `OrderBy` is used in a map-reduce 
 index and [limit](../indexes/querying/paging#example-ii---basic-paging) 
 is applied to restrict the number of retrieved results, there are scenarios 
 in which **all** the results will still be retrieved from all shards.  
 To understand how this can happen, let's run a few queries over this 
-map reduce index:  
+map-reduce index:  
 {CODE-BLOCK:csharp}
 Reduce = results => from result in results
                     group result by result.Name
@@ -183,7 +184,7 @@ Reduce = results => from result in results
                     {
                         // Group-by field (reduce key)
                         Name = g.Key,
-                        // Calculation field
+                        // Computation field
                         Sum = g.Sum(x => x.Sum)
                     };
 {CODE-BLOCK/}
@@ -252,7 +253,8 @@ filter TotalSales >= 5000
 **Including** items by a query or an index **will** work even if the 
 included item resides on another shard.  
 If requested items are not found on this shard, the orchestrator will 
-connect with the shards that hold them, load the items and provide them.  
+connect the shards that these items are stored on, load the items, 
+and provide them.  
 
 Note that this process will cost the extra travel to the shard 
 that the requested document is on.  
