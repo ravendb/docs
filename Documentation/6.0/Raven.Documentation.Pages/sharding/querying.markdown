@@ -24,7 +24,7 @@
 ---
 {PANEL: Querying in a Sharded Database}
 
-From a user's' point of view, querying a sharded RavenDB database 
+From a user's point of view, querying a sharded RavenDB database 
 is similar to querying a non-sharded database: query syntax is the 
 same, and the same results can be expected to be returned in the 
 same format.  
@@ -82,7 +82,7 @@ data retrieval from the database to only those items that match given conditions
      most successful products, we can easily run a query such as:  
      {CODE-BLOCK:JSON}
      from index 'Products/Sales'
-     where TotalSales >= 5000
+where TotalSales >= 5000
      {CODE-BLOCK/}
      This will retrieve only the documents of products that were sold at least 5000 times.  
 
@@ -96,7 +96,13 @@ data retrieval from the database to only those items that match given conditions
      If a certain product was sold 4000 times on each shard, the query demonstrated 
      above will filter this product out on each shard, even though its total sales 
      far exceed 5000.  
-     To solve this problem, the role of the `filter` command is altered on sharded databases.  
+
+     To solve this problem, the role of the `filter` command is 
+     [altered on sharded databases](../sharding/querying#section-1).  
+     {NOTE: }
+     Using `where` raises no problem, and is actually [recommended](../sharding/querying#vs--recommendations), 
+     when the filtering is done [over a GroupBy field](../sharding/querying#orderby-in-a-map-reduce-index).  
+     {NOTE/}
 
 ### `filter`
 The `filter` command is used when we want to scan data that has already been 
@@ -119,17 +125,24 @@ retrieved from the database but is still on the server.
    * The `filter` clause is executed on the orchestrator machine 
      over the entire downloaded dataset.  
    
-  On the cons side, a huge amount of data may be retrieved from 
+  **On the cons side**, a huge amount of data may be retrieved from 
   the database and then scanned by the filtering condition.  
-  On the pros side, this mechanism allows us to perform queries 
-  like the one we had a problem with when we used `where`.  
+
+  **On the pros side**, this mechanism allows us to perform queries 
+  like the one we had a problem with when we used [where](../sharding/querying#section).  
   The below query will indeed return all the products that 
   were sold at least 5000 times, no matter how their sales 
   are divided between the shards.  
      {CODE-BLOCK:JSON}
      from index 'Products/Sales'
-     filter TotalSales >= 5000
+filter TotalSales >= 5000
      {CODE-BLOCK/}
+  {NOTE: }
+  The results volume retrieved from the shards can be decreased 
+  (when it makes sense as part of the query) by applying `where` 
+  [over a GroupBy field](../sharding/querying#orderby-in-a-map-reduce-index) 
+  before calling `filter`.  
+  {NOTE/}
 
 ## Projection
 
@@ -228,12 +241,10 @@ and scanning of a substantial amount of data, it is recommended to use
   needs to be transferred from the shards to the orchestrator and scanned 
   by `filter` over the orchestrator machine. E.g. -  
   {CODE-BLOCK:JSON}
-  var emp = session.Query<Employee>()
-  .Where(w => w.Title == "Sales Representative")
-  .Filter(f => f.Address.Country == "USA", limit: 500)
-  .SingleOrDefault();
+  from index 'Products/Sales'
+where Category = 'categories/7-A'
+filter TotalSales >= 5000
   {CODE-BLOCK/}
-
 {PANEL/}
 
 {PANEL: Include}

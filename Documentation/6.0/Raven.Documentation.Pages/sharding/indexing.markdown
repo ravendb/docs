@@ -34,8 +34,8 @@ shard during indexation, and on the orchestrator machine each time a query uses 
    the results by map reduce indexes.  
 2. **Reduction by the orchestrator during queries**  
    When a query is executed over map reduce indexes the orchestrator 
-   distributed the query to the shards, collects and combines the results, 
-   and then reduces the entire dataset.  
+   distributes the query to the shards, collects and combines the results, 
+   and then reduces them again.  
   
 {NOTE: }
 Learn about **querying map reduce indexes** in a sharded database [here](../sharding/querying#orderby-in-a-map-reduce-index).  
