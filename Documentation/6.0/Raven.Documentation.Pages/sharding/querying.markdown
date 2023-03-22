@@ -9,52 +9,127 @@
   Please read below about unsupported or altered features.  
 
 * In this page:  
+  * [Querying in a Sharded Database](../sharding/querying#querying-in-a-sharded-database)  
   * [Querying Map Reduce Indexes](../sharding/querying#querying-map-reduce-indexes)  
      * [Filtering Results in a Sharded Database](../sharding/querying#filtering-results-in-a-sharded-database)  
      * [Projection](../sharding/querying#projection)  
      * [OrderBy in a Map Reduce Index](../sharding/querying#orderby-in-a-map-reduce-index)  
+     * [`where` vs `filter` Recommendations](../sharding/querying#vs--recommendations)  
   * [Include](../sharding/querying#include)  
   * [Unsupported Querying Features](../sharding/querying#unsupported-querying-features)  
+  * [Querying a Specific Shard](../sharding/querying#querying-a-specific-shard)  
   
 {NOTE/}
 
 ---
+{PANEL: Querying in a Sharded Database}
+
+From a user's' point of view, querying a sharded RavenDB database 
+is similar to querying a non-sharded database: query syntax is the 
+same, and the same results can be expected to be returned in the 
+same format.  
+
+Here is a simplified version of what actually takes place when we 
+send a query to a sharded database:  
+
+* The query is received by a RavenDB server that was appointed 
+  [orchestrator](../sharding/overview#client-server-communication) 
+  and now mediates all the communications between the client and 
+  the database shards.  
+* The orchestrator distributes the query to the shards.  
+* Each shard runs the query over its own database, using its own indexes.  
+  When the data is retrieved, the shard transfers it to the orchestrator.  
+* The orchestrator combines the data it received from all shards into 
+  a single dataset, and may perform additional operations over it.  
+  E.g., running a [map reduce query](../sharding/querying#querying-map-reduce-indexes) 
+  would retrieve from the shards data that has already been reduced by 
+  map reduce indexes, but once the orchestrator gets all the data it will 
+  reduce the full dataset once again.  
+* Finally, the orchestrator returns the combined dataset to the client.  
+* The client remains unaware that it has just communicated with 
+  a sharded database.  
+  Note, however, that this process is costly in comparison with 
+  the simple data retrieval performed by non-sharded databases.  
+  Sharding is therefore [recommended](../sharding/overview#when-should-sharding-be-used) 
+  only when the database has grown to substantial size and complexity.  
+
+{PANEL/}
 
 {PANEL: Querying Map Reduce Indexes}
 
-* When [map reduce queries are executed over a sharded database](../sharding/indexing#map-reduce-indexes-in-a-sharded-database) 
-  the results are reduced both by each shard during indexation **and** by 
-  the orchestrator over the entire dataset after the results are collected from 
-  all shards.  
+* [Map reduce indexes on a sharded database](../sharding/indexing#map-reduce-indexes-in-a-sharded-database) 
+  are used to reduce data both over each shard during indexation, and on 
+  the orchestrator machine each time a query uses them.  
 * Read more below about querying map reduce indexes in a sharded database.  
 
 ## Filtering Results in a Sharded Database
 
-Query results can be filtered either on each shard, or on the orchestrator 
-machine after the results are collected by it from all shards.  
+* We can filter data using the keywords [where](../indexes/querying/filtering#where) 
+  and [filter](../indexes/querying/exploration-queries#filter) on both non-sharded and 
+  sharded databases.  
+* There **are**, however, differences in the behavior of these commands on sharded and 
+  non-sharded databases. This section explains these differences.  
 
-* Use [where](../indexes/querying/filtering#where) 
-  to filter the results **on each shard**.  
-  {CODE-BLOCK:csharp}
-  var queryResult = session.Query<UserMapReduce.Result, UserMapReduce>()
-                  .Where(x => x.Sum >= 30)
-                  .ToList();
-  {CODE-BLOCK/}
-  In the sample above:  
-    * Only documents whose `Sum` is greater than 30 are retrieved from the shards.  
+### `where`
+`where` is RavenDB's basic filtering command. It is used by the server to restrict 
+data retrieval from the database to only those items that match given conditions.  
 
-* Use [Filter](../indexes/querying/exploration-queries#filter) 
-  to filter the results **on the orchestrator** machine after it retrieves 
-  the results from all shards.  
-  {CODE-BLOCK:csharp}
-  var queryResult = session.Query<UserMapReduce.Result, UserMapReduce>()
-                  .Filter(x => x.Sum >= 30)
-                  .ToList();
-  {CODE-BLOCK/}
-  In the sample above:
-    * Documents with any `Sum` are retrieved from all shards  
-    * When the documents arrive at the orchestrator machine those with values not 
-      greater than 30 are filtered out.  
+* **`where` on a non-sharded database**  
+  When a query that applies `where` is executed over a **non-sharded** database, 
+  the filtering applies to the entire database.  
+
+     If we query all **products**, for example, and want to find only the 
+     most successful products, we can easily run a query such as:  
+     {CODE-BLOCK:JSON}
+     from index 'Products/Sales'
+     where TotalSales >= 5000
+     {CODE-BLOCK/}
+     This will retrieve only the documents of products that were sold at least 5000 times.  
+
+* **`where` on a sharded database**  
+  When a query that includes a `where` clause is sent to a **sharded database**, 
+  filtering is applied **per-shard**, over each shard's database.  
+  
+     This presents us with the following problem:  
+     The filtering that runs on each shard takes into account only the sales that were 
+     recorded on that shard.  
+     If a certain product was sold 4000 times on each shard, the query demonstrated 
+     above will filter this product out on each shard, even though its total sales 
+     far exceed 5000.  
+     To solve this problem, the role of the `filter` command is altered on sharded databases.  
+
+### `filter`
+The `filter` command is used when we want to scan data that has already been 
+retrieved from the database but is still on the server.  
+
+* When a query that includes a `filter` clause is sent to a 
+  **non-sharded database** its main usage is as an 
+  [exploration query](../indexes/querying/exploration-queries): 
+  an additional layer of filtering that scans the entire retrieved dataset 
+  without creating an index that would then have to be maintained.  
+
+     We consider exploration queries one-time operations and use them 
+     cautiously because scanning the entire retrieved dataset may take 
+     a high toll on resources.  
+
+* When a query that includes a `filter` clause is sent to a 
+  **sharded database**:  
+   * The `filter` clause is ommitted from the query.  
+     All data is retrieved from the shards to the orchestrator.  
+   * The `filter` clause is executed on the orchestrator machine 
+     over the entire downloaded dataset.  
+   
+  On the cons side, a huge amount of data may be retrieved from 
+  the database and then scanned by the filtering condition.  
+  On the pros side, this mechanism allows us to perform queries 
+  like the one we had a problem with when we used `where`.  
+  The below query will indeed return all the products that 
+  were sold at least 5000 times, no matter how their sales 
+  are divided between the shards.  
+     {CODE-BLOCK:JSON}
+     from index 'Products/Sales'
+     filter TotalSales >= 5000
+     {CODE-BLOCK/}
 
 ## Projection
 
@@ -93,9 +168,9 @@ Reduce = results => from result in results
                     into g
                     select new Result
                     {
-                        // Reduce key
+                        // Group-by field (reduce key)
                         Name = g.Key,
-                        // Calculation
+                        // Calculation field
                         Sum = g.Sum(x => x.Sum)
                     };
 {CODE-BLOCK/}
@@ -109,8 +184,8 @@ Reduce = results => from result in results
                         .ToList();
   {CODE-BLOCK/}
   
-* The second query sorts the results by one of the reduce keys, `Name`, 
-  and sets a limit to restrict the retrieved dataset to 3 results.  
+* The second query sorts the results by one of the `GroupBy` fields, 
+  `Name`, and sets a limit to restrict the retrieved dataset to 3 results.  
   This **will** restrict the retrieved dataset to the set limit.  
   {CODE-BLOCK:csharp}
                     var queryResult = session.Query<UserMapReduce.Result, UserMapReduce>()
@@ -119,8 +194,8 @@ Reduce = results => from result in results
                         .ToList();
   {CODE-BLOCK/}
   
-* The third query sorts the results **not** by a reduce key but by 
-  a field that computes a sum from retrieved values.  
+* The third query sorts the results **not** by a `GroupBy` field 
+  but by a field that computes a sum from retrieved values.  
   This will retrieve **all** the results from all shards regardless of 
   the set limit, perform the computation over them all, and only then 
   sort them and provide us with just the number of results we requested.  
@@ -138,14 +213,35 @@ Reduce = results => from result in results
   of data and extend memory, CPU, and bandwidth usage.  
   {NOTE/}
 
+## `where` vs `filter` Recommendations
+
+As using `filter` may (unless `where` is also used) cause the retrieval 
+and scanning of a substantial amount of data, it is recommended to use 
+`filter` cautiously and restrict its operation wherever needed.  
+
+* Prefer `where` over `filter` when the query is executed over 
+  a [GroupBy](../sharding/querying#orderby-in-a-map-reduce-index) field.  
+* Prefer `filter` over `where` when the query is executed over 
+  a conditional query field like [Total or Sum](../sharding/querying#orderby-in-a-map-reduce-index) field.  
+* When using `filter`, set a [limit](../indexes/querying/exploration-queries#usage) if possible.  
+* When `filter` is needed, use `where` first to minimize the dataset that 
+  needs to be transferred from the shards to the orchestrator and scanned 
+  by `filter` over the orchestrator machine. E.g. -  
+  {CODE-BLOCK:JSON}
+  var emp = session.Query<Employee>()
+  .Where(w => w.Title == "Sales Representative")
+  .Filter(f => f.Address.Country == "USA", limit: 500)
+  .SingleOrDefault();
+  {CODE-BLOCK/}
+
 {PANEL/}
 
 {PANEL: Include}
 
-**Including** documents by a query or an index **will** work even 
-if the included entity resides on another shard: if the requested 
-document is not found on the current shard it will be searched on 
-other shards and if found loaded from the shard that holds it.  
+**Including** items by a query or an index **will** work even if the 
+included item resides on another shard.  
+If requested items are not found on this shard, the orchestrator will 
+connect with the shards that hold them, load the items and provide them.  
 
 Note that this process will cost the extra travel to the shard 
 that the requested document is on.  
