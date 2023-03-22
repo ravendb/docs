@@ -52,7 +52,7 @@ Client certificate authentication is handled through [Cloudflare mTLS authentica
 
 ### Obtain RavenDB certificate
 
-First, download your RavenDB client certificate package you will use to authenticate. Follow the guides for either Cloud or for self-hosting.
+First, download your RavenDB client certificate package you will use to authenticate. Follow the guides for either [Cloud certificates][docs-cloud-certs] or for [self-hosted certificates][docs-on-prem-certs].
 
 Once extracted to a folder, you'll need the paths to the `.pem` and `.key` files for the next step.
 
@@ -175,3 +175,5 @@ If your Worker account is not yet set up, Wrangler will walk you through the ste
 [cf-mtls-worker]: https://developers.cloudflare.com/workers/runtime-apis/mtls
 [cf-wrangler]: https://developers.cloudflare.com/workers/wrangler/install-and-update/
 [docs-create-db]: /docs/article-page/latest/csharp/studio/database/create-new-database/general-flow
+[docs-cloud-certs]: /docs/article-page/latest/csharp/cloud/cloud-security
+[docs-on-prem-certs]: /docs/article-page/latest/csharp/studio/overview
