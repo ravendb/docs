@@ -4,19 +4,21 @@
 {NOTE: }
 
 * This page explains how to manage a sharded database using RavenDB's API.  
-* Learn [here](../../sharding/administration/api-admin) how to manage 
+* Learn [here](../../sharding/administration/studio-admin) how to manage 
   a sharded database using Studio.  
 * A sharded database can currently be created only 
   [via Studio](../../sharding/administration/studio-admin#creating-a-sharded-database).  
   All other database operations are available via API as well.  
 
 * In this page:  
-  * [Orchestrator Administration](../../)  
-     * [Adding an Orchestrator](../../)  
-     * [Removing an Orchestrator](../../)  
-  * [Shard Administration](../../)  
-     * [Adding a New Shard](../../)  
-     * [Removing a Shard](../../)  
+  * [Orchestrator Administration](../../sharding/administration/api-admin#orchestrator-administration)  
+     * [Adding an Orchestrator](../../sharding/administration/api-admin#adding-an-orchestrator)  
+     * [Removing an Orchestrator](../../sharding/administration/api-admin#removing-an-orchestrator)  
+  * [Shard Administration](../../sharding/administration/api-admin#shard-administration)  
+     * [Adding a Shard](../../sharding/administration/api-admin#adding-a-shard)  
+     * [Adding a Shard Replica](../../sharding/administration/api-admin#adding-a-shard-replica)  
+     * [Promoting a Shard Replica](../../sharding/administration/api-admin#promoting-a-shard-replica)  
+     * [Removing a Shard](../../sharding/administration/api-admin#removing-a-shard)  
 
 {NOTE/}
 
@@ -40,7 +42,7 @@ orchestrators nodes that host no shards.
     | Parameter | Type | Description |
     |:-------------:|:-------------:|-------------|
     | `databaseName` | string | Database Name |
-    | `node ` | string | The node to be made orchestrator |
+    | `node ` | string | Node tag for the node to be made orchestrator |
 
 * Return value: `ModifyOrchestratorTopologyResult`  
   {CODE ModifyOrchestratorTopologyResult@Sharding\ShardingAdministration.cs /}
@@ -48,7 +50,7 @@ orchestrators nodes that host no shards.
 ## Removing an Orchestrator
 
 * To stop a node from functioning as an orchestrator pass the database name 
-  and the node identifier to the `RemoveNodeFromOrchestratorTopologyOperation` 
+  and the node tag to the `RemoveNodeFromOrchestratorTopologyOperation` 
   operation.  
   {CODE RemoveNodeFromOrchestratorTopologyOperation_Definition@Sharding\ShardingAdministration.cs /}
 
@@ -66,7 +68,7 @@ orchestrators nodes that host no shards.
 
 {PANEL: Shard Administration}
 
-## Add a Shard 
+## Adding a Shard 
 
 * To add a new shard, use one of the `AddDatabaseShardOperation` operation overloads.  
   {CODE AddDatabaseShardOperation_Overload-1@Sharding\ShardingAdministration.cs /}
@@ -78,14 +80,30 @@ orchestrators nodes that host no shards.
     | Parameter | Type | Description |
     |:-------------:|:-------------:|-------------|
     | `databaseName` | string | Database Name |
-    | `shardNumber ` | int? | Shard number |
-    | `replicationFactor` | int? | The new shard's replication factor. <br> if not provided, the replication factor will be set as that of the previous shard to be added. |
-    | `nodes` | string[] | A list of nodes to replicate the shard to. <br> The replication factor will be set by the number of nodes provided here. |
+    | `shardNumber ` | int? | Shard number <br> If a shard number is not explicitly provided, the shard number will be the biggest existing shard number + 1 |
+    | `replicationFactor` | int? | The new shard's replication factor (**see comment below**) |
+    | `nodes` | string[] | A list of nodes to replicate the shard to. <br> If provided, the replication factor will be set by the number of nodes. |
+
+    {NOTE: }
+    `replicationFactor`, the new shard's replication factor, is determined as follows:  
+    
+    * If `replicationFactor` is **not** provided explicitly, and a list of nodes is provided, 
+      the replication factor will be set by the number of nodes.  
+    * If **neither** `replicationFactor` and a nodes list are provided, the replication factor 
+      will be set as that of the first shard.  
+    * If **both** `replicationFactor` and a nodes list are provided:  
+       * If there are **less** nodes than set by `replicationFactor`, the new shard will be replicated 
+         on these nodes.  
+       * If there are **more** nodes than set by `replicationFactor`, only as many replications as 
+         set by `replicationFactor` will be carried out.
+
+    {NOTE/}
+
 
 * Return value: `AddDatabaseShardResult`  
   {CODE AddDatabaseShardResult@Sharding\ShardingAdministration.cs /}
 
-## Add a Shard Replica
+## Adding a Shard Replica
 
 * To add a replica to an existing shard pass the database name and a shard 
   number to the `AddDatabaseNodeOperation` operation.  
@@ -102,18 +120,22 @@ orchestrators nodes that host no shards.
     | Parameter | Type | Description |
     |:-------------:|:-------------:|-------------|
     | `databaseName` | string | Database Name |
-    | `node ` | string | The node that the shard will be set on (optional). <br> If not provided, RavenDB will select an available node. |
+    | `node ` | string | The node that the replica will be set on (optional). <br> If not provided, RavenDB will select an available node. |
 
 * Return value: `DatabasePutResult`  
   {CODE DatabasePutResult@Sharding\ShardingAdministration.cs /}
 
 
-## Promote Shard Replica Immediately
+## Promoting a Shard Replica
 
-* Shards can be promoted as non-sharded databases can.  
+* Shard replicas can be [promoted](../../client-api/operations/server-wide/promote-database-node) 
+  as non-sharded databases can.  
 
     To promote a shard, pass the database name, shard number and 
-    node identifier to the `PromoteDatabaseNodeOperation` operation.  
+    node tag to the `PromoteDatabaseNodeOperation` operation.  
+    This will help locate the  exact shard instance we want to 
+    promote, leading to the database, then to the specific shard, 
+    and finally to the specific replica of that shard.  
     {CODE PromoteDatabaseNodeOperation_Definition@Sharding\ShardingAdministration.cs /}
 
 * Parameters:  
@@ -122,7 +144,7 @@ orchestrators nodes that host no shards.
     |:-------------:|:-------------:|-------------|
     | `databaseName` | string | Database Name |
     | `shard ` | int | Shard number |
-    | `node ` | string | Node identifier |
+    | `node ` | string | Node tag |
 
 * Return value: `DatabasePutResult`  
   {CODE DatabasePutResult@Sharding\ShardingAdministration.cs /}
@@ -130,12 +152,10 @@ orchestrators nodes that host no shards.
 
 ## Removing a Shard
 
-* A shard is removed when of all its replicas have been deleted.  
+* A shard is removed when all its replicas have been deleted.  
 * RavenDB will remove a shard only after verifying that its database 
   is empty. If any buckets remain in the database the operation will 
   be aborted.  
-* The replication factor is updated automatically as replicas are 
-  removed, there is no need to update it explicitly.  
 * To remove a shard use the designated `DeleteDatabasesOperation` overload.  
   {CODE DeleteDatabasesOperation_Definition@Sharding\ShardingAdministration.cs /}
 
