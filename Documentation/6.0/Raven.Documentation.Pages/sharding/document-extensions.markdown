@@ -15,7 +15,7 @@
   same API commands and Studio views.  
 
 * Document extensions are identified by the ID of their parent document, 
-  and are always stored in **the same bucket and shard** as the document.  
+  and are always stored in **the same bucket** as the document.  
 
 * In this page:  
    * [Document Extensions and Resharding](../sharding/document-extensions#document-extensions-and-resharding)  
@@ -54,18 +54,18 @@ to divide the data between shards.
 The following points relate to this issue.  
 
 * **Time Series**  
-  Some time series can get very large very quickly. As they reside in 
-  a single bucket with their parent document, they cannot be spread between 
-  shards and may become hard to manage and use.  
+  Some time series can get very large. As they reside in a single bucket 
+  with their parent document, they cannot be spread between shards and may 
+  become hard to manage and use.  
   We recommend keeping the number of time series added to each document 
   fairly small, and using practices such as [rollup and retention](../document-extensions/timeseries/rollup-and-retention).  
 
 * **Revisions**  
-  Revisions in a large database may accumulate quickly, especially in 
-  an environment of rapid document modification. We can, however, create 
+  Revisions may accumulate in a large database, especially in an 
+  environment of rapid document modification. We can, however, create 
   a [revisions configuration](../document-extensions/revisions/overview#revisions-configuration) 
-  that takes this into account, limits the revisions that are kept by age 
-  and number, and automatically removed when no longer needed.  
+  that would take this into account, limit revisions quantity by number 
+  and age, and automatically remove those that are no longer needed.  
 
 * **Attachments**  
   Remain aware of the size and amount of attachments in your database as well, 
