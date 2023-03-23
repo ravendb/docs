@@ -1,6 +1,7 @@
 ﻿# What is Smuggler
 
-Smuggler gives you the ability to export or import data from or to a database using JSON format. It is exposed via the `DocumentStore.Smuggler` property.
+Smuggler gives you the ability to export or import data from or to a database using JSON format.  
+It is exposed via the `DocumentStore.Smuggler` property.
 
 {PANEL:ForDatabase}
 
@@ -67,10 +68,10 @@ In order to switch it to a different database use the `.ForDatabase` method.
 ### DatabaseSmugglerImportOptions
 
 | Parameters | | |
-| ------------- | ------------- | ----- |
+| - | - | - |
 | **Collections** | `List<string>` | List specific of collections to import. If empty then all collections will be imported. Default: `empty` |
 | **OperateOnTypes** | `DatabaseItemType` | Indicates what should be imported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `Identities`, `CompareExchange`, `Subscriptions` |
-| **OperateOnDatabaseRecordTypes** | `DatabaseRecordItemType` | Indicates what should be exported from database record. Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications` |
+| **OperateOnDatabaseRecordTypes** | `DatabaseRecordItemType` | Indicates what should be imported. Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications` |
 | **IncludeExpired** | `bool` | Should expired documents be imported. Default: `true` |
 | **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. Default: `false` |
 | **TransformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |

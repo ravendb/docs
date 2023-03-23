@@ -1,6 +1,7 @@
 ﻿# What is Smuggler
 
-Smuggler gives you the ability to export or import data from or to a database using JSON format. It is exposed via the `DocumentStore.smuggler()`.
+Smuggler gives you the ability to export or import data from or to a database using JSON format.  
+It is exposed via the `DocumentStore.smuggler()`.
 
 {PANEL:ForDatabase}
 
@@ -65,11 +66,11 @@ In order to switch it to a different database use the `.forDatabase` method.
 ### DatabaseSmugglerImportOptions
 
 | Parameters | | |
-| ------------- | ------------- | ----- |
-| **Collections** | `List<String>` | List of specific collections to export. If empty, then all collections will be exported. Default: `empty` |
-| **operateOnTypes** | `DatabaseItemType` | Indicates what should be exported. Default: `INDEXES`, `DOCUMENTS`, `REVISION_DOCUMENTS`, `CONFLICTS`, `DATABASE_RECORD`, `IDENTITIES`, `COMPARE_EXCHANGE`, `SUBSCRIPTIONS` |
-| **operateOnDatabaseRecordType** | `DatabaseRecordItemType` | Indicates what should be exported from database record. Default: `CLIENT`, `CONFLICT_SOLVER_CONFIG`, `EXPIRATION`, `EXTERNAL_REPLICATIONS`, `PERIODIC_BACKUPS`, `RAVEN_CONNECTION_STRINGS`, `RAVEN_ETLS`, `REVISIONS`, `SQL_CONNECTION_STRINGS`, `SORTERS`, `SQL_ETLS`, `HUB_PULL_REPLICATIONS`, `SINK_PULL_REPLICATIONS` |
-| **includeExpired** | `boolean` | Should expired documents be included in the export. Default: `true` |
+| - | - | - |
+| **Collections** | `List<String>` | List of specific collections to import. If empty, then all collections will be exported. Default: `empty` |
+| **operateOnTypes** | `DatabaseItemType` | Indicates what should be imported. Default: `INDEXES`, `DOCUMENTS`, `REVISION_DOCUMENTS`, `CONFLICTS`, `DATABASE_RECORD`, `IDENTITIES`, `COMPARE_EXCHANGE`, `SUBSCRIPTIONS` |
+| **operateOnDatabaseRecordType** | `DatabaseRecordItemType` | Indicates what should be imported. Default: `CLIENT`, `CONFLICT_SOLVER_CONFIG`, `EXPIRATION`, `EXTERNAL_REPLICATIONS`, `PERIODIC_BACKUPS`, `RAVEN_CONNECTION_STRINGS`, `RAVEN_ETLS`, `REVISIONS`, `SQL_CONNECTION_STRINGS`, `SORTERS`, `SQL_ETLS`, `HUB_PULL_REPLICATIONS`, `SINK_PULL_REPLICATIONS` |
+| **includeExpired** | `boolean` | Should expired documents be included in the import. Default: `true` |
 | **removeAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
 | **transformScript** | `String` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
 | **maxStepsForTransformScript** | `int` | Maximum number of steps that transform script can process before failing. Default: 10000 |
