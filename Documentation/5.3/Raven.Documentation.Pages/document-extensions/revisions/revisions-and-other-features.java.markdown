@@ -1,4 +1,4 @@
-# Counter Revisions
+# Revisions and Other Features
 
 When the revisions feature is enabled, a snapshot of a document that holds *Counters* will include in its metadata a `@counters-snapshot` property, 
 that holds all the document's counter names **and values** (at the time of the revision creation).  
