@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.Backups;
 using Raven.Client.Documents.Operations.Backups.Sharding;
@@ -10,12 +11,15 @@ using Raven.Client.ServerWide.Operations;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
 {
-    class Program
+    public class User
+    {
+        public string Name { get; set; }
+    }
+
+    class Program1
     {
         static void Main(string[] args)
         {
-            var a = MainInternal();
-            a.Wait();
         }
 
         static async Task MainInternal()
@@ -26,7 +30,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 Database = "Products"
             }.Initialize())
             {
-                #region backup_remote_destinations
                 var config = new PeriodicBackupConfiguration
                 {
                     LocalSettings = new LocalSettings
@@ -63,7 +66,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
 
                 var operation = new UpdatePeriodicBackupOperation(config);
                 var result = await docStore.Maintenance.SendAsync(operation);
-                #endregion
+                
             }
 
             using (var docStore = new DocumentStore
@@ -72,7 +75,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 Database = "Products"
             }.Initialize())
             {
-                #region restore_local-settings
                 // Create a dictionary with paths to shard backups
                 var restoreSettings = new ShardedRestoreSettings
                 {
@@ -117,7 +119,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 });
 
                 var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
-                #endregion
+                
             }
 
             using (var docStore = new DocumentStore
@@ -126,7 +128,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 Database = "Products"
             }.Initialize())
             {
-                #region restore_s3-settings
                 // Create a dictionary with paths to shard backups
                 var restoreSettings = new ShardedRestoreSettings
                 {
@@ -180,7 +181,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 });
 
                 var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
-                #endregion
+                
             }
 
             using (var docStore = new DocumentStore
@@ -189,7 +190,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 Database = "Products"
             }.Initialize())
             {
-                #region restore_azure-settings
                 // Create a dictionary with paths to shard backups
                 var restoreSettings = new ShardedRestoreSettings
                 {
@@ -242,7 +242,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                   });
 
                 var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
-                #endregion
+                
             }
 
             using (var docStore = new DocumentStore
@@ -251,7 +251,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 Database = "Products"
             }.Initialize())
             {
-                #region restore_google-cloud-settings
                 // Create a dictionary with paths to shard backups
                 var restoreSettings = new ShardedRestoreSettings
                 {
@@ -303,10 +302,9 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 });
 
                 var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
-                #endregion
+                
             }
 
-            #region SingleShardRestoreSetting
             var shard0 = new SingleShardRestoreSetting
             {
                 ShardNumber = 0,
@@ -326,58 +324,120 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 NodeTag = "C",
                 FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$2-C-backup"
             };
-            #endregion
+            
         }
         public class Foo
         {
-            public class RestoreBackupOperation
+            public class AddNodeToOrchestratorTopologyOperation
             {
-                #region restore_RestoreBackupOperation
-                public RestoreBackupOperation(RestoreBackupConfigurationBase restoreConfiguration)
+                #region AddNodeToOrchestratorTopologyOperation_Definition
+                public AddNodeToOrchestratorTopologyOperation(string databaseName, string node = null)
                 #endregion
-                { }
-
-                #region restore_RestoreBackupConfigurationBase
-                public abstract class RestoreBackupConfigurationBase
                 {
-                    public string DatabaseName { get; set; }
-
-                    public string LastFileNameToRestore { get; set; }
-
-                    public string DataDirectory { get; set; }
-
-                    public string EncryptionKey { get; set; }
-
-                    public bool DisableOngoingTasks { get; set; }
-
-                    public bool SkipIndexes { get; set; }
-
-                    public ShardedRestoreSettings ShardRestoreSettings { get; set; }
-
-                    public BackupEncryptionSettings BackupEncryptionSettings { get; set; }
-
                 }
-                #endregion
+            }
 
-                #region restore_ShardedRestoreSettings
-                public class ShardedRestoreSettings
+            public class RemoveNodeFromOrchestratorTopologyOperation
+            {
+                #region RemoveNodeFromOrchestratorTopologyOperation_Definition
+                public RemoveNodeFromOrchestratorTopologyOperation(string databaseName, string node)
+                #endregion
                 {
-                  public Dictionary<int, 
-                    SingleShardRestoreSetting> Shards { get; set; }
                 }
-                #endregion
+            }
 
-                #region restore_SingleShardRestoreSetting
-                public class SingleShardRestoreSetting
-                {
-                    // Shard number 
-                    public int ShardNumber { get; set; }
-                    // Node tag
-                    public string NodeTag { get; set; }
-                    // Folder name
-                    public string FolderName { get; set; }
-                }
+            #region ModifyOrchestratorTopologyResult
+            public class ModifyOrchestratorTopologyResult
+            {
+                public string Name; // Database Name
+                public OrchestratorTopology OrchestratorTopology; // Database Topology
+                public long RaftCommandIndex;
+            }
+            #endregion
+
+            public class AddDatabaseNodeOperation
+            {
+                #region AddDatabaseNodeOperation_Definition
+                public AddDatabaseNodeOperation(string databaseName, string node = null)
                 #endregion
+                {
+                }
+            }
+
+            #region DatabasePutResult
+            public class DatabasePutResult
+            {
+                public long RaftCommandIndex { get; set; }
+
+                public string Name { get; set; }
+                public DatabaseTopology Topology { get; set; }
+                public List<string> NodesAddedTo { get; set; }
+
+                public bool ShardsDefined { get; set; }
+            }
+            #endregion
+
+            public class DeleteDatabasesOperation
+            {
+                #region DeleteDatabasesOperation_Definition
+                public DeleteDatabasesOperation(
+                    string databaseName, 
+                    int shardNumber, 
+                    bool hardDelete, 
+                    string fromNode, 
+                    TimeSpan? timeToWaitForConfirmation = null)
+                #endregion
+                {
+                }
+            }
+
+            #region DeleteDatabaseResult
+            public class DeleteDatabaseResult
+            {
+                public long RaftCommandIndex { get; set; }
+                public string[] PendingDeletes { get; set; }
+            }
+            #endregion
+
+            
+            internal class AddDatabaseShardOperation
+            {
+                #region AddDatabaseShardOperation_Overload-1
+                public AddDatabaseShardOperation(string databaseName, int? shardNumber = null)
+                #endregion
+                {
+                }
+
+                #region AddDatabaseShardOperation_Overload-2
+                public AddDatabaseShardOperation(string databaseName, string[] nodes, int? shardNumber = null)
+                #endregion
+                {
+                }
+
+                #region AddDatabaseShardOperation_Overload-3
+                public AddDatabaseShardOperation(string databaseName, int? replicationFactor, int? shardNumber = null)
+                #endregion
+                {
+                }
+            }
+
+            #region AddDatabaseShardResult
+            public class AddDatabaseShardResult
+            {
+                public string Name { get; set; }
+                public int ShardNumber { get; set; }
+                public DatabaseTopology ShardTopology { get; set; }
+                public long RaftCommandIndex { get; set; }
+            }
+            #endregion
+
+            public class PromoteDatabaseNodeOperation
+            {
+                #region PromoteDatabaseNodeOperation_Definition
+                public PromoteDatabaseNodeOperation(string databaseName, int shard, string node)
+                #endregion
+                {
+                }
             }
         }
     }

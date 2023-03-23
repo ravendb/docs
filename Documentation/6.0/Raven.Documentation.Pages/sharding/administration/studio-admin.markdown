@@ -26,7 +26,7 @@
    This button is available when no database has been created yet.  
    Click it to create a new database.  
 2. **New database**  
-   CLick to create a new database.  
+   Click to create a new database.  
 
 ---
 
@@ -106,7 +106,7 @@ be available here:
 
       ![Add Shard](images/database-group_add-shard.png "Add Shard")
    
-      Set the shard's replication factor and click **Add shard**, or **Cancel**.  
+      Set the shard's replication factor and click **Add shard** (or **Cancel**).  
       The new shard will be added to the database group view.  
 
 2. **Manage Orchestrators**  
@@ -114,7 +114,7 @@ be available here:
 
     * **Add Orchestrator**  
       This option will be available only if there are still nodes that 
-      an orchestrator haven't been assigned for.  
+      an orchestrator hasn't been assigned for.  
 
         ![Add Orchestrator 1](images/database-group_add-orchestrator-01.png "Add Orchestrator 1")
 
@@ -122,7 +122,7 @@ be available here:
 
         ![Add Orchestrator 2](images/database-group_add-orchestrator-02.png "Add Orchestrator 2")
 
-        Select an available node for the orchestrator and click **Add orchestrator**, or **Cancel**.  
+        Select an available node for the orchestrator and click **Add orchestrator** (or **Cancel**).  
 
     * **Remove Orchestrator**  
 
@@ -145,7 +145,7 @@ be available here:
         Select a node for the replica.  
         If you want, you can also set a mentor node that will replicate 
         the data to the new replica.  
-        Click "Add node" to create the new replica, or **Cancel**.  
+        Click "Add node" to create the new replica (or **Cancel**).  
 
     * **Remove shard replica**  
       
