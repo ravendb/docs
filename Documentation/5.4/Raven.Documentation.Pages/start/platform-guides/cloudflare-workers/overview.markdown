@@ -188,14 +188,14 @@ This means you have successfully connected to your RavenDB database.
 
 If you have used the Deploy with Workers wizard, your GitHub repository is already set up for continuous integration and deployment to Cloudflare.
 
-If you have manually initialized the template, once pushed to GitHub you can enable GitHub action workflows.
+If you have manually initialized the template, once pushed to GitHub you can [enable GitHub action workflows][gh-workflows].
 
-You will also need to add two repository secrets:
+You will also need to [add two repository secrets][gh-repo-secrets]:
 
 - `CF_ACCOUNT_ID` -- Your Cloudflare global account ID
 - `CF_API_TOKEN` -- An API token with the "Edit Workers" permission
 
-Once these secrets are added, trigger a workflow manually or push a commit to trigger a deployment.
+Once these secrets are added, [trigger a workflow manually][gh-workflows-manual] or push a commit to trigger a deployment.
 
 ### Manual Deployment
 
@@ -215,7 +215,7 @@ If it is not working, verify the Wrangler settings are being applied.
 
 {PANEL: Using RavenDB in the Worker}
 
-The RavenDB Cloudflare template uses the itty-router package to provide basic routing and middleware support.
+The RavenDB Cloudflare template uses the [itty-router package][npm-itty-router] to provide basic routing and middleware support.
 
 Each routing handler is passed a `request` and `env` argument. A document session is opened per-request and accessible through `env.db`.
 
@@ -231,7 +231,6 @@ router.get("/users/:id", async (request: IRequest, env: Env) => {
 
 {PANEL/}
 
-
 [template]: https://github.com/ravendb/template-cloudflare-worker
 [deploy-with-workers]: https://deploy.workers.cloudflare.com/?url=https://github.com/ravendb/template-cloudflare-worker
 [cf-mtls-worker]: https://developers.cloudflare.com/workers/runtime-apis/mtls
@@ -239,3 +238,7 @@ router.get("/users/:id", async (request: IRequest, env: Env) => {
 [docs-create-db]: /docs/article-page/latest/csharp/studio/database/create-new-database/general-flow
 [docs-cloud-certs]: /docs/article-page/latest/csharp/cloud/cloud-security
 [docs-on-prem-certs]: /docs/article-page/latest/csharp/studio/overview
+[npm-itty-router]: https://npmjs.com/package/itty-router
+[gh-repo-secrets]: https://docs.github.com/en/actions/security-guides/encrypted-secrets
+[gh-workflows]: https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions
+[gh-workflows-manual]: https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow
