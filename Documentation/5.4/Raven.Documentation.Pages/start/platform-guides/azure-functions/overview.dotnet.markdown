@@ -69,27 +69,72 @@ After cloning the repository locally, restore .NET dependencies with `dotnet`:
 
 By default, the template is configured to connect to the Live Test instance of RavenDB and the Northwind database. Since this is only for testing purposes, next you will configure the app to connect to your existing RavenDB database.
 
+### Starting the Function
+
+You can start the Azure Function locally using:
+
+`func start`
+
+If you are using Visual Studio Code, you can also debug the function with F5 debugging.
+
 {PANEL/}
 
 
 {PANEL: Configuring Local Connection to RavenDB}
 
-To configure the local version of your Azure Functions app to connect to RavenDB, you will need to update the `local.settings.json` file with the `DB_URLS` value and `DB_NAME` value. The default is:
+To configure the local version of your Azure Functions app to connect to RavenDB, you will need to update the `appsettings.json` file with the `RavenSettings:Urls` value and `RavenSettings:DatabaseName` value. The default is:
 
-```json
+{CODE-BLOCK:json}
 {
-  "IsEncrypted": false,
-  "Values": {
-    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-    "DB_URLS": "http://live-test.ravendb.net",
-    "DB_NAME": "Northwind",
-    "DB_CERT_THUMBPRINT": ""
+  "RavenSettings": {
+    "Urls": ["http://live-test.ravendb.net"],
+    "DatabaseName": "Northwind"
   }
 }
-```
+{CODE-BLOCK/}
 
 If using an authenticated RavenDB URL, you will need a local client certificate installed. Learn more about [configuring client authentication for RavenDB][docs-client-certs].
+
+### Certificate Path and Password (Windows and Linux)
+
+To specify the path to a `.pfx` file, specify a relative or absolute file path using `RavenSettings:CertFilePath`.
+
+To specify a PFX password, use the .NET User Secrets tool to add a secret locally:
+
+{CODE-BLOCK:bash}
+dotnet user-secrets init
+dotnet user-secrets set RavenSettings:CertPassword "<CERT_PASSWORD>"
+{CODE-BLOCK/}
+
+Replace `<CERT_PASSWORD>` with your PFX password.
+
+Example `appsettings.json`:
+
+{CODE-BLOCK:json}
+{
+  "RavenSettings": {
+    "Urls": ["https://a.free.mycompany.ravendb.cloud"],
+    "DatabaseName": "company_db",
+    "CertFilePath": "a.free.mycompany.ravendb.cloud.with.password.pfx"
+  }
+}
+{CODE-BLOCK/}
+
+### Certificate Thumbprint (Windows Only)
+
+You can also specify a certificate to use from the `CurrentUser\My` Windows certificate store by setting `RavenSettings:CertThumbprint`.
+
+Example `appsettings.json`:
+
+{CODE-BLOCK:json}
+{
+  "RavenSettings": {
+    "Urls": ["https://a.free.mycompany.ravendb.cloud"],
+    "DatabaseName": "company_db",
+    "CertThumbprint": "<CERT_THUMBPRINT>"
+  }
+}
+{CODE-BLOCK/}
 
 {PANEL/}
 
@@ -122,11 +167,11 @@ The Azure portal will only use the certificate password once on upload. You will
 1. Go to your Azure Functions dashboard in the Portal
 1. Click the Application Settings menu
 1. Modify or add app setting for `WEBSITE_LOAD_CERTIFICATES` to the certificate thumbprint you copied
-1. Modify or add app setting for `DB_CERT_THUMBPRINT` with the certificate thumbprint you copied
-1. Modify or add app setting for `DB_URLS` with the comma-separated list of RavenDB node URLs to connect to
-1. Modify or add an app setting for `DB_NAME` with the database name to connect to
+1. Modify or add app setting for `RavenSettings__CertThumbprint` with the certificate thumbprint you copied
+1. Modify or add app setting for `RavenSettings__Urls` with the comma-separated list of RavenDB node URLs to connect to
+1. Modify or add an app setting for `RavenSettings__DatabaseName` with the database name to connect to
 
-These values will override `local.settings.json` once deployed on Azure.
+These values will override `appsettings.json` once deployed on Azure.
 
 {NOTE: Loading multiple certificates}
 `WEBSITE_LOAD_CERTIFICATES` makes any specified certificates available in the Windows Certificate Store under the `CurrentUser\My` location. You can use the wildcard value `*` for `WEBSITE_LOAD_CERTIFICATES` to load ALL uploaded certificates for your Function App. However, it's recommended to be specific and use comma-separated thumbprints so that only allowed certificates are made available. This avoids accidentally exposing a certificate to the application that isn't explicitly used.
