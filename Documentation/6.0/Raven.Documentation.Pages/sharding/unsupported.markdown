@@ -88,13 +88,6 @@
 | ------------- | ------------- | 
 | [Concurrent Subscriptions](../client-api/data-subscriptions/concurrent-subscriptions) |  | 
 
-## Unsupported Debug Features
-
-| Unsupported Feature | Comment | 
-| ------------- | ------------- | 
-| **Debug Package for a sharded DB** |  | 
-| **Many debug handlers for /debug/*** |  | 
-
 ## Unsupported Integrations Features
 
 | Unsupported Unsupported Feature | Comment | 
@@ -115,13 +108,6 @@
 | [Filtered Replication](../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#filtered-replication) |  | 
 | [Hub/Sink Replication](../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview) |  | 
 | **Legacy replication** | From RavenDB 3.x instances | 
-
-## Other Unsupported Features
-
-| Unsupported Feature | Comment | 
-| ------------- | ------------- | 
-| [Tombstones cleanup](../glossary/tombstone#tombstone-cleaning) | By POST, Studio | 
-| **Get tombstones state** | By GET, Studio | 
 
 {PANEL/}
 
