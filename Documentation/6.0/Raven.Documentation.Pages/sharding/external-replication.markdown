@@ -65,57 +65,51 @@ the scenes.
 
 ## Non-Sharded Database to Sharded Database
 
-The image below shows a non-sharded database replicating data to a 5-shard database.  
+The image below depicts a non-sharded database replicating data to a 5-shard database.  
 
 ![Non-Sharded Database to Sharded Database](images/external-replication_non-sharded-to-sharded.png "Non-Sharded Database to Sharded Database")
 
 1. **Non-Sharded Database**  
 2. **Replication to Sharded Database**  
-   A non-sharded database is unaware that the destination database is sharded.  
-   From the replicator's side there is no difference between replicating data 
-   to sharded and non-sharded databases.  
+   The database is unaware that the destination database is sharded, 
+   no special syntax or preparation is needed.  
 3. **Orchestrator**  
    The orchestrator receives and prepares the replicated data, 
-   dividing documents and document extensions by document IDs so each 
-   entity can be sent to its correct shard.  
+   grouping documents and document extensions by document IDs so each 
+   entity can be stored in the correct shard.  
 4. **Transfer to Shard**  
-   The orchestrator connects each destination shard and transfers its data.  
+   The orchestrator transfers each destination shard its data.  
    Optimization routines are applied to make the process as 
-   effective as possible.   
+   effective as possible.  
 5. **Shard**  
    Document and document extensions are assigned to buckets by document ID.  
    Shard replies to replicated data and replication attempts are similar 
-   to those made by non-sharded databases.  
+   to replies made by non-sharded databases.  
 
 ## Sharded Database to Sharded Database
 
-The image below shows a 3-shard database replicating data to a 5-shard database.  
-We depict databases with different numbers of shards to emphasize that though both 
-databases are sharded, the internal order of their shards may be completely different.  
+* The image below depicts a 3-shard database replicating data to a 5-shard database.  
+* Each shard replicates its data as an autonomous database.  
 
 ![Sharded Database to Sharded Database](images/external-replication_sharded-to-sharded.png "Sharded Database to Sharded Database")
 
 1. **DB 1 Shard**  
-2. **Replication through DB 1 Orchestrator**  
-   Each shard is appointed an orchestrator to fetch and transfer its data.  
-3. **DB 1 Orchestrator**  
-   The orchestrator is unaware that the destination database is sharded.  
-4. **Replication to DB 2**  
-   Replicating data to a sharded RavenDB 6.0 database is similar to 
-   replicating data to a non-sharded RavenDB 6.0.  
-5. **DB 2 Orchestrator**  
+   The shard is unaware that the destination database is sharded.  
+2. **Replication to DB 2**  
+   The database is unaware that the destination database is sharded, 
+   no special syntax or preparation is needed.  
+3. **DB 2 Orchestrator**  
    The orchestrator receives and prepares the replicated data, 
-   dividing documents and document extensions by document IDs so each 
-   entity can be sent to its correct shard.  
-6. **Transfer to Shard**  
-   Each orchestrator connects each destination shard and transfers 
-   its data.  
+   grouping documents and document extensions by document IDs so each 
+   entity can be stored in the correct shard.  
+4. **Transfer to Shard**  
+   The orchestrator transfers each destination shard its data.  
    Optimization routines are applied to make the process as 
    effective as possible.  
-7. **DB 2 Shard**  
-   Document and document extensions are assigned to buckets by document ID.  
+5. **DB 2 Shard**  
+   Documents and document extensions are assigned to buckets by document ID.  
    Shard replies to replicated data and replication attempts are similar 
-   to those made by non-sharded databases.  
+   to replies made by non-sharded databases.  
 
 {PANEL/}
 
