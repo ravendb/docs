@@ -1,12 +1,16 @@
-﻿# Sharding: Querying in a Sharded Database
+﻿# Sharding: Querying
 ---
 
 {NOTE: }
 
-* Queries use the same syntax in sharded and non-sharded databases.  
-* Sharded databases support most querying features that non-sharded 
-  database support, and retain similar behavior.  
-  Please read below about unsupported or altered features.  
+* Query syntax is similar in sharded and non-sharded databases.  
+* A sharded database offers the same set of querying features that 
+  a non-sharded database offers, so queries that were written for 
+  a non-sharded database can generally be kept as is.  
+* Some querying features are yet to be implemented. Others behave 
+  a little differently in a sharded database. One example for the 
+  latter is [filter](../sharding/querying#filtering-results-in-a-sharded-database).  
+  These instances are discussed below.  
 
 * In this page:  
   * [Querying in a Sharded Database](../sharding/querying#querying-in-a-sharded-database)  
@@ -15,7 +19,7 @@
      * [Projection](../sharding/querying#projection)  
      * [OrderBy in a Map-Reduce Index](../sharding/querying#orderby-in-a-map-reduce-index)  
      * [`where` vs `filter` Recommendations](../sharding/querying#vs--recommendations)  
-  * [Include](../sharding/querying#include)  
+  * [Including Items](../sharding/querying#including-items)  
   * [Unsupported Querying Features](../sharding/querying#unsupported-querying-features)  
   
 {NOTE/}
@@ -247,16 +251,15 @@ filter TotalSales >= 5000
   {CODE-BLOCK/}
 {PANEL/}
 
-{PANEL: Include}
+{PANEL: Including Items}
 
-**Including** items by a query or an index **will** work even if the 
-included item resides on another shard.  
-If requested items are not found on this shard, the orchestrator will 
-connect the shards that these items are stored on, load the items, 
-and provide them.  
+**Including** items by a query or an index **will** work even if an included 
+item resides on another shard.  
+If a requested item is not found on this shard, the orchestrator will connect 
+the shard it is stored on, load the item and provide it.  
 
-Note that this process will cost the extra travel to the shard 
-that the requested document is on.  
+Note that this process will cost the extra travel to the shard that the requested 
+document is on.  
 
 {PANEL/}
 

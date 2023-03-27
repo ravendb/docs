@@ -79,15 +79,17 @@ and modifications no matter how large the overall database gets.
 
 {PANEL: ETL Queries}
 
-Queries used from within ETL transform scripts are handled like other 
-queries in a sharded database, i.e. mostly without change in respect to 
-a non-sharded database, with a few unimplemented or somewhat altered features.  
-
-For instance, a shard may run an ETL task whose transform script 
-loads a document. Loading the document will succeed if it resides 
-on this shard, but [fail if the document is on a different shard](../sharding/querying#unsupported-querying-features).  
-
-Read more about querying in a sharded database [here](../sharding/querying).  
+Queries used by an ETL task's transform script on a sharded 
+database are basically no different than queries executed over 
+a non-sharded database.  
+However, as some querying features are 
+[not yet implemented](../sharding/querying#unsupported-querying-features) 
+on a sharded database (e.g. loading a document that resides 
+on a different shard will fail) and others behave a little 
+differently than their non-sharded equivalents (e.g. 
+[filer](../sharding/querying#filtering-results-in-a-sharded-database)), 
+it is recommended to read the pages dedicated to [indexing](../sharding/indexing) 
+and [querying](../sharding/querying) on a sharded database.  
 
 {PANEL/}
 
