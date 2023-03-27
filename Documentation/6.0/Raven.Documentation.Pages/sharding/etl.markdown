@@ -3,16 +3,18 @@
 
 {NOTE: }
 
-* From a user's perspective, ETL usage on a sharded RavenDB database is mostly 
-  similar to its usage on a non-sharded database, including unchanged syntax and 
-  support for the same list of destinations.  
-* Most changes are meant to remain behind the scenes and allow smooth transition 
-  to using a sharded database if and when it is needed.  
+* From a user's point of view, ETL usage on a sharded RavenDB database 
+  is similar to its usage on a non-sharded database, including unchanged 
+  syntax and support for the same list of destinations.  
+* Most changes are meant to remain behind the scenes and allow the 
+  transition to a sharded database to be seamless.  
 * A user defines an ETL task once.  
-  Each shard then defines the task for its own database.  
-* Resharding may cause documents to be transferred multiple times.  
-  It is the user's responsibility to make sure that duplicates are handled properly.  
-* ETL tasks info can be retrieved per database and per shard.  
+  As the shards detect that a task was defined, each shard defines 
+  its own local ETL task, based on the user's settings.  
+* Resharding may result in the transfer of some documents more than 
+  once to the ETL destination. It is the user's responsibility to 
+  [detect and handle](../sharding/etl#etl-and-resharding) such duplicates.  
+* ETL tasks information is available [per database and per shard](../sharding/etl#retrieving-shard-specific-etl-task-info).  
 
 * In this page:  
   * [ETL](../sharding/etl#etl)  
