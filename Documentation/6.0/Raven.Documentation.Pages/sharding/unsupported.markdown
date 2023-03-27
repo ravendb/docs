@@ -35,7 +35,7 @@
 | Unsupported Feature | Comment | 
 | ------------- | ------------- | 
 | [Rolling index deploymeny](../indexes/rolling-index-deployment) |  | 
-| [Loading documents from other shards](../sharding/indexing#unsupported-indexing-features) | Loading a document during indexing is possible only if the document resides on the shard. | 
+| [Load Document from another shard](../sharding/indexing#unsupported-indexing-features) | Loading a document during indexing is possible only if the document resides on the shard. | 
 | **Map-Reduce Output Documents** | Using [OutputReduceToCollection](../indexes/map-reduce-indexes#map-reduce-output-documents) to output the results of a map-reduce index to a collection is not supported in a Sharded Database. | 
 | [Custom Sorters](../indexes/querying/sorting#creating-a-custom-sorter) |  | 
 | **Testing Javascript indexes** |  | 
@@ -47,7 +47,7 @@
 | [Load Document from another shard](../sharding/indexing#unsupported-indexing-features) | An index or a query can only load a document if it resides on the same shard. | 
 | [Load Document within a map-reduce projection](../sharding/querying#projection) |  | 
 | **Stream Map-Reduce results** | [Streaming](../client-api/session/querying/how-to-stream-query-results#stream-an-index-query) map-reduce results is not supported in a Sharded Database. | 
-| [Use `limit` with `PatchByQueryOperation` or `DeleteByQueryOperation`](../sharding/querying#unsupported-querying-features) |  | 
+| Use `limit` with [PatchByQueryOperation](../client-api/operations/patching/set-based#patchbyqueryoperation) or [DeleteByQueryOperation](../client-api/operations/delete-by-query) | [Unsupported Querying Features](../sharding/querying#unsupported-querying-features) | 
 | [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis) |  | 
 | **Order by score** |  | 
 
