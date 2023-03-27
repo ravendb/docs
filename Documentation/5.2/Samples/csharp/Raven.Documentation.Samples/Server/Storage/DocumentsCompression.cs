@@ -10,7 +10,7 @@ namespace Raven.Documentation.Samples.Server.Storage
         {
             using (var store = new DocumentStore())
             {
-                #region comparess_all
+                #region compress_all
                 // Compression is configured by setting the database record 
                 
                 // Retrieve the database record
@@ -26,11 +26,11 @@ namespace Raven.Documentation.Samples.Server.Storage
 
             using (var store = new DocumentStore())
             {
-                #region comparess_specific
+                #region compress_specific
                 // Retrieve the database record
                 var dbrecord = store.Maintenance.Server.Send(new GetDatabaseRecordOperation(store.Database));
 
-                // Turn on compression for the specific collections
+                // Turn on compression for specific collections
                 dbrecord.DocumentsCompression.Collections = new[] { "Orders", "Employees" };
                 
                 // Turn off compression for all revisions, on all collections
@@ -46,7 +46,7 @@ namespace Raven.Documentation.Samples.Server.Storage
         {
             using (var store = new DocumentStore())
             {
-                #region comparess_all_async
+                #region compress_all_async
                 // Compression is configured by setting the database record 
                 
                 // Retrieve the database record
@@ -62,7 +62,7 @@ namespace Raven.Documentation.Samples.Server.Storage
 
             using (var store = new DocumentStore())
             {
-                #region comparess_specific_async
+                #region compress_specific_async
                 // Retrieve the database record
                 var dbrecord = await store.Maintenance.Server.SendAsync(new GetDatabaseRecordOperation(store.Database));
 

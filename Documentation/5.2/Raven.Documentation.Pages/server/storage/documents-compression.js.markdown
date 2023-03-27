@@ -75,27 +75,21 @@
 
 {PANEL: Set compression for all collections}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync compress_all@Server/Storage/DocumentsCompression.cs /}  
-{CODE-TAB:csharp:Async compress_all_async@Server/Storage/DocumentsCompression.cs /}  
-{CODE-TABS/}
+{CODE:nodejs compress_all@Server/Storage/documentsCompression.js /}
 
 {PANEL/}
 
 {PANEL: Set compression for selected collections}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync compress_specific@Server/Storage/DocumentsCompression.cs /}  
-{CODE-TAB:csharp:Async compress_specific_async@Server/Storage/DocumentsCompression.cs /}  
-{CODE-TABS/}
+{CODE:nodejs compress_specific@Server/Storage/documentsCompression.js /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-* Documents compression is configured using the `DocumentsCompressionConfiguration` class in the database record.  
+* Documents compression is configured using the following object in the database record:  
 
-{CODE:csharp syntax@Server/Storage/DocumentsCompression.cs /}  
+{CODE:nodejs syntax@Server/Storage/documentsCompression.js /}  
 
 {PANEL/}
 
