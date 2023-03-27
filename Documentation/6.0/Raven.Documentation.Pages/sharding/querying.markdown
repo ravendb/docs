@@ -17,7 +17,6 @@
      * [`where` vs `filter` Recommendations](../sharding/querying#vs--recommendations)  
   * [Include](../sharding/querying#include)  
   * [Unsupported Querying Features](../sharding/querying#unsupported-querying-features)  
-  * [Querying a Specific Shard](../sharding/querying#querying-a-specific-shard)  
   
 {NOTE/}
 
