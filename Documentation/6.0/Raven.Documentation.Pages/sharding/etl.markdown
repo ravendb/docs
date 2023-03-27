@@ -22,6 +22,7 @@
      * [Non-Sharded Database ETL Tasks](../sharding/etl#non-sharded-database-etl-tasks)  
      * [Sharded Database ETL Tasks](../sharding/etl#sharded-database-etl-tasks)  
   * [ETL and Resharding](../sharding/etl#etl-and-resharding)  
+  * [ETL Queries](../sharding/etl#etl-queries)  
   * [Retrieving Shard-Specific ETL Task Info](../sharding/etl#retrieving-shard-specific-etl-task-info)  
 
 {NOTE/}
@@ -73,6 +74,20 @@ and modifications no matter how large the overall database gets.
 * If the responsible node fails a failover scenario will start, 
   another shard node will be made responsible for the task, 
   and the transfer will continue from the point of failure.  
+
+{PANEL/}
+
+{PANEL: ETL Queries}
+
+Queries used from within ETL transform scripts are handled like other 
+queries in a sharded database, i.e. mostly without change in respect to 
+a non-sharded database, with a few unimplemented or somewhat altered features.  
+
+For instance, a shard may run an ETL task whose transform script 
+loads a document. Loading the document will succeed if it resides 
+on this shard, but [fail if the document is on a different shard](../sharding/querying#unsupported-querying-features).  
+
+Read more about querying in a sharded database [here](../sharding/querying).  
 
 {PANEL/}
 
