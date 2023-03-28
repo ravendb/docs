@@ -4,20 +4,20 @@
 {NOTE: }
 
 * The __Documents Compression__ feature employs the [Zstd compression algorithm](https://github.com/facebook/zstd)  
-  to achieve more efficient data storage with constantly improving compression ratios.
+  to achieve more efficient data storage with constantly improving compression ratios.  
 
-* Documents compression can be set for all collections or for selected collections.  
-  Revisions compression is turned on for all collections by default.
+* Documents compression can be set for all collections, selected collections, and revisions.  
+  Default compression settings are [configurable](../../server/configuration/database-configuration#databases.compression.compressallcollectionsdefault).  
 
 * When turned on, compression will be applied to:  
   * __New documents__:  
       * A new document that is saved will be compressed.  
   * __Existing documents__:  
       * Existing documents that are modified and saved will be compressed.  
-      * Existing documents that are Not modified are compressed when executing the    
+      * Existing documents that are Not modified will only be compressed when executing the    
         [compact database operation](../../client-api/operations/server-wide/compact-database#compaction-triggers-compression).  
 
-* Compression can be set from the [Studio](../../studio/database/settings/documents-compression#database-storage-report),  
+* Compression can be set from the [Studio](../../studio/database/settings/documents-compression),  
   or by updating the database record from the Client API, see below.
 
 * In this page:  
@@ -49,7 +49,9 @@
   their uncompressed versions because the compressed data is loaded much faster.  
 
 * Compression is Not applied to attachments, counters, and time series data,  
-  only to the content of documents and revisions.
+  only to the content of documents and revisions.  
+
+* Detailed information about the database's physical storage is visible in the [Storage Report view](../../studio/database/stats/storage-report).
 
 {PANEL/}
 
@@ -108,6 +110,7 @@
 
 ### Server
 
+- [Database Configuration - Compress Collections Default](../../server/configuration/database-configuration#databases.compression.compressallcollectionsdefault)
 - [Database Configuration - Compress Revisions Default](../../server/configuration/database-configuration#databases.compression.compressrevisionsdefault)
 
 ### Studio
