@@ -12,15 +12,21 @@
     "Mappings": []
   },
   {
-    "Path": "querying.markdown",
-    "Name": "Querying",
-    "DiscussionId": "445e663b-fb72-40b4-8b81-b221be977c21",
+    "Path": "unsupported.markdown",
+    "Name": "Unsupported Features",
+    "DiscussionId": "ecec58dd-349f-45fb-ac73-1059cb21524c",
     "Mappings": []
   },
   {
     "Path": "indexing.markdown",
     "Name": "Indexing",
     "DiscussionId": "8082b99d-3ebd-4840-8d75-8d4f3d065bf2",
+    "Mappings": []
+  },
+  {
+    "Path": "querying.markdown",
+    "Name": "Querying",
+    "DiscussionId": "445e663b-fb72-40b4-8b81-b221be977c21",
     "Mappings": []
   },
   {
@@ -47,21 +53,9 @@
     "Mappings": []
   },
   {
-    "Path": "subscriptions.markdown",
-    "Name": "Subscriptions",
-    "DiscussionId": "2a7ae03e-ecef-4bf1-b321-cc8fab54a447",
-    "Mappings": []
-  },
-  {
     "Path": "etl.markdown",
     "Name": "ETL",
     "DiscussionId": "2031f15d-e67b-4186-bf23-d0fd3490d3ec",
-    "Mappings": []
-  },
-  {
-    "Path": "resharding.markdown",
-    "Name": "Resharding",
-    "DiscussionId": "46539a5a-a2f6-48ee-8065-417377c14b3c",
     "Mappings": []
   }
 ]
