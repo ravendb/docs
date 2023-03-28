@@ -19,11 +19,9 @@
       * [Unsupported Import & Export Features](../sharding/unsupported#unsupported-import--export-features)  
       * [Unsupported Migration Features](../sharding/unsupported#unsupported-migration-features)  
       * [Unsupported Subscriptions Features](../sharding/unsupported#unsupported-subscriptions-features)  
-      * [Unsupported Debug Features](../sharding/unsupported#unsupported-debug-features)  
       * [Unsupported Integrations Features](../sharding/unsupported#unsupported-integrations-features)  
       * [Unsupported Patching Features](../sharding/unsupported#unsupported-patching-features)  
       * [Unsupported Replication Features](../sharding/unsupported#unsupported-replication-features)  
-      * [Other Unsupported Features](../sharding/unsupported#other-unsupported-features)  
   
 {NOTE/}
 
@@ -122,6 +120,4 @@
 [Restore](../sharding/backup-and-restore/restore)  
 [Import & Export](../sharding/import-and-export)  
 [External Replication](../sharding/external-replication)  
-[Subscriptions](../sharding/subscriptions)  
 [ETL](../sharding/etl)  
-[Resharding](../sharding/resharding)  
