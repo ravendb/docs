@@ -57,5 +57,11 @@
     "Name": "ETL",
     "DiscussionId": "2031f15d-e67b-4186-bf23-d0fd3490d3ec",
     "Mappings": []
+  },
+  {
+    "Path": "subscriptions.markdown",
+    "Name": "Subscriptions",
+    "DiscussionId": "2a7ae03e-ecef-4bf1-b321-cc8fab54a447",
+    "Mappings": []
   }
 ]

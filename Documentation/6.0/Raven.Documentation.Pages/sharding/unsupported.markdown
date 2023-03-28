@@ -121,3 +121,4 @@
 [Import & Export](../sharding/import-and-export)  
 [External Replication](../sharding/external-replication)  
 [ETL](../sharding/etl)  
+[Subscriptions](../sharding/subscriptions)  
