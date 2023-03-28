@@ -3,95 +3,46 @@
 
 {NOTE: }
 
-* The **Documents Compression** feature uses the [Zstd compression algorithm](https://github.com/facebook/zstd) to 
-  continuously create a more efficient data model with better compression ratios.  
+* The __Documents Compression__ feature employs the Zstd compression algorithm  
+  to achieve more efficient data storage with constantly improving compression ratios.  
+  Learn more in this [overview](../../../server/storage/documents-compression#overview).
 
-* Go to **Settings** > **Documents Compression** to configure compression for a 
-particular database.  
-  * Revisions are compressed by default.  
-  * **Compress all collections** or specific collections can be selected for compression in this view.  
+* Documents compression can be set for all collections, selected collections, and revisions.  
+  Default compression settings are [configurable](../../../server/configuration/database-configuration#databases.compression.compressallcollectionsdefault). 
 
-* Compression will be applied to:  
-  * Newly created documents  
-  * Existing documents when they are modified and saved  
+* When turned on, compression will be applied to:  
+    * __New documents__:  
+        * A new document that is saved will be compressed.  
+    * __Existing documents__:  
+        * Existing documents that are modified and saved will be compressed.  
+        * Existing documents that are Not modified will only be compressed when executing the    
+          [compact database operation](../../../client-api/operations/server-wide/compact-database#compaction-triggers-compression).
 
-{INFO: Compressing all existing documents}
+* From the Studio, go to __Settings__ > __Documents Compression__ to set compression for a particular database.  
+  Compression can also be set from the [Client API](../../../server/storage/documents-compression).
 
-Only new or modified documents from selected collections will be compressed.  
-To compress all existing documents without modifying them,  
-use [CompactDatabaseOperation](../../../client-api/operations/server-wide/compact-database) 
-after configuring which collections to compress.
-
-{INFO/}
-
-* Go to **Stats** > **Storage Report** to see the contents and size of your database 
-storage, and to compact the database.  
+* To see the contents and size details of your database storage go to the [Storage Report](../../../studio/database/stats/storage-report) view in the Studio.  
 
 * In this page:  
-  * [Configure Documents Compression](../../../studio/database/settings/documents-compression#configure-documents-compression)  
-  * [Database Storage Report](../../../studio/database/settings/documents-compression#database-storage-report)  
-
+  * [Set documents compression from Studio](../../../studio/database/settings/documents-compression#set-documents-compression-from-studio)  
 
 {NOTE/}
 
 ---
 
-{PANEL: Configure Documents Compression}
+{PANEL: Set documents compression from Studio}
 
-RavenDB will compress documents in selected collections or in all collections when storing those documents.  
-The compression will be applied to:  
+![Document Compression Configuration](images/documents-compression.png "Set Document Compression")
 
-* Newly created documents  
-* Existing documents that are modified and saved  
+1. Go to __Settings > Document Compression__
 
-* If opened just for reading, **existing documents will not be compressed** .  
-  * If you also want to compress existing documents without editing them, 
-    after configuring the collections to compress, you can use the [CompactDatabaseOperation](../../../client-api/operations/server-wide/compact-database).
-    While removing empty gaps which occupy space in your database, 
-    this operation will also trigger compression on collections that were configured.  
-     * Compaction can also be done via the studio [Database Storage Report](../../../studio/database/settings/documents-compression#database-storage-report) view.
-     * Note: Compression and compaction are two different methods.  
-       Compression reduces the amount of storage that data uses,  
-       while compaction removes empty gaps that still occupy space after deletes.  
+2. Toggle on to compress documents from ALL collections.
 
-* Compression is configured in the [Database Record](../../../studio/database/settings/database-record).  
+3. Or, select specific collections to be compressed.
 
-![Document Compression Configuration](images/documents-compression.png "Document Compression Configuration")
+4. Toggle on to compress revisions of all collections.
 
-1. **Select Collection(s)**  
-   Select the collections on which to activate compression or select  
-    * **Compress all collections**  
-      ![Compress All Collections](images/documents-compression-all-collections.png "Compress All Collections")  
-      Toggle to compress new or modified documents in all collections in this particular database.  
-2. **Collections Selected**  
-   List of selected collections (seen if "Compress all collections" is toggled off).  
-3. **Compress Revisions**  
-   Toggle whether to activate compression for all revisions of all collections.  
-4. **Save**  
-   Save and apply configuration.  
-
-
-
-{PANEL/}
-
-{PANEL: Database Storage Report}
-
-The database storage report displays detailed information about the database's physical storage.  
-Go to this page (Stats > Storage Report) to see the effect of compression and compaction.  
-(Refresh the page to see the changes.)  
-
-![sampleDB Storage Report](images/storage-report.png "sampleDB Storage Report")
-
-1. **Database Component**  
-   * The size of each rectangle is proportional to its storage size.  
-   * Click any rectangle to view its subdirectories' details.  
-   * To see storage details, hover over a section or see the detailed list below.  
-2. **Compact Database**  
-   * Click to [compact the database](../../../client-api/operations/server-wide/compact-database) 
-     which removes empty gaps that occupy space in your database.
-   * All documents will be compressed in any collection where compression is configured when 
-     using the `CompactDatabaseOperation`.  
-   * Note: During this asynchronous operation **the database will be offline**.
+5. Save the configuration.  
 
 {PANEL/}
 
