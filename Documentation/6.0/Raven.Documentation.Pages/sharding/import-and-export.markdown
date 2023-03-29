@@ -72,8 +72,6 @@ or contents of the database the data is imported to.
 * If the database is sharded, the data will be distributed among the shards.  
   In case the shard has [several nodes](../sharding/overview#shard-replication), 
   each shard database will be replicated to all the nodes of this shard.  
-* If the database is non-sharded, the local database will be replicated 
-  among cluster nodes.  
 
 See a code example [here](../client-api/smuggler/what-is-smuggler#example-1).  
 
@@ -82,14 +80,27 @@ See a code example [here](../client-api/smuggler/what-is-smuggler#example-1).
 * Backup files are given an extension that reflects the backup type.  
   A full-backup file, for example, will be given a `.ravendb-full-backup` 
   extension.  
-  Regardless of the extension, though, the internal structure of backup 
+  Regardless of the extension, the internal structure of backup 
   files is similar to that of `.ravendbdump` files.  
-* It **is** therefore possible to import backup files using Smuggler, 
-  including those created for a sharded database.  
-* This can be helpful in many ways. We can, for example, divide the 
-  data that is currently held by a sharded database, between several 
-  databases, by creating new databases and importing into each of them 
-  the backup made by a single shard.  
+  It **is** therefore possible to import backup files.  
+* Unlike the [restore](../client-api/operations/maintenance/backup/restore) operation, 
+  which creates a new database from the backup files, importing 
+  a backup file adds the imported data to data already stored in 
+  the database.  
+* Import can be helpful in the following cases, among others:  
+   * a backup created for a non-sharded database can be imported 
+     into a sharded database.  
+     This allows the migration of data from a non-sharded database 
+     to a sharded one.  
+   * A sharded database can be easily split into several databases.  
+     To do this, we can simply import the backup made for each shard, 
+     into a newly created (sharded or not) database.  
+
+{NOTE: }
+[Incremental backups](../server/ongoing-tasks/backup-overview#backup-scope:-full-or-incremental) 
+contain only the changes that have been made in the database since the last full backup.  
+Import the full backup first, and then the incremental backups that complement it.  
+{NOTE/}
 
 {PANEL/}
 

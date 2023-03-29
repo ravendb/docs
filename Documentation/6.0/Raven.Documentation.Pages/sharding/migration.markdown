@@ -85,6 +85,12 @@ The sharded database can be kept and tested in a controlled environment
 as long as necessary, as the original database keeps on serving its users. 
 When all is ready, the new database can be moved into production.  
 
+{NOTE: }
+A live replica created using external replication includes all documents 
+and document extensions, but does **not** include server and cluster level 
+features like indexes and compare exchange entries. Find the full list [here](../server/ongoing-tasks/external-replication#general-information-about-external-replication-task).  
+{NOTE/}
+
 {PANEL/}
 
 ## Related articles
