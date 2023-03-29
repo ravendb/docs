@@ -83,8 +83,22 @@ how large the overall database gets.
 
 {PANEL: Unsupported Features}
 
-[Concurrent Subscriptions](../client-api/data-subscriptions/concurrent-subscriptions) 
-are currently not supported under a sharded database.  
+Revisions features that are not supported yet under a sharded database:  
+
+* [Concurrent Subscriptions](../client-api/data-subscriptions/concurrent-subscriptions)  
+  Allowing multiple workers to connect a common subscription simultaneously.  
+* [Data Subscriptions Revisions Support](../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)  
+  Subscribing to document revisions.  
+* [SubscriptionCreationOptions.ChangeVector](../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions<t>)  
+  Providing an arbitrary change vector from which the subscription would start processing 
+  is currently not supported.  
+  {NOTE: }
+  Setting ChangeVector to one of the following special values is supported 
+  under a sharded database as well:  
+  `"LastDocument"` (the latest change vector on the database)  
+  `"BeginningOfTime"`  (the earliest change vector on the database)  
+  {NOTE/}
+
 
 {PANEL/}
 

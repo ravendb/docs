@@ -85,6 +85,8 @@
 | Unsupported Feature | Comment | 
 | ------------- | ------------- | 
 | [Concurrent Subscriptions](../client-api/data-subscriptions/concurrent-subscriptions) |  | 
+| [Data Subscriptions Revisions Support](../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning) | Subscribing to document revisions | 
+| [SubscriptionCreationOptions.ChangeVector](../sharding/subscriptions#unsupported-features) | Providing a change vector to start the processing from <br> except for special cases: `"LastDocument"`, `"BeginningOfTime"` |
 
 ## Unsupported Integrations Features
 
