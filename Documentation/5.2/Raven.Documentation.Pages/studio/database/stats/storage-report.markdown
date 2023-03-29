@@ -6,7 +6,7 @@
 * The database storage report displays detailed information about the database's physical storage.  
 
 * Go to __Stats > Storage Report__ in the Studio.  
-  Refresh the page to the effect of [Documents Compression](../../../server/storage/documents-compression) and [Database Compaction](../../../client-api/operations/server-wide/compact-database).
+  Refresh the page to see the effect of [Documents Compression](../../../server/storage/documents-compression) and [Database Compaction](../../../client-api/operations/server-wide/compact-database).
 
 * In this page:  
   * [Database storage report](../../../studio/database/stats/storage-report#database-storage-report)  
@@ -21,7 +21,7 @@
 
 1. Go to __Stats > Storage Report__.  
 
-2. This is the database location of on disk.  
+2. This is the database location on disk.  
 
 3. __Database components__:  
 

@@ -101,7 +101,7 @@ There are a few ways to reload a database:
 1. Restart RavenDB on all nodes.  
    The database settings configuration will become effective for each node that is restarted.
 
-2. Execute the [toggle database state](../../../client-api/client-api/operations/server-wide/toggle-databases-state) operation from the Client API.  
+2. Execute the [toggle database state](../../../client-api/operations/server-wide/toggle-databases-state) operation from the Client API.  
 
 3. Disable and then re-enable the database from the [Database List View](../../../studio/database/databases-list-view) in the Studio, see image below.  
    This will reload the database on all the cluster nodes immediately.
