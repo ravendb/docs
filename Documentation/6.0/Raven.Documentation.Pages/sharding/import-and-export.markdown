@@ -59,34 +59,37 @@ is appointed **orchestrator**; the orchestrator retrieves items from
 the `.ravendbdump` or backup files, gathers the imported items into 
 batches, and distributes them among the shards.  
 
-* **Importing data from a `.ravendbdump` file**  
-  There are no preliminary requirements regarding the structure 
-  or contents of the database the data is imported to.  
-   * The data can be imported into a long-existing database, 
-     as well as into a database just created.  
-   * The data can be imported into both sharded and non-sharded databases.  
-     In both cases, the data will be retrieved into the database from 
-     a local `.ravendbdump` file.  
-   * If the database is sharded, the data will be distributed among the shards.  
-     In case the shard has [several nodes](../sharding/overview#shard-replication), 
-     each shard database will be replicated to all the nodes of this shard.  
-   * If the database is non-sharded, the local database will be replicated 
-     among cluster nodes.  
+## Importing data from a `.ravendbdump` file
 
-* **Importing data from backup files**  
-   * Backup files are given an extension that reflects the backup type.  
-     A full-backup file, for example, will be given a `.ravendb-full-backup` 
-     extension.  
-     Regardless of the extension, though, the internal structure of backup 
-     files is similar to that of `.ravendbdump` files.  
-   * It **is** therefore possible to import backup files using Smuggler, 
-     including those created for a sharded database.  
-   * This can be helpful in many ways. We can, for example, divide the 
-     data that is currently held by a sharded database, between several 
-     databases, by creating new databases and importing into each of them 
-     the backup made by a single shard.  
+There are no preliminary requirements regarding the structure 
+or contents of the database the data is imported to.  
+
+* The data can be imported into a long-existing database, 
+  as well as into a database just created.  
+* The data can be imported into both sharded and non-sharded databases.  
+  In both cases, the data will be retrieved into the database from 
+  a local `.ravendbdump` file.  
+* If the database is sharded, the data will be distributed among the shards.  
+  In case the shard has [several nodes](../sharding/overview#shard-replication), 
+  each shard database will be replicated to all the nodes of this shard.  
+* If the database is non-sharded, the local database will be replicated 
+  among cluster nodes.  
 
 See a code example [here](../client-api/smuggler/what-is-smuggler#example-1).  
+
+## Importing data from backup files
+
+* Backup files are given an extension that reflects the backup type.  
+  A full-backup file, for example, will be given a `.ravendb-full-backup` 
+  extension.  
+  Regardless of the extension, though, the internal structure of backup 
+  files is similar to that of `.ravendbdump` files.  
+* It **is** therefore possible to import backup files using Smuggler, 
+  including those created for a sharded database.  
+* This can be helpful in many ways. We can, for example, divide the 
+  data that is currently held by a sharded database, between several 
+  databases, by creating new databases and importing into each of them 
+  the backup made by a single shard.  
 
 {PANEL/}
 
