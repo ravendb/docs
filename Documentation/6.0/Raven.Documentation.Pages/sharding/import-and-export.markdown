@@ -69,7 +69,7 @@ or contents of the database the data is imported to.
 * The data can be imported into both sharded and non-sharded databases.  
   In both cases, the data will be retrieved into the database from 
   a local `.ravendbdump` file.  
-* If the database is sharded, the data will be distributed among the shards.  
+* If the database is sharded, the imported data will be distributed among the shards.  
   In case the shard has [several nodes](../sharding/overview#shard-replication), 
   each shard database will be replicated to all the nodes of this shard.  
 
@@ -92,9 +92,10 @@ See a code example [here](../client-api/smuggler/what-is-smuggler#example-1).
      into a sharded database.  
      This allows the migration of data from a non-sharded database 
      to a sharded one.  
-   * A sharded database can be easily split into several databases.  
-     To do this, we can simply import the backup made for each shard, 
-     into a newly created (sharded or not) database.  
+   * When a sharded database is backed up, each shard creates a backup 
+     of its own database. If you want to split the sharded database 
+     into multiple databases, you can simply import the backup of each 
+     shard into a newly created (sharded or not) database.  
 
 {NOTE: }
 [Incremental backups](../server/ongoing-tasks/backup-overview#backup-scope:-full-or-incremental) 
