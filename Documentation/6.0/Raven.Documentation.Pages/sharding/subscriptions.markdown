@@ -93,10 +93,10 @@ Revisions features that are not supported yet under a sharded database:
   Providing an arbitrary change vector from which the subscription would start processing 
   is currently not supported.  
   {NOTE: }
-  Setting ChangeVector to one of the following special values is supported 
-  under a sharded database as well:  
+  Setting `ChangeVector` to one of the following special values **is** supported:  
   `"LastDocument"` (the latest change vector on the database)  
-  `"BeginningOfTime"`  (the earliest change vector on the database)  
+  `"BeginningOfTime"` (the earliest change vector on the database)  
+  `"DoNotChange"` (keep current subscription change vector)  
   {NOTE/}
 
 
