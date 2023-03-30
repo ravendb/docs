@@ -1,4 +1,4 @@
-# How to Compact a Database
+# Compact Database Operation
 
  ---
 
@@ -94,22 +94,14 @@
 
 {PANEL: Compaction triggers compression}
 
-* The __compaction__ operation triggers documents [compression](../../../server/storage/documents-compression) on all existing documents in collections that are configured for compression.  
-* Differences between the two features are summarized below:
+* When document [compression](../../../server/storage/documents-compression) is turned on, compression is applied to the documents when:
+  * __New__ documents that are created and saved.  
+  * __Existing__ documents that are modified and saved.  
 
-| __Compaction__ | |
-| - | - |
-| Action: | Remove empty gaps on disk that still occupy space after deletes |
-| Items that can be compacted: | Documents and/or indexes on the specified database |
-| Triggered by: | Client API code |
-| Triggered when: | Explicitly calling `CompactDatabaseOperation` |
+* You can use the [compaction](../../../client-api/operations/server-wide/compact-database) operation to __compress existing documents without having to modify and save__ them.  
+  Executing compaction triggers compression on ALL existing documents for the collections that are configured for compression.
 
-| __Compression__ | |
-| - | - |
-| Action: | Reduce storage space using the Zstd compression algorithm |
-| Items that can be compressed: | __-__ Documents in collections that are configured for compression<br>__-__ Revisions for all collections |
-| Triggered by: | The server |
-| Triggered when: | Compression feature is configured,<br> __and__ when either of the following occurs for the configured collections:<br>&nbsp;&nbsp;&nbsp;__-__ Storing new documents<br>&nbsp;&nbsp;&nbsp;__-__ Modifying & saving existing documents<br>&nbsp;&nbsp;&nbsp;__-__ Compact operation is triggered, existing documents will be compressed |
+* Learn more about Compression -vs- Compaction [here](../../../server/storage/documents-compression#compression--vs--compaction).
 
 {PANEL/}
 
