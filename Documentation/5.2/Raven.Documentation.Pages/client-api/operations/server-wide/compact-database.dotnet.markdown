@@ -107,7 +107,7 @@
 
 {PANEL: Compact from Studio}
 
-* Compaction can be triggered from the [Storage Report](../../../studio/database/settings/documents-compression#database-storage-report) view in the Studio.  
+* Compaction can be triggered from the [Storage Report](../../../studio/database/stats/storage-report) view in the Studio.  
   The operation will compact the database only on the node being viewed (node info is in the Studio footer).
  
 * To compact the database on another node,  
@@ -148,4 +148,4 @@
 
 **Studio**
 
-- [Storage Report](../../../studio/database/settings/documents-compression#database-storage-report)
+- [Storage Report](../../../studio/database/stats/storage-report)
