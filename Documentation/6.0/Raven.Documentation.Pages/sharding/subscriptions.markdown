@@ -39,7 +39,7 @@ To allow data subscriptions in a sharded database:
   requests.  
 * The orchestrator unifies the data sent by shards, handles 
   documents (e.g. by adding included documents even if the 
-  original document arrives from one batch and the included 
+  original document arrives from one shard and the included 
   document from another), and arranges them in new consumable 
   batches.  
 * The orchestrator keeps track of the worker's progress.  
