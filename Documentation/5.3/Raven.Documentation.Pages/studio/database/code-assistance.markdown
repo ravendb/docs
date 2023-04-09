@@ -5,7 +5,7 @@
 
 {NOTE: }
 
-* All queries addressed to the RavenDB server use [RQL](../../indexes/querying/what-is-rql), 
+* All queries addressed to the RavenDB server use [RQL](../../client-api/session/querying/what-is-rql), 
   RavenDB's rich query language.  
 * The **query structure** exposes the **order of the query operations** 
   handled by the RavenDB server when serving a query.  
@@ -42,9 +42,9 @@
 **At the very beginning of a query**, the suggested options will be the 
 most basic ones:  
 
-* [from](../../indexes/querying/what-is-rql#from) - to select a collection to query on  
+* [from](../../client-api/session/querying/what-is-rql#from) - to select a collection to query on  
 * `from index` - to select an index to query on  
-* [declare function](../../indexes/querying/what-is-rql#declare) - to create a JavaScript function  
+* [declare function](../../client-api/session/querying/what-is-rql#declare) - to create a JavaScript function  
 
 !["Click CTRL+Space To See Available Options"](images/code-assistance-1.png "Click CTRL+Space To See Available Options")
 
@@ -99,4 +99,4 @@ most basic ones:
 
 ### RQL
 
-- [What is RQL](../../indexes/querying/what-is-rql)  
+- [What is RQL](../../client-api/session/querying/what-is-rql)  

@@ -11,7 +11,7 @@
         * when querying with the session's `RawQuery` method.  
         * when querying from the [Query view](../../../studio/database/queries/query-view) in Studio.  
 
-* Queries defined with _Query_ or _DocumentQuery_ are translated by the RavenDB client to [RQL](../../../indexes/querying/what-is-rql)  
+* Queries defined with `Query` or `DocumentQuery` are translated by the RavenDB client to [RQL](../../../client-api/session/querying/what-is-rql)  
   when sent to the server.
 
 ---
@@ -247,7 +247,7 @@ from "Employees" where FirstName = "Robert"
 
 {PANEL: Session.Advanced.RawQuery}
 
-* Queries defined with [Query](../../../client-api/session/querying/how-to-query#session.query) or [DocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery) are translated by the RavenDB client to [RQL](../../../indexes/querying/what-is-rql)  
+* Queries defined with [Query](../../../client-api/session/querying/how-to-query#session.query) or [DocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery) are translated by the RavenDB client to [RQL](../../../client-api/session/querying/what-is-rql)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the `RawQuery` method.

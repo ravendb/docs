@@ -1,4 +1,4 @@
-# Querying: RQL - Raven Query Language
+# RQL - Raven Query Language
 ---
 
 {NOTE: }
@@ -6,23 +6,23 @@
 Queries in RavenDB use an SQL-like language called **RQL** (Raven Query Language).  
 
 * In this page:  
-  * [Overview](../../indexes/querying/what-is-rql#overview)  
-  * [Query Optimizer](../../indexes/querying/what-is-rql#query-optimizer)  
-     * [Dynamic and Indexed Queries](../../indexes/querying/what-is-rql#dynamic-and-indexed-queries)  
-     * [Queries Usage of Indexes](../../indexes/querying/what-is-rql#queries-usage-of-indexes)  
-  * [RQL Keywords and Methods](../../indexes/querying/what-is-rql#rql-keywords-and-methods)  
-     * [`declare`](../../indexes/querying/what-is-rql#declare)  
-     * [`from`](../../indexes/querying/what-is-rql#from)  
-     * [`group by`](../../indexes/querying/what-is-rql#group-by)  
-     * [`where`](../../indexes/querying/what-is-rql#where)  
-     * [`order by`](../../indexes/querying/what-is-rql#order-by)  
-     * [`load`](../../indexes/querying/what-is-rql#load)  
-     * [`select`](../../indexes/querying/what-is-rql#select)  
-     * [`update`](../../indexes/querying/what-is-rql#update)  
-     * [`include`](../../indexes/querying/what-is-rql#include)  
-     * [`with`](../../indexes/querying/what-is-rql#with)  
-     * [`match`](../../indexes/querying/what-is-rql#match)  
-     * [`Keywords and Methods Summary`](../../indexes/querying/what-is-rql#keywords-and-methods)  
+  * [Overview](../../../client-api/session/querying/what-is-rql#overview)  
+  * [Query Optimizer](../../../client-api/session/querying/what-is-rql#query-optimizer)  
+     * [Dynamic and Indexed Queries](../../../client-api/session/querying/what-is-rql#dynamic-and-indexed-queries)  
+     * [Queries Usage of Indexes](../../../client-api/session/querying/what-is-rql#queries-usage-of-indexes)  
+  * [RQL Keywords and Methods](../../../client-api/session/querying/what-is-rql#rql-keywords-and-methods)  
+     * [`declare`](../../../client-api/session/querying/what-is-rql#declare)  
+     * [`from`](../../../client-api/session/querying/what-is-rql#from)  
+     * [`group by`](../../../client-api/session/querying/what-is-rql#group-by)  
+     * [`where`](../../../client-api/session/querying/what-is-rql#where)  
+     * [`order by`](../../../client-api/session/querying/what-is-rql#order-by)  
+     * [`load`](../../../client-api/session/querying/what-is-rql#load)  
+     * [`select`](../../../client-api/session/querying/what-is-rql#select)  
+     * [`update`](../../../client-api/session/querying/what-is-rql#update)  
+     * [`include`](../../../client-api/session/querying/what-is-rql#include)  
+     * [`with`](../../../client-api/session/querying/what-is-rql#with)  
+     * [`match`](../../../client-api/session/querying/what-is-rql#match)  
+     * [`Keywords and Methods Summary`](../../../client-api/session/querying/what-is-rql#keywords-and-methods)  
 
 {NOTE/}
 
@@ -65,13 +65,13 @@ the query optimizer will **create a new index for the query**.
 RavenDB queries will use the index they have created or found, to minimize response 
 time and return results at the same speed regardless of the size of the data.  
 
-You can read more about indexes [here](../indexing-basics).   
+You can read more about indexes [here](../../../indexes/indexing-basics).
 
 
 {NOTE: Exceptions: Time-Series and Counters}
 Queries in RavenDB are indexed automatically (unless they are already indexed).  
-[Distributed Time-Series](../../document-extensions/timeseries/overview) and 
-[Distributed Counters](../../document-extensions/counters/overview) are an exception 
+[Distributed Time-Series](../../../document-extensions/timeseries/overview) and 
+[Distributed Counters](../../../document-extensions/counters/overview) are an exception 
 to this rule: they are **not** indexed automatically, though they **can** be indexed 
 manually.  
 Time series and counters that haven't been indexed manually, will be queried without index.  
@@ -110,7 +110,7 @@ from Employees as e select output(e)
 
 Values are returned from a declared Javascript function as a set of values 
 rather than in an array, to ease their projection. See an example for this 
-usage [here](../../document-extensions/timeseries/querying/overview-and-syntax#combine-time-series-and-javascript-functions).  
+usage [here](../../../document-extensions/timeseries/querying/overview-and-syntax#combine-time-series-and-javascript-functions).  
 
 {PANEL/}
 
@@ -127,7 +127,7 @@ You have two options:
      and the required document is returned directly from the storage.  
      E.g.  
      `from Companies where id() == 'companies/1-A'`  
-   - Dynamic queries that are executed using [auto indexes](../../indexes/creating-and-deploying#auto-indexes).  
+   - Dynamic queries that are executed using [auto indexes](../../../indexes/creating-and-deploying#auto-indexes).  
 
       {INFO:All Documents}
        In order to query all documents, the `@all_docs` keyword can be used:
@@ -143,7 +143,7 @@ You have two options:
 
 {PANEL: `group by`}
 
-The keyword `group by` is used to create an aggregation query. Please refer to the article about [dynamic group by queries](../../client-api/session/querying/how-to-perform-group-by-query) to find out more.
+The keyword `group by` is used to create an aggregation query. Please refer to the article about [dynamic group by queries](../../../client-api/session/querying/how-to-perform-group-by-query) to find out more.
 
 {PANEL/}
 
@@ -159,7 +159,7 @@ to filter chosen documents from the final result-set.
 These basic operators can be used with all value types, including 'numbers' and 'strings'.
 
 You can, for example, return every document from the 
-[companies collection](../../client-api/faq/what-is-a-collection) 
+[companies collection](../../../client-api/faq/what-is-a-collection) 
 whose _field value_ **=** _a given input_.  
 
 {CODE-BLOCK:csharp}
@@ -262,19 +262,19 @@ Subclauses can be used along with binary operators to build even more complex lo
 {PANEL: `order by`}
 
 To perform sorting, `order by` must be used.  
-Read more about this subject in the [article dedicated to sorting](../../indexes/querying/sorting).  
+Read more about this subject in the [article dedicated to sorting](../../../indexes/querying/sorting).  
 
 {PANEL/}
 
 {PANEL: `load`}
 
-When there is a need to use data from an external document in projection, `load` can be used. Please refer to the following [projection article](../../indexes/querying/projections#example-vii---projection-using-a-loaded-document) to find out more about it.
+When there is a need to use data from an external document in projection, `load` can be used. Please refer to the following [projection article](../../../indexes/querying/projections#example-vii---projection-using-a-loaded-document) to find out more about it.
 
 {PANEL/}
 
 {PANEL: `select`}
 
-Projections can be performed by using `select`. Please read our dedicated projection article [here](../../indexes/querying/projections).
+Projections can be performed by using `select`. Please read our dedicated projection article [here](../../../indexes/querying/projections).
 
 {PANEL/}
 
@@ -288,8 +288,8 @@ To patch documents on the server-side, use `update` with the desired JavaScript 
 
 The keyword `include` has been introduced to support:
 
-- [including additional documents](../../client-api/how-to/handle-document-relationships#includes) or counters to the query response
-- [highlighting](../../client-api/session/querying/how-to-use-highlighting) results
+- [including additional documents](../../../client-api/how-to/handle-document-relationships#includes) or counters to the query response
+- [highlighting](../../../client-api/session/querying/how-to-use-highlighting) results
 - query timings
 - explanations
 
@@ -311,7 +311,7 @@ There are two types of `with` clauses, regular `with` and `with edges`.
 
 {PANEL: `match`}
 
-The keyword `match` is used to determine the pattern of a [graph query](../../indexes/querying/graph/graph-queries-overview).  
+The keyword `match` is used to determine the pattern of a [graph query](../../../indexes/querying/graph/graph-queries-overview).  
 `match (Orders as o)-[Lines as cheap where Discount >= 0.25 select Product]->(Products as p)`  
 The above statement means that we are searching for a pattern that starts with an order and traverse using the
 order lines referred to by the `Lines` property where their `Discount` property is larger than 25%  and the destination is the product referred to by the `Product` property.  
@@ -332,51 +332,51 @@ where the `and` is a set intersection between the two patterns.
 The following keywords and methods are available in RQL:
 
 - DECLARE
-- [FROM](../../indexes/querying/what-is-rql#from)
+- [FROM](../../../client-api/session/querying/what-is-rql#from)
   - INDEX
-- [GROUP BY](../../indexes/querying/what-is-rql#group-by)
-  - [array()](../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
-- [WHERE](../../indexes/querying/what-is-rql#where)
+- [GROUP BY](../../../client-api/session/querying/what-is-rql#group-by)
+  - [array()](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
+- [WHERE](../../../client-api/session/querying/what-is-rql#where)
   - id()
-  - [search()](../../indexes/querying/searching)
+  - [search()](../../../indexes/querying/searching)
   - cmpxchg()
   - boost()
-  - [regex()](../../client-api/session/querying/how-to-use-regex)
+  - [regex()](../../../client-api/session/querying/how-to-use-regex)
   - startsWith()
   - endsWith()
-  - [lucene()](../../client-api/session/querying/document-query/how-to-use-lucene)
-  - [exists()](../../client-api/session/querying/how-to-filter-by-field)
+  - [lucene()](../../../client-api/session/querying/document-query/how-to-use-lucene)
+  - [exists()](../../../client-api/session/querying/how-to-filter-by-field)
   - exact()
-  - [intersect()](../../indexes/querying/intersection)
-  - [spatial.within()](../../indexes/querying/spatial)
-  - [spatial.contains()](../../indexes/querying/spatial)
-  - [spatial.disjoint()](../../indexes/querying/spatial)
-  - [spatial.intersects()](../../indexes/querying/spatial)
-  - [moreLikeThis()](../../client-api/session/querying/how-to-use-morelikethis)
-- [ORDER BY](../../indexes/querying/what-is-rql#order-by)
-  - [ASC | ASCENDING](../../indexes/querying/sorting#basics)
-  - [DESC | DESCENDING](../../indexes/querying/sorting#basics)
-  - [AS](../../indexes/querying/sorting#basics)
-    - [string](../../indexes/querying/sorting#basics)
-    - [long](../../indexes/querying/sorting#basics)
-    - [double](../../indexes/querying/sorting#basics)
-    - [alphaNumeric](../../indexes/querying/sorting#alphanumeric-ordering)
-  - [random()](../../indexes/querying/sorting#random-ordering)
-  - [score()](../../indexes/querying/sorting#ordering-by-score)
-  - [spatial.distance()](../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance)
-- [LOAD](../../indexes/querying/what-is-rql#load)
-- [SELECT](../../indexes/querying/what-is-rql#select)
+  - [intersect()](../../../indexes/querying/intersection)
+  - [spatial.within()](../../../indexes/querying/spatial)
+  - [spatial.contains()](../../../indexes/querying/spatial)
+  - [spatial.disjoint()](../../../indexes/querying/spatial)
+  - [spatial.intersects()](../../../indexes/querying/spatial)
+  - [moreLikeThis()](../../../client-api/session/querying/how-to-use-morelikethis)
+- [ORDER BY](../../../client-api/session/querying/what-is-rql#order-by)
+  - [ASC | ASCENDING](../../../indexes/querying/sorting#basics)
+  - [DESC | DESCENDING](../../../indexes/querying/sorting#basics)
+  - [AS](../../../indexes/querying/sorting#basics)
+    - [string](../../../indexes/querying/sorting#basics)
+    - [long](../../../indexes/querying/sorting#basics)
+    - [double](../../../indexes/querying/sorting#basics)
+    - [alphaNumeric](../../../indexes/querying/sorting#alphanumeric-ordering)
+  - [random()](../../../indexes/querying/sorting#random-ordering)
+  - [score()](../../../indexes/querying/sorting#ordering-by-score)
+  - [spatial.distance()](../../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance)
+- [LOAD](../../../client-api/session/querying/what-is-rql#load)
+- [SELECT](../../../client-api/session/querying/what-is-rql#select)
   - DISTINCT
   - key()
   - sum()
   - count()
-  - [facet()](../../indexes/querying/faceted-search)
-  - [timeseries()](../../document-extensions/timeseries/querying/overview-and-syntax#syntax)
-  - [counter()](../../document-extensions/counters/counters-and-other-features#counters-and-queries)
-- [UPDATE](../../indexes/querying/what-is-rql#update)
-- [INCLUDE](../../indexes/querying/what-is-rql#include)
-- [WITH](../../indexes/querying/what-is-rql#with)
-- [MATCH](../../indexes/querying/what-is-rql#match)
+  - [facet()](../../../indexes/querying/faceted-search)
+  - [timeseries()](../../../document-extensions/timeseries/querying/overview-and-syntax#syntax)
+  - [counter()](../../../document-extensions/counters/counters-and-other-features#counters-and-queries)
+- [UPDATE](../../../client-api/session/querying/what-is-rql#update)
+- [INCLUDE](../../../client-api/session/querying/what-is-rql#include)
+- [WITH](../../../client-api/session/querying/what-is-rql#with)
+- [MATCH](../../../client-api/session/querying/what-is-rql#match)
 
 With the following operators:
 
@@ -410,10 +410,10 @@ And the following values:
 
 ### Client API
 
-- [How to Query](../../client-api/session/querying/how-to-query)  
-- [How to Use RQL Directly When Querying](../../client-api/session/querying/how-to-query#session.advanced.rawquery)  
+- [How to Query](../../../client-api/session/querying/how-to-query)  
+- [How to Use RQL Directly When Querying](../../../client-api/session/querying/how-to-query#session.advanced.rawquery)  
 
 ### Querying
 
-- [Basics](../../indexes/querying/basics)  
-- [Graph Queries Overview](../../indexes/querying/graph/graph-queries-overview)  
+- [Basics](../../../indexes/querying/basics)  
+- [Graph Queries Overview](../../../indexes/querying/graph/graph-queries-overview)  

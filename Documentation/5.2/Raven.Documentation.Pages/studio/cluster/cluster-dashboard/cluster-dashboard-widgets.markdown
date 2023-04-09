@@ -35,7 +35,7 @@
 4. **Learn how to connect your client to the database**  
    Click to learn how to [connect your client to your database](../../../start/getting-started#documentstore) using RavenDB's API.  
 5. **Learn more about Querying and Indexes**  
-   Click to learn how [Querying](../../../indexes/querying/what-is-rql) 
+   Click to learn how [Querying](../../../client-api/session/querying/what-is-rql) 
    and [Indexes](../../../indexes/what-are-indexes) are managed in RavenDB.  
 6. **Hide This Widget**  
    Click to remove the **Let's Get Started** widget from the cluster dashboard view.  
@@ -188,7 +188,7 @@
 - [connect your client to your database](../../../start/getting-started#documentstore)
 
 ###Querying
-- [Querying](../../../indexes/querying/what-is-rql) 
+- [Querying](../../../client-api/session/querying/what-is-rql) 
 
 ###Indexing
 - [Indexes](../../../indexes/what-are-indexes)

@@ -9,7 +9,7 @@
     * The session's  `rawQuery` method - using RQL
     * The [Query view](../../../studio/database/queries/query-view) in Studio - using RQL
 
-* Queries defined with the `query` method are translated by the RavenDB client to [RQL](../../../indexes/querying/what-is-rql)  
+* Queries defined with the `query` method are translated by the RavenDB client to [RQL](../../../client-api/session/querying/what-is-rql)  
   when sent to the server.
 
 ---
@@ -208,7 +208,7 @@ __Syntax__:
 
 {PANEL: session.advanced.rawQuery}
 
-* Queries defined with [query](../../../client-api/session/querying/how-to-query#session.query) are translated by the RavenDB client to [RQL](../../../indexes/querying/what-is-rql) when sent to the server.  
+* Queries defined with [query](../../../client-api/session/querying/how-to-query#session.query) are translated by the RavenDB client to [RQL](../../../client-api/session/querying/what-is-rql) when sent to the server.  
 
 * The session also gives you a way to express the query directly in RQL using the `rawQuery` method.
 

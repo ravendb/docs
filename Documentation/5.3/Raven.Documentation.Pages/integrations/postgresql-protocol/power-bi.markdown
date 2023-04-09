@@ -8,7 +8,7 @@
 
 * See below how to use Power BI Desktop to -  
    * Easily select RavenDB collections and retrieve chosen data.  
-   * Query RavenDB using [RQL](../../indexes/querying/what-is-rql).  
+   * Query RavenDB using [RQL](../../client-api/session/querying/what-is-rql).  
 
 * In this page:  
    * [Using RavenDB From Power BI Desktop](../../integrations/postgresql-protocol/power-bi#using-ravendb-from-power-bi-desktop)  
@@ -78,7 +78,7 @@ The database's collections & documents will show once RavenDB is connected.
 
 ### Query RavenDB Using RQL
 
-Instead of loading collections in their entirety, you can run [RQL](../../indexes/querying/what-is-rql) queries 
+Instead of loading collections in their entirety, you can run [RQL](../../client-api/session/querying/what-is-rql) queries 
 to import into Power BI just the data you're looking for.  
 
 !["RQL Query"](images/rql-query.png "RQL Query")
@@ -136,7 +136,7 @@ to import into Power BI just the data you're looking for.
 [PostgreSQL Port Configuration](../../integrations/postgresql-protocol/overview#postgresql-port)  
 
 **Queries**  
-[RQL](../../indexes/querying/what-is-rql)  
+[RQL](../../client-api/session/querying/what-is-rql)  
 
 **Additional Links**  
 [Power BI](https://en.wikipedia.org/wiki/Microsoft_Power_BI)  

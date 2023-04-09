@@ -142,7 +142,7 @@ Click **Test** to open the patch test dialog.
 - [What Are Operaions](../../../client-api/operations/what-are-operations)  
 
 ### Queries
-- [RQL - Raven Query Language](../../../indexes/querying/what-is-rql)  
+- [RQL - Raven Query Language](../../../client-api/session/querying/what-is-rql)  
 - [Basics](../../../indexes/querying/basics)  
 
 ### Indexes
