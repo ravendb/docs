@@ -124,6 +124,17 @@ that would seamlessly retrieve `Users/3000` from shard **2** and `Users/5000` fr
 shard **3** and hand them to the client.  
 {NOTE/}
 
+As much as clients are concerned a sharded database is still a single entity: 
+the clients are not required to detect whether the database is sharded or not, 
+and clients of RavenDB versions prior to 6.0 (that had no sharding support) 
+can access a sharded database unaltered.  
+
+Shard-specific operations are, however, available: clients can, for example, 
+track the shard that a document is stored at, query a selected shard, and 
+relocate ([reshard](../sharding/resharding)) documents from one shard to another.  
+
+!["Studio Document View"](images/overview_document-view.png "Studio Document View")
+
 ---
 
 ### Shard Replication 
@@ -212,9 +223,9 @@ of the shards is overpopulated and others are underpopulated.
 
 {PANEL: Resharding}
 
-**Resharding** is the relocation of data placed on one shard, on 
-another shard, to maintain a balanced database in which all shards 
-handle about the same volume of data.  
+[Resharding](../sharding/resharding) is the relocation of data placed 
+on one shard, on another shard, to maintain a balanced database in which 
+all shards handle about the same volume of data.  
 
 The resharding process moves all the data related to a certain 
 bucket, including documents, document extensions, tombstones, etc., 

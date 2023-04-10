@@ -1,4 +1,4 @@
-﻿# Sharding: Subscriptions
+﻿# Sharding: Data Subscriptions
 ---
 
 {NOTE: }
@@ -83,7 +83,7 @@ how large the overall database gets.
 
 {PANEL: Unsupported Features}
 
-Revisions features that are not supported yet under a sharded database:  
+Data subscriptions features that are not supported yet under a sharded database:  
 
 * [Concurrent Subscriptions](../client-api/data-subscriptions/concurrent-subscriptions)  
   Allowing multiple workers to connect a common subscription simultaneously.  
