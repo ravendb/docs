@@ -149,10 +149,11 @@
         "DiscussionId": "73b6dea7-68dc-4c75-9072-7b50cff79976",
         "Mappings": [
             {
-                "Version": 2.5,
-                "Key": "client-api/querying/query-and-lucene-query"
+                "Version": 5.2,
+                "Key": "client-api/session/querying/document-query/query-vs-document-query"
             }
-        ]
+        ],
+        "LastSupportedVersion": "5.1"
     },
     {
         "Path": "/graph",

@@ -96,10 +96,11 @@
     "Name": "Query and LuceneQuery",
     "DiscussionId": "0ba4ef36-f93a-4aae-87a8-8e5846e40052",
     "Mappings": [
-      {
-        "Version": 3.0,
-        "Key": "indexes/querying/query-vs-document-query"
-      }
-    ]
+        {
+            "Version": 5.2,
+            "Key": "client-api/session/querying/document-query/query-vs-document-query"
+        }
+    ],
+    "LastSupportedVersion": "2.5"
   }
 ]

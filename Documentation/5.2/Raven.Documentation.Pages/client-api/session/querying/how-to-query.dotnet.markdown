@@ -226,7 +226,7 @@ __Syntax__:
 * Below is a simple _DocumentQuery_ usage.  
   For a full description and more examples see:  
     * [What is a document query](../../../client-api/session/querying/document-query/what-is-document-query)
-    * [Query -vs- DocumentQuery](../../../indexes/querying/query-vs-document-query)
+    * [Query -vs- DocumentQuery](../../../client-api/session/querying/document-query/query-vs-document-query)
 
 __Example__:
 

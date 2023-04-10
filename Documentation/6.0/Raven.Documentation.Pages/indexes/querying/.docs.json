@@ -136,16 +136,5 @@
                 "Version": 4.0
             }
         ]
-    },
-    {
-        "Path": "query-vs-document-query.markdown",
-        "Name": "Query vs DocumentQuery",
-        "DiscussionId": "73b6dea7-68dc-4c75-9072-7b50cff79976",
-        "Mappings": [
-            {
-                "Version": 2.5,
-                "Key": "client-api/querying/query-and-lucene-query"
-            }
-        ]
     }
 ]
