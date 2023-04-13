@@ -20,9 +20,12 @@
 * In this page:  
   * [Resharding](../sharding/resharding#resharding)  
   * [The Resharding Process](../sharding/resharding#the-resharding-process)  
+      * [Following Resharding Progress](../sharding/resharding#following-resharding-progress)  
+      * [Racing](../sharding/resharding#racing)  
   * [Change Vector on a Sharded Database](../sharding/resharding#change-vector-on-a-sharded-database)  
   * [Resharding and Other Features](../sharding/resharding#resharding-and-other-features)  
-  * [Execute Resharding](../sharding/resharding#execute-resharding)  
+  * [Executing Resharding](../sharding/resharding#executing-resharding)  
+      * [Bucket Ownership](../sharding/resharding#bucket-ownership)  
 
 {NOTE/}
 
@@ -75,25 +78,45 @@ using a database like the one shown below:
       When the original bucket is cleared, the bucket is remapped 
       to shard #2 and document modifications start to be routed there.  
 
-* Learn [below](../sharding/resharding#execute-resharding) 
-  how to reshard buckets using Studio.  
-* The resharding of some documents, e.g. of ones that include large 
-  attachments or time series, may take a long time. The process is 
-  reported by Studio, and can also be seen by opening the Database 
-  Record:  
+## Following Resharding Progress
 
-    !["Database Record"](images/resharding_database-record.png "Database Record")
+You can follow the progress of the resharding progress using -  
 
-    **1** Click to open the Settings  
-    **2** Click to view or edit the [database record](../studio/database/settings/database-record)  
+* **Studio Popup Messages**  
+  When [Studio is used for resharding](../sharding/resharding#executing-resharding) 
+  the user interface produces popup messages to keep users 
+  informed of its progress.  
 
-{NOTE: Racing}
-It may happen that a file would find its way into a bucket whose 
-ownership has already shifted to another shard. RavenDB runs an ongoing 
-**periodic documents migrator** routine that constantly checks the 
-system for such occurrences, and If any is found a new resharding process 
-is automatically initiated for this bucket.  
-{NOTE/}
+* **The [Database Record](../studio/database/settings/database-record)**  
+  All sharding-related info is stored in the database record `Sharding` 
+  property, where this info can be accessed by all shards.  
+  During resharding, migrating buckets details like status, source shard, 
+  and destination shard, are updated in related `Sharding` sub-properties.   
+   * Via [Studio](../studio/database/settings/database-record#the-database-record)  
+     Open Studio's Database Record view and the Sharding property.   
+     The details of currently-migrating buckets are recorded in 
+     the `BucketMigration` property.  
+     !["Database Record"](images/resharding_database-record.png "Database Record")
+       **1**. Click to open the Settings  
+       **2**. Click to view or edit the database record  
+
+    * Via API  
+      To get the database record via API, pass `GetDatabaseRecordOperation` the 
+      database name.  
+      Open the database record `BucketMigration` property to check migrating buckets 
+      status, source and destination shards.  
+
+## Racing
+
+It may happen that a file (like a time seties, due to the addition 
+of a time series entry) would find its way into a bucket after the 
+ownership of this bucket has already been shifted to another shard 
+and before RavenDB managed to delete it.  
+To handle such occurences, a **periodic documents migrator** task 
+routinely checks the system.  
+Upon locating a file in a bucket that is already owned by another shard, 
+the documents migrator task immediately initiates a new resharding process 
+for the related bucket.  
 
 {PANEL/}
 
@@ -157,16 +180,22 @@ the worker to check whether a document is duplicated or not.
 
 ### Resharding and Querying
 
-Though resharding large documents may duplicate these documents 
-for a long time until the transfer and the deletion of the source 
-document are complete, [Querying](../sharding/querying) them during 
-resharding will **not** produce duplicate results as RavenDB filters 
-out duplications due to resharding.  
+Since documents are stored in their buckets along with all the data 
+related to them, including revisions, time series, attachments, and 
+so on, resharding a large document's bucket may take a considerable 
+amount of time.  
+During this time, checking which shard the bucket belongs to 
+[may show](../sharding/resharding#bucket-ownership) 
+both the bucket's source and destination shards.  
+However, if documents stored in this bucket are [queried](../sharding/querying) 
+during this time, RavenDB will add them to the retrieved dataset 
+**only once** and prevent results duplication due to resharding.  
 
 {PANEL/}
 
-{PANEL: Execute Resharding}
+{PANEL: Executing Resharding}
 
+Resharding can currently be initiated only via Studio.  
 To reshard selected buckets, open the **Stats** view.
 
 !["Stats View"](images/resharding_stats.png "Stats View")
@@ -197,11 +226,14 @@ Select the shard you want to transfer the bucket/s to and confirm the transfer
 
 ---
 
-Resharding has ended.  
+Studio will indicate its progress in resharding the requested 
+buckets range using popup messages until the process ends.  
 
 !["Finished Resharding"](images/resharding_finished-resharding.png "Finished Resharding")
 
 ---
+
+### Bucket Ownership
 
 For a while, as long as there are still files to transfer to the new 
 shard's replicas or delete from the old shard, transferred buckets are 
@@ -223,6 +255,8 @@ Eventually, the bucket/s reside on their new shard.
 [Shards](../sharding/overview#shards)  
 [Buckets](../sharding/overview#buckets)  
 [Replicas](../sharding/overview#shard-replication)  
+
+**Sharding & Other Features**  
 [External Replication](../sharding/external-replication)  
 [ETL Tasks](../sharding/etl)  
 [Data Subscription](../sharding/subscriptions)  
@@ -230,3 +264,6 @@ Eventually, the bucket/s reside on their new shard.
 
 **Server**  
 [Change Vector](../server/clustering/replication/change-vector)  
+
+**Studio**  
+[Database Record](../studio/database/settings/database-record)  
