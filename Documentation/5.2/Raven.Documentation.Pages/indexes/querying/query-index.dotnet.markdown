@@ -4,175 +4,183 @@
 
 {NOTE: }
 
-* Queries can either be written in the [Session with LINQ syntax](../../client-api/session/querying/how-to-query) 
-  or in the [Studio with RQL](../../studio/database/queries/query-view).  
-  There are examples for both below.
+* Prior to this article, it is recommended that you first read this [Query Overview](../../client-api/session/querying/how-to-query).  
+  For a basic indexes overview see this [Indexes Overview](../../studio/database/indexes/indexes-overview).
 
-* Indexes are used by RavenDB to satisfy queries. 
+---
 
-* To accelerate queries, RavenDB [indexes](../../indexes/creating-and-deploying) can process various calculations, filters and conversions behind the scenes 
-  so that the data is already processed and ready for queries.  
-  Indexes keep the processed data in a separate storage so that the raw data isn't affected.  
-  Furthermore, indexes only scan and process the entire specified dataset once.  
-  After the initial scan, they only need to process specific data as it is modified, added or deleted.
-   * For queries to use an index that has already processed the data, the index must be [called in the query](../../indexes/querying/basics#example-iv---querying-a-specified-index).
+* This article is a basic overview of how to __query a static index__.  
+  Indexing the content of your documents allows for __fast document retrieval__ when querying the index.
 
-* In this page:
-   * [Query-Flow](../../indexes/querying/basics#query-flow)
-   * [Querying Using LINQ](../../indexes/querying/basics#querying-using-linq)
-      * [Example I - Querying an Entire Collection](../../indexes/querying/basics#example-i---querying-an-entire-collection)
-      * [Example II - Filtering](../../indexes/querying/basics#example-ii---filtering)
-      * [Example III - Paging](../../indexes/querying/basics#example-iii---paging)
-      * [Example IV - Querying a Specified Index](../../indexes/querying/basics#example-iv---querying-a-specified-index)
-      * [Low-Level Query Access](../../indexes/querying/basics#low-level-query-access)
+* Examples in this article show querying an index.  
+  For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query).
+
+* You can query an index with either of the following:
+      * [Session.Query](../../indexes/querying/query-index#session.query) (using LINQ)
+      * [Session.Advanced.DocumentQuery](../../indexes/querying/query-index#session.advanced.documentquery) (low-level API)
+      * [Session.Advanced.RawQuery](../../indexes/querying/query-index#session.advanced.rawquery) (using RQL)
+      * [Query from Studio](../../studio/database/queries/query-view) (using [RQL](../../client-api/session/querying/what-is-rql))
 
 {NOTE/}
 
-{PANEL: Query-Flow}
+---
 
-Queries in RavenDB can be defined in Studio with [RQL](../../indexes/querying/what-is-rql), our query language, or in the [Session with LINQ syntax](../../client-api/session/querying/how-to-query). 
-Each query must match an index in order to return the results. If no index exists to satisfy the query and if a specific index isn't specified, 
-an Auto-Index will be created automatically.  
+{PANEL: Session.Query}
 
-The full query flow is as follows:
+* The following examples __query an index__ using the session's `Query` method which supports LINQ.  
 
-1. `from index | collection` 
-  - First step. When a query is issued, it locates the appropriate index. 
-    If our query specifies that index, the task is simple - use this index. 
-    Otherwise, a query analysis takes place and an auto-index is created if no auto-index can already satisfy the query.
+* Querying can be enhanced using these [extension methods](../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq).
 
-2. `where` 
-  - When we have our index, we scan it for records that match the query predicate.
+{NOTE: }
 
-3. `load`
-  - If a query contains a projection that requires any document loads to be processed, they are done just before projection is executed.
+__Query index - no filtering__
 
-3. `select`
-  - From each record, the server extracts the appropriate fields. It always extracts the `id()` field ([stored](../../indexes/storing-data-in-index) by default).   
 
-  - If a query is not a projection query, then we load a document from storage. Otherwise, if we stored all requested fields in the index, we use them and continue. If not, the document is loaded from storage and the missing fields are fetched from it.
+{CODE-TABS}
+{CODE-TAB:csharp:Query index_query_1_1@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Query_async index_query_1_2@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Query_overload index_query_1_3@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Index the_index@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+// Note:
+// Use slash `/` in the index name, replacing the underscore `_` from the index class definition
 
-  - If a query indicates that [projection](../../indexes/querying/projections) should be used, then all results that were not filtered out are processed by that projection. Fields defined in the projection are extracted from the index (if stored).
+from index "Employees/ByFirstName"
 
-4. `include` 
-  - If any [includes](../../client-api/how-to/handle-document-relationships#includes) are defined, then the query also extracts data from potential related documents to include with the results.
+// All 'Employee' documents that contain DOCUMENT-fields 'FirstName' and\or 'LastName' will be returned
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
 
-5. (LINQ syntax) `ToList` or `ToListAsync`
-  - Return results.
+{NOTE/}
+
+{NOTE: }
+
+__Query index - with filtering__
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query index_query_2_1@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Query_async index_query_2_2@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Index the_index@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+// Note:
+// Use slash `/` in the index name, replacing the underscore `_` from the index class definition
+
+from index "Employees/ByName"
+where LastName == "King"
+
+// Results will include all documents from 'Employees' collection whose 'FirstName' equals to 'Robert'.
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+* `OfType` is used to convert the type being used in the where clause (`IndexEntry`)   
+  to the collection type (`Employee`).  
+  The reason for this is that while the `IndexEntry` type allows for a strongly typed query,  
+  the server returns the actual documents entities objects.
+
+* An exception will be thrown when filtering by fields that are Not defined in the index.
+
+* Read more about filtering [here](../../indexes/querying/filtering).
+
+{NOTE/}
+
+{NOTE: }
+
+__Query index - with paging__
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query index_query_3_1@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Query_async index_query_3_2@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Index the_index@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+// Note:
+// Use slash `/` in the index name, replacing the underscore `_` from the index class definition
+
+from index "Employees/ByName"
+where LastName == "King"
+limit 5, 10 // skip 5, take 10
+
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+* Read more about paging [here](../../indexes/querying/paging).
+
+{NOTE/}
+
+[//]: # ()
+[//]: # (---)
+[//]: # ()
+[//]: # (__Syntax__:)
+[//]: # ()
+[//]: # (* The syntax below is the relevant overload for querying an index.)
+[//]: # (* Method overload that does Not specify which index to use &#40;dynamic query&#41; is listed in [query overview]&#40;../../../todo..&#41;.)
+[//]: # ()
+[//]: # ({CODE syntax@Indexes\Querying\QueryIndex.cs /})
+[//]: # ()
+[//]: # (| Parameter | Type | Description |)
+[//]: # (| - | - | - |)
+[//]: # (| __T__ | object | <ul><li>The type of entity that represents the collection to query</li></ul> |)
+[//]: # (| __collectionName__ | string | <ul><li>Name of a collection to query</li><li>No need to provide this param when specifying `T`</li><li>Specify the collection name when querying a collection that is created<br> on the fly, i.e. when querying [Artifical Documents]&#40;../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-&#40;artificial-documents&#41;&#41;</li></ul> |)
+[//]: # ()
+[//]: # (| Return Value | |)
+[//]: # (| - | - |)
+[//]: # (| `IRavenQueryable` | Instance implementing `IRavenQueryable` interface exposing additional query methods and [extensions]&#40;../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq&#41; |)
+[//]: # ()
+[//]: # (// add link to conventions...)
+[//]: # (In this example, the index name is `Employees_ByFirstName` if written for LINQ or `Employees/ByFirstName` if written for RQL.)
+[//]: # ([naming convention]&#40;../../indexes/creating-and-deploying#naming-convention&#41;)
 
 {PANEL/}
 
-{PANEL: Querying Using LINQ}
+{PANEL: Session.Advanced.DocumentQuery}
 
-RavenDB Client supports querying using LINQ. This functionality can be accessed using the session `Query` method, and is the most common and basic method for querying the database.
+* `DocumentQuery` provides low-level access to RavenDB's querying mechanism,  
+  giving you more flexibility and control when making complex queries.
 
-### Example I - Querying an Entire Collection
+* Below is a simple _DocumentQuery_ usage.  
+  For a full description and more examples see:
+    * [What is a document query](../../client-api/session/querying/document-query/what-is-document-query)
+    * [Query -vs- DocumentQuery](../../client-api/session/querying/document-query/query-vs-document-query)
 
-Let's execute our first query and return all the employees from the Northwind database. 
-To do that, we need to have a [document store](../../client-api/what-is-a-document-store) with an [open session](../../client-api/session/opening-a-session), 
-and specify a [collection](../../client-api/faq/what-is-a-collection) 
-that we want to query (in our case `Employees`) by passing `Employee` as a generic parameter to the `Query` method:
+__Example__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync basics_0_0@Indexes\Querying\QueryIndex.cs /}
-{CODE-TAB:csharp:Async basics_1_0@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Query index_query_4_1@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Query_async index_query_4_2@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Index the_index@Indexes\Querying\QueryIndex.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Employees
+// Note:
+// Use slash `/` in the index name, replacing the underscore `_` from the index class definition
+
+from index "Employees/ByName"
+where LastName == "King"
+
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-By specifying `Employee` as a type parameter, we are also defining a result type.
+{PANEL/}
 
-### Example II - Filtering
+{PANEL: Session.Advanced.RawQuery}
 
-To filter the results, use the suitable LINQ method, like `Where`:
+* Queries defined with [Query](../../indexes/querying/query-index#session.query) or [DocumentQuery](../../indexes/querying/query-index#session.advanced.documentquery) are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql)  
+  when sent to the server.
+
+* The session also gives you a way to express the query directly in RQL using the `RawQuery` method.
+
+__Example__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync basics_0_1@Indexes\Querying\QueryIndex.cs /}
-{CODE-TAB:csharp:Async basics_1_1@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Query index_query_5_1@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Query_async index_query_5_2@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Index the_index@Indexes\Querying\QueryIndex.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Employees
-where FirstName = 'Robert'
+// Note:
+// Use slash `/` in the index name, replacing the underscore `_` from the index class definition
+
+from index "Employees/ByName"
+where LastName == "King"
+
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync basics_3_0@Indexes\Querying\QueryIndex.cs /}
-{CODE-TAB:csharp:Async basics_3_1@Indexes\Querying\QueryIndex.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from Employees
-where id() = 'employees/1-A'
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-You can read more about filtering [here](../../indexes/querying/filtering).
-
-### Example III - Paging
-
-Paging is very simple. The methods `Take` and `Skip` can be used:
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync basics_0_2@Indexes\Querying\QueryIndex.cs /}
-{CODE-TAB:csharp:Async basics_1_2@Indexes\Querying\QueryIndex.cs /}
-{CODE-TABS/}
-
-You can read more about paging [here](../../indexes/querying/paging).
-
-### Example IV - Querying a Specified Index
-
-In the above examples, we **did not** specify an index that we want to query. 
-If you don't specify an index, RavenDB will look for an appropriate auto-index or create a new one. 
-You can read more about creating indexes [here](../../indexes/creating-and-deploying).
-
-**To query a static index, you must specify the index in the query definition.**
-
-In order to specify an index, we need to pass it as a second generic parameter to the `Query` method 
-or pass the index name as a parameter.
-
-In this example, the index name is `Employees_ByFirstName` if written for LINQ or `Employees/ByFirstName` if written for RQL.
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync basics_0_3@Indexes\Querying\QueryIndex.cs /}
-{CODE-TAB:csharp:Async basics_1_3@Indexes\Querying\QueryIndex.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstName' 
-where FirstName = 'Robert'
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync basics_0_4@Indexes\Querying\QueryIndex.cs /}
-{CODE-TAB:csharp:Async basics_1_4@Indexes\Querying\QueryIndex.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstName' 
-where FirstName = 'Robert'
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-{INFO:Remember}
-If you are filtering by fields that are not present in an index, an exception will be thrown.
-{INFO/}
-
-## Low-Level Query Access
-
-To take full control over your queries, we introduced a `DocumentQuery` method that is available in advanced session operations. It is a low-level access to the querying mechanism the user can take advantage of to shape queries according to his needs.
-
-### Example
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync basics_2_0@Indexes\Querying\QueryIndex.cs /}
-{CODE-TAB:csharp:Async basics_2_1@Indexes\Querying\QueryIndex.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstName' 
-where FirstName = 'Robert'
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-### Remarks
-
-{INFO You can check the API reference for the `DocumentQuery` [here](../../client-api/session/querying/document-query/what-is-document-query). /}
-
-{INFO There are some differences between `Query` and `DocumentQuery`. They are described in [this article](../../indexes/querying/query-vs-document-query). /}
 
 {PANEL/}
 

@@ -10,6 +10,7 @@ Queries in RavenDB use an SQL-like language called **RQL** (Raven Query Language
   * [Query Optimizer](../../../client-api/session/querying/what-is-rql#query-optimizer)  
      * [Dynamic and Indexed Queries](../../../client-api/session/querying/what-is-rql#dynamic-and-indexed-queries)  
      * [Queries Usage of Indexes](../../../client-api/session/querying/what-is-rql#queries-usage-of-indexes)  
+  * [Query-Flow](../../indexes/querying/basics#query-flow) // TODO !!
   * [RQL Keywords and Methods](../../../client-api/session/querying/what-is-rql#rql-keywords-and-methods)  
      * [`declare`](../../../client-api/session/querying/what-is-rql#declare)  
      * [`from`](../../../client-api/session/querying/what-is-rql#from)  
@@ -90,7 +91,43 @@ old indexes that are now superseded by the new index.
 
 ---
 
-#RQL Keywords and Methods
+{PANEL: Query-Flow}
+
+Queries in RavenDB can be defined in Studio with [RQL](../../indexes/querying/what-is-rql), our query language, or in the [Session with LINQ syntax](../../client-api/session/querying/how-to-query).
+Each query must match an index in order to return the results. If no index exists to satisfy the query and if a specific index isn't specified,
+an Auto-Index will be created automatically.
+
+The full query flow is as follows:
+
+1. `from index | collection`
+- First step. When a query is issued, it locates the appropriate index.
+  If our query specifies that index, the task is simple - use this index.
+  Otherwise, a query analysis takes place and an auto-index is created if no auto-index can already satisfy the query.
+
+2. `where`
+- When we have our index, we scan it for records that match the query predicate.
+
+3. `load`
+- If a query contains a projection that requires any document loads to be processed, they are done just before projection is executed.
+
+3. `select`
+- From each record, the server extracts the appropriate fields. It always extracts the `id()` field ([stored](../../indexes/storing-data-in-index) by default).
+
+- If a query is not a projection query, then we load a document from storage. Otherwise, if we stored all requested fields in the index, we use them and continue. If not, the document is loaded from storage and the missing fields are fetched from it.
+
+- If a query indicates that [projection](../../indexes/querying/projections) should be used, then all results that were not filtered out are processed by that projection. Fields defined in the projection are extracted from the index (if stored).
+
+4. `include`
+- If any [includes](../../client-api/how-to/handle-document-relationships#includes) are defined, then the query also extracts data from potential related documents to include with the results.
+
+5. (LINQ syntax) `ToList` or `ToListAsync`
+- Return results.
+
+{PANEL/}
+
+--- 
+
+#RQL Keywords and Methods  //TODO ? PANEL ?
 
 {PANEL: `declare`}
 

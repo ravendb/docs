@@ -28,7 +28,7 @@
     * Query returns a [projection](../../../client-api/session/querying/how-to-project-query-results)  
     * Tracking is [disabled](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)  
 
-* Queries results are __cached__ by default. To disable query caching see [noCaching](../../../client-api/session/querying/how-to-customize-query#nocaching).  
+* Query results are __cached__ by default. To disable query caching see [noCaching](../../../client-api/session/querying/how-to-customize-query#nocaching).  
 
 * Queries are timed out after a configurable time period.  See [query timeout](../../../server/configuration/database-configuration#databases.querytimeoutinsec).
 
@@ -133,7 +133,7 @@ from "employees"
 
 {NOTE: }
 
-__Query collection by ID__
+__Query collection - by ID__
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query query_2@ClientApi\Session\Querying\howToQuery.js /}
@@ -141,7 +141,7 @@ __Query collection by ID__
 // This RQL queries the 'Employees' collection by ID
 // No auto-index is created when querying only by ID
 
-from "employees" where id() = "employees/1-A"
+from "employees" where id() == "employees/1-A"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -159,7 +159,7 @@ __Query collection - with filtering__
 // An auto-index will be created if there isn't already an existing auto-index
 // that indexes the requested field
 
-from "employees" where firstName = "Robert"
+from "employees" where firstName == "Robert"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -167,7 +167,7 @@ from "employees" where firstName = "Robert"
 
 {NOTE: }
 
-__Query collection with paging__ 
+__Query collection - with paging__ 
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query query_4@ClientApi\Session\Querying\howToQuery.js /}

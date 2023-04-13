@@ -3,13 +3,46 @@ using System.Linq;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
+using Raven.Client.Documents.Linq;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.Indexes.Querying
 {
-    public class Employees_ByFirstName : AbstractIndexCreationTask<Employee>
+    #region the_index
+    // The index definition:
+    
+    public class Employees_ByName : AbstractIndexCreationTask<Employee, Employees_ByName.IndexEntry>
     {
+        // The IndexEntry class defines the index-fields.
+        // The index-fields can be queried on to fetch matching documents. 
+        public class IndexEntry
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+        }
+            
+        public Employees_ByName()
+        {
+            // The 'Map' function defines the content of the index-fields
+            Map = employees => from employee in employees
+                select new IndexEntry
+                {
+                    // * The content of INDEX-fields 'FirstName' & 'LastName'
+                    //   is composed of the relevant DOCUMENT-fields.
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName
+                    
+                    // * You can now query and filter Employee documents based on their first or last names.
+                    
+                    // * Employee documents that do Not contain both 'FirstName' and 'LastName' fields
+                    //   will Not be indexed.
+                    
+                    // * Note: the INDEX-field name does Not have to be exactly the same
+                    //   as the DOCUMENT-field name. 
+                };
+        }
     }
+    #endregion
 
     public class QueryIndex
     {
@@ -19,183 +52,208 @@ namespace Raven.Documentation.Samples.Indexes.Querying
             {
                 using (var session = store.OpenSession())
                 {
-                    #region basics_0_0
-                    // load all entities from 'Employees' collection
-                    IList<Employee> results = session
-                        .Query<Employee>()
-                        .ToList(); // send query
+                    #region index_query_1_1
+                    // Open the 'Index' tab to view the index class definition
+                    // Query the 'Employees' collection using the index - without filtering
+                    
+                    List<Employee> employees = session
+                         // Pass the queried collection as the first generic parameter
+                         // Pass the index class as the second generic parameter
+                        .Query<Employee, Employees_ByName>()
+                         // Execute the query
+                        .ToList();
+
+                    // All 'Employee' documents that contain DOCUMENT-fields 'FirstName' and\or 'LastName' will be returned
                     #endregion
                 }
 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
-                    #region basics_1_0
-                    // load all entities from 'Employees' collection
-                    IList<Employee> results = await asyncSession
-                        .Query<Employee>()
-                        .ToListAsync(); // send query
+                    #region index_query_1_2
+                    // Open the 'Index' tab to view the index class definition
+                    // Query the 'Employees' collection using the index - without filtering
+
+                    List<Employee> employees = await asyncSession
+                         // Pass the queried collection as the first generic parameter
+                         // Pass the index class as the second generic parameter
+                        .Query<Employee, Employees_ByName>()
+                         // Execute the query
+                        .ToListAsync();
+                    
+                    // All 'Employee' documents that contain DOCUMENT-fields 'FirstName' and\or 'LastName' will be returned
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region index_query_1_3
+                    // Open the 'Index' tab to view the index class definition
+                    // Query the 'Employees' collection using the index - without filtering
+
+                    List<Employee> employees = session
+                         // Pass the index name as a parameter
+                         // Use slash `/` in the index name, replacing the underscore `_` from the index class definition
+                        .Query<Employee>("Employees/ByName")
+                         // Execute the query
+                        .ToList();
+
+                    // All 'Employee' documents that contain DOCUMENT-fields 'FirstName' and\or 'LastName' will be returned
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region index_query_2_1
+                    // Query the 'Employees' collection using the index - filter by index-field
+                    
+                    List<Employee> employees = session
+                         // Pass the IndexEntry class as the first generic parameter
+                         // Pass the index class as the second generic parameter
+                        .Query<Employees_ByName.IndexEntry, Employees_ByName>()
+                         // Filter the retrieved documents by some predicate on an INDEX-field
+                        .Where(x => x.LastName == "King")
+                         // Specify the type of the returned document entities
+                        .OfType<Employee>()
+                         // Execute the query
+                        .ToList();
+
+                    // Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region index_query_2_2
+                    // Query the 'Employees' collection using the index - filter by index-field
+
+                    List<Employee> employees = await asyncSession
+                         // Pass the IndexEntry class as the first generic parameter
+                         // Pass the index class as the second generic parameter
+                        .Query<Employees_ByName.IndexEntry, Employees_ByName>()
+                         // Filter the retrieved documents by some predicate on an INDEX-field
+                        .Where(x => x.LastName == "King")
+                         // Specify the type of the returned document entities
+                        .OfType<Employee>()
+                         // Execute the query
+                        .ToListAsync();
+
+                    // Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
                     #endregion
                 }
 
                 using (var session = store.OpenSession())
                 {
-                    #region basics_0_1
-                    // load all entities from 'Employees' collection
-                    // where 'FirstName' is 'Robert'
-                    IList<Employee> results = session
-                        .Query<Employee>()
-                        .Where(x => x.FirstName == "Robert")
-                        .ToList(); // send query
+                    #region index_query_3_1
+                    // Query the 'Employees' collection using the index - page results
+                    
+                    // This example is based on the previous filtering example
+                    List<Employee> employees = session
+                        .Query<Employees_ByName.IndexEntry, Employees_ByName>()
+                        .Where(x => x.LastName == "King")
+                        .Skip(5)  // Skip first 5 results
+                        .Take(10) // Retrieve up to 10 documents
+                        .OfType<Employee>()
+                        .ToList();
+
+                    // Results will include up to 10 matching documents
                     #endregion
                 }
 
-
                 using (var asyncSession = store.OpenAsyncSession())
                 {
-                    #region basics_1_1
-                    // load all entities from 'Employees' collection
-                    // where 'FirstName' is 'Robert'
-                    IList<Employee> results = await asyncSession
-                        .Query<Employee>()
-                        .Where(x => x.FirstName == "Robert")
-                        .ToListAsync(); // send query
+                    #region index_query_3_2
+                    // Query the 'Employees' collection using the index - page results
+                    
+                    // This example is based on the previous filtering example
+                    List<Employee> employees = await asyncSession
+                        .Query<Employees_ByName.IndexEntry, Employees_ByName>()
+                        .Where(x => x.LastName == "King")
+                        .Skip(5)  // Skip first 5 results
+                        .Take(10) // Retrieve up to 10 documents
+                        .OfType<Employee>()
+                        .ToListAsync();
+
+                    // Results will include up to 10 matching documents
                     #endregion
                 }
 
                 using (var session = store.OpenSession())
                 {
-                    #region basics_0_2
-                    // load up to 10 entities from 'Products' collection
-                    // where there are more than 10 units in stock
-                    // skip first 5 results
-                    IList<Product> results = session
-                        .Query<Product>()
-                        .Where(x => x.UnitsInStock > 10)
-                        .Skip(5)
-                        .Take(10)
-                        .ToList(); // send query
+                    #region index_query_4_1
+                    // Query the 'Employees' collection using the index - filter by INDEX-field
+                    
+                    List<Employee> employees = session
+                         // Pass the IndexEntry class as the first generic parameter
+                         // Pass the index class as the second generic parameter
+                        .Advanced.DocumentQuery<Employees_ByName.IndexEntry, Employees_ByName>()
+                         // Filter the retrieved documents by some predicate on an INDEX-field
+                        .WhereEquals(x => x.LastName, "King")
+                         // Specify the type of the returned document entities
+                        .OfType<Employee>()
+                         // Execute the query
+                        .ToList();
+
+                    // Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
                     #endregion
                 }
 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
-                    #region basics_1_2
-                    // load up to 10 entities from 'Products' collection
-                    // where there are more than 10 units in stock
-                    // skip first 5 results
-                    IList<Product> results = await asyncSession
-                        .Query<Product>()
-                        .Where(x => x.UnitsInStock > 10)
-                        .Skip(5)
-                        .Take(10)
-                        .ToListAsync(); // send query
+                    #region index_query_4_2
+                    // Query the 'Employees' collection using the index - filter by INDEX-field
+                    
+                    List<Employee> employees = await asyncSession
+                         // Pass the IndexEntry class as the first generic parameter
+                         // Pass the index class as the second generic parameter
+                        .Advanced.AsyncDocumentQuery<Employees_ByName.IndexEntry, Employees_ByName>()
+                         // Filter the retrieved documents by some predicate on an INDEX-field
+                        .WhereEquals(x => x.LastName, "King")
+                         // Specify the type of the returned document entities
+                        .OfType<Employee>()
+                         // Execute the query
+                        .ToListAsync();
+
+                    // Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
                     #endregion
                 }
-
+                
                 using (var session = store.OpenSession())
                 {
-                    #region basics_0_3
-                    // load all entities from 'Employees' collection
-                    // where 'FirstName' is 'Robert'
-                    // using 'Employees/ByFirstName' index
-                    IList<Employee> results = session
-                        .Query<Employee, Employees_ByFirstName>()
-                        .Where(x => x.FirstName == "Robert")
-                        .ToList(); // send query
+                    #region index_query_5_1
+                    // Query with RawQuery - filter by INDEX-field
+
+                    List<Employee> employees = session
+                         // Provide RQL to RawQuery
+                        .Advanced.RawQuery<Employee>("from index 'Employees/ByName' where LastName = 'King'")
+                         // Execute the query
+                        .ToList();
+
+                    // Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
                     #endregion
                 }
 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
-                    #region basics_1_3
-                    // load all entities from 'Employees' collection
-                    // where 'FirstName' is 'Robert'
-                    // using 'Employees/ByFirstName' index
-                    IList<Employee> results = await asyncSession
-                        .Query<Employee, Employees_ByFirstName>()
-                        .Where(x => x.FirstName == "Robert")
-                        .ToListAsync(); // send query
-                    #endregion
-                }
+                    #region index_query_5_2
+                    // Query with RawQuery - filter by INDEX-field
 
-                using (var session = store.OpenSession())
-                {
-                    #region basics_0_4
-                    // load all entities from 'Employees' collection
-                    // where 'FirstName' is 'Robert'
-                    // using 'Employees/ByFirstName' index
-                    IList<Employee> results = session
-                        .Query<Employee>("Employees/ByFirstName")
-                        .Where(x => x.FirstName == "Robert")
-                        .ToList(); // send query
-                    #endregion
-                }
+                    List<Employee> employees = await asyncSession
+                         // Provide RQL to RawQuery
+                        .Advanced.AsyncRawQuery<Employee>("from index 'Employees/ByName' where LastName = 'King'")
+                         // Execute the query
+                        .ToListAsync();
 
-                using (var asyncSession = store.OpenAsyncSession())
-                {
-                    #region basics_1_4
-                    // load all entities from 'Employees' collection
-                    // where 'FirstName' is 'Robert'
-                    // using 'Employees/ByFirstName' index
-                    IList<Employee> results = await asyncSession
-                        .Query<Employee>("Employees/ByFirstName")
-                        .Where(x => x.FirstName == "Robert")
-                        .ToListAsync(); // send query
-                    #endregion
-                }
-
-                using (var session = store.OpenSession())
-                {
-                    #region basics_2_0
-                    // load all entities from 'Employees' collection
-                    // where 'FirstName' is 'Robert'
-                    // using 'Employees/ByFirstName' index
-                    IList<Employee> results = session
-                        .Advanced
-                        .DocumentQuery<Employee, Employees_ByFirstName>()
-                        .WhereEquals(x => x.FirstName, "Robert")
-                        .ToList(); // send query
-                    #endregion
-                }
-
-                using (var asyncSession = store.OpenAsyncSession())
-                {
-                    #region basics_2_1
-                    // load all entities from 'Employees' collection
-                    // where 'FirstName' is 'Robert'
-                    // using 'Employees/ByFirstName' index
-                    IList<Employee> results = await asyncSession
-                        .Advanced
-                        .AsyncDocumentQuery<Employee, Employees_ByFirstName>()
-                        .WhereEquals(x => x.FirstName, "Robert")
-                        .ToListAsync(); // send query
-                    #endregion
-                }
-
-                using (var session = store.OpenSession())
-                {
-                    #region basics_3_0
-                    // load up entity from 'Employees' collection
-                    // with ID matching 'employees/1-A'
-                    Employee result = session
-                        .Query<Employee>()
-                        .Where(x => x.Id == "employees/1-A")
-                        .FirstOrDefault(); // send query
-                    #endregion
-                }
-
-                using (var asyncSession = store.OpenAsyncSession())
-                {
-                    #region basics_3_1
-                    // load up entity from 'Employees' collection
-                    // with ID matching 'employees/1-A'
-                    Employee result = await asyncSession
-                        .Query<Employee>()
-                        .Where(x => x.Id == "employees/1-A")
-                        .FirstOrDefaultAsync(); // send query
+                    // Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
                     #endregion
                 }
             }
+        }
+        
+        private interface IFoo
+        {
+            #region syntax
+            IRavenQueryable<T> Query<T>(string collectionName = null);
+            #endregion
         }
     }
 }

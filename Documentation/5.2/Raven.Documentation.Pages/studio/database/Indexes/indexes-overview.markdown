@@ -11,7 +11,16 @@
 
 * Indexes are at the heart of RavenDB's efficiency and should be understood before indexes and queries are defined in production.  
   Although they remove a lot of the burden from the queries, indexes utilize machine resources behind the scenes. 
-  This should be considered when defining indexes and queries. 
+  This should be considered when defining indexes and queries.
+
+/// - todo...
+ * To accelerate queries, RavenDB [indexes](../../indexes/creating-and-deploying) can process various calculations, filters and conversions behind the scenes
+   so that the data is already processed and ready for queries.
+
+*  Furthermore, indexes only scan and process the entire specified dataset once.  
+   After the initial scan, they only need to process specific data as it is modified, added or deleted.
+///
+
 
 * Indexes can be created:
   * From Studio  
