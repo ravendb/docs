@@ -148,6 +148,12 @@
         ]
     },
     {
+        "Path": "indexing-attachments.markdown",
+        "Name": "Indexing Attachments",
+        "DiscussionId": "6b51906a-f480-48a0-ad5b-91fee56949cd",
+        "Mappings": []
+    },
+    {
         "Path": "indexing-counters.markdown",
         "Name": "Indexing Counters",
         "DiscussionId": "439e9ec8-773a-4bdf-8bfa-bafa7a48ece6",
@@ -259,6 +265,12 @@
         "Path": "additional-assemblies.markdown",
         "Name": "Additional Assemblies",
         "DiscussionId": "ded1676d-362d-4aa3-8255-f5098cf6f02c",
+        "Mappings": []
+    },
+    {
+        "Path": "number-type-conversion.markdown",
+        "Name": "Numerical Type Conversion",
+        "DiscussionId": "e0345771-3f51-4e2e-8c7f-ec1b91e70761",
         "Mappings": []
     },
     {

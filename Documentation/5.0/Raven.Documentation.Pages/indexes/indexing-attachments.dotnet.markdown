@@ -1,28 +1,12 @@
-# Indexes: Indexing Attachments
+# Indexing Attachments
 
-The `AttachmentsFor` method returns a list of 
-[attachments](../document-extensions/attachments/what-are-attachments) 
-in a given document as well as basic information like `Name` or `Size` 
-about each of them.
+---
 
-{CODE-TABS}
-{CODE-TAB:csharp:AttachmentsFor syntax@Indexes\IndexingAttachments.cs /}
-{CODE-TAB:csharp:AttachmentName result@Indexes\IndexingAttachments.cs /}
-{CODE-TABS/}
+{INFO: }
 
-## Creating an index using `AttachmentsFor()`
+Learn about __Indexing Attachments__ here: [Document Extensions > Attachments > Indexing Attachments](../document-extensions/attachments/indexing).
 
-The `AttachmentsFor` method is available in `AbstractIndexCreationTask`.
-
-{CODE:csharp index@Indexes\IndexingAttachments.cs /}
-
-## Querying the index
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync query1@Indexes\IndexingAttachments.cs /}
-{CODE-TAB:csharp:Async query2@Indexes\IndexingAttachments.cs /}
-{CODE-TAB:csharp:DocumentQuery query3@Indexes\IndexingAttachments.cs /}
-{CODE-TABS/}
+{INFO/}
 
 ## Related Articles
 
