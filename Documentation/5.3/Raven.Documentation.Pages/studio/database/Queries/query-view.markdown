@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* Use the **Query View** to run [RQL](../../../indexes/querying/what-is-rql) queries and view their results.  
+* Use the **Query View** to run [RQL](../../../client-api/session/querying/what-is-rql) queries and view their results.  
 * Queries can be executed either on a **Collection** or on an existing **Static-Index**.  
 * RavenDB always uses an index to fetch the query results.  
   When a query is executed over a Collection (without any filtering condition),  
@@ -192,7 +192,7 @@ Some RavenDB features enhance the queries options.
 ## Related Articles
 
 ### Queries
-- [RQL - Raven Query Language](../../../indexes/querying/what-is-rql)  
+- [RQL - Raven Query Language](../../../client-api/session/querying/what-is-rql)  
 - [Basics](../../../indexes/querying/basics)  
 
 ### Indexes

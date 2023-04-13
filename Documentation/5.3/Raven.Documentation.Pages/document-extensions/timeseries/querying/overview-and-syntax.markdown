@@ -65,7 +65,7 @@ indexes can be created by clients (or using the Studio).
 
 * Use **dynamic queries** when time series you query are unindexed 
   or when you prefer that RavenDB would choose an index automatically 
-  using its [query optimizer](../../../indexes/querying/what-is-rql#query-optimizer). E.g. - 
+  using its [query optimizer](../../../client-api/session/querying/what-is-rql#query-optimizer). E.g. - 
    {CODE-BLOCK: javascript}
 //Look for time series named "HeartRates" in user profiles of users under 30.
 from Employees as e 
@@ -219,7 +219,7 @@ select ts(jog)
 #### Combine Time Series and Javascript Functions
 
 You can declare and use both **time series functions** and 
-[custom JavaScript functions](../../../indexes/querying/what-is-rql#declare) 
+[custom JavaScript functions](../../../client-api/session/querying/what-is-rql#declare) 
 in a query.  
 JavaScript functions can then call time series functions, pass them arguments, 
 use and manipulate their results.  

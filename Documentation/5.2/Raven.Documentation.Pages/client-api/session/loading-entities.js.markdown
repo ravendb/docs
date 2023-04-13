@@ -208,7 +208,7 @@ Type information about the entity and its contents is by default stored in the d
 {INFO: Entity type registration }
 In order to avoid passing **documentType** argument every time, you can register the type in the document conventions using the `registerEntityType()` method before calling DocumentStore's `initialize()` like so:
 
-{CODE:nodejs query_1_8@ClientApi\Session\Querying\howToQuery.js /}
+{CODE:nodejs loading_entities_8@ClientApi\Session\loadingEntities.js /}
 
 {INFO/}
 

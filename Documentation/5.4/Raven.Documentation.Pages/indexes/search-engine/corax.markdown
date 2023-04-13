@@ -191,7 +191,7 @@ of supported and yet-unsupported features below.
 
 | Query Term | Method / Keyword | Supported by Corax |
 | ---------- | ---------------- | ------------------ |
-| [WHERE](../../indexes/querying/what-is-rql#where) | | |
+| [WHERE](../../client-api/session/querying/what-is-rql#where) | | |
 | | id() | `yes` |
 | | [search()](../../indexes/querying/searching) | `yes` |
 | | cmpxchg() | **no** |
@@ -208,7 +208,7 @@ of supported and yet-unsupported features below.
 
 | Query Term | Method / Keyword | Supported by Corax |
 | ---------- | ---------------- | ------------------ |
-| [ORDER BY](../../indexes/querying/what-is-rql#order-by) | | |
+| [ORDER BY](../../client-api/session/querying/what-is-rql#order-by) | | |
 | | [ASC / ASCENDING](../../indexes/querying/sorting#basics) | `yes` |
 | | [DESC / DESCENDING](../../indexes/querying/sorting#basics) | `yes` |
 | | [AS](../../indexes/querying/sorting#basics) | `yes` |

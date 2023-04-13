@@ -143,7 +143,7 @@ Indexes in RavenDB are split across the following multiple axes:
 
 * **Auto Indexes**:  
   When a Query doesn't [specify a specific index](../../../indexes/querying/basics#example-iv---querying-a-specified-index) 
-  to be used, the server [Query Optimizer](../../../indexes/querying/what-is-rql#query-optimizer) will first analyze the query 
+  to be used, the server [Query Optimizer](../../../client-api/session/querying/what-is-rql#query-optimizer) will first analyze the query 
   and search for an already existing Auto-Index that can answer the query.
   If there is no such index, the Query Optimizer creates on the fly an Auto-Index 
   that can answer this query and all previous queries on that collection.  

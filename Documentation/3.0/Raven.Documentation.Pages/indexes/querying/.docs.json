@@ -128,10 +128,11 @@
     "DiscussionId": "eccb6d03-cf7a-49cc-beed-594c3d25a9be",
     "Mappings": [
       {
-        "Version": 2.5,
-        "Key": "client-api/querying/query-and-lucene-query"
+        "Version": 5.2,
+        "Key": "client-api/session/querying/document-query/query-vs-document-query"
       }
-    ]
+    ],
+    "LastSupportedVersion": "5.1"
   },
   {
     "Path": "full-query-syntax.markdown",

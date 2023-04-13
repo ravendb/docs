@@ -383,4 +383,4 @@ To specify a range of time series entries:
 
 ### Querying
 
-* [What is RQL](../../../indexes/querying/what-is-rql)
+* [What is RQL](../../../client-api/session/querying/what-is-rql)
