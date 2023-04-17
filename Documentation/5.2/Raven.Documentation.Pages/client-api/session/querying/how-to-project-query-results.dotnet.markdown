@@ -233,12 +233,12 @@ select Name, Phone
 
 ### Session
 
-- [How to Query](../../../client-api/session/querying/how-to-query)
+- [Query Overview](../../../client-api/session/querying/how-to-query)
 - [How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results)
 
 ### Querying
 
-- [Basics](../../../indexes/querying/basics)
+- [Querying an Index](../../../indexes/querying/query-index)
 - [Projections](../../../indexes/querying/projections)
 
 ### Server

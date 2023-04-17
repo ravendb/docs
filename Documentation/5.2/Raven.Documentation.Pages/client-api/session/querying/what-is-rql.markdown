@@ -10,7 +10,7 @@ Queries in RavenDB use an SQL-like language called **RQL** (Raven Query Language
   * [Query Optimizer](../../../client-api/session/querying/what-is-rql#query-optimizer)  
      * [Dynamic and Indexed Queries](../../../client-api/session/querying/what-is-rql#dynamic-and-indexed-queries)  
      * [Queries Usage of Indexes](../../../client-api/session/querying/what-is-rql#queries-usage-of-indexes)  
-  * [Query-Flow](../../indexes/querying/basics#query-flow) // TODO !!
+  * [Query-Flow](../../../client-api/session/querying/what-is-rql#query-flow) // TODO !!
   * [RQL Keywords and Methods](../../../client-api/session/querying/what-is-rql#rql-keywords-and-methods)  
      * [`declare`](../../../client-api/session/querying/what-is-rql#declare)  
      * [`from`](../../../client-api/session/querying/what-is-rql#from)  
@@ -447,10 +447,10 @@ And the following values:
 
 ### Client API
 
-- [How to Query](../../../client-api/session/querying/how-to-query)  
+- [Query Overview](../../../client-api/session/querying/how-to-query)  
 - [How to Use RQL Directly When Querying](../../../client-api/session/querying/how-to-query#session.advanced.rawquery)  
 
 ### Querying
 
-- [Basics](../../../indexes/querying/basics)  
+- [Querying an index](../../../indexes/querying/query-index)
 - [Graph Queries Overview](../../../indexes/querying/graph/graph-queries-overview)  

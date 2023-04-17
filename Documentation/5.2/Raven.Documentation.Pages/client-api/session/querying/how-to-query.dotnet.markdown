@@ -21,7 +21,7 @@
 
 * Queries that do Not specify which index to use are called __Dynamic Queries__.  
   Examples in this article show dynamic queries.  
-  See [querying an index](../../../indexes/querying/basics) for other examples.
+  See [querying an index](../../../indexes/querying/query-index) for other examples.
 
 ---
 
@@ -116,7 +116,7 @@ __Query a collection - no filtering__:
   Both the LINQ method syntax and the LINQ query syntax are supported.  
 
 * The following examples show __dynamic queries__ that do not specify which index to use.  
-  Please refer to [querying an index](../../../indexes/querying/basics) for other examples.
+  Please refer to [querying an index](../../../indexes/querying/query-index) for other examples.
 
 * Querying can be enhanced using these [extension methods](../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq).
  
@@ -203,7 +203,7 @@ from "Products" limit 5, 10 // skip 5, take 10
 __Syntax__:
 
 * The syntax below is the relevant overload for making a dynamic query that does Not specify which index to use.  
-* Method overloads that specify which index to use are listed in [querying an index](../../../indexes/querying/basics).  
+* Method overloads that specify which index to use are listed in [querying an index](../../../indexes/querying/query-index).  
 
 {CODE syntax@ClientApi\Session\Querying\HowToQuery.cs /}
 
@@ -306,7 +306,7 @@ Available custom methods and extensions for the session's [Query](../../../clien
 
 ### Querying
 
-- [Basics](../../../indexes/querying/basics)
+- [Querying an Index](../../../indexes/querying/query-index)
 - [Filtering](../../../indexes/querying/filtering)
 - [Paging](../../../indexes/querying/paging)
 - [Sorting](../../../indexes/querying/sorting)

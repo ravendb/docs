@@ -143,7 +143,8 @@ Click **Test** to open the patch test dialog.
 
 ### Queries
 - [RQL - Raven Query Language](../../../client-api/session/querying/what-is-rql)  
-- [Basics](../../../indexes/querying/basics)  
+- [Query Overview](../../../client-api/session/querying/how-to-query)  
+- [Querying an Index](../../../indexes/querying/query-index)
 
 ### Indexes
 - [Indexing Basics](../../../indexes/indexing-basics)  

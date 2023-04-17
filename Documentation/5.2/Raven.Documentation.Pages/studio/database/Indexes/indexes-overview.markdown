@@ -151,7 +151,7 @@ Indexes in RavenDB are split across the following multiple axes:
 ### Auto Indexes -vs- Static Indexes
 
 * **Auto Indexes**:  
-  When a Query doesn't [specify a specific index](../../../indexes/querying/basics#example-iv---querying-a-specified-index) 
+  When a Query doesn't [specify a specific index](../../../indexes/querying/query-index) 
   to be used, the server [Query Optimizer](../../../client-api/session/querying/what-is-rql#query-optimizer) will first analyze the query 
   and search for an already existing Auto-Index that can answer the query.
   If there is no such index, the Query Optimizer creates on the fly an Auto-Index 
@@ -164,7 +164,7 @@ Indexes in RavenDB are split across the following multiple axes:
   The index shape (as defined in the index definition) and the shape of the source document don't have to be the same, 
   as the indexed data can be a computed value. These computations are run as background indexing processes to provide 
   fast query results when querying the index.  
-   * [To query a static index](../../../indexes/querying/basics#example-iv---querying-a-specified-index), 
+   * [To query a static index](../../../indexes/querying/query-index), 
      the index must be specified in the query definition.
 {NOTE/}
 

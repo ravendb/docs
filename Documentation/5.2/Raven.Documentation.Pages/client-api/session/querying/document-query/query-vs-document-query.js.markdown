@@ -39,12 +39,12 @@ is equivalent to:
 
 ## Related Articles
 
-### Querying
-
-- [Basics](../../../../indexes/querying/basics)
-
 ### Session 
 
-- [How to Query](../../../../client-api/session/querying/how-to-query)
+- [Query Overview](../../../../client-api/session/querying/how-to-query)
 - [What is a Document Query](../../../../client-api/session/querying/document-query/what-is-document-query)
 - [How to use Lucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
+
+### Indexes
+
+- [Querying an index](../../../../indexes/querying/query-index)

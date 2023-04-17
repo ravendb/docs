@@ -19,7 +19,7 @@
 
 * Queries that do Not specify which index to use are called __Dynamic Queries__.  
   Examples in this article show dynamic queries.  
-  See [querying an index](../../../indexes/querying/basics) for other examples.
+  See [querying an index](../../../indexes/querying/query-index) for other examples.
 
 ---
 
@@ -113,7 +113,7 @@ __Query a collection - no filtering__:
   Customize your query with these [API methods](../../../client-api/session/querying/how-to-query#query-method-api).
 
 * The following examples show __dynamic queries__ that do not specify which index to use.  
-  Please refer to [querying an index](../../../indexes/querying/basics) for other examples.
+  Please refer to [querying an index](../../../indexes/querying/query-index) for other examples.
 
 {NOTE: }
 
@@ -195,7 +195,7 @@ __Syntax__:
 | - | - | - |
 |  __collection__ | string | <ul><li>Collection name queried</li></ul> |
 |  __indexName__ | string | <ul><li>Index name queried</li></ul> |
-|  __index__ | object | <ul><li>Index object queried</li><li>Note:<br>`indexName` & `index` are mutually exclusive with `collection`.<br>See examples in [querying an index](../../../indexes/querying/basics).</li></ul> |
+|  __index__ | object | <ul><li>Index object queried</li><li>Note:<br>`indexName` & `index` are mutually exclusive with `collection`.<br>See examples in [querying an index](../../../indexes/querying/query-index).</li></ul> |
 
 | Return Value | |
 | - | - |
@@ -304,7 +304,7 @@ Available methods for the session's [query](../../../client-api/session/querying
 
 ### Querying
 
-- [Basics](../../../indexes/querying/basics)
+- [Querying an Index](../../../indexes/querying/query-index)
 - [Filtering](../../../indexes/querying/filtering)
 - [Paging](../../../indexes/querying/paging)
 - [Sorting](../../../indexes/querying/sorting)

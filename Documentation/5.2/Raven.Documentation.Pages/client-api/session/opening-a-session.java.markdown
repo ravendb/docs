@@ -62,7 +62,7 @@ The second method is an equivalent of doing
 
 ### Querying
 
-- [Basics](../../indexes/querying/basics)
+- [Basics](../../indexes/querying/query-index)
 
 ### Document Store
 
