@@ -61,22 +61,13 @@ using a database like the one shown below:
 
 !["Sharded Database"](images/resharding_sharded-database.png "Sharded Database")
 
-1. The client requests resharding buckets from shard #0 to shard #2.  
-2. Shard #0 connects shard #2 and transfers to it all the content of 
-   the first bucket.  
-3. Shard #0 remains the owner of the bucket until:  
-    * All bucket content is transferred to [all replicas](../sharding/overview#shard-replication) 
-      of shard #2.  
-    * Shard #2 replies: `Ownership Transferred`.  
-      At this point, the transfer of the next bucket can start since 
-      no files are being transferred.  
-    * All bucket content is deleted from all replicas of shard #0.  
-      The bucket is **not** remapped to shard #2 until all of its files 
-      have been removed from the original shard. Until then, new content 
-      (document modification, new revision, time series update..) continues 
-      to be stored in the original shard and bucket. 
-      When the original bucket is cleared, the bucket is remapped 
-      to shard #2 and document modifications start to be routed there.  
+1. The client requests to reshard buckets from shard `#0` to shard `#2`.  
+2. Shard `#0` connects shard `#2` and transfers to it all the content of the first bucket.  
+3. Shard `#0` remains the owner of the bucket until all data has been propagated to 
+   all shard `#2` [replicas](../sharding/overview#shard-replication).  
+4. The ownership is transferred, the bucket is remapped to shard `#2`.  
+5. Shard `#0` starts purging all the entities whose ownership is now held by shard `#2`.  
+   If there are still buckets to shift, shard `#0` can start transferring content from the next bucket.  
 
 ## Following Resharding Progress
 
@@ -108,7 +99,7 @@ You can follow the progress of the resharding progress using -
 
 ## Racing
 
-It may happen that a file (like a time seties, due to the addition 
+It may happen that a file (like a time series, due to the addition 
 of a time series entry) would find its way into a bucket after the 
 ownership of this bucket has already been shifted to another shard 
 and before RavenDB managed to delete it.  
@@ -131,16 +122,19 @@ On a sharded database, the latter (order) property may turn meaningless, because
 resharding may change the order of documents: an old document may be moved to a shard 
 that contains newer documents, and get a change vector newer than theirs.  
 
-To overcome this problem, resharded documents receive an altered change vector 
-that explicitly defines both its version and its order, using this format:  
-`<document name> <order>|<version>`
+To resolve this issue, resharded documents are given an altered change vector 
+that explicitly defines both their version and their order, using this format:  
+`<order>|<version>`
 
 * E.g. `Users/1 A:3|B:7`  
-  In the example above:
-    * `Users/1` - the document  
-    * `A:3` - the change vector part that indicates the document's **order**  
-    * `|` - the pipe symbol  
-    * `B:7` - the change vector part that indicates the document's **version**  
+  In the example above `A:3|B:7` is `Users/1`'s change vector.  
+    * `A:3` indicates the document's **order**.  
+    * The `|` symbol separates the two parts.  
+    * `B:7` inidcates the document's **version**.  
+
+{NOTE: }
+The change vector is altered this way only for documents that have been resharded.  
+{NOTE/}
 
 {PANEL/}
 
@@ -148,15 +142,14 @@ that explicitly defines both its version and its order, using this format:
 
 ### Resharding and External Replication
 
-During [external replication](../sharding/external-replication), 
-we check **only the version part** of the document's change vector.  
+During [external replication](../sharding/external-replication):  
 
-If a replicated document exists on the destination side:  
-To decide whether to replicate the document, we compare the source 
-document's **version** (right) part of the change vector with the 
-change vector of the destination document.  
-
-The **Order** part of the change vector is not used.  
+* The **order** (left-hand) part of the document's change vector 
+  is checked on the **source** side, to determine whether the document 
+  should be replicated.  
+* The **version** (right-hand) part of the document's change vector 
+  is checked on the **destination** side, to determine whether this 
+  version of the document already resides on it.  
 
 ---
 
@@ -173,8 +166,8 @@ transform script) new/modified and transfer them all to the destination.
 
 Our promise to [data subscription](../sharding/subscriptions) workers is that we 
 send all data **at least once**.  
-We also do our best not to send documents twice, but it is the responsibility of 
-the worker to check whether a document is duplicated or not.  
+As in a non-sharded database, we do our best not to send documents twice, but it 
+is the responsibility of the worker to check whether a document is duplicated or not.  
 
 ---
 
@@ -235,7 +228,7 @@ buckets range using popup messages until the process ends.
 
 ### Bucket Ownership
 
-For a while, as long as there are still files to transfer to the new 
+For a while, as long as there are still entities to transfer to the new 
 shard's replicas or delete from the old shard, transferred buckets are 
 presented as if they reside on both their old and new shards.  
 

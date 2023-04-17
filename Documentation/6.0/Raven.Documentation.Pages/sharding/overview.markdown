@@ -126,12 +126,13 @@ shard **3** and hand them to the client.
 
 As much as clients are concerned a sharded database is still a single entity: 
 the clients are not required to detect whether the database is sharded or not, 
-and clients of RavenDB versions prior to 6.0 (that had no sharding support) 
+and clients of RavenDB versions prior to 6.0, which had no sharding support, 
 can access a sharded database unaltered.  
 
-Shard-specific operations are, however, available: clients can, for example, 
-track the shard that a document is stored at, query a selected shard, and 
-relocate ([reshard](../sharding/resharding)) documents from one shard to another.  
+Shard-specific operations are, however, available: a client can, for example, 
+track the shard that a document is stored at and query this shard, and Studio 
+can be used to relocate ([reshard](../sharding/resharding)) documents from one 
+shard to another.  
 
 !["Studio Document View"](images/overview_document-view.png "Studio Document View")
 
