@@ -69,5 +69,11 @@
     "Name": "Data Subscriptions",
     "DiscussionId": "2a7ae03e-ecef-4bf1-b321-cc8fab54a447",
     "Mappings": []
+  },
+  {
+    "Path": "resharding.markdown",
+    "Name": "Resharding",
+    "DiscussionId": "2a7ae03e-ecef-4bf1-b321-cc8fab54a447",
+    "Mappings": []
   }
 ]

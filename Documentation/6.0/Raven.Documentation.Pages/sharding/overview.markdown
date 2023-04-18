@@ -124,6 +124,18 @@ that would seamlessly retrieve `Users/3000` from shard **2** and `Users/5000` fr
 shard **3** and hand them to the client.  
 {NOTE/}
 
+As much as clients are concerned a sharded database is still a single entity: 
+the clients are not required to detect whether the database is sharded or not, 
+and clients of RavenDB versions prior to 6.0, which had no sharding support, 
+can access a sharded database unaltered.  
+
+Shard-specific operations are, however, available: a client can, for example, 
+track the shard that a document is stored at and query this shard, and Studio 
+can be used to relocate ([reshard](../sharding/resharding)) documents from one 
+shard to another.  
+
+!["Studio Document View"](images/overview_document-view.png "Studio Document View")
+
 ---
 
 ### Shard Replication 
@@ -212,9 +224,9 @@ of the shards is overpopulated and others are underpopulated.
 
 {PANEL: Resharding}
 
-**Resharding** is the reallocation of data from one shard 
-to another, to maintain a balanced database in which all shards 
-handle about the same volume of data.  
+[Resharding](../sharding/resharding) is the relocation of data placed 
+on one shard, on another shard, to maintain a balanced database in which 
+all shards handle about the same volume of data.  
 
 The resharding process moves all the data related to a certain 
 bucket, including documents, document extensions, tombstones, etc., 
@@ -225,7 +237,7 @@ to a different shard, and then associates the bucket with the new shard.
   1. Bucket `100,000` was initially associated with shard **1**.  
      Therefore, all data added to this bucket has been stored in shard **1**.  
   2. Resharding bucket `100,000` to shard **2** will:  
-      * Move all the data that belong to this bucket to shard **2**.  
+      * Move all the data that belongs to this bucket to shard **2**.  
       * Associate bucket `100,000` with shard **2**.  
         From now on, any data added to this bucket will be stored in shard **2**.  
 {NOTE/}
