@@ -95,12 +95,15 @@ indexes and compare exchange entries. Find the full list [here](../server/ongoin
 
 ## Related articles
 
-[Create Database](../sharding/administration/studio-admin#creating-a-sharded-database)  
-[Smuggler](../client-api/smuggler/what-is-smuggler)  
-[Export](../sharding/import-and-export#export)  
-[Import](../sharding/import-and-export#import)  
-[Backup](../sharding/backup-and-restore/backup)  
-[Restore](../sharding/backup-and-restore/restore)  
-[Restore From File](../sharding/import-and-export#importing-data-from-a--file)  
-[Restore From Backup](../sharding/import-and-export#importing-data-from-backup-files)  
-[External Replication](../sharding/external-replication)  
+### Sharding
+- [Create Database](../sharding/administration/studio-admin#creating-a-sharded-database)  
+- [Export](../sharding/import-and-export#export)  
+- [Import](../sharding/import-and-export#import)  
+- [Backup](../sharding/backup-and-restore/backup)  
+- [Restore](../sharding/backup-and-restore/restore)  
+- [Restore From File](../sharding/import-and-export#importing-data-from-a--file)  
+- [Restore From Backup](../sharding/import-and-export#importing-data-from-backup-files)  
+- [External Replication](../sharding/external-replication)  
+
+### Client API
+- [Smuggler](../client-api/smuggler/what-is-smuggler)  

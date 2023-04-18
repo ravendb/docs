@@ -47,7 +47,8 @@
 | **Stream Map-Reduce results** | [Streaming](../client-api/session/querying/how-to-stream-query-results#stream-an-index-query) map-reduce results is not supported in a Sharded Database. |
 | Use `limit` with [PatchByQueryOperation](../client-api/operations/patching/set-based#patchbyqueryoperation) or [DeleteByQueryOperation](../client-api/operations/delete-by-query) | [Unsupported Querying Features](../sharding/querying#unsupported-querying-features) |
 | [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis) |  |
-| **Order by score** |  |
+| [OrderByScore](../indexes/querying/sorting#ordering-by-score) |  |
+| [OrderByDistance](../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance) | Not supported in spatial map reduce indexes |
 
 ## Unsupported Document Extensions Features
 
@@ -71,7 +72,8 @@
 | ------------- | ------------- |
 | [Import from a CSV file](../studio/database/tasks/import-data/import-from-csv) |  |
 | **Import from an S3 Bucket** | using GET, Studio, smuggler, import s3 dir |
-
+| [Import from SQL](../studio/database/tasks/import-data/import-from-sql) | |
+| [Import from Other Databases](../studio/database/tasks/import-data/import-from-other) | Importing from databases like MongoDB and CosmosDB is not supported 
 
 ## Unsupported Migration Features
 
@@ -86,11 +88,11 @@
 | ------------- | ------------- |
 | [Concurrent Subscriptions](../client-api/data-subscriptions/concurrent-subscriptions) |  |
 | [Data Subscriptions Revisions Support](../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning) | Subscribing to document revisions |
-| [SubscriptionCreationOptions.ChangeVector](../sharding/subscriptions#unsupported-features) | Providing a change vector to start the processing from <br> except for these special cases: <br> `"LastDocument"`, `"BeginningOfTime"`, `"DoNotChange"` |
+| [SubscriptionCreationOptions.ChangeVector](../sharding/subscriptions#unsupported-features) | Providing a change vector to start the processing from is not supported <br> except for these special cases: <br> `"LastDocument"`, `"BeginningOfTime"`, `"DoNotChange"` |
 
 ## Unsupported Integrations Features
 
-| Unsupported Unsupported Feature | Comment |
+| Unsupported Feature | Comment |
 | ------------- | ------------- |
 | [PostgreSQL](../integrations/postgresql-protocol/overview) |  |
 | [Queue ETL](../server/ongoing-tasks/etl/queue-etl/overview) | [Kafka](../server/ongoing-tasks/etl/queue-etl/kafka), [RabbitMQ](../server/ongoing-tasks/etl/queue-etl/rabbit-mq) |
@@ -113,14 +115,15 @@
 
 ## Related articles
 
-**Sharding**  
-[Overview](../sharding/overview)  
-[Indexing](../sharding/indexing)  
-[Querying](../sharding/querying)  
-[Document Extensions](../sharding/document-extensions)  
-[Backup](../sharding/backup-and-restore/backup)  
-[Restore](../sharding/backup-and-restore/restore)  
-[Import & Export](../sharding/import-and-export)  
-[External Replication](../sharding/external-replication)  
-[ETL](../sharding/etl)  
-[Subscriptions](../sharding/subscriptions)  
+### Sharding
+
+- [Overview](../sharding/overview)  
+- [Indexing](../sharding/indexing)  
+- [Querying](../sharding/querying)  
+- [Document Extensions](../sharding/document-extensions)  
+- [Backup](../sharding/backup-and-restore/backup)  
+- [Restore](../sharding/backup-and-restore/restore)  
+- [Import & Export](../sharding/import-and-export)  
+- [External Replication](../sharding/external-replication)  
+- [ETL](../sharding/etl)  
+- [Subscriptions](../sharding/subscriptions)  

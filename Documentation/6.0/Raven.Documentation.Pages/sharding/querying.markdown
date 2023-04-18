@@ -293,18 +293,18 @@ databases include:
 
 ## Related articles
 
-**Indexing**  
-[Map-Reduce Indexes](../indexes/map-reduce-indexes)  
-[Indexing Basics](../indexes/indexing-basics)  
-[Rolling index deploymeny](../indexes/rolling-index-deployment)  
-[Map-Reduce Output Documents](../indexes/map-reduce-indexes#map-reduce-output-documents)  
+### Indexing
+- [Map-Reduce Indexes](../indexes/map-reduce-indexes)  
+- [Indexing Basics](../indexes/indexing-basics)  
+- [Rolling index deploymeny](../indexes/rolling-index-deployment)  
+- [Map-Reduce Output Documents](../indexes/map-reduce-indexes#map-reduce-output-documents)  
 
-**Querying**  
-[Filtering: Where](../indexes/querying/filtering#where)  
-[Exploration Queries: Filter](../indexes/querying/exploration-queries#filter)  
-[Stream Query Results](../client-api/session/querying/how-to-stream-query-results#stream-an-index-query)  
+### Querying
+- [Filtering: Where](../indexes/querying/filtering#where)  
+- [Exploration Queries: Filter](../indexes/querying/exploration-queries#filter)  
+- [Stream Query Results](../client-api/session/querying/how-to-stream-query-results#stream-an-index-query)  
 
-**Sharding**  
-[Share a Bucket: $ Syntax](../sharding/overview#forcing-documents-to-share-a-bucket)  
-[Shards Indexing](../sharding/indexing)  
+### Sharding
+- [Share a Bucket: $ Syntax](../sharding/overview#forcing-documents-to-share-a-bucket)  
+- [Shards Indexing](../sharding/indexing)  
 

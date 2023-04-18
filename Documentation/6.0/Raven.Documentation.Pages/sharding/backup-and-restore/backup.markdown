@@ -191,18 +191,20 @@ by the orchestrator for each shard.
 
 ## Related articles
 
-**Client API**  
-[Create Database](../../client-api/operations/server-wide/create-database)  
-[Smuggler](../../client-api/smuggler/what-is-smuggler)  
-[Server-Wide Backup](../../client-api/operations/maintenance/backup/backup#server-wide-backup)  
+### Client API
+- [Smuggler](../../client-api/smuggler/what-is-smuggler)  
+- [Server-Wide Backup](../../client-api/operations/maintenance/backup/backup#server-wide-backup)  
 
-**Server**  
-[Backup Overview](../../server/ongoing-tasks/backup-overview)  
-[External Replication](../../server/ongoing-tasks/external-replication)  
-[Responsible Node](../../server/clustering/distribution/highly-available-tasks#responsible-node)  
+### Server
+- [Backup Overview](../../server/ongoing-tasks/backup-overview)  
+- [External Replication](../../server/ongoing-tasks/external-replication)  
+- [Responsible Node](../../server/clustering/distribution/highly-available-tasks#responsible-node)  
 
-**Studio**  
-[Export Data](../../studio/database/tasks/export-database)  
-[Import Data](../../studio/database/tasks/import-data/import-data-file)  
-[One-Time Backup](../../studio/database/tasks/backup-task#manually-creating-one-time-backups)  
+### Sharding
+- [Export Data](../../sharding/import-and-export#export)  
+- [Import Data](../../sharding/import-and-export#import)  
+- [Creating a Sharded DB](../../sharding/administration/studio-admin#creating-a-sharded-database)  
+
+### Studio
+- [One-Time Backup](../../studio/database/tasks/backup-task#manually-creating-one-time-backups)  
 

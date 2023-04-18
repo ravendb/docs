@@ -94,9 +94,10 @@ Data subscriptions features that are not supported yet under a sharded database:
   is currently not supported.  
   {NOTE: }
   Setting `ChangeVector` to one of the following special values **is** supported:  
-  `"LastDocument"` (the latest change vector on the database)  
-  `"BeginningOfTime"` (the earliest change vector on the database)  
-  `"DoNotChange"` (keep current subscription change vector)  
+   
+   * `"LastDocument"` (the latest change vector on the database)  
+   * `"BeginningOfTime"` (the earliest change vector on the database)  
+   * `"DoNotChange"` (keep current subscription change vector)  
   {NOTE/}
 
 
@@ -104,12 +105,12 @@ Data subscriptions features that are not supported yet under a sharded database:
 
 ## Related articles
 
-**Data Subscriptions**  
-[Data Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions)  
-[Creating Subscription](../client-api/data-subscriptions/creation/how-to-create-data-subscription)  
-[Consuming Data](../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)  
-[Concurrent Subscriptions](../client-api/data-subscriptions/concurrent-subscriptions)  
+### Data Subscriptions
+- [Data Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions)  
+- [Creating Subscription](../client-api/data-subscriptions/creation/how-to-create-data-subscription)  
+- [Consuming Data](../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)  
+- [Concurrent Subscriptions](../client-api/data-subscriptions/concurrent-subscriptions)  
 
-**Sharding**  
-[Orchestrator](../sharding/overview#client-server-communication)  
-[Shard](../sharding/overview#shards)  
+### Sharding
+- [Orchestrator](../sharding/overview#client-server-communication)  
+- [Shards](../sharding/overview#shards)  

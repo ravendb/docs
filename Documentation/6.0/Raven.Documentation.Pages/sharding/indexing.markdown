@@ -80,13 +80,13 @@ Unsupported or yet-unimplemented indexing features include:
 
 ## Related articles
 
-**Indexing**  
-[Map-Reduce Indexes](../indexes/map-reduce-indexes)  
-[Indexing Basics](../indexes/indexing-basics)  
-[Rolling index deployment](../indexes/rolling-index-deployment)  
-[Map-Reduce Output Documents](../indexes/map-reduce-indexes#map-reduce-output-documents)  
+### Indexing
+- [Map-Reduce Indexes](../indexes/map-reduce-indexes)  
+- [Indexing Basics](../indexes/indexing-basics)  
+- [Rolling index deployment](../indexes/rolling-index-deployment)  
+- [Map-Reduce Output Documents](../indexes/map-reduce-indexes#map-reduce-output-documents)  
 
-**Sharding**  
-[Force Docs Share a Bucket](../sharding/overview#forcing-documents-to-share-a-bucket)  
-[Sharding: Querying](../sharding/querying)  
+### Sharding
+- [Force Docs Share a Bucket](../sharding/overview#forcing-documents-to-share-a-bucket)  
+- [Querying](../sharding/querying)  
 

@@ -15,7 +15,11 @@
   same API commands and Studio views.  
 
 * Document extensions are identified by the ID of their parent document, 
-  and are always stored in **the same bucket** as the document.  
+  and are always stored in [the same bucket](../sharding/overview#document-extensions-storage) 
+  as the document.  
+
+     When a document is resharded, its document extensions are transferred 
+     along with it to the new shard.  
 
 * In this page:  
    * [Document Extensions and Resharding](../sharding/document-extensions#document-extensions-and-resharding)  
@@ -99,23 +103,19 @@ The following points relate to this issue.
 
 ## Related articles
 
-**Counters**:  
-
+### Counters
 - [Counters](../document-extensions/counters/overview)
 - [Indexing with Counters](../document-extensions/counters/indexing)
 - [Counters With Other Features](../document-extensions/counters/counters-and-other-features#counters-and-other-features)
 
-**Attachments**:  
-
+### Attachments
 - [Attachments](../document-extensions/attachments/what-are-attachments)
 
-**Time Series**:  
-
+### Time Series
 - [Time Series](../document-extensions/timeseries/overview)
 - [Incremental Time Series](../document-extensions/timeseries/incremental-time-series/overview)
 
-**Revisions**:  
-
+### Revisions
 - [Document Revisions](../document-extensions/revisions/overview)
 - [Conflict Revisions](../document-extensions/revisions/client-api/operations/conflict-revisions-configuration)
 
