@@ -316,33 +316,23 @@ select Name
 ## Related Articles
 
 ### Installation
+- [Setup Wizard](../start/installation/setup-wizard)  
+- [System Requirements](../start/installation/system-requirements)  
+- [Running in a Docker Container](../../start/installation/running-in-docker-container)  
 
-- [Setup Wizard](../start/installation/setup-wizard)
-- [System Requirements](../start/installation/system-requirements)
-- [Running in a Docker Container](../../start/installation/running-in-docker-container)
-
-### Client API
-
-- [Session Introduction](../client-api/session/what-is-a-session-and-how-does-it-work)
-- [Opening a Session](../client-api/session/opening-a-session)
-- [Storing Entities](../client-api/session/storing-entities)
-- [Deleting Entities](../client-api/session/deleting-entities)
-- [Loading Entities](../client-api/session/loading-entities)
-- [Saving Changes](../client-api/session/saving-changes)
+### Session
+- [Introduction](../client-api/session/what-is-a-session-and-how-does-it-work)  
 
 ### Querying
-
-- [Basics](../indexes/querying/basics)
-- [What is RQL](../indexes/querying/what-is-rql)
+- [Basics](../indexes/querying/basics)  
+- [What is RQL](../indexes/querying/what-is-rql)  
 
 ### Indexes
-
-- [What are Indexes](../indexes/what-are-indexes)
-- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
-- [Indexing Basics](../indexes/indexing-basics)
-- [Map Indexes](../indexes/map-indexes)
+- [What are Indexes](../indexes/what-are-indexes)  
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)  
+- [Indexing Basics](../indexes/indexing-basics)  
+- [Map Indexes](../indexes/map-indexes)  
 
 ### Sharding
-
-- [Overview](../sharding/overview)
-- [Migration](../sharding/migration)
+- [Overview](../sharding/overview)  
+- [Migration](../sharding/migration)  

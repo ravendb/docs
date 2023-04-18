@@ -66,6 +66,12 @@ backup files made for a non-sharded database can be
 [imported](../sharding/import-and-export#importing-data-from-backup-files) 
 into a new or an existing sharded database.  
 
+{NOTE: }
+A backup created for a non-sharded database **cannot** be 
+[restored](../sharding/backup-and-restore/restore) as a sharded database.  
+The data can be migrated into a sharded database only by importing it.  
+{NOTE/}
+
 {PANEL/}
 
 {PANEL: External Replication}

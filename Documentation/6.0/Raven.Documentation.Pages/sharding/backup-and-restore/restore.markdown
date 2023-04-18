@@ -25,6 +25,8 @@
   backup files can also be 
   [imported](../../sharding/import-and-export#import) 
   into a database (sharded or non-sharded).  
+* A backup created for a non-sharded database **cannot** be restored 
+  as a sharded database.  
 
 * In this page:  
   * [Restore](../../sharding/backup-and-restore/restore#restore)  
