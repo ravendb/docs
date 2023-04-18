@@ -1,115 +1,152 @@
 # Querying an Index
 
-Indexes are used by RavenDB to satisfy queries.
+---
 
-## Query-Flow
+{NOTE: }
 
-Each query in RavenDB must be expressed by [RQL](../../indexes/querying/what-is-rql), our query language. Each query must match an index in order to return the results. The full query flow is as follows:
+* Prior to this article, it is recommended that you first read the [Query Overview](../../client-api/session/querying/how-to-query).  
+  For a basic indexes overview see [Indexes Overview](../../studio/database/indexes/indexes-overview).
 
-1. `from index | collection` 
-  - First step. When a query is issued, it locates the appropriate index. If our query specifies that index, the task is simple - use this index. Otherwise, a query analysis takes place and an auto-index is created.
+---
 
-2. `where` 
-  - When we have our index, we scan it for records that match the query predicate.
+* This article is a basic overview of how to __query a static index__.  
+  Indexing the content of your documents allows for __fast document retrieval__ when querying the index.
 
-3. `load`
-  - If a query contains a projection that requires any document loads to be processed, they are done just before projection is executed.
+* Examples in this article show querying an index.  
+  For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query).
 
-3. `select`
-  - From each record, the server extracts the appropriate fields. It always extracts the `id()` field ([stored](../../indexes/storing-data-in-index) by default).   
+* You can query an index with either of the following:
+  * [session.query](../../indexes/querying/query-index#session.query) (using API)
+  * [session.advanced.rawQuery](../../indexes/querying/query-index#session.advanced.rawquery) (using RQL)
+  * [Query from Studio](../../studio/database/queries/query-view) (using [RQL](../../client-api/session/querying/what-is-rql))
 
-  - If a query is not a projection query, then we load a document from storage. Otherwise, if we stored all requested fields in the index, we use them and continue. If not, the document is loaded from storage and the missing fields are fetched from it.
+{NOTE/}
 
-  - If a query indicates that [projection](../../indexes/querying/projections) should be used, then all results that were not filtered out are processed by that projection. Fields defined in the projection are extracted from the index (if stored).
+---
 
-4. `include` 
-  - If any [includes](../../client-api/how-to/handle-document-relationships#includes) are defined, then the results are being traversed to extract the IDs of potential documents to include with the results.
+{PANEL: session.query}
 
-5. Return results.
+* The following examples __query an index__ using the session's `query` method.  
 
-## Querying
+* Customize your query with these [API methods](../../client-api/session/querying/how-to-query#query-api).
 
-RavenDB Client supports querying for data. This functionality can be accessed using the session `query()` method, and is the most common and basic method for querying the database.
+{NOTE: }
 
-### Example I
-
-Let's execute our first query and return all the employees from the Northwind database. To do that, we need to have a [document store](../../client-api/what-is-a-document-store) and [opened session](../../client-api/session/opening-a-session) and specify a [collection](../../client-api/faq/what-is-a-collection) type that we want to query (in our case `Employees`) by passing `Employee` as a first parameter to the `query()` method:
+__Query index - no filtering__
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js basics_0_0@indexes\querying\queryIndex.js /}
+{CODE-TAB:nodejs:Query index_query_1_1@indexes\querying\queryIndex.js /}
+{CODE-TAB:nodejs:Query_overload index_query_1_2@indexes\querying\queryIndex.js /}
+{CODE-TAB:nodejs:Index the_index@indexes\querying\queryIndex.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Employees
+// Note:
+// Use slash `/` in the index name, replacing the underscore `_` from the index class definition
+
+from index "Employees/ByName"
+
+// All 'Employee' documents that contain DOCUMENT-fields 'FirstName' and\or 'LastName' will be returned
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-By specifying `Employee` class as a parameter, we are also defining a result type.
+{NOTE/}
 
-### Example II - Filtering
+{NOTE: }
 
-To filter the results, use the suitable method, like `whereEquals()`:
+__Query index - with filtering__
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js basics_0_1@indexes\querying\queryIndex.js /}
+{CODE-TAB:nodejs:Query index_query_2_1@indexes\querying\queryIndex.js /}
+{CODE-TAB:nodejs:Query_overload index_query_2_2@indexes\querying\queryIndex.js /}
+{CODE-TAB:nodejs:Index the_index@indexes\querying\queryIndex.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Employees
-where firstName = 'Robert'
+// Note:
+// Use slash `/` in the index name, replacing the underscore `_` from the index class definition
+
+from index "Employees/ByName"
+where lastName == "King"
+
+// Results will include all documents from 'Employees' collection whose 'lastName' equals to 'King'.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+* An exception will be thrown when filtering by fields that are Not defined in the index.
+
+{NOTE/}
+
+{NOTE: }
+
+__Query index - with paging__
+
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js basics_3_0@indexes\querying\queryIndex.js /}
+{CODE-TAB:nodejs:Query index_query_3_1@indexes\querying\queryIndex.js /}
+{CODE-TAB:nodejs:Query_overload index_query_3_2@indexes\querying\queryIndex.js /}
+{CODE-TAB:nodejs:Index the_index@indexes\querying\queryIndex.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Employees
-where id() == 'employees/1-A'
+// Note:
+// Use slash `/` in the index name, replacing the underscore `_` from the index class definition
+
+from index "Employees/ByName"
+where lastName == "King"
+limit 5, 10 // skip 5, take 10
+
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+* Read more about paging [here](../../indexes/querying/paging).
 
-You can read more about filtering [here](../../indexes/querying/filtering).
+{NOTE/}
 
-### Example III - Paging
+{PANEL/}
 
-Paging is very simple. The methods `take()` and `skip()` can be used:
+{PANEL: session.advanced.rawQuery}
 
-{CODE:nodejs basics_0_2@indexes\querying\queryIndex.js /}
+* Queries defined with [query](../../indexes/querying/query-index#session.query) are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql) when sent to the server.
 
-You can read more about paging [here](../../indexes/querying/paging).
+* The session also gives you a way to express the query directly in RQL using the `rawQuery` method.
 
-### Example IV - Querying a Specified Index
-
-In the above examples, we **did not** specify an index that we want to query. RavenDB will try to locate an appropriate index or create a new one. You can read more about creating indexes [here](../../indexes/creating-and-deploying).
-
-In order to specify an index, we need to pass the index name as a parameter to `query()` method.
+__Example__:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js basics_0_3@indexes\querying\queryIndex.js /}
+{CODE-TAB:nodejs:Query index_query_4_1@indexes\querying\queryIndex.js /}
+{CODE-TAB:nodejs:Index the_index@indexes\querying\queryIndex.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstName' 
-where FirstName = 'Robert'
+// Note:
+// Use slash `/` in the index name, replacing the underscore `_` from the index class definition
+
+from index "Employees/ByName"
+where LastName == "King"
+
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{INFO:Remember}
-If you are filtering by fields that are not present in an index, an exception will be thrown.
-{INFO/}
-
-### Remarks
-
-{INFO You can check the API reference for the `DocumentQuery` [here](../../client-api/session/querying/document-query/what-is-document-query). /}
+{PANEL/}
 
 ## Related Articles
 
 ### Indexes
 
 - [Indexing Basics](../../indexes/indexing-basics)
+- [Creating and Deploying Indexes](../../indexes/creating-and-deploying)
 
 ### Querying
 
 - [Filtering](../../indexes/querying/filtering)
 - [Paging](../../indexes/querying/paging)
+- [Projections](../../indexes/querying/projections)
+- [Sorting](../../indexes/querying/sorting)
 
 ### Client API
 
 - [What is a Document Store](../../client-api/what-is-a-document-store)
 - [Opening a Session](../../client-api/session/opening-a-session)
 - [How to Handle Document Relationships](../../client-api/how-to/handle-document-relationships)
+
+### Studio
+
+- [Query View](../../studio/database/queries/query-view)
+
+---
+
+### Code Walkthrough
+
+- [Scroll for Queries Section](https://demo.ravendb.net/)

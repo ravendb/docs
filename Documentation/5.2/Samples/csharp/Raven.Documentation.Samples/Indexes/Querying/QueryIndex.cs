@@ -14,7 +14,6 @@ namespace Raven.Documentation.Samples.Indexes.Querying
     public class Employees_ByName : AbstractIndexCreationTask<Employee, Employees_ByName.IndexEntry>
     {
         // The IndexEntry class defines the index-fields.
-        // The index-fields can be queried on to fetch matching documents. 
         public class IndexEntry
         {
             public string FirstName { get; set; }
@@ -23,7 +22,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
             
         public Employees_ByName()
         {
-            // The 'Map' function defines the content of the index-fields
+            // The 'Map' function defines the content of the INDEX-fields
             Map = employees => from employee in employees
                 select new IndexEntry
                 {
@@ -32,7 +31,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     FirstName = employee.FirstName,
                     LastName = employee.LastName
                     
-                    // * You can now query and filter Employee documents based on their first or last names.
+                    // * The index-fields can be queried on to fetch matching documents. 
+                    //   You can query and filter Employee documents based on their first or last names.
                     
                     // * Employee documents that do Not contain both 'FirstName' and 'LastName' fields
                     //   will Not be indexed.
@@ -53,8 +53,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 using (var session = store.OpenSession())
                 {
                     #region index_query_1_1
-                    // Open the 'Index' tab to view the index class definition
                     // Query the 'Employees' collection using the index - without filtering
+                    // (Open the 'Index' tab to view the index class definition)
                     
                     List<Employee> employees = session
                          // Pass the queried collection as the first generic parameter
@@ -70,7 +70,6 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region index_query_1_2
-                    // Open the 'Index' tab to view the index class definition
                     // Query the 'Employees' collection using the index - without filtering
 
                     List<Employee> employees = await asyncSession
@@ -87,7 +86,6 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 using (var session = store.OpenSession())
                 {
                     #region index_query_1_3
-                    // Open the 'Index' tab to view the index class definition
                     // Query the 'Employees' collection using the index - without filtering
 
                     List<Employee> employees = session
@@ -104,7 +102,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 using (var session = store.OpenSession())
                 {
                     #region index_query_2_1
-                    // Query the 'Employees' collection using the index - filter by index-field
+                    // Query the 'Employees' collection using the index - filter by INDEX-field
                     
                     List<Employee> employees = session
                          // Pass the IndexEntry class as the first generic parameter
@@ -124,7 +122,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region index_query_2_2
-                    // Query the 'Employees' collection using the index - filter by index-field
+                    // Query the 'Employees' collection using the index - filter by INDEX-field
 
                     List<Employee> employees = await asyncSession
                          // Pass the IndexEntry class as the first generic parameter
@@ -224,7 +222,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
                     List<Employee> employees = session
                          // Provide RQL to RawQuery
-                        .Advanced.RawQuery<Employee>("from index 'Employees/ByName' where LastName = 'King'")
+                        .Advanced.RawQuery<Employee>("from index 'Employees/ByName' where LastName == 'King'")
                          // Execute the query
                         .ToList();
 
@@ -239,7 +237,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
                     List<Employee> employees = await asyncSession
                          // Provide RQL to RawQuery
-                        .Advanced.AsyncRawQuery<Employee>("from index 'Employees/ByName' where LastName = 'King'")
+                        .Advanced.AsyncRawQuery<Employee>("from index 'Employees/ByName' where LastName == 'King'")
                          // Execute the query
                         .ToListAsync();
 

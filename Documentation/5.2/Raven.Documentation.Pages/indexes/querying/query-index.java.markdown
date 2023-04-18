@@ -1,4 +1,4 @@
-# Querying an Index
+# Querying: Basics
 
 Indexes are used by RavenDB to satisfy queries.
 

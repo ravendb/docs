@@ -4,8 +4,8 @@
 
 {NOTE: }
 
-* Prior to this article, it is recommended that you first read this [Query Overview](../../client-api/session/querying/how-to-query).  
-  For a basic indexes overview see this [Indexes Overview](../../studio/database/indexes/indexes-overview).
+* Prior to this article, it is recommended that you first read the [Query Overview](../../client-api/session/querying/how-to-query).  
+  For a basic indexes overview see [Indexes Overview](../../studio/database/indexes/indexes-overview).
 
 ---
 
@@ -45,7 +45,7 @@ __Query index - no filtering__
 // Note:
 // Use slash `/` in the index name, replacing the underscore `_` from the index class definition
 
-from index "Employees/ByFirstName"
+from index "Employees/ByName"
 
 // All 'Employee' documents that contain DOCUMENT-fields 'FirstName' and\or 'LastName' will be returned
 {CODE-TAB-BLOCK/}
@@ -68,7 +68,7 @@ __Query index - with filtering__
 from index "Employees/ByName"
 where LastName == "King"
 
-// Results will include all documents from 'Employees' collection whose 'FirstName' equals to 'Robert'.
+// Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -206,7 +206,7 @@ where LastName == "King"
 
 ### Studio
 
-- [Studio: Querying](../../studio/database/queries/query-view)
+- [Query View](../../studio/database/queries/query-view)
 
 ---
 

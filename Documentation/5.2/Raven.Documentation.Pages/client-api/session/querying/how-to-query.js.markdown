@@ -110,7 +110,7 @@ __Query a collection - no filtering__:
 {PANEL: session.query}
 
 * The simplest way to issue a query is by using the session's `query` method.    
-  Customize your query with these [API methods](../../../client-api/session/querying/how-to-query#query-method-api).
+  Customize your query with these [API methods](../../../client-api/session/querying/how-to-query#query-api).
 
 * The following examples show __dynamic queries__ that do not specify which index to use.  
   Please refer to [querying an index](../../../indexes/querying/query-index) for other examples.
