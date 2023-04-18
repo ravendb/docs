@@ -106,29 +106,6 @@ limit 5, 10 // skip 5, take 10
 
 {NOTE/}
 
-[//]: # ()
-[//]: # (---)
-[//]: # ()
-[//]: # (__Syntax__:)
-[//]: # ()
-[//]: # (* The syntax below is the relevant overload for querying an index.)
-[//]: # (* Method overload that does Not specify which index to use &#40;dynamic query&#41; is listed in [query overview]&#40;../../../todo..&#41;.)
-[//]: # ()
-[//]: # ({CODE syntax@Indexes\Querying\QueryIndex.cs /})
-[//]: # ()
-[//]: # (| Parameter | Type | Description |)
-[//]: # (| - | - | - |)
-[//]: # (| __T__ | object | <ul><li>The type of entity that represents the collection to query</li></ul> |)
-[//]: # (| __collectionName__ | string | <ul><li>Name of a collection to query</li><li>No need to provide this param when specifying `T`</li><li>Specify the collection name when querying a collection that is created<br> on the fly, i.e. when querying [Artifical Documents]&#40;../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-&#40;artificial-documents&#41;&#41;</li></ul> |)
-[//]: # ()
-[//]: # (| Return Value | |)
-[//]: # (| - | - |)
-[//]: # (| `IRavenQueryable` | Instance implementing `IRavenQueryable` interface exposing additional query methods and [extensions]&#40;../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq&#41; |)
-[//]: # ()
-[//]: # (// add link to conventions...)
-[//]: # (In this example, the index name is `Employees_ByFirstName` if written for LINQ or `Employees/ByFirstName` if written for RQL.)
-[//]: # ([naming convention]&#40;../../indexes/creating-and-deploying#naming-convention&#41;)
-
 {PANEL/}
 
 {PANEL: Session.Advanced.DocumentQuery}

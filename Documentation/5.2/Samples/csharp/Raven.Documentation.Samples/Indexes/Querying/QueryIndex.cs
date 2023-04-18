@@ -246,12 +246,5 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 }
             }
         }
-        
-        private interface IFoo
-        {
-            #region syntax
-            IRavenQueryable<T> Query<T>(string collectionName = null);
-            #endregion
-        }
     }
 }

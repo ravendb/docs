@@ -18,8 +18,8 @@
   Learn more [below](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
 
 * Queries that do Not specify which index to use are called __Dynamic Queries__.  
-  Examples in this article show dynamic queries.  
-  See [querying an index](../../../indexes/querying/query-index) for other examples.
+  This article displays examples of dynamic queries only.  
+  For examples showing how to query an index see [querying an index](../../../indexes/querying/query-index).
 
 ---
 
@@ -39,6 +39,7 @@
   * [session.query](../../../client-api/session/querying/how-to-query#session.query)  
   * [session.advanced.rawQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery)
   * [query API](../../../client-api/session/querying/how-to-query#query-api)  
+  * [Syntax](../../../client-api/session/querying/how-to-query#syntax)
 
 {NOTE/}
 
@@ -120,7 +121,8 @@ __Query a collection - no filtering__:
 __Query collection - no filtering__ 
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query query_1@ClientApi\Session\Querying\howToQuery.js /}
+{CODE-TAB:nodejs:Query query_1_0@ClientApi\Session\Querying\howToQuery.js /}
+{CODE-TAB:nodejs:Query_overload query_1_1@ClientApi\Session\Querying\howToQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 // This RQL is a Full Collection Query
 // No auto-index is created since no filtering is applied
@@ -136,7 +138,8 @@ from "employees"
 __Query collection - by ID__
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query query_2@ClientApi\Session\Querying\howToQuery.js /}
+{CODE-TAB:nodejs:Query query_2_0@ClientApi\Session\Querying\howToQuery.js /}
+{CODE-TAB:nodejs:Query_overload query_2_1@ClientApi\Session\Querying\howToQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 // This RQL queries the 'Employees' collection by ID
 // No auto-index is created when querying only by ID
@@ -152,7 +155,8 @@ from "employees" where id() == "employees/1-A"
 __Query collection - with filtering__ 
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query query_3@ClientApi\Session\Querying\howToQuery.js /}
+{CODE-TAB:nodejs:Query query_3_0@ClientApi\Session\Querying\howToQuery.js /}
+{CODE-TAB:nodejs:Query_overload query_3_1@ClientApi\Session\Querying\howToQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Query collection - filter by document field
 
@@ -170,7 +174,8 @@ from "employees" where firstName == "Robert"
 __Query collection - with paging__ 
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query query_4@ClientApi\Session\Querying\howToQuery.js /}
+{CODE-TAB:nodejs:Query query_4_0@ClientApi\Session\Querying\howToQuery.js /}
+{CODE-TAB:nodejs:Query_overload query_4_1@ClientApi\Session\Querying\howToQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Query collection - page results
 // No auto-index is created since no filtering is applied
@@ -180,29 +185,6 @@ from "products" limit 5, 10 // skip 5, take 10
 {CODE-TABS/}
 
 {NOTE/}
-
----
-
-__Syntax__:
-
-{CODE:nodejs syntax@ClientApi\Session\Querying\howToQuery.js /}
-
-| Parameter | Type | Description |
-| - | - | - |
-| __opts__ | `DocumentQueryOptions` object | Query options |
-
-| `DocumentQueryOptions` | | | 
-| - | - | - |
-|  __collection__ | string | <ul><li>Collection name queried</li></ul> |
-|  __indexName__ | string | <ul><li>Index name queried</li></ul> |
-|  __index__ | object | <ul><li>Index object queried</li><li>Note:<br>`indexName` & `index` are mutually exclusive with `collection`.<br>See examples in [querying an index](../../../indexes/querying/query-index).</li></ul> |
-
-| Return Value | |
-| - | - |
-| `object` | Instance implementing `IDocumentQuery` exposing the additional [query methods](../../../client-api/session/querying/how-to-query#query-method-api). |
-
-* Note:  
-  Use `await` when executing the query, e.g. when calling `.all`, `.single`, `.first`, `.count`, etc.  
 
 {PANEL/}
 
@@ -292,6 +274,30 @@ Available methods for the session's [query](../../../client-api/session/querying
 - whereStartsWith
 - withinRadiusOf
 
+{PANEL/}
+
+{PANEL: Syntax}
+
+{CODE:nodejs syntax@ClientApi\Session\Querying\howToQuery.js /}
+
+| Parameter | Type | Description |
+| - | - | - |
+| __documentType__ | object | The type of entity that represents the collection queried |
+| __index__ | object | The index class |
+| __opts__ | `DocumentQueryOptions` object | Query options |
+
+| `DocumentQueryOptions` | | |
+| - | - | - |
+|  __collection__ | string | <ul><li>Collection name queried</li></ul> |
+|  __indexName__ | string | <ul><li>Index name queried</li></ul> |
+|  __index__ | object | <ul><li>Index object queried</li><li>Note:<br>`indexName` & `index` are mutually exclusive with `collection`.<br>See examples in [querying an index](../../../indexes/querying/query-index).</li></ul> |
+
+| Return Value | |
+| - | - |
+| `object` | Instance implementing `IDocumentQuery` exposing the additional [query methods](../../../client-api/session/querying/how-to-query#query-method-api). |
+
+* Note:  
+  Use `await` when executing the query, e.g. when calling `.all`, `.single`, `.first`, `.count`, etc.  
 {PANEL/}
 
 ## Related Articles

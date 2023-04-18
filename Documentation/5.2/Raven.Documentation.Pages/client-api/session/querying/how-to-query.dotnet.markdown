@@ -20,8 +20,8 @@
   Learn more [below](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
 
 * Queries that do Not specify which index to use are called __Dynamic Queries__.  
-  Examples in this article show dynamic queries.  
-  See [querying an index](../../../indexes/querying/query-index) for other examples.
+  This article displays examples of dynamic queries only.  
+  For examples showing how to query an index see [querying an index](../../../indexes/querying/query-index).
 
 ---
 
@@ -42,6 +42,7 @@
   * [Session.Advanced.DocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery)  
   * [Session.Advanced.RawQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery)
   * [Custom methods and extensions for LINQ](../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq)  
+  * [Syntax](../../../client-api/session/querying/how-to-query#syntax)  
 
 {NOTE/}
 
@@ -198,24 +199,6 @@ from "Products" limit 5, 10 // skip 5, take 10
 
 {NOTE/}
 
----
-
-__Syntax__:
-
-* The syntax below is the relevant overload for making a dynamic query that does Not specify which index to use.  
-* Method overloads that specify which index to use are listed in [querying an index](../../../indexes/querying/query-index).  
-
-{CODE syntax@ClientApi\Session\Querying\HowToQuery.cs /}
-
-| Parameter | Type | Description |
-| - | - | - |
-| __T__ | object | <ul><li>The type of entity that represents the collection to query</li></ul> |
-| __collectionName__ | string | <ul><li>Name of a collection to query</li><li>No need to provide this param when specifying `T`</li><li>Specify the collection name when querying a collection that is created<br> on the fly, i.e. when querying [Artifical Documents](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))</li></ul> |
-
-| Return Value | |
-| - | - |
-| `IRavenQueryable` | Instance implementing `IRavenQueryable` interface exposing additional query methods and [extensions](../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq) |
-
 {PANEL/}
 
 {PANEL: Session.Advanced.DocumentQuery}
@@ -294,6 +277,24 @@ Available custom methods and extensions for the session's [Query](../../../clien
 - ToListAsync
 - ToArrayAsync
 
+{PANEL/}
+
+{PANEL: Syntax}
+
+{CODE syntax@ClientApi\Session\Querying\HowToQuery.cs /}
+
+| Parameter | Type | Description |
+| - | - | - |
+| __T__ | object | <ul><li>The type of entity that represents the collection queried</li></ul> |
+| __TIndexCreator__ | string | <ul><li>The index class type</li></ul> |
+| __collectionName__ | string | <ul><li>Name of a collection to query</li><li>No need to provide this param when specifying `T`</li><li>Specify the collection name when querying a collection that is created<br> on the fly, i.e. when querying [Artifical Documents](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))</li><li>Mutually exclusive with _indexName_</li></ul> |
+| __indexName__ | string | <ul><li>Name of index to query</li><li>Mutually exclusive with _collectionName_</li></ul> |
+| __isMapReduce__ | string | <ul><li>Whether querying a map-reduce index</li></ul> |
+
+| Return Value | |
+| - | - |
+| `IRavenQueryable`<br>`IDocumentQuery`<br>`IRawDocumentQuery` | Instances exposing additional query methods and [extensions](../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq) |
+ 
 {PANEL/}
 
 ## Related Articles
