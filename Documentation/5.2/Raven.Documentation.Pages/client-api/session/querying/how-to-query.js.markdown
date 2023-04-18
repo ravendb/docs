@@ -294,7 +294,7 @@ Available methods for the session's [query](../../../client-api/session/querying
 
 | Return Value | |
 | - | - |
-| `object` | Instance implementing `IDocumentQuery` exposing the additional [query methods](../../../client-api/session/querying/how-to-query#query-method-api). |
+| `object` | Instance implementing `IDocumentQuery` exposing the additional [query methods](../../../client-api/session/querying/how-to-query#query-api). |
 
 * Note:  
   Use `await` when executing the query, e.g. when calling `.all`, `.single`, `.first`, `.count`, etc.  
