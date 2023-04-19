@@ -298,7 +298,7 @@ When no index is specified in the query (like in the query below), RavenDB will 
 
 The other option is to write the index yourself and deploy it to the server. Those indexes are called [Static Indexes](../indexes/creating-and-deploying#static-indexes).
 
-Behind the scenes, queries are translated to the Raven Query Language (RQL) syntax. Read more about RQL [here](../indexes/querying/what-is-rql).
+Behind the scenes, queries are translated to the Raven Query Language (RQL) syntax. Read more about RQL [here](../client-api/session/querying/what-is-rql).  
 
 {CODE-TABS}
 {CODE-TAB:csharp:C# client_4@Start/GettingStarted.cs /}
@@ -318,14 +318,14 @@ select Name
 ### Installation
 - [Setup Wizard](../start/installation/setup-wizard)  
 - [System Requirements](../start/installation/system-requirements)  
-- [Running in a Docker Container](../../start/installation/running-in-docker-container)  
+- [Running in a Docker Container](../start/installation/running-in-docker-container)  
 
 ### Session
 - [Introduction](../client-api/session/what-is-a-session-and-how-does-it-work)  
 
 ### Querying
 - [Basics](../indexes/querying/basics)  
-- [What is RQL](../indexes/querying/what-is-rql)  
+- [What is RQL](../client-api/session/querying/what-is-rql)  
 
 ### Indexes
 - [What are Indexes](../indexes/what-are-indexes)  

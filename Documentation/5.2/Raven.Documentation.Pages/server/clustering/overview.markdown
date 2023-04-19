@@ -64,15 +64,15 @@ can use 1-3 cores. If there are 3 nodes, each will use 1 core (since a server is
 assigned with at least 1 core).  
 * The number of assigned cores is divided evenly between all the nodes of a cluster.  
 * The maximum number of cores a node can use can be limited 
-  [using Studio](../../studio/server/cluster/cluster-view#reassign-cores).  
+  [using Studio](../../studio/cluster/cluster-view#reassign-cores).  
 {NOTE/}
 
 ## Related Articles
 
 ### Cluster in the Studio
-- [Cluster View](../../studio/server/cluster/cluster-view)
-- [Adding Node to Cluster](../../studio/server/cluster/add-node-to-cluster)  
+- [Cluster View](../../studio/cluster/cluster-view)
+- [Adding Node to Cluster](../../studio/cluster/cluster-view#cluster-view-operations)  
 - [Cluster Observer Log](../../studio/server/debug/advanced/cluster-observer)  
 - [Database Group View](../../studio/database/settings/manage-database-group)  
 - [Ongoing Work Tasks](../../studio/database/tasks/ongoing-tasks/general-info)  
-- [Cluster-Operations -vs- DB-Operations](../../studio/server/cluster/cluster-view#cluster-wide-operation--vs--database-operations)  
+- [Cluster-Operations -vs- DB-Operations](../../studio/cluster/cluster-view#cluster-wide-operation--vs--database-operations)  

@@ -10,15 +10,15 @@
   own node machine storage) and/or **remotely** (all shards sending 
   backup files to a common remote destination like an AWS S3 bucket).  
 
-* Both [Full](../../backup-overview#full-backup) 
-  and [Incremental](../../backup-overview#incremental-backup) 
+* Both [Full](../../server/ongoing-tasks/backup-overview#full-backup) 
+  and [Incremental](../../server/ongoing-tasks/backup-overview#incremental-backup) 
   backups can be created for a sharded database.  
 
-* A [logical](../../backup-overview#logical-backup) 
+* A [logical](../../server/ongoing-tasks/backup-overview#logical-backup) 
   backup **can** be created for a sharded database and restored into either 
   a sharded or a non-sharded database.  
 
-* A [snapshot](../../backup-overview#snapshot) 
+* A [snapshot](../../server/ongoing-tasks/backup-overview#snapshot) 
   backup **cannot** be created for a sharded database.  
 
 * A manual [one-time](../../studio/database/tasks/backup-task#manually-creating-one-time-backups) 

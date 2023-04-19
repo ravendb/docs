@@ -246,7 +246,6 @@ Before proceeding to the examples, we would like to point out that most of the a
 {CODE-TAB:csharp:C# client_1@Start/GettingStarted.cs /}
 {CODE-TAB:java:Java client_1@Start\GettingStarted.java /}
 {CODE-TAB:nodejs:Node.js client_1@start\gettingStarted.js /}
-{CODE-TAB:python:Python client_1@start\getting_started.py /}
 {CODE-TABS/}
 
 {INFO: Singleton}
@@ -276,7 +275,6 @@ RavenDB is a Document Database. All stored objects are called `documents`. Each 
 {CODE-TAB:csharp:C# client_2@Start/GettingStarted.cs /}
 {CODE-TAB:java:Java client_2@Start\GettingStarted.java /}
 {CODE-TAB:nodejs:Node.js client_2@start\gettingStarted.js /}
-{CODE-TAB:python:Python client_2@start\getting_started.py /}
 {CODE-TABS/}
 
 ### Example II - Loading
@@ -289,7 +287,6 @@ Besides that, the session implements the `Unit of Work` pattern, meaning that al
 {CODE-TAB:csharp:C# client_3@Start/GettingStarted.cs /}
 {CODE-TAB:java:Java client_3@Start\GettingStarted.java /}
 {CODE-TAB:nodejs:Node.js client_3@start\gettingStarted.js /}
-{CODE-TAB:python:Python client_3@start\getting_started.py /}
 {CODE-TABS/}
 
 ### Example III - Querying
@@ -300,40 +297,18 @@ When no index is specified in the query (like in the query below), RavenDB will 
 
 The other option is to write the index yourself and deploy it to the server. Those indexes are called [Static Indexes](../indexes/creating-and-deploying#static-indexes).
 
-Behind the scenes, queries are translated to the Raven Query Language (RQL) syntax. Read more about RQL [here](../indexes/querying/what-is-rql).
+Behind the scenes, queries are translated to the Raven Query Language (RQL) syntax. Read more about RQL [here](../client-api/session/querying/what-is-rql).  
 
 {CODE-TABS}
 {CODE-TAB:csharp:C# client_4@Start/GettingStarted.cs /}
 {CODE-TAB:java:Java client_4@Start\GettingStarted.java /}
 {CODE-TAB:nodejs:Node.js client_4@start\gettingStarted.js /}
-{CODE-TAB:python:Python client_4@start\getting_started.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Products
 where UnitsInStock > 5
 select Name
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-**Session** - The following articles can extend your knowledge about the Session:
-
-- [What is a Session and how does it work?](../client-api/session/what-is-a-session-and-how-does-it-work)
-- [Opening a Session](../client-api/session/opening-a-session)
-- [Storing Entities](../client-api/session/storing-entities)
-- [Deleting Entities](../client-api/session/deleting-entities)
-- [Loading Entities](../client-api/session/loading-entities)
-- [Saving Changes](../client-api/session/saving-changes)
-
-**Querying** - The introductory articles describing Querying can be found here:
-
-- [Basics](../indexes/querying/basics)
-- [What is RQL?](../indexes/querying/what-is-rql)
-
-**Indexes** - If you wish to understand Indexes better, we recommend reading the following articles:
-
-- [Indexes: What are indexes?](../indexes/what-are-indexes)
-- [Indexes: Creating and deploying indexes](../indexes/creating-and-deploying) (RavenDB's Auto-Indexing and how to set up static indexes)  
-- [Indexes: Indexing basics](../indexes/indexing-basics)
-- [Indexes: Map indexes](../indexes/map-indexes)
 
 {PANEL/}
 
@@ -357,7 +332,7 @@ select Name
 ### Querying
 
 - [Basics](../indexes/querying/basics)
-- [What is RQL](../indexes/querying/what-is-rql)
+- [What is RQL](../client-api/session/querying/what-is-rql)
 
 ### Indexes
 

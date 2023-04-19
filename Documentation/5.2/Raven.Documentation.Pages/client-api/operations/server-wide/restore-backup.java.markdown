@@ -24,19 +24,19 @@
 
 ## Related Articles
 
-**Studio Articles**:   
-[Create a Database : From Backup](../../../studio/server/databases/create-new-database/from-backup)      
-[Create a Database : General Flow](../../../studio/server/databases/create-new-database/general-flow)           
-[Create a Database : Encrypted](../../../studio/server/databases/create-new-database/encrypted)        
-[The Backup Task](../../../studio/database/tasks/backup-task)      
+### Studio Articles
+- [Create DB: From Backup](../../../studio/database/create-new-database/from-backup)  
+- [Create DB: General Flow](../../../studio/database/create-new-database/general-flow)  
+- [Create DB: Encrypted](../../../studio/database/create-new-database/encrypted)  
+- [The Backup Task](../../../studio/database/tasks/backup-task)  
 
-**Client Articles**:  
-[Restore](../../../client-api/operations/maintenance/backup/restore)   
-[What Is Smuggler](../../../client-api/smuggler/what-is-smuggler)   
-[Backup](../../../client-api/operations/maintenance/backup/backup)
+### Client Articles
+- [Restore](../../../client-api/operations/maintenance/backup/restore)  
+- [What Is Smuggler](../../../client-api/smuggler/what-is-smuggler)  
+- [Backup](../../../client-api/operations/maintenance/backup/backup)  
 
-**Server Articles**:  
-[Backup Overview](../../../server/ongoing-tasks/backup-overview)
+### Server Articles
+- [Backup Overview](../../../server/ongoing-tasks/backup-overview)  
 
-**Migration Articles**:  
-[Migration](../../../migration/server/data-migration) 
+### Migration Articles
+- [Migration](../../../migration/server/data-migration)  
