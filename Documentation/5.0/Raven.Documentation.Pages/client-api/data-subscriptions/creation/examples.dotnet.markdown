@@ -4,16 +4,15 @@
 
 {NOTE: }
 
-In this page:  
-
-* [Create subscription on all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription-on-all-documents-in-a-collection)  
-* [Create subscription with filtering](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering)  
-* [Create subscription with filtering and projection](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering-and-projection)  
-* [Create subscription with load document in filter projection](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-load-document-in-filter-projection)  
-* [Create subscription with include statement](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-include-statement)  
-  * [Including counters](../../../client-api/data-subscriptions/creation/examples#including-counters)  
-* [Create revisions enabled subscription](../../../client-api/data-subscriptions/creation/examples#create-revisions-enabled-subscription)  
-* [Update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription)  
+* In this page:  
+   * [Create subscription on all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription-on-all-documents-in-a-collection)  
+   * [Create subscription with filtering](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering)  
+   * [Create subscription with filtering and projection](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering-and-projection)  
+   * [Create subscription with load document in filter projection](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-load-document-in-filter-projection)  
+   * [Create subscription with include statement](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-include-statement)  
+      * [Including counters](../../../client-api/data-subscriptions/creation/examples#including-counters)  
+   * [Create revisions enabled subscription](../../../client-api/data-subscriptions/creation/examples#create-revisions-enabled-subscription)  
+   * [Update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription)  
 {NOTE/}
 
 ---

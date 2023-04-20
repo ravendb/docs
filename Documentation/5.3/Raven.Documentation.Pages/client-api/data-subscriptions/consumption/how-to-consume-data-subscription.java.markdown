@@ -8,11 +8,10 @@ Subscriptions are consumed by processing batches of documents received from the 
 A `SubscriptionWorker` object manages the documents processing and the communication between the client and the server according to a set of configurations received upon it's creation. 
 We've introduced several ways to create and configure a SubscriptionWorker, starting from just giving a subscription name, and ending with a detailed configuration object - `SubscriptionWorkerOptions`.
 
-In this page:
-
-[SubscriptionWorker lifecycle](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#subscriptionworker-lifecycle)  
-[Error handling](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#error-handling)  
-[Workers interplay](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#workers-interplay)
+* In this page:
+   * [SubscriptionWorker lifecycle](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#subscriptionworker-lifecycle)  
+   * [Error handling](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#error-handling)  
+   * [Workers interplay](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#workers-interplay)
 
 {NOTE/}
 
