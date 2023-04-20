@@ -10,7 +10,7 @@ using Raven.Client.ServerWide.Operations;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
 {
-    class Program
+    class Program2
     {
         static void Main(string[] args)
         {

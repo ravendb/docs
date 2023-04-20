@@ -11,7 +11,7 @@ using Raven.Client.ServerWide.Operations;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
 {
-    public class User
+    public class User1
     {
         public string Name { get; set; }
     }
