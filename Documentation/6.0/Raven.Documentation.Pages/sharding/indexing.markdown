@@ -11,7 +11,7 @@
 
 * In this page:  
   * [Indexing](../sharding/indexing#indexing)  
-  * [Map-Reduce Indexes in a Sharded Database](../sharding/indexing#map-reduce-indexes-in-a-sharded-database)  
+  * [Map-Reduce Indexes on a Sharded Database](../sharding/indexing#map-reduce-indexes-on-a-sharded-database)  
   * [Unsupported Indexing Features](../sharding/indexing#unsupported-indexing-features)  
 
 {NOTE/}
@@ -24,7 +24,7 @@ Indexing each database shard is basically similar to indexing a non-sharded data
 As each shard holds and manages a unique dataset, indexing is performed 
 per-shard and indexes are stored only on the shard that created and uses them.  
 
-## Map-Reduce Indexes in a Sharded Database
+## Map-Reduce Indexes on a Sharded Database
 
 Map-reduce indexes on a sharded database are used to reduce data both over each 
 shard during indexation, and on the orchestrator machine each time a query uses them.  

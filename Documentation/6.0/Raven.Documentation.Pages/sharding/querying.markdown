@@ -60,7 +60,7 @@ steps when we send a query to a sharded database:
 
 {PANEL: Querying Map-Reduce Indexes}
 
-* [Map-reduce indexes on a sharded database](../sharding/indexing#map-reduce-indexes-in-a-sharded-database) 
+* [Map-reduce indexes on a sharded database](../sharding/indexing#map-reduce-indexes-on-a-sharded-database) 
   are used to reduce data both over each shard during indexation, and on 
   the orchestrator machine each time a query uses them.  
 * Read more below about querying map-reduce indexes in a sharded database.  
