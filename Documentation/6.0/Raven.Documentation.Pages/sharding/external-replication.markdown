@@ -115,13 +115,13 @@ The image below depicts a non-sharded database replicating data to a 5-shard dat
 
 ## Related articles
 
-**External Replication**  
+### External Replication
 [Overview](../server/ongoing-tasks/external-replication)  
 [Studio Admin](../studio/database/tasks/ongoing-tasks/external-replication-task#definition)  
 [API Admin](../server/ongoing-tasks/external-replication#code-sample)
 [Step-by-Step Guide](../studio/database/tasks/ongoing-tasks/external-replication-task#step-by-step-guide)  
 
-**Sharding**  
+### Sharding
 [Overview](../sharding/overview#shard-replication)  
 [Studio Administration](../sharding/administration/studio-admin) 
 [API Administration](../sharding/administration/api-admin)  

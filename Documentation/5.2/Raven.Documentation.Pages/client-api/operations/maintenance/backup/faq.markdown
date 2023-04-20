@@ -46,7 +46,7 @@ save the entire [database record](../../../../studio/database/settings/database-
 * Ongoing tasks (Ongoing backup, ETL, Subscription, and Replication tasks)  
 
 **Cluster configuration and nodes setup** can be [re-created](../../../../start/getting-started#installation--setup) 
-and databases can be [restored from backup](../../../../studio/server/databases/create-new-database/from-backup).  
+and databases can be [restored from backup](../../../../studio/database/create-new-database/from-backup).  
 
 **To prevent downtime while rebuilding**, you can [replicate your database](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview) 
 so that there is a live version available to distribute the workload and act as a failover.  

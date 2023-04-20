@@ -66,6 +66,12 @@ backup files made for a non-sharded database can be
 [imported](../sharding/import-and-export#importing-data-from-backup-files) 
 into a new or an existing sharded database.  
 
+{NOTE: }
+A backup created for a non-sharded database **cannot** be 
+[restored](../sharding/backup-and-restore/restore) as a sharded database.  
+The data can be migrated into a sharded database only by importing it.  
+{NOTE/}
+
 {PANEL/}
 
 {PANEL: External Replication}
@@ -95,12 +101,15 @@ indexes and compare exchange entries. Find the full list [here](../server/ongoin
 
 ## Related articles
 
-[Create Database](../sharding/administration/studio-admin#creating-a-sharded-database)  
-[Smuggler](../client-api/smuggler/what-is-smuggler)  
-[Export](../sharding/import-and-export#export)  
-[Import](../sharding/import-and-export#import)  
-[Backup](../sharding/backup-and-restore/backup)  
-[Restore](../sharding/backup-and-restore/restore)  
-[Restore From File](../sharding/import-and-export#importing-data-from-a--file)  
-[Restore From Backup](../sharding/import-and-export#importing-data-from-backup-files)  
-[External Replication](../sharding/external-replication)  
+### Sharding
+- [Create Database](../sharding/administration/studio-admin#creating-a-sharded-database)  
+- [Export](../sharding/import-and-export#export)  
+- [Import](../sharding/import-and-export#import)  
+- [Backup](../sharding/backup-and-restore/backup)  
+- [Restore](../sharding/backup-and-restore/restore)  
+- [Restore From File](../sharding/import-and-export#importing-data-from-a--file)  
+- [Restore From Backup](../sharding/import-and-export#importing-data-from-backup-files)  
+- [External Replication](../sharding/external-replication)  
+
+### Client API
+- [Smuggler](../client-api/smuggler/what-is-smuggler)  

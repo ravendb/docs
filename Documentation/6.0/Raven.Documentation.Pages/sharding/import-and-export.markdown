@@ -107,18 +107,17 @@ Import the full backup first, and then the incremental backups that complement i
 
 ## Related articles
 
-**Client API**  
-[Create Database](../client-api/operations/server-wide/create-database)  
-[Smuggler](../client-api/smuggler/what-is-smuggler)  
-[Restore Operation](../client-api/operations/maintenance/backup/restore#restoring-a-database:-configuration-and-execution)  
-[Server-Wide Backup](../client-api/operations/maintenance/backup/backup#server-wide-backup)  
+### Client API
+- [Smuggler](../client-api/smuggler/what-is-smuggler)  
 
-**Server**  
-[Backup Overview](../server/ongoing-tasks/backup-overview)  
-[External Replication](../server/ongoing-tasks/external-replication)  
+### Server
+- [Backup Overview](../server/ongoing-tasks/backup-overview)  
+- [Incremental backup](../server/ongoing-tasks/backup-overview#backup-scope:-full-or-incremental)
+- [Responsible Node](../server/clustering/distribution/highly-available-tasks#responsible-node)  
 
-**Studio**  
-[Export Data](../studio/database/tasks/export-database)  
-[Import Data](../studio/database/tasks/import-data/import-data-file)  
-[Backup Task](../studio/database/tasks/backup-task)
-[One-Time Backup](../studio/database/tasks/backup-task#manually-creating-one-time-backups)  
+### Studio
+- [Export Data](../studio/database/tasks/export-database)  
+- [Import Data](../studio/database/tasks/import-data/import-data-file)  
+
+### Sharding
+- [Creating a Sharded DB](../sharding/administration/studio-admin#creating-a-sharded-database)  

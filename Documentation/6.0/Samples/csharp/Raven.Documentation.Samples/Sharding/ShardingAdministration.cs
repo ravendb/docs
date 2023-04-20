@@ -11,7 +11,7 @@ using Raven.Client.ServerWide.Operations;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
 {
-    public class User
+    public class User1
     {
         public string Name { get; set; }
     }
@@ -358,7 +358,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
             public class AddDatabaseNodeOperation
             {
                 #region AddDatabaseNodeOperation_Definition
-                public AddDatabaseNodeOperation(string databaseName, string node = null)
+                public AddDatabaseNodeOperation(string databaseName, int shardNumber, string node = null)
                 #endregion
                 {
                 }
@@ -434,7 +434,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
             public class PromoteDatabaseNodeOperation
             {
                 #region PromoteDatabaseNodeOperation_Definition
-                public PromoteDatabaseNodeOperation(string databaseName, int shard, string node)
+                public PromoteDatabaseNodeOperation(string databaseName, int shardNumber, string node)
                 #endregion
                 {
                 }

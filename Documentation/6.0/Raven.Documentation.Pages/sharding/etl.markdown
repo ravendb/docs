@@ -136,14 +136,14 @@ and relevant code samples [here](../server/ongoing-tasks/etl/olap#athena-example
 
 ## Related articles
 
-**Server**  
-[Responsible Node](../server/clustering/distribution/highly-available-tasks#responsible-node)  
+### ETL
+- [ETL Basics](../server/ongoing-tasks/etl/basics)  
+- [OLAP ETL: Studio](../studio/database/tasks/ongoing-tasks/olap-etl-task#transform-scripts)  
+- [OLAP ETL: Samples](../server/ongoing-tasks/etl/olap#athena-examples)  
+- [Queue ETL](../server/ongoing-tasks/etl/queue-etl/overview)  
 
-**Sharding**  
-[Shard Replication](../sharding/overview#shard-replication) 
+### Sharding
+- [Shard Replication](../sharding/overview#shard-replication)  
 
-**ETL**  
-[ETL Basics](../server/ongoing-tasks/etl/basics)  
-[OLAP ETL: Studio](../studio/database/tasks/ongoing-tasks/olap-etl-task#transform-scripts)  
-[OLAP ETL: Samples](../server/ongoing-tasks/etl/olap#athena-examples)  
-[Queue ETL](../server/ongoing-tasks/etl/queue-etl/overview)  
+### Server
+- [Responsible Node](../server/clustering/distribution/highly-available-tasks#responsible-node)  

@@ -120,6 +120,7 @@ orchestrators nodes that host no shards.
     | Parameter | Type | Description |
     |:-------------:|:-------------:|-------------|
     | `databaseName` | string | Database Name |
+    | `shardNumber` | string | Shard Number |
     | `node ` | string | The node that the replica will be set on (optional). <br> If not provided, RavenDB will select an available node. |
 
 * Return value: `DatabasePutResult`  
@@ -143,8 +144,8 @@ orchestrators nodes that host no shards.
     | Parameter | Type | Description |
     |:-------------:|:-------------:|-------------|
     | `databaseName` | string | Database Name |
-    | `shard ` | int | Shard number |
-    | `node ` | string | Node tag |
+    | `shardNumber` | int | Shard number |
+    | `node` | string | Node tag |
 
 * Return value: `DatabasePutResult`  
   {CODE DatabasePutResult@Sharding\ShardingAdministration.cs /}
@@ -177,18 +178,7 @@ orchestrators nodes that host no shards.
 
 ## Related articles
 
-**Client API**  
-[Create Database](../../client-api/operations/server-wide/create-database)  
-[Smuggler](../../client-api/smuggler/what-is-smuggler)  
-[Server-Wide Backup](../../client-api/operations/maintenance/backup/backup#server-wide-backup)  
+### Sharding
 
-**Server**  
-[Backup Overview](../../server/ongoing-tasks/backup-overview)  
-[External Replication](../../server/ongoing-tasks/external-replication)  
-[Responsible Node](../../server/clustering/distribution/highly-available-tasks#responsible-node)  
-
-**Studio**  
-[Export Data](../../studio/database/tasks/export-database)  
-[Import Data](../../studio/database/tasks/import-data/import-data-file)  
-[One-Time Backup](../../studio/database/tasks/backup-task#manually-creating-one-time-backups)  
-
+- [Sharding Overview](../../sharding/overview)  
+- [Sharding Studio API](../../sharding/administration/studio-admin)  

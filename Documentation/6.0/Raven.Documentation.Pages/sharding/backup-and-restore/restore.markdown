@@ -25,6 +25,8 @@
   backup files can also be 
   [imported](../../sharding/import-and-export#import) 
   into a database (sharded or non-sharded).  
+* A backup created for a non-sharded database **cannot** be restored 
+  as a sharded database.  
 
 * In this page:  
   * [Restore](../../sharding/backup-and-restore/restore#restore)  
@@ -156,17 +158,20 @@ backup files stored locally and remotely.
 
 ## Related articles
 
-**Client API**  
-[Create Database](../../client-api/operations/server-wide/create-database)  
-[Smuggler Import](../../client-api/smuggler/what-is-smuggler#import)  
-[RestoreBackupOperation](../../client-api/operations/maintenance/backup/restore#restoring-a-database:-configuration-and-execution)  
+### Client API
+- [Smuggler](../../client-api/smuggler/what-is-smuggler)  
+- [Restore](../../client-api/operations/maintenance/backup/restore)  
+- [Backup & Restore FAQ](../../client-api/operations/maintenance/backup/faq)  
 
-**Server**  
-[External Replication](../../server/ongoing-tasks/external-replication)  
-[Logical Backup](../../server/ongoing-tasks/backup-overview#logical-backup)  
-[Snapshot Backup](../../server/ongoing-tasks/backup-overview#snapshot)  
+### Server
+- [Backup Overview](../../server/ongoing-tasks/backup-overview)  
+- [External Replication](../../server/ongoing-tasks/external-replication)  
+- [Responsible Node](../../server/clustering/distribution/highly-available-tasks#responsible-node)  
 
-**Studio**  
-[Export Data](../../studio/database/tasks/export-database)  
-[Import Data](../../studio/database/tasks/import-data/import-data-file)  
+### Sharding
+- [Import Data](../../sharding/import-and-export#import)  
+- [Export Data](../../sharding/import-and-export#export)  
+- [Creating a Sharded DB](../../sharding/administration/studio-admin#creating-a-sharded-database)  
 
+### Studio
+- [One-Time Backup](../../studio/database/tasks/backup-task#manually-creating-one-time-backups)  

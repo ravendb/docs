@@ -244,19 +244,13 @@ Eventually, the bucket/s reside on their new shard.
 
 ## Related articles
 
-**Sharding**  
-[Shards](../sharding/overview#shards)  
-[Buckets](../sharding/overview#buckets)  
-[Replicas](../sharding/overview#shard-replication)  
+### Sharding
+- [Shards](../sharding/overview#shards)  
+- [Buckets](../sharding/overview#buckets)  
+- [Replicas](../sharding/overview#shard-replication)  
 
-**Sharding & Other Features**  
-[External Replication](../sharding/external-replication)  
-[ETL Tasks](../sharding/etl)  
-[Data Subscription](../sharding/subscriptions)  
-[Querying](../sharding/querying)  
+### Server
+- [Change Vector](../server/clustering/replication/change-vector)  
 
-**Server**  
-[Change Vector](../server/clustering/replication/change-vector)  
-
-**Studio**  
-[Database Record](../studio/database/settings/database-record)  
+### Studio
+- [Database Record](../studio/database/settings/database-record)  

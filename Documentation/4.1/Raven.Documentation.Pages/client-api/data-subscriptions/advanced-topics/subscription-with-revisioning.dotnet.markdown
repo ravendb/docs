@@ -10,10 +10,10 @@ While regular subscriptions process single documents, subscription on documents 
 Such functionality allows keeping track of each change that was performed on a document, and even to compare two subsequent versions of a document.  
 Both document revisions are accessible in the filtering and the projection process.
 
-In this page:  
-[Revisions processing](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-order)  
-[Simple declaration and usage](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#simple-declaration-and-usage)   
-[Revisions processing and projection](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-and-projection)  
+* In this page:  
+   * [Revisions processing](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-order)  
+   * [Simple declaration and usage](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#simple-declaration-and-usage)   
+   * [Revisions processing and projection](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-and-projection)  
 
 {NOTE/}
 
@@ -32,9 +32,9 @@ Let us assume a user document that looks like:
     Age:'21'  
 }`  
 
-We update the User document twice, in separate operations:  
-* We update the 'Age' field to the value of 22  
-* We update the 'Age' field to the value of 23  
+* We update the User document twice, in separate operations:  
+   * We update the 'Age' field to the value of 22  
+   * We update the 'Age' field to the value of 23  
 
 Data subscription's revision processing mechanism will receive pairs of revision in the following order:  
 
