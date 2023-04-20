@@ -17,10 +17,15 @@
         "DiscussionId": "e9a86f6b-b231-4914-85fb-e1b0a62dc579",
         "Mappings": [
             {
+                "Version": 5.2,
+                "Key": "indexes/querying/query-index"
+            },
+            {
                 "Version": 1.0,
                 "Key": "client-api/querying/using-linq-to-query-ravendb"
             }
-        ]
+        ],
+        "LastSupportedVersion": "5.1"
     },
     {
         "Path": "filtering.markdown",

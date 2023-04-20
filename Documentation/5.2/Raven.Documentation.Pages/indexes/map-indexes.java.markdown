@@ -224,7 +224,7 @@ Read the article dedicated to `Multi-Map` indexes [here](../indexes/indexing-pol
 - [Creating and Deploying Indexes](../indexes/creating-and-deploying)
 
 ### Querying
-- [Basics](../indexes/querying/basics)
+- [Basics](../indexes/querying/query-index)
 
 ### Studio
 - [Create Map Index](../studio/database/indexes/create-map-index)

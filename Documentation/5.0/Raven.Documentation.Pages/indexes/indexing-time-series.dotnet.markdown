@@ -1,4 +1,4 @@
-# Indexes: Indexing Time Series
+# Indexing Time Series
 ---
 
 {INFO: }

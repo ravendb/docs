@@ -145,5 +145,6 @@
 - [Storing Entities](../../client-api/session/storing-entities)
 - [Loading Entities](../../client-api/session/loading-entities)
 - [Saving Changes](../../client-api/session/saving-changes)
-- [Querying Basics](../../indexes/querying/basics)
+- [Query Overview](../../client-api/session/querying/how-to-query)
+- [Querying an Index](../../indexes/querying/query-index)
 - [What is a Document Store](../../client-api/what-is-a-document-store)

@@ -225,7 +225,8 @@ If you fail to do so, entities (and all subobjects) loaded from the server are g
 
 ### Querying
 
-- [Basics](../../indexes/querying/basics)
+- [Query Overview](../../client-api/session/querying/how-to-query)
+- [Querying an Index](../../indexes/querying/query-index)
 
 ### Document Store
 

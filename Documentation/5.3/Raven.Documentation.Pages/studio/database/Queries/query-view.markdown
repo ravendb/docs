@@ -32,7 +32,7 @@
 2. **Database**  
    Click to select the database you want to query.  
 3. **Syntax Samples**  
-   Click to display [RQL](../../../indexes/querying/basics) syntax samples.  
+   Click to display [RQL](../../../client-api/session/querying/what-is-rql) syntax samples.  
 4. **Query Box**  
    Enter your RQL query in the query box.  
 5. **Save Query**  
@@ -192,11 +192,9 @@ Some RavenDB features enhance the queries options.
 ## Related Articles
 
 ### Queries
+- [Query Overview](../../../client-api/session/querying/how-to-query)  
 - [RQL - Raven Query Language](../../../client-api/session/querying/what-is-rql)  
-- [Basics](../../../indexes/querying/basics)  
+- [Querying an Index](../../../indexes/querying/query-index)  
 
 ### Indexes
 - [Indexing Basics](../../../indexes/indexing-basics)  
-
-### Client API
-- [How to Query](../../../client-api/session/querying/how-to-query)  

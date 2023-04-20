@@ -183,12 +183,6 @@
         ]
     },
     {
-        "Path": "number-type-conversion.markdown",
-        "Name": "Numerical Type Conversion",
-        "DiscussionId": "e0345771-3f51-4e2e-8c7f-ec1b91e70761",
-        "Mappings": []
-    },
-    {
         "Path": "boosting.markdown",
         "Name": "Boosting",
         "DiscussionId": "091c36b1-719b-459e-bd92-0e810d1fec3d",
@@ -247,6 +241,12 @@
         "Path": "extending-indexes.markdown",
         "Name": "Extending Indexes",
         "DiscussionId": "27f1127f-ccde-4680-8cfe-d4f140b3098c",
+        "Mappings": []
+    },
+    {
+        "Path": "number-type-conversion.markdown",
+        "Name": "Numerical Type Conversion",
+        "DiscussionId": "e0345771-3f51-4e2e-8c7f-ec1b91e70761",
         "Mappings": []
     },
     {

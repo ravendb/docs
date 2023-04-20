@@ -285,7 +285,7 @@ For most cases where denormalization is not an option, Includes are probably the
 
 ### Querying
 
-- [Basics](../../indexes/querying/basics)
+- [Query Overview](../../client-api/session/querying/how-to-query)
 
 ### Document Extensions
 

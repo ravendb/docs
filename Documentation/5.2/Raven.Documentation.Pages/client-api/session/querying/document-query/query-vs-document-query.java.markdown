@@ -42,10 +42,9 @@ is equivalent to:
 
 ### Querying
 
-- [Basics](../../../../indexes/querying/basics)
+- [Basics](../../../../indexes/querying/query-index)
 
 ### Session 
 
-- [How to Query](../../../../client-api/session/querying/how-to-query)
 - [What is a Document Query](../../../../client-api/session/querying/document-query/what-is-document-query)
 - [How to use Lucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)

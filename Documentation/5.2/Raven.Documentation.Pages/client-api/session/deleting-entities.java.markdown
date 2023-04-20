@@ -55,9 +55,10 @@ You can read more about defer operations [here](./how-to/defer-operations).
 - [Loading Entities](../../client-api/session/loading-entities)
 - [Saving Changes](../../client-api/session/saving-changes)
 - [How To: Enable Optimistic Concurrency](../../client-api/session/configuration/how-to-enable-optimistic-concurrency)  
+
 ### Querying
 
-- [Basics](../../indexes/querying/basics)
+- [Basics](../../indexes/querying/query-index)
 
 ### Document Store
 

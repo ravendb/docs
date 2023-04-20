@@ -20,8 +20,8 @@
   Learn more [below](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
 
 * Queries that do Not specify which index to use are called __Dynamic Queries__.  
-  Examples in this article show dynamic queries.  
-  See [querying an index](../../../indexes/querying/basics) for other examples.
+  This article displays examples of dynamic queries only.  
+  For examples showing how to query an index see [querying an index](../../../indexes/querying/query-index).
 
 ---
 
@@ -30,7 +30,7 @@
     * Query returns a [projection](../../../client-api/session/querying/how-to-project-query-results)  
     * Tracking is [disabled](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)  
 
-* Queries results are __cached__ by default. To disable query caching see [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching).
+* Query results are __cached__ by default. To disable query caching see [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching).
 
 * Queries are timed out after a configurable time period.  See [query timeout](../../../server/configuration/database-configuration#databases.querytimeoutinsec).
 
@@ -42,6 +42,7 @@
   * [Session.Advanced.DocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery)  
   * [Session.Advanced.RawQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery)
   * [Custom methods and extensions for LINQ](../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq)  
+  * [Syntax](../../../client-api/session/querying/how-to-query#syntax)  
 
 {NOTE/}
 
@@ -116,7 +117,7 @@ __Query a collection - no filtering__:
   Both the LINQ method syntax and the LINQ query syntax are supported.  
 
 * The following examples show __dynamic queries__ that do not specify which index to use.  
-  Please refer to [querying an index](../../../indexes/querying/basics) for other examples.
+  Please refer to [querying an index](../../../indexes/querying/query-index) for other examples.
 
 * Querying can be enhanced using these [extension methods](../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq).
  
@@ -141,7 +142,7 @@ from "Employees"
 
 {NOTE: }
 
-__Query collection by ID__
+__Query collection - by ID__
 
 {CODE-TABS}
 {CODE-TAB:csharp:Method-syntax query_2_1@ClientApi\Session\Querying\HowToQuery.cs /}
@@ -152,7 +153,7 @@ __Query collection by ID__
 // This RQL queries the 'Employees' collection by ID
 // No auto-index is created when querying only by ID
 
-from "Employees" where id() = "employees/1-A"
+from "Employees" where id() == "employees/1-A"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -173,7 +174,7 @@ __Query collection - with filtering__
 // An auto-index will be created if there isn't already an existing auto-index
 // that indexes the requested field
 
-from "Employees" where FirstName = "Robert"
+from "Employees" where FirstName == "Robert"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -181,7 +182,7 @@ from "Employees" where FirstName = "Robert"
 
 {NOTE: }
 
-__Query collection with paging__ 
+__Query collection - with paging__ 
 
 {CODE-TABS}
 {CODE-TAB:csharp:Method-syntax query_4_1@ClientApi\Session\Querying\HowToQuery.cs /}
@@ -197,24 +198,6 @@ from "Products" limit 5, 10 // skip 5, take 10
 {CODE-TABS/}
 
 {NOTE/}
-
----
-
-__Syntax__:
-
-* The syntax below is the relevant overload for making a dynamic query that does Not specify which index to use.  
-* Method overloads that specify which index to use are listed in [querying an index](../../../indexes/querying/basics).  
-
-{CODE syntax@ClientApi\Session\Querying\HowToQuery.cs /}
-
-| Parameter | Type | Description |
-| - | - | - |
-| __T__ | object | <ul><li>The type of entity that represents the collection to query</li></ul> |
-| __collectionName__ | string | <ul><li>Name of a collection to query</li><li>No need to provide this param when specifying `T`</li><li>Specify the collection name when querying a collection that is created<br> on the fly, i.e. when querying [Artifical Documents](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))</li></ul> |
-
-| Return Value | |
-| - | - |
-| `IRavenQueryable` | Instance implementing `IRavenQueryable` interface exposing additional query methods and [extensions](../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq) |
 
 {PANEL/}
 
@@ -296,6 +279,24 @@ Available custom methods and extensions for the session's [Query](../../../clien
 
 {PANEL/}
 
+{PANEL: Syntax}
+
+{CODE syntax@ClientApi\Session\Querying\HowToQuery.cs /}
+
+| Parameter | Type | Description |
+| - | - | - |
+| __T__ | object | <ul><li>The type of entity that represents the collection queried</li></ul> |
+| __TIndexCreator__ | string | <ul><li>The index class type</li></ul> |
+| __collectionName__ | string | <ul><li>Name of a collection to query</li><li>No need to provide this param when specifying `T`</li><li>Specify the collection name when querying a collection that is created<br> on the fly, i.e. when querying [Artifical Documents](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))</li><li>Mutually exclusive with _indexName_</li></ul> |
+| __indexName__ | string | <ul><li>Name of index to query</li><li>Mutually exclusive with _collectionName_</li></ul> |
+| __isMapReduce__ | string | <ul><li>Whether querying a map-reduce index</li></ul> |
+
+| Return Value | |
+| - | - |
+| `IRavenQueryable`<br>`IDocumentQuery`<br>`IRawDocumentQuery` | Instances exposing additional query methods and [extensions](../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq) |
+ 
+{PANEL/}
+
 ## Related Articles
 
 ### Session
@@ -306,7 +307,7 @@ Available custom methods and extensions for the session's [Query](../../../clien
 
 ### Querying
 
-- [Basics](../../../indexes/querying/basics)
+- [Querying an Index](../../../indexes/querying/query-index)
 - [Filtering](../../../indexes/querying/filtering)
 - [Paging](../../../indexes/querying/paging)
 - [Sorting](../../../indexes/querying/sorting)

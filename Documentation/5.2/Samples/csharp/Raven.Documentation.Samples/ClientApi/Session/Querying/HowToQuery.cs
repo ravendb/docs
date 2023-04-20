@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Linq;
+using Raven.Client.Documents.Session;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.Querying
@@ -350,7 +351,18 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
         private interface IFoo
         {
             #region syntax
-            IRavenQueryable<T> Query<T>(string collectionName = null);
+            // Overloads for querying a collection OR an index:
+            IRavenQueryable<T> Query<T>(string indexName = null, 
+                string collectionName = null, bool isMapReduce = false);
+            IDocumentQuery<T> DocumentQuery<T>(string indexName = null,
+                string collectionName = null, bool isMapReduce = false);
+            
+            // Overloads for querying an index:
+            IRavenQueryable<T> Query<T, TIndexCreator>();
+            IDocumentQuery<T> DocumentQuery<T, TIndexCreator>();
+            
+            // RawQuery:
+            IRawDocumentQuery<T> RawQuery<T>(string query);
             #endregion
         }
     }

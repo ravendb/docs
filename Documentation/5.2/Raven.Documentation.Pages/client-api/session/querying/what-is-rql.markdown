@@ -88,8 +88,6 @@ old indexes that are now superseded by the new index.
 
 {PANEL/}
 
----
-
 #RQL Keywords and Methods
 
 {PANEL: `declare`}
@@ -410,10 +408,10 @@ And the following values:
 
 ### Client API
 
-- [How to Query](../../../client-api/session/querying/how-to-query)  
+- [Query Overview](../../../client-api/session/querying/how-to-query)  
 - [How to Use RQL Directly When Querying](../../../client-api/session/querying/how-to-query#session.advanced.rawquery)  
 
 ### Querying
 
-- [Basics](../../../indexes/querying/basics)  
+- [Querying an index](../../../indexes/querying/query-index)
 - [Graph Queries Overview](../../../indexes/querying/graph/graph-queries-overview)  

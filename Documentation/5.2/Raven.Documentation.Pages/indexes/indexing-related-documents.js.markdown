@@ -224,7 +224,8 @@ where CategoryName == "Beverages"
 
 ### Querying
 
-- [Basics](../indexes/querying/basics)
+- [Query Overview](../client-api/session/querying/how-to-query)
+- [Querying an Index](../indexes/querying/query-index)
 
 ---
 
