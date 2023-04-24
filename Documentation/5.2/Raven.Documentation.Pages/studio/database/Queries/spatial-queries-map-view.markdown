@@ -10,7 +10,7 @@
   displays the search results in graphical form.  
 
     {INFO: }
-    The spatial map view is added only for [dynamic](../../../client-api/session/querying/what-is-rql#dynamic-and-indexed-queries) 
+    The spatial map view is added only for [dynamic](../../../client-api/session/querying/how-to-query#dynamicQuery) 
     spatial queries.  
     It is not added when spatial queries are executed over indexes.  
     {INFO/}
