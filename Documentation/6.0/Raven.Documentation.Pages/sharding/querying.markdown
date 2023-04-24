@@ -20,6 +20,7 @@
      * [OrderBy in a Map-Reduce Index](../sharding/querying#orderby-in-a-map-reduce-index)  
      * [`where` vs `filter` Recommendations](../sharding/querying#vs--recommendations)  
   * [Including Items](../sharding/querying#including-items)  
+  * [Querying a Selected Shard](../sharding/querying#querying-a-selected-shard)
   * [Unsupported Querying Features](../sharding/querying#unsupported-querying-features)  
   
 {NOTE/}
@@ -255,11 +256,47 @@ filter TotalSales >= 5000
 
 **Including** items by a query or an index **will** work even if an included 
 item resides on another shard.  
-If a requested item is not found on this shard, the orchestrator will connect 
-the shard it is stored on, load the item and provide it.  
+When the orchestrator queries a shard and an included item is not stored on 
+that shard, the orchestrator will connect the shard that the item **is** stored 
+on, load the item and provide it.  
 
-Note that this process will cost the extra travel to the shard that the requested 
-document is on.  
+Note that this process will cost an extra travel to the shard that the requested 
+item is on.  
+
+{PANEL/}
+
+{PANEL: Querying a Selected Shard}
+
+A client normally queries its orchestrator, which forwards the query 
+to allshards. It is, however, possible for a client to direct a query 
+to a specific shard.  
+It makes sense to send a shard-specific query, when it is known what 
+shard stored the documents that are being queried. This may happen 
+when, for example, all the documents of a certain account were 
+deliberately stored over time [in the same bucket]() to make sure 
+that loading or querying them will be done at the highest efficiency.  
+
+* To query specific shards, add the query the contexts of the shards 
+  you want to query: `ShardContext`  
+* Query a single specific shard by adding the query a shard's 
+  `ShardContext`.  
+  You can find the `ShardContext` by the ID of a document that 
+  the this shard contains, using `ByDocumentId`.  
+  In the sample below, for example, we query the shard of the 
+  document `users/1`.  
+  {CODE-BLOCK:JSON}
+  var ResultSet = session.Advanced.DocumentQuery<User>()
+                    .ShardContext(s => s.ByDocumentId("users/2"))
+                    .WhereEquals(x => x.Name, "Joe").ToList();
+  {CODE-BLOCK/}
+* Query a list of specific shards by adding the query a `ShardContext` 
+  with only the shards that need to be queried. Identify the shards using 
+  `ByDocumentId` with IDs of documents stored in these shards.  
+  {CODE-BLOCK:JSON}
+  var ResultSet  = session.Advanced.DocumentQuery<User>()
+                    .ShardContext(s => s.ByDocumentIds(new [] { "users/2", "users/3" }))
+                    .SelectFields<string>("Occupation").ToList();
+  {CODE-BLOCK/}
 
 {PANEL/}
 
