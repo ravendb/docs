@@ -59,9 +59,12 @@
 
 {NOTE: }
 
-__Query an existing index__:
+__1. Query an existing index__:
 
-* You can specify which __static index__ the query will use.
+*  __Query type__: Index query  
+   __Index used__: Static-index  
+
+* You can specify which __STATIC-index__ the query will use.
 
 * Static indexes are defined by the user, as opposed to auto-indexes that are created by the server  
   when querying a collection with some filtering applied.
@@ -70,11 +73,14 @@ __Query an existing index__:
 
 {NOTE: }
 
-__Query a collection - with filtering (Dynamic Query)__:
+__2. Query a collection - with filtering__:  
 
-* When querying a collection without specifying an index and with some filtering condition,   
-  the query-optimizer will analyze the query to see if an __auto-index__ that can answer the query already exists,  
-  i.e. an auto-index on the collection queried with index-fields that match those queried.  
+*  __Query type__: Dynamic Query  
+   __Index used__: Auto-index  
+
+* When querying a collection without specifying an index and with some filtering condition  
+  (other than just the document ID) the query-optimizer will analyze the query to see if an __AUTO-index__  
+  that can answer the query already exists, i.e. an auto-index on the collection queried with index-fields that match those queried.  
 
 * If such auto-index (Not a static one...) is found, it will be used to fetch the results.  
   Else, the query-optimizer will create a new auto-index with matching fields.
@@ -91,7 +97,10 @@ __Query a collection - with filtering (Dynamic Query)__:
 
 {NOTE: }
 
-__Query a collection - no filtering__:
+__3. Query a collection - query full collection | query by ID__:  
+ 
+* __Query type__: Full collection Query  
+  __Index used__: The raw collection (internal storage indexes)  
 
 * Full collection query:
 
@@ -105,7 +114,8 @@ __Query a collection - no filtering__:
  
   * When querying a collection only by document ID or IDs,  
     then similar to the full collection query, no auto-index is created.  
-    RavenDB uses the raw collection documents as the source for this query.  
+  
+  * RavenDB uses the raw collection documents as the source for this query.  
 
 {NOTE/}
 
