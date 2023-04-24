@@ -208,7 +208,7 @@ from Employees
 
 // Collection query - by ID 
 // Data source: The raw collection documents (Auto-index is Not created)
-from Employees where id() = "companies/1-A"
+from Employees where id() = "employees/1-A"
 
 // Dynamic query - with filtering
 // Data source: Auto-index (server uses an existing auto-index or creates a new one)
@@ -240,11 +240,11 @@ from @all_docs where FirstName = "Laura"
 {CODE-BLOCK: csharp}
 // Index query
 // Data source: The specified index
-from index "Employees/ByName"
+from index "Employees/ByFirstName"
 
 // Index query - with filtering
 // Data source: The specified index
-from index "Employees/ByName" where FirstName = "Laura"
+from index "Employees/ByFirstName" where FirstName = "Laura"
 {CODE-BLOCK/}
 
 {NOTE/}
