@@ -8,11 +8,11 @@
 * RQL exposes the RavenDB query pipeline in a straightforward and accessible manner  
   that is easy to use and interact with.
 
-* Any high-level query that is written with the Client API session methods (`Query`, `DocumentQuery`)  
-  is translated by the client to RQL before being sent to the server for execution.  
+* Any query written using high-level Session methods (`Query`, `DocumentQuery`)  
+  is translated by the client to RQL before being sent to the server for execution. 
 
 * A query can be written with RQL directly by either:  
-  * Using the session's `RawQuery` method  
+  * Using the Session's `RawQuery` method  
   * Making a query from the [Query view](../../../studio/database/queries/query-view) in Studio  
 
 * Learn more about querying from the session in this [Query Overview](../../../client-api/session/querying/how-to-query). 
@@ -41,48 +41,51 @@
 
 The query pipeline in RavenDB includes the following main stages:  
 
-1. __Detect query source__  (`from index | collection`)  
-   * All queries in RavenDB use an index to provide results, even when you don't specify one.
-   
-   * When a query is issued, the first thing done is to locate the most suitable index for retrieving the requested data.
-     The server's query optimizer analyzes the query and determines which index should be used.
-   
-   * Results can be fetched either using a STATIC-index, an AUTO-index, or directly from the raw collections.  
-     Learn about those __3 query scenarios__ in this [Query Overview](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
+1. __Detect query source__  ([`from`](../../../client-api/session/querying/what-is-rql#from))
 
-2. __Filter the data__ (`where`)  
+    * Based on your query, RavenDB will determine the appropriate data source from which to retrieve results.
+
+    * Note: all queries in RavenDB use an index to provide results, even when you don't specify one.
+
+    * The following options are available:
+
+        * `from index` - Explicitly specify which index to use.
+
+        * `from collection` - Specify the collection to query.  
+          RavenDB will decide which index will be used depending on the query criteria.
+
+    * Learn more about these __query scenarios__ in this [Query Overview](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
+
+2. __Filter the data__ ([`where`](../../../client-api/session/querying/what-is-rql#where))  
    * The index is scanned for records that match the query predicate. 
 
-3. __Include related documents__  (`include`)  
-   * [Related documents](../../../client-api/how-to/handle-document-relationships#includes) that are included in the query will be retrieved and returned to the client  
-     along with the resulting matching documents.
-   
-   * Both the resulting documents and the included related documents are loaded to the Session in the client for tracking changes, 
-     reducing the need to do another network round trip to the database when accessing the included documents.
+3. __Include related documents__  ([`include`](../../../client-api/session/querying/what-is-rql#include))
+    * [Related documents](../../../client-api/how-to/handle-document-relationships#includes) that are included in the query will be retrieved and returned to the client  
+      along with the resulting matching documents, reducing the need to do another network round trip  
+      to the database when accessing the included documents.
 
-4. __Sort results__ (`order by`) 
+4. __Sort results__ ([`order by`](../../../client-api/session/querying/what-is-rql#order-by)) 
    * Query results can be sorted.  
      For example, you can order by a field value, by the resulting documents' score, by random ordering, etc.
 
-5. __Project results__ (`select`) 
+5. __Limit results__ ([`limit`](../../../client-api/session/querying/what-is-rql#limit))
+    * You can specify the number of results you want to get back from the query  
+      and the number of results you want to skip.
+
+6. __Project results__ ([`select`](../../../client-api/session/querying/what-is-rql#select)) 
    * [Projections](../../../indexes/querying/projections) are specified when you need to retrieve only specific document fields, instead of the whole full document.
      This reduces the amount of data sent over the network and is useful when only partial data is needed.
      When projections are Not defined on the query - then the full document content is retrieved from the document storage.
 
-   * Projections are applied as the last stage after the query has been processed, filtered, and sorted.  
+   * Projections are applied as the last stage after the query has been processed, filtered, sorted, and paged.  
      This means that the projection doesn't apply to all the documents in the database,  
      only to the results that are actually returned.
 
-   * Data can be loaded (`load`) from related documents to be used in the projected fields.   
-     If a query contains a projection that requires any document loads to be processed,  
-     they are loaded just before the projection is executed.
+   * Data can be loaded ([`load`](../../../client-api/session/querying/what-is-rql#load)) from related documents to be used in the projected fields.  
    
    * For each record, the server extracts the requested field:  
      If a field is stored in the index - the server will fetch it from the index.  
      If a field is Not stored in the index - the server will fetch it from the document storage.  
-        
-   * The output projected entities returned by the query are Not tracked by the Session on the client side,  
-     as they are Not full documents.
 
 6. __Return results__ to the client.
 
@@ -92,7 +95,7 @@ The query pipeline in RavenDB includes the following main stages:
 
 The following keywords and methods are available in RQL:
 
-- DECLARE
+- [DECLARE](../../../client-api/session/querying/what-is-rql#declare)
 - [FROM](../../../client-api/session/querying/what-is-rql#from)
     - index
 - [GROUP BY](../../../client-api/session/querying/what-is-rql#group-by)

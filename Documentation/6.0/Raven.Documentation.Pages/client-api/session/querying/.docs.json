@@ -14,7 +14,12 @@
         "Path": "what-is-rql.markdown",
         "Name": "What is RQL",
         "DiscussionId": "de2c079e-8bd4-45fc-86dd-50f25446ed79",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "indexes/querying/what-is-rql"
+            }
+        ]
     },
     {
         "Path": "/document-query",
