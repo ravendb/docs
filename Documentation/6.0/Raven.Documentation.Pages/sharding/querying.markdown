@@ -267,37 +267,38 @@ item is on.
 
 {PANEL: Querying a Selected Shard}
 
-Client queries are normally forwarded by the orchestrator to all shards.  
-However, if it is known prior to the query what shard a requested document 
-is on, it is also possible to query only that shard, avoiding redundant 
-travels to other shards.  
+A query is normally executed over all shards.  
+It is, however, also possible to query only selected shards.  
+Query a selected shard when you know in advance that the documents you need 
+to query reside on this shard, to avoid redundant travels to other shards.  
 
-Such circumstances can be created deliberately, e.g. by keeping all 
-the documents related to a specific account on the same shard, and when 
-it's time to query the account - directing the query only at that shard.  
+This feature can be helpful when, for example, all the documents related 
+to a specific account are deliberately stored on the same shard, and when 
+it's time to query any of them the query is sent only to this shard.  
 
-* To query specific shards, add to the query a `ShardContext` that 
-  specifies which shard/s to query.  
-* You can discover what shard a document is stored on using `ByDocumentId` 
-  and specify this shard in the `ShardContext`.  
-  E.g., in the sample below we query only the shard containing `users/1`.  
-  {CODE-BLOCK:JSON}
-  var ResultSet = session.Advanced.DocumentQuery<User>()
-                    // Which shard to query
-                    .ShardContext(s => s.ByDocumentId("users/1"))
-                    // The query
-                    .SelectFields<string>("Occupation").ToList();
-  {CODE-BLOCK/}
-* You can discover what shard/s contain a list of documents using 
-  `ByDocumentIds` and specify these shards in the `ShardContext`.  
-  E.g., in the sample below we query only the shard/s containing `users/2` and `users/3`.  
-  {CODE-BLOCK:JSON}
-  var ResultSet  = session.Advanced.DocumentQuery<User>()
-                    // Which shards to query
-                    .ShardContext(s => s.ByDocumentIds(new [] { "users/2", "users/3" }))
-                    // The query
-                    .SelectFields<string>("Occupation").ToList();
-  {CODE-BLOCK/}
+* To query a specific shard or a list of specific shards add to the 
+  query a `ShardContext` object that specifies the shard/s to query.  
+* You can discover what shard or shards documents are stored on using 
+  `ByDocumentId` or `ByDocumentIds`.  
+* Examples:  
+
+     Query only the shard containing `users/1`:  
+     {CODE-BLOCK:JSON}
+      var ResultSet = session.Advanced.DocumentQuery<User>()
+                   // Which shard to query
+                   .ShardContext(s => s.ByDocumentId("users/1"))
+                   // The query
+                   .SelectFields<string>("Occupation").ToList();
+     {CODE-BLOCK/}
+
+     Query only the shard/s containing `users/2` and `users/3`:  
+     {CODE-BLOCK:JSON}
+      var ResultSet  = session.Advanced.DocumentQuery<User>()
+                   // Which shards to query
+                   .ShardContext(s => s.ByDocumentIds(new [] { "users/2", "users/3" }))
+                   // The query
+                   .SelectFields<string>("Occupation").ToList();
+     {CODE-BLOCK/}
 
 {PANEL/}
 
