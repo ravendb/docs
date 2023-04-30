@@ -22,7 +22,7 @@
   An exception is thrown if the specified database doesn't exist on the server node.  
 
 * In this page:  
-  * [Examples](..):  
+  * [Examples](../../../client-api/operations/server-wide/compact-database#examples):  
       * [Compact documents](../../../client-api/operations/server-wide/compact-database#examples)  
       * [Compact specific indexes](../../../client-api/operations/server-wide/compact-database#compact-specific-indexes)  
       * [Compact all indexes](../../../client-api/operations/server-wide/compact-database#compact-all-indexes)  
