@@ -1,7 +1,7 @@
 # Getting Started: Writing your Unit Test using TestDriver
 
-In this section we will explain how to use [ravendb-test-driver](https://search.maven.org/search?q=g:net.ravendb%20AND%20a:ravendb-test-driver&core=gav) in order to write unit tests for working with RavenDB.
-TestDriver uses an [ravendb-embedded](https://search.maven.org/search?q=g:net.ravendb%20AND%20a:ravendb-embedded&core=gav) package with the same set of [prerequisites](../server/embedded#prerequisites) to run the Server.
+In this section we will explain how to use [ravendb-test-driver](https://central.sonatype.com/search?q=g:net.ravendb%20%20a:ravendb-test-driver&core=gav&smo=true) in order to write unit tests for working with RavenDB.
+TestDriver uses an [ravendb-embedded](../server/embedded) package with the same set of [prerequisites](../server/embedded#prerequisites) to run the Server.
 
 - [RavenTestDriver](../start/test-driver#raventestdriver)
 - [Pre-initializing the store](../start/test-driver#preinitialize)
