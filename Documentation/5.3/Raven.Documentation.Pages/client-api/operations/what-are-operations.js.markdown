@@ -74,7 +74,7 @@
 
 __Example__:
 
-{CODE:nodejs operations_ex@ClientApi\Operations\whatAreOperations.js /}
+{CODE:nodejs operations_ex@client-api\Operations\whatAreOperations.js /}
 
 {NOTE/}
 
@@ -82,7 +82,7 @@ __Example__:
 
 __Send syntax__:
 
-{CODE:nodejs operations_send@ClientApi\Operations\whatAreOperations.js /}
+{CODE:nodejs operations_send@client-api\Operations\whatAreOperations.js /}
 
 {NOTE/}
 
@@ -108,7 +108,7 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTimeSeriesStatisticsOperation  
 
 * __Revisions__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetRevisionsOperation](../../client-api/operations/revisions/get-revisions)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetRevisionsOperation](../../document-extensions/revisions/client-api/operations/get-revisions)  
 
 * __Patching__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchOperation](../../client-api/operations/patching/single-document)  
@@ -143,7 +143,7 @@ __Send syntax__:
 
 __Example__:
 
-{CODE:nodejs maintenance_ex@ClientApi\Operations\whatAreOperations.js /}
+{CODE:nodejs maintenance_ex@client-api\Operations\whatAreOperations.js /}
 
 {NOTE/}
 
@@ -151,7 +151,7 @@ __Example__:
 
 __Send syntax__:
 
-{CODE:nodejs maintenance_send@ClientApi\Operations\whatAreOperations.js /}
+{CODE:nodejs maintenance_send@client-api\Operations\whatAreOperations.js /}
 
 {NOTE/}
 
@@ -251,7 +251,7 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RemoveTimeSeriesPolicyOperation  
 
 * __Revisions__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../client-api/operations/revisions/configure-revisions)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions)  
 
 * __Sorters__:   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutSortersOperation  
@@ -284,7 +284,7 @@ __Send syntax__:
 
 __Example__:
 
-{CODE:nodejs server_ex@ClientApi\Operations\whatAreOperations.js /}
+{CODE:nodejs server_ex@client-api\Operations\whatAreOperations.js /}
 
 {NOTE/}
 
@@ -292,7 +292,7 @@ __Example__:
 
 __Send syntax__:
 
-{CODE:nodejs server_send@ClientApi\Operations\whatAreOperations.js /}
+{CODE:nodejs server_send@client-api\Operations\whatAreOperations.js /}
 
 {NOTE/}
 
@@ -367,7 +367,7 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTrafficWatchConfigurationOperation
 
 * __Revisions__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRevisionsForConflictsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsForConflictsOperation](../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration)  
 
 * __Misc__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ModifyConflictSolverOperation  
@@ -385,11 +385,11 @@ __Send syntax__:
 
 __Example__:  
 
-{CODE:nodejs wait_ex@ClientApi\Operations\whatAreOperations.js /}
+{CODE:nodejs wait_ex@client-api\Operations\whatAreOperations.js /}
 
 __Syntax__:
 
-{CODE:nodejs waitForCompletion_syntax@ClientApi\Operations\whatAreOperations.js /}
+{CODE:nodejs waitForCompletion_syntax@client-api\Operations\whatAreOperations.js /}
 
 {PANEL/}
 

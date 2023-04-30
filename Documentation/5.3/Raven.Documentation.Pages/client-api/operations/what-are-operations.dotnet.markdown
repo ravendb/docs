@@ -15,7 +15,7 @@
 * In this page:  
   * [Why use operations](../../client-api/operations/what-are-operations#why-use-operations)  
   * [How operations work](../../client-api/operations/what-are-operations#how-operations-work)  
-<br>
+  <br>
   * __Operation types__: 
       * [Common operations](../../client-api/operations/what-are-operations#common-operations)  
       * [Maintenance operations](../../client-api/operations/what-are-operations#maintenance-operations)  
@@ -31,7 +31,7 @@
 * Operations provide __management functionality__ that is Not available in the context of the session, e.g.:  
   create/delete a database, execute administrative tasks, assign permissions, change server configuration, etc.
 
-* Some operations (e.g. _PatchOperation_) can also be carried out via the session (e.g. _session.advanced.patch()_).  
+* Some operations (e.g. _PatchOperation_) can also be carried out via the session (e.g. _session.Advanced.Patch()_).  
   However, while a session wraps multiple actions into a single business transaction,  
   the operation is an __individual action__ that is Not part of the session transaction.
 
@@ -40,17 +40,18 @@
 {PANEL: How operations work}
 
 * __Sending the request__:  
-  Each Operation creates an HTTP request message to be sent to the relevant server endpoint.  
+  Each Operation is an encapsulation of a `RavenCommand`.  
+  The RavenCommand creates the HTTP request message to be sent to the relevant server endpoint.  
   The DocumentStore `OperationExecutor` sends the request and processes the results.
 * __Target node__:  
   By default, the operation will be executed on the server node that is defined by the [client configuration](../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
-  However, server-maintenance operations can be executed on a specific node by using the [forNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
+  However, server-maintenance operations can be executed on a specific node by using the [ForNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
 * __Target database__:  
   By default, operations work on the default database defined in the DocumentStore.  
-  However, common operations & maintenance operations can operate on a different database by using the [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) method.  
+  However, common operations & maintenance operations can operate on a different database by using the [ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) method.  
 * __Transaction scope__:  
   Operations execute as a single-node transaction.  
-  If needed, data will then replicate to the other nodes in the database-group.
+  If needed, data will then replicate to the other nodes in the database-group.  
 * __Background operations__:  
   Some operations may take a long time to complete and can be awaited for completion.   
   Learn more [below](../../client-api/operations/what-are-operations#wait-for-completion).
@@ -63,18 +64,21 @@
 
 * All common operations implement the `IOperation` interface.  
   The operation is executed within the __database scope__.  
-  Use [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.  
+  Use [ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.  
 
 * These operations include set-based operations such as _PatchOperation_, _CounterBatchOperation_,  
   document-extensions related operations such as getting/putting an attachment, and more.  
   See all available operations [below](../../client-api/operations/what-are-operations#operations-list).
 
 * To execute a common operation request,  
-  use the `send` method on the `operations` property in the DocumentStore.
+  use the `Send` method on the `Operations` property in the DocumentStore.
 
 __Example__:
 
-{CODE:nodejs operations_ex@ClientApi\Operations\whatAreOperations.js /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync operations_ex@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:Async operations_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TABS/}
 
 {NOTE/}
 
@@ -82,7 +86,10 @@ __Example__:
 
 __Send syntax__:
 
-{CODE:nodejs operations_send@ClientApi\Operations\whatAreOperations.js /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync operations_send@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:Async operations_send_async@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TABS/}
 
 {NOTE/}
 
@@ -108,7 +115,7 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTimeSeriesStatisticsOperation  
 
 * __Revisions__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetRevisionsOperation](../../client-api/operations/revisions/get-revisions)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetRevisionsOperation](../../document-extensions/revisions/client-api/operations/get-revisions)  
 
 * __Patching__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchOperation](../../client-api/operations/patching/single-document)  
@@ -132,18 +139,21 @@ __Send syntax__:
 
 * All maintenance operations implement the `IMaintenanceOperation` interface.  
   The operation is executed within the __database scope__.  
-  Use [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.
+  Use [ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.
 
 * These operations include database management operations such as setting client configuration,  
   managing indexes & ongoing-tasks operations, getting stats, and more.  
   See all available maintenance operations [below](../../client-api/operations/what-are-operations#maintenance-list).
  
 * To execute a maintenance operation request,  
-  use the `send` method on the `maintenance` property in the DocumentStore.
+  use the `Send` method on the `Maintenance` property in the DocumentStore.
 
 __Example__:
 
-{CODE:nodejs maintenance_ex@ClientApi\Operations\whatAreOperations.js /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync maintenance_ex@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:Async maintenance_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TABS/}
 
 {NOTE/}
 
@@ -151,7 +161,10 @@ __Example__:
 
 __Send syntax__:
 
-{CODE:nodejs maintenance_send@ClientApi\Operations\whatAreOperations.js /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync maintenance_send@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:Async maintenance_send_async@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TABS/}
 
 {NOTE/}
 
@@ -190,7 +203,7 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexOperation](../../client-api/operations/maintenance/indexes/stop-index)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexingOperation](../../client-api/operations/maintenance/indexes/stop-indexing)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetIndexOperation](../../client-api/operations/maintenance/indexes/reset-index)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexOperation](../../client-api/operations/maintenance/indexes/delete-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexOperation](../../client-api/operations/maintenance/indexes/delete-index)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexErrorsOperation](../../client-api/operations/maintenance/indexes/delete-index-errors)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DisableIndexOperation](../../client-api/operations/maintenance/indexes/disable-index)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [EnableIndexOperation](../../client-api/operations/maintenance/indexes/enable-index)   
@@ -251,7 +264,7 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RemoveTimeSeriesPolicyOperation  
 
 * __Revisions__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../client-api/operations/revisions/configure-revisions)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions)  
 
 * __Sorters__:   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutSortersOperation  
@@ -274,17 +287,20 @@ __Send syntax__:
 
 * All server-maintenance operations implement the `IServerOperation` interface.  
   The operation is executed within the __server scope__.   
-  Use [forNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) to operate on a specific node other than the default defined in the client configuration.
+  Use [ForNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) to operate on a specific node other than the default defined in the client configuration.
 
 * These operations include server management and configuration operations.  
   See all available operations [below](../../client-api/operations/what-are-operations#server-list).
 
 * To execute a server-maintenance operation request,  
-  use the `send` method on the `maintenance.server` property in the DocumentStore.   
+  use the `Send` method on the `Maintenance.Server` property in the DocumentStore.
 
 __Example__:
 
-{CODE:nodejs server_ex@ClientApi\Operations\whatAreOperations.js /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync server_ex@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:Async server_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TABS/}
 
 {NOTE/}
 
@@ -292,7 +308,10 @@ __Example__:
 
 __Send syntax__:
 
-{CODE:nodejs server_send@ClientApi\Operations\whatAreOperations.js /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync server_send@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:Async server_send_async@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TABS/}
 
 {NOTE/}
 
@@ -345,33 +364,33 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideBackupConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationsOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RestoreBackupOperation
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RestoreBackupOperation  
 
 * __Server-wide analyzers__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideAnalyzersOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideAnalyzerOperation
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideAnalyzerOperation  
 
 * __Server-wide sorters__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideSortersOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideSorterOperation
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideSorterOperation  
 
 * __Logs & debug__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetLogsConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetLogsConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetClusterDebugInfoPackageOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetBuildNumberOperation](../../client-api/operations/server-wide/get-build-number)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideOperationStateOperation
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideOperationStateOperation  
 
 * __Traffic watch__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutTrafficWatchConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTrafficWatchConfigurationOperation
 
 * __Revisions__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRevisionsForConflictsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsForConflictsOperation](../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration)  
 
 * __Misc__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ModifyConflictSolverOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OfflineMigrationOperation
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OfflineMigrationOperation  
 
 {NOTE/}
 {PANEL/}
@@ -380,16 +399,30 @@ __Send syntax__:
 
 * Some operations may take a long time to complete.  
   Those operations will run in the server background and can be awaited for completion.  
-* Those operations implement an interface with result type `OperationIdResult`.  
-* For those operations, the `send` method returns a promise for an object that can be awaited on that Id.  
+* The response of the inner 'RavenCommand' class for such operations is `OperationIdResult`.  
+* For those operations, the `Send` method will return an `Operation` object that allows waiting on that operation Id.  
 
 __Example__:  
 
-{CODE:nodejs wait_ex@ClientApi\Operations\whatAreOperations.js /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync wait_ex@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:Async wait_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TABS/}
 
 __Syntax__:
 
-{CODE:nodejs waitForCompletion_syntax@ClientApi\Operations\whatAreOperations.js /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync waitForCompletion_syntax@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:Async waitForCompletion_syntax_async@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TABS/}
+
+| Parameters | Type | Description |
+| - | - | - |
+| __timeout__ | `TimeSpan` | <ul><li> __When timespan is specified__ - <br>server throws an error if operation has Not completed within the specified time frame. No rollback action will take place.</li><li>`null` - <br>WaitForCompletion will wait for operation to complete forever.</li></ul> |
+
+| Return type | |
+| - | - |
+| `IOperationResult` | The operation result content. |
 
 {PANEL/}
 
