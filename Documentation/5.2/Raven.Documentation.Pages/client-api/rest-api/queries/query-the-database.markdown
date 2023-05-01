@@ -150,7 +150,7 @@ double quotes within the request body using a backslash: `"` -> `\"`.
 
 | Parameter | Description |
 | - | - |
-| **Query** | A query in [RQL](../../../indexes/querying/what-is-rql). You can insert parameters from the `QueryParameters` object with `$<parameter name>` |
+| **Query** | A query in [RQL](../../../client-api/session/querying/what-is-rql). You can insert parameters from the `QueryParameters` object with `$<parameter name>` |
 | **QueryParameters** | A list of values that can be used in the query, such as strings, ints, or documents IDs.<br/>Inputs from your users should always be passed as query parameters to avoid SQL injection attacks, and in general it's best practice to pass all your right-hand operands as parameters. |
 
 {PANEL/}
