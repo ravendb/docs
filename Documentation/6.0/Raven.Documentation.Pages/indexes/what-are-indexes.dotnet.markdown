@@ -32,17 +32,18 @@ This behavior can be altered by [storing](../indexes/storing-data-in-index) fiel
 
 ## Related Articles
 
+### Client API
+
+- [Query Overview](../client-api/session/querying/how-to-query)
+
 ### Indexes
+
 - [Creating and Deploying Indexes](../indexes/creating-and-deploying)
 - [Indexing Basics](../indexes/indexing-basics)
-
-### Querying
-- [Basics](../indexes/querying/basics)
-
-### Client API
-- [How to Query](../client-api/session/querying/how-to-query)
+- [Query an Index](../indexes/querying/query-index)
 
 ### Studio
+
 - [Indexes: Overview](../studio/database/indexes/indexes-overview#indexes-overview)
 - [Studio Index List View](../studio/database/indexes/indexes-list-view)
 

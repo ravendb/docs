@@ -10,15 +10,15 @@ In our example, we will create an index that will map documents from the `Employ
 
 - First we need to create an index. One way to create it is to use the `AbstractIndexCreationTask`, but there are other ways available as well (you can read about them [here](../indexes/creating-and-deploying)).
 
-{CODE:java indexes_1@Indexes/WhatAreIndexes.java /}
+{CODE indexes_1@Indexes/WhatAreIndexes.cs /}
 
 - The next step is to send an index to a server (more about index deployment options can be found [here](../indexes/creating-and-deploying)) so the indexing process can start indexing documents.
 
-{CODE:java indexes_2@Indexes/WhatAreIndexes.java /}
+{CODE indexes_2@Indexes/WhatAreIndexes.cs /}
 
 - Now our index can be queried and indexed results can be returned.
 
-{CODE:java indexes_3@Indexes/WhatAreIndexes.java /}
+{CODE indexes_3@Indexes/WhatAreIndexes.cs /}
 
 More examples with detailed descriptions can be found [here](../indexes/indexing-basics).
 
@@ -32,13 +32,15 @@ This behavior can be altered by [storing](../indexes/storing-data-in-index) fiel
 
 ## Related Articles
 
+### Client API
+
+- [Query Overview](../client-api/session/querying/how-to-query)
+
 ### Indexes
 
 - [Creating and Deploying Indexes](../indexes/creating-and-deploying)
 - [Indexing Basics](../indexes/indexing-basics)
-
-### Querying
-- [Basics](../indexes/querying/query-index)
+- [Query an Index](../indexes/querying/query-index)
 
 ### Studio
 
