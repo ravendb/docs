@@ -42,7 +42,7 @@ This is an example of a basic OLAP ETL creation operation:
 | Property | Type | Description |
 | - | - | - |
 | `RunFrequency` | `string` | Takes a [cron expression](https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm) which determines how often the server will execute the ETL process. |
-| `CustomPartitionValue` | `string` | A value that can be used as a partition name in multiple scripts. See [below](). |
+| `CustomPartitionValue` | `string` | A value that can be used as a partition name in multiple scripts. See [below](../../../server/ongoing-tasks/etl/olap#the-custom-partition-value). |
 | `OlapTables` | `List<OlapEtlTable>` | List of naming configurations for individual tables. See more details below. |
 
 #### `OlapConnectionString`
