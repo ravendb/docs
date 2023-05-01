@@ -134,6 +134,6 @@ where endsWith(Name, 'ra')
 
 ### Querying
 
-- [Basics](../../indexes/querying/basics)
+- [Basics](../../indexes/querying/query-index)
 - [Paging](../../indexes/querying/paging)
 - [Sorting](../../indexes/querying/sorting)

@@ -208,12 +208,16 @@ To find all documents in a collection that don't have a specified field, see [Ho
 
 ## Related Articles
 
+### Client API
+
+- [Query Overview](../../client-api/session/querying/how-to-query)
+
 ### Indexes
 
 - [Indexing Basics](../../indexes/indexing-basics)
 
 ### Querying
 
-- [Basics](../../indexes/querying/basics)
+- [Query an Index](../../indexes/querying/query-index)
 - [Paging](../../indexes/querying/paging)
 - [Sorting](../../indexes/querying/sorting)
