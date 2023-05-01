@@ -57,7 +57,7 @@ Here you can filter the data you want to import, select configuration and apply 
      Determines whether or not legacy attachments contained in the file should be imported where legacy attachments refers to v2.x and v3.x attachments.  
     - [Include Counters](../../../../document-extensions/counters/overview)  
     - [Include Legacy Counters](../../../../studio/database/create-new-database/from-legacy-files)  
-    - [Include Artificial Documents](../../../studio/database/indexes/create-map-reduce-index#artificial-documents--vs--regular-documents)  
+    - [Include Artificial Documents](../../../../studio/database/indexes/create-map-reduce-index#artificial-documents--vs--regular-documents)  
     - [Include Expired Documents](../../../../server/extensions/expiration)  
     - [Include Revisions](../../../../server/extensions/revisions)  
     - [Include Conflicts](../../../../client-api/cluster/document-conflicts-in-client-side)  
