@@ -117,7 +117,7 @@
      However, the resulting rollup time series is non incremental.  
      It can be handled via [TimeSeriesFor](../../../document-extensions/timeseries/client-api/session/append#timeseriesfor.append), not 
      [IncrementalTimeSeriesFor](../../../document-extensions/timeseries/incremental-time-series/client-api/session/overview#methods), 
-     and its values can no longer be [Increment](../../..document-extensions/timeseries/incremental-time-series/client-api/session/increment)ed.  
+     and its values can no longer be [Incremented](../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment).  
 
 {PANEL/}
 
