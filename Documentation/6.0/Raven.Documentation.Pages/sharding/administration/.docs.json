@@ -10,5 +10,11 @@
     "Name": "API Administration",
     "DiscussionId": "445e663b-fb72-40b4-8b81-b221be977c21",
     "Mappings": []
+  },
+  {
+    "Path": "pairing-documents.markdown",
+    "Name": "Pairing Documents",
+    "DiscussionId": "445e663b-fb72-40b4-8b81-b221be977c21",
+    "Mappings": []
   }
 ]

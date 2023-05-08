@@ -273,8 +273,8 @@ Query a selected shard when you know in advance that the documents you need
 to query reside on this shard, to avoid redundant travels to other shards.  
 
 This feature can be helpful when, for example, all the documents related 
-to a specific account are deliberately stored on the same shard, and when 
-it's time to query any of them the query is sent only to this shard.  
+to a specific account [are deliberately stored on the same shard](../sharding/administration/pairing-documents), 
+and when it's time to query any of them the query is sent only to this shard.  
 
 * To query a specific shard or a list of specific shards add to the 
   query a `ShardContext` object that specifies the shard/s to query.  
@@ -344,6 +344,6 @@ databases include:
 - [Stream Query Results](../client-api/session/querying/how-to-stream-query-results#stream-an-index-query)  
 
 ### Sharding
-- [Share a Bucket: $ Syntax](../sharding/overview#forcing-documents-to-share-a-bucket)  
+- [Pairing Docs: $ Syntax](../sharding/overview#pairing-documents)  
 - [Shards Indexing](../sharding/indexing)  
 

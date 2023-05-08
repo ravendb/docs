@@ -39,7 +39,7 @@
      * [Buckets Allocation](../sharding/overview#buckets-allocation)  
      * [Buckets Population](../sharding/overview#buckets-population)  
      * [Document Extensions Storage](../sharding/overview#document-extensions-storage)  
-     * [Forcing Documents to Share a Bucket](../sharding/overview#forcing-documents-to-share-a-bucket)  
+     * [Pairing Documents](../sharding/overview#pairing-documents)  
   * [Resharding](../sharding/overview#resharding)  
   * [Creating a Sharded Database](../sharding/overview#creating-a-sharded-database)  
 
@@ -130,9 +130,9 @@ and clients of RavenDB versions prior to 6.0, which had no sharding support,
 can access a sharded database unaltered.  
 
 Shard-specific operations are, however, available: a client can, for example, 
-track the shard that a document is stored at and query this shard, and Studio 
-can be used to relocate ([reshard](../sharding/resharding)) documents from one 
-shard to another.  
+track the shard that a document is stored at and [query this shard](../sharding/querying#querying-a-selected-shard), 
+and Studio can be used to relocate ([reshard](../sharding/resharding)) documents 
+from one shard to another.  
 
 !["Studio Document View"](images/overview_document-view.png "Studio Document View")
 
@@ -197,7 +197,7 @@ is calculated by the ID of the document that owns them.
 
 ---
 
-### Forcing Documents to Share a Bucket
+### Pairing Documents
 
 The cluster can be forced to store a document in the same bucket 
 (and therefore in the same shard) as another document.  
@@ -205,20 +205,7 @@ To do this, add the document name a suffix: `$` + <`ID`>
 The cluster will calculate the document's bucket number by 
 the suffix ID, and store the document in this bucket.  
 
-{NOTE: }
-E.g. - 
-Original document ID: `Users/70`  
-The document you want Users/70 to share a bucket with: `Users/4`  
-Rename `Users/70` to: `Users/70$Users/4`
-{NOTE/}
-
-!["Forcing Documents to Share a Bucket"](images/overview_force-docs-to-share-bucket.png "Forcing Documents to Share a Bucket")
-
-{WARNING: }
-Be careful not to force the storage of too many documents in the same bucket 
-(and shard), to prevent the creation of an imbalanced database in which one 
-of the shards is overpopulated and others are underpopulated.  
-{WARNING/}
+Read more about this feature [here](../sharding/administration/pairing-documents).  
 
 {PANEL/}
 

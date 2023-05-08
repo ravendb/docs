@@ -96,7 +96,7 @@ The following points relate to this issue.
 * When documents and their extensions are queried and/or included, it takes longer 
   to retrieve documents and extensions when they are stored on different shards.  
   To accelerate these operations, we can place related documents 
-  [in the same bucket](../sharding/overview#forcing-documents-to-share-a-bucket) 
+  [in the same bucket](../sharding/overview#pairing-documents) 
   in advance.  
 
 {PANEL/}
