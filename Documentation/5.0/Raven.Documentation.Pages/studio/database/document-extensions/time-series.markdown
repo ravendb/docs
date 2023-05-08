@@ -229,9 +229,6 @@ To specify a range of time series entries:
 **Studio**  
 [Time Series Settings View](../../../studio/database/settings/time-series-settings)  
 
-**Document Extensins**:  
+**Document Extensions**:  
 [Time Series Overview](../../../document-extensions/timeseries/overview)  
 [Time Series Queries](../../../document-extensions/timeseries/querying/overview-and-syntax)  
-
-**Querying**  
-[What is RQL](../../../indexes/querying/what-is-rql)

@@ -324,7 +324,7 @@ select Name
 - [Introduction](../client-api/session/what-is-a-session-and-how-does-it-work)  
 
 ### Querying
-- [Basics](../indexes/querying/basics)  
+- [Query Overview](../client-api/session/querying/how-to-query) 
 - [What is RQL](../client-api/session/querying/what-is-rql)  
 
 ### Indexes

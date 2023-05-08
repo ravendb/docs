@@ -127,12 +127,16 @@ where endsWith(Name, 'ra')
 
 ## Related Articles
 
+### Client API
+
+- [Query Overview](../../client-api/session/querying/how-to-query)
+
 ### Indexes
 
 - [Indexing Basics](../../indexes/indexing-basics)
 
 ### Querying
 
-- [Basics](../../indexes/querying/basics)
+- [Query an Index](../../indexes/querying/query-index)
 - [Paging](../../indexes/querying/paging)
 - [Sorting](../../indexes/querying/sorting)

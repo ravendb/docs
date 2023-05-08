@@ -11,7 +11,10 @@
   which is common to all the database-group nodes.  
   i.e., an index state change done only on a local node is not reflected.
 
-* To get a specific index state on a local node use [get index stats](../../../../client-api/operations/maintenance/indexes/get-index-stats).
+* To get a specific index state on a local node use `GetIndexStatisticsOperation`.
+
+[//]: # (TODO - add the below line instead of the above once GetIndexStatisticsOperation is done)
+[//]: # (* To get a specific index state on a local node use [get index stats]&#40;../../../../client-api/operations/maintenance/indexes/get-index-stats&#41;.)
 
 * In this page:
     * [Get indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes#get-indexes-example)
@@ -55,4 +58,6 @@
 - [How to Get Index](../../../../client-api/operations/maintenance/indexes/get-index)
 - [How to Put Indexes](../../../../client-api/operations/maintenance/indexes/put-indexes)
 - [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)
-- [Get index stats](../../../../client-api/operations/maintenance/indexes/get-index-stats)
+
+[//]: # (TODO - add the below line once GetIndexStatisticsOperation is done)
+[//]: # (- [Get index stats]&#40;../../../../client-api/operations/maintenance/indexes/get-index-stats&#41;)

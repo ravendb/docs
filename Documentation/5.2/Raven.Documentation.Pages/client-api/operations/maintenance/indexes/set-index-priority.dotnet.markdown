@@ -83,7 +83,7 @@ Setting the priority will affect the indexing thread priority at the operating s
 
 ### Server
 
-- [Index Administration](../../../../server/administration/index-administration)
+- [Index Administration](../../../../indexes/index-administration)
 
 ### Operations
 

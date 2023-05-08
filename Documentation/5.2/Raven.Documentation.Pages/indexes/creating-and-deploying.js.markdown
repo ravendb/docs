@@ -181,7 +181,8 @@ Setting this configuration option to a high value may result in performance degr
 - [Indexing Basics](../indexes/indexing-basics)
 
 ### Querying
-- [Basics](../indexes/querying/basics)
+- [Query Overview](../client-api/session/querying/how-to-query)
+- [Querying an Index](../indexes/querying/query-index)
 
 ### Studio
 - [Indexes: Overview](../studio/database/indexes/indexes-overview#indexes-overview)

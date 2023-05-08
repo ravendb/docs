@@ -11,7 +11,7 @@
 
 * In this page:
 
-  * [Activate license with configuration keys]()
+  * [Activate license with configuration keys](../../start/licensing/activate-license#activate-license-with-configuration-keys)
   * [Activate license from Studio](../../start/licensing/activate-license#activate-license-from-studio)
 
 {NOTE/}

@@ -102,4 +102,4 @@ this.Freight = 15.3;
 
 ### Studio
 
-- [Backup Task](../../studio/database/tasks/ongoing-tasks/backup-task)
+- [Backup Task](../../studio/database/tasks/backup-task)

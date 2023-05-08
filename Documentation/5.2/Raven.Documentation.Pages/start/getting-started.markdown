@@ -331,7 +331,7 @@ select Name
 
 ### Querying
 
-- [Basics](../indexes/querying/basics)
+- [Query Overview](../client-api/session/querying/how-to-query)
 - [What is RQL](../client-api/session/querying/what-is-rql)
 
 ### Indexes

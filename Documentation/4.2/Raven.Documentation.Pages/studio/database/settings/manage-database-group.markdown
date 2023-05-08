@@ -4,7 +4,7 @@
 {NOTE: }
 
 * A **Database instance** can reside on a single node, on a number of nodes, or on all cluster nodes,  
-  depending on the replication factor defined when [creating the database](../../server/databases/create-new-database/general-flow).  
+  depending on the replication factor defined when [creating the database](../../../studio/server/databases/create-new-database/general-flow).  
   The replication factor determines the number of copies we hold for that database in the cluster,  
   so we still have a copy of the data when a node goes down.  
 
@@ -18,7 +18,7 @@
 
 * At the **Database Group Level**, all the nodes are working cooperatively together.  
   The connections between the databases on the different nodes do not go through any consensus protocol.  
-  Instead of selecting a leader, as in the [Cluster Level](../../server/cluster/cluster-view), 
+  Instead of selecting a leader, as in the [Cluster Level](../../../studio/server/cluster/cluster-view), 
   there is a direct TCP connection among the various nodes that hold a particular database. 
   Whenever there is a write on one of the databases instances, it will immediately be recorded and replicated (sent) to all the other nodes in the Database Group.  
 
@@ -91,7 +91,7 @@
 
 1. **Node:**  
    Select the cluster Node to add to the Database Group Topology  
-   Note: Node should be already part of the Cluster Topology. See [Adding a node to the Cluster](../../server/cluster/add-node-to-cluster)  
+   Note: Node should be already part of the Cluster Topology. See [Adding a node to the Cluster](../../../studio/server/cluster/add-node-to-cluster)  
 
 2. **Preferred Mentor:**  
    Check the 'Choose preferred mentor node manually' checkbox in order to specify which node will be the preferred mentor for the newly added node.  

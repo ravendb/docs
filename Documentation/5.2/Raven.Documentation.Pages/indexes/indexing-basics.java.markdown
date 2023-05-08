@@ -61,7 +61,7 @@ More detailed information about `Map-Reduce` indexes can be found [here](../inde
 
 ### Querying
 
-- [Basics](../indexes/querying/basics)
+- [Basics](../indexes/querying/query-index)
 - [What is RQL](../client-api/session/querying/what-is-rql)
 
 ### Studio
