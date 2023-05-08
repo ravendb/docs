@@ -8,7 +8,7 @@
 
 * There is no need to explicitly create or delete a time series.  
    * A time series is created when its first entry is incremented.  
-   * A time series is deleted when all entries are [deleted](../../../../../) from it.  
+   * A time series is deleted when all entries are [deleted](../../../../../document-extensions/timeseries/client-api/session/delete) from it.  
 
 * You can add a single [incremental time series entry](../../../../../document-extensions/timeseries/design#time-series-entries) at a time.  
   Note, however, that you can `Increment` as many times as you need to before calling 
