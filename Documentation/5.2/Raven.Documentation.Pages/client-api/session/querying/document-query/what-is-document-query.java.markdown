@@ -1,16 +1,17 @@
-# Session: Querying: What is a Document Query?
+# What is a Document Query?
 
-Querying capabilities can be accessed via the `documentQuery` method in advanced session operations. `DocumentQuery` gives you more flexibility and control over the process of building a query.
+Querying capabilities can be accessed via the `documentQuery` method in advanced session operations.  
+`DocumentQuery` gives you more flexibility and control over the process of building a query.
 
 ## Syntax
 
 {CODE:java document_query_1@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.java /}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **indexName** | String | Name of an index to perform a query on (exclusive with **collectionName**)  |
-| **collectionName** | String | Name of a collection to perform a query on (exclusive with **indexName**) |
-| **isMapReduce** | bool | Indicates if a queried index is a map/reduce index (modifies how we treat identifier properties) |
+| Parameters | |                                                                                                       |
+| ------------- | ------------- |-------------------------------------------------------------------------------------------------------|
+| **indexName** | String | Name of an index to perform a query on<br> (mutually exclusive with **collectionName**)               |
+| **collectionName** | String | Name of a collection to perform a query on<br> (mutually exclusive with **indexName**)                |
+| **isMapReduce** | bool | Indicates if a queried index is a map-reduce index<br> (modifies how we treat identifier properties) |
 
 | Return Value | |
 | ------------- | ----- |

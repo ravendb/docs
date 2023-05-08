@@ -352,16 +352,24 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
         {
             #region syntax
             // Overloads for querying a collection OR an index:
+            // ================================================
+            
             IRavenQueryable<T> Query<T>(string indexName = null, 
                 string collectionName = null, bool isMapReduce = false);
+            
             IDocumentQuery<T> DocumentQuery<T>(string indexName = null,
                 string collectionName = null, bool isMapReduce = false);
             
             // Overloads for querying an index:
+            // ================================
+            
             IRavenQueryable<T> Query<T, TIndexCreator>();
+            
             IDocumentQuery<T> DocumentQuery<T, TIndexCreator>();
             
             // RawQuery:
+            // =========
+            
             IRawDocumentQuery<T> RawQuery<T>(string query);
             #endregion
         }

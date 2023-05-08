@@ -226,6 +226,8 @@ from "products" limit 5, 10 // skip 5, take 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+* By default, if the page size is not specified, all matching records will be retrieved from the database.
+
 {NOTE/}
 
 {PANEL/}
