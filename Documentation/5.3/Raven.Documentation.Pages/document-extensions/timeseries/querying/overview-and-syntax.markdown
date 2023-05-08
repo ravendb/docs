@@ -60,14 +60,14 @@ to the client, so they require very little client computation resources.
 
 {PANEL: Dynamic and Indexed Queries}
 
-Time series indexes are not created automatically by the server, but static time series 
-indexes can be created by clients (or using the Studio).  
+Time series indexes are not created automatically by the server when making a dynamic query.  
+Static time series indexes can be created by clients (or using the Studio).  
 
-* Use **dynamic queries** when time series you query are unindexed 
-  or when you prefer that RavenDB would choose an index automatically 
-  using its [query optimizer](../../../client-api/session/querying/what-is-rql#query-optimizer). E.g. - 
+* Use **dynamic queries** when time series you query are not indexed,  
+  or when you prefer that RavenDB would choose an index automatically.  
+  See [queries always use an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index). E.g. -
    {CODE-BLOCK: javascript}
-//Look for time series named "HeartRates" in user profiles of users under 30.
+//Look for time series named "HeartRates" in user profiles of users born after 1990
 from Employees as e 
 where Birthday > '1990-01-01'
 select timeseries(

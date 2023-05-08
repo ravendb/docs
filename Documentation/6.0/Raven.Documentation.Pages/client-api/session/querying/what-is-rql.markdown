@@ -9,10 +9,10 @@
   that is easy to use and interact with.
 
 * Any query written using high-level Session methods (`Query`, `DocumentQuery`)  
-  is translated by the client to RQL before being sent to the server for execution. 
+  is translated by the client to RQL before being sent to the server for execution.
 
 * A query can be written with RQL directly by either:  
-  * Using the Session's `RawQuery` method  
+  * Using the session's `RawQuery` method  
   * Making a query from the [Query view](../../../studio/database/queries/query-view) in Studio  
 
 * Learn more about querying from the session in this [Query Overview](../../../client-api/session/querying/how-to-query). 
@@ -30,8 +30,6 @@
      * [`load`](../../../client-api/session/querying/what-is-rql#load)
      * [`limit`](../../../client-api/session/querying/what-is-rql#limit)
      * [`update`](../../../client-api/session/querying/what-is-rql#update)
-     * [`with`](../../../client-api/session/querying/what-is-rql#with)  
-     * [`match`](../../../client-api/session/querying/what-is-rql#match)  
 
 {NOTE/}
 
@@ -43,18 +41,18 @@ The query pipeline in RavenDB includes the following main stages:
 
 1. __Detect query source__  ([`from`](../../../client-api/session/querying/what-is-rql#from))
 
-    * Based on your query, RavenDB will determine the appropriate data source from which to retrieve results.
+   * Based on your query, RavenDB will determine the appropriate data source from which to retrieve results.  
+   
+   * Note: all queries in RavenDB use an index to provide results, even when you don't specify one.   
+    
+   * The following options are available:
+     
+     * `from index` - Explicitly specify which index to use.
+   
+     * `from collection` - Specify the collection to query.  
+       RavenDB will decide which index will be used depending on the query criteria.
 
-    * Note: all queries in RavenDB use an index to provide results, even when you don't specify one.
-
-    * The following options are available:
-
-        * `from index` - Explicitly specify which index to use.
-
-        * `from collection` - Specify the collection to query.  
-          RavenDB will decide which index will be used depending on the query criteria.
-
-    * Learn more about these __query scenarios__ in this [Query Overview](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
+   * Learn more about these __query scenarios__ in this [Query Overview](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
 
 2. __Filter the data__ ([`where`](../../../client-api/session/querying/what-is-rql#where))  
    * The index is scanned for records that match the query predicate. 
@@ -69,8 +67,8 @@ The query pipeline in RavenDB includes the following main stages:
      For example, you can order by a field value, by the resulting documents' score, by random ordering, etc.
 
 5. __Limit results__ ([`limit`](../../../client-api/session/querying/what-is-rql#limit))
-    * You can specify the number of results you want to get back from the query  
-      and the number of results you want to skip.
+   * You can specify the number of results you want to get back from the query  
+     and the number of results you want to skip.
 
 6. __Project results__ ([`select`](../../../client-api/session/querying/what-is-rql#select)) 
    * [Projections](../../../indexes/querying/projections) are specified when you need to retrieve only specific document fields, instead of the whole full document.
@@ -140,8 +138,6 @@ The following keywords and methods are available in RQL:
 - [LIMIT](../../../client-api/session/querying/what-is-rql#limit)
 - [UPDATE](../../../client-api/session/querying/what-is-rql#update)
 - [INCLUDE](../../../client-api/session/querying/what-is-rql#include)
-- [WITH](../../../client-api/session/querying/what-is-rql#with)
-- [MATCH](../../../client-api/session/querying/what-is-rql#match)
 
 With the following operators:
 
@@ -429,42 +425,6 @@ from "Products" limit 5, 10 // skip 5, take 10
 
 To patch documents on the server-side, use `update` with the desired JavaScript that will be applied to any document matching the query criteria.  
 For more information, please refer to this [patching](../../../client-api/operations/patching/set-based) article.  
-
-{PANEL/}
-
-{PANEL: `with`}
-
-The keyword `with` is used to determine the data source of a [graph query](../../../indexes/querying/graph/graph-queries-overview).  
-There are two types of `with` clauses, regular `with` and `with edges`.
-
-- __with__: &nbsp;&nbsp; `with {from Orders} as o`  
-  The above statement means that the data source referred to by the alias `o` is the result of the `from Orders` query.  
-    
-- __with edges__: &nbsp;&nbsp; `with edges (Lines) { where Discount >= 0.25 select Product } as cheap`  
-  The above statement means that our data source is the property `Lines` of the source documents and we filter all lines that match `Discount >= 0.25` query.  
-  The destination referred to by the `cheap` alias is the product pointed by the `Product` property of the order line.   
-    
-{PANEL/}
-
-{PANEL: `match`}
-
-The keyword `match` is used to determine the pattern of a [graph query](../../../indexes/querying/graph/graph-queries-overview).   
-
-`match (Orders as o)-[Lines as cheap where Discount >= 0.25 select Product]->(Products as p)`  
-The above statement means that we are searching for a pattern that starts with an order and traverse using the
-order lines referred to by the `Lines` property where their `Discount` property is larger than 25%  and the destination is the product referred to by the `Product` property.  
-
-A match may contain an edge in both direction, a right edge would look like so `(node1)-[right]->(node2)`  
-and a left one would look like so `(node1)<-[left]-(node2)`.  
-
-Any combination of edges is allowed in a match clause e.g.  
-`(node1)-[right]->(node2)<-[left]-(node3)`  
-
-The above match will actually be translated to:  
-`(node1)-[right]->(node2)`  
-and  
-`(node3)-[left]->(node2)`  
-where the `and` is a set intersection between the two patterns.  
 
 {PANEL/}
 

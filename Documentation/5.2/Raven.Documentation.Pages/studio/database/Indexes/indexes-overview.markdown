@@ -3,7 +3,9 @@
 
 {NOTE: }
 
-* RavenDB uses __indexes__ to satisfy queries, allowing for fast query results.
+* RavenDB uses __indexes__ to satisfy queries, allowing for fast query results.  
+  The index type the query will use depends on the query itself.  
+  Learn more about that in [queries always use an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
 
 * Indexes scan and process the entire dataset only once.  
   After the initial scan, an index will process only documents that were modified, added or deleted.
@@ -137,10 +139,9 @@ Indexes in RavenDB are split across the following multiple axes:
 * **Auto Indexes**:  
   * Auto-indexes are created by the server.  
   * When a query that has some filtering condition doesn't specify a specific index to be used,  
-    the server [Query Optimizer](../../../client-api/session/querying/what-is-rql#query-optimizer) will first analyze the query and search for an already existing Auto-index  
-    that can answer the query.  
+    the server Query Optimizer will first analyze the query and search for an already existing Auto-index that can answer the query.  
   * If there is no such index, the Query Optimizer creates on the fly an Auto-index that can answer this query and all previous queries on that collection.  
-  * When the new Auto-index has caught up, RavenDB cleans up all the old Auto-indexes that are now superseded by the new one.  
+  * When the new Auto-index has caught up, RavenDB cleans up all the old Auto-indexes that are now superseded by the new one.
 
 * **Static Indexes**:  
   * Static-indexes are created by the user (database admin only) from the Studio or from the [Client API](../../../indexes/creating-and-deploying).  
@@ -218,9 +219,8 @@ See [Create Map Index](../../../studio/database/indexes/create-map-index) to lea
 * RavenDB keeps a [history of index revisions](../../../studio/database/indexes/index-history), 
   allowing you to revert an index to any of its past revisions.  
   The number of index revisions kept can be configured in the 
-  [Server Configuration Options](../../../server/configuration/configuration-options), 
-  or using the [Database Settings view](../../../studio/database/indexes/index-history#view-and-update-number-of-index-revisions) 
-  in the Studio.
+  [Server Configuration Options](../../../server/configuration/configuration-options),  
+  or using the [Database Settings view](../../../studio/database/indexes/index-history#view-and-update-number-of-index-revisions) in the Studio.
 {PANEL/}
 
 {PANEL: Indexes in the Cluster}
