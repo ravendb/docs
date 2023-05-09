@@ -330,7 +330,7 @@ indexes is altered in in a few ways that database operators should be aware of.
 - [Multi-Map Indexes](../indexes/multi-map-indexes)  
 
 ### Querying
-- [Basics](../indexes/querying/basics)  
+- [Query Overview](../client-api/session/querying/how-to-query)
 
 ### Studio
 - [Indexes: Overview](../studio/database/indexes/indexes-overview)  
