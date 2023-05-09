@@ -1,41 +1,24 @@
 # Query vs DocumentQuery
 
-Unlike .NET, Node.js client offers single API for querying documents. 
+---
 
-Below you can find examples of equivalent calls. 
+{NOTE: }
 
-`query()` method in `DocumentSession` is shorthand for calling `session.advanced.documentQuery()`.
+* The Node.js client provides a __unified API__ for querying documents via the `session.query()` method.  
+  All available methods for the session's _query_ method are listed [here](../../../../client-api/session/querying/how-to-query#query-api).
 
-{CODE:nodejs query_1a@ClientApi\Session\Querying\DocumentQuery\queryVsDocumentQuery.js /}
+* The `query` method is essentially a shorthand for invoking the `documentQuery` method.  
+  Examples of those equivalent calls are listed below. 
 
-is equivalent to:
 
-{CODE:nodejs query_1b@ClientApi\Session\Querying\DocumentQuery\queryVsDocumentQuery.js /}
+{NOTE/}
 
-<hr />
+---
 
-{CODE:nodejs query_2a@ClientApi\Session\Querying\DocumentQuery\queryVsDocumentQuery.js /}
-
-is equivalent to:
-
-{CODE:nodejs query_2b@ClientApi\Session\Querying\DocumentQuery\queryVsDocumentQuery.js /}
-
-<hr />
-
-{CODE:nodejs query_3a@ClientApi\Session\Querying\DocumentQuery\queryVsDocumentQuery.js /}
-
-is equivalent to:
-
-{CODE:nodejs query_3b@ClientApi\Session\Querying\DocumentQuery\queryVsDocumentQuery.js /}
-
-<hr />
-
-{CODE:nodejs query_4a@ClientApi\Session\Querying\DocumentQuery\queryVsDocumentQuery.js /}
-
-is equivalent to:
-
-{CODE:nodejs query_4b@ClientApi\Session\Querying\DocumentQuery\queryVsDocumentQuery.js /}
-
+{CODE:nodejs query_1@ClientApi\Session\Querying\DocumentQuery\queryVsDocumentQuery.js /}
+{CODE:nodejs query_2@ClientApi\Session\Querying\DocumentQuery\queryVsDocumentQuery.js /}
+{CODE:nodejs query_3@ClientApi\Session\Querying\DocumentQuery\queryVsDocumentQuery.js /}
+{CODE:nodejs query_4@ClientApi\Session\Querying\DocumentQuery\queryVsDocumentQuery.js /}
 
 ## Related Articles
 

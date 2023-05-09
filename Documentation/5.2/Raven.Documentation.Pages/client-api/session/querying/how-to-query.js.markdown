@@ -324,11 +324,12 @@ Available methods for the session's [query](../../../client-api/session/querying
 
 {CODE:nodejs syntax@ClientApi\Session\Querying\howToQuery.js /}
 
-| Parameter | Type | Description |
-| - | - | - |
-| __documentType__ | object | The type of entity that represents the collection queried |
-| __index__ | object | The index class |
-| __opts__ | `DocumentQueryOptions` object | Query options |
+| Parameter        | Type                          | Description                  |
+|------------------|-------------------------------|------------------------------|
+| __documentType__ | object                        | The type of entities queried |
+| __index__        | object                        | The index class              |
+| __opts__         | `DocumentQueryOptions` object | Query options                |
+| __query__        | string                        | The RQL query string         |
 
 | `DocumentQueryOptions` | | |
 | - | - | - |

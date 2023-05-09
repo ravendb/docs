@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* Queries in RavenDB can be written using `Query`, `DocumentQuery` or directly with [RQL](../../../../client-api/session/querying/what-is-rql).  
+* Queries in RavenDB can be written using `Query`, `DocumentQuery`, `RawQuery`, or directly with [RQL](../../../../client-api/session/querying/what-is-rql).  
   Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query).
 
 * The main differences between `Query` and `DocumentQuery` are outlined in this article.
