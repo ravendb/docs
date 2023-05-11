@@ -84,6 +84,7 @@ data retrieval from the database to only those items that match given conditions
 
      If we query all **products**, for example, and want to find only the 
      most successful products, we can easily run a query such as:  
+
      {CODE-BLOCK:JSON}
      from index 'Products/Sales'
 where TotalSales >= 5000
@@ -180,50 +181,25 @@ is applied to restrict the number of retrieved results, there are scenarios
 in which **all** the results will still be retrieved from all shards.  
 To understand how this can happen, let's run a few queries over this 
 map-reduce index:  
-{CODE-BLOCK:csharp}
-Reduce = results => from result in results
-                    group result by result.Name
-                    into g
-                    select new Result
-                    {
-                        // Group-by field (reduce key)
-                        Name = g.Key,
-                        // Computation field
-                        Sum = g.Sum(x => x.Sum)
-                    };
-{CODE-BLOCK/}
+{CODE map-reduce-index@Sharding\ShardingQuerying.cs /}
 
 * The first query sorts the results using `OrderBy` without setting any limit.  
   This will load **all** matching results from all shards (just like this query 
   would load all matching results from a non-sharded database).  
-  {CODE-BLOCK:csharp}
-                      var queryResult = session.Query<UserMapReduce.Result, UserMapReduce>()
-                        .OrderBy(x => x.Name)
-                        .ToList();
-  {CODE-BLOCK/}
+  {CODE OrderBy_with-no-limit@Sharding\ShardingQuerying.cs /}
   
 * The second query sorts the results by one of the `GroupBy` fields, 
   `Name`, and sets a limit to restrict the retrieved dataset to 3 results.  
   This **will** restrict the retrieved dataset to the set limit.  
-  {CODE-BLOCK:csharp}
-                    var queryResult = session.Query<UserMapReduce.Result, UserMapReduce>()
-                        .OrderBy(x => x.Name)
-                        .Take(3) // this limit will apply while retrieving the items
-                        .ToList();
-  {CODE-BLOCK/}
+  {CODE OrderBy_with-limit@Sharding\ShardingQuerying.cs /}
   
 * The third query sorts the results **not** by a `GroupBy` field 
   but by a field that computes a sum from retrieved values.  
   This will retrieve **all** the results from all shards regardless of 
   the set limit, perform the computation over them all, and only then 
   sort them and provide us with just the number of results we requested.  
-  {CODE-BLOCK:csharp}
-                    var queryResult = session.Query<UserMapReduce.Result, UserMapReduce>()
-                        .OrderBy(x => x.Sum)
-                        .Take(3) // this limit will only apply after retrieving all items
-                        .ToList();
-  {CODE-BLOCK/}
-    
+  {CODE compute-sum-by-retrieved-results@Sharding\ShardingQuerying.cs /}
+  
   {NOTE: }
   Note that retrieving all the results from all shards, either 
   by setting no limit or by setting a limit based on a computation 
@@ -283,22 +259,10 @@ and when it's time to query any of them the query is sent only to this shard.
 * Examples:  
 
      Query only the shard containing `users/1`:  
-     {CODE-BLOCK:JSON}
-      var ResultSet = session.Advanced.DocumentQuery<User>()
-                   // Which shard to query
-                   .ShardContext(s => s.ByDocumentId("users/1"))
-                   // The query
-                   .SelectFields<string>("Occupation").ToList();
-     {CODE-BLOCK/}
+     {CODE query-selected-shard@Sharding\ShardingQuerying.cs /}
 
      Query only the shard/s containing `users/2` and `users/3`:  
-     {CODE-BLOCK:JSON}
-      var ResultSet  = session.Advanced.DocumentQuery<User>()
-                   // Which shards to query
-                   .ShardContext(s => s.ByDocumentIds(new [] { "users/2", "users/3" }))
-                   // The query
-                   .SelectFields<string>("Occupation").ToList();
-     {CODE-BLOCK/}
+     {CODE query-selected-shards@Sharding\ShardingQuerying.cs /}
 
 {PANEL/}
 
