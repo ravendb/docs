@@ -249,7 +249,7 @@ Query a selected shard when you know in advance that the documents you need
 to query reside on this shard, to avoid redundant travels to other shards.  
 
 This feature can be helpful when, for example, all the documents related 
-to a specific account [are deliberately stored on the same shard](../sharding/administration/pairing-documents), 
+to a specific account [are deliberately stored on the same shard](../sharding/administration/anchoring-documents), 
 and when it's time to query any of them the query is sent only to this shard.  
 
 * To query a specific shard or a list of specific shards add to the 
@@ -308,6 +308,6 @@ databases include:
 - [Stream Query Results](../client-api/session/querying/how-to-stream-query-results#stream-an-index-query)  
 
 ### Sharding
-- [Pairing Docs: $ Syntax](../sharding/overview#pairing-documents)  
+- [Anchoring Documents](../sharding/administration/anchoring-documents)  
 - [Shards Indexing](../sharding/indexing)  
 
