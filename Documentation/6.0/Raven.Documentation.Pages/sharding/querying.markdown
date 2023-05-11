@@ -7,10 +7,10 @@
 * A sharded database offers the same set of querying features that 
   a non-sharded database offers, so queries that were written for 
   a non-sharded database can generally be kept as is.  
-* Some querying features are yet to be implemented. Others behave 
-  a little differently in a sharded database. One example for the 
-  latter is [filter](../sharding/querying#filtering-results-in-a-sharded-database).  
-  These instances are discussed below.  
+* Some querying features are yet to be implemented. Others (like 
+  [filter](../sharding/querying#filtering-results-in-a-sharded-database)) 
+  behave a little differently in a sharded database. These cases 
+  are discussed below.  
 
 * In this page:  
   * [Querying in a Sharded Database](../sharding/querying#querying-in-a-sharded-database)  
@@ -20,6 +20,7 @@
      * [OrderBy in a Map-Reduce Index](../sharding/querying#orderby-in-a-map-reduce-index)  
      * [`where` vs `filter` Recommendations](../sharding/querying#vs--recommendations)  
   * [Including Items](../sharding/querying#including-items)  
+  * [Timing Queries](../sharding/querying#timing-queries)
   * [Unsupported Querying Features](../sharding/querying#unsupported-querying-features)  
   
 {NOTE/}
@@ -169,7 +170,7 @@ and projections of map indexes **can** load a document,
 
 ## OrderBy in a Map-Reduce Index
 
-Simlarly to its behavior under a non-sharded database, 
+Similarly to its behavior under a non-sharded database, 
 [OrderBy](../indexes/querying/sorting) is used in an index or a query to 
 sort the retrieved dataset by a given order.  
 
@@ -258,8 +259,35 @@ item resides on another shard.
 If a requested item is not found on this shard, the orchestrator will connect 
 the shard it is stored on, load the item and provide it.  
 
-Note that this process will cost the extra travel to the shard that the requested 
-document is on.  
+Note that this process will cost the additional travel to the shard that the 
+requested item resides on.  
+
+{PANEL/}
+
+{PANEL: Timing Queries}
+The duration of queries and query parts (e.g. optimization 
+or execution time) can be measured using API or Studio.  
+
+Timing is **disabled** by default, to avoid the measuring overhead. 
+It can be enabled per query by adding `include timings()` to an RQL 
+query or calling `.Timings` in a [Linq](../client-api/session/querying/how-to-query#session.query) 
+query, as explained [here](../client-api/session/querying/debugging/query-timings).  
+
+To time queries in a sharded database using Studio open the 
+[Query View](../studio/database/queries/query-view), enable timings 
+as explained above, run the query, and open the **Timing** tab.  
+
+!["Timing Shards Querying"](images/querying_timing.png "Timing Shards Querying")
+
+1. **Textual view** of query parts and their duration.  
+   Point the mouse cursor at captions to display timing properties in the graphical view on the right.  
+2. **Per-shard Timings**  
+3. **Graphical View**  
+   Point the mouse cursor at graph sections to display query parts duration:  
+    **A**. Shard #0 overall query time  
+    **B**. Shard #0 optimization period  
+    **C**. Shard #0 query period  
+    **D**. Shard #0 staleness period  
 
 {PANEL/}
 
@@ -296,7 +324,7 @@ databases include:
 ### Indexing
 - [Map-Reduce Indexes](../indexes/map-reduce-indexes)  
 - [Indexing Basics](../indexes/indexing-basics)  
-- [Rolling index deploymeny](../indexes/rolling-index-deployment)  
+- [Rolling index deployment](../indexes/rolling-index-deployment)  
 - [Map-Reduce Output Documents](../indexes/map-reduce-indexes#map-reduce-output-documents)  
 
 ### Querying
