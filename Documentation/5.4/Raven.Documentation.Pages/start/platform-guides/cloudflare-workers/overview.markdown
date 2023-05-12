@@ -9,9 +9,9 @@ Learn more about [how Workers works](https://developers.cloudflare.com/workers/l
 
 Cloudflare Workers run on the V8 Runtime. The RavenDB Node.js client SDK provides support to query RavenDB resources in RavenDB Cloud or in your own cloud infrastructure.
 
-### New to Cloudflare Workers?
+<!-- ### New to Cloudflare Workers?
 
-For a walkthrough and demo of getting started with Cloudflare Workers, see [TBD](#).
+For a walkthrough and demo of getting started with Cloudflare Workers, see [TBD](#). -->
 
 {NOTE/}
 
@@ -19,7 +19,7 @@ In this guide, you will learn how deploy a Cloudflare Worker using the [RavenDB 
 
 * [Before We Get Started](#before-we-get-started)
 * [Create a Cloudflare RavenDB Worker project](#create-a-cloudflare-ravendb-worker-project)
-* [Connecting to an Unauthenticated RavenDB Cluster](#connecting-to-an-unauthenticated-ravendb-cluster)
+* [Updating Database Connection Settings](#updating-database-connection-settings)
 * [Connecting to an Authenticated RavenDB Cluster](#connecting-to-an-authenticated-ravendb-cluster)
 * [Deploying to Production](#deploying-to-production)
 * [Using RavenDB in the Worker](#using-ravendb-in-the-worker)
@@ -31,7 +31,7 @@ You will need the following before continuing:
 - A free or paid [Cloudflare account](https://cloudflare.com)
 - A [RavenDB Cloud](https://cloud.ravendb.net) account or self-hosted client certificate
 - [Git](https://git-scm.org)
-- [Node.js](https://nodejs.com) 16+
+- [Node.js](https://nodejs.com) 16+ with npm
 
 {PANEL/}
 
@@ -44,14 +44,16 @@ There are two primary ways to get started:
 
 ### Using Deploy with Workers wizard
 
-TODO: Embed YT video how-to
+<!-- TODO: Embed YT video how-to -->
 
 Using [Deploy with Workers][deploy-with-workers] step-by-step wizard is the simplest method but requires a GitHub account and authorized access, which may not be applicable in all situations. For example, this method will not work with GitLab or GitHub Enterprise.
+
+![Screenshot of Deploy with Cloudflare Wizard][image-template-deploy-cloudflare]
 
 The wizard will guide you through deploying a Worker and hooking up a new repo with continuous deployment through GitHub actions. It will also automatically set up your repository secrets.
 
 {WARNING: Forking the Template}
-The deployment wizard will fork the GitHub repository into your GitHub user account (not an organization). You will want to manually rename the repository and unmark it as a "Template" in the repository settings before cloning it.
+The deployment wizard will fork the GitHub repository into your GitHub user account (not an organization). You will want to manually rename the repository and [unmark it as a "Template"][gh-template-repo] in the repository settings before cloning it.
 {WARNING/}
 
 ### Using npm to initialize an empty template
@@ -62,36 +64,75 @@ If you do not want to use the wizard, you can use npm and Cloudflare's `create-c
 
 This will generate all the required code and run `npm install` for you to set up a new project on your computer. You can then push to GitHub or any other source provider from there.
 
-{PANEL/}
+### Test the template locally
 
-{PANEL: Connecting to an Unauthenticated RavenDB Cluster}
+By default, the template is set up to connect to the [RavenDB Live Test cluster][live-test].
 
-By default, the template is not set up fully to connect to RavenDB.
-
-### Update DB connection settings
-
-In the `wrangler.toml` file you will also see some environment variables:
-
-- `DB_URLS` -- These are the node URLs for your RavenDB instance (Cloud or self-hosted)
-- `DB_NAME` -- This is the default database to connect to
-
-The defaults are under `[vars]` and overriden in `[env.production.vars]`. These settings will overwrite whatever values you use in the Cloudflare dashboard on deployment.
-
-{NOTE: Make sure the DB exists}
-
-For brand new projects, the database you connect to may not exist yet. Follow the [create database procedure][docs-create-db] to create a new database otherwise you will encounter a `DatabaseDoesNotExist` exception on startup.
-
-{NOTE/}
-
-Once the connection info is provided, run the template locally to test it:
+You can run the template locally to test the connection:
 
 `npm run dev`
 
-Open the browser by pressing the "B" key (e.g. http://localhost:7071) and you should see a message like this:
+{NOTE: First-Time Wrangler Setup}
+If this is the first time you are connecting using the Wrangler CLI, it will open a browser window for you to authenticate using your Cloudflare account. After you sign in, you can return to the terminal.
+{NOTE/}
 
-`Successfully connected to Node A`
+Open the browser by pressing the "B" key (e.g. http://localhost:7071) and you should see a screen like this:
+
+![Successfully connected to RavenDB welcome screen from Cloudflare][image-template-welcome-unauthenticated]
 
 This means you have successfully connected to your RavenDB database.
+
+{PANEL/}
+
+{PANEL: Updating Database Connection Settings}
+
+The `wrangler.toml` file contains configuration for the worker. Here's an example:
+
+{CODE-BLOCK:json}
+name = "ravendb-worker"
+main = "./src/index.ts"
+node_compat = true
+compatibility_date = "2022-05-03"
+
+# mtls_certificates = [
+#  { binding = "DB_CERT", certificate_id = "<CERTIFICATE_ID>" } 
+# ]
+
+# Define top-level environment variables
+# under the `[vars]` block using
+# the `key = "value"` format
+[vars]
+DB_URLS = ""
+DB_NAME = ""
+
+# Override values for `--env production` usage
+[env.production]
+name = "ravendb-worker-production"
+[env.production.vars]
+DB_URLS = ""
+DB_NAME = ""
+{CODE-BLOCK/}
+
+The `node_compat = true` setting is required for the RavenDB Node.js SDK to operate correctly. If this is `false` or missing, you will experience runtime exceptions.
+
+There are two variables defined that are used by the template:
+
+- `DB_URLS` -- These are the node URLs for your RavenDB instance (Cloud or self-hosted). The values are comma-separated
+- `DB_NAME` -- This is the default database to connect to
+ 
+When left blank, the Live Test connection settings are used. The defaults are under `[vars]` and overriden in `[env.production.vars]`.
+
+{NOTE: wrangler.toml overrides on deployment}
+You can also define settings within the Cloudflare worker dashboard. The values in the `wrangler.toml` will overwrite those values *on new deployment*. Keep this in mind when deciding where to define the variables!
+{NOTE/}
+
+{WARNING: Make sure the named database exists}
+
+For brand new projects, the database you connect to may not exist yet. Follow the [create database procedure][docs-create-db] to create a new database otherwise you will encounter a `DatabaseDoesNotExist` exception on startup.
+
+{WARNING/}
+
+Variables defined here, including the `DB_CERT` mTLS binding, will be exposed as `process.env` variables you can access in the worker at runtime. You'll use the mTLS binding when connecting to an authenticated cluster using your client certificate.
 
 {PANEL/}
 
@@ -101,7 +142,7 @@ Client certificate authentication is handled through [Cloudflare mTLS authentica
 
 ### Obtain RavenDB certificate
 
-First, download your RavenDB client certificate package you will use to authenticate. Follow the guides for either [Cloud certificates][docs-cloud-certs] or for [self-hosted certificates][docs-on-prem-certs].
+First, download your RavenDB client certificate package you will use to authenticate. Follow the guides for either [Cloud certificates][docs-cloud-certs] or for [self-hosted certificates][docs-on-prem-certs]. It is recommended to [generate a new client certificate][docs-generate-client-certificate] with limited access rights instead of a `ClusterAdmin`-level certificate. This also ensures the Worker is using a dedicated certificate that can be managed separately.
 
 Once extracted to a folder, you'll need the paths to the `.crt` and `.key` files for the next step.
 
@@ -171,13 +212,13 @@ You should see the following message in the console:
 
 > A bound cert was found and will be used for RavenDB requests.
 
-Once started, the Worker will be running on a localhost address through the Miniflare tunnel infrastructure.
+Once started, the Worker will be running on a localhost address.
 
-Open the browser by pressing the "B" key (e.g. http://localhost:7071) and you should see a message like this:
+Open the browser by pressing the "B" key (e.g. http://localhost:7071) and you should see a screen like this:
 
-`Successfully connected to Node A`
+![Successfully connected to RavenDB welcome screen from Cloudflare][image-template-welcome-authenticated]
 
-This means you have successfully connected to your RavenDB database.
+If you see a green check and the correct connection details, this means you have successfully connected to your RavenDB database.
 
 {PANEL/}
 
@@ -207,7 +248,9 @@ If your Worker account is not yet set up, Wrangler will walk you through the ste
 
 ### Verifying Production Worker
 
-In your Cloudflare Dashboard, the Worker should be deployed. You can find your Worker URL in the dashboard and open it to test the connection is working.
+In your Cloudflare Dashboard, the Worker should be deployed. You can find your Worker URL in the dashboard under "Preview URL" and open it to test the connection is working.
+
+![Preview URL shown in the Cloudflare Worker dashboard][image-cloudflare-worker-preview]
 
 If it is not working, verify the Wrangler settings are being applied.
 
@@ -233,12 +276,19 @@ router.get("/users/:id", async (request: IRequest, env: Env) => {
 
 [template]: https://github.com/ravendb/template-cloudflare-worker
 [deploy-with-workers]: https://deploy.workers.cloudflare.com/?url=https://github.com/ravendb/template-cloudflare-worker
+[live-test]: http://live-test.ravendb.net
 [cf-mtls-worker]: https://developers.cloudflare.com/workers/runtime-apis/mtls
 [cf-wrangler]: https://developers.cloudflare.com/workers/wrangler/install-and-update/
 [docs-create-db]: /docs/article-page/latest/csharp/studio/database/create-new-database/general-flow
 [docs-cloud-certs]: /docs/article-page/latest/csharp/cloud/cloud-security
 [docs-on-prem-certs]: /docs/article-page/latest/csharp/studio/overview
+[docs-generate-client-certificate]: /docs/article-page/latest/csharp/server/security/authentication/certificate-management#generate-client-certificate
 [npm-itty-router]: https://npmjs.com/package/itty-router
 [gh-repo-secrets]: https://docs.github.com/en/actions/security-guides/encrypted-secrets
 [gh-workflows]: https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions
 [gh-workflows-manual]: https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow
+[gh-template-repo]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository
+[image-template-deploy-cloudflare]: images/template-deploy-cloudflare.jpg
+[image-template-welcome-unauthenticated]: images/template-welcome-unauthenticated.jpg
+[image-template-welcome-authenticated]: images/template-welcome-authenticated.jpg
+[image-cloudflare-worker-preview]: images/cloudflare-worker-preview.jpg
