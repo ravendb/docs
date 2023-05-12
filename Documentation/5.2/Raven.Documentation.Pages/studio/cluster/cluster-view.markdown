@@ -50,10 +50,12 @@
    * _Watcher_  
    * _Promotable_  
 5. **Cores Info**  
-   Number of cores assigned for the node to use - out of available cores on this node's machine  
+   Number of cores assigned for the node to use __-__ out of available cores on this node's machine.  
 6. **Memory**  
-    Memory used by the node out of total memory installed on this node's machine.  
-    The core-memory ratio is determined by your license type  
+    Amount of memory that RavenDB will use on the node __-__ out of the total memory installed on the machine.  
+    This memory limit is set by your license, and it applies to managed memory (.NET),  
+    and to unmanaged memory handled by RavenDB.  
+    It doesn't apply to memory-mapped files managed by the OS.  
 {PANEL/}
 
 {PANEL: Cluster View Operations}

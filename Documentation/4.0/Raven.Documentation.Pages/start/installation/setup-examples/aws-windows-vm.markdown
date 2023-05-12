@@ -27,7 +27,7 @@ You would probably want to go over the entire set of options and customize your 
 
 {WARNING:Security Concerns}
 The following settings are fine if you just want to experiment with RavenDB. However, when security is needed you should set 
-proper firewall rules and restrict access by IP. Please visit the [AWS security documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_Network_and_Security.html)
+proper firewall rules and restrict access by IP. Please visit the [AWS security documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html)
 for more information about securing your VM.
 {WARNING/}
 

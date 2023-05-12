@@ -64,13 +64,7 @@
          the operation is canceled and an exception is thrown.  
          ![Patch Timeout](images/patch-view-timeout.png "Patch Timeout")  
 
-    * c. **Disable creating new Auto-Indexes**  
-         If toggled ON, the patch command will not create an auto-index if there is no existing index that serves the patch. 
-         In that case, an exception will be thrown. 
-         * Toggling this ON will not affect Auto-Index creation in future Studio patch requests.
-           To disable all future Auto-Index creation from Studio patches, change the default setting in [Studio Configuration](../../../studio/database/settings/studio-configuration#disabling-auto-index-creation-on-studio-queries-or-patches)
-
-    * d. **Limit number of operations**  
+    * c. **Limit number of operations**  
          Toggle this option ON to set the max number of patch operations per second.  
          ![Patch Operations Limit](images/patch-view-operations-limit.png "Patch Operations Limit")  
 
@@ -142,8 +136,9 @@ Click **Test** to open the patch test dialog.
 - [What Are Operaions](../../../client-api/operations/what-are-operations)  
 
 ### Queries
-- [RQL - Raven Query Language](../../../indexes/querying/what-is-rql)  
-- [Basics](../../../indexes/querying/basics)  
+- [RQL - Raven Query Language](../../../client-api/session/querying/what-is-rql)  
+- [Query Overview](../../../client-api/session/querying/how-to-query)  
+- [Querying an Index](../../../indexes/querying/query-index)
 
 ### Indexes
 - [Indexing Basics](../../../indexes/indexing-basics)  

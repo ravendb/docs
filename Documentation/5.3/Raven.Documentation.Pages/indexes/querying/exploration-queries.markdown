@@ -201,7 +201,7 @@ The filtered results can be projected using `select`, like those of any other qu
 ### With User-Defined Javascript Functions (`declare`)
 
 You can define a Javascript function as part of your query using the 
-[declare]()../../indexes/querying/what-is-rql#declare) keyword, and 
+[declare](../../client-api/session/querying/what-is-rql#declare) keyword, and 
 use it as part of your `filter` condition to freely adapt the filtering 
 to your needs.  
 
@@ -226,11 +226,11 @@ filter_limit 100
 
 ### Querying
 
-- [What is RQL](../../indexes/querying/what-is-rql)  
+- [What is RQL](../../client-api/session/querying/what-is-rql)  
 - [Query](../../client-api/session/querying/how-to-query#session.query)  
 - [DocumentQuery](../../client-api/session/querying/how-to-query#session.advanced.documentquery)  
-- [Raw RQL](../../client-api/session/querying/how-to-query#session.advanced.rawquery)  
+- [RawQuery](../../client-api/session/querying/how-to-query#session.advanced.rawquery)  
 - [Where](../../indexes/querying/filtering)  
-- [Basics](../../indexes/querying/basics)  
+- [Querying an Index](../../indexes/querying/query-index)  
 - [Sorting](../../indexes/querying/sorting)  
-- [declare](../../indexes/querying/what-is-rql#declare)  
+- [declare](../../client-api/session/querying/what-is-rql#declare)  

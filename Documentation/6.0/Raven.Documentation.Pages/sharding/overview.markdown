@@ -14,6 +14,10 @@
   is required from clients when accessing a sharding-capable server 
   or a sharded database.  
     * The client API is **unchanged** under a sharded database.  
+      Clients of RavenDB versions older than 6.0 (that provided 
+      no sharding support) can seamlessly connect a sharded database,
+      without making any adaptations or even knowing that the 
+      database they connect is sharded.  
     * Particular modifications in RavenDB features under a sharded 
       database are documented in detail in feature-specific articles.  
 
@@ -63,11 +67,11 @@ of each shard in check and maintaining its high performance and throughput.
 
 ### Client-Server Communication
 
-As a client approaches a sharded database, the node it connects becomes the 
-**session orchestrator** and manages all the communication between the client 
-and the shards containing the documents it requires access to.  
-The client remains unaware of this process and uses the same API as if 
-the database wasn't sharded.  
+As a client connects a sharded database, it is appointed a RavenDB server 
+that functions as an **orchestrator** and mediates all the communication 
+between the client and the database shards.  
+The client remains unaware of this process and uses the same API used by 
+non-sharded databases to load documents, query, and so on.  
 The additional communication between the client and the orchestrator and 
 between the orchestrator and the shards does, however, present an overhead 
 over the usage of a non-sharded database.  
@@ -120,6 +124,18 @@ that would seamlessly retrieve `Users/3000` from shard **2** and `Users/5000` fr
 shard **3** and hand them to the client.  
 {NOTE/}
 
+As much as clients are concerned a sharded database is still a single entity: 
+the clients are not required to detect whether the database is sharded or not, 
+and clients of RavenDB versions prior to 6.0, which had no sharding support, 
+can access a sharded database unaltered.  
+
+Shard-specific operations are, however, available: a client can, for example, 
+track the shard that a document is stored at and query this shard, and Studio 
+can be used to relocate ([reshard](../sharding/resharding)) documents from one 
+shard to another.  
+
+!["Studio Document View"](images/overview_document-view.png "Studio Document View")
+
 ---
 
 ### Shard Replication 
@@ -131,7 +147,7 @@ provide multiple access points, and load-balance the traffic between shard repli
 The number of nodes a shard is replicated to is determined by 
 the **Shard Replication Factor**.  
 
-!["Shard Replication"](images/sharding-replication-factor.png "Shard Replication")
+!["Shard Replication"](images/overview_sharding-replication-factor.png "Shard Replication")
 
 * In the image above, a 3-shards database is hosted by a 5-nodes cluster (where 
   two of the nodes, **D** and **E**, are unused by this database).  
@@ -150,10 +166,10 @@ The number of documents and the amount of data stored in each bucket may vary.
 
 The number of buckets allocated for the whole database is fixed, always remaining 
 **1,048,576** (1024 times 1024).  
-Each shard is assigned with a range of buckets from this overall portion, in which 
+Each shard is assigned a range of buckets from this overall portion, in which 
 documents can be stored.  
 
-!["Buckets Allocation"](images/buckets-allocation.png "Buckets Allocation")
+!["Buckets Allocation"](images/overview_buckets-allocation.png "Buckets Allocation")
 
 ---
 
@@ -164,7 +180,7 @@ A hash algorithm is executed over each document ID. The resulting
 hash code, a number between 0 and 1,048,576, is the number of the 
 bucket in which the document is stored.  
 
-!["Buckets Population"](images/buckets-population.png "Buckets Population")
+!["Buckets Population"](images/overview_buckets-population.png "Buckets Population")
 
 As buckets are spread among different shards, the bucket number 
 allocated for a document also determines which shard the document 
@@ -196,7 +212,7 @@ The document you want Users/70 to share a bucket with: `Users/4`
 Rename `Users/70` to: `Users/70$Users/4`
 {NOTE/}
 
-!["Forcing Documents to Share a Bucket"](images/force-docs-to-share-bucket.png "Forcing Documents to Share a Bucket")
+!["Forcing Documents to Share a Bucket"](images/overview_force-docs-to-share-bucket.png "Forcing Documents to Share a Bucket")
 
 {WARNING: }
 Be careful not to force the storage of too many documents in the same bucket 
@@ -208,9 +224,9 @@ of the shards is overpopulated and others are underpopulated.
 
 {PANEL: Resharding}
 
-**Resharding** is the reallocation of data from one shard 
-to another, to maintain a balanced database in which all shards 
-handle about the same volume of data.  
+[Resharding](../sharding/resharding) is the relocation of data placed 
+on one shard, on another shard, to maintain a balanced database in which 
+all shards handle about the same volume of data.  
 
 The resharding process moves all the data related to a certain 
 bucket, including documents, document extensions, tombstones, etc., 
@@ -221,7 +237,7 @@ to a different shard, and then associates the bucket with the new shard.
   1. Bucket `100,000` was initially associated with shard **1**.  
      Therefore, all data added to this bucket has been stored in shard **1**.  
   2. Resharding bucket `100,000` to shard **2** will:  
-      * Move all the data that belong to this bucket to shard **2**.  
+      * Move all the data that belongs to this bucket to shard **2**.  
       * Associate bucket `100,000` with shard **2**.  
         From now on, any data added to this bucket will be stored in shard **2**.  
 {NOTE/}
@@ -230,35 +246,19 @@ to a different shard, and then associates the bucket with the new shard.
 
 {PANEL: Creating a Sharded Database}
 
-{NOTE: }
-
-* A sharded database can be created via API or using Studio.  
+* A sharded database can be [created via Studio](../sharding/administration/studio-admin#creating-a-sharded-database).  
 
 * A RavenDB cluster can run sharded and non-sharded databases in parallel.  
 
 * RavenDB (6.0 and on) supports sharding by default, no further steps are required to enable the feature.
-{NOTE/}
-
-To create a sharded database via API, use [CreateDatabaseOperation](../client-api/operations/server-wide/create-database) as follows.  
-
-{CODE-BLOCK:csharp}
-store.Maintenance.Server.Send(
-    new CreateDatabaseOperation(
-        new DatabaseRecord(database), 
-        replicationFactor: 2, // Sharding Replication Factor
-        shardFactor: 3)); // Sharding Factor
-{CODE-BLOCK/}
 
 {PANEL/}
 
 ## Related articles
 
-**Client API**  
-[Create Database](../client-api/operations/server-wide/create-database)  
+### Sharding
 
-**Server**  
-[External Replication](../server/ongoing-tasks/external-replication)  
-
-**Studio**  
-[Export Database](../studio/database/tasks/export-database)  
-
+- [Administration: Studio](../sharding/administration/studio-admin)  
+- [Administration: API](../sharding/administration/api-admin)  
+- [Unsupported Features](../sharding/unsupported)  
+- [Migration](../sharding/migration)  

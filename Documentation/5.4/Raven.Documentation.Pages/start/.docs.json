@@ -22,12 +22,6 @@
         ]
     },
     {
-        "Path": "licenses-required.markdown",
-        "Name": "Licenses Required",
-        "DiscussionId": "8dc7f6a1-ec5d-4066-bd0f-f7940dbee476",
-        "Mappings": []
-    },
-    {
         "Path": "playground-server.markdown",
         "Name": "Playground Server",
         "DiscussionId": "7374e4fe-24a7-4e6c-82f2-18360b4ea29d",
@@ -59,6 +53,11 @@
         "Path": "/platform-guides",
         "Name": "Platform Guides",
         "DiscussionId": "138288bb-7859-4668-8d43-b938d1f19652",
+        "Mappings": []
+    },
+    {
+        "Path": "/licensing",
+        "Name": "Licensing",
         "Mappings": []
     }
 ]

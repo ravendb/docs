@@ -1,22 +1,12 @@
-# Indexes: Indexing Attachments
+# Indexing Attachments
 
-The `AttachmentsFor` method returns a list of 
-[attachments](../document-extensions/attachments/what-are-attachments) 
-in a given document as well as basic information like `Name` or `Size` 
-about each of them.
+---
 
-{CODE-TABS}
-{CODE-TAB:java:AttachmentsFor syntax@Indexes\IndexingAttachments.java /}
-{CODE-TAB:java:AttachmentName result@Indexes\IndexingAttachments.java /}
-{CODE-TABS/}
+{INFO: }
 
-## Creating an index using `AttachmentsFor()`
+Learn about __Indexing Attachments__ here: [Document Extensions > Attachments > Indexing Attachments](../document-extensions/attachments/indexing).
 
-{CODE:java index@Indexes\IndexingAttachments.java /}
-
-## Querying the index
-
-{CODE:java query1@Indexes\IndexingAttachments.java /}
+{INFO/}
 
 ## Related Articles
 

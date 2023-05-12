@@ -1,55 +1,90 @@
-﻿using Raven.Client.Documents;
+﻿using System.Threading.Tasks;
+using Raven.Client.Documents;
 using Raven.Client.ServerWide.Operations;
-using Raven.Client.ServerWide;
 
-namespace Raven.Documentation.Samples.ClientApi
+namespace Raven.Documentation.Samples.Server.Storage
 {
-        class DocumentsCompressionConfigExample
-    {
-        #region Syntax_0
-        public class DocumentsCompressionConfiguration
-        {
-            public string[] Collections { get; set; }
-            public bool CompressRevisions { get; set; }
-            public bool CompressAllCollections { get; set; }
-        }
-        #endregion
-    }
-
     class DocumentsCompression
     {
-        public void Example()
+        public DocumentsCompression()
         {
-            #region Example_0
             using (var store = new DocumentStore())
             {
-                // Retrieve database record
-                var record = store.Maintenance.Server.Send(new GetDatabaseRecordOperation(store.Database));
-
-                // Enable compression on collection Orders
-                // Enable compression of revisions on all 
-                // collections
-                record.DocumentsCompression = new DocumentsCompressionConfiguration(compressRevisions: true, "Orders");
-
-                // Update the server
-                store.Maintenance.Server.Send(new UpdateDatabaseOperation(record, record.Etag));
-            }
-            #endregion
-
-            #region CompressAllCollections
-            using (var store = new DocumentStore())
-            {
-                // Retrieve database record
-                var record = store.Maintenance.Server.Send(new GetDatabaseRecordOperation(store.Database));
-
-                // To configure compression on all collections for new or edited documents
+                #region compress_all
+                // Compression is configured by setting the database record 
+                
+                // Retrieve the database record
                 var dbrecord = store.Maintenance.Server.Send(new GetDatabaseRecordOperation(store.Database));
+                
+                // Set compression on ALL collections
                 dbrecord.DocumentsCompression.CompressAllCollections = true;
 
-                // Update the server
-                store.Maintenance.Server.Send(new UpdateDatabaseOperation(record, record.Etag));
+                // Update the the database record
+                store.Maintenance.Server.Send(new UpdateDatabaseOperation(dbrecord, dbrecord.Etag));
+                #endregion
             }
-            #endregion
+
+            using (var store = new DocumentStore())
+            {
+                #region compress_specific
+                // Retrieve the database record
+                var dbrecord = store.Maintenance.Server.Send(new GetDatabaseRecordOperation(store.Database));
+
+                // Turn on compression for specific collections
+                dbrecord.DocumentsCompression.Collections = new[] { "Orders", "Employees" };
+                
+                // Turn off compression for all revisions, on all collections
+                dbrecord.DocumentsCompression.CompressRevisions = false;
+
+                // Update the the database record
+                store.Maintenance.Server.Send(new UpdateDatabaseOperation(dbrecord, dbrecord.Etag));
+                #endregion
+            }
+        }
+
+        public async Task DocumentsCompressionAsync()
+        {
+            using (var store = new DocumentStore())
+            {
+                #region compress_all_async
+                // Compression is configured by setting the database record 
+                
+                // Retrieve the database record
+                var dbrecord = await store.Maintenance.Server.SendAsync(new GetDatabaseRecordOperation(store.Database));
+                
+                // Set compression on ALL collections
+                dbrecord.DocumentsCompression.CompressAllCollections = true;
+
+                // Update the the database record
+                await store.Maintenance.Server.SendAsync(new UpdateDatabaseOperation(dbrecord, dbrecord.Etag));
+                #endregion
+            }
+
+            using (var store = new DocumentStore())
+            {
+                #region compress_specific_async
+                // Retrieve the database record
+                var dbrecord = await store.Maintenance.Server.SendAsync(new GetDatabaseRecordOperation(store.Database));
+
+                // Turn on compression for specific collection
+                dbrecord.DocumentsCompression.Collections = new[] { "Orders", "Employees" };
+                
+                // Turn off compression for all revisions, on all collections
+                dbrecord.DocumentsCompression.CompressRevisions = false;
+
+                // Update the the database record
+                await store.Maintenance.Server.SendAsync(new UpdateDatabaseOperation(dbrecord, dbrecord.Etag));
+                #endregion
+            }
         }
     }
+
+    #region syntax
+    public class DocumentsCompressionConfiguration 
+    {
+        public string[] Collections { get; set; }
+        public bool CompressRevisions { get; set; }
+        public bool CompressAllCollections { get; set; }
+    }
+    #endregion
 }

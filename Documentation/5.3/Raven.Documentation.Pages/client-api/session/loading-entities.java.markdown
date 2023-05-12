@@ -220,7 +220,7 @@ If you try to load a document that does not exist with the `load` method, `isLoa
 
 ### Querying
 
-- [Basics](../../indexes/querying/basics)
+- [Basics](../../indexes/querying/query-index)
 
 ### Document Store
 

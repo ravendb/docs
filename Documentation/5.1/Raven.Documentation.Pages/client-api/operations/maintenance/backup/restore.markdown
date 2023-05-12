@@ -168,9 +168,9 @@ In such cases, **disable** ongoing tasks using the [DisableOngoingTasks](../../.
 
 ###Studio  
 - [The Backup Task](../../../../studio/database/tasks/backup-task)  
-- [Create Database: from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
-- [Create a Database: General Flow](../../../../studio/server/databases/create-new-database/general-flow)  
-- [Create a Database: Encrypted](../../../../studio/server/databases/create-new-database/encrypted)  
+- [Create Database: from Backup](../../../../studio/database/create-new-database/from-backup)  
+- [Create a Database: General Flow](../../../../studio/database/create-new-database/general-flow)  
+- [Create a Database: Encrypted](../../../../studio/database/create-new-database/encrypted)  
 
 ###Security  
 - [Database Encryption](../../../../server/security/encryption/database-encryption)  

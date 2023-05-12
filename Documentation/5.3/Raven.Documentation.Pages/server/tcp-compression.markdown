@@ -55,7 +55,7 @@ With the **TCP compression** feature enabled, data **in transit** is compressed 
 
 ## Enabling TCP Compression
 
-Your server's [license](../studio/server/license-management) type determines whether 
+Your server's [license](../start/licensing/licensing-overview) type determines whether 
 TCP compression, among other features, is activated.  
 No additional configuration is needed to enable this feature.  
 
@@ -80,7 +80,7 @@ No additional configuration is needed to enable this feature.
 ### Studio
 
 - [Documents Compression](../studio/database/settings/documents-compression)  
-- [License](../studio/server/license-management)
+- [License overview](../start/licensing/licensing-overview)
 
 ### Server
 

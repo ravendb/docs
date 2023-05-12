@@ -47,7 +47,7 @@ RavenDB offers conversion of types in static indexes with the methods [AsDateOnl
 
 * [Static indexes](../../indexes/indexing-basics) process new data in the background, 
   including calculations and conversions to DateOnly/TimeOnly values, which can be used as ticks, 
-  so that the data is ready at query time when you [query the index](../../indexes/querying/basics#example-iv---querying-a-specified-index).  
+  so that the data is ready at query time when you [query the index](../../indexes/querying/query-index).  
     * These indexes do all of the calculations on the entire dataset that you define the first time they run, and then they only need to 
       process changes in data. 
 
@@ -74,7 +74,7 @@ though comparing ticks is faster.
 
 The following generic sample is a map index where `AsDateOnly` converts the string `item.StringDateOnlyField` into `DateOnly`.  
 
-When the converted data is available in the index, you can inexpensively [query the index](../../indexes/querying/basics#example-iv---querying-a-specified-index).
+When the converted data is available in the index, you can inexpensively [query the index](../../indexes/querying/query-index).
 
 Strings are automatically converted to ticks for faster querying.  
 
@@ -96,7 +96,7 @@ the index is queried.
 
 The following generic sample is a map index that converts `DateTime` into `DateOnly` and saves the values in the index.
 
-Once the converted data is available in the static index, you can inexpensively [query the index](../../indexes/querying/basics#example-iv---querying-a-specified-index).
+Once the converted data is available in the static index, you can inexpensively [query the index](../../indexes/querying/query-index).
 
 {CODE IndexConvertsDateTimeWithAsDateOnlySample@ClientApi/HowTo/UseTimeOnlyAndDateOnly.cs /}
 

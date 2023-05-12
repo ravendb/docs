@@ -4,15 +4,14 @@
 
 {NOTE: }
 
-This page covers data subscriptions maintenance operations:  
-
-[Deletion](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#deletion)  
-[Dropping Connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#dropping-connection)  
-[Disabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#disabling-subscription)  
-[Enabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#enabling-subscription)  
-[Updating subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#updating-subscription)  
-[Getting subscription status](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#getting-subscription-status)  
-[DocumentSubscriptions class](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#documentsubscriptions-class)  
+* This page covers data subscriptions maintenance operations:  
+  * [Deletion](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#deletion)  
+  * [Dropping Connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#dropping-connection)  
+  * [Disabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#disabling-subscription)  
+  * [Enabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#enabling-subscription)  
+  * [Updating subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#updating-subscription)  
+  * [Getting subscription status](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#getting-subscription-status)  
+  * [DocumentSubscriptions class](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#documentsubscriptions-class)  
 
 {NOTE/}
 

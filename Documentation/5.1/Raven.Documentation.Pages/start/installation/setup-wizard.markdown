@@ -627,7 +627,9 @@ In the **Unsecure Mode**, all you need to do is specify the **IP address** and *
    * **Checked** - The server will be created within a cluster with the specified Node Tag.  
                    This new cluster will only contain this node.  
    * **Unchecked** - The server will Not be created in a cluster.  
-                     The server will be created in a [Passive State](../../studio/server/cluster/cluster-view#cluster-nodes-states-&-types-flow) and can later be added to an already existing cluster.  
+                     The server will be created in a 
+                     [Passive State](../../studio/cluster/cluster-view#cluster-nodes-states-&-types-flow) 
+                     and can later be added to an already existing cluster.  
 
 4. **Environment**  
    This option only shows when creating a new cluster.  
@@ -652,7 +654,7 @@ In each node, start the RavenDB server and complete the Setup Wizard, entering a
 
 Once all the servers are up and running, building the cluster is simple.  
 Access the studio, go to _Manage Server > Cluster_, and add nodes to the cluster by their URL.  
-Learn more in [Adding a Node to a Cluster](../../studio/server/cluster/add-node-to-cluster).  
+Learn more in [Adding a Node to a Cluster](../../studio/cluster/setting-a-cluster#add-another-node-to-the-cluster).  
 {PANEL/}
 
 ## Related Articles

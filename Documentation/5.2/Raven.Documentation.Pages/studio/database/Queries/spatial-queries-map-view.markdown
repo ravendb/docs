@@ -10,7 +10,7 @@
   displays the search results in graphical form.  
 
     {INFO: }
-    The spatial map view is added only for [dynamic](../../../indexes/querying/what-is-rql#dynamic-and-indexed-queries) 
+    The spatial map view is added only for [dynamic](../../../client-api/session/querying/how-to-query#dynamicQuery) 
     spatial queries.  
     It is not added when spatial queries are executed over indexes.  
     {INFO/}
@@ -190,7 +190,7 @@ spatial.within(
 
 The following query searches for companies within the boundaries of a **polygonal** (polygon-shaped) region.  
 
-* The polygon's coordinates must be provided in a [counterclockwise](../../../../indexes/querying/spatial#advanced-search) order.  
+* The polygon's coordinates must be provided in a [counterclockwise](../../../indexes/querying/spatial#advanced-search) order.  
 * The first and last coordinates must mark the same location to form a closed region.  
 * You can use [tools like this one](https://www.keene.edu/campus/maps/tool/) 
   to draw a polygon on the world map and copy the coordinates to your query.  

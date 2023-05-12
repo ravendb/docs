@@ -163,27 +163,22 @@ Setting this configuration option to a high value may result in performance degr
 ## Related Articles
 
 ### Indexes
-
 - [What are Indexes](../indexes/what-are-indexes)
 - [Indexing Basics](../indexes/indexing-basics)
 
 ### Querying
-
 - [Basics](../indexes/querying/basics)
 
 ### Studio
-
 - [Indexes: Overview](../studio/database/indexes/indexes-overview#indexes-overview)
 - [Studio Index List View](../studio/database/indexes/indexes-list-view)
 
 ---
 
 ### Inside RavenDB 
-
 - [Working with Indexes](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/12-working-with-indexes)
 
 ---
 
 ### Code Walkthrough
-
 - [Scroll to see various indexing guides](https://demo.ravendb.net/)

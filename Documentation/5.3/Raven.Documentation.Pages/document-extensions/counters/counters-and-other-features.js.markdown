@@ -215,7 +215,7 @@ so it can be immediately retrieved when needed with no additional remote calls.
     {CODE-TAB:nodejs:IncludeCounters counters_region_load_include2@document-extensions\counters\counters.js /}
     {CODE-TABS/}
 
-* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query#session--querying--how-to-query)**:  
+* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query#session.query)**:  
     * Include a single Counter using `IncludeCounter`.  
     * Include multiple Counters using `IncludeCounters`.  
 
