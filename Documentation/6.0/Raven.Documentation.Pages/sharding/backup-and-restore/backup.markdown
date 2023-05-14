@@ -34,6 +34,7 @@
      * [Naming Convention](../../sharding/backup-and-restore/backup#naming-convention)  
      * [Server-Wide Backup](../../sharding/backup-and-restore/backup#server-wide-backup)  
      * [Example](../../sharding/backup-and-restore/backup#example)  
+  * [Backup Options Summary](../../sharding/backup-and-restore/backup#backup-options-summary)  
 
 {NOTE/}
 
@@ -186,6 +187,22 @@ would define for a non-sharded database. As part of a sharded
 database, however, this task will be re-defined automatically 
 by the orchestrator for each shard.  
 {CODE backup_remote_destinations@Sharding\ShardingBackupAndRestore.cs /}
+
+{PANEL/}
+
+{PANEL: Backup Options Summary}
+
+| Option | Available on a Sharded Database | Comment |
+| -------------------- | --------------- | --------------------- |
+| Store backups of sharded DBs **Locally** | **Yes** | Shards can store the backups they create locally. |
+| Store backups of sharded DBs [remotely](../../sharding/backup-and-restore/backup#backup-storage-local-and-remote) | **Yes** | Shards can store the backups they create on remote S3, Azure, or Google Cloud destinations. |
+| Create [Full](../../server/ongoing-tasks/backup-overview#full-backup) backups for sharded  DBs | **Yes** |  |
+| Create [Incremental](../../server/ongoing-tasks/backup-overview#incremental-backup) backups for sharded DBs | **Yes** |  |
+| Create [Logical](../../server/ongoing-tasks/backup-overview#logical-backup) backups for sharded DBs | **Yes** |  |
+| Create [Snapshot](../../server/ongoing-tasks/backup-overview#snapshot) backups for sharded DBs | **No** | Snapshot backups CANNOT be created for sharded databases. |
+| Create **Periodic Backup Tasks** for sharded DBs | **Yes** |  |
+| Run a manual [one-time](../../studio/database/tasks/backup-task#manually-creating-one-time-backups) backup operation on a sharded DB | **Yes** |  |
+| Include sharded DBs in a [Server-Wide Backup Operation](../../sharding/backup-and-restore/backup#server-wide-backup) | **Yes** | A server-wide backup operation will create backups for all databases, including the sharded ones. |
 
 {PANEL/}
 

@@ -35,6 +35,7 @@
          * [`RestoreBackupConfigurationBase`](../../sharding/backup-and-restore/restore#section)
      * [Run `RestoreBackupOperation` with the Restore Configuration](../../sharding/backup-and-restore/restore#run--with-the-restore-configuration)  
      * [Examples](../../sharding/backup-and-restore/restore#examples)  
+  * [Restore Options Summary](../../sharding/backup-and-restore/restore#restore-options-summary)  
 
 {NOTE/}
 
@@ -153,6 +154,23 @@ backup files stored locally and remotely.
 {CODE-TAB:csharp:Azure_Blob restore_azure-settings@Sharding\ShardingBackupAndRestore.cs /}
 {CODE-TAB:csharp:Google_Cloud restore_google-cloud-settings@Sharding\ShardingBackupAndRestore.cs /}
 {CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Restore Options Summary}
+
+| Option | Available on a Sharded Database | Comment |
+| -------------------- | --------------- | --------------------- |
+| Restore from **Local Shard Storage** | **Yes** | Define a [restore configuration](../../sharding/backup-and-restore/restore#define-a-restore-configuration) with no additional properties. |
+| Restore from a [remote location](../../sharding/backup-and-restore/backup#backup-storage-local-and-remote) | **Yes** | Define a [restore configuration](../../sharding/backup-and-restore/restore#define-a-restore-configuration) with S3, Azure, or Google Cloud settings. |
+| Restore a **Sharded DB** backup <br> to a **Sharded DB** | **Yes** |  |
+| Restore a **Sharded DB** backup <br> to a **Non-Sharded DB** | **Yes** |  |
+| Restore a **Non-Sharded DB** backup <br> to a **Sharded DB** | **No** | A backup created for a non-sharded database CANNOT be restored by a sharded database. |
+| Restore a **Full** DB backup | **Yes** |  |
+| Restore a **Partial** DB backup | **Yes** |  |
+| Restore a **Logical** DB backup | **Yes** |  |
+| Restore a **Snapshot** DB backup | **No** | A snapshot backup CANNOT be restored by a sharded database. |
+| Restore backed-up shards in a different order than the original | **No** | Always restore the shards in their original order. |
 
 {PANEL/}
 

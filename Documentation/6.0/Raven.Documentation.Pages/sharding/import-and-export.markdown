@@ -25,6 +25,7 @@
 * In this page:  
   * [Export](../sharding/import-and-export#export)  
   * [Import](../sharding/import-and-export#import)  
+  * [Export and Import Options Summary](../sharding/import-and-export#export-and-import-options-summary)  
 
 {NOTE/}
 
@@ -104,6 +105,22 @@ Import the full backup first, and then the incremental backups that complement i
 {NOTE/}
 
 {PANEL/}
+
+{PANEL: Export and Import Options Summary}
+
+| Option | Available on a Sharded Database | Comment |
+| -------------------- | --------------- | --------------------- |
+| Export and Import `.ravendbdump` files using [Smuggler](../client-api/smuggler/what-is-smuggler) | **Yes** | Smuggler behaves just like it does on non-sharded databases. |
+| [Export](../studio/database/tasks/export-database) and [import](../studio/database/tasks/import-data/import-data-file) sharded DB data using Studio | **Yes** | Behind the scenes, Studio uses Smuggler. |
+| Export to **Local shard node storage** | **Yes** | The shard that issued the export call stores its data locally. <br> Other shards transmit their data to the same shard, creating a single file. |
+| Export to **remote locations** like S3, Azure, or Google Cloud | **No** | |
+| Import from a [.ravendbdump](../sharding/import-and-export#export) file | **Yes** | An orchestrator is appointed to distribute the data among the shards. |
+| Import from **Backup files** | **Yes** | Importing data from a backup file does **not** create a new database like [restoring](../sharding/backup-and-restore/restore) the backup would, but adds the data to the existing database by distributing it among the shards. |
+| Import from **Full backup files** | **Yes** |  |
+| Import from **Incremental backup files** | **Yes** |  |
+
+{PANEL/}
+
 
 ## Related articles
 
