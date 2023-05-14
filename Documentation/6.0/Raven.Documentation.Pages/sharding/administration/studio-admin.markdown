@@ -67,37 +67,44 @@ be available here:
 
 ![Database View](images/studio-admin_database-view_01.png "Database View")
 
-1. **Shard storage report**  
+1. **Expand/Collapse distribution details**  
+   Click to display or hide per-shard database details.  
+
+     ![Expanded Details](images/studio-admin_database-view_expanded-details.png "Expanded Details")
+
+2. **Encryption status**  
+   Informative icon: notify whether the database is encrypted or not.  
+   
+3. **Shard storage report**  
    Click to watch the shard's storage usage.  
      
-      Select the shard number and its replica node.  
-
       ![Select Shard](images/studio-admin_database-view_02_select-shard.png "Select Shard")
 
+      Select the shard number and its replica node.    
       The storage report view will open.  
 
       ![Storage Report](images/studio-admin_database-view_03_storage-report.png "Storage Report")
 
-2. **Documents view**  
+4. **Documents view**  
    Click to view and edit documents.  
-   The storage report view will open.  
       
      ![Documents View](images/studio-admin_database-view_04_docs-view.png "Documents View")
 
-3. **Indexes view**  
-   Click to view and edit indexes.  
-4. **Backups view**  
-   Click to manage backup tasks and restore existing backups.  
-5. **Manage group**  
-   Click to manage the database group.  
-   The Database Group view allows you to appoint and dismiss 
-   [orchestrators](../../sharding/overview#client-server-communication) 
-   and add or remove [shards](../../sharding/overview#shards) and 
-   shard [replicas](../../sharding/overview#shard-replication).  
+5. **Indexes view**  
+   Click to open the [List of Indexes](../../studio/database/indexes/indexes-list-view) view.  
+6. **Backups view**  
+   Click to manage [backup tasks](../../studio/database/tasks/backup-task) and restore existing backups.  
+7. **Manage group**  
+   Click to manage the database group ([see below](../../sharding/administration/studio-admin#database-group)).  
 
 {PANEL/}
 
 {PANEL: Database Group}
+
+The Database Group view allows you to appoint and dismiss 
+[orchestrators](../../sharding/overview#client-server-communication) 
+and add or remove [shards](../../sharding/overview#shards) and 
+shard [replicas](../../sharding/overview#shard-replication).  
 
 ![Database Group](images/studio-admin_database-group.png "Database Group")
 
