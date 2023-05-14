@@ -270,7 +270,8 @@ or execution time) can be measured using API or Studio.
 
 Timing is **disabled** by default, to avoid the measuring overhead. 
 It can be enabled per query by adding `include timings()` to an RQL 
-query or calling `.Timings` in a [Linq](../client-api/session/querying/how-to-query#session.query) 
+query or calling [`.Timings()`](../client-api/session/querying/debugging/query-timings#syntax) 
+in a [Linq](../client-api/session/querying/how-to-query#session.query) 
 query, as explained [here](../client-api/session/querying/debugging/query-timings).  
 
 To time queries in a sharded database using Studio open the 
