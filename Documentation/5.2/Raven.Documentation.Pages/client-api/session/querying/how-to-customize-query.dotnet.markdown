@@ -1,194 +1,373 @@
-# Session: Querying: How to Customize a Query
+# How to Customize a Query
+
 ---
 
 {NOTE: }
 
-The following query customization options are available in the `IDocumentQueryCustomization` interface:
+* Use `Customize()` to set the following customization options on a specific [Query](../../../client-api/session/querying/how-to-query).   
+  Can be set for both dynamic-query and for index-query.
 
-- [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query#beforequeryexecuted)
-- [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query#afterqueryexecuted)
-- [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query#afterstreamexecuted)
-- [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
-- [NoTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
-- [ProjectionBehavior](../../../client-api/session/querying/how-to-customize-query#projectionbehavior)
-- [RandomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
-- [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
+* Each such customization can also be implemented via the [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query) API.
+
+* Note:  
+  A query can also be customized on the Store or Session level by subscribing to `OnBeforeQuery`.  
+  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events). 
+
+* Customization methods available:
+
+  - [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query#beforequeryexecuted)
+  - [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query#afterqueryexecuted)
+  - [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query#afterstreamexecuted)
+  - [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
+  - [NoTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
+  - [Projection](../../../client-api/session/querying/how-to-customize-query#projection)
+  - [RandomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
+  - [Timings](../../../client-api/session/querying/how-to-customize-query#timings)
+  - [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
+
+* [Methods return value](../../../client-api/session/querying/how-to-customize-query#methods-return-value)
+
 
 {NOTE/}
 
 ---
 
-{PANEL:BeforeQueryExecuted}
+{PANEL: BeforeQueryExecuted}
 
-Allows you to modify the index query just before it's executed.
+* Use `BeforeQueryExecuted` to customize the query just before it is executed.
 
-{CODE customize_1_0@ClientApi\Session\Querying\HowToCustomize.cs /}
+{NOTE: }
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **action** | Action<[IndexQuery](../../../glossary/index-query)> | Action that will modify IndexQuery. |
-
-| Return Value | |
-| ------------- | ----- |
-| IDocumentQueryCustomization | Returns self for easier method chaining. |
-
-### Example
-
-{CODE customize_1_1@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-{PANEL/}
-
-{PANEL:AfterQueryExecuted}
-
-Allows you to retrieve a raw query result after it's executed.
-
-{CODE customize_1_0_0@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **action** | Action<[QueryResult](../../../glossary/query-result)> | Action that has the query result. |
-
-| Return Value | |
-| ------------- | ----- |
-| IDocumentQueryCustomization | Returns self for easier method chaining. |
-
-### Example
-
-{CODE customize_1_1_0@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-{PANEL/}
-
-{PANEL:AfterStreamExecuted}
-
-Allows you to retrieve a raw (blittable) result of the streaming query.
-
-{CODE customize_1_0_1@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **action** | Action<[BlittableJsonReaderObject](../../../glossary/blittable-json-reader-object)> | Action that has the single query result. |
-
-| Return Value | |
-| ------------- | ----- |
-| IDocumentQueryCustomization | Returns self for easier method chaining. |
-
-### Example
-
-{CODE customize_1_1_1@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-{PANEL/}
-
-{PANEL:NoCaching}
-
-By default, queries are cached. To disable query caching use the `NoCaching` customization.
-
-{CODE customize_2_0@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-| Return Value | |
-| ------------- | ----- |
-| IDocumentQueryCustomization | Returns self for easier method chaining. |
-
-### Example
-
-{CODE customize_2_1@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-{PANEL/}
-
-{PANEL:NoTracking}
-
-To disable entity tracking by `Session` use `NoTracking`. Usage of this option will prevent holding the query results in memory.
-
-{CODE customize_3_0@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-| Return Value | |
-| ------------- | ----- |
-| IDocumentQueryCustomization | Returns self for easier method chaining. |
-
-### Example
-
-{CODE customize_3_1@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-{PANEL/}
-
-{PANEL: ProjectionBehavior}
-
-By default, queries are satisfied with the values stored in the index. If the index 
-doesn't contain the requested values, they are retrieved from the documents 
-themselves.  
-
-This behavior can be configured using the `Projection` option, which takes a 
-`ProjectionBehavior`:  
-
-{CODE projectionbehavior@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-* `Default` - query will be satisfied with indexed data when possible, and directly 
-from the document when it is not.  
-* `FromIndex` - query will be satisfied with indexed data when possible, and when 
-it is not, the field is skipped.  
-* `FromIndexOrThrow` - query will be satisfied with indexed data. If the index does 
-not contain the requested data, an exception is thrown.  
-* `FromDocument` - query will be satisfied with document data when possible, and 
-when it is not, the field is skipped.  
-* `FromDocumentOrThrow` - query will be satisfied with document data. If the 
-document does not contain the requested data, an exception is thrown.  
-
-### Example
+__Example__
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projectionbehavior_query@ClientApi\Session\Querying\HowToCustomize.cs /}
-{CODE-TAB:csharp:RawQuery projectionbehavior_rawquery@ClientApi\Session\Querying\HowToCustomize.cs /}
-{CODE-TAB:csharp:DocumentQuery projectionbehavior_docquery@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:Query customize_1_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:Query_async customize_1_2@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:DocumentQuery customize_1_3@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:RawQuery customize_1_4@ClientApi\Session\Querying\HowToCustomize.cs /}
 {CODE-TABS/}
 
-{PANEL/}
-
-{PANEL:RandomOrdering}
-
-To order results randomly, use the `RandomOrdering` method.
-
-{CODE customize_4_0@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **seed** | string | Seed used for ordering. Useful when repeatable random queries are needed. |
-
-| Return Value | |
-| ------------- | ----- |
-| IDocumentQueryCustomization | Returns self for easier method chaining. |
-
-### Example
-
-{CODE customize_4_1@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-{PANEL/}
-
-{PANEL:WaitForNonStaleResults}
-
-Queries can be 'instructed' to wait for non-stale results for a specified amount of time using the `WaitForNonStaleResults` method. If the query won't be able to return 
-non-stale results within the specified (or default) timeout, then a `TimeoutException` is thrown.
-
-{NOTE: Cutoff Point}
-If a query sent to the server specifies that it needs to wait for non-stale results, then RavenDB sets the cutoff Etag for the staleness check.
-It is the Etag of the last document (or document tombstone), from the collection(s) processed by the index, as of the query arrived to the server.
-This way the server won't be waiting forever for the non-stale results even though documents are constantly updated meanwhile.
-
-If the last Etag processed by the index is greater than the cutoff then the results are considered as non-stale.
 {NOTE/}
 
+{NOTE: }
 
-{CODE customize_8_0@ClientApi\Session\Querying\HowToCustomize.cs /}
+__Syntax__
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **waitTimeout** | TimeSpan? | Time to wait for an index to return non-stale results. The default is 15 seconds. |
+{CODE customize_1_5@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-| Return Value | |
-| ------------- | ----- |
+| Parameters | Type | Description                                                                                                                     |
+|------------| ---- |---------------------------------------------------------------------------------------------------------------------------------|
+| __action__ | `Action<IndexQuery>` | An _Action_ method that operates on the query.<br>The query is passed in the [IndexQuery](../../../glossary/index-query) param. |
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: AfterQueryExecuted}
+
+* Use `AfterQueryExecuted` to access the raw query result after it is executed.
+
+{NOTE: }
+
+__Example__
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query customize_2_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:Query_async customize_2_2@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:DocumentQuery customize_2_3@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:RawQuery customize_2_4@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Syntax__
+
+{CODE customize_2_5@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+| Parameters | Type | Description                                                                                                                 |
+|------------| ---- |-----------------------------------------------------------------------------------------------------------------------------|
+| __action__ | `Action<QueryResult>` | An _Action_ method that receives the raw query result.<br>The query result is passed in the [QueryResult](../../../glossary/query-result) param. |
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: AfterStreamExecuted}
+
+* Use `AfterStreamExecuted` to retrieve a raw (blittable) result of the streaming query.
+
+* Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results).
+
+{NOTE: }
+
+__Example__
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query customize_3_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:Query_async customize_3_2@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:DocumentQuery customize_3_3@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:RawQuery customize_3_4@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Syntax__
+
+{CODE customize_3_5@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+| Parameters | Type | Description                                                                                                                                                                                  |
+|------------| ---- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __action__ | `Action<BlittableJsonReaderObject>` | An _Action_ method that recieves a single stream query result.<br>The stream result is passed in the [BlittableJsonReaderObject](../../../glossary/blittable-json-reader-object) param. |
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: NoCaching}
+
+* By default, query results are cached. 
+
+* You can use the `NoCaching` customization to disable query caching.
+
+* Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching).
+
+{NOTE: }
+
+__Example__
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query customize_4_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:Query_async customize_4_2@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:DocumentQuery customize_4_3@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:RawQuery customize_4_4@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Syntax__
+
+{CODE customize_4_5@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: NoTracking}
+
+* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+
+* You can use the `NoTracking` customization to disable entity tracking.  
+
+* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking) for all other options.
+
+{NOTE: }
+
+__Example__
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query customize_5_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:Query_async customize_5_2@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:DocumentQuery customize_5_3@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:RawQuery customize_5_4@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Syntax__
+
+{CODE customize_5_5@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: Projection}
+
+* By default, when [querying an an index](../../../indexes/querying/query-index), and projecting query results  
+  (projecting means the query returns only specific document fields instead of the full document)  
+  then the server will try to retrieve the fields' values from the fields stored in the index.  
+
+* If the index does Not store those fields then the fields' values will be retrieved from the documents store.
+
+* Use the `Projection` method to customize and modify this behavior.
+
+* Learn more about projections in:
+  * [Projections](../../../indexes/querying/projections)
+  * [How to project query results](../../../client-api/session/querying/how-to-project-query-results)
+
+{NOTE: }
+
+__Example__
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query customize_6_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:Query_async customize_6_2@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:DocumentQuery customize_6_3@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:RawQuery customize_6_4@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:Index the_index@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TABS/}
+
+In the above example:  
+
+  * Field _'FullName'_ is stored in the index (see index definition in the rightmost tab).  
+    However, the server will try to fetch the value from the document since the default behavior was modified to `FromDocumentOrThrow`.  
+  * An exception will be thrown since an _'Employee'_ document does not contain the property _'FullName'_.  
+    (based on the Northwind sample data).  
+
+{NOTE/}
+
+{NOTE: }
+
+__Syntax__
+
+{CODE customize_6_5@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+* `Default`  
+  Retrieve values from the stored index fields when available.  
+  If fields are not stored then get values from the document.  
+* `FromIndex`  
+  Retrieve values from the stored index fields when available.  
+  A field that is not stored in the index is skipped.  
+* `FromIndexOrThrow`  
+  Retrieve values from the stored index fields when available.  
+  An exception is thrown if the index does not store the requested field.  
+* `FromDocument`  
+  Retrieve values directly from the documents store.  
+  A field that is not found in the document is skipped.  
+* `FromDocumentOrThrow`  
+  Retrieve values directly from the documents store.  
+  An exception is thrown if the document does not contain the requested field.  
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: RandomOrdering}
+
+* Use `RandomOrdering` to order the query results randomly.  
+
+* More ordering options are available in this [Sorting](../../../indexes/querying/sorting) article.  
+
+{NOTE: }
+
+__Example__
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query customize_7_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:Query_async customize_7_2@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:DocumentQuery customize_7_3@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:RawQuery customize_7_4@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Syntax__
+
+{CODE customize_7_5@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+| Parameters | Type | Description                                                                                              |
+|------------| ------------- |-------------------------------------------------------------------------------------------------|
+| __seed__   | `string` | Order the search results randomly using this seed.<br>Useful when executing repeated random queries. |
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: Timings}
+
+* Use `Timings` to get detailed stats of the time spent by the server on each part of the query.
+
+* The timing statistics will be included in the query results.
+
+* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings).
+
+{NOTE: }
+
+__Example__
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query customize_9_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:Query_async customize_9_2@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:DocumentQuery customize_9_3@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:RawQuery customize_9_4@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Syntax__
+
+{CODE customize_9_5@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+| Parameters | Type | Description |
+|------------| ------------- | ----- |
+| __timings__ | `QueryTimings` | An out param that will be filled with the timings results |
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: WaitForNonStaleResults}
+
+* All queries in RavenDB provide results using an index, even when you don't specify one.  
+  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
+
+* Use `WaitForNonStaleResults` to instruct the query to wait for non-stale results from the index.  
+
+* A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
+  (or default) timeout.
+
+* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes).
+
+{NOTE: }
+
+__Example__
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query customize_8_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:Query_async customize_8_2@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:DocumentQuery customize_8_3@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TAB:csharp:RawQuery customize_8_4@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Syntax__
+
+{CODE customize_8_5@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+| Parameters | Type | Description |
+|------------| ------------- |-----------|
+| __waitTimeout__ | `TimeSpan?` | Time to wait for non-stale results. <br>Default is 15 seconds. |
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: Methods return value}
+
+All above customization methods return the following:
+
+| `Query` return value         | |
+|-----------------------------| ----- |
 | IDocumentQueryCustomization | Returns self for easier method chaining. |
 
-### Example
-
-{CODE customize_8_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+| `DocumentQuery` return value      | |
+|---------------------------------| ----- |
+| IQueryBase | Returns self for easier method chaining. |
 
 {PANEL/}
 
