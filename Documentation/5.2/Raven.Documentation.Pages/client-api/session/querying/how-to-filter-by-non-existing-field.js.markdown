@@ -21,7 +21,7 @@
 
 * You can make a dynamic query on a collection to find which documents are missing the specified field.
 
-* Use extension methods `Not` & `WhereExists` that are accessible from [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query).
+* Use extension methods `not` & `whereExists` that are accessible from the [query](../../../client-api/session/querying/how-to-query) API.
 
 * This will either create a new auto-index or add the queried field to an existing auto-index.  
   Learn more about the dynamic query flow [here](../../../client-api/session/querying/how-to-query#dynamicQuery).
@@ -31,11 +31,10 @@
 __Example__
 
 {CODE-TABS}
-{CODE-TAB:csharp:DocumentQuery whereNotExists_1@ClientApi\Session\Querying\FilterByNonExistingField.cs /}
-{CODE-TAB:csharp:DocumentQuery_async whereNotExists_1_async@ClientApi\Session\Querying\FilterByNonExistingField.cs /}
+{CODE-TAB:nodejs:DocumentQuery whereNotExists_1@ClientApi\Session\Querying\filterByNonExistingField.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from "Orders"
-where true and not exists("Freight")
+from "orders"
+where true and not exists("freight")
 // `not` cannot be used immediately after `where`, thus we use `where true`.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -53,21 +52,20 @@ where true and not exists("Freight")
     1. The field that is suspected to be __missing in some documents__.  
   
     2. A document-field that __exists in all documents__ in the collection,  
-       (i.e. the _Id_ field, or any other field that is common to all).  
+       (i.e. the _id_ field, or any other field that is common to all).  
        Indexing such a field is mandatory so that all documents in the collection will be indexed.
 
 {NOTE: }
 
 __Example__
 
-{CODE the_index@ClientApi\Session\Querying\FilterByNonExistingField.cs /}
+{CODE:nodejs the_index@ClientApi\Session\Querying\filterByNonExistingField.js /}
 
 {CODE-TABS}
-{CODE-TAB:csharp:DocumentQuery whereNotexists_2@ClientApi\Session\Querying\FilterByNonExistingField.cs /}
-{CODE-TAB:csharp:DocumentQuery_async whereNotexists_2_async@ClientApi\Session\Querying\FilterByNonExistingField.cs /}
+{CODE-TAB:nodejs:DocumentQuery whereNotexists_2@ClientApi\Session\Querying\filterByNonExistingField.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Orders/ByFreight"
-where true and not exists("Freight")
+where true and not exists("freight")
 // `not` cannot come immediately after `where`, thus we use `where true`.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -83,8 +81,8 @@ where true and not exists("Freight")
 * Use an [RQL](../../../client-api/session/querying/what-is-rql) expression such as:
 
     {CODE-BLOCK:sql}
-from "Orders"    
-where exists("Company") and not exists("Freight")
+from "orders"    
+where exists("company") and not exists("freight")
     {CODE-BLOCK/}
 
 * In the `where` clause,  

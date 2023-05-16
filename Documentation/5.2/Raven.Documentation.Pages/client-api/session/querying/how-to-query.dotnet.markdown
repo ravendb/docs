@@ -59,8 +59,15 @@
   Learn more about indexes in [indexes overview](../../../studio/database/indexes/indexes-overview). 
 
 {INFO: }
-We differentiate between the following __3 query scenarios__.  
+
+We differentiate between the following __3 query scenarios__:  
+
+  * Index query  
+  * Dynamic query  
+  * Full collection query  
+
 For each scenario, a different index type will be used.
+
 {INFO/}
 
 {NOTE: }
