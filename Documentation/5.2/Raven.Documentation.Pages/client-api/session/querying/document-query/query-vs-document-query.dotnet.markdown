@@ -1,44 +1,112 @@
 # Query vs DocumentQuery
 
-Why does the RavenDB client offer two ways of querying by exposing the `Query` as well as `DocumentQuery` methods? What are the differences between them?
+---
 
-`DocumentQuery` is the lower level API that we use to query RavenDB, but it does not support LINQ, the mandatory data access solution in .NET. We created `Query` to be the LINQ endpoint for RavenDB. 
+{NOTE: }
 
-The entire LINQ API is a wrapper of `DocumentQuery` and is built on top on that. 
-When you use `Query`, it always is translated into the `DocumentQuery` object, which then builds a RQL-syntax query that is sent to the server.
-However, we still expose `DocumentQuery` in advanced options to allow the users to have the full power of RQL available to them. 
+* Queries in RavenDB can be written using `Query`, `DocumentQuery`, `RawQuery`, or directly with [RQL](../../../../client-api/session/querying/what-is-rql).  
+  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query).
 
-## Immutability
+* The main differences between `Query` and `DocumentQuery` are outlined in this article.
 
-`DocumentQuery` is mutable while `Query` is immutable. You might get different results if you try to *reuse* a query. The usage of the `Query` method in the following example:
+* In this page:
+  * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query#api-support)
+  * [Immutability](../../../../client-api/session/querying/document-query/query-vs-document-query#immutability)
+  * [Default query operator](../../../../client-api/session/querying/document-query/query-vs-document-query#default-query-operator)
 
-{CODE immutable_query@ClientApi\Session\Querying\DocumentQuery\QueryVsDocumentQuery.cs /}
+{NOTE/}
 
-will result that the queries will be translated into following Lucene-syntax queries:
+---
 
-`query - from Users where startsWith(Name, 'A')`
+{PANEL: API support}
 
-`ageQuery - from Users where startsWith(Name, 'A') and Age > 21`
+__Query__:
 
-`eyeQuery - from Users where startsWith(Name, 'A') and EyeColor = 'blue'`
+* The `Query` API supports LINQ, the essential data access solution in .NET.
 
-The similar usage of `DocumentQuery`:
+* The API exposed by the _Query_ method is a wrapper of _DocumentQuery_ and is built on top of it.
 
-{CODE mutable_lucene_query@ClientApi\Session\Querying\DocumentQuery\QueryVsDocumentQuery.cs /}
+* When using _Query_, the query is translated into a _DocumentQuery_ object,  
+  which then builds into an RQL that is sent to the server.
 
-`documentQuery - from Users where startsWith(Name, 'A')` (before creating `ageQuery`)
+* The available _Query_ methods and extensions are listed [here](../../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq).
 
-`ageLuceneQuery - from Users where startsWith(Name, 'A') and Age > 21` (before creating `eyeDocumentQuery`)
+---
 
-`eyeLuceneQuery - from Users where startsWith(Name, 'A') and Age > 21 and EyeColor = 'blue'`
+__DocumentQuery__:
 
-In results, all created Lucene queries are the same query (actually the same instance). This is an important hint that you should be aware if you are going to reuse `DocumentQuery`.
+* `DocumentQuery` does Not support LINQ.
+ 
+* It exposes a lower-level API that provides more flexibility and control when building a query.
 
-## Default Query Operator
+* When using _DocumentQuery_, the query is translated into an RQL that is sent to the server.
 
-Starting from version 4.0, the `Query` and `DocumentQuery` have an identical default operator `AND` (previously `Query` used `AND` and `DocumentQuery` used `OR`). You are able to change this behavior by using `UsingDefaultOperator`:
+* The available _DocumentQuery_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query#custom-methods-and-extensions).
+
+---
+
+{NOTE: }
+
+__Note__:
+
+`Query` and `DocumentQuery` can be converted to one another.  
+This enables you to take advantage of all available API methods & extensions.  
+See [Convert between DocumentQuery and Query](../../../../client-api/session/querying/document-query/what-is-document-query#convert-between-documentquery-and-query).
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: Immutability}
+
+* `Query` is __immutable__ while `DocumentQuery` is __mutable__.  
+  You might get different results if you try to *reuse* a query.
+
+---
+
+* The usage of the `Query` method in the following example:
+
+    {CODE immutable_query@ClientApi\Session\Querying\DocumentQuery\QueryVsDocumentQuery.cs /}
+
+    will result with the following Lucene-syntax queries:
+
+    `query: from Users where startsWith(Name, 'A')`
+
+    `ageQuery: from Users where startsWith(Name, 'A') and Age > 21`
+
+    `eyeQuery: from Users where startsWith(Name, 'A') and EyeColor = 'blue'`
+
+---
+
+* A similar usage with `DocumentQuery`:
+
+    {CODE mutable_query@ClientApi\Session\Querying\DocumentQuery\QueryVsDocumentQuery.cs /}
+
+    will result with the following Lucene queries:
+
+    `documentQuery: from Users where startsWith(Name, 'A')`  
+    (before creating `ageDocumentQuery`)
+
+    `ageDocumentQuery: from Users where startsWith(Name, 'A') and Age > 21`  
+    (before creating `eyeDocumentQuery`)
+
+    `eyeDocumentuery: from Users where startsWith(Name, 'A') and Age > 21 and EyeColor = 'blue'`
+
+    All created Lucene queries are the same query (actually the same instance).  
+    This is an important hint to be aware of if you are going to reuse `DocumentQuery`.
+
+{PANEL/}
+
+{PANEL: Default Query Operator}
+
+* Starting from version 4.0, both `Query` and `DocumentQuery` use `AND` as the default operator.  
+  (Previously, `Query` used `AND` and `DocumentQuery` used `OR`).
+
+* This behavior can be modified by calling `UsingDefaultOperator`:
         
 {CODE default_operator@ClientApi\Session\Querying\DocumentQuery\QueryVsDocumentQuery.cs /}
+
+{PANEL/}
 
 ## Related Articles
 

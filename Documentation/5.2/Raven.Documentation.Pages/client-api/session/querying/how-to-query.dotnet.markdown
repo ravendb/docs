@@ -170,9 +170,9 @@ __Query collection - no filtering__
 
 {CODE-TABS}
 {CODE-TAB:csharp:Method-syntax query_1_1@ClientApi\Session\Querying\HowToQuery.cs /}
-{CODE-TAB:csharp:Method-syntax-async query_1_2@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Method-syntax_async query_1_2@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TAB:csharp:Query-syntax query_1_3@ClientApi\Session\Querying\HowToQuery.cs /}
-{CODE-TAB:csharp:Query-syntax-async query_1_4@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Query-syntax_async query_1_4@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 // This RQL is a Full Collection Query
 // No auto-index is created since no filtering is applied
@@ -189,9 +189,9 @@ __Query collection - by ID__
 
 {CODE-TABS}
 {CODE-TAB:csharp:Method-syntax query_2_1@ClientApi\Session\Querying\HowToQuery.cs /}
-{CODE-TAB:csharp:Method-syntax-async query_2_2@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Method-syntax_async query_2_2@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TAB:csharp:Query-syntax query_2_3@ClientApi\Session\Querying\HowToQuery.cs /}
-{CODE-TAB:csharp:Query-syntax-async query_2_4@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Query-syntax_async query_2_4@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 // This RQL queries the 'Employees' collection by ID
 // No auto-index is created when querying only by ID
@@ -208,9 +208,9 @@ __Query collection - with filtering__
 
 {CODE-TABS}
 {CODE-TAB:csharp:Method-syntax query_3_1@ClientApi\Session\Querying\HowToQuery.cs /}
-{CODE-TAB:csharp:Method-syntax-async query_3_2@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Method-syntax_async query_3_2@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TAB:csharp:Query-syntax query_3_3@ClientApi\Session\Querying\HowToQuery.cs /}
-{CODE-TAB:csharp:Query-syntax-async query_3_4@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Query-syntax_async query_3_4@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Query collection - filter by document field
 
@@ -229,9 +229,9 @@ __Query collection - with paging__
 
 {CODE-TABS}
 {CODE-TAB:csharp:Method-syntax query_4_1@ClientApi\Session\Querying\HowToQuery.cs /}
-{CODE-TAB:csharp:Method-syntax-async query_4_2@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Method-syntax_async query_4_2@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TAB:csharp:Query-syntax query_4_3@ClientApi\Session\Querying\HowToQuery.cs /}
-{CODE-TAB:csharp:Query-syntax-async query_4_4@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Query-syntax_async query_4_4@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Query collection - page results
 // No auto-index is created since no filtering is applied
@@ -239,6 +239,8 @@ __Query collection - with paging__
 from "Products" limit 5, 10 // skip 5, take 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+* By default, if the page size is not specified, all matching records will be retrieved from the database.
 
 {NOTE/}
 
@@ -257,8 +259,8 @@ from "Products" limit 5, 10 // skip 5, take 10
 __Example__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync query_5_1@ClientApi\Session\Querying\HowToQuery.cs /}
-{CODE-TAB:csharp:Async query_5_2@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:DocumentQuery query_5_1@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:DocumentQuery_async query_5_2@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Query collection - filter by document field
 
@@ -281,8 +283,8 @@ from "Employees" where FirstName = "Robert"
 __Example__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync query_6_1@ClientApi\Session\Querying\HowToQuery.cs /}
-{CODE-TAB:csharp:Async query_6_2@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:RawQuery query_6_1@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:RawQuery_async query_6_2@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TABS/}
 
 {PANEL/}
@@ -326,13 +328,14 @@ Available custom methods and extensions for the session's [Query](../../../clien
 
 {CODE syntax@ClientApi\Session\Querying\HowToQuery.cs /}
 
-| Parameter | Type | Description |
-| - | - | - |
-| __T__ | object | <ul><li>The type of entity that represents the collection queried</li></ul> |
-| __TIndexCreator__ | string | <ul><li>The index class type</li></ul> |
+| Parameter          | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                                              |
+|--------------------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __T__              | object | <ul><li>The type of entities queried</li></ul>                                                                                                                                                                                                                                                                                                                                                                             |
+| __TIndexCreator__  | string | <ul><li>The index class type</li></ul>                                                                                                                                                                                                                                                                                                                                                                                   |
 | __collectionName__ | string | <ul><li>Name of a collection to query</li><li>No need to provide this param when specifying `T`</li><li>Specify the collection name when querying a collection that is created<br> on the fly, i.e. when querying [Artifical Documents](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))</li><li>Mutually exclusive with _indexName_</li></ul> |
-| __indexName__ | string | <ul><li>Name of index to query</li><li>Mutually exclusive with _collectionName_</li></ul> |
-| __isMapReduce__ | string | <ul><li>Whether querying a map-reduce index</li></ul> |
+| __indexName__      | string | <ul><li>Name of index to query</li><li>Mutually exclusive with _collectionName_</li></ul>                                                                                                                                                                                                                                                                                                                                |
+| __isMapReduce__    | string | <ul><li>Whether querying a map-reduce index</li></ul>                                                                                                                                                                                                                                                                                                                                                                    |
+| __query__          | string | <ul><li>The RQL query string</li></ul>                                                                                                                                                                                                                                                                                                                                                                    |
 
 | Return Value | |
 | - | - |

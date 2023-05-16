@@ -1,50 +1,162 @@
-# Session: Querying: What is a Document Query?
+# What is a Document Query?
 
-Low-level querying capabilities can be accessed via the `DocumentQuery` method in advanced session operations. `DocumentQuery` gives you more flexibility and control over the process of building a query.
+---
 
-## Syntax
+{NOTE: }
 
-{CODE document_query_1@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
+* Queries in RavenDB can be written using `Query`, `DocumentQuery` or directly with `RQL`.  
+  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query).
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **indexName** | string | Name of an index to perform a query on (exclusive with **collectionName**)  |
-| **collectionName** | string | Name of a collection to perform a query on (exclusive with **indexName**) |
-| **isMapReduce** | bool | Indicates if a queried index is a map/reduce index (modifies how we treat identifier properties) |
+* Unlike the `Query` method, the `DocumentQuery` method does Not support LINQ.  
+  However, it gives you more flexibility and control over the process of building a query,  
+  as it provides low-level querying capabilities. See [Query -vs- DocumentQuery](../../../../client-api/session/querying/document-query/query-vs-document-query) for all differences.
 
-| Return Value | |
-| ------------- | ----- |
-| **IDocumentQuery** | Instance implementing IDocumentQuery interface containing additional query methods and extensions |
+* In this page:
+  * [DocumentQuery examples](../../../../client-api/session/querying/document-query/what-is-document-query#documentquery-examples)
+  * [Convert between DocumentQuery and Query](../../../../client-api/session/querying/document-query/what-is-document-query#convert-between-documentquery-and-query)
+  * [Custom Methods and Extensions](../../../../client-api/session/querying/document-query/what-is-document-query#custom-methods-and-extensions)
+  * [Syntax](../../../../client-api/session/querying/document-query/what-is-document-query#syntax)
 
-## Example I - Basic
+{NOTE/}
 
-{CODE document_query_2@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
+---
 
-{CODE document_query_3@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
+{PANEL: DocumentQuery examples}
 
-## Example II - Querying Specified Index
+{NOTE: }
 
-{CODE document_query_4@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
+__Query collection - no filtering__
 
-or
+{CODE-TABS}
+{CODE-TAB:csharp:DocumentQuery documentQuery_1@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
+{CODE-TAB:csharp:DocumentQuery_async documentQuery_1_async@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
+{CODE-TAB-BLOCK:sql:RQL}
+from "Employees"
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
 
-{CODE document_query_5@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
+{NOTE/}
 
-{PANEL:ToQueryable}
+{NOTE: }
 
-To convert `DocumentQuery` to `Query` and using LINQ to project you only need to use `ToQueryable` method.
+__Query collection - by ID__
 
-### Example - Converting DocumentQuery to Query and using LINQ to project
+{CODE-TABS}
+{CODE-TAB:csharp:DocumentQuery documentQuery_2@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
+{CODE-TAB:csharp:DocumentQuery_async documentQuery_2_async@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
+{CODE-TAB-BLOCK:sql:RQL}
+from "Employees" where id() == "employees/1-A"
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
 
-{CODE document_query_toqueryable@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
+{NOTE/}
 
-See [Projections](../../../../indexes/querying/projections) for more information.
+{NOTE: }
+
+__Query collection - with filtering__
+
+{CODE-TABS}
+{CODE-TAB:csharp:DocumentQuery documentQuery_3@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
+{CODE-TAB:csharp:DocumentQuery_async documentQuery_3_async@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
+{CODE-TAB-BLOCK:sql:RQL}
+from "Employees" where FirstName == "Robert"
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Query collection - with paging__
+
+{CODE-TABS}
+{CODE-TAB:csharp:DocumentQuery documentQuery_4@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
+{CODE-TAB:csharp:DocumentQuery_async documentQuery_4_async@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
+{CODE-TAB-BLOCK:sql:RQL}
+from "Products" limit 5, 10 // skip 5, take 10
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Query an index__
+
+* Please refer to [Querying an index](../../../../indexes/querying/query-index#session.advanced.documentquery) for examples of querying an index using a DocumentQuery.
+
+{NOTE/}
 
 {PANEL/}
 
-## Custom Methods and Extensions
+{PANEL: Convert between DocumentQuery and Query}
 
-{NOTE Functionality of most of the methods match the functionality of their `Query` counterparts and therefore will not be described again. Please refer to the appropriate counterpart documentation articles. Links starting with `[Query]` are marking those articles. /}
+{NOTE: }
+
+__DocumentQuery to Query__
+
+---
+
+* A `DocumentQuery` can be converted to a `Query`.  
+  This enables you to take advantage of all available LINQ extensions provided by RavenDB.  
+
+{CODE-TABS}
+{CODE-TAB:csharp:DocumentQuery documentQuery_5@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
+{CODE-TAB:csharp:DocumentQuery_async documentQuery_5_async@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
+{CODE-TAB-BLOCK:sql:RQL}
+from "Orders" where Freight > 25
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+* Convert `DocumentQuery` to `Query` when you need to project data from a related document  
+  in a dynamic query.
+
+{CODE-TABS}
+{CODE-TAB:csharp:DocumentQuery documentQuery_6@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
+{CODE-TAB-BLOCK:sql:RQL}
+from "Orders" as o
+where o.Freight > 25
+load o.Company as c
+select {
+    Freight: o.Freight,
+    CompanyName: c.Name
+}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Query to DocumentQuery__
+
+---
+
+* A `Query` can be converted to a `DocumentQuery`.  
+  This enables you to take advantage of the API available only for _DocumentQuery_.  
+
+{CODE-TABS}
+{CODE-TAB:csharp:DocumentQuery documentQuery_7@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
+{CODE-TAB:csharp:DocumentQuery_async documentQuery_7_async@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
+{CODE-TAB-BLOCK:sql:RQL}
+from "Orders"
+where Freight > 25
+include explanations()
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: Custom Methods and Extensions}
+
+{NOTE: }
+
+Several methods share the same functionality as their `Query` counterparts.  
+Refer to the corresponding documentation articles, marked with links starting with "[Query]" in the list below.
+
+{NOTE/}
 
 Available custom methods and extensions:   
 
@@ -67,18 +179,22 @@ Available custom methods and extensions:
 - First
 - FirstOrDefault
 - Fuzzy
-- [Not](../../../../client-api/session/querying/document-query/how-to-use-not-operator)
+- GetIndexQuery
+- GetQueryResult
 - [GroupBy](../../../../client-api/session/querying/how-to-perform-group-by-query)
 - [GroupByArrayValues](../../../../client-api/session/querying/how-to-perform-group-by-query#by-array-values)
 - [GroupByArrayContent](../../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
 - [Query] [Highlight](../../../../client-api/session/querying/how-to-use-highlighting)
 - Include
+- IncludeExplanations
 - Intersect
 - InvokeAfterQueryExecuted
 - InvokeAfterStreamExecuted
 - [Query] [Lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily)
+- LongCount
 - MoreLikeThis
 - NegateNext
+- [Not](../../../../client-api/session/querying/document-query/how-to-use-not-operator)
 - [Query] [NoCaching](../../../../client-api/session/querying/how-to-customize-query#nocaching)
 - [Query] [NoTracking](../../../../client-api/session/querying/how-to-customize-query#notracking)
 - OfType
@@ -95,6 +211,7 @@ Available custom methods and extensions:
 - [Query] [RelatesToShape](../../../../client-api/session/querying/how-to-query-a-spatial-index)
 - Search
 - SelectFields
+- SelectTimeSeries
 - Single
 - SingleOrDefault
 - Skip
@@ -121,9 +238,13 @@ Available custom methods and extensions:
 - WhereStartsWith
 - [Query] [WithinRadiusOf](../../../../client-api/session/querying/how-to-query-a-spatial-index)
 
-## Remarks
+{PANEL/}
 
-By default, if the `page size` is not specified, all of the matching records will be retrieved from a database.
+{PANEL: Syntax}
+
+The available `DocumentQuery` overloads are listed in this [Syntax section](../../../../client-api/session/querying/how-to-query#syntax) in the [Query Overview](../../../../client-api/session/querying/how-to-query).
+
+{PANEL/}
 
 ## Related Articles
 
