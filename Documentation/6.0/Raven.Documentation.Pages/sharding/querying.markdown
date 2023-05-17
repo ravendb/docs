@@ -20,6 +20,7 @@
      * [OrderBy in a Map-Reduce Index](../sharding/querying#orderby-in-a-map-reduce-index)  
      * [`where` vs `filter` Recommendations](../sharding/querying#vs--recommendations)  
   * [Including Items](../sharding/querying#including-items)  
+  * [Querying a Selected Shard](../sharding/querying#querying-a-selected-shard)
   * [Timing Queries](../sharding/querying#timing-queries)
   * [Unsupported Querying Features](../sharding/querying#unsupported-querying-features)  
   
@@ -180,49 +181,24 @@ is applied to restrict the number of retrieved results, there are scenarios
 in which **all** the results will still be retrieved from all shards.  
 To understand how this can happen, let's run a few queries over this 
 map-reduce index:  
-{CODE-BLOCK:csharp}
-Reduce = results => from result in results
-                    group result by result.Name
-                    into g
-                    select new Result
-                    {
-                        // Group-by field (reduce key)
-                        Name = g.Key,
-                        // Computation field
-                        Sum = g.Sum(x => x.Sum)
-                    };
-{CODE-BLOCK/}
+{CODE map-reduce-index@Sharding\ShardingQuerying.cs /}
 
 * The first query sorts the results using `OrderBy` without setting any limit.  
   This will load **all** matching results from all shards (just like this query 
   would load all matching results from a non-sharded database).  
-  {CODE-BLOCK:csharp}
-                      var queryResult = session.Query<UserMapReduce.Result, UserMapReduce>()
-                        .OrderBy(x => x.Name)
-                        .ToList();
-  {CODE-BLOCK/}
+  {CODE OrderBy_with-no-limit@Sharding\ShardingQuerying.cs /}
   
 * The second query sorts the results by one of the `GroupBy` fields, 
   `Name`, and sets a limit to restrict the retrieved dataset to 3 results.  
   This **will** restrict the retrieved dataset to the set limit.  
-  {CODE-BLOCK:csharp}
-                    var queryResult = session.Query<UserMapReduce.Result, UserMapReduce>()
-                        .OrderBy(x => x.Name)
-                        .Take(3) // this limit will apply while retrieving the items
-                        .ToList();
-  {CODE-BLOCK/}
+  {CODE OrderBy_with-limit@Sharding\ShardingQuerying.cs /}
   
 * The third query sorts the results **not** by a `GroupBy` field 
   but by a field that computes a sum from retrieved values.  
   This will retrieve **all** the results from all shards regardless of 
   the set limit, perform the computation over them all, and only then 
   sort them and provide us with just the number of results we requested.  
-  {CODE-BLOCK:csharp}
-                    var queryResult = session.Query<UserMapReduce.Result, UserMapReduce>()
-                        .OrderBy(x => x.Sum)
-                        .Take(3) // this limit will only apply after retrieving all items
-                        .ToList();
-  {CODE-BLOCK/}
+  {CODE compute-sum-by-retrieved-results@Sharding\ShardingQuerying.cs /}
     
   {NOTE: }
   Note that retrieving all the results from all shards, either 
@@ -256,11 +232,35 @@ filter TotalSales >= 5000
 
 **Including** items by a query or an index **will** work even if an included 
 item resides on another shard.  
-If a requested item is not found on this shard, the orchestrator will connect 
-the shard it is stored on, load the item and provide it.  
+If a requested item is not located on this shard, the orchestrator will fetch 
+it from the shard that does host it.  
+Note that this process will cost an extra travel to the shard that the requested 
+item is on.  
 
-Note that this process will cost the additional travel to the shard that the 
-requested item resides on.  
+{PANEL/}
+
+{PANEL: Querying a Selected Shard}
+
+A query is normally executed over all shards.  
+It is, however, also possible to query only selected shards.  
+Query a selected shard when you know in advance that the documents you need 
+to query reside on this shard, to avoid redundant travels to other shards.  
+
+This feature can be helpful when, for example, all the documents related 
+to a specific account [are deliberately stored on the same shard](../sharding/administration/anchoring-documents), 
+and when it's time to query any of them the query is sent only to this shard.  
+
+* To query a specific shard or a list of specific shards add to the 
+  query a `ShardContext` object that specifies the shard/s to query.  
+* You can discover what shard or shards documents are stored on using 
+  `ByDocumentId` or `ByDocumentIds`.  
+* Examples:  
+
+     Query only the shard containing `users/1`:  
+     {CODE query-selected-shard@Sharding\ShardingQuerying.cs /}
+
+     Query only the shard/s containing `users/2` and `users/3`:  
+     {CODE query-selected-shards@Sharding\ShardingQuerying.cs /}
 
 {PANEL/}
 

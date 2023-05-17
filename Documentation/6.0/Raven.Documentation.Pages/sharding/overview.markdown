@@ -39,7 +39,7 @@
      * [Buckets Allocation](../sharding/overview#buckets-allocation)  
      * [Buckets Population](../sharding/overview#buckets-population)  
      * [Document Extensions Storage](../sharding/overview#document-extensions-storage)  
-     * [Forcing Documents to Share a Bucket](../sharding/overview#forcing-documents-to-share-a-bucket)  
+     * [Anchoring Documents to a Bucket](../sharding/overview#anchoring-documents-to-a-bucket)  
   * [Resharding](../sharding/overview#resharding)  
   * [Creating a Sharded Database](../sharding/overview#creating-a-sharded-database)  
 
@@ -197,28 +197,11 @@ is calculated by the ID of the document that owns them.
 
 ---
 
-### Forcing Documents to Share a Bucket
+### Anchoring Documents to a Bucket
 
-The cluster can be forced to store a document in the same bucket 
-(and therefore in the same shard) as another document.  
-To do this, add the document name a suffix: `$` + <`ID`>  
-The cluster will calculate the document's bucket number by 
-the suffix ID, and store the document in this bucket.  
-
-{NOTE: }
-E.g. - 
-Original document ID: `Users/70`  
-The document you want Users/70 to share a bucket with: `Users/4`  
-Rename `Users/70` to: `Users/70$Users/4`
-{NOTE/}
-
-!["Forcing Documents to Share a Bucket"](images/overview_force-docs-to-share-bucket.png "Forcing Documents to Share a Bucket")
-
-{WARNING: }
-Be careful not to force the storage of too many documents in the same bucket 
-(and shard), to prevent the creation of an imbalanced database in which one 
-of the shards is overpopulated and others are underpopulated.  
-{WARNING/}
+You can make documents share a bucket (and therefore a shard) by 
+adding their ID a suffix by which RavenDB will calculate their bucket number.  
+Learn [here](../sharding/administration/anchoring-documents) why and how to do this.  
 
 {PANEL/}
 
