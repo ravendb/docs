@@ -83,10 +83,10 @@ The task keeps the two databases in sync by updating the destination
 database with any deletion, addition, or modification made in the 
 origin database's data.  
 
-An external replication task can be created on a non-sharded database, 
+An external replication task can run on a non-sharded database, 
 and [create a live replica of its data on a sharded database](../sharding/external-replication#non-sharded-database-to-sharded-database).  
-The destination (sharded) database will distribute incoming data between 
-its shards.  
+The destination (sharded) database will distribute incoming data 
+among its shards.  
 The sharded database can be kept and tested in a controlled environment 
 as long as necessary, as the original database keeps on serving its users. 
 When all is ready, the new database can be moved into production.  
