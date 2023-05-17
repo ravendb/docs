@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Conventions;
 using Raven.Client.Documents.Operations.Backups;
 using Raven.Client.Documents.Operations.Backups.Sharding;
 using Raven.Client.ServerWide;
@@ -66,7 +67,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
 
                 var operation = new UpdatePeriodicBackupOperation(config);
                 var result = await docStore.Maintenance.SendAsync(operation);
-                
+
             }
 
             using (var docStore = new DocumentStore
@@ -119,7 +120,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 });
 
                 var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
-                
+
             }
 
             using (var docStore = new DocumentStore
@@ -170,18 +171,18 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                     // Paths to backup files
                     ShardRestoreSettings = restoreSettings,
                     // S3 Bucket settings
-                    Settings = new S3Settings 
+                    Settings = new S3Settings
                     {
                         AwsRegionName = "us-east-1", // Optional
                         BucketName = "your bucket name here",
                         RemoteFolderName = "", // Replaced by restoreSettings.Shards.FolderName 
                         AwsAccessKey = "your access key here",
                         AwsSecretKey = "your secret key here",
-                    } 
+                    }
                 });
 
                 var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
-                
+
             }
 
             using (var docStore = new DocumentStore
@@ -239,10 +240,10 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                         AccountName = "your account name here",
                         AccountKey = "your account key here",
                     }
-                  });
+                });
 
                 var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
-                
+
             }
 
             using (var docStore = new DocumentStore
@@ -302,7 +303,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 });
 
                 var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
-                
+
             }
 
             var shard0 = new SingleShardRestoreSetting
@@ -324,8 +325,80 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 NodeTag = "C",
                 FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$2-C-backup"
             };
-            
+
+            using (var store = new DocumentStore()
+            {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "Products",
+            }.Initialize())
+            {
+                using (var session = store.OpenSession())
+                {
+                    var order = new Order
+                    {
+                    };
+                    session.Store(order);
+                    var invoice = new Invoice
+                    {
+                        OrderId = order.Id
+                    };
+                    #region storeInvoiceInOrderBucketExplicitNaming
+                    // The invoice will be stored with the order ID as a suffix
+                    session.Store(invoice, invoice.Id + "$" + order.Id);
+                    session.SaveChanges();
+                    #endregion
+                }
+            }
+
+            #region storeInvoiceInOrderBucketNamingConvention
+            // Store an invoice document in the same bucket as its order document
+
+            // Register a naming convention for invoices
+            // When an invoice is stored, the $ symbol and an order ID are added to the invoice ID
+            var conventions = new DocumentConventions();
+            conventions.RegisterAsyncIdConvention<Invoice>(async (dbName, r) =>
+            {
+                var id = await conventions.AsyncDocumentIdGenerator(dbName, r);
+                return $"{id}${r.OrderId}";
+            });
+
+            // Implement the naming convention we define above
+            using (var store = new DocumentStore()
+            {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "Products",
+                Conventions = conventions
+            }.Initialize())
+            {
+                using (var session = store.OpenSession())
+                {
+                    var order = new Order
+                    {
+                    };
+                    session.Store(order);
+                    var invoice = new Invoice
+                    {
+                        OrderId = order.Id
+                    };
+                    // The invoice will be stored with the order ID as a suffix
+                    session.Store(invoice);
+                    session.SaveChanges();
+                } 
+            }
+            #endregion
         }
+        public class Invoice
+        {
+            public string Id;
+            public string OrderId;
+        }
+
+        public class Order
+        {
+            public string Id;
+        }
+    
+
         public class Foo
         {
             public class AddNodeToOrchestratorTopologyOperation
@@ -442,4 +515,5 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
         }
     }
 }
+
 
