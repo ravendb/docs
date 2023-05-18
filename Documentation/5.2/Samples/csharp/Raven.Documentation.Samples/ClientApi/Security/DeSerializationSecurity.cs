@@ -11,9 +11,9 @@ using Sparrow;
 namespace Raven.Documentation.Samples.ClientApi.Configuration
 {
 
-    public class Serialization
+    public class DeSerializationSecurity
     {
-        public Serialization()
+        public DeSerializationSecurity()
         {
             var store = new DocumentStore()
             {
@@ -69,8 +69,7 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
             };
         }
     }
-
-    class foo
+    class foofoo
     {
         #region custom_json_contract_resolver
         public class CustomJsonContractResolver : IContractResolver
@@ -96,5 +95,4 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
         }
         #endregion
     }
-
 }

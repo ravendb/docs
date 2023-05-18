@@ -11,9 +11,9 @@ using Sparrow;
 namespace Raven.Documentation.Samples.ClientApi.Configuration
 {
 
-    public class Serialization
+    public class DeSerialization
     {
-        public Serialization()
+        public DeSerialization()
         {
             var store = new DocumentStore()
             {
@@ -70,31 +70,27 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
         }
     }
 
-    class foo
+    #region custom_json_contract_resolver
+    public class CustomJsonContractResolver : IContractResolver
     {
-        #region custom_json_contract_resolver
-        public class CustomJsonContractResolver : IContractResolver
+        public JsonContract ResolveContract(Type type)
         {
-            public JsonContract ResolveContract(Type type)
-            {
-                throw new CodeOmitted();
-            }
+            throw new CodeOmitted();
         }
-        #endregion
-
-        #region custom_json_contract_resolver_based_on_default
-        public class CustomizedRavenJsonContractResolver : DefaultRavenContractResolver
-        {
-            public CustomizedRavenJsonContractResolver(ISerializationConventions conventions) : base(conventions)
-            {
-            }
-
-            protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
-            {
-                throw new CodeOmitted();
-            }
-        }
-        #endregion
     }
+    #endregion
 
+    #region custom_json_contract_resolver_based_on_default
+    public class CustomizedRavenJsonContractResolver : DefaultRavenContractResolver
+    {
+        public CustomizedRavenJsonContractResolver(ISerializationConventions conventions) : base(conventions)
+        {
+        }
+
+        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+        {
+            throw new CodeOmitted();
+        }
+    }
+    #endregion
 }

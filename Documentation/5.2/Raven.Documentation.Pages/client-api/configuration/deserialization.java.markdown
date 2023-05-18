@@ -4,7 +4,7 @@
 
 If you need to customize Jackson `ObjectMapper` object used by the client when sending entities to the server you can access and modify its instance:
 
-{CODE:java customize_object_mapper@ClientApi\Configuration\DeSerialization.java /}
+{CODE:java customize_object_mapper@ClientApi\Configuration\Serialization.java /}
 
 ##Numbers (de)serialization
 
