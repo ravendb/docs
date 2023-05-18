@@ -1,22 +1,27 @@
 # Conventions: Serialization
+---
+
+{NOTE: }
+
+* **Serialization**
+
+* In this page:  
+  * [CustomizeJsonSerializer](../../client-api/configuration/serialization#customizejsonserializer)  
+  * [JsonContractResolver](../../client-api/configuration/serialization#jsoncontractresolver)  
+  * [BulkInsert.TrySerializeEntityToJsonStream](../../client-api/configuration/serialization#bulkinsert.tryserializeentitytojsonstream)  
+  * [IgnoreByRefMembers and IgnoreUnsafeMembers](../../client-api/configuration/serialization#ignorebyrefmembers-and-ignoreunsafemembers)  
+
+{NOTE/}
+
+---
+
+{{PANEL: Serialization}
 
 ## CustomizeJsonSerializer
 
 If you need to modify `JsonSerializer` object used by the client when sending entities to the server you can register a customization action:
 
 {CODE customize_json_serializer@ClientApi\Configuration\DeSerialization.cs /}
-
-## CustomizeJsonDeserializer
-
-To modify the `JsonSerializer` object used by the client to deserialize entities loaded from the server, you can register a customization action:
-
-{CODE customize_json_deserializer@ClientApi\Configuration\DeSerialization.cs /}
-
-## DeserializeEntityFromBlittable
-
-In order to customize the entity deserialization from blittable JSON you can use define `DeserializeEntityFromBlittable` implementation:
-
-{CODE DeserializeEntityFromBlittable@ClientApi\Configuration\DeSerialization.cs /}
 
 ## JsonContractResolver
 
@@ -30,24 +35,11 @@ You can also customize behavior of the default resolver by inheriting from `Defa
 
 {CODE custom_json_contract_resolver_based_on_default@ClientApi\Configuration\DeSerialization.cs /}
 
-## PreserveDocumentPropertiesNotFoundOnModel
-
-Controls whatever properties that were not de-serialized to an object properties will be preserved 
-during saving a document again. If `false`, those properties will be removed when the document will be saved. Default: `true`.
-
-{CODE preserve_doc_props_not_found_on_model@ClientApi\Configuration\DeSerialization.cs /}
-
 ## BulkInsert.TrySerializeEntityToJsonStream
 
 For the bulk insert you can configure custom serialization implementation by providing `TrySerializeEntityToJsonStream`:
 
 {CODE TrySerializeEntityToJsonStream@ClientApi\Configuration\DeSerialization.cs /}
-
-## Numbers (de)serialization
-
-RavenDB client supports out of the box all common numeric value types: `int`, `long`, `double`, `decimal` etc.  
-Note that although the (de)serialization of `decimals` is fully supported, there are [server side limitations](../../server/kb/numbers-in-ravendb) to numbers in that range.  
-Other number types like `BigInteger` must be treated using custom (de)serialization.
 
 ## IgnoreByRefMembers and IgnoreUnsafeMembers
 
@@ -64,6 +56,8 @@ If `IgnoreUnsafeMembers` is set to `true`, all pointer members will be ignored
 in the same manner.  
 
 The default value of both these conventions is `false`.  
+
+{PANEL/}
 
 ## Related articles
 

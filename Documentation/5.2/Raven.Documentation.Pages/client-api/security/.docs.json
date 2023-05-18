@@ -1,6 +1,8 @@
 [
-    {
-        "Path": "deserialization-security.markdown",
-        "Name": "Deserialization Security"
-    }
+  {
+    "Path": "deserialization-security.markdown",
+    "Name": "Deserialization Security",
+    "DiscussionId": "26cb4626-fefa-41bc-8338-5bec38e86048",
+    "Mappings": []
+  }
 ]
