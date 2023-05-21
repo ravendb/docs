@@ -12,7 +12,7 @@ class BlogPosts_ByTag extends AbstractJavaScriptIndexCreationTask {
         super();
 
         this.map(BlogPost, b => {
-            const result: TagResult[] = [];
+            const result = [];
 
             b.tags.forEach(item => {
                 result.push({
