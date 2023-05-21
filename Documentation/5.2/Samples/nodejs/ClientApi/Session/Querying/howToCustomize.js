@@ -3,8 +3,6 @@ import { DocumentStore } from "ravendb";
 const store = new DocumentStore();
 const session = store.openSession();
 
-const logger = getLogger({ module: "ravendb" });
-
 let action, queryCustomization, seed, waitTimeout, projectionBehavior;
 class Employee {}
 
@@ -75,8 +73,8 @@ async function customizeExamples() {
             .on("beforeQueryExecuted", query => {
                 // Can modify query parameters
                 query.skipDuplicateChecking = true;
-                // Can apply any needed action, e.g. write to log
-                logger.info(`Query to be executed is: ${query.query}`);
+                // Can apply any needed action, e.g. write to log/console
+                console.log(`Query to be executed is: ${query.query}`);
             })
             .all();
         //endregion
@@ -92,8 +90,8 @@ async function customizeExamples() {
             .on("afterQueryExecuted", rawResult => {
                 // Can access the raw query result
                 queryDuration = rawResult.durationInMs
-                // Can apply any needed action, e.g. write to log
-                logger.info(`${rawResult.lastQueryTime}`);
+                // Can apply any needed action, e.g. write to log/console
+                console.log(`${rawResult.lastQueryTime}`);
              })
             .all();
         //endregion
