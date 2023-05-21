@@ -9,8 +9,8 @@ let action, queryCustomization, seed, waitTimeout, projectionBehavior;
 class Employee {}
 
 //region index_1
-class BlogPosts_ByTag extends AbstractJavaScriptIndexCreationTask<BlogPost> {
-    public constructor() {
+class BlogPosts_ByTag extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
         super();
 
         this.map(BlogPost, b => {
@@ -33,20 +33,24 @@ class BlogPosts_ByTag extends AbstractJavaScriptIndexCreationTask<BlogPost> {
 }
 
 class BlogPost {
-    public id: string;
-    public title: string;
-    public body: string;
-    public tags: string[];
+    constructor() {
+        this.id = null;
+        this.title = null;
+        this.body = null;
+        this.tags = null;
+    }
 }
 
 class TagResult {
-    public tag: string;
+    constructor() {
+        this.tag = null;
+    }
 }
 //endregion
 
 //region index_2
-class Employee_ByFullName extends AbstractJavaScriptIndexCreationTask<Employee> {
-    public constructor() {
+class Employee_ByFullName extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
         super();
 
         this.map(Employee, e => {
@@ -83,7 +87,7 @@ async function customizeExamples() {
         let queryDuration = 0;
 
         const results = await session
-            .query<Employee>({ collection: "employees" })
+            .query({ collection: "employees" })
              // Provide a callback for the 'afterQueryExecuted' event 
             .on("afterQueryExecuted", rawResult => {
                 // Can access the raw query result
@@ -98,7 +102,7 @@ async function customizeExamples() {
     {
         //region customize_3_0
         const results = await session
-            .query<Employee>({ collection: "employees" })
+            .query({ collection: "employees" })
             .whereEquals("firstName", "Robert")
              // Add a call to 'noCaching'
             .noCaching()
@@ -109,7 +113,7 @@ async function customizeExamples() {
     {
         //region customize_4_0
         const results = await session
-            .query<Employee>({ collection: "employees" })
+            .query({ collection: "employees" })
             .whereEquals("firstName", "Robert")
             // Add a call to 'noTrcking'
             .noTracking()
@@ -121,7 +125,6 @@ async function customizeExamples() {
         //region customize_5_0
         // The projection class: 
         class EmployeeProjectedDetails {
-            private fullName: null;
             constructor() {
                 this.fullName = null;
             }
@@ -149,7 +152,7 @@ async function customizeExamples() {
     {
         //region customize_6_0
         const results = await session
-            .query<Employee>({ collection: "employees" })
+            .query({ collection: "employees" })
             // Add a call to 'randomOrdering', can pass a seed
             .randomOrdering("123")
             .all();
