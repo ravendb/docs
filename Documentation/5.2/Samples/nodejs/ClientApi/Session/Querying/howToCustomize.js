@@ -70,7 +70,7 @@ async function customizeExamples() {
              // Provide a callback for the 'beforeQueryExecuted' event 
             .on("beforeQueryExecuted", query => {
                 // Can modify query parameters
-                (query as IndexQuery).skipDuplicateChecking = true;
+                query.skipDuplicateChecking = true;
                 // Can apply any needed action, e.g. write to log
                 logger.info(`Query to be executed is: ${query.query}`);
             })

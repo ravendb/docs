@@ -195,7 +195,7 @@ __Syntax__
   (projecting means the query returns only specific document fields instead of the full document)  
   then the server will try to retrieve the fields' values from the fields [stored in the index](../../../indexes/storing-data-in-index).  
 
-* If the index does Not store those fields then the fields' values will be retrieved from the documents store.
+* If the index does Not store those fields then the fields' values will be retrieved from the documents.
 
 * Use the `Projection` method to customize and modify this behavior.
 
