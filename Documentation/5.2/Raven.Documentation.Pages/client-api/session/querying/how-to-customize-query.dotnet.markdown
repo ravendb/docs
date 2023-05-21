@@ -191,15 +191,18 @@ __Syntax__
 
 {PANEL: Projection}
 
-* By default, when [querying an an index](../../../indexes/querying/query-index), and projecting query results  
+* By default, when [querying an index](../../../indexes/querying/query-index), and projecting query results  
   (projecting means the query returns only specific document fields instead of the full document)  
-  then the server will try to retrieve the fields' values from the fields stored in the index.  
+  then the server will try to retrieve the fields' values from the fields [stored in the index](../../../indexes/storing-data-in-index).  
 
 * If the index does Not store those fields then the fields' values will be retrieved from the documents store.
 
 * Use the `Projection` method to customize and modify this behavior.
 
-* Learn more about projections in:
+* Note:  
+  Entities resulting from a projecting query are Not tracked by the session.  
+  Learn more about projections in:
+  
   * [Projections](../../../indexes/querying/projections)
   * [How to project query results](../../../client-api/session/querying/how-to-project-query-results)
 

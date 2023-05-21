@@ -282,10 +282,12 @@ Available methods for the session's [query](../../../client-api/session/querying
 - longCount
 - [moreLikeThis](../../../client-api/session/querying/how-to-use-morelikethis)
 - negateNext
-- noCaching
-- noTracking
+- [noCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
+- [noTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
 - not
 - [ofType](../../../client-api/session/querying/how-to-project-query-results#oftype)
+- [on("afterQueryExecuted")](../../../client-api/session/querying/how-to-customize-query#on-("afterqueryexecuted"))
+- [on("beforeQueryExecuted")](../../../client-api/session/querying/how-to-customize-query#on-("beforequeryexecuted"))
 - openSubclause
 - orderBy
 - orderByDescending
@@ -295,10 +297,10 @@ Available methods for the session's [query](../../../client-api/session/querying
 - orderByScoreDescending
 - orElse
 - proximity
-- randomOrdering
+- [randomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
 - relatesToShape
 - search
-- selectFields
+- [selectFields](../../../indexes/querying/projections#selectfields)
 - selectTimeSeries
 - single
 - singleOrNull
@@ -309,7 +311,7 @@ Available methods for the session's [query](../../../client-api/session/querying
 - take
 - timings
 - usingDefaultOperator
-- waitForNonStaleResults
+- [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
 - whereBetween
 - whereEndsWith
 - whereEquals

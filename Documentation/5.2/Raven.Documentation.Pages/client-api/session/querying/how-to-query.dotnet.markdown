@@ -309,6 +309,7 @@ Available custom methods and extensions for the session's [Query](../../../clien
 - FirstOrDefaultAsync
 - [GroupByArrayValues](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-values)
 - [GroupByArrayContent](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
+- Highlight
 - [Include](../../../client-api/how-to/handle-document-relationships)
 - [Intersect](../../../client-api/session/querying/how-to-use-intersect)
 - [Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
