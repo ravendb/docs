@@ -21,15 +21,15 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
         {
             var store = new DocumentStore()
             {
+                #region customize_json_deserializer
                 Conventions =
                 {
-                    #region customize_json_deserializer
                     Serialization = new NewtonsoftJsonSerializationConventions
                     {
                         CustomizeJsonDeserializer = serializer => throw new CodeOmitted()
                     }
-                    #endregion
                 }
+                #endregion
             };
         }
 
@@ -37,15 +37,15 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
         {
             var store = new DocumentStore()
             {
+                #region DeserializeEntityFromBlittable
                 Conventions =
                 {
-                    #region DeserializeEntityFromBlittable
                     Serialization = new NewtonsoftJsonSerializationConventions
                     {
                         DeserializeEntityFromBlittable = (type, blittable) => throw new CodeOmitted()
                     }
-                    #endregion
                 }
+                #endregion
             };
         }
 
@@ -53,12 +53,12 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
         {
             var store = new DocumentStore()
             {
+                #region preserve_doc_props_not_found_on_model
                 Conventions =
                 {
-                    #region preserve_doc_props_not_found_on_model
                     PreserveDocumentPropertiesNotFoundOnModel = true
-                    #endregion
                 }
+                #endregion
             };
         }
 
@@ -66,12 +66,12 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
         {
             var store = new DocumentStore()
             {
+                #region MaxNumberOfRequestsPerSession
                 Conventions =
                 {
-                    #region MaxNumberOfRequestsPerSession
                     MaxNumberOfRequestsPerSession = 10
-                    #endregion
                 }
+                #endregion
             };
         }
 
@@ -79,12 +79,12 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
         {
             var store = new DocumentStore()
             {
+                #region UseOptimisticConcurrency
                 Conventions =
                 {
-                    #region UseOptimisticConcurrency
                     UseOptimisticConcurrency = true
-                    #endregion
                 }
+                #endregion
             };
         }
     }

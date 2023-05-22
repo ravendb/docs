@@ -1,15 +1,17 @@
 # Conventions: DeSerialization
+
 ---
 
 {NOTE: }
 
-* **DeSerialization**
+Use the methods described in this page to customize the [conventions](../../client-api/configuration/conventions) 
+by which entities are deserialized as they are received by the client.  
 
 * In this page:  
   * [CustomizeJsonDeserializer](../../client-api/configuration/deserialization#customizejsondeserializer)  
   * [DeserializeEntityFromBlittable](../../client-api/configuration/deserialization#deserializeentityfromblittable)  
   * [PreserveDocumentPropertiesNotFoundOnModel](../../client-api/configuration/deserialization#preservedocumentpropertiesnotfoundonmodel)  
-  * [Numbers DeSerialization](../../client-api/configuration/deserialization#numbers-deserialization)  
+  * [Numbers DeSerialization](../../client-api/configuration/deserialization#number-deserialization)  
 
 {NOTE/}
 
@@ -19,29 +21,38 @@
 
 ## CustomizeJsonDeserializer
 
-To modify the `JsonSerializer` object used by the client to deserialize entities 
-loaded from the server, register a customization action:
+* The `JsonSerializer` object is used by the client to deserialize entities 
+  loaded from the server.  
+* Use the `CustomizeJsonDeserializer` convention to modify `JsonSerializer` 
+  by registering a deserialization customization action.  
 
 {CODE customize_json_deserializer@ClientApi\Configuration\DeSerialization.cs /}
 
 ## DeserializeEntityFromBlittable
 
-Use `DeserializeEntityFromBlittable` to customize entity deserialization from a blittable JSON.  
+* Use the `DeserializeEntityFromBlittable` convention to customize entity 
+  deserialization from a blittable JSON.  
 
 {CODE DeserializeEntityFromBlittable@ClientApi\Configuration\DeSerialization.cs /}
 
 ## PreserveDocumentPropertiesNotFoundOnModel
 
-Controls whatever properties that were not de-serialized to an object properties will be preserved 
-during saving a document again. If `false`, those properties will be removed when the document will be saved. Default: `true`.
+* Some document properties are not deserialized to an object.  
+* Set the `PreserveDocumentPropertiesNotFoundOnModel` convention to `true` 
+  to **preserve** such properties when the document is saved.  
+* Set the `PreserveDocumentPropertiesNotFoundOnModel` convention to `false` 
+  to **remove** such properties when the document is saved.  
+* Default: `true`  
 
 {CODE preserve_doc_props_not_found_on_model@ClientApi\Configuration\DeSerialization.cs /}
 
-## Numbers DeSerialization
+## Number DeSerialization
 
-RavenDB client supports out of the box all common numeric value types: `int`, `long`, `double`, `decimal` etc.  
-Note that although the de-serialization of `decimals` is fully supported, there are [server side limitations](../../server/kb/numbers-in-ravendb) to numbers in that range.  
-Other number types like `BigInteger` must be treated using custom de-serialization.
+* RavenDB client supports all common numeric value types (including `int`, `long`, 
+  `double`, `decimal`, etc.) out of the box.  
+* Note that although deserialization of `decimals` is fully supported, there are 
+  [server side limitations](../../server/kb/numbers-in-ravendb) to numbers in this range.  
+* Other number types, like `BigInteger`, must be handled using custom deserialization.
 
 {PANEL/}
 
