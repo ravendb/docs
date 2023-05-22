@@ -296,7 +296,7 @@ namespace Rvn.Ch02
                             #region smuggler_options
                             OperateOnTypes = DatabaseItemType.Indexes
                                              | DatabaseItemType.Documents
-                                             | DatabaseItemType.Counters
+                                             | DatabaseItemType.CounterGroups
                             #endregion
                         },
                         @"C:\ravendb-exports\Northwind.ravendbdump",

@@ -15,84 +15,54 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
     {
         public DeSerializationSecurity()
         {
+        }
+
+        void DeSerializationSecurity_RegisterForbiddenNamespace()
+        {
+            var binder = new DefaultRavenSerializationBinder();
+            binder.RegisterForbiddenNamespace("MyNamespace");
+
             var store = new DocumentStore()
             {
+                #region RegisterForbiddenNamespace
                 Conventions =
                 {
-                    #region customize_json_serializer
-                    Serialization = new NewtonsoftJsonSerializationConventions
-                    {
-                        CustomizeJsonSerializer = serializer => throw new CodeOmitted()
-                    }
-                    #endregion
-                    /*
-                    #region customize_json_deserializer
                     Serialization = new NewtonsoftJsonSerializationConventions
                     {
                         CustomizeJsonDeserializer = serializer => throw new CodeOmitted()
                     }
-                    #endregion
+                }
+                #endregion
+            };
+        }
 
-                    #region DeserializeEntityFromBlittable
+        void DeSerializationSecurity_RegisterForbiddenType()
+        {
+            var store = new DocumentStore()
+            {
+                #region RegisterForbiddenType
+                Conventions =
+                {
                     Serialization = new NewtonsoftJsonSerializationConventions
                     {
                         DeserializeEntityFromBlittable = (type, blittable) => throw new CodeOmitted()
                     }
-                    #endregion
-
-                    #region json_contract_resolver
-                    Serialization = new NewtonsoftJsonSerializationConventions
-                    {
-                        JsonContractResolver = new CustomJsonContractResolver()
-                    }
-                    #endregion */
-                    ,
-                    #region preserve_doc_props_not_found_on_model
-                    PreserveDocumentPropertiesNotFoundOnModel = true
-                    #endregion
-                    ,
-                    #region MaxNumberOfRequestsPerSession
-                    MaxNumberOfRequestsPerSession = 10
-                    #endregion
-                    ,
-                    #region UseOptimisticConcurrency
-                    UseOptimisticConcurrency = true
-                    #endregion
-                    ,
-                    #region TrySerializeEntityToJsonStream
-                    BulkInsert =
-                    {
-                        TrySerializeEntityToJsonStream = (entity, metadata, writer) => throw new CodeOmitted(),
-                    }
-                    #endregion
                 }
+                #endregion
             };
         }
-    }
-    class foofoo
-    {
-        #region custom_json_contract_resolver
-        public class CustomJsonContractResolver : IContractResolver
-        {
-            public JsonContract ResolveContract(Type type)
-            {
-                throw new CodeOmitted();
-            }
-        }
-        #endregion
 
-        #region custom_json_contract_resolver_based_on_default
-        public class CustomizedRavenJsonContractResolver : DefaultRavenContractResolver
+        void DeSerializationSecurity_RegisterSafeType()
         {
-            public CustomizedRavenJsonContractResolver(ISerializationConventions conventions) : base(conventions)
+            var store = new DocumentStore()
             {
-            }
-
-            protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
-            {
-                throw new CodeOmitted();
-            }
+                #region RegisterSafeType
+                Conventions =
+                {
+                    PreserveDocumentPropertiesNotFoundOnModel = true
+                }
+                #endregion
+            };
         }
-        #endregion
     }
 }

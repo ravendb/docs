@@ -42,7 +42,8 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
                 var blittableDoc = session.Advanced.JsonConverter.ToBlittable(doc, docInfo);
 
                 // The Put command (parameters are document ID, changeVector check is null, the document to store)
-                var command = new PutDocumentCommand("categories/999", null, blittableDoc);
+                var command = new PutDocumentCommand(null, "categories/999", null, blittableDoc);
+
                 // RequestExecutor sends the command to the server
                 session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
                 #endregion

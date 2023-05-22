@@ -59,8 +59,12 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     RequestTimeout = TimeSpan.FromSeconds(90)
                     #endregion
                     ,
-                    #region UseCompression
-                    UseCompression = true
+                    #region UseHttpCompression
+                    UseHttpCompression = true
+                    #endregion
+                    ,
+                    #region UseHttpDecompression
+                    UseHttpDecompression = true
                     #endregion
                     ,
                     #region OperationStatusFetchMode

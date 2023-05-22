@@ -64,9 +64,9 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var session = store.OpenSession())
                 {
                     #region customize_1_1
-                    // set 'PageSize' to 10
+                    // set DisableCaching to true
                     List<Employee> results = session.Query<Employee>()
-                        .Customize(x => x.BeforeQueryExecuted(query => query.PageSize = 10))
+                        .Customize(x => x.BeforeQueryExecuted(query => query.DisableCaching = true))
                         .ToList();
                     #endregion
                 }
