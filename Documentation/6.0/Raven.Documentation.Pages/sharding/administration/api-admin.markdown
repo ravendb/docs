@@ -11,6 +11,7 @@
   All other database operations are available via API as well.  
 
 * In this page:  
+  * [Creating a Sharded Database](../../sharding/administration/api-admin#creating-a-sharded-database)  
   * [Orchestrator Administration](../../sharding/administration/api-admin#orchestrator-administration)  
      * [Adding an Orchestrator](../../sharding/administration/api-admin#adding-an-orchestrator)  
      * [Removing an Orchestrator](../../sharding/administration/api-admin#removing-an-orchestrator)  
@@ -23,6 +24,25 @@
 {NOTE/}
 
 ---
+
+{PANEL: Creating a Sharded Database}
+
+To create a sharded database:  
+
+* Use [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database) 
+  to create the database.  
+* Define `ShardingConfiguration` in the database record.  
+   * The initial configuration can define just the database topologies for as many shards 
+     as needed.  
+   * Orchestrators and shards can be added and removed later on, after the database is created.  
+
+### `ShardingConfiguration`
+{CODE ShardingConfiguration_definition@Sharding\ShardingAdministration.cs /}
+
+### Example
+{CODE createShardedDatabase@Sharding\ShardingAdministration.cs /}
+
+{PANEL/}
 
 {PANEL: Orchestrator Administration}
 
@@ -182,3 +202,7 @@ orchestrators nodes that host no shards.
 
 - [Sharding Overview](../../sharding/overview)  
 - [Sharding Studio API](../../sharding/administration/studio-admin)  
+
+### Client-API
+
+- [Create a Database](../../client-api/operations/server-wide/create-database) 
