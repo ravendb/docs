@@ -74,16 +74,18 @@ by which entities are serialized as they are sent by the client to the server.
 
 ### Conventions
 
-- [Conventions](../../client-api/configuration/conventions)
-- [Querying](../../client-api/configuration/querying)
-- [Load Balance & Failover](../../client-api/configuration/load-balance/overview)
+- [Conventions](../../client-api/configuration/conventions)  
+- [Querying](../../client-api/configuration/querying)  
+- [Load Balance & Failover](../../client-api/configuration/load-balance/overview)  
+- [Deserialization](../../client-api/configuration/deserialization)  
+- [Deserialization Security](../../client-api/security/deserialization-security)  
 
 ### Document Identifiers
 
-- [Working with Document IDs](../../client-api/document-identifiers/working-with-document-identifiers)
-- [Global ID Generation Conventions](../../client-api/configuration/identifier-generation/global)
-- [Type-specific ID Generation Conventions](../../client-api/configuration/identifier-generation/type-specific)
+- [Document Identifiers](../../client-api/document-identifiers/working-with-document-identifiers)  
+- [Global ID Generation](../../client-api/configuration/identifier-generation/global)  
+- [Type-specific ID](../../client-api/configuration/identifier-generation/type-specific)  
 
 ### Document Store
 
-- [What is a Document Store](../../client-api/what-is-a-document-store)
+- [Document Store](../../client-api/what-is-a-document-store)  

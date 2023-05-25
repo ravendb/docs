@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -19,50 +20,82 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
 
         void DeSerializationSecurity_RegisterForbiddenNamespace()
         {
+            object suspiciousObject = "suspiciousObject";
+            object trustedObject = "trustedObject";
+
+            #region DefaultRavenSerializationBinder
+            // Create a default serialization binder
             var binder = new DefaultRavenSerializationBinder();
-            binder.RegisterForbiddenNamespace("MyNamespace");
+            // Register a forbidden namespace
+            binder.RegisterForbiddenNamespace("SuspiciousNamespace");
+            // Register a forbidden object type
+            binder.RegisterForbiddenType(suspiciousObject.GetType());
+            // Register a trusted object type
+            binder.RegisterSafeType(trustedObject.GetType());
 
             var store = new DocumentStore()
             {
-                #region RegisterForbiddenNamespace
                 Conventions =
                 {
                     Serialization = new NewtonsoftJsonSerializationConventions
                     {
-                        CustomizeJsonDeserializer = serializer => throw new CodeOmitted()
+                        // Customize store deserialization using the defined binder
+                        CustomizeJsonDeserializer = deserializer => deserializer.SerializationBinder = binder
                     }
                 }
-                #endregion
             };
+            #endregion
         }
 
-        void DeSerializationSecurity_RegisterForbiddenType()
+
+        void DeSerializationSecurity_InvokeGadget1()
         {
-            var store = new DocumentStore()
+            using (var store = new DocumentStore())
             {
-                #region RegisterForbiddenType
-                Conventions =
+                // Create a document
+                using (var session = store.OpenSession())
                 {
-                    Serialization = new NewtonsoftJsonSerializationConventions
-                    {
-                        DeserializeEntityFromBlittable = (type, blittable) => throw new CodeOmitted()
-                    }
+                    #region DeSerializationSecurity_load-object
+                    // The object will be allowed to be deserialized
+                    // regardless of the default binder list.  
+                    session.Load<object>("Gadget");
+                    #endregion
                 }
-                #endregion
-            };
+            }
         }
 
-        void DeSerializationSecurity_RegisterSafeType()
+        void DeSerializationSecurity_InvokeGadget()
         {
-            var store = new DocumentStore()
-            {
-                #region RegisterSafeType
-                Conventions =
-                {
-                    PreserveDocumentPropertiesNotFoundOnModel = true
-                }
-                #endregion
-            };
+            #region DeSerializationSecurity_define-type
+            string userdata = @"{
+                '$type':'System.Windows.Data.ObjectDataProvider, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35',
+                'MethodName':'Start',
+                'MethodParameters':{
+                            '$type':'System.Collections.ArrayList, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089',
+                    '$values':['cmd', '/c calc.exe']
+                },
+                'ObjectInstance':{'$type':'System.Diagnostics.Process, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'}
+            }";
+            #endregion
+        }
+
+
+        class foo
+        {
+            #region RegisterForbiddenNamespace_definition
+            public void RegisterForbiddenNamespace(string @namespace)
+            #endregion
+            { }
+
+            #region RegisterForbiddenType_definition
+            public void RegisterForbiddenType(Type type)
+            #endregion
+            { }
+
+            #region RegisterSafeType_definition
+            public void RegisterSafeType(Type type)
+            #endregion
+            { }
         }
     }
 }

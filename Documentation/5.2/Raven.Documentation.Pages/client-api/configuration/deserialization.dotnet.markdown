@@ -11,6 +11,7 @@ by which entities are deserialized as they are received by the client.
   * [CustomizeJsonDeserializer](../../client-api/configuration/deserialization#customizejsondeserializer)  
   * [DeserializeEntityFromBlittable](../../client-api/configuration/deserialization#deserializeentityfromblittable)  
   * [PreserveDocumentPropertiesNotFoundOnModel](../../client-api/configuration/deserialization#preservedocumentpropertiesnotfoundonmodel)  
+  * [DefaultRavenSerializationBinder](../../client-api/configuration/deserialization#defaultravenserializationbinder)  
   * [Numbers DeSerialization](../../client-api/configuration/deserialization#number-deserialization)  
 
 {NOTE/}
@@ -46,6 +47,16 @@ by which entities are deserialized as they are received by the client.
 
 {CODE preserve_doc_props_not_found_on_model@ClientApi\Configuration\DeSerialization.cs /}
 
+## DefaultRavenSerializationBinder
+
+Use the `DefaultRavenSerializationBinder` convention and its methods to 
+prevent gadgets from running RCE (Remote Code Execution) attacks while 
+data is deserialized by the client.  
+
+Read about this security convention and maintaining deserialization security 
+[here](../../client-api/security/deserialization-security).  
+
+
 ## Number DeSerialization
 
 * RavenDB client supports all common numeric value types (including `int`, `long`, 
@@ -60,16 +71,18 @@ by which entities are deserialized as they are received by the client.
 
 ### Conventions
 
-- [Conventions](../../client-api/configuration/conventions)
-- [Querying](../../client-api/configuration/querying)
-- [Load Balance & Failover](../../client-api/configuration/load-balance/overview)
+- [Conventions](../../client-api/configuration/conventions)  
+- [Querying](../../client-api/configuration/querying)  
+- [Load Balance & Failover](../../client-api/configuration/load-balance/overview)  
+- [Serialization](../../client-api/configuration/serialization)  
+- [Deserialization Security](../../client-api/security/deserialization-security)  
 
 ### Document Identifiers
 
-- [Working with Document Identifiers](../../client-api/document-identifiers/working-with-document-identifiers)
-- [Global ID Generation Conventions](../../client-api/configuration/identifier-generation/global)
-- [Type-specific ID Generation Conventions](../../client-api/configuration/identifier-generation/type-specific)
+- [Document Identifiers](../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global ID Generation](../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID](../../client-api/configuration/identifier-generation/type-specific)
 
 ### Document Store
 
-- [What is a Document Store](../../client-api/what-is-a-document-store)
+- [Document Store](../../client-api/what-is-a-document-store)
