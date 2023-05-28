@@ -4,6 +4,8 @@ Paging, or pagination, is the process of splitting a dataset into pages, reading
 
 {WARNING:Warning}
 Starting from version 4.0, if the page size is not specified **on client side**, the server will assume **int.MaxValue** (2,147,483,647) and all the results will be downloaded. It is **recommended to set a page size explicitly** to avoid long response times caused by sending excessive amounts of data over the network or high memory consumption caused by handling large quantities of documents.
+
+You can also set `DocumentConventions.setThrowIfQueryPageSizeIsNotSet` convention to **true** to guard yourself from executing queries without the page size explicitly set. We recommend turning this convention on, especially during development or testing phases to detect early the queries that potentially can return an excessive amount of results.
 {WARNING/}
 
 {INFO:Performance}

@@ -11,9 +11,9 @@ using Sparrow;
 namespace Raven.Documentation.Samples.ClientApi.Configuration
 {
 
-    public class DeSerialization
+    public class Deserialization
     {
-        public DeSerialization()
+        public Deserialization()
         {
         }
 

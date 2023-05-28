@@ -1,4 +1,4 @@
-# Conventions: DeSerialization
+# Conventions: Deserialization
 
 ---
 
@@ -12,13 +12,13 @@ by which entities are deserialized as they are received by the client.
   * [DeserializeEntityFromBlittable](../../client-api/configuration/deserialization#deserializeentityfromblittable)  
   * [PreserveDocumentPropertiesNotFoundOnModel](../../client-api/configuration/deserialization#preservedocumentpropertiesnotfoundonmodel)  
   * [DefaultRavenSerializationBinder](../../client-api/configuration/deserialization#defaultravenserializationbinder)  
-  * [Numbers DeSerialization](../../client-api/configuration/deserialization#number-deserialization)  
+  * [Number Deserialization](../../client-api/configuration/deserialization#number-deserialization)  
 
 {NOTE/}
 
 ---
 
-{PANEL: DeSerialization}
+{PANEL: Deserialization}
 
 ## CustomizeJsonDeserializer
 
@@ -27,14 +27,14 @@ by which entities are deserialized as they are received by the client.
 * Use the `CustomizeJsonDeserializer` convention to modify `JsonSerializer` 
   by registering a deserialization customization action.  
 
-{CODE customize_json_deserializer@ClientApi\Configuration\DeSerialization.cs /}
+{CODE customize_json_deserializer@ClientApi\Configuration\Deserialization.cs /}
 
 ## DeserializeEntityFromBlittable
 
 * Use the `DeserializeEntityFromBlittable` convention to customize entity 
   deserialization from a blittable JSON.  
 
-{CODE DeserializeEntityFromBlittable@ClientApi\Configuration\DeSerialization.cs /}
+{CODE DeserializeEntityFromBlittable@ClientApi\Configuration\Deserialization.cs /}
 
 ## PreserveDocumentPropertiesNotFoundOnModel
 
@@ -45,7 +45,7 @@ by which entities are deserialized as they are received by the client.
   to **remove** such properties when the document is saved.  
 * Default: `true`  
 
-{CODE preserve_doc_props_not_found_on_model@ClientApi\Configuration\DeSerialization.cs /}
+{CODE preserve_doc_props_not_found_on_model@ClientApi\Configuration\Deserialization.cs /}
 
 ## DefaultRavenSerializationBinder
 
@@ -57,7 +57,7 @@ Read about this security convention and maintaining deserialization security
 [here](../../client-api/security/deserialization-security).  
 
 
-## Number DeSerialization
+## Number Deserialization
 
 * RavenDB client supports all common numeric value types (including `int`, `long`, 
   `double`, `decimal`, etc.) out of the box.  

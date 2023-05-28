@@ -5,17 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="document-extensions\NewFolder1\**" />
     <Compile Remove="document-extensions\NewFolder\**" />
+    <EmbeddedResource Remove="document-extensions\NewFolder1\**" />
     <EmbeddedResource Remove="document-extensions\NewFolder\**" />
+    <None Remove="document-extensions\NewFolder1\**" />
     <None Remove="document-extensions\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="RavenDB.Client" Version="5.2.4-nightly-20210930-0301" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="document-extensions\NewFolder1\" />
   </ItemGroup>
 
 </Project>

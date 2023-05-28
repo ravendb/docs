@@ -12,13 +12,13 @@ using Sparrow;
 namespace Raven.Documentation.Samples.ClientApi.Configuration
 {
 
-    public class DeSerializationSecurity
+    public class DeserializationSecurity
     {
-        public DeSerializationSecurity()
+        public DeserializationSecurity()
         {
         }
 
-        void DeSerializationSecurity_RegisterForbiddenNamespace()
+        void DeserializationSecurity_RegisterForbiddenNamespace()
         {
             object suspiciousObject = "suspiciousObject";
             object trustedObject = "trustedObject";
@@ -48,14 +48,14 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
         }
 
 
-        void DeSerializationSecurity_InvokeGadget1()
+        void DeserializationSecurity_InvokeGadget1()
         {
             using (var store = new DocumentStore())
             {
                 // Create a document
                 using (var session = store.OpenSession())
                 {
-                    #region DeSerializationSecurity_load-object
+                    #region DeserializationSecurity_load-object
                     // The object will be allowed to be deserialized
                     // regardless of the default binder list.  
                     session.Load<object>("Gadget");
@@ -64,9 +64,9 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
             }
         }
 
-        void DeSerializationSecurity_InvokeGadget()
+        void DeserializationSecurity_InvokeGadget()
         {
-            #region DeSerializationSecurity_define-type
+            #region DeserializationSecurity_define-type
             string userdata = @"{
                 '$type':'System.Windows.Data.ObjectDataProvider, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35',
                 'MethodName':'Start',

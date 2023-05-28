@@ -1,4 +1,4 @@
-# Security: DeSerialization
+# Security: Deserialization
 ---
 
 {NOTE: }
@@ -6,7 +6,7 @@
 * Data deserialization can run gadgets that may initiate RCE attack 
   on the client machine.  
 * To prevent this risk, RavenDB's default deserializer blocks the 
-  deserialization of known [`.Net` RCE gadgets](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html#known-net-rce-gadgets).  
+  deserialization of known [`.NET` RCE gadgets](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html#known-net-rce-gadgets).  
 * Users can easily modify the list of namespaces and object types 
   for which deserialization is forbidden or allowed.  
 
@@ -26,7 +26,7 @@
 {PANEL: Securing Deserialization}
 
 * When a RavenDB client uses the [Newtonsoft library](https://www.newtonsoft.com/json/help/html/SerializingJSON.htm) 
-  to deserialize a JSON string to a `.Net` object, the object may include 
+  to deserialize a JSON string to a `.NET` object, the object may include 
   a reference to a **gadget** (a code segment) and the deserialization 
   process may execute this gadget.  
 * Some gadgets attempt to exploit the deserialization process and initiate 
@@ -34,7 +34,7 @@
   system with malicious code. RCE attacks may sabotage the system, gain 
   control over it, steal information, and so on.  
 * To prevent such exploitation, RavenDB's default deserializer blocks the 
-  deserialization of [known `.Net` RCE gadgets](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html#known-net-rce-gadgets):  
+  deserialization of [known `.NET` RCE gadgets](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html#known-net-rce-gadgets):  
     `System.Configuration.Install.AssemblyInstaller`  
     `System.Activities.Presentation.WorkflowDesigner`  
     `System.Windows.ResourceDictionary`  
@@ -56,10 +56,10 @@
   Deserialization of directly-loaded objects **is permitted** 
   regardless of the content of the default deserializer list.  
   E.g., the following segment **will** be executed,  
-  {CODE DeSerializationSecurity_load-object@ClientApi\Security\DeSerializationSecurity.cs /}
+  {CODE DeserializationSecurity_load-object@ClientApi\Security\DeserializationSecurity.cs /}
 
 * **Indirect gadget loading CAN BE PREVENTED**  
-  Gadgets loading and execution during deserialization **can** 
+  Gadgets loading and execution during deserialization **will** 
   be prevented using the default deserializer list 
   when the gadgets are loaded indirectly.  
   E.g., in the following sample, taken [from here](https://book.hacktricks.xyz/pentesting-web/deserialization/basic-.net-deserialization-objectdataprovider-gadgets-expandedwrapper-and-json.net#abusing-json.net), 
@@ -67,7 +67,7 @@
   its place and be used to execute the gadget during deserialization.  
   Including this type in the default deserialization list **will** 
   prevent the gadget's deserialization and execution.  
-  {CODE DeSerializationSecurity_define-type@ClientApi\Security\DeSerializationSecurity.cs /}
+  {CODE DeserializationSecurity_define-type@ClientApi\Security\DeserializationSecurity.cs /}
 
 {PANEL/}
 
@@ -93,7 +93,7 @@ that you want the list to apply to is initialized.
 ### `RegisterForbiddenNamespace`  
 Use `RegisterForbiddenNamespace` to prevent the deserialization of objects loaded from a given namespace.
 
-* {CODE RegisterForbiddenNamespace_definition@ClientApi\Security\DeSerializationSecurity.cs /}
+* {CODE RegisterForbiddenNamespace_definition@ClientApi\Security\DeserializationSecurity.cs /}
 
      | Parameter | Type | Description |
      |:-------------:|:-------------:|-------------|
@@ -112,7 +112,7 @@ Use `RegisterForbiddenNamespace` to prevent the deserialization of objects loade
 ### `RegisterForbiddenType`  
 Use `RegisterForbiddenType` to prevent the deserialization of a given object type.
 
-* {CODE RegisterForbiddenType_definition@ClientApi\Security\DeSerializationSecurity.cs /}
+* {CODE RegisterForbiddenType_definition@ClientApi\Security\DeserializationSecurity.cs /}
 
      | Parameter | Type | Description |
      |:-------------:|:-------------:|-------------|
@@ -132,7 +132,7 @@ Use `RegisterForbiddenType` to prevent the deserialization of a given object typ
 ### `RegisterSafeType`  
 Use `RegisterSafeType` to **allow** the deserialization of a given object type.
 
-* {CODE RegisterSafeType_definition@ClientApi\Security\DeSerializationSecurity.cs /}
+* {CODE RegisterSafeType_definition@ClientApi\Security\DeserializationSecurity.cs /}
 
      | Parameter | Type | Description |
      |:-------------:|:-------------:|-------------|
@@ -140,7 +140,7 @@ Use `RegisterSafeType` to **allow** the deserialization of a given object type.
 
 ## Example
 
-{CODE DefaultRavenSerializationBinder@ClientApi\Security\DeSerializationSecurity.cs /}
+{CODE DefaultRavenSerializationBinder@ClientApi\Security\DeserializationSecurity.cs /}
 
 {PANEL/}
 

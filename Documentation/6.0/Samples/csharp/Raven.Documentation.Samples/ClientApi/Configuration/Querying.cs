@@ -49,10 +49,6 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
 
                         FindPropertyNameForDynamicIndex = (indexedType, indexName, path, prop) => path + prop,
                         #endregion
-
-                        #region throw_if_query_page_is_not_set
-                        ThrowIfQueryPageSizeIsNotSet = true
-                        #endregion
                     }
                 };
             }

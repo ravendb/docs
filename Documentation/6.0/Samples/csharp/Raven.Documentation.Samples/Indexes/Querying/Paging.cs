@@ -127,7 +127,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .Take(10)
                         .ToList();
 
-                    int totalResults = stats.TotalResults;
+                    long totalResults = stats.TotalResults;
                     #endregion
                 }
 
@@ -143,7 +143,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .Take(10)
                         .ToList();
 
-                    int totalResults = stats.TotalResults;
+                    long totalResults = stats.TotalResults;
                     #endregion
                 }
             }
@@ -156,14 +156,14 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     IList<Product> results;
                     int pageNumber = 0;
                     int pageSize = 10;
-                    int skippedResults = 0;
+                    long skippedResults = 0;
 
                     do
                     {
                         results = session
                             .Query<Product, Products_ByUnitsInStock>()
                             .Statistics(out QueryStatistics stats)
-                            .Skip((pageNumber * pageSize) + skippedResults)
+                            .Skip((pageNumber * pageSize) + (int)skippedResults)
                             .Take(pageSize)
                             .Where(x => x.UnitsInStock > 10)
                             .Distinct()
@@ -176,13 +176,14 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     #endregion
                 }
 
+
                 using (var session = store.OpenSession())
                 {
                     #region paging_4_2
                     IList<Product> results;
                     int pageNumber = 0;
                     int pageSize = 10;
-                    int skippedResults = 0;
+                    long skippedResults = 0;
 
                     do
                     {
@@ -212,14 +213,14 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     IList<Order> results;
                     int pageNumber = 0;
                     int pageSize = 10;
-                    int skippedResults = 0;
+                    long skippedResults = 0;
 
                     do
                     {
                         results = session
                             .Query<Order, Orders_ByOrderLines_ProductName>()
                             .Statistics(out QueryStatistics stats)
-                            .Skip((pageNumber * pageSize) + skippedResults)
+                            .Skip((pageNumber * pageSize) + (int)skippedResults)
                             .Take(pageSize)
                             .ToList();
 
@@ -234,9 +235,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 {
                     #region paging_6_2
                     IList<Order> results;
-                    int pageNumber = 0;
-                    int pageSize = 10;
-                    int skippedResults = 0;
+                    long pageNumber = 0;
+                    long pageSize = 10;
+                    long skippedResults = 0;
 
                     do
                     {

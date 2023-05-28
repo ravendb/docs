@@ -4,8 +4,6 @@ Paging, or pagination, is the process of splitting a dataset into pages, reading
 
 {WARNING:Warning}
 Starting from version 4.0, if the page size is not specified **on client side**, the server will assume **int.MaxValue** (2,147,483,647) and all the results will be downloaded. It is **recommended to set a page size explicitly** to avoid long response times caused by sending excessive amounts of data over the network or high memory consumption caused by handling large quantities of documents.
-
-You can also set `DocumentConventions.throwIfQueryPageSizeIsNotSet` convention to **true** to guard yourself from executing queries without the page size explicitly set. We recommend turning this convention on, especially during development or testing phases to detect early the queries that potentially can return an excessive amount of results.
 {WARNING/}
 
 {INFO:Performance}
@@ -18,8 +16,8 @@ The threshold can be adjusted by changing the `PerformanceHints.MaxNumberOfResul
 The queries below will return all the results available.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query paging_0_1@indexes\querying\paging.js /}
-{CODE-TAB:nodejs:Index paging_0_4@indexes\querying\paging.js /}
+{CODE-TAB:java:Query paging_0_1@Indexes\Querying\Paging.java /}
+{CODE-TAB:java:Index paging_0_4@Indexes\Querying\Paging.java /}
 {CODE-TABS/}
 
 ## Example II - Basic Paging
@@ -27,8 +25,8 @@ The queries below will return all the results available.
 Let's assume that our page size is `10`, and we want to retrieve the 3rd page. To do this, we need to issue following query:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query paging_2_1@indexes\querying\paging.js /}
-{CODE-TAB:nodejs:Index paging_0_4@indexes\querying\paging.js /}
+{CODE-TAB:java:Query paging_2_1@Indexes\Querying\Paging.java /}
+{CODE-TAB:java:Index paging_0_4@Indexes\Querying\Paging.java /}
 {CODE-TABS/}
 
 ## Finding the Total Results Count When Paging
@@ -36,8 +34,8 @@ Let's assume that our page size is `10`, and we want to retrieve the 3rd page. T
 While paging, you sometimes need to know the exact number of results returned from the query. The Client API supports this explicitly:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query paging_3_1@indexes\querying\paging.js /}
-{CODE-TAB:nodejs:Index paging_0_4@indexes\querying\paging.js /}
+{CODE-TAB:java:Query paging_3_1@Indexes\Querying\Paging.java /}
+{CODE-TAB:java:Index paging_0_4@Indexes\Querying\Paging.java /}
 {CODE-TABS/}
 
 While the query will return with just 10 results, `totalResults` will hold the total number of matching documents.
@@ -53,28 +51,24 @@ In order to do proper paging in those scenarios, you should use `skippedResults`
 For example, let's page through all the results:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query paging_4_1@indexes\querying\paging.js /}
-{CODE-TAB:nodejs:Index paging_0_4@indexes\querying\paging.js /}
+{CODE-TAB:java:Query paging_4_1@Indexes\Querying\Paging.java /}
+{CODE-TAB:java:Index paging_0_4@Indexes\Querying\Paging.java /}
 {CODE-TABS/}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query paging_6_1@indexes\querying\paging.js /}
-{CODE-TAB:nodejs:Index paging_6_0@indexes\querying\paging.js /}
+{CODE-TAB:java:Query paging_6_1@Indexes\Querying\Paging.java /}
+{CODE-TAB:java:Index paging_6_0@Indexes\Querying\Paging.java /}
 {CODE-TABS/}
 
 The situation would be different if a `distinct` query and a projection applied to stored fields only. To get the correct results here, you shouldn't include `skippedResults`
 into the paging formula. Let's take a look at the example (note the usage of `store` method in the index definition):
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query paging_7_1@indexes\querying\paging.js /}
-{CODE-TAB:nodejs:Index paging_7_0@indexes\querying\paging.js /}
+{CODE-TAB:java:Query paging_7_1@Indexes\Querying\Paging.java /}
+{CODE-TAB:java:Index paging_7_0@Indexes\Querying\Paging.java /}
 {CODE-TABS/}
 
 ## Related Articles
-
-### Client API
-
-- [Query Overview](../../client-api/session/querying/how-to-query)
 
 ### Indexes
 
@@ -82,6 +76,6 @@ into the paging formula. Let's take a look at the example (note the usage of `st
 
 ### Querying
 
-- [Query an Index](../../indexes/querying/query-index)
+- [Basics](../../indexes/querying/query-index)
 - [Filtering](../../indexes/querying/filtering)
-- [Sorting](../../indexes/querying/sorting)  
+- [Sorting](../../indexes/querying/sorting)
