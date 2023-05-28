@@ -3,12 +3,12 @@
 
 {NOTE: }
 
-* Data deserialization can run gadgets that may initiate RCE attack 
-  on the client machine.  
-* To prevent this risk, RavenDB's default deserializer blocks the 
+* Data deserialization can trigger the execution of gadgets that 
+  may initiate RCE attacks on the client machine.  
+* To handle this threat, RavenDB's default deserializer blocks the 
   deserialization of known [`.NET` RCE gadgets](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html#known-net-rce-gadgets).  
 * Users can easily modify the list of namespaces and object types 
-  for which deserialization is forbidden or allowed.  
+  that deserialization is forbidden or allowed for.  
 
 * In this page:  
   * [Securing Deserialization](../../client-api/security/deserialization-security#securing-deserialization)  
@@ -33,8 +33,9 @@
   an RCE (Remote Code Execution) attack that may, for example, inject the 
   system with malicious code. RCE attacks may sabotage the system, gain 
   control over it, steal information, and so on.  
-* To prevent such exploitation, RavenDB's default deserializer blocks the 
-  deserialization of [known `.NET` RCE gadgets](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html#known-net-rce-gadgets):  
+* To prevent such exploitation, RavenDB's default deserializer 
+  blocks deserialization for suspicious namespaces and 
+  [known `.NET` RCE gadgets](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html#known-net-rce-gadgets):  
     `System.Configuration.Install.AssemblyInstaller`  
     `System.Activities.Presentation.WorkflowDesigner`  
     `System.Windows.ResourceDictionary`  
@@ -52,22 +53,25 @@
 
 {PANEL: Invoking a Gadget}
 
-* **Direct gadget loading is PERMITTED**  
-  Deserialization of directly-loaded objects **is permitted** 
-  regardless of the content of the default deserializer list.  
-  E.g., the following segment **will** be executed,  
-  {CODE DeserializationSecurity_load-object@ClientApi\Security\DeserializationSecurity.cs /}
+* **Directly-loaded gadgets Cannot be blocked using the default binder**.  
+  When a gadget is loaded directly its loading and execution during 
+  deserialization is **permitted** regardless of the content of the 
+  default deserializer list.  
 
-* **Indirect gadget loading CAN BE PREVENTED**  
-  Gadgets loading and execution during deserialization **will** 
-  be prevented using the default deserializer list 
-  when the gadgets are loaded indirectly.  
-  E.g., in the following sample, taken [from here](https://book.hacktricks.xyz/pentesting-web/deserialization/basic-.net-deserialization-objectdataprovider-gadgets-expandedwrapper-and-json.net#abusing-json.net), 
-  the gadget name is included as a value, and will only take 
-  its place and be used to execute the gadget during deserialization.  
-  Including this type in the default deserialization list **will** 
-  prevent the gadget's deserialization and execution.  
-  {CODE DeserializationSecurity_define-type@ClientApi\Security\DeserializationSecurity.cs /}
+    E.g., the following segment will be executed,  
+    {CODE DeserializationSecurity_load-object@ClientApi\Security\DeserializationSecurity.cs /}
+
+* **Indirectly-loaded gadgets Can be blocked using the default binder**.  
+  When a gadget is loaded indirectly its loading and execution during 
+  deserialization **can be blocked** using the default deserializer list.  
+
+    E.g., in the following sample, taken [from here](https://book.hacktricks.xyz/pentesting-web/deserialization/basic-.net-deserialization-objectdataprovider-gadgets-expandedwrapper-and-json.net#abusing-json.net), 
+    a gadget is loaded indirectly: its name is included as a value 
+    and will only take its place and be used to execute the gadget 
+    during deserialization.  
+    Including this type in the default deserialization list will 
+    prevent the gadget's deserialization and execution.  
+    {CODE DeserializationSecurity_define-type@ClientApi\Security\DeserializationSecurity.cs /}
 
 {PANEL/}
 
@@ -75,8 +79,8 @@
 {PANEL: `DefaultRavenSerializationBinder`}
 
 Use the `DefaultRavenSerializationBinder` convention and its methods to 
-block the deserialization of suspicious namespaces and object types and 
-to allow the deserialization of trusted object types.  
+block the deserialization of suspicious namespaces and object types or 
+allow the deserialization of trusted object types.  
 
 Define a `DefaultRavenSerializationBinder` instance, use the dedicated 
 methods to forbid or allow the deserialization of entities, and register 
@@ -84,8 +88,8 @@ the defined instance as a serialization convention as shown
 [below](../../client-api/security/deserialization-security#example).  
 
 {NOTE: }
-Be sure to update the default deserializer list **before** the document 
-that you want the list to apply to is initialized.  
+Be sure to update the default deserializer list **before** the initialization 
+of the document that you want the list to apply to.  
 {NOTE/}
 
 ---

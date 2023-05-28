@@ -68,13 +68,16 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
         {
             #region DeserializationSecurity_define-type
             string userdata = @"{
-                '$type':'System.Windows.Data.ObjectDataProvider, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35',
+                '$type':'System.Windows.Data.ObjectDataProvider, PresentationFramework, Version=4.0.0.0, 
+                        Culture=neutral, PublicKeyToken=31bf3856ad364e35',
                 'MethodName':'Start',
                 'MethodParameters':{
-                            '$type':'System.Collections.ArrayList, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089',
+                            '$type':'System.Collections.ArrayList, mscorlib, Version=4.0.0.0, 
+                                    Culture=neutral, PublicKeyToken=b77a5c561934e089',
                     '$values':['cmd', '/c calc.exe']
                 },
-                'ObjectInstance':{'$type':'System.Diagnostics.Process, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'}
+                'ObjectInstance':{'$type':'System.Diagnostics.Process, System, Version=4.0.0.0, 
+                                            Culture=neutral, PublicKeyToken=b77a5c561934e089'}
             }";
             #endregion
         }
