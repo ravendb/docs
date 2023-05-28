@@ -72,3 +72,7 @@ In order to sort the results by distance, please use the `OrderByDistance` or `O
 ### Client API
 
 - [How to Query a Spatial Index](../../client-api/session/querying/how-to-query-a-spatial-index)
+
+### Studio
+
+- [Spatial query view](../../studio/database/queries/spatial-queries-map-view) 

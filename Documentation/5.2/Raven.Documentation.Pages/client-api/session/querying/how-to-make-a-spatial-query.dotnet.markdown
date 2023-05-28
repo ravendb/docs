@@ -172,3 +172,7 @@ order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1
 ### Indexes
 
 - [Indexing Spatial Data](../../../indexes/indexing-spatial-data) 
+
+### Studio
+
+- [Spatial query view](../../../studio/database/queries/spatial-queries-map-view) 
