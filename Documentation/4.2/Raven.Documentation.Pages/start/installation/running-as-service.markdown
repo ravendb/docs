@@ -86,7 +86,6 @@ Alternatively, open a bash terminal, and create the following file `/etc/systemd
 
 {CODE-BLOCK:bash}
 [Unit]
-[Unit]
 Description=RavenDB NoSQL Database
 After=network.target
 
