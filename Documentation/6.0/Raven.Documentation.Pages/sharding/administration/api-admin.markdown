@@ -6,9 +6,6 @@
 * This page explains how to manage a sharded database using RavenDB's API.  
 * Learn [here](../../sharding/administration/studio-admin) how to manage 
   a sharded database using Studio.  
-* A sharded database can currently be created only 
-  [via Studio](../../sharding/administration/studio-admin#creating-a-sharded-database).  
-  All other database operations are available via API as well.  
 
 * In this page:  
   * [Creating a Sharded Database](../../sharding/administration/api-admin#creating-a-sharded-database)  
