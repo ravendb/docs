@@ -175,18 +175,17 @@ after the end of the retention period.
 
 {PANEL: Restoration Procedure}
 
-In order to restore a database - 
+To restore a database - 
 
 * [Provide RavenDB](../../client-api/operations/maintenance/backup/restore#restoring-a-database:-configuration-and-execution) 
-  with the backup folder's path.
-* To [restore an encrypted database](../../client-api/operations/maintenance/backup/encrypted-backup#restoring-an-encrypted-backup), 
-  you must provide the encryption key.
-* RavenDB will browse this folder and restore the full-backup found in it.  
-* RavenDB will then restore the incremental-backups one by one, up to and including the last one.
+  with the path to the backup folder.  
+* To [restore an encrypted database](../../client-api/operations/maintenance/backup/encrypted-backup#restoring-an-encrypted-backup) 
+  you must provide the encryption key.  
+* RavenDB will search the backup folder and restore the full-backup found in it.  
+* RavenDB will then restore the incremental-backups one by one, up to and including the last one.  
   You can set `LastFileNameToRestore` to 
   [stop restoration](../../client-api/operations/maintenance/backup/restore#optional-settings) 
-  at a specific backup file.
-
+  at a specific backup file.  
 
 {PANEL/}
 
