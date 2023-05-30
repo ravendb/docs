@@ -316,8 +316,8 @@ Available custom methods and extensions for the session's [Query](../../../clien
 - [LazilyAsync](../../../client-api/session/querying/how-to-perform-queries-lazily)
 - [MoreLikeThis](../../../client-api/session/querying/how-to-use-morelikethis)
 - [OfType](../../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection)
-- OrderByDistance
-- OrderByDistanceDescending
+- [OrderByDistance](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistance)
+- [OrderByDistanceDescending](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistanceDesc)
 - OrderByScore
 - OrderByScoreDescending
 - [ProjectInto](../../../client-api/session/querying/how-to-project-query-results)

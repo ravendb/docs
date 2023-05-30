@@ -201,8 +201,8 @@ Available custom methods and extensions:
 - OpenSubclause
 - OrderBy
 - OrderByDescending
-- [Query] [OrderByDistance](../../../../client-api/session/querying/how-to-query-a-spatial-index)
-- [Query] [OrderByDistanceDescending](../../../../client-api/session/querying/how-to-query-a-spatial-index)
+- [Query] [OrderByDistance](../../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistance)
+- [Query] [OrderByDistanceDescending](../../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistanceDesc)
 - OrderByScore
 - OrderByScoreDescending
 - OrElse
@@ -237,7 +237,7 @@ Available custom methods and extensions:
 - WhereNotEquals
 - [WhereRegex](../../../../client-api/session/querying/how-to-use-regex)
 - WhereStartsWith
-- [Query] [WithinRadiusOf](../../../../client-api/session/querying/how-to-query-a-spatial-index)
+- WithinRadiusOf
 
 {PANEL/}
 
