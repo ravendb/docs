@@ -4,7 +4,7 @@
 {NOTE: }
 
 * [Spatial queries](../../../client-api/session/querying/how-to-make-a-spatial-query) retrieve documents using geographical criteria,  
-  provided that the documents contain spatial data (latitude & longitude).
+  provided that the documents contain spatial data.
 
 * The spatial query defines geographic regions (circles or polygons)  
   and queries for documents that have some relation to those regions.
@@ -31,7 +31,10 @@
 
 {PANEL: Spatial data in documents}
 
-* Documents that contain geographic data (latitude & longitude) can be queried for using a spatial query.  
+* Documents that contain geographic data can be queried for using a spatial query.  
+  The spatial data in a document can be in the form of:  
+  * Latitude & Longitude
+  * [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) string
   
 * For example, the following Employee document contains fields:  
   `Address.Location.Latitude` & `Address.Location.Longitude` and can be searched for by this spatial data.
@@ -71,6 +74,7 @@ where spatial.within(
 
     // Use 'spatial.point' to specify the document field names containing the spatial data.
     // The latitude field is always passed as the first param.
+    // (Note: 'spatial.wkt' is used when the document contains a WKT string.)
     spatial.point(Address.Location.Latitude, Address.Location.Longitude),
 
     // Specify a geographical area.
@@ -185,7 +189,7 @@ spatial.within(
 
 * **Circular region syntax**  
   A circular region can be defined using two different syntaxes, 
-  **spatial.circle** and **spatial.[wkt](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)**.  
+  `spatial.circle` and `spatial.wkt`.  
   {CODE-TABS}
   {CODE-TAB:csharp:spatial.circle spatial.circle@Studio\Database\Queries\Queries.cs /}
   {CODE-TAB:csharp:spatial.wkt spatial.wkt@Studio\Database\Queries\Queries.cs /}
@@ -209,12 +213,12 @@ spatial.within(
 
 The following query searches for companies within the boundaries of a **polygonal** region.  
 
-* The polygon's coordinates must be provided in [counterclockwise](../../../indexes/querying/spatial#advanced-search) order.  // todo.. link..
+* The polygon's coordinates must be provided in counterclockwise order.
 * The first and last coordinates must mark the same location to form a closed region.  
 * You can use [tools like this one](https://www.keene.edu/campus/maps/tool/) 
   to draw a polygon on the world map and copy the coordinates to your query.  
 
-{CODE-BLOCK: csharp}
+{CODE-BLOCK:csharp}
 from companies 
 where 
 spatial.within(
@@ -243,7 +247,7 @@ spatial.within(
 This query searches for companies at the intersection of a **circular region** and a **polygonal region**.  
 Though additional companies are located in each region, only companies located in both regions are retrieved.  
 
-{CODE-BLOCK: csharp}
+{CODE-BLOCK:csharp}
 from Companies 
 where 
 spatial.within(

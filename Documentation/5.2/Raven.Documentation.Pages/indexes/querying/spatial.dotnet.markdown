@@ -1,19 +1,30 @@
 # Query a Spatial Index
 
-To perform a spatial search, you can use the `Spatial` method which contains a full spectrum of spatial capabilities. You can check the detailed Client API reference for this method [here](../../client-api/session/querying/how-to-query-a-spatial-index).
+---
+moved here:
+* Spatial indexes can be queried using the `Spatial` method which contains a full spectrum of
+  spatial methods. The following article will cover the methods `Spatial()`, `OrderByDistance()`,
+  and `OrderByDistanceDescending`.
 
-## Radius Search
+---
 
-The most basic usage and probably most common one is to search for all points or shapes within provided distance from the given center point. To perform this search use the `WithinRadius` method.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Query spatial_1_0@Indexes\Querying\Spatial.cs /}
-{CODE-TAB:csharp:DocumentQuery spatial_1_1@Indexes\Querying\Spatial.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from Events
-where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(500, 30, 30))
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
+To perform a spatial search, use the `Spatial` method which contains a full spectrum of spatial capabilities.  
+You can check the detailed Client API reference for this method [here](../../client-api/session/querying/how-to-query-a-spatial-index).
+
+[//]: # (## Radius Search)
+
+[//]: # (The most basic usage and probably most common one is to search for all points or shapes within provided distance from the given center point.  )
+[//]: # (To perform this search use the `WithinRadius` method.)
+
+[//]: # ({CODE-TABS})
+[//]: # ({CODE-TAB:csharp:Query spatial_1_0@Indexes\Querying\Spatial.cs /})
+[//]: # ({CODE-TAB:csharp:DocumentQuery spatial_1_1@Indexes\Querying\Spatial.cs /})
+[//]: # ({CODE-TAB-BLOCK:sql:RQL})
+[//]: # (from Events)
+[//]: # (where spatial.within&#40;spatial.point&#40;Latitude, Longitude&#41;, spatial.circle&#40;500, 30, 30&#41;&#41;)
+[//]: # ({CODE-TAB-BLOCK/})
+[//]: # ({CODE-TABS/})
 
 ## Advanced Search
 
@@ -28,7 +39,8 @@ where spatial.within(spatial.point(Latitude, Longitude), spatial.wkt('Circle(30 
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-Where the shape is in [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format and the relation is one of `Within`, `Contains`, `Disjoint`, `Intersects`. The above example will yield the same results as the example from the `Radius Search` section.
+Where the shape is in [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format and the relation is one of `Within`, `Contains`, `Disjoint`, `Intersects`.   
+The above example will yield the same results as the example from the `Radius Search` section.
 
 {INFO: Polygons}
 When using `spatial.wkt()` to define a **polygon**, the vertices (points that form the corners of the polygon) must be listed 
@@ -41,7 +53,8 @@ in a counter-clockwise order:
 
 ## Static Indexes
 
-All of the above examples are using the dynamic querying capabilities of RavenDB and will create automatic indexes to retrieve their results. However, spatial queries can also be performed against static indexes, and this is done in a very similar way.
+All of the above examples are using the dynamic querying capabilities of RavenDB and will create automatic indexes to retrieve their results.  
+However, spatial queries can also be performed against static indexes, and this is done in a very similar way.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query spatial_3_0@Indexes\Querying\Spatial.cs /}
@@ -57,7 +70,8 @@ where spatial.within(Coordinates, spatial.circle(500, 30, 30))
 
 ## Ordering
 
-In order to sort the results by distance, please use the `OrderByDistance` or `OrderByDistanceDescending` methods. You can read more about them [here](../../client-api/session/querying/how-to-query-a-spatial-index).
+In order to sort the results by distance, please use the `OrderByDistance` or `OrderByDistanceDescending` methods.  
+You can read more about them [here](../../client-api/session/querying/how-to-query-a-spatial-index).
 
 ## Remarks
 
