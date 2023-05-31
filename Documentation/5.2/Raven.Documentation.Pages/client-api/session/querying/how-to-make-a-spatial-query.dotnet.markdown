@@ -4,20 +4,20 @@
 
 {NOTE: }
 
-* __Spatial queries__ allow you to search for documents using geographical criteria,  
-  provided that your documents contain spatial data.
- 
-* The spatial query defines geographic regions (circles or polygons)   
-  and queries for documents that have some relation to those regions.
+* Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
+  You have two options:
+  
+    * Either make a dynamic spatial query on a collection ( __described in this article__ ).  
+      An auto-index will be created by the server.
+
+    * Or, index your documents' spatial data in a static-index (see [indexing spatial data](../../../indexes/indexing-spatial-data)),  
+      and then make a spatial query on this index (see [query a spatial index](../../../indexes/querying/spatial)).
 
 * To perform a spatial search,  
   use the `Spatial` method which provides a wide range of spatial functionalities.
 
-* When making a __dynamic spatial query__ from the studio,  
+* When making a __dynamic spatial query__ from the Studio,  
   results are also displayed on the global map. See [spatial queries map view](../../../studio/database/queries/spatial-queries-map-view#circular-region-example).
-
-* Spatial fields can also be indexed in a static index,  
-  and a spatial query can be made against the index. See [indexing spatial data](../../../indexes/indexing-spatial-data#indexing-spatial-data). 
 
 ---
 

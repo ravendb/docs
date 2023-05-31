@@ -1,73 +1,139 @@
 # Indexing Spatial Data
 
-To support the ability to retrieve the data based on spatial coordinates, the spatial search has been introduced.
+---
 
-{INFO This article describes how to setup a spatial field in static index. If you are interested in an automatic approach, please visit relevant spatial querying article that can be found [here](../indexes/querying/spatial). /}
+{NOTE: }
 
-## Creating Indexes
+* Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
+  You have two options:  
 
-To take an advantage of the spatial search, first we need to create an index with a spatial field. To mark field as the spatial field, we need to use the `CreateSpatialField` method:
+  * Either make a dynamic spatial query on a collection (see [how to make a spatial query](../client-api/session/querying/how-to-make-a-spatial-query)).  
+    An auto-index will be created by the server.  
+  
+  * Or, index your documents' spatial data in a static-index ( __described in this article__ ),  
+    and then make a spatial query on this index (see [query a spatial index](../indexes/querying/spatial)).
 
-{CODE spatial_search_0@Indexes\SpatialIndexes.cs /}
+* In this page:
+  * [Create index with spatial field](../indexes/indexing-spatial-data#create-index-with-spatial-field)
+  * [Customize coordinate system and strategy](../indexes/indexing-spatial-data#customize-coordinate-system-and-strategy)
+  * [Spatial indexing strategies](../indexes/indexing-spatial-data#spatial-indexing-strategies)
 
-Where:   
-     
-*	**lat/lng** are latitude/longitude coordinates   
-*	**shapeWKT** is a shape in the [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format    
+{NOTE/}
 
-### Example
+---
+
+
+{PANEL: Create index with spatial field}
+
+* Use `CreateSpatialField` to index spatial data in a static-index.
+
+* You can then retrieve documents based on geographical criteria when making a spatial query on this index-field.
+
+{NOTE: }
+
+__Exmaple__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Coordinates spatial_search_1@Indexes\SpatialIndexes.cs /}
-{CODE-TAB:csharp:WKT spatial_search_2@Indexes\SpatialIndexes.cs /}
-{CODE-TAB:csharp:JavaScript spatial_search_1@Indexes\JavaScript.cs /}
+{CODE-TAB:csharp:Indexing_coordinates spatial_1@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:Indexing_WKT spatial_2@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:JavaScript_index spatial_3@Indexes\SpatialIndexes.cs /}
 {CODE-TABS/}
 
-### Options
+{NOTE/}
 
-RavenDB supports both the `Geography` and `Cartesian` systems and multiple strategies for each one of them.
+{NOTE: }
 
-{CODE spatial_search_enhancements_3@Indexes\SpatialIndexes.cs /}
+__Syntax__:
+
+{CODE spatial_syntax_1@Indexes\SpatialIndexes.cs /}
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: Customize coordinate system and strategy}
+
+* For each spatial index-field, you can specify the __coordinate system__ and __strategy__ to be used  
+  during indexing and when processing the data at query time.
+
+* RavenDB supports both the `Geography` and `Cartesian` systems with the following strategies:
+
+  * Geography system:
+      * BoundingBox
+      * GeoHashPrefixTree
+      * QuadPrefixTree
+
+  * Cartesian system:
+      * BoundingBox
+      * QuadPrefixTree
+
+* __By default__, the `GeoHashPrefixTree` strategy is used with `GeoHashLevel` set to __9__.  
+  Use the `Spatial` method from `AbstractIndexCreationTask` to modify this setting.
+
+* The performance cost of spatial indexing is directly related to the tree level chosen.  
+  Learn more about each strategy [below](../indexes/indexing-spatial-data#spatial-indexing-strategies).
+
+* Note: Modifying the strategy after the index has been created & deployed will trigger the re-indexing.
+
+{NOTE: }
+
+__Exmaple__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:GeographySpatialOptionsFactory spatial_search_enhancements_4@Indexes\SpatialIndexes.cs /}
-{CODE-TAB:csharp:CartesianSpatialOptionsFactory spatial_search_enhancements_5@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:Index spatial_4@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:JavaScript_index spatial_5@Indexes\SpatialIndexes.cs /}
 {CODE-TABS/}
 
-### Changing Default Behavior
+{NOTE/}
 
-By default, if no action is taken, the `GeohashPrefixTree` strategy is used with `GeohashLevel` set to **9**. This behavior can be changed by using the `Spatial` method from `AbstractIndexCreationTask`
+{NOTE: }
 
-{CODE spatial_search_3@Indexes\SpatialIndexes.cs /}
+__Syntax__:
 
-## Spatial search strategies
+{CODE spatial_syntax_2@Indexes\SpatialIndexes.cs /}
 
-{PANEL:GeohashPrefixTree}
-Geohash is a latitude/longitude representation system that describes earth as a grid with 32 cells, assigning an alphanumeric character to each grid cell. Each grid cell is further divided into 32 smaller chunks, and each chunk has an alphanumeric character assigned as well, and so on.
+{CODE-TABS}
+{CODE-TAB:csharp:GeographySpatialOptionsFactory spatial_syntax_3@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:CartesianSpatialOptionsFactory spatial_syntax_4@Indexes\SpatialIndexes.cs /}
+{CODE-TABS/}
 
-E.g. The location of 'New York' in the United States is represented by the following geohash: [DR5REGY6R](http://geohash.org/dr5regy6r) and it represents the `40.7144 -74.0060` coordinates. Removing characters from the end of geohash will decrease the precision level.
+{NOTE/}
 
-More information about geohash uses, decoding algorithm and limitations can be found [here](https://en.wikipedia.org/wiki/Geohash).
 {PANEL/}
 
-{PANEL:QuadPrefixTree}
-QuadTree represents the earth as a grid with exactly four cells and similarly to geohash, each grid cell (sometimes called a bucket) has a letter assigned, and is divided further into 4 more cells and so on.
+{PANEL: Spatial indexing strategies}
 
-More information about QuadTree can be found [here](https://en.wikipedia.org/wiki/Quadtree).
-{PANEL/}
+{NOTE: BoundingBox}
 
-{PANEL:BoundingBox}
-More information about BoundingBox can be found [here](https://en.wikipedia.org/wiki/Minimum_bounding_rectangle).
-{PANEL/}
+* The bounding box strategy is the simplest.  
+  Given a spatial shape, such as a point, circle, or polygon, the shape's bounding box is computed  
+  and the spatial coordinates (minX, minY, maxX, maxY) that enclose the shape are indexed.
 
-{WARNING `GeohashPrefixTree` is a default `SpatialSearchStrategy`. Doing any changes to the strategy after an index has been created will trigger the re-indexation process. /}
+* When making a query,  
+  RavenDB translates the query criteria to the same bounding box system used for indexing. 
 
-### Precision
+* Bounding box strategy is cheaper at indexing time and can produce quick queries,  
+  but that's at the expense of the level of accuracy you can get.  
 
-By default, the precision level (`maxTreeLevel`) for GeohashPrefixTree is set to **9** and for QuadPrefixTree the value is **23**. This means that the coordinates are represented by a 9 or 23 character string. The difference exists because the `QuadTree` representation would be much less precise if the level would be the same.
+* Read more about bounding box [here](https://en.wikipedia.org/wiki/Minimum_bounding_rectangle).
 
-{PANEL:Geohash precision values}
-Source: unterbahn.com
+{NOTE/}
+
+{NOTE: GeoHashPrefixTree}
+
+* Geohash is a latitude/longitude representation system that describes Earth as a grid with 32 cells, assigning an alphanumeric character to each grid cell. 
+  Each grid cell is further divided into 32 smaller chunks, and each chunk has an alphanumeric character assigned as well, and so on.
+
+* E.g. The location of 'New York' in the United States is represented by the following geohash: [DR5REGY6R](http://geohash.org/dr5regy6r) 
+  and it represents the `40.7144 -74.0060` coordinates. 
+  Removing characters from the end of the geohash will decrease the precision level.
+
+* The `maxTreeLevel` determines the length of the geohash used for the indexing, which in turn affects accuracy. 
+  By default, it is set to __9__, providing a resolution of approximately 2.5 meters.
+
+* More information about geohash uses, decoding algorithm, and limitations can be found [here](https://en.wikipedia.org/wiki/Geohash).
+
+__Geohash precision values__:
 
 | Level | E-W Distance at Equator | N-S Distance at Equator |
 |:----- |:------------------------|:------------------------|
@@ -84,9 +150,18 @@ Source: unterbahn.com
 | 2     | ~1252km                 | ~626km                  |
 | 1     | ~5018km                 | ~5018km                 |
 
-{PANEL/}
+{NOTE/}
 
-{PANEL:Quadtree precision values}
+{NOTE: QuadPrefixTree}
+
+* The QuadTree represents Earth as a grid consisting of four cells (also known as buckets).
+  Similar to GeoHash, each cell is assigned a letter, and is recursively divided into four more cells, creating a hierarchical structure. 
+
+* By default, the precision level (`maxTreeLevel`) for QuadPrefixTree is __23__.
+
+* More information about QuadTree can be found [here](https://en.wikipedia.org/wiki/Quadtree).
+
+__Quadtree precision values__:
 
 | Level | Distance at Equator |
 |:-------|:-------------------|
@@ -121,13 +196,17 @@ Source: unterbahn.com
 | 2      | ~7996km            |
 | 1      | ~15992km           |
 
+{NOTE/}
+
 {PANEL/}
 
 ## Remarks
 
-{INFO You can read more about **spatial search** in a **dedicated querying article** available [here](../indexes/querying/spatial). /}
+{INFO: }
 
-{WARNING Distance by default is measured in **kilometers**. /}
+Distance by default is measured in __kilometers__.
+
+{INFO/}
 
 ## Related Articles
 
