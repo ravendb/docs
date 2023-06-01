@@ -1,81 +1,129 @@
 # Query a Spatial Index
 
 ---
-moved here:
-* Spatial indexes can be queried using the `Spatial` method which contains a full spectrum of
-  spatial methods. The following article will cover the methods `Spatial()`, `OrderByDistance()`,
-  and `OrderByDistanceDescending`.
+
+{NOTE: }
+
+* Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
+  You have two options:
+
+    * Either make a dynamic spatial query on a collection (see [how to make a spatial query](../../client-api/session/querying/how-to-make-a-spatial-query)).  
+      An auto-index will be created by the server.
+
+    * Or, index your documents' spatial data in a static-index (see [indexing spatial data](../../indexes/querying/spatial))  
+      and then make a spatial query on this index ( __described in this article__ ).
+
+* A few examples of querying a spatial index are provided below.  
+  __A spatial query performed on a static-index is similar to the__ [dynamic spatial query](../../client-api/session/querying/how-to-make-a-spatial-query).  
+  Find all spatial API methods listed [here](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-api).  
+
+* Examples in this page:
+    * [Search by radius](../indexes/indexing-spatial-data#create-index-with-spatial-field)
+    * [Search by shape](../indexes/indexing-spatial-data#create-index-with-spatial-field)
+    * [Sort results](../indexes/indexing-spatial-data#create-index-with-spatial-field)
+
+{NOTE/}
 
 ---
 
+{PANEL: Search by radius}
 
-To perform a spatial search, use the `Spatial` method which contains a full spectrum of spatial capabilities.  
-You can check the detailed Client API reference for this method [here](../../client-api/session/querying/how-to-query-a-spatial-index).
+* Query the spatial index:
 
-[//]: # (## Radius Search)
-
-[//]: # (The most basic usage and probably most common one is to search for all points or shapes within provided distance from the given center point.  )
-[//]: # (To perform this search use the `WithinRadius` method.)
-
-[//]: # ({CODE-TABS})
-[//]: # ({CODE-TAB:csharp:Query spatial_1_0@Indexes\Querying\Spatial.cs /})
-[//]: # ({CODE-TAB:csharp:DocumentQuery spatial_1_1@Indexes\Querying\Spatial.cs /})
-[//]: # ({CODE-TAB-BLOCK:sql:RQL})
-[//]: # (from Events)
-[//]: # (where spatial.within&#40;spatial.point&#40;Latitude, Longitude&#41;, spatial.circle&#40;500, 30, 30&#41;&#41;)
-[//]: # ({CODE-TAB-BLOCK/})
-[//]: # ({CODE-TABS/})
-
-## Advanced Search
-
-The most advanced (and low-level) method available is `RelatesToShape`
+* Use the `WithinRadius` method to search for all documents containing spatial data that is located  
+  within the specified distance from the given center point.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query spatial_2_0@Indexes\Querying\Spatial.cs /}
-{CODE-TAB:csharp:DocumentQuery spatial_2_1@Indexes\Querying\Spatial.cs /}
+{CODE-TAB:csharp:Query spatial_query_1@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:DocumentQuery spatial_query_2@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:Index spatial_index_1@Indexes\SpatialIndexes.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Events
-where spatial.within(spatial.point(Latitude, Longitude), spatial.wkt('Circle(30 30 d=500.0000)'))
+from index "Events/ByNameAndCoordinates"
+where spatial.within(
+    Coordinates,
+    spatial.circle(20, 47.623473, -122.3060097)
+)
+
+// The query returns all matching employee entities
+// that are located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-Where the shape is in [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format and the relation is one of `Within`, `Contains`, `Disjoint`, `Intersects`.   
-The above example will yield the same results as the example from the `Radius Search` section.
+{PANEL/}
 
-{INFO: Polygons}
-When using `spatial.wkt()` to define a **polygon**, the vertices (points that form the corners of the polygon) must be listed 
-in a counter-clockwise order:  
-<br/>
+{PANEL: Search by shape}
 
-![NoSQL DB - Query a Spatial Index](images/spatial_1.png "NoSQL DB - Query a Spatial Index")
-{INFO/}
+* Query the spatial index:  
+  Use the `RelatesToShape` method to search for all documents containing spatial data that is located  
+  in the specified relation to the given shape.
 
+* The shape is specified as either a __circle__ or a __polygon__ in a WKT format.  
+  See polygon rules [here](../client-api/session/querying/how-to-make-a-spatial-query#polygonRules).
 
-## Static Indexes
+* The relation to the shape can be one of: `Within`, `Contains`, `Disjoint`, `Intersects`.
 
-All of the above examples are using the dynamic querying capabilities of RavenDB and will create automatic indexes to retrieve their results.  
-However, spatial queries can also be performed against static indexes, and this is done in a very similar way.
+* See more usage examples in the [dynamic search by shape](../client-api/session/querying/how-to-make-a-spatial-query#search-by-shape) query.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query spatial_3_0@Indexes\Querying\Spatial.cs /}
-{CODE-TAB:csharp:DocumentQuery spatial_3_1@Indexes\Querying\Spatial.cs /}
-{CODE-TAB:csharp:Index spatial_3_2@Indexes\Querying\Spatial.cs /}
+{CODE-TAB:csharp:Query spatial_query_3@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:DocumentQuery spatial_query_4@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:Index spatial_index_2@Indexes\SpatialIndexes.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Events/ByCoordinates'
-where spatial.within(Coordinates, spatial.circle(500, 30, 30))
+from index "EventsWithWKT/ByNameAndWKT"
+where spatial.within(
+    WKT,
+    spatial.wkt("POLYGON ((
+        -118.6527948 32.7114894,
+        -95.8040242 37.5929338,
+        -102.8344151 53.3349629,
+        -127.5286633 48.3485664,
+        -129.4620208 38.0786067,
+        -118.7406746 32.7853769,
+        -118.6527948 32.7114894))")
+)
+
+// The query returns all matching employee entities
+// that are located within the specified polygon.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{INFO If you want to know how to setup and customize a spatial field in static index please refer to [this](../../indexes/indexing-spatial-data) article. /}
+{PANEL/}
 
-## Ordering
+{PANEL: Sort results}
 
-In order to sort the results by distance, please use the `OrderByDistance` or `OrderByDistanceDescending` methods.  
-You can read more about them [here](../../client-api/session/querying/how-to-query-a-spatial-index).
+* Query the spatial index:  
+  Use `OrderByDistance` or `OrderByDistanceDescending` to sort the results by distance from a given point.
 
-## Remarks
+* By default, distance in RavenDB measured in **kilometers**.  
+  The distance can be rounded to a specific range.  
 
-{INFO Distance in RavenDB by default is measured in **kilometers**. /}
+* See more usage examples in the [dynamic spatial sorting](../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting) query.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query spatial_query_5@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:DocumentQuery spatial_query_6@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:Index spatial_index_1@Indexes\SpatialIndexes.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Events/ByNameAndCoordinates"
+where spatial.within(
+    Coordinates,
+    spatial.circle(20, 47.623473, -122.3060097)
+)
+order by spatial.distance(
+    Coordinates,
+    spatial.point(47.623473, -122.3060097)
+)
+
+// The query returns all matching employee entities located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+
+// Sort the results by their distance from a specified point,
+// the closest results will be listed first.
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
 
 ## Related Articles
 

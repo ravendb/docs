@@ -122,6 +122,8 @@ where spatial.within(
 
 {INFO:  }
 
+<a id="polygonRules" /> __Polygon rules__:
+
 * The polygon's coordinates must be provided in counterclockwise order.
 
 * The first and last coordinates must mark the same location to form a closed region.
@@ -138,7 +140,8 @@ where spatial.within(
 
 * Use `OrderByDistance` or `OrderByDistanceDescending` to sort the results by distance from a given point.
 
-* The distance can be rounded to a specific range.
+* By default, distance in RavenDB measured in **kilometers**.  
+  The distance can be rounded to a specific range.  
 
 {NOTE: }
 

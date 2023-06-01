@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Indexes.Spatial;
 
 namespace Raven.Documentation.Samples.Indexes
 {
-    #region spatial_1
+    #region spatial_index_1
     // Define an index with a spatial field
     public class Events_ByNameAndCoordinates : AbstractIndexCreationTask<Event>
     {
@@ -33,7 +34,7 @@ namespace Raven.Documentation.Samples.Indexes
     }
     #endregion
     
-    #region spatial_2
+    #region spatial_index_2
     // Define an index with a spatial field
     public class EventsWithWKT_ByNameAndWKT : AbstractIndexCreationTask<EventWithWKT>
     {
@@ -60,7 +61,7 @@ namespace Raven.Documentation.Samples.Indexes
     }
     #endregion
 
-    #region spatial_3
+    #region spatial_index_3
     public class Events_ByNameAndCoordinates_JS : AbstractJavaScriptIndexCreationTask
     {
         public Events_ByNameAndCoordinates_JS()
@@ -78,7 +79,7 @@ namespace Raven.Documentation.Samples.Indexes
     }
     #endregion
 
-    #region spatial_4
+    #region spatial_index_4
     public class Events_ByNameAndCoordinates_Custom : AbstractIndexCreationTask<Event>
     {
         public Events_ByNameAndCoordinates_Custom()
@@ -97,7 +98,7 @@ namespace Raven.Documentation.Samples.Indexes
     }
     #endregion
     
-    #region spatial_5
+    #region spatial_index_5
     public class Events_ByNameAndCoordinates_Custom_JS : AbstractJavaScriptIndexCreationTask
     {
         public Events_ByNameAndCoordinates_Custom_JS()
@@ -128,6 +129,169 @@ namespace Raven.Documentation.Samples.Indexes
         }
     }
     #endregion
+
+    public class QuerySpatialIndex
+    {
+        public QuerySpatialIndex()
+        {
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region spatial_query_1
+                    // Define a spatial query on index 'Events_ByNameAndCoordinates'
+                    List<Event> employeesWithinRadius = session
+                        .Query<Event, Events_ByNameAndCoordinates>()
+                         // Call 'Spatial' method
+                        .Spatial(
+                            // Pass the spatial index-field containing the spatial data
+                            "Coordinates",
+                            // Set the geographical area in which to search for matching documents
+                            // Call 'WithinRadius', pass the radius and the center points coordinates  
+                            criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
+                        .ToList();
+
+                    // The query returns all matching event entities
+                    // that are located within 20 kilometers radius
+                    // from point (47.623473 latitude, -122.3060097 longitude).
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region spatial_query_2
+                    // Define a spatial query on index 'Events_ByNameAndCoordinates'
+                    List<Event> employeesWithinRadius = session.Advanced
+                        .DocumentQuery<Event, Events_ByNameAndCoordinates>()
+                         // Call 'Spatial' method
+                        .Spatial(
+                            // Pass the spatial index-field containing the spatial data
+                            "Coordinates",
+                            // Set the geographical area in which to search for matching documents
+                            // Call 'WithinRadius', pass the radius and the center points coordinates  
+                            criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
+                        .ToList();
+                    
+                    // The query returns all matching event entities
+                    // that are located within 20 kilometers radius
+                    // from point (47.623473 latitude, -122.3060097 longitude).
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region spatial_query_3
+                    // Define a spatial query on index 'EventsWithWKT_ByNameAndWKT'
+                    List<EventWithWKT> employeesWithinRadius = session
+                        .Query<EventWithWKT, EventsWithWKT_ByNameAndWKT>()
+                        // Call 'Spatial' method
+                        .Spatial(
+                            // Pass the spatial index-field containing the spatial data
+                            "WKT",
+                            // Set the geographical search criteria, call 'RelatesToShape'
+                            criteria => criteria.RelatesToShape(
+                                // Specify the WKT string.
+                                shapeWkt: @"POLYGON ((
+                                               -118.6527948 32.7114894,
+                                               -95.8040242 37.5929338,
+                                               -102.8344151 53.3349629,
+                                               -127.5286633 48.3485664,
+                                               -129.4620208 38.0786067,
+                                               -118.7406746 32.7853769,
+                                               -118.6527948 32.7114894
+                                          ))",
+                                // Specify the relation between the WKT shape and the documents spatial data
+                                relation: SpatialRelation.Within))
+                        .ToList();
+                    
+                    // The query returns all matching employee entities
+                    // that are located within the specified polygon.
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region spatial_query_4
+                    // Define a spatial query on index 'EventsWithWKT_ByNameAndWKT'
+                    List<EventWithWKT> employeesWithinRadius = session.Advanced
+                        .DocumentQuery<EventWithWKT, EventsWithWKT_ByNameAndWKT>()
+                        // Call 'Spatial' method
+                        .Spatial(
+                            // Pass the spatial index-field containing the spatial data
+                            "WKT",
+                            // Set the geographical search criteria, call 'RelatesToShape'
+                            criteria => criteria.RelatesToShape(
+                                // Specify the WKT string.
+                                shapeWkt: @"POLYGON ((
+                                               -118.6527948 32.7114894,
+                                               -95.8040242 37.5929338,
+                                               -102.8344151 53.3349629,
+                                               -127.5286633 48.3485664,
+                                               -129.4620208 38.0786067,
+                                               -118.7406746 32.7853769,
+                                               -118.6527948 32.7114894
+                                          ))",
+                                // Specify the relation between the WKT shape and the documents spatial data
+                                relation: SpatialRelation.Within))
+                        .ToList();
+                    
+                    // The query returns all matching employee entities
+                    // that are located within the specified polygon.
+                   #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region spatial_query_5
+                    // Define a spatial query on index 'Events_ByNameAndCoordinates'
+                    List<Event> employeesWithinRadius = session
+                        .Query<Event, Events_ByNameAndCoordinates>()
+                        .Spatial(
+                            "Coordinates",
+                            criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
+                        // Call 'OrderByDistance'
+                        .OrderByDistance(
+                            // Pass the spatial index-field containing the spatial data
+                            "Coordinates",
+                            // Sort the results by their distance from this point: 
+                            47.623473, -122.3060097)
+                        .ToList();
+
+                    // Return all matching employee entities located within 20 kilometers radius
+                    // from point (47.623473 latitude, -122.3060097 longitude).
+
+                    // Sort the results by their distance from a specified point,
+                    // the closest results will be listed first.
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region spatial_query_6
+                    // Define a spatial query on index 'Events_ByNameAndCoordinates'
+                    List<Event> employeesWithinRadius = session.Advanced
+                        .DocumentQuery<Event, Events_ByNameAndCoordinates>()
+                        .Spatial(
+                            "Coordinates",
+                            criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
+                        // Call 'OrderByDistance'
+                        .OrderByDistance(
+                            // Pass the spatial index-field containing the spatial data
+                            "Coordinates",
+                            // Sort the results by their distance from this point: 
+                            47.623473, -122.3060097)
+                        .ToList();
+
+                    // Return all matching employee entities located within 20 kilometers radius
+                    // from point (47.623473 latitude, -122.3060097 longitude).
+
+                    // Sort the results by their distance from a specified point,
+                    // the closest results will be listed first.
+                    #endregion
+                }
+            }
+        }
+    }
     
     namespace Foo
     {

@@ -29,14 +29,16 @@
 
 * You can then retrieve documents based on geographical criteria when making a spatial query on this index-field.
 
+* A spatial index can also be defined from the [Studio](../studio/database/indexes/create-map-index#spatial-field-options). 
+
 {NOTE: }
 
 __Exmaple__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Indexing_coordinates spatial_1@Indexes\SpatialIndexes.cs /}
-{CODE-TAB:csharp:Indexing_WKT spatial_2@Indexes\SpatialIndexes.cs /}
-{CODE-TAB:csharp:JavaScript_index spatial_3@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:Indexing_coordinates spatial_index_1@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:Indexing_WKT spatial_index_2@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:JavaScript_index spatial_index_3@Indexes\SpatialIndexes.cs /}
 {CODE-TABS/}
 
 {NOTE/}
@@ -80,8 +82,8 @@ __Syntax__:
 __Exmaple__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Index spatial_4@Indexes\SpatialIndexes.cs /}
-{CODE-TAB:csharp:JavaScript_index spatial_5@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:Index spatial_index_4@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:JavaScript_index spatial_index_5@Indexes\SpatialIndexes.cs /}
 {CODE-TABS/}
 
 {NOTE/}
