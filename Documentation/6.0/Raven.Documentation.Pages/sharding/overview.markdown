@@ -41,6 +41,7 @@
      * [Document Extensions Storage](../sharding/overview#document-extensions-storage)  
      * [Anchoring Documents to a Bucket](../sharding/overview#anchoring-documents-to-a-bucket)  
   * [Resharding](../sharding/overview#resharding)  
+  * [Paging](../sharding/overview#paging)  
   * [Creating a Sharded Database](../sharding/overview#creating-a-sharded-database)  
 
 {NOTE/}
@@ -227,9 +228,22 @@ to a different shard, and then associates the bucket with the new shard.
 
 {PANEL/}
 
+{PANEL: Paging}
+
+from a user's perspective [paging](../indexes/querying/paging) 
+is conducted similarly in sharded and non-sharded databases, using 
+the same API.  
+Paging is more costly in a sharded database, however, since the 
+database must load selected pages **from each shard** and sort the 
+results before handing them to the user.  
+Read more about this subject [here](../sharding/querying#paging).  
+
+{PANEL/}
+
 {PANEL: Creating a Sharded Database}
 
-* A sharded database can be [created via Studio](../sharding/administration/studio-admin#creating-a-sharded-database).  
+* A sharded database can be created via [Studio](../sharding/administration/studio-admin#creating-a-sharded-database) 
+  or the [API](../sharding/administration/api-admin).  
 
 * A RavenDB cluster can run sharded and non-sharded databases in parallel.  
 

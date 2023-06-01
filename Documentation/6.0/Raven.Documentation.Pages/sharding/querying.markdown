@@ -21,6 +21,7 @@
      * [`where` vs `filter` Recommendations](../sharding/querying#vs--recommendations)  
   * [Including Items](../sharding/querying#including-items)  
   * [Querying a Selected Shard](../sharding/querying#querying-a-selected-shard)
+  * [Paging](../sharding/querying#paging)  
   * [Timing Queries](../sharding/querying#timing-queries)
   * [Unsupported Querying Features](../sharding/querying#unsupported-querying-features)  
   
@@ -261,6 +262,31 @@ and when it's time to query any of them the query is sent only to this shard.
 
      Query only the shard/s containing `users/2` and `users/3`:  
      {CODE query-selected-shards@Sharding\ShardingQuerying.cs /}
+
+{PANEL/}
+
+{PANEL: Paging}
+
+From a client's point of view, [paging](../indexes/querying/paging) 
+is conducted similarly in sharded and non-sharded databases and the 
+same API is used to define page size and retrieve selected pages.  
+
+Under the hood, however, performing paging in a sharded database entails 
+some overhead as the database is required to load the selected pages 
+**from each shard**, sort the retrieved data, and provide the results.  
+
+* E.g., let's see what happens when we set the page size to **100** 
+  and load page **8** in a non-sharded and in a sharded database:  
+   * A non-sharded database would skip 7 pages, load the 8th, and 
+     hand the user results 701 through 800.  
+   * A 3-shard database would skip 7 pages and load the 8th page 
+     **for each shard**, sort the 300 retrieved results, and provide 
+     the user with the sorted 100 results.  
+
+{NOTE: }
+The default **sorting order** is **last modified comes first**: the 
+latest document to be modified will be provided as the first result.  
+{NOTE/}
 
 {PANEL/}
 
