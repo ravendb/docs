@@ -209,14 +209,14 @@ Available custom methods and extensions:
 - [Query] [Projection](../../../../client-api/session/querying/how-to-customize-query#projection)
 - Proximity
 - [Query] [RandomOrdering](../../../../client-api/session/querying/how-to-customize-query#randomordering)
-- [Query] [RelatesToShape](../../../../client-api/session/querying/how-to-query-a-spatial-index)
+- [Query] [RelatesToShape](../../../../client-api/session/querying/how-to-make-a-spatial-query#search-by-shape)
 - Search
 - SelectFields
 - SelectTimeSeries
 - Single
 - SingleOrDefault
 - Skip
-- [Query] [Spatial](../../../../client-api/session/querying/how-to-query-a-spatial-index)
+- [Query] [Spatial](../../../../client-api/session/querying/how-to-make-a-spatial-query)
 - Statistics
 - SuggestUsing
 - Take

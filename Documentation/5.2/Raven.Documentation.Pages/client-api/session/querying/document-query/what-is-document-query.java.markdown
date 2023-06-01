@@ -71,20 +71,20 @@ Available methods:
 - openSubclause
 - orderBy
 - orderByDescending
-- [Query] [orderByDistance](../../../../client-api/session/querying/how-to-query-a-spatial-index)
-- [Query] [orderByDistanceDescending](../../../../client-api/session/querying/how-to-query-a-spatial-index)
+- [Query] [orderByDistance](../../../../client-api/session/querying/how-to-make-a-spatial-query#orderbydistance)
+- [Query] [orderByDistanceDescending](../../../../client-api/session/querying/how-to-make-a-spatial-query#orderbydistancedescending)
 - orderByScore
 - orderByScoreDescending
 - orElse
 - proximity
 - randomOrdering
-- [Query] [relatesToShape](../../../../client-api/session/querying/how-to-query-a-spatial-index)
+- [Query] [relatesToShape](../../../../client-api/session/querying/how-to-make-a-spatial-query#example-ii)
 - search
 - selectFields
 - single
 - singleOrDefault
 - skip
-- [Query] [spatial](../../../../client-api/session/querying/how-to-query-a-spatial-index)
+- [Query] [spatial](../../../../client-api/session/querying/how-to-make-a-spatial-query#spatial)
 - statistics
 - suggestUsing
 - take
@@ -105,7 +105,7 @@ Available methods:
 - whereNotEquals
 - [whereRegex](../../../../client-api/session/querying/how-to-use-regex)
 - whereStartsWith
-- [Query] [withinRadiusOf](../../../../client-api/session/querying/how-to-query-a-spatial-index)
+- withinRadiusOf
 
 
 ## Remarks

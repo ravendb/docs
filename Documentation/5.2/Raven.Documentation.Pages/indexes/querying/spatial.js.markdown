@@ -53,7 +53,7 @@ where spatial.within(coordinates, spatial.circle(500, 30, 30))
 
 ## Ordering
 
-In order to sort the results by distance, please use the `orderByDistance()` or `orderByDistanceDescending()` methods. You can read more about them [here](../../client-api/session/querying/how-to-query-a-spatial-index).
+In order to sort the results by distance, please use the `orderByDistance()` or `orderByDistanceDescending()` methods. You can read more about them [here](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting).
 
 ## Remarks
 
@@ -67,4 +67,4 @@ In order to sort the results by distance, please use the `orderByDistance()` or 
 
 ### Client API
 
-- [How to Query a Spatial Index](../../client-api/session/querying/how-to-query-a-spatial-index)
+- [How to make a spatial query](../../client-api/session/querying/how-to-make-a-spatial-query)

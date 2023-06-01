@@ -212,13 +212,13 @@ Distance by default is measured in __kilometers__.
 
 ## Related Articles
 
-### Querying
-
-- [Spatial](../indexes/querying/spatial)
-
 ### Client API
 
-- [How to Query a Spatial Index](../client-api/session/querying/how-to-query-a-spatial-index)
+- [How to make a spatial query](../client-api/session/querying/how-to-make-a-spatial-query)
+
+### Indexes
+
+- [Query a spatial index](../indexes/querying/spatial)
 
 ### Studio
 

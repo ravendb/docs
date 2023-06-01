@@ -137,4 +137,4 @@ Source: unterbahn.com
 
 ### Client API
 
-- [How to Query a Spatial Index](../client-api/session/querying/how-to-query-a-spatial-index)
+- [How to make a spatial query](../client-api/session/querying/how-to-make-a-spatial-query)

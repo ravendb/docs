@@ -2,9 +2,9 @@
 
 Spatial indexes can be queried using the `spatial` method which contains a full spectrum of spatial methods. The following article will cover these methods:
 
-- [Spatial](../../../client-api/session/querying/how-to-query-a-spatial-index#spatial)
-- [OrderByDistance](../../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance)
-- [OrderByDistanceDescending](../../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistancedescending)
+- [Spatial](../../../client-api/session/querying/how-to-make-a-spatial-query#spatial)
+- [OrderByDistance](../../../client-api/session/querying/how-to-make-a-spatial-query#orderbydistance)
+- [OrderByDistanceDescending](../../../client-api/session/querying/how-to-make-a-spatial-query#orderbydistancedescending)
 
 {PANEL:Spatial}
 

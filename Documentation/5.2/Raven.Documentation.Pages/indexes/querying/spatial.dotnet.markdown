@@ -18,9 +18,9 @@
   Find all spatial API methods listed [here](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-api).  
 
 * Examples in this page:
-    * [Search by radius](../indexes/indexing-spatial-data#create-index-with-spatial-field)
-    * [Search by shape](../indexes/indexing-spatial-data#create-index-with-spatial-field)
-    * [Sort results](../indexes/indexing-spatial-data#create-index-with-spatial-field)
+    * [Search by radius](../../indexes/querying/spatial#search-by-radius)
+    * [Search by shape](../../indexes/querying/spatial#search-by-shape)
+    * [Sort results](../../indexes/querying/spatial#sort-results)
 
 {NOTE/}
 
@@ -59,11 +59,11 @@ where spatial.within(
   in the specified relation to the given shape.
 
 * The shape is specified as either a __circle__ or a __polygon__ in a WKT format.  
-  See polygon rules [here](../client-api/session/querying/how-to-make-a-spatial-query#polygonRules).
+  See polygon rules [here](../../client-api/session/querying/how-to-make-a-spatial-query#polygonRules).
 
 * The relation to the shape can be one of: `Within`, `Contains`, `Disjoint`, `Intersects`.
 
-* See more usage examples in the [dynamic search by shape](../client-api/session/querying/how-to-make-a-spatial-query#search-by-shape) query.
+* See more usage examples in the [dynamic search by shape](../../client-api/session/querying/how-to-make-a-spatial-query#search-by-shape) query.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query spatial_query_3@Indexes\SpatialIndexes.cs /}
@@ -98,7 +98,7 @@ where spatial.within(
 * By default, distance in RavenDB measured in **kilometers**.  
   The distance can be rounded to a specific range.  
 
-* See more usage examples in the [dynamic spatial sorting](../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting) query.
+* See more usage examples in the [dynamic spatial sorting](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting) query.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query spatial_query_5@Indexes\SpatialIndexes.cs /}
@@ -133,7 +133,7 @@ order by spatial.distance(
 
 ### Client API
 
-- [How to Query a Spatial Index](../../client-api/session/querying/how-to-query-a-spatial-index)
+- [How to make a spatial query](../../client-api/session/querying/how-to-make-a-spatial-query)
 
 ### Studio
 

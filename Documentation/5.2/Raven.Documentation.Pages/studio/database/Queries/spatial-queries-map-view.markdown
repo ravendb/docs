@@ -275,14 +275,12 @@ spatial.within(
 
 ## Related Articles
 
-### Queries
-- [Querying: Spatial](../../../indexes/querying/spatial)  
+### Client API
+- [How to make a spatial query](../../../client-api/session/querying/how-to-make-a-spatial-query)
 
 ### Indexes
 - [Indexing Spatial Data](../../../indexes/indexing-spatial-data)  
-
-### Client API
-- [How to Query a Spatial Index](../../../client-api/session/querying/how-to-query-a-spatial-index)  
+- [Query a spatial index](../../../indexes/querying/spatial)  
 
 ### Additional Pages
 - [Polyline Mapping Tool](https://www.keene.edu/campus/maps/tool/)

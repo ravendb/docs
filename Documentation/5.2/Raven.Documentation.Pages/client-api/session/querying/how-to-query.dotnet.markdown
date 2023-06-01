@@ -324,7 +324,7 @@ Available custom methods and extensions for the session's [Query](../../../clien
 - [Search](../../../client-api/session/querying/how-to-use-search)
 - SingleAsync
 - SingleOrDefaultAsync
-- [Spatial](../../../client-api/session/querying/how-to-query-a-spatial-index)
+- [Spatial](../../../client-api/session/querying/how-to-make-a-spatial-query)
 - [Statistics](../../../client-api/session/querying/how-to-get-query-statistics)
 - [SuggestUsing](../../../client-api/session/querying/how-to-work-with-suggestions)
 - ToListAsync
