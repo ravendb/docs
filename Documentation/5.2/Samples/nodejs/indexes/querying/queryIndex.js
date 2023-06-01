@@ -8,7 +8,7 @@ class Employee { }
 //region the_index
 // The index definition:
 
-class Employees_ByName extends AbstractJavaScriptIndexCreationTask<Employee> {
+class Employees_ByName extends AbstractJavaScriptIndexCreationTask {
 
     constructor() {
         super();

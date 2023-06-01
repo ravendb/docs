@@ -1,189 +1,290 @@
-# Session: Querying: How to Customize a Query
+# How to Customize a Query
+
 ---
 
 {NOTE: }
 
-The following query customization options are available:
+* The following query customization methods that are available for the __.NET client__ under `IDocumentQueryCustomization` 
+  are also available in the __Node.js client__.
 
-- ["beforeQueryExecuted" event](../../../client-api/session/querying/how-to-customize-query#beforequeryexecuted)
-- ["afterQueryExecuted" event](../../../client-api/session/querying/how-to-customize-query#afterqueryexecuted)
-- ["afterStreamExecuted" event](../../../client-api/session/querying/how-to-customize-query#afterstreamexecuted)
-- [noCaching()](../../../client-api/session/querying/how-to-customize-query#nocaching)
-- [noTracking()](../../../client-api/session/querying/how-to-customize-query#notracking)
-- [ProjectionBehavior](../../../client-api/session/querying/how-to-customize-query#projectionbehavior)
-- [randomOrdering()](../../../client-api/session/querying/how-to-customize-query#randomordering)
-- [waitForNonStaleResults()](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
+* These methods can be used for both a dynamic-query and an index-query.
 
-Query is an `EventEmitter`. It emits few events allowing you to customize its behavior.
+* Note:  
+  A [query](../../../client-api/session/querying/how-to-query) can also be customized on the Store or Session level by subscribing to the `beforeQuery` event.  
+  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events).
+
+* Customization methods available:
+
+  - [on ("beforeQueryExecuted")](../../../client-api/session/querying/how-to-customize-query#on-("beforequeryexecuted"))
+  - [on ("afterQueryExecuted")](../../../client-api/session/querying/how-to-customize-query#on-("afterqueryexecuted"))
+  - [noCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
+  - [noTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
+  - [projectionBehavior](../../../client-api/session/querying/how-to-customize-query#projectionbehavior)
+  - [randomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
+  - [timings](../../../client-api/session/querying/how-to-customize-query#timings)
+  - [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
+
 {NOTE/}
 
 ---
-{PANEL:BeforeQueryExecuted}
 
-Allows you to modify the index query just before it's executed.
+{PANEL: on ("beforeQueryExecuted")}
 
-{CODE:nodejs customize_1_0@ClientApi\Session\Querying\howToCustomize.js /}
+* Use `on("beforeQueryExecuted")` to customize the query just before it is executed.
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **action** | function | Action on the index query |
+{NOTE: }
 
-| Return Value | |
-| ------------- | ----- |
-| query | Returns self for easier method chaining. |
+__Example__
 
-### Example
+{CODE-TABS}
+{CODE-TAB:nodejs:Query customize_1_0@ClientApi\Session\Querying\howToCustomize.js /}
+{CODE-TAB:nodejs:Index index_1@ClientApi\Session\Querying\howToCustomize.js /}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Syntax__
 
 {CODE:nodejs customize_1_1@ClientApi\Session\Querying\howToCustomize.js /}
 
-{PANEL/}
+| Parameters       | Type            | Description                                                                                                                           |
+|------------------|-----------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| __eventHandler__ | (query) => void | A callback method that is invoked when the `beforeQueryExecuted` event is emitted.<br>The passed query param is of type `IndexQuery`. |
 
-{PANEL:AfterQueryExecuted}
-
-Allows you to retrieve a raw query result after it's executed.
-
-{CODE:nodejs customize_1_0_0@ClientApi\Session\Querying\howToCustomize.js /}
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **action** | function | Action on the query result |
-
-| Return Value | |
-| ------------- | ----- |
-| query | Returns self for easier method chaining |
-
-### Example
-
-{CODE:nodejs customize_1_1_0@ClientApi\Session\Querying\howToCustomize.js /}
+{NOTE/}
 
 {PANEL/}
 
-{PANEL:AfterStreamExecuted}
+{PANEL: on ("afterQueryExecuted")}
 
-Allows you to retrieve a raw result of the streaming query.
+* Use `on("afterQueryExecuted")` to access the raw query result after it is executed.
 
-{CODE:nodejs customize_1_0_1@ClientApi\Session\Querying\howToCustomize.js /}
+{NOTE: }
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **action** | function | Action on a single query result |
-
-| Return Value | |
-| ------------- | ----- |
-| query | Returns self for easier method chaining. |
-
-### Example
-
-{CODE:nodejs customize_1_1_1@ClientApi\Session\Querying\howToCustomize.js /}
-
-{PANEL/}
-
-{PANEL:NoCaching}
-
-By default, queries are cached. To disable query caching use the `noCaching()` customization.
+__Example__
 
 {CODE:nodejs customize_2_0@ClientApi\Session\Querying\howToCustomize.js /}
 
-| Return Value | |
-| ------------- | ----- |
-| IDocumentQueryCustomization | Returns self for easier method chaining. |
+{NOTE/}
 
-### Example
+{NOTE: }
+
+__Syntax__
 
 {CODE:nodejs customize_2_1@ClientApi\Session\Querying\howToCustomize.js /}
 
+| Parameters               | Type                  | Description                                                                                                                            |
+|--------------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| __eventHandler__ | (queryResult) => void | A callback method that is invoked when the `afterQueryExecuted` event is emitted.<br> The passed query param is of type `QueryResult`. |
+
+{NOTE/}
+
 {PANEL/}
 
-{PANEL:NoTracking}
+{PANEL: noCaching}
+ 
+* By default, query results are cached.
 
-To disable entity tracking by `session` use `noTracking()`. Usage of this option will prevent holding the query results in memory.
+* You can use the `noCaching` customization to disable query caching.
+
+{NOTE: }
+
+__Example__
 
 {CODE:nodejs customize_3_0@ClientApi\Session\Querying\howToCustomize.js /}
 
-| Return Value | |
-| ------------- | ----- |
-| IDocumentQueryCustomization | Returns self for easier method chaining. |
+{NOTE/}
 
-### Example
+{NOTE: }
+
+__Syntax__
 
 {CODE:nodejs customize_3_1@ClientApi\Session\Querying\howToCustomize.js /}
-{PANEL/}
 
-{PANEL: ProjectionBehavior}
-
-By default, queries are satisfied with the values stored in the index. If the index 
-doesn't contain the requested values, they are retrieved from the documents 
-themselves.  
-
-{CODE:nodejs projectionbehavior@ClientApi\Session\Querying\HowToCustomize.js /}
-
-This behavior can be configured using the `projection` option, which takes a 
-`projectionBehavior`:  
-
-* `Default` - query will be satisfied with indexed data when possible, and directly 
-from the document when it is not.  
-* `FromIndex` - query will be satisfied with indexed data when possible, and when 
-it is not, the field is skipped.  
-* `FromIndexOrThrow` - query will be satisfied with indexed data. If the index does 
-not contain the requested data, an exception is thrown.  
-* `FromDocument` - query will be satisfied with document data when possible, and 
-when it is not, the field is skipped.  
-* `FromDocumentOrThrow` - query will be satisfied with document data. If the 
-document does not contain the requested data, an exception is thrown.  
-
-### Example 
-
-{CODE:nodejs projectionbehavior_query@ClientApi\Session\Querying\howToCustomize.js /} 
+{NOTE/}
 
 {PANEL/}
 
-{PANEL:RandomOrdering}
+{PANEL: noTracking}
 
-To order results randomly, use the `randomOrdering()` method.
+* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+
+* You can use the `noTracking` customization to disable entity tracking.
+
+* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking) for all other options.
+
+{NOTE: }
+
+__Example__
 
 {CODE:nodejs customize_4_0@ClientApi\Session\Querying\howToCustomize.js /}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **seed** | string | Seed used for ordering. Useful when repeatable random queries are needed. |
+{NOTE/}
 
-| Return Value | |
-| ------------- | ----- |
-| IDocumentQueryCustomization | Returns self for easier method chaining. |
+{NOTE: }
 
-### Example
+__Syntax__
 
 {CODE:nodejs customize_4_1@ClientApi\Session\Querying\howToCustomize.js /}
 
-{PANEL/}
-
-{PANEL:WaitForNonStaleResults}
-
-Queries can be 'instructed' to wait for non-stale results for a specified amount of time using the `waitForNonStaleResults()` method. If the query won't be able to return 
-non-stale results within the specified (or default) timeout, then a `TimeoutException` is thrown.
-
-{NOTE: Cutoff Point}
-If a query sent to the server specifies that it needs to wait for non-stale results, then RavenDB sets the cutoff Etag for the staleness check.
-It is the Etag of the last document (or document tombstone), from the collection(s) processed by the index, as of the query arrived to the server.
-This way the server won't be waiting forever for the non-stale results even though documents are constantly updated meanwhile.
-
-If the last Etag processed by the index is greater than the cutoff then the results are considered as non-stale.
 {NOTE/}
 
+{PANEL/}
+
+{PANEL: projectionBehavior}
+
+* By default, when [querying an index](../../../indexes/querying/query-index), and projecting query results  
+  (projecting means the query returns only specific document fields instead of the full document)  
+  then the server will try to retrieve the fields' values from the fields [stored in the index](../../../indexes/storing-data-in-index).
+
+* If the index does Not store those fields then the fields' values will be retrieved from the documents store.
+
+* Use the `selectFields` method to customize and modify this behavior for the specified fields.
+
+* Note:  
+  Entities resulting from a projecting query are Not tracked by the session.  
+  Learn more about projections in:  
+    * [Projections](../../../indexes/querying/projections)
+    * [How to project query results](../../../client-api/session/querying/how-to-project-query-results)
+
+{NOTE: }
+
+__Example__
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Query customize_5_0@ClientApi\Session\Querying\howToCustomize.js /}
+{CODE-TAB:nodejs:Index index_2@ClientApi\Session\Querying\howToCustomize.js /}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Syntax__
+
+{CODE:nodejs customize_5_1@ClientApi\Session\Querying\howToCustomize.js /}
+
+| Parameters             | Type     | Description                                                    |
+|------------------------|----------|----------------------------------------------------------------|
+| __properties__         | string[] | Fields' names for which to fetch values                        |
+| __projectionClass__    | object   | The projected results class                                    |
+| __projectionBehavior__ | string   | The requested projection behavior, see available options below |
+
+* `Default`  
+  Retrieve values from the stored index fields when available.  
+  If fields are not stored then get values from the document.
+* `FromIndex`  
+  Retrieve values from the stored index fields when available.  
+  A field that is not stored in the index is skipped.
+* `FromIndexOrThrow`  
+  Retrieve values from the stored index fields when available.  
+  An exception is thrown if the index does not store the requested field.
+* `FromDocument`  
+  Retrieve values directly from the documents store.  
+  A field that is not found in the document is skipped.
+* `FromDocumentOrThrow`  
+  Retrieve values directly from the documents store.  
+  An exception is thrown if the document does not contain the requested field.
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: randomOrdering}
+
+* Use `RandomOrdering` to order the query results randomly.
+
+{NOTE: }
+
+__Example__
+
+{CODE:nodejs customize_6_0@ClientApi\Session\Querying\howToCustomize.js /}
+
+{NOTE/}
+
+{NOTE: }
+
+__Syntax__
+
+{CODE:nodejs customize_6_1@ClientApi\Session\Querying\howToCustomize.js /}
+
+| Parameters | Type   | Description                                                                                            |
+|------------|--------|--------------------------------------------------------------------------------------------------------|
+| __seed__   | string | Order the search results randomly using this seed. <br> Useful when executing repeated random queries. |
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: timings}
+
+* Use `Timings` to get detailed stats of the time spent by the server on each part of the query.
+
+* The timing statistics will be included in the query results.
+
+* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings).
+
+{NOTE: }
+
+__Example__
+
+{CODE:nodejs customize_7_0@ClientApi\Session\Querying\howToCustomize.js /}
+
+{NOTE/}
+
+{NOTE: }
+
+__Syntax__
+
+{CODE:nodejs customize_7_1@ClientApi\Session\Querying\howToCustomize.js /}
+
+| Parameters | Type | Description |
+| - |----------------| - |
+| __timings__ | `QueryTimings` | An _out_ param that will be filled with the timings results |
+
+| `QueryTimings` |  |  |
+| - |-----------------------------------|---------------------------------------------------|
+| __DurationInMs__ | long | Total duration |
+| __Timings__ | IDictionary<string, QueryTimings> | Dictionary with _QueryTimings_ info per time part |
+
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: waitForNonStaleResults}
+
+* All queries in RavenDB provide results using an index, even when you don't specify one.  
+  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
+
+* Use `waitForNonStaleResults` to instruct the query to wait for non-stale results from the index.
+
+* A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
+  (or default) timeout.
+
+* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes).
+
+{NOTE: }
+
+__Example__
 
 {CODE:nodejs customize_8_0@ClientApi\Session\Querying\howToCustomize.js /}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **waitTimeout** | number | Time to wait for an index to return non-stale results. The default is 15 seconds. |
+{NOTE/}
 
-| Return Value | |
-| ------------- | ----- |
-| query | Returns self for easier method chaining. |
+{NOTE: }
 
-### Example
+__Syntax__
 
 {CODE:nodejs customize_8_1@ClientApi\Session\Querying\howToCustomize.js /}
+
+| Parameters      | Type   | Description                                                                           |
+|-----------------|--------|---------------------------------------------------------------------------------------|
+| **waitTimeout** | number | Time (ms) to wait for an index to return non-stale results.<br>Default is 15 seconds. |
+
+{NOTE/}
 
 {PANEL/}
 

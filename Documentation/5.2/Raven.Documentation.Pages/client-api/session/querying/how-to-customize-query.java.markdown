@@ -1,4 +1,4 @@
-# Session: Querying: How to Customize a Query
+# How to Customize a Query
 ---
 
 {NOTE: }

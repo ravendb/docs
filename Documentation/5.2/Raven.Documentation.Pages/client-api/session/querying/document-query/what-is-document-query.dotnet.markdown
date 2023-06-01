@@ -161,12 +161,12 @@ Refer to the corresponding documentation articles, marked with links starting wi
 Available custom methods and extensions:   
 
 - AddOrder
-- AfterQueryExecuted
-- AfterStreamExecuted
+- [Query] [AfterQueryExecuted](../../../../client-api/session/querying/how-to-customize-query#afterqueryexecuted)
+- [Query] [AfterStreamExecuted](../../../../client-api/session/querying/how-to-customize-query#afterstreamexecuted)
 - [Query] [AggregateBy](../../../../client-api/session/querying/how-to-perform-a-faceted-search)
 - [Query] [AggregateUsing](../../../../client-api/session/querying/how-to-perform-a-faceted-search)
 - AndAlso
-- BeforeQueryExecuted
+- [Query] [BeforeQueryExecuted](../../../../client-api/session/querying/how-to-customize-query#beforequeryexecuted)
 - Boost
 - CloseSubclause
 - CmpXchg
@@ -206,8 +206,9 @@ Available custom methods and extensions:
 - OrderByScore
 - OrderByScoreDescending
 - OrElse
+- [Query] [Projection](../../../../client-api/session/querying/how-to-customize-query#projection)
 - Proximity
-- RandomOrdering
+- [Query] [RandomOrdering](../../../../client-api/session/querying/how-to-customize-query#randomordering)
 - [Query] [RelatesToShape](../../../../client-api/session/querying/how-to-query-a-spatial-index)
 - Search
 - SelectFields
@@ -219,9 +220,9 @@ Available custom methods and extensions:
 - Statistics
 - SuggestUsing
 - Take
+- [Query] [Timings](../../../../client-api/session/querying/how-to-customize-query#timings)
 - UsingDefaultOperator
 - [Query] [WaitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
-- [Query] [WaitForNonStaleResultsAsOf](../../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresultsasof)
 - Where
 - WhereBetween
 - WhereEndsWith
