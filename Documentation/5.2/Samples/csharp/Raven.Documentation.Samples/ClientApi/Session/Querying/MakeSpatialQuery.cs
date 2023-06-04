@@ -180,12 +180,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var session = store.OpenSession())
                 {
                     #region spatial_3
-                    // This query will return all matching employee entities
+                    // This query will return all matching company entities
                     // that are located within the specified polygon.
                     
-                    // Define a dynamic query on Employees collection
-                    List<Employee> employeesWithinShape = session
-                        .Query<Employee>()
+                    // Define a dynamic query on Companies collection
+                    List<Company> companiesWithinShape = session
+                        .Query<Company>()
                          // Call 'Spatial' method
                         .Spatial(
                             // Call 'Point'
@@ -195,7 +195,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                                 x => x.Address.Location.Longitude),
                             // Set the geographical search criteria, call 'RelatesToShape'
                             criteria => criteria.RelatesToShape(
-                                // Specify the WKT string.
+                                // Specify the WKT string
                                 shapeWkt: @"POLYGON ((
                                                -118.6527948 32.7114894,
                                                -95.8040242 37.5929338,
@@ -214,12 +214,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region spatial_3_1
-                    // This query will return all matching employee entities
+                    // This query will return all matching company entities
                     // that are located within the specified polygon.
                     
-                    // Define a dynamic query on Employees collection
-                    List<Employee> employeesWithinShape = await asyncSession
-                        .Query<Employee>()
+                    // Define a dynamic query on Companies collection
+                    List<Company> companiesWithinShape = await asyncSession
+                        .Query<Company>()
                          // Call 'Spatial' method
                         .Spatial(
                             // Call 'Point'
@@ -229,7 +229,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                                 x => x.Address.Location.Longitude),
                             // Set the geographical search criteria, call 'RelatesToShape'
                             criteria => criteria.RelatesToShape(
-                                // Specify the WKT string.
+                                // Specify the WKT string
                                 shapeWkt: @"POLYGON ((
                                                -118.6527948 32.7114894,
                                                -95.8040242 37.5929338,
@@ -248,12 +248,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var session = store.OpenSession())
                 {
                     #region spatial_3_2
-                    // This query will return all matching employee entities
+                    // This query will return all matching company entities
                     // that are located within the specified polygon.
                     
-                    // Define a dynamic query on Employees collection
-                    List<Employee> employeesWithinShape = session.Advanced
-                        .DocumentQuery<Employee>()
+                    // Define a dynamic query on Companies collection
+                    List<Company> companiesWithinShape = session.Advanced
+                        .DocumentQuery<Company>()
                         // Call 'Spatial' method
                         .Spatial(
                             // Call 'Point'
@@ -263,7 +263,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                                 x => x.Address.Location.Longitude),
                             // Set the geographical search criteria, call 'RelatesToShape'
                             criteria => criteria.RelatesToShape(
-                                // Specify the WKT string.
+                                // Specify the WKT string
                                 shapeWkt: @"POLYGON ((
                                                -118.6527948 32.7114894,
                                                -95.8040242 37.5929338,
@@ -290,6 +290,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 
                     List<Employee> employeesSortedByDistance = session
                         .Query<Employee>()
+                         // Provide the query criteria:
                         .Spatial(
                             pointField => pointField.Point(
                                 x => x.Address.Location.Latitude,
@@ -320,6 +321,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     
                     List<Employee> employeesSortedByDistance = await asyncSession
                         .Query<Employee>()
+                         // Provide the query criteria:
                         .Spatial(
                             pointField => pointField.Point(
                                 x => x.Address.Location.Latitude,
@@ -350,6 +352,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 
                     List<Employee> employeesSortedByDistance = session.Advanced
                         .DocumentQuery<Employee>()
+                         // Provide the query criteria:
                         .Spatial(
                             pointField => pointField.Point(
                                 x => x.Address.Location.Latitude,
