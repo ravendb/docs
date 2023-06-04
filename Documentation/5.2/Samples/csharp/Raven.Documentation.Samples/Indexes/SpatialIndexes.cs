@@ -153,7 +153,7 @@ namespace Raven.Documentation.Samples.Indexes
                             criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
                         .ToList();
 
-                    // The query returns all matching event entities
+                    // The query returns all matching Event entities
                     // that are located within 20 kilometers radius
                     // from point (47.623473 latitude, -122.3060097 longitude).
                     #endregion
@@ -174,7 +174,7 @@ namespace Raven.Documentation.Samples.Indexes
                             criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
                         .ToList();
                     
-                    // The query returns all matching event entities
+                    // The query returns all matching Event entities
                     // that are located within 20 kilometers radius
                     // from point (47.623473 latitude, -122.3060097 longitude).
                     #endregion
@@ -184,7 +184,7 @@ namespace Raven.Documentation.Samples.Indexes
                 {
                     #region spatial_query_3
                     // Define a spatial query on index 'EventsWithWKT_ByNameAndWKT'
-                    List<EventWithWKT> employeesWithinRadius = session
+                    List<EventWithWKT> employeesWithinShape = session
                         .Query<EventWithWKT, EventsWithWKT_ByNameAndWKT>()
                         // Call 'Spatial' method
                         .Spatial(
@@ -192,7 +192,7 @@ namespace Raven.Documentation.Samples.Indexes
                             "WKT",
                             // Set the geographical search criteria, call 'RelatesToShape'
                             criteria => criteria.RelatesToShape(
-                                // Specify the WKT string.
+                                // Specify the WKT string
                                 shapeWkt: @"POLYGON ((
                                                -118.6527948 32.7114894,
                                                -95.8040242 37.5929338,
@@ -206,7 +206,7 @@ namespace Raven.Documentation.Samples.Indexes
                                 relation: SpatialRelation.Within))
                         .ToList();
                     
-                    // The query returns all matching employee entities
+                    // The query returns all matching Event entities
                     // that are located within the specified polygon.
                     #endregion
                 }
@@ -215,7 +215,7 @@ namespace Raven.Documentation.Samples.Indexes
                 {
                     #region spatial_query_4
                     // Define a spatial query on index 'EventsWithWKT_ByNameAndWKT'
-                    List<EventWithWKT> employeesWithinRadius = session.Advanced
+                    List<EventWithWKT> employeesWithinShape = session.Advanced
                         .DocumentQuery<EventWithWKT, EventsWithWKT_ByNameAndWKT>()
                         // Call 'Spatial' method
                         .Spatial(
@@ -223,7 +223,7 @@ namespace Raven.Documentation.Samples.Indexes
                             "WKT",
                             // Set the geographical search criteria, call 'RelatesToShape'
                             criteria => criteria.RelatesToShape(
-                                // Specify the WKT string.
+                                // Specify the WKT string
                                 shapeWkt: @"POLYGON ((
                                                -118.6527948 32.7114894,
                                                -95.8040242 37.5929338,
@@ -237,7 +237,7 @@ namespace Raven.Documentation.Samples.Indexes
                                 relation: SpatialRelation.Within))
                         .ToList();
                     
-                    // The query returns all matching employee entities
+                    // The query returns all matching Event entities
                     // that are located within the specified polygon.
                    #endregion
                 }
@@ -246,12 +246,13 @@ namespace Raven.Documentation.Samples.Indexes
                 {
                     #region spatial_query_5
                     // Define a spatial query on index 'Events_ByNameAndCoordinates'
-                    List<Event> employeesWithinRadius = session
+                    List<Event> employeesSortedByDistance = session
                         .Query<Event, Events_ByNameAndCoordinates>()
+                         // Filter results by geographical criteria
                         .Spatial(
                             "Coordinates",
                             criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
-                        // Call 'OrderByDistance'
+                         // Sort results, call 'OrderByDistance'
                         .OrderByDistance(
                             // Pass the spatial index-field containing the spatial data
                             "Coordinates",
@@ -259,7 +260,7 @@ namespace Raven.Documentation.Samples.Indexes
                             47.623473, -122.3060097)
                         .ToList();
 
-                    // Return all matching employee entities located within 20 kilometers radius
+                    // Return all matching Event entities located within 20 kilometers radius
                     // from point (47.623473 latitude, -122.3060097 longitude).
 
                     // Sort the results by their distance from a specified point,
@@ -271,12 +272,13 @@ namespace Raven.Documentation.Samples.Indexes
                 {
                     #region spatial_query_6
                     // Define a spatial query on index 'Events_ByNameAndCoordinates'
-                    List<Event> employeesWithinRadius = session.Advanced
+                    List<Event> employeesSortedByDistance = session.Advanced
                         .DocumentQuery<Event, Events_ByNameAndCoordinates>()
+                         // Filter results by geographical criteria
                         .Spatial(
                             "Coordinates",
                             criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
-                        // Call 'OrderByDistance'
+                         // Sort results, call 'OrderByDistance'
                         .OrderByDistance(
                             // Pass the spatial index-field containing the spatial data
                             "Coordinates",
@@ -284,7 +286,7 @@ namespace Raven.Documentation.Samples.Indexes
                             47.623473, -122.3060097)
                         .ToList();
 
-                    // Return all matching employee entities located within 20 kilometers radius
+                    // Return all matching Event entities located within 20 kilometers radius
                     // from point (47.623473 latitude, -122.3060097 longitude).
 
                     // Sort the results by their distance from a specified point,

@@ -3,8 +3,6 @@ import { DocumentStore, AbstractJavaScriptIndexCreationTask } from "ravendb";
 const documentStore = new DocumentStore();
 const session = documentStore.openSession();
 
-
-
 //region spatial_index_1
 // Define an index with a spatial field
 class Events_ByNameAndCoordinates extends AbstractJavaScriptIndexCreationTask {
@@ -95,6 +93,85 @@ class Events_ByNameAndCoordinates_Custom extends AbstractJavaScriptIndexCreation
     }
 }
 //endregion
+
+async function spatialIndexQuery() {
+    
+    {
+        //region spatial_query_1
+        // Define a spatial query on index 'Events/ByNameAndCoordinates'
+        const employeesWithinRadius = await session
+            .query({ indexName: "Events/ByNameAndCoordinates"})
+             // Call 'spatial' method
+            .spatial(
+                /// Pass the spatial index-field containing the spatial data
+                "coordinates",
+                // Set the geographical area in which to search for matching documents
+                // Call 'withinRadius', pass the radius and the center points coordinates  
+                criteria => criteria.withinRadius(20, 47.623473, -122.3060097))
+            .all();
+
+        // The query returns all matching Event entities
+        // that are located within 20 kilometers radius
+        // from point (47.623473 latitude, -122.3060097 longitude).
+        //endregion
+    }
+
+    {
+        //region spatial_query_2
+        // Define a spatial query on index 'EventsWithWKT/ByNameAndWKT'
+        const employeesWithinShape = await session
+            .query({ indexName: "EventsWithWKT/ByNameAndWKT" })
+             // Call 'spatial' method
+            .spatial(
+                // Pass the spatial index-field containing the spatial data
+                "wkt",
+                // Set the geographical search criteria, call 'relatesToShape'
+                criteria => criteria.relatesToShape(
+                    // Specify the WKT string
+                    `POLYGON ((
+                           -118.6527948 32.7114894,
+                           -95.8040242 37.5929338,
+                           -102.8344151 53.3349629,
+                           -127.5286633 48.3485664,
+                           -129.4620208 38.0786067,
+                           -118.7406746 32.7853769,
+                           -118.6527948 32.7114894
+                    ))`,
+                    // Specify the relation between the WKT shape and the documents spatial data
+                    "Within"
+                ))
+            .all();
+
+        // The query returns all matching Event entities
+        // that are located within the specified polygon.
+        //endregion
+    }
+
+    {
+        //region spatial_query_3
+        // Define a spatial query on index 'Events_ByNameAndCoordinates'
+        const employeesSortedByDistance = await session
+            .query({ indexName: "Events/ByNameAndCoordinates" })
+             // Filter results by geographical criteria
+            .spatial(
+                "coordinates",
+                criteria => criteria.withinRadius(20, 47.623473, -122.3060097))
+             // Sort results, call 'orderByDistance'
+            .orderByDistance(
+                // Pass the spatial index-field containing the spatial data
+                "coordinates",
+                // Sort the results by their distance from this point: 
+                47.623473, -122.3060097)
+            .all();
+
+        // Return all matching Event entities located within 20 kilometers radius
+        // from point (47.623473 latitude, -122.3060097 longitude).
+
+        // Sort the results by their distance from a specified point,
+        // the closest results will be listed first.
+        //endregion
+    }
+}
 
 {
     //region syntax

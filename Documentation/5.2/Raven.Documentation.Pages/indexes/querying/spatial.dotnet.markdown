@@ -7,10 +7,12 @@
 * Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
   You have two options:
 
-    * Either make a dynamic spatial query on a collection (see [how to make a spatial query](../../client-api/session/querying/how-to-make-a-spatial-query)).  
+    * __Dynamic spatial query__  
+      Either make a dynamic spatial query on a collection (see [how to make a spatial query](../../client-api/session/querying/how-to-make-a-spatial-query)).  
       An auto-index will be created by the server.
 
-    * Or, index your documents' spatial data in a static-index (see [indexing spatial data](../../indexes/querying/spatial))  
+    * __Spatial index query__  
+      Or, index your documents' spatial data in a static-index (see [indexing spatial data](../../indexes/indexing-spatial-data))  
       and then make a spatial query on this index ( __described in this article__ ).
 
 * A few examples of querying a spatial index are provided below.  
@@ -44,7 +46,7 @@ where spatial.within(
     spatial.circle(20, 47.623473, -122.3060097)
 )
 
-// The query returns all matching employee entities
+// The query returns all matching Event entities
 // that are located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 {CODE-TAB-BLOCK/}
@@ -58,7 +60,7 @@ where spatial.within(
   Use the `RelatesToShape` method to search for all documents containing spatial data that is located  
   in the specified relation to the given shape.
 
-* The shape is specified as either a __circle__ or a __polygon__ in a WKT format.  
+* The shape in the query is specified as either a __circle__ or a __polygon__ in a WKT format.  
   See polygon rules [here](../../client-api/session/querying/how-to-make-a-spatial-query#polygonRules).
 
 * The relation to the shape can be one of: `Within`, `Contains`, `Disjoint`, `Intersects`.
@@ -83,10 +85,14 @@ where spatial.within(
         -118.6527948 32.7114894))")
 )
 
-// The query returns all matching employee entities
+// The query returns all matching Event entities
 // that are located within the specified polygon.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+* Note:  
+  The index in the above example indexes a WKT string in the spatial index-field.  
+  However, you can query by shape also on spatial data that is indexed as lat/lng coordinates.  
 
 {PANEL/}
 
@@ -115,7 +121,7 @@ order by spatial.distance(
     spatial.point(47.623473, -122.3060097)
 )
 
-// The query returns all matching employee entities located within 20 kilometers radius
+// The query returns all matching Event entities located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
 
 // Sort the results by their distance from a specified point,

@@ -1,63 +1,132 @@
 # Query a Spatial Index
 
-To perform a spatial search, you can use the `spatial()` method which contains a full spectrum of spatial capabilities. You can check the detailed Client API reference for this method [here](../../client-api/session/querying/how-to-query-a-spatial-index).
+---
 
-## Radius Search
+{NOTE: }
 
-The most basic usage and probably most common one is to search for all points or shapes within provided distance from the given center point. To perform this search use the `withinRadius()` method.
+* Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
+  You have two options:
+
+    * __Dynamic spatial query__  
+      Either make a dynamic spatial query on a collection (see [how to make a spatial query](../../client-api/session/querying/how-to-make-a-spatial-query)).  
+      An auto-index will be created by the server.
+
+    * __Spatial index query__  
+      Or, index your documents' spatial data in a static-index (see [indexing spatial data](../../indexes/indexing-spatial-data))  
+      and then make a spatial query on this index ( __described in this article__ ).
+
+* A few examples of querying a spatial index are provided below.  
+  __A spatial query performed on a static-index is similar to the__ [dynamic spatial query](../../client-api/session/querying/how-to-make-a-spatial-query).  
+  Find all spatial API methods listed [here](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-api).  
+
+* Examples in this page:
+    * [Search by radius](../../indexes/querying/spatial#search-by-radius)
+    * [Search by shape](../../indexes/querying/spatial#search-by-shape)
+    * [Sort results](../../indexes/querying/spatial#sort-results)
+
+{NOTE/}
+
+---
+
+{PANEL: Search by radius}
+
+* Query the spatial index:
+
+* Use the `withinRadius` method to search for all documents containing spatial data that is located  
+  within the specified distance from the given center point.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js spatial_1_0@indexes\querying\spatial.js  /}
+{CODE-TAB:nodejs:Query spatial_query_1@Indexes\spatialIndexes.js /}
+{CODE-TAB:nodejs:Index spatial_index_1@Indexes\spatialIndexes.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Events
-where spatial.within(spatial.point(latitude, longitude), spatial.circle(500, 30, 30))
+from index "Events/ByNameAndCoordinates"
+where spatial.within(
+    Coordinates,
+    spatial.circle(20, 47.623473, -122.3060097)
+)
+
+// The query returns all matching Event entities
+// that are located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Advanced Search
+{PANEL/}
 
-The most advanced (and low-level) method available is `relatesToShape()`
+{PANEL: Search by shape}
+
+* Query the spatial index:  
+  Use the `relatesToShape` method to search for all documents containing spatial data that is located  
+  in the specified relation to the given shape.
+
+* The shape in the query is specified as either a __circle__ or a __polygon__ in a WKT format.  
+  See polygon rules [here](../../client-api/session/querying/how-to-make-a-spatial-query#polygonRules).
+
+* The relation to the shape can be one of: `Within`, `Contains`, `Disjoint`, `Intersects`.
+
+* See more usage examples in the [dynamic search by shape](../../client-api/session/querying/how-to-make-a-spatial-query#search-by-shape) query.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js spatial_2_0@indexes\querying\spatial.js  /}
+{CODE-TAB:nodejs:Query spatial_query_2@Indexes\spatialIndexes.js /}
+{CODE-TAB:nodejs:Index spatial_index_2@Indexes\spatialIndexes.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Events
-where spatial.within(spatial.point(latitude, longitude), spatial.wkt('Circle(30 30 d=500.0000)'))
+from index "EventsWithWKT/ByNameAndWKT"
+where spatial.within(
+    WKT,
+    spatial.wkt("POLYGON ((
+        -118.6527948 32.7114894,
+        -95.8040242 37.5929338,
+        -102.8344151 53.3349629,
+        -127.5286633 48.3485664,
+        -129.4620208 38.0786067,
+        -118.7406746 32.7853769,
+        -118.6527948 32.7114894))")
+)
+
+// The query returns all matching Event entities
+// that are located within the specified polygon.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-Where the shape is in [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format and the relation is one of `within`, `contains`, `disjoint`, `intersects`. The above example will yield the same results as the example from the `Radius Search` section.
+* Note:  
+  The index in the above example indexes a WKT string in the spatial index-field.  
+  However, you can query by shape also on spatial data that is indexed as lat/lng coordinates.
 
-{INFO: Polygons}
-When using `spatial.wkt()` to define a **polygon**, the vertices (points that form the corners of the polygon) must be listed 
-in a counter-clockwise order:  
-<br/>
+{PANEL/}
 
-![NoSQL Database - How to Query a Spatial Index](images/spatial_1.png "NoSQL Database - How to Query a Spatial Index")
-{INFO/}
+{PANEL: Sort results}
 
-## Static Indexes
+* Query the spatial index:  
+  Use `orderByDistance` or `orderByDistanceDescending` to sort the results by distance from a given point.
 
-All of the above examples are using the dynamic querying capabilities of RavenDB and will create automatic indexes to retrieve their results. However, spatial queries can also be performed against static indexes, and this is done in a very similar way.
+* By default, distance in RavenDB measured in **kilometers**.  
+  The distance can be rounded to a specific range.  
+
+* See more usage examples in the [dynamic spatial sorting](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting) query.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js spatial_3_0@indexes\querying\spatial.js  /}
-{CODE-TAB:nodejs:Index spatial_3_2@indexes\querying\spatial.js  /}
+{CODE-TAB:nodejs:Query spatial_query_3@Indexes\spatialIndexes.js /}
+{CODE-TAB:nodejs:Index spatial_index_1@Indexes\spatialIndexes.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Events/ByCoordinates'
-where spatial.within(coordinates, spatial.circle(500, 30, 30))
+from index "Events/ByNameAndCoordinates"
+where spatial.within(
+    Coordinates,
+    spatial.circle(20, 47.623473, -122.3060097)
+)
+order by spatial.distance(
+    Coordinates,
+    spatial.point(47.623473, -122.3060097)
+)
+
+// The query returns all matching Event entities located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+
+// Sort the results by their distance from a specified point,
+// the closest results will be listed first.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{INFO If you want to know how to setup and customize a spatial field in static index please refer to [this](../../indexes/indexing-spatial-data) article. /}
-
-## Ordering
-
-In order to sort the results by distance, please use the `orderByDistance()` or `orderByDistanceDescending()` methods. You can read more about them [here](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting).
-
-## Remarks
-
-{INFO Distance in RavenDB by default is measured in **kilometers**. /}
+{PANEL/}
 
 ## Related Articles
 
@@ -68,3 +137,7 @@ In order to sort the results by distance, please use the `orderByDistance()` or 
 ### Client API
 
 - [How to make a spatial query](../../client-api/session/querying/how-to-make-a-spatial-query)
+
+### Studio
+
+- [Spatial query view](../../studio/database/queries/spatial-queries-map-view) 
