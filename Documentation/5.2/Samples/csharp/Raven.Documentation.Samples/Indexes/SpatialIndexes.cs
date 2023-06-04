@@ -20,7 +20,8 @@ namespace Raven.Documentation.Samples.Indexes
                     // Field 'Coordinates' will be composed of lat & lng supplied from the document
                     Coordinates = CreateSpatialField(e.Latitude, e.Longitude)
                     
-                    // Documents can be retrieved by making a spatial query on this index-field
+                    // Documents can be retrieved
+                    // by making a spatial query on the 'Coordinates' index-field
                 };
         }
     }
@@ -48,7 +49,8 @@ namespace Raven.Documentation.Samples.Indexes
                     // Field 'WKT' will be composed of the WKT string supplied from the document
                     WKT = CreateSpatialField(e.WKT)
 
-                    // Documents can be retrieved by making a spatial query on this index-field
+                    // Documents can be retrieved
+                    // by making a spatial query on the 'WKT' index-field
                 };
         }
     }

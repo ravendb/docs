@@ -3,8 +3,6 @@ import { DocumentStore, AbstractIndexCreationTask } from "ravendb";
 const documentStore = new DocumentStore();
 const session = documentStore.openSession();
 
-class Employee { }
-
 async function spatialQuery() {
     {
         //region spatial_1
@@ -174,7 +172,7 @@ async function spatialQuery() {
         intersects(shapeWkt, distErrorPercent);
         intersects(shapeWkt, distErrorPercent);
         intersects(shapeWkt, units, distErrorPercent);
-        contains(shapeWkt): SpatialCriteria;
+        contains(shapeWkt);
         contains(shapeWkt, units);
         contains(shapeWkt, distErrorPercent);
         contains(shapeWkt, units, distErrorPercent);
@@ -185,7 +183,7 @@ async function spatialQuery() {
         within(shapeWkt);
         within(shapeWkt, units);
         within(shapeWkt, distErrorPercent);
-        within(shapeWkt, units: SpatialUnits, distErrorPercent);
+        within(shapeWkt, units, distErrorPercent);
         withinRadius(radius, latitude, longitude);
         withinRadius(radius, latitude, longitude, radiusUnits);
         withinRadius(radius, latitude, longitude, radiusUnits, distErrorPercent);

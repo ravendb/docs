@@ -26,7 +26,7 @@
 
 {PANEL: Create index with spatial field}
 
-* Use `CreateSpatialField` to index spatial data in a static-index.
+* Use `createSpatialField` to index spatial data in a static-index.
 
 * You can then retrieve documents based on geographical criteria when making a spatial query on this index-field.
 
@@ -37,9 +37,8 @@
 __Exmaple__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Indexing_coordinates spatial_index_1@Indexes\SpatialIndexes.cs /}
-{CODE-TAB:csharp:Indexing_WKT spatial_index_2@Indexes\SpatialIndexes.cs /}
-{CODE-TAB:csharp:JavaScript_index spatial_index_3@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:nodejs:Indexing_coordinates spatial_index_1@Indexes\spatialIndexes.js /}
+{CODE-TAB:nodejs:Indexing_WKT spatial_index_2@Indexes\spatialIndexes.js /}
 {CODE-TABS/}
 
 {NOTE/}
@@ -48,7 +47,13 @@ __Exmaple__:
 
 __Syntax__:
 
-{CODE spatial_syntax_1@Indexes\SpatialIndexes.cs /}
+{CODE:nodejs spatial_syntax_1@Indexes\spatialIndexes.js /}
+
+| Parameters | Type     | Description                |
+|------------|----------|----------------------------|
+| __lat__    | `number` | Latitude coordinate        |
+| __lng__    | `number` | Longitude coordinate       |
+| __wkt__    | `string` | Shpae in WKT string format |
 
 {NOTE/}
 
@@ -71,7 +76,7 @@ __Syntax__:
       * QuadPrefixTree
 
 * __By default__, the `GeoHashPrefixTree` strategy is used with `GeoHashLevel` set to __9__.  
-  Use the `Spatial` method from `AbstractIndexCreationTask` to modify this setting.
+  Use the `spatial` method to modify this setting.
 
 * The performance cost of spatial indexing is directly related to the tree level chosen.  
   Learn more about each strategy [below](../indexes/indexing-spatial-data#spatial-indexing-strategies).
@@ -82,10 +87,7 @@ __Syntax__:
 
 __Exmaple__:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Index spatial_index_4@Indexes\SpatialIndexes.cs /}
-{CODE-TAB:csharp:JavaScript_index spatial_index_5@Indexes\SpatialIndexes.cs /}
-{CODE-TABS/}
+{CODE:nodejs spatial_index_3@Indexes\spatialIndexes.js /}
 
 {NOTE/}
 
@@ -93,12 +95,18 @@ __Exmaple__:
 
 __Syntax__:
 
-{CODE spatial_syntax_2@Indexes\SpatialIndexes.cs /}
+{CODE:nodejs spatial_syntax_2@Indexes\spatialIndexes.js /}
 
 {CODE-TABS}
-{CODE-TAB:csharp:GeographySpatialOptionsFactory spatial_syntax_3@Indexes\SpatialIndexes.cs /}
-{CODE-TAB:csharp:CartesianSpatialOptionsFactory spatial_syntax_4@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:nodejs:GeographySpatialOptionsFactory spatial_syntax_3@Indexes\spatialIndexes.js /}
+{CODE-TAB:nodejs:CartesianSpatialOptionsFactory spatial_syntax_4@Indexes\spatialIndexes.js /}
 {CODE-TABS/}
+
+| Parameters            | Type            | Description                                       |
+|-----------------------|-----------------|---------------------------------------------------|
+| __circleRadiusUnits__ | `string`        | "Kilometers" or "Miles"                           |
+| __maxTreeLevel__      | `number`        | Controls precision level                          |
+| __bounds__            | `SpatialBounds` | Coordinates for the cartesian quadPrefixTreeIndex |
 
 {NOTE/}
 
