@@ -53,7 +53,7 @@ __Syntax__:
 |------------|----------|----------------------------|
 | __lat__    | `number` | Latitude coordinate        |
 | __lng__    | `number` | Longitude coordinate       |
-| __wkt__    | `string` | Shpae in WKT string format |
+| __wkt__    | `string` | Shape in WKT string format |
 
 {NOTE/}
 

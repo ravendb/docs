@@ -43,8 +43,9 @@ async function spatialQuery() {
                     "CIRCLE(-122.3060097 47.623473 d=20)",
                     // Specify the relation between the WKT shape and the documents spatial data
                     "Within",
-                    // Optional: customize radius units (default is Kilometers) and error percentage
-                    "Miles", 0))
+                    // Customize radius units (default is Kilometers) and error percentage (Optional)
+                    "Miles",
+                    0))
             .all();
         //endregion
     }
