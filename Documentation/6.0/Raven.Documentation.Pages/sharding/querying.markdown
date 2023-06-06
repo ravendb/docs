@@ -268,24 +268,39 @@ and when it's time to query any of them the query is sent only to this shard.
 {PANEL: Paging}
 
 From a client's point of view, [paging](../indexes/querying/paging) 
-is conducted similarly in sharded and non-sharded databases and the 
-same API is used to define page size and retrieve selected pages.  
+is conducted similarly in sharded and non-sharded databases, and 
+the same API is used to define page size and retrieve selected pages.  
 
-Under the hood, however, performing paging in a sharded database entails 
-some overhead as the database is required to load the selected pages 
-**from each shard**, sort the retrieved data, and provide the results.  
+Under the hood, however, performing paging in a sharded database 
+entails some overhead since the orchestrator is required to load 
+the requested data **from each shard** and sort the retrieved 
+results before handing the selected page to the user.  
 
-* E.g., let's see what happens when we set the page size to **100** 
-  and load page **8** in a non-sharded and in a sharded database:  
-   * A non-sharded database would skip 7 pages, load the 8th, and 
-     hand the user results 701 through 800.  
-   * A 3-shard database would skip 7 pages and load the 8th page 
-     **for each shard**, sort the 300 retrieved results, and provide 
-     the user with the sorted 100 results.  
+* E.g., let's see what happens when we load the 8th page (where 
+  the page size is 100) from a non-sharded and a sharded database.  
+  {CODE-TABS}
+  {CODE-TAB:csharp:Query Query_basic-paging@Sharding\ShardingQuerying.cs /}
+  {CODE-TAB:csharp:DocumentQuery DocumentQuery_basic-paging@Sharding\ShardingQuerying.cs /}
+  {CODE-TAB:csharp:Index index-for-paging-sample@Sharding\ShardingQuerying.cs /}
+  {CODE-TABS/}
+    
+    When the database is **Not sharded** the server would:  
+      * skip 7 pages.  
+      * hand page 8 to the client (results 701 to 800).  
+   
+    When the database is **Sharded** the orchestrator would:  
+      * load 8 pages (sorted by modification order) from each shard.  
+      * sort the retrieved results (in a 3-shard database, 
+        for example, the orchestrator would sort 2400 results).  
+      * skip 7 pages (of 24).  
+      * hand page 8 to the client (results 701 to 800).  
 
 {NOTE: }
-The default **sorting order** is **last modified comes first**: the 
-latest document to be modified will be provided as the first result.  
+The shards sort the data by modification order before sending 
+it to the orchestrator.  
+If a shard is required to send 800 results to the orchestrator, 
+for example, the first result would be the document modified most 
+recently and the document modified first would be the last result. 
 {NOTE/}
 
 {PANEL/}

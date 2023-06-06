@@ -3,6 +3,7 @@ using System.Linq;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Linq;
+using Raven.Client.Documents.Session;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.Sharding.ShardingQuerying
@@ -68,7 +69,52 @@ namespace Raven.Documentation.Samples.Sharding.ShardingQuerying
                         .SelectFields<string>("Occupation").ToList();
                 #endregion
             }
+
+            using (var session = store.OpenSession())
+            {
+                #region Query_basic-paging
+                IList<Product> results = session
+                    .Query<Product, Products_ByUnitsInStock>()
+                    .Statistics(out QueryStatistics stats) // fill query statistics
+                    .Where(x => x.UnitsInStock > 10)
+                    .Skip(700) // skip the first 7 pages (700 results)
+                    .Take(100) // get pages 701-800
+                    .ToList();
+
+                long totalResults = stats.TotalResults;
+                #endregion
+            }
+
+            using (var session = store.OpenSession())
+            {
+                #region DocumentQuery_basic-paging
+                IList<Product> results = session
+                    .Advanced
+                    .DocumentQuery<Product, Products_ByUnitsInStock>()
+                    .Statistics(out QueryStatistics stats) // fill query statistics
+                    .WhereGreaterThan(x => x.UnitsInStock, 10)
+                    .Skip(700) // skip the first 7 pages (700 results)
+                    .Take(100) // get pages 701-800
+                    .ToList();
+
+                long totalResults = stats.TotalResults;
+                #endregion
+            }
         }
+
+        #region index-for-paging-sample
+        public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+        {
+            public Products_ByUnitsInStock()
+            {
+                Map = products => from product in products
+                                  select new
+                                  {
+                                      UnitsInStock = product.UnitsInStock
+                                  };
+            }
+        }
+        #endregion
 
         private class UserMapReduce : AbstractIndexCreationTask<User, UserMapReduce.Result>
         {

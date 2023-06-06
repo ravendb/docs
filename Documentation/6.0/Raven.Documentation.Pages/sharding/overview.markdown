@@ -234,8 +234,8 @@ from a user's perspective [paging](../indexes/querying/paging)
 is conducted similarly in sharded and non-sharded databases, using 
 the same API.  
 Paging is more costly in a sharded database, however, since the 
-database must load selected pages **from each shard** and sort the 
-results before handing them to the user.  
+orchestrator must load data **from each shard** and sort the retrieved 
+results before handing the selected page to the user.  
 Read more about this subject [here](../sharding/querying#paging).  
 
 {PANEL/}
