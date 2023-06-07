@@ -291,8 +291,8 @@ Available methods for the session's [query](../../../client-api/session/querying
 - openSubclause
 - orderBy
 - orderByDescending
-- orderByDistance
-- orderByDistanceDescending
+- [orderByDistance](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistance)
+- [orderByDistanceDescending](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistanceDesc)
 - orderByScore
 - orderByScoreDescending
 - orElse

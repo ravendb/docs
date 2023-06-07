@@ -76,8 +76,8 @@
         ]
     },
     {
-        "Path": "how-to-query-a-spatial-index.markdown",
-        "Name": "How to Query a Spatial Index",
+        "Path": "how-to-make-a-spatial-query.markdown",
+        "Name": "How to Make a Spatial Query",
         "DiscussionId": "b62de172-77e9-4241-a525-9ba6cc027860",
         "Mappings": [
             {

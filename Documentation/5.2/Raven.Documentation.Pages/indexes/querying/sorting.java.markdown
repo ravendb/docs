@@ -125,7 +125,7 @@ order by Name as alphanumeric
 
 If your data contains geographical locations, you might want to sort the query result by distance from a given point.
 
-This can be achived by using the `orderByDistance` and `orderByDistanceDescending` methods (API reference [here](../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance)):
+This can be achived by using the `orderByDistance` and `orderByDistanceDescending` methods (API reference [here](../../client-api/session/querying/how-to-make-a-spatial-query)):
 
 {CODE-TABS}
 {CODE-TAB:java:Query sorting_9_1@Indexes\Querying\Sorting.java /}
