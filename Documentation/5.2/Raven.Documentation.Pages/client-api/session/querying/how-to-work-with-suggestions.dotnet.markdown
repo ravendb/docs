@@ -8,8 +8,8 @@
 
 * Word similarities are found using string distance algorithms.
 
-* Examples in this article demonstrate getting suggestions with a dynamic-query.  
-  For getting suggestions with an index-query see [query for suggestions with index](../../../indexes/querying/suggestions).
+* Examples in this article demonstrate getting suggestions with a __dynamic-query__.  
+  For getting suggestions with an __index-query__ see [query for suggestions with index](../../../indexes/querying/suggestions).
 
 ---
 
@@ -20,6 +20,7 @@
     * [Suggest terms - for multiple terms](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-multiple-terms)
     * [Suggest terms - for multiple fields](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-multiple-fields)
     * [Suggest terms - customize options and display name](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---customize-options-and-display-name)
+    * [The auto-index terms in Studio](../../../client-api/session/querying/how-to-work-with-suggestions#the-auto-index-terms-in-studio)
     * [Syntax](../../../client-api/session/querying/how-to-work-with-suggestions#syntax)
 
 {NOTE/}
@@ -74,7 +75,8 @@ as no document in the Products collection contains the term `chaig` in its `Name
 {CODE suggest_1@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
 
 * Executing the above query will generate the auto-index `Auto/Products/ByName`.  
-  This auto-index will contain a list of all available terms from the document field `Name`.
+  This auto-index will contain a list of all available terms from the document field `Name`.  
+  The generated terms are visible in the Studio - see image [below](../../../client-api/session/querying/how-to-work-with-suggestions#the-auto-index-terms-in-studio).
 
 * If you suspect that the term `chaig` in the query criteria is written incorrectly,   
   you can ask RavenDB to suggest __existing terms__ that are similar to `chaig`, as follows:.  
@@ -150,6 +152,19 @@ select suggest(
 {CODE-TABS/}
 
 {CODE suggest_21@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
+
+{PANEL/}
+
+{PANEL: The auto-index terms in Studio}
+
+These are the terms generated for index `Auto/Products/ByName`:
+
+![Figure 1. Auto-index terms](images/auto-index-terms.png "Terms generated for index Auto/Products/ByName")
+
+1. The field name - derived from the document field that was used in the dynamic-query.  
+   In this case the field name is `Name`.
+
+2. The terms generated from the data that the Products collection documents have in their `Name` field.
 
 {PANEL/}
 
