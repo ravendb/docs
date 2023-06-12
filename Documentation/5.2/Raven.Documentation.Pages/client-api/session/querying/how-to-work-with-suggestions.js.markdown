@@ -62,12 +62,12 @@ Querying for suggestions is useful in the following scenarios:
 
       * When simply searching for additional alternative terms for a term that does exist.  
 
-{NOTE: }
+{WARNING: }
 
 The resulting suggested terms will Not include the term for which you search,  
 they will only contain the similar terms.
 
-{NOTE/}
+{WARNING/}
 
 {PANEL/}
 
