@@ -20,7 +20,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region suggest_1
                     // This dynamic query on the 'Products' collection has NO resulting documents
-                    var product = session
+                    List<Product> products = session
                         .Query<Product>()
                         .Where(x => x.Name == "chaig")
                         .ToList();
@@ -185,7 +185,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     // The resulting suggested terms:
                     // ==============================
                     
-                    // Suggested terms in field 'Name' that are similar to 'chaig' or to 'tof':
+                    // Suggested terms in field 'Name' that are similar to 'chaig' OR to 'tof':
                     //     chai
                     //     chang
                     //     tofu
@@ -202,7 +202,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                          // Make a dynamic query on collection 'Companies'
                         .Query<Company>()
                          // Call 'SuggestUsing' to get suggestions for terms that are 
-                         // similar to 'chaig' in first document field (e.g. 'Name') 
+                         // similar to 'chop-soy china' in first document field (e.g. 'Name') 
                         .SuggestUsing(builder => builder
                             .ByField(x => x.Name, "chop-soy china"))
                          // Call 'AndSuggestUsing' to get suggestions for terms that are 
@@ -223,7 +223,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                          // Make a dynamic query on collection 'Companies'   
                         .Query<Company>()
                          // Call 'SuggestUsing' to get suggestions for terms that are 
-                         // similar to 'chaig' in first document field (e.g. 'Name') 
+                         // similar to 'chop-soy china' in first document field (e.g. 'Name') 
                         .SuggestUsing(builder => builder
                             .ByField(x => x.Name, "chop-soy china"))
                          // Call 'AndSuggestUsing' to get suggestions for terms that are 
@@ -271,7 +271,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                          // Make a dynamic document-query on collection 'Companies'
                         .DocumentQuery<Company>()
                          // Call 'SuggestUsing' to get suggestions for terms that are 
-                         // similar to 'chaig' in first document field (e.g. 'Name') 
+                         // similar to 'chop-soy china' in first document field (e.g. 'Name') 
                         .SuggestUsing(builder => builder
                             .ByField(x => x.Name, "chop-soy china"))
                          // Call 'AndSuggestUsing' to get suggestions for terms that are 

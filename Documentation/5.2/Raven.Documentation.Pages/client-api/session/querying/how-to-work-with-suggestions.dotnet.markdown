@@ -14,12 +14,17 @@
 ---
 
 * In this page:
-    * [What are terms](../../../client-api/session/querying/how-to-work-with-suggestions#what-are-terms)  
-    * [When to use suggestions](../../../client-api/session/querying/how-to-work-with-suggestions#when-to-use-suggestions)
-    * [Suggest terms - for single term](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-single-term)
-    * [Suggest terms - for multiple terms](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-multiple-terms)
-    * [Suggest terms - for multiple fields](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-multiple-fields)
-    * [Suggest terms - customize options and display name](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---customize-options-and-display-name)
+
+    * Overview:
+        * [What are terms](../../../client-api/session/querying/how-to-work-with-suggestions#what-are-terms)
+        * [When to use suggestions](../../../client-api/session/querying/how-to-work-with-suggestions#when-to-use-suggestions)
+      
+    * Examples:
+        * [Suggest terms - for single term](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-single-term)
+        * [Suggest terms - for multiple terms](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-multiple-terms)
+        * [Suggest terms - for multiple fields](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-multiple-fields)
+        * [Suggest terms - customize options and display name](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---customize-options-and-display-name)
+      
     * [The auto-index terms in Studio](../../../client-api/session/querying/how-to-work-with-suggestions#the-auto-index-terms-in-studio)
     * [Syntax](../../../client-api/session/querying/how-to-work-with-suggestions#syntax)
 
@@ -157,14 +162,14 @@ select suggest(
 
 {PANEL: The auto-index terms in Studio}
 
-These are the terms generated for index `Auto/Products/ByName`:
+Based on the Northwind sample data, these are the terms generated for index `Auto/Products/ByName`:
 
 ![Figure 1. Auto-index terms](images/auto-index-terms.png "Terms generated for index Auto/Products/ByName")
 
-1. The field name - derived from the document field that was used in the dynamic-query.  
-   In this case the field name is `Name`.
+1. __The field name__ - derived from the document field that was used in the dynamic-query.  
+   In this example the field name is `Name`.
 
-2. The terms generated from the data that the Products collection documents have in their `Name` field.
+2. __The terms__ generated from the data that the Products collection documents have in their `Name` field.
 
 {PANEL/}
 
