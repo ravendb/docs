@@ -218,7 +218,7 @@ Available custom methods and extensions:
 - Skip
 - [Query] [Spatial](../../../../client-api/session/querying/how-to-make-a-spatial-query)
 - Statistics
-- SuggestUsing
+- [SuggestUsing](../../../../client-api/session/querying/how-to-work-with-suggestions)
 - Take
 - [Query] [Timings](../../../../client-api/session/querying/how-to-customize-query#timings)
 - UsingDefaultOperator
