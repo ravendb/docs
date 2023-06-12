@@ -441,8 +441,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             ISuggestionOperations<T> ByField(Expression<Func<T, object>> path, string term);
             ISuggestionOperations<T> ByField(Expression<Func<T, object>> path, string[] terms);
 
-            ISuggestionOperations<T> WithOptions(SuggestionOptions options);
             ISuggestionOperations<T> WithDisplayName(string displayName);
+            ISuggestionOperations<T> WithOptions(SuggestionOptions options);
             #endregion
         }
         
