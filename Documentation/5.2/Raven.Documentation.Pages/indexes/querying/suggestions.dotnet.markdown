@@ -11,7 +11,7 @@
   you can query for similar terms when querying an index.
   
 * This article provides examples of querying an index for suggestions.  
-  Find all suggestions API methods listed [here](../../client-api/session/querying/how-to-work-with-suggestions#syntax).
+  Find the Suggestions API methods listed [here](../../client-api/session/querying/how-to-work-with-suggestions#syntax).
 
 * In this page:
 
@@ -31,7 +31,8 @@
 * In order to be able to ask for suggested terms when querying an index field,  
   that field must first be configured for suggestions in the __index definition__.
 
-* See the following sample index:
+* See the following sample index:  
+  (This index will be used in the examples ahead).
 
 {CODE suggestions_index_1@Indexes\Querying\Suggestions.cs /}
 
@@ -40,7 +41,7 @@
 __Increased indexing time__:
 
 * When configuring an index for suggestions, then during the indexing process,  
-  in addition to the regular break-down of the data into terms (tokenization),  
+  in addition to the regular breakdown of the data into terms (tokenization),  
   RavenDB will scramble the terms to simulate common errors.
 
 * This can impact indexing speed but the cost of querying suggestions is Not impacted.
@@ -51,7 +52,8 @@ __Increased indexing time__:
 
 {PANEL: The index terms}
  
-Based on the Northwind sample data, these are the terms generated for the above index `Products/ByName`:
+Based on the Northwind sample data,  
+these are the terms generated for the above index `Products/ByName`:
 
 ![Figure 1. Index terms](images/index-terms.png "Terms generated for index Products/ByName")
 

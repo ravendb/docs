@@ -64,7 +64,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 Suggestion(x => x.CompanyName);
                 Suggestion(x => x.ContactName);
                 
-                // Optionally: set 'Search' on the index-field
+                // Optionally: set 'Search' on the index-fields
                 // This will split the fields' content into multiple terms allowing for a full-text search
                 Indexes.Add(x => x.CompanyName, FieldIndexing.Search);
                 Indexes.Add(x => x.ContactName, FieldIndexing.Search);
