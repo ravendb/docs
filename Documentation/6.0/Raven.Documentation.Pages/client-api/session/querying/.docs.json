@@ -77,7 +77,7 @@
     },
     {
         "Path": "how-to-make-a-spatial-query.markdown",
-        "Name": "How to Make a Spatial Query",
+        "Name": "Make a Spatial Query",
         "DiscussionId": "b62de172-77e9-4241-a525-9ba6cc027860",
         "Mappings": [
             {
@@ -94,13 +94,13 @@
     },
     {
         "Path": "how-to-filter-by-field.markdown",
-        "Name": "How to Filter by Field Presence",
+        "Name": "Filter by Field Presence",
         "DiscussionId": "bda0ec07-d0f9-46a0-bab7-ca733f692533",
         "Mappings": []
     },
     {
         "Path": "how-to-filter-by-non-existing-field.markdown",
-        "Name": "How to Filter by Non-Existing Field",
+        "Name": "Filter by Non-Existing Field",
         "DiscussionId": "bda0ec07-d0f9-46a0-bab7-ca733f692533",
         "Mappings": []
     },
