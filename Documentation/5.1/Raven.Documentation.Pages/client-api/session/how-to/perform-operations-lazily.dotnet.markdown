@@ -40,7 +40,7 @@
 
 {CODE-TABS}
 {CODE-TAB:csharp:Lazy_load_with_include lazy_LoadWithInclude@ClientApi\Session\HowTo\Lazy.cs /}
-{CODE-TAB:csharp:The-document lazy_productClass@ClientApi\Session\HowTo\Lazy.cs /}
+{CODE-TAB:csharp:The_document lazy_productClass@ClientApi\Session\HowTo\Lazy.cs /}
 {CODE-TABS/}
 {NOTE/}
 

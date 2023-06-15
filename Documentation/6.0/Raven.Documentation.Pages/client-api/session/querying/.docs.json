@@ -117,7 +117,7 @@
     },
     {
         "Path": "how-to-perform-queries-lazily.markdown",
-        "Name": "Perform Queries Lazily",
+        "Name": "Perform a Lazy Query",
         "DiscussionId": "a359f844-7193-4228-98e0-81a07e561a8b",
         "Mappings": [
             {

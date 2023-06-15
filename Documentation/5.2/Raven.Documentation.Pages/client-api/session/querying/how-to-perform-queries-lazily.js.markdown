@@ -1,4 +1,4 @@
-# Perform Queries Lazily
+# Perform a Lazy Query
 
 In some situations, query execution must be delayed. To cover such a scenario, `lazily` and many other query extensions have been introduced.
 
