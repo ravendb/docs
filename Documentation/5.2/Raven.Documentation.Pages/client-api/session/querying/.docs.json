@@ -28,7 +28,7 @@
     },
     {
         "Path": "how-to-stream-query-results.markdown",
-        "Name": "How to Stream Query Results",
+        "Name": "Stream Query Results",
         "DiscussionId": "c96a370e-8d0d-4e8f-93b3-03a8105e8b0e",
         "Mappings": [
             {
@@ -39,7 +39,7 @@
     },
     {
         "Path": "how-to-customize-query.markdown",
-        "Name": "How to Customize Query",
+        "Name": "Customize Query",
         "DiscussionId": "73dfb483-1fca-4fca-a1a4-15c7366b4775",
         "Mappings": []
     },
