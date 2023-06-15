@@ -39,8 +39,8 @@
   Loading entities with include can be executed __lazily__.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Lazy-load-with-include lazy_loadWithInclude@client-api\Session\HowTo\lazy.js /}
-{CODE-TAB:nodejs:Sample-document lazy_productClass@client-api\Session\HowTo\lazy.js /}
+{CODE-TAB:nodejs:Lazy_load_with_include lazy_loadWithInclude@client-api\Session\HowTo\lazy.js /}
+{CODE-TAB:nodejs:The_document lazy_productClass@client-api\Session\HowTo\lazy.js /}
 {CODE-TABS/}
 {NOTE/}
 
@@ -70,7 +70,7 @@
 {NOTE: }
 <a id="runQuery" /> __Run query__
 
-* A Query can be executing a __lazily__.  
+* A Query can be executed __lazily__.  
   Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily).
 
 {CODE:nodejs lazy_query@client-api\Session\HowTo\lazy.js /}
