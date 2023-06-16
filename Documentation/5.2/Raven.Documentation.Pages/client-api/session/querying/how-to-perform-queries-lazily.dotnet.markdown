@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* Query execution can be deferred.  
+* [Query](../../../client-api/session/querying/how-to-query) execution can be deferred.  
   You can __define a query as lazy__ and only execute it later when the query results are actually needed.
 
 * The lazy query definition is stored in the session and a `Lazy<T>` instance is returned.  
@@ -12,7 +12,7 @@
 
 * You can __define multiple lazy requests__, one after another, and no network activity will be triggered.  
   However, as soon as you access the value of one of those lazy instances,  
-  all pending lazy requests held up by the session will be sent to the server as a single unit.  
+  ALL pending lazy requests held up by the session will be sent to the server as a single unit.  
   This can help reduce the number of remote calls made to the server over the network.  
 
 * Besides queries, other request types can be executed lazily within a session.  
@@ -97,5 +97,5 @@
 
 ### Session
 
-- [How to Query](../../../client-api/session/querying/how-to-query)
-- [How to Perform Operations Lazily](../../../client-api/session/how-to/perform-operations-lazily)
+- [Query overview](../../../client-api/session/querying/how-to-query)
+- [Perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily)
