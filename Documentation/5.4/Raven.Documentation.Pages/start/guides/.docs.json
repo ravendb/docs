@@ -1,5 +1,10 @@
 [
     {
+        "Path": "/aws-lambda",
+        "Name": "AWS Lambda",
+        "Mappings": []
+    },
+    {
         "Path": "/azure-functions",
         "Name": "Azure Functions"
     },
