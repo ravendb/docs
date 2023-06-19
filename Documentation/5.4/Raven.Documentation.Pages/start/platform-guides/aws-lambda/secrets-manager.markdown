@@ -13,15 +13,52 @@ Before continuing, make sure you have:
 
 - The [AWS CLI][aws-cli] installed
 - A configured AWS local environment
-- Your RavenDB client certificate with password (`.pfx` file)
+- Your RavenDB client certificate with password (`.pfx` file) or PEM file
 - Your IAM role name used by your AWS Lambda function(s)
 - Your AWS account ID number
 
 {PANEL: Storing RavenDB Secrets}
 
-### Store Certificate Binary in Secrets Manager
+For `RavenSettings` values, you can use the **Key/Value** JSON storage using a secret named `RavenSettings` that the Lambda function will load.
 
-The RavenDB .NET client SDK loads certificates using `X502Certificate2` which means the client certificate needs to be stored in binary in AWS Secrets Manager. In the Secrets Manager console, you can add JSON and plaintext secrets. Binary secrets must be uploaded through the AWS CLI.
+Learn more about [adding secrets to Secrets Manager][aws-secrets-mgr-add].
+
+There are two ways to specify certificates using `RavenSettings`:
+
+### CertPemFile: Store PEM Certificate in Secrets Manager
+
+The AWS template for RavenDB can load certificates through the `CertPemFile` secret setting, supported through [X502Certificate2.CreateFromPem][dotnet-createfrompem].
+
+The `CertPemFile` JSON key should be set to a value containing the contents of the `.pem` file from the RavenDB client certificate package.
+
+**Example RavenSettings configuration:**
+
+{CODE-BLOCK:json}
+{
+  // ... other settings
+  "CertPemFile": "-----BEGIN CERTIFICATE-----\nabc123\n-----END CERTIFICATE-----\n-----BEGIN RSA PRIVATE KEY-----\nabc123\n-----END RSA PRIVATE KEY-----"
+}
+{CODE-BLOCK/}
+
+You will need to ensure both the `BEGIN CERTIFICATE` and `BEGIN RSA PRIVATE KEY` values are included, which they are by default in the exported RavenDB client certificate `.pem` file.
+
+{NOTE: Converting line endings for JSON}
+If you are copying the contents of the PEM file, you will likely need to format the value for pasting into a JSON file. You can use a custom script (e.g. `JSON.stringify`), use a tool like [JSON Stringify a String][tool-stringify], or if you have Node installed, you can use [jsesc][npm-jsesc]:
+
+{CODE-BLOCK:bash}
+# Bash
+$ npx jsesc < free.mycompany.client.certificate.pem
+# PowerShell
+gc free.mycompany.client.certificate.pem | npx jsesc
+{CODE-BLOCK/}
+    
+{NOTE/}
+
+### CertBytes: Store PFX Certificate in Secrets Manager
+
+The AWS template for RavenDB can also load certificates through the `CertBytes` secret setting. This means the client certificate needs to be stored in binary in AWS Secrets Manager. In the Secrets Manager console, you can add JSON and plaintext secrets. Binary secrets must be uploaded through the AWS CLI.
+
+
 
 {WARNING: Risk of command history being accessed}
 When you enter commands into your terminal, the command history is at risk of being accessed. Learn more about [mitigating risks of using the AWS CLI to store secrets][aws-secrets-mgr-cli]
@@ -69,12 +106,6 @@ aws secretsmanager put-resource-policy \
 
 The certificate file contents is now stored and will be accessed by the Lambda function on startup.
 
-### Configuring Other RavenDB Settings in Secrets Manager
-
-For other `RavenSettings` values, you can use the **Key/Value** JSON storage using a secret named `RavenSettings` that the Lambda function will load. `RavenSettings.CertBytes` will automatically be merged with any other settings.
-
-Learn more about [adding secrets to Secrets Manager][aws-secrets-mgr-add].
-
 ### Verifying the Secret is Loaded
 
 Test invoking the Lambda function again, which should access AWS Secrets Manager successfully and load the X.509 certificate to use with RavenDB.
@@ -85,3 +116,6 @@ Test invoking the Lambda function again, which should access AWS Secrets Manager
 [aws-secrets-pricing]: https://aws.amazon.com/secrets-manager/pricing/
 [aws-secrets-mgr-add]: https://docs.aws.amazon.com/secretsmanager/latest/userguide/hardcoded.html
 [aws-secrets-mgr-cli]: https://docs.aws.amazon.com/secretsmanager/latest/userguide/security_cli-exposure-risks.html
+[dotnet-createfrompem]: https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.x509certificate2.createfrompem?view=net-7.0
+[npm-jsesc]: https://www.npmjs.com/package/jsesc
+[tool-stringify]: https://onlinestringtools.com/json-stringify-string
