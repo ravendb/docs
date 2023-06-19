@@ -163,7 +163,7 @@ If you prefer to use the password-protected PFX file, you can store the `CertPas
 
 {CODE-BLOCK:bash}
 dotnet user-secrets init
-dotnet user-secrets set "RavenSettings:CertFilePassword" "<CERT_PASSWORD>"
+dotnet user-secrets set "RavenSettings:CertPassword" "<CERT_PASSWORD>"
 {CODE-BLOCK/}
 
 ### Loading Configuration from AWS Secrets Manager
