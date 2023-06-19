@@ -25,18 +25,18 @@ Learn more about [adding secrets to Secrets Manager][aws-secrets-mgr-add].
 
 There are two ways to specify certificates using `RavenSettings`:
 
-### CertPemFile: Store PEM Certificate in Secrets Manager
+### CertPem: Store PEM Certificate in Secrets Manager
 
-The AWS template for RavenDB can load certificates through the `CertPemFile` secret setting, supported through [X502Certificate2.CreateFromPem][dotnet-createfrompem].
+The AWS template for RavenDB can load certificates through the `CertPem` secret setting, supported through [X502Certificate2.CreateFromPem][dotnet-createfrompem].
 
-The `CertPemFile` JSON key should be set to a value containing the contents of the `.pem` file from the RavenDB client certificate package.
+The `CertPem` JSON key should be set to a value containing the contents of the `.pem` file from the RavenDB client certificate package.
 
 **Example RavenSettings configuration:**
 
 {CODE-BLOCK:json}
 {
   // ... other settings
-  "CertPemFile": "-----BEGIN CERTIFICATE-----\nabc123\n-----END CERTIFICATE-----\n-----BEGIN RSA PRIVATE KEY-----\nabc123\n-----END RSA PRIVATE KEY-----"
+  "CertPem": "-----BEGIN CERTIFICATE-----\nabc123\n-----END CERTIFICATE-----\n-----BEGIN RSA PRIVATE KEY-----\nabc123\n-----END RSA PRIVATE KEY-----"
 }
 {CODE-BLOCK/}
 

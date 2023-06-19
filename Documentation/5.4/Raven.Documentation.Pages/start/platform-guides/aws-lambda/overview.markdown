@@ -19,6 +19,7 @@ On this page:
 * [Create a Local Lambda Function](#create-a-local-lambda-function)
 * [Configuring Local Connection to RavenDB](#configuring-local-connection-to-ravendb)
 * [Deploying to AWS](#deploying-to-aws)
+* [Configuring Production Connection to RavenDB](#configuring-production-connection-to-ravendb)
 * [Verify the Connection Works](#verify-the-connection-works)
 * [Using RavenDB in the Lambda Function](#using-ravendb-in-the-lambda-function)
 
@@ -106,7 +107,7 @@ Learn more about setting up AWS credentials or the default AWS region.
 
 {PANEL: Configuring Local Connection to RavenDB}
 
-To configure the local version of your Azure Functions app to connect to RavenDB, you will need to update the `appsettings.json` file with the `RavenSettings.Urls` value and `RavenSettings.DatabaseName` value. The default is:
+To configure the local version of your AWS Lambda function to connect to RavenDB, you will need to update the `appsettings.json` file with the `RavenSettings.Urls` value and `RavenSettings.DatabaseName` value. The default is:
 
 {CODE-BLOCK:json}
 {
@@ -131,7 +132,7 @@ If using an authenticated RavenDB URL, you will need a local client certificate.
 
 ### Using a PFX Certificate File
 
-To configure the local Lambda function to load a certificate from the project directory, specify the `RavenSettings.CertFilePath` and `RavenSettings.CertPassword` settings:
+To configure the local Lambda function to load a certificate from the project directory, specify the `RavenSettings.CertFilePath` and, optionally, the `RavenSettings.CertPassword` settings:
 
 {CODE-BLOCK:json}
 {
@@ -145,13 +146,25 @@ To configure the local Lambda function to load a certificate from the project di
   "RavenSettings": {
     "Urls": ["https://a.MYCOMPANY.ravendb.cloud"],
     "DatabaseName": "MyDB",
-    "CertFilePath": "db.pfx",
-    "CertPassword": "<CERT_PASSWORD>"
+    "CertFilePath": "free.MYCOMPANY.client.certificate.without.password.pfx"
   }
 }
 {CODE-BLOCK/}
 
 This will connect to the `a.MYCOMPANY.ravendb.cloud` RavenDB Cloud cluster using the local certificate file.
+
+{WARNING: Do not commit and publish PFX files}
+It is recommended to only use the PFX file locally, e.g. `free.MYCOMPANY.client.certificate.without.password.pfx` and exclude it from source control (e.g. `.gitignore`). The template is configured by default to do this for you.
+{WARNING/}
+
+#### Using the password-protected PFX file
+
+If you prefer to use the password-protected PFX file, you can store the `CertPassword` using the [.NET User Secrets Tool][dotnet-user-secrets]. However, keep in mind that all teammates will need this secret configured locally to use the PFX file.
+
+{CODE-BLOCK:bash}
+dotnet user-secrets init
+dotnet user-secrets set "RavenSettings:CertFilePassword" "<CERT_PASSWORD>"
+{CODE-BLOCK/}
 
 ### Loading Configuration from AWS Secrets Manager
 
@@ -241,6 +254,44 @@ Once deployed, using the default settings, the Function will connect to the Live
 ### Changing Application Configuration for Production
 
 By default, configuration will be loaded from `appsettings.json` but it is likely you may have different configuration needed once the Lambda function is deployed.
+
+{PANEL/}
+
+{PANEL: Configuring Production Connection to RavenDB}
+
+To configure the production version of your AWS Lambda function to connect to RavenDB, you will need to override your app settings through environment variables or, optionally, using AWS Secrets Manager.
+
+### Environment Variable Configuration
+
+The convention to override .NET app settings would look like:
+
+- `RavenSettings__Urls__0` -- Specify database URLs in array format (zero-indexed)
+- `RavenSettings__DatabaseName` -- Specify database name
+
+You only need to provide the environment variables you want to override in the `appsettings.json`.
+
+#### Using a PEM Certificate
+
+You will need to configure the client certificate to connect to an authenticated RavenDB cluster. The `RavenSettings__CertPem` environment variable should be set to a value containing the contents of the `.pem` file from the RavenDB client certificate package.
+
+**Example value:**
+
+{CODE-BLOCK}
+-----BEGIN CERTIFICATE-----
+abc123
+-----END CERTIFICATE-----
+-----BEGIN RSA PRIVATE KEY-----
+abc123
+-----END RSA PRIVATE KEY-----
+{CODE-BLOCK/}
+
+You will need to ensure both the `BEGIN CERTIFICATE` and `BEGIN RSA PRIVATE KEY` values are included, which they are by default in the exported RavenDB client certificate `.pem` file.
+
+### AWS Secrets Manager Configuration (optional)
+
+The template uses [Kralizek.Extensions.Configuration.AWSSecretsManager][kralizek] to automatically load .NET configuration from AWS Secrets Manager to support securely loading certificates instead of relying on production environment variables.
+
+[Learn more about configuring AWS Secrets Manager](secrets-manager)
 
 {PANEL/}
 
@@ -368,6 +419,7 @@ public class Functions
 [aws-vs-code]: https://aws.amazon.com/visualstudiocode/
 [aws-vs]: https://aws.amazon.com/visualstudio/
 [aws-lambda-deploy]: https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/deploying-lambda.html
+[dotnet-user-secrets]: https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets
 [template]: https://github.com/ravendb/template-aws-lambda-csharp
 [gh-secrets]: https://docs.github.com/en/actions/security-guides/encrypted-secrets
 [gh-variables]: https://docs.github.com/en/actions/learn-github-actions/variables
