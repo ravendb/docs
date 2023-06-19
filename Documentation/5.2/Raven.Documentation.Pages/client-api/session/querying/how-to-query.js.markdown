@@ -307,7 +307,7 @@ Available methods for the session's [query](../../../client-api/session/querying
 - skip
 - spatial
 - [statistics](../../../client-api/session/querying/how-to-get-query-statistics)
-- suggestUsing
+- [suggestUsing](../../../client-api/session/querying/how-to-work-with-suggestions)
 - take
 - timings
 - usingDefaultOperator
