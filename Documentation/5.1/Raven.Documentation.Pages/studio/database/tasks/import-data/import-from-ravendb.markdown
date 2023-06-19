@@ -58,14 +58,14 @@
    1. **Name**  
     Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
    2. **Security Clearance**  
-    Set [authorization level](../../../../server/security/authorization/security-clearance-and-permissions) for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) to choose appropriate level.  
+    Set [authorization level](../../../../server/security/authorization/security-clearance-and-permissions) for this certificate. Read about [Security Clearance](../../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) to choose appropriate level.  
    3. **Certificate file**  
     Upload the `.pfx` certificate file from the destination server installation folder.  
    4. **Certificate Passphrase**  
     (Optional) Set a password for this certificate.  
    5. **Database permissions**  
     Select databases and permission levels for this certificate.  
-    If you choose *User* security clearance, you can give access to specific databases on the server and configure [User](../../../server/security/authorization/security-clearance-and-permissions#user) authorization levels for this certificate.  
+    If you choose *User* security clearance, you can give access to specific databases on the server and configure [User](../../../../server/security/authorization/security-clearance-and-permissions#user) authorization levels for this certificate.  
  
     Click **Upload** to complete the process.  
      The uploaded certificate will be added to the list of registered client certificates on this server.  

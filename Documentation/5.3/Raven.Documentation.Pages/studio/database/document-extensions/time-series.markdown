@@ -376,11 +376,11 @@ To specify a range of time series entries:
 
 ### Document Extensions
 
-* [Incremental Time Series: Overview](../../../document-extensions/timeseries/incremental-time-series/overview)  
-* [Incremental Time Series: Client API](../../../document-extensions/timeseries/incremental-time-series/client-api)  
 * [Time Series Overview](../../../document-extensions/timeseries/overview)  
 * [Time Series Queries](../../../document-extensions/timeseries/querying/overview-and-syntax)  
+* [Incremental Time Series: Overview](../../../document-extensions/timeseries/incremental-time-series/overview)  
+* [Incremental Time Series: Session](../../../document-extensions/timeseries/incremental-time-series/client-api/session/overview)  
 
 ### Querying
 
-* [What is RQL](../../../indexes/querying/what-is-rql)
+* [What is RQL](../../../client-api/session/querying/what-is-rql)

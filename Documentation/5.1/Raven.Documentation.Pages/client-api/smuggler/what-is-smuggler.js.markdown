@@ -1,6 +1,7 @@
 ﻿# What is Smuggler
 
-Smuggler gives you the ability to export or import data from or to a database using JSON format. It is exposed via the `DocumentStore.smuggler`.
+Smuggler gives you the ability to export or import data from or to a database using JSON format.  
+It is exposed via the `DocumentStore.smuggler`.
 
 {PANEL:ForDatabase}
 
@@ -31,7 +32,7 @@ In order to switch it to a different database use the `.forDatabase` method.
 ### DatabaseSmugglerExportOptions
 
 | Parameters | | |
-| ------------- | ------------- | ----- |
+| - | - | - |
 | **collections** | ` string[]` | List of specific collections to export. If empty, then all collections will be exported. Default: `empty` |
 | **operateOnTypes** | `DatabaseItemType[]` | Indicates what should be exported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `Identities`, `CompareExchange`, `Subscriptions` |
 | **operateOnDatabaseRecordTypes** | `DatabaseRecordItemType[]` | Indicates what should be exported from database record. Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications` |
@@ -40,7 +41,7 @@ In order to switch it to a different database use the `.forDatabase` method.
 | **removeAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
 | **transformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
 | **maxStepsForTransformScript** | `number` | Maximum number of steps that transform script can process before failing. Default: 10000 |
-| **skipRevisionCreation** | `boolean` | skip revision craetion |
+| **skipRevisionCreation** | `boolean` | skip revision creation |
 | **encryptionKey** | `string` | Encryption key used for restore |
 
 ### Example
@@ -68,15 +69,15 @@ In order to switch it to a different database use the `.forDatabase` method.
 ### DatabaseSmugglerImportOptions
 
 | Parameters | | |
-| ------------- | ------------- | ----- |
-| **operateOnTypes** | `DatabaseItemType[]` | Indicates what should be exported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `Identities`, `CompareExchange`, `Subscriptions` |
-| **operateOnDatabaseRecordTypes** | `DatabaseRecordItemType[]` | Indicates what should be exported from database record. Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications` |
-| **includeExpired** | `boolean` | Should expired documents be included in the export. Default: `true` |
+| - | - | - |
+| **operateOnTypes** | `DatabaseItemType[]` | Indicates what should be imported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `Identities`, `CompareExchange`, `Subscriptions` |
+| **operateOnDatabaseRecordTypes** | `DatabaseRecordItemType[]` | Indicates what should be imported. Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications` |
+| **includeExpired** | `boolean` | Should expired documents be included in the import. Default: `true` |
 | **includeArtificial** | `boolean` | ? |
 | **removeAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
-| **transformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
+| **transformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
 | **maxStepsForTransformScript** | `number` | Maximum number of steps that transform script can process before failing. Default: 10000 |
-| **skipRevisionCreation** | `boolean` | skip revision craetion |
+| **skipRevisionCreation** | `boolean` | skip revision creation |
 | **encryptionKey** | `string` | Encryption key used for restore |
 
 ### Example

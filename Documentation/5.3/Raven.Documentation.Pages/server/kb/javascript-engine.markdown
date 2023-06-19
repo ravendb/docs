@@ -48,7 +48,7 @@ RavenDB introduced a set of predefined functions in addition to Jint's ECMAScrip
 | **cmpxchg(compareExchangeKey)** | `object` | Returns stored  [Compare Exchange](../../client-api/operations/compare-exchange/overview) value for the received key. |
 | **getMetadata(document)** | `object` | Returns document's metadata, along with it's `ChangeVector`, `ID` and `LastModified`. |
 | **lastModified(document)** | `long` | Returns document's last modified metadata value as total miliseconds of UTC. |
-| **include(documentId)** | `Task<string>` | Used for RQL [queries](../../indexes/querying/what-is-rql) in order to include the document with the given ID with the results. |
+| **include(documentId)** | `Task<string>` | Used for RQL [queries](../../client-api/session/querying/what-is-rql) in order to include the document with the given ID with the results. |
 | **del(documentId)** | `void` | Used in patches, deletes the document with the given ID. |
 | **put(documentId, document, [optional]changeVectorString)** | `Task` | Used in patches, creates or updates a document with the given ID. In order to generate a new document ID it's possible to use "[collectionPrefix]/" [Server-Side ID](../../server/kb/document-identifier-generation#server-side-id) notation<sup>[[ex]](../../client-api/operations/patching/single-document#add-document)</sup>. <br/>This function can also be used to clone an existing document (Note: Attachments & counters will not be added to the clone)<sup>[[ex]](../../client-api/operations/patching/single-document#clone-document)</sup>.  |
 | **String.prototype.startsWith(searchString, position)** | `bool` | Returns true if at `position` the string starts with `searchString`. |

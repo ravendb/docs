@@ -4,13 +4,13 @@
 
 {NOTE: }
 
-In this page:  
-* [Subscription Creation Overloads Summary](../../../client-api/data-subscriptions/creation/api-overview#create-and-createasync-overloads-summary)  
-* [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions)  
-* [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions<t>)  
-* [Update Subscription](../../../client-api/data-subscriptions/creation/api-overview#update-subscription)  
-* [SubscriptionUpdateOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptionupdateoptions)  
-* [Subscription query](../../../client-api/data-subscriptions/creation/api-overview#subscription-query)  
+* In this page:  
+   * [Subscription Creation Overloads Summary](../../../client-api/data-subscriptions/creation/api-overview#create-and-createasync-overloads-summary)  
+   * [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions)  
+   * [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions<t>)  
+   * [Update Subscription](../../../client-api/data-subscriptions/creation/api-overview#update-subscription)  
+   * [SubscriptionUpdateOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptionupdateoptions)  
+   * [Subscription query](../../../client-api/data-subscriptions/creation/api-overview#subscription-query)  
 
 {NOTE/}
 

@@ -76,8 +76,7 @@ There are two main phases to the flow of a graph query:
 
 ## Related Articles
 
-**Querying**:  
-[RQL](../../../indexes/querying/what-is-rql#querying-rql---raven-query-language)  
+**Indexes**:  
 [Indexes](../../../indexes/what-are-indexes#what-indexes-are)  
 
 **Graph Querying**  

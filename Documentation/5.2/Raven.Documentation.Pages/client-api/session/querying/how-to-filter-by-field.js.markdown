@@ -64,4 +64,4 @@ where exists("address.location.latitude")
 ### Indexes
 
 - [Querying: Filtering](../../../indexes/querying/filtering)
-- [Query vs DocumentQuery](../../../indexes/querying/query-vs-document-query)
+- [Query vs DocumentQuery](../../../client-api/session/querying/document-query/query-vs-document-query)

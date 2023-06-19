@@ -54,7 +54,7 @@ This can be changed by the DocumentConventions::maxNumberOfRequestsPerSession pr
 
 ### Querying
 
-- [Basics](../../indexes/querying/basics)
+- [Basics](../../indexes/querying/query-index)
 
 ### Document Store
 

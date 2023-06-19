@@ -9,11 +9,10 @@ Once created, it's definition and progress will be stored on the cluster, and no
 Upon subscription creation, the cluster will choose a preferred node that will run the subscription (unless client has stated a mentor node).  
 From that point and on, clients that will connect to a server in order to consume the subscription will be redirected to the node mentioned above.  
 
-In this page:  
-
-[Subscription creation prerequisites](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-creation-prerequisites)   
-[Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-name)  
-[Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#responsible-node)  
+* In this page:  
+   * [Subscription creation prerequisites](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-creation-prerequisites)   
+   * [Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-name)  
+   * [Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#responsible-node)  
 
 {NOTE/}
 

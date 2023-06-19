@@ -4,15 +4,14 @@
 
 {NOTE: }
 
-In this page:  
-
-[Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples#worker-with-a-specified-batch-size)  
-[Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples#client-with-full-exception-handling-and-processing-retries)  
-[Subscription that ends when no documents left](../../../client-api/data-subscriptions/consumption/examples#subscription-that-ends-when-no-documents-left)  
-[Subscription that processes ObjectNode objects](../../../client-api/data-subscriptions/consumption/examples#subscription-that-processes-objectnode-objects)  
-[Subscription that works with a session](../../../client-api/data-subscriptions/consumption/examples#subscription-that-works-with-a-session)  
-[Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents)  
-[Two subscription workers that are waiting for each other](../../../client-api/data-subscriptions/consumption/examples#two-subscription-workers-that-are-waiting-for-each-other)  
+*  this page:  
+   * [Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples#worker-with-a-specified-batch-size)  
+   * [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples#client-with-full-exception-handling-and-processing-retries)  
+   * [Subscription that ends when no documents left](../../../client-api/data-subscriptions/consumption/examples#subscription-that-ends-when-no-documents-left)  
+   * [Subscription that processes ObjectNode objects](../../../client-api/data-subscriptions/consumption/examples#subscription-that-processes-objectnode-objects)  
+   * [Subscription that works with a session](../../../client-api/data-subscriptions/consumption/examples#subscription-that-works-with-a-session)  
+   * [Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents)  
+   * [Two subscription workers that are waiting for each other](../../../client-api/data-subscriptions/consumption/examples#two-subscription-workers-that-are-waiting-for-each-other)  
 
 {NOTE/}
 

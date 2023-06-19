@@ -104,4 +104,6 @@ Supported JavaScript version : ECMAScript 5.1
 - [Creating and Deploying Indexes](../indexes/creating-and-deploying)
 
 ### Querying
-- [Basics](../indexes/querying/basics)
+
+- [Query Overview](../client-api/session/querying/how-to-query)
+- [Querying an Index](../indexes/querying/query-index)

@@ -123,8 +123,7 @@ match
 
 ## Related Articles
 
-**Querying**:  
-[RQL](../../../indexes/querying/what-is-rql#querying-rql---raven-query-language)  
+**Indexes**:   
 [Indexes](../../../indexes/what-are-indexes#what-indexes-are)  
 
 **Graph Querying**  

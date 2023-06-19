@@ -27,7 +27,7 @@
    * If no [Auto-Index](../indexes/creating-and-deploying#auto-indexes) exists to satisfy a query, 
      a new Auto-Index will be created and maintained automatically.
 * Indexes created explicitly by the user are called `static`.
-   * [To use a Static Index in a query](../indexes/querying/basics#example-iv---querying-a-specified-index), 
+   * [To use a Static Index in a query](../indexes/querying/query-index), 
      **you must specify the index in the query definition**. If you don't specify the index, 
      RavenDB will look for an auto-index and potentially create a new one.  
    * Static Indexes can be defined to do calculations, conversions, and various other processes behind the scenes, to prevent
@@ -176,27 +176,23 @@ Setting this configuration option to a high value may result in performance degr
 ## Related Articles
 
 ### Indexes
-
 - [What are Indexes](../indexes/what-are-indexes)
 - [Indexing Basics](../indexes/indexing-basics)
 
 ### Querying
-
-- [Basics](../indexes/querying/basics)
+- [Query Overview](../client-api/session/querying/how-to-query)
+- [Querying an Index](../indexes/querying/query-index)
 
 ### Studio
-
 - [Indexes: Overview](../studio/database/indexes/indexes-overview#indexes-overview)
 - [Studio Index List View](../studio/database/indexes/indexes-list-view)
 
 ---
 
 ### Inside RavenDB 
-
 - [Working with Indexes](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/12-working-with-indexes)
 
 ---
 
 ### Code Walkthrough
-
 - [Scroll to see various indexing guides](https://demo.ravendb.net/)

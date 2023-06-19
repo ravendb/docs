@@ -200,3 +200,25 @@ async function examples() {
     }
 }
 
+{
+    //region loading_entities_8
+    class Pet {
+        constructor(name) {
+            this.name = name;
+        }
+    }
+
+    class Person {
+        constructor(name, pet) {
+            this.name = name;
+            this.pet = pet;
+        }
+    }
+
+    documentStore.conventions.registerEntityType(Person);
+    documentStore.conventions.registerEntityType(Pet);
+    // ...
+
+    documentStore.initialize();
+    //endregion
+}

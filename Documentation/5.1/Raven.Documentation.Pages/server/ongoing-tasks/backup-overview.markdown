@@ -61,7 +61,7 @@ Backed-up data includes both database-level and cluster-level contents, as detai
 
 | Database-level data | [Logical Backup](../../server/ongoing-tasks/backup-overview#logical-backup) | [Snapshot](../../server/ongoing-tasks/backup-overview#snapshot) |
 |---- | - | - |
-| [Documents](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling) | ✔ | ✔ |
+| [Documents & Revisions](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/3-document-modeling) | ✔ | ✔ |
 | [Attachments](../../document-extensions/attachments/what-are-attachments) | ✔ | ✔ |
 | [Counters](../../document-extensions/counters/overview) | ✔ | ✔ |
 | [Time-Series](../../document-extensions/timeseries/overview) | ✔ | ✔ |

@@ -23,8 +23,8 @@
 
 * To create sample data, you can either empty your playground database or [create a new database](../../../studio/database/create-new-database/general-flow).  
  
-* If you plan to use [multiple nodes](../../../studio/server/databases/create-new-database/general-flow#3.-configure-replication) 
-   and/or [encryption](../../../studio/server/databases/create-new-database/encrypted) in production, 
+* If you plan to use [multiple nodes](../../../studio/database/create-new-database/general-flow#3.-configure-replication) 
+   and/or [encryption](../../../studio/database/create-new-database/encrypted) in production, 
    we recommend installing your playground database in a similar environment.  
 
 ![Figure 1. Create Sample Data](images/Create-Sample-Data.png "Create Sample Data")

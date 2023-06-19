@@ -210,7 +210,7 @@ You can configure [batch stops](../../../studio/database/indexes/indexing-perfor
   * **Cloud server**  
     Your indexing process will continue until it is finished, but will be broken up into smaller batches and continue when enough CPU credits accumulate.  
     This can happen on [basic](../../../cloud/cloud-instances#basic-grade-production-cluster)-level cloud instances.  
-     * Unless you're running a [production cloud tier](../../../) with CPU priority of [standard](../../../cloud/cloud-instances#standard-grade-production-cluster) 
+     * Unless you're running a [production cloud tier](../../../cloud/cloud-instances#a-production-cloud-cluster) with CPU priority of [standard](../../../cloud/cloud-instances#standard-grade-production-cluster) 
     or [Performance](../../../cloud/cloud-instances#performance-grade-production-cluster), your cluster is [burstable and subject to throttling](../../../cloud/cloud-overview#budget-credits-and-throttling).  
     This means that you have CPU credits with limits.  If you have reached your credit limit, RavenDB will wait until you've 
     accumulated enough credits to run another batch process.  

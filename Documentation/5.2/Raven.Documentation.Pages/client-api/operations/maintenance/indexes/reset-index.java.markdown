@@ -24,7 +24,7 @@
 
 ### Server
 
-- [Index Administration](../../../../server/administration/index-administration)
+- [Index Administration](../../../../indexes/index-administration)
 
 ### Operations
 
