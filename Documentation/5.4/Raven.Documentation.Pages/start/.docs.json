@@ -56,8 +56,8 @@
         "Mappings": []
     },
     {
-        "Path": "/platform-guides",
-        "Name": "Platform Guides",
+        "Path": "/guides",
+        "Name": "Guides",
         "Mappings": []
     }
 ]
