@@ -132,7 +132,7 @@ If using an authenticated RavenDB URL, you will need a local client certificate.
 
 ### Using a PFX Certificate File
 
-To configure the local Lambda function to load a certificate from the project directory, specify the `RavenSettings.CertFilePath` and, optionally, the `RavenSettings.CertPassword` settings:
+To configure the local Lambda function to load a certificate from outside the project directory, specify the `RavenSettings.CertFilePath` and, optionally, the `RavenSettings.CertPassword` settings:
 
 {CODE-BLOCK:json}
 {
@@ -146,20 +146,20 @@ To configure the local Lambda function to load a certificate from the project di
   "RavenSettings": {
     "Urls": ["https://a.MYCOMPANY.ravendb.cloud"],
     "DatabaseName": "MyDB",
-    "CertFilePath": "free.MYCOMPANY.client.certificate.without.password.pfx"
+    "CertFilePath": "../certs/free.MYCOMPANY.client.certificate.without.password.pfx"
   }
 }
 {CODE-BLOCK/}
 
-This will connect to the `a.MYCOMPANY.ravendb.cloud` RavenDB Cloud cluster using the local certificate file.
+This will connect to the `a.MYCOMPANY.ravendb.cloud` RavenDB Cloud cluster using the local certificate file. The file path can be relative to the `.csproj` file or absolute.
 
 {WARNING: Do not commit and publish PFX files}
-It is recommended to only use the PFX file locally, e.g. `free.MYCOMPANY.client.certificate.without.password.pfx` and exclude it from source control (e.g. `.gitignore`). The template is configured by default to do this for you.
+It is recommended to only use the PFX file locally, e.g. `free.MYCOMPANY.client.certificate.without.password.pfx` and keep it outside your project directory. The template is configured by default to ignore it in Git and to never copy PFX files to the `bin` and `publish` folders.
 {WARNING/}
 
 #### Using the password-protected PFX file
 
-If you prefer to use the password-protected PFX file, you can store the `CertPassword` using the [.NET User Secrets Tool][dotnet-user-secrets]. However, keep in mind that all teammates will need this secret configured locally to use the PFX file.
+If you prefer to use the password-protected PFX file, you can store the `CertPassword` using the [.NET User Secrets Tool][dotnet-user-secrets]. However, keep in mind that your team will need this secret configured locally to use the PFX file.
 
 {CODE-BLOCK:bash}
 dotnet user-secrets init
@@ -168,7 +168,7 @@ dotnet user-secrets set "RavenSettings:CertPassword" "<CERT_PASSWORD>"
 
 ### Loading Configuration from AWS Secrets Manager
 
-The template uses [Kralizek.Extensions.Configuration.AWSSecretsManager][kralizek] to automatically load .NET configuration from AWS Secrets Manager to support securely loading certificates instead of relying on production environment variables.
+The template uses [Kralizek.Extensions.Configuration.AWSSecretsManager][kralizek] to automatically load .NET configuration from AWS Secrets Manager to support securely loading certificates instead of relying on production environment variables. This has an added cost but it may scale better for a large team and help you better manage the lifecycle of your certificates.
 
 The configuration will be loaded from AWS Secrets Manager if it exists, otherwise `appsettings.json` will be used.
 
@@ -272,20 +272,34 @@ You only need to provide the environment variables you want to override in the `
 
 #### Using a PEM Certificate
 
-You will need to configure the client certificate to connect to an authenticated RavenDB cluster. The `RavenSettings__CertPem` environment variable should be set to a value containing the contents of the `.pem` file from the RavenDB client certificate package.
+You will need to configure the client certificate to connect to an authenticated RavenDB cluster. If you are not using AWS Secrets Manager, you will need to use environment variables. There is a 5KB limit on the size of variables, which poses an issue for using certificate auth. To accomodate this, you will need to set `RavenSettings__CertPublicKeyFilePath` and `RavenSettings__CertPrivateKey`.
+
+First, copy your PEM-encoded `.crt` public key certificate to your project. It is safe to commit and deploy since it does not contain your private key. The template is configured to automatically copy `*.crt` files to your `bin` and `publish` directories.
+
+Specify the path to the file relative to your `.csproj`:
+
+{CODE-BLOCK:json}
+{
+  "RavenSettings": {
+    "Urls": ["https://a.MYCOMPANY.ravendb.cloud"],
+    "DatabaseName": "MyDB",
+    "CertFilePath": "../certs/free.MYCOMPANY.client.certificate.without.password.pfx",
+    "CertPublicKeyFilePath": "free.MYCOMPANY.client.certificate.crt"
+  }
+}
+{CODE-BLOCK/}
+
+You can choose whether to set this in production through the `RavenSettings__CertPublicKeyFilePath` or in your `appsettings.json` file.
+
+The `RavenSettings__CertPrivateKey` environment variable should be set to a [base-64 encoded string][tool-base64] of the `.key` file from the RavenDB client certificate package.
 
 **Example value:**
 
-{CODE-BLOCK}
------BEGIN CERTIFICATE-----
-abc123
------END CERTIFICATE-----
------BEGIN RSA PRIVATE KEY-----
-abc123
------END RSA PRIVATE KEY-----
+{CODE-BLOCK:bash}
+RavenSettings__CertPrivateKey=LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlKS0FJLi4uCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0t
 {CODE-BLOCK/}
 
-You will need to ensure both the `BEGIN CERTIFICATE` and `BEGIN RSA PRIVATE KEY` values are included, which they are by default in the exported RavenDB client certificate `.pem` file.
+The template will automatically decode the value and construct a PEM certificate from these two settings using the .NET [X502Certificate2.CreateFromPem][dotnet-createfrompem] API.
 
 ### AWS Secrets Manager Configuration (optional)
 
@@ -420,6 +434,7 @@ public class Functions
 [aws-vs]: https://aws.amazon.com/visualstudio/
 [aws-lambda-deploy]: https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/deploying-lambda.html
 [dotnet-user-secrets]: https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets
+[dotnet-createfrompem]: https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.x509certificate2.createfrompem?view=net-7.0
 [template]: https://github.com/ravendb/template-aws-lambda-csharp
 [gh-secrets]: https://docs.github.com/en/actions/security-guides/encrypted-secrets
 [gh-variables]: https://docs.github.com/en/actions/learn-github-actions/variables
@@ -429,3 +444,4 @@ public class Functions
 [docs-client-certs]: /docs/article-page/csharp/client-api/setting-up-authentication-and-authorization
 [ravendb-dotnet]: /docs/article-page/csharp/client-api/session/what-is-a-session-and-how-does-it-work
 [kralizek]: https://github.com/Kralizek/AWSSecretsManagerConfigurationExtensions
+[tool-base64]: https://www.base64encode.org/
