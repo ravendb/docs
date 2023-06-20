@@ -6,14 +6,14 @@ The template supports using AWS Secrets Manager to store app configuration, incl
 {WARNING: AWS Secrets Manager Incurs a Cost}
 While AWS Secrets Manager is the most secure way to load a client certificate, it does incur a cost. Learn more about [how much it will cost to store secrets][aws-secrets-pricing] for your application.
 
-If you do not wish to use this method, you can still co-locate and deploy your `.pfx` file using the `RavenSettings.CertFilePath` option.
+If you do not wish to use this method, you can still use the PEM certificate option using environment variables through the `RavenSettings.CertPublicKeyFilePath` and `RavenSettings.CertPrivateKey` settings.
 {WARNING/}
 
 Before continuing, make sure you have:
 
 - The [AWS CLI][aws-cli] installed
 - A configured AWS local environment
-- Your RavenDB client certificate with password (`.pfx` file) or PEM file
+- Your RavenDB client certificate with password (`.pfx` file) or PEM-encoded `.crt` and `.key` files
 - Your IAM role name used by your AWS Lambda function(s)
 - Your AWS account ID number
 
@@ -27,38 +27,27 @@ There are two ways to specify certificates using `RavenSettings`:
 
 ### CertPem: Store PEM Certificate in Secrets Manager
 
-The AWS template for RavenDB can load certificates through the `CertPem` secret setting, supported through [X502Certificate2.CreateFromPem][dotnet-createfrompem].
+The AWS template for RavenDB can load certificates through the `RavenSettings:CertPublicKeyFilePath` and `RavenSettings:CertPrivateKey` JSON configuration, supported through [X502Certificate2.CreateFromPem][dotnet-createfrompem].
 
-The `CertPem` JSON key should be set to a value containing the contents of the `.pem` file from the RavenDB client certificate package.
+The `CertPublicKeyFilePath` JSON key should be set to the relative path to the `.crt` public key certificate, relative to the `.csproj` file. This should be copied to the output and publish directories automatically.
 
-**Example RavenSettings configuration:**
+The `CertPrivateKey` JSON key should be set to a value containing the [base64-encoded][tool-base64] contents of the `.key` file from the RavenDB client certificate package.
+
+**Example `RavenSettings` key configuration value:**
 
 {CODE-BLOCK:json}
 {
   // ... other settings
-  "CertPem": "-----BEGIN CERTIFICATE-----\nabc123\n-----END CERTIFICATE-----\n-----BEGIN RSA PRIVATE KEY-----\nabc123\n-----END RSA PRIVATE KEY-----"
+  "CertPublicKeyFilePath": "free.mycompany.client.certificate.crt",
+  "CertPrivateKey": "LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlKS0FJLi4uCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0t"
 }
 {CODE-BLOCK/}
 
-You will need to ensure both the `BEGIN CERTIFICATE` and `BEGIN RSA PRIVATE KEY` values are included, which they are by default in the exported RavenDB client certificate `.pem` file.
-
-{NOTE: Converting line endings for JSON}
-If you are copying the contents of the PEM file, you will likely need to format the value for pasting into a JSON file. You can use a custom script (e.g. `JSON.stringify`), use a tool like [JSON Stringify a String][tool-stringify], or if you have Node installed, you can use [jsesc][npm-jsesc]:
-
-{CODE-BLOCK:bash}
-# Bash
-$ npx jsesc < free.mycompany.client.certificate.pem
-# PowerShell
-gc free.mycompany.client.certificate.pem | npx jsesc
-{CODE-BLOCK/}
-    
-{NOTE/}
+Settings will be _merged_ with `appsettings.json` configuration, so you only need to specify settings you wish to overwrite.
 
 ### CertBytes: Store PFX Certificate in Secrets Manager
 
 The AWS template for RavenDB can also load certificates through the `CertBytes` secret setting. This means the client certificate needs to be stored in binary in AWS Secrets Manager. In the Secrets Manager console, you can add JSON and plaintext secrets. Binary secrets must be uploaded through the AWS CLI.
-
-
 
 {WARNING: Risk of command history being accessed}
 When you enter commands into your terminal, the command history is at risk of being accessed. Learn more about [mitigating risks of using the AWS CLI to store secrets][aws-secrets-mgr-cli]
@@ -73,7 +62,7 @@ aws secretsmanager create-secret \
 
 We then need to grant access to the IAM role used by the Lambda function (created above).
 
-### Apply a Resource Policy
+#### Apply a Resource Policy
 
 First, create a file `certpolicy.json` with the following AWS policy:
 
@@ -117,5 +106,4 @@ Test invoking the Lambda function again, which should access AWS Secrets Manager
 [aws-secrets-mgr-add]: https://docs.aws.amazon.com/secretsmanager/latest/userguide/hardcoded.html
 [aws-secrets-mgr-cli]: https://docs.aws.amazon.com/secretsmanager/latest/userguide/security_cli-exposure-risks.html
 [dotnet-createfrompem]: https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.x509certificate2.createfrompem?view=net-7.0
-[npm-jsesc]: https://www.npmjs.com/package/jsesc
-[tool-stringify]: https://onlinestringtools.com/json-stringify-string
+[tool-base64]: https://www.base64encode.org/
