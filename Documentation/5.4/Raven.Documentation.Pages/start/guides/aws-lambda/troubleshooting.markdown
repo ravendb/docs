@@ -33,5 +33,15 @@ This user will need the following policies set:
 * `AWSLambda_FullAccess` for local deployment
 * `IAMFullAccess` for local deployment and `IAMReadOnlyAccess` for hosted deployment
 
+## Environment Variables Exceed AWS Limits
+
+AWS limits the size of individual environment variables to 4KB and 5KB overall. This does not leave much room for using public/private keypair values to pass to your Lambda function.
+
+The template is built to support loading the PEM-encoded public key from the file system (`.crt` file), to be deployed alongside your app through the `RavenSettings:CertPublicKeyFilePath` app setting. The private key can be provided in plain-text through the `RavenSettings:CertPrivateKey` app setting, which using the .NET conventions is the `RavenSettings__CertPrivateKey` environment variable.
+
+The private key should be around 3.1KB, which is under the 4KB limit, but you may still exceed the 5KB limit overall when combined with your other environment variables.
+
+If this is the case, we recommend [using the AWS Secrets Manager](secrets-manager) for storing your certificate instead since this will not be subject to the same limitations (and it is more secure and robust for production-scale usage).
+
 [aws-credentials]: https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-creds.html
 [aws-iam-policies]: https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-users-roles.html
