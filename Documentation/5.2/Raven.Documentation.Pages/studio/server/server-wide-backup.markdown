@@ -188,8 +188,8 @@ To edit or modify a Server-Wide task, navigate back to the [Server-Wide Backup v
 
 **Studio**  
 [Ongoing Backup Tasks](../../studio/database/tasks/backup-task)  
-[Restore: Create a Database From Backup](../../studio/server/databases/create-new-database/from-backup#create-a-database-from-backup)  
-[Database Encryption](../../studio/server/databases/create-new-database/encrypted#create-a-database-encrypted)  
+[Restore: Create DB From Backup](../../studio/database/create-new-database/from-backup#create-a-database-from-backup)  
+[Database Encryption](../../studio/database/create-new-database/encrypted#create-a-database-encrypted)  
 
 **Client API**  
 [Backup Encryption](../../client-api/operations/maintenance/backup/encrypted-backup#backup-encryption)  

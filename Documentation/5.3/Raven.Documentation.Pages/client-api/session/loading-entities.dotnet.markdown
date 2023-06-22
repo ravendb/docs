@@ -277,7 +277,8 @@ If you try to load a document that no longer exists with the `Load` method (perh
 
 ### Querying
 
-- [Basics](../../indexes/querying/basics)
+- [Query Overview](../../client-api/session/querying/how-to-query)
+- [Querying an Index](../../indexes/querying/query-index)
 
 ### Document Store
 

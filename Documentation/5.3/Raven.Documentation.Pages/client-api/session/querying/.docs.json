@@ -1,12 +1,7 @@
 [
     {
-        "Path": "/document-query",
-        "Name": "DocumentQuery",
-        "Mappings": []
-    },
-    {
         "Path": "how-to-query.markdown",
-        "Name": "How to Query",
+        "Name": "Query Overview",
         "DiscussionId": "e88cd882-bd8c-41a4-9bf0-44e5314edd33",
         "Mappings": [
             {
@@ -14,6 +9,17 @@
                 "Key": "client-api/querying/using-linq-to-query-ravendb"
             }
         ]
+    },
+    {
+        "Path": "what-is-rql.markdown",
+        "Name": "What is RQL",
+        "DiscussionId": "de2c079e-8bd4-45fc-86dd-50f25446ed79",
+        "Mappings": []
+    },
+    {
+        "Path": "/document-query",
+        "Name": "DocumentQuery",
+        "Mappings": []
     },
     {
         "Path": "how-to-stream-query-results.markdown",

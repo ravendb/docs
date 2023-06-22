@@ -51,4 +51,4 @@ To create an index with `Author Name` and list of `Book Names`, we need do the f
 
 ### Querying
 
-- [Basics](../indexes/querying/basics)
+- [Basics](../indexes/querying/query-index)

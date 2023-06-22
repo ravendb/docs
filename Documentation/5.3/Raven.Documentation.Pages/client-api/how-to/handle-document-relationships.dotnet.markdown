@@ -117,8 +117,8 @@ This works because RavenDB has two channels through which it can return informat
 {NOTE Embedded and builder variants of Include clause are essentially syntax sugar and are equivalent at the server side. /}
 
 {INFO: }
-Streaming query results does not support the includes feature. Learn more in 
-[How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results).  
+Streaming query results does not support the includes feature.  
+Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results).  
 {INFO/}
  
 ---
@@ -287,7 +287,8 @@ For most cases where denormalization is not an option, Includes are probably the
 
 ### Querying
 
-- [Basics](../../indexes/querying/basics)
+- [Query Overview](../../client-api/session/querying/how-to-query)
+- [Querying an Index](../../indexes/querying/query-index)
 
 ### Document Extensions
 

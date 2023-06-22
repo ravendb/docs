@@ -64,7 +64,7 @@ You can read more about defer operations [here](../../client-api/session/how-to/
 
 ### Querying  
 
-- [Basics](../../indexes/querying/basics)  
+- [Query Overview](../../client-api/session/querying/how-to-query)
 
 ### Document Store  
 

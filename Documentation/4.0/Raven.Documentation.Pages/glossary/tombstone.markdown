@@ -19,4 +19,9 @@ Cleaning will occur only for tombstones that were already processed by the modul
 * ETL 
 * Periodic Backup
 
-{NOTE: The tombstone retaining period is configurable with config entry name = `Tombstones.CleanupIntervalInMin`. By default, the configuration value it is 5 minutes /}
+{NOTE: }
+
+* The tombstone retaining period is configurable with config entry name = 
+  [Tombstones.CleanupIntervalInMin](../server/configuration/tombstone-configuration)  
+* By default, the configuration value it is 5 minutes.  
+{NOTE/}

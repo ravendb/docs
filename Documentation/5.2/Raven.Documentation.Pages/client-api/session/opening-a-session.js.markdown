@@ -80,8 +80,8 @@
 - [Saving Changes](../../client-api/session/saving-changes)
 - [What is a Document Store](../../client-api/what-is-a-document-store)
 
-### Indexes
+### Querying
 
-- [Querying Basics](../../indexes/querying/basics)
+- [Query Overview](../../client-api/session/querying/how-to-query)
 
 

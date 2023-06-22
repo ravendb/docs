@@ -285,7 +285,8 @@ Because you are working with projections and not directly with documents, they a
 
 ### Querying 
 
-- [Basics](../../indexes/querying/basics)
+- [Query Overview](../../client-api/session/querying/how-to-query)
+- [Querying an Index](../../indexes/querying/query-index)
 
 ### Client API
 

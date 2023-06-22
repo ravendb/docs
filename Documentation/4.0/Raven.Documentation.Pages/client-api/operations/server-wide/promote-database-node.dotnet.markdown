@@ -18,4 +18,4 @@ This operation is used to promote a database node. After promotion, the node is 
 
 ## Related Articles
 
-- [Explanation of Node Types](../../../studio/server/cluster/cluster-view#nodes-types)
+- [Explanation of Node Types](../../../studio/server/cluster/cluster-view#cluster-nodes-types) 

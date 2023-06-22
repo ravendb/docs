@@ -37,7 +37,7 @@ In this page:
 
  * All database documents and related data:  
    * [Attachments](../../document-extensions/attachments/what-are-attachments)  
-   * [Revisions](../../document-extensions/revisions/overview)  
+   * [Revisions](../../client-api/session/revisions/what-are-revisions)  
    * [Counters](../../document-extensions/counters/overview)
    * [Time Series](../../document-extensions/timeseries/overview)
 

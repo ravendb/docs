@@ -203,7 +203,8 @@ Parameters
 - [Atomic Guards](../../client-api/session/cluster-transaction/atomic-guards)
 
 ### Session
-- [Cluster-Wide Session](../../client-api/session/cluster-transaction#open-cluster-wide-session)
+- [Cluster Transaction Overview](../../client-api/session/cluster-transaction/overview)
+- [Cluster-Wide vs Single-Node Transactions](../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction)
 
 ### Server
 - [Cluster-Wide Transactions ACIDity](../../server/clustering/cluster-transactions#cluster-transaction-properties)

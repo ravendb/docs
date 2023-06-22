@@ -15,7 +15,7 @@
       * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily#loadStartingWith)
       * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily#conditionalLoad)
       * [Run query](../../../client-api/session/how-to/perform-operations-lazily#runQuery)
-      * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily#getRevisons)  
+      * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily#getRevisions)  
       * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily#getCompareExchange)     
    * [Execute all pending lazy operations](../../../client-api/session/how-to/perform-operations-lazily#execute-all-pending-lazy-operations)  
 
@@ -77,7 +77,7 @@
 {NOTE/}
 
 {NOTE: }
-<a id="getRevisons" /> __Get revisions__
+<a id="getRevisions" /> __Get revisions__
 
 * All methods for [getting revisions](../../../client-api/session/revisions/loading#revisions-loading-revisions) and their metadata can be executed __lazily__.
 

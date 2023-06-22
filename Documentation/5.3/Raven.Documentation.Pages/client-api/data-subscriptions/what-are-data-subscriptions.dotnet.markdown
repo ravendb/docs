@@ -8,14 +8,14 @@ The server sends batches of documents to the client.
 The client then processes the batch and will receive the next one only after it acknowledges the batch was processed.  
 The server persists the processing progress, allowing you to pause and continue the processing.  
 
-In this page:  
-[Data subscription consumption](../../client-api/data-subscriptions/what-are-data-subscriptions#data-subscription-consumption)  
-[What defines a data subscription](../../client-api/data-subscriptions/what-are-data-subscriptions#what-defines-a-data-subscription)  
-[Documents processing](../../client-api/data-subscriptions/what-are-data-subscriptions#documents-processing)  
-[Progress Persistence](../../client-api/data-subscriptions/what-are-data-subscriptions#progress-persistence)  
-[How the worker communicates with the server](../../client-api/data-subscriptions/what-are-data-subscriptions#how-the-worker-communicates-with-the-server)  
-[Working with multiple clients](../../client-api/data-subscriptions/what-are-data-subscriptions#working-with-multiple-clients)  
-[Data subscriptions usage example](../../client-api/data-subscriptions/what-are-data-subscriptions#data-subscriptions-usage-example)  
+* In this page:  
+   * [Data subscription consumption](../../client-api/data-subscriptions/what-are-data-subscriptions#data-subscription-consumption)  
+   * [What defines a data subscription](../../client-api/data-subscriptions/what-are-data-subscriptions#what-defines-a-data-subscription)  
+   * [Documents processing](../../client-api/data-subscriptions/what-are-data-subscriptions#documents-processing)  
+   * [Progress Persistence](../../client-api/data-subscriptions/what-are-data-subscriptions#progress-persistence)  
+   * [How the worker communicates with the server](../../client-api/data-subscriptions/what-are-data-subscriptions#how-the-worker-communicates-with-the-server)  
+   * [Working with multiple clients](../../client-api/data-subscriptions/what-are-data-subscriptions#working-with-multiple-clients)  
+   * [Data subscriptions usage example](../../client-api/data-subscriptions/what-are-data-subscriptions#data-subscriptions-usage-example)  
 
 
 {NOTE/}

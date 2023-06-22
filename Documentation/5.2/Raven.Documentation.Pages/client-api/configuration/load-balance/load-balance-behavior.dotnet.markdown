@@ -73,7 +73,7 @@ __`UseSessionContext`__
 * The `LoadBalanceBehavior` convention can be set __on the client__ when initializing the Document Store.  
   This will set the load balance behavior for the default database that is set on the store.
 
-* This setting can be __overriden__ by setting 'LoadBalanceBehavior' on the server, see [below](../../../client-api/configuration/load-balance/load-balance-behavior#initialize-loadbalancebehavior-on-the-server).
+* This setting can be __overriden__ by setting 'LoadBalanceBehavior' on the server, see [below](../../../client-api/configuration/load-balance/load-balance-behavior#set-loadbalancebehavior-on-the-server).
 
 ---
 

@@ -57,7 +57,7 @@
 
 * Resetting an index will force re-indexing of all documents that match the index definition.  
   An index usually needs to be reset once it reached its error quota and is in an _Error_ state.
-* See [reset index](../client-api/operations/maintenance/indexes/reet-index) for detailed information.
+* See [reset index](../client-api/operations/maintenance/indexes/reset-index) for detailed information.
 * Operation scope: Single node.
 
 {PANEL/}

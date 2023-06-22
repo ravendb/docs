@@ -338,7 +338,8 @@ determines whether missing fields in documents are indexed with the value `null`
 - [Creating and Deploying Indexes](../indexes/creating-and-deploying)
 
 ### Querying
-- [Basics](../indexes/querying/basics)
+- [Query Overview](../client-api/session/querying/how-to-query)
+- [Querying an Index](../indexes/querying/query-index)
 
 ### Studio
 - [Create Map Index](../studio/database/indexes/create-map-index)

@@ -84,7 +84,6 @@ In Studio > click Documents Tab > select specific Collection > select specific D
 **Time Series**:  
 
 - [Time Series](../document-extensions/timeseries/overview)
-- [Incremental Time Series](../document-extensions/timeseries/incremental-time-series/overview)
 
 **Revisions**:  
 
