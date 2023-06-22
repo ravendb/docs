@@ -73,7 +73,7 @@ By default, the template is configured to connect to the Live Test instance of R
 
 To configure the local version of your Azure Functions app to connect to RavenDB, you will need to update the `local.settings.json` file with the `DB_URLS` value and `DB_NAME` value. The default is:
 
-```json
+{CODE-BLOCK:json}
 {
   "IsEncrypted": false,
   "Values": {
@@ -83,29 +83,41 @@ To configure the local version of your Azure Functions app to connect to RavenDB
     "DB_NAME": "Northwind"
   }
 }
-```
+{CODE-BLOCK/}
 
 ### Configure Database Certificate
 
-RavenDB is secured using client-certificate authentication (or Mutual TLS). Azure Functions support client certificates on the Consumption or App Service Plans.
+RavenDB is secured using client-certificate authentication (or Mutual TLS).
 
-On either Linux or Windows, you can include your password-protected `.pfx` certificate in your deployment instead of uploading it through the portal.
+The template supports loading certificate through physical `.pfx` files (X.509 certificates) or the PEM-encoded certificate through an environment variable.
+
+### PFX Certificate (Local Machine)
 
 Specify the following app settings:
 
-- `DB_CERT_PATH`: the relative path from the project root to your `.pfx` file, e.g. `./db.pfx`
+- `DB_CERT_PATH`: the absolute path or relative path from the project root to your `.pfx` file, e.g. `../certs/db.pfx`
 - `DB_PASSWORD`: the password that is protecting your PFX file
 
-{WARNING: Only use a password-protected PFX certificate}
-Since the PFX will be uploaded as part of your deployment, be sure its password-protected. All client certificates have passwords when generated through RavenDB Cloud portal.
+{WARNING: Do not store DB_PASSWORD in source control}
+You are not required to use the password-protected PFX locally. If you do intend use the password-protected PFX file, you will need to set `DB_PASSWORD` as an environment variable in your terminal session (e.g. `export DB_PASSWORD=abc`) or through your terminal profile (e.g. `.bashrc`). Do not store the `.pfx` files to source control.
 {WARNING/}
+
+### PEM Certificate (Azure)
+
+Azure Functions supports client certificates on both the Consumption or App Service Plans.
+
+Specify the following app settings:
+
+- `DB_CERT_PEM`: the contents of the PEM-encoded certificate (`.pem` file) downloaded from RavenDB
+
+You can safely copy/paste the contents of the file into the environment variable in the Azure Portal without preserving newlines. If you are setting the value in the `local.settings.json` file, you will need to format the value for JSON using [a stringify tool][tool-stringify].
 
 {NOTE: What about uploading certificates to the portal?}
 
 Azure allows you to upload PFX certificates to the portal and load them using the `WEBSITE_LOAD_CERTIFICATES` app setting. However, this is much more difficult to use
-for Node.js functions. That method is better suited for .NET or Java functions.
+for Node.js functions. That method is better suited for .NET or Java functions. **Regardless, this is not yet supported on Linux Consumption-based plans.** For a discussion on this, reference [this issue on the Azure Functions repository][ms-issue-linux-certs-unsupported].
 
-For Node.js functions, it's recommended to use the local PFX file for ease of use.
+The template is configured to use the PEM certificate method for ease of use across plan types and platforms.
 
 {NOTE/}
 
@@ -234,3 +246,5 @@ Learn more about [how to use the RavenDB Node.js client SDK][ravendb-nodejs]
 [docs-get-started]: /docs/article-page/nodejs/start/getting-started
 [npm-middleware]: https://npmjs.com/package/@senacor/azure-function-middleware
 [ravendb-nodejs]: /docs/article-page/nodejs/client-api/session/what-is-a-session-and-how-does-it-work
+[tool-stringify]: https://onlinestringtools.com/json-stringify-string
+[ms-issue-linux-certs-unsupported]: https://github.com/Azure/Azure-Functions/issues/1644

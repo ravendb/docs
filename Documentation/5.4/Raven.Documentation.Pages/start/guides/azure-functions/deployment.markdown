@@ -9,7 +9,7 @@ Azure Functions allows you to deploy Function Apps on Linux or Windows. For Rave
 
 **Using a Windows deployment plus .NET Azure Functions will provide the most secure and performant option.** This will allow you to upload client certificates through the Portal and make them accessible to your .NET functions with the `WEBSITE_LOAD_CERTIFICATES` application setting. Further, .NET Core functions have the lowest cold start times compared to Node.js.
 
-**If you prefer to use Node.js,** you can choose Linux or Windows but certificates must be loaded through a physical path.
+**If you prefer to use Node.js,** you can choose Linux or Windows. The template is configured to support a PEM-encoded certificate loaded through an environment variable due to a limitation with cross-platform support for `WEBSITE_LOAD_CERTIFICATES` (see [this issue][ms-issue-linux-certs-unsupported] on the Azure Functions repo).
 
 ## Document Store Lifetime and Cold Starts
 
@@ -26,3 +26,4 @@ To reduce cold starts, consider switching from the Consumption (Pay-as-you-Go) p
 Learn more about [how Azure Functions deals with cold vs. warm start times][az-func-cold-warm].
 
 [az-func-cold-warm]: https://azure.microsoft.com/en-us/blog/understanding-serverless-cold-start/
+[ms-issue-linux-certs-unsupported]: https://github.com/Azure/Azure-Functions/issues/1644
