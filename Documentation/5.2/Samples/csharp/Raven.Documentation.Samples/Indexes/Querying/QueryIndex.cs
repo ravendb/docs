@@ -13,7 +13,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
     
     public class Employees_ByName : AbstractIndexCreationTask<Employee, Employees_ByName.IndexEntry>
     {
-        // The IndexEntry class defines the index-fields.
+        // The IndexEntry class defines the index-fields
         public class IndexEntry
         {
             public string FirstName { get; set; }

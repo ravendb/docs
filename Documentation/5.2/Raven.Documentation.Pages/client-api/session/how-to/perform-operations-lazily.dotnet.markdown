@@ -111,14 +111,14 @@
 {PANEL: Multiple lazy requests }
 
 {NOTE: }
-<a id="implicit" /> __Execute all Requests - Implicitly__
+<a id="implicit" /> __Execute all requests - implicitly__
 
 {CODE lazy_ExecuteAll_Implicit@ClientApi\Session\HowTo\Lazy.cs /}
 
 {NOTE/}
 
 {NOTE: }
-<a id="explicit" /> __Execute all Requests - Explicitly__
+<a id="explicit" /> __Execute all requests - explicitly__
 
 {CODE lazy_ExecuteAll_Explicit@ClientApi\Session\HowTo\Lazy.cs /}
 

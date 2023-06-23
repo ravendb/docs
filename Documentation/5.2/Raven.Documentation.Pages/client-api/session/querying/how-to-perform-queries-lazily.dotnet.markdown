@@ -4,92 +4,86 @@
 
 {NOTE: }
 
-* [Query](../../../client-api/session/querying/how-to-query) execution can be deferred.  
-  You can __define a query as lazy__ and only execute it later when the query results are actually needed.
+* Query execution can be deferred.  
+  You can __define a query as lazy__ and execute it later when query results are actually needed.  
 
-* The lazy query definition is stored in the session and a `Lazy<T>` instance is returned.  
-  The query is executed on the server only when you access the value of this instance.  
-
-* You can __define multiple lazy requests__, one after another, and no network activity will be triggered.  
-  However, as soon as you access the value of one of those lazy instances,  
-  ALL pending lazy requests held up by the session will be sent to the server as a single unit.  
-  This can help reduce the number of remote calls made to the server over the network.  
-
-* Besides queries, other request types can be executed lazily within a session.  
-  See [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily).
+* This article contains lazy queries examples.  
+  __Prior to this article__, please refer to [perform requests lazily](../../../)  for general knowledge about  
+  RavenDB's lazy behavior, and other request types that can be executed lazily within a session.
 
 * In this page:
-  * Lazy query  
-  * Lazy count query  
-  * Lazy suggestion query  
-  * Lazy facets query  
-  * Multiple lazy queries  
-  * Syntax
+  * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-query)  
+  * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-count-query)  
+  * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-suggestions-query)  
+  * [Lazy facets query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-facets-query)  
+  * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL:Lazily and LazilyAsync}
-
-{CODE lazy_1@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **onEval** | Action<IEnumerable&lt;TResult&gt;> | An action that will be performed on the query results. |
-
-| Return Value | |
-| ------------- | ----- |
-| Lazy<IEnumerable&lt;TResult&gt;> | Lazy query initializer returning query results. |
-
-### Example
+{PANEL: Lazy query}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync lazy_2@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
-{CODE-TAB:csharp:Async lazy_3@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TAB:csharp:Lazy_query lazy_1@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TAB:csharp:Lazy_query_async lazy_2@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TAB:csharp:Lazy_documentQuery lazy_3@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TABS/}
+
+* Learn more about queries in this [query overview](../../../client-api/session/querying/how-to-query).
+
+{PANEL/}
+
+{PANEL: Lazy count query}
+
+{CODE-TABS}
+{CODE-TAB:csharp:Lazy_query lazy_4@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TAB:csharp:Lazy_query_async lazy_5@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TAB:csharp:Lazy_documentQuery lazy_6@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
 {CODE-TABS/}
 
 {PANEL/}
 
-{PANEL:Counts}
+{PANEL: Lazy suggestions query}
 
-{CODE lazy_4@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Lazy_query lazy_7@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TAB:csharp:Lazy_query_async lazy_8@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TAB:csharp:Lazy_documentQuery lazy_9@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TABS/}
 
-| Return Value | |
-| ------------- | ----- |
-| Lazy<int> | Lazy query initializer returning a count of matched documents. |
-
-### Example
-
-{CODE lazy_5@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+* Learn more about suggestions in [query for suggestions](../../../client-api/session/querying/how-to-work-with-suggestions).
 
 {PANEL/}
 
-{PANEL:Suggestions}
+{PANEL: Lazy facets query}
 
-{CODE lazy_6@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Lazy_query lazy_10@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TAB:csharp:Lazy_query_async lazy_11@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TAB:csharp:Lazy_documentQuery lazy_12@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TAB:csharp:Facets_definition the_facets@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TAB:csharp:Index_definition the_index@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE-TABS/}
 
-| Return Value | |
-| ------------- | ----- |
-| Lazy<Dictionary<string, SuggestionResult>> | Lazy query initializer containing a dictionary with suggestions for matching executed query |
-
-### Example
-
-{CODE lazy_7@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+* Learn more about facets in [perform faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search).
 
 {PANEL/}
 
-{PANEL:Facets}
+{PANEL: Syntax}
 
-{CODE lazy_8@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE syntax_1@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE syntax_2@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE syntax_3@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+{CODE syntax_4@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
 
-| Return Value | |
-| ------------- | ----- |
-| Lazy<Dictionary<string, FacetResult>> | Lazy query initializer containing a dictionary with facet results matching executed query |
+| Parameters | Type                                                                                                                              | Description                                                                          |
+|------------|-----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| __onEval__ | `Action<IEnumerable<TResult>>` <br> `Action<Dictionary<string, SuggestionResult>>` <br> `Action<Dictionary<string, FacetResult>>` | An action that will be performed on the query results<br>when the query is executed. |
 
-### Example
-
-{CODE lazy_9@ClientApi\Session\Querying\HowToPerformQueriesLazily.cs /}
+| Return Value                                                                                                                           |                                                                |
+|----------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
+| `Lazy<IEnumerable<TResult>>`<br>`Lazy<int>`<br>`Lazy<Dictionary<string, SuggestionResult>>`<br>`Lazy<Dictionary<string, FacetResult>>` | A lazy instance that will evaluate the query only when needed. |
 
 {PANEL/}
 
