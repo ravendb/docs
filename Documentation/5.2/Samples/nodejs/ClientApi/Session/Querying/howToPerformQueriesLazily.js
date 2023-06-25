@@ -1,74 +1,112 @@
-import { DocumentStore, AbstractIndexCreationTask } from "ravendb";
+import { DocumentStore, AbstractJavaScriptIndexCreationTask, Facet, RangeFacet } from "ravendb";
 
 const documentStore = new DocumentStore();
 const session = documentStore.openSession();
 
-{
-    const query = session.query();
-    //region lazy_1
-    query.lazily();
-    //endregion
-
-    //region lazy_4
-    query.countLazily();
-    //endregion
-
-    //region lazy_6
-    query.executeLazy();
-    //endregion
-}
-
-{
-    const query = session.query();
-    //region lazy_8
-    query.executeLazy();
-    //endregion
-}
-
-async function examples() {
+async function lazyExamples() {
     {
-        //region lazy_2
-        const employeesLazy = session
+        //region lazy_1
+        // Define a lazy query
+        const lazyEmployees = session
             .query({ collection: "Employees" })
             .whereEquals("FirstName", "Robert")
+             // Add a call to 'lazily'
             .lazily();
 
-        const employees = await employeesLazy.getValue(); // query will be executed here
+        const employees = await lazyEmployees.getValue(); // Query is executed here
         //endregion
     }
 
     {
-        //region lazy_5
-        const countLazy = session
+        //region lazy_2
+        // Define a lazy count query
+        const lazyCount = session
             .query({ collection: "Employees" })
             .whereEquals("FirstName", "Robert")
+             // Add a call to 'countLazily'
             .countLazily();
 
-        const count = await countLazy.getValue(); // query will be executed here
+        const count = await lazyCount.getValue(); // Query is executed here
         //endregion
     }
 
     {
-        //region lazy_7
-        const suggestLazy = session
-            .query({ indexName: "Employees_ByFullName" })
-            .suggestUsing(builder => builder.byField("FullName", "Johne"))
+        //region lazy_3
+        // Define a lazy suggestion query
+        const lazySuggestions = session
+            .query({ collection: "Products" })
+            .suggestUsing(builder => builder.byField("Name", "chaig"))
+             // Add a call to 'executeLazy'
             .executeLazy();
 
-        const suggestResult = await suggestLazy.getValue(); // query will be executed here
-        const suggestions = suggestResult["FullName"].suggestions;
+        const suggestResult = await lazySuggestions.getValue(); // Query is executed here
+        const suggestions = suggestResult["Name"].suggestions;
         //endregion
     }
 
     {
-        //region lazy_9
-        const facetsLazy = session
-            .query({ indexName: "Camera/Costs" })
-            .aggregateUsing("facets/CameraFacets")
+        //region lazy_4
+        // The facets definition used in the facets query:
+        // ===============================================
+        const categoryNameFacet = new Facet();
+
+        categoryNameFacet.fieldName = "categoryName";
+        categoryNameFacet.displayFieldName = "Product Category";
+
+        const rangeFacet = new RangeFacet();
+        rangeFacet.ranges = [
+            "pricePerUnit < " + 25,
+            "pricePerUnit >= " + 25 + " and pricePerUnit < " + 50,
+            "pricePerUnit >= " + 50 + " and pricePerUnit < " + 100,
+            "pricePerUnit >= " + 100
+        ];
+        rangeFacet.displayFieldName = 'Price per Unit';
+
+        const facetsDefinition = [categoryNameFacet, rangeFacet];
+        
+        // The lazy factes query:
+        // ======================
+        const lazyFacets = session
+            .query({ indexName: "Products/ByCategoryAndPrice" })
+            .aggregateBy(...facetsDefinition)
+             // Add a call to 'executeLazy'
             .executeLazy();
 
-        const facets = await facetsLazy.getValue(); // query will be executed here
-        const results = facets["manufacturer"];
+        const facets = await lazyFacets.getValue(); // Query is executed here
+        
+        const categoryResults = facets["Product Category"];
+        const priceResults = facets["Price per Unit"];
         //endregion
     }
+}
+
+{
+    //region the_index
+    // The index definition used in the facets query:
+    class Products_ByCategoryAndPrice extends AbstractJavaScriptIndexCreationTask {
+        constructor() {
+            super();
+
+            const { load } = this.mapUtils();
+
+            this.map("Products", product => {
+                return {
+                    categoryName: load(product.Category, "Categories").Name,
+                    pricePerUnit: product.PricePerUnit
+                }
+            });
+        }
+    }
+    //endregion
+}
+
+{
+    //region syntax
+    lazily();
+    lazily(onEval);
+    
+    countLazily();
+    
+    executeLazy();
+    //endregion
 }

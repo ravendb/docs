@@ -8,7 +8,7 @@
   You can __define a query as lazy__ and execute it later when query results are actually needed.  
 
 * This article contains lazy queries examples.  
-  __Prior to this article__, please refer to [perform requests lazily](../../../)  for general knowledge about  
+  __Prior to this article__, please refer to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily)  for general knowledge about  
   RavenDB's lazy behavior, and other request types that can be executed lazily within a session.
 
 * In this page:

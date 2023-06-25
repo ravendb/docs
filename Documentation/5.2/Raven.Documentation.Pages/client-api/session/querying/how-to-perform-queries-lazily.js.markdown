@@ -1,60 +1,71 @@
 # Perform a Lazy Query
 
-In some situations, query execution must be delayed. To cover such a scenario, `lazily` and many other query extensions have been introduced.
+---
 
-{PANEL:Lazily}
+{NOTE: }
+
+* Query execution can be deferred.  
+  You can __define a query as lazy__ and execute it later when query results are actually needed.
+
+* This article contains lazy queries examples.  
+  __Prior to this article__, please refer to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily)  for general knowledge about  
+  RavenDB's lazy behavior, and other request types that can be executed lazily within a session.
+
+* In this page:
+    * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-query)
+    * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-count-query)
+    * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-suggestions-query)
+    * [Lazy facets query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-facets-query)
+    * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily#syntax)
+
+{NOTE/}
+
+---
+
+{PANEL: Lazy query}
 
 {CODE:nodejs lazy_1@ClientApi\Session\Querying\howToPerformQueriesLazily.js /}
 
-| Return Value | |
-| ------------- | ----- |
-| `Lazy<object[]>` | Lazy query initializer returning query results. |
+* Learn more about queries in this [query overview](../../../client-api/session/querying/how-to-query).
 
-### Example
+{PANEL/}
+
+{PANEL: Lazy count query}
 
 {CODE:nodejs lazy_2@ClientApi\Session\Querying\howToPerformQueriesLazily.js /}
 
 {PANEL/}
 
-{PANEL:Counts}
+{PANEL: Lazy suggestions query}
 
-{CODE:nodejs lazy_4@ClientApi\Session\Querying\howToPerformQueriesLazily.js /}
+{CODE:nodejs lazy_3@ClientApi\Session\Querying\howToPerformQueriesLazily.js /}
 
-| Return Value | |
-| ------------- | ----- |
-| `Lazy<number>` | Lazy query initializer returning a count of matched documents. |
-
-### Example
-
-{CODE:nodejs lazy_5@ClientApi\Session\Querying\howToPerformQueriesLazily.js /}
+* Learn more about suggestions in [query for suggestions](../../../client-api/session/querying/how-to-work-with-suggestions).
 
 {PANEL/}
 
-{PANEL:Suggestions}
+{PANEL: Lazy facets query}
 
-{CODE:nodejs lazy_6@ClientApi\Session\Querying\howToPerformQueriesLazily.js /}
+{CODE-TABS}
+{CODE-TAB:nodejs:Lazy_query lazy_4@ClientApi\Session\Querying\howToPerformQueriesLazily.js /}
+{CODE-TAB:nodejs:Index_definition the_index@ClientApi\Session\Querying\howToPerformQueriesLazily.js /}
+{CODE-TABS/}
 
-| Return Value | |
-| ------------- | ----- |
-| `Lazy<{ [key]: SuggestionResult }>` | Lazy query initializer containing a map with suggestions for matching executed query |
-
-### Example
-
-{CODE:nodejs lazy_7@ClientApi\Session\Querying\howToPerformQueriesLazily.js /}
+* Learn more about facets in [perform faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search).
 
 {PANEL/}
 
-{PANEL:Facets}
+{PANEL: Syntax}
 
-{CODE:nodejs lazy_8@ClientApi\Session\Querying\howToPerformQueriesLazily.js /}
+{CODE:nodejs syntax@ClientApi\Session\Querying\howToPerformQueriesLazily.js /}
 
-| Return Value | |
-| ------------- | ----- |
-| `Lazy<{ [key]: FacetResult }>` | Lazy query initializer containing a map with facet results matching executed query |
+| Parameters | Type                 | Description                                                                          |
+|------------|----------------------|--------------------------------------------------------------------------------------|
+| __onEval__ | `(object[]) => void` | An action that will be performed on the query results<br>when the query is executed. |
 
-### Example
-
-{CODE:nodejs lazy_9@ClientApi\Session\Querying\howToPerformQueriesLazily.js /}
+| Return Value |                                                                  |
+|--------------|------------------------------------------------------------------|
+| __object__   | A `Lazy` instance that will evaluate the query only when needed. |
 
 {PANEL/}
 
@@ -62,5 +73,5 @@ In some situations, query execution must be delayed. To cover such a scenario, `
 
 ### Session
 
-- [How to Query](../../../client-api/session/querying/how-to-query)
-- [How to Perform Operations Lazily](../../../client-api/session/how-to/perform-operations-lazily)
+- [Query overview](../../../client-api/session/querying/how-to-query)
+- [Perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily)
