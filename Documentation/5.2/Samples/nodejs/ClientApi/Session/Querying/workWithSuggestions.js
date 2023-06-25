@@ -9,7 +9,7 @@ async function suggestions() {
         // This dynamic query on the 'Products' collection has NO resulting documents
         const products = await session
             .query({ collection: "Products" })
-            .where(x => x.Name == "chaig")
+            .whereEquals("Name", "Chai")
             .all();
         //endregion
     }
