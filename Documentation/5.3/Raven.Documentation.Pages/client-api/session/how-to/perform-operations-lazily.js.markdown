@@ -1,25 +1,40 @@
 # Perform requests lazily
-
 ---
 
 {NOTE: }
 
-* **Defining a lazy operation** allows deferring the execution of the operation until it is needed.  
+* __Lazy request__:
 
-* Multiple pending lazy operations can be executed together, see below. 
+    * You can define a lazy request within a session (e.g. a lazy-query or a lazy-load request)  
+      and defer its execution until actually needed.
+
+    * The lazy request definition is stored in the session and a `Lazy` instance is returned.  
+      The request will be sent to the server and executed only when you access the value of this instance.
+
+* __Multiple lazy requests__:
+
+    * Multiple lazy requests can be defined within the same session.
+
+    * When triggering the deferred execution (whether implicitly or explicitly),  
+      ALL pending lazy requests held up by the session will be sent to the server in a single call.  
+      This can help reduce the number of remote calls made to the server over the network.
 
 * In this page:
-   * [Operations that can be executed lazily](../../../client-api/session/how-to/perform-operations-lazily#operations-that-can-be-executed-lazily)  
-      * [Load entities](../../../client-api/session/how-to/perform-operations-lazily#loadEntities)  
-      * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily#loadWithInclude)  
-      * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily#loadStartingWith)
-      * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily#conditionalLoad)
-      * [Run query](../../../client-api/session/how-to/perform-operations-lazily#runQuery)
-      * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily#getRevisions)  
-      * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily#getCompareExchange)     
-   * [Execute all pending lazy operations](../../../client-api/session/how-to/perform-operations-lazily#execute-all-pending-lazy-operations)  
+    * [Requests that can be executed lazily:](../../../client-api/session/how-to/perform-operations-lazily#requests-that-can-be-executed-lazily)
+        * [Load entities](../../../client-api/session/how-to/perform-operations-lazily#loadEntities)
+        * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily#loadWithInclude)
+        * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily#loadStartingWith)
+        * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily#conditionalLoad)
+        * [Run query](../../../client-api/session/how-to/perform-operations-lazily#runQuery)
+        * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily#getRevisions)
+        * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily#getCompareExchange)
+    * [Multiple lazy requests](../../../client-api/session/how-to/perform-operations-lazily#multiple-lazy-requests)
+        * [Execute all requests - implicitly](../../../client-api/session/how-to/perform-operations-lazily#implicit)
+        * [Execute all requests - explicitly](../../../client-api/session/how-to/perform-operations-lazily#explicit)
 
 {NOTE/}
+
+---
 
 {PANEL: Operations that can be executed lazily}
 
@@ -94,11 +109,21 @@
 
 {PANEL/}
 
-{PANEL: Execute all pending lazy operations}
+{PANEL: Multiple lazy requests }
 
-* Use `executeAllPendingLazyOperations` to execute **all** pending lazy operations at once. 
+{NOTE: }
+<a id="implicit" /> __Execute all requests - implicitly__
 
-{CODE:nodejs lazy_executeAllPendingLazyOperations@client-api\Session\HowTo\lazy.js /}
+{CODE:nodejs lazy_ExecuteAll_Implicit@client-api\Session\HowTo\lazy.js /}
+
+{NOTE/}
+
+{NOTE: }
+<a id="explicit" /> __Execute all requests - explicitly__
+
+{CODE:nodejs lazy_ExecuteAll_Explicit@client-api\Session\HowTo\lazy.js /}
+
+{NOTE/}
 
 {PANEL/}
 

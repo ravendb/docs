@@ -1,5 +1,4 @@
 # Perform requests lazily
-
 ---
 
 {NOTE: }
@@ -34,6 +33,8 @@
         * [Execute all requests - explicitly](../../../client-api/session/how-to/perform-operations-lazily#explicit)
 
 {NOTE/}
+
+---
 
 {PANEL: Requests that can be executed lazily}
 
