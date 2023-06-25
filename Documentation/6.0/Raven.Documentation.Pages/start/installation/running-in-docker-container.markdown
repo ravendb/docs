@@ -4,14 +4,25 @@
 {NOTE: }
 
 * RavenDB can be launched using [Docker](https://www.docker.com/).  
-* **Stable** and **LTS** RavenDB Server Docker Images are available 
-  for **Ubuntu** Linux and **Windows Nano Server**.  
-* Additional information regarding using and setting RavenDB 
-  on Docker is available in the [Docker Hub page](https://hub.docker.com/r/ravendb/ravendb/).  
+* **Stable** and **LTS** Docker images of RavenDB Server are available for 
+  **Ubuntu** Linux and **Windows Nano Server**.  
+* Information related to setting and running RavenDB on Docker is available 
+  in this page and in the RavenDB 
+  [dockerhub](https://hub.docker.com/r/ravendb/ravendb/) page.  
+* Starting from version `6.0` RavenDB introduces an improved security model, 
+  using a dedicated user rather than `root`.  
+  RavenDB `6.0` and up also use a Debian archive file 
+  ([.deb package](../../start/installation/gnu-linux/deb)), applying 
+  a uniform internal structure for Ubuntu and Windows Linux versions.  
+  To conform with these changes, installing RavenDB 6.0 and higher 
+  in a system that already hosts RavenDB `5.x` or older requires 
+  a simple [migration](../../start/installation/running-in-docker-container#migration) 
+  procedure.  
 
 * In this page:  
-  * [Installation](../../start/installation/running-in-docker-container#installation)  
-  * [Running RavenDB Server in a Docker Container](../../start/installation/running-in-docker-container#running-ravendb-server-in-a-docker-container)  
+  * [Requirements](../../start/installation/running-in-docker-container#requirements)  
+  * [Setup and Execution](../../start/installation/running-in-docker-container#setup-and-execution)  
+  * [Migration](../../start/installation/running-in-docker-container#migration)  
   * [Configuration](../../start/installation/running-in-docker-container#configuration)  
   * [FAQ](../../start/installation/running-in-docker-container#faq)  
 
@@ -20,38 +31,34 @@
 
 ---
 
-{PANEL: Installation}  
+{PANEL: Requirements}  
 
-#### Requirements
-
-* Use the default Docker networking configuration.  
-* Do **not** expose the Docker instance beyond the host machine.  
-  If you intend to host RavenDB on Docker and expose it 
-  externally, please go through the security configuration first.  
-
----
-
-#### Platforms
-Server images are published on Docker for the following platforms:
-
-* **Ubuntu** (20.04, 18.04, 16.04) or any other Debian-based distribution.  
-* [Windows Nano Server](https://hub.docker.com/_/microsoft-windows-nanoserver)  
-
----
-
-#### Storage Requirements
-
-* **Non-NFS file systems are Supported**  
-  NTFS, Ext4, and other non-NFS volume mounts' file systems are supported.  
-* **SMB and CIFS mounts are Not supported**  
-  Linux Docker containers running under Windows Docker hosts via shared volumes 
-  are [not supported](../../start/installation/deployment-considerations#storage-considerations) 
-  due to CIFS protocol usage.  
+* **Docker Configuration**  
+  Use the default Docker networking configuration.  
+* **Security**  
+  Do not expose the Docker instance beyond the host machine.  
+  {WARNING: }
+  If you Do intend to host RavenDB on Docker and expose it 
+  externally, please make sure the server is [secure](../../start/installation/setup-wizard#secure-setup-with-a-free-let).  
+  {WARNING/}
+* **Storage**  
+   * Non-NFS file systems **are** Supported.  
+     NTFS, Ext4, and other non-NFS volume mounts' file systems are supported.  
+   * SMB and CIFS mounts are **not** supported.  
+     Linux Docker containers running under Windows Docker hosts via shared volumes 
+     are [not supported](../../start/installation/deployment-considerations#storage-considerations) 
+     due to CIFS protocol usage.  
+* **Platforms**  
+  RavenDB images are available for:  
+   * **Ubuntu** (20.04, 18.04, 16.04) or any other Debian-based distribution.  
+   * [Windows Nano Server](https://hub.docker.com/_/microsoft-windows-nanoserver)  
 
 {PANEL/}
 
-{PANEL: Running RavenDB Server in a Docker Container}
-To run RavenDB via Docker use an updated **stable** or **nightly** version.  
+{PANEL: Setup and Execution}
+
+#### RavenDB Versions
+To install or run a Docker RavenDB image use an updated **stable** or **nightly** version.  
 
 * [Stable and LTS images](https://hub.docker.com/r/ravendb/ravendb/)  
 * [Nightly releases](https://hub.docker.com/r/ravendb/ravendb-nightly/)  
@@ -66,34 +73,44 @@ Use the following tags to install the latest **Stable** or **LTS** RavenDB Serve
      Latest RavenDB version, running on Ubuntu container  
    * _Tag_: `windows-latest`  
      Latest RavenDB version, running on Windows Nano Server  
+   * See additional tags [here](https://github.com/ravendb/ravendb/blob/v6.0/docker/readme.md#latest-stable)  
 
 * **Latest RavenDB LTS version**  
    * _Tag_: `latest-lts` / `ubuntu-latest-lts`  
      Latest RavenDB LTS version, running on Ubuntu container  
    * _Tag_: `windows-latest-lts`  
      Latest RavenDB LTS version, running on Windows Nano Server  
+   * See additional tags [here](https://github.com/ravendb/ravendb/blob/v6.0/docker/readme.md#latest-lts)  
 
 ---
 
-#### Examples
-Run a RavenDB image using [docker run](https://docs.docker.com/engine/reference/commandline/run/), e.g. -  
+#### Running a RavenDB image
+To install or run RavenDB start the Docker service, and run a RavenDB image manually or using a script.  
 
-* **Linux image**  
-  {CODE-BLOCK:bash}
-  $ docker run -p 8080:8080 ravendb/ravendb:ubuntu-latest  
-  {CODE-BLOCK/}
+* **Running manually**:  
+  Run RavenDB using [docker run](https://docs.docker.com/engine/reference/commandline/run/), e.g. -  
+  _Ubuntu image_: `$ docker run -p 8080:8080 ravendb/ravendb:ubuntu-latest`  
+  _Windows image_: `$ docker run -p 8080:8080 ravendb/ravendb:windows-latest`  
 
-* **Windows image**  
-  {CODE-BLOCK:bash}
-  $ docker run -p 8080:8080 ravendb/ravendb:windows-latest  
-  {CODE-BLOCK/}
+* **Running using a script:**  
+  Run a RavenDB image using a dedicated script for Ubuntu or Windows.  
+  [Ubuntu-based image script](https://github.com/ravendb/ravendb/blob/v5.4/docker/run-linux.ps1)  
+  [Windows-based image script](https://github.com/ravendb/ravendb/blob/v5.4/docker/run-nanoserver.ps1)  
+
+{NOTE: Setup and Management}
+After running the image, access it from a browser using its URL.  
+By default:  `http://localhost:8080`  
+
+If the server is not installed yet, connecting it will start the setup wizard.  
+After installing the server, connecting it will open its [management studio](https://ravendb.net/docs/article-page/latest/csharp/studio/overview).  
+{NOTE/}
 
 ---
 
 #### Sharing data with Docker Host
-To share data with the docker host using docker for Windows:  
+To share data with the Docker host using Docker for Windows:  
 
-* The docker client application must have `sharing` enabled.  
+* The Docker client application must have `sharing` enabled.  
 * The folder (e.g. `C:\RavenDb\Data`) must exist.  
 
 ---
@@ -104,23 +121,23 @@ The `Dockerfiles` used to build RavenDB Server images and their assets can be fo
 * [Ubuntu image Dockerfile](https://github.com/ravendb/ravendb/tree/v5.4/docker/ravendb-ubuntu)  
 * [Windows Nano Server image Dockerfile](https://github.com/ravendb/ravendb/tree/v5.4/docker/ravendb-nanoserver)  
 
-{NOTE: Running RavenDB Management Studio}
-After running RavenDB, access its [management studio](https://ravendb.net/docs/article-page/latest/csharp/studio/overview) 
-from a browser using the server's URL.  
-E.g., `http://localhost:8080`  
-{NOTE/}
+
 
 ---
 
 #### Persisting Data
-To install using the `latest` tag and persist the data stored on your 
+
+To install using the `latest` tag, and persist the data stored on your 
 hard disk if the container is removed, you can use:  
 {CODE-BLOCK:bash}
 docker run --rm -d -p 8080:8080 -p 38888:38888 -v c:/RavenDb/Data:/opt/RavenDB/Server/RavenData ravendb/ravendb
 {CODE-BLOCK/}
-The data will now remain available even if the container is removed.  
-When you start a new instance of the image using a volume mounted to 
-the same directory, the data will still be available.  
+
+* The data will now remain available even if the container is removed.  
+* When you start a new instance of the image using a volume mounted to 
+  the same directory, the data will still be available.  
+* To keep persistence, RavenDB data in a Windows container is always 
+  kept in this location: `C:/RavenDB/Server/RavenData`  
 
 ---
 
@@ -134,7 +151,7 @@ docker run --rm -d -p 8080:8080 -p 38888:38888 -v c:/RavenDb/Data:/opt/RavenDB/S
 Using this command will skip the Setup Wizard and mount a volume for data persistence.  
 
 {WARNING: Warning} 
-Please be aware that running a docker container with `RAVEN_Setup_Mode=None` and 
+Please be aware that running a Docker container with `RAVEN_Setup_Mode=None` and 
 `RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork` will run an **Unsecure** server.  
 {WARNING/}
 
@@ -144,24 +161,67 @@ By setting `RAVEN_License_Eula_Accepted=true` you're accepting our [terms & cond
 
 {PANEL/}
 
+{PANEL: Migration}
+
+#### Changes made in RavenDB `6.0` and up:
+
+RavenDB Docker images of versions `6.0` and up are owned by a 
+different user than older versions and use a different folders tree.  
+
+* RavenDB Docker images up to `5.x`:  
+   * Create a folders tree unique to Linux under Windows.  
+   * Install and access server properties using the `root` user.  
+
+* RavenDB Docker images from `6.0` up:  
+   * Use a Debian archive file ([.deb package](../../start/installation/gnu-linux/deb)) 
+     and create a similar folders tree under Windows and Ubuntu.  
+   * Use a dedicated `ravendb` user to install and access server properties, 
+     greatly improving security by restricting access to these properties.  
+
+Migrating from version `5.x` or lower to version `6.0` and higher requires us 
+to take these changes into account.  
+
+---
+
+#### Migrating to `6.0` and up:
+
+* **Migrate Files and Data**  
+  The usage of a `.Deb` package will make the setup process create 
+  a folders tree as described [here](../../start/installation/gnu-linux/deb#file-system-locations).  
+  
+     When this is done, you will have to migrate or link the contents 
+     stored in the old (`5.x` or below) RavenDB directories to the 
+     directories now created for the new version.  
+
+     Most notably, the **data** needs to be migrated from its old 
+     location to its new one: `/var/lib/ravendb/data`  
+
+* **Build the Docker Image Yourself**  
+  To grant the dedicated `ravendb` user that now runs the container access 
+  to RavenDB data, build the Ubuntu package yourself using `docker build` 
+  with these optional arguments:  
+  `--build-arg "RAVEN_USER_ID=999"`  
+  `--build-arg "RAVEN_GROUP_ID=999"`  
+  
+     Read more about this process [here](https://github.com/ravendb/ravendb/blob/v6.0/docker/readme.md#what-migration-process-from-54-image-looks-like).  
+
+{PANEL/}
+
 {PANEL: Configuration}
-Configuration can be adjusted using environment variables.  
+RavenDB can be adjusted using:  
 
-* The server will use all the environment variables that are preceded by 
-  a `RAVEN_` prefix and apply their values to specified configuration keys.  
-* All period `.` characters in configuration keys should be replaced with 
-  an underscore character (`_`) when used in environment variables.  
+* The [settings.json](../../server/configuration/configuration-options#settings.json) configuration file.  
 
-{NOTE: Example}
-{CODE-BLOCK:plain}
-RAVEN_Setup_Mode=None
+* [Environment Variables](../../server/configuration/configuration-options#environment-variables), e.g. -
+  {CODE-BLOCK:plain}
+  RAVEN_Setup_Mode=None
 RAVEN_DataDir=RavenData
 RAVEN_Certificate_Path=/config/raven-server.certificate.pfx
-{CODE-BLOCK/}
-{NOTE/}
+  {CODE-BLOCK/}
 
-In addition, `RAVEN_ARGS` environment variable can be passed 
-to a RavenDB docker image as a server CLI arguments line.  
+* [CLI arguments](../../server/configuration/configuration-options#command-line-arguments)  
+  Variables can be passed to a RavenDB Docker image in a CLI arguments line, e.g. -  
+  `./Raven.Server --Setup.Mode=None`  
 
 {PANEL/}
 
@@ -209,7 +269,7 @@ Additional information regarding logging configuration is available
 ---
 
 #### Q: How do I use a custom config file?
-**A:** Mount it as a docker volume, and use the `--config-path PATH_TO_CONFIG` 
+**A:** Mount it as a Docker volume, and use the `--config-path PATH_TO_CONFIG` 
 command line argument to use a settings file from outside of the server directory.  
 Alternatively, you can pass your custom `settings.json` content via the 
 `RAVENDB_SETTINGS` environment variable.
