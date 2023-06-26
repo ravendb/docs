@@ -61,6 +61,11 @@ cloud you have no direct access to.
 You can [view and restore](../cloud/cloud-backup-and-restore#restore-mandatory-backup-files) them using your portal's Backups tab and the 
 management Studio.  
 
+{NOTE: }
+Backups are always kept in the same geographical region as the backed up data.  
+E.g., backups made for data that resides in Europe will be kept in Europe.  
+{NOTE/}
+
 ---
 
 ####Custom-Backup Storage

@@ -13,7 +13,7 @@
   using a dedicated user rather than `root`.  
   RavenDB `6.0` and up also use a Debian archive file 
   ([.deb package](../../start/installation/gnu-linux/deb)), applying 
-  a uniform internal structure for Ubuntu and Windows Linux versions.  
+  a uniform internal structure for Ubuntu OS.  
   To conform with these changes, installing RavenDB 6.0 and higher 
   in a system that already hosts RavenDB `5.x` or older requires 
   a simple [migration](../../start/installation/running-in-docker-container#migration) 
@@ -50,7 +50,7 @@
      due to CIFS protocol usage.  
 * **Platforms**  
   RavenDB images are available for:  
-   * **Ubuntu** (20.04, 18.04, 16.04) or any other Debian-based distribution.  
+   * **Ubuntu** (22.04, 20.04) or any other Debian-based distribution.  
    * [Windows Nano Server](https://hub.docker.com/_/microsoft-windows-nanoserver)  
 
 {PANEL/}
@@ -76,7 +76,7 @@ Use the following tags to install the latest **Stable** or **LTS** RavenDB Serve
    * _Tag_: `windows-1809-latest`  
      Latest RavenDB version, running on Windows Nano Server version 1809
    * _Tag_: `windows-ltsc2022-latest`  
-     Latest RavenDB version, running on Windows Nano Server version 2022
+     Latest RavenDB version, running on Windows Nano Server version LTSC2022
    * An updated tags list is available [here](https://github.com/ravendb/ravendb/blob/v6.0/docker/readme.md#latest-stable).  
 
 * **Latest RavenDB LTS version**  
@@ -87,7 +87,7 @@ Use the following tags to install the latest **Stable** or **LTS** RavenDB Serve
    * _Tag_: `windows-1809-latest-lts`  
      Latest RavenDB LTS version, running on Windows Nano Server version 1809
    * _Tag_: `windows-ltsc2022-latest-lts`  
-     Latest RavenDB LTS version, running on Windows Nano Server version 2022
+     Latest RavenDB LTS version, running on Windows Nano Server version LTSC2022
    * An updated tags list is available [here](https://github.com/ravendb/ravendb/blob/v6.0/docker/readme.md#latest-lts)  
 
 ---
@@ -109,7 +109,7 @@ To install or run RavenDB start the Docker service, and run a RavenDB image manu
 After running the image, access it from a browser using its URL.  
 By default:  `http://localhost:8080`  
 
-If the server is not installed yet, connecting it will start the setup wizard.  
+If the server is not installed yet, connecting it will start the Setup Wizard.  
 After installing the server, connecting it will open its [management studio](https://ravendb.net/docs/article-page/latest/csharp/studio/overview).  
 {NOTE/}
 
@@ -119,15 +119,15 @@ After installing the server, connecting it will open its [management studio](htt
 To share data with the Docker host using Docker for Windows:  
 
 * The Docker client application must have `sharing` enabled.  
-* The folder (e.g. `C:\RavenDb\Data`) must exist.  
+* The directory (e.g. `C:\RavenDb\Data`) must exist.  
 
 ---
 
 #### Dockerfiles
 The `Dockerfiles` used to build RavenDB Server images and their assets can be found at:  
 
-* [Ubuntu image Dockerfile](https://github.com/ravendb/ravendb/tree/v5.4/docker/ravendb-ubuntu)  
-* [Windows Nano Server image Dockerfile](https://github.com/ravendb/ravendb/tree/v5.4/docker/ravendb-nanoserver)  
+* [Ubuntu image Dockerfile](https://github.com/ravendb/ravendb/tree/v6.0/docker/ravendb-ubuntu)  
+* [Windows Nano Server image Dockerfile](https://github.com/ravendb/ravendb/tree/v6.0/docker/ravendb-nanoserver)  
 
 ---
 
@@ -136,7 +136,7 @@ The `Dockerfiles` used to build RavenDB Server images and their assets can be fo
 To install using the `latest` tag, and persist the data stored on your 
 hard disk if the container is removed, you can use:  
 {CODE-BLOCK:bash}
-docker run --rm -d -p 8080:8080 -p 38888:38888 -v c:/RavenDb/Data:/opt/RavenDB/Server/RavenData ravendb/ravendb
+docker run --rm -d -p 8080:8080 -p 38888:38888 -v /var/lib/ravendb/data ravendb/ravendb
 {CODE-BLOCK/}
 
 * The data will now remain available even if the container is removed.  
@@ -151,7 +151,9 @@ docker run --rm -d -p 8080:8080 -p 38888:38888 -v c:/RavenDb/Data:/opt/RavenDB/S
 To start the RavenDB container on your localhost without running 
 through the Setup Wizard each time, you can use:  
 {CODE-BLOCK:bash}
-docker run --rm -d -p 8080:8080 -p 38888:38888 -v c:/RavenDb/Data:/opt/RavenDB/Server/RavenData --name RavenDb-WithData -e RAVEN_Setup_Mode=None -e RAVEN_License_Eula_Accepted=true -e RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork ravendb/ravendb
+docker run --rm -d -p 8080:8080 -p 38888:38888 -v /var/lib/ravendb/data --name RavenDb-WithData 
+-e RAVEN_Setup_Mode=None -e RAVEN_License_Eula_Accepted=true 
+-e RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork ravendb/ravendb
 {CODE-BLOCK/}
 
 Using this command will skip the Setup Wizard and mount a volume for data persistence.  
@@ -171,21 +173,22 @@ By setting `RAVEN_License_Eula_Accepted=true` you're accepting our [terms & cond
 
 #### Changes made in RavenDB `6.0` and up:
 
-The **user** that installs and runs RavenDB `6.0` and up 
-and the **folders structure** used by these versions are 
+The **user** that runs RavenDB `6.0` and up 
+and the **directory structure** used by these versions are 
 different from the user and structure used by older versions.  
-These changes need to be addressed when migrating from 
-version `5.x` or lower to version `6.0` and higher.  
 
 * RavenDB Docker images up to `5.x`:  
-   * Create a unique folders tree under Windows.  
+   * Create a unique directory structure under Windows.  
    * Are installed and accessed using the `root` user.  
 
 * RavenDB Docker images from `6.0` up:  
    * Use a Debian archive file ([.deb package](../../start/installation/gnu-linux/deb)) 
-     and create a similar folders tree under Windows and Ubuntu.  
+     and create a similar directory structure under Windows and Ubuntu.  
    * Are installed and accessed using a dedicated `ravendb` user 
      instead of `root`, to improve security.  
+
+These differences need to be addressed when migrating from 
+version `5.x` or lower to version `6.0` and higher.  
 
 ---
 
@@ -194,7 +197,7 @@ version `5.x` or lower to version `6.0` and higher.
 * Permit the `ravendb` user to access the image directory.  
   The default **UID** (User ID) and **GID** (Group ID) 
   used by `ravendb` are **999**.  
-  Set the data folder permissions to these values (or 
+  Set the data directory permissions to these values (or 
   any other values you give `ravendb`).  
   `chown -R 999:999 $TARGET_DATA_DIR`
 
@@ -205,12 +208,17 @@ version `5.x` or lower to version `6.0` and higher.
   E.g., `docker build --build-arg "RAVEN_USER_ID=999" --build-arg "RAVEN_GROUP_ID=999" <...>`  
 
 * Migrate files and data  
-  The setup process will create the folders structure detailed 
+  The setup process will create the directory structure detailed 
   [here](../../start/installation/gnu-linux/deb#file-system-locations).  
-  When setup is done, migrate or link the contents stored in the 
-  old RavenDB folders to the newly created structure.  
-  Most notably, the **data** needs to be migrated from its old 
-  location to its new one: `/var/lib/ravendb/data`  
+  
+     The script within the image will attempt to link the old version's 
+     data directory to the new version's data directory automatically.  
+     If this attempt fails, an error will be produced.  
+
+     When setup is done, migrate or link the contents stored in the 
+     old RavenDB directories to the newly created structure.  
+     Most notably, make sure that the data is available in its new 
+     location: `/var/lib/ravendb/data`  
 
 {PANEL/}
 
@@ -301,8 +309,8 @@ Will try to connect to discovered Raven.Server process : 8...
 
       Safe by default, optimized for efficiency
 
- Build 40040, Version 4.1, SemVer 4.1.4, Commit dc2e9e3
- PID 8, 64 bits, 2 Cores, Phys Mem 1.934 GBytes, Arch: X64
+ Build 60, Version 6.0, SemVer 6.0.0-custom-60, Commit 10ed5a8
+ PID 8232, 64 bits, 8 Cores, Phys Mem 23.866 GBytes, Arch: X64
  Source Code (git repo): https://github.com/ravendb/ravendb
  Built with love by Hibernating Rhinos and awesome contributors!
 +---------------------------------------------------------------+
