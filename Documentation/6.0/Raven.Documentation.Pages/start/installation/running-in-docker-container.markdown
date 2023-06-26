@@ -129,8 +129,6 @@ The `Dockerfiles` used to build RavenDB Server images and their assets can be fo
 * [Ubuntu image Dockerfile](https://github.com/ravendb/ravendb/tree/v5.4/docker/ravendb-ubuntu)  
 * [Windows Nano Server image Dockerfile](https://github.com/ravendb/ravendb/tree/v5.4/docker/ravendb-nanoserver)  
 
-
-
 ---
 
 #### Persisting Data
@@ -173,45 +171,46 @@ By setting `RAVEN_License_Eula_Accepted=true` you're accepting our [terms & cond
 
 #### Changes made in RavenDB `6.0` and up:
 
-RavenDB Docker images of versions `6.0` and up are owned by a 
-different user than older versions and use a different folders tree.  
+The **user** that installs and runs RavenDB `6.0` and up 
+and the **folders structure** used by these versions are 
+different from the user and structure used by older versions.  
+These changes need to be addressed when migrating from 
+version `5.x` or lower to version `6.0` and higher.  
 
 * RavenDB Docker images up to `5.x`:  
-   * Create a folders tree unique to Linux under Windows.  
-   * Install and access server properties using the `root` user.  
+   * Create a unique folders tree under Windows.  
+   * Are installed and accessed using the `root` user.  
 
 * RavenDB Docker images from `6.0` up:  
    * Use a Debian archive file ([.deb package](../../start/installation/gnu-linux/deb)) 
      and create a similar folders tree under Windows and Ubuntu.  
-   * Use a dedicated `ravendb` user to install and access server properties, 
-     greatly improving security by restricting access to these properties.  
-
-Migrating from version `5.x` or lower to version `6.0` and higher requires us 
-to take these changes into account.  
+   * Are installed and accessed using a dedicated `ravendb` user 
+     instead of `root`, to improve security.  
 
 ---
 
 #### Migrating to `6.0` and up:
 
-* **Migrate Files and Data**  
-  The usage of a `.Deb` package will make the setup process create 
-  a folders tree as described [here](../../start/installation/gnu-linux/deb#file-system-locations).  
-  
-     When this is done, you will have to migrate or link the contents 
-     stored in the old (`5.x` or below) RavenDB directories to the 
-     directories now created for the new version.  
+* Permit the `ravendb` user to access the image directory.  
+  The default **UID** (User ID) and **GID** (Group ID) 
+  used by `ravendb` are **999**.  
+  Set the data folder permissions to these values (or 
+  any other values you give `ravendb`).  
+  `chown -R 999:999 $TARGET_DATA_DIR`
 
-     Most notably, the **data** needs to be migrated from its old 
-     location to its new one: `/var/lib/ravendb/data`  
+* Build the Ubuntu package yourself with the same **UID** and 
+  **GID** values, using the following arguments:  
+  **UID**: `--build-arg "RAVEN_USER_ID=999"`  
+  **GID**: `--build-arg "RAVEN_GROUP_ID=999"`  
+  E.g., `docker build --build-arg "RAVEN_USER_ID=999" --build-arg "RAVEN_GROUP_ID=999" <...>`  
 
-* **Build the Docker Image Yourself**  
-  To grant the dedicated `ravendb` user that now runs the container access 
-  to RavenDB data, build the Ubuntu package yourself using `docker build` 
-  with these optional arguments:  
-  `--build-arg "RAVEN_USER_ID=999"`  
-  `--build-arg "RAVEN_GROUP_ID=999"`  
-  
-     Read more about this process [here](https://github.com/ravendb/ravendb/blob/v6.0/docker/readme.md#what-migration-process-from-54-image-looks-like).  
+* Migrate files and data  
+  The setup process will create the folders structure detailed 
+  [here](../../start/installation/gnu-linux/deb#file-system-locations).  
+  When setup is done, migrate or link the contents stored in the 
+  old RavenDB folders to the newly created structure.  
+  Most notably, the **data** needs to be migrated from its old 
+  location to its new one: `/var/lib/ravendb/data`  
 
 {PANEL/}
 
