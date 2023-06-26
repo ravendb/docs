@@ -73,14 +73,22 @@ Use the following tags to install the latest **Stable** or **LTS** RavenDB Serve
      Latest RavenDB version, running on Ubuntu container  
    * _Tag_: `windows-latest`  
      Latest RavenDB version, running on Windows Nano Server  
-   * See additional tags [here](https://github.com/ravendb/ravendb/blob/v6.0/docker/readme.md#latest-stable)  
+   * _Tag_: `windows-1809-latest`  
+     Latest RavenDB version, running on Windows Nano Server version 1809
+   * _Tag_: `windows-ltsc2022-latest`  
+     Latest RavenDB version, running on Windows Nano Server version 2022
+   * An updated tags list is available [here](https://github.com/ravendb/ravendb/blob/v6.0/docker/readme.md#latest-stable).  
 
 * **Latest RavenDB LTS version**  
    * _Tag_: `latest-lts` / `ubuntu-latest-lts`  
      Latest RavenDB LTS version, running on Ubuntu container  
    * _Tag_: `windows-latest-lts`  
      Latest RavenDB LTS version, running on Windows Nano Server  
-   * See additional tags [here](https://github.com/ravendb/ravendb/blob/v6.0/docker/readme.md#latest-lts)  
+   * _Tag_: `windows-1809-latest-lts`  
+     Latest RavenDB LTS version, running on Windows Nano Server version 1809
+   * _Tag_: `windows-ltsc2022-latest-lts`  
+     Latest RavenDB LTS version, running on Windows Nano Server version 2022
+   * An updated tags list is available [here](https://github.com/ravendb/ravendb/blob/v6.0/docker/readme.md#latest-lts)  
 
 ---
 
