@@ -62,8 +62,10 @@ You can [view and restore](../cloud/cloud-backup-and-restore#restore-mandatory-b
 management Studio.  
 
 {NOTE: }
-Backups are always kept in the same geographical region as the backed up data.  
-E.g., backups made for data that resides in Europe will be kept in Europe.  
+A backup created for data hosted by a server in Europe or the US 
+will be kept within the same [geographical region](https://cloud.ravendb.net/pricing), 
+i.e. backups made for a database hosted in Europe are kept in Europe 
+and backups made for a database hosted in the US are kept in the US.  
 {NOTE/}
 
 ---
