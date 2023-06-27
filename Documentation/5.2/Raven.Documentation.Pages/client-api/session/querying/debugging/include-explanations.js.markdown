@@ -1,4 +1,4 @@
-# How to Include Query Explanations
+# Include Query Explanations
 
 ---
 

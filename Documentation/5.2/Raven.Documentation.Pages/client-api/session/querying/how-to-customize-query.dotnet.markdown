@@ -1,4 +1,4 @@
-# How to Customize a Query
+# Customize Query
 
 ---
 

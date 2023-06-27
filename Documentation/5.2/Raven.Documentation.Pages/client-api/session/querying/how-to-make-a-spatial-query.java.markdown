@@ -1,4 +1,4 @@
-# How to Make a Spatial Query
+# Make a Spatial Query
 
 Spatial indexes can be queried using the `spatial` method which contains a full spectrum of spatial methods. The following article will cover these methods:
 

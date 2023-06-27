@@ -1,4 +1,4 @@
-# How to Make a Spatial Query
+# Make a Spatial Query
 
 ---
 

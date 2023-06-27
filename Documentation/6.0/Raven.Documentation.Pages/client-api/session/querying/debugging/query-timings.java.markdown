@@ -1,4 +1,4 @@
-# How to Include Query Timings
+# Include Query Timings
 
 ---
 

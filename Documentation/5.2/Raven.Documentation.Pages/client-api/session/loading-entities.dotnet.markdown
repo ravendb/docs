@@ -3,17 +3,19 @@
 
 {NOTE: }
 
-There are several methods with many overloads that allow users to download documents 
-from the database and convert them to entities. This article will cover the following 
-methods:  
+* There are several methods that allow users to load documents from the database and convert them to entities.  
 
-- [Load](../../client-api/session/loading-entities#load)
-- [Load with Includes](../../client-api/session/loading-entities#load-with-includes)
-- [Load - multiple entities](../../client-api/session/loading-entities#load---multiple-entities)
-- [LoadStartingWith](../../client-api/session/loading-entities#loadstartingwith)
-- [ConditionalLoad](../../client-api/session/loading-entities#conditionalload)
-- [Stream](../../client-api/session/loading-entities#stream)
-- [IsLoaded](../../client-api/session/loading-entities#isloaded)
+* This article covers the following methods:  
+
+  - [Load](../../client-api/session/loading-entities#load)
+  - [Load with Includes](../../client-api/session/loading-entities#load-with-includes)
+  - [Load - multiple entities](../../client-api/session/loading-entities#load---multiple-entities)
+  - [LoadStartingWith](../../client-api/session/loading-entities#loadstartingwith)
+  - [ConditionalLoad](../../client-api/session/loading-entities#conditionalload)
+  - [Stream](../../client-api/session/loading-entities#stream)
+  - [IsLoaded](../../client-api/session/loading-entities#isloaded)
+
+* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily).
 
 {NOTE/}
 
