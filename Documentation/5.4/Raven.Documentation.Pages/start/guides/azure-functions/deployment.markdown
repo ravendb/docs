@@ -19,7 +19,7 @@ The Document Store is meant to be instantiated once for the lifetime of an appli
 
 In Azure Functions, the document store will be shared across invocations of a Function as long as it remains warmed up. For Functions being invoked more than once every 60 seconds, the document store will remain initialized and you should not see an impact to latency.
 
-If an Azure Function is wound down, the next time it is invoked will incur a cold start cost, including initializing the document store.
+If an Azure Function is wound down, the next time it is invoked will incur a cold start cost. The vast majority of cold start time is due to the Azure Function runtime. Document store initialization will not have a major impact on latency, as establishing the TCP & TLS connection is still quite fast.
 
 To reduce cold starts, consider switching from the Consumption (Pay-as-you-Go) plan to a Premium App Service Plan which will allow you to keep Functions warm for longer periods of time.
 
