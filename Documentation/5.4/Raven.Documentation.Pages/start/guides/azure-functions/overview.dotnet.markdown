@@ -317,10 +317,10 @@ Learn more about [how to use the RavenDB .NET client SDK][ravendb-dotnet]
 [download-dotnet]: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
 [az-funcs]: https://learn.microsoft.com/en-us/azure/azure-functions/functions-get-started
 [az-core-tools]: https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local
-[az-deploy]: https://foo
-[template]: https://github.com/ravendb/template-azure-functions-csharp
+[az-deploy]: https://learn.microsoft.com/en-us/azure/azure-functions/functions-deployment-technologies
+[template]: https://github.com/ravendb/templates/tree/main/azure-functions/csharp-http
 [gh-secrets]: https://docs.github.com/en/actions/security-guides/encrypted-secrets
-[cloud-signup]: https://cloud.ravendb.net?utm_source=ravendb_docs&utm_medium=web&utm_campaign=howto_template_azurefns_nodejs&utm_content=cloud_signup
+[cloud-signup]: https://cloud.ravendb.net?utm_source=ravendb_docs&utm_medium=web&utm_campaign=howto_template_azurefns_dotnet&utm_content=cloud_signup
 [docs-get-started]: /docs/article-page/csharp/start/getting-started
 [docs-client-certs]: /docs/article-page/csharp/client-api/setting-up-authentication-and-authorization
 [ravendb-dotnet]: /docs/article-page/csharp/client-api/session/what-is-a-session-and-how-does-it-work

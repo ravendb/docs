@@ -240,14 +240,14 @@ Learn more about [how to use the RavenDB Node.js client SDK][ravendb-nodejs]
 
 [az-funcs]: https://learn.microsoft.com/en-us/azure/azure-functions/functions-get-started
 [az-core-tools]: https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local
-[az-deploy]: https://foo
+[az-deploy]: https://learn.microsoft.com/en-us/azure/azure-functions/functions-deployment-technologies
 [nodejs]: https://nodejs.org
-[template]: https://github.com/ravendb/template-azure-functions-nodejs
+[template]: https://github.com/ravendb/templates/tree/main/azure-functions/node-http
 [gh-secrets]: https://docs.github.com/en/actions/security-guides/encrypted-secrets
 [cloud-signup]: https://cloud.ravendb.net?utm_source=ravendb_docs&utm_medium=web&utm_campaign=howto_template_azurefns_nodejs&utm_content=cloud_signup
 [docs-get-started]: /docs/article-page/nodejs/start/getting-started
-[npm-middleware]: https://npmjs.com/package/@senacor/azure-function-middleware
 [ravendb-nodejs]: /docs/article-page/nodejs/client-api/session/what-is-a-session-and-how-does-it-work
+[npm-middleware]: https://npmjs.com/package/@senacor/azure-function-middleware
 [tool-stringify]: https://onlinestringtools.com/json-stringify-string
 [tool-degit]: https://npmjs.com/package/degit
 [ms-issue-linux-certs-unsupported]: https://github.com/Azure/Azure-Functions/issues/1644
