@@ -42,30 +42,28 @@ This will set up a local Azure Function app that we will deploy to your Azure ac
 
 ### Creating a New Repository from the Template
 
-1. Open the template in GitHub
-1. Click the green "Use this template" button
-1. Click "In a new repository"
-
-GitHub will walk you through creating a new repository in your account or organization which you can clone.
-
-### Cloning the Repository
-
-Clone the repository with Git on your machine:
+Depending on your environment, there are several ways to clone the template and initialize a new Git repository. The template repository lists each clone method you can copy & paste directly, but the fastest way is by using [degit][tool-degit].
 
 {CODE-BLOCK:bash}
-$ git clone <GIT_CLONE_URL> my-project
-$ cd my-project
+npx degit ravendb/templates/azure-functions/node-http my-project
+cd my-project
+git init
 {CODE-BLOCK/}
-
-Replace `<GIT_CLONE_URL>` with the repository you are cloning, either the original template or your newly derived repository.
 
 ### Install Dependencies
 
 After cloning the repository locally, install the Node.js dependencies with `npm`:
 
-`npm install`
+{CODE-BLOCK:bash}
+npm install
+npm start
+{CODE-BLOCK/}
 
-By default, the template is configured to connect to the Live Test instance of RavenDB and the Northwind database. Since this is only for testing purposes, next you will configure the connection to your existing RavenDB database.
+By default, the template is configured to connect to the Live Test instance of RavenDB and you will see a welcome screen like this:
+
+![.NET template welcome screen](images/js-func-start.jpg)
+
+Since this is only for testing purposes, next you will configure the connection to your existing RavenDB database.
 
 {PANEL/}
 
@@ -79,19 +77,17 @@ To configure the local version of your Azure Functions app to connect to RavenDB
   "Values": {
     "AzureWebJobsStorage": "",
     "FUNCTIONS_WORKER_RUNTIME": "node",
-    "DB_URLS": "http://live-test.ravendb.net",
-    "DB_NAME": "Northwind"
+    "DB_URLS": "",
+    "DB_NAME": ""
   }
 }
 {CODE-BLOCK/}
 
-### Configure Database Certificate
+### Configure Local Database Certificate
 
 RavenDB is secured using client-certificate authentication (or Mutual TLS).
 
-The template supports loading certificate through physical `.pfx` files (X.509 certificates) or the PEM-encoded certificate through an environment variable.
-
-### PFX Certificate (Local Machine)
+The template supports loading certificate through physical `.pfx` files (X.509 certificates) locally.
 
 Specify the following app settings:
 
@@ -101,25 +97,6 @@ Specify the following app settings:
 {WARNING: Do not store DB_PASSWORD in source control}
 You are not required to use the password-protected PFX locally. If you do intend use the password-protected PFX file, you will need to set `DB_PASSWORD` as an environment variable in your terminal session (e.g. `export DB_PASSWORD=abc`) or through your terminal profile (e.g. `.bashrc`). Do not store the `.pfx` files to source control.
 {WARNING/}
-
-### PEM Certificate (Azure)
-
-Azure Functions supports client certificates on both the Consumption or App Service Plans.
-
-Specify the following app settings:
-
-- `DB_CERT_PEM`: the contents of the PEM-encoded certificate (`.pem` file) downloaded from RavenDB
-
-You can safely copy/paste the contents of the file into the environment variable in the Azure Portal without preserving newlines. If you are setting the value in the `local.settings.json` file, you will need to format the value for JSON using [a stringify tool][tool-stringify].
-
-{NOTE: What about uploading certificates to the portal?}
-
-Azure allows you to upload PFX certificates to the portal and load them using the `WEBSITE_LOAD_CERTIFICATES` app setting. However, this is much more difficult to use
-for Node.js functions. That method is better suited for .NET or Java functions. **Regardless, this is not yet supported on Linux Consumption-based plans.** For a discussion on this, reference [this issue on the Azure Functions repository][ms-issue-linux-certs-unsupported].
-
-The template is configured to use the PEM certificate method for ease of use across plan types and platforms.
-
-{NOTE/}
 
 {PANEL/}
 
@@ -135,7 +112,30 @@ Follow the guide of your choice in the Microsoft docs. Once the app is created, 
 1. Add an app setting for `DB_URLS` with the comma-separated list of RavenDB node URLs to connect to
 1. Add an app setting for `DB_NAME` with the database name to connect to
 
+![JS update Azure app settings](images/js-azure-app-settings.jpg)
+
 These values will override `local.settings.json` once deployed on Azure.
+
+### Configuring PEM Certificate in Azure
+
+Azure Functions supports client certificates on both the Consumption or App Service Plans.
+
+Specify the `DB_CERT_PEM` app settings:
+
+![JS add DB_CERT_PEM Azure app setting](images/js-azure-db-cert-pem.jpg)
+
+The value should be the contents of the PEM-encoded certificate (`.pem` file) downloaded from RavenDB.
+
+You can safely copy/paste the contents of the file into the environment variable in the Azure Portal without preserving newlines. If you are setting the value in the `local.settings.json` file, you will need to format the value for JSON using [a stringify tool][tool-stringify].
+
+{NOTE: What about uploading certificates to the portal?}
+
+Azure allows you to upload PFX certificates to the portal and load them using the `WEBSITE_LOAD_CERTIFICATES` app setting. However, this is much more difficult to use
+for Node.js functions. That method is better suited for .NET or Java functions. **Regardless, this is not yet supported on Linux Consumption-based plans.** For a discussion on this, reference [this issue on the Azure Functions repository][ms-issue-linux-certs-unsupported].
+
+The template is configured to use the PEM certificate method for ease of use across plan types and platforms.
+
+{NOTE/}
 
 {PANEL/}
 
@@ -150,9 +150,11 @@ The GitHub actions rely on having a secret environment variable `AZURE_FUNCTIONA
 
 1. Go to your Azure Functions dashboard in the Azure Portal
 1. Click "Get Publish Profile"
+    - ![JS download Azure publish profile](images/js-azure-download-publish-profile.jpg)
 1. Download the publish profile
 1. Open it and copy the full XML
 1. Go to your [GitHub repository's secrets settings][gh-secrets]
+    - ![add GitHub secret for publish profile](images/github-publish-profile-secret.jpg)
 1. Add a new secret: `AZURE_FUNCTIONAPP_PUBLISH_PROFILE`
 1. Paste in the value of the publish profile
 
@@ -168,9 +170,9 @@ If you have already committed and pushed, it is likely that the Action failed an
 
 If the deployment succeeds, the `HttpTrigger` endpoint should now be available at your Function URL.
 
-Once you open the URL in the browser, you should see a message like this:
+Once you open the URL in the browser, you should see a welcome screen like this with the connection information:
 
-`Connected successfully to Node A`
+![JS Azure func welcome screen](images/js-azure-func-success.jpg)
 
 This means your Azure Functions app is correctly configured and ready to work with RavenDB.
 
@@ -247,4 +249,5 @@ Learn more about [how to use the RavenDB Node.js client SDK][ravendb-nodejs]
 [npm-middleware]: https://npmjs.com/package/@senacor/azure-function-middleware
 [ravendb-nodejs]: /docs/article-page/nodejs/client-api/session/what-is-a-session-and-how-does-it-work
 [tool-stringify]: https://onlinestringtools.com/json-stringify-string
+[tool-degit]: https://npmjs.com/package/degit
 [ms-issue-linux-certs-unsupported]: https://github.com/Azure/Azure-Functions/issues/1644

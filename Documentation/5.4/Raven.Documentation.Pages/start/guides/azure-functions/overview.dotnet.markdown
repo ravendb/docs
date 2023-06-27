@@ -44,22 +44,26 @@ This will set up a local Azure Function app that we will deploy to your Azure ac
 
 ### Creating a New Repository from the Template
 
-1. Open the template in GitHub
-1. Click the green "Use this template" button
-1. Click "In a new repository"
+Depending on your environment, there are several ways to clone the template and initialize a new Git repository. The template repository lists each clone method you can copy & paste directly.
 
-GitHub will walk you through creating a new repository in your account or organization which you can clone.
-
-### Cloning the Repository
-
-Clone the repository with Git on your machine:
+**Using `npx` and the [degit][tool-degit] tool if you have Node.js installed:**
 
 {CODE-BLOCK:bash}
-$ git clone <GIT_CLONE_URL> my-project
-$ cd my-project
+npx degit ravendb/templates/azure-functions/csharp-http my-project
+cd my-project
+git init
 {CODE-BLOCK/}
 
-Replace `<GIT_CLONE_URL>` with the repository you are cloning, either the original template or your newly derived repository.
+**Using Bash or PowerShell:**
+
+{CODE-BLOCK:bash}
+git clone https://github.com/ravendb/templates my-project
+cd my-project
+git filter-branch --subdirectory-filter azure-functions/csharp-http
+rm -rf .git       # Bash
+rm -r -force .git # PowerShell
+git init
+{CODE-BLOCK/}
 
 ### Install Dependencies
 
@@ -76,6 +80,10 @@ You can start the Azure Function locally using:
 `func start`
 
 If you are using Visual Studio Code, you can also debug the function with F5 debugging.
+
+You will see the welcome screen if the template is set up correctly:
+
+![.NET template welcome screen](images/dotnet-func-start.jpg)
 
 {PANEL/}
 
@@ -149,6 +157,8 @@ Follow the guide of your choice in the Microsoft docs. Once the app is created, 
 
 Once the app is created in the portal, follow these steps to upload the client certificate and make it accessible to your Function.
 
+![.NET upload certificate to Azure](images/dotnet-azure-upload-cert.jpg)
+
 1. Go to your Azure Functions dashboard in the Portal
 1. Click "Certificates"
 1. Click the "Bring Your Own Certificate" tab
@@ -164,10 +174,14 @@ The Azure portal will only use the certificate password once on upload. You will
 
 ### Configure Application Settings
 
+![.NET update Azure app settings](images/dotnet-azure-app-settings.jpg)
+
 1. Go to your Azure Functions dashboard in the Portal
 1. Click the Application Settings menu
 1. Modify or add app setting for `WEBSITE_LOAD_CERTIFICATES` to the certificate thumbprint you copied
+    - ![.NET WEBSITE_LOAD_CERTIFICATES example](images/dotnet-azure-website-load-certificates.jpg)
 1. Modify or add app setting for `RavenSettings__CertThumbprint` with the certificate thumbprint you copied
+    - ![.NET WEBSITE_LOAD_CERTIFICATES example](images/dotnet-azure-ravensettings__certthumbprint.jpg)
 1. Modify or add app setting for `RavenSettings__Urls` with the comma-separated list of RavenDB node URLs to connect to
 1. Modify or add an app setting for `RavenSettings__DatabaseName` with the database name to connect to
 
@@ -193,6 +207,7 @@ The GitHub actions rely on having a secret environment variable `AZURE_FUNCTIONA
 1. Download the publish profile
 1. Open it and copy the full XML
 1. Go to your [GitHub repository's secrets settings][gh-secrets]
+    - ![add GitHub secret for publish profile](images/github-publish-profile-secret.jpg)
 1. Add a new secret: `AZURE_FUNCTIONAPP_PUBLISH_PROFILE`
 1. Paste in the value of the publish profile
 
@@ -208,9 +223,9 @@ If you have already committed and pushed, it is likely that the Action failed an
 
 If the deployment succeeds, the `HttpTrigger` endpoint should now be available at your Function URL.
 
-Once you open the URL in the browser, you should see a message like this:
+Once you open the URL in the browser, you should see a welcome screen like this with the connection information:
 
-`Connected successfully to RavenDB - Node A`
+![.NET Azure Function welcome connected screen](images/dotnet-azure-func-success.jpg)
 
 This means your Azure Functions app is correctly configured and ready to work with RavenDB.
 
@@ -309,3 +324,4 @@ Learn more about [how to use the RavenDB .NET client SDK][ravendb-dotnet]
 [docs-get-started]: /docs/article-page/csharp/start/getting-started
 [docs-client-certs]: /docs/article-page/csharp/client-api/setting-up-authentication-and-authorization
 [ravendb-dotnet]: /docs/article-page/csharp/client-api/session/what-is-a-session-and-how-does-it-work
+[tool-degit]: https://npmjs.com/package/degit
