@@ -230,7 +230,7 @@ to a different shard, and then associates the bucket with the new shard.
 
 {PANEL: Paging}
 
-from a user's perspective [paging](../indexes/querying/paging) 
+From a user's perspective [paging](../indexes/querying/paging) 
 is conducted similarly in sharded and non-sharded databases, using 
 the same API.  
 Paging is more costly in a sharded database, however, since the 
