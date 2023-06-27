@@ -6,9 +6,9 @@ Microsoft Azure Functions are a serverless platform that supports multiple langu
 
 Learn more about [how Microsoft Azure Functions work][az-funcs].
 
-### New to Azure Functions?
+<!-- ### New to Azure Functions?
 
-For a walkthrough and demo of getting started with Azure Functions, see [TBD](#).
+For a walkthrough and demo of getting started with Azure Functions, see [TBD](#). -->
 {NOTE/}
 
 In this guide, you will learn how to deploy a C# Azure Function using the [RavenDB Azure Functions C# template][template] that is connected to your RavenDB database. This guide assumes you are familiar with .NET development techniques and the basics of Azure Function apps.
@@ -69,15 +69,19 @@ git init
 
 After cloning the repository locally, restore .NET dependencies with `dotnet`:
 
-`dotnet restore`
+{CODE-BLOCK:bash}
+dotnet restore
+{CODE-BLOCK/}
 
-By default, the template is configured to connect to the Live Test instance of RavenDB and the Northwind database. Since this is only for testing purposes, next you will configure the app to connect to your existing RavenDB database.
+By default, the template is configured to connect to the Live Test instance of RavenDB. Since this is only for testing purposes, next you will configure the app to connect to your existing RavenDB database.
 
 ### Starting the Function
 
 You can start the Azure Function locally using:
 
-`func start`
+{CODE-BLOCK:bash}
+func start
+{CODE-BLOCK/}
 
 If you are using Visual Studio Code, you can also debug the function with F5 debugging.
 
@@ -204,6 +208,7 @@ The GitHub actions rely on having a secret environment variable `AZURE_FUNCTIONA
 
 1. Go to your Azure Functions dashboard in the Azure Portal
 1. Click "Get Publish Profile"
+    - ![download Azure publish profile](images/azure-download-publish-profile.jpg)
 1. Download the publish profile
 1. Open it and copy the full XML
 1. Go to your [GitHub repository's secrets settings][gh-secrets]

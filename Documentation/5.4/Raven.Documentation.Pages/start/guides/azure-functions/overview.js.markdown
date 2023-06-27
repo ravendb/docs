@@ -6,9 +6,9 @@ Microsoft Azure Functions is a serverless platform that supports multiple langua
 
 Learn more about [how Microsoft Azure Functions work][az-funcs].
 
-### New to Azure Functions?
+<!-- ### New to Azure Functions?
 
-For a walkthrough and demo of getting started with Azure Functions, see [TBD](#).
+For a walkthrough and demo of getting started with Azure Functions, see [TBD](#). -->
 {NOTE/}
 
 In this guide, you will learn how to deploy a Node.js Azure Function using the [RavenDB Azure Functions Node.js template][template] that is connected to your RavenDB database. This guide assumes you are familiar with Node.js development techniques and the basics of Azure Function apps.
@@ -56,10 +56,19 @@ After cloning the repository locally, install the Node.js dependencies with `npm
 
 {CODE-BLOCK:bash}
 npm install
-npm start
 {CODE-BLOCK/}
 
-By default, the template is configured to connect to the Live Test instance of RavenDB and you will see a welcome screen like this:
+By default, the template is configured to connect to the Live Test instance of RavenDB. Since this is only for testing purposes, next you will configure the app to connect to your existing RavenDB database.
+
+### Starting the Function
+
+You can start the Azure Function locally using:
+
+`npm start`
+
+If you are using Visual Studio Code, you can also debug the function with F5 debugging.
+
+You will see the welcome screen if the template is set up correctly:
 
 ![.NET template welcome screen](images/js-func-start.jpg)
 
@@ -150,7 +159,7 @@ The GitHub actions rely on having a secret environment variable `AZURE_FUNCTIONA
 
 1. Go to your Azure Functions dashboard in the Azure Portal
 1. Click "Get Publish Profile"
-    - ![JS download Azure publish profile](images/js-azure-download-publish-profile.jpg)
+    - ![download Azure publish profile](images/azure-download-publish-profile.jpg)
 1. Download the publish profile
 1. Open it and copy the full XML
 1. Go to your [GitHub repository's secrets settings][gh-secrets]
