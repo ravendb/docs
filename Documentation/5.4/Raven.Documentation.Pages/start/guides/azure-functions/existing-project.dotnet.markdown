@@ -308,7 +308,11 @@ This will only load by thumbprint if it is specified, meaning that you can still
 
 ### Load from Azure Key Vault
 
-Azure Key Vault is a paid service that allows you to store, retrieve, and rotate encrypted secrets including X.509 Certificates. This is recommended for more robust certificate handling. Using the XYZ Nuget package, you can load a certificate during initial startup:
+[Azure Key Vault][ms-az-key-vault] is a paid service that allows you to store, retrieve, and rotate encrypted secrets including X.509 Certificates. This is recommended for more robust certificate handling. 
+
+Using the [Azure Key Vault configuration provider][ms-az-key-vault-configuration], you can load `RavenSettings` from Key Vault. However, you will need to use the [CertificateClient][ms-az-key-vault-cert-client] to retrieve a certificate from the vault.
+
+For more, see the [sample code for using CertificateClient][ms-az-key-vault-sample-get].
 
 {PANEL/}
 
@@ -382,6 +386,10 @@ The `WEBSITE_LOAD_CERTIFICATES` setting is not supported yet for Linux-based con
 [az-func-di-ip]: https://learn.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection
 [az-func-di-oop]: https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide#dependency-injection
 [ms-download-dotnet]: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
+[ms-az-key-vault]: https://learn.microsoft.com/en-us/azure/key-vault/
+[ms-az-key-vault-configuration]: https://learn.microsoft.com/en-us/aspnet/core/security/key-vault-configuration
+[ms-az-key-vault-cert-client]: https://learn.microsoft.com/en-us/dotnet/api/overview/azure/security.keyvault.certificates-readme
+[ms-az-key-vault-sample-get]: https://github.com/Azure/azure-sdk-for-net/blob/0e2399f030aa365c13fcd06f891a57ee9154fc60/sdk/keyvault/Azure.Security.KeyVault.Certificates/samples/Sample1_HelloWorld.md
 [ms-powershell-get-cert]: https://learn.microsoft.com/en-us/powershell/module/pki/get-certificate
 [ms-powershell-import-pfxcert]: https://learn.microsoft.com/en-us/powershell/module/pki/import-certificate
 [ms-docs-aspnet-configuration]: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/#configuration-providers
