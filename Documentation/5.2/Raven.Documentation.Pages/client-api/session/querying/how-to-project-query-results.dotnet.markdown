@@ -179,7 +179,7 @@ select Name, Phone
 The `SelectFields` methods can also take a `ProjectionBehavior` parameter, which 
 determines whether the query should retrieve indexed data or directly retrieve 
 document data, and what to do when the data can't be retrieved. Learn more 
-[here](../../../client-api/session/querying/how-to-customize-query#projectionbehavior).  
+[here](../../../client-api/session/querying/how-to-customize-query#projection).  
 
 {CODE-BLOCK: csharp}
 IDocumentQuery<TProjection> SelectFields<TProjection>(ProjectionBehavior projectionBehavior,
