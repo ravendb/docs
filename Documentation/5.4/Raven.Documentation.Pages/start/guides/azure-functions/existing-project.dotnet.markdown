@@ -17,11 +17,10 @@ On this page:
 
 * [Before We Get Started](#before-we-get-started)
 * [Installing the RavenDB Client SDK](#installing-the-ravendb-client-sdk)
-* [Configuring Local Connection to RavenDB](#configuring-local-connection-to-ravendb)
-* [Creating Function App Resources in Azure](#creating-function-app-resources-in-azure)
-* [Deploying to Azure](#deploying-to-azure)
-* [Verify the Connection Works](#verify-the-connection-works)
-* [Using RavenDB in the Azure Functions App](#using-ravendb-in-the-azure-functions-app)
+* [Initializing the Document Store](#initializing-the-document-store)
+* [Adding Support for App Settings](#adding-support-for-app-settings)
+* [Configuring Support for Certificates](#configuring-support-for-certificates)
+* [Configuring Azure](#configuring-azure)
 
 {PANEL: Before We Get Started}
 
@@ -29,10 +28,11 @@ You will need the following before continuing:
 
 - A [RavenDB Cloud][cloud-signup] account or self-hosted client certificate
 - [Azure Function Core Tools][az-core-tools] 4.x+
-- [Git](https://git-scm.org)
 - [.NET 6.x][download-dotnet]
 
+{NOTE: Starting from scratch?}
 For a brand new Azure Functions app, we recommend using the [RavenDB Azure Functions .NET template](overview) which is set up with dependency injection and X.509 certificate support. You can also reference the template to see how the integration is set up.
+{NOTE/}
 
 {PANEL/}
 
@@ -86,6 +86,7 @@ In Azure Functions, the instance will be shared across function invocations if t
 {PANEL/}
 
 {PANEL: Adding Support for App Settings}
+
 You will need a way to pass options to the `DocumentStore` on your local machine and when deployed to Azure.
 
 The RavenDB.DependencyInjection package supports reading settings from `appsettings.json` for ASP.NET applications but Azure Function apps require some manually setup. To support Azure app settings, you will also need to add support to override those settings through environment variables using XXX Nuget package.
@@ -130,18 +131,126 @@ You can pass environment variables in your terminal profile, OS settings, Docker
 
 {PANEL: Configuring Support for Certificates}
 
+RavenDB uses client certificate authentication (mutual TLS) to secure your database connection. The .NET Client SDK supports `X509Certificate2` which is passed to the `DocumentStore.Certificate` option. There are multiple ways to load a certificate:
+
+- Load from .pfx files
+- Load from Certificate Store by thumbprint
+- Load from Azure Key Vault
+
+### Load from .pfx Files
+
+You can load PFX files with or without a password by providing the certificate path (relative to the output directory or absolute).
+
+{CODE-BLOCK:csharp}
+documentStore.Certificate = new X509Certificate2(@"C:\certs\raven.client.certificate.pfx");
+{CODE-BLOCK/}
+
+When using the RavenDB.DependencyInjection package, you can provide the path using `RavenSettings:CertFilePath` and the password using the .NET secrets tool:
+
+{CODE-BLOCK:bash}
+dotnet secrets init
+dotnet secrets add "RavenSettings:CertFilePath" "<CertPassword>"
+{CODE-BLOCK/}
+
+However, keep in mind that using an absolute physical file path or a user secret requires manual steps for every developer working on a project to configure.
+
+{WARNING: Avoid uploading or deploying .pfx files}
+PFX files can be compromised, especially if they are not password-protected. Using a physical file also makes it hard to manage and rotate when they expire. They are only recommended for ease-of-use on your local machine. For production, it is better to use the Certificate Store method or Azure Key Vault.
+{WARNING/}
+
+### Load from Certificate Store by Thumbprint
+
+For .NET-based Azure Functions, it's recommended to use the Windows Certificate Store since you can upload a password-protected .pfx file to the Azure Portal and load it programmatically without deploying any files.
+
+On your local machine, you can import a certificate on Windows by right-clicking the `.pfx` file and adding to your Current User store (`CurrentUser\My`):
+
+![Windows certificate import wizard](images/dotnet-certificate-install.jpg)
+
+The certificate thumbprint is displayed in the details when viewing the certificate information:
+
+![Windows certificate thumbprint](images/dotnet-certificate-thumbprint.jpg)
+
+You can also install and view certificates using PowerShell through the [Import-PfxCertificate][ms-powershell-import-pfxcert] and [Get-Certificate][ms-powershell-get-cert] cmdlets.
+
+To specify the thumbprint you can add a new `RavenSettings:CertThumbprint` setting and use the `IConfiguration.GetSection` method to retrieve it when building options. 
+
+{CODE-BLOCK:json}
+{
+  "RavenSettings": {
+    "Urls": ["https://a.free.mycompany.ravendb.cloud"],
+    "DatabaseName": "company_db",
+    "CertThumbprint": "<CERT_THUMBPRINT>"
+  }
+}
+{CODE-BLOCK/}
+
+Update your `DocumentStore` initialization to load the certificate by its thumbprint by searching the appropriate certificate store (`CurrentUser\My`).
+
+Here is how the starter template adds support for loading certificates by thumbprint:
+
+{CODE-BLOCK:csharp}
+public class Startup : FunctionsStartup
+{
+  public override void Configure(IFunctionsHostBuilder builder)
+  {
+    var context = builder.GetContext();
+
+    builder.Services.AddRavenDbDocStore(options =>
+  {
+    var certThumbprint = context.Configuration.GetSection("RavenSettings:CertThumbprint").Value;
+
+    if (!string.IsNullOrWhiteSpace(certThumbprint))
+    {
+      var cert = GetRavendbCertificate(certThumbprint);
+
+      options.Certificate = cert;
+    }
+  });
+
+    builder.Services.AddRavenDbAsyncSession();
+  }
+
+  private static X509Certificate2 GetRavendbCertificate(string certThumb)
+  {
+    X509Store certStore = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+    certStore.Open(OpenFlags.ReadOnly);
+
+    X509Certificate2Collection certCollection = certStore.Certificates
+        .Find(X509FindType.FindByThumbprint, certThumb, false);
+
+    // Get the first cert with the thumbprint
+    if (certCollection.Count > 0)
+    {
+      X509Certificate2 cert = certCollection[0];
+      return cert;
+    }
+
+    certStore.Close();
+
+    throw new Exception($"Certificate {certThumb} not found.");
+  }
+}
+{CODE-BLOCK/}
+
+This will only load by thumbprint if it is specified, meaning that you can still load by a physical `.pfx` path locally if you choose. On Azure, follow the steps below to upload a certificate.
+
+### Load from Azure Key Vault
+
+Azure Key Vault is a paid service that allows you to store, retrieve, and rotate encrypted secrets including X.509 Certificates. This is recommended for more robust certificate handling. Using the XYZ Nuget package, you can load a certificate during initial startup:
+
 {PANEL/}
 
 {PANEL: Configuring Azure}
-At this point, the local Function app is ready to be deployed. Before you can do that, you need to set up the Function App resources in Azure first.
 
-The template includes an ARM deployment option using the **Deploy to Azure** button. This will open the Azure Portal and walkthrough creating a default Function App with the required resources and app settings.
+You will need to configure certificate authentication in Azure. Depending on the method you choose above, the steps vary.
 
-Follow the guide of your choice in the Microsoft docs. Once the app is created, come back here to finish configuring your database connection.
+### Specifying Path to Certificate
+
+If you are deploying a physical `.pfx` file, you can specify the `RavenSettings__CertFilePath` and `RavenSettings__CertPassword` app settings.
 
 ### Upload Your Client Certificate (.pfx)
 
-Once the app is created in the portal, follow these steps to upload the client certificate and make it accessible to your Function.
+If you are loading a certificate by its thumbprint from the Certificate Store, follow the steps below to make your uploaded `.pfx` certificate available to your Azure Functions:
 
 ![.NET upload certificate to Azure](images/dotnet-azure-upload-cert.jpg)
 
@@ -177,127 +286,17 @@ These values will override `appsettings.json` once deployed on Azure.
 `WEBSITE_LOAD_CERTIFICATES` makes any specified certificates available in the Windows Certificate Store under the `CurrentUser\My` location. You can use the wildcard value `*` for `WEBSITE_LOAD_CERTIFICATES` to load ALL uploaded certificates for your Function App. However, it's recommended to be specific and use comma-separated thumbprints so that only allowed certificates are made available. This avoids accidentally exposing a certificate to the application that isn't explicitly used.
 {NOTE/}
 
-{PANEL/}
-
-{PANEL: Deploying to Azure}
-Once the Azure app is set up in the portal, you are ready to deploy your app. There are 3 main ways to deploy your new Azure Function app: GitHub actions, command-line, and an extension.
-
-The template has already been set up to use continuous deployment using GitHub Actions. For the other methods, see [Deploying Azure Function apps][az-deploy].
-
-### Configure GitHub Secrets
-
-The GitHub actions rely on having a secret environment variable `AZURE_FUNCTIONAPP_PUBLISH_PROFILE` in your repository secrets.
-
-1. Go to your Azure Functions dashboard in the Azure Portal
-1. Click "Get Publish Profile"
-    - ![download Azure publish profile](images/azure-download-publish-profile.jpg)
-1. Download the publish profile
-1. Open it and copy the full XML
-1. Go to your [GitHub repository's secrets settings][gh-secrets]
-    - ![add GitHub secret for publish profile](images/github-publish-profile-secret.jpg)
-1. Add a new secret: `AZURE_FUNCTIONAPP_PUBLISH_PROFILE`
-1. Paste in the value of the publish profile
-
-### Trigger a Deployment
-
-Your repository and GitHub action is now set up. To test the deployment, you can push a commit to the repository.
-
-If you have already committed and pushed, it is likely that the Action failed and you can re-run the job using the new secret variable.
+{WARNING: Not Supported on Linux-Based Consumption Plans}
+The `WEBSITE_LOAD_CERTIFICATES` setting is not supported yet for Linux-based consumption plans. To use this method, you will need to use a Windows-based plan.
+{WARNING/}
 
 {PANEL/}
 
-{PANEL: Verify the Connection Works}
+{PANEL: Next Steps}
 
-If the deployment succeeds, the `HttpTrigger` endpoint should now be available at your Function URL.
-
-Once you open the URL in the browser, you should see a welcome screen like this with the connection information:
-
-![.NET Azure Function welcome connected screen](images/dotnet-azure-func-success.jpg)
-
-This means your Azure Functions app is correctly configured and ready to work with RavenDB.
-
-{PANEL/}
-
-{PANEL: Using RavenDB in the Azure Functions App}
-
-The template sets up a singleton `DocumentStore` and dependency injection for the `IAsyncDocumentStore` per function invocation which you can inject into Function classes.
-
-### Example: Injecting `IAsyncDocumentSession`
-
-Pass the `IAsyncDocumentSession` in a function class constructor to make it available to trigger functions:
-
-{CODE-BLOCK:csharp}
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
-using Raven.Client.Documents.Session;
-using System.Threading.Tasks;
-
-namespace Company.FunctionApp
-{
-  public class HttpTrigger
-  {
-    private readonly IAsyncDocumentSession session;
-
-    public HttpTrigger(IAsyncDocumentSession session)
-    {
-      this.session = session;
-    }
-
-    [FunctionName("HttpTrigger")]
-    public async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-        ILogger log)
-    {
-      // Access `session` within the body of the function
-    }
-  }
-}
-
-{CODE-BLOCK/}
-
-You can also inject an `IDocumentStore` to get a reference to the current store instance.
-
-### Example: Loading a user
-
-{CODE-BLOCK:csharp}
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
-using Raven.Client.Documents.Session;
-using System.Threading.Tasks;
-
-namespace Company.FunctionApp
-{
-  public class HttpTrigger
-  {
-    private readonly IAsyncDocumentSession session;
-
-    public HttpTrigger(IAsyncDocumentSession session)
-    {
-      this.session = session;
-    }
-
-    [FunctionName("HttpTrigger")]
-    public async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "{id:int}")] int id,
-        ILogger log)
-    {
-      log.LogInformation("C# HTTP trigger function processed a request.");
-
-      var user = await session.Load<object>("users/" + id);
-
-      return new OkObjectResult(user);
-    }
-  }
-}
-{CODE-BLOCK/}
-
-Learn more about [how to use the RavenDB .NET client SDK][ravendb-dotnet]
+- Learn more about [how to use the RavenDB .NET client SDK][ravendb-dotnet]
+- [Troubleshoot](troubleshooting) issues with RavenDB and Azure Functions
+- [Deployment Considerations](deployment-considerations) for RavenDB and Azure Functions
 
 {PANEL/}
 
@@ -316,4 +315,6 @@ Learn more about [how to use the RavenDB .NET client SDK][ravendb-dotnet]
 
 [az-func-di-ip]: https://learn.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection
 [az-func-di-oop]: https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide#dependency-injection
+[ms-powershell-get-cert]: https://learn.microsoft.com/en-us/powershell/module/pki/get-certificate
+[ms-powershell-import-pfxcert]: https://learn.microsoft.com/en-us/powershell/module/pki/import-certificate
 [docs-creating-document-store]: /docs/article-page/csharp/client-api/creating-document-store
