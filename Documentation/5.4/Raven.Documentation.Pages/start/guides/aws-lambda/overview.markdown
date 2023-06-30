@@ -72,7 +72,9 @@ git init
 
 After cloning the repository locally, restore .NET dependencies with `dotnet`:
 
-`dotnet restore`
+{CODE-BLOCK:bash}
+dotnet restore
+{CODE-BLOCK/}
 
 By default, the template is configured to connect to the Live Test instance of RavenDB and the Northwind database. Since this is only for testing purposes, next you will configure the app to connect to your existing RavenDB database.
 
@@ -82,11 +84,15 @@ You will need the .NET Global Tools for Lambda installed to perform the deployme
 
 Install the `Amazon.Lambda.Tools` package:
 
-`dotnet tool install -g Amazon.Lambda.Tools`
+{CODE-BLOCK:bash}
+dotnet tool install -g Amazon.Lambda.Tools`
+{CODE-BLOCK/}
 
 Or make sure it's updated if you already have it:
 
-`dotnet tool update -g Amazon.Lambda.Tools`
+{CODE-BLOCK:bash}
+dotnet tool update -g Amazon.Lambda.Tools
+{CODE-BLOCK/}
 
 ### Set Up Your Environment
 
@@ -104,14 +110,16 @@ AWS libraries, SDKs and this template rely on several environmental artifacts to
 
 **Using an environment variable:** Set the `AWS_REGION` environment variable in your terminal session or profile.
 
-Learn more about setting up AWS credentials or the default AWS region.
+Learn more about [setting up AWS credentials or the default AWS region][aws-dotnet-project-setup].
 
 {PANEL/}
 
 
 {PANEL: Configuring Local Connection to RavenDB}
 
-To configure the local version of your AWS Lambda function to connect to RavenDB, you will need to update the `appsettings.json` file with the `RavenSettings.Urls` value and `RavenSettings.DatabaseName` value. The default is:
+To configure the local version of your AWS Lambda function to connect to RavenDB, you will need to update the `appsettings.json` file with the `RavenSettings.Urls` value and `RavenSettings.DatabaseName` value. 
+
+An example `appsettings.json` connecting to the RavenDB live test cluster might look like:
 
 {CODE-BLOCK:json}
 {
@@ -124,12 +132,11 @@ To configure the local version of your AWS Lambda function to connect to RavenDB
   "AllowedHosts": "*",
   "RavenSettings": {
     "Urls": ["http://live-test.ravendb.net"],
-    "DatabaseName": "Northwind",
+    "DatabaseName": "demo",
     "CertFilePath": "",
     "CertPassword": ""
   }
 }
-
 {CODE-BLOCK/}
 
 If using an authenticated RavenDB URL, you will need a local client certificate. Learn more about [configuring client authentication for RavenDB][docs-client-certs].
@@ -433,6 +440,7 @@ public class Functions
 [download-dotnet]: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
 [aws-lambda]: https://docs.aws.amazon.com/lambda/latest/dg/welcome.html
 [aws-dotnet]: https://aws.amazon.com/sdk-for-net/
+[aws-dotnet-project-setup]: https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config.html
 [aws-dotnet-lambda]: https://docs.aws.amazon.com/lambda/latest/dg/csharp-package-cli.html
 [aws-vs-code]: https://aws.amazon.com/visualstudiocode/
 [aws-vs]: https://aws.amazon.com/visualstudio/
