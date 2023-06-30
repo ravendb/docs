@@ -209,8 +209,8 @@ The dependency injection logic will automatically load the certificate from this
 If the `.pfx` file requires a password, provide it using the .NET secrets tool by setting `RavenSettings:CertPassword`:
 
 {CODE-BLOCK:bash}
-dotnet secrets init
-dotnet secrets add "RavenSettings:CertPassword" "<CertPassword>"
+dotnet user-secrets init
+dotnet user-secrets set "RavenSettings:CertPassword" "<CERT_PASSWORD>"
 {CODE-BLOCK/}
 
 However, keep in mind that using an absolute physical file path or a user secret requires manual steps for every developer working on a project to configure.
