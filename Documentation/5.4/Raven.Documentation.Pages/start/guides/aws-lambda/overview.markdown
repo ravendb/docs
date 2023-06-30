@@ -47,28 +47,34 @@ This will set up a local Lambda C# function that we will deploy to your AWS acco
 
 ### Creating a New Repository from the Template
 
-1. Open the template in GitHub
-1. Click the green "Use this template" button
-1. Click "In a new repository"
+Depending on your environment, there are several ways to clone the template and initialize a new Git repository. The template repository lists each clone method you can copy & paste directly.
 
-GitHub will walk you through creating a new repository in your account or organization which you can clone.
-
-### Cloning the Repository
-
-Clone the repository with Git on your machine:
+**Using `npx` and the [degit][tool-degit] tool if you have Node.js installed:**
 
 {CODE-BLOCK:bash}
-$ git clone <GIT_CLONE_URL> my-project
-$ cd my-project
+npx degit ravendb/templates/aws-lambda/csharp-http my-project
+cd my-project
+git init
 {CODE-BLOCK/}
 
-Replace `<GIT_CLONE_URL>` with the repository you are cloning, either the original template or your newly derived repository.
+**Using Bash or PowerShell:**
+
+{CODE-BLOCK:bash}
+git clone https://github.com/ravendb/templates my-project
+cd my-project
+git filter-branch --subdirectory-filter aws-lambda/csharp-http
+rm -rf .git       # Bash
+rm -r -force .git # PowerShell
+git init
+{CODE-BLOCK/}
 
 ### Install Dependencies
 
 After cloning the repository locally, restore .NET dependencies with `dotnet`:
 
-`dotnet restore`
+{CODE-BLOCK:bash}
+dotnet restore
+{CODE-BLOCK/}
 
 By default, the template is configured to connect to the Live Test instance of RavenDB and the Northwind database. Since this is only for testing purposes, next you will configure the app to connect to your existing RavenDB database.
 
@@ -78,11 +84,15 @@ You will need the .NET Global Tools for Lambda installed to perform the deployme
 
 Install the `Amazon.Lambda.Tools` package:
 
-`dotnet tool install -g Amazon.Lambda.Tools`
+{CODE-BLOCK:bash}
+dotnet tool install -g Amazon.Lambda.Tools`
+{CODE-BLOCK/}
 
 Or make sure it's updated if you already have it:
 
-`dotnet tool update -g Amazon.Lambda.Tools`
+{CODE-BLOCK:bash}
+dotnet tool update -g Amazon.Lambda.Tools
+{CODE-BLOCK/}
 
 ### Set Up Your Environment
 
@@ -100,14 +110,16 @@ AWS libraries, SDKs and this template rely on several environmental artifacts to
 
 **Using an environment variable:** Set the `AWS_REGION` environment variable in your terminal session or profile.
 
-Learn more about setting up AWS credentials or the default AWS region.
+Learn more about [setting up AWS credentials or the default AWS region][aws-dotnet-project-setup].
 
 {PANEL/}
 
 
 {PANEL: Configuring Local Connection to RavenDB}
 
-To configure the local version of your AWS Lambda function to connect to RavenDB, you will need to update the `appsettings.json` file with the `RavenSettings.Urls` value and `RavenSettings.DatabaseName` value. The default is:
+To configure the local version of your AWS Lambda function to connect to RavenDB, you will need to update the `appsettings.json` file with the `RavenSettings.Urls` value and `RavenSettings.DatabaseName` value. 
+
+An example `appsettings.json` connecting to the RavenDB live test cluster might look like:
 
 {CODE-BLOCK:json}
 {
@@ -120,12 +132,11 @@ To configure the local version of your AWS Lambda function to connect to RavenDB
   "AllowedHosts": "*",
   "RavenSettings": {
     "Urls": ["http://live-test.ravendb.net"],
-    "DatabaseName": "Northwind",
+    "DatabaseName": "demo",
     "CertFilePath": "",
     "CertPassword": ""
   }
 }
-
 {CODE-BLOCK/}
 
 If using an authenticated RavenDB URL, you will need a local client certificate. Learn more about [configuring client authentication for RavenDB][docs-client-certs].
@@ -429,6 +440,7 @@ public class Functions
 [download-dotnet]: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
 [aws-lambda]: https://docs.aws.amazon.com/lambda/latest/dg/welcome.html
 [aws-dotnet]: https://aws.amazon.com/sdk-for-net/
+[aws-dotnet-project-setup]: https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config.html
 [aws-dotnet-lambda]: https://docs.aws.amazon.com/lambda/latest/dg/csharp-package-cli.html
 [aws-vs-code]: https://aws.amazon.com/visualstudiocode/
 [aws-vs]: https://aws.amazon.com/visualstudio/
@@ -445,3 +457,4 @@ public class Functions
 [ravendb-dotnet]: /docs/article-page/csharp/client-api/session/what-is-a-session-and-how-does-it-work
 [kralizek]: https://github.com/Kralizek/AWSSecretsManagerConfigurationExtensions
 [tool-base64]: https://www.base64encode.org/
+[tool-degit]: https://npmjs.com/package/degit
