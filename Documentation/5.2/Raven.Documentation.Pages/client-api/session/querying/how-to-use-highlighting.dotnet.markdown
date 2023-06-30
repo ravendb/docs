@@ -3,14 +3,14 @@
 
 {NOTE: }
 
-* When making a [full-text search query](../../../client-api/session/querying/how-to-use-search),  
+* When making a [Full-Text Search query](../../../client-api/session/querying/how-to-use-search),  
   in addition to retrieving documents that contain the searched terms in the results,  
   you can also request to get a __list of text fragments that highlight the searched terms__.
 
 * The highlighted terms can enhance user experience when searching for documents with specific content.
 
 * This article shows highlighting search results when making a __dynamic query__.  
-  For highlighting search results when querying an __index__ see [highlight index search results](../../../).
+  For highlighting search results when querying an __index__ see [highlight index query results](../../../).
 
 ---
 
@@ -148,7 +148,7 @@ include highlight(Notes, 35, 2)
 | __path__           | `Expression<Func<T, object>>` | Path to the field that contains the searched terms to highlight.                          |
 | __fragmentLength__ | int                           | Maximum length of a text fragment. Must be `>= 18`.                                       |
 | __fragmentCount__  | int                           | Maximum number of text fragments that will be returned.                                   |
-| __options__        | `HighlightingOptions`         | Customizing options (see class fields below).                                             |
+| __options__        | `HighlightingOptions`         | Customizing options.                                                                      |
 | __highlightings__  | `Highlightings`               | An 'out' param that will contain the highlighted text fragments for each returned result. |
 
 <br>
@@ -157,11 +157,11 @@ __Highlighting options__:
 
 {CODE syntax_2@ClientApi\Session\Querying\HowToUseHighlighting.cs /}
 
-| Option       | Type       | Description                                                                                                                                                                                                                           |
-|--------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __GroupKey__ | string     | Grouping key for the results.<br>Used when highlighting query results from a __map-reduce index__.<br>If `null` results are grouped by document ID (default).<br>Note: Highlighting is Not available for dynamic aggregation queries. |
-| __PreTags__  | `string[]` | Array of pre tags used to wrap the highlighted search term in the text fragment.                                                                                                                                                      |
-| __PostTags__ | `string[]` | Array of post tags used to wrap the highlighted search term in the text fragment.                                                                                                                                                     |
+| Option       | Type      | Description                                                                                                                                                                                                                           |
+|--------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __GroupKey__ | string    | Grouping key for the results.<br>Used when highlighting query results from a __map-reduce index__.<br>If `null` results are grouped by document ID (default).<br>Note: Highlighting is Not available for dynamic aggregation queries. |
+| __PreTags__  | string[]  | Array of PRE tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                    |
+| __PostTags__ | string[]  | Array of POST tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                   |
 
 <br>
 

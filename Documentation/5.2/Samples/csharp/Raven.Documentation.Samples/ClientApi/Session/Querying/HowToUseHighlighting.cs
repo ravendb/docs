@@ -29,7 +29,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Search(x => x.Notes, "sales")
                          // Request to highlight the searched term by calling 'Highlight'. Pass:
                          //   * The document-field name in which we search (e.g. 'Notes') 
-                         //   * Max length of each string fragment (e.g. 35)
+                         //   * Max length of each text fragment (e.g. 35)
                          //   * Max number of fragments to return per document (e.g. 4)
                          //   * An out param for getting the highlighted text fragments (e.g. 'salesHighlights')
                         .Highlight(x => x.Notes, 35, 4, out Highlightings salesHighlights)
@@ -42,13 +42,13 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     // ================
                     
                     // 'employeesResults' contains all Employee DOCUMENTS that have 'sales' in their 'Notes' field.
-                    // 'salesHighlights' contains the text FRAGMENTS that highlight the 'sales' string.
+                    // 'salesHighlights' contains the text FRAGMENTS that highlight the 'sales' term.
                     
                     StringBuilder builder = new StringBuilder().AppendLine("<ul>");
 
                     foreach (var employee in employeesResults)
                     {
-                        // Call 'GetFragments' to get all fragments for the specified employee id
+                        // Call 'GetFragments' to get all fragments for the specified employee Id
                         string[] fragments = salesHighlights.GetFragments(employee.Id);
                         foreach (var fragment in fragments)
                         {
@@ -89,7 +89,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Search(x => x.Notes, "sales")
                          // Request to highlight the searched term by calling 'Highlight'. Pass:
                          //   * The document-field name in which we search (e.g. 'Notes') 
-                         //   * Max length of each string fragment (e.g. 35)
+                         //   * Max length of each text fragment (e.g. 35)
                          //   * Max number of fragments to return per document (e.g. 4)
                          //   * An out param for getting the highlighted text fragments (e.g. 'salesHighlights')
                         .Highlight(x => x.Notes, 35, 4, out Highlightings salesHighlights)
@@ -110,7 +110,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Search(x => x.Notes, "sales")
                          // Request to highlight the searched term by calling 'Highlight'. Pass:
                          //   * The document-field name in which we search (e.g. 'Notes') 
-                         //   * Max length of each string fragment (e.g. 35)
+                         //   * Max length of each text fragment (e.g. 35)
                          //   * Max number of fragments to return per document (e.g. 4)
                          //   * An out param for getting the highlighted text fragments (e.g. 'salesHighlights')
                         .Highlight(x => x.Notes, 35, 4, out Highlightings salesHighlights)
@@ -172,6 +172,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     // =================================================================
                     HighlightingOptions tagsToUse = new HighlightingOptions
                     {
+                        // Provide strings of your choice to 'PreTags' & 'PostTags', e.g.:
                         // The first term searched for will be wrapped with '+++'
                         // the second term searched for will be wrapped with '<<<' & '>>>'
                         PreTags = new[] { "+++", "<<<" },
