@@ -325,7 +325,7 @@ Specify the path to the file relative to your `.csproj`:
 
 You can choose whether to set this in production through the `RavenSettings__CertPublicKeyFilePath` or in your `appsettings.json` file.
 
-The `RavenSettings__CertPrivateKey` environment variable should be set to a [base-64 encoded string][tool-base64] of the `.key` file from the RavenDB client certificate package.
+The `RavenSettings__CertPrivateKey` environment variable should be set to the contents of the `.key` file from the RavenDB client certificate package.
 
 **Example value:**
 
