@@ -47,22 +47,26 @@ This will set up a local Lambda C# function that we will deploy to your AWS acco
 
 ### Creating a New Repository from the Template
 
-1. Open the template in GitHub
-1. Click the green "Use this template" button
-1. Click "In a new repository"
+Depending on your environment, there are several ways to clone the template and initialize a new Git repository. The template repository lists each clone method you can copy & paste directly.
 
-GitHub will walk you through creating a new repository in your account or organization which you can clone.
-
-### Cloning the Repository
-
-Clone the repository with Git on your machine:
+**Using `npx` and the [degit][tool-degit] tool if you have Node.js installed:**
 
 {CODE-BLOCK:bash}
-$ git clone <GIT_CLONE_URL> my-project
-$ cd my-project
+npx degit ravendb/templates/aws-lambda/csharp-http my-project
+cd my-project
+git init
 {CODE-BLOCK/}
 
-Replace `<GIT_CLONE_URL>` with the repository you are cloning, either the original template or your newly derived repository.
+**Using Bash or PowerShell:**
+
+{CODE-BLOCK:bash}
+git clone https://github.com/ravendb/templates my-project
+cd my-project
+git filter-branch --subdirectory-filter aws-lambda/csharp-http
+rm -rf .git       # Bash
+rm -r -force .git # PowerShell
+git init
+{CODE-BLOCK/}
 
 ### Install Dependencies
 
@@ -445,3 +449,4 @@ public class Functions
 [ravendb-dotnet]: /docs/article-page/csharp/client-api/session/what-is-a-session-and-how-does-it-work
 [kralizek]: https://github.com/Kralizek/AWSSecretsManagerConfigurationExtensions
 [tool-base64]: https://www.base64encode.org/
+[tool-degit]: https://npmjs.com/package/degit
