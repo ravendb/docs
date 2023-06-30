@@ -457,8 +457,9 @@ public class Functions
 
 {PANEL: Next Steps}
 
-* [Configure AWS Secrets Manager support][docs-lambda-secrets]
-* [Use the RavenDB .NET client SDK][ravendb-dotnet]
+* For more robust certificate handling, [configure AWS Secrets Manager support][docs-lambda-secrets]
+* Learn more about [deployment considerations](deployment) for RavenDB and AWS Lambda
+* Learn more about [using the RavenDB .NET client SDK][ravendb-dotnet]
 
 {PANEL/}
 
