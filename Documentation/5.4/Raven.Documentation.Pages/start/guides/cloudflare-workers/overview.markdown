@@ -28,8 +28,8 @@ In this guide, you will learn how deploy a Cloudflare Worker using the [RavenDB 
 
 You will need the following before continuing:
 
+- A [RavenDB Cloud][cloud-signup] account or self-hosted client certificate
 - A free or paid [Cloudflare account](https://cloudflare.com)
-- A [RavenDB Cloud](https://cloud.ravendb.net) account or self-hosted client certificate
 - [Git](https://git-scm.org)
 - [Node.js](https://nodejs.com) 16+ with npm
 
@@ -274,6 +274,7 @@ router.get("/users/:id", async (request: IRequest, env: Env) => {
 
 {PANEL/}
 
+[cloud-signup]: https://cloud.ravendb.net?utm_source=ravendb_docs&utm_medium=web&utm_campaign=howto_template_cloudflare_worker&utm_content=cloud_signup
 [template]: https://github.com/ravendb/template-cloudflare-worker
 [deploy-with-workers]: https://deploy.workers.cloudflare.com/?url=https://github.com/ravendb/template-cloudflare-worker
 [live-test]: http://live-test.ravendb.net
