@@ -18,6 +18,12 @@
         "Mappings": []
     },
     {
+        "Path": "deployment.markdown",
+        "Name": "Deployment Considerations",
+        "DiscussionId": "f0f81c13-39f0-4497-bd7f-49752d432b6f",
+        "Mappings": []
+    },
+    {
         "Path": "troubleshooting.markdown",
         "Name": "Troubleshooting",
         "DiscussionId": "e4ec5be7-def7-453f-8734-7ec62e31e708",
