@@ -18,11 +18,11 @@ For a walkthrough and demo of getting started with Cloudflare Workers, see [TBD]
 In this guide, you will learn how connect to RavenDB from an existing Cloudflare Worker. This guide assumes you are familiar with Node.js development techniques and the basics of Cloudflare Workers.
 
 * [Before We Get Started](#before-we-get-started)
-* [Create a Cloudflare RavenDB Worker project](#create-a-cloudflare-ravendb-worker-project)
+* [Installing the RavenDB Client SDK](#installing-the-ravendb-client-sdk)
+* [Initializing the Document Store](#initializing-the-document-store)
 * [Updating Database Connection Settings](#updating-database-connection-settings)
-* [Connecting to an Authenticated RavenDB Cluster](#connecting-to-an-authenticated-ravendb-cluster)
-* [Deploying to Production](#deploying-to-production)
-* [Using RavenDB in the Worker](#using-ravendb-in-the-worker)
+* [Configuring Support for Certificates](#configuring-support-for-certificates)
+* [Configuring Cloudflare](#configuring-cloudflare)
 
 {PANEL: Before We Get Started}
 
@@ -34,108 +34,161 @@ You will need the following before continuing:
 
 {PANEL/}
 
-{PANEL: Create a Cloudflare RavenDB Worker project}
+{PANEL: Installing the RavenDB Client SDK}
 
-There are two primary ways to get started:
+Get started by installing the [ravendb][npm-ravendb-client] npm package in your project which provides the Node.js client SDK.
 
-- Using the Cloudflare Deploy with Workers wizard
-- Using npm to initialize an empty template
+Using npm:
 
-### Using Deploy with Workers wizard
+{CODE-BLOCK:bash}
+npm install ravendb
+{CODE-BLOCK/}
 
-<!-- TODO: Embed YT video how-to -->
-
-Using [Deploy with Workers][deploy-with-workers] step-by-step wizard is the simplest method but requires a GitHub account and authorized access, which may not be applicable in all situations. For example, this method will not work with GitLab or GitHub Enterprise.
-
-![Screenshot of Deploy with Cloudflare Wizard][image-template-deploy-cloudflare]
-
-The wizard will guide you through deploying a Worker and hooking up a new repo with continuous deployment through GitHub actions. It will also automatically set up your repository secrets.
-
-{WARNING: Forking the Template}
-The deployment wizard will fork the GitHub repository into your GitHub user account (not an organization). You will want to manually rename the repository and [unmark it as a "Template"][gh-template-repo] in the repository settings before cloning it.
-{WARNING/}
-
-### Using npm to initialize an empty template
-
-If you do not want to use the wizard, you can use npm and Cloudflare's `create-cloudflare` package to create a new Worker using [the RavenDB template][template]:
-
-`npm init cloudflare my-project https://github.com/ravendb/template-cloudflare-worker`
-
-This will generate all the required code and run `npm install` for you to set up a new project on your computer. You can then push to GitHub or any other source provider from there.
-
-### Test the template locally
-
-By default, the template is set up to connect to the [RavenDB Live Test cluster][live-test].
-
-You can run the template locally to test the connection:
-
-`npm run dev`
-
-{NOTE: First-Time Wrangler Setup}
-If this is the first time you are connecting using the Wrangler CLI, it will open a browser window for you to authenticate using your Cloudflare account. After you sign in, you can return to the terminal.
+{NOTE: }
+Support for Cloudflare Workers was added in `5.2.8+`.
 {NOTE/}
 
-Open the browser by pressing the "B" key (e.g. http://localhost:7071) and you should see a screen like this:
+{PANEL/}
 
-![Successfully connected to RavenDB welcome screen from Cloudflare][image-template-welcome-unauthenticated]
+{PANEL: Initializing the Document Store}
 
-This means you have successfully connected to your RavenDB database.
+Import the `DocumentStore` from `ravendb` package to create a new instance with the required configuration and initialize your connection to RavenDB by calling the `initialize` method. You can then export a function to initialize a document session to use in your Cloudflare Worker.
+
+Example `db.ts` TypeScript module:
+
+{CODE-BLOCK:javascript}
+import { DocumentStore } from "ravendb";
+
+const documentStore = new DocumentStore(
+  ["https://a.free.mycompany.ravendb.cloud"],
+  "demo",
+  // authOptions
+};
+
+var initialized = false;
+
+function initialize() {
+    if (initialized) return;
+    documentStore.initialize();
+    initialized = true;
+}
+
+export function openAsyncSession() {
+    if (!initialized) {
+        initialize();
+    }
+
+    return documentStore.openAsyncSession();
+}
+{CODE-BLOCK/}
+
+For more on what options are available, see [Creating a Document Store][docs-creating-document-store].
+
+You can set options manually but it's more likely you'll want to set config variables in Wrangler or in Cloudflare to customize the document store initialization.
 
 {PANEL/}
 
 {PANEL: Updating Database Connection Settings}
 
-The `wrangler.toml` file contains configuration for the worker. Here's an example:
+### Enable Node Compatibility
+
+Update your `wrangler.toml` file to enable Node.js compatibility by setting `node_compat` to `true`:
 
 {CODE-BLOCK:json}
 name = "ravendb-worker"
 main = "./src/index.ts"
 node_compat = true
 compatibility_date = "2022-05-03"
+{CODE-BLOCK/}
 
-# mtls_certificates = [
-#  { binding = "DB_CERT", certificate_id = "<CERTIFICATE_ID>" } 
-# ]
+This setting is required for the RavenDB Node.js SDK to operate correctly. If this is `false` or missing, you will experience runtime exceptions.
 
+### Define environment variables
+
+You will also want to set environment variables to pass database information such as the URLs and database name:
+
+{CODE-BLOCK:json}
 # Define top-level environment variables
 # under the `[vars]` block using
 # the `key = "value"` format
 [vars]
-DB_URLS = ""
-DB_NAME = ""
+DB_URLS = "https://a.free.company.ravendb.cloud"
+DB_NAME = "dev"
 
 # Override values for `--env production` usage
-[env.production]
-name = "ravendb-worker-production"
 [env.production.vars]
-DB_URLS = ""
-DB_NAME = ""
+DB_URLS = "https://a.free.company.ravendb.cloud,https://b.free.company.ravendb.cloud"
+DB_NAME = "prod"
 {CODE-BLOCK/}
 
-The `node_compat = true` setting is required for the RavenDB Node.js SDK to operate correctly. If this is `false` or missing, you will experience runtime exceptions.
-
-There are two variables defined that are used by the template:
+There are two variables defined above:
 
 - `DB_URLS` -- These are the node URLs for your RavenDB instance (Cloud or self-hosted). The values are comma-separated
 - `DB_NAME` -- This is the default database to connect to
  
-When left blank, the Live Test connection settings are used. The defaults are under `[vars]` and overriden in `[env.production.vars]`.
+The defaults are under `[vars]` and overriden in `[env.production.vars]`.
 
 {NOTE: wrangler.toml overrides on deployment}
 You can also define settings within the Cloudflare worker dashboard. The values in the `wrangler.toml` will overwrite those values *on new deployment*. Keep this in mind when deciding where to define the variables!
 {NOTE/}
 
-{WARNING: Make sure the named database exists}
+Variables defined here will be exposed on the `env` variable passed to the root `fetch` function of the Worker.
 
-For brand new projects, the database you connect to may not exist yet. Follow the [create database procedure][docs-create-db] to create a new database otherwise you will encounter a `DatabaseDoesNotExist` exception on startup.
+For example, a barebones `index.ts` ES module could look like:
 
-{WARNING/}
+{CODE-BLOCK:javascript}
+import { DocumentStore } from "ravendb";
 
-Variables defined here, including the `DB_CERT` mTLS binding, will be exposed as `process.env` variables you can access in the worker at runtime. You'll use the mTLS binding when connecting to an authenticated cluster using your client certificate.
+let documentStore: DocumentStore;
+let initialized = false;
+
+function initialize({ urls, databaseName }) {
+    if (initialized) return;
+    documentStore = new DocumentStore(
+      urls,
+      databaseName
+    };
+    documentStore.initialize();
+    initialized = true;
+}
+
+function openAsyncSession() {
+    if (!initialized) {
+        throw new Error("DocumentStore has not been initialized");
+    }
+
+    return documentStore.openAsyncSession();
+}
+
+export default {
+    fetch(req, env, ctx) {
+        const { DB_URLS, DB_NAME } = env;
+
+        initialize({ 
+            urls: DB_URLS.split(","), 
+            databaseName: DB_NAME
+        });
+
+        ctx.db = openAsyncSession();
+
+        // Handle request
+        // ...
+        return handleRequest(req, env, ctx);
+    }
+}
+{CODE-BLOCK/}
+
+This creates a session-per-request and avoids re-initializing the document store. The request handler can then pass the document session to middleware or route handlers as needed. The [gh-ravendb-template][gh-ravendb-template] uses the [itty-router][npm-itty-router] package to make this easier.
+
+{NOTE: Cloudflare Worker requests are isolated}
+Cloudflare Worker invocations do not incur cold start cost like other serverless platforms. However, requests are isolated and modules are not shared between requests. This means that document store initialization is incurred every request, however the overhead is minimal.
+
+For document caching during a session or across requests, using Cloudflare's KV natively is not yet supported by the RavenDB Node.js client SDK but could be implemented manually through application logic.
+{NOTE/}
 
 {PANEL/}
 
-{PANEL: Connecting to an Authenticated RavenDB Cluster}
+{PANEL: Configuring Support for Certificates}
 
 Client certificate authentication is handled through [Cloudflare mTLS authentication for Workers][cf-mtls-worker]. You will need to upload your certificate to your Cloudflare account so that it can be accessed and bound to your Worker.
 
@@ -163,7 +216,9 @@ This guide will use `npx` to execute wrangler to ensure the commands work across
 
 In the project directory, run:
 
-`npx wrangler mtls-certificate upload --cert path/to/db.crt --key path/to/db.key --name ravendb_cert`
+{CODE-BLOCK:bash}
+npx wrangler mtls-certificate upload --cert path/to/db.crt --key path/to/db.key --name ravendb_cert
+{CODE-BLOCK/}
 
 This will display output like:
 
@@ -179,7 +234,7 @@ Copy the `<CERTIFICATE_ID>` in the output for the next step.
 
 ### Setup mTLS binding in wrangler
 
-Cloudflare Workers use the `wrangler.toml` file for configuration. You will need to add a "binding" so that the certificate is made available and used by the Worker at runtime.
+You will need to add a mTLS "binding" so that the certificate is made available and used by the Worker at runtime.
 
 Edit your `wrangler.toml` file to update the following:
 
@@ -189,106 +244,105 @@ mtls_certificates = [
 ]
 {CODE-BLOCK/}
 
-It is important to maintain the `DB_CERT` name here as it is expected by the template. Replace `<CERTIFICATE_ID>` with the Certificate ID you copied from the previous step.
+Replace `<CERTIFICATE_ID>` with the Certificate ID you copied from the previous step.
 
 Be sure to also update the `DB_URLS` and `DB_NAME` variables for your cluster.
 
 For a deeper dive on what this is doing, you can [read more][cf-mtls-worker] about how mTLS bindings work in Cloudflare Workers.
 
-### Testing Certificate Authentication Locally
+### Set custom fetcher for DocumentStore
 
-Once the certificate binding is added, you will be able to start the Worker locally and test the certificate authentication.
+Once the certificate binding is added, Cloudflare will create a `DB_CERT` object exposed through `env`. You can then bind the provided `env.DB_CERT.fetch` custom fetch function to the `DocumentStore` using the `DocumentConventions.customFetch` option.
 
-`npm run dev`
-
-This will launch `wrangler` in development mode. It may require you to sign in to your Cloudflare account before continuing.
-
-{NOTE: }
-The `env.DB_CERT` binding will not be available in local mode (`--local`), this is a known issue with Wrangler. The template is configured to start Wrangler in non-local mode.
-{NOTE/}
-
-You should see the following message in the console:
-
-> A bound cert was found and will be used for RavenDB requests.
-
-Once started, the Worker will be running on a localhost address.
-
-Open the browser by pressing the "B" key (e.g. http://localhost:7071) and you should see a screen like this:
-
-![Successfully connected to RavenDB welcome screen from Cloudflare][image-template-welcome-authenticated]
-
-If you see a green check and the correct connection details, this means you have successfully connected to your RavenDB database.
-
-{PANEL/}
-
-
-{PANEL: Deploying to Production}
-
-### Automated Deployment
-
-If you have used the Deploy with Workers wizard, your GitHub repository is already set up for continuous integration and deployment to Cloudflare.
-
-If you have manually initialized the template, once pushed to GitHub you can [enable GitHub action workflows][gh-workflows].
-
-You will also need to [add two repository secrets][gh-repo-secrets]:
-
-- `CF_ACCOUNT_ID` -- Your Cloudflare global account ID
-- `CF_API_TOKEN` -- An API token with the "Edit Workers" permission
-
-Once these secrets are added, [trigger a workflow manually][gh-workflows-manual] or push a commit to trigger a deployment.
-
-### Manual Deployment
-
-You can also deploy a Worker manually using:
-
-`npm run deploy`
-
-If your Worker account is not yet set up, Wrangler will walk you through the steps.
-
-### Verifying Production Worker
-
-In your Cloudflare Dashboard, the Worker should be deployed. You can find your Worker URL in the dashboard under "Preview URL" and open it to test the connection is working.
-
-![Preview URL shown in the Cloudflare Worker dashboard][image-cloudflare-worker-preview]
-
-If it is not working, verify the Wrangler settings are being applied.
-
-{PANEL/}
-
-{PANEL: Using RavenDB in the Worker}
-
-The RavenDB Cloudflare template uses the [itty-router package][npm-itty-router] to provide basic routing and middleware support.
-
-Each routing handler is passed a `request` and `env` argument. A document session is opened per-request and accessible through `env.db`.
-
-### Example: Load user on route
+An updated example `index.ts` ES module:
 
 {CODE-BLOCK:javascript}
-router.get("/users/:id", async (request: IRequest, env: Env) => {
-    const user = await env.db.load("users/" + request.params.id);
+import { DocumentStore } from "ravendb";
 
-    return new Response(JSON.stringify({ user }), { status: 200 });
-});
+let documentStore: DocumentStore;
+let initialized = false;
+
+function initialize({ urls, databaseName, mtlsBinding }) {
+    if (initialized) return;
+    documentStore = new DocumentStore(
+      urls,
+      databaseName
+    };
+
+    // Bind custom mTLS binding `fetch()` function and ensure `this` remains bound to
+    // original context
+    documentStore.conventions.customFetch = mtlsBinding.fetch.bind(mtlsBinding);
+
+    documentStore.initialize();
+    initialized = true;
+}
+
+function openAsyncSession() {
+    if (!initialized) {
+        throw new Error("DocumentStore has not been initialized");
+    }
+
+    return documentStore.openAsyncSession();
+}
+
+export default {
+    fetch(req, env, ctx) {
+        const { DB_URLS, DB_NAME, DB_CERT } = env;
+
+        initialize({ 
+            urls: DB_URLS.split(","), 
+            databaseName: DB_NAME,
+            mtlsBinding: DB_CERT
+        });
+
+        ctx.db = openAsyncSession();
+
+        // Handle request
+        // ...
+        return handleRequest(req, env, ctx);
+    }
+}
 {CODE-BLOCK/}
+
+The `DB_CERT` variable is exposed on `env` and has a single `fetch` function that is automatically bound to the client certificate at runtime. Note that passing the function requires binding the `this` context to the original scope, otherwise you will run into closure-related exceptions.
+
+{NOTE: }
+The `env.DB_CERT` binding will not be available in local mode (`--local`), this is a known issue with Wrangler.
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: Configuring Cloudflare}
+
+There is no extra configuration necessary if you are providing all the connection information in your `wrangler.toml` file.
+
+However, you may want to override variables set in the `[env.production.vars]` through the Cloudflare Worker dashboard.
+
+Navigate to your Worker **Settings > Variables > Environment Variables** and add variables to override, like `DB_NAME` and `DB_URLS`. You will also see the `DB_CERT` binding listed if the mTLS binding was successfully uploaded.
+
+![Cloudflare Worker environment variables and settings](images/cf-env-vars.jpg)
+
+{PANEL/}
+
+{PANEL: Next Steps}
+
+- Learn more about [how to use the RavenDB Node.js client SDK][docs-nodejs]
+- Reference the [Cloudflare Worker starter template][gh-ravendb-template] to see the code
+- [Troubleshoot](troubleshooting) issues with RavenDB and Cloudflare Workers
 
 {PANEL/}
 
 [cloud-signup]: https://cloud.ravendb.net?utm_source=ravendb_docs&utm_medium=web&utm_campaign=howto_template_cloudflare_worker&utm_content=cloud_signup
-[template]: https://github.com/ravendb/template-cloudflare-worker
+[gh-ravendb-template]: https://github.com/ravendb/template-cloudflare-worker
 [deploy-with-workers]: https://deploy.workers.cloudflare.com/?url=https://github.com/ravendb/template-cloudflare-worker
 [live-test]: http://live-test.ravendb.net
 [cf-mtls-worker]: https://developers.cloudflare.com/workers/runtime-apis/mtls
 [cf-wrangler]: https://developers.cloudflare.com/workers/wrangler/install-and-update/
+[docs-nodejs]: /docs/article-page/nodejs/client-api/session/what-is-a-session-and-how-does-it-work
+[docs-creating-document-store]: /docs/article-page/nodejs/client-api/creating-document-store
 [docs-create-db]: /docs/article-page/latest/csharp/studio/database/create-new-database/general-flow
 [docs-cloud-certs]: /docs/article-page/latest/csharp/cloud/cloud-security
 [docs-on-prem-certs]: /docs/article-page/latest/csharp/studio/overview
 [docs-generate-client-certificate]: /docs/article-page/latest/csharp/server/security/authentication/certificate-management#generate-client-certificate
+[npm-ravendb-client]: https://npmjs.com/package/ravendb
 [npm-itty-router]: https://npmjs.com/package/itty-router
-[gh-repo-secrets]: https://docs.github.com/en/actions/security-guides/encrypted-secrets
-[gh-workflows]: https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions
-[gh-workflows-manual]: https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow
-[gh-template-repo]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository
-[image-template-deploy-cloudflare]: images/template-deploy-cloudflare.jpg
-[image-template-welcome-unauthenticated]: images/template-welcome-unauthenticated.jpg
-[image-template-welcome-authenticated]: images/template-welcome-authenticated.jpg
-[image-cloudflare-worker-preview]: images/cloudflare-worker-preview.jpg
