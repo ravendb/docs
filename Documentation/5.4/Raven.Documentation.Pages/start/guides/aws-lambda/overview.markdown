@@ -76,7 +76,20 @@ After cloning the repository locally, restore .NET dependencies with `dotnet`:
 dotnet restore
 {CODE-BLOCK/}
 
-By default, the template is configured to connect to the Live Test instance of RavenDB and the Northwind database. Since this is only for testing purposes, next you will configure the app to connect to your existing RavenDB database.
+By default, the template is configured to connect to the Live Test instance of RavenDB. Since this is only for testing purposes, next you will configure the app to connect to your existing RavenDB database.
+### Starting the Function
+
+You can start the Lambda function locally using:
+
+{CODE-BLOCK:bash}
+dotnet run
+{CODE-BLOCK/}
+
+If you are using Visual Studio Code, you can also debug the function with F5 debugging.
+
+You will see the welcome screen if the template is set up correctly:
+
+![.NET template welcome screen](images/dotnet-run.jpg)
 
 ### Install AWS .NET tools
 
@@ -195,7 +208,9 @@ However, we need to do a deployment manually for the first-time setup, such as s
 
 Start by deploying your function manually using the .NET CLI:
 
-`dotnet lambda deploy-function <FUNCTION_NAME>`
+{CODE-BLOCK:bash}
+dotnet lambda deploy-function <FUNCTION_NAME>
+{CODE-BLOCK/}
 
 {NOTE: }
 The function name should match the name of the `.csproj` file.
@@ -208,14 +223,20 @@ The tool will walk you through the first-time deployment:
 
 ### Create a deployment AWS Access Key
 
-If you do not have code deployment user, create a new IAM user to be used by your GitHub automation.
+If you do not have code deployment user, create a new IAM user to be used by your GitHub automation (e.g. `gh_actions`).
+
+![AWS IAM users for deployment](images/aws-iam-users.jpg)
 
 You will need the following security policies (assigned to group or user):
 
 - `AWSLambda_FullAccess`
 - `IAMReadOnlyAccess`
 
+![AWS IAM permissions for Lambda deployment](images/aws-iam-permissions.jpg)
+
 Once you have the user created, create and obtain an AWS access key specific for your GitHub action deployment workflow.
+
+![AWS access keys for Lambda deployment](images/aws-iam-access-keys.jpg)
 
 {WARNING: Do not use Root Keys}
 It is recommended to use a dedicated deployment IAM user with specific access policies for automated deployment through GitHub Actions.
@@ -272,6 +293,8 @@ By default, configuration will be loaded from `appsettings.json` but it is likel
 
 To configure the production version of your AWS Lambda function to connect to RavenDB, you will need to override your app settings through environment variables or, optionally, using AWS Secrets Manager.
 
+![AWS environment variable settings](images/aws-lambda-env-vars.jpg)
+
 ### Environment Variable Configuration
 
 The convention to override .NET app settings would look like:
@@ -307,8 +330,12 @@ The `RavenSettings__CertPrivateKey` environment variable should be set to a [bas
 **Example value:**
 
 {CODE-BLOCK:bash}
-RavenSettings__CertPrivateKey=LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlKS0FJLi4uCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0t
+RavenSettings__CertPrivateKey=----- BEGIN RSA PRIVATE KEY ----- MIIJKA...
 {CODE-BLOCK/}
+
+It will look like this in the AWS console:
+
+![AWS environment variable settings for PEM certificate private key](images/aws-lambda-env-vars-pem.jpg)
 
 The template will automatically decode the value and construct a PEM certificate from these two settings using the .NET [X502Certificate2.CreateFromPem][dotnet-createfrompem] API.
 
@@ -322,15 +349,13 @@ The template uses [Kralizek.Extensions.Configuration.AWSSecretsManager][kralizek
 
 {PANEL: Verify the Connection Works}
 
-If the deployment succeeds, the Lambda function should now be available to invoke.
+Once the environment variables are set up correctly, your Lambda function should authenticate successfully to your cluster.
 
-You can test it using the .NET CLI:
+You should see a welcome screen like this with the connection information:
 
-`dotnet lambda invoke-function <FUNCTION_NAME>`
+![AWS Lambda welcome connected screen](images/dotnet-lambda-success.jpg)
 
-You should see a message that looks like this:
-
-`Successfully connected to RavenDB - Node A`
+This means your Lambda function is correctly configured and ready to work with RavenDB.
 
 {PANEL/}
 
