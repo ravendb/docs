@@ -1,85 +1,165 @@
-# Highlight Query Results
+# Highlight Index Query Results
+---
 
-Another feature called `Highlighting` has been added to RavenDB to enhance the search UX.
+{NOTE: }
 
-## Setup
+* When making a [Full-Text Search query](../../indexes/querying/searching),  
+  in addition to retrieving documents that contain the searched terms in the results,  
+  you can also request to get a list of text fragments that highlight the searched terms.  
 
-{CODE-TABS}
-{CODE-TAB:csharp:BlogPost blog_post@Blog.cs /}
-{CODE-TAB:csharp:BlogComment blog_comment@Blog.cs /}
-{CODE-TABS/}
+* This article provides examples of highlighting search results when querying a static-index.  
+  __Prior to this article__, please refer to [Highlight query results](../../client-api/session/querying/how-to-use-highlighting) for general knowledge about Highlighting,  
+  and for dynamic-queries examples.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Index highlights_1@Indexes\Querying\Highlights.cs /}
-{CODE-TABS/}
+* In order to search and get fragments with highlighted terms when querying a static-index,  
+  the index field on which you search must be configured for highlighting,  
+  see examples below. 
 
-{INFO:Important}
+* In this page:
+  * [Highlight results - Map index](../../indexes/querying/highlighting#highlight-results---map-index)
+  * [Highlight results - Map-Reduce index](../../indexes/querying/highlighting#highlight-results---map-reduce-index)
+  * [Customize highlight tags](../../indexes/querying/highlighting#customize-highlight-tags)
 
-Each of the fields on which we want to use **Highlighting** needs to have:
-
-- **FieldIndexing** set to `Search`
-- **FieldStorage** set to `Yes`
-- **FieldTermVector** set to `WithPositionsAndOffsets`
-
-{INFO/}
-
-## Usage
-
-To use Highlighting we just need to use one of the `Highlight` query methods. The basic usage can be as simple as:   
-
-{CODE highlights_2@Indexes\Querying\Highlights.cs /}
-
-This will return the list of results and for each result we will be displaying first found fragment with the length up to 128 characters.
-
-### Highlighting + Projections
-
-Highlighting can also be done when projections are performed.
-
-{CODE-TABS}
-{CODE-TAB:csharp:DocumentQuery highlights_6_1@Indexes\Querying\Highlights.cs /}
-{CODE-TAB:csharp:DocumentQuery highlights_6_2@Indexes\Querying\Highlights.cs /}
-{CODE-TAB:csharp:Index highlights_1@Indexes\Querying\Highlights.cs /}
-{CODE-TABS/}
-
-### Highlighting + Map-Reduce
-
-Highlighting can be performed when executing queries on map-reduce indexes.
-
-{CODE-TABS}
-{CODE-TAB:csharp:Query highlights_8_1@Indexes\Querying\Highlights.cs /}
-{CODE-TAB:csharp:DocumentQuery highlights_8_2@Indexes\Querying\Highlights.cs /}
-{CODE-TAB:csharp:Index highlights_7@Indexes\Querying\Highlights.cs /}
-{CODE-TABS/}
-
-## Remarks
-
-{NOTE:Note}
-Default `<b></b>` tags are coloured and colours are returned in following order:
-
-- <span style="border-left: 10px solid yellow">&nbsp;</span>yellow,
-- <span style="border-left: 10px solid lawngreen">&nbsp;</span>lawngreen,
-- <span style="border-left: 10px solid aquamarine">&nbsp;</span>aquamarine,
-- <span style="border-left: 10px solid magenta">&nbsp;</span>magenta,
-- <span style="border-left: 10px solid palegreen">&nbsp;</span>palegreen,
-- <span style="border-left: 10px solid coral">&nbsp;</span>coral,
-- <span style="border-left: 10px solid wheat">&nbsp;</span>wheat,
-- <span style="border-left: 10px solid khaki">&nbsp;</span>khaki,
-- <span style="border-left: 10px solid lime">&nbsp;</span>lime,
-- <span style="border-left: 10px solid deepskyblue">&nbsp;</span>deepskyblue,
-- <span style="border-left: 10px solid deeppink">&nbsp;</span>deeppink,
-- <span style="border-left: 10px solid salmon">&nbsp;</span>salmon,
-- <span style="border-left: 10px solid peachpuff">&nbsp;</span>peachpuff,
-- <span style="border-left: 10px solid violet">&nbsp;</span>violet,
-- <span style="border-left: 10px solid mediumpurple">&nbsp;</span>mediumpurple,
-- <span style="border-left: 10px solid palegoldenrod">&nbsp;</span>palegoldenrod,
-- <span style="border-left: 10px solid darkkhaki">&nbsp;</span>darkkhaki,
-- <span style="border-left: 10px solid springgreen">&nbsp;</span>springgreen,
-- <span style="border-left: 10px solid turquoise">&nbsp;</span>turquoise,
-- <span style="border-left: 10px solid powderblue">&nbsp;</span>powderblue
 {NOTE/}
+
+---
+
+{PANEL: Highlight results - Map index}
+
+{NOTE: }
+
+__Configure a Map index for highlighting__:
+
+---
+
+* In order to search and get fragments with highlighted terms, the index-field on which you search  
+  must be configured with:  
+
+  * __`FieldStorage.Yes`__ - store the field in the index  
+  * __`FieldIndexing.Search`__ - allow Full-Text search  
+  * __`FieldTermVector.WithPositionsAndOffsets`__ - store the term's position and offsets
+
+{CODE index_1@Indexes\Querying\Highlights.cs /}
+
+{NOTE/}
+
+{NOTE: }
+
+__Query the index with `search`__:
+
+---
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query highlight_1@Indexes\Querying\Highlights.cs /}
+{CODE-TAB:csharp:Query_async highlight_2@Indexes\Querying\Highlights.cs /}
+{CODE-TAB:csharp:DocumentQuery highlight_3@Indexes\Querying\Highlights.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Employees/ByNotes"
+where search(EmployeeNotes, "manager")
+include highlight(EmployeeNotes, 35, 2)
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Query the index with `where`__:
+
+---
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query highlight_4@Indexes\Querying\Highlights.cs /}
+{CODE-TAB:csharp:Query_async highlight_5@Indexes\Querying\Highlights.cs /}
+{CODE-TAB:csharp:DocumentQuery highlight_6@Indexes\Querying\Highlights.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Employees/ByNotes"
+where search(EmployeeNotes, "manager")
+include highlight(EmployeeNotes, 35, 2)
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Process results__:
+
+---
+
+{CODE highlight_7@Indexes\Querying\Highlights.cs /}
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: Highlight results - Map-Reduce index}
+
+{NOTE: }
+
+__Configure a Map-Reduce index for highlighting__:
+
+---
+
+* In order to search and get fragments with highlighted terms in a Map-Reduce index,  
+  __both__ the index-field on which you search and the index-field by which you group-by  
+  must be configured for highlighting.
+
+{CODE index_2@Indexes\Querying\Highlights.cs /}
+
+{NOTE/}
+
+{NOTE: }
+
+__Query the index__:
+
+---
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query highlight_8@Indexes\Querying\Highlights.cs /}
+{CODE-TAB:csharp:Query_async highlight_9@Indexes\Querying\Highlights.cs /}
+{CODE-TAB:csharp:DocumentQuery highlight_10@Indexes\Querying\Highlights.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Companies/ContactsByCountry"
+where ContactDetails = "agent"
+include highlight(ContactDetails, 35, 2, $p0)
+{"p0":{"GroupKey":"Country"}}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Process results__:
+
+---
+
+{CODE highlight_11@Indexes\Querying\Highlights.cs /}
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: Customize highlight tags}
+
+* __Default tags__:  
+
+  * Please refer to [Highlight tags](../../client-api/session/querying/how-to-use-highlighting#highlight-tags) to learn about the default html tags used to wrap the highlighted terms.
+
+* __Customizing tags__:  
+
+  * The default html tags that wrap the highlighted terms can be customized to any other tags.  
+  
+  * Customizing the wrapping tags when querying an index is done exactly the same as when making  
+    a dynamic query where a `HighlightingOptions` object is passed to the `Highlight` method.
+  
+  * Follow the example in [Highlight - customize tags](../../client-api/session/querying/how-to-use-highlighting#highlight---customize-tags).
+
+{PANEL/}
 
 ## Related articles
 
 ### Client API
 
-- [How to Use Highlighting](../../client-api/session/querying/how-to-use-highlighting)
+- [Highlight query results](../../client-api/session/querying/how-to-use-highlighting)

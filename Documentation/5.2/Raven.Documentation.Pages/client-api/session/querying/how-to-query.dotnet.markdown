@@ -300,36 +300,35 @@ __Example__:
 
 Available custom methods and extensions for the session's [Query](../../../client-api/session/querying/how-to-query#session.query) method:
 
-- [AggregateBy](../../../client-api/session/querying/how-to-perform-a-faceted-search)  
-- AnyAsync  
-- [CountAsync](../../../client-api/session/querying/how-to-count-query-results#countasync)  
-- [LongCount and LongCountAsync](../../../client-api/session/querying/how-to-count-query-results#longcount-and-longcountasync)  
-- [CountLazily](../../../client-api/session/querying/how-to-perform-queries-lazily)  
-- [Customize](../../../client-api/session/querying/how-to-customize-query)  
-- FirstAsync  
-- FirstOrDefaultAsync  
-- [GroupByArrayValues](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-values)  
-- [GroupByArrayContent](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)  
-- Highlight  
-- [Include](../../../client-api/how-to/handle-document-relationships)  
-- [Intersect](../../../client-api/session/querying/how-to-use-intersect)  
-- [Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)  
-- [LazilyAsync](../../../client-api/session/querying/how-to-perform-queries-lazily)  
-- [MoreLikeThis](../../../client-api/session/querying/how-to-use-morelikethis)  
-- [OfType](../../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection)  
-- [OrderByDistance](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistance)  
-- [OrderByDistanceDescending](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistanceDesc)  
-- OrderByScore  
-- OrderByScoreDescending  
-- [ProjectInto](../../../client-api/session/querying/how-to-project-query-results)  
-- [Search](../../../client-api/session/querying/how-to-use-search)  
-- SingleAsync  
-- SingleOrDefaultAsync  
-- [Spatial](../../../client-api/session/querying/how-to-make-a-spatial-query)  
-- [Statistics](../../../client-api/session/querying/how-to-get-query-statistics)  
-- [SuggestUsing](../../../client-api/session/querying/how-to-work-with-suggestions)  
-- ToListAsync  
-- ToArrayAsync  
+- [AggregateBy](../../../client-api/session/querying/how-to-perform-a-faceted-search)
+- AnyAsync
+- CountAsync
+- [CountLazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
+- [Customize](../../../client-api/session/querying/how-to-customize-query)
+- FirstAsync
+- FirstOrDefaultAsync
+- [GroupByArrayValues](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-values)
+- [GroupByArrayContent](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
+- [Highlight](../../../client-api/session/querying/how-to-use-highlighting)
+- [Include](../../../client-api/how-to/handle-document-relationships)
+- [Intersect](../../../client-api/session/querying/how-to-use-intersect)
+- [Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
+- [LazilyAsync](../../../client-api/session/querying/how-to-perform-queries-lazily)
+- [MoreLikeThis](../../../client-api/session/querying/how-to-use-morelikethis)
+- [OfType](../../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection)
+- [OrderByDistance](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistance)
+- [OrderByDistanceDescending](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistanceDesc)
+- OrderByScore
+- OrderByScoreDescending
+- [ProjectInto](../../../client-api/session/querying/how-to-project-query-results)
+- [Search](../../../client-api/session/querying/how-to-use-search)
+- SingleAsync
+- SingleOrDefaultAsync
+- [Spatial](../../../client-api/session/querying/how-to-make-a-spatial-query)
+- [Statistics](../../../client-api/session/querying/how-to-get-query-statistics)
+- [SuggestUsing](../../../client-api/session/querying/how-to-work-with-suggestions)
+- ToListAsync
+- ToArrayAsync
 
 {PANEL/}
 

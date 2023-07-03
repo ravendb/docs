@@ -9,8 +9,8 @@
 
 * The highlighted terms can enhance user experience when searching for documents with specific content.
 
-* This article shows highlighting search results when making a __dynamic query__.  
-  For highlighting search results when querying an __index__ see [highlight index query results](../../../).
+* This article shows highlighting search results when making a __dynamic-query__.  
+  For highlighting search results when querying a __static-index__ see [highlight index query results](../../../indexes/querying/highlighting).
 
 ---
 
@@ -50,8 +50,8 @@ include highlight(Notes, 35, 4)
 * By default, the highlighted term is wrapped with the following html:  
   `<b style="background:yellow">term</b>`  
 
-* When searching for multiple different terms,  
-  the color returned for each different term will be in the following order:  
+* When requesting to highlight multiple terms,  
+  the background color returned for each different term will be in the following order:
 
   - <span style="border-left: 10px solid yellow">&nbsp;</span>yellow,
   - <span style="border-left: 10px solid lawngreen">&nbsp;</span>lawngreen,
@@ -157,11 +157,11 @@ __Highlighting options__:
 
 {CODE syntax_2@ClientApi\Session\Querying\HowToUseHighlighting.cs /}
 
-| Option       | Type      | Description                                                                                                                                                                                                                           |
-|--------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __GroupKey__ | string    | Grouping key for the results.<br>Used when highlighting query results from a __map-reduce index__.<br>If `null` results are grouped by document ID (default).<br>Note: Highlighting is Not available for dynamic aggregation queries. |
-| __PreTags__  | string[]  | Array of PRE tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                    |
-| __PostTags__ | string[]  | Array of POST tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                   |
+| Option       | Type      | Description                                                                                                                                                                                                                                                                                                      |
+|--------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __GroupKey__ | string    | Grouping key for the results.<br>Used when highlighting query results from a [Map-Reduce index](../../../indexes/querying/highlighting#highlight-results---map-reduce-index).<br>If `null` results are grouped by document ID (default).<br>Note: Highlighting is Not available for dynamic aggregation queries. |
+| __PreTags__  | string[]  | Array of PRE tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                                                                                               |
+| __PostTags__ | string[]  | Array of POST tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                                                                                              |
 
 <br>
 
@@ -190,4 +190,4 @@ __Highlightings object__:
 
 ### Indexes
 
-- [Highlighting](../../../indexes/querying/highlighting)
+- [Highlight index query results](../../../indexes/querying/highlighting)
