@@ -2,13 +2,44 @@
 
 This repository contains documentation for [RavenDB](https://ravendb.net/docs).
 
-Found a bug?
-------------
+## Found a bug?
+
 Please create an issue at our [YouTrack](https://issues.hibernatingrhinos.com/issues/RDoc).
 
-Need help?
-----------
-If you have any questions please visit our [community group](http://groups.google.com/group/ravendb/).
+## Need help?
+
+If you have any questions please visit our [community](https://github.com/ravendb/ravendb/discussions).
+
+## Want to contribute?
+
+You do not need anything special if you wish to modify or update an existing Markdown documentation file. You can even edit them straight on GitHub and submit a pull request.
+
+For more comprehensive changes or additions, you will need:
+
+- Visual Studio 2022
+- .NET Framework 4.7.1 Developer Pack
+- .NET Core 2.0 & 2.1
+- RavenDB 4.2
+
+### Setup
+
+1. Clone the repo
+1. Open `Raven.Documentation.sln` and build the solution
+   - Visual Studio will warn you of any missing SDKs
+   - You may need to install them and restart
+1. Ensure your local RavenDB is up and running (e.g. `http://localhost:8080`)
+   - It needs to be unauthenticated as the docs do not use a certificate
+   - If you need to change the URL, edit `Raven.Documentation.Web/web.config` and set the `ServerUrl` setting
+   - Take care not to commit this back to source control
+   - You can use a Docker version of RavenDB if you are already running an instance for other work.
+     - `docker run -p <port>:8080 ravendb/ravendb:4.2-ubuntu-latest`
+     - Adjust forward port as necessary to not conflict
+
+### Running Docs
+
+1. Set the `Raven.Documentation.Web` as the Startup Project
+1. Run the project (Ctrl-F5 to start without debugging)
+1. Once running, in the bottom right of the browser, click "Development Tools" and then "Generate Documentation for {version}" (or for all versions)
 
 ## Language-specific docs inheritance between documentation versions
 
@@ -36,7 +67,6 @@ The v5.0 directory does not contain any related document, so the documents are i
 
 In order to fix the missing language page, the related markdown file should be copied from the previous version. The pasted file should be analyzed to indicate what needs to be updated for the current documentation version.
 
-
 ## Adding new documentation version
 
 1. Add `Documentation/[[version]]/Raven.Documentation.Pages/Raven.Documentation.Pages.csproj` project. Make sure that it references the correct RavenDB nuget packages versions.
@@ -44,7 +74,6 @@ In order to fix the missing language page, the related markdown file should be c
 3. Add version to the `AllVersions` list in `Raven.Documentation.Web.Core.ViewModels.DocsVersion`.
 4. Run `scripts/populateDocsJson.ps1` in order to populate the correct directory structure and `.docs.json` files in the newly added `Raven.Documentation.Pages` project. Please check the script parameters for details.
 5. Add version to the `RouteConfig.RouteAvailableVersions` constant.
-
 
 ## Changing document location between versions
 
@@ -55,7 +84,9 @@ For example, let's say in v4.1 there is a document introduced in the path `a/b`.
 First, you need to tell each version how to reach the new location for a moved document. This is done by adding document mappings.
 
 In the example described above, you need to add the following mappings:
+
 - in v4.1:
+
 ```
 "Mappings": [
     {
@@ -64,7 +95,9 @@ In the example described above, you need to add the following mappings:
     }
 ]
 ```
+
 - in v4.2:
+
 ```
 "Mappings": [
     {
@@ -73,7 +106,9 @@ In the example described above, you need to add the following mappings:
     }
 ]
 ```
+
 - in v5.0:
+
 ```
 "Mappings": [
     {
@@ -86,6 +121,7 @@ In the example described above, you need to add the following mappings:
     }
 ]
 ```
+
 Basically, both v4.1 and v4.2 need to know where to go to when v5.0 is selected from the version dropdown. The same goes for v5.0 when you want to reach v4.1 or v4.2.
 
 ### Last supported version
@@ -95,6 +131,7 @@ The document bubbling algorithm assumes that each document will be present in th
 For this particular example, the article introduced in v4.1 in location `a/b` will be present in this location for v4.2, v5.0 etc. Assuming that the article was added to a new location in v5.0, you will end up with two articles: `5.0/a/b` and `5.0/c/d`. This will ignore the defined mappings.
 
 In order to fix this, you need to tell the algorithm that the last supported version for location `a/b` is v4.2. You do this by adding the following entries to the related `.docs.json` file entries:
+
 ```
 "LastSupportedVersion": "4.2"
 ```
