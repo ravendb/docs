@@ -30,8 +30,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     EmployeeNotes = employee.Notes[0]
                 };
             
-            // Configure index-field 'EmployeeNotes' for highlightings:
-            // ========================================================
+            // Configure index-field 'EmployeeNotes' for highlighting:
+            // =======================================================
             Store(x => x.EmployeeNotes, FieldStorage.Yes);
             Index(x => x.EmployeeNotes, FieldIndexing.Search);
             TermVector(x => x.EmployeeNotes, FieldTermVector.WithPositionsAndOffsets);
@@ -42,8 +42,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
     #region index_2
     // Define a Map-Reduce index:
     // ==========================
-    public class Companies_ContactsByCountry :
-        AbstractIndexCreationTask<Company, Companies_ContactsByCountry.IndexEntry>
+    public class ContactDetailsPerCountry :
+        AbstractIndexCreationTask<Company, ContactDetailsPerCountry.IndexEntry>
     {
         // The IndexEntry class defines the index-fields
         public class IndexEntry
@@ -52,7 +52,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
             public string ContactDetails { get; set; }
         }
            
-        public Companies_ContactsByCountry()
+        public ContactDetailsPerCountry()
         {
             // The 'Map' function defines what will be indexed from each document in the collection
             Map = companies => from company in companies
@@ -79,8 +79,6 @@ namespace Raven.Documentation.Samples.Indexes.Querying
             // Configure index-field 'Country' for Highlighting:
             // =================================================
             Store(x => x.Country, FieldStorage.Yes);
-            Index(x => x.Country, FieldIndexing.Search);
-            TermVector(x => x.Country, FieldTermVector.WithPositionsAndOffsets);
             
             // Configure index-field 'ContactDetails' for Highlighting:
             // ========================================================
@@ -198,8 +196,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         string[] fragments = managerHighlights.GetFragments(employee.Id);
                         foreach (var fragment in fragments)
                         {
-                            builder.AppendLine($"<li>Doc: {employee.Id}");
-                            builder.AppendLine($"Fragment: {fragment}</li>");
+                            builder.AppendLine($"<li>Doc: {employee.Id}</li>");
+                            builder.AppendLine($"<li>Fragment: {fragment}</li>");
                             builder.AppendLine($"<li></li>");
                         }
                     }
@@ -212,12 +210,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     // <ul>
                     //   <li>Doc: employees/2-A</li>
                     //   <li>Fragment:  to sales <b style="background:yellow">manager</b> in January</li>
-                    //   <li></li>
-                    //   <li>Doc: employees/5-A</li>
-                    //   <li>Fragment:  Sales <b style="background:yellow">Manager</b> Steven</li>
-                    //   <li></li>
                     //   <li>Doc: employees/5-A</li>
                     //   <li>Fragment:  to sales <b style="background:yellow">manager</b> in March</li>
+                    //   <li></li>
                     // </ul>
                     #endregion
                 }
@@ -236,8 +231,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     
                     // Query the map-reduce index:
                     // ===========================
-                    List<Companies_ContactsByCountry.IndexEntry> contactsDetailsPerCountry = session
-                        .Query<Companies_ContactsByCountry.IndexEntry, Companies_ContactsByCountry>()
+                    List<ContactDetailsPerCountry.IndexEntry> detailsPerCountry = session
+                        .Query<ContactDetailsPerCountry.IndexEntry, ContactDetailsPerCountry>()
                          // Search for results containing the term 'agent'
                         .Search(x => x.ContactDetails, "agent")
                          // Request to highlight the searched term by calling 'Highlight'
@@ -261,8 +256,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     
                     // Query the map-reduce index:
                     // ===========================
-                    List<Companies_ContactsByCountry.IndexEntry> contactsDetailsPerCountry = await asyncSession
-                        .Query<Companies_ContactsByCountry.IndexEntry, Companies_ContactsByCountry>()
+                    List<ContactDetailsPerCountry.IndexEntry> detailsPerCountry = await asyncSession
+                        .Query<ContactDetailsPerCountry.IndexEntry, ContactDetailsPerCountry>()
                          // Search for results containing the term 'agent'
                         .Search(x => x.ContactDetails, "agent")
                          // Request to highlight the searched term by calling 'Highlight'
@@ -286,8 +281,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     
                     // Query the map-reduce index:
                     // ===========================
-                    List<Companies_ContactsByCountry.IndexEntry> contactsDetailsPerCountry = session.Advanced
-                        .DocumentQuery<Companies_ContactsByCountry.IndexEntry, Companies_ContactsByCountry>()
+                    List<ContactDetailsPerCountry.IndexEntry> detailsPerCountry = session.Advanced
+                        .DocumentQuery<ContactDetailsPerCountry.IndexEntry, ContactDetailsPerCountry>()
                          // Search for results containing the term 'agent'
                         .Search(x => x.ContactDetails, "agent")
                          // Request to highlight the searched term by calling 'Highlight'
@@ -297,12 +292,12 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     #endregion
                     
                     #region highlight_11
-                    // 'contactsDetailsPerCountry' contains the contacts details grouped per country.
+                    // 'detailsPerCountry' contains the contacts details grouped per country.
                     // 'agentHighlights' contains the text FRAGMENTS that highlight the 'agent' term.
                     
                     StringBuilder builder = new StringBuilder().AppendLine("<ul>");
 
-                    foreach (var item in contactsDetailsPerCountry)
+                    foreach (var item in detailsPerCountry)
                     {
                         // Call 'GetFragments' to get all fragments for the specified country key
                         string[] fragments = agentHighlights.GetFragments(item.Country);

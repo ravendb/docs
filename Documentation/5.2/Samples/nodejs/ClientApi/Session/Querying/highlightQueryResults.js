@@ -1,4 +1,4 @@
-import { DocumentStore, AbstractIndexCreationTask } from "ravendb";
+import { DocumentStore, QueryData } from "ravendb";
 
 const documentStore = new DocumentStore();
 const session = documentStore.openSession();
