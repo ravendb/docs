@@ -85,10 +85,13 @@ include highlight(Notes, 35, 4)
 
 ![Figure 1. Fragments results](images/fragmentsResults.png "View highlighted fragments in the Query View")
 
-1. __Results tab__  
+1. __Auto-Index__  
+   This is the auto-index that was created by the server to serve the dynamic-query.
+
+2. __Results tab__  
    The results tab contains the resulting __documents__ that match the provided RQL query.
 
-2. __Highlight tab__  
+3. __Highlight tab__  
    The highlight tab shows the resulting __fragments__ that were included in the query result.
 
 {NOTE/}
