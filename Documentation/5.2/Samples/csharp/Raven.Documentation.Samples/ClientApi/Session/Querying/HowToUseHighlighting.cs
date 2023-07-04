@@ -27,12 +27,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Query<Employee>()
                          // Search for documents containing the term 'sales' in their 'Notes' field
                         .Search(x => x.Notes, "sales")
-                         // Request to highlight the searched term by calling 'Highlight'. Pass:
-                         //   * The document-field name in which we search (e.g. 'Notes') 
-                         //   * Max length of each text fragment (e.g. 35)
-                         //   * Max number of fragments to return per document (e.g. 4)
-                         //   * An out param for getting the highlighted text fragments (e.g. 'salesHighlights')
-                        .Highlight(x => x.Notes, 35, 4, out Highlightings salesHighlights)
+                         // Request to highlight the searched term by calling 'Highlight'
+                        .Highlight(
+                            x => x.Notes, // The document-field name in which we search
+                            35,           // Max length of each text fragment
+                            4,            // Max number of fragments to return per document
+                            out Highlightings salesHighlights) // An out param for getting the highlighted text fragments
                          // Execute the query
                         .ToList();
                     #endregion
@@ -87,12 +87,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Query<Employee>()
                          // Search for documents containing the term 'sales' in their 'Notes' field
                         .Search(x => x.Notes, "sales")
-                         // Request to highlight the searched term by calling 'Highlight'. Pass:
-                         //   * The document-field name in which we search (e.g. 'Notes') 
-                         //   * Max length of each text fragment (e.g. 35)
-                         //   * Max number of fragments to return per document (e.g. 4)
-                         //   * An out param for getting the highlighted text fragments (e.g. 'salesHighlights')
-                        .Highlight(x => x.Notes, 35, 4, out Highlightings salesHighlights)
+                         // Request to highlight the searched term by calling 'Highlight'
+                        .Highlight(
+                            x => x.Notes, // The document-field name in which we search
+                            35,           // Max length of each text fragment
+                            4,            // Max number of fragments to return per document
+                            out Highlightings salesHighlights) // An out param for getting the highlighted text fragments
                          // Execute the query
                         .ToListAsync();
                     #endregion
@@ -108,12 +108,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .DocumentQuery<Employee>()
                          // Search for documents containing the term 'sales' in their 'Notes' field
                         .Search(x => x.Notes, "sales")
-                         // Request to highlight the searched term by calling 'Highlight'. Pass:
-                         //   * The document-field name in which we search (e.g. 'Notes') 
-                         //   * Max length of each text fragment (e.g. 35)
-                         //   * Max number of fragments to return per document (e.g. 4)
-                         //   * An out param for getting the highlighted text fragments (e.g. 'salesHighlights')
-                        .Highlight(x => x.Notes, 35, 4, out Highlightings salesHighlights)
+                         // Request to highlight the searched term by calling 'Highlight'
+                        .Highlight(
+                            x => x.Notes, // The document-field name in which we search
+                            35,           // Max length of each text fragment
+                            4,            // Max number of fragments to return per document
+                            out Highlightings salesHighlights) // An out param for getting the highlighted text fragments
                          // Execute the documentQuery
                         .ToList();
                     #endregion
@@ -227,7 +227,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     // "to sales <b style=\"background:yellow\">manager</b> in January"
                     // "in French and <b style=\"background:lawngreen\">German</b>."
 
-                    // Note: each search term is wrapped with a different color
+                    // NOTE: each search term is wrapped with a different color
                     // 'manager' is wrapped with yellow
                     // 'german' is wrapped with lawngreen
                     #endregion
