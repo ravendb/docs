@@ -39,7 +39,9 @@ async function hightlightQueryResults() {
         let fragmentsHtml = "<ul>";
 
         employeesResults.forEach((employee) => {
+            // Call 'getFragments' to get all fragments for the specified employee id
             let fragments = salesHighlights.getFragments(employee.id);
+            
             fragments.forEach((fragment) => {
                 fragmentsHtml += `<li>Doc: ${employee.id} Fragment: ${fragment}</li>`;
             });

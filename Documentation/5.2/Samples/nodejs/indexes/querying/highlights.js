@@ -119,7 +119,9 @@ const session = store.openSession();
             let fragmentsHtml = "<ul>";
 
             employeesResults.forEach((employee) => {
+                // Call 'getFragments' to get all fragments for the specified employee id
                 let fragments = managerHighlights.getFragments(employee.id);
+                
                 fragments.forEach((fragment) => {
                     fragmentsHtml += `<li>Doc: ${employee.id}</li>`
                     fragmentsHtml += `<li>Fragment: ${fragment}</li>`;
@@ -181,7 +183,9 @@ const session = store.openSession();
             let fragmentsHtml = "<ul>";
 
             employeesResults.forEach((item) => {
+                // Call 'getFragments' to get all fragments for the specified country key
                 let fragments = agentHighlights.getFragments(item.Country);
+                
                 fragments.forEach((fragment) => {
                     fragmentsHtml += `<li>Doc: ${item.Country}</li>`
                     fragmentsHtml += `<li>Fragment: ${fragment}</li>`;
