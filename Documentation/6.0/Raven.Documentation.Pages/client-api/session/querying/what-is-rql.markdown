@@ -125,7 +125,7 @@ The following keywords and methods are available in RQL:
         - [alphaNumeric](../../../indexes/querying/sorting#alphanumeric-ordering)
     - [random()](../../../indexes/querying/sorting#random-ordering)
     - [score()](../../../indexes/querying/sorting#ordering-by-score)
-    - [spatial.distance()](../../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance)
+    - [spatial.distance()](../../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting)
 - [LOAD](../../../client-api/session/querying/what-is-rql#load)
 - [SELECT](../../../client-api/session/querying/what-is-rql#select)
     - DISTINCT

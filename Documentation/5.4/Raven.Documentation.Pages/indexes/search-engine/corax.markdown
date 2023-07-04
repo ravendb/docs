@@ -218,7 +218,7 @@ of supported and yet-unsupported features below.
 | | [alphaNumeric](../../indexes/querying/sorting#alphanumeric-ordering) | `yes` |
 | | [random()](../../indexes/querying/sorting#random-ordering) | **no** |
 | | [score()](../../indexes/querying/sorting#ordering-by-score) | `yes` |
-| | [spatial.distance()](../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance) | `yes` |
+| | [spatial.distance()](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting) | `yes` |
 
 ---
 
