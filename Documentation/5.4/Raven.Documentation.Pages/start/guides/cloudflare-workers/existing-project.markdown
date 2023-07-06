@@ -63,9 +63,9 @@ const documentStore = new DocumentStore(
   ["https://a.free.mycompany.ravendb.cloud"],
   "demo",
   // authOptions
-};
+);
 
-var initialized = false;
+let initialized = false;
 
 function initialize() {
     if (initialized) return;
@@ -78,7 +78,7 @@ export function openAsyncSession() {
         initialize();
     }
 
-    return documentStore.openAsyncSession();
+    return documentStore.openSession();
 }
 {CODE-BLOCK/}
 
@@ -147,7 +147,7 @@ function initialize({ urls, databaseName }) {
     documentStore = new DocumentStore(
       urls,
       databaseName
-    };
+    );
     documentStore.initialize();
     initialized = true;
 }
@@ -157,7 +157,7 @@ function openAsyncSession() {
         throw new Error("DocumentStore has not been initialized");
     }
 
-    return documentStore.openAsyncSession();
+    return documentStore.openSession();
 }
 
 export default {
@@ -267,7 +267,7 @@ function initialize({ urls, databaseName, mtlsBinding }) {
     documentStore = new DocumentStore(
       urls,
       databaseName
-    };
+    );
 
     // Bind custom mTLS binding `fetch()` function and ensure `this` remains bound to
     // original context
@@ -282,7 +282,7 @@ function openAsyncSession() {
         throw new Error("DocumentStore has not been initialized");
     }
 
-    return documentStore.openAsyncSession();
+    return documentStore.openSession();
 }
 
 export default {
