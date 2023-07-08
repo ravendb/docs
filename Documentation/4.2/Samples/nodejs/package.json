@@ -3,7 +3,7 @@
         "lint": "eslint ."
     },
     "dependencies": {
-        "ravendb": "4.0.5"
+        "ravendb": "4.2.3"
     },
     "devDependencies": {
         "eslint": "^5.9.0",
