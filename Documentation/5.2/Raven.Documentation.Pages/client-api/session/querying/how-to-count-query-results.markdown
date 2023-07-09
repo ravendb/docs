@@ -33,7 +33,7 @@ an `OverflowException` will be thrown.
 
 ### Example 
 {CODE-TABS}
-{CODE-TAB:csharp:Count Count@ClientApi\Session\Querying\HowToCountResults.cs /}
+{CODE-TAB:csharp:Count Count@ClientApi\Session\Querying\UseCount.cs /}
 {CODE-TAB:csharp:Count_async CountAsync@ClientApi\Session\Querying\HowToCountResults.cs /}
 {CODE-TABS/}
 
