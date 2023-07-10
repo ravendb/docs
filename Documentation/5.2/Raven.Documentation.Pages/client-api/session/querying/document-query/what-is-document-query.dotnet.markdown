@@ -235,8 +235,8 @@ Available custom methods and extensions:
 - WhereLessThanOrEqual
 - [WhereLucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
 - WhereNotEquals
-- [WhereRegex](../../../../client-api/session/querying/how-to-use-regex)
-- WhereStartsWith
+- [WhereRegex](../../../../client-api/session/querying/text-search/using-regex)
+- [WhereStartsWith](../../../../client-api/session/querying/text-search/starts-with-search)
 - WithinRadiusOf
 
 {PANEL/}

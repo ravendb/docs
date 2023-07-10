@@ -103,7 +103,7 @@ Available methods:
 - whereLessThanOrEqual
 - [whereLucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
 - whereNotEquals
-- [whereRegex](../../../../client-api/session/querying/how-to-use-regex)
+- [whereRegex](../../../../client-api/session/querying/text-search/using-regex)
 - whereStartsWith
 - withinRadiusOf
 

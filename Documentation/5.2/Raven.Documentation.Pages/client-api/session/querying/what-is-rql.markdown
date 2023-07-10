@@ -106,7 +106,7 @@ The following keywords and methods are available in RQL:
     - cmpxchg()
     - boost()
     - [regex()](../../../client-api/session/querying/how-to-use-regex)
-    - startsWith()
+    - [startsWith()](../../../client-api/session/querying/text-search/starts-with-search)
     - endsWith()
     - [lucene()](../../../client-api/session/querying/document-query/how-to-use-lucene)
     - [exists()](../../../client-api/session/querying/how-to-filter-by-field)
