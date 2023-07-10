@@ -193,7 +193,7 @@ If the last Etag processed by the index is greater than the cutoff then the resu
 
 ### Session
 
-- [How to Query](../../../client-api/session/querying/how-to-query)
+- [Querying: Basics](../../../../indexes/querying/query-index)
 - [How to Subscribe to Events](../../../client-api/session/how-to/subscribe-to-events)
 
 ### Configuration

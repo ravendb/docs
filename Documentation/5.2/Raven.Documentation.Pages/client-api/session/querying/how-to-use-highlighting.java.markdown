@@ -67,7 +67,7 @@ Default `<b></b>` tags are coloured and colours are returned in following order:
 
 ### Session
 
-- [How to Query](../../../client-api/session/querying/how-to-query)
+- [Querying: Basics](../../../indexes/querying/query-index)
 
 ### Indexes
 

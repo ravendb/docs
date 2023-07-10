@@ -66,5 +66,5 @@ In some situations, query execution must be delayed. To cover such a scenario, `
 
 ### Session
 
-- [How to Query](../../../client-api/session/querying/how-to-query)
+- [Querying: Basics](../../../indexes/querying/query-index)
 - [How to Perform Operations Lazily](../../../client-api/session/how-to/perform-operations-lazily)

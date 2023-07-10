@@ -34,7 +34,7 @@ Let's create an index that will help us search for `Employees` by their `FirstNa
 {CODE-TAB:java:JavaScript-syntax javaScriptindexes_2@Indexes/JavaScript.java /}
 {CODE-TABS/}
 
-- The final step is to [deploy it](../indexes/creating-and-deploying) to the server and issue a query using the session [Query](../client-api/session/querying/how-to-query) method:
+- The final step is to [deploy it](../indexes/creating-and-deploying) to the server and issue a query using the session [Query](../indexes/querying/query-index) method:
 
 {CODE-TABS}
 {CODE-TAB:java:Query indexes_4@Indexes/Map.java /}
