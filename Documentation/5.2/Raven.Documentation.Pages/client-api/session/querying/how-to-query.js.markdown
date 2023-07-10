@@ -323,8 +323,8 @@ Available methods for the session's [query](../../../client-api/session/querying
 - whereLessThanOrEqual
 - [whereLucene](../../../client-api/session/querying/document-query/how-to-use-lucene)
 - whereNotEquals
-- [whereRegex](../../../client-api/session/querying/how-to-use-regex)
-- whereStartsWith
+- [whereRegex](../../../client-api/session/querying/text-search/using-regex)
+- [whereStartsWith](../../../client-api/session/querying/text-search/starts-with-search)
 - withinRadiusOf
 
 {PANEL/}
