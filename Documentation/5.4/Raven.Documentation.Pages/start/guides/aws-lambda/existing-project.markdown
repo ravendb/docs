@@ -5,10 +5,6 @@
 AWS Lambda is a serverless platform that supports multiple languages and frameworks that let you deploy workloads that scale without managing any infrastructure.
 
 Learn more about [how AWS Lambda works][aws-lambda].
-
-<!-- ### New to AWS Lambda
-
-This guide assumes you are familiar with C# development techniques and the basics of AWS Lambda functions. For a walkthrough and demo of getting started with AWS Lambda, see [TBD](#). -->
 {NOTE/}
 
 In this guide, you will learn how to connect to RavenDB from your existing .NET AWS Lambda functions. This guide assumes you are familiar with .NET development techniques and the basics of AWS Lambda functions.
