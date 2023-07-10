@@ -1,16 +1,17 @@
-# Session: Querying: What is a Document Query?
+# What is a Document Query?
 
-Querying capabilities can be accessed via the `documentQuery` method in advanced session operations. `DocumentQuery` gives you more flexibility and control over the process of building a query.
+Querying capabilities can be accessed via the `documentQuery` method in advanced session operations.  
+`DocumentQuery` gives you more flexibility and control over the process of building a query.
 
 ## Syntax
 
 {CODE:java document_query_1@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.java /}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **indexName** | String | Name of an index to perform a query on (exclusive with **collectionName**)  |
-| **collectionName** | String | Name of a collection to perform a query on (exclusive with **indexName**) |
-| **isMapReduce** | bool | Indicates if a queried index is a map/reduce index (modifies how we treat identifier properties) |
+| Parameters | |                                                                                                       |
+| ------------- | ------------- |-------------------------------------------------------------------------------------------------------|
+| **indexName** | String | Name of an index to perform a query on<br> (mutually exclusive with **collectionName**)               |
+| **collectionName** | String | Name of a collection to perform a query on<br> (mutually exclusive with **indexName**)                |
+| **isMapReduce** | bool | Indicates if a queried index is a map-reduce index<br> (modifies how we treat identifier properties) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -70,20 +71,20 @@ Available methods:
 - openSubclause
 - orderBy
 - orderByDescending
-- [Query] [orderByDistance](../../../../client-api/session/querying/how-to-query-a-spatial-index)
-- [Query] [orderByDistanceDescending](../../../../client-api/session/querying/how-to-query-a-spatial-index)
+- [Query] [orderByDistance](../../../../client-api/session/querying/how-to-make-a-spatial-query#orderbydistance)
+- [Query] [orderByDistanceDescending](../../../../client-api/session/querying/how-to-make-a-spatial-query#orderbydistancedescending)
 - orderByScore
 - orderByScoreDescending
 - orElse
 - proximity
 - randomOrdering
-- [Query] [relatesToShape](../../../../client-api/session/querying/how-to-query-a-spatial-index)
+- [Query] [relatesToShape](../../../../client-api/session/querying/how-to-make-a-spatial-query#example-ii)
 - search
 - selectFields
 - single
 - singleOrDefault
 - skip
-- [Query] [spatial](../../../../client-api/session/querying/how-to-query-a-spatial-index)
+- [Query] [spatial](../../../../client-api/session/querying/how-to-make-a-spatial-query#spatial)
 - statistics
 - suggestUsing
 - take
@@ -104,7 +105,7 @@ Available methods:
 - whereNotEquals
 - [whereRegex](../../../../client-api/session/querying/how-to-use-regex)
 - whereStartsWith
-- [Query] [withinRadiusOf](../../../../client-api/session/querying/how-to-query-a-spatial-index)
+- withinRadiusOf
 
 
 ## Remarks

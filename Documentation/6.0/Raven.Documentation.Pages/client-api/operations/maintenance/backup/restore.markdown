@@ -12,6 +12,7 @@
 
 * In this page:  
   * [Restoring a Database: Configuration and Execution](../../../../client-api/operations/maintenance/backup/restore#restoring-a-database:-configuration-and-execution)  
+  * [Optional Settings](../../../../client-api/operations/maintenance/backup/restore#optional-settings)  
   * [Restore Database to a Single Node](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node)  
   * [Restore Database to Multiple Nodes](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes)  
      * [Restore to a Single Node & Replicate to Other Nodes](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node--replicate-it-to-other-nodes)  
@@ -24,16 +25,17 @@
 
 {PANEL: Restoring a Database: Configuration and Execution}
 
-To restore your database, configure a `RestoreBackupConfiguration` instance and pass it to `RestoreBackupOperation` for execution.  
+To restore a database, set a `RestoreBackupConfiguration` instance and pass 
+it to `RestoreBackupOperation` for execution.  
 
 ---
 
-#### `RestoreBackupOperation`
+### `RestoreBackupOperation`
 {CODE restore_restorebackupoperation@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
 
 ---
 
-#### `RestoreBackupConfiguration`
+### `RestoreBackupConfiguration`
 {CODE restore_restorebackupconfiguration@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
 
 * Parameters:
@@ -55,6 +57,49 @@ To restore your database, configure a `RestoreBackupConfiguration` instance and 
 
 {PANEL/}
 
+{PANEL: Optional Settings}
+
+### `LastFileNameToRestore`
+Restore incremental backup files up to (including) the selected file, and stop restoring there.  
+
+* E.g. - 
+   * These are the files in your backup folder:  
+     2018-12-26-09-00.ravendb-full-backup  
+     2018-12-26-12-00.ravendb-incremental-backup  
+     2018-12-26-15-00.ravendb-incremental-backup  
+     2018-12-26-18-00.ravendb-incremental-backup  
+   * Feed **LastFileNameToRestore** with the 2018-12-26-12-00 incremental-backup file name:
+     {CODE restore_last_file_name_to_restore@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+   * The full-backup and 12:00 incremental-backup files **will** be restored.  
+     The 15:00 and 18:00 files will **not** be restored.  
+
+---
+
+### `DataDirectory`
+
+Specify the directory into which the database will be restored.
+{CODE restore_to_specific__data_directory@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+
+---
+
+### `EncryptionKey`
+
+This is where you need to provide your encryption key if your backup is encrypted.  
+{CODE-BLOCK:json}
+restoreConfiguration.EncryptionKey = "your_encryption_key";  
+{CODE-BLOCK/}
+
+---
+
+### `DisableOngoingTasks`
+
+set **DisableOngoingTasks** to **true** to disable the execution of ongoing tasks after restoration.  
+See [Recommended Precautions](../../../../client-api/operations/maintenance/backup/restore#recommended-precautions).
+{CODE restore_disable_ongoing_tasks_true@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+
+{PANEL/}
+
+
 {PANEL: Restore Database to a Single Node}
 
 *  **Configuration**  
@@ -68,44 +113,11 @@ To restore your database, configure a `RestoreBackupConfiguration` instance and 
 * **Code Sample**:  
      {CODE restore_to_single_node@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
----
-
-####Optional Settings:
-
-* `LastFileNameToRestore`  
-   Restore incremental backup files until a certain file is reached, and stop there.  
-   For example - 
-   * These are the files in your backup folder:  
-     2018-12-26-09-00.ravendb-full-backup  
-     2018-12-26-12-00.ravendb-incremental-backup  
-     2018-12-26-15-00.ravendb-incremental-backup  
-     2018-12-26-18-00.ravendb-incremental-backup  
-   * Feed **LastFileNameToRestore** with the 2018-12-26-12-00 incremental-backup file name:
-     {CODE restore_last_file_name_to_restore@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
-   * The full-backup and 12:00 incremental-backup files **will** be restored.  
-     The 15:00 and 18:00 files will **not** be restored.  
-
-* `DataDirectory`  
-   Specify the directory into which the database will be restored.
-   {CODE restore_to_specific__data_directory@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
-
-* `EncryptionKey`  
-   This is where you need to provide your encryption key if your backup is encrypted.  
-   {CODE-BLOCK:json}
-   restoreConfiguration.EncryptionKey = "your_encryption_key";  
-   {CODE-BLOCK/}
-
-* `DisableOngoingTasks`  
-   set **DisableOngoingTasks** to **true** to disable the execution of ongoing tasks after restoration.  
-   See [Recommended Precautions](../../../../client-api/operations/maintenance/backup/restore#recommended-precautions).
-   
-   {CODE restore_disable_ongoing_tasks_true@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
-
 {PANEL/}
 
 {PANEL: Restore Database to Multiple Nodes}
 
-####Restore Database to a Single Node & Replicate it to Other Nodes  
+### Restore Database to a Single Node & Replicate it to Other Nodes  
 
 The common approach to restoring a database that should reside on multiple nodes, is to restore the backed-up 
 database to a single server and then expand the database group to additional nodes, allowing normal replication.  
@@ -117,7 +129,7 @@ database to a single server and then expand the database group to additional nod
 
 ---
 
-####Restore Database to Multiple Nodes Simultaneously  
+### Restore Database to Multiple Nodes Simultaneously  
 
 You can create the cluster in advance, and restore the database to multiple nodes simultaneously.  
 

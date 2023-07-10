@@ -39,8 +39,9 @@
      * [Buckets Allocation](../sharding/overview#buckets-allocation)  
      * [Buckets Population](../sharding/overview#buckets-population)  
      * [Document Extensions Storage](../sharding/overview#document-extensions-storage)  
-     * [Forcing Documents to Share a Bucket](../sharding/overview#forcing-documents-to-share-a-bucket)  
+     * [Anchoring Documents to a Bucket](../sharding/overview#anchoring-documents-to-a-bucket)  
   * [Resharding](../sharding/overview#resharding)  
+  * [Paging](../sharding/overview#paging)  
   * [Creating a Sharded Database](../sharding/overview#creating-a-sharded-database)  
 
 {NOTE/}
@@ -197,28 +198,11 @@ is calculated by the ID of the document that owns them.
 
 ---
 
-### Forcing Documents to Share a Bucket
+### Anchoring Documents to a Bucket
 
-The cluster can be forced to store a document in the same bucket 
-(and therefore in the same shard) as another document.  
-To do this, add the document name a suffix: `$` + <`ID`>  
-The cluster will calculate the document's bucket number by 
-the suffix ID, and store the document in this bucket.  
-
-{NOTE: }
-E.g. - 
-Original document ID: `Users/70`  
-The document you want Users/70 to share a bucket with: `Users/4`  
-Rename `Users/70` to: `Users/70$Users/4`
-{NOTE/}
-
-!["Forcing Documents to Share a Bucket"](images/overview_force-docs-to-share-bucket.png "Forcing Documents to Share a Bucket")
-
-{WARNING: }
-Be careful not to force the storage of too many documents in the same bucket 
-(and shard), to prevent the creation of an imbalanced database in which one 
-of the shards is overpopulated and others are underpopulated.  
-{WARNING/}
+You can make documents share a bucket (and therefore a shard) by 
+adding their ID a suffix by which RavenDB will calculate their bucket number.  
+Learn [here](../sharding/administration/anchoring-documents) why and how to do this.  
 
 {PANEL/}
 
@@ -244,9 +228,22 @@ to a different shard, and then associates the bucket with the new shard.
 
 {PANEL/}
 
+{PANEL: Paging}
+
+From a user's perspective [paging](../indexes/querying/paging) 
+is conducted similarly in sharded and non-sharded databases, using 
+the same API.  
+Paging is more costly in a sharded database, however, since the 
+orchestrator must load data **from each shard** and sort the retrieved 
+results before handing the selected page to the user.  
+Read more about this subject [here](../sharding/querying#paging).  
+
+{PANEL/}
+
 {PANEL: Creating a Sharded Database}
 
-* A sharded database can be [created via Studio](../sharding/administration/studio-admin#creating-a-sharded-database).  
+* A sharded database can be created via [Studio](../sharding/administration/studio-admin#creating-a-sharded-database) 
+  or the [API](../sharding/administration/api-admin).  
 
 * A RavenDB cluster can run sharded and non-sharded databases in parallel.  
 

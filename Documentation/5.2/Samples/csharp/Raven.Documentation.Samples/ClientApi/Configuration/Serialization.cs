@@ -15,6 +15,10 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
     {
         public Serialization()
         {
+        }
+
+        void Serialization_CustomizeJsonSerializer()
+        {
             var store = new DocumentStore()
             {
                 Conventions =
@@ -25,40 +29,58 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                         CustomizeJsonSerializer = serializer => throw new CodeOmitted()
                     }
                     #endregion
-                    /*
-                    #region customize_json_deserializer
-                    Serialization = new NewtonsoftJsonSerializationConventions
-                    {
-                        CustomizeJsonDeserializer = serializer => throw new CodeOmitted()
-                    }
-                    #endregion
+                }
+            };
+        }
 
-                    #region DeserializeEntityFromBlittable
-                    Serialization = new NewtonsoftJsonSerializationConventions
-                    {
-                        DeserializeEntityFromBlittable = (type, blittable) => throw new CodeOmitted()
-                    }
-                    #endregion
-
+        void Serialization_JsonContractResolver()
+        {
+            var store = new DocumentStore()
+            {
+                Conventions =
+                {
                     #region json_contract_resolver
                     Serialization = new NewtonsoftJsonSerializationConventions
                     {
                         JsonContractResolver = new CustomJsonContractResolver()
                     }
-                    #endregion */
-                    ,
-                    #region preserve_doc_props_not_found_on_model
-                    PreserveDocumentPropertiesNotFoundOnModel = true
-                    #endregion
-                    ,
+                    #endregion 
+                }
+            };
+        }
+
+        void Serialization_MaxNumberOfRequestsPerSession()
+        {
+            var store = new DocumentStore()
+            {
+                Conventions =
+                {
                     #region MaxNumberOfRequestsPerSession
                     MaxNumberOfRequestsPerSession = 10
                     #endregion
-                    ,
+                }
+            };
+        }
+
+        void Serialization_UseOptimisticConcurrency()
+        {
+            var store = new DocumentStore()
+            {
+                Conventions =
+                {
                     #region UseOptimisticConcurrency
                     UseOptimisticConcurrency = true
                     #endregion
-                    ,
+                }
+            };
+        }
+
+        void Serialization_TrySerializeEntityToJsonStream()
+        {
+            var store = new DocumentStore()
+            {
+                Conventions =
+                {
                     #region TrySerializeEntityToJsonStream
                     BulkInsert =
                     {
@@ -80,17 +102,21 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
     }
     #endregion
 
-    #region custom_json_contract_resolver_based_on_default
-    public class CustomizedRavenJsonContractResolver : DefaultRavenContractResolver
+    class foo
     {
-        public CustomizedRavenJsonContractResolver(ISerializationConventions conventions) : base(conventions)
+        #region custom_json_contract_resolver_based_on_default
+        public class CustomizedRavenJsonContractResolver : DefaultRavenContractResolver
         {
-        }
+            public CustomizedRavenJsonContractResolver(ISerializationConventions conventions) : base(conventions)
+            {
+            }
 
-        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
-        {
-            throw new CodeOmitted();
+            protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+            {
+                throw new CodeOmitted();
+            }
         }
+        #endregion
     }
-    #endregion
+
 }

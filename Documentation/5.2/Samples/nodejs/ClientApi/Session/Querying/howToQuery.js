@@ -146,5 +146,8 @@ async function howToQuery() {
     
     // Overload for querying a collection OR an index:
     session.query(opts);
+
+    // rawQuery:
+    session.rawQuery(query);
     //endregion
 }

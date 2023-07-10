@@ -63,11 +63,16 @@
   {
     "Path": "how-to-query-a-spatial-index.markdown",
     "Name": "How to query a spatial index?",
+    "LastSupportedVersion": "5.1",
     "DiscussionId": "34617154-b3b3-4249-bf43-6aef32e3cc10",
     "Mappings": [
       {
         "Version": 2.0,
         "Key": "client-api/querying/static-indexes/spatial-search"
+      },
+      {
+          "Version": 5.2,
+          "Key": "client-api/session/querying/how-to-make-a-spatial-query"
       }
     ]
   },

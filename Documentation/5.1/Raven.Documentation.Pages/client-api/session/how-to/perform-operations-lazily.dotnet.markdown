@@ -39,8 +39,8 @@
   Loading entities with include can be executed __lazily__.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Lazy-load-with-include lazy_LoadWithInclude@ClientApi\Session\HowTo\Lazy.cs /}
-{CODE-TAB:csharp:The-document lazy_productClass@ClientApi\Session\HowTo\Lazy.cs /}
+{CODE-TAB:csharp:Lazy_load_with_include lazy_LoadWithInclude@ClientApi\Session\HowTo\Lazy.cs /}
+{CODE-TAB:csharp:The_document lazy_productClass@ClientApi\Session\HowTo\Lazy.cs /}
 {CODE-TABS/}
 {NOTE/}
 
@@ -70,7 +70,7 @@
 {NOTE: }
 <a id="runQuery" /> __Run query__
 
-* A Query can be executing a __lazily__.  
+* A Query can be executed __lazily__.  
   Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily).
 
 {CODE lazy_Query@ClientApi\Session\HowTo\Lazy.cs /}

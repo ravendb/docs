@@ -457,24 +457,5 @@ namespace Raven.Documentation.Samples.Indexes
             }
         }
         #endregion
-
-        #region spatial_search_1
-        private class Events_ByNameAndCoordinates : AbstractJavaScriptIndexCreationTask
-        {
-            public Events_ByNameAndCoordinates()
-            {
-                Maps = new HashSet<string>
-                {
-                    @"map('events', function (e){
-                        return { 
-                            Name: e.Name  ,
-                            Coordinates: createSpatialField(e.Latitude, e.Longitude)
-                        };                            
-                    })"
-                };
-
-            }
-        }
-        #endregion
     }
 }

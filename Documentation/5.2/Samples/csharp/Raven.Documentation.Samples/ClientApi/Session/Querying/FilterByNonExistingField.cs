@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Raven.Client.Documents;
 using Raven.Documentation.Samples.Orders;
@@ -15,164 +14,106 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             {
                 using (var session = store.OpenSession())
                 {
-                    #region whereNotexists_1
-
-                    List<Order> results = session
+                    #region whereNotExists_1
+                    List<Order> ordersWithoutFreightField = session
                         .Advanced
+                         // Define a DocumentQuery on 'Orders' collection
                         .DocumentQuery<Order>()
-                        .Not
-                        .WhereExists("Freight")
+                         // Search for documents that do Not contain field 'Freight'
+                        .Not.WhereExists("Freight")
+                         // Execute the query
                         .ToList();
-
+                    
+                    // Results will be only the documents that do Not contain the 'Freight' field in 'Orders' collection 
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region whereNotExists_1_async
+                    List<Order> ordersWithoutFreightField = await asyncSession
+                        .Advanced
+                         // Define a DocumentQuery on 'Orders' collection
+                        .AsyncDocumentQuery<Order>()
+                         // Search for documents that do Not contain field 'Freight'
+                        .Not.WhereExists("Freight")
+                         // Execute the query
+                        .ToListAsync();
+                    
+                    // Results will be only the documents that do Not contain the 'Freight' field in 'Orders' collection 
                     #endregion
                 }
 
                 using (var session = store.OpenSession())
                 {
-                    #region whereNotexists_signature
-
-                    List<T> results = session
+                    #region whereNotexists_2
+                    // Query the index
+                    // ===============
+                    
+                    List<Order> ordersWithoutFreightField = session
                         .Advanced
-                        .DocumentQuery<T>()
-                        .Not
-                        .WhereExists("missingFieldName")
+                         // Define a DocumentQuery on the index
+                        .DocumentQuery<Order, Orders_ByFreight>()
+                         // Verify the index is not stale (optional)
+                        .WaitForNonStaleResults()
+                         // Search for documents that do Not contain field 'Freight'
+                        .Not.WhereExists(x => x.Freight)
+                         // Execute the query
                         .ToList();
+                    
+                    // Results will be only the documents that do Not contain the 'Freight' field in 'Orders' collection 
+                    #endregion
+                }
 
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region whereNotexists_2_async
+                    // Query the index
+                    // ===============
+                    
+                    List<Order> ordersWithoutFreightField = await asyncSession
+                        .Advanced
+                         // Define a DocumentQuery on the index
+                        .AsyncDocumentQuery<Order, Orders_ByFreight>()
+                         // Verify the index is not stale (optional)
+                        .WaitForNonStaleResults()
+                         // Search for documents that do Not contain field 'Freight'
+                        .Not.WhereExists(x => x.Freight)
+                         // Execute the query
+                        .ToListAsync();
+
+                    // Results will be only the documents that do Not contain the 'Freight' field in 'Orders' collection 
                     #endregion
                 }
             }
         }
-
-        class HowToFilterByNonExistingField
+    }
+    
+    #region the_index
+    // Define a static index on the 'Orders' collection
+    // ================================================
+    
+    public class Orders_ByFreight : AbstractIndexCreationTask<Order, Orders_ByFreight.IndexEntry>
+    {
+        public class IndexEntry
         {
-            public async void Examples<T, TIndexCreator>(string missingFieldName)
-                where TIndexCreator : AbstractIndexCreationTask, new()
-            {
-                using (var store = new DocumentStore())
-                {
-                    using (var session = store.OpenSession())
-                    {
-                        #region whereNotexists_1
-
-                        // Create a list of documents in `results` from Order
-                        List<Order> results = session
-                            .Advanced
-                            .DocumentQuery<Order>()
-                            // Make sure that the index has finished before listing the results
-                            .WaitForNonStaleResults(TimeSpan.MaxValue)
-                            // Negate the next method
-                            .Not
-                            // Specify the field that is suspected to be missing
-                            .WhereExists("Freight")
-                            .ToList();
-
-                        #endregion
-                    }
-
-                    using (var session = store.OpenSession())
-                    {
-                        #region whereNotexists_signature
-
-                        List<T> results = session
-                            .Advanced
-                            .DocumentQuery<T>()
-                            .Not
-                            .WhereExists("fieldName")
-                            .ToList();
-
-                        #endregion
-                    }
-
-                    using (var session = store.OpenSession())
-                    {
-                        #region whereNotexists_StaticSignature
-
-                        List<T> results = session
-                            .Advanced
-                            .DocumentQuery<T, TIndexCreator>()
-                            .Not
-                            .WhereExists("missingFieldName")
-                            .ToList();
-
-                        #endregion
-                    }
-                }
-            }
-
-            class HowToFilterByNonExistingField2
-            {
-                #region IndexwhereNotexists_example
-
-                // Create or modify a static index called Orders_ByFreight
-                public class Orders_ByFreight : AbstractIndexCreationTask<Order>
-                {
-                    public Orders_ByFreight()
-                    {
-                        // Specify collection name
-                        Map = orders => from doc in orders
-                            select new
-                            {
-                                // Field that is missing in some documents
-                                doc.Freight,
-                                // Field that exists in all documents
-                                doc.Id
-                            };
-                    }
-                }
-
-                #endregion
-
-                public void FilteringByNonExistingFieldStaticIndexQuery()
-                {
-                    using (var store = new DocumentStore())
-                    {
-                        using (var session = store.OpenSession())
-                        {
-                            #region QuerywhereNotexists_example
-
-                            List<Order> results = session
-                                .Advanced
-                                // Query the static index 
-                                .DocumentQuery<Order, Orders_ByFreight>()
-                                // Verify that the index is not stale (optional)
-                                .WaitForNonStaleResults(TimeSpan.MaxValue)
-                                // Negate the next method
-                                .Not
-                                // Specify the field that is suspected to be missing
-                                .WhereExists(x => x.Freight)
-                                .ToList();
-                            // `results` will contain the list of incomplete documents.
-
-                            #endregion
-                        }
-                    }
-                }
-            }
+            // Define the index-fields
+            public decimal Freight { get; set; }
+            public string Id { get; set; }
         }
-
-        public class Employee
+        
+        public Orders_ByFreight()
         {
-            public string FirstName { get; set; }
-
-            public Address Address
-            {
-                get;
-                set;
-            }
-
-            public class Location
-            {
-                public double Latitude { get; set; }
-                public double Longitude { get; set; }
-            }
-        }
-
-        internal class TIndexCreator
-        {
-        }
-
-        internal class T
-        {
+            // Define the index Map function
+            Map = orders => from doc in orders
+                select new IndexEntry
+                {
+                    // Index a field that might be missing in SOME documents
+                    Freight = doc.Freight,
+                    // Index a field that exists in ALL documents in the collection
+                    Id = doc.Id
+                };
         }
     }
+    #endregion
 }

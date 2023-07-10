@@ -25,7 +25,7 @@
     },
     {
         "Path": "perform-operations-lazily.markdown",
-        "Name": "...perform operations lazily",
+        "Name": "...perform requests lazily",
         "DiscussionId": "7a54c2fc-67ee-40e6-94b5-1266e990cf57",
         "Mappings": [
             {

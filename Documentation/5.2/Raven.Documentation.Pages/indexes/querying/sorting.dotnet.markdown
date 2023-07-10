@@ -132,7 +132,8 @@ order by Name as alphanumeric
 
 If your data contains geographical locations, you might want to sort the query result by distance from a given point.
 
-This can be achieved by using the `OrderByDistance` and `OrderByDistanceDescending` methods (API reference [here](../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance)):
+This can be achieved by using the `OrderByDistance` and `OrderByDistanceDescending` methods.  
+Learn more [here](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting).  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_9_1@Indexes\Querying\Sorting.cs /}

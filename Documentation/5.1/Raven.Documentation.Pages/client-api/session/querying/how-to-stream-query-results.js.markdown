@@ -1,4 +1,4 @@
-# How to Stream Query Results
+# Stream Query Results
 
 ---
 

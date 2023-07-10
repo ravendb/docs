@@ -134,19 +134,51 @@ async function lazyExamples() {
         //endregion
     }
     {
-        //region lazy_executeAllPendingLazyOperations
+        //region lazy_ExecuteAll_Implicit
         // Define multiple lazy requests
         const lazyUser1 = session.advanced.lazily.load("users/1-A");
         const lazyUser2 = session.advanced.lazily.load("users/2-A");
-        const lazyEmployees = session.query({ collection: "employees" }).lazily();
 
-        // Execute all pending lazy operations
+        const lazyEmployees = session.query({ collection: "employees" })
+            .lazily();
+        const lazyProducts = session.query({ collection: "products" })
+            .search("Name", "Ch*")
+            .lazily();
+
+        // Accessing the value of ANY of the lazy instances will trigger
+        // the execution of ALL pending lazy requests held up by the session
+        // This is done in a SINGLE server call
+        const user1 = await lazyUser1.getValue();
+
+        // ALL the other values are now also available
+        // No additional server calls are made when accessing these values
+        const user2 = await lazyUser2.getValue();
+        const employees = await lazyEmployees.getValue();
+        const products = await lazyProducts.getValue();
+        //endregion
+    }
+    {
+        //region lazy_ExecuteAll_Explicit
+        // Define multiple lazy requests
+        const lazyUser1 = session.advanced.lazily.load("users/1-A");
+        const lazyUser2 = session.advanced.lazily.load("users/2-A");
+
+        const lazyEmployees = session.query({ collection: "employees" })
+            .lazily();
+        const lazyProducts = session.query({ collection: "products" })
+            .search("Name", "Ch*")
+            .lazily();
+
+        // Explicitly call 'executeAllPendingLazyOperations'
+        // ALL pending lazy requests held up by the session will be executed in a SINGLE server call
         await session.advanced.eagerly.executeAllPendingLazyOperations();
 
-        // All values are now available
+        // ALL values are now available
+        // No additional server calls are made when accessing the values
         const user1 = await lazyUser1.getValue();
         const user2 = await lazyUser2.getValue();
         const employees = await lazyEmployees.getValue();
+        const products = await lazyProducts.getValue();
         //endregion
     }
     {

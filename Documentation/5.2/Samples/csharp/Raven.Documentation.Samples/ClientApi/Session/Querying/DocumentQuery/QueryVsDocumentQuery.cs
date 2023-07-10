@@ -33,7 +33,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.DocumentQuery
                         .Where(x => x.EyeColor == "blue");
                     #endregion
 
-                    #region mutable_lucene_query
+                    #region mutable_query
                     IDocumentQuery<User> documentQuery = session
                         .Advanced
                         .DocumentQuery<User>()
@@ -45,7 +45,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.DocumentQuery
                     IDocumentQuery<User> eyeDocumentQuery = documentQuery
                         .WhereEquals(x => x.EyeColor, "blue");
 
-                    // here all of the DocumentQuery variables are the same references
+                    // Here all of the DocumentQuery variables have the same reference
                     #endregion
 
                     #region default_operator
