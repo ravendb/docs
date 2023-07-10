@@ -93,10 +93,9 @@ The following points relate to this issue.
   like time series rollups to summarize a large amount of data using a tiny amount 
   of space.  
 
-* When documents and their extensions are queried and/or included, it takes longer 
-  to retrieve documents and extensions when they are stored on different shards.  
-  To accelerate these operations, we can place related documents 
-  [in the same bucket](../sharding/overview#forcing-documents-to-share-a-bucket) 
+* It takes longer to retrieve related documents (and their extensions) when 
+  they are stored on different shards. To accelerate such operations, we can 
+  store related documents [in the same bucket](../sharding/administration/anchoring-documents) 
   in advance.  
 
 {PANEL/}

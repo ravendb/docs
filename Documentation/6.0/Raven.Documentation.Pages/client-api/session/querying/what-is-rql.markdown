@@ -438,4 +438,3 @@ For more information, please refer to this [patching](../../../client-api/operat
 ### Querying
 
 - [Querying an index](../../../indexes/querying/query-index)
-- [Graph Queries Overview](../../../indexes/querying/graph/graph-queries-overview)  

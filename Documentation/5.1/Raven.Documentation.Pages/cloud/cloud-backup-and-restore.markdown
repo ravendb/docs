@@ -61,6 +61,13 @@ cloud you have no direct access to.
 You can [view and restore](../cloud/cloud-backup-and-restore#restore-mandatory-backup-files) them using your portal's Backups tab and the 
 management Studio.  
 
+{NOTE: }
+A backup created for data hosted by a server in Europe or the US 
+will be kept within the same [geographical region](https://cloud.ravendb.net/pricing), 
+i.e. backups made for a database hosted in Europe are kept in Europe 
+and backups made for a database hosted in the US are kept in the US.  
+{NOTE/}
+
 ---
 
 ####Custom-Backup Storage

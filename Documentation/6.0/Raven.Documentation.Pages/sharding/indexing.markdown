@@ -62,9 +62,9 @@ Unsupported or yet-unimplemented indexing features include:
                           };
   {CODE-BLOCK/}
   {NOTE: }
-  You can make sure that documents share a bucket and a shard, and can 
-  therefore locate and load each other, using the 
-  [$ syntax](../sharding/overview#forcing-documents-to-share-a-bucket).  
+  You can make sure that documents share a bucket, and 
+  can therefore locate and load each other, using the 
+  [$ syntax](../sharding/administration/anchoring-documents).  
   {NOTE/}
 * **Map-Reduce Output Documents**  
   Using [OutputReduceToCollection](../indexes/map-reduce-indexes#map-reduce-output-documents) 
@@ -87,6 +87,6 @@ Unsupported or yet-unimplemented indexing features include:
 - [Map-Reduce Output Documents](../indexes/map-reduce-indexes#map-reduce-output-documents)  
 
 ### Sharding
-- [Force Docs Share a Bucket](../sharding/overview#forcing-documents-to-share-a-bucket)  
+- [Anchoring Documents](../sharding/administration/anchoring-documents)  
 - [Querying](../sharding/querying)  
 

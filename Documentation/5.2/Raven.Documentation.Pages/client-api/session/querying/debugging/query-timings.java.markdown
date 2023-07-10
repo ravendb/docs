@@ -1,4 +1,4 @@
-# How to Include Query Timings
+# Include Query Timings
 
 By default, detailed timings (duration of Lucene search, loading documents, transforming results) in queries are turned off, this is due to small overhead that calculation of such timings produces.
 

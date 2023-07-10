@@ -93,7 +93,7 @@ database items from an existing file into the database.
 
 * **Transferred Counter Value**: **Distributed**  
   Smuggler transfers the entire series of values that the different nodes maintain for a Counter.  
-* To make Smuggler handle Counters, include `DatabaseItemType.Counters` in `OperateOnTypes`'s list of entities to import or export.  
+* To make Smuggler handle Counters, include `DatabaseItemType.CountersGroups` in `OperateOnTypes`'s list of entities to import or export.  
   {CODE smuggler_options@DocumentExtensions\Counters\counters.cs /}
 
 ---

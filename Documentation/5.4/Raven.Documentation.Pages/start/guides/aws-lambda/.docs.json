@@ -1,0 +1,26 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "7013f4c0-2fad-41ad-bc25-5d54ca212f60",
+        "Mappings": []
+    },
+    {
+        "Path": "secrets-manager.markdown",
+        "Name": "Using AWS Secrets Manager",
+        "DiscussionId": "9958bfaa-4171-4ab1-a4f4-3b562d75e7c3",
+        "Mappings": []
+    },
+    {
+        "Path": "deployment.markdown",
+        "Name": "Deployment Considerations",
+        "DiscussionId": "f0f81c13-39f0-4497-bd7f-49752d432b6f",
+        "Mappings": []
+    },
+    {
+        "Path": "troubleshooting.markdown",
+        "Name": "Troubleshooting",
+        "DiscussionId": "e4ec5be7-def7-453f-8734-7ec62e31e708",
+        "Mappings": []
+    }
+]

@@ -7,10 +7,10 @@
 * A sharded database offers the same set of querying features that 
   a non-sharded database offers, so queries that were written for 
   a non-sharded database can generally be kept as is.  
-* Some querying features are yet to be implemented. Others behave 
-  a little differently in a sharded database. One example for the 
-  latter is [filter](../sharding/querying#filtering-results-in-a-sharded-database).  
-  These instances are discussed below.  
+* Some querying features are yet to be implemented. Others (like 
+  [filter](../sharding/querying#filtering-results-in-a-sharded-database)) 
+  behave a little differently in a sharded database. These cases 
+  are discussed below.  
 
 * In this page:  
   * [Querying in a Sharded Database](../sharding/querying#querying-in-a-sharded-database)  
@@ -20,6 +20,9 @@
      * [OrderBy in a Map-Reduce Index](../sharding/querying#orderby-in-a-map-reduce-index)  
      * [`where` vs `filter` Recommendations](../sharding/querying#vs--recommendations)  
   * [Including Items](../sharding/querying#including-items)  
+  * [Querying a Selected Shard](../sharding/querying#querying-a-selected-shard)
+  * [Paging](../sharding/querying#paging)  
+  * [Timing Queries](../sharding/querying#timing-queries)
   * [Unsupported Querying Features](../sharding/querying#unsupported-querying-features)  
   
 {NOTE/}
@@ -169,7 +172,7 @@ and projections of map indexes **can** load a document,
 
 ## OrderBy in a Map-Reduce Index
 
-Simlarly to its behavior under a non-sharded database, 
+Similarly to its behavior under a non-sharded database, 
 [OrderBy](../indexes/querying/sorting) is used in an index or a query to 
 sort the retrieved dataset by a given order.  
 
@@ -179,49 +182,24 @@ is applied to restrict the number of retrieved results, there are scenarios
 in which **all** the results will still be retrieved from all shards.  
 To understand how this can happen, let's run a few queries over this 
 map-reduce index:  
-{CODE-BLOCK:csharp}
-Reduce = results => from result in results
-                    group result by result.Name
-                    into g
-                    select new Result
-                    {
-                        // Group-by field (reduce key)
-                        Name = g.Key,
-                        // Computation field
-                        Sum = g.Sum(x => x.Sum)
-                    };
-{CODE-BLOCK/}
+{CODE map-reduce-index@Sharding\ShardingQuerying.cs /}
 
 * The first query sorts the results using `OrderBy` without setting any limit.  
   This will load **all** matching results from all shards (just like this query 
   would load all matching results from a non-sharded database).  
-  {CODE-BLOCK:csharp}
-                      var queryResult = session.Query<UserMapReduce.Result, UserMapReduce>()
-                        .OrderBy(x => x.Name)
-                        .ToList();
-  {CODE-BLOCK/}
+  {CODE OrderBy_with-no-limit@Sharding\ShardingQuerying.cs /}
   
 * The second query sorts the results by one of the `GroupBy` fields, 
   `Name`, and sets a limit to restrict the retrieved dataset to 3 results.  
   This **will** restrict the retrieved dataset to the set limit.  
-  {CODE-BLOCK:csharp}
-                    var queryResult = session.Query<UserMapReduce.Result, UserMapReduce>()
-                        .OrderBy(x => x.Name)
-                        .Take(3) // this limit will apply while retrieving the items
-                        .ToList();
-  {CODE-BLOCK/}
+  {CODE OrderBy_with-limit@Sharding\ShardingQuerying.cs /}
   
 * The third query sorts the results **not** by a `GroupBy` field 
   but by a field that computes a sum from retrieved values.  
   This will retrieve **all** the results from all shards regardless of 
   the set limit, perform the computation over them all, and only then 
   sort them and provide us with just the number of results we requested.  
-  {CODE-BLOCK:csharp}
-                    var queryResult = session.Query<UserMapReduce.Result, UserMapReduce>()
-                        .OrderBy(x => x.Sum)
-                        .Take(3) // this limit will only apply after retrieving all items
-                        .ToList();
-  {CODE-BLOCK/}
+  {CODE compute-sum-by-retrieved-results@Sharding\ShardingQuerying.cs /}
     
   {NOTE: }
   Note that retrieving all the results from all shards, either 
@@ -255,11 +233,103 @@ filter TotalSales >= 5000
 
 **Including** items by a query or an index **will** work even if an included 
 item resides on another shard.  
-If a requested item is not found on this shard, the orchestrator will connect 
-the shard it is stored on, load the item and provide it.  
+If a requested item is not located on this shard, the orchestrator will fetch 
+it from the shard that does host it.  
+Note that this process will cost an extra travel to the shard that the requested 
+item is on.  
 
-Note that this process will cost the extra travel to the shard that the requested 
-document is on.  
+{PANEL/}
+
+{PANEL: Querying a Selected Shard}
+
+A query is normally executed over all shards.  
+It is, however, also possible to query only selected shards.  
+Query a selected shard when you know in advance that the documents you need 
+to query reside on this shard, to avoid redundant travels to other shards.  
+
+This feature can be helpful when, for example, all the documents related 
+to a specific account [are deliberately stored on the same shard](../sharding/administration/anchoring-documents), 
+and when it's time to query any of them the query is sent only to this shard.  
+
+* To query a specific shard or a list of specific shards add to the 
+  query a `ShardContext` object that specifies the shard/s to query.  
+* You can discover what shard or shards documents are stored on using 
+  `ByDocumentId` or `ByDocumentIds`.  
+* Examples:  
+
+     Query only the shard containing `users/1`:  
+     {CODE query-selected-shard@Sharding\ShardingQuerying.cs /}
+
+     Query only the shard/s containing `users/2` and `users/3`:  
+     {CODE query-selected-shards@Sharding\ShardingQuerying.cs /}
+
+{PANEL/}
+
+{PANEL: Paging}
+
+From a client's point of view, [paging](../indexes/querying/paging) 
+is conducted similarly in sharded and non-sharded databases, and 
+the same API is used to define page size and retrieve selected pages.  
+
+Under the hood, however, performing paging in a sharded database 
+entails some overhead since the orchestrator is required to load 
+the requested data **from each shard** and sort the retrieved 
+results before handing the selected page to the user.  
+
+* E.g., let's see what happens when we load the 8th page (where 
+  the page size is 100) from a non-sharded and a sharded database.  
+  {CODE-TABS}
+  {CODE-TAB:csharp:Query Query_basic-paging@Sharding\ShardingQuerying.cs /}
+  {CODE-TAB:csharp:DocumentQuery DocumentQuery_basic-paging@Sharding\ShardingQuerying.cs /}
+  {CODE-TAB:csharp:Index index-for-paging-sample@Sharding\ShardingQuerying.cs /}
+  {CODE-TABS/}
+    
+    When the database is **Not sharded** the server would:  
+      * skip 7 pages.  
+      * hand page 8 to the client (results 701 to 800).  
+   
+    When the database is **Sharded** the orchestrator would:  
+      * load 8 pages (sorted by modification order) from each shard.  
+      * sort the retrieved results (in a 3-shard database, 
+        for example, the orchestrator would sort 2400 results).  
+      * skip 7 pages (of 24).  
+      * hand page 8 to the client (results 701 to 800).  
+
+{NOTE: }
+The shards sort the data by modification order before sending 
+it to the orchestrator.  
+If a shard is required to send 800 results to the orchestrator, 
+for example, the first result would be the document modified most 
+recently and the document modified first would be the last result. 
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: Timing Queries}
+The duration of queries and query parts (e.g. optimization 
+or execution time) can be measured using API or Studio.  
+
+Timing is **disabled** by default, to avoid the measuring overhead. 
+It can be enabled per query by adding `include timings()` to an RQL 
+query or calling [`.Timings()`](../client-api/session/querying/debugging/query-timings#syntax) 
+in a [Linq](../client-api/session/querying/how-to-query#session.query) 
+query, as explained [here](../client-api/session/querying/debugging/query-timings).  
+
+To time queries in a sharded database using Studio open the 
+[Query View](../studio/database/queries/query-view), enable timings 
+as explained above, run the query, and open the **Timing** tab.  
+
+!["Timing Shards Querying"](images/querying_timing.png "Timing Shards Querying")
+
+1. **Textual view** of query parts and their duration.  
+   Point the mouse cursor at captions to display timing properties in the graphical view on the right.  
+2. **Per-shard Timings**  
+3. **Graphical View**  
+   Point the mouse cursor at graph sections to display query parts duration:  
+    **A**. Shard #0 overall query time  
+    **B**. Shard #0 optimization period  
+    **C**. Shard #0 query period  
+    **D**. Shard #0 staleness period  
 
 {PANEL/}
 
@@ -296,7 +366,7 @@ databases include:
 ### Indexing
 - [Map-Reduce Indexes](../indexes/map-reduce-indexes)  
 - [Indexing Basics](../indexes/indexing-basics)  
-- [Rolling index deploymeny](../indexes/rolling-index-deployment)  
+- [Rolling index deployment](../indexes/rolling-index-deployment)  
 - [Map-Reduce Output Documents](../indexes/map-reduce-indexes#map-reduce-output-documents)  
 
 ### Querying

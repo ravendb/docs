@@ -15,7 +15,7 @@ In this page:
   * [Registering](../../start/installation/running-as-service#registering)  
   * [Unregistering](../../start/installation/running-as-service#unregistering)  
   * [Starting and Stopping](../../start/installation/running-as-service#starting-and-stopping)  
-* [Linux - Ubuntu 16.04](../../start/installation/running-as-service#linux---ubuntu-16.04)  
+* [Linux - Ubuntu](../../start/installation/running-as-service#linux---ubuntu)  
 
 {INFO:Prerequisites}
 
@@ -78,7 +78,7 @@ Service can be also controlled using the `start` and `stop` commands:
 
 {PANEL/}
 
-{PANEL:Linux - Ubuntu 16.04}
+{PANEL:Linux - Ubuntu}
 
 You can run RavenDB as a daemon by running the script `install-daemon.sh` from the package root.
 
@@ -86,17 +86,21 @@ Alternatively, open a bash terminal, and create the following file `/etc/systemd
 
 {CODE-BLOCK:bash}
 [Unit]
-Description=RavenDB v4.0
+Description=RavenDB NoSQL Database
 After=network.target
 
 [Service]
 LimitCORE=infinity
-LimitNOFILE=65536
+LimitNOFILE=65535
 LimitRSS=infinity
 LimitAS=infinity
-User=<desired-user>
+LimitMEMLOCK=infinity
+TasksMax=infinity
+StartLimitBurst=0
 Restart=on-failure
 Type=simple
+TimeoutStopSec=300
+User=<desired-user>
 ExecStart=<path-to-RavenDB>/run.sh
 
 [Install]
