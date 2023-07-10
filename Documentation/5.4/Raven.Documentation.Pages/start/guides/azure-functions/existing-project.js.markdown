@@ -5,10 +5,6 @@
 Microsoft Azure Functions are a serverless platform that supports multiple languages and frameworks that let you deploy workloads that scale without managing any infrastructure.
 
 Learn more about [how Microsoft Azure Functions work][az-funcs].
-
-<!-- ### New to Azure Functions?
-
-For a walkthrough and demo of getting started with Azure Functions, see [TBD](#). -->
 {NOTE/}
 
 In this guide, you will learn how to connect to RavenDB from your existing Node.js Azure Functions. This guide assumes you are familiar with Node.js development techniques and the basics of Azure Function apps.
