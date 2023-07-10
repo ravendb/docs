@@ -27,4 +27,4 @@ where fuzzy(Name = 'Ernts Hnadel', 0.5)
 ### Session
 
 - [How to Query](../../../../client-api/session/querying/how-to-query)
-- [How to Use Search](../../../../client-api/session/querying/how-to-use-search)
+- [Full-text search](../../../../client-api/session/querying/text-search/full-text-search)

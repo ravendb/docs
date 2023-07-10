@@ -8,7 +8,7 @@
   you can also request to get a list of text fragments that highlight the searched terms.  
 
 * This article provides examples of highlighting search results when querying a static-index.  
-  __Prior to this article__, please refer to [Highlight query results](../../client-api/session/querying/how-to-use-highlighting) for general knowledge about Highlighting,  
+  __Prior to this article__, please refer to [Highlight query results](../../client-api/session/querying/text-search/highlight-query-results) for general knowledge about Highlighting,  
   and for dynamic-queries examples.
 
 * In order to search and get fragments with highlighted terms when querying a static-index,  
@@ -149,7 +149,7 @@ __Process results__:
 
 * __Default tags__:  
 
-  * Please refer to [Highlight tags](../../client-api/session/querying/how-to-use-highlighting#highlight-tags) to learn about the default html tags used to wrap the highlighted terms.
+  * Please refer to [Highlight tags](../../client-api/session/querying/text-search/highlight-query-results#highlight-tags) to learn about the default html tags used to wrap the highlighted terms.
 
 * __Customizing tags__:  
 
@@ -158,7 +158,7 @@ __Process results__:
   * Customizing the wrapping tags when querying an index is done exactly the same as when making  
     a dynamic query where the `preTags` and `postTags` parameters are passed to the `highlight` method.
   
-  * Follow the example in [Highlight - customize tags](../../client-api/session/querying/how-to-use-highlighting#highlight---customize-tags).
+  * Follow the example in [Highlight - customize tags](../../client-api/session/querying/text-search/highlight-query-results#highlight---customize-tags).
 
 {PANEL/}
 
@@ -166,4 +166,4 @@ __Process results__:
 
 ### Client API
 
-- [Highlight query results](../../client-api/session/querying/how-to-use-highlighting)
+- [Highlight query results](../../client-api/session/querying/text-search/highlight-query-results)

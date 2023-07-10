@@ -386,7 +386,7 @@ Learn more in [dynamic group by queries](../../../client-api/session/querying/ho
 The keyword `include` has been introduced to support:
 
 - [including related documents](../../../client-api/how-to/handle-document-relationships#includes) or counters in the query response
-- [highlighting](../../../client-api/session/querying/how-to-use-highlighting) results
+- [highlighting](../../../client-api/session/querying/text-search/highlight-query-results) results
 - [get query timings](../../../client-api/session/querying/debugging/query-timings)
 - [get explanations](../../../client-api/session/querying/debugging/include-explanations)
 

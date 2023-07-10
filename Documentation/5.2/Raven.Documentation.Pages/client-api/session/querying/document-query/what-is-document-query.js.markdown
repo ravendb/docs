@@ -20,7 +20,7 @@
 
 ### Session
 
-- [How to Query](../../../../client-api/session/querying/how-to-query)
+- [Query overview](../../../../client-api/session/querying/how-to-query)
 - [How to Use Lucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
 
 ### Querying 

@@ -309,7 +309,7 @@ Available custom methods and extensions for the session's [Query](../../../clien
 - FirstOrDefaultAsync
 - [GroupByArrayValues](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-values)
 - [GroupByArrayContent](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
-- [Highlight](../../../client-api/session/querying/how-to-use-highlighting)
+- [Highlight](../../../client-api/session/querying/text-search/highlight-query-results)
 - [Include](../../../client-api/how-to/handle-document-relationships)
 - [Intersect](../../../client-api/session/querying/how-to-use-intersect)
 - [Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
@@ -322,7 +322,7 @@ Available custom methods and extensions for the session's [Query](../../../clien
 - OrderByScore
 - OrderByScoreDescending
 - [ProjectInto](../../../client-api/session/querying/how-to-project-query-results)
-- [Search](../../../client-api/session/querying/how-to-use-search)
+- [Search](../../../client-api/session/querying/text-search/full-text-search)
 - SingleAsync
 - SingleOrDefaultAsync
 - [Spatial](../../../client-api/session/querying/how-to-make-a-spatial-query)

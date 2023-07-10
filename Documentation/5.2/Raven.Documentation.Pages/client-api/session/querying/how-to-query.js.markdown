@@ -274,7 +274,7 @@ Available methods for the session's [query](../../../client-api/session/querying
 - fuzzy
 - getQueryResult
 - [groupBy](../../../client-api/session/querying/how-to-perform-group-by-query)
-- [highlight](../../../client-api/session/querying/how-to-use-highlighting)
+- [highlight](../../../client-api/session/querying/text-search/highlight-query-results)
 - include
 - [includeExplanations](../../../client-api/session/querying/debugging/include-explanations)
 - getIndexQuery

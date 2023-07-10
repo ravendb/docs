@@ -38,5 +38,5 @@ where exact(Lines[].ProductName == 'Singaporean Hokkien Fried Mee')
 ### Session
 
 - [How to Query](../../../../client-api/session/querying/how-to-query)
-- [How to Use Search](../../../../client-api/session/querying/how-to-use-search)
+- [Full-text search](../../../../client-api/session/querying/text-search/full-text-search)
 - [How to Use Regex](../../../../client-api/session/querying/how-to-use-regex)

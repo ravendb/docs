@@ -184,7 +184,7 @@ Available custom methods and extensions:
 - [GroupBy](../../../../client-api/session/querying/how-to-perform-group-by-query)
 - [GroupByArrayValues](../../../../client-api/session/querying/how-to-perform-group-by-query#by-array-values)
 - [GroupByArrayContent](../../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
-- [Query] [Highlight](../../../../client-api/session/querying/how-to-use-highlighting)
+- [Query] [Highlight](../../../../client-api/session/querying/text-search/highlight-query-results)
 - Include
 - IncludeExplanations
 - Intersect
@@ -251,7 +251,7 @@ The available `DocumentQuery` overloads are listed in this [Syntax section](../.
 
 ### Session
 
-- [How to Query](../../../../client-api/session/querying/how-to-query)
+- [Query overview](../../../../client-api/session/querying/how-to-query)
 - [How to Use Lucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
 
 ### Querying 

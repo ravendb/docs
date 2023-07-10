@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* When making a [Full-Text Search query](../../../../client-api/session/querying/how-to-use-search),  
+* When making a [Full-Text Search query](../../../../client-api/session/querying/text-search/full-text-search),  
   in addition to retrieving documents that contain the searched terms in the results,  
   you can also request to get a __list of text fragments that highlight the searched terms__.
 
@@ -15,12 +15,12 @@
 ---
 
 * In this page:
-  * [Highlight - basic example](../../../../client-api/session/querying/how-to-use-highlighting#highlight---basic-example)
-      * [Highlight tags](../../../../client-api/session/querying/how-to-use-highlighting#highlight-tags)
-      * [Highlight results in Studio](../../../../client-api/session/querying/how-to-use-highlighting#highlight-results-in-studio)
-  * [Highlight - customize tags](../../../../client-api/session/querying/how-to-use-highlighting#highlight---customize-tags)
-  * [Highlight - projected results](../../../../client-api/session/querying/how-to-use-highlighting#highlight---projected-results)
-  * [Syntax](../../../../client-api/session/querying/how-to-use-highlighting#syntax)
+  * [Highlight - basic example](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---basic-example)
+      * [Highlight tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight-tags)
+      * [Highlight results in Studio](../../../../client-api/session/querying/text-search/highlight-query-results#highlight-results-in-studio)
+  * [Highlight - customize tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---customize-tags)
+  * [Highlight - projected results](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---projected-results)
+  * [Syntax](../../../../client-api/session/querying/text-search/highlight-query-results#syntax)
   
 {NOTE/}
 
@@ -73,7 +73,7 @@ include highlight(Notes, 35, 4)
   - <span style="border-left: 10px solid powderblue">&nbsp;</span>powderblue
 
 * The html tags that wrap the highlighted terms can be __customized__ to any other tags.  
-  See [customize tags](../../../../client-api/session/querying/how-to-use-highlighting#highlight---customize-tags) below.
+  See [customize tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---customize-tags) below.
 
 {NOTE/}
 
@@ -171,7 +171,7 @@ __The Highlightings object__:
 
 ### Session
 
-- [How to Query](../../../../client-api/session/querying/how-to-query)
+- [Query overview](../../../../client-api/session/querying/how-to-query)
 
 ### Indexes
 

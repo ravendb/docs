@@ -80,4 +80,4 @@ Default `<b></b>` tags are coloured and colours are returned in following order:
 
 ### Client API
 
-- [How to Use Highlighting](../../client-api/session/querying/how-to-use-highlighting)
+- [How to Use Highlighting](../../client-api/session/querying/text-search/highlight-query-results)

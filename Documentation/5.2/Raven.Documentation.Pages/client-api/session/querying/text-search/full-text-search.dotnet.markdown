@@ -61,9 +61,9 @@ where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but a
 
 ### Session
 
-- [How to Query](../../../../client-api/session/querying/how-to-query)
+- [Query overview](../../../../client-api/session/querying/how-to-query)
 - [How to Use Regex](../../../../client-api/session/querying/how-to-use-regex)
-- [How to Query With Exact Match](../../../../client-api/session/querying/how-to-query-with-exact-match)
+- [How to Query With Exact Match](../../../../client-api/session/querying/text-search/exact-match-search)
 
 ### Indexes
 
