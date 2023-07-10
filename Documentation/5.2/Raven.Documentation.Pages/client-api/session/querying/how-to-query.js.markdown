@@ -266,6 +266,7 @@ Available methods for the session's [query](../../../client-api/session/querying
 - containsAll
 - containsAny
 - count
+- longCount
 - countLazily
 - distinct
 - first
@@ -279,7 +280,6 @@ Available methods for the session's [query](../../../client-api/session/querying
 - getIndexQuery
 - [intersect](../../../client-api/session/querying/how-to-use-intersect)
 - lazily
-- longCount
 - [moreLikeThis](../../../client-api/session/querying/how-to-use-morelikethis)
 - negateNext
 - [noCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)

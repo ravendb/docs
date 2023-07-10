@@ -20,7 +20,7 @@
         "Path": "/document-query",
         "Name": "DocumentQuery",
         "Mappings": []
-    },    
+    },
     {
         "Path": "how-to-stream-query-results.markdown",
         "Name": "Stream Query Results",
@@ -85,6 +85,12 @@
         "Path": "how-to-get-query-statistics.markdown",
         "Name": "How to Get Query Statistics",
         "DiscussionId": "6c7d2633-e0ec-4b8f-8ddd-43470f24aa29",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-count-query-results.markdown",
+        "Name": "How to Count Query Results",
+        "DiscussionId": "77cec3b4-0001-4a30-81a7-e3182f4150bf",
         "Mappings": []
     },
     {
