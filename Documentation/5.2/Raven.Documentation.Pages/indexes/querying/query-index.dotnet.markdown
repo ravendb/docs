@@ -113,16 +113,17 @@ limit 5, 10 // skip 5, take 10
 * `DocumentQuery` provides low-level access to RavenDB's querying mechanism,  
   giving you more flexibility and control when making complex queries.
 
-* Below is a simple _DocumentQuery_ usage.  
-  For a full description and more examples see:
+* For more information about _DocumentQuery_ see:
     * [What is a document query](../../client-api/session/querying/document-query/what-is-document-query)
     * [Query -vs- DocumentQuery](../../client-api/session/querying/document-query/query-vs-document-query)
 
 __Example__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query index_query_4_1@Indexes\Querying\QueryIndex.cs /}
-{CODE-TAB:csharp:Query_async index_query_4_2@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:DocumentQuery index_query_4_1@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:DocumentQuery_async index_query_4_2@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Overload index_query_4_3@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:Overload_async index_query_4_4@Indexes\Querying\QueryIndex.cs /}
 {CODE-TAB:csharp:Index the_index@Indexes\Querying\QueryIndex.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Note:
@@ -146,8 +147,8 @@ where LastName == "King"
 __Example__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query index_query_5_1@Indexes\Querying\QueryIndex.cs /}
-{CODE-TAB:csharp:Query_async index_query_5_2@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:RawQuery index_query_5_1@Indexes\Querying\QueryIndex.cs /}
+{CODE-TAB:csharp:RawQuery_async index_query_5_2@Indexes\Querying\QueryIndex.cs /}
 {CODE-TAB:csharp:Index the_index@Indexes\Querying\QueryIndex.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Note:

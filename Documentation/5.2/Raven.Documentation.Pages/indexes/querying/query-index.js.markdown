@@ -107,7 +107,7 @@ limit 5, 10 // skip 5, take 10
 __Example__:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query index_query_4_1@indexes\querying\queryIndex.js /}
+{CODE-TAB:nodejs:RawQuery index_query_4_1@indexes\querying\queryIndex.js /}
 {CODE-TAB:nodejs:Index the_index@indexes\querying\queryIndex.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Note:

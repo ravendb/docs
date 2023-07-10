@@ -8,7 +8,7 @@ class Employee { }
 //region the_index
 // The index definition:
 
-class Employees_ByName extends AbstractJavaScriptIndexCreationTask<Employee> {
+class Employees_ByName extends AbstractJavaScriptIndexCreationTask {
 
     constructor() {
         super();
@@ -25,7 +25,7 @@ class Employees_ByName extends AbstractJavaScriptIndexCreationTask<Employee> {
         // * The index-fields can be queried on to fetch matching documents. 
         //   You can query and filter Employee documents based on their first or last names.
 
-        // * Employee documents that do Not contain both 'FirstName' and 'LastName' fields
+        // * Employee documents that do Not contain both 'firstName' and 'lastName' fields
         //   will Not be indexed.
 
         // * Note: the INDEX-field name does Not have to be exactly the same

@@ -3,5 +3,15 @@
         "Path": "/aws-lambda",
         "Name": "AWS Lambda",
         "Mappings": []
+    },
+    {
+        "Path": "/azure-functions",
+        "Name": "Azure Functions"
+    },
+    {
+        "Path": "/cloudflare-workers",
+        "Name": "Cloudflare Workers",
+        "DiscussionId": "6c35efa3-2812-4696-99a0-171d39afe825",
+        "Mappings": []
     }
 ]

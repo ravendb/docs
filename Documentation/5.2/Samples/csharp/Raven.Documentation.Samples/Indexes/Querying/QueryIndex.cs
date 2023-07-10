@@ -13,7 +13,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
     
     public class Employees_ByName : AbstractIndexCreationTask<Employee, Employees_ByName.IndexEntry>
     {
-        // The IndexEntry class defines the index-fields.
+        // The IndexEntry class defines the index-fields
         public class IndexEntry
         {
             public string FirstName { get; set; }
@@ -180,10 +180,10 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     #region index_query_4_1
                     // Query the 'Employees' collection using the index - filter by INDEX-field
                     
-                    List<Employee> employees = session
+                    List<Employee> employees = session.Advanced
                          // Pass the IndexEntry class as the first generic parameter
                          // Pass the index class as the second generic parameter
-                        .Advanced.DocumentQuery<Employees_ByName.IndexEntry, Employees_ByName>()
+                        .DocumentQuery<Employees_ByName.IndexEntry, Employees_ByName>()
                          // Filter the retrieved documents by some predicate on an INDEX-field
                         .WhereEquals(x => x.LastName, "King")
                          // Specify the type of the returned document entities
@@ -200,10 +200,10 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     #region index_query_4_2
                     // Query the 'Employees' collection using the index - filter by INDEX-field
                     
-                    List<Employee> employees = await asyncSession
+                    List<Employee> employees = await asyncSession.Advanced
                          // Pass the IndexEntry class as the first generic parameter
                          // Pass the index class as the second generic parameter
-                        .Advanced.AsyncDocumentQuery<Employees_ByName.IndexEntry, Employees_ByName>()
+                        .AsyncDocumentQuery<Employees_ByName.IndexEntry, Employees_ByName>()
                          // Filter the retrieved documents by some predicate on an INDEX-field
                         .WhereEquals(x => x.LastName, "King")
                          // Specify the type of the returned document entities
@@ -217,12 +217,54 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 
                 using (var session = store.OpenSession())
                 {
+                    #region index_query_4_3
+                    // Query the 'Employees' collection using the index - filter by INDEX-field
+                    
+                    List<Employee> employees = session.Advanced
+                         // Pass the IndexEntry class as the generic param
+                         // Pass the index name as the param
+                         // Use slash `/` in the index name, replacing the underscore `_` from the index class definition
+                        .DocumentQuery<Employees_ByName.IndexEntry>("Employees/ByName")
+                         // Filter the retrieved documents by some predicate on an INDEX-field
+                        .WhereEquals(x => x.LastName, "King")
+                         // Specify the type of the returned document entities
+                        .OfType<Employee>()
+                         // Execute the query
+                        .ToList();
+
+                    // Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region index_query_4_4
+                    // Query the 'Employees' collection using the index - filter by INDEX-field
+                    
+                    List<Employee> employees = await asyncSession.Advanced
+                        // Pass the IndexEntry class as the generic parameter
+                        // Pass the index name as the parameter
+                        // Use slash `/` in the index name, replacing the underscore `_` from the index class definition
+                        .AsyncDocumentQuery<Employees_ByName.IndexEntry>("Employees/ByName")
+                        // Filter the retrieved documents by some predicate on an INDEX-field
+                        .WhereEquals(x => x.LastName, "King")
+                        // Specify the type of the returned document entities
+                        .OfType<Employee>()
+                        // Execute the query
+                        .ToListAsync();
+
+                    // Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
                     #region index_query_5_1
                     // Query with RawQuery - filter by INDEX-field
 
-                    List<Employee> employees = session
+                    List<Employee> employees = session.Advanced
                          // Provide RQL to RawQuery
-                        .Advanced.RawQuery<Employee>("from index 'Employees/ByName' where LastName == 'King'")
+                        .RawQuery<Employee>("from index 'Employees/ByName' where LastName == 'King'")
                          // Execute the query
                         .ToList();
 
@@ -235,9 +277,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     #region index_query_5_2
                     // Query with RawQuery - filter by INDEX-field
 
-                    List<Employee> employees = await asyncSession
+                    List<Employee> employees = await asyncSession.Advanced
                          // Provide RQL to RawQuery
-                        .Advanced.AsyncRawQuery<Employee>("from index 'Employees/ByName' where LastName == 'King'")
+                        .AsyncRawQuery<Employee>("from index 'Employees/ByName' where LastName == 'King'")
                          // Execute the query
                         .ToListAsync();
 

@@ -7,7 +7,7 @@
 * You can get the number of revisions a document has by using the advance session method `GetCountFor`.
 
 * In this page:  
-   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/get-revisions-count)
+   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/counting#get-revisions-count)
    * [syntax](../../../../document-extensions/revisions/client-api/session/counting#syntax)
 
 {NOTE/}

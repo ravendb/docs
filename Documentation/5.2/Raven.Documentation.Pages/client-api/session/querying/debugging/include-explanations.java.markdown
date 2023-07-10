@@ -1,4 +1,4 @@
-# How to include Query Explanations
+# Include Query Explanations
 
 `includeExplanations` allows to investigate details related to score assigned for each query result.
 

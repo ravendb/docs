@@ -35,6 +35,8 @@
          * [`RestoreBackupConfigurationBase`](../../sharding/backup-and-restore/restore#section)
      * [Run `RestoreBackupOperation` with the Restore Configuration](../../sharding/backup-and-restore/restore#run--with-the-restore-configuration)  
      * [Examples](../../sharding/backup-and-restore/restore#examples)  
+  * [Restoring to a Selected Restore Point](../../sharding/backup-and-restore/restore#restoring-to-a-selected-restore-point)  
+  * [Restore Options Summary](../../sharding/backup-and-restore/restore#restore-options-summary)  
 
 {NOTE/}
 
@@ -64,7 +66,8 @@ are provided in a dictionary of `SingleShardRestoreSetting` objects.
     | **ShardNumber** | `int` | The shard number that will be given to the restored shard. <br> should normally be similar to the original shard number. |
     | **NodeTag** | `string` | The node to restore the shard on. |
     | **FolderName** | `string` | The name of the folder that holds the backup file/s. |
-
+    | **LastFileNameToRestore** | `string` | Last incremental backup file to restore. <br> If omitted, restore all backup files in folder. |
+ 
     {WARNING: }
     When setting **ShardNumber**, please make sure that all shards are 
     given the same numbers they had when they were backed-up.  
@@ -117,12 +120,12 @@ mentioned above, allowing you to set backups **encryption settings** among other
     | Parameter | Value | Functionality |
     | ------------- | ------------- | ----- |
     | **DatabaseName** | `string` | Name for the new database. |
-    | **LastFileNameToRestore** <br> (Optional -<br> omit for default) | `string` | [Last incremental backup file](../../server/ongoing-tasks/backup-overview#restoration-procedure) to restore. <br> **Default behavior: Restore all backup files in the folder.** |
-    | **DataDirectory** <br> (Optional -<br> omit for default) | `string` | The new database data directory. <br> **Default folder: Under the "Databases" folder, <br> in a folder that carries the restored database's name.** |
-    | **EncryptionKey** <br> (Optional -<br> omit for default) | `string` | A key for an encrypted database. <br> **Default behavior: Try to restore as if DB is unencrypted.**|
-    | **DisableOngoingTasks** <br> (Optional -<br> omit for default) | `boolean` | `true` - disable ongoing tasks when Restore is complete. <br> `false` - enable ongoing tasks when Restore is complete. <br> **Default: `false` (Ongoing tasks will run when Restore is complete).**|
-    | **SkipIndexes** <br> (Optional -<br> omit for default) | `boolean` | `true` to disable indexes import, <br> `false` to enable indexes import. <br> **Default: `false` restore all indexes.**|
-    | **ShardRestoreSettings** | `ShardedRestoreSettings` | a dictionary of `SingleShardRestoreSetting` instances defining <br> paths to backup locations <br> {CODE restore_ShardedRestoreSettings@Sharding\ShardingBackupAndRestore.cs /} |
+    | **LastFileNameToRestore** <br> (Optional -<br> omit for default) | `string` | [Last incremental backup file](../../server/ongoing-tasks/backup-overview#restoration-procedure) to restore. <br> Ignored when restoring a sharded database. <br> `SingleShardRestoreSetting.LastFileNameToRestore` used instead, per shard. |
+    | **DataDirectory** <br> (Optional -<br> omit for default) | `string` | The new database data directory. <br> <br> **Default folder: <br> Under the "Databases" folder <br> In a folder carrying the restored database name.** |
+    | **EncryptionKey** <br> (Optional -<br> omit for default) | `string` | A key for an encrypted database. <br> <br> **Default behavior: <br> Try restoring as if DB is unencrypted.**|
+    | **DisableOngoingTasks** <br> (Optional -<br> omit for default) | `boolean` | `true` - disable ongoing tasks when Restore is complete. <br> `false` - enable ongoing tasks when Restore is complete. <br> <br> **Default: `false` <br> Ongoing tasks will run when Restore is complete.**|
+    | **SkipIndexes** <br> (Optional -<br> omit for default) | `boolean` | `true` - disable indexes import, <br> `false` - enable indexes import. <br> <br> **Default: `false` <br> Restore all indexes.**|
+    | **ShardRestoreSettings** | `ShardedRestoreSettings` | a dictionary of `SingleShardRestoreSetting` instances defining paths to backup locations <br> {CODE restore_ShardedRestoreSettings@Sharding\ShardingBackupAndRestore.cs /} |
     | **BackupEncryptionSettings** | `BackupEncryptionSettings` | [Backup Encryption Settings](../../client-api/operations/maintenance/backup/encrypted-backup#choosing-encryption-mode--key) |
          
     {NOTE: }
@@ -153,6 +156,65 @@ backup files stored locally and remotely.
 {CODE-TAB:csharp:Azure_Blob restore_azure-settings@Sharding\ShardingBackupAndRestore.cs /}
 {CODE-TAB:csharp:Google_Cloud restore_google-cloud-settings@Sharding\ShardingBackupAndRestore.cs /}
 {CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Restoring to a Selected Restore Point}
+
+### The default procedure
+When a **full backup** is created, (for either a non sharded database or for 
+any shard of a sharded database), a backup folder is created to contain it.  
+When **incremental backups** are created, they are stored in the folder of 
+the last full backup.  
+To restore a backup, its folder name is provided. By default, the full 
+backup stored in this folder will be restored, as well as all the incremental 
+backups that were added to it over time.  
+
+### Restoring a Non-sharded database to a selected restore point 
+
+* Read [here](../../sharding/backup-and-restore/restore) about restoring a non-sharded database.  
+* In short, restoring a non-sharded database to a selected restore point 
+  is done by filling:  
+   * [RestoreBackupConfiguration.BackupLocation](../../client-api/operations/maintenance/backup/restore#section-1) 
+     with the backup location.  
+   * [RestoreBackupConfiguration.LastFileNameToRestore](../../client-api/operations/maintenance/backup/restore#section-2) 
+     with the name of the last incremental backup to restore.  
+
+### Restoring a Sharded database to a selected restore point 
+
+* When a sharded database is restored, `RestoreBackupConfiguration.BackupLocation` 
+  and `RestoreBackupConfiguration.LastFileNameToRestore` mentioned above are **overridden** 
+  by per-shard settings.  
+
+* To restore the database of a particular shard up to a selected restore point 
+  simply add `ShardRestoreSettings.SingleShardRestoreSetting.LastFileNameToRestore` 
+  to the shard configuration and fill it with the name of the last incremental 
+  backup to restore.  
+
+* Example:  
+  {CODE-TABS}
+  {CODE-TAB:csharp:Local_Storage singleShardSettings_restore_local-settings@Sharding\ShardingBackupAndRestore.cs /}
+  {CODE-TAB:csharp:S3_Bucket singleShardSettings_restore_s3-settings@Sharding\ShardingBackupAndRestore.cs /}
+  {CODE-TAB:csharp:Azure_Blob singleShardSettings_restore_azure-settings@Sharding\ShardingBackupAndRestore.cs /}
+  {CODE-TAB:csharp:Google_Cloud singleShardSettings_restore_google-cloud-settings@Sharding\ShardingBackupAndRestore.cs /}
+  {CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Restore Options Summary}
+
+| Option | Supported on a Sharded Database | Comment |
+| -------------------- | --------------- | --------------------- |
+| Restore from **local shard storage** | **Yes** |  |
+| Restore from a [remote location](../../sharding/backup-and-restore/backup#backup-storage-local-and-remote) | **Yes** | Define a [restore configuration](../../sharding/backup-and-restore/restore#define-a-restore-configuration) with S3, Azure, or Google Cloud settings. |
+| Restore a **sharded database** backup <br> to a **sharded database** | **Yes** |  |
+| Restore a **sharded database** backup <br> to a **non-sharded database** | **Yes** |  |
+| Restore a **non-sharded database** backup <br> to a **sharded database** | **No** | A backup created for a non-sharded database CANNOT be restored to a sharded database. |
+| Restore a **Full** database backup | **Yes** |  |
+| Restore a **Partial** database backup | **Yes** |  |
+| Restore a **Logical** database backup | **Yes** |  |
+| Restore a **Snapshot** database backup | **No** | A snapshot backup CANNOT be restored by a sharded database. |
+| Restore backed-up shards in a different order than the original | **No** | Always restore the shards in their original order. |
 
 {PANEL/}
 

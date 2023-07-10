@@ -116,7 +116,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                 using (var session = store.OpenSession())
                 {
                     #region lazy_Revisions 
-                    var lazyRevisions = session
+                    Lazy<List<Employee>> lazyRevisions = session
                          // Add a call to Lazily 
                         .Advanced.Revisions.Lazily
                          // Revisions will Not be fetched here, no server call is made
@@ -140,7 +140,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                     session.SaveChanges();
 
                     // Get the compare-exchange value lazily: 
-                    var lazyCmpXchg = session
+                    Lazy<CompareExchangeValue<string>> lazyCmpXchg = session
                         // Add a call to Lazily 
                         .Advanced.ClusterTransaction.Lazily
                         // Compare-exchange values will Not be fetched here, no server call is made
@@ -156,19 +156,53 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 
                 using (var session = store.OpenSession())
                 {
-                    #region lazy_ExecuteAllPendingLazyOperations
+                    #region lazy_ExecuteAll_Implicit
                     // Define multiple lazy requests
                     Lazy<User> lazyUser1 = session.Advanced.Lazily.Load<User>("users/1-A");
                     Lazy<User> lazyUser2 = session.Advanced.Lazily.Load<User>("users/2-A");
-                    Lazy<IEnumerable<Employee>> lazyEmployees = session.Query<Employee>().Lazily();
+                    
+                    Lazy<IEnumerable<Employee>> lazyEmployees = session.Query<Employee>()
+                        .Lazily();
+                    Lazy<IEnumerable<Product>> lazyProducts = session.Query<Product>()
+                        .Search(x => x.Name, "Ch*")
+                        .Lazily();
+                    
+                    // Accessing the value of ANY of the lazy instances will trigger
+                    // the execution of ALL pending lazy requests held up by the session
+                    // This is done in a SINGLE server call
+                    User user1 = lazyUser1.Value;
+                    
+                    // ALL the other values are now also available
+                    // No additional server calls are made when accessing these values
+                    User user2 = lazyUser2.Value;
+                    IEnumerable<Employee> employees = lazyEmployees.Value;
+                    IEnumerable<Product> products = lazyProducts.Value;
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region lazy_ExecuteAll_Explicit
+                    // Define multiple lazy requests
+                    Lazy<User> lazyUser1 = session.Advanced.Lazily.Load<User>("users/1-A");
+                    Lazy<User> lazyUser2 = session.Advanced.Lazily.Load<User>("users/2-A");
+                    
+                    Lazy<IEnumerable<Employee>> lazyEmployees = session.Query<Employee>()
+                        .Lazily();
+                    Lazy<IEnumerable<Product>> lazyProducts = session.Query<Product>()
+                        .Search(x => x.Name, "Ch*")
+                        .Lazily();
 
-                    // Execute all pending lazy operations
+                    // Explicitly call 'ExecuteAllPendingLazyOperations'
+                    // ALL pending lazy requests held up by the session will be executed in a SINGLE server call
                     session.Advanced.Eagerly.ExecuteAllPendingLazyOperations();
                     
-                    // All values are now available
+                    // ALL values are now available
+                    // No additional server calls are made when accessing the values
                     User user1 = lazyUser1.Value;
                     User user2 = lazyUser2.Value;
                     IEnumerable<Employee> employees = lazyEmployees.Value;
+                    IEnumerable<Product> products = lazyProducts.Value;
                     #endregion
                 }
             }

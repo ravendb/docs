@@ -214,7 +214,7 @@ indexes is altered in in a few ways that database operators should be aware of.
 - [Creating and Deploying Indexes](../indexes/creating-and-deploying)
 
 ### Querying
-- [Basics](../indexes/querying/basics)
+- [Query Overview](../client-api/session/querying/how-to-query)
 
 ### Studio
 - [Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index)

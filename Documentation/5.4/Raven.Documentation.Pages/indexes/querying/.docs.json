@@ -140,6 +140,27 @@
     {
         "Path": "/graph",
         "Name": "Graph API",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 5.3,
+                "Key": "indexes/querying/graph"
+            },
+            {
+                "Version": 5.2,
+                "Key": "indexes/querying/graph"
+            },
+            {
+                "Version": 5.1,
+                "Key": "indexes/querying/graph"
+            },
+            {
+                "Version": 5.0,
+                "Key": "indexes/querying/graph"
+            },
+            {
+                "Version": 4.2,
+                "Key": "indexes/querying/graph"
+            }
+        ]
     }
 ]

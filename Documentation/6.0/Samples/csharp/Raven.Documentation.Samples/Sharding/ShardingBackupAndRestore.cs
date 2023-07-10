@@ -328,6 +328,179 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
             };
             #endregion
         }
+
+
+        static async Task singleShardSettings()
+        {
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "Products"
+            }.Initialize())
+            {
+                #region singleShardSettings_restore_local-settings
+                // Create a dictionary with paths to shard backups
+                var restoreSettings = new ShardedRestoreSettings
+                {
+                    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+                };
+
+                // First shard
+                restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+                {
+                    ShardNumber = 0,
+                    NodeTag = "A",
+                    // Backups Folder Name
+                    FolderName = "E:/RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup",
+                    // Last incremental backup to restore
+                    LastFileNameToRestore = "2023-02-12-10-30-00.ravendb-incremental-backup"
+                });
+
+                var restoreBackupOperation = new RestoreBackupOperation(new RestoreBackupConfiguration
+                {
+                    // Database Name
+                    DatabaseName = "Books",
+                    // Paths to backup files
+                    ShardRestoreSettings = restoreSettings
+                });
+
+                var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
+                #endregion
+            }
+
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "Products"
+            }.Initialize())
+            {
+                #region singleShardSettings_restore_s3-settings
+                // Create a dictionary with paths to shard backups
+                var restoreSettings = new ShardedRestoreSettings
+                {
+                    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+                };
+
+                // First shard
+                restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+                {
+                    ShardNumber = 0,
+                    NodeTag = "A",
+                    // Backups Folder Name
+                    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup",
+                    // Last incremental backup to restore
+                    LastFileNameToRestore = "2023-02-12-10-30-00.ravendb-incremental-backup"
+                });
+
+                var restoreBackupOperation = new RestoreBackupOperation(new RestoreFromS3Configuration
+                {
+                    // Database Name
+                    DatabaseName = "Books",
+                    // Paths to backup files
+                    ShardRestoreSettings = restoreSettings,
+                    // S3 Bucket settings
+                    Settings = new S3Settings
+                    {
+                        AwsRegionName = "us-east-1", // Optional
+                        BucketName = "your bucket name here",
+                        RemoteFolderName = "", // Replaced by restoreSettings.Shards.FolderName 
+                        AwsAccessKey = "your access key here",
+                        AwsSecretKey = "your secret key here",
+                    }
+                });
+
+                var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
+                #endregion
+            }
+
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "Products"
+            }.Initialize())
+            {
+                #region singleShardSettings_restore_azure-settings
+                // Create a dictionary with paths to shard backups
+                var restoreSettings = new ShardedRestoreSettings
+                {
+                    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+                };
+
+                // First shard
+                restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+                {
+                    ShardNumber = 0,
+                    NodeTag = "A",
+                    // Backups Folder Name
+                    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup",
+                    // Last incremental backup to restore
+                    LastFileNameToRestore = "2023-02-12-10-30-00.ravendb-incremental-backup"
+                });
+
+                var restoreBackupOperation = new RestoreBackupOperation(new RestoreFromAzureConfiguration
+                {
+                    // Database Name
+                    DatabaseName = "Books",
+                    // Paths to backup files
+                    ShardRestoreSettings = restoreSettings,
+                    // Azure Blob settings
+                    Settings = new AzureSettings
+                    {
+                        StorageContainer = "storageContainer",
+                        RemoteFolderName = "", // Replaced by restoreSettings.Shards.FolderName 
+                        AccountName = "your account name here",
+                        AccountKey = "your account key here",
+                    }
+                });
+
+                var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
+                #endregion
+            }
+
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "Products"
+            }.Initialize())
+            {
+                #region singleShardSettings_restore_google-cloud-settings
+                // Create a dictionary with paths to shard backups
+                var restoreSettings = new ShardedRestoreSettings
+                {
+                    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+                };
+
+                // First shard
+                restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+                {
+                    ShardNumber = 0,
+                    NodeTag = "A",
+                    // Backups Folder Name
+                    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup",
+                    // Last incremental backup to restore
+                    LastFileNameToRestore = "2023-02-12-10-30-00.ravendb-incremental-backup"
+                });
+
+                var restoreBackupOperation = new RestoreBackupOperation(new RestoreFromGoogleCloudConfiguration
+                {
+                    // Database Name
+                    DatabaseName = "Books",
+                    // Paths to backup files
+                    ShardRestoreSettings = restoreSettings,
+                    // Google Cloud settings
+                    Settings = new GoogleCloudSettings
+                    {
+                        BucketName = "your bucket name here",
+                        RemoteFolderName = "", // Replaced by restoreSettings.Shards.FolderName 
+                        GoogleCredentialsJson = "your credentials here"
+                    }
+                });
+
+                var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
+                #endregion
+            }
+        }
+
         public class Foo
         {
             public class RestoreBackupOperation
@@ -363,7 +536,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 public class ShardedRestoreSettings
                 {
                   public Dictionary<int, 
-                    SingleShardRestoreSetting> Shards { get; set; }
+                    SingleShardRestoreSetting> Shards 
+                                            { get; set; }
                 }
                 #endregion
 
@@ -376,6 +550,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                     public string NodeTag { get; set; }
                     // Folder name
                     public string FolderName { get; set; }
+                    // Restore up to (including) this incremental backup file
+                    public string LastFileNameToRestore { get; set; }
                 }
                 #endregion
             }

@@ -1,84 +1,91 @@
 # Conventions: Serialization
 
+---
+
+{NOTE: }
+
+Use the methods described in this page to customize the [conventions](../../client-api/configuration/conventions) 
+by which entities are serialized as they are sent by the client to the server.  
+
+* In this page:  
+  * [CustomizeJsonSerializer](../../client-api/configuration/serialization#customizejsonserializer)  
+  * [JsonContractResolver](../../client-api/configuration/serialization#jsoncontractresolver)  
+  * [BulkInsert.TrySerializeEntityToJsonStream](../../client-api/configuration/serialization#bulkinsert.tryserializeentitytojsonstream)  
+  * [IgnoreByRefMembers and IgnoreUnsafeMembers](../../client-api/configuration/serialization#ignorebyrefmembers-and-ignoreunsafemembers)  
+
+{NOTE/}
+
+---
+
+{PANEL: Serialization}
+
 ## CustomizeJsonSerializer
 
-If you need to modify `JsonSerializer` object used by the client when sending entities to the server you can register a customization action:
+* The `JsonSerializer` object is used by the client to serialize entities 
+  sent by the client to the server.  
+* Use the `CustomizeJsonSerializer ` convention to modify `JsonSerializer` 
+  by registering a serialization customization action.  
 
 {CODE customize_json_serializer@ClientApi\Configuration\Serialization.cs /}
 
-## CustomizeJsonDeserializer
-
-To modify the `JsonSerializer` object used by the client to deserialize entities loaded from the server, you can register a customization action:
-
-{CODE customize_json_deserializer@ClientApi\Configuration\Serialization.cs /}
-
-## DeserializeEntityFromBlittable
-
-In order to customize the entity deserialization from blittable JSON you can use define `DeserializeEntityFromBlittable` implementation:
-
-{CODE DeserializeEntityFromBlittable@ClientApi\Configuration\Serialization.cs /}
-
 ## JsonContractResolver
 
-The default `JsonContractResolver` used by RavenDB will serialize all properties and all public fields. You can change it by providing own implementation of `IContractResolver` interface:
+* The default `JsonContractResolver` convention used by RavenDB will serialize 
+  **all** properties and **all** public fields.  
+* Change this behavior by providing your own implementation of the `IContractResolver` 
+  interface.  
 
-{CODE json_contract_resolver@ClientApi\Configuration\Serialization.cs /}
+    {CODE json_contract_resolver@ClientApi\Configuration\Serialization.cs /}
 
-{CODE custom_json_contract_resolver@ClientApi\Configuration\Serialization.cs /}
+    {CODE custom_json_contract_resolver@ClientApi\Configuration\Serialization.cs /}
 
-You can also customize behavior of the default resolver by inheriting from `DefaultRavenContractResolver` and overriding specific methods.
+* You can also customize the behavior of the **default resolver** by inheriting 
+  from `DefaultRavenContractResolver` and overriding specific methods.  
 
-{CODE custom_json_contract_resolver_based_on_default@ClientApi\Configuration\Serialization.cs /}
-
-## PreserveDocumentPropertiesNotFoundOnModel
-
-Controls whatever properties that were not de-serialized to an object properties will be preserved 
-during saving a document again. If `false`, those properties will be removed when the document will be saved. Default: `true`.
-
-{CODE preserve_doc_props_not_found_on_model@ClientApi\Configuration\Serialization.cs /}
+    {CODE custom_json_contract_resolver_based_on_default@ClientApi\Configuration\Serialization.cs /}
 
 ## BulkInsert.TrySerializeEntityToJsonStream
 
-For the bulk insert you can configure custom serialization implementation by providing `TrySerializeEntityToJsonStream`:
+* Adjust [Bulk Insert](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation) 
+  behavior by using the `TrySerializeEntityToJsonStream` convention to register a custom 
+  serialization implementation.  
 
 {CODE TrySerializeEntityToJsonStream@ClientApi\Configuration\Serialization.cs /}
 
-## Numbers (de)serialization
-
-RavenDB client supports out of the box all common numeric value types: `int`, `long`, `double`, `decimal` etc.  
-Note that although the (de)serialization of `decimals` is fully supported, there are [server side limitations](../../server/kb/numbers-in-ravendb) to numbers in that range.  
-Other number types like `BigInteger` must be treated using custom (de)serialization.
-
 ## IgnoreByRefMembers and IgnoreUnsafeMembers
 
-By default, if you try to store an entity that has `ref` or unsafe members, the 
-Client will throw an exception when [`session.SaveChanges()` is called](../../client-api/session/saving-changes).  
+* By default, if you try to store an entity with `ref` or unsafe members, 
+  the Client will throw an exception when [`session.SaveChanges()`](../../client-api/session/saving-changes) 
+  is called.  
+* Set the `IgnoreByRefMembers` convention to `true` to simply ignore `ref` 
+  members when an attempt to store an entity with `ref` members is made.  
+  The entity will be uploaded to the server with all non-`ref` members without 
+  throwing an exception.  
+  The document structure on the server-side will not contain fields for those 
+  `ref` members.  
+* Set the `IgnoreUnsafeMembers` convention to `true` to ignore all pointer 
+  members in the same manner.  
+* `IgnoreByRefMembers` default value: `false`  
+* `IgnoreUnsafeMembers` default value: `false`  
 
-If `IgnoreByRefMembers` is set to `true` and you try to store an entity that has 
-`ref` members, those members will simply be ignored. The entity will be uploaded 
-to the server with all non-`ref` members without throwing an exception. The 
-document structure on the server-side will not contain fields for those `ref` 
-members.  
-
-If `IgnoreUnsafeMembers` is set to `true`, all pointer members will be ignored 
-in the same manner.  
-
-The default value of both these conventions is `false`.  
+{PANEL/}
 
 ## Related articles
 
 ### Conventions
 
-- [Conventions](../../client-api/configuration/conventions)
-- [Querying](../../client-api/configuration/querying)
-- [Load Balance & Failover](../../client-api/configuration/load-balance/overview)
+- [Conventions](../../client-api/configuration/conventions)  
+- [Querying](../../client-api/configuration/querying)  
+- [Load Balance & Failover](../../client-api/configuration/load-balance/overview)  
+- [Deserialization](../../client-api/configuration/deserialization)  
+- [Deserialization Security](../../client-api/security/deserialization-security)  
 
 ### Document Identifiers
 
-- [Working with Document Identifiers](../../client-api/document-identifiers/working-with-document-identifiers)
-- [Global ID Generation Conventions](../../client-api/configuration/identifier-generation/global)
-- [Type-specific ID Generation Conventions](../../client-api/configuration/identifier-generation/type-specific)
+- [Document Identifiers](../../client-api/document-identifiers/working-with-document-identifiers)  
+- [Global ID Generation](../../client-api/configuration/identifier-generation/global)  
+- [Type-specific ID](../../client-api/configuration/identifier-generation/type-specific)  
 
 ### Document Store
 
-- [What is a Document Store](../../client-api/what-is-a-document-store)
+- [Document Store](../../client-api/what-is-a-document-store)  

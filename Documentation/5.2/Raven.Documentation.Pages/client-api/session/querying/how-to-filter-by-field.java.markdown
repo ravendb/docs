@@ -1,4 +1,4 @@
-﻿# How to Filter by Field Presence  
+﻿# Filter by Field Presence  
 
 ---
 

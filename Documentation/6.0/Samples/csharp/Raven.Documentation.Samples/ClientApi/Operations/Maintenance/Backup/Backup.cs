@@ -129,8 +129,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                     //FTP Backup settings
                     FtpSettings = new FtpSettings
                     {
-                        Url = "192.168.10.4",
-                        Port = 8080,
+                        Url = "192.168.10.4:8080",
                         UserName = "John",
                         Password = "JohnDoe38"
                     },
@@ -211,8 +210,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                     //FTP Backup settings
                     FtpSettings = new FtpSettings
                     {
-                        Url = "192.168.10.4",
-                        Port = 8080,
+                        Url = "192.168.10.4:8080",
                         UserName = "John",
                         Password = "JohnDoe38"
                     },

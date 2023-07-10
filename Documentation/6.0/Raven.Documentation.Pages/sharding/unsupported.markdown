@@ -32,11 +32,10 @@
 
 | Unsupported Feature | Comment |
 | ------------- | ------------- |
-| [Rolling index deploymeny](../indexes/rolling-index-deployment) |  |
+| [Rolling index deployment](../indexes/rolling-index-deployment) |  |
 | [Load Document from another shard](../sharding/indexing#unsupported-indexing-features) | Loading a document during indexing is possible only if the document resides on the shard. |
 | **Map-Reduce Output Documents** | Using [OutputReduceToCollection](../indexes/map-reduce-indexes#map-reduce-output-documents) to output the results of a map-reduce index to a collection is not supported in a Sharded Database. |
 | [Custom Sorters](../indexes/querying/sorting#creating-a-custom-sorter) |  |
-| **Testing Javascript indexes** |  |
 
 ## Unsupported Querying Features
 

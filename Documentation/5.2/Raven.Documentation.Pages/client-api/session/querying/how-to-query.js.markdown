@@ -56,8 +56,15 @@
   Learn more about indexes in [indexes overview](../../../studio/database/indexes/indexes-overview).
 
 {INFO: }
-We differentiate between the following __3 query scenarios__.  
+
+We differentiate between the following __3 query scenarios__:
+
+  * Index query
+  * Dynamic query
+  * Full collection query
+
 For each scenario, a different index type will be used.
+
 {INFO/}
 
 {NOTE: }
@@ -226,6 +233,8 @@ from "products" limit 5, 10 // skip 5, take 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+* By default, if the page size is not specified, all matching records will be retrieved from the database.
+
 {NOTE/}
 
 {PANEL/}
@@ -257,6 +266,7 @@ Available methods for the session's [query](../../../client-api/session/querying
 - containsAll
 - containsAny
 - count
+- longCount
 - countLazily
 - distinct
 - first
@@ -270,37 +280,38 @@ Available methods for the session's [query](../../../client-api/session/querying
 - getIndexQuery
 - [intersect](../../../client-api/session/querying/how-to-use-intersect)
 - lazily
-- longCount
 - [moreLikeThis](../../../client-api/session/querying/how-to-use-morelikethis)
 - negateNext
-- noCaching
-- noTracking
+- [noCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
+- [noTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
 - not
 - [ofType](../../../client-api/session/querying/how-to-project-query-results#oftype)
+- [on("afterQueryExecuted")](../../../client-api/session/querying/how-to-customize-query#on-("afterqueryexecuted"))
+- [on("beforeQueryExecuted")](../../../client-api/session/querying/how-to-customize-query#on-("beforequeryexecuted"))
 - openSubclause
 - orderBy
 - orderByDescending
-- orderByDistance
-- orderByDistanceDescending
+- [orderByDistance](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistance)
+- [orderByDistanceDescending](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistanceDesc)
 - orderByScore
 - orderByScoreDescending
 - orElse
 - proximity
-- randomOrdering
+- [randomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
 - relatesToShape
 - search
-- selectFields
+- [selectFields](../../../indexes/querying/projections#selectfields)
 - selectTimeSeries
 - single
 - singleOrNull
 - skip
 - spatial
 - [statistics](../../../client-api/session/querying/how-to-get-query-statistics)
-- suggestUsing
+- [suggestUsing](../../../client-api/session/querying/how-to-work-with-suggestions)
 - take
 - timings
 - usingDefaultOperator
-- waitForNonStaleResults
+- [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
 - whereBetween
 - whereEndsWith
 - whereEquals
@@ -322,11 +333,12 @@ Available methods for the session's [query](../../../client-api/session/querying
 
 {CODE:nodejs syntax@ClientApi\Session\Querying\howToQuery.js /}
 
-| Parameter | Type | Description |
-| - | - | - |
-| __documentType__ | object | The type of entity that represents the collection queried |
-| __index__ | object | The index class |
-| __opts__ | `DocumentQueryOptions` object | Query options |
+| Parameter        | Type                          | Description                  |
+|------------------|-------------------------------|------------------------------|
+| __documentType__ | object                        | The type of entities queried |
+| __index__        | object                        | The index class              |
+| __opts__         | `DocumentQueryOptions` object | Query options                |
+| __query__        | string                        | The RQL query string         |
 
 | `DocumentQueryOptions` | | |
 | - | - | - |
