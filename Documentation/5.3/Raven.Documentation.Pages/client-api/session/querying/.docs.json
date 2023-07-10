@@ -145,12 +145,6 @@
         "Mappings": []
     },
     {
-        "Path": "how-to-use-regex.markdown",
-        "Name": "Using Regex",
-        "DiscussionId": "48bc68f2-db18-4b4e-8cc4-4d29877ae9c0",
-        "Mappings": []
-    },
-    {
         "Path": "/text-search",
         "Name": "Text Search",
         "Mappings": []

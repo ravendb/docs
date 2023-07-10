@@ -141,7 +141,13 @@
         "Path": "how-to-use-regex.markdown",
         "Name": "How to Use Regex",
         "DiscussionId": "48bc68f2-db18-4b4e-8cc4-4d29877ae9c0",
-        "Mappings": []
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/session/querying/text-search/using-regex"
+            }
+        ]
     },
     {
         "Path": "how-to-query-with-exact-match.markdown",

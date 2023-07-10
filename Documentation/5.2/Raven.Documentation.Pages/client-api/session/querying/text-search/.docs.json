@@ -62,6 +62,17 @@
         ]
     },
     {
+        "Path": "using-regex.markdown",
+        "Name": "Using Regex",
+        "DiscussionId": "4c262003-44c5-46ff-84fc-7988405f4628",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "client-api/session/querying/how-to-use-regex"
+            }
+        ]
+    },
+    {
         "Path": "highlight-query-results.markdown",
         "Name": "Highlight Query Results",
         "DiscussionId": "4c262003-44c5-46ff-84fc-7988405f4628",

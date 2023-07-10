@@ -42,6 +42,12 @@
         "Mappings": []
     },
     {
+        "Path": "using-regex.markdown",
+        "Name": "Using Regex",
+        "DiscussionId": "4c262003-44c5-46ff-84fc-7988405f4628",
+        "Mappings": []
+    },
+    {
         "Path": "highlight-query-results.markdown",
         "Name": "Highlight Query Results",
         "DiscussionId": "4c262003-44c5-46ff-84fc-7988405f4628",
