@@ -1,11 +1,76 @@
-﻿# EndsWith Search
+﻿# Ends-With Search
 
 ---
 
 {NOTE: }
 
-todo...
+* You can query for documents having a field that ends with some specified string.
+
+* By default, the string comparisons are __case-insensitive__.  
+  To perform a search that is __case-sensitive__ use DocumentQuery, see examples below.  
+
+* __Note__:  
+  This postfix search causes RavenDB to perform a full index scan.  
+  Instead, consider using a static index that indexes the field in reverse order  
+  and then query with a [prefix search](../../../../client-api/session/querying/text-search/starts-with-search), which is much faster.
+
+* In this page:
+    * [EndsWith](../../../../client-api/session/querying/text-search/starts-with-search#startswith)
+    * [Negate EndsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-startswith)
+    * [EndsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#startswith-(case-sensitive))
 
 {NOTE/}
 
 ---
+
+{PANEL: EndsWith}
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query endsWith_1@ClientApi\Session\Querying\TextSearch\EndsWith.cs /}
+{CODE-TAB:csharp:Query_async endsWith_2@ClientApi\Session\Querying\TextSearch\EndsWith.cs /}
+{CODE-TAB:csharp:DocumentQuery endsWith_3@ClientApi\Session\Querying\TextSearch\EndsWith.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Products"
+where endsWith(Name, "Lager")
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Negate EndsWith}
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query endsWith_4@ClientApi\Session\Querying\TextSearch\EndsWith.cs /}
+{CODE-TAB:csharp:Query_async endsWith_5@ClientApi\Session\Querying\TextSearch\EndsWith.cs /}
+{CODE-TAB:csharp:DocumentQuery endsWith_6@ClientApi\Session\Querying\TextSearch\EndsWith.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Products"
+where (true and not endsWith(Name, "Lager"))
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: EndsWith (case-sensitive)}
+
+{CODE-TABS}
+{CODE-TAB:csharp:DocumentQuery endsWith_7@ClientApi\Session\Querying\TextSearch\EndsWith.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Products"
+where exact(endsWith(Name, "Lager"))
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+## Related Articles
+
+### Session
+
+- [Query overview](../../../../client-api/session/querying/how-to-query)
+- [Starts-With search](../../../../client-api/session/querying/text-search/ends-with-search)
+- [Full-text search](../../../../client-api/session/querying/text-search/full-text-search)
+
+### Indexes
+
+- [map indexes](../../../../indexes/map-indexes)

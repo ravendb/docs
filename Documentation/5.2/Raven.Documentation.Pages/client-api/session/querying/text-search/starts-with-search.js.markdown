@@ -74,7 +74,7 @@ where exact(startsWith(Name, "Ch"))
 ### Session
 
 - [Query overview](../../../../client-api/session/querying/how-to-query)
-- [EndsWith search](../../../../client-api/session/querying/text-search/ends-with-search)
+- [Ends-With search](../../../../client-api/session/querying/text-search/ends-with-search)
 - [Full-text search](../../../../client-api/session/querying/text-search/full-text-search)
 
 

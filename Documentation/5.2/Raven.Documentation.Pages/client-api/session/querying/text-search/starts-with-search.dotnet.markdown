@@ -7,7 +7,7 @@
 * You can query for documents having a field that starts with some specified string.  
 
 * By default, the string comparisons are __case-insensitive__.  
-* To perform a Starts-With search that is __case-sensitive__ use DocumentQuery, see example below.
+* To perform a search that is __case-sensitive__ use DocumentQuery, see examples below.
 
 * In this page:
   * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-search#startswith)
@@ -63,7 +63,7 @@ where exact(startsWith(Name, "Ch"))
 ### Session
 
 - [Query overview](../../../../client-api/session/querying/how-to-query)
-- [EndsWith search](../../../../client-api/session/querying/text-search/ends-with-search)
+- [Ends-With search](../../../../client-api/session/querying/text-search/ends-with-search)
 - [Full-text search](../../../../client-api/session/querying/text-search/full-text-search)
 
 
