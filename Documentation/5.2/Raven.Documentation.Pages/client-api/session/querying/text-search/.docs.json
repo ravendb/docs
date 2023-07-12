@@ -1,13 +1,13 @@
 [
     {
         "Path": "starts-with-search.markdown",
-        "Name": "StartsWith Search",
+        "Name": "Starts-With Search",
         "DiscussionId": "b1c0918f-5fc3-4991-809d-c9014da73caf",
         "Mappings": []
     },
     {
         "Path": "ends-with-search.markdown",
-        "Name": "EndsWith Search",
+        "Name": "Ends-With Search",
         "DiscussionId": "b1c0918f-5fc3-4991-809d-c9014da73caf",
         "Mappings": []
     },

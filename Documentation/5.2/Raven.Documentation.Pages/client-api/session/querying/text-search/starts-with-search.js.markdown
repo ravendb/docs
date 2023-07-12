@@ -1,22 +1,26 @@
-﻿# StartsWith Search
+﻿# Starts-With Search
 
 ---
 
 {NOTE: }
 
-* Use `whereStartsWith` to query for documents having a field that starts with the specified string.
+* Use `whereStartsWith` to query for documents having a field that starts with some specified string.
 
-* Comparisons are __case insensitive__.
+* Unless explicitly specified, the string comparisons are case-insensitive by default,  
+  see examples below.
+
 
 * In this page:
   * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-search#startswith)
-  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-startswith)
+  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-startswith)  
+  * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#startswith-(case-sensitive))
+  * [Syntax](../../../../client-api/session/querying/text-search/starts-with-search#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL: StartsWith}
+{PANEL: Starts-with}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query startsWith_1@ClientApi\Session\Querying\TextSearch\startsWith.js /}
@@ -28,16 +32,40 @@ where startsWith(Name, "Ch")
 
 {PANEL/}
 
-
-{PANEL: Negate StartsWith}
+{PANEL: Negate starts-with}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query startsWith_2@ClientApi\Session\Querying\TextSearch\StartsWith.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where (true and not startsWith(Name, "Ch"))
+where exists(Name) and not startsWith(Name, "Ch")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Starts-with (case-sensitive)}
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Query startsWith_3@ClientApi\Session\Querying\TextSearch\StartsWith.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Products"
+where exact(startsWith(Name, "Ch"))
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Syntax}
+
+{CODE:nodejs syntax@ClientApi\Session\Querying\TextSearch\StartsWith.js /}
+
+| Parameter     | Type    | Description                                                               |
+|---------------|---------|---------------------------------------------------------------------------|
+| __fieldName__ | string  | The field name in which to search                                         |
+| __value__     | string  | The prefix string to search by                                            |
+| __exact__     | boolean | `false` - search is case-insensitive<br>`true` - search is case-sensitive |
+
 
 {PANEL/}
 

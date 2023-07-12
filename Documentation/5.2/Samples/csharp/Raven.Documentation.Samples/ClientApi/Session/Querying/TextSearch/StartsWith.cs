@@ -23,7 +23,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Where(x => x.Name.StartsWith("Ch"))
                         .ToList();
                     
-                    // Results will contain only Product documents having a 'Name' field that starts with 'Ch'
+                    // Results will contain only Product documents having a 'Name' field
+                    // that starts with 'Ch' or 'ch'
                     #endregion
                 }
 
@@ -37,7 +38,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Where(x => x.Name.StartsWith("Ch"))
                         .ToListAsync();
                     
-                    // Results will contain only Product documents having a 'Name' field that starts with 'Ch'
+                    // Results will contain only Product documents having a 'Name' field
+                    // that starts with 'Ch' or 'ch'
                     #endregion
                 }
 
@@ -51,7 +53,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .WhereStartsWith(x => x.Name, "Ch")
                         .ToList();
                     
-                    // Results will contain only Product documents having a 'Name' field that starts with 'Ch'
+                    // Results will contain only Product documents having a 'Name' field
+                    // that starts with 'Ch' or 'ch'
                     #endregion
                 }
 
@@ -65,7 +68,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Where(x => x.Name.StartsWith("Ch") == false)
                         .ToList();
                     
-                    // Results will contain only Product documents having a 'Name' field that does NOT start with 'Ch'
+                    // Results will contain only Product documents having a 'Name' field
+                    // that does NOT start with 'Ch' or 'ch'
                     #endregion
                 }
                 
@@ -79,7 +83,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Where(x => x.Name.StartsWith("Ch") == false)
                         .ToListAsync();
                     
-                    // Results will contain only Product documents having a 'Name' field that does NOT start with 'Ch'
+                    // Results will contain only Product documents having a 'Name' field
+                    // that does NOT start with 'Ch' or 'ch'
                     #endregion
                 }
                 
@@ -95,7 +100,23 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .WhereStartsWith(x => x.Name, "Ch")
                         .ToList();
                     
-                    // Results will contain only Product documents having a 'Name' field that does NOT start with 'Ch'
+                    // Results will contain only Product documents having a 'Name' field
+                    // that does NOT start with 'Ch' or 'ch'
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region startsWith_7
+                    List<Product> products = session.Advanced
+                        .DocumentQuery<Product>()
+                        // Call 'WhereStartsWith'
+                        // Pass 'true' as the 3'rd parameter to search for an EXACT prefix match
+                        .WhereStartsWith(x => x.Name, "Ch", true)
+                        .ToList();
+                    
+                    // Results will contain only Product documents having a 'Name' field
+                    // that starts with 'Ch'
                     #endregion
                 }
             }

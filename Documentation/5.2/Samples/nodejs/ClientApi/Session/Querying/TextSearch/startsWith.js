@@ -14,7 +14,8 @@ async function startsWith() {
             .whereStartsWith("Name", "Ch")
             .all();
 
-        // Results will contain only Product documents having a 'Name' field that starts with 'Ch'
+        // Results will contain only Product documents having a 'Name' field
+        // that starts with 'Ch' or 'ch'
         //endregion
     }
 
@@ -29,7 +30,31 @@ async function startsWith() {
             .whereStartsWith("Name", "Ch")
             .all();
 
-        // Results will contain only Product documents having a 'Name' field that does NOT start with 'Ch'
+        // Results will contain only Product documents having a 'Name' field
+        // that does NOT start with 'Ch' or 'ch'
+        //endregion
+    }
+
+    {
+        //region startsWith_3
+        const products = await session
+            .query({ collection: "Products" })
+            // Call 'whereStartsWith'
+            // Pass 'true' as the 3'rd parameter to search for an EXACT prefix match
+            .whereStartsWith("Name", "Ch", true)
+            .all();
+
+        // Results will contain only Product documents having a 'Name' field
+        // that starts with 'Ch'
         //endregion
     }
 }
+
+{
+    //region syntax
+    // Available overloads:
+    whereStartsWith(fieldName, value);
+    whereStartsWith(fieldName, value, exact);
+    //endregion
+}
+//endregion
