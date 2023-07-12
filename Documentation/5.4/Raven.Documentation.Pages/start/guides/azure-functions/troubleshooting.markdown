@@ -7,6 +7,8 @@ The instance you're connecting to doesn't have a database yet (specified through
 
 Follow the instructions to [create a new database][docs-create-db] in the Studio.
 
+---
+
 ### `InvalidAuth` certificate error
 
 If RavenDB returns an `InvalidAuth` response with a message like:

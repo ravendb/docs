@@ -5,25 +5,23 @@
 
 * [Cloudflare Workers](https://developers.cloudflare.com/workers/) is a serverless platform that allows 
   you to deploy workloads closer to where your users are with 200+ metro data centers in its CDN network.  
-  Learn more [here](https://developers.cloudflare.com/workers/learning/how-workers-works/) about operating **Workers**.  
+  Learn more about operating **Workers** [here](https://developers.cloudflare.com/workers/learning/how-workers-works/).  
 * Cloudflare Workers run on the V8 Runtime. The RavenDB Node.js client SDK provides support to query RavenDB 
   resources in RavenDB Cloud or in your own cloud infrastructure.  
 * In this guide, you will learn how to deploy a Cloudflare Worker using the [RavenDB Cloudflare Worker template][template] 
-  that is connected to your RavenDB database. This guide assumes you are familiar with Node.js development techniques 
+  that is connected to your RavenDB database.  
+  {INFO: }
+  This guide assumes you are familiar with Node.js development techniques 
   and the basics of Cloudflare Workers.  
-
-<!-- ### New to Cloudflare Workers?
-
-For a walkthrough and demo of getting started with Cloudflare Workers, see [TBD](#). -->
-
+  {INFO/}
 
 * In this page: 
-    * [Before We Get Started](#before-we-get-started)
-    * [Create a Cloudflare RavenDB Worker project](#create-a-cloudflare-ravendb-worker-project)
-    * [Updating Database Connection Settings](#updating-database-connection-settings)
-    * [Connecting to an Authenticated RavenDB Cluster](#connecting-to-an-authenticated-ravendb-cluster)
-    * [Deploying to Production](#deploying-to-production)
-    * [Using RavenDB in the Worker](#using-ravendb-in-the-worker)
+    * [Before We Get Started](../../../start/guides/cloudflare-workers/overview#before-we-get-started)  
+    * [Create a Cloudflare RavenDB Worker project](../../../start/guides/cloudflare-workers/overview#create-a-cloudflare-ravendb-worker-project)  
+    * [Updating Database Connection Settings](../../../start/guides/cloudflare-workers/overview#updating-database-connection-settings)  
+    * [Connecting to an Authenticated RavenDB Cluster](../../../start/guides/cloudflare-workers/overview#connecting-to-an-authenticated-ravendb-cluster)  
+    * [Deploying to Production](../../../start/guides/cloudflare-workers/overview#deploying-to-production)  
+    * [Using RavenDB in the Worker](../../../start/guides/cloudflare-workers/overview#using-ravendb-in-the-worker)  
 
 {NOTE/}
 
@@ -34,7 +32,7 @@ You will need the following before continuing:
 - A [RavenDB Cloud][cloud-signup] account or self-hosted client certificate  
 - A free or paid [Cloudflare account](https://cloudflare.com)  
 - [Git](https://git-scm.org)  
-- [Node.js](https://nodejs.com) 16+ with npm  
+- [Node.js](https://nodejs.com) version 16 and above with npm  
 
 {PANEL/}
 
@@ -46,8 +44,6 @@ There are two primary ways to get started:
 - Using npm to initialize an empty template  
 
 ### Using Deploy with Workers wizard
-
-<!-- TODO: Embed YT video how-to -->
 
 Using [Deploy with Workers][deploy-with-workers] step-by-step wizard is the simplest method 
 but requires a GitHub account and authorized access, which may not be applicable in all situations.  
@@ -88,7 +84,7 @@ for you to authenticate using your Cloudflare account.
 After you sign in, you can return to the terminal.  
 {NOTE/}
 
-Open the browser by pressing the "B" key (e.g. http://localhost:7071) and you should see a screen like this:  
+Open the browser by pressing the "B" key (e.g. `http://localhost:7071`) and you should see a screen like this:  
 
 ![Successfully connected to RavenDB welcome screen from Cloudflare][image-template-welcome-unauthenticated]
 
@@ -248,7 +244,7 @@ You should see the following message in the console:
 
 Once started, the Worker will be running on a localhost address.  
 
-Open the browser by pressing the "B" key (e.g. http://localhost:7071) and you should see a screen like this:  
+Open the browser by pressing the "B" key (e.g. `http://localhost:7071`) and you should see a screen like this:  
 
 ![Successfully connected to RavenDB welcome screen from Cloudflare][image-template-welcome-authenticated]
 
@@ -327,8 +323,8 @@ router.get("/users/:id", async (request: IRequest, env: Env) => {
 [gh-workflows-manual]: https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow
 [gh-template-repo]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository
 [image-template-deploy-cloudflare]: images/template-deploy-cloudflare.jpg "Screenshot of Deploy with Cloudflare Wizard"
-[image-template-welcome-unauthenticated]: images/template-welcome-unauthenticated.jpg "Successfully connected to RavenDB welcome screen from Cloudflare"
-[image-template-welcome-authenticated]: images/template-welcome-authenticated.jpg "Successfully connected to RavenDB welcome screen from Cloudflare"
+[image-template-welcome-unauthenticated]: images/template-welcome-unauthenticated.jpg "Successfully connected to RavenDB welcome screen from Cloudflare (unauthenticated)"
+[image-template-welcome-authenticated]: images/template-welcome-authenticated.jpg "Successfully connected to RavenDB welcome screen from Cloudflare (authenticated)"
 [image-cloudflare-worker-preview]: images/cloudflare-worker-preview.jpg "Preview URL shown in the Cloudflare Worker dashboard"
 
 ## Related Articles
