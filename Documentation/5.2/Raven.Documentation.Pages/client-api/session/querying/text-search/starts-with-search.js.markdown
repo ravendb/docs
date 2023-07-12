@@ -11,16 +11,16 @@
 
 
 * In this page:
-  * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-search#startswith)
-  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-startswith)  
-  * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#startswith-(case-sensitive))
+  * [whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-search#startswith)
+  * [Negate whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-startswith)  
+  * [whereStartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#startswith-(case-sensitive))
   * [Syntax](../../../../client-api/session/querying/text-search/starts-with-search#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL: Starts-with}
+{PANEL: whereStartsWith}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query startsWith_1@ClientApi\Session\Querying\TextSearch\startsWith.js /}
@@ -32,7 +32,7 @@ where startsWith(Name, "Ch")
 
 {PANEL/}
 
-{PANEL: Negate starts-with}
+{PANEL: Negate whereStartsWith}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query startsWith_2@ClientApi\Session\Querying\TextSearch\StartsWith.js /}
@@ -44,7 +44,7 @@ where exists(Name) and not startsWith(Name, "Ch")
 
 {PANEL/}
 
-{PANEL: Starts-with (case-sensitive)}
+{PANEL: whereStartsWith (case-sensitive)}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query startsWith_3@ClientApi\Session\Querying\TextSearch\StartsWith.js /}

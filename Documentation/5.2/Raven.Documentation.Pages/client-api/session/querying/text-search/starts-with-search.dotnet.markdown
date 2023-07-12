@@ -18,7 +18,7 @@
 
 ---
 
-{PANEL: Starts-with}
+{PANEL: StartsWith}
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query startsWith_1@ClientApi\Session\Querying\TextSearch\StartsWith.cs /}
@@ -32,7 +32,7 @@ where startsWith(Name, "Ch")
 
 {PANEL/}
 
-{PANEL: Negate starts-with}
+{PANEL: Negate StartsWith}
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query startsWith_4@ClientApi\Session\Querying\TextSearch\StartsWith.cs /}
@@ -46,7 +46,7 @@ where (true and not startsWith(Name, "Ch"))
 
 {PANEL/}
 
-{PANEL: Starts-with (case-sensitive)}
+{PANEL: StartsWith (case-sensitive)}
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery startsWith_7@ClientApi\Session\Querying\TextSearch\StartsWith.cs /}
