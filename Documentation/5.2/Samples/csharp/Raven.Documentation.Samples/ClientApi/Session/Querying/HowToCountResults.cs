@@ -12,6 +12,36 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
     public class CountQueryResults
     {
+        public void CanUseCount(Options options)
+        {
+            using (var store = new DocumentStore())
+            {
+                using (var s = store.OpenSession())
+                {
+                    s.Store(new User
+                    {
+                        Name = "John"
+                    });
+
+                    s.SaveChanges();
+                }
+
+                using (var s = store.OpenSession())
+                {
+                    QueryStatistics stats;
+
+                    #region Count
+                    // Use Count in a synchronous session
+                    var query =
+                        s.Query<User>()
+                            .Statistics(out stats)
+                            .Search(u => u.Name, "John");
+                    System.Int32 count = System.Linq.Enumerable.Count(query);
+                    #endregion
+                }
+            }
+        }
+
         public async Task CanUseCountAsync(Options options)
         {
             using (var store = new DocumentStore())
