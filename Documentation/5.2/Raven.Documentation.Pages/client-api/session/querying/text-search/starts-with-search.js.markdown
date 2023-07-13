@@ -11,9 +11,9 @@
 
 
 * In this page:
-  * [whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-search#startswith)
-  * [Negate whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-startswith)  
-  * [whereStartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#startswith-(case-sensitive))
+  * [whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-search#wherestartswith)
+  * [Negate whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-wherestartswith)  
+  * [whereStartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#wherestartswith-(case-sensitive))
   * [Syntax](../../../../client-api/session/querying/text-search/starts-with-search#syntax)
 
 {NOTE/}
@@ -63,7 +63,7 @@ where exact(startsWith(Name, "Ch"))
 | Parameter     | Type    | Description                                                               |
 |---------------|---------|---------------------------------------------------------------------------|
 | __fieldName__ | string  | The field name in which to search                                         |
-| __value__     | string  | The prefix string to search by                                            |
+| __value__     | string  | The __prefix__ string to search by                                        |
 | __exact__     | boolean | `false` - search is case-insensitive<br>`true` - search is case-sensitive |
 
 

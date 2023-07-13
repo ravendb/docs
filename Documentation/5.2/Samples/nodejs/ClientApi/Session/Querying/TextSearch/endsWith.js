@@ -3,49 +3,49 @@ import { DocumentStore } from "ravendb";
 const documentStore = new DocumentStore();
 const session = documentStore.openSession();
 
-async function startsWith() {
+async function endsWith() {
 
     {
-        //region startsWith_1
+        //region endsWith_1
         const products = await session
             .query({ collection: "Products" })
-             // Call 'whereStartsWith'
-             // Pass the document field and the prefix to search by
-            .whereStartsWith("Name", "Ch")
+             // Call 'whereEndsWith'
+             // Pass the document field and the postfix to search by
+            .whereEndsWith("Name", "Lager")
             .all();
 
         // Results will contain only Product documents having a 'Name' field
-        // that starts with 'Ch' or 'ch'
+        // that ends with 'Lager' or 'lager'
         //endregion
     }
 
     {
-        //region startsWith_2
+        //region endsWith_2
         const products = await session
             .query({ collection: "Products" })
              // Call 'Not' to negate the next predicate
             .not()
-             // Call 'whereStartsWith'
-             // Pass the document field and the prefix to search by
-            .whereStartsWith("Name", "Ch")
+             // Call 'whereEndWith'
+             // Pass the document field and the postfix to search by
+            .whereEndsWith("Name", "Lager")
             .all();
 
         // Results will contain only Product documents having a 'Name' field
-        // that does NOT start with 'Ch' or 'ch'
+        // that does NOT end with 'Lager' or 'lager'
         //endregion
     }
 
     {
-        //region startsWith_3
+        //region endsWith_3
         const products = await session
             .query({ collection: "Products" })
-            // Call 'whereStartsWith'
-            // Pass 'true' as the 3'rd parameter to search for an EXACT prefix match
-            .whereStartsWith("Name", "Ch", true)
+            // Call 'whereEndsWith'
+            // Pass 'true' as the 3'rd parameter to search for an EXACT postfix match
+            .whereEndsWith("Name", "Lager", true)
             .all();
 
         // Results will contain only Product documents having a 'Name' field
-        // that starts with 'Ch'
+        // that ends with 'Lager'
         //endregion
     }
 }
@@ -53,8 +53,8 @@ async function startsWith() {
 {
     //region syntax
     // Available overloads:
-    whereStartsWith(fieldName, value);
-    whereStartsWith(fieldName, value, exact);
+    whereEndsWith(fieldName, value);
+    whereEndsWith(fieldName, value, exact);
     //endregion
 }
 //endregion
