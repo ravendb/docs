@@ -282,11 +282,11 @@ invocation which you can inject into Function classes.
 
 ### Example: Injecting `IAsyncDocumentSession`
 
-Pass the `IAsyncDocumentSession` in a function class constructor to make it available to trigger functions:
+Pass the `IAsyncDocumentSession` in a function class constructor to make it available to trigger functions:  
 
 {CODE HttpTrigger1@Start\Guides\azureFunctions.cs /}  
 
-You can also inject an `IDocumentStore` to get a reference to the current store instance.
+You can also inject an `IDocumentStore` to get a reference to the current store instance.  
 
 ### Example: Loading a user
 
