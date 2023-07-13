@@ -1,38 +1,60 @@
 # Exact Match Search
 
-By default, the `Where` method in `Query` uses a case-insensitive match.
+---
 
-To perform a case-sensitive match you should use the `exact` parameter.
+{NOTE: }
 
-### Syntax
+* By default, the string comparisons are __case-insensitive__.  
 
-{CODE query_1_0@ClientApi\Session\Querying\TextSearch\ExactMatchSearch.cs /}
+* Use the `exact` parameter to perform a search that is __case-sensitive__.
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **predicate** | Expression<Func<T, int, bool>> | Predicate with match condition |
-| **exact** | bool | Indicates if `predicate` should be matched in case-sensitive manner |
+* In this page:
+    * [Query with exact match](../../../../client-api/session/querying/text-search/exact-match-search#query-with-exact-match)
+    * [Query with inner exact match](../../../../client-api/session/querying/text-search/exact-match-search#query-with-inner-exact-match)
+    * [Syntax](../../../../client-api/session/querying/text-search/exact-match-search#syntax)
 
-###Example I - Query With Exact Match
+{NOTE/}
+
+---
+
+{PANEL: Query with exact match}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync query_1_1@ClientApi\Session\Querying\TextSearch\ExactMatchSearch.cs /}
-{CODE-TAB:csharp:Async query_1_1_async@ClientApi\Session\Querying\TextSearch\ExactMatchSearch.cs /}
+{CODE-TAB:csharp:Query exact_1@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
+{CODE-TAB:csharp:Query_async exact_2@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
+{CODE-TAB:csharp:DocumentQuery exact_3@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Employees where exact(FirstName == 'Robert')
+from "Employees"
+where exact(FirstName == "Robert")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example II - Query With Inner Exact Match
+{PANEL/}
+
+{PANEL: Query with inner exact match}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync query_2_1@ClientApi\Session\Querying\TextSearch\ExactMatchSearch.cs /}
-{CODE-TAB:csharp:Async query_2_1_async@ClientApi\Session\Querying\TextSearch\ExactMatchSearch.cs /}
+{CODE-TAB:csharp:Query exact_4@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
+{CODE-TAB:csharp:Query_async exact_5@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
+{CODE-TAB:csharp:DocumentQuery exact_6@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Orders 
-where exact(Lines[].ProductName == 'Singaporean Hokkien Fried Mee')
+from "Orders" 
+where exact(Lines[].ProductName == "Teatime Chocolate Biscuits")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Syntax}
+
+{CODE syntax@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
+
+| Parameter     | Type                                                        | Description                                                               |
+|---------------|-------------------------------------------------------------|---------------------------------------------------------------------------|
+| __predicate__ | Expression<Func<T, int, bool>><br>Expression<Func<T, bool>> | Predicate with match condition                                            |
+| __exact__     | bool                                                        | `false` - search is case-insensitive<br>`true` - search is case-sensitive |
+
+{PANEL/}
 
 ## Related Articles
 

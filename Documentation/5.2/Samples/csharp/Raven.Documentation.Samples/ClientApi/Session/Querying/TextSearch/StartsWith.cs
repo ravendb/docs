@@ -62,8 +62,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     #region startsWith_4
                     List<Product> products = session
                         .Query<Product>()
-                         // Pass 'true' as the 2'nd parameter to search for an EXACT prefix match
-                        .Where(x => x.Name.StartsWith("Ch"), true)
+                         // Pass 'exact: true' to search for an EXACT prefix match
+                        .Where(x => x.Name.StartsWith("Ch"), exact: true)
                         .ToList();
                     
                     // Results will contain only Product documents having a 'Name' field
@@ -76,8 +76,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     #region startsWith_5
                     List<Product> products = await asyncSession
                         .Query<Product>()
-                         // Pass 'true' as the 2'nd parameter to search for an EXACT prefix match
-                        .Where(x => x.Name.StartsWith("Ch"), true)
+                         // Pass 'exact: true' to search for an EXACT prefix match
+                        .Where(x => x.Name.StartsWith("Ch"), exact: true)
                         .ToListAsync();
                     
                     // Results will contain only Product documents having a 'Name' field
@@ -91,8 +91,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     List<Product> products = session.Advanced
                         .DocumentQuery<Product>()
                          // Call 'WhereStartsWith'
-                         // Pass 'true' as the 3'rd parameter to search for an EXACT prefix match
-                        .WhereStartsWith(x => x.Name, "Ch", true)
+                         // Pass 'exact: true' to search for an EXACT prefix match
+                        .WhereStartsWith(x => x.Name, "Ch", exact: true)
                         .ToList();
                     
                     // Results will contain only Product documents having a 'Name' field

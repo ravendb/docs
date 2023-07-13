@@ -63,8 +63,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     #region endsWith_4
                     List<Product> products = session
                         .Query<Product>()
-                         // Pass 'true' as the 2'nd parameter to search for an EXACT postfix match
-                        .Where(x => x.Name.EndsWith("Lager"), true)
+                         // Pass 'exact: true' to search for an EXACT postfix match
+                        .Where(x => x.Name.EndsWith("Lager"), exact: true)
                         .ToList();
                     
                     // Results will contain only Product documents having a 'Name' field
@@ -77,8 +77,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     #region endsWith_5
                     List<Product> products = await asyncSession
                         .Query<Product>()
-                         // Pass 'true' as the 2'nd parameter to search for an EXACT postfix match
-                        .Where(x => x.Name.EndsWith("Lager"), true)
+                         // Pass 'exact: true' to search for an EXACT postfix match
+                        .Where(x => x.Name.EndsWith("Lager"), exact: true)
                         .ToListAsync();
                     
                     // Results will contain only Product documents having a 'Name' field
@@ -92,8 +92,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     List<Product> products = session.Advanced
                         .DocumentQuery<Product>()
                          // Call 'WhereEndsWith'
-                         // Pass 'true' as the 3'rd parameter to search for an EXACT postfix match
-                        .WhereEndsWith(x => x.Name, "Lager", true)
+                         // Pass 'exact: true' to search for an EXACT postfix match
+                        .WhereEndsWith(x => x.Name, "Lager", exact: true)
                         .ToList();
                     
                     // Results will contain only Product documents having a 'Name' field

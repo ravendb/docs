@@ -69,7 +69,7 @@ where (true and not endsWith(Name, "Lager"))
 ### Session
 
 - [Query overview](../../../../client-api/session/querying/how-to-query)
-- [Starts-With search](../../../../client-api/session/querying/text-search/ends-with-search)
+- [Starts-With search](../../../../client-api/session/querying/text-search/starts-with-search)
 - [Full-text search](../../../../client-api/session/querying/text-search/full-text-search)
 
 ### Indexes
