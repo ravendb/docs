@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Linq;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
@@ -24,7 +23,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToList();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that starts with 'Ch' or 'ch'
+                    // that starts with 'Ch' OR 'ch'
                     #endregion
                 }
 
@@ -39,7 +38,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToListAsync();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that starts with 'Ch' or 'ch'
+                    // that starts with 'Ch' OR 'ch'
                     #endregion
                 }
 
@@ -54,13 +53,54 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToList();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that starts with 'Ch' or 'ch'
+                    // that starts with 'Ch' OR 'ch'
                     #endregion
                 }
 
                 using (var session = store.OpenSession())
                 {
                     #region startsWith_4
+                    List<Product> products = session
+                        .Query<Product>()
+                         // Pass 'true' as the 2'nd parameter to search for an EXACT prefix match
+                        .Where(x => x.Name.StartsWith("Ch"), true)
+                        .ToList();
+                    
+                    // Results will contain only Product documents having a 'Name' field
+                    // that starts with 'Ch'
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region startsWith_5
+                    List<Product> products = await asyncSession
+                        .Query<Product>()
+                         // Pass 'true' as the 2'nd parameter to search for an EXACT prefix match
+                        .Where(x => x.Name.StartsWith("Ch"), true)
+                        .ToListAsync();
+                    
+                    // Results will contain only Product documents having a 'Name' field
+                    // that starts with 'Ch'
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region startsWith_6
+                    List<Product> products = session.Advanced
+                        .DocumentQuery<Product>()
+                         // Call 'WhereStartsWith'
+                         // Pass 'true' as the 3'rd parameter to search for an EXACT prefix match
+                        .WhereStartsWith(x => x.Name, "Ch", true)
+                        .ToList();
+                    
+                    // Results will contain only Product documents having a 'Name' field
+                    // that starts with 'Ch'
+                    #endregion
+                }                using (var session = store.OpenSession())
+                {
+                    #region startsWith_7
                     List<Product> products = session
                         .Query<Product>()
                          // Call 'StartsWith' on the field
@@ -75,7 +115,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
-                    #region startsWith_5
+                    #region startsWith_8
                     List<Product> products = await asyncSession
                         .Query<Product>()
                          // Call 'StartsWith' on the field
@@ -90,7 +130,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                 
                 using (var session = store.OpenSession())
                 {
-                    #region startsWith_6
+                    #region startsWith_9
                     List<Product> products = session.Advanced
                         .DocumentQuery<Product>()
                          // Call 'Not' to negate the next predicate
@@ -102,21 +142,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     
                     // Results will contain only Product documents having a 'Name' field
                     // that does NOT start with 'Ch' or 'ch'
-                    #endregion
-                }
-                
-                using (var session = store.OpenSession())
-                {
-                    #region startsWith_7
-                    List<Product> products = session.Advanced
-                        .DocumentQuery<Product>()
-                        // Call 'WhereStartsWith'
-                        // Pass 'true' as the 3'rd parameter to search for an EXACT prefix match
-                        .WhereStartsWith(x => x.Name, "Ch", true)
-                        .ToList();
-                    
-                    // Results will contain only Product documents having a 'Name' field
-                    // that starts with 'Ch'
                     #endregion
                 }
             }

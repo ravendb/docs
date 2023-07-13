@@ -6,15 +6,13 @@
 
 * Use `whereStartsWith` to query for documents having a field that starts with some specified string.
 
-* Unless explicitly specified, the string comparisons are case-insensitive by default,  
-  see examples below.
-
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
 
 * In this page:
-  * [whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-search#wherestartswith)
+  * [whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-search#wherestartswith)  
+  * [whereStartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#wherestartswith-(case-sensitive))  
   * [Negate whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-wherestartswith)  
-  * [whereStartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#wherestartswith-(case-sensitive))
-  * [Syntax](../../../../client-api/session/querying/text-search/starts-with-search#syntax)
+  * [Syntax](../../../../client-api/session/querying/text-search/starts-with-search#syntax)  
 
 {NOTE/}
 
@@ -32,25 +30,25 @@ where startsWith(Name, "Ch")
 
 {PANEL/}
 
-{PANEL: Negate whereStartsWith}
+{PANEL: whereStartsWith (case-sensitive)}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query startsWith_2@ClientApi\Session\Querying\TextSearch\StartsWith.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where exists(Name) and not startsWith(Name, "Ch")
+where exact(startsWith(Name, "Ch"))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 {PANEL/}
 
-{PANEL: whereStartsWith (case-sensitive)}
+{PANEL: Negate whereStartsWith}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query startsWith_3@ClientApi\Session\Querying\TextSearch\StartsWith.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where exact(startsWith(Name, "Ch"))
+where exists(Name) and not startsWith(Name, "Ch")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

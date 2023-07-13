@@ -15,28 +15,12 @@ async function endsWith() {
             .all();
 
         // Results will contain only Product documents having a 'Name' field
-        // that ends with 'Lager' or 'lager'
+        // that ends with 'Lager' OR 'lager'
         //endregion
     }
 
     {
         //region endsWith_2
-        const products = await session
-            .query({ collection: "Products" })
-             // Call 'Not' to negate the next predicate
-            .not()
-             // Call 'whereEndWith'
-             // Pass the document field and the postfix to search by
-            .whereEndsWith("Name", "Lager")
-            .all();
-
-        // Results will contain only Product documents having a 'Name' field
-        // that does NOT end with 'Lager' or 'lager'
-        //endregion
-    }
-
-    {
-        //region endsWith_3
         const products = await session
             .query({ collection: "Products" })
             // Call 'whereEndsWith'
@@ -46,6 +30,22 @@ async function endsWith() {
 
         // Results will contain only Product documents having a 'Name' field
         // that ends with 'Lager'
+        //endregion
+    }
+
+    {
+        //region endsWith_3
+        const products = await session
+            .query({ collection: "Products" })
+            // Call 'Not' to negate the next predicate
+            .not()
+            // Call 'whereEndWith'
+            // Pass the document field and the postfix to search by
+            .whereEndsWith("Name", "Lager")
+            .all();
+
+        // Results will contain only Product documents having a 'Name' field
+        // that does NOT end with 'Lager' or 'lager'
         //endregion
     }
 }

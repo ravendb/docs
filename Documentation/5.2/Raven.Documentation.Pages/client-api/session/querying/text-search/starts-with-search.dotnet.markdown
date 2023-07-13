@@ -6,13 +6,12 @@
 
 * You can query for documents having a field that starts with some specified string.  
 
-* By default, the string comparisons are __case-insensitive__.  
-* To perform a search that is __case-sensitive__ use DocumentQuery, see examples below.
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
 
 * In this page:
   * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-search#startswith)
-  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-startswith)
   * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#startswith-(case-sensitive))
+  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-startswith)
 
 {NOTE/}
 
@@ -32,7 +31,7 @@ where startsWith(Name, "Ch")
 
 {PANEL/}
 
-{PANEL: Negate StartsWith}
+{PANEL: StartsWith (case-sensitive)}
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query startsWith_4@ClientApi\Session\Querying\TextSearch\StartsWith.cs /}
@@ -40,19 +39,21 @@ where startsWith(Name, "Ch")
 {CODE-TAB:csharp:DocumentQuery startsWith_6@ClientApi\Session\Querying\TextSearch\StartsWith.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where (true and not startsWith(Name, "Ch"))
+where exact(startsWith(Name, "Ch"))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 {PANEL/}
 
-{PANEL: StartsWith (case-sensitive)}
+{PANEL: Negate StartsWith}
 
 {CODE-TABS}
-{CODE-TAB:csharp:DocumentQuery startsWith_7@ClientApi\Session\Querying\TextSearch\StartsWith.cs /}
+{CODE-TAB:csharp:Query startsWith_7@ClientApi\Session\Querying\TextSearch\StartsWith.cs /}
+{CODE-TAB:csharp:Query_async startsWith_8@ClientApi\Session\Querying\TextSearch\StartsWith.cs /}
+{CODE-TAB:csharp:DocumentQuery startsWith_9@ClientApi\Session\Querying\TextSearch\StartsWith.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where exact(startsWith(Name, "Ch"))
+where (true and not startsWith(Name, "Ch"))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

@@ -6,8 +6,7 @@
 
 * You can query for documents having a field that ends with some specified string.
 
-* By default, the string comparisons are __case-insensitive__.  
-  To perform a search that is __case-sensitive__ use DocumentQuery, see examples below.  
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
 
 * __Note__:  
   This postfix search causes RavenDB to perform a full index scan.  
@@ -16,8 +15,8 @@
 
 * In this page:
     * [EndsWith](../../../../client-api/session/querying/text-search/starts-with-search#startswith)
-    * [Negate EndsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-startswith)
     * [EndsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#startswith-(case-sensitive))
+    * [Negate EndsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-startswith)
 
 {NOTE/}
 
@@ -37,7 +36,7 @@ where endsWith(Name, "Lager")
 
 {PANEL/}
 
-{PANEL: Negate EndsWith}
+{PANEL: EndsWith (case-sensitive)}
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query endsWith_4@ClientApi\Session\Querying\TextSearch\EndsWith.cs /}
@@ -45,19 +44,21 @@ where endsWith(Name, "Lager")
 {CODE-TAB:csharp:DocumentQuery endsWith_6@ClientApi\Session\Querying\TextSearch\EndsWith.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where (true and not endsWith(Name, "Lager"))
+where exact(endsWith(Name, "Lager"))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 {PANEL/}
 
-{PANEL: EndsWith (case-sensitive)}
+{PANEL: Negate EndsWith}
 
 {CODE-TABS}
-{CODE-TAB:csharp:DocumentQuery endsWith_7@ClientApi\Session\Querying\TextSearch\EndsWith.cs /}
+{CODE-TAB:csharp:Query endsWith_7@ClientApi\Session\Querying\TextSearch\EndsWith.cs /}
+{CODE-TAB:csharp:Query_async endsWith_8@ClientApi\Session\Querying\TextSearch\EndsWith.cs /}
+{CODE-TAB:csharp:DocumentQuery endsWith_9@ClientApi\Session\Querying\TextSearch\EndsWith.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where exact(endsWith(Name, "Lager"))
+where (true and not endsWith(Name, "Lager"))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

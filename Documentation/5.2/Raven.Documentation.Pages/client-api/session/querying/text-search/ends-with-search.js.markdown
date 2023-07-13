@@ -6,9 +6,7 @@
 
 * Use `whereEndsWith` to query for documents having a field that ends with some specified string.  
 
-* Unless explicitly specified, the string comparisons are case-insensitive by default,  
-  see examples below.  
-
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
 
 * __Note__:  
   This postfix search causes RavenDB to perform a full index scan.  
@@ -17,8 +15,8 @@
 
 * In this page:
     * [whereEndsWith](../../../../client-api/session/querying/text-search/starts-with-search#wherestartswith)
-    * [Negate whereEndsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-wherestartswith)
     * [whereEndsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#wherestartswith-(case-sensitive))
+    * [Negate whereEndsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-wherestartswith)
     * [Syntax](../../../../client-api/session/querying/text-search/starts-with-search#syntax)
 
 {NOTE/}
@@ -37,25 +35,25 @@ where endsWith(Name, "Lager")
 
 {PANEL/}
 
-{PANEL: Negate EndsWith}
+{PANEL: EndsWith (case-sensitive)}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query endsWith_2@ClientApi\Session\Querying\TextSearch\endsWith.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where exists(Name) and not endsWith(Name, "Lager")
+where exact(endsWith(Name, "Lager"))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 {PANEL/}
 
-{PANEL: EndsWith (case-sensitive)}
+{PANEL: Negate EndsWith}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query endsWith_3@ClientApi\Session\Querying\TextSearch\endsWith.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where exact(endsWith(Name, "Lager"))
+where exists(Name) and not endsWith(Name, "Lager")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
