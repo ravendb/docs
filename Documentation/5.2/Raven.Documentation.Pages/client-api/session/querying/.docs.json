@@ -97,6 +97,12 @@
         "Mappings": []
     },
     {
+        "Path": "how-to-count-query-results.markdown",
+        "Name": "How to Count Query Results",
+        "DiscussionId": "77cec3b4-0001-4a30-81a7-e3182f4150bf",
+        "Mappings": []
+    },
+    {
         "Path": "how-to-filter-by-field.markdown",
         "Name": "Filter by Field Presence",
         "DiscussionId": "bda0ec07-d0f9-46a0-bab7-ca733f692533",
