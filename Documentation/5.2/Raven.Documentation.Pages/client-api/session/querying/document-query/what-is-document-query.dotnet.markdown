@@ -225,7 +225,7 @@ Available custom methods and extensions:
 - [Query] [WaitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
 - Where
 - WhereBetween
-- WhereEndsWith
+- [WhereEndsWith](../../../../client-api/session/querying/text-search/ends-with-search)
 - WhereEquals
 - [WhereExists](../../../../client-api/session/querying/how-to-filter-by-field)
 - WhereGreaterThan

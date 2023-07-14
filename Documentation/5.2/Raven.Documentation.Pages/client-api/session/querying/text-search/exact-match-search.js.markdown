@@ -1,37 +1,57 @@
 # Exact Match Search
 
-By default, the `whereXXX()` methods in `query` use a case-insensitive match.
+---
 
-To perform a case-sensitive match you should use the `exact` parameter.
+{NOTE: }
 
-### Syntax
+* By default, when making a query that filters by strings, the string comparisons are __case-insensitive__.
 
-{CODE:nodejs query_1_0@ClientApi\Session\Querying\TextSearch\exactMatchSearch.js /}
+* Use the `exact` parameter to perform a search that is __case-sensitive__.
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **fieldName** | string | Object field to use |
-| **value** | any | Predicate value |
-| **exact** | boolean | Indicates if `predicate` should be matched in case-sensitive manner |
+* In this page:
+    * [Query with exact match](../../../../client-api/session/querying/text-search/exact-match-search#query-with-exact-match)
+    * [Query with inner exact match](../../../../client-api/session/querying/text-search/exact-match-search#query-with-inner-exact-match)
+    * [Syntax](../../../../client-api/session/querying/text-search/exact-match-search#syntax)
 
-###Example I - Query With Exact Match
+{NOTE/}
+
+---
+
+{PANEL: Query with exact match}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js query_1_1@ClientApi\Session\Querying\TextSearch\exactMatchSearch.js /}
+{CODE-TAB:nodejs:Query exact_1@ClientApi\Session\Querying\TextSearch\exactMatch.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Employees where exact(FirstName == 'Robert')
+from "Employees"
+where exact(FirstName == "Robert")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example II - Query With Inner Exact Match
+{PANEL/}
+
+{PANEL: Query with inner exact match}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js query_2_1@ClientApi\Session\Querying\TextSearch\exactMatchSearch.js /}
+{CODE-TAB:nodejs:Query exact_2@ClientApi\Session\Querying\TextSearch\exactMatch.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Orders 
-where exact(Lines[].ProductName == 'Singaporean Hokkien Fried Mee')
+from "Orders"
+where exact(Lines.ProductName == "Teatime Chocolate Biscuits")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Syntax}
+
+{CODE:nodejs syntax@ClientApi\Session\Querying\TextSearch\exactMatch.js /}
+
+| Parameter     | Type    | Description                                                               |
+|---------------|---------|---------------------------------------------------------------------------|
+| __fieldName__ | string  | Name of field in which to search                                          |
+| __value__     | any     | The value searched for                                                    |
+| __exact__     | boolean | `false` - search is case-insensitive<br>`true` - search is case-sensitive |
+
+{PANEL/}
 
 ## Related Articles
 

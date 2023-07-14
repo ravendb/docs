@@ -89,7 +89,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                          // Make a dynamic DocumentQuery on 'Orders' collection
                         .DocumentQuery<Order>()
                          // Query for documents that contain at least one order line with 'Teatime Chocolate Biscuits'
-                        .WhereEquals("Lines[].ProductName", "Teatime Chocolate Biscuits",
+                        .WhereEquals("Lines.ProductName", "Teatime Chocolate Biscuits",
                              // Pass 'exact: true' for a case-sensitive match 
                              exact: true)
                         .ToList();
@@ -102,7 +102,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
         {
             #region syntax
             IRavenQueryable<T> Where<T>(Expression<Func<T, bool>> predicate, bool exact);
-            IRavenQueryable<T> Where<T>(Expression<Func<T, int, bool>> predicate, bool exact);
             #endregion
         }
     }

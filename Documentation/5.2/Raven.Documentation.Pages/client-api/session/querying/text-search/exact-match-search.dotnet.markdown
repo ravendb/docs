@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* By default, the string comparisons are __case-insensitive__.  
+* By default, when making a query that filters by strings, the string comparisons are __case-insensitive__.
 
 * Use the `exact` parameter to perform a search that is __case-sensitive__.
 
@@ -39,7 +39,7 @@ where exact(FirstName == "Robert")
 {CODE-TAB:csharp:DocumentQuery exact_6@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Orders" 
-where exact(Lines[].ProductName == "Teatime Chocolate Biscuits")
+where exact(Lines.ProductName == "Teatime Chocolate Biscuits")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -49,10 +49,10 @@ where exact(Lines[].ProductName == "Teatime Chocolate Biscuits")
 
 {CODE syntax@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
 
-| Parameter     | Type                                                        | Description                                                               |
-|---------------|-------------------------------------------------------------|---------------------------------------------------------------------------|
-| __predicate__ | Expression<Func<T, int, bool>><br>Expression<Func<T, bool>> | Predicate with match condition                                            |
-| __exact__     | bool                                                        | `false` - search is case-insensitive<br>`true` - search is case-sensitive |
+| Parameter     | Type                      | Description                                                               |
+|---------------|---------------------------|---------------------------------------------------------------------------|
+| __predicate__ | Expression<Func<T, bool>> | Predicate with match condition                                            |
+| __exact__     | bool                      | `false` - search is case-insensitive<br>`true` - search is case-sensitive |
 
 {PANEL/}
 
