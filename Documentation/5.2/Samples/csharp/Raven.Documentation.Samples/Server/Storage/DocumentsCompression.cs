@@ -19,7 +19,7 @@ namespace Raven.Documentation.Samples.Server.Storage
                 // Set compression on ALL collections
                 dbrecord.DocumentsCompression.CompressAllCollections = true;
 
-                // Update the the database record
+                // Update the database record
                 store.Maintenance.Server.Send(new UpdateDatabaseOperation(dbrecord, dbrecord.Etag));
                 #endregion
             }
@@ -36,7 +36,7 @@ namespace Raven.Documentation.Samples.Server.Storage
                 // Turn off compression for all revisions, on all collections
                 dbrecord.DocumentsCompression.CompressRevisions = false;
 
-                // Update the the database record
+                // Update the database record
                 store.Maintenance.Server.Send(new UpdateDatabaseOperation(dbrecord, dbrecord.Etag));
                 #endregion
             }
@@ -55,7 +55,7 @@ namespace Raven.Documentation.Samples.Server.Storage
                 // Set compression on ALL collections
                 dbrecord.DocumentsCompression.CompressAllCollections = true;
 
-                // Update the the database record
+                // Update the database record
                 await store.Maintenance.Server.SendAsync(new UpdateDatabaseOperation(dbrecord, dbrecord.Etag));
                 #endregion
             }
@@ -72,7 +72,7 @@ namespace Raven.Documentation.Samples.Server.Storage
                 // Turn off compression for all revisions, on all collections
                 dbrecord.DocumentsCompression.CompressRevisions = false;
 
-                // Update the the database record
+                // Update the database record
                 await store.Maintenance.Server.SendAsync(new UpdateDatabaseOperation(dbrecord, dbrecord.Etag));
                 #endregion
             }
