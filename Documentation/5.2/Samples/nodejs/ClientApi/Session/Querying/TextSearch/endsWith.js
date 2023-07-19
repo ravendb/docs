@@ -15,7 +15,7 @@ async function endsWith() {
             .all();
 
         // Results will contain only Product documents having a 'Name' field
-        // that ends with 'Lager' OR 'lager'
+        // that ends with any case variation of 'lager'
         //endregion
     }
 
@@ -45,7 +45,7 @@ async function endsWith() {
             .all();
 
         // Results will contain only Product documents having a 'Name' field
-        // that does NOT end with 'Lager' or 'lager'
+        // that does NOT end with 'lager' or any other case variations of it
         //endregion
     }
 }

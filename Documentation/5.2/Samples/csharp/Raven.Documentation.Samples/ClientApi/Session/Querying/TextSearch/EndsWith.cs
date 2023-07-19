@@ -24,7 +24,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToList();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that ends with 'Lager' OR 'lager'
+                    // that ends with any case variation of 'lager'
                     #endregion
                 }
 
@@ -39,7 +39,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToListAsync();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that ends with 'Lager' OR 'lager'
+                    // that ends with any case variation of 'lager'
                     #endregion
                 }
 
@@ -54,7 +54,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToList();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that ends with 'Lager' OR 'lager'
+                    // that ends with any case variation of 'lager'
                     #endregion
                 }
                 
@@ -112,7 +112,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToList();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that does NOT end with 'Lager' or 'lager'
+                    // that does NOT end with 'lager' or any other case variations of it
                     #endregion
                 }
                 
@@ -127,7 +127,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToListAsync();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that does NOT end with 'Lager' or 'lager'
+                    // that does NOT end with 'lager' or any other case variations of it
                     #endregion
                 }
                 
@@ -144,7 +144,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToList();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that does NOT end with 'Lager' or 'lager'
+                    // that does NOT end with 'lager' or any other case variations of it
                     #endregion
                 }
             }

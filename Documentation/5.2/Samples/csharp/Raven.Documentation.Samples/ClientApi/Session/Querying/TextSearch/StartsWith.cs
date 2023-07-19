@@ -23,7 +23,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToList();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that starts with 'Ch' OR 'ch'
+                    // that starts with any case variation of 'ch'
                     #endregion
                 }
 
@@ -38,7 +38,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToListAsync();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that starts with 'Ch' OR 'ch'
+                    // that starts with any case variation of 'ch'
                     #endregion
                 }
 
@@ -53,7 +53,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToList();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that starts with 'Ch' OR 'ch'
+                    // that starts with any case variation of 'ch'
                     #endregion
                 }
 
@@ -109,7 +109,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToList();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that does NOT start with 'Ch' or 'ch'
+                    // that does NOT start with 'ch' or any other case variations of it
                     #endregion
                 }
                 
@@ -124,7 +124,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToListAsync();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that does NOT start with 'Ch' or 'ch'
+                    // that does NOT start with 'ch' or any other case variations of it
                     #endregion
                 }
                 
@@ -141,7 +141,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .ToList();
                     
                     // Results will contain only Product documents having a 'Name' field
-                    // that does NOT start with 'Ch' or 'ch'
+                    // that does NOT start with 'ch' or any other case variations of it
                     #endregion
                 }
             }
