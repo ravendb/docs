@@ -1,4 +1,4 @@
-# Session: How to Use MoreLikeThis
+# Using MoreLikeThis
 
 `MoreLikeThis` is available through query methods and will return similar documents according to the provided criteria and options.
 

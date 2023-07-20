@@ -14,7 +14,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
         #region suggestions_index_1
         public class Products_ByName : AbstractIndexCreationTask<Product, Products_ByName.IndexEntry>
         {
-            // The IndexEntry class defines the index-fields.
+            // The IndexEntry class defines the index-fields
             public class IndexEntry
             {
                 public string ProductName { get; set; }

@@ -40,7 +40,7 @@
     },
     {
         "Path": "how-to-project-query-results.markdown",
-        "Name": "How to Project Query Results",
+        "Name": "Project Query Results",
         "DiscussionId": "7608822d-893e-4f9e-9011-9ec146af73db",
         "Mappings": [
             {
@@ -55,7 +55,7 @@
     },
     {
         "Path": "how-to-perform-group-by-query.markdown",
-        "Name": "How to Perform Group By Query",
+        "Name": "Perform Group By Query",
         "DiscussionId": "9d8bb754-54d4-47dc-bb5d-b101561fc861",
         "Mappings": []
     },
@@ -83,7 +83,7 @@
     },
     {
         "Path": "how-to-get-query-statistics.markdown",
-        "Name": "How to Get Query Statistics",
+        "Name": "Get Query Statistics",
         "DiscussionId": "6c7d2633-e0ec-4b8f-8ddd-43470f24aa29",
         "Mappings": []
     },
@@ -107,7 +107,7 @@
     },
     {
         "Path": "how-to-use-intersect.markdown",
-        "Name": "How to Use Intersect",
+        "Name": "Using Intersect",
         "DiscussionId": "3f14b363-a022-4bca-91ec-eb1b1b2ed230",
         "Mappings": [
             {
@@ -140,7 +140,7 @@
     },
     {
         "Path": "how-to-use-morelikethis.markdown",
-        "Name": "How to Use MoreLikeThis",
+        "Name": "Using MoreLikeThis",
         "DiscussionId": "977915e5-9b87-43b0-9c31-14c980ee9d36",
         "Mappings": []
     },
@@ -152,7 +152,7 @@
     },
     {
         "Path": "how-to-use-highlighting.markdown",
-        "Name": "How to Use Highlighting",
+        "Name": "Highlight Query Results",
         "DiscussionId": "4c262003-44c5-46ff-84fc-7988405f4628",
         "Mappings": [
             {
@@ -166,13 +166,13 @@
     },
     {
         "Path": "how-to-use-regex.markdown",
-        "Name": "How to Use Regex",
+        "Name": "Using Regex",
         "DiscussionId": "48bc68f2-db18-4b4e-8cc4-4d29877ae9c0",
         "Mappings": []
     },
     {
         "Path": "how-to-query-with-exact-match.markdown",
-        "Name": "How to Query With Exact Match",
+        "Name": "Query With Exact Match",
         "DiscussionId": "b1c0918f-5fc3-4991-809d-c9014da73caf",
         "Mappings": []
     },

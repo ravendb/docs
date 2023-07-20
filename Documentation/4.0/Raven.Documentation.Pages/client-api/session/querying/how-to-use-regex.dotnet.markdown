@@ -1,4 +1,4 @@
-# Session: Querying: How to Use Regex
+# Using Regex
 
 To return only documents that match regular expression, use the `Regex` method which enables RavenDB to perform server-side pattern matching queries. 
 

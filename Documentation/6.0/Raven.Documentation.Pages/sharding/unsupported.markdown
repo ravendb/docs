@@ -47,7 +47,7 @@
 | Use `limit` with [PatchByQueryOperation](../client-api/operations/patching/set-based#patchbyqueryoperation) or [DeleteByQueryOperation](../client-api/operations/delete-by-query) | [Unsupported Querying Features](../sharding/querying#unsupported-querying-features) |
 | [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis) |  |
 | [OrderByScore](../indexes/querying/sorting#ordering-by-score) |  |
-| [OrderByDistance](../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance) | Not supported in spatial map reduce indexes |
+| [OrderByDistance](../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting) | Not supported in spatial map reduce indexes |
 
 ## Unsupported Document Extensions Features
 
