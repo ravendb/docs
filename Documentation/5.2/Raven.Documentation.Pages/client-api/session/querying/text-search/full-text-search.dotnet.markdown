@@ -62,13 +62,14 @@ where search(Notes, "University")
 
 * Executing the above query will generate the auto-index `Auto/Employees/BySearch(Notes)`.  
 
-* This auto-index will contain 2 index fields:
+* This auto-index will contain the following two index-fields:
 
   * `Notes`  
-    Contains the original text from the indexed document field 'Notes'.
+    Contains terms with the original text from the indexed document field 'Notes'.  
+    Text is lower-cased but Not tokenized.
   
   * `search(Notes)`  
-    Contains __lower-cased terms__ that were tokenized from the 'Notes' field by the default search analyzer (RavenStandardAnalyzer). 
+    Contains __lower-cased terms__ that were tokenized from the 'Notes' field by the [default search analyzer](indexes/using-analyzers#ravendb) (RavenStandardAnalyzer). 
     Calling the `Search()` method targets these terms to find matching documents.
 
 {PANEL/}
@@ -316,14 +317,14 @@ search(Notes, "*mark*")
 
 {CODE syntax@ClientApi\Session\Querying\TextSearch\FullTextSearch.cs /}
 
-| Parameter         | Type                                | Description                                                                                                                                                            |
-|-------------------|-------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __fieldSelector__ | `Expression<Func<TResult>>`         | Points to the field in which you search.                                                                                                                               |
-| __fieldName__     | string                              | Name of the field in which you search.                                                                                                                                 |
-| __searchTerms__   | string / <br/>`IEnumerable<string>` | A string containing the term or terms (separated by spaces) to search for.<br/>Or, can pass an array (or other `IEnumerable`) with terms to search for.                |
-| __boost__         | decimal                             | The boost value.<br>Learn more in [boost search results](../../../../client-api/session/querying/text-search/boost-search-results).<br><strong>Default</strong> is `1` |
-| __options__       | `SearchOptions` enum                | Logical operator to use between consecutive Search methods.<br> Can be `Or`, `And`, `Not`, or `Guess`.<br><strong>Default</strong> is `SearchOptions.Guess`            |
-| __@operator__     | `SearchOperator` enum               | Logical operator to use between multiple terms in the same Search method.<br>Can be `Or` or `And`.<br><strong>Default</strong> is `SearchOperation.Or`                 |
+| Parameter         | Type                                | Description                                                                                                                                                              |
+|-------------------|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __fieldSelector__ | `Expression<Func<TResult>>`         | Points to the field in which you search.                                                                                                                                 |
+| __fieldName__     | string                              | Name of the field in which you search.                                                                                                                                   |
+| __searchTerms__   | string / <br/>`IEnumerable<string>` | A string containing the term or terms (separated by spaces) to search for.<br/>Or, can pass an array (or other `IEnumerable`) with terms to search for.                  |
+| __boost__         | decimal                             | The boost value.<br>Learn more in [boost search results](../../../../client-api/session/querying/text-search/boost-search-results).<br><strong>Default</strong> is `1.0` |
+| __options__       | `SearchOptions` enum                | Logical operator to use between consecutive Search methods.<br> Can be `Or`, `And`, `Not`, or `Guess`.<br><strong>Default</strong> is `SearchOptions.Guess`              |
+| __@operator__     | `SearchOperator` enum               | Logical operator to use between multiple terms in the same Search method.<br>Can be `Or` or `And`.<br><strong>Default</strong> is `SearchOperation.Or`                   |
 
 {PANEL/}
 

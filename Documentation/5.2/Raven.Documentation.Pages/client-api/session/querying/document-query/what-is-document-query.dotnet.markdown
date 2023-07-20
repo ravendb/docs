@@ -167,7 +167,7 @@ Available custom methods and extensions:
 - [Query] [AggregateUsing](../../../../client-api/session/querying/how-to-perform-a-faceted-search)
 - AndAlso
 - [Query] [BeforeQueryExecuted](../../../../client-api/session/querying/how-to-customize-query#beforequeryexecuted)
-- Boost
+- [Boost](../../../../client-api/session/querying/text-search/boost-search-results)
 - CloseSubclause
 - CmpXchg
 - ContainsAll
@@ -210,7 +210,7 @@ Available custom methods and extensions:
 - Proximity
 - [Query] [RandomOrdering](../../../../client-api/session/querying/how-to-customize-query#randomordering)
 - [Query] [RelatesToShape](../../../../client-api/session/querying/how-to-make-a-spatial-query#search-by-shape)
-- Search
+- [Search](../../../../client-api/session/querying/text-search/full-text-search)
 - SelectFields
 - SelectTimeSeries
 - Single

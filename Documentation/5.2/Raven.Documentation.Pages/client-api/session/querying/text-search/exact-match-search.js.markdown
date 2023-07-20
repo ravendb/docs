@@ -8,9 +8,13 @@
 
 * Use the `exact` parameter to perform a search that is __case-sensitive__.
 
+* When making a dynamic query with an exact match,  
+  the auto-index created by the server indexes the text of the document field  
+  using the [default exact analyzer](../../../../indexes/using-analyzers#ravendb) where the casing of the original text is not changed.
+
 * In this page:
     * [Query with exact match](../../../../client-api/session/querying/text-search/exact-match-search#query-with-exact-match)
-    * [Query with inner exact match](../../../../client-api/session/querying/text-search/exact-match-search#query-with-inner-exact-match)
+    * [Query with exact match - nested object](../../../../client-api/session/querying/text-search/exact-match-search#query-with-exact-match---nested-object)
     * [Syntax](../../../../client-api/session/querying/text-search/exact-match-search#syntax)
 
 {NOTE/}
@@ -18,6 +22,8 @@
 ---
 
 {PANEL: Query with exact match}
+
+{NOTE: }
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query exact_1@ClientApi\Session\Querying\TextSearch\exactMatch.js /}
@@ -27,9 +33,26 @@ where exact(FirstName == "Robert")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+{NOTE/}
+
+* Executing the above query will generate the auto-index `Auto/Employees/ByExact(FirstName)`.
+
+* This auto-index will contain the following two index-fields:
+
+    * `FirstName`  
+      Contains terms with text from the indexed document field 'FirstName'.  
+      Text is lower-cased and not tokenized.
+
+    * `exact(FirstName)`  
+      Contain terms with the original text from the indexed document field 'FirstName'.  
+      Casing is exactly the same as in the original text, and the text is not tokenized.  
+      Making an exact query targets these terms to find matching documents.
+
 {PANEL/}
 
-{PANEL: Query with inner exact match}
+{PANEL: Query with exact match - nested object}
+
+{NOTE: }
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query exact_2@ClientApi\Session\Querying\TextSearch\exactMatch.js /}
@@ -38,6 +61,8 @@ from "Orders"
 where exact(Lines.ProductName == "Teatime Chocolate Biscuits")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+{NOTE/}
 
 {PANEL/}
 
