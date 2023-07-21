@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Raven.Client;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Linq;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
@@ -162,7 +162,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     var metadata = session.Advanced.GetMetadataFor(employees[0]);
                     
                     // Score is available in the '@index-score' metadata property
-                    var score = metadata["@index-score"];
+                    var score = metadata[Constants.Documents.Metadata.IndexScore];
                     #endregion
                 }
             }

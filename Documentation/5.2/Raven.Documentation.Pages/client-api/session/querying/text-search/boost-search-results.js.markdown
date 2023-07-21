@@ -25,18 +25,14 @@
 
 {PANEL: Boost results - when making a full-text search}
 
-* When making a full-text search with the `Search()` method then boosting can be applied  
-  to both `Query` and `DocumentQuery`.
-
 {NOTE: }
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query boost_1@ClientApi\Session\Querying\TextSearch\BoostResults.cs /}
-{CODE-TAB:csharp:Query_async boost_2@ClientApi\Session\Querying\TextSearch\BoostResults.cs /}
-{CODE-TAB:csharp:DocumentQuery boost_3@ClientApi\Session\Querying\TextSearch\BoostResults.cs /}
+{CODE-TAB:nodejs:Query boost_1@ClientApi\Session\Querying\TextSearch\boostResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees" where
-(search(Notes, "English") or boost(search(Notes, "Italian"), 10))
+search(Notes, "English") or boost(search(Notes, "Italian"), 10)
+{"p0":"English","p1":"Italian"}
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -46,14 +42,10 @@ from "Employees" where
 
 {PANEL: Boost results - when querying with where clause}
 
-* When querying with `Where` clauses (using an OR condition in between) then boosting can be applied  
-  only with `DocuemtQuery`.
-
 {NOTE: }
 
 {CODE-TABS}
-{CODE-TAB:csharp:DocumentQuery boost_4@ClientApi\Session\Querying\TextSearch\BoostResults.cs /}
-{CODE-TAB:csharp:DocumentQuery_async boost_5@ClientApi\Session\Querying\TextSearch\BoostResults.cs /}
+{CODE-TAB:nodejs:Query boost_2@ClientApi\Session\Querying\TextSearch\boostResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Companies" where
 boost(startsWith(Name, "O"), 10) or
@@ -70,15 +62,15 @@ boost(endsWith(Name, "OP"), 90)
 
 * The score can be retrieved by either:
 
-   * Request to __include explanations__ when making the query.  
-     See [include query explanations](../../../../client-api/session/querying/debugging/include-explanations).
+    * Request to __include explanations__ when making the query.  
+      See [include query explanations](../../../../client-api/session/querying/debugging/include-explanations).
 
-   * __Get the metadata__ of the resulting entities that were loaded to the session.  
-     See example below.  
+    * __Get the metadata__ of the resulting entities that were loaded to the session.  
+      See example below.
 
 {NOTE: }
 
-{CODE:csharp boost_6@ClientApi\Session\Querying\TextSearch\BoostResults.cs /}
+{CODE:nodejs boost_3@ClientApi\Session\Querying\TextSearch\boostResults.js /}
 
 {NOTE/}
 
