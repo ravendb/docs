@@ -66,7 +66,7 @@ where search(Notes, "University")
 
   * `Notes`  
     Contains terms with the original text from the indexed document field 'Notes'.  
-    Text is lower-cased but Not tokenized.
+    Text is lower-cased and Not tokenized.
   
   * `search(Notes)`  
     Contains __lower-cased terms__ that were tokenized from the 'Notes' field by the [default search analyzer](indexes/using-analyzers#ravendb) (RavenStandardAnalyzer). 
@@ -80,7 +80,7 @@ where search(Notes, "University")
 
 * By default, the logical operator between these terms is 'OR'.
 
-* This behavior can be modified. See section [Search operators](../../../../csharp/client-api/session/querying/text-search/full-text-search#search-operators). 
+* This behavior can be modified. See section [Search operators](../../../../client-api/session/querying/text-search/full-text-search#search-operators). 
 
 {NOTE: }
 
@@ -121,7 +121,7 @@ where search(Notes, "University Sales Japanese")
 
 * By default, the logical operator between consecutive search methods is 'OR'.
 
-* This behavior can be modified. See section [Search options](../../../../csharp/client-api/session/querying/text-search/full-text-search#search-operators).
+* This behavior can be modified. See section [Search options](../../../../client-api/session/querying/text-search/full-text-search#search-operators).
 
 {NOTE: }
 
@@ -212,7 +212,7 @@ where search(Notes, "College German")
 
 {NOTE: }
 
-__Negate search criteria__:
+__Negate search__:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query fts_21@ClientApi\Session\Querying\TextSearch\FullTextSearch.cs /}
@@ -289,7 +289,7 @@ where search(Notes, "French") and
 
 * Note:  
 
-  * Searching with a wildcard as the prefix of the term (e.g. '*text') is less recommended,  
+  * Searching with a wildcard as the prefix of the term (e.g. `*text`) is less recommended,  
     as it will cause the server to perform a full index scan.
   
   * Instead, consider using a static-index that indexes the field in reverse order  

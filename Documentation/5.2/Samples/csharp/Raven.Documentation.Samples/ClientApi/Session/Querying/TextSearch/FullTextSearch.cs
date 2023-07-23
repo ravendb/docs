@@ -31,7 +31,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Search(x => x.Notes, "University")
                         .ToList();
                     
-                    // Results will contain Employee documents that contain
+                    // Results will contain Employee documents that have
                     // any case variation of the term 'university' in their 'Notes' field.
                     #endregion
                 }
@@ -48,7 +48,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Search(x => x.Notes, "University")
                         .ToListAsync();
                     
-                    // Results will contain Employee documents that contain
+                    // Results will contain Employee documents that have
                     // any case variation of the term 'university' in their 'Notes' field.
                     #endregion
                 }
@@ -65,7 +65,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Search(x => x.Notes, "University")
                         .ToList();
                     
-                    // Results will contain Employee documents that contain
+                    // Results will contain Employee documents that have
                     // any case variation of the term 'university' in their 'Notes' field.
                     #endregion
                 }
@@ -83,7 +83,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Search(x => x.Notes, "University Sales Japanese")
                         .ToList();
                     
-                    // * Results will contain Employee documents that contain at least one of the specified terms.
+                    // * Results will contain Employee documents that have at least one of the specified terms.
                     // * Search is case-insensitive.
                     #endregion
                 }
@@ -99,7 +99,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Search(x => x.Notes, "University Sales Japanese")
                         .ToListAsync();
                     
-                    // * Results will contain Employee documents that contain at least one of the specified terms.
+                    // * Results will contain Employee documents that have at least one of the specified terms.
                     // * Search is case-insensitive.
                     #endregion
                 }
@@ -115,7 +115,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Search(x => x.Notes, "University Sales Japanese")
                         .ToList();
                     
-                    // * Results will contain Employee documents that contain at least one of the specified terms.
+                    // * Results will contain Employee documents that have at least one of the specified terms.
                     // * Search is case-insensitive.
                     #endregion
                 }
@@ -133,7 +133,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Search(x => x.Notes, new[] { "University", "Sales", "Japanese" })
                         .ToList();
                     
-                    // * Results will contain Employee documents that contain at least one of the specified terms.
+                    // * Results will contain Employee documents that have at least one of the specified terms.
                     // * Search is case-insensitive.
                     #endregion
                 }
@@ -149,7 +149,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Search(x => x.Notes, new[] { "University", "Sales", "Japanese" })
                         .ToListAsync();
                     
-                    // * Results will contain Employee documents that contain at least one of the specified terms.
+                    // * Results will contain Employee documents that have at least one of the specified terms.
                     // * Search is case-insensitive.
                     #endregion
                 }
@@ -167,7 +167,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Search(x => x.Title, "President")
                         .ToList();
                     
-                    // * Results will contain Employee documents that contain
+                    // * Results will contain Employee documents that have
                     //   at least one of the specified fields with the specified terms.
                     // * Search is case-insensitive.
                     #endregion
@@ -184,7 +184,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Search(x => x.Title, "President")
                         .ToListAsync();
                     
-                    // * Results will contain Employee documents that contain
+                    // * Results will contain Employee documents that have
                     //   at least one of the specified fields with the specified terms.
                     // * Search is case-insensitive.
                     #endregion
@@ -201,7 +201,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .Search(x => x.Title, "President")
                         .ToList();
                     
-                    // * Results will contain Employee documents that contain
+                    // * Results will contain Employee documents that have
                     //   at least one of the specified fields with the specified terms.
                     // * Search is case-insensitive.
                     #endregion
@@ -308,7 +308,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     #region fts_18
                     List<Employee> employees = session
                         .Query<Employee>()
-                         // * Pass `@operator` with 'SearchOperator.Or'
+                         // * Pass `@operator` with 'SearchOperator.Or' (or don't pass this param at all)
                         .Search(x => x.Notes, "College German", @operator: SearchOperator.Or)
                         .ToList();
                     
@@ -323,7 +323,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     #region fts_19
                     List<Employee> employees = await asyncSession
                         .Query<Employee>()
-                         // * Pass `@operator` with 'SearchOperator.Or'
+                         // * Pass `@operator` with 'SearchOperator.Or' (or don't pass this param at all)
                         .Search(x => x.Notes, "College German", @operator: SearchOperator.Or)
                         .ToListAsync();
                     
@@ -338,7 +338,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     #region fts_20
                     List<Employee> employees = session.Advanced
                         .DocumentQuery<Employee>()
-                         // * Pass `@operator` with 'SearchOperator.Or'
+                         // * Pass `@operator` with 'SearchOperator.Or' (or don't pass this param at all)
                         .Search(x => x.Notes, "College German", @operator: SearchOperator.Or)
                         .ToList();
                     
@@ -445,14 +445,13 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     List<Company> companies = session.Advanced
                         .DocumentQuery<Company>()
                         .WhereEquals(x => x.Contact.Title, "Owner")
-                         // Call 'AndAlso' so that operator AND will be used with previous 'Where' predicate
-                        .AndAlso()
-                         // Call 'OpenSubclause' to open parenthesis
+                         // Operator AND will be used with previous 'Where' predicate
+                         // Call 'OpenSubclause' to open predicate block
                         .OpenSubclause()
                         .Search(x => x.Address.Country, "France")
                          // Operator OR will be used between the two 'Search' calls by default
                         .Search(x => x.Name, "Markets")
-                         // Call 'CloseSubclause' to close parenthesis
+                         // Call 'CloseSubclause' to close predicate block
                         .CloseSubclause()
                         .ToList();
                     
@@ -599,6 +598,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     #region fts_33
                     List<Employee> employees = session
                         .Query<Employee>()
+                         // Use '*' to replace one ore more characters
                         .Search(x => x.Notes, "art*")
                         .Search(x => x.Notes, "*logy")
                         .Search(x => x.Notes, "*mark*")
@@ -618,6 +618,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     #region fts_34
                     List<Employee> employees = await asyncSession
                         .Query<Employee>()
+                         // Use '*' to replace one ore more characters
                         .Search(x => x.Notes, "art*")
                         .Search(x => x.Notes, "*logy")
                         .Search(x => x.Notes, "*mark*")
@@ -637,6 +638,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     #region fts_35
                     List<Employee> employees = session.Advanced
                         .DocumentQuery<Employee>()
+                         // Use '*' to replace one ore more characters
                         .Search(x => x.Notes, "art*")
                         .Search(x => x.Notes, "*logy")
                         .Search(x => x.Notes, "*mark*")

@@ -80,15 +80,3 @@ async function boostResults() {
         //endregion
     }
 }
-
-{
-    //region syntax
-    // Available overloads:
-    
-    whereEquals(fieldName, value);
-    whereEquals(fieldName, value, exact);
-
-    whereNotEquals(fieldName, value);
-    whereNotEquals(fieldName, value, exact);
-    //endregion
-}
