@@ -45,6 +45,17 @@
         ]
     },
     {
+        "Path": "highlight-query-results.markdown",
+        "Name": "Highlight Search Results",
+        "DiscussionId": "4c262003-44c5-46ff-84fc-7988405f4628",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "client-api/session/querying/how-to-use-highlighting"
+            }
+        ]
+    },
+    {
         "Path": "proximity-search.markdown",
         "Name": "Proximity Search",
         "DiscussionId": "c01f1b7c-038a-4663-a48b-b5401794bf96",
@@ -74,17 +85,6 @@
             {
                 "Version": 4.0,
                 "Key": "client-api/session/querying/how-to-use-regex"
-            }
-        ]
-    },
-    {
-        "Path": "highlight-query-results.markdown",
-        "Name": "Highlight Query Results",
-        "DiscussionId": "4c262003-44c5-46ff-84fc-7988405f4628",
-        "Mappings": [
-            {
-                "Version": 3.0,
-                "Key": "client-api/session/querying/how-to-use-highlighting"
             }
         ]
     }

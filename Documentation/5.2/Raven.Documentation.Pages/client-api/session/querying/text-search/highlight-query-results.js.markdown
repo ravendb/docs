@@ -1,4 +1,4 @@
-# Highlight Query Results
+# Highlight Search Results
 ---
 
 {NOTE: }
@@ -10,7 +10,7 @@
 * The highlighted terms can enhance user experience when searching for documents with specific content.
 
 * This article shows highlighting search results when making a __dynamic-query__.  
-  For highlighting search results when querying a __static-index__ see [highlight index query results](../../../../indexes/querying/highlighting).
+  For highlighting search results when querying a __static-index__ see [highlight index search results](../../../../indexes/querying/highlighting).
 
 ---
 
@@ -175,4 +175,4 @@ __The Highlightings object__:
 
 ### Indexes
 
-- [Highlight index query results](../../../../indexes/querying/highlighting)
+- [Highlight index search results](../../../../indexes/querying/highlighting)

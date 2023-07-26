@@ -1,4 +1,4 @@
-# Highlight Index Query Results
+# Highlight Index Search Results
 ---
 
 {NOTE: }
@@ -8,7 +8,7 @@
   you can also request to get a list of text fragments that highlight the searched terms.  
 
 * This article provides examples of highlighting search results when querying a static-index.  
-  __Prior to this article__, please refer to [Highlight query results](../../client-api/session/querying/text-search/highlight-query-results) for general knowledge about Highlighting,  
+  __Prior to this article__, please refer to [Highlight search results](../../client-api/session/querying/text-search/highlight-query-results) for general knowledge about Highlighting,  
   and for dynamic-queries examples.
 
 * In order to search and get fragments with highlighted terms when querying a static-index,  
@@ -170,4 +170,4 @@ __Process results__:
 
 ### Client API
 
-- [Highlight query results](../../client-api/session/querying/text-search/highlight-query-results)
+- [Highlight search results](../../client-api/session/querying/text-search/highlight-query-results)
