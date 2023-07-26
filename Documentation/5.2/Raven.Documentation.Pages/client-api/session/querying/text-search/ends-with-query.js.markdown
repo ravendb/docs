@@ -14,16 +14,16 @@
   and then query with a [prefix search](../../../../client-api/session/querying/text-search/starts-with-query), which is much faster.
 
 * In this page:
-    * [whereEndsWith](../../../../client-api/session/querying/text-search/starts-with-search#wherestartswith)
-    * [whereEndsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#wherestartswith-(case-sensitive))
-    * [Negate whereEndsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-wherestartswith)
-    * [Syntax](../../../../client-api/session/querying/text-search/starts-with-search#syntax)
+    * [whereEndsWith](../../../../client-api/session/querying/text-search/ends-with-query#whereendswith)
+    * [whereEndsWith (case-sensitive)](../../../../client-api/session/querying/text-search/ends-with-query#whereendswith-(case-sensitive))
+    * [Negate whereEndsWith](../../../../client-api/session/querying/text-search/ends-with-query#negate-whereendswith)
+    * [Syntax](../../../../client-api/session/querying/text-search/ends-with-query#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL: EndsWith}
+{PANEL: whereEndsWith}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query endsWith_1@ClientApi\Session\Querying\TextSearch\endsWith.js /}
@@ -35,7 +35,7 @@ where endsWith(Name, "Lager")
 
 {PANEL/}
 
-{PANEL: EndsWith (case-sensitive)}
+{PANEL: whereEndsWith (case-sensitive)}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query endsWith_2@ClientApi\Session\Querying\TextSearch\endsWith.js /}
@@ -47,7 +47,7 @@ where exact(endsWith(Name, "Lager"))
 
 {PANEL/}
 
-{PANEL: Negate EndsWith}
+{PANEL: Negate whereEndsWith}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query endsWith_3@ClientApi\Session\Querying\TextSearch\endsWith.js /}

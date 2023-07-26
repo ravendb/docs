@@ -21,4 +21,4 @@ where regex(Name, '^[NA]')
 
 - [Querying: Basics](../../../../indexes/querying/query-index)
 - [Full-text search](../../../../client-api/session/querying/text-search/full-text-search)
-- [Query with exact match](../../../../client-api/session/querying/text-search/exact-match-search)
+- [Query with exact match](../../../../client-api/session/querying/text-search/exact-match-query)

@@ -69,7 +69,7 @@ where search(Notes, "University")
     Text is lower-cased and Not tokenized.
   
   * `search(Notes)`  
-    Contains __lower-cased terms__ that were tokenized from the 'Notes' field by the [default search analyzer](indexes/using-analyzers#ravendb) (RavenStandardAnalyzer). 
+    Contains __lower-cased terms__ that were tokenized from the 'Notes' field by the [default search analyzer](../../../../indexes/using-analyzers#ravendb) (RavenStandardAnalyzer). 
     Calling the `Search()` method targets these terms to find matching documents.
 
 {PANEL/}
@@ -334,7 +334,7 @@ search(Notes, "*mark*")
 
 - [Query overview](../../../../client-api/session/querying/how-to-query)
 - [How to Use Regex](../../../../client-api/session/querying/text-search/using-regex)
-- [How to Query With Exact Match](../../../../client-api/session/querying/text-search/exact-match-search)
+- [How to Query With Exact Match](../../../../client-api/session/querying/text-search/exact-match-query)
 
 ### Indexes
 

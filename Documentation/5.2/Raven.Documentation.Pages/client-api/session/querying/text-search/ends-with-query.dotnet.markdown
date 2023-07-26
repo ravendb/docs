@@ -14,9 +14,9 @@
   and then query with a [prefix search](../../../../client-api/session/querying/text-search/starts-with-query), which is much faster.
 
 * In this page:
-    * [EndsWith](../../../../client-api/session/querying/text-search/starts-with-search#startswith)
-    * [EndsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#startswith-(case-sensitive))
-    * [Negate EndsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-startswith)
+    * [EndsWith](../../../../client-api/session/querying/text-search/ends-with-query#endswith)
+    * [EndsWith (case-sensitive)](../../../../client-api/session/querying/text-search/ends-with-query#endswith-(case-sensitive))
+    * [Negate EndsWith](../../../../client-api/session/querying/text-search/ends-with-query#negate-endswith)
 
 {NOTE/}
 

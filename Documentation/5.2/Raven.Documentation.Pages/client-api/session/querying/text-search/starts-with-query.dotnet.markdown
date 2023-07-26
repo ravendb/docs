@@ -9,9 +9,9 @@
 * Unless explicitly specified, the string comparisons are case-insensitive by default.
 
 * In this page:
-  * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-search#startswith)
-  * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#startswith-(case-sensitive))
-  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-startswith)
+  * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-query#startswith)
+  * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query#startswith-(case-sensitive))
+  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-query#negate-startswith)
 
 {NOTE/}
 

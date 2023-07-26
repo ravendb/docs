@@ -261,7 +261,7 @@ Available methods for the session's [query](../../../client-api/session/querying
 - aggregateUsing
 - andAlso
 - any
-- boost
+- [boost](../../../client-api/session/querying/text-search/boost-search-results)
 - closeSubclause
 - containsAll
 - containsAny
@@ -313,7 +313,7 @@ Available methods for the session's [query](../../../client-api/session/querying
 - usingDefaultOperator
 - [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
 - whereBetween
-- whereEndsWith
+- [whereEndsWith](../../../client-api/session/querying/text-search/ends-with-query)
 - whereEquals
 - [whereExists](../../../client-api/session/querying/how-to-filter-by-field)
 - whereGreaterThan
@@ -324,7 +324,7 @@ Available methods for the session's [query](../../../client-api/session/querying
 - [whereLucene](../../../client-api/session/querying/document-query/how-to-use-lucene)
 - whereNotEquals
 - [whereRegex](../../../client-api/session/querying/text-search/using-regex)
-- [whereStartsWith](../../../client-api/session/querying/text-search/starts-with-search)
+- [whereStartsWith](../../../client-api/session/querying/text-search/starts-with-query)
 - withinRadiusOf
 
 {PANEL/}

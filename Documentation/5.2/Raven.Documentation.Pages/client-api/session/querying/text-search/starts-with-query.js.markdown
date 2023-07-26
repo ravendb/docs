@@ -9,10 +9,10 @@
 * Unless explicitly specified, the string comparisons are case-insensitive by default.
 
 * In this page:
-  * [whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-search#wherestartswith)  
-  * [whereStartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-search#wherestartswith-(case-sensitive))  
-  * [Negate whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-search#negate-wherestartswith)  
-  * [Syntax](../../../../client-api/session/querying/text-search/starts-with-search#syntax)  
+  * [whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-query#wherestartswith)  
+  * [whereStartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query#wherestartswith-(case-sensitive))  
+  * [Negate whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-query#negate-wherestartswith)  
+  * [Syntax](../../../../client-api/session/querying/text-search/starts-with-query#syntax)  
 
 {NOTE/}
 

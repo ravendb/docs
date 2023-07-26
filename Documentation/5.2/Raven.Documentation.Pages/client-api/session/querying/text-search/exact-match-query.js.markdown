@@ -13,9 +13,9 @@
   using the [default exact analyzer](../../../../indexes/using-analyzers#ravendb) where the casing of the original text is not changed.
 
 * In this page:
-    * [Query with exact match](../../../../client-api/session/querying/text-search/exact-match-search#query-with-exact-match)
-    * [Query with exact match - nested object](../../../../client-api/session/querying/text-search/exact-match-search#query-with-exact-match---nested-object)
-    * [Syntax](../../../../client-api/session/querying/text-search/exact-match-search#syntax)
+    * [Query with exact match](../../../../client-api/session/querying/text-search/exact-match-query#query-with-exact-match)
+    * [Query with exact match - nested object](../../../../client-api/session/querying/text-search/exact-match-query#query-with-exact-match---nested-object)
+    * [Syntax](../../../../client-api/session/querying/text-search/exact-match-query#syntax)
 
 {NOTE/}
 
