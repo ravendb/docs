@@ -75,8 +75,7 @@ async function boostResults() {
         const metadata = session.advanced.getMetadataFor(employees[0]);
 
         // Score is available in the '@index-score' metadata property
-        const score = metadata[const score = metadata["@index-score"]];
-        // const score = metadata[CONSTANTS.Documents.Metadata.INDEX_SCORE] // todo ???
+        const score = metadata[CONSTANTS.Documents.Metadata.INDEX_SCORE];
         //endregion
     }
 }

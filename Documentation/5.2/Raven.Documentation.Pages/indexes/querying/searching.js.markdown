@@ -4,9 +4,9 @@
 {NOTE: }
 
 * __Prior to this article__, please refer to article [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search)  
-  to learn about the `Search` method.  
+  to learn about the `search` method.  
 
-* __All capabilities__ provided by `Search` with a dynamic query can also be used when querying a static-index.
+* __All capabilities__ provided by `search` with a dynamic query can also be used when querying a static-index.
 
 * However, as opposed to making a dynamic search query where an auto-index is created for you,  
   when using a __static-index__:  
@@ -36,7 +36,7 @@ __The index__:
 
 ---
 
-{CODE:csharp index_1@Indexes\Querying\Searching.cs/}
+{CODE:nodejs index_1@Indexes\Querying\searching.js/}
 
 {NOTE/}
 
@@ -46,18 +46,16 @@ __Query with Search__:
 
 ---
 
-* Use `Search` to make a full-text search when querying the index.  
+* Using the `search` method has the advantage of using any of its functionalities,  
+  such as using wildcards, searching for multiple terms, etc.  
 
-* Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search) for all available __Search options__,  
-  such as using wildcards, searching for multiple terms, etc.
+* Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search) for all available __Search options__.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query search_1@Indexes\Querying\Searching.cs /}
-{CODE-TAB:csharp:Query_async search_2@Indexes\Querying\Searching.cs /}
-{CODE-TAB:csharp:DocumentQuery search_3@Indexes\Querying\Searching.cs /}
+{CODE-TAB:nodejs:Query search_1@Indexes\Querying\searching.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Employees/ByNotes"
-where search(EmployeeNotes, "French")
+where search(employeeNotes, "French")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -73,7 +71,7 @@ __The index__:
 
 ---
 
-{CODE:csharp index_2@Indexes\Querying\Searching.cs/}
+{CODE:nodejs index_2@Indexes\Querying\searching.js/}
 
 {NOTE/}
 
@@ -84,12 +82,10 @@ __Sample query__:
 ---
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query search_4@Indexes\Querying\Searching.cs /}
-{CODE-TAB:csharp:Query_async search_5@Indexes\Querying\Searching.cs /}
-{CODE-TAB:csharp:DocumentQuery search_6@Indexes\Querying\Searching.cs /}
+{CODE-TAB:nodejs:Query search_2@Indexes\Querying\searching.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Employees/ByEmployeeData"
-where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish", and))
+where (search(employeeData, "Manager") or search(employeeData, "French Spanish", and))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
