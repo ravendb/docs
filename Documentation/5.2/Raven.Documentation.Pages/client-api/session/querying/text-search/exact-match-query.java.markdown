@@ -1,4 +1,4 @@
-# Exact Match Search
+# Exact Match Query
 
 By default, the `whereXXX` methods in `query` uses a case-insensitive match.
 
@@ -39,4 +39,4 @@ where exact(Lines[].ProductName == 'Singaporean Hokkien Fried Mee')
 
 - [Querying: Basics](../../../../indexes/querying/query-index)
 - [Full-text search](../../../../client-api/session/querying/text-search/full-text-search)
-- [How to Use Regex](../../../../client-api/session/querying/how-to-use-regex)
+- [How to Use Regex](../../../../client-api/session/querying/text-search/using-regex)

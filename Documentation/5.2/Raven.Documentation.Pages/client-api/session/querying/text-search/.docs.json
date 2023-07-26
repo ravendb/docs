@@ -1,19 +1,19 @@
 [
     {
-        "Path": "starts-with-search.markdown",
-        "Name": "Starts-With Search",
+        "Path": "starts-with-query.markdown",
+        "Name": "Starts-With Query",
         "DiscussionId": "b1c0918f-5fc3-4991-809d-c9014da73caf",
         "Mappings": []
     },
     {
-        "Path": "ends-with-search.markdown",
-        "Name": "Ends-With Search",
+        "Path": "ends-with-query.markdown",
+        "Name": "Ends-With Query",
         "DiscussionId": "b1c0918f-5fc3-4991-809d-c9014da73caf",
         "Mappings": []
     },
     {
-        "Path": "exact-match-search.markdown",
-        "Name": "Exact Match Search",
+        "Path": "exact-match-query.markdown",
+        "Name": "Exact Match Query",
         "DiscussionId": "b1c0918f-5fc3-4991-809d-c9014da73caf",
         "Mappings": [
             {

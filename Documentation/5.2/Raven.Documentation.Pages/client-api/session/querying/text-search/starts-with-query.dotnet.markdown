@@ -1,4 +1,4 @@
-﻿# Starts-With Search
+﻿# Starts-With Query
 
 ---
 
@@ -64,7 +64,7 @@ where (true and not startsWith(Name, "Ch"))
 ### Session
 
 - [Query overview](../../../../client-api/session/querying/how-to-query)
-- [Ends-With search](../../../../client-api/session/querying/text-search/ends-with-search)
+- [Ends-With query](../../../../client-api/session/querying/text-search/ends-with-query)
 - [Full-text search](../../../../client-api/session/querying/text-search/full-text-search)
 
 

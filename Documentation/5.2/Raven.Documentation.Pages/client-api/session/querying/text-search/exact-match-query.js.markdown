@@ -1,4 +1,4 @@
-# Exact Match Search
+# Exact Match Query
 
 ---
 
@@ -26,9 +26,7 @@
 {NOTE: }
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query exact_1@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
-{CODE-TAB:csharp:Query_async exact_2@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
-{CODE-TAB:csharp:DocumentQuery exact_3@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
+{CODE-TAB:nodejs:Query exact_1@ClientApi\Session\Querying\TextSearch\exactMatch.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees"
 where exact(FirstName == "Robert")
@@ -40,15 +38,15 @@ where exact(FirstName == "Robert")
 * Executing the above query will generate the auto-index `Auto/Employees/ByExact(FirstName)`.
 
 * This auto-index will contain the following two index-fields:
-  
-  * `FirstName`  
-    Contains terms with the text from the indexed document field 'FirstName'.  
-    Text is lower-cased and not tokenized.  
 
-  * `exact(FirstName)`  
-    Contain terms with the original text from the indexed document field 'FirstName'.  
-    Casing is exactly the same as in the original text, and the text is not tokenized.  
-    Making an exact query targets these terms to find matching documents.
+    * `FirstName`  
+      Contains terms with text from the indexed document field 'FirstName'.  
+      Text is lower-cased and not tokenized.
+
+    * `exact(FirstName)`  
+      Contain terms with the original text from the indexed document field 'FirstName'.  
+      Casing is exactly the same as in the original text, and the text is not tokenized.  
+      Making an exact query targets these terms to find matching documents.
 
 {PANEL/}
 
@@ -57,11 +55,9 @@ where exact(FirstName == "Robert")
 {NOTE: }
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query exact_4@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
-{CODE-TAB:csharp:Query_async exact_5@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
-{CODE-TAB:csharp:DocumentQuery exact_6@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
+{CODE-TAB:nodejs:Query exact_2@ClientApi\Session\Querying\TextSearch\exactMatch.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from "Orders" 
+from "Orders"
 where exact(Lines.ProductName == "Teatime Chocolate Biscuits")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -72,12 +68,13 @@ where exact(Lines.ProductName == "Teatime Chocolate Biscuits")
 
 {PANEL: Syntax}
 
-{CODE syntax@ClientApi\Session\Querying\TextSearch\ExactMatch.cs /}
+{CODE:nodejs syntax@ClientApi\Session\Querying\TextSearch\exactMatch.js /}
 
-| Parameter     | Type                      | Description                                                               |
-|---------------|---------------------------|---------------------------------------------------------------------------|
-| __predicate__ | Expression<Func<T, bool>> | Predicate with match condition                                            |
-| __exact__     | bool                      | `false` - search is case-insensitive<br>`true` - search is case-sensitive |
+| Parameter     | Type    | Description                                                               |
+|---------------|---------|---------------------------------------------------------------------------|
+| __fieldName__ | string  | Name of field in which to search                                          |
+| __value__     | any     | The value searched for                                                    |
+| __exact__     | boolean | `false` - search is case-insensitive<br>`true` - search is case-sensitive |
 
 {PANEL/}
 
@@ -87,4 +84,4 @@ where exact(Lines.ProductName == "Teatime Chocolate Biscuits")
 
 - [Query overview](../../../../client-api/session/querying/how-to-query)
 - [Full-text search](../../../../client-api/session/querying/text-search/full-text-search)
-- [How to Use Regex](../../../../client-api/session/querying/how-to-use-regex)
+- [How to Use Regex](../../../../client-api/session/querying/text-search/using-regex)

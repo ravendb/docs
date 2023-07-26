@@ -157,7 +157,7 @@
         "Mappings": [
             {
                 "Version": 5.2,
-                "Key": "client-api/session/querying/text-search/exact-match-search"
+                "Key": "client-api/session/querying/text-search/exact-match-query"
             }
         ]
     }
