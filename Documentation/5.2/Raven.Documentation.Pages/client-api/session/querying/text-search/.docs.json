@@ -37,7 +37,12 @@
         "Path": "boost-search-results.markdown",
         "Name": "Boost Search Results",
         "DiscussionId": "cd7b4952-968a-4d66-a6c3-d08217efbf96",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "indexes/querying/boosting"
+            }
+        ]
     },
     {
         "Path": "proximity-search.markdown",

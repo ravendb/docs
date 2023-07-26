@@ -54,7 +54,13 @@
         "Path": "boosting.markdown",
         "Name": "Boosting",
         "DiscussionId": "36de1ad6-915c-40b4-9905-075b78930379",
-        "Mappings": []
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/session/querying/text-search/boost-search-results"
+            }
+        ]
     },
     {
         "Path": "projections.markdown",
