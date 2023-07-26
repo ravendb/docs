@@ -236,7 +236,7 @@ search(Notes, "*mark*")
 ### Session
 
 - [Query overview](../../../../client-api/session/querying/how-to-query)
-- [How to Use Regex](../../../../client-api/session/querying/how-to-use-regex)
+- [How to Use Regex](../../../../client-api/session/querying/text-search/using-regex)
 - [How to Query With Exact Match](../../../../client-api/session/querying/text-search/exact-match-search)
 
 ### Indexes
