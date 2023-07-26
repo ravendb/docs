@@ -225,7 +225,7 @@ Available custom methods and extensions:
 - [Query] [WaitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
 - Where
 - WhereBetween
-- [WhereEndsWith](../../../../client-api/session/querying/text-search/ends-with-search)
+- [WhereEndsWith](../../../../client-api/session/querying/text-search/ends-with-query)
 - WhereEquals
 - [WhereExists](../../../../client-api/session/querying/how-to-filter-by-field)
 - WhereGreaterThan
@@ -236,7 +236,7 @@ Available custom methods and extensions:
 - [WhereLucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
 - WhereNotEquals
 - [WhereRegex](../../../../client-api/session/querying/text-search/using-regex)
-- [WhereStartsWith](../../../../client-api/session/querying/text-search/starts-with-search)
+- [WhereStartsWith](../../../../client-api/session/querying/text-search/starts-with-query)
 - WithinRadiusOf
 
 {PANEL/}
