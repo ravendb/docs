@@ -1,4 +1,4 @@
-# Full-Text Search in Index
+# Full-Text Search with Index
 ---
 
 {NOTE: }

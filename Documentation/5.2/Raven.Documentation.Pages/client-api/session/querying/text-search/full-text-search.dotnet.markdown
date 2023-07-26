@@ -5,7 +5,7 @@
 {NOTE: }
 
 * This article is about making a full-text search with a __dynamic query__.  
-  For making a full-text search using a static-index see [full-text search in index](../../../../indexes/querying/searching).
+  For making a full-text search using a static-index see [full-text search with index](../../../../indexes/querying/searching).
 
 ---
 
@@ -339,4 +339,4 @@ search(Notes, "*mark*")
 ### Indexes
 
 - [Analyzers](../../../../indexes/using-analyzers)
-- [Full-text search in index](../../../../indexes/querying/searching)
+- [Full-text search with index](../../../../indexes/querying/searching)

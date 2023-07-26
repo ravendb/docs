@@ -93,4 +93,4 @@ boost(endsWith(Name, "OP"), 90)
 
 ### Indexes
 
-- [Full-text search in index](../../../../indexes/querying/searching)
+- [Full-text search with index](../../../../indexes/querying/searching)
