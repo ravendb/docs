@@ -172,8 +172,8 @@ Available custom methods and extensions:
 - CmpXchg
 - ContainsAll
 - ContainsAny
-- Count
-- CountLazily
+- [Count](../../../../client-api/session/querying/how-to-count-query-results)
+- [CountLazily](../../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-count-query)
 - Distinct
 - ExplainScores
 - First
@@ -191,7 +191,7 @@ Available custom methods and extensions:
 - InvokeAfterQueryExecuted
 - InvokeAfterStreamExecuted
 - [Query] [Lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily)
-- LongCount
+- [LongCount](../../../../client-api/session/querying/how-to-count-query-results)
 - MoreLikeThis
 - NegateNext
 - [Not](../../../../client-api/session/querying/document-query/how-to-use-not-operator)

@@ -302,7 +302,7 @@ Available custom methods and extensions for the session's [Query](../../../clien
 
 - [AggregateBy](../../../client-api/session/querying/how-to-perform-a-faceted-search)
 - AnyAsync
-- [CountAsync](../../../client-api/session/querying/how-to-count-query-results)
+- [Count](../../../client-api/session/querying/how-to-count-query-results)
 - [CountLazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
 - [Customize](../../../client-api/session/querying/how-to-customize-query)
 - FirstAsync
@@ -314,7 +314,7 @@ Available custom methods and extensions for the session's [Query](../../../clien
 - [Intersect](../../../client-api/session/querying/how-to-use-intersect)
 - [Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
 - [LazilyAsync](../../../client-api/session/querying/how-to-perform-queries-lazily)
-- [LongCount](../../../client-api/session/querying/how-to-count-query-results#longcount)
+- [LongCount](../../../client-api/session/querying/how-to-count-query-results)
 - [MoreLikeThis](../../../client-api/session/querying/how-to-use-morelikethis)
 - [OfType](../../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection)
 - [OrderByDistance](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistance)

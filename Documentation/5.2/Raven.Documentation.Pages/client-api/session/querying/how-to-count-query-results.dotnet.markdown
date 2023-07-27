@@ -1,4 +1,4 @@
-﻿# Querying: Count Query Results  
+﻿# Count Query Results  
 
 ---
 
@@ -17,6 +17,7 @@ here and many others, using the `Statistics` method and references to
 * In This Page:  
     * [Count](../../../client-api/session/querying/how-to-count-query-results#count)  
     * [LongCount](../../../client-api/session/querying/how-to-count-query-results#longcount)  
+    * [Get count from stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-stats)
 
 {NOTE/}
 
@@ -41,8 +42,8 @@ an `OverflowException` will be thrown.
 
 ### Example 
 {CODE-TABS}
-{CODE-TAB:csharp:Count Count@ClientApi\Session\Querying\HowToCountResults.cs /}
-{CODE-TAB:csharp:Count_async CountAsync@ClientApi\Session\Querying\HowToCountResults.cs /}
+{CODE-TAB:csharp:Count Count@ClientApi\Session\Querying\CountQueryResults.cs /}
+{CODE-TAB:csharp:Count_async CountAsync@ClientApi\Session\Querying\CountQueryResults.cs /}
 {CODE-TABS/}
 
 {NOTE: }
@@ -67,8 +68,8 @@ want to use.
 
 ### Example
 {CODE-TABS}
-{CODE-TAB:csharp:LongCount LongCount@ClientApi\Session\Querying\HowToCountResults.cs /}
-{CODE-TAB:csharp:LongCount_async LongCountAsync@ClientApi\Session\Querying\HowToCountResults.cs /}
+{CODE-TAB:csharp:LongCount LongCount@ClientApi\Session\Querying\CountQueryResults.cs /}
+{CODE-TAB:csharp:LongCount_async LongCountAsync@ClientApi\Session\Querying\CountQueryResults.cs /}
 {CODE-TABS/}
 
 {NOTE: }
@@ -82,19 +83,12 @@ The query results count provided by `LongCount` can also be provided using
 
 ### Client API
 
+- [Query overview](../../../client-api/session/querying/how-to-query)  
 - [What is a Document Query](../../../client-api/session/querying/document-query/what-is-document-query)  
 - [Filter by Field Presence](../../../client-api/session/querying/how-to-filter-by-field)  
 - [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics)  
 
 ### Querying
 
-- [Filtering](../../../indexes/querying/filtering)  
-- [Query vs DocumentQuery](../../../client-api/session/querying/document-query/query-vs-document-query)  
-- [RQL - Raven Query Language](../../../client-api/session/querying/what-is-rql)  
-
----
-
-### Code Walkthrough: Queries
-
-- [Filtering Results Basics](https://demo.ravendb.net/demos/csharp/queries/filtering-results-basics)  
-- [Filtering with Multiple Conditions](https://demo.ravendb.net/demos/csharp/queries/filtering-results-multiple-conditions)  
+- [Filtering](../../../indexes/querying/filtering)   
+- [RQL - Raven Query Language](../../../client-api/session/querying/what-is-rql) 
