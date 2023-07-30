@@ -1,132 +1,108 @@
 ﻿using Raven.Client.Documents;
-using Raven.Client.Documents.Session;
-using static NodaTime.TimeZones.ZoneEqualityComparer;
+using Raven.Client.Documents.Linq;
+using Raven.Documentation.Samples.Orders;
 using System.Threading.Tasks;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
     public class CountQueryResults
     {
-        public void CanUseCount(Options options)
+        public async Task CanUseCount()
         {
             using (var store = new DocumentStore())
             {
-                using (var s = store.OpenSession())
+                using (var asyncSession = store.OpenAsyncSession())
                 {
-                    s.Store(new User
-                    {
-                        Name = "John"
-                    });
-
-                    s.SaveChanges();
+                    #region count_2
+                    // using Raven.Client.Documents;
+                    // using Raven.Client.Documents.Linq;
+                    // ==================================
+                    
+                    int numberOfOrders = await asyncSession
+                        .Query<Order>()
+                         // Calling 'Where' from Raven.Client.Documents.Linq
+                        .Where(order => order.ShipTo.Country == "UK")
+                         // Calling 'CountAsync' from Raven.Client.Documents
+                        .CountAsync();
+                    
+                    // The query returns the NUMBER of orders shipped to UK (Int32)
+                    #endregion
                 }
-
-                using (var s = store.OpenSession())
+                
+                using (var session = store.OpenSession())
                 {
-                    QueryStatistics stats;
+                    #region count_3
+                    // using Raven.Client.Documents.Session;
+                    // =====================================
+                    
+                    int numberOfOrders = session.Advanced
+                        .DocumentQuery<Order>()
+                        .WhereEquals(order => order.ShipTo.Country, "UK")
+                         // Calling 'Count' from Raven.Client.Documents.Session
+                        .Count();
 
-                    #region Count
-                    // Use Count in a synchronous session
-                    var query =
-                        s.Query<User>()
-                            .Statistics(out stats)
-                            .Search(u => u.Name, "John");
-                    System.Int32 count = System.Linq.Enumerable.Count(query);
+                    // The query returns the NUMBER of orders shipped to UK (Int32)
                     #endregion
                 }
             }
         }
 
-        public async Task CanUseCountAsync(Options options)
+        public async Task CanUseLongCount()
         {
             using (var store = new DocumentStore())
             {
-                using (var s = store.OpenAsyncSession())
+                using (var session = store.OpenSession())
                 {
-                    await s.StoreAsync(new User
-                    {
-                        Name = "John"
-                    });
-
-                    await s.SaveChangesAsync();
+                    #region count_4
+                    // using Raven.Client.Documents;
+                    // using Raven.Client.Documents.Linq;
+                    // ==================================
+                    
+                    long numberOfOrders = session
+                        .Query<Order>()
+                         // Calling 'Where' from Raven.Client.Documents.Linq
+                        .Where(order => order.ShipTo.Country == "UK")
+                         // Calling 'LongCount' from Raven.Client.Documents
+                        .LongCount();
+                    
+                    // The query returns the NUMBER of orders shipped to UK (Int64)
+                    #endregion
                 }
-
-                using (var s = store.OpenAsyncSession())
+                
+                using (var asyncSession = store.OpenAsyncSession())
                 {
-                    QueryStatistics stats;
-
-                    #region CountAsync
-                    // Use CountAsync in an Async session
-                    System.Int32 count = await
-                        s.Query<User>()
-                            .Statistics(out stats)
-                            .Search(u => u.Name, "John")
-                            .CountAsync();
+                    #region count_5
+                    // using Raven.Client.Documents;
+                    // using Raven.Client.Documents.Linq;
+                    // ==================================
+                    
+                    long numberOfOrders = await asyncSession
+                        .Query<Order>()
+                         // Calling 'Where' from Raven.Client.Documents.Linq
+                        .Where(order => order.ShipTo.Country == "UK")
+                         // Calling 'LongCountAsync' from Raven.Client.Documents
+                        .LongCountAsync();
+                    
+                    // The query returns the NUMBER of orders shipped to UK (Int64)
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region count_6
+                    // using Raven.Client.Documents.Session;
+                    // =====================================
+                    
+                    long numberOfOrders = session.Advanced
+                        .DocumentQuery<Order>()
+                        .WhereEquals(order => order.ShipTo.Country, "UK")
+                         // Calling 'LongCount' from  Raven.Client.Documents.Session
+                        .LongCount();
+                    
+                    // The query returns the NUMBER of orders shipped to UK (Int64)
                     #endregion
                 }
             }
         }
-
-        public void CanUseLongCount(Options options)
-        {
-            using (var store = new DocumentStore())
-            {
-                using (var s = store.OpenSession())
-                {
-                    s.Store(new User
-                    {
-                        Name = "John"
-                    });
-
-                    s.SaveChanges();
-                }
-
-                using (var s = store.OpenSession())
-                {
-                    QueryStatistics stats;
-
-                    #region LongCount
-                    // Use LongCount in a synchronous session
-                    System.Int64 longCount = 
-                        s.Query<User>()
-                            .Statistics(out stats)
-                            .Search(u => u.Name, "John")
-                            .LongCount();
-                    #endregion
-                }
-            }
-        }
-
-        public async Task CanUseLongCountAsync(Options options)
-        {
-            using (var store = new DocumentStore())
-            {
-                using (var s = store.OpenAsyncSession())
-                {
-                    await s.StoreAsync(new User
-                    {
-                        Name = "John"
-                    });
-
-                    await s.SaveChangesAsync();
-                }
-
-                using (var s = store.OpenAsyncSession())
-                {
-                    QueryStatistics stats;
-
-                    #region LongCountAsync
-                    // Use LongCountAsync in an Async session
-                    System.Int64 longCount = await
-                        s.Query<User>()
-                            .Statistics(out stats)
-                            .Search(u => u.Name, "John")
-                            .LongCountAsync();
-                    #endregion
-                }
-            }
-        }
-
-
     }
 }

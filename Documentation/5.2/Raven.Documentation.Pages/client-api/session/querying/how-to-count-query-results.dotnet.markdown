@@ -4,78 +4,84 @@
 
 {NOTE: }
 
-To count query results, use the `Count` and `LongCount` methods 
-as demonstrated below.  
+* The following options are available to __count query results__:
 
-{INFO: }
-Read [here](../../../client-api/session/querying/how-to-get-query-statistics) 
-how to retrieve query statistics, including the counting statistics described 
-here and many others, using the `Statistics` method and references to 
-`QueryStatistics` properties.  
-{INFO/}
-
-* In This Page:  
-    * [Count](../../../client-api/session/querying/how-to-count-query-results#count)  
-    * [LongCount](../../../client-api/session/querying/how-to-count-query-results#longcount)  
-    * [Get count from stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-stats)
+    * [Query with Count](../../../client-api/session/querying/how-to-count-query-results#query-with-count)
+  
+    * [Query with LongCount](../../../client-api/session/querying/how-to-count-query-results#query-with-longcount)
+  
+    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-query-stats)
 
 {NOTE/}
 
 ---
 
-{PANEL: Count}
+{PANEL: Query with Count}
 
-To count the number of items returned by a query where an `Int32` 
-variable is expected to be sufficient for the resulting number, use 
-`Count` in a synchronous session or `CountAsync` in an async session.  
+* When the number of resulting items is expected to be an **`Int32`** variable,  
+  use `Count` in a synchronous session (or `CountAsync` in an async session).  
+  
+* `Count` is implemented in `System.Linq`.  
+  `CountAsync` is implemented in `Raven.Client.Documents`.  
+
+* An `OverflowException` will be thrown if the number of items exceeds **`Int32.MaxValue`**. 
 
 {NOTE: }
-`Count` and `CountAsync` are implemented in `System.Linq`.  
-`CountAsync` is also implemented by RavenDB.  
-Make sure you include in your project the library whose 
-`CountAsync` version you want to use.  
-{NOTE/}
 
-### Exception
-If the number of items returned by the query exceeds `Int32.MaxValue`, 
-an `OverflowException` will be thrown.  
-
-### Example 
 {CODE-TABS}
-{CODE-TAB:csharp:Count Count@ClientApi\Session\Querying\CountQueryResults.cs /}
-{CODE-TAB:csharp:Count_async CountAsync@ClientApi\Session\Querying\CountQueryResults.cs /}
+{CODE-TAB:csharp:Query count_1@ClientApi\Session\Querying\CountQueryResultsUsingLinq.cs /}
+{CODE-TAB:csharp:Query_async count_2@ClientApi\Session\Querying\CountQueryResults.cs /}
+{CODE-TAB:csharp:DocumentQuery count_3@ClientApi\Session\Querying\CountQueryResults.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Orders"
+where ShipTo.Country = "UK" limit 0, 0
+
+// The RQL generated will trigger query execution
+// however, no documents will be returned (limit is set 0)
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE: }
-The query results count provided by `Count` can also be provided using 
-`QueryStatistics.TotalResults`, as demonstrated [here](../../../client-api/session/querying/how-to-get-query-statistics#example).  
 {NOTE/}
 
 {PANEL/}
 
-{PANEL: LongCount}
+{PANEL: Query with LongCount}
 
-To count query results where an `Int64` variable is needed for 
-the result, use `LongCount` in a synchronous session or `LongCountAsync` 
-in an async session.  
+* When the number of resulting items is expected to be an **`Int64`** variable,  
+  use `LongCount` in a synchronous session (or `LongCountAsync` in an async session).
+  
+* `LongCount` is implemented in both `Raven.Client.Documents` & `System.Linq` (use as needed).  
+  `LongCountAsync` is implemented in `Raven.Client.Documents`.
 
 {NOTE: }
-`LongCount` and `LongCountAsync` are implemented in `System.Linq` 
-as well as by RavenDB. Make sure you include in your project the 
-library whose `LongCount` and `LongCountAsync` versions you 
-want to use.  
-{NOTE/}
 
-### Example
 {CODE-TABS}
-{CODE-TAB:csharp:LongCount LongCount@ClientApi\Session\Querying\CountQueryResults.cs /}
-{CODE-TAB:csharp:LongCount_async LongCountAsync@ClientApi\Session\Querying\CountQueryResults.cs /}
+{CODE-TAB:csharp:Query count_4@ClientApi\Session\Querying\CountQueryResults.cs /}
+{CODE-TAB:csharp:Query_async count_5@ClientApi\Session\Querying\CountQueryResults.cs /}
+{CODE-TAB:csharp:DocumentQuery count_6@ClientApi\Session\Querying\CountQueryResults.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Orders"
+where ShipTo.Country = "UK" limit 0, 0
+
+// The RQL generated will trigger query execution
+// however, no documents will be returned (limit is set 0)
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE: }
-The query results count provided by `LongCount` can also be provided using 
-`QueryStatistics.LongTotalResults`, as explained [here](../../../client-api/session/querying/how-to-get-query-statistics).  
 {NOTE/}
+
+{PANEL/}
+
+{PANEL: Get count from query stats}
+
+* When executing a query,  
+  you can retrieve the query statistics which include the total number of results.
+
+* The number of results is available in the `QueryStatistics` object as:  
+  * `TotalResults` - an Int32 value  
+  * `LongTotalResults` - an Int64 value  
+
+* Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics). 
 
 {PANEL/}
 
