@@ -34,10 +34,10 @@
 {CODE-TAB:csharp:DocumentQuery count_3@ClientApi\Session\Querying\CountQueryResults.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Orders"
-where ShipTo.Country = "UK" limit 0, 0
+where ShipTo.Country == "UK" limit 0, 0
 
 // The RQL generated will trigger query execution
-// however, no documents will be returned (limit is set 0)
+// however, no documents are returned (limit is set 0)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -61,10 +61,10 @@ where ShipTo.Country = "UK" limit 0, 0
 {CODE-TAB:csharp:DocumentQuery count_6@ClientApi\Session\Querying\CountQueryResults.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Orders"
-where ShipTo.Country = "UK" limit 0, 0
+where ShipTo.Country == "UK" limit 0, 0
 
 // The RQL generated will trigger query execution
-// however, no documents will be returned (limit is set 0)
+// however, no documents are returned (limit is set 0)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
