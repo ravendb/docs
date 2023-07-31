@@ -6,9 +6,9 @@
 
 * The following options are available to __count query results__:
 
-    * [Query with Count](../../../client-api/session/querying/how-to-count-query-results#query-with-count)
+    * [Count](../../../client-api/session/querying/how-to-count-query-results#count)
   
-    * [Query with LongCount](../../../client-api/session/querying/how-to-count-query-results#query-with-longcount)
+    * [LongCount](../../../client-api/session/querying/how-to-count-query-results#longcount)
   
     * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-query-stats)
 
@@ -16,7 +16,7 @@
 
 ---
 
-{PANEL: Query with Count}
+{PANEL: Count}
 
 * When the number of resulting items is expected to be an **`Int32`** variable,  
   use `Count` in a synchronous session (or `CountAsync` in an async session).  
@@ -45,7 +45,7 @@ where ShipTo.Country == "UK" limit 0, 0
 
 {PANEL/}
 
-{PANEL: Query with LongCount}
+{PANEL: LongCount}
 
 * When the number of resulting items is expected to be an **`Int64`** variable,  
   use `LongCount` in a synchronous session (or `LongCountAsync` in an async session).

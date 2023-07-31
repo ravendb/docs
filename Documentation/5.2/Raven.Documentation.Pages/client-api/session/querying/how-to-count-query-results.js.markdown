@@ -6,7 +6,7 @@
 
 * The following options are available to __count query results__:
 
-    * [Query with Count](../../../client-api/session/querying/how-to-count-query-results#query-with-count)
+    * [Count](../../../client-api/session/querying/how-to-count-query-results#count)
   
     * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-query-stats)
 
@@ -14,7 +14,7 @@
 
 ---
 
-{PANEL: Query with Count}
+{PANEL: Count}
 
 * Call `count` to get the number of items in the query results.
 
