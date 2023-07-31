@@ -20,7 +20,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     int numberOfOrders = session
                         .Query<Order>()
                         .Where(order => order.ShipTo.Country == "UK")
-                        // Calling 'Count' from System.Linq
+                         // Calling 'Count' from System.Linq
                         .Count();
                     
                     // The query returns the NUMBER of orders shipped to UK (Int32)
