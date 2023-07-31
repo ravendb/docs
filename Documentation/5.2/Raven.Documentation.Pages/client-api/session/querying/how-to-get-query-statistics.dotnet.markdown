@@ -28,7 +28,6 @@ from "Employees" where FirstName == "Anne"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-
 {PANEL/}
 
 {PANEL: Syntax}

@@ -87,3 +87,7 @@ Stats are returned in the `DetailedDatabaseStatistics` object.
 ### FAQ
 
 - [What is a Collection](../../../client-api/faq/what-is-a-collection)
+
+### Client API
+
+- [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics)  
