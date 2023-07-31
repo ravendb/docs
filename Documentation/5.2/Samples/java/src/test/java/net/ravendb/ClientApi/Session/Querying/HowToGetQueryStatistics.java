@@ -15,11 +15,31 @@ public class HowToGetQueryStatistics {
         IDocumentQuery<T> statistics(Reference<QueryStatistics> stats);
         //endregion
     }
+    
+    private interface Foo<T> {
+        //region stats_2
+        public class QueryStatistics {
+        
+            private boolean isStale;
+            private long durationInMs;
+            private int totalResults;
+            private long longTotalResults;
+            private int skippedResults;
+            private Date timestamp;
+            private String indexName;
+            private Date indexTimestamp;
+            private Date lastQueryTime;
+            private Long resultEtag;
+            private String nodeTag;
+            
+        }
+        //endregion
+    }
 
     public HowToGetQueryStatistics() {
         try (IDocumentStore store = new DocumentStore()) {
             try (IDocumentSession session = store.openSession()) {
-                //region stats_2
+                //region stats_3
                 Reference<QueryStatistics> stats = new Reference<>();
 
                 List<Employee> employees = session.query(Employee.class)

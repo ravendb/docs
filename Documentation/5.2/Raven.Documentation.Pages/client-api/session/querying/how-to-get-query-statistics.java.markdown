@@ -1,6 +1,11 @@
-# Session: Querying: How to Get Query Statistics
+# Get Query Statistics
 
-Query statistics can provide important information about a query like duration, total number of results, staleness information, etc. To access statistics use the `statistics` method.
+Query statistics can provide important information about a query like duration, total number of results, staleness information, etc. 
+To access statistics use the `statistics` method.
+
+## Example
+
+{CODE:java stats_3@ClientApi\Session\Querying\HowToGetQueryStatistics.java /}
 
 ## Syntax
 
@@ -10,9 +15,22 @@ Query statistics can provide important information about a query like duration, 
 | ------------- | ------------- | ----- |
 | **stats** | `QueryStatistics` | Statistics for query. |
 
-## Example
-
 {CODE:java stats_2@ClientApi\Session\Querying\HowToGetQueryStatistics.java /}
+
+
+| Property             | Type      | Description                                                                                                                                                        |
+|----------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **IsStale**          | `boolean` | Are the results returned by the query potentially stale                                                                                                            |
+| **DurationInMs**     | `long`    | Query duration on the server side in Milliseconds                                                                                                                  |
+| **TotalResults**     | `int`     | The total count of results that matched the query as `int`                                                                                                         |
+| **LongTotalResults** | `long`    | The total count of the results that matched the query as `long`                                                                                                    |
+| **SkippedResults**   | `int`     | The number of results skipped by the server.<br>Learn more in [paging through tampered results](../../../indexes/querying/paging#paging-through-tampered-results). |
+| **Timestamp**        | `Date`    | The time when the query results were unstale                                                                                                                       |
+| **IndexName**        | `string`  | The name of the queried index                                                                                                                                      |
+| **indexTimestamp**   | `Date`    | The timestamp of the queried index                                                                                                                                 |
+| **LastQueryTime**    | `Date`    | The timestamp of the last time the index was queried                                                                                                               |
+| **ResultEtag**       | `Long`    | Results Etag                                                                                                                                                       |
+| **NodeTag**          | `String`  | Tag of the cluster node that responded to the query                                                                                                                |
 
 ## Related articles
 
