@@ -13,21 +13,21 @@
   you can use `IncludeExplanations` when querying with a [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query). 
 
 * In this page:
-    * [Include explanations in query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-query)  
+    * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
     * [View explanations](../../../../client-api/session/querying/debugging/include-explanations#view-explanations)  
     * [Syntax](../../../../client-api/session/querying/debugging/include-explanations#syntax)  
 {NOTE/}
 
 ---
 
-{PANEL: Include explanations in query}
+{PANEL: Include explanations in a query}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync explain@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
-{CODE-TAB:csharp:Async explain_async@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
+{CODE-TAB:csharp:DocumentQuery explain@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
+{CODE-TAB:csharp:DocumentQuery_async explain_async@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Products
-where search(Name, 'Syrup') or search(Name, 'Lager')
+from "Products"
+where search(Name, "Syrup") or search(Name, "Lager")
 include explanations()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -37,6 +37,7 @@ include explanations()
 {PANEL: View explanations}
 
 * The detailed explanations can be viewed from the __Query view__ in the Studio.  
+
 * Running a query with `include explanations()` will show an additional __Explanations Tab__.
 
 ![Figure 1. Explanations in the Studio](images/include-explanations-1.png "Include explanations")
