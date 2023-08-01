@@ -50,13 +50,13 @@ include timings()
 
 {CODE:nodejs syntax@ClientApi\Session\Querying\Debugging\includeQueryTimings.js /}
 
-| Parameters | Data type | Description |
-| - | - | - |
+| Parameter           | Type                        | Description                                                                                                                                                                    |
+|---------------------|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | __timingsCallback__ | `(timingsCallback) => void` | <ul><li>A callback function with an output parameter.</li><li>The parameter passed to the callback will be filled with the `QueryTimings` object when query returns.</li></ul> |
 
-| `QueryTimings` | | |
-| - | - | - |
-| __durationInMs__ | `number` | Total duration |
-| __timings__ | `Record<string, QueryTimings>` | Dictionary with `QueryTimings` info per time part |
+| `QueryTimings`   |                                |                                                   |
+|------------------|--------------------------------|---------------------------------------------------|
+| __durationInMs__ | `number`                       | Total duration                                    |
+| __timings__      | `Record<string, QueryTimings>` | Dictionary with `QueryTimings` info per time part |
 
 {PANEL/}

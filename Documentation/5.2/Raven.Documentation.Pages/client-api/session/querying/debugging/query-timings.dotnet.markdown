@@ -53,13 +53,13 @@ include timings()
 
 {CODE syntax@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.cs /}
 
-| Parameters | Data type | Description |
-| - | - | - |
+| Parameter   | Type           | Description                                                 |
+|-------------|----------------|-------------------------------------------------------------|
 | __timings__ | `QueryTimings` | An _out_ param that will be filled with the timings results |
 
-| `QueryTimings` | | |
-| - | - | - |
-| __DurationInMs__ | `long` | Total duration |
-| __Timings__ | `IDictionary<string, QueryTimings>` | Dictionary with `QueryTimings` info per time part |
+| `QueryTimings`   |                                     |                                                   |
+|------------------|-------------------------------------|---------------------------------------------------|
+| __DurationInMs__ | `long`                              | Total duration                                    |
+| __Timings__      | `IDictionary<string, QueryTimings>` | Dictionary with `QueryTimings` info per time part |
 
 {PANEL/}
