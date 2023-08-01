@@ -306,6 +306,7 @@ recently and the document modified first would be the last result.
 {PANEL/}
 
 {PANEL: Timing Queries}
+
 The duration of queries and query parts (e.g. optimization 
 or execution time) can be measured using API or Studio.  
 
