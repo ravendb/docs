@@ -8,7 +8,7 @@
   you can request to get detailed stats of the time spent by RavenDB on each part of the query.  
   E.g. duration of search, loading documents, transforming results, total duration, etc.
 
-* By default, the timings stats are Not included in the query results.
+* By default, the timings stats are Not included in the query results, to avoid the measuring overhead.
 
 * __To include the query timings__ in the query results:  
   add a call to `Timings()` in your query code, or add `include timings()` to an RQL query.  
