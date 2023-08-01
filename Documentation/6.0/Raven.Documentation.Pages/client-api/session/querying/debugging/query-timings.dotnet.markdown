@@ -4,7 +4,8 @@
 
 {NOTE: }
 
-* When making a query, you can request to get detailed stats of the time spent by RavenDB on each part of the query.
+* When making a query,   
+  you can request to get detailed stats of the time spent by RavenDB on each part of the query.  
   E.g. duration of search, loading documents, transforming results, total duration, etc.
 
 * By default, the timings stats are Not included in the query results.
@@ -17,6 +18,7 @@
     * [Include timings in a query](../../../../client-api/session/querying/debugging/query-timings#include-timings-in-a-query)
     * [View timings](../../../../client-api/session/querying/debugging/query-timings#view-timings)
     * [Syntax](../../../../client-api/session/querying/debugging/query-timings#syntax)
+    * [Timings in a sharded database](../../../../client-api/session/querying/debugging/query-timings#timings-in-a-sharded-database)
 
 {NOTE/}
 
@@ -61,5 +63,13 @@ include timings()
 |------------------|-------------------------------------|---------------------------------------------------|
 | __DurationInMs__ | `long`                              | Total duration                                    |
 | __Timings__      | `IDictionary<string, QueryTimings>` | Dictionary with `QueryTimings` info per time part |
+
+{PANEL/}
+
+{PANEL: Timings in a sharded database}
+
+* In a sharded database, timings for each part are provided __per shard__.
+
+* Learn more in [timings in a sharded database](../../../../sharding/querying#timing-queries).
 
 {PANEL/}

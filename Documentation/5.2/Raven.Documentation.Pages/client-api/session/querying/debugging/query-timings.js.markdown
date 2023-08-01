@@ -4,7 +4,8 @@
 
 {NOTE: }
 
-* When making a query, you can request to get detailed stats of the time spent by RavenDB on each part of the query.
+* When making a query,  
+  you can request to get detailed stats of the time spent by RavenDB on each part of the query.  
   E.g. duration of search, loading documents, transforming results, total duration, etc.
 
 * By default, the timings stats are Not included in the query results.
