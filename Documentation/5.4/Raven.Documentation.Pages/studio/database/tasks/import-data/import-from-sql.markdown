@@ -86,7 +86,7 @@ The configuration can then be exported and [reused](../../../../studio/database/
 5. **Test Connection**  
    Click to validate the connection string and verify connectivity to the data source.  
    
-   ![Successful Connection](images/test-connection-string.png "Successful Connection")
+      ![Successful Connection](images/test-connection-string.png "Successful Connection")
 
 ---
 
@@ -116,7 +116,7 @@ The configuration can then be exported and [reused](../../../../studio/database/
       To **continue** this behavior keep the above configuration option disabled or provide no alternative 
       schema name in the input area.  
       To **alter** this behavior and import data using other schemas, enable the above configuration option 
-      and provide schema names (comma separated, e.g. `'info_schema', 'prod_schema'`) in the input area.  
+      and provide schema names (comma separated, e.g. `public.info_schema,public.prod_schema`) in the input area.  
 
 ---
 
@@ -154,14 +154,15 @@ is executed RavenDB connects the SQL source, obtains information about database 
 and keys, and displays the following view to allow the user to alter the migration and 
 target documents structure.  
 
-![Migration Tuning](images/sql-migration-tuning.png "Migration Tuning")  
+![Migration Tuning](images/sql-migration-tuning.png "Migration Tuning")
 
 1. **Select Tables**  
    Toggle ON/OFF to select the tables you want to migrate  
 
 2. **Migrate Tables**  
    Click to migrate the selected tables and display a concise execution summary.  
-   ![Execution Summary](images/sql-migration-execution-summary.png "Execution Summary")
+   
+      ![Execution Summary](images/sql-migration-execution-summary.png "Execution Summary")
 
 3. **Filter**  
    Filter tables by name  
@@ -175,7 +176,7 @@ target documents structure.
 6. **Settings**  
    Click to set additional import configuration settings  
 
-      ![Migration Settings](images/sql-migration-tuning_settings.png "Migration Settings")  
+      ![Migration Settings](images/sql-migration-tuning_settings.png "Migration Settings")
 
       * **Batch Size**  
         Enable to change batch size of document insertion  
@@ -184,10 +185,12 @@ target documents structure.
         Disable to add binary content target documentd as `base64 strings`.  
       * **Partial migration**  
         Enable to limit the number of items imported per table.  
-        ![Partial Migration](images/sql-migration-tuning_settings_partial-migration.png "Partial Migration")
-        {NOTE: }
-        Please note that limiting the migration may break links between documents.  
-        {NOTE/}
+        
+           ![Partial Migration](images/sql-migration-tuning_settings_partial-migration.png "Partial Migration")
+           
+           {NOTE: }
+           Please note that limiting the migration may break links between documents.  
+           {NOTE/}
 
 7. [Table/Collection Conversion Tuning](../../../../studio/database/tasks/import-data/import-from-sql#data-conversion-tablecollection-settings)  
    Specific details related to the transfer of each table can be altered as well.  
@@ -255,52 +258,58 @@ how to connect the source database and open the filter/transform dialog.
 ![Filter and Transform](images/sql-migration-filter-and-export-I.png "Filter and Transform")
 
 1. Enable this option to open the filter editor.  
-   ![Filter Query](images/sql-migration-filter-and-export-II.png "Filter Query")
    
-     Data rows are read from the source SQL database by executing 
-     the query defined in the filter section.  
-     A **where** SQL statement can be included in the query to filter 
-     the data as you please.  
-     E.g. -  
-    {CODE-BLOCK: SQL}
-     select * from `shop`, `orders`
-     where year(Date) >= 2022
-     {CODE-BLOCK/}
+      ![Filter Query](images/sql-migration-filter-and-export-II.png "Filter Query")
+   
+      Data rows are read from the source SQL database by executing 
+      the query defined in the filter section.  
+      A **where** SQL statement can be included in the query to filter 
+      the data as you please.  
+      E.g. -  
+      {CODE-BLOCK: SQL}
+      select * from `shop`, `orders`
+      where year(Date) >= 2022
+      {CODE-BLOCK/}
 
 2. Enable this option to open the transform-script editor.  
-   ![Transform Script](images/sql-migration-filter-and-export-III.png "Transform Script")
    
-     The added transformation script can be used to monitor all 
-     or any part of the imported data and shape the final documents 
-     as you please.  
-     E.g. -  
-    {CODE-BLOCK: JavaScript}
-     var linesCount = this.OrderLines.Length;
-     if (linesCount < 3) {
-        throw `skip`; // use this statement to skip a given document
-     }
-     this.LinesCount = linescount;
-     where year(Date) >= 2022
-     {CODE-BLOCK/}
+      ![Transform Script](images/sql-migration-filter-and-export-III.png "Transform Script")
+   
+      The added transformation script can be used to monitor all 
+      or any part of the imported data and shape the final documents 
+      as you please.  
+      E.g. -  
+      {CODE-BLOCK: JavaScript}
+      var linesCount = this.OrderLines.Length;
+      if (linesCount < 3) {
+         throw `skip`; // use this statement to skip a given document
+      }
+      this.LinesCount = linescount;
+      where year(Date) >= 2022
+      {CODE-BLOCK/}
 
 
 3. select a test mode to test your filter and/or transform script before 
    actually importing the data from the source DB to RavenDB.  
-   ![Transform Script](images/sql-migration-test-filter-and-export.png "Transform Script")
-    * **Use first record matching query**  
-      This mode runs a query defined in the filter section and gets the first result.  
-    * **Specify primary key values to use**  
-      With this mode the user is presented with extra fields to provide value for each primary key column.  
+
+      ![Transform Script](images/sql-migration-test-filter-and-export.png "Transform Script")
+    
+      * **Use first record matching query**  
+        This mode runs a query defined in the filter section and gets the first result.  
+      * **Specify primary key values to use**  
+        With this mode the user is presented with extra fields to provide value for each primary key column.  
 
 {PANEL/}
 
 {PANEL: Handling Relationships}
 
 Let's use an SQL database with the following tables as an example.  
-![Figure 5.](images/sql-migration-erd.png "ERD of sample database")
+
+   ![Database ERD (Entity Relationship Diagram)](images/sql-migration-erd.png "Database ERD (Entity Relationship Diagram)")
 
 The database contains 2 relationships, which can be represented as additional document properties.  
-![Figure 6.](images/sql-migration-relationships-1.png "SQL Migration - Relationships")
+
+   ![SQL Migration - Relationships](images/sql-migration-relationships-1.png "SQL Migration - Relationships")
 
 * The *OrderLines* document will be given an *OrderId* property (with the value *Orders/{ID}*).  
   This is a _linking_ property.  
@@ -334,11 +343,10 @@ These settings will present us with a document with the following structure:
     }
     ```
 
-If we embed *OrderLines* in *Orders* and uncheck the *OrderLines* table 
-(as we don't need this artificial collection), we will end up with the 
-following structure:
+If we embed *OrderLines* in *Orders* and uncheck the *OrderLines* table (as 
+we don't need this artificial collection), we end up with the following structure:
 
-![Figure 7.](images/sql-migration-embed.png "SQL Migration - Relationships")
+![SQL Migration - Relationships](images/sql-migration-embed.png "SQL Migration - Relationships")
 
 * Order:
     ```
@@ -363,16 +371,22 @@ following structure:
     }
     ```
 
-The target document structure depends upon the side of the relationship and the selected mode:
+---
 
-* **One-to-many** relationship: Source table contains *primary key*, target table contains *foreign key*  
-   * Mode set to **skip** - Property is skipped 
-   * Mode set to **link** - Property value contains array of document identifiers
-   * Mode set to **embed** - Property value contains array of nested documents
-* **Many-to-one** relationship: Source table contains *foreign key*, target table contains *primary key*
-   * Mode set to **skip** - Property is skipped
-   * Mode set to **link** - Property value contains a single document identifier or null
-   * Mode set to **embed** - Property value contains single nested document 
+The **target document structure** is determined by the relationship and selected mode.  
+
+* **One-to-many** relationship  
+  The source table contains a *primary key*  
+  The target table contains a *foreign key*  
+   * Mode set to **skip** - Property is skipped  
+   * Mode set to **link** - Property value contains an array of document identifiers  
+   * Mode set to **embed** - Property value contains array of nested documents  
+* **Many-to-one** relationship  
+  The source table contains a *foreign key*  
+  The target table contains a *primary key*  
+   * Mode set to **skip** - Property is skipped  
+   * Mode set to **link** - Property value contains a single document identifier or null  
+   * Mode set to **embed** - Property value contains single nested document  
 
 {NOTE: }
 Embedded documents do **not** contain an identifier, as it is redundant in this context.  
@@ -382,27 +396,42 @@ Embedded documents do **not** contain an identifier, as it is redundant in this 
 
 {PANEL: Data Integrity Helpers}
 
-The SQL migrator tries to maintain model integrity throughout the process.  
-It contains the following checks:  
+The SQL migrator tries to maintain model integrity throughout the process, applying 
+the following checks.  
 
-1. **Table cannot be deselected when at least an incoming relationship is defined.**  
-   ![Table is in use by incoming references](images/sql-migration-table-in-use.png "Table is in use by incoming references")
+---
+
+### Table cannot be deselected when at least an incoming relationship is defined.
    
-2. **An embedded table can be deselected.**  
-   If the table is embedded and is not used by any other relationship, the migrator 
-   will suggest deselecting root collection.  
-   E.g., *OrderLines* was embedded within *Orders*:  
-   The *OrderLines* collection will not be needed, since it was embedded in *Orders*.  
-   ![Suggestion to deselect root table](images/sql-migration-deselect.png "Suggestion to deselect root table")
+![Table is in use by incoming references](images/sql-migration-table-in-use.png "Table is in use by incoming references")
    
-3. **A target table for linking is not selected.**  
-   This might create a broken link, so the migrator suggests selecting a target table first.  
-   ![Figure 13.](images/sql-migration-link.png "Suggestion to select target")
+---
+
+### An embedded table can be deselected.
+
+If the table is embedded and is not used by any other relationship, the migrator 
+will suggest deselecting root collection.  
+E.g., *OrderLines* was embedded within *Orders*:  
+The *OrderLines* collection will not be needed, since it was embedded in *Orders*.  
    
-4. **Deselecting all tables**  
-   Before deselecting all tables, the migration process asks whether the user wishes to set 
-   all relationships to *skip*.  
-   ![Figure 14.](images/sql-migration-skip-all.png "Skipping all relationships")
+![Suggestion to deselect root table](images/sql-migration-deselect.png "Suggestion to deselect root table")
+   
+---
+
+### A target table for linking is not selected.
+
+This might create a broken link, so the migrator suggests selecting a target table first.  
+   
+![Suggestion to select target](images/sql-migration-link.png "Suggestion to select target")
+   
+---
+
+### Deselecting all tables
+
+Before deselecting all tables, the migration process asks whether the user wishes to set 
+all relationships to *skip*.  
+   
+![Skipping all relationships](images/sql-migration-skip-all.png "Skipping all relationships")
   
 {PANEL/}
 
