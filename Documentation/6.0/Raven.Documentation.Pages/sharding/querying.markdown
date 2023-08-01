@@ -307,18 +307,16 @@ recently and the document modified first would be the last result.
 
 {PANEL: Timing Queries}
 
-The duration of queries and query parts (e.g. optimization 
-or execution time) can be measured using API or Studio.  
+* The duration of queries and query parts (e.g. optimization or execution time) can be measured using API or Studio.
 
-Timing is **disabled** by default, to avoid the measuring overhead. 
-It can be enabled per query by adding `include timings()` to an RQL 
-query or calling [`.Timings()`](../client-api/session/querying/debugging/query-timings#syntax) 
-in a [Linq](../client-api/session/querying/how-to-query#session.query) 
-query, as explained [here](../client-api/session/querying/debugging/query-timings).  
+* In a sharded database, the timings for each part will be provided __per shard__.
 
-To time queries in a sharded database using Studio open the 
-[Query View](../studio/database/queries/query-view), enable timings 
-as explained above, run the query, and open the **Timing** tab.  
+* Timing is disabled by default, to avoid the measuring overhead.  
+  It can be enabled per query by adding `include timings()` to an RQL query or calling [`Timings()`](../client-api/session/querying/debugging/query-timings#syntax) 
+  in your query code, as explained in [include query timings](../client-api/session/querying/debugging/query-timings).
+
+* To view the query timings in the Studio, open the [Query View](../studio/database/queries/query-view),  
+  run an RQL query with `include timings()`, and open the __Timings tab__.
 
 !["Timing Shards Querying"](images/querying_timing.png "Timing Shards Querying")
 
