@@ -317,59 +317,58 @@ The database contains 2 relationships, which can be represented as additional do
 
 These settings will present us with a document with the following structure:  
 
-* OrderLine:
-    ```
-    {
-        "Quantity": 10,
-        "OrderId": "Orders/1",
-        "ProductId": "Products/2"
-    }
-    ```
+* **OrderLine**  
+  {CODE-BLOCK: JSON}
+{
+    "Quantity": 10,
+    "OrderId": "Orders/1",
+    "ProductId": "Products/2"
+}
+  {CODE-BLOCK/}
 
-* Order:
-    ```
-    {
-        "Date": "2018-05-05",
-        "Username": "accountName",
-        "ExtraInfo": "Please call before delivery"
-    }
-    ```
+* **Order**  
+  {CODE-BLOCK: JSON}
+{
+    "Date": "2018-05-05",
+    "Username": "accountName",
+    "ExtraInfo": "Please call before delivery"
+}
+  {CODE-BLOCK/}
 
-* Product:
-    ```
-    {
-        "Name": "Phone",
-        "UnitsInStock": 4
-    }
-    ```
+* **Product**  
+  {CODE-BLOCK: JSON}
+{
+    "Name": "Phone",
+    "UnitsInStock": 4
+}
+  {CODE-BLOCK/}
 
 If we embed *OrderLines* in *Orders* and uncheck the *OrderLines* table (as 
 we don't need this artificial collection), we end up with the following structure:
 
 ![SQL Migration - Relationships](images/sql-migration-embed.png "SQL Migration - Relationships")
 
-* Order:
-    ```
+* **Order**  
+  {CODE-BLOCK: JSON}
+{
+    "Date": "2018-05-05",
+    "Username": "accountName",
+    "ExtraInfo": "Please call before delivery",
+    "OrderLines: [
     {
-        "Date": "2018-05-05",
-        "Username": "accountName",
-        "ExtraInfo": "Please call before delivery",
-        "OrderLines: [
-            {
-                "Quantity": 10,
-                "ProductId": "Products/2"
-            } 
-        ]
-    }
-    ```
+        "Quantity": 10,
+        "ProductId": "Products/2"
+    }]
+}
+  {CODE-BLOCK/}
 
-* Product:
-    ```
-    {
-        "Name": "Phone",
-        "UnitsInStock": 4
-    }
-    ```
+* **Product**  
+  {CODE-BLOCK: JSON}
+{
+    "Name": "Phone",
+    "UnitsInStock": 4
+}
+  {CODE-BLOCK/}
 
 ---
 
