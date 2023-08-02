@@ -10,11 +10,6 @@
   You can run it as a one-time operation as well, by using [Export](../../../../client-api/smuggler/what-is-smuggler#export) 
   or executing a backup task [immediately](../../../../client-api/operations/maintenance/backup/backup#initiate-immediate-backup-execution).  
 
-* On a [sharded](../../../../sharding/overview) database, a single backup task 
-  is defined by the user for all shards, and RavenDB automatically defines 
-  sub-tasks that create backups per shard.  
-  Read about backups on a sharded database [in the section dedicated to it](../../../../sharding/backup-and-restore/backup).  
-
 * In this page:  
   * [Backup Types](../../../../client-api/operations/maintenance/backup/backup#backup-types)  
       * [Logical-Backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup)  
@@ -353,8 +348,3 @@ or using the `DelayBackupOperation` store operation.
 
 ###Migration  
 - [Migration](../../../../migration/server/data-migration)   
-
-###Sharding
-- [Sharding Overview](../../../../sharding/overview)
-- [Sharding: Backup](../../../../sharding/backup-and-restore/backup)  
-- [Sharding: Restore](../../../../sharding/backup-and-restore/restore)  
