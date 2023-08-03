@@ -154,47 +154,8 @@
         "Mappings": []
     },
     {
-        "Path": "how-to-use-search.markdown",
-        "Name": "How to Use Search",
-        "DiscussionId": "133fe009-7704-42a4-9647-5ee2df188c31",
-        "Mappings": []
-    },
-    {
-        "Path": "how-to-use-highlighting.markdown",
-        "Name": "Highlight Query Results",
-        "DiscussionId": "4c262003-44c5-46ff-84fc-7988405f4628",
-        "Mappings": [
-            {
-                "Version": 3.0,
-                "Key": "client-api/session/querying/how-to-use-highlighting"
-            },
-            {
-                "Version": 4.0
-            }
-        ]
-    },
-    {
-        "Path": "how-to-use-regex.markdown",
-        "Name": "Using Regex",
-        "DiscussionId": "48bc68f2-db18-4b4e-8cc4-4d29877ae9c0",
-        "Mappings": []
-    },
-    {
-        "Path": "how-to-query-with-exact-match.markdown",
-        "Name": "Query With Exact Match",
-        "DiscussionId": "b1c0918f-5fc3-4991-809d-c9014da73caf",
-        "Mappings": []
-    },
-    {
-        "Path": "how-to-use-fuzzy.markdown",
-        "Name": "How to Use Fuzzy",
-        "DiscussionId": "cd7b4952-968a-4d66-a6c3-d08217efbf96",
-        "Mappings": []
-    },
-    {
-        "Path": "how-to-perform-proximity-search.markdown",
-        "Name": "How to Perform Proximity Search",
-        "DiscussionId": "c01f1b7c-038a-4663-a48b-b5401794bf96",
+        "Path": "/text-search",
+        "Name": "Text Search",
         "Mappings": []
     },
     {

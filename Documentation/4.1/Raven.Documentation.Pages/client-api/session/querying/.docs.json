@@ -141,19 +141,23 @@
         "Path": "how-to-use-search.markdown",
         "Name": "How to Use Search",
         "DiscussionId": "133fe009-7704-42a4-9647-5ee2df188c31",
-        "Mappings": []
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/session/querying/text-search/full-text-search"
+            }
+        ]
     },
     {
         "Path": "how-to-use-highlighting.markdown",
         "Name": "How to Use Highlighting",
         "DiscussionId": "4c262003-44c5-46ff-84fc-7988405f4628",
+        "LastSupportedVersion": "5.1",
         "Mappings": [
             {
-                "Version": 3.0,
-                "Key": "client-api/session/querying/how-to-use-highlighting"
-            },
-            {
-                "Version": 4.0
+                "Version": 5.2,
+                "Key": "client-api/session/querying/text-search/highlight-query-results"
             }
         ]
     },
@@ -161,25 +165,49 @@
         "Path": "how-to-use-regex.markdown",
         "Name": "How to Use Regex",
         "DiscussionId": "48bc68f2-db18-4b4e-8cc4-4d29877ae9c0",
-        "Mappings": []
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/session/querying/text-search/using-regex"
+            }
+        ]
     },
     {
         "Path": "how-to-query-with-exact-match.markdown",
         "Name": "How to Query With Exact Match",
         "DiscussionId": "b1c0918f-5fc3-4991-809d-c9014da73caf",
-        "Mappings": []
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/session/querying/text-search/exact-match-query"
+            }
+        ]
     },
     {
         "Path": "how-to-use-fuzzy.markdown",
         "Name": "How to Use Fuzzy",
         "DiscussionId": "cd7b4952-968a-4d66-a6c3-d08217efbf96",
-        "Mappings": []
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/session/querying/text-search/fuzzy-search"
+            }
+        ]
     },
     {
         "Path": "how-to-perform-proximity-search.markdown",
         "Name": "How to Perform Proximity Search",
         "DiscussionId": "c01f1b7c-038a-4663-a48b-b5401794bf96",
-        "Mappings": []
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/session/querying/text-search/proximity-search"
+            }
+        ]
     },
     {
         "Path": "/debugging",

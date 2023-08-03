@@ -167,7 +167,7 @@ Available custom methods and extensions:
 - [Query] [AggregateUsing](../../../../client-api/session/querying/how-to-perform-a-faceted-search)
 - AndAlso
 - [Query] [BeforeQueryExecuted](../../../../client-api/session/querying/how-to-customize-query#beforequeryexecuted)
-- Boost
+- [Boost](../../../../client-api/session/querying/text-search/boost-search-results)
 - CloseSubclause
 - CmpXchg
 - ContainsAll
@@ -184,7 +184,7 @@ Available custom methods and extensions:
 - [GroupBy](../../../../client-api/session/querying/how-to-perform-group-by-query)
 - [GroupByArrayValues](../../../../client-api/session/querying/how-to-perform-group-by-query#by-array-values)
 - [GroupByArrayContent](../../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
-- [Query] [Highlight](../../../../client-api/session/querying/how-to-use-highlighting)
+- [Query] [Highlight](../../../../client-api/session/querying/text-search/highlight-query-results)
 - Include
 - IncludeExplanations
 - Intersect
@@ -210,7 +210,7 @@ Available custom methods and extensions:
 - Proximity
 - [Query] [RandomOrdering](../../../../client-api/session/querying/how-to-customize-query#randomordering)
 - [Query] [RelatesToShape](../../../../client-api/session/querying/how-to-make-a-spatial-query#search-by-shape)
-- Search
+- [Search](../../../../client-api/session/querying/text-search/full-text-search)
 - SelectFields
 - SelectTimeSeries
 - Single
@@ -225,7 +225,7 @@ Available custom methods and extensions:
 - [Query] [WaitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
 - Where
 - WhereBetween
-- WhereEndsWith
+- [WhereEndsWith](../../../../client-api/session/querying/text-search/ends-with-query)
 - WhereEquals
 - [WhereExists](../../../../client-api/session/querying/how-to-filter-by-field)
 - WhereGreaterThan
@@ -235,8 +235,8 @@ Available custom methods and extensions:
 - WhereLessThanOrEqual
 - [WhereLucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
 - WhereNotEquals
-- [WhereRegex](../../../../client-api/session/querying/how-to-use-regex)
-- WhereStartsWith
+- [WhereRegex](../../../../client-api/session/querying/text-search/using-regex)
+- [WhereStartsWith](../../../../client-api/session/querying/text-search/starts-with-query)
 - WithinRadiusOf
 
 {PANEL/}
@@ -251,7 +251,7 @@ The available `DocumentQuery` overloads are listed in this [Syntax section](../.
 
 ### Session
 
-- [How to Query](../../../../client-api/session/querying/how-to-query)
+- [Query overview](../../../../client-api/session/querying/how-to-query)
 - [How to Use Lucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
 
 ### Querying 

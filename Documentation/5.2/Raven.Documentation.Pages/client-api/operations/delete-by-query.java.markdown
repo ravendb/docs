@@ -75,7 +75,7 @@ so it can happen than a document has been updated or deleted meanwhile.
 
 ### Client API
 
-- [How to Query](../../client-api/session/querying/how-to-query)
+- [Querying: Basics](../../indexes/querying/query-index)
 
 ### Querying
 

@@ -126,7 +126,7 @@ order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1
 
 ### Session
 
-- [How to Query](../../../client-api/session/querying/how-to-query)
+- [Querying: Basics](../../../indexes/querying/query-index)
 
 ### Querying
 

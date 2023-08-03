@@ -184,27 +184,27 @@ of supported and yet-unsupported features below.
 * **While querying**, Corax does **not** support:  
    * [MoreLikeThis](../../indexes/querying/morelikethis)  
    * [Facets](../../indexes/querying/faceted-search)  
-   * [Fuzzy Search](../../client-api/session/querying/how-to-use-fuzzy)  
-   * Searching by [Regex](../../client-api/session/querying/how-to-use-regex)  
+   * [Fuzzy Search](../../client-api/session/querying/text-search/fuzzy-search)  
+   * Searching by [Regex](../../client-api/session/querying/text-search/using-regex)  
 * Corax does **not** support [Dynamic Fields](../../indexes/using-dynamic-fields) yet.  
   As a result, the many Javascript indexes that use dynamic fields are not supported.  
 
-| Query Term | Method / Keyword | Supported by Corax |
-| ---------- | ---------------- | ------------------ |
-| [WHERE](../../client-api/session/querying/what-is-rql#where) | | |
-| | id() | `yes` |
-| | [search()](../../indexes/querying/searching) | `yes` |
-| | cmpxchg() | **no** |
-| | boost() | `yes` |
-| | [regex()](../../client-api/session/querying/how-to-use-regex) | **no** |
-| | startsWith() | `yes` |
-| | endsWith() | `yes` |
-| | [lucene()](../../client-api/session/querying/document-query/how-to-use-lucene) | **no** |
-| | [exists()](../../client-api/session/querying/how-to-filter-by-field) | `yes` |
-| | exact() | `yes` |
-| | [intersect()](../../indexes/querying/intersection) | **no** |
-| | [spatial.within()](../../indexes/querying/spatial) <br> [spatial.contains()](../../indexes/querying/spatial) <br> [spatial.disjoint()](../../indexes/querying/spatial) <br> [spatial.intersects()](../../indexes/querying/spatial) | `yes` <br> `yes` <br> `yes` <br> `yes` |
-| | [moreLikeThis()](../../client-api/session/querying/how-to-use-morelikethis) | **no** |
+| Query Term                                                   | Method / Keyword                                                                                                                                                                                                                   | Supported by Corax                     |
+|--------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
+| [WHERE](../../client-api/session/querying/what-is-rql#where) |                                                                                                                                                                                                                                    |                                        |
+|                                                              | id()                                                                                                                                                                                                                               | `yes`                                  |
+|                                                              | [search()](../../client-api/session/querying/text-search/full-text-search)                                                                                                                                                         | `yes`                                  |
+|                                                              | cmpxchg()                                                                                                                                                                                                                          | **no**                                 |
+|                                                              | [boost()](../../client-api/session/querying/text-search/boost-search-results)                                                                                                                                                      | `yes`                                  |
+|                                                              | [regex()](../../client-api/session/querying/text-search/using-regex)                                                                                                                                                               | **no**                                 |
+|                                                              | [startsWith()](../../client-api/session/querying/text-search/starts-with-query)                                                                                                                                                    | `yes`                                  |
+|                                                              | [endsWith()](../../client-api/session/querying/text-search/ends-with-query)                                                                                                                                                        | `yes`                                  |
+|                                                              | [lucene()](../../client-api/session/querying/document-query/how-to-use-lucene)                                                                                                                                                     | **no**                                 |
+|                                                              | [exists()](../../client-api/session/querying/how-to-filter-by-field)                                                                                                                                                               | `yes`                                  |
+|                                                              | [exact()](../../client-api/session/querying/text-search/exact-match-query)                                                                                                                                                         | `yes`                                  |
+|                                                              | [intersect()](../../indexes/querying/intersection)                                                                                                                                                                                 | **no**                                 |
+|                                                              | [spatial.within()](../../indexes/querying/spatial) <br> [spatial.contains()](../../indexes/querying/spatial) <br> [spatial.disjoint()](../../indexes/querying/spatial) <br> [spatial.intersects()](../../indexes/querying/spatial) | `yes` <br> `yes` <br> `yes` <br> `yes` |
+|                                                              | [moreLikeThis()](../../client-api/session/querying/how-to-use-morelikethis)                                                                                                                                                        | **no**                                 |
 
 | Query Term | Method / Keyword | Supported by Corax |
 | ---------- | ---------------- | ------------------ |

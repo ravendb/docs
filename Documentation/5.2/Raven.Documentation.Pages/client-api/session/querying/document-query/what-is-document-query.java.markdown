@@ -103,7 +103,7 @@ Available methods:
 - whereLessThanOrEqual
 - [whereLucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
 - whereNotEquals
-- [whereRegex](../../../../client-api/session/querying/how-to-use-regex)
+- [whereRegex](../../../../client-api/session/querying/text-search/using-regex)
 - whereStartsWith
 - withinRadiusOf
 
@@ -116,7 +116,7 @@ By default, if the `page size` is not specified, all of the matching records wil
 
 ### Session
 
-- [How to Query](../../../../client-api/session/querying/how-to-query)
+- [Querying: Basics](../../../../indexes/querying/query-index)
 - [How to Use Lucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
 
 ### Querying 

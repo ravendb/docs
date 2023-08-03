@@ -100,15 +100,15 @@ The following keywords and methods are available in RQL:
     - [array()](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
 - [WHERE](../../../client-api/session/querying/what-is-rql#where)
     - id()
-    - [search()](../../../indexes/querying/searching)
+    - [search()](../../../client-api/session/querying/text-search/full-text-search)
     - cmpxchg()
-    - boost()
-    - [regex()](../../../client-api/session/querying/how-to-use-regex)
-    - startsWith()
-    - endsWith()
+    - [boost()](../../../client-api/session/querying/text-search/boost-search-results)
+    - [regex()](../../../client-api/session/querying/text-search/using-regex)
+    - [startsWith()](../../../client-api/session/querying/text-search/starts-with-query)
+    - [endsWith()](../../../client-api/session/querying/text-search/ends-with-query)
     - [lucene()](../../../client-api/session/querying/document-query/how-to-use-lucene)
     - [exists()](../../../client-api/session/querying/how-to-filter-by-field)
-    - exact()
+    - [exact()](../../../client-api/session/querying/text-search/exact-match-query)
     - [intersect()](../../../indexes/querying/intersection)
     - [spatial.within()](../../../indexes/querying/spatial)
     - [spatial.contains()](../../../indexes/querying/spatial)
@@ -382,7 +382,7 @@ Learn more in [dynamic group by queries](../../../client-api/session/querying/ho
 The keyword `include` has been introduced to support:
 
 - [including related documents](../../../client-api/how-to/handle-document-relationships#includes) or counters in the query response
-- [highlighting](../../../client-api/session/querying/how-to-use-highlighting) results
+- [highlighting](../../../client-api/session/querying/text-search/highlight-query-results) results
 - [get query timings](../../../client-api/session/querying/debugging/query-timings)
 - [get explanations](../../../client-api/session/querying/debugging/include-explanations)
 

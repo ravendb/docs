@@ -1,0 +1,56 @@
+[
+    {
+        "Path": "starts-with-query.markdown",
+        "Name": "Starts-With Query",
+        "DiscussionId": "b1c0918f-5fc3-4991-809d-c9014da73caf",
+        "Mappings": []
+    },
+    {
+        "Path": "ends-with-query.markdown",
+        "Name": "Ends-With Query",
+        "DiscussionId": "b1c0918f-5fc3-4991-809d-c9014da73caf",
+        "Mappings": []
+    },
+    {
+        "Path": "exact-match-query.markdown",
+        "Name": "Exact Match Query",
+        "DiscussionId": "b1c0918f-5fc3-4991-809d-c9014da73caf",
+        "Mappings": []
+    },
+    {
+        "Path": "full-text-search.markdown",
+        "Name": "Full-Text Search",
+        "DiscussionId": "133fe009-7704-42a4-9647-5ee2df188c31",
+        "Mappings": []
+    },
+    {
+        "Path": "boost-search-results.markdown",
+        "Name": "Boost Search Results",
+        "DiscussionId": "cd7b4952-968a-4d66-a6c3-d08217efbf96",
+        "Mappings": []
+    },
+    {
+        "Path": "highlight-query-results.markdown",
+        "Name": "Highlight Search Results",
+        "DiscussionId": "4c262003-44c5-46ff-84fc-7988405f4628",
+        "Mappings": []
+    },
+    {
+        "Path": "proximity-search.markdown",
+        "Name": "Proximity Search",
+        "DiscussionId": "c01f1b7c-038a-4663-a48b-b5401794bf96",
+        "Mappings": []
+    },
+    {
+        "Path": "fuzzy-search.markdown",
+        "Name": "Fuzzy Search",
+        "DiscussionId": "cd7b4952-968a-4d66-a6c3-d08217efbf96",
+        "Mappings": []
+    },
+    {
+        "Path": "using-regex.markdown",
+        "Name": "Using Regex",
+        "DiscussionId": "4c262003-44c5-46ff-84fc-7988405f4628",
+        "Mappings": []
+    }
+]

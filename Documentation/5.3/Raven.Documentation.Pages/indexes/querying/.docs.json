@@ -40,12 +40,6 @@
         "Mappings": []
     },
     {
-        "Path": "boosting.markdown",
-        "Name": "Boosting",
-        "DiscussionId": "36de1ad6-915c-40b4-9905-075b78930379",
-        "Mappings": []
-    },
-    {
         "Path": "projections.markdown",
         "Name": "Projections",
         "DiscussionId": "da044934-b24c-4d0e-946a-0fdda4abf880",
@@ -59,7 +53,7 @@
     },
     {
         "Path": "searching.markdown",
-        "Name": "Searching",
+        "Name": "Full-Text Search",
         "DiscussionId": "3d32f28e-80e6-482b-b46c-a36f3a4a29ce",
         "Mappings": [
             {
