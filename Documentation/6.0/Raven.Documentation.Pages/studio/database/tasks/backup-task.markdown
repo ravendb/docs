@@ -11,14 +11,18 @@
   as well as one-time 
   [manual backups](../../../studio/database/tasks/backup-task#manually-creating-one-time-backups), for a particular database.  
 
-* It also enables **server-wide backups** which can back up all of the databases on one server/node.  
-  See [Studio: Server-Wide Backups](../../../studio/server/server-wide-backup) to learn more.  
+     It also enables **server-wide backups** which can back up all of the databases on one server/node.  
+     See [Studio: Server-Wide Backups](../../../studio/server/server-wide-backup) to learn more.  
 
 * On a [sharded](../../../sharding/overview) database, a single backup task 
   is defined by the user for all shards, and RavenDB automatically defines 
   sub-tasks that create backups per shard.  
-  Read about backups on a sharded database [in the section dedicated to it](../../../sharding/backup-and-restore/backup).  
+  Read about backups on a sharded database [in the section dedicated to it](../../../sharding/backup-and-restore/backup). 
 
+* A backup is _not equivalent_ to replicating your data, as explained below in 
+  [Backup -vs- Replication](../../../studio/database/tasks/backup-task#backup-task--vs--replication-task).  
+
+* To check what data different backup types save, see the [backup overview article](../../../server/ongoing-tasks/backup-overview).  
 
 * In this page:  
   * [Backups View](../../../studio/database/tasks/backup-task#backups-view)  
@@ -29,9 +33,9 @@
       * [Destination](../../../studio/database/tasks/backup-task#destination)  
       * [Periodic Backup Details](../../../studio/database/tasks/backup-task#periodic-backup-details)  
   * [Manually Creating One-Time Backups](../../../studio/database/tasks/backup-task#manually-creating-one-time-backups)  
+  * [Delaying a Running Backup Task](../../../studio/database/tasks/backup-task#delaying-a-running-backup-task)  
   * [When the Cluster or Node is Down](../../../studio/database/tasks/backup-task#when-the-cluster-or-node-is-down)  
   * [Backup Task -vs- Replication Task](../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)  
-
 
 {NOTE/}
 
@@ -53,13 +57,9 @@
  6. **Database Group Topology**  
     You can see all active server-wide and database-specific periodic backups.  
 
-
-
 {PANEL/}
 
-## Periodic Backup Creation
-
-{PANEL: }
+{PANEL: Periodic Backup Creation}
 
 ### Periodic Backup Tasks View
 
@@ -81,12 +81,10 @@
 
 ![Defining Periodic Backup](images/periodic-backup-definition.png "Defining Periodic Backups")
 
-
  1. **Task Name** (Optional)  
 
   * Choose a name of your choice  
   * If no name is given then the RavenDB server will create one for you based on the defined destination  
-
 
  2. **Backup Task Type**:  
 
@@ -102,24 +100,18 @@
      * Backup Speed: Slower  
      * Restoring: Faster, Indexes do not have to be rebuilt  
 
-
 3. **Preferred Node** (Optional)  
 
    * Select a preferred mentor node from the [Database Group](../../../studio/database/settings/manage-database-group) to be the responsible node for this Backup Task  
    * If no node is selected, then the cluster will assign a responsible node (see [Members Duties](../../../studio/database/settings/manage-database-group#database-group-topology---members-duties))  
 
-
 ---
 
 ### Scheduling Backups
 
-
-
 Select the content to back up. Note: Both incremental and full backups can be scheduled at the same time.  
 
-
 ![Scheduling Two Backups](images/backup-schedule51up-fullandincremental.png "Scheduling Two Backups")
-
 
  1. **Full Backup**  
     Full Backup will back up _all_ the database data every time the task is scheduled to work.  
@@ -147,10 +139,6 @@ Select the content to back up. Note: Both incremental and full backups can be sc
 
 {INFO/}  
   
-
-
-
-
 ---
 
 ### Retention Policy
@@ -218,8 +206,6 @@ Make sure to save the destinations and credentials information so that your team
  
  If any of the remote destinations fail, the entire backup will be considered to have failed.
 
-
-
 {INFO: For a resilient data protection strategy}
  
   that protects your databases from natural disasters and theft, we recommend scheduling concurrent backups on a local machine and on the cloud. 
@@ -232,7 +218,6 @@ Make sure to save the destinations and credentials information so that your team
 ###Periodic Backup Details
 
 ![Periodic Backup Details](images/backup-task-details.png "Periodic Backup Details")
-
 
 1. **Backup Task Details**:  
 
@@ -258,11 +243,7 @@ Make sure to save the destinations and credentials information so that your team
 3. **Refresh**:  
    Click to refresh this panel viewed details  
 
-
-
 {PANEL/}
-
----
 
 {PANEL: Manually Creating One-Time Backups}
 
@@ -270,7 +251,6 @@ Make sure to save the destinations and credentials information so that your team
 
 ![Manual Backup View](images/manual-backup-task-view.png "Manual Backups View")
 
- 
  1. Create a one-time [manual backup](../../../studio/database/tasks/backup-task#manually-creating-one-time-backups).  
     This can be vital before upgrading or whenever you want an unscheduled backup.  
  2. Unscheduled backups (e.g. before upgrades) can also be done in the [periodic backup details view](../../../studio/database/tasks/backup-task#periodic-backup-details).  
@@ -303,16 +283,60 @@ There are also some important differences:
 * Manual backups are not scheduled, they occur exactly once: when the **Backup Now** button is pressed.  
 * The backup cannot be modified afterward from the Studio, but you can create a new one-time backup whenever you need to.  
 
-
 {NOTE/}
 
 {PANEL/}
 
+{PANEL: Delaying a Running Backup Task}
+
+The execution of a running backup task can be **delayed** for a given time period.  
+
+* The current execution of the delayed task is cancelled immediately.  
+* All scheduled executions of the task during the delay period are cancelled.  
+  {NOTE: }
+  Delaying a running backup operation is only available for 
+  [periodic backup tasks](../../../studio/database/tasks/backup-task#periodic-backup-creation).  
+  A [one-time backup operation](../../../studio/database/tasks/backup-task#manually-creating-one-time-backups) 
+  cannot be delayed.  
+  {NOTE/}
+* When the delay period has passed, the backup operation is executed 
+  **from scratch**, using no material from the initial delayed run, 
+  and its future schedules are enabled.  
+
+Delaying a running backup operation may be useful when, for example, 
+backup creation time turns out to be much longer than anticipated, 
+system resources are currently limited (e.g. on the cloud), or another 
+process currently overuses resources.  
+
 ---
 
-{PANEL: }
+### To delay a running backup task:  
 
-### When the Cluster or Node is Down
+1. Open the notifications center, find the notification regarding the 
+   execution of the backup task you want to delay, and click the notification's 
+   **Details** button.  
+
+      ![Periodic Backup Notification](images/backup_periodic-backup-notification.png "Periodic Backup Notification")
+
+2. When the **Backup Details** popup appears, click the **Delay backup** button.  
+   
+      ![Backup Details Popup](images/backup_backup-details-popup.png "Backup Details Popup")
+
+3. Select a delay period and confirm.  
+   
+      ![Delay Backup](images/backup_delay-backup.png "Delay Backup")
+
+      {INFO: }
+      Backup tasks can be delayed using this Studio option for a **preset** time period, 
+      e.g. an hour or a day.  
+      You can also delay tasks for a **custom time period** via code, applying the 
+      [DelayBackupOperation](../../../client-api/operations/maintenance/backup/backup#delay-backup-execution) 
+      store operation.  
+      {INFO/}
+
+{PANEL/}
+
+{PANEL: When the Cluster or Node is Down}
 
 * **When the cluster is down** (and there is no leader):  
 
@@ -329,12 +353,8 @@ There are also some important differences:
     then another node from the Database Group will take ownership of the task so that there are no gaps in your backups.  
   
 {PANEL/}
-
----
   
-{PANEL: }
-
-### Backup Task -vs- Replication Task
+{PANEL: Backup Task -vs- Replication Task}
 
  * RavenDB's [External Replication](../../../studio/database/tasks/ongoing-tasks/external-replication-task) provides you with an off-site live replica/copy of the data 
    ('live' meaning that any changes in the database will be duplicated into the replica immediately).  
@@ -354,21 +374,20 @@ There are also some important differences:
 
 {PANEL/}
 
-
-
 ## Related Articles  
 
 ### Studio  
-- [Server-Wide Backups](../../../studio/server/server-wide-backup)
+- [Server-Wide Backups](../../../studio/server/server-wide-backup)  
 - [Create DB: From Backup](../../../studio/database/create-new-database/from-backup)  
 - [Create DB: General Flow](../../../studio/database/create-new-database/general-flow)  
 - [Create DB: Encrypted](../../../studio/database/create-new-database/encrypted)  
 - [External Replication](../../../studio/database/tasks/ongoing-tasks/external-replication-task)  
 
 ### Client API  
-- [Backup](../../../client-api/operations/maintenance/backup/backup)  
 - [Restore](../../../client-api/operations/maintenance/backup/restore)  
+- [Operations: How to Restore a Database from Backup](../../../client-api/operations/server-wide/restore-backup)  
 - [What Is Smuggler](../../../client-api/smuggler/what-is-smuggler)  
+- [Backup](../../../client-api/operations/maintenance/backup/backup)  
 
 ### Server  
 - [Backup Overview](../../../server/ongoing-tasks/backup-overview)  
@@ -380,3 +399,6 @@ There are also some important differences:
 - [Sharding Overview](../../../sharding/overview)
 - [Sharding: Backup](../../../sharding/backup-and-restore/backup)  
 - [Sharding: Restore](../../../sharding/backup-and-restore/restore)  
+
+### Inside RavenDB
+- [Backups and restores](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/17-backups-and-restores)  
