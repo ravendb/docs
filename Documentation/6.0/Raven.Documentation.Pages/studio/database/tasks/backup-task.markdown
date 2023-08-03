@@ -33,7 +33,7 @@
       * [Destination](../../../studio/database/tasks/backup-task#destination)  
       * [Periodic Backup Details](../../../studio/database/tasks/backup-task#periodic-backup-details)  
   * [Manually Creating One-Time Backups](../../../studio/database/tasks/backup-task#manually-creating-one-time-backups)  
-  * [Delaying Backup Operations](../../../studio/database/tasks/backup-task#delaying-backup-operations)  
+  * [Delaying a Running Backup Task](../../../studio/database/tasks/backup-task#delaying-a-running-backup-task)  
   * [When the Cluster or Node is Down](../../../studio/database/tasks/backup-task#when-the-cluster-or-node-is-down)  
   * [Backup Task -vs- Replication Task](../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)  
 
@@ -287,17 +287,21 @@ There are also some important differences:
 
 {PANEL/}
 
-{PANEL: Delaying Backup Operations}
+{PANEL: Delaying a Running Backup Task}
 
-The execution of a running backup operation can be **delayed** for a given time period.  
+The execution of a running backup task can be **delayed** for a given time period.  
 
-* A delayed backup operation is cancelled immediately.  
-* The delayed operation (be it a 
-  [one-time backup operation](../../../studio/database/tasks/backup-task#manually-creating-one-time-backups) 
-  or a [periodic backup task](../../../studio/database/tasks/backup-task#periodic-backup-creation)) 
-  will not run again for the set time period.  
-* When the delay period ends, the backup operation will restart 
-  **from scratch** (no material from the initial run will be used).  
+* The current execution of the delayed task is cancelled immediately.  
+* All scheduled executions of the task during the delay period are cancelled.  
+  {NOTE: }
+  Delaying a running backup operation is only available for 
+  [periodic backup tasks](../../../studio/database/tasks/backup-task#periodic-backup-creation).  
+  A [one-time backup operation](../../../studio/database/tasks/backup-task#manually-creating-one-time-backups) 
+  cannot be delayed.  
+  {NOTE/}
+* When the delay period has passed, the backup operation is executed 
+  **from scratch**, using no material from the initial delayed run, 
+  and its future schedules are enabled.  
 
 Delaying a running backup operation may be useful when, for example, 
 backup creation time turns out to be much longer than anticipated, 
@@ -306,24 +310,15 @@ process currently overuses resources.
 
 ---
 
-### To delay a backup operation:  
+### To delay a running backup task:  
 
-Delay backup by clicking the **Backup Details** popup **Delay backup** button.  
-{INFO: The Backup Details popup}
-A **Backup Details** popup appears automatically when backup is created 
-[manually](../../../studio/database/tasks/backup-task#manually-creating-one-time-backups).  
-To open this window for a periodic backup task that started automatically 
-open the notifications center, find the notification regarding the currently 
-running backup task, and click its Details button (see below).  
-{INFO/}
+1. Open the notifications center, find the notification regarding the 
+   execution of the backup task you want to delay, and click the notification's 
+   **Details** button.  
 
----
-
-1. Invoke the Backup Details popup for a periodic backup  
-   
       ![Periodic Backup Notification](images/backup_periodic-backup-notification.png "Periodic Backup Notification")
 
-2. Click the **Delay backup** button to delay the execution.  
+2. When the **Backup Details** popup appears, click the **Delay backup** button.  
    
       ![Backup Details Popup](images/backup_backup-details-popup.png "Backup Details Popup")
 
@@ -331,9 +326,13 @@ running backup task, and click its Details button (see below).
    
       ![Delay Backup](images/backup_delay-backup.png "Delay Backup")
 
-      This view allows delaying backup for one of these preset periods; backups can also be 
-      delayed for a **custom time period** using the [DelayBackupOperation](../../../client-api/operations/maintenance/backup/backup#delay-backup-execution) 
+      {INFO: }
+      Backup tasks can be delayed using this Studio option for a **preset** time period, 
+      e.g. an hour or a day.  
+      You can also delay tasks for a **custom time period** via code, applying the 
+      [DelayBackupOperation](../../../client-api/operations/maintenance/backup/backup#delay-backup-execution) 
       store operation.  
+      {INFO/}
 
 {PANEL/}
 

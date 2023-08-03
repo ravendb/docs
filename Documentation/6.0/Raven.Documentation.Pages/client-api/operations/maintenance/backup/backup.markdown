@@ -289,8 +289,8 @@ If needed, it can also be executed immediately.
 
 {PANEL: Delay Backup Execution}
 
-The execution of a running backup operation can be **delayed** for a given time period 
-via [Studio](../../../../studio/database/tasks/backup-task#delaying-backup-operations) 
+The execution of a periodic backup task can be **delayed** for a given time period 
+via [Studio](../../../../studio/database/tasks/backup-task#delaying-a-running-backup-task) 
 or using the `DelayBackupOperation` store operation.  
 
 * Definition:  
@@ -300,12 +300,12 @@ or using the `DelayBackupOperation` store operation.
     
       | Parameter | Type | Functionality |
       | ------ | ------ | ------ |
-      | runningBackupTaskId| `long` | Task ID of the running backup operation |
+      | runningBackupTaskId| `long` | Backup task ID |
       | duration | `TimeSpan` | Delay Duration |
 
 * Example:  
-  To delay the execution of a running backup operation pass `DelayBackupOperation` 
-  the backup task ID and the delay duration.  
+  To delay the execution of a running backup task pass `DelayBackupOperation` 
+  the task's ID and the delay duration.  
   {CODE:csharp DelayBackupOperation@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
 {PANEL/}
