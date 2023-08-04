@@ -310,6 +310,20 @@ The `DB_CERT` variable is exposed on `env` and has a single `fetch` function tha
 The `env.DB_CERT` binding will not be available in local mode (`--local`), this is a known issue with Wrangler.
 {NOTE/}
 
+### Add TypeScript Declaration for DB_CERT
+
+If you are using TypeScript, `env.DB_CERT` will not be typed by default. You can create a `globals.d.ts` file in your project and add the following type declarations:
+
+{CODE-BLOCK:typescript}
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      DB_CERT?: { fetch: typeof fetch }
+    }
+  }
+}
+{CODE-BLOCK/}
+
 {PANEL/}
 
 {PANEL: Configuring Cloudflare}
