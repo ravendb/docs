@@ -12,14 +12,14 @@
 * Use the `Fuzzy` method when querying with `WhereEquals`.
 
 * In this page:
-    * [Fuzzy search](../../../../client-api/session/querying/text-search/proximity-search#fuzzy-search)
-    * [Syntax](../../../../client-api/session/querying/text-search/proximity-search#syntax)
+    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search#fuzzy-search-example)
+    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL: Fuzzy search}
+{PANEL: Fuzzy search example}
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery fuzzy_1@ClientApi\Session\Querying\TextSearch\FuzzySearch.cs /}

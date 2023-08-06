@@ -10,14 +10,14 @@
 * Use the `fuzzy` method when querying with `whereEquals`.
 
 * In this page:
-    * [Fuzzy search](../../../../client-api/session/querying/text-search/proximity-search#fuzzy-search)
-    * [Syntax](../../../../client-api/session/querying/text-search/proximity-search#syntax)
+    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search#fuzzy-search-example)
+    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL: Fuzzy search}
+{PANEL: Fuzzy search example}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query fuzzy@ClientApi\Session\Querying\TextSearch\fuzzySearch.js /}
