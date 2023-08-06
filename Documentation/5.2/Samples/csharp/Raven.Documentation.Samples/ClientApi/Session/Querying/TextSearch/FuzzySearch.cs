@@ -19,8 +19,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                         .DocumentQuery<Company>()
                          // Query with a term that is misspelled
                         .WhereEquals(x => x.Name, "Ernts Hnadel")
-                        // Call 'Fuzzy', 
-                        // Pass the required similarity, a decimal param
+                        // Call 'Fuzzy' 
+                        // Pass the required similarity, a decimal param between 0.0 and 1.0
                         .Fuzzy(0.5m)
                         .ToList();
                     
@@ -34,10 +34,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     #region fuzzy_2
                     List<Company> companies = await asyncSession.Advanced
                         .AsyncDocumentQuery<Company>()
-                         // Query with a term that is for misspelled
+                         // Query with a term that is misspelled
                         .WhereEquals(x => x.Name, "Ernts Hnadel")
-                         // Call 'Fuzzy', 
-                         // Pass the required similarity, a decimal param
+                         // Call 'Fuzzy' 
+                         // Pass the required similarity, a decimal param between 0.0 and 1.0
                         .Fuzzy(0.5m)
                         .ToListAsync();
                     

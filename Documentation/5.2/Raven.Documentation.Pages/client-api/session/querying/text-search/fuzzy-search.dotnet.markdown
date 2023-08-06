@@ -25,8 +25,8 @@
 {CODE-TAB:csharp:DocumentQuery fuzzy_1@ClientApi\Session\Querying\TextSearch\FuzzySearch.cs /}
 {CODE-TAB:csharp:DocumentQuery_async fuzzy_2@ClientApi\Session\Querying\TextSearch\FuzzySearch.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Companies
-where fuzzy(Name = 'Ernts Hnadel', 0.5)
+from "Companies"
+where fuzzy(Name = "Ernts Hnadel", 0.5)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
