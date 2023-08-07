@@ -16,10 +16,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Debugging
 {
     public class IncludeQueryTimings
     {
-        public interface IFoo<T>
+        public interface IFoo
         {
             #region syntax
-            IDocumentQuery<T> Timings(out QueryTimings timings);
+            IDocumentQueryCustomization Timings(out QueryTimings timings);
             #endregion
         }
 
@@ -43,11 +43,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Debugging
                         .ToList();
 
                     // Get total query duration:
+                    // =========================
                     var totalQueryDuration = timings.DurationInMs;
                     
                     // Get specific parts duration: 
+                    // ============================
                     IDictionary<string, QueryTimings> timingsDictionary = timings.Timings;
                     var optimizerDuration = timingsDictionary["Optimizer"].DurationInMs;
+                    var luceneDuration = timingsDictionary["Query"].Timings["Lucene"].DurationInMs;
                     #endregion
                 }
                 
@@ -64,11 +67,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Debugging
                         .ToList();
 
                     // Get total query duration:
+                    // =========================
                     var totalQueryDuration = timings.DurationInMs;
                     
                     // Get specific parts duration: 
+                    // ============================
                     IDictionary<string, QueryTimings> timingsDictionary = timings.Timings;
                     var optimizerDuration = timingsDictionary["Optimizer"].DurationInMs;
+                    var luceneDuration = timingsDictionary["Query"].Timings["Lucene"].DurationInMs;
                     #endregion
                 }
 
@@ -88,11 +94,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Debugging
                         .ToListAsync();
 
                     // Get total query duration:
+                    // =========================
                     var totalQueryDuration = timings.DurationInMs;
                     
                     // Get specific parts duration: 
+                    // ============================
                     IDictionary<string, QueryTimings> timingsDictionary = timings.Timings;
                     var optimizerDuration = timingsDictionary["Optimizer"].DurationInMs;
+                    var luceneDuration = timingsDictionary["Query"].Timings["Lucene"].DurationInMs;
                     #endregion
                 }
                 
@@ -109,11 +118,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Debugging
                         .ToListAsync();
 
                     // Get total query duration:
+                    // =========================
                     var totalQueryDuration = timings.DurationInMs;
                     
-                    // Get specific parts duration: 
+                    // Get specific parts duration:
+                    // ============================ 
                     IDictionary<string, QueryTimings> timingsDictionary = timings.Timings;
                     var optimizerDuration = timingsDictionary["Optimizer"].DurationInMs;
+                    var luceneDuration = timingsDictionary["Query"].Timings["Lucene"].DurationInMs;
                     #endregion
                 }
             }

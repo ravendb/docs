@@ -10,10 +10,10 @@
 ## Example
 
 {CODE-TABS}
-{CODE-TAB:java:Java explain_2@ClientApi\Session\Querying\Debugging\IncludeExplanations.java /}
+{CODE-TAB:java:Query explain_2@ClientApi\Session\Querying\Debugging\IncludeExplanations.java /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Products 
-where search(Name, 'Syrup')
+from "Products" 
+where search(Name, "Syrup")
 include explanations()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}

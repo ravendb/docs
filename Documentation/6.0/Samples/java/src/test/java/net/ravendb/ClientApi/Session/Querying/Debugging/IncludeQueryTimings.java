@@ -15,7 +15,7 @@ public class IncludeQueryTimings {
 
     public interface IFoo<T> {
         //region timing_1
-        IDocumentQuery<T> timings(Reference<QueryTimings> timings);
+        IDocumentQueryCustomization timings(Reference<QueryTimings> timings);
         //endregion
     }
 

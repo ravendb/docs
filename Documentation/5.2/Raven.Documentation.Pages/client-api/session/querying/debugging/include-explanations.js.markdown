@@ -12,20 +12,20 @@
 * Use `includeExplanations` in your query __to get the score details__ and see how it was calculated.  
 
 * In this page:
-    * [Include explanations in query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-query)  
+    * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
     * [View explanations](../../../../client-api/session/querying/debugging/include-explanations#view-explanations)  
     * [Syntax](../../../../client-api/session/querying/debugging/include-explanations#syntax)  
 {NOTE/}
 
 ---
 
-{PANEL: Include explanations in query}
+{PANEL: Include explanations in a query}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query explain@ClientApi\Session\Querying\Debugging\includeExplanations.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Products
-where search(Name, 'Syrup') or search(Name, 'Lager')
+from "Products"
+where search(Name, "Syrup") or search(Name, "Lager")
 include explanations()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}

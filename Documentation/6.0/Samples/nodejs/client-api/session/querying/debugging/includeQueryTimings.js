@@ -32,10 +32,14 @@ async function timings() {
         .all();
 
     // Get total query duration:
+    // =========================    
     const totalQueryDuration = timingsResults.durationInMs;
 
-    // Get specific parts duration, e.g. get the optimizer part:
-    const optimizerDuration = timings.timings.optimizer.durationInMs;
-    // or: timings.timings["optimizer"].durationInMs;
+    // Get specific parts duration:
+    // ============================
+    const optimizerDuration = timingsResults.timings.optimizer.durationInMs;
+    // or: timingsResults.timings["optimizer"].durationInMs;    
+    const luceneDuration = timingsResults.timings.query.timings.lucene.durationInMs;
+    // or: timingsResults.timings["query"].timings.["lucene"].durationInMs;
     //endregion
 }
