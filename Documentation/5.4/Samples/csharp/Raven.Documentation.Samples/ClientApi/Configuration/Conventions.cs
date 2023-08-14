@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Net.Http;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Amazon.XRay.Recorder.Handlers.System.Net;
 using Newtonsoft.Json.Serialization;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations;
@@ -35,25 +38,25 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
             {
                 Conventions =
                 {
-	                #region MaxHttpCacheSize
-	                MaxHttpCacheSize = new Size(256, SizeUnit.Megabytes)
-	                #endregion
-	                ,
-	                #region MaxNumberOfRequestsPerSession
-	                MaxNumberOfRequestsPerSession = 10
-	                #endregion
-	                ,
-	                #region UseOptimisticConcurrency
-	                UseOptimisticConcurrency = true
-	                #endregion
-	                ,
-	                #region DisableTopologyUpdates
-                    DisableTopologyUpdates = false
-	                #endregion
+                    #region MaxHttpCacheSize
+                    MaxHttpCacheSize = new Size(256, SizeUnit.Megabytes)
+                    #endregion
                     ,
-	                #region SaveEnumsAsIntegers
+                    #region MaxNumberOfRequestsPerSession
+                    MaxNumberOfRequestsPerSession = 10
+                    #endregion
+                    ,
+                    #region UseOptimisticConcurrency
+                    UseOptimisticConcurrency = true
+                    #endregion
+                    ,
+                    #region DisableTopologyUpdates
+                    DisableTopologyUpdates = false
+                    #endregion
+                    ,
+                    #region SaveEnumsAsIntegers
                     SaveEnumsAsIntegers = true
-	                #endregion
+                    #endregion
                     ,
                     #region RequestTimeout
                     RequestTimeout = TimeSpan.FromSeconds(90)
@@ -98,7 +101,20 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     #region WaitForNonStaleResultsTimeout
                     WaitForNonStaleResultsTimeout = TimeSpan.FromSeconds(10)
                     #endregion
-
+                    ,
+                    #region CreateHttpClient
+                    CreateHttpClient = handler =>
+                    {
+                        // Your HTTP Client code here, e.g. -
+                        var httpClient = new HttpClient(new HttpClientXRayTracingHandler(new HttpClientHandler()));
+                        return httpClient;
+                    }
+                    #endregion
+                    ,
+                    #region HttpClientType
+                    // The type of HTTP client you are using
+                    HttpClientType = typeof(MyHttpClient)
+                    #endregion
                 }
             };
             
@@ -112,5 +128,10 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                 }
             };
         }
+    }
+    public class MyHttpClient
+    {
+        public HttpClient MyClient;
+        public HttpClientHandler Client;
     }
 }

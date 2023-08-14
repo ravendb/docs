@@ -1,17 +1,42 @@
 # Conventions
 
-**Conventions** are adjustable RavenDB settings that users 
-can adjust to modify client behaviors by their preferences.  
+* **Conventions** are adjustable RavenDB settings that users 
+  can configure to modify client behaviors by their preferences.  
+* Access conventions through the `DocumentStore` object 
+  `Conventions` property.  
+
+* In this page:  
+   * [Client Conventions](../../client-api/configuration/conventions#client-conventions)  
+   * [MaxHttpCacheSize](../../client-api/configuration/conventions#maxhttpcachesize)  
+   * [MaxNumberOfRequestsPerSession](../../client-api/configuration/conventions#maxnumberofrequestspersession)  
+   * [UseOptimisticConcurrency](../../client-api/configuration/conventions#useoptimisticconcurrency)  
+   * [RequestTimeout](../../client-api/configuration/conventions#requesttimeout)  
+   * [DisableTopologyUpdates](../../client-api/configuration/conventions#disabletopologyupdates)  
+   * [SaveEnumsAsIntegers](../../client-api/configuration/conventions#saveenumsasintegers)  
+   * [UseCompression](../../client-api/configuration/conventions#usecompression)  
+   * [OperationStatusFetchMode](../../client-api/configuration/conventions#operationstatusfetchmode)  
+   * [Change fields/properties Naming Convention](../../client-api/configuration/conventions#change-fieldsproperties-naming-convention)  
+   * [IdentityPartsSeparator](../../client-api/configuration/conventions#identitypartsseparator)  
+   * [TopologyCacheLocation](../../client-api/configuration/conventions#topologycachelocation)  
+   * [AddIdFieldToDynamicObjects](../../client-api/configuration/conventions#addidfieldtodynamicobjects)  
+   * [ShouldIgnoreEntityChanges](../../client-api/configuration/conventions#shouldignoreentitychanges)  
+   * [WaitForIndexesAfterSaveChangesTimeout](../../client-api/configuration/conventions#waitforindexesaftersavechangestimeout)  
+   * [WaitForReplicationAfterSaveChangesTimeout](../../client-api/configuration/conventions#waitforreplicationaftersavechangestimeout)  
+   * [WaitForNonStaleResultsTimeout](../../client-api/configuration/conventions#waitfornonstaleresultstimeout)  
+   * [CreateHttpClient](../../client-api/configuration/conventions#createhttpclient)  
+   * [HttpClientType](../../client-api/configuration/conventions#httpclienttype)  
+
+{PANEL: Client Conventions}
 
 Access conventions via the `Conventions` property of the 
 `DocumentStore` object.  
 {CODE conventions_1@ClientApi\Configuration\Conventions.cs /}
 
-{INFO: }
+{NOTE: }
 Customize conventions **before** `DocumentStore.Initialize()` is called. 
-{INFO/}
+{NOTE/}
 
-##MaxHttpCacheSize
+## MaxHttpCacheSize
 
 Use `MaxHttpCacheSize` as follows to modify the maximum HTTP cache size.  
 {CODE MaxHttpCacheSize@ClientApi\Configuration\Conventions.cs /}
@@ -37,34 +62,34 @@ Use `MaxNumberOfRequestsPerSession` to get or set the maximum number of GET requ
 **Default**: `30`  
 {CODE MaxNumberOfRequestsPerSession@ClientApi\Configuration\Conventions.cs /}
 
-##UseOptimisticConcurrency
+## UseOptimisticConcurrency
 
 Use `UseOptimisticConcurrency` to control whether optimistic 
 concurrency is set to true by default for all future sessions.  
 **Default**: `false`  
 {CODE UseOptimisticConcurrency@ClientApi\Configuration\Conventions.cs /}
 
-##RequestTimeout
+## RequestTimeout
 
 Use `RequestTimeout` to define the global request timeout 
 value for all `RequestExecutors` created per database.  
 **Default**: `null`
 {CODE RequestTimeout@ClientApi\Configuration\Conventions.cs /}
 
-##DisableTopologyUpdates
+## DisableTopologyUpdates
 
 Use `DisableTopologyUpdates` to disable database topology updates.  
 **Default**: `false`  
 {CODE DisableTopologyUpdates@ClientApi\Configuration\Conventions.cs /}
 
-##SaveEnumsAsIntegers
+## SaveEnumsAsIntegers
 
 `SaveEnumsAsIntegers` determines whether C# `enum` types should be saved as 
 integers or strings and instructs the LINQ provider to query enums as integer values.  
 **Default**: `false`  
 {CODE SaveEnumsAsIntegers@ClientApi\Configuration\Conventions.cs /}
 
-##UseCompression
+## UseCompression
 
 `UseCompression` determines if the client would send the 
 server headers indicating whether compression is to be used.  
@@ -84,7 +109,7 @@ this issue, the value can be changed to `Polling`.
 {NOTE/}
 {CODE OperationStatusFetchMode@ClientApi\Configuration\Conventions.cs /}
 
-## Changing fields/properties naming convention 
+## Change fields/properties Naming Convention
 
 Different clients may use different casing conventions for entity field names.  
 E.g., here are the field naming defaults for clients of a few languages.  
@@ -105,10 +130,10 @@ Make a C# client use camelCase by setting `CustomizeJsonSerializer` and `Propert
 {CODE FirstChar@ClientApi\Configuration\Conventions.cs /}
 {CODE PropertyCasing@ClientApi\Configuration\Conventions.cs /}
 
-## Changing the Identity Separator
+## IdentityPartsSeparator
 
-Use `IdentityPartsSeparator ` to change the default **separator** for 
-automatically-generated document IDs.  
+Use the `IdentityPartsSeparator` convention to change the default 
+**ID (Identity) separator** for automatically-generated document IDs.  
 **Default**: `/` (forward slash)  
 {CODE IdentityPartsSeparator@ClientApi\Configuration\Conventions.cs /}
 
@@ -164,7 +189,31 @@ methods used when querying.
 
 ## CreateHttpClient
 
+Use the `CreateHttpClient` convention to modify the HTTP client your 
+client application uses.  
+Implementing your own  HTTP client can be useful when, for example, 
+you'd like your clients to provide the server with tracing info.  
+{CODE CreateHttpClient@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE: }
+If you override the default `CreateHttpClient` convention we advise 
+that you also set the HTTP client type correctly using the 
+[HttpClientType](../../client-api/configuration/conventions#httpclienttype) convention.  
+{NOTE/}
+
 ## HttpClientType
+
+Use `HttpClientType` to get or set the type of HTTP client you're using.  
+{CODE HttpClientType@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE: }
+RavenDB uses the HTTP type internally to manage its cache. If you 
+override the [CreateHttpClient](../../client-api/configuration/conventions#createhttpclient) 
+convention to use a non-default HTTP client, we advise that you also 
+set `HttpClientType` so it returns the client type you are actually using.  
+{NOTE/}
+
+{PANEL/}
 
 ## Related Articles
 
