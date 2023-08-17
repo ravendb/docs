@@ -109,7 +109,7 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     CreateHttpClient = handler =>
                     {
                         // Your HTTP Client code here, e.g. -
-                        var httpClient = new HttpClient(new HttpClientXRayTracingHandler(new HttpClientHandler()));
+                        var httpClient = new MyHttpClient(new HttpClientXRayTracingHandler(new HttpClientHandler()));
                         return httpClient;
                     }
                     #endregion
@@ -132,9 +132,9 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
             };
         }
     }
-    public class MyHttpClient
+    public class MyHttpClient : HttpClient
     {
-        public HttpClient MyClient;
-        public HttpClientHandler Client;
+        public MyHttpClient(HttpMessageHandler handler)
+        { }
     }
 }
