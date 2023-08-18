@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSXRayRecorder.Handlers.System.Net" Version="2.11.0" />
     <PackageReference Include="NodaTime" Version="3.0.0" />
     <PackageReference Include="RavenDB.Client" Version="6.0.0-nightly-20230516-0103" />
     <PackageReference Include="RavenDB.Embedded" Version="6.0.0-nightly-20230516-0103" />

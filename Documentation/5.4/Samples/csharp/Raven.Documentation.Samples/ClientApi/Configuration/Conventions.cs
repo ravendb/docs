@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Amazon.XRay.Recorder.Handlers.System.Net;
 using Newtonsoft.Json.Serialization;
 using Raven.Client.Documents;
@@ -37,36 +38,32 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
             {
                 Conventions =
                 {
-	                #region MaxHttpCacheSize
-	                MaxHttpCacheSize = new Size(256, SizeUnit.Megabytes)
-	                #endregion
-	                ,
-	                #region MaxNumberOfRequestsPerSession
-	                MaxNumberOfRequestsPerSession = 10
-	                #endregion
-	                ,
-	                #region UseOptimisticConcurrency
-	                UseOptimisticConcurrency = true
-	                #endregion
-	                ,
-	                #region DisableTopologyUpdates
-                    DisableTopologyUpdates = false
-	                #endregion
+                    #region MaxHttpCacheSize
+                    MaxHttpCacheSize = new Size(256, SizeUnit.Megabytes)
+                    #endregion
                     ,
-	                #region SaveEnumsAsIntegers
+                    #region MaxNumberOfRequestsPerSession
+                    MaxNumberOfRequestsPerSession = 10
+                    #endregion
+                    ,
+                    #region UseOptimisticConcurrency
+                    UseOptimisticConcurrency = true
+                    #endregion
+                    ,
+                    #region DisableTopologyUpdates
+                    DisableTopologyUpdates = false
+                    #endregion
+                    ,
+                    #region SaveEnumsAsIntegers
                     SaveEnumsAsIntegers = true
-	                #endregion
+                    #endregion
                     ,
                     #region RequestTimeout
                     RequestTimeout = TimeSpan.FromSeconds(90)
                     #endregion
                     ,
-                    #region UseHttpCompression
-                    UseHttpCompression = true
-                    #endregion
-                    ,
-                    #region UseHttpDecompression
-                    UseHttpDecompression = true
+                    #region UseCompression
+                    UseCompression = true
                     #endregion
                     ,
                     #region OperationStatusFetchMode

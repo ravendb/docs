@@ -13,7 +13,7 @@
    * [RequestTimeout](../../client-api/configuration/conventions#requesttimeout)  
    * [DisableTopologyUpdates](../../client-api/configuration/conventions#disabletopologyupdates)  
    * [SaveEnumsAsIntegers](../../client-api/configuration/conventions#saveenumsasintegers)  
-   * [UseHttpCompression, UseHttpDecompression](../../client-api/configuration/conventions#usehttpcompression-usehttpdecompression)  
+   * [UseCompression](../../client-api/configuration/conventions#usecompression)  
    * [OperationStatusFetchMode](../../client-api/configuration/conventions#operationstatusfetchmode)  
    * [Change fields/properties Naming Convention](../../client-api/configuration/conventions#change-fieldsproperties-naming-convention)  
    * [IdentityPartsSeparator](../../client-api/configuration/conventions#identitypartsseparator)  
@@ -89,13 +89,12 @@ integers or strings and instructs the LINQ provider to query enums as integer va
 **Default**: `false`  
 {CODE SaveEnumsAsIntegers@ClientApi\Configuration\Conventions.cs /}
 
-##UseHttpCompression, UseHttpDecompression
+## UseCompression
 
-It determines if the client will send headers to the server indicating that it allows compression/decompression to be used.  
-Default: `true`.  
-
-{CODE UseHttpCompression@ClientApi\Configuration\Conventions.cs /}
-{CODE UseHttpDecompression@ClientApi\Configuration\Conventions.cs /}
+`UseCompression` determines if the client would send the 
+server headers indicating whether compression is to be used.  
+**Default**: `true`  
+{CODE UseCompression@ClientApi\Configuration\Conventions.cs /}
 
 ## OperationStatusFetchMode
 
