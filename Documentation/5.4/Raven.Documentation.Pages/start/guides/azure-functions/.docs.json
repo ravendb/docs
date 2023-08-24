@@ -5,6 +5,11 @@
         "DiscussionId": "6f6ba11a-478d-4217-97b2-4371ebc3e094"
     },
     {
+        "Path": "existing-project.markdown",
+        "Name": "Add to Existing Project",
+        "DiscussionId": "d7e5c88b-de20-42b5-bace-9010053ecc1b"
+    },
+    {
         "Path": "deployment.markdown",
         "Name": "Deployment Considerations",
         "DiscussionId": "0c8d203e-8006-47c8-a1e5-2cdd05df069e"

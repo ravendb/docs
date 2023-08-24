@@ -6,6 +6,12 @@
         "Mappings": []
     },
     {
+        "Path": "existing-project.markdown",
+        "Name": "Add to Existing Project",
+        "DiscussionId": "a8616ab2-42a6-4562-b3df-3c0d715d739d",
+        "Mappings": []
+    },
+    {
         "Path": "troubleshooting.markdown",
         "Name": "Troubleshooting",
         "DiscussionId": "138288bb-7859-4668-8d43-b938d1f19652",
