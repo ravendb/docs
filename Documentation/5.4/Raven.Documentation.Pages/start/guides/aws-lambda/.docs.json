@@ -6,6 +6,12 @@
         "Mappings": []
     },
     {
+        "Path": "existing-project.markdown",
+        "Name": "Adding to Existing Project",
+        "DiscussionId": "da49de93-05de-4f9a-a37c-5b66eb0e958b",
+        "Mappings": []
+    },
+    {
         "Path": "secrets-manager.markdown",
         "Name": "Using AWS Secrets Manager",
         "DiscussionId": "9958bfaa-4171-4ab1-a4f4-3b562d75e7c3",
