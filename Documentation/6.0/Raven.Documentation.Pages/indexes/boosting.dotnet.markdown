@@ -21,8 +21,8 @@ The next step is to perform a query against that index:
 
 {NOTE: }
 When using [Corax](../indexes/search-engine/corax) as the search engine, 
-[indexing-time boosting is available](../indexes/search-engine/corax#supported-features) 
-for documents, but not for document fields.  
+[indexing-time boosting](../indexes/search-engine/corax#supported-features) 
+ is available for documents, but not for document fields.  
 {NOTE/}
 
 ## Related Articles
