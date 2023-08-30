@@ -417,3 +417,23 @@ Disabling this option can improve query performance.
 - **Scope**: Server-wide, per database, or per index
 
 {PANEL/}
+
+{PANEL:Indexing.Corax.DocumentsLimitForCompressionDictionaryCreation}
+
+Corax index compression max documents used for dictionary creation.
+
+- **Type**: `int`
+- **Default**: `100000`
+- **Scope**: Server-wide, per database, or per index
+
+{PANEL/}
+
+{PANEL:Indexing.Corax.MaxMemoizationSizeInMb}
+
+The maximum amount of memory that Corax can use for a memoization clause during query processing.  
+
+- **Type**: `Size`
+- **Default**: `128`
+- **Scope**: Server-wide, per database, or per index
+
+{PANEL/}

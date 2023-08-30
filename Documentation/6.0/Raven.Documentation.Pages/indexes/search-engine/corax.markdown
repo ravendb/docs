@@ -4,7 +4,7 @@
 {NOTE: }
 
 * **Corax** is RavenDB's native search engine, introduced in RavenDB 
-  version 5.4 as an in-house searching alternative for Lucene.  
+  version 6.0 as an in-house searching alternative for Lucene.  
   Lucene remains available as well, you can use either search engine 
   as you prefer.  
 
@@ -73,6 +73,20 @@ E.g. -
 {NOTE: }
 You must restart the server for the new settings to be read and applied.  
 {NOTE/}
+
+{NOTE: }
+Selecting a new search engine will change the search engine only for indexes created from now on.  
+
+E.g., If my configuration has been `"Indexing.Static.SearchEngineType": "Corax"` 
+until now and i now change it to `"Indexing.Static.SearchEngineType": "Lucene"`, 
+static indexes created from now on will use Lucene, but static indexes created 
+while Corax was selected will continue using Corax.  
+
+After selecting a new search engine using the above options, change the search 
+engine used by an existing index by [resetting](../../client-api/operations/maintenance/indexes/reset-index) 
+the index.  
+{NOTE/}
+
 
 ---
 
@@ -145,7 +159,7 @@ These are the features currently supported/yet-unsupported by Corax.
     |------------------------------------------------------------------------|--------------------
     | [Boosting](../../indexes/boosting) <br> Boosting **documents** during indexing <br> Boosting **document fields** during indexing | <br> `yes` <br> **no** 
     | [WKT shapes](../../indexes/indexing-spatial-data) <br> Indexing **spatial points** during the indexing of spatial data <br> Indexing **WKT shapes** during the indexing of spatial data  | <br> `yes` <br> **no** 
-    
+    | [Custom analyzers](../../studio/database/settings/custom-analyzers) | **no** 
 
 * **While querying**:  
 
@@ -155,12 +169,21 @@ These are the features currently supported/yet-unsupported by Corax.
     | [Facets](../../indexes/querying/faceted-search) | `yes` 
     | Searching by [Regex](../../client-api/session/querying/text-search/using-regex) | `yes` 
     | [Fuzzy Search](../../client-api/session/querying/text-search/fuzzy-search) | **no** 
+    | [Explanations](../../client-api/session/querying/debugging/include-explanations) | **no** 
+    | [Distinct](../../indexes/querying/distinct) operation on a collection with more than int32 ({int.MaxValue}) documents | **no** 
 
-* [Dynamic Fields](../../indexes/using-dynamic-fields)  
+    throw new NotSupportedInCoraxException($"{nameof(Corax)} doesn't support {nameof(Explanations)} yet.");
+    throw new NotSupportedInCoraxException($"Corax doesn't support 'Distinct' operation on collection bigger than int32 ({int.MaxValue}).");
 
-    | Feature        | Supported by Corax | Comment
-    |----------------|--------------------|--------
-    | Dynamic Fields | `yes` | Corax' handling of dynamic fields is similar to Lucene's.
+* **Dynamic Fields**  
+
+    | Feature        | Supported by Corax 
+    |----------------|--------------------
+    | [Dynamic Fields](../../indexes/using-dynamic-fields) | `yes` 
+
+* **Complex JSON properties**  
+  Complex JSON properties cannot currently be indexed and searched by Corax.  
+  Read more about this [below](../../indexes/search-engine/corax#handling-of-complex-json-objects).  
 
 * `WHERE`  
 
@@ -203,7 +226,7 @@ These are the features currently supported/yet-unsupported by Corax.
 
 Trying to use Corax with an unimplemented method (see 
 [Supported Features](../../indexes/search-engine/corax#supported-features) above) 
-will generate a `System.NotImplementedException` exception and end the search.  
+will generate a `NotSupportedInCoraxException` exception and end the search.  
 
 {INFO: }
 E.g. -  
@@ -274,8 +297,9 @@ select Lucene as your search engine when you need to index nested properties.
 
 You can use Corax as your search engine, but explicitly disable the indexing 
 of complex objects.  
-When you disable the **indexing** of a field this way, the field's contents 
-can still be **stored and projected**.  
+When you disable the indexing of a field this way, the field's content 
+can still be stored so it may be used in 
+[projection queries](../../indexes/querying/projections#projections-and-stored-fields).  
 
 * To disable indexing for a specified field **via Studio**:  
   
@@ -354,6 +378,12 @@ Corax configuration options include:
 
 * [Indexing.Corax.IncludeSpatialDistance](../../server/configuration/indexing-configuration#indexing.corax.includespatialdistance)
   Used to include spatial information in document metadata when sorting by distance.  
+
+* [Indexing.Corax.DocumentsLimitForCompressionDictionaryCreation](../../server/configuration/indexing-configuration#indexing.corax.documentslimitforcompressiondictionarycreation)
+  Set the Corax index compression max documents limit used for dictionary creation.  
+
+* [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration#indexing.corax.maxmemoizationsizeinmb)
+  The maximum amount of memory that Corax can use for a memoization clause during query processing.  
 
 
 {PANEL/}
