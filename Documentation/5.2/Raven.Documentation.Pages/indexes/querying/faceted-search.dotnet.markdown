@@ -54,8 +54,8 @@ __Facets definition__:
 * Define a list of facets by which to aggregate the data.
 
 * There are two __Facet types__:
-    * `Facet` - return a count for each unique term found in the specified category (index-field).
-    * `RangeFacet` - return a count per range within the specified category (index-field).
+    * `Facet` - returns a count for each unique term found in the specified index-field.
+    * `RangeFacet` - returns a count per range within the specified index-field.
   
 {CODE facets_1@Indexes\Querying\FacetedSearch.cs /}
 
@@ -79,7 +79,7 @@ __Query the index for facets results__:
 {CODE-TAB:csharp:Query facets_2@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:Query_async facets_3@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:DocumentQuery facets_4@Indexes\Querying\FacetedSearch.cs /}
-{CODE-TAB:csharp:Query_with_FluentAPI facets_5@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:Query_FluentAPI facets_5@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Cameras/ByFeatures"
 select
@@ -159,7 +159,7 @@ __Query the index for facets results__:
 {CODE-TAB:csharp:Query facets_10@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:Query_async facets_11@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:DocumentQuery facets_12@Indexes\Querying\FacetedSearch.cs /}
-{CODE-TAB:csharp:Query_with_FluentAPI facets_13@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:Query_FluentAPI facets_13@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Cameras/ByFeatures"
 select facet(Brand, $p0)
@@ -193,7 +193,7 @@ __Facets definition__:
 * Aggregation of data is available for an index-field per unique Facet or Range item.  
   For example:  
   * Get the total number of UnitsInStock per Brand  
-  * Get the highest Megapixels value for documents that cost between 200 & 400   
+  * Get the highest MegaPixels value for documents that cost between 200 & 400   
 
 * The following aggregation operations are available:  
   * Sum
@@ -217,7 +217,7 @@ __Query the index for facets results__:
 {CODE-TAB:csharp:Query facets_17@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:Query_async facets_18@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:DocumentQuery facets_19@Indexes\Querying\FacetedSearch.cs /}
-{CODE-TAB:csharp:Query_with_FluentAPI facets_20@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:Query_FluentAPI facets_20@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Cameras/ByFeatures"
 select
@@ -225,8 +225,8 @@ select
           sum(UnitsInStock),
           avg(Price),
           min(Price),
-          max(Megapixels),
-          max(MaxFocalLength))),
+          max(MegaPixels),
+          max(MaxFocalLength)),
     facet(Price < $p0,
           Price >= $p1 and Price < $p2,
           Price >= $p3 and Price < $p4,
@@ -235,7 +235,7 @@ select
           sum(UnitsInStock),
           avg(Price),
           min(Price),
-          max(Megapixels),
+          max(MegaPixels),
           max(MaxFocalLength))
 {"p0":200.0,"p1":200.0,"p2":400.0,"p3":400.0,"p4":600.0,"p5":600.0,"p6":800.0,"p7":800.0}
 {CODE-TAB-BLOCK/}
@@ -286,7 +286,7 @@ __Query using facets from document__:
 {CODE-TAB:csharp:DocumentQuery facets_26@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Cameras/ByFeatures"
-select facet(id("customFacetSetupDocumentID"))
+select facet(id("customDocumentID"))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

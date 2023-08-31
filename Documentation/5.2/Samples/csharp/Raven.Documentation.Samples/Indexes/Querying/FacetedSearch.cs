@@ -16,7 +16,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
     {
         public string Manufacturer { get; set; }
         public double Cost { get; set; }
-        public double Megapixels { get; set; }
+        public double MegaPixels { get; set; }
         public int MaxFocalLength { get; set; }
         public int UnitsInStock { get; set; }
     }
@@ -29,7 +29,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
         {
             public string Brand { get; set; }
             public double Price { get; set; }
-            public double Megapixels { get; set; }
+            public double MegaPixels { get; set; }
             public int MaxFocalLength { get; set; }
             public int UnitsInStock { get; set; }
         }
@@ -41,7 +41,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 {
                     Brand = camera.Manufacturer,
                     Price = camera.Cost,
-                    Megapixels = camera.Megapixels,
+                    MegaPixels = camera.MegaPixels,
                     MaxFocalLength = camera.MaxFocalLength,
                     UnitsInStock = camera.UnitsInStock
                 };
@@ -61,18 +61,18 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
                 var cameras = new[]
                 {
-                  new Camera { Manufacturer = "Sony", Cost = 100, Megapixels = 20.1, MaxFocalLength = 200, UnitsInStock = 10 },
-                  new Camera { Manufacturer = "Sony", Cost = 200, Megapixels = 29, MaxFocalLength = 250, UnitsInStock = 15 },
-                  new Camera { Manufacturer = "Nikon", Cost = 120, Megapixels = 22.3, MaxFocalLength = 300, UnitsInStock = 2 },
-                  new Camera { Manufacturer = "Nikon", Cost = 180, Megapixels = 32, MaxFocalLength = 300, UnitsInStock = 5 },
-                  new Camera { Manufacturer = "Nikon", Cost = 220, Megapixels = 40, MaxFocalLength = 300, UnitsInStock = 20 },
-                  new Camera { Manufacturer = "Canon", Cost = 200, Megapixels = 30.4, MaxFocalLength = 400, UnitsInStock = 30 },
-                  new Camera { Manufacturer = "Olympus", Cost = 250, Megapixels = 32.5, MaxFocalLength = 600, UnitsInStock = 4 },
-                  new Camera { Manufacturer = "Olympus", Cost = 390, Megapixels = 40, MaxFocalLength = 600, UnitsInStock = 6 },
-                  new Camera { Manufacturer = "Fuji", Cost = 410, Megapixels = 45, MaxFocalLength = 700, UnitsInStock = 1 },
-                  new Camera { Manufacturer = "Fuji", Cost = 590, Megapixels = 45, MaxFocalLength = 700, UnitsInStock = 5 },
-                  new Camera { Manufacturer = "Fuji", Cost = 650, Megapixels = 61, MaxFocalLength = 800, UnitsInStock = 17 },
-                  new Camera { Manufacturer = "Fuji", Cost = 850, Megapixels = 102, MaxFocalLength = 800, UnitsInStock = 19 }
+                  new Camera { Manufacturer = "Sony", Cost = 100, MegaPixels = 20.1, MaxFocalLength = 200, UnitsInStock = 10 },
+                  new Camera { Manufacturer = "Sony", Cost = 200, MegaPixels = 29, MaxFocalLength = 250, UnitsInStock = 15 },
+                  new Camera { Manufacturer = "Nikon", Cost = 120, MegaPixels = 22.3, MaxFocalLength = 300, UnitsInStock = 2 },
+                  new Camera { Manufacturer = "Nikon", Cost = 180, MegaPixels = 32, MaxFocalLength = 300, UnitsInStock = 5 },
+                  new Camera { Manufacturer = "Nikon", Cost = 220, MegaPixels = 40, MaxFocalLength = 300, UnitsInStock = 20 },
+                  new Camera { Manufacturer = "Canon", Cost = 200, MegaPixels = 30.4, MaxFocalLength = 400, UnitsInStock = 30 },
+                  new Camera { Manufacturer = "Olympus", Cost = 250, MegaPixels = 32.5, MaxFocalLength = 600, UnitsInStock = 4 },
+                  new Camera { Manufacturer = "Olympus", Cost = 390, MegaPixels = 40, MaxFocalLength = 600, UnitsInStock = 6 },
+                  new Camera { Manufacturer = "Fuji", Cost = 410, MegaPixels = 45, MaxFocalLength = 700, UnitsInStock = 1 },
+                  new Camera { Manufacturer = "Fuji", Cost = 590, MegaPixels = 45, MaxFocalLength = 700, UnitsInStock = 5 },
+                  new Camera { Manufacturer = "Fuji", Cost = 650, MegaPixels = 61, MaxFocalLength = 800, UnitsInStock = 17 },
+                  new Camera { Manufacturer = "Fuji", Cost = 850, MegaPixels = 102, MaxFocalLength = 800, UnitsInStock = 19 }
                 };
 
                 using (var session = store.OpenSession())
@@ -101,7 +101,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     // ===============
                     new Facet
                     {
-                        // Specify an index-field for which to get count of documents per unique ITEM
+                        // Specify the index-field for which to get count of documents per unique ITEM
                         // e.g. get the number of Camera documents for each unique Brand
                         FieldName = "Brand",
                         // Set a display name for this field in the results (optional) 
@@ -176,7 +176,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                          // Call 'AggregateBy' to aggregate the data by facets
                          // Use a builder as follows:
                         .AggregateBy(builder => builder
-                             // Specify an index-field (e.g. 'Brand') for which to get count per unique ITEM
+                             // Specify the index-field (e.g. 'Brand') for which to get count per unique ITEM
                             .ByField(x => x.Brand)
                              // Set a display name for the field in the results (optional) 
                             .WithDisplayName("Camera Brand"))
@@ -221,7 +221,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     // Get the aggregated facet value for a specific Brand:
                     var facetValue = brandFacets.Values[0];
                     // The brand name is available in the 'Range' property
-                    // Note: value is lower-case since the default RavenDB analyzer was used 
+                    // Note: value is lower-case since the default RavenDB analyzer was used by the index
                     Assert.Equal("canon", facetValue.Range);
                     // Number of documents for 'Canon' is available in the 'Count' property
                     Assert.Equal(1, facetValue.Count);
@@ -229,7 +229,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     // Get facets results for index-field 'Price' using the display name specified:
                     // ============================================================================
                     var priceFacets = results["Camera Price"];
-                    var numberRanges = priceFacets.Values.Count; // 5 different ranges
+                    var numberOfRanges = priceFacets.Values.Count; // 5 different ranges
 
                     // Get the aggregated facet value for a specific Range:
                     facetValue = priceFacets.Values[0];
@@ -241,9 +241,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 using (var session = store.OpenSession())
                 {
                     #region facets_8
-                    Dictionary<string, FacetResult> results = session
+                    Dictionary<string, FacetResult> filteredResults = session
                         .Query<Cameras_ByFeatures.IndexEntry, Cameras_ByFeatures>()
-                         // Limiting query results to the selected brands: 
+                         // Limit query results to the selected brands: 
                         .Where(x => x.Brand.In("Fuji", "Nikon"))
                         .AggregateBy(facets)
                         .Execute();
@@ -358,7 +358,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     // Get the aggregated facet value for a specific Brand:
                     var facetValue = brandFacets.Values[0];
                     // The brand name is available in the 'Range' property
-                    // Note: value is lower-case since the default RavenDB analyzer was used 
+                    // Note: value is lower-case since the default RavenDB analyzer was used by the index
                     Assert.Equal("fuji", facetValue.Range);
                     // Number of documents for 'Fuji' is available in the 'Count' property
                     Assert.Equal(4, facetValue.Count);
@@ -408,8 +408,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         {
                             FacetAggregation.Max, new HashSet<FacetAggregationField>
                             {
-                                // Get max Megapixels per Brand
-                                new FacetAggregationField {Name = "Megapixels"},
+                                // Get max MegaPixels per Brand
+                                new FacetAggregationField {Name = "MegaPixels"},
                                 // Get max MaxFocalLength per Brand
                                 new FacetAggregationField {Name = "MaxFocalLength"}
                             }
@@ -455,8 +455,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         {
                             FacetAggregation.Max, new HashSet<FacetAggregationField>
                             {
-                                // Get max Megapixels for each group of documents per range specified
-                                new FacetAggregationField {Name = "Megapixels"},
+                                // Get max MegaPixels for each group of documents per range specified
+                                new FacetAggregationField {Name = "MegaPixels"},
                                 // Get max MaxFocalLength for each group of documents per range specified
                                 new FacetAggregationField {Name = "MaxFocalLength"}
                             }
@@ -523,7 +523,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                             .SumOn(x => x.UnitsInStock)
                             .AverageOn(x => x.Price)
                             .MinOn(x => x.Price)
-                            .MaxOn(x => x.Megapixels)
+                            .MaxOn(x => x.MegaPixels)
                             .MaxOn(x => x.MaxFocalLength))
                         .AndAggregateBy(builder => builder
                              // Specify ranges within an index field (e.g. 'Price') in order to get count per RANGE
@@ -537,7 +537,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                             .SumOn(x => x.UnitsInStock)
                             .AverageOn(x => x.Price)
                             .MinOn(x => x.Price)
-                            .MaxOn(x => x.Megapixels)
+                            .MaxOn(x => x.MegaPixels)
                             .MaxOn(x => x.MaxFocalLength))
                         .Execute();
                     #endregion
@@ -549,12 +549,12 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     // For the "Brand" Facet:
                     //     "canon" Count:1, Sum: 30, Name: UnitsInStock
                     //     "canon" Count:1, Min: 200, Average: 200, Name: Price
-                    //     "canon" Count:1, Max: 30.4, Name: Megapixels
+                    //     "canon" Count:1, Max: 30.4, Name: MegaPixels
                     //     "canon" Count:1, Max: 400, Name: MaxFocalLength
                     //
                     //     "fuji" Count:4, Sum: 42, Name: UnitsInStock
                     //     "fuji" Count:4, Min: 410, Name: Price
-                    //     "fuji" Count:4, Max: 102, Name: Megapixels
+                    //     "fuji" Count:4, Max: 102, Name: MegaPixels
                     //     "fuji" Count:4, Max: 800, Name: MaxFocalLength
                     //     
                     //     etc.....
@@ -562,12 +562,12 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     // For the "Price" Ranges:
                     //     "Price < 200.0" Count:3, Sum: 17, Name: UnitsInStock
                     //     "Price < 200.0" Count:3, Min: 100, Average: 133.33, Name: Price
-                    //     "Price < 200.0" Count:3, Max: 32, Name: Megapixels
+                    //     "Price < 200.0" Count:3, Max: 32, Name: MegaPixels
                     //     "Price < 200.0" Count:3, Max: 300, Name: MaxFocalLength
                     //
                     //     "Price < 200.0 and Price > 400.0" Count:5, Sum: 75, Name: UnitsInStock
                     //     "Price < 200.0 and Price > 400.0" Count:5, Min: 200, Average: 252, Name: Price
-                    //     "Price < 200.0 and Price > 400.0" Count:5, Max: 40, Name: Megapixels
+                    //     "Price < 200.0 and Price > 400.0" Count:5, Max: 40, Name: MegaPixels
                     //     "Price < 200.0 and Price > 400.0" Count:5, Max: 600, Name: MaxFocalLength
                     //     
                     //     etc.....
@@ -618,9 +618,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         // Provide the ID of the document in which the facet setup will be stored.
                         // This is optional -
                         // if not provided then the session will assign an ID for the stored document.
-                        Id = "customFacetSetupDocumentID",
+                        Id = "customDocumentID",
 
-                        // Define a Facets and RangeFacets to query by:
+                        // Define Facets and RangeFacets to query by:
                         Facets = new List<Facet> {
                             new Facet()
                             {
@@ -633,10 +633,10 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                             {
                                 Ranges =
                                 {
-                                    x => x.Megapixels < 20,
-                                    x => x.Megapixels >= 20 && x.Megapixels < 30,
-                                    x => x.Megapixels >= 30 && x.Megapixels < 50,
-                                    x => x.Megapixels >= 50
+                                    x => x.MegaPixels < 20,
+                                    x => x.MegaPixels >= 20 && x.MegaPixels < 30,
+                                    x => x.MegaPixels >= 30 && x.MegaPixels < 50,
+                                    x => x.MegaPixels >= 50
                                 }
                             }
                         }
@@ -646,6 +646,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     // ================================================
                     session.Store(facetSetup);
                     session.SaveChanges();
+                    
+                    // The document will be stored under the 'FacetSetups' collection
                     #endregion
                 }
                 
@@ -657,7 +659,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .Query<Cameras_ByFeatures.IndexEntry, Cameras_ByFeatures>()
                          // Call 'AggregateUsing'
                          // Pass the ID of the document that contains your facets setup
-                        .AggregateUsing("customFacetSetupDocumentID")
+                        .AggregateUsing("customDocumentID")
                         .Execute();
                     #endregion
                 }
@@ -670,7 +672,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .Query<Cameras_ByFeatures.IndexEntry, Cameras_ByFeatures>()
                          // Call 'AggregateUsing'
                          // Pass the ID of the document that contains your facets setup
-                        .AggregateUsing("customFacetSetupDocumentID")
+                        .AggregateUsing("customDocumentID")
                         .ExecuteAsync();
                     #endregion
                 }
@@ -683,7 +685,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .DocumentQuery<Cameras_ByFeatures.IndexEntry, Cameras_ByFeatures>()
                          // Call 'AggregateUsing'
                          // Pass the ID of the document that contains your facets setup
-                        .AggregateUsing("customFacetSetupDocumentID")
+                        .AggregateUsing("customDocumentID")
                         .Execute();
                     #endregion
                 }
