@@ -30,6 +30,7 @@
    * [Supported Features](../../indexes/search-engine/corax#supported-features)  
       * [Unimplemented Methods](../../indexes/search-engine/corax#unimplemented-methods)  
    * [Handling of Complex JSON Objects](../../indexes/search-engine/corax#handling-of-complex-json-objects)  
+   * [Limits](../../indexes/search-engine/corax#limits)  
    * [Configuration Options](../../indexes/search-engine/corax#configuration-options)  
 
 {NOTE/}
@@ -172,9 +173,6 @@ These are the features currently supported/yet-unsupported by Corax.
     | [Explanations](../../client-api/session/querying/debugging/include-explanations) | **no** 
     | [Distinct](../../indexes/querying/distinct) operation on a collection with more than int32 ({int.MaxValue}) documents | **no** 
 
-    throw new NotSupportedInCoraxException($"{nameof(Corax)} doesn't support {nameof(Explanations)} yet.");
-    throw new NotSupportedInCoraxException($"Corax doesn't support 'Distinct' operation on collection bigger than int32 ({int.MaxValue}).");
-
 * **Dynamic Fields**  
 
     | Feature        | Supported by Corax 
@@ -230,7 +228,7 @@ will generate a `NotSupportedInCoraxException` exception and end the search.
 
 {INFO: }
 E.g. -  
-the following query uses the `intersect` method, which is currently not supported by Corax.  
+The following query uses the `intersect` method, which is currently not supported by Corax.  
 {CODE-BLOCK: SQL}
 from index 'Orders/ByCompany'
 where intersect(Count > 10, Total > 3)
@@ -263,9 +261,9 @@ Consider, for example, the following `orders` document:
 }
 {CODE-BLOCK/}
 
-As the `Location` property of the document above contains not a simple numeric value 
-or string but a list of key/value pairs, attempting to index this field using Corax 
-[would fail](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing).  
+As the `Location` property of the document above contains a list of key/value pairs 
+rather than a simple numeric value or a string, attempting to index this field using 
+Corax [would fail](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing).  
 
 There are several ways to handle the indexing of complex JSON objects:  
 
@@ -325,7 +323,7 @@ You can use `ToString()` to index the complex property as a string.
 from order in docs.Orders
 select new
 {
-    // this will fail for the above document when using Corax
+    // This will fail for the above document when using Corax
     Location = order.ShipTo.Location
 }
 {CODE-TAB-BLOCK/}
@@ -333,7 +331,7 @@ select new
 from order in docs.Orders
 select new
 {
-    // handling the field as string will allow Corax to index it
+    // Handling the field as a string will allow Corax to index it
     Location = order.ShipTo.Location.ToString()
 }
 {CODE-TAB-BLOCK/}
@@ -344,6 +342,12 @@ Using `ToString` will serialize all the properties of the complex property into
 a single string, including names, values, brackets, and so on.  
 The produced string is **not** a good feed for analyzers and is not commonly used for searches.  
 It does, however, make sense in some cases to **project** such a string.  
+{NOTE/}
+
+{NOTE: }
+Make sure your code handles failure scenarios such as `ToString` returning `null` 
+rather than a string because the object you attempt to serialize includes references 
+to unreachable objects.  
 {NOTE/}
 
 ---
@@ -361,6 +365,20 @@ It does, however, make sense in some cases to **project** such a string.
   
      If the static index explicitly sets the Indexing flag in 
      any other way but "no", Corax **will** throw the exception.  
+
+{PANEL/}
+
+{PANEL: Limits}
+
+* Corax can create and use indexes of more than `int.MaxValue` documents.  
+  To match this capacity, queries over Corax indexes can 
+  [skip](../../client-api/session/querying/what-is-rql#limit) 
+  a number of results that exceeds `int.MaxValue` and 
+  [take](../../indexes/querying/paging#example-ii---basic-paging) 
+  documents from this location.  
+
+* The maximum number of documents that can be **projected** by a query 
+  (using either Corax or Lucene) is `int.MaxValue`.  
 
 {PANEL/}
 
@@ -384,7 +402,6 @@ Corax configuration options include:
 
 * [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration#indexing.corax.maxmemoizationsizeinmb)
   The maximum amount of memory that Corax can use for a memoization clause during query processing.  
-
 
 {PANEL/}
 

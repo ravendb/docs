@@ -20,9 +20,13 @@ The next step is to perform a query against that index:
 {INFO Boosting is also available at the query level. You can read more about it [here](../client-api/session/querying/text-search/boost-search-results). /}
 
 {NOTE: }
-When using [Corax](../indexes/search-engine/corax) as the search engine, 
-[indexing-time boosting](../indexes/search-engine/corax#supported-features) 
- is available for documents, but not for document fields.  
+When using [Corax](../indexes/search-engine/corax) as the search engine:  
+
+* [indexing-time boosting](../indexes/search-engine/corax#supported-features) 
+  is available for documents, but not for document fields.  
+* Corax ranks search results using the [BM25 algorithm](https://en.wikipedia.org/wiki/Okapi_BM25).  
+  Other search engines, e.g. Lucene, may use a different ranking algorithm and return different search results.  
+
 {NOTE/}
 
 ## Related Articles

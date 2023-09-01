@@ -11,6 +11,14 @@ By default, if the number of returned results exceeds **2048**, the server will 
 The threshold can be adjusted by changing the `PerformanceHints.MaxNumberOfResults` configuration value.
 {INFO/}
 
+{INFO:Limits}
+When [Corax](../../indexes/search-engine/corax) is used as the search engine, 
+indexes of more than `int.MaxValue` documents can be created and used.  
+To match this capacity, queries over Corax indexes can [skip](../../indexes/querying/paging#example-ii---basic-paging) 
+a number of results that exceeds `int.MaxValue` and `take` documents from 
+this location.  
+{INFO/}
+
 ## Example I - No Paging
 
 The queries below will return all the results available.
