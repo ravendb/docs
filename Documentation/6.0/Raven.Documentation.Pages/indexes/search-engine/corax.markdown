@@ -30,8 +30,10 @@
    * [Supported Features](../../indexes/search-engine/corax#supported-features)  
       * [Unimplemented Methods](../../indexes/search-engine/corax#unimplemented-methods)  
    * [Handling of Complex JSON Objects](../../indexes/search-engine/corax#handling-of-complex-json-objects)  
+   * [Compound Fields](../../indexes/search-engine/corax#compound-fields)  
    * [Limits](../../indexes/search-engine/corax#limits)  
    * [Configuration Options](../../indexes/search-engine/corax#configuration-options)  
+   * [Index Training: Compression Dictionaries](../../indexes/search-engine/corax#index-training:-compression-dictionaries)  
 
 {NOTE/}
 
@@ -368,6 +370,53 @@ to unreachable objects.
 
 {PANEL/}
 
+{PANEL: Compound Fields}
+
+A compound field is a Corax index field comprised of multiple simple data elements.  
+Users can define compound fields to optimize data retrieval: data stored in a compound 
+field is sorted as requested by the user, and would later on be retrieved in this order 
+with extended efficiency.  
+Compound fields can also be used to unify simple data elements in cohesive units to 
+make the index more readable. 
+
+* **Adding a Compound Field**  
+  In an index definition, add a compound field using the `CompoundFields.Add` method.  
+  Pass the method simple data elements in the order by which you want them to be sorted.  
+
+* **Example**  
+  An example for an index definition with a compound field can be:  
+  {CODE-BLOCK:csharp}
+private class Product_Location : AbstractIndexCreationTask<Product>
+{
+    public Product_Location()
+    {
+        Map = products => 
+            from p in products 
+            select new { p.Brand, p.Location };
+
+        // Add a compound field 
+        CompoundFields.Add(new[] { nameof(Product.Brand), nameof(Product.Location) });
+    }
+}
+{CODE-BLOCK/}
+
+    The code that uses the indexed data will look no different than if the 
+    index included no compound field, but as the data is pre-sorted will produce 
+    much faster results.  
+
+    {CODE-BLOCK:csharp}
+using (var s = store.OpenSession())
+{
+    // Use the internal optimization previously created by the added compount field
+    var products = s.Query<Product, Product_Location>()
+        .Where(x => x.Brand == "RunningShoes")
+        .OrderBy(x => x.Location)
+        .ToList();
+}
+{CODE-BLOCK/}
+
+{PANEL/}
+
 {PANEL: Limits}
 
 * Corax can create and use indexes of more than `int.MaxValue` documents.  
@@ -404,6 +453,43 @@ Corax configuration options include:
   The maximum amount of memory that Corax can use for a memoization clause during query processing.  
 
 {PANEL/}
+
+{PANEL: Index Training: Compression Dictionaries}
+
+When creating Corax indexes, RavenDB analyzes indexes contents and trains 
+[compression dictionaries](https://en.wikibooks.org/wiki/Data_Compression/Dictionary_compression) 
+for much higher storage and execution efficiency.  
+
+* The larger the collection, the longer the training process will take.  
+  The index, however, will become more efficient in terms of resource usage.  
+* The training process can take from a few seconds to up to a minute in multiterabyte collections.  
+* The IO speed of the storage system also affects the training time.  
+
+Here are some additional things to keep in mind about Corax indexes compression dictionaries:  
+
+* Compression dictionaries are used to store index terms more efficiently.  
+  This can significantly reduce the size of the index, which can improve performance.  
+* The training process is **only performed once**, when the index is created.  
+* The compression dictionaries are stored with the index and are used for all subsequent 
+  operations (indexing and querying).  
+* The benefits of compression dictionaries are most pronounced for large collections.  
+* If upon creation there is less than 10000 documents in the collections involved, 
+  it may make sense to manually force an index reset after reaching 100000 documents 
+  to force a retraining.  
+  This can be done using [side-by-side](../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing) 
+  manner, letting existing indexes work as new ones are being created, to avoid any 
+  interruption to existing queries.  
+
+---
+
+{NOTE: }
+Corax indexes will not train compression dictionaries if they are created in the 
+testing studio interface, because it is designed for indexing prototyping and the 
+training process will add unnecessary overhead.
+{NOTE/}
+
+{PANEL/}
+
 
 ## Related Articles
 
