@@ -400,11 +400,11 @@ private class Product_Location : AbstractIndexCreationTask<Product>
 }
 {CODE-BLOCK/}
 
-    The code that uses the indexed data will look no different than if the 
-    index included no compound field, but as the data is pre-sorted will produce 
-    much faster results.  
+    The query that uses the indexed data will look no different than if the 
+    index included no compound field, but produce the results much faster.  
 
-    {CODE-BLOCK:csharp}
+    {CODE-TABS}
+{CODE-TAB-BLOCK:csharp:Query}
 using (var s = store.OpenSession())
 {
     // Use the internal optimization previously created by the added compount field
@@ -413,7 +413,13 @@ using (var s = store.OpenSession())
         .OrderBy(x => x.Location)
         .ToList();
 }
-{CODE-BLOCK/}
+{CODE-TAB-BLOCK/}
+{CODE-TAB-BLOCK:sql:RQL}
+from Products 
+where Brand = "RunningShoes" 
+order by Location 
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
 
 {PANEL/}
 
