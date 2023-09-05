@@ -54,7 +54,7 @@ namespace Raven.Documentation.Samples.SearchEngine
                 }
 
                 #region index-definition_select-while-creating-index
-                // set search engine type while creating the index
+                // Set search engine type while creating the index
                 new Product_ByAvailability(SearchEngineType.Corax).Execute(store);
                 #endregion
             }

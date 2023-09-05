@@ -426,6 +426,10 @@ The maximum amount of memory that Corax can use for a memoization clause during 
 - **Default**: `128`
 - **Scope**: Server-wide, per database, or per index
 
+{WARNING: Expert Level Configuration}
+Please configure this option only if you are an expert.
+{WARNING/}
+
 {PANEL/}
 
 {PANEL:Indexing.Corax.DocumentsLimitForCompressionDictionaryCreation}
@@ -449,3 +453,19 @@ Training will stop when it reaches this limit.
 - **Scope**: Server-wide, per database, or per index
 
 {PANEL/}
+
+## Related Articles
+
+### Indexes
+
+- [Auto Indexes](../../indexes/creating-and-deploying#auto-indexes)  
+- [Static Indexes](../../indexes/creating-and-deploying#static-indexes)  
+- [Boosting](../../indexes/boosting)
+- [Search Enigine: Corax](../../indexes/search-engine/corax#enabling-corax)
+
+### Studio
+- [Index List View](../../studio/database/indexes/indexes-list-view)  
+- [Database Settings](../../studio/database/settings/database-settings)  
+
+### Configuration
+- [Configuration Options](../../server/configuration/configuration-options)

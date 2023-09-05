@@ -13,7 +13,7 @@
   If no relevant index exists, the search engine will create one automatically.  
   
     The search engine is the main "moving part" of the indexing mechanism, 
-    that processes and indexes documents by index definitions.  
+    which processes and indexes documents by index definitions.  
 
 * The search engine can be selected separately for 
   [auto](../../indexes/creating-and-deploying#auto-indexes) and 
@@ -81,7 +81,7 @@ You must restart the server for the new settings to be read and applied.
 Selecting a new search engine will change the search engine only for indexes created from now on.  
 
 E.g., If my configuration has been `"Indexing.Static.SearchEngineType": "Corax"` 
-until now and i now change it to `"Indexing.Static.SearchEngineType": "Lucene"`, 
+until now and I now change it to `"Indexing.Static.SearchEngineType": "Lucene"`, 
 static indexes created from now on will use Lucene, but static indexes created 
 while Corax was selected will continue using Corax.  
 
@@ -126,7 +126,7 @@ overriding any per-database and per-server settings.
   view and select the index whose search engine you want to set.  
 
     ![Index Definition](images/corax-02_index-definition.png "Index Definition")
-    1. Open the index' **Configuration** tab.  
+    1. Open the index **Configuration** tab.  
     2. Select the search engine you prefer for this index.  
        ![Per-Index Search Engine](images/corax-03_index-definition_searcher-select.png "Per-Index Search Engine")
 
@@ -358,7 +358,7 @@ to unreachable objects.
 
 * If an auto index exists for the document, Corax will throw 
   `System.NotSupportedException` to notify the user that a search 
-  that makes no sense has been attempted.  
+  that is not supported by Corax has been attempted.  
 
 * If a static index is used and it doesn't explicitly relate 
   to the complex field, Corax will automatically exempt the 
@@ -387,7 +387,7 @@ make the index more readable.
   In an index definition, add a compound field using the `CompoundField` method.  
   Pass the method simple data elements in the order by which you want them to be sorted.  
 * **Example**  
-  An example for an index definition with a compound field can be:  
+  An example of an index definition with a compound field can be:  
   {CODE-BLOCK:csharp}
 private class Product_Location : AbstractIndexCreationTask<Product>
 {
@@ -410,7 +410,7 @@ private class Product_Location : AbstractIndexCreationTask<Product>
 {CODE-TAB-BLOCK:csharp:Query}
 using (var s = store.OpenSession())
 {
-    // Use the internal optimization previously created by the added compount field
+    // Use the internal optimization previously created by the added compound field
     var products = s.Query<Product, Product_Location>()
         .Where(x => x.Brand == "RunningShoes")
         .OrderBy(x => x.Location)
@@ -458,6 +458,9 @@ Corax configuration options include:
 
 * [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration#indexing.corax.maxmemoizationsizeinmb)  
   The maximum amount of memory that Corax can use for a memoization clause during query processing.  
+  {WARNING: Expert Level Configuration}
+  Please configure this option only if you are an expert.
+  {WARNING/}
 
 * [Indexing.Corax.DocumentsLimitForCompressionDictionaryCreation](../../server/configuration/indexing-configuration#indexing.corax.documentslimitforcompressiondictionarycreation)  
   Set the maximum number of documents that will be used for the training of a Corax index during dictionary creation.  
@@ -471,7 +474,7 @@ Corax configuration options include:
 
 {PANEL: Index Training: Compression Dictionaries}
 
-When creating Corax indexes, RavenDB analyzes indexes contents and trains 
+When creating Corax indexes, RavenDB analyzes index contents and trains 
 [compression dictionaries](https://en.wikibooks.org/wiki/Data_Compression/Dictionary_compression) 
 for much higher storage and execution efficiency.  
 
@@ -499,8 +502,8 @@ Here are some additional things to keep in mind about Corax indexes compression 
   documents in the involved collections, it may make sense to manually force an index 
   reset after reaching 100000 documents to force retraining.  
   {NOTE: }
-  Index are replaced in a [side-by-side](../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing) 
-  manner, so existing indexes would continue running until the new ones are created 
+  Indexes are replaced in a [side-by-side](../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing) 
+  manner: existing indexes would continue running until the new ones are created, 
   to avoid any interruption to existing queries.  
   {NOTE/}
 
@@ -532,3 +535,4 @@ training process will add unnecessary overhead.
 
 ### Configuration
 - [Configuration Options](../../server/configuration/configuration-options)
+- [Configuration: Indexing](../../server/configuration/indexing-configuration)
