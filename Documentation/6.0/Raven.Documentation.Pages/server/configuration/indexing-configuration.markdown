@@ -418,9 +418,20 @@ Disabling this option can improve query performance.
 
 {PANEL/}
 
+{PANEL:Indexing.Corax.MaxMemoizationSizeInMb}
+
+The maximum amount of memory that Corax can use for a memoization clause during query processing.  
+
+- **Type**: `Size`
+- **Default**: `128`
+- **Scope**: Server-wide, per database, or per index
+
+{PANEL/}
+
 {PANEL:Indexing.Corax.DocumentsLimitForCompressionDictionaryCreation}
 
-Corax index compression max documents used for dictionary creation.
+Set the maximum number of documents that will be used for the training of a Corax index during dictionary creation.  
+Training will stop when it reaches this limit.  
 
 - **Type**: `int`
 - **Default**: `100000`
@@ -428,12 +439,13 @@ Corax index compression max documents used for dictionary creation.
 
 {PANEL/}
 
-{PANEL:Indexing.Corax.MaxMemoizationSizeInMb}
+{PANEL:Indexing.Corax.MaxAllocationsAtDictionaryTrainingInMb}
 
-The maximum amount of memory that Corax can use for a memoization clause during query processing.  
+Set the maximum amount of memory (in MB) that will be allocated for the training of a Corax index during dictionary creation.  
+Training will stop when it reaches this limit.  
 
-- **Type**: `Size`
-- **Default**: `128`
+- **Type**: `SizeUnit.Megabytes`
+- **Default**: 2 GB for x64, or 128 MB for x86 (32 bits)
 - **Scope**: Server-wide, per database, or per index
 
 {PANEL/}

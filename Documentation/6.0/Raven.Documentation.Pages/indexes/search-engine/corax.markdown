@@ -372,17 +372,20 @@ to unreachable objects.
 
 {PANEL: Compound Fields}
 
-A compound field is a Corax index field comprised of multiple simple data elements.  
+A compound field is a Corax index field comprised of 2 simple data elements.  
+{NOTE: }
+A compound field can currently be composed of exactly **2 elements**.  
+{NOTE/}
+
 Users can define compound fields to optimize data retrieval: data stored in a compound 
 field is sorted as requested by the user, and would later on be retrieved in this order 
-with extended efficiency.  
+with extreme efficiency.  
 Compound fields can also be used to unify simple data elements in cohesive units to 
 make the index more readable. 
 
 * **Adding a Compound Field**  
-  In an index definition, add a compound field using the `CompoundFields.Add` method.  
+  In an index definition, add a compound field using the `CompoundField` method.  
   Pass the method simple data elements in the order by which you want them to be sorted.  
-
 * **Example**  
   An example for an index definition with a compound field can be:  
   {CODE-BLOCK:csharp}
@@ -395,7 +398,7 @@ private class Product_Location : AbstractIndexCreationTask<Product>
             select new { p.Brand, p.Location };
 
         // Add a compound field 
-        CompoundFields.Add(new[] { nameof(Product.Brand), nameof(Product.Location) });
+        CompoundField(x => x.Brand, x.Location);
     }
 }
 {CODE-BLOCK/}
@@ -441,22 +444,28 @@ order by Location
 
 Corax configuration options include:  
 
-* [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration#indexing.auto.searchenginetype) 
-  and [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration#indexing.static.searchenginetype)  
-  Used to select the search engine for **Auto** and **Static** indexes, respectively.  
-  Read about these options [here](../../indexes/search-engine/corax#selecting-the-search-engine).  
-     
-* [Indexing.Corax.IncludeDocumentScore](../../server/configuration/indexing-configuration#indexing.corax.includedocumentscore)
-  Used to include the score value in document metadata when sorting by score.  
+* [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration#indexing.auto.searchenginetype)  
+  [Select](../../indexes/search-engine/corax#selecting-the-search-engine) the search engine for **Auto** indexes.  
 
-* [Indexing.Corax.IncludeSpatialDistance](../../server/configuration/indexing-configuration#indexing.corax.includespatialdistance)
-  Used to include spatial information in document metadata when sorting by distance.  
+* [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration#indexing.static.searchenginetype)  
+  [Select](../../indexes/search-engine/corax#selecting-the-search-engine) the search engine for **Static** indexes.  
 
-* [Indexing.Corax.DocumentsLimitForCompressionDictionaryCreation](../../server/configuration/indexing-configuration#indexing.corax.documentslimitforcompressiondictionarycreation)
-  Set the Corax index compression max documents limit used for dictionary creation.  
+* [Indexing.Corax.IncludeDocumentScore](../../server/configuration/indexing-configuration#indexing.corax.includedocumentscore)  
+  Choose whether to include the score value in document metadata when sorting by score.  
 
-* [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration#indexing.corax.maxmemoizationsizeinmb)
+* [Indexing.Corax.IncludeSpatialDistance](../../server/configuration/indexing-configuration#indexing.corax.includespatialdistance)  
+  Choose whether to include spatial information in document metadata when sorting by distance.  
+
+* [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration#indexing.corax.maxmemoizationsizeinmb)  
   The maximum amount of memory that Corax can use for a memoization clause during query processing.  
+
+* [Indexing.Corax.DocumentsLimitForCompressionDictionaryCreation](../../server/configuration/indexing-configuration#indexing.corax.documentslimitforcompressiondictionarycreation)  
+  Set the maximum number of documents that will be used for the training of a Corax index during dictionary creation.  
+  Training will stop when it reaches this limit.  
+
+* [Indexing.Corax.MaxAllocationsAtDictionaryTrainingInMb](../../server/configuration/indexing-configuration#indexing.corax.maxallocationsatdictionarytraininginmb)  
+  Set the maximum amount of memory (in MB) that will be allocated for the training of a Corax index during dictionary creation.  
+  Training will stop when it reaches this limit.  
 
 {PANEL/}
 
@@ -479,12 +488,21 @@ Here are some additional things to keep in mind about Corax indexes compression 
 * The compression dictionaries are stored with the index and are used for all subsequent 
   operations (indexing and querying).  
 * The benefits of compression dictionaries are most pronounced for large collections.  
-* If upon creation there is less than 10000 documents in the collections involved, 
-  it may make sense to manually force an index reset after reaching 100000 documents 
-  to force a retraining.  
-  This can be done using [side-by-side](../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing) 
-  manner, letting existing indexes work as new ones are being created, to avoid any 
-  interruption to existing queries.  
+  {NOTE: }
+  Training stops when it reaches either the 
+  [number of documents](../../server/configuration/indexing-configuration#indexing.corax.documentslimitforcompressiondictionarycreation)
+  threshold (10000 docs by default) or the 
+  [amount of memory](../../server/configuration/indexing-configuration#indexing.corax.maxallocationsatdictionarytraininginmb) 
+  threshold (2GB/128MB by default). Both thresholds are configurable.  
+  {NOTE/}
+* If upon creation there are less than [10000](../../server/configuration/indexing-configuration#indexing.corax.documentslimitforcompressiondictionarycreation) 
+  documents in the involved collections, it may make sense to manually force an index 
+  reset after reaching 100000 documents to force retraining.  
+  {NOTE: }
+  Index are replaced in a [side-by-side](../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing) 
+  manner, so existing indexes would continue running until the new ones are created 
+  to avoid any interruption to existing queries.  
+  {NOTE/}
 
 ---
 
