@@ -281,7 +281,7 @@ can still be stored so it may be used in
 
 #### 4. Turn the complex property into a string
 
-You can use `ToString()` to index the complex property as a string.  
+You can handle the complex property as a string.  
 
 {CODE-TABS}
 {CODE-TAB-BLOCK:sql:Not_Supported_By_Corax}
@@ -303,9 +303,9 @@ select new
 {CODE-TABS/}
 
 {NOTE: }
-Using `ToString` will serialize all the properties of the complex property into 
-a single string, including names, values, brackets, and so on.  
-The produced string is **not** a good feed for analyzers and is not commonly used for searches.  
+Serializing all the properties of a complex property into a single string, 
+including names, values, brackets, and so on, produces a string that is 
+**not** a good feed for analyzers and is not commonly used for searches.  
 It does, however, make sense in some cases to **project** such a string.  
 {NOTE/}
 
