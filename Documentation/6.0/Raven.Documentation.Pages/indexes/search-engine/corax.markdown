@@ -297,7 +297,7 @@ from order in docs.Orders
 select new
 {
     // Handling the field as a string will allow Corax to index it
-    Location = JsonConvert.Serialize(record.Location)
+    Location = JsonConvert.Serialize(order.ShipTo.Location)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
