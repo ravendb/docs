@@ -449,7 +449,7 @@ Set the maximum amount of memory (in MB) that will be allocated for the training
 Training will stop when it reaches this limit.  
 
 - **Type**: `SizeUnit.Megabytes`
-- **Default**: 2 GB for x64, or 128 MB for x86 (32 bits)
+- **Default**: 2 GB for 64 bits systems, or 128 MB for 32 bits systems
 - **Scope**: Server-wide, per database, or per index
 
 {PANEL/}

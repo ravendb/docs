@@ -3,7 +3,7 @@
 Paging, or pagination, is the process of splitting a dataset into pages, reading one page at a time. This is useful for optimizing bandwidth traffic and hardware usage or simply because no user can handle huge amounts of data at once.
 
 {WARNING:Warning}
-Starting from version 4.0, if the page size is not specified **on client side**, the server will assume **int.MaxValue** (2,147,483,647) and all the results will be downloaded. It is **recommended to set a page size explicitly** to avoid long response times caused by sending excessive amounts of data over the network or high memory consumption caused by handling large quantities of documents.
+Starting from version 4.0, if the page size is not specified **on client side**, the server will assume `int.MaxValue` (2,147,483,647) and all the results will be downloaded. It is **recommended to set a page size explicitly** to avoid long response times caused by sending excessive amounts of data over the network or high memory consumption caused by handling large quantities of documents.
 {WARNING/}
 
 {INFO:Performance}
@@ -13,7 +13,7 @@ The threshold can be adjusted by changing the `PerformanceHints.MaxNumberOfResul
 
 {INFO:Limits}
 When [Corax](../../indexes/search-engine/corax) is used as the search engine, 
-indexes of more than `int.MaxValue` documents can be created and used.  
+indexes of more than `int.MaxValue` (2,147,483,647) documents can be created and used.  
 To match this capacity, queries over Corax indexes can [skip](../../indexes/querying/paging#example-ii---basic-paging) 
 a number of results that exceeds `int.MaxValue` and `take` documents from 
 this location.  

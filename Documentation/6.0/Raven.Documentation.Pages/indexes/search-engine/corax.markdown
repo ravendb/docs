@@ -15,9 +15,9 @@
     The search engine is the main "moving part" of the indexing mechanism, 
     which processes and indexes documents by index definitions.  
 
-* The search engine can be selected separately for 
-  [auto](../../indexes/creating-and-deploying#auto-indexes) and 
-  [static](../../indexes/creating-and-deploying#static-indexes) indexes.  
+* The search engine supports both [Auto](../../indexes/creating-and-deploying#auto-indexes) 
+  and [Static](../../indexes/creating-and-deploying#static-indexes) indexing 
+  and can be selected separately for each.  
 
 * The search engine can be selected per server, per database, and per index (for static indexes only).  
 
@@ -27,7 +27,7 @@
       * [Server Wide](../../indexes/search-engine/corax#select-search-engine-server-wide)  
       * [Per Database](../../indexes/search-engine/corax#select-search-engine-per-database)  
       * [Per Index](../../indexes/search-engine/corax#select-search-engine-per-index)  
-   * [Supported Features](../../indexes/search-engine/corax#supported-features)  
+   * [Unsupported Features](../../indexes/search-engine/corax#unsupported-features)  
       * [Unimplemented Methods](../../indexes/search-engine/corax#unimplemented-methods)  
    * [Handling of Complex JSON Objects](../../indexes/search-engine/corax#handling-of-complex-json-objects)  
    * [Compound Fields](../../indexes/search-engine/corax#compound-fields)  
@@ -50,7 +50,12 @@
      overriding server-wide and per-database settings.  
      Per-index settings are available only for **static** indexes.  
 
-* Two configuration options are available:  
+     {NOTE: }
+     Note that the search engine is selected for **new indexes** only.  
+     These settings do not apply to existing indexes.  
+     {NOTE/}
+
+* These configuration options are available:  
    * [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration#indexing.auto.searchenginetype)  
      Use this option to select the search engine (either `Lucene` or `Corax`) for **auto** indexes.  
      The search engine can be selected **server-wide** or **per database**.  
@@ -149,83 +154,38 @@ Available values: `SearchEngineType.Lucene`, `SearchEngineType.Corax`.
 
 {PANEL/}
 
-{PANEL: Supported Features}
+{PANEL: Unsupported Features}
 
-These are the features currently supported/yet-unsupported by Corax.  
+Below are the features currently not supported by Corax.  
 
-* Corax supports [Auto](../../indexes/creating-and-deploying#auto-indexes) 
-  and [Static](../../indexes/creating-and-deploying#static-indexes) indexing.  
+#### Unsupported during indexing:
 
-* **While indexing**:  
+* [Boosting](../../indexes/boosting) **document fields** during indexing  
+  Note that boosting **documents** IS supported.  
+* Indexing [WKT shapes](../../indexes/indexing-spatial-data)  
+  Note that indexing **spatial points** IS supported.  
+* [Custom analyzers](../../studio/database/settings/custom-analyzers)  
+* [Custom Sorters](../../indexes/querying/sorting#creating-a-custom-sorter)  
 
-    | Feature                                                     | Supported by Corax 
-    |------------------------------------------------------------------------|--------------------
-    | [Boosting](../../indexes/boosting) <br> Boosting **documents** during indexing <br> Boosting **document fields** during indexing | <br> `yes` <br> **no** 
-    | [WKT shapes](../../indexes/indexing-spatial-data) <br> Indexing **spatial points** during the indexing of spatial data <br> Indexing **WKT shapes** during the indexing of spatial data  | <br> `yes` <br> **no** 
-    | [Custom analyzers](../../studio/database/settings/custom-analyzers) | **no** 
+#### Unsupported while querying:
 
-* **While querying**:  
+* [Fuzzy Search](../../client-api/session/querying/text-search/fuzzy-search)  
+* [Explanations](../../client-api/session/querying/debugging/include-explanations)  
 
-    | Feature                                                     | Supported by Corax 
-    |------------------------------------------------------------------------|--------------------
-    | [MoreLikeThis](../../indexes/querying/morelikethis) | `yes` 
-    | [Facets](../../indexes/querying/faceted-search) | `yes` 
-    | Searching by [Regex](../../client-api/session/querying/text-search/using-regex) | `yes` 
-    | [Fuzzy Search](../../client-api/session/querying/text-search/fuzzy-search) | **no** 
-    | [Explanations](../../client-api/session/querying/debugging/include-explanations) | **no** 
-    | [Distinct](../../indexes/querying/distinct) operation on a collection with more than int32 ({int.MaxValue}) documents | **no** 
+#### Complex JSON properties:
 
-* **Dynamic Fields**  
+Complex JSON properties cannot currently be indexed and searched by Corax.  
+Read more about this [below](../../indexes/search-engine/corax#handling-of-complex-json-objects).  
 
-    | Feature        | Supported by Corax 
-    |----------------|--------------------
-    | [Dynamic Fields](../../indexes/using-dynamic-fields) | `yes` 
+#### Unsupported `WHERE` Methods/Terms:  
 
-* **Complex JSON properties**  
-  Complex JSON properties cannot currently be indexed and searched by Corax.  
-  Read more about this [below](../../indexes/search-engine/corax#handling-of-complex-json-objects).  
+* [lucene()](../../client-api/session/querying/document-query/how-to-use-lucene)  
+* [intersect()](../../indexes/querying/intersection)  
 
-* `WHERE`  
-
-    | Query Term                                                   | Method / Keyword                                                                                                                                                                                                                   | Supported by Corax                     |
-    |--------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
-    | [WHERE](../../client-api/session/querying/what-is-rql#where) |                                                                                                                                                                                                                                    |                                        |
-    |                                                              | id()                                                                                                                                                                                                                               | `yes`                                  |
-    |                                                              | [search()](../../client-api/session/querying/text-search/full-text-search)                                                                                                                                                         | `yes`                                  |
-    |                                                              | cmpxchg()                                                                                                                                                                                                                          | `yes`                                  |
-    |                                                              | [boost()](../../client-api/session/querying/text-search/boost-search-results)                                                                                                                                                      | `yes`                                  |
-    |                                                              | [regex()](../../client-api/session/querying/text-search/using-regex)                                                                                                                                                               | `yes`                                  |
-    |                                                              | [startsWith()](../../client-api/session/querying/text-search/starts-with-query)                                                                                                                                                    | `yes`                                  |
-    |                                                              | [endsWith()](../../client-api/session/querying/text-search/ends-with-query)                                                                                                                                                        | `yes`                                  |
-    |                                                              | [lucene()](../../client-api/session/querying/document-query/how-to-use-lucene)                                                                                                                                                     | **no**                                 |
-    |                                                              | [exists()](../../client-api/session/querying/how-to-filter-by-field)                                                                                                                                                               | `yes`                                  |
-    |                                                              | [exact()](../../client-api/session/querying/text-search/exact-match-query)                                                                                                                                                         | `yes`                                  |
-    |                                                              | [intersect()](../../indexes/querying/intersection)                                                                                                                                                                                 | **no**                                 |
-    |                                                              | [spatial.within()](../../indexes/querying/spatial) <br> [spatial.contains()](../../indexes/querying/spatial) <br> [spatial.disjoint()](../../indexes/querying/spatial) <br> [spatial.intersects()](../../indexes/querying/spatial) | `yes` <br> `yes` <br> `yes` <br> `yes` |
-    |                                                              | [moreLikeThis()](../../client-api/session/querying/how-to-use-morelikethis)                                                                                                                                                        | `yes`                                  |
-
-* `ORDER BY`  
-
-    | Query Term | Method / Keyword | Supported by Corax |
-    | ---------- | ---------------- | ------------------ |
-    | [ORDER BY](../../client-api/session/querying/what-is-rql#order-by) | | |
-    | | [ASC / ASCENDING](../../indexes/querying/sorting#basics) | `yes` |
-    | | [DESC / DESCENDING](../../indexes/querying/sorting#basics) | `yes` |
-    | | [AS](../../indexes/querying/sorting#basics) | `yes` |
-    | | [string](../../indexes/querying/sorting#basics) | `yes` |
-    | | [long](../../indexes/querying/sorting#basics) | `yes` |
-    | | [double](../../indexes/querying/sorting#basics) | `yes` |
-    | | [alphaNumeric](../../indexes/querying/sorting#alphanumeric-ordering) | `yes` |
-    | | [random()](../../indexes/querying/sorting#random-ordering) | `yes` |
-    | | [score()](../../indexes/querying/sorting#ordering-by-score) | `yes` |
-    | | [spatial.distance()](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting) | `yes` |
-
----
-
-### Unimplemented Methods
+## Unimplemented Methods
 
 Trying to use Corax with an unimplemented method (see 
-[Supported Features](../../indexes/search-engine/corax#supported-features) above) 
+[Unsupported Features](../../indexes/search-engine/corax#unsupported-features) above) 
 will generate a `NotSupportedInCoraxException` exception and end the search.  
 
 {INFO: }
@@ -266,6 +226,9 @@ Consider, for example, the following `orders` document:
 As the `Location` property of the document above contains a list of key/value pairs 
 rather than a simple numeric value or a string, attempting to index this field using 
 Corax [would fail](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing).  
+{NOTE: }
+The approach taken by Lucene, indexing such objects as a JSON string, usually makes no sense and is not supported by Corax.  
+{NOTE/}
 
 There are several ways to handle the indexing of complex JSON objects:  
 
@@ -334,7 +297,8 @@ from order in docs.Orders
 select new
 {
     // Handling the field as a string will allow Corax to index it
-    Location = order.ShipTo.Location.ToString()
+    Location = order.ShipTo.Location
+    .ToString()
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -344,12 +308,6 @@ Using `ToString` will serialize all the properties of the complex property into
 a single string, including names, values, brackets, and so on.  
 The produced string is **not** a good feed for analyzers and is not commonly used for searches.  
 It does, however, make sense in some cases to **project** such a string.  
-{NOTE/}
-
-{NOTE: }
-Make sure your code handles failure scenarios such as `ToString` returning `null` 
-rather than a string because the object you attempt to serialize includes references 
-to unreachable objects.  
 {NOTE/}
 
 ---
@@ -372,12 +330,17 @@ to unreachable objects.
 
 {PANEL: Compound Fields}
 
+{INFO: }
+This feature should be applied to very large datasets and specific queries.  
+It is meant for **experts only**.  
+{INFO/}
+
 A compound field is a Corax index field comprised of 2 simple data elements.  
 {NOTE: }
 A compound field can currently be composed of exactly **2 elements**.  
 {NOTE/}
 
-Users can define compound fields to optimize data retrieval: data stored in a compound 
+Expert users can define compound fields to optimize data retrieval: data stored in a compound 
 field is sorted as requested by the user, and would later on be retrieved in this order 
 with extreme efficiency.  
 Compound fields can also be used to unify simple data elements in cohesive units to 
@@ -398,7 +361,7 @@ private class Product_Location : AbstractIndexCreationTask<Product>
             select new { p.Brand, p.Location };
 
         // Add a compound field 
-        CompoundField(x => x.Brand, x.Location);
+        CompoundField(x => x.Brand, x => x.Location);
     }
 }
 {CODE-BLOCK/}
@@ -428,7 +391,7 @@ order by Location
 
 {PANEL: Limits}
 
-* Corax can create and use indexes of more than `int.MaxValue` documents.  
+* Corax can create and use indexes of more than `int.MaxValue` (2,147,483,647) documents.  
   To match this capacity, queries over Corax indexes can 
   [skip](../../client-api/session/querying/what-is-rql#limit) 
   a number of results that exceeds `int.MaxValue` and 
@@ -436,7 +399,7 @@ order by Location
   documents from this location.  
 
 * The maximum number of documents that can be **projected** by a query 
-  (using either Corax or Lucene) is `int.MaxValue`.  
+  (using either Corax or Lucene) is `int.MaxValue` (2,147,483,647).  
 
 {PANEL/}
 
@@ -494,13 +457,14 @@ Here are some additional things to keep in mind about Corax indexes compression 
   {NOTE: }
   Training stops when it reaches either the 
   [number of documents](../../server/configuration/indexing-configuration#indexing.corax.documentslimitforcompressiondictionarycreation)
-  threshold (10000 docs by default) or the 
+  threshold (100,000 docs by default) or the 
   [amount of memory](../../server/configuration/indexing-configuration#indexing.corax.maxallocationsatdictionarytraininginmb) 
-  threshold (2GB/128MB by default). Both thresholds are configurable.  
+  threshold (2GB by default). Both thresholds are configurable.  
   {NOTE/}
-* If upon creation there are less than [10000](../../server/configuration/indexing-configuration#indexing.corax.documentslimitforcompressiondictionarycreation) 
-  documents in the involved collections, it may make sense to manually force an index 
-  reset after reaching 100000 documents to force retraining.  
+* If upon creation there are less than 10,000 documents in the involved collections, 
+  it may make sense to manually force an index reset after reaching 
+  [100,000](../../server/configuration/indexing-configuration#indexing.corax.documentslimitforcompressiondictionarycreation) 
+  documents to force retraining.  
   {NOTE: }
   Indexes are replaced in a [side-by-side](../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing) 
   manner: existing indexes would continue running until the new ones are created, 
