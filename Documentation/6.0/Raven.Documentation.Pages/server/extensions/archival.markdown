@@ -28,7 +28,10 @@ Archived documents are **compressed**.
 {INFO/}
 
 {INFO: }
-Document extensions of an archived document are **not** archived.  
+Document extensions of an archived document are **not** archived, and are not 
+affected by their parent document state in any way. Counters and time series, 
+for example, will continue to be updated no matter if the parent document is 
+archived or not.  
 {INFO/}
 
 * In this page:  
@@ -167,10 +170,13 @@ var result = await store.Maintenance.SendAsync(
 | Parameter | Type | Description |
 | - | - | - |
 | **Disabled** | `bool` | If set to `true`, archival is disabled for the entire database. <br> Default: `true` |
-| **ArchiveFrequencyInSec** | `long` | Determines how often the server checks for documents that need to be archived. |
+| **ArchiveFrequencyInSec** | `long` | Frequency (in sec) in which the server checks for documents that need to be archived. <br> Default: 60 |
 
-* To enable archiving via Studio:  
-  See [Setting Document Archiving in Studio](../../studio/database/settings/document-archiving).  
+---
+
+{NOTE: }
+Read [here](../../studio/database/settings/document-archival) about setting document archival using Studio.  
+{NOTE/}
 
 {PANEL/}
 
@@ -199,7 +205,7 @@ The behavior of an auto index when it encounters an archived document.
       ExcludeArchived,
       // Include archived documents: index them or send them to workers
       IncludeArchived,
-      // Handle ONLY archived documents: index or send to workers only archived documents)  
+      // Handle ONLY archived documents: index or send to workers only archived documents  
       ArchivedOnly
   }
   {CODE-BLOCK/}
@@ -221,7 +227,7 @@ The behavior of a static index when it encounters an archived document.
       ExcludeArchived,
       // Include archived documents: index them or send them to workers
       IncludeArchived,
-      // Handle ONLY archived documents: index or send to workers only archived documents)  
+      // Handle ONLY archived documents: index or send to workers only archived documents  
       ArchivedOnly
   }
   {CODE-BLOCK/}
@@ -243,7 +249,7 @@ The behavior of a data subscription task when it encounters an archived document
       ExcludeArchived,
       // Include archived documents: index them or send them to workers
       IncludeArchived,
-      // Handle ONLY archived documents: index or send to workers only archived documents)  
+      // Handle ONLY archived documents: index or send to workers only archived documents  
       ArchivedOnly
   }
   {CODE-BLOCK/}
@@ -256,4 +262,4 @@ The behavior of a data subscription task when it encounters an archived document
 ## Related Articles
 
 ### Studio
-- [Document Archiving](../../studio/database/settings/document-archiving)
+- [Document Archiving](../../studio/database/settings/document-archival)
