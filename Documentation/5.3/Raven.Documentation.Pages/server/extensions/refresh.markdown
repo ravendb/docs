@@ -3,9 +3,8 @@
 
 {NOTE: }
 
-* The Refresh feature causes a document's [change vector](../../server/clustering/replication/change-vector) 
-to increment. This causes it to be re-indexed, as well as activates other features 
-that react to document updates.  
+* The Refresh feature increments a document's [change vector](../../server/clustering/replication/change-vector), 
+  triggering its re-indexation as well as other features that react to document updates.  
 
 * Refresh is scheduled using the `@refresh` flag in a document's [metadata](../../client-api/session/how-to/get-and-modify-entity-metadata).  
 
