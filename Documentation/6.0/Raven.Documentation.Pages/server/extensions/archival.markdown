@@ -15,8 +15,13 @@
 * RavenDB features and clients can recognize an archived document by its metadata 
   property and handle it accordingly. Indexing and Data subscription tasks, 
   for example, **refrain by default** from processing archived documents.  
-  The exclusion of archived documents from indexes especially can boost  
-  database performance.   
+  The exclusion of archived documents from indexation can improve  
+  database performance significantly.  
+
+* On a cluster, archiving is handled by a single node only, which 
+  is always the first node in the cluster topology.  
+  Following archiving, documents are propagated to the other nodes 
+  by regular replication.  
 
 {INFO: }
 Archived documents are **compressed**.  
@@ -25,8 +30,6 @@ Archived documents are **compressed**.
 {INFO: }
 Document extensions of an archived document are **not** archived.  
 {INFO/}
-
-
 
 * In this page:  
   * [Overview](../../server/extensions/archival#overview)  
@@ -50,19 +53,24 @@ Document extensions of an archived document are **not** archived.
 Continuous accumulation of documents in a database may, over time, slow 
 down some of its functions, including indexation and document distribution.  
 
-**Indexing** in particular may suffer as a larger number of documents requires 
-more indexing resources, increases the number and size of indexes, and may 
-eventually reduce querying speed.  
-Regularly archiving documents, and excluding archived documents from indexation, 
-is therefore an all-round performance enhancer as fewer, more effective, indexes 
-are created for queries that are executed over smaller datasets of higher priority.  
+* **Indexing** efficiency in particular may sink as a larger number of documents 
+  requires more indexing resources, increases the number and size of indexes, and 
+  may eventually reduce querying speed.  
+  
+    Regularly archiving documents, and excluding archived documents from indexation, 
+    is therefore an all-round performance enhancer as fewer, more effective, indexes 
+    are created for queries that are executed over smaller datasets of higher priority.  
+  
+    Since indexes can recognize archived documents as such during indexation by their 
+    metadata, they may also apply their own logic for such encounters in the index 
+    definition level.  
 
-**Data subscriptions** exclusion of archived documents from data batches reduces 
-workload not only from the server but also from the workers that may now receive 
-a smaller number of more relevant documents.  
+* **Data subscriptions** exclusion of archived documents from data batches reduces 
+  workload not only from the server but also from the workers that may now receive 
+  a smaller number of more relevant documents.  
 
-The same attitude can be implemented by **ETL tasks**, that can easily recognize 
-archived documents by their metadata and refrain from extracting them.  
+* The same attitude can be implemented by **ETL tasks**, that can easily recognize 
+  archived documents by their metadata and refrain from extracting them.  
 
 ---
 
