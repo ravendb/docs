@@ -296,7 +296,7 @@ select new
 from order in docs.Orders
 select new
 {
-    // Use .ToString() to convert the data to a string in JSON format (the same way JsonConvert.Serialize() would) 
+    // .ToString() will convert the data to a string in JSON format (same as using JsonConvert.Serialize()) 
     Location = order.ShipTo.Location.ToString()
 }
 {CODE-TAB-BLOCK/}
@@ -414,9 +414,15 @@ Corax configuration options include:
 
 * [Indexing.Corax.IncludeDocumentScore](../../server/configuration/indexing-configuration#indexing.corax.includedocumentscore)  
   Choose whether to include the score value in document metadata when sorting by score.  
+  {NOTE: }
+  Disabling this option can improve query performance.  
+  {NOTE/}
 
 * [Indexing.Corax.IncludeSpatialDistance](../../server/configuration/indexing-configuration#indexing.corax.includespatialdistance)  
   Choose whether to include spatial information in document metadata when sorting by distance.  
+  {NOTE: }
+  Disabling this option can improve query performance.  
+  {NOTE/}
 
 * [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration#indexing.corax.maxmemoizationsizeinmb)  
   The maximum amount of memory that Corax can use for a memoization clause during query processing.  
