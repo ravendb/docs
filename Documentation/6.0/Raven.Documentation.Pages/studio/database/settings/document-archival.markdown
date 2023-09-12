@@ -112,11 +112,10 @@ are taught how to handle archived documents.
 
 {PANEL: Index-Specific Archival Configuration}
 
-To set the way a specific index handles archived documents 
-([overriding](../../../server/extensions/archival#index-definition-archiving-configuration) 
-default server/database configuration), open the [Index List view](../../../studio/database/indexes/indexes-list-view) 
-and select the index whose behavior you want to set, scroll down for the index properties 
-and open the **Archived Data** tab.  
+To set the way a specific index handles archived documents (overriding default 
+server/database configuration), open the [Index List view](../../../studio/database/indexes/indexes-list-view) 
+and select the index whose behavior you want to set, scroll down for the index 
+properties and open the **Archived Data** tab.  
 
 ![Figure 7. Index Definition Archived Data Tab](images/data-archival_index-definition-archived-data.png "Index Definition Archived Data Tab")
 
@@ -135,19 +134,16 @@ and open the **Archived Data** tab.
 
 {PANEL: Subscription-Specific Archival Configuration}
 
-To set the way a specific data subscription task handles archived documents 
-([overriding](../../../server/extensions/archival#archiving-and-data-subscriptions) 
-default server/database configuration), open the [Subscription Task view](../../../studio/database/indexes/indexes-list-view) 
+To set the way a specific data subscription task handles archived documents (overriding default 
+server/database configuration), open the [Subscription Task view](../../../studio/database/indexes/indexes-list-view) 
 and create a new subscription.  
 
 ![Figure 8. Subscription Archived Data Processing Behavior](images/data-archival_data-subscription-definition-archived-data.png "Subscription Archived Data Processing Behavior")
 
-1. Click to open the Archived Data tab.  
-2. Click to determine how this index would handle archived documents.  
+1. Click to select how this subscription handles archived documents.  
    
       ![Archived Docs Handling Options](images/data-archival_archived-docs-handling-options.png "Archived Docs Handling Options")
 
-      Select how this subscription handles archived documents.  
       **Default** - Do not change the policy set by higher (database/server) configuration levels.  
       **Exclude Archived** - Do not process archived documents (this is the default configuration).  
       **Include Archived** - Process archived documents.  
@@ -176,4 +172,20 @@ one) and toggle the **Include Archived Documents** option as you prefer.
 
 ## Related Articles
 
-- [Documents Expiration](../../../server/extensions/expiration)  
+### Extensions
+- [Document Archival](../../../server/extensions/archival)  
+- [Document Expiration](../../../server/extensions/expiration)  
+
+### Configuration
+- [Overview](../../../server/configuration/configuration-options#settings.json)  
+- [Database Settings](../../../studio/database/settings/database-settings#view-database-settings)  
+
+### Tasks
+- [Smuggler (Import/Export)](../../../client-api/smuggler/what-is-smuggler) 
+- [ETL Basics](../../../server/ongoing-tasks/etl/basics)  
+- [Regular Replication](../../../server/clustering/replication/replication)  
+- [External Replication](../../../server/ongoing-tasks/external-replication)  
+- [Hub/Sink Replication](../../../server/ongoing-tasks/hub-sink-replication)  
+
+### Patching
+- [Patch By Query](../../../client-api/rest-api/queries/patch-by-query)  

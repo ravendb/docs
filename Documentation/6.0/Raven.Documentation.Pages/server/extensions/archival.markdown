@@ -28,11 +28,11 @@
      * [Archiving and Document Extensions](../../server/extensions/archival#archiving-and-document-extensions)  
      * [Archiving and Smuggler (Import/Export)](../../server/extensions/archival#archiving-and-smuggler-importexport)  
      * [Archiving and Expiration](../../server/extensions/archival#archiving-and-expiration)  
-     * [Archiving and Patching](../../)  
      * [Archiving and ETL](../../server/extensions/archival#archiving-and-etl)  
      * [Archiving and Backup](../../server/extensions/archival#archiving-and-backup)  
      * [Archiving and Querying](../../server/extensions/archival#archiving-and-querying)  
      * [Archiving and Replication](../../server/extensions/archival#archiving-and-replication)  
+     * [Archiving and Patching](../../server/extensions/archival#archiving-and-patching)  
 * [Unarchiving Documents](../../server/extensions/archival#unarchiving-documents)  
   * [Enabling Archiving and Setting Scan Frequency](../../server/extensions/archival#enabling-archiving-and-setting-scan-frequency)  
   * [Default (Server/Database) Configuration Options](../../server/extensions/archival#default-(server/database)-configuration-options)  
@@ -157,7 +157,7 @@ is, therefore, an all-round performance enhancer, as fewer and more effective in
 are created for queries that are executed over smaller datasets of higher priority.  
   
 An index may inherit the way it handles archived documents from the 
-[default](../../server/extensions/archival#server-and-db-configuration-options) 
+[default](../../server/extensions/archival#default-(server/database)-configuration-options) 
 server or database configuration, or have this behavior defined in the index 
 definition, overriding higher-level configuration.  
 
@@ -200,7 +200,7 @@ store.Maintenance.Send(new PutIndexesOperation(new[] {
 
 #### Archiving and Data Subscriptions
 
-**Data subscriptions** exclusion of archived documents from data batches reduces 
+Data subscriptions exclusion of archived documents from data batches reduces 
 workload for both the server and the workers which may now receive fewer and more 
 relevant documents.  
 
@@ -455,8 +455,7 @@ The following configuration options determine how RavenDB features handle archiv
 {NOTE: }
 Note that configuring the behavior of a specific [index](../../server/extensions/archival#archiving-and-indexing) 
 or [data subscription task](../../server/extensions/archival#archiving-and-data-subscriptions) 
-when they encounter archived documents will [override](../../server/extensions/archival#feature-level-archiving-configuration-options) 
-the default settings presented here.  
+when they encounter archived documents will override the default settings presented here.  
 {NOTE/}
 
 ---
@@ -501,3 +500,20 @@ when they encounter archived documents.
 
 ### Studio
 - [Document Archiving](../../studio/database/settings/document-archival)
+
+### Configuration
+- [Overview](../../server/configuration/configuration-options#settings.json)  
+- [Database Settings](../../studio/database/settings/database-settings#view-database-settings)  
+
+### Tasks
+- [Smuggler (Import/Export)](../../client-api/smuggler/what-is-smuggler) 
+- [ETL Basics](../../server/ongoing-tasks/etl/basics)  
+- [Regular Replication](../../server/clustering/replication/replication)  
+- [External Replication](../../server/ongoing-tasks/external-replication)  
+- [Hub/Sink Replication](../../server/ongoing-tasks/hub-sink-replication)  
+
+### Extensions
+- [Document Expiration](../../server/extensions/expiration)  
+
+### Patching
+- [Patch By Query](../../client-api/rest-api/queries/patch-by-query)  
