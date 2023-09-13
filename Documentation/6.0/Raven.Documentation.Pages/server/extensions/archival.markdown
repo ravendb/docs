@@ -130,18 +130,18 @@ will be archived:
   `@archived: true` property so clients can  recognize the document 
   as archived and handle it however they choose.  
 
-  `companies/90-A`:
+    `companies/90-A`:
   
-  {CODE-BLOCK:json}
-  {
-      "Name": "Wilman Kala",
-      "Phone": "90-224 8858",
-      "@metadata": {
-          "@archived": true,
-          "@collection": "Companies",
-       }
-  }
-  {CODE-BLOCK/}
+    {CODE-BLOCK:json}
+    {
+        "Name": "Wilman Kala",
+        "Phone": "90-224 8858",
+        "@metadata": {
+            "@archived": true,
+            "@collection": "Companies",
+         }
+    }
+    {CODE-BLOCK/}
 
 {PANEL/}
 
@@ -164,75 +164,21 @@ definition, overriding higher-level configuration.
 
 * An index definition can override the default database/server configuration 
   to determine how the index would process archived documents.  
-
-    {CODE-BLOCK: csharp}
-store.Maintenance.Send(new PutIndexesOperation(new[] {
-    new IndexDefinition
-    {
-        Maps = {
-                    // maps definition 
-               },
-
-        // Process archived documents
-        ArchivedDataProcessingBehavior = ArchivedDataProcessingBehavior.IncludeArchived
-    }
-}));
-    {CODE-BLOCK/}
+  {CODE overrideDefaultIndexConfiguration@Server\Archival.cs /}
 
     see the definition of `ArchivedDataProcessingBehavior` [here](../../server/extensions/archival#section).  
 
 * An index definition can also check whether the document metadata includes 
   `@archived: true`, and if so freely apply any archived-document logic.  
+  {CODE applyAdditionalLogic@Server\Archival.cs /}
 
-    {CODE-BLOCK: csharp}
-store.Maintenance.Send(new PutIndexesOperation(new[] {
-    new IndexDefinition
-    {
-        // This will apply only to non-archived documents (whose @archived property is null)
-        {"from o in docs where o[\"@metadata\"][\"@archived\"] == null select new" +
-                        "{" +
-                        "    Name = o.Name" +
-                        "}"}
-    }
-}));
-    {CODE-BLOCK/}
-
-* `ArchivedDataProcessingBehavior` can also be set to determine how a static index 
-  handles archived documents.  
+* `ArchivedDataProcessingBehavior` can be used with additional static index creation methods.  
 
    * When the index is created using [IndexDefinitionBuilder](../../indexes/creating-and-deploying#indexdefinitionbuilder):  
-     {CODE-BLOCK: csharp}
-var indexDefinition = new IndexDefinitionBuilder<Company, Company>
-{
-  Map = companies => from company in companies where company.Name == 
-                      "Company Name" select new {company.Name},
-}.ToIndexDefinition(store.Conventions);
-
-indexDefinition.Name = "indexName";
-
-// Process only archived documents
-indexDefinition.ArchivedDataProcessingBehavior = ArchivedDataProcessingBehavior.ArchivedOnly;
-  
-store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
-await Indexes.WaitForIndexingAsync(store);
-     {CODE-BLOCK/}
-
+     {CODE useIndexDefinitionBuilder@Server\Archival.cs /}
+     
    * When the index is created using [AbstractIndexCreationTask](../../indexes/creating-and-deploying#using-abstractindexcreationtask):  
-
-     {CODE-BLOCK: csharp}
-public class Orders_Totals : AbstractIndexCreationTask<Order>
-{
-    public Order_Totals()
-    {
-        Map = //...
-        
-        Reduce= //...
-        
-        ArchivedDataProcessingBehavior = 
-            Raven.Client.Documents.DataArchival.ArchivedDataProcessingBehavior.ArchivedOnly;
-    }
-}
-     {CODE-BLOCK/}
+     {CODE useAbstractIndexCreationTask@Server\Archival.cs /}
 
 ---
 
@@ -249,17 +195,7 @@ toward archived documents or override it locally, in the task definition.
   and uses its `ArchivedDataProcessingBehavior` property with the 
   [ArchivedDataProcessingBehavior](../../server/extensions/archival#section) 
   enum to process **only** archived documents.  
-
-    {CODE-BLOCK: csharp}
-// Set the subscription
-var subsId = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions
-{
-    Query = "from Companies", 
-    Name = "Created", 
-    // Process only archived documents
-    ArchivedDataProcessingBehavior = ArchivedDataProcessingBehavior.ArchivedOnly
-});
-    {CODE-BLOCK/}
+  {CODE dataSubscriptionDefinition@Server\Archival.cs /}
 
 ---
 
@@ -281,11 +217,7 @@ or `false` the boolean `IncludeArchived` property in the `DatabaseSmugglerExport
 instance you pass Smuggler.  
 
 In the following example, the exported data **includes** archived documents.  
-{CODE-BLOCK: csharp}
-var operation = 
-    await store.Smuggler.ExportAsync
-        (new DatabaseSmugglerExportOptions {IncludeArchived = true}, path);
-{CODE-BLOCK/}
+{CODE smugglerOption@Server\Archival.cs /}
 
 {INFO: }
 By default, archived documents are **Included** when importing/exporting data.  
@@ -365,24 +297,10 @@ and [Hub/Sink](../../server/ongoing-tasks/hub-sink-replication) replication.
 #### Archiving and Patching
 
 * To archive documents via [Patching](../../client-api/rest-api/queries/patch-by-query), 
-  use your patch to add a metadata [@archive-at](../../server/extensions/archival#scheduling-document-archival) 
+  create a script that adds a metadata [@archive-at](../../server/extensions/archival#scheduling-document-archival) 
   property to the documents you want to archive, with the designated archival (`UTC`) time 
   as a value.  
-
-  {CODE-BLOCK:csharp}
-var operation = store
-    .Operations
-    .Send(new PatchByQueryOperation(new IndexQuery
-     {
-        Query = @"from Orders as c
-                  update
-                  {
-                      this["@metadata"]["@archive-at"] = "2023-09-06T22:45:30.018Z";
-                  }"
-     }));
-
-operation.WaitForCompletion();
-{CODE-BLOCK/}
+  {CODE updateByPatch@Server\Archival.cs /}
 
 * Patching is also the only way to [Unarchive documents](../../server/extensions/archival#unarchiving-documents).  
 
@@ -396,18 +314,7 @@ As unarchiving documents would normally be a multiple-document operation,
 unarchive using a [patching](../../client-api/rest-api/queries/patch-by-query) 
 operation with the dedicated `archived.unarchive` method.  
 
-{CODE-BLOCK:json}
-// Unarchive any archived document in a collection
-var operation = 
-    await store.Operations.SendAsync(
-        new PatchByQueryOperation(new IndexQuery()
-        {
-            Query = "from Companies update 
-            { 
-                archived.unarchive(this) 
-            }"
-        }));
-{CODE-BLOCK/}
+{CODE unarchiveByPatch@Server\Archival.cs /}
 
 {PANEL/}
 
@@ -419,17 +326,7 @@ To Enable the feature on the database, and to set the Frequency by which RavenDB
 the database for documents scheduled for archiving, pass the `ConfigureDataArchivalOperation` 
 operation a `DataArchivalConfiguration` instance.  
 
-{CODE-BLOCK:csharp}
-var configuration = new DataArchivalConfiguration {
-                        // Enable archiving
-                        Disabled = false, 
-                        // Scan for documents scheduled for archiving every 100 seconds 
-                        ArchiveFrequencyInSec = 100 
-                    };
-
-var result = await store.Maintenance.SendAsync(
-                    new ConfigureDataArchivalOperation(configuration));  
-{CODE-BLOCK/}
+{CODE enableArchivingAndSetFrequency@Server\Archival.cs /}
 
 | Parameter | Type | Description |
 | - | - | - |
