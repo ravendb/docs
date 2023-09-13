@@ -54,6 +54,7 @@
 
 * A document can be **scheduled for archival** by adding its metadata an 
   `@archive-at` property with the requested archival time (in `UTC`) as a value.  
+  When the archival feature is [enabled](../../server/extensions/archival#enabling-archiving-and-setting-scan-frequency), 
   RavenDB runs an archiving task that periodically scans the database for 
   documents scheduled for archival.  
 
@@ -196,6 +197,43 @@ store.Maintenance.Send(new PutIndexesOperation(new[] {
 }));
     {CODE-BLOCK/}
 
+* `ArchivedDataProcessingBehavior` can also be set to determine how a static index 
+  handles archived documents.  
+
+   * When the index is created using [IndexDefinitionBuilder](../../indexes/creating-and-deploying#indexdefinitionbuilder):  
+     {CODE-BLOCK: csharp}
+var indexDefinition = new IndexDefinitionBuilder<Company, Company>
+{
+  Map = companies => from company in companies where company.Name == 
+                      "Company Name" select new {company.Name},
+}.ToIndexDefinition(store.Conventions);
+
+indexDefinition.Name = "indexName";
+
+// Process only archived documents
+indexDefinition.ArchivedDataProcessingBehavior = ArchivedDataProcessingBehavior.ArchivedOnly;
+  
+store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
+await Indexes.WaitForIndexingAsync(store);
+     {CODE-BLOCK/}
+
+   * When the index is created using [AbstractIndexCreationTask](../../indexes/creating-and-deploying#using-abstractindexcreationtask):  
+
+     {CODE-BLOCK: csharp}
+public class Orders_Totals : AbstractIndexCreationTask<Order>
+{
+    public Order_Totals()
+    {
+        Map = //...
+        
+        Reduce= //...
+        
+        ArchivedDataProcessingBehavior = 
+            Raven.Client.Documents.DataArchival.ArchivedDataProcessingBehavior.ArchivedOnly;
+    }
+}
+     {CODE-BLOCK/}
+
 ---
 
 #### Archiving and Data Subscriptions
@@ -236,14 +274,11 @@ example, **will** be indexed even if the document that owns it is archived.
 #### Archiving and Smuggler (Import/Export)
 
 [Smuggler](../../client-api/smuggler/what-is-smuggler), used by RavenDB to import and 
-export data, checks documents' archival status and handles their transfer according to it.  
-By default, archived documents **are** transferred, but their archival status can be used 
-to apply different logic like, for example, exporting only non-archived documents, or 
-importing archived and non-archived documents into different paths.  
+export data, checks documents' archival status and can be set to skip archived docs.  
 
-To determine whether archived documents would be transferred set the boolean `IncludeArchived` 
-property in the `DatabaseSmugglerExportOptions` instance you pass to Smuggler to `true` 
-or `false`.  
+Determine whether archived documents would be transferred or not by setting to `true` 
+or `false` the boolean `IncludeArchived` property in the `DatabaseSmugglerExportOptions` 
+instance you pass Smuggler.  
 
 In the following example, the exported data **includes** archived documents.  
 {CODE-BLOCK: csharp}
@@ -307,7 +342,7 @@ Archived documents **Are** included in backups.
 
 #### Archiving and Querying
 
-Collection queries **will** retrieve archived documents, since they do not run over 
+Collection queries **will** retrieve archived documents (since they do not run over 
 indexes that exclude archived docs from the results).  
 
 Auto indexes will **not** retrieve archived documents, if the indexes were created 

@@ -51,7 +51,7 @@ document you want to archive.
 ![Figure 2. Document View: @archive-at Property](images/data-archival_archive-at-property.png "Document View: @archive-at Property")
 
 1. Add this property to the document's metadata.  
-2. Provide the archival time (`UTC` time) as a value.  
+2. Provide the archival time (`UTC` time) as a value (see an example [here](../../../server/extensions/archival#scheduling-document-archival)).  
 3. After adding the `@archive-at` property, the time that remains until the document is archived is displayed here.  
 
 ---
