@@ -247,7 +247,9 @@ Read more about this subject [here](../sharding/querying#paging).
 
 * A RavenDB cluster can run sharded and non-sharded databases in parallel.  
 
-* RavenDB (6.0 and on) supports sharding by default, no further steps are required to enable the feature.
+* When a database is created, The user can choose whether it would be sharded 
+  or not. The ability to make this choice is provided by RavenDB (6.0 and on) 
+  by default, no further steps are required to enable the feature.  
 
 {PANEL/}
 
