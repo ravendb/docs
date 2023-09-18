@@ -25,7 +25,7 @@
   * Include any error messages, warnings, or unexpected behavior you have encountered.
 
 * __Exceptions__:  
-  * If applicable, attach the __full-stack exception__ as plain text.
+  * If applicable, attach the __full-stack exception__ including the error message as plain text.
   * Specify the origin of the exception  
     (e.g. from RavenDB Studio, from the client, from server logs, etc.).
 
@@ -124,11 +124,12 @@ Perform the following for each node in your cluster:
 {INFO: }
 
 __If the Studio is unavailable__, or if the logs downloaded via the Studio appear problematic,  
-then copy the log files directly from the disk before they are deleted:  
+then copy the log files directly from the disk to another location to ensure that you keep them,  
+avoiding potential loss due to the retention configuration.
 
 * The location of the log files is determined by the [Logs.Path](../../server/configuration/logs-configuration#logs.path) configuration.
 
-* Deletion time is controlled by the following configurations:
+* Logs deletion time is controlled by the following configurations:
   * [Retention time in hours](../../server/configuration/logs-configuration#logs.retentiontimeinhrs)
   * [Retention time in megabytes](../../server/configuration/logs-configuration#logs.retentionsizeinmb)
 
@@ -151,7 +152,7 @@ __Before sending the log files__, perform the following checks:
 
 {PANEL: Reproduce scenario}
 
-* If the incident is over and you can reproduce it, then first verify logging is enabled.
+* If the incident is over and you can reproduce it, then first verify logging level is set to information.  
 
 * See how to enable the logs in [Enable logs](../../server/troubleshooting/collect-info#enable-logs-for-ongoing-issues).
 
