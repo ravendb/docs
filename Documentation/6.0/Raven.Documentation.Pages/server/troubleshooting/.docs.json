@@ -1,0 +1,31 @@
+[
+    {
+        "Path": "debug-routes.markdown",
+        "Name": "Debug Endpoints",
+        "DiscussionId": "916372ea-9b0a-4f9c-aff8-87dd1ca9a16d",
+        "Mappings": [
+            {
+                "Version": 4.1,
+                "Key": "server/troubleshooting/debug-routes"
+            }
+        ]
+    },
+    {
+        "Path": "logging.markdown",
+        "Name": "Logging",
+        "DiscussionId": "9f099a2d-1393-4a76-ad66-640903507751",
+        "Mappings": []
+    },
+    {
+        "Path": "voron-recovery-tool.markdown",
+        "Name": "Voron Recovery Tool",
+        "DiscussionId": "2b0f5f63-b991-4e5f-8ce8-36a72481d3b4",
+        "Mappings": []
+    },
+    {
+        "Path": "collect-info.markdown",
+        "Name": "Collect Info for Support",
+        "DiscussionId": "2b0f5f63-b991-4e5f-8ce8-36a72481d3b4",
+        "Mappings": []
+    }
+]
