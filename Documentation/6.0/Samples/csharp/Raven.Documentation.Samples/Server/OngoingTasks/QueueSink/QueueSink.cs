@@ -50,7 +50,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.QueueSink
                     {
                         // Script name
                         Name = "orders",
-                        // Queues list
+                        // A list of Kafka topics to connect
                         Queues = new List<string>() { "orders" },
                         // Apply this script
                         Script = @"this['@metadata']['@collection'] = 'Orders'; 
@@ -105,7 +105,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.QueueSink
                     {
                         // Script name
                         Name = "orders",
-                        // Queues list
+                        // A list of Kafka topics to connect
                         Queues = new List<string>() { "orders" },
                         // Apply this script
                         Script = @"this['@metadata']['@collection'] = 'Orders'; 
@@ -159,7 +159,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.QueueSink
                     {
                         // Script name
                         Name = "orders",
-                        // Queues list
+                        // A list of RabbitMQ queues to connect
                         Queues = new List<string>() { "orders" },
                         // Apply this script
                         Script = @"this['@metadata']['@collection'] = 'Orders'; 
@@ -214,7 +214,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.QueueSink
                     {
                         // Script name
                         Name = "orders",
-                        // Queues list
+                        // A list of RabbitMQ queues to connect
                         Queues = new List<string>() { "orders" },
                         // Apply this script
                         Script = @"this['@metadata']['@collection'] = 'Orders'; 

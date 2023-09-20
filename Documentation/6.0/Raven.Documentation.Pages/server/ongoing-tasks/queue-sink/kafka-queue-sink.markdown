@@ -9,57 +9,107 @@
   
 * RavenDB can harness the advantages presented by message brokers like Kafka 
   both as a producer (by [running ETL tasks](../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq)) 
-  and as a **consumer** (using a sink connector to read enqueued messages).  
+  and as a **consumer** (using a sink task to consume enqueued messages).  
 
-* To use RavenDB as a consumer, define an ongoing Queue Sink task that will 
-  access selected Kafka topics and read enqueued messages, use a user-defined 
-  transform script to construct documents out of read messages contents, and 
-  potentially store the documents in RavenDB collections.  
+* To use RavenDB as a consumer, define an ongoing Sink task that will read 
+  batches of enqueued documents from Kafka topics, construct documents using 
+  user-defined scripts, and store the documents in RavenDB collections.  
 
 * In this page:  
   * [The Queue Sink Task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#the-queue-sink-task)  
   * [Client API](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#client-api)  
      * [Add a Kafka Connection String](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#add-a-kafka-connection-string)  
      * [Add a Kafka Sink Task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#add-a-kafka-sink-task)  
-
+     * [Configuration Options](../../../)  
 {NOTE/}
 
 ---
 
 {PANEL: The Queue Sink Task}
 
-In RavenDB, a Kafka sink is implemented as a user-defined ongoing sink task 
-that connects a Kafka server, retrieves enqueued messages from selected Kafka 
-topics, runs a user-defined transformation script to construct documents, and 
-stores the documents in RavenDB collections.  
+In RavenDB, a Kafka sink is implemented as a user-defined ongoing task that 
+connects a Kafka server, retrieves enqueued messages from selected Kafka topics, 
+runs a user-defined script to construct documents, and stores the documents 
+in RavenDB collections.  
 
-* **Connecting a Kafka server** 
-  Connecting a Kafka broker requires a connection string.  
-  Read [below](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#add-a-kafka-connection-string) 
-  how to add a Kafka connection string via API.  
-  Read [here](../../../) how to add a Kafka connection string using Studio.  
+---
 
-* **Retrieving enqueued messages** from selected Kafka topics  
-  When a message is sent to a Kafka broker by a producer, it is pushed to 
-  the tail of the topic assigned to it. The message then advances in the queue 
-  as preceding messages are pulled, until it finally reaches the queue's head 
-  where RavenDB's sink task and other consumers can get it.  
+#### Connecting a Kafka broker
 
-* **Running a user-defined transformation script**  
-  A sink connector's transformation script is a JavaScript segment. Its basic 
-  role is to retrieve selected Kafka messages or message properties, and prepare 
-  them for storage in RavenDB.  
-  The script can, however, also load and delete RavenDB documents (e.g. to check 
-  and handle potential duplicates) and perform various other functions.  
+Connecting a Kafka broker requires a connection string.  
+Read [below](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#add-a-kafka-connection-string) 
+how to add a Kafka connection string via API.  
+Read [here](../../../) how to add a Kafka connection string using Studio.  
 
-* **Storing documents in RavenDB collections**  
-  {INFO: }
-  Note that producers may enqueue 
-  [multiple instances](../../../server/ongoing-tasks/etl/queue-etl/kafka#idempotence-and-message-duplication) 
-  of the same document.  
-  It is **the consumer's own responsibility** (if processing each message only 
-  once is important to it) to verify the uniqueness of each consumed message.  
-  {INFO/}
+---
+
+#### Retrieving enqueued messages from selected Kafka topics
+
+When a message is sent to a Kafka broker by a producer, it is pushed to 
+the tail of the topic assigned to it. The message then advances in the queue 
+as preceding messages are pulled, until it finally reaches the queue's head 
+where RavenDB's sink task can get it.  
+
+---
+
+#### Running user-defined scripts
+
+A sink task's script is a JavaScript segment. Its basic role is to retrieve 
+selected Kafka messages or message properties, and construct documents that 
+will then be stored in RavenDB.  
+
+The script can simply store the whole message as a document, as in this 
+segment:  
+{CODE-BLOCK: javascript}
+// Add the document a metadata `@collection` property to set the collection 
+// it will be stored at.  
+this['@metadata']['@collection'] = 'Orders'; 
+// Store the message as is, using its Id property as its RavenDB Id as well.  
+put(this.Id, this)
+{CODE-BLOCK/}
+
+But the script can also retrieve some information from the read message 
+and construct a new document that doesn't resemble the original message.  
+Scripts often apply two sections: a section that creates a JSON object 
+that defines the document's structure and contents, and a second section 
+that stores the document.  
+{CODE-BLOCK: javascript}
+var item = { 
+    Id : this.Id, 
+    FirstName : this.FirstName, 
+    LastName : this.LastName, 
+    FullName : this.FirstName + ' ' + this.LastName, 
+    "@metadata" : {
+        "@collection" : "Users"
+    }
+};
+put(this.Id.toString(), item)
+{CODE-BLOCK/}
+
+The script can also apply various other JavaScript commands, including 
+`load` to load a RavenDB document (e.g. to construct a document that 
+includes data from the retrieved message and complementing data from 
+existing RavenDB documents), `del` to remove existing RavenDB documents, 
+and [many others](../../../server/kb/javascript-engine#predefined-javascript-functions).  
+
+---
+
+#### Storing documents in RavenDB collections
+
+The sink task consumes batches of queued messages and stores them in RavenDB 
+in a transactional manner, processing either the entire batch or none of it.  
+Once a batch is consumed, the task confirms it by calling `kafkaConsumer.Commit()`.  
+
+Note that the number of documents included in a batch is 
+[configurable](../../../).
+
+{WARNING: }
+Note that producers may enqueue 
+[multiple instances](../../../server/ongoing-tasks/etl/queue-etl/kafka#idempotence-and-message-duplication) 
+of the same document.  
+It is **the consumer's own responsibility** (if processing each message only 
+once is important to it) to verify the uniqueness of each consumed message.  
+{WARNING/}
 
 {PANEL/}
 
@@ -93,12 +143,12 @@ To create the connection string:
 
 To create the Sink task:  
 
-* Create a `QueueSinkScript` instance with a transformation script that constructs 
-  RavenDB documents from read queue messages.  
+* Create `QueueSinkScript` instances to define scripts with which the 
+  task can process retrieved messages, apply JavaScript commands, construct 
+  documents and store them in RavenDB.  
   {CODE define-kafka-sink-script@Server\OngoingTasks\QueueSink\QueueSink.cs /}
 
-* Prepare a `QueueSinkConfiguration`object with the sink task configuration, 
-  collecting the connection string and the transformation script.  
+* Prepare a `QueueSinkConfiguration`object with the sink task configuration.  
 
     `QueueSinkConfiguration` properties:  
 
@@ -107,7 +157,7 @@ To create the Sink task:
     | **Name** | `string` | The sink task name |
     | **ConnectionStringName** | `string` | The registered connection string name |
     | **BrokerType** | `QueueBrokerType` | Set to `QueueBrokerType.Kafka` to define a Kafka sink task |
-    | **Scripts** | `List<QueueSinkScript>` | A list of strings holding transformation scripts |
+    | **Scripts** | `List<QueueSinkScript>` | A list of scripts |
 
 * Pass this object to the `AddQueueSinkOperation` store operation to add the Sink task.  
 
@@ -116,11 +166,39 @@ To create the Sink task:
     | Property | Type | Description |
     |:-------------|:-------------|:-------------|
     | **Name** | `string` | Script name|
-    | **Queues** | `List<string>` | list of queues |
-    | **Script** | `string  ` | A transform script |
+    | **Queues** | `List<string>` | A list of kafka topics to connect |
+    | **Script** | `string  ` | The script contents |
 
 **Code Sample**:  
 {CODE add_RabbitMQ_sink-task@Server\OngoingTasks\QueueSink\QueueSink.cs /}
+
+{PANEL/}
+
+{PANEL: Configuration Options}
+
+The following configuration options allow additional tuning of sink task.  
+
+---
+
+#### `QueueSink.MaxBatchSize`:
+
+Max number of pulled messages consumed in a single batch.  
+
+- **Default**: `8192`
+- **Scope**: [Server-wide](../../server/configuration/configuration-options#settings.json) 
+  or [per database](../../studio/database/settings/database-settings#view-database-settings)
+
+---
+
+#### `QueueSink.MaxFallbackTimeInSec`:
+
+Maximum number of seconds the Queue Sink process will be in a fallback 
+mode (i.e. suspending the process) after a connection failure.  
+
+- **Default**: `15*60`
+- **TimeUnit**: `TimeUnit.Seconds`
+- **Scope**: [Server-wide](../../server/configuration/configuration-options#settings.json) 
+  or [per database](../../studio/database/settings/database-settings#view-database-settings)
 
 {PANEL/}
 
