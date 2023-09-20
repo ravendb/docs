@@ -259,9 +259,9 @@ parts of them can be sent to the target.
 
 {CODE-BLOCK: JavaScript}
 var isArchived = this['@metadata']['@archived'];
-if (isArchived === 'true')
-    throw 'skip'; // do not load archived documents
-}
+if (isArchived === true) {
+    return; // do not load archived documents
+}}
 {CODE-BLOCK/}
 
 ---

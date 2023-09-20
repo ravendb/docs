@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Raven.Client;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Session;
 using Raven.Client.Json;
 using Raven.Documentation.Samples.Orders;
 using Xunit;
@@ -46,7 +47,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                 {
                     #region example_2_sync
                     // Get revisions' metadata for document 'orders/1-A'
-                    List<MetadataAsDictionary> orderRevisionsMetadata = session
+                    List<IMetadataDictionary> orderRevisionsMetadata = session
                         .Advanced
                         .Revisions
                         .GetMetadataFor(id: "orders/1-A", start: 0, pageSize: 10);
@@ -63,7 +64,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                 {
                     #region example_2_async
                     // Get revisions' metadata for document 'orders/1-A'
-                    List<MetadataAsDictionary> orderRevisionsMetadata = await asyncSession
+                    List<IMetadataDictionary> orderRevisionsMetadata = await asyncSession
                         .Advanced
                         .Revisions
                         .GetMetadataForAsync(id: "orders/1-A", start: 0, pageSize: 10);
@@ -112,7 +113,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                 {
                     #region example_4_sync
                     // Get revisions metadata 
-                    List<MetadataAsDictionary> revisionsMetadata = session
+                    List<IMetadataDictionary> revisionsMetadata = session
                         .Advanced
                         .Revisions
                         .GetMetadataFor("orders/1-A", start: 0, pageSize: 25);
@@ -132,7 +133,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                 {
                     #region example_4_async
                     // Get revisions metadata 
-                    List<MetadataAsDictionary> revisionsMetadata = await asyncSession
+                    List<IMetadataDictionary> revisionsMetadata = await asyncSession
                         .Advanced
                         .Revisions
                         .GetMetadataForAsync("orders/1-A", start: 0, pageSize: 25);

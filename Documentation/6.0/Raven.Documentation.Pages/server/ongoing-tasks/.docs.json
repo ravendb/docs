@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "/queue-sink",
+        "Name": "Queue Sink",
+        "Mappings": []
+    },
+    {
         "Path": "hub-sink-replication.markdown",
         "Name": "Hub/Sink Replication",
         "DiscussionId": "3ebce840-1ea8-4f9e-ae50-0275661a3c1d",
