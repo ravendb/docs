@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* **RabbitMQ** exchanges are designed to disperse data to multiple queues, 
+* **RabbitMQ** brokers are designed to disperse data to multiple queues, 
   making for a flexible data channeling system that can easily handle complex 
   message streaming scenarios.  
 
@@ -12,8 +12,8 @@
   and as a **consumer** (using a sink task to consume enqueued messages).  
 
 * To use RavenDB as a consumer, define an ongoing Sink task that will read 
-  batches of enqueued messages from RabbitMQ queues, construct documents using 
-  user-defined scripts, and store the documents in RavenDB collections.  
+  batches of JSON formatted messages from RabbitMQ queues, construct documents 
+  using user-defined scripts, and store the documents in RavenDB collections.  
 
 * In this page:  
   * [The RabbitMQ Sink Task](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink#the-rabbitmq-sink-task)  
@@ -27,28 +27,31 @@
 
 {PANEL: The RabbitMQ Sink Task}
 
-In RavenDB, a RabbitMQ sink is implemented as a user-defined ongoing sink task 
-that connects a RabbitMQ exchange, retrieves enqueued messages from selected queues, 
-runs a user-defined script to construct documents, and stores the documents in RavenDB 
-collections.  
+Users of RavenDB 6.0 and on can create an ongoing Sink task that connects 
+a RabbitMQ broker, retrieves messages from selected queues, runs a user-defined 
+script to manipulate data and construct documents, and potentially stores the 
+created documents in RavenDB collections.  
 
 ---
 
-#### Connecting a RabbitMQ exchange
+#### Connecting a RabbitMQ broker
 
-Connecting a RabbitMQ exchange requires a connection string.  
+In the message broker architecture, RavenDB sinks take the role of data consumers.  
+A sink would connect a RabbitMQ broker using a connection string, and retrieve messages 
+from the broker's queues.  
+
 Read [below](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink#add-a-rabbitmq-connection-string) 
-how to add a RabbitMQ connection string via API.  
-Read [here](../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink) how to add a RabbitMQ connection string using Studio.  
+about adding a connection string via API.  
+Read [here](../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink#define-a-rabbitmq-sink-task) 
+about adding a connection string using Studio.  
 
 ---
 
-#### Retrieving enqueued messages from selected RabbitMQ queues
+#### Retrieving messages from RabbitMQ queues
 
-When a message is sent to a RabbitMQ exchange by a producer, it is pushed to 
-the tail of the queue assigned to it. The message then advances in the queue 
-as preceding messages are pulled, until it finally reaches the queue's head 
-where RavenDB's sink task can get it.  
+When a message is sent to a RabbitMQ broker by a producer, it is pushed to 
+the tail of a queue. As preceding messages are pulled, the message advances 
+up the queue until it reaches its head and can be consumed by RavenDB's sink.  
 
 ---
 
@@ -61,11 +64,11 @@ will then be stored in RavenDB.
 The script can simply store the whole message as a document, as in this 
 segment:  
 {CODE-BLOCK: javascript}
-// Add the document a metadata `@collection` property to set the collection 
-// it will be stored at.  
+// Add the document a metadata `@collection` property to keep it in 
+// this collection, or do not set it to store the document in @empty).  
 this['@metadata']['@collection'] = 'Orders'; 
 // Store the message as is, using its Id property as its RavenDB Id as well.  
-put(this.Id, this)
+put(this.Id.toString(), this)
 {CODE-BLOCK/}
 
 But the script can also retrieve some information from the read message 
@@ -73,6 +76,17 @@ and construct a new document that doesn't resemble the original message.
 Scripts often apply two sections: a section that creates a JSON object 
 that defines the document's structure and contents, and a second section 
 that stores the document.  
+
+E.g., for RabbitMQ messages of this format -  
+{CODE-BLOCK: JSON}
+{
+   "Id" : 13,
+   "FirstName" : "John",
+   "LastName" : "Doe"
+}
+{CODE-BLOCK/}
+
+We can create this script -  
 {CODE-BLOCK: javascript}
 var item = { 
     Id : this.Id, 
@@ -83,6 +97,8 @@ var item = {
         "@collection" : "Users"
     }
 };
+
+// Use .toString() to pass the Id as a string even if RabbitMQ provides it as a number
 put(this.Id.toString(), item)
 {CODE-BLOCK/}
 
@@ -103,12 +119,18 @@ Once a batch is consumed, the task confirms it by sending `_channel.BasicAck`.
 Note that the number of documents included in a batch is 
 [configurable](../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink#configuration-options).
 
-{WARNING: }
-Note that producers may enqueue 
+{WARNING: Take care of duplicates}
+Producers may enqueue 
 [multiple instances](../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#message-duplication) 
 of the same document.  
-It is **the consumer's own responsibility** (if processing each message only 
-once is important to it) to verify the uniqueness of each consumed message.  
+if processing each message only once is important to the consumer, 
+it is **the consumer's responsibility** to verify the uniqueness of 
+each consumed message.  
+
+Note that as long as the **Id** property of RabbitMQ messages is preserved 
+(so duplicate messages share an Id), the script's `put(ID, { ... })` command 
+will overwrite a previous document with the same Id and only one copy of 
+it will remain.  
 {WARNING/}
 
 {PANEL/}
@@ -118,7 +140,7 @@ once is important to it) to verify the uniqueness of each consumed message.
 #### Add a RabbitMQ Connection String
 
 Prior to defining a RabbitMQ sink task, add a **RabbitMQ connection string** 
-that the task will use to connect the message broker exchanges.  
+that the task will use to connect the message brokers.  
 
 To create the connection string:  
 
@@ -135,7 +157,7 @@ To create the connection string:
     |:-------------|:-------------|:-------------|
     | **Name** | `string` | Connection string name |
     | **BrokerType** | `QueueBrokerType` | Set to `QueueBrokerType.RabbitMq` for a RabbitMQ connection string |
-    | **RabbitMqConnectionSettings** | `KafkaConnectionSettings[]` | A list of strings indicating RabbitMQ exchanges connection details |
+    | **RabbitMqConnectionSettings** | `RabbitMqConnectionSettings[]` | A list of strings indicating RabbitMQ brokers connection details |
 
 ---
 
@@ -166,7 +188,7 @@ To create the Sink task:
     | Property | Type | Description |
     |:-------------|:-------------|:-------------|
     | **Name** | `string` | Script name|
-    | **Queues** | `List<string>` | A list of RabbitMQ queues to connect |
+    | **Queues** | `List<string>` | A list of RabbitMQ queues to consume messages from |
     | **Script** | `string  ` | The script contents |
 
 **Code Sample**:  
@@ -176,31 +198,16 @@ To create the Sink task:
 
 {PANEL: Configuration Options}
 
-The following configuration options allow additional tuning of sink tasks.  
+Use these configuration options to gain more control over queue sink tasks.  
 
----
-
-#### `QueueSink.MaxBatchSize`:
-
-The maximum number of pulled messages consumed in a single batch.  
-
-- **Default**: `8192`
-- **Scope**: [Server-wide](../../../server/configuration/configuration-options#settings.json) 
-  or [per database](../../../studio/database/settings/database-settings#view-database-settings)
-
----
-
-#### `QueueSink.MaxFallbackTimeInSec`:
-
-The maximum number of seconds the Queue Sink process will be in a fallback 
-mode (i.e. suspending the process) after a connection failure.  
-
-- **Default**: `15*60`
-- **TimeUnit**: `TimeUnit.Seconds`
-- **Scope**: [Server-wide](../../../server/configuration/configuration-options#settings.json) 
-  or [per database](../../../studio/database/settings/database-settings#view-database-settings)
+* [QueueSink.MaxBatchSize](../../../server/configuration/queue-sink-configuration#queuesink.maxbatchsize)  
+  The maximum number of pulled messages consumed in a single batch.
+* [QueueSink.MaxFallbackTimeInSec](../../../server/configuration/queue-sink-configuration#queuesink.maxfallbacktimeinsec)  
+  The maximum number of seconds the Queue Sink process will be in a fallback 
+  mode (i.e. suspending the process) after a connection failure.  
 
 {PANEL/}
+
 
 ## Related Articles
 

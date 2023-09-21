@@ -117,15 +117,15 @@ or a variety of other sources.
 
 ### Idempotence and Message Duplication
 
-RavenDB is an **idempotent producer**, that will **not** typically send duplicates 
+RavenDB is an **idempotent producer**, that will **not** typically send duplicate 
 messages to topics.  
 
-* It **is** possible, however, that duplicate messages will be sent to the exchange.  
+* It **is** possible, however, that duplicate messages will be sent to the broker.  
   For example:  
   Different nodes of a RavenDB cluster will be regarded as different 
-  producers by the exchange.  
+  producers by the broker.  
   If the node responsible for the ETL task fails while sending a batch of messages, 
-  the new responsible node may resend messages that were already received by the exchange.  
+  the new responsible node may resend messages that were already received by the broker.  
 
 * It is, therefore, **the consumer's own responsibility** (if processing each message 
   only once is important to it) to verify the uniqueness of each consumed message.  

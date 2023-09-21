@@ -4,7 +4,7 @@
 {NOTE: }
 
 
-* **RabbitMQ** exchanges are designed to disperse data to multiple queues, 
+* **RabbitMQ** brokers are designed to disperse data to multiple queues, 
   making for a flexible data channeling system that can easily handle complex 
   message streaming scenarios.  
 
@@ -12,17 +12,18 @@
   a **producer**, by running [ETL tasks](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq)), 
   and as a **consumer**, using a sink task to consume enqueued messages.  
 
-* To use RavenDB as a consumer, define an ongoing **Queue Sink Task**. Sink tasks 
-  can read batches of enqueued messages from RabbitMQ queues, construct documents 
-  using user-defined scripts, and store the documents in RavenDB collections.  
+* To use RavenDB as a consumer, define an ongoing **Queue Sink Task**. 
+  Sink tasks can read batches of JSON formatted messages from RabbitMQ 
+  queues, construct documents using user-defined scripts, and store the 
+  documents in RavenDB collections.  
 
 * This page explains how to create a RabbitMQ sink task using Studio.  
   Learn more about RavenDB queue sinks [here](../../../../server/ongoing-tasks/queue-sink/overview).  
   Learn how to define a RabbitMQ queue sink using the API [here](../../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink).  
 
 * In this page:  
-  * [Create a RabbitMQ Sink Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink#create-a-rabbitmq-sink-task)  
-  * [Define RabbitMQ Sink Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink#define-rabbitmq-sink-task)  
+  * [Add a Database Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink#add-a-database-task)  
+  * [Define a RabbitMQ Sink Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink#define-a-rabbitmq-sink-task)  
       * [Define and Test Task Scripts](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink#define-and-test-task-scripts)  
   * [Task Statistics](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink#task-statistics)  
 
@@ -30,7 +31,7 @@
 
 ---
 
-{PANEL: Create a RabbitMQ Sink Task}
+{PANEL: Add a Database Task}
 
 To open the ongoing tasks view: 
 
@@ -53,7 +54,7 @@ To open the ongoing tasks view:
 
 {PANEL/}
 
-{PANEL: Define RabbitMQ Sink Task}
+{PANEL: Define a RabbitMQ Sink Task}
 
 ![New RabbitMQ Sink](images/queue/sink/new-rabbitmq-sink.png "New RabbitMQ Sink")
 
@@ -62,7 +63,7 @@ To open the ongoing tasks view:
 
 2. **Task Name** (Optional)  
    * Enter a name for your task  
-   * If no name is provided, the server will create a name based on the defined connection string,  
+   * If no name is provided, RavenDB will create a name based on the defined connection string,  
      e.g. *Queue Sink to RabbitMqTaskConStr*  
 
 3. **Task State**  
@@ -77,7 +78,7 @@ To open the ongoing tasks view:
     (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)).  
 
 5. **Create a new RabbitMQ connection String**  
-   The connection string defines the source RabbitMQ exchanges URLs.  
+   The connection string defines the source RabbitMQ brokers URLs.  
    Enable to create a new connection string, or leave disabled to select an existing string.  
    
       ![RabbitMQ Connection String](images/queue/sink/rabbitmq-connection-string.png "RabbitMQ Connection String")
@@ -87,7 +88,7 @@ To open the ongoing tasks view:
 
 6. **Test Connection**  
    Click after defining the connection string, to test the connection to 
-   the RabbitMQ exchange.  
+   the RabbitMQ broker.  
 
      ![Successful Connection](images/queue/sink/rabbitmq_successful-connection.png "Successful Connection")
 
@@ -108,7 +109,7 @@ To open the ongoing tasks view:
 3. **Script**: [Edit the script](../../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#running-user-defined-scripts).  
 
 4. **Source Queues**  
-   Enter the name of at least one RabbitMQ queue that resides on the exchange/s 
+   Enter the name of at least one RabbitMQ queue that resides on the broker/s 
    the task connects, and click **Add Queue** to add it to the queues list.  
 
 5. **Add** a new script to the list of scripts that this task runs, or 

@@ -54,7 +54,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.QueueSink
                         Queues = new List<string>() { "orders" },
                         // Apply this script
                         Script = @"this['@metadata']['@collection'] = 'Orders'; 
-                                   put(this.Id, this)"
+                                   put(this.Id.toString(), this)"
                     };
 
                     // Define a Kafka configuration
@@ -109,7 +109,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.QueueSink
                         Queues = new List<string>() { "orders" },
                         // Apply this script
                         Script = @"this['@metadata']['@collection'] = 'Orders'; 
-                                   put(this.Id, this)"
+                                   put(this.Id.toString(), this)"
                     };
                     #endregion
 
@@ -163,7 +163,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.QueueSink
                         Queues = new List<string>() { "orders" },
                         // Apply this script
                         Script = @"this['@metadata']['@collection'] = 'Orders'; 
-                                   put(this.Id, this)"
+                                   put(this.Id.toString(), this)"
                     };
 
                     // Define a RabbitMQ configuration
@@ -218,7 +218,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.QueueSink
                         Queues = new List<string>() { "orders" },
                         // Apply this script
                         Script = @"this['@metadata']['@collection'] = 'Orders'; 
-                                   put(this.Id, this)"
+                                   put(this.Id.toString(), this)"
                     };
                     #endregion
 

@@ -5,7 +5,7 @@
 
 * Message brokers are high-throughput, distributed messaging services that 
   host data they receive from **producer** applications and serve it to 
-  **consumer** clients via FIFO data queue/s. 
+  **consumer** clients via FIFO data queues. 
 * RavenDB 5.4 and on can function as a _Producer_ in this architecture.  
   RavenDB 6.0 and on can also function as a _Consumer_.  
   {INFO: }
@@ -15,10 +15,17 @@
   To learn about RavenDB's role as a _Producer_ please refer to the 
   [Queue ETL section](../../../server/ongoing-tasks/etl/queue-etl/overview).  
   {INFO/}
-* RavenDB can run an ongoing Sink task that reads messages from broker queues, 
-  transforms them to documents by a user-defined script, and stores the 
-  documents in RavenDB's database.  
+* RavenDB can run an ongoing Sink task that reads JSON formatted messages 
+  from broker queues, apply a user-defined script that can, among other things, 
+  construct documents from the retrieved messages, and potentially store 
+  manufactured documents in RavenDB's database.  
 * Supported broker queues currently include **Apache Kafka** and **RabbitMQ**.  
+
+{INFO: }
+Using RavenDB as a message broker sink can benefit users who want to combine 
+Kafka or RabbitMQ's immense capability to collect and stream data with RavenDB's 
+ability to process this data, reveal and exploit its value.  
+{INFO/}
 
 * In this page:  
    * [Supported Message Brokers](../../../server/ongoing-tasks/queue-sink/overview#supported-message-brokers)  

@@ -12,16 +12,16 @@
   and as a **consumer**, using a sink task to consume enqueued messages.  
 
 * To use RavenDB as a consumer, define an ongoing **Queue Sink Task**. Sink tasks 
-  can read batches of enqueued messages from Kafka topics, construct documents 
-  using user-defined scripts, and store the documents in RavenDB collections.  
+  can read batches of JSON formatted enqueued messages from Kafka topics, construct 
+  documents using user-defined scripts, and store the documents in RavenDB collections.  
 
 * This page explains how to create a Kafka queue sink task using Studio.  
   Learn more about RavenDB queue sinks [here](../../../../server/ongoing-tasks/queue-sink/overview).  
   Learn how to define a Kafka queue sink using the API [here](../../../../server/ongoing-tasks/queue-sink/kafka-queue-sink).  
 
 * In this page:  
-  * [Create a Kafka Sink Task](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink#create-a-kafka-sink-task)  
-  * [Define Kafka Sink Task](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink#define-kafka-sink-task)  
+  * [Add a Database Task](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink#add-a-database-task)  
+  * [Define a Kafka Sink Task](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink#define-a-kafka-sink-task)  
       * [Define and Test Task Scripts](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink#define-and-test-task-scripts)  
   * [Task Statistics](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink#task-statistics)  
 
@@ -29,7 +29,7 @@
 
 ---
 
-{PANEL: Create a Kafka Sink Task}
+{PANEL: Add a Database Task}
 
 To open the ongoing tasks view: 
 
@@ -52,7 +52,7 @@ To open the ongoing tasks view:
 
 {PANEL/}
 
-{PANEL: Define Kafka Sink Task}
+{PANEL: Define a Kafka Sink Task}
 
 ![New Kafka Sink](images/queue/sink/new-kafka-sink.png "New Kafka Sink")
 
@@ -61,7 +61,7 @@ To open the ongoing tasks view:
 
 2. **Task Name** (Optional)  
    * Enter a name for your task  
-   * If no name is provided, the server will create a name based on the defined connection string,  
+   * If no name is provided, RavenDB will create a name based on the defined connection string,  
      e.g. *Queue Sink to KafkaServerConStr*  
 
 3. **Task State**  
