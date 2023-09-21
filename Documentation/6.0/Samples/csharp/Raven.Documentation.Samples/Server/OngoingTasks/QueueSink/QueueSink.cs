@@ -133,17 +133,17 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.QueueSink
         }
 
 
-        // Creat a RabbitMq sink task - single region
+        // Create a RabbitMQ sink task - single region
         public void AddRabbitMqSinkTask()
         {
             using (var store = new DocumentStore())
             {
-                // Create a RabbitMq Sink Task
+                // Create a RabbitMQ Sink Task
                 using (var session = store.OpenSession())
                 {
                     #region add_RabbitMq_sink-task
 
-                    // Add RabbitMq connection string
+                    // Add RabbitMQ connection string
                     var res = store.Maintenance.Send(
                         new PutConnectionStringOperation<QueueConnectionString>(
                             new QueueConnectionString
@@ -166,7 +166,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.QueueSink
                                    put(this.Id, this)"
                     };
 
-                    // Define a RabbitMq onfiguration
+                    // Define a RabbitMQ configuration
                     var config = new QueueSinkConfiguration()
                     {
                         // Sink name
@@ -187,16 +187,16 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.QueueSink
             }
         }
 
-        // Creat a RabbitMq sink task - several regions
+        // Create a RabbitMQ sink task - several regions
         public void AddRabbitMqSinkTaskParts()
         {
             using (var store = new DocumentStore())
             {
-                // Create a RabbitMq Sink Task
+                // Create a RabbitMQ Sink Task
                 using (var session = store.OpenSession())
                 {
                     #region add_RabbitMq_connection-string
-                    // Add RabbitMq connection string
+                    // Add RabbitMQ connection string
                     var res = store.Maintenance.Send(
                         new PutConnectionStringOperation<QueueConnectionString>(
                             new QueueConnectionString
@@ -223,7 +223,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.QueueSink
                     #endregion
 
                     #region define-rabbit-mq-configuration
-                    // Define a RabbitMq onfiguration
+                    // Define a RabbitMQ onfiguration
                     var config = new QueueSinkConfiguration()
                     {
                         // Sink name

@@ -68,7 +68,7 @@ view to see transfer statistics.
 2. **RabbitMQ sink task statistics**  
 3. **Sink statistics**  
     * Total duration  
-      Duration of documents receiving from source (in MS)  
+      The time it took to get a batch of documents (in MS) 
     * Currently allocated  
       Memory allocated for the task (in MB)  
     * Number of processed messages  
@@ -78,9 +78,9 @@ view to see transfer statistics.
     * Successfully processed  
       Has this batch of messages been fully processed (yes/no)  
 4. **Queue readings**  
-   Reading duration in MS  
+   The duration of reading from queues (in MS)  
 5. **Script processing**  
-   Transform script processing in MS  
+   The duration of script processing (in MS)  
 
 {PANEL/}
 

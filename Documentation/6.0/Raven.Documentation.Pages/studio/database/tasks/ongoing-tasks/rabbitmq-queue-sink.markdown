@@ -1,164 +1,165 @@
-﻿# Studio: RabbitMQ ETL Task
+﻿# Studio: RabbitMQ Queue Sink Task
 ---
 
 {NOTE: }
 
-* RavenDB ETL tasks for **RabbitMQ** -  
-   * **Extract** selected data from RavenDB documents  
-   * **Transform** the data to new JSON objects and add the new objects to CloudEvents messages.  
-   * **Load** the messages to a **RabbitMQ exchange**.  
-* The RabbitMQ exchange enqueues incoming messages at the tail of RabbitMQ queue/s.  
-  When the enqueued messages advance to the queue head, RabbitMQ clients can access and consume them.  
-* RabbitMQ ETL tasks transfer **documents only**.  
-  Document extensions like attachments, counters, or time series, are not transferred.  
-* This page explains how to create a RabbitMQ ETL task using Studio.  
-  [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq) how to define a RabbitMQ ETL task using code.  
+
+* **RabbitMQ** exchanges are designed to disperse data to multiple queues, 
+  making for a flexible data channeling system that can easily handle complex 
+  message streaming scenarios.  
+
+* RavenDB can collaborate with message brokers like RabbitMQ both as 
+  a **producer**, by running [ETL tasks](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq)), 
+  and as a **consumer**, using a sink task to consume enqueued messages.  
+
+* To use RavenDB as a consumer, define an ongoing **Queue Sink Task**. Sink tasks 
+  can read batches of enqueued messages from RabbitMQ queues, construct documents 
+  using user-defined scripts, and store the documents in RavenDB collections.  
+
+* This page explains how to create a RabbitMQ sink task using Studio.  
+  Learn more about RavenDB queue sinks [here](../../../../server/ongoing-tasks/queue-sink/overview).  
+  Learn how to define a RabbitMQ queue sink using the API [here](../../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink).  
 
 * In this page:  
-  * [Open RabbitMQ ETL Task View](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task#open-rabbitmq-etl-task-view)  
-  * [Define RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task#define-rabbitmq-etl-task)  
-  * [Options Per Exchange](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task#options-per-exchange)  
-  * [Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task#edit-transformation-script)  
+  * [Create a RabbitMQ Sink Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink#create-a-rabbitmq-sink-task)  
+  * [Define RabbitMQ Sink Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink#define-rabbitmq-sink-task)  
+      * [Define and Test Task Scripts](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink#define-and-test-task-scripts)  
+  * [Task Statistics](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink#task-statistics)  
 
 {NOTE/}
 
 ---
 
-{PANEL: Open RabbitMQ ETL Task View}
+{PANEL: Create a RabbitMQ Sink Task}
 
-![Ongoing Tasks View](images/queue/ongoing-tasks.png "Ongoing Tasks View")
+To open the ongoing tasks view: 
+
+![Ongoing Tasks](images/queue/sink/ongoing-tasks-view.png "Ongoing Tasks")
 
 1. **Ongoing Tasks**  
    Click to open the ongoing tasks view.  
 2. **Add a Database Task**  
    Click to create a new ongoing task.  
+3. **Info Hub**  
+   Click for usage and licensing assistance.  
+
+      ![Info Hub](images/queue/sink/info-hub.png "Info Hub")
 
 ---
 
-![Define ETL Task](images/queue/rabbitmq_task-selection.png "Define ETL Task")
+![Task Selection](images/queue/sink/rabbitmq_task-selection.png "Task Selection")
 
-* **RabbitMQ ETL**  
-  Click to define a RabbitMQ ETL task.  
-   
+* Click to create a RabbitMQ sink task.
+
 {PANEL/}
 
-{PANEL: Define RabbitMQ ETL Task}
+{PANEL: Define RabbitMQ Sink Task}
 
-![Define RabbitMQ ETL Task](images/queue/rabbitmq_etl-define-task.png "Define RabbitMQ ETL Task")
+![New RabbitMQ Sink](images/queue/sink/new-rabbitmq-sink.png "New RabbitMQ Sink")
 
-1. **Task Name** (Optional)  
+1. **Save** to store the configuration and exit. If the task is enabled it will start running.   
+   **Cancel** to revoke the creation of a new task or the changes made to an existing task.  
+
+2. **Task Name** (Optional)  
    * Enter a name for your task  
    * If no name is provided, the server will create a name based on the defined connection string,  
-     e.g. *Queue ETL to conStr*  
+     e.g. *Queue Sink to RabbitMqTaskConStr*  
 
-2. **Task State**  
+3. **Task State**  
    Select the task state:  
-   Enabled - The task runs in the background, transforming and sending documents as defined in this view.  
-   Disabled - No documents are transformed and sent.  
+   Enabled - The task runs in the background, reading, manipulating, and storing data as defined in this view.  
+   Disabled - No documents are read or stored, and the task's script is inactive.  
 
-3. **Set Preferred Responsible Node** (Optional)  
-  * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be responsible for this task.  
-  * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)).  
+4. **Responsible Node** (Optional)  
+  * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group) 
+    to be responsible for this task.  
+  * If no node is selected, the cluster will assign a responsible node 
+    (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)).  
 
-4. **Skip Automatic Exchange/Queue Declaration**  
-   When enabled:  
-    * We declare the exchange and queue using the same name.  
-    * We bind The exchange and queue using a default (empty) routing key.  
-    * The declared exchange's type is **Fanout**.  
-
-5. **Create new RabbitMQ connection String**  
-    * Select an existing connection string from the list or create a new one.  
-    * The connection string defines the location of the destination RabbitMQ exchange/queue.  
-    * **Name** - Enter a name for the connection string.  
-    * **Connection String**  
-      This is a single string that includes all the options required to connect the 
-      RabbitMQ server.  
-      E.g. -  `amqp://<username>:<password>@<URL>:<portnumber>`  
-      {NOTE: }
-       Learn more about RabbitMQ connection strings [here](https://www.rabbitmq.com/uri-spec.html).  
-      {NOTE/}
+5. **Create a new RabbitMQ connection String**  
+   The connection string defines the source RabbitMQ exchanges URLs.  
+   Enable to create a new connection string, or leave disabled to select an existing string.  
+   
+      ![RabbitMQ Connection String](images/queue/sink/rabbitmq-connection-string.png "RabbitMQ Connection String")
+   
+      * A. **Name** - Enter a name for the new connection string.  
+      * B. **Connection string** (format: `amqp://guest:guest@localhost:5672/`)
 
 6. **Test Connection**  
    Click after defining the connection string, to test the connection to 
    the RabbitMQ exchange.  
 
-     ![Successful Connection](images/queue/rabbitmq_successful-connection.png "Successful Connection")
+     ![Successful Connection](images/queue/sink/rabbitmq_successful-connection.png "Successful Connection")
 
-{PANEL/}  
-
-{PANEL: Options Per Exchange}
-
-![Click for Advanced Options](images/queue/rabbitmq_click-for-advanced-options.png "Click for Advanced Options")
-
-Clicking the Advanced button will display per-exchange options.  
-In it, you'll find the option to delete documents from RavenDB 
-while they were processed by the selected queue.  
-
-![Options Per Queue - Delete Processed Documents](images/queue/rabbitmq_options-per-queue.png "Options Per Queue - Delete Processed Documents")
-
-1. **The Exchange**  
-   `loadToOrders` is the script instruction to transfer documents to the `Orders` Exchange.  
-2. **Add Queue Options**  
-   Click to add a per-queue option.  
-3. **Queue Name**  
-   This is the name of the RabbitMQ exchange the documents are loaded to.  
-4. **Delete Processed Documents**  
-   Enabling this option will remove from the RavenDB collection documents that 
-   were processed and loaded to the RabbitMQ exchange.  
-   {WARNING: }
-    Enabling this option will **remove processed documents** from the database.  
-    The documents will be deleted after the messages are pushed.  
-   {WARNING/}
-
-{PANEL/}
-
-{PANEL: Edit Transformation Script}
-
-![Add or Edit Transformation Script](images/queue/add-or-edit-script.png "Add or Edit Transformation Script")
+7. **Scripts**
+   Click Add Script to add the task a new script.  
+   Edit or Delete any existing script from the list.  
 
 ---
 
-![Add or Edit Transform Script](images/queue/rabbitmq_transformation-script.png "Add or Edit Transform Script")
+### Define and Test Task Scripts
 
-1. **Script Name**  
-   Enter a name for the script (Optional).  
-   A default name will be generated if no name is entered, e.g. Script_1  
+![Task Script Editor](images/queue/sink/rabbitmq-script-area.png "Task Script Editor")
 
-2. **Script**  
-   Edit the transformation script.  
-   * Define a **document object** whose contents will be extracted from 
-     RavenDB documents and sent to the RabbitMQ exchange.  
-     E.g., `var orderData` in the above example.  
-   * Make sure that one of the properties of the document object 
-     is given the value `id(this)`. This property will contain the 
-     RavenDB document ID.  
-   * Use the `loadTo<ExchangeName>` method to pass the document object 
-     to the RabbitMQ destination.  
+1. **Name**: Name the script, or leave it for the task to name it (e.g. `Script_1`).  
 
-3. **Syntax**  
-   Click for a transformation script Syntax Sample.  
+2. **Syntax**: Click for assistance and sample scripts.  
 
-4. **Collections**  
-    * **Select (or enter) a collection**  
-      Type or select the names of the collections your script is using.  
-    * **Collections Selected**  
-      A list of collections that were already selected.  
+3. **Script**: [Edit the script](../../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#running-user-defined-scripts).  
 
-5. **Apply script to documents from beginning of time (Reset)**  
-    * When this option is **enabled**:  
-      The script will be executed over **all existing documents in the 
-      specified collections** the first time the task runs.  
-    * When this option is **disabled**:  
-      The script will be executed **only over new and modified documents**.  
+4. **Source Queues**  
+   Enter the name of at least one RabbitMQ queue that resides on the exchange/s 
+   the task connects, and click **Add Queue** to add it to the queues list.  
 
-6. **Add/Update**  
-   Click to add a new script or update the task with changes made in an existing script.  
+5. **Add** a new script to the list of scripts that this task runs, or 
+   **Update** an existing script (a different button appears for existing 
+   and new scripts).  
 
-7. **Cancel**  
-   Click to cancel your changes.  
+6. **Cancel** to revoke a new script or any changes made in an existing one.  
 
-8. **Test Script**  
-   Click to **test** the transformation script.  
+7. **Test Script**  
+    Click to test your script in a test area without actually loading data 
+    from queues or storing documents in RavenDB.  
+    
+     ![Test Script](images/queue/sink/rabbitmq-test-area.png "Test Script")
+      * A. **Script** - Edit your script here to find the version that 
+        produces the documents you want.  
+      * B. **Message** - write here any message you want in JSON format. 
+        Your script will be applied to this message so you can check the 
+        outcome.  
+      * C. **Test** to run the test, or **Close Test Area** to return to 
+        the task editing view.  
+      * D. **Documents** - The documents created when the test is executed.  
+{PANEL/}
+
+{PANEL: Task Statistics}
+
+Sink statistics are added to RavenDB's ongoing tasks stats view, where their 
+performance can be examined from various aspects. To watch these statistics, 
+enter Studio's [ongoing tasks stats](../../../studio/database/stats/ongoing-tasks-stats/overview) 
+view.  
+
+![Queue Sink Stats](images/queue/sink/kafka-stats.png "Queue Sink Stats")
+
+1. **RabbitMQ sink task statistics**  
+   All statistics related to the sink task.  
+   Click the bars to expand or collide statistics.  
+   Hover over bar sections to expose statistics.  
+2. **Sink statistics**  
+    * Total duration  
+      The time it took to get a batch of documents (in MS) 
+    * Currently allocated  
+      The memory allocated for the task (in MB)  
+    * Number of processed messages  
+      The number of messages that were recognized and processed  
+    * Number of read messages  
+      The number of messages that were actually transferred to the database  
+    * Successfully processed  
+      Has this batch of messages been fully processed (yes/no)  
+3. **Queue readings**  
+   Time duration of reading from RabbitMQ queues (in MS)  
+5. **Script processing**  
+   Time duration of script processing (in MS)  
 
 {PANEL/}
 
@@ -169,8 +170,11 @@ while they were processed by the selected queue.
 - [ETL Basics](../../../../server/ongoing-tasks/etl/basics)
 - [Queue ETL Overview](../../../../server/ongoing-tasks/etl/queue-etl/overview)
 - [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka)
+- [Kafka Sink](../../../../server/ongoing-tasks/queue-sink/kafka-queue-sink)  
 - [RabbitMQ ETL](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq)
+- [RabbitMQ Sink](../../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink)  
 
 ### Studio
 
-- [Studio: Kafka ETL Task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task)
+- [Studio: RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task)
+- [Studio: Kafka Sink Task](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink)

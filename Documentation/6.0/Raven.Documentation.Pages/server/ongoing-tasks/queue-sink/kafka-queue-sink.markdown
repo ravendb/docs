@@ -12,7 +12,7 @@
   and as a **consumer** (using a sink task to consume enqueued messages).  
 
 * To use RavenDB as a consumer, define an ongoing Sink task that will read 
-  batches of enqueued documents from Kafka topics, construct documents using 
+  batches of enqueued messages from Kafka topics, construct documents using 
   user-defined scripts, and store the documents in RavenDB collections.  
 
 * In this page:  
@@ -20,7 +20,7 @@
   * [Client API](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#client-api)  
      * [Add a Kafka Connection String](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#add-a-kafka-connection-string)  
      * [Add a Kafka Sink Task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#add-a-kafka-sink-task)  
-     * [Configuration Options](../../../)  
+     * [Configuration Options](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#configuration-options)  
 {NOTE/}
 
 ---
@@ -39,7 +39,7 @@ in RavenDB collections.
 Connecting a Kafka broker requires a connection string.  
 Read [below](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#add-a-kafka-connection-string) 
 how to add a Kafka connection string via API.  
-Read [here](../../../) how to add a Kafka connection string using Studio.  
+Read [here](../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink) how to add a Kafka connection string using Studio.  
 
 ---
 
@@ -101,7 +101,7 @@ in a transactional manner, processing either the entire batch or none of it.
 Once a batch is consumed, the task confirms it by calling `kafkaConsumer.Commit()`.  
 
 Note that the number of documents included in a batch is 
-[configurable](../../../).
+[configurable](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#configuration-options).
 
 {WARNING: }
 Note that producers may enqueue 
@@ -166,7 +166,7 @@ To create the Sink task:
     | Property | Type | Description |
     |:-------------|:-------------|:-------------|
     | **Name** | `string` | Script name|
-    | **Queues** | `List<string>` | A list of kafka topics to connect |
+    | **Queues** | `List<string>` | A list of Kafka topics to connect |
     | **Script** | `string  ` | The script contents |
 
 **Code Sample**:  
@@ -182,23 +182,23 @@ The following configuration options allow additional tuning of sink task.
 
 #### `QueueSink.MaxBatchSize`:
 
-Max number of pulled messages consumed in a single batch.  
+The maximum number of pulled messages consumed in a single batch.  
 
 - **Default**: `8192`
-- **Scope**: [Server-wide](../../server/configuration/configuration-options#settings.json) 
-  or [per database](../../studio/database/settings/database-settings#view-database-settings)
+- **Scope**: [Server-wide](../../../server/configuration/configuration-options#settings.json) 
+  or [per database](../../../studio/database/settings/database-settings#view-database-settings)
 
 ---
 
 #### `QueueSink.MaxFallbackTimeInSec`:
 
-Maximum number of seconds the Queue Sink process will be in a fallback 
+The maximum number of seconds the Queue Sink process will be in a fallback 
 mode (i.e. suspending the process) after a connection failure.  
 
 - **Default**: `15*60`
 - **TimeUnit**: `TimeUnit.Seconds`
-- **Scope**: [Server-wide](../../server/configuration/configuration-options#settings.json) 
-  or [per database](../../studio/database/settings/database-settings#view-database-settings)
+- **Scope**: [Server-wide](../../../server/configuration/configuration-options#settings.json) 
+  or [per database](../../../studio/database/settings/database-settings#view-database-settings)
 
 {PANEL/}
 
@@ -216,3 +216,5 @@ mode (i.e. suspending the process) after a connection failure.
 
 - [Studio: Kafka ETL Task](../../../studio/database/tasks/ongoing-tasks/kafka-etl-task)
 - [Studio: RabbitMQ ETL Task](../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task)
+- [Studio: Kafka Queue Sink](../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink)
+- [Studio: RabbitMQ Queue Sink](../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink)
