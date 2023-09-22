@@ -49,10 +49,13 @@ about adding a connection string using Studio.
 Like all ongoing tasks, a sink task is operated by a 
 [responsible node](../../../server/clustering/distribution/highly-available-tasks#responsible-node).  
 When the responsibility for the task is moved from one node to another, 
-e.g. from node `A` to node `B` as a result of node `A` down time, Kafka 
-brokers may **cease serving the sink task for some time** as the Kafka 
-consumer group rebalances (adapting to the leaving of node `A`, the joining 
-of node `B`, and other changes).  
+e.g. from node `A` to node `B` as a result of node `A` down time:  
+
+* The consumer task will maintain the same consumer group id it had on the original node.  
+* Kafka brokers may **cease serving the sink task for some time** as the Kafka consumer 
+  group rebalances (adapting to the leaving of one node and the joining of another, among 
+  other changes).  
+
 {WARNING/}
 
 ---
@@ -124,6 +127,12 @@ and [many others](../../../server/kb/javascript-engine#predefined-javascript-fun
 
 The sink task consumes batches of queued messages and stores them in RavenDB 
 in a transactional manner, processing either the entire batch or none of it.  
+{NOTE: Exceptions to this rule}
+Some script processing errors are allowed; when such an error occurs RavenDB 
+will skip the affected message, record the event in the logs, and alert the 
+user in Studio, but **continue processing the batch**.  
+{NOTE/}
+
 Once a batch is consumed, the task confirms it by calling `kafkaConsumer.Commit()`.  
 
 Note that the number of documents included in a batch is 

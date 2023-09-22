@@ -114,6 +114,12 @@ and [many others](../../../server/kb/javascript-engine#predefined-javascript-fun
 
 The sink task consumes batches of queued messages and stores them in RavenDB 
 in a transactional manner, processing either the entire batch or none of it.  
+{NOTE: Exceptions to this rule}
+Some script processing errors are allowed; when such an error occurs RavenDB 
+will skip the affected message, record the event in the logs, and alert the 
+user in Studio, but **continue processing the batch**.  
+{NOTE/}
+
 Once a batch is consumed, the task confirms it by sending `_channel.BasicAck`.  
 
 Note that the number of documents included in a batch is 
