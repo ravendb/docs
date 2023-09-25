@@ -8,8 +8,10 @@
 
 * In this page:  
   * [Edit Index View](../../../studio/database/indexes/create-map-index#edit-index-view)  
+  * [Test Index](../../../studio/database/indexes/create-map-index#test-index)  
   * [Index Fields & Terms](../../../studio/database/indexes/create-map-index#index-fields-&-terms)  
   * [Index Field Options](../../../studio/database/indexes/create-map-index#index-field-options)  
+     * [Add Compound Field](../../../studio/database/indexes/create-map-index#add-compound-field)  
   * [Configuration](../../../studio/database/indexes/create-map-index#configuration)  
   * [Additional Assemblies](../../../studio/database/indexes/create-map-index#additional-assemblies)  
   * [Additional Sources](../../../studio/database/indexes/create-map-index#additional-sources)  
@@ -83,6 +85,62 @@ select new
   * See more Map-Indexes examples in [Map Index defined from Code](../../../indexes/map-indexes)  
 {PANEL/}
 
+{PANEL: Test Index}
+
+The **Test Index** bar allows instant execution of test-queries over indexes.  
+Floating at the bottom of the page, the bar remains available when the index 
+page is scrolled up and down, and can be instantly invoked to test any addition 
+or modification in index maps or configuration.  
+
+Testing an index **does not require** saving it first, so changes can be easily 
+made, tested, and either kept or unmade, in testing as well as production environments.  
+
+![Test Index Bar - Collapsed](images/create-map-index_test-index_bar-collapsed.png "Test Index Bar - Collapsed")
+
+1. **Scan limit**
+   Enter the maximum number of documents to query, from **1** to **10,000**.  
+   Default: **10000**  
+2. **Time limit**
+   Enter the maximum amount of time for the test query, inseconds.  
+   Default: **15 seconds**  
+3. **Run test**
+   Click to run the test and expand the test bar to display the results.  
+4. **Expand test bar**
+   Click to expand the test bar, displaying the index query editor and the result tabs.  
+
+![Test Index Bar - Expanded](images/create-map-index_test-index_bar-expanded.png "Test Index Bar - Expanded")
+
+1. **Query editor**  
+   Initially the editor displays a simple query over the index.  
+   You can edit the query so it applies any logic that would help you 
+   understand the results and improve the index, e.g. make the query 
+   display only a selected subset of the index results.  
+2. **Collide test bar**  
+   Click to collide the test bar.  
+3. **Display**  
+   Click to select which columns to display.  
+4. **Results tab**  
+   Click to display query results.  
+5. **Index entries tab**  
+   Click to view values of document properties retrieved by the query.  
+   
+      ![Index Entries Tab](images/create-map-index_test-index_Index-entries-tab.png "Index Entries Tab")
+
+6. **Map results tab**  
+   Click to view mapped index parameters.  
+
+      ![Map Results Tab](images/create-map-index_test-index_map-results-tab.png "Map Results Tab")
+
+      {NOTE: }
+      Note that when the test is executed over an index that includes 
+      a **map reduce** section, a **Reduce Results** tab is added as well.  
+
+      ![Map Reduce Results Tab](images/create-map-index_test-index_map-reduce-results-tab.png "Map Reduce Results Tab")
+
+      {NOTE/}
+
+{PANEL/}
+
 {PANEL: Index Fields & Terms}
 
 ![Open Terms View](images/create-map-index_open-terms-view.png "Open Terms View")
@@ -110,13 +168,16 @@ select new
 1. **Add compound field**  
    If the Corax search engine is used, compound fields can be added to optimize specific queries.  
    This option is for **expert users only**.  
-   Learn more about Corax and compound fields [here](../../../indexes/search-engine/corax#compound-fields).  
+    * Learn about Corax and compound fields [here](../../../indexes/search-engine/corax#compound-fields).  
+    * Learn to add a compound field using Studio [below](../../../studio/database/indexes/create-map-index#add-compound-field).  
 
 3. **Add default field options**  
-   Use this option to set default field options for all indexed fields ([See below](../../../studio/database/indexes/create-map-index#default-index-field-options)).  
+   Use this option to set default field options for all indexed fields.  
+   
+      ![Add Default Field Options](images/create-map-index_add-default-field.png "Add Default Field Options")
 
 4. **Field name**  
-   Click the text box to display a drop-down list of fields, and 
+   Click the text box to display a dropdown menu of fields, and 
    select a field whose options will replace the default options.  
 
 5. **Basic options**  
@@ -133,12 +194,12 @@ select new
       Set this to _'Yes'_ to allow searching for strings inside the text values of this field.  
       The indexed terms are _tokens_ that are split from the original string according to the 
       specified [Analyzer](../../../indexes/using-analyzers).  
-      The Analyzer is set in the _'Indexing'_ dropdown list.  
+      The Analyzer is set using the _'Indexing'_ and _'Analyzer'_ dropdown menus (see Advanced Options below).  
       The default analyzer is a simple case-insensitive analyzer.  
 
     * `Highlighting`  
      Set to _'Yes'_ to enable [Highlighting](../../../indexes/querying/highlighting).  
-     Requires `Store` to be set to 'Yes'.  
+     Requires _'Store'_ to be set to `Yes`.  
      In the advanced options, Indexing needs to be set to 'Search' and Term Vector set 
      to 'WithPositionsAndOffsets'.  
 
@@ -152,11 +213,11 @@ select new
       See [below](../../../studio/database/indexes/create-map-index#spatial-field-options)
 
 6. **Advanced Options**  
-   Click to display or hide the list of advanced index field options.  
+   Click to display or hide these advanced index field options:  
 
-     ![Figure 3b. Advanced Index Field Options](images/create-map-index_advanced-options.png "Figure-3b: Advanced Index Field Options")
+     ![Advanced Index Field Options](images/create-map-index_advanced-options.png "Advanced Index Field Options")
 
-     * **a.** `Term Vector`  
+     * `Term Vector`  
        Term Vectors are used in RavenDB's query feature [More Like This](../../../indexes/querying/morelikethis), 
        which suggests documents that are similar to a selected document, based on shared 
        indexed terms. I.e., suggest similar catalogs.  
@@ -166,7 +227,7 @@ select new
        Learn more in [Indexes: Term Vectors](../../../indexes/using-term-vectors), 
        and in this [Blog Post](https://ayende.com/blog/180900/queries-in-ravendb-gimme-more-like-this).  
 
-     * **b.** `Indexing`  
+     * `Indexing`  
        This setting determines which [Analyzer](../../../indexes/using-analyzers) (see the next option below) 
        can be used.  
         * **Exact**  
@@ -178,21 +239,22 @@ select new
           The text is not split into tokens.  
           The text is converted to lower-case, and matches are case insensitive.  
         * **Search**  
-          Use the `Analyzer` dropdown menu to select an analyzer, 'StandardAnalyzer' 
-          will be used by default.  
+          Use the `Analyzer` dropdown menu to select an analyzer.  
+          'StandardAnalyzer' will be used by default.  
           When a [custom analyzer](../../../studio/database/settings/custom-analyzers) 
           is created, it is added to the dropdown menu.  
 
-    * **c.** `Analyzer`  
-      The Analyzer rubric either reflects the option set by `Indexing` or allows 
-      selecting an analyzer from the dropdown list. (See `Indexing` above for details.)  
+     * `Analyzer`  
+       This is the analyzer in use, determined either by the `Indexing` setting above 
+       or (when `Indexing` is set to **Search**) by clicking the `Analyzer` edit box 
+       and explicitly selecting the analyzer from a dropdown list.  
 
 7. **Delete Field**  
    Click to remove this field from the index.  
 
 ---
 
-#### Add Compound Field:  
+#### Add Compound Field  
 
 Compound fields are used by Corax to optimize specific queries.  
 A compound field is always comprised of two simple data elements, 
@@ -214,12 +276,6 @@ Read more about this feature [here](../../../indexes/search-engine/corax#compoun
 2. Click to select the first data element for the compound field.  
 3. Click to select the second data element for the compound field.  
 4. Click to remove the compound field.    
-
-#### Default Index Field Options:  
-
-![Add Default Field Options](images/create-map-index_add-default-field.png "Add Default Field Options")
-
-* Click to add default field options.  
 
 {PANEL/}
 
