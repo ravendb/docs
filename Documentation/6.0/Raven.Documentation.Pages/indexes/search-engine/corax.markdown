@@ -22,7 +22,6 @@
 * The search engine can be selected per server, per database, and per index (for static indexes only).  
 
 * In this page:  
-   * [Enabling Corax](../../indexes/search-engine/corax#enabling-corax)  
    * [Selecting the Search Engine](../../indexes/search-engine/corax#selecting-the-search-engine)  
       * [Server Wide](../../indexes/search-engine/corax#select-search-engine-server-wide)  
       * [Per Database](../../indexes/search-engine/corax#select-search-engine-per-database)  
@@ -137,7 +136,7 @@ overriding any per-database and per-server settings.
 
 * The indexes list view will show the changed configuration.  
 
-    ![Search Engine Changed](images/corax-02.5_search-engine-changed.png "Search Engine Changed")
+    ![Search Engine Changed](images/corax-01_search-engine-changed.png "Search Engine Changed")
 
 ---
 
@@ -313,9 +312,10 @@ It does, however, make sense in some cases to **project** such a string.
 
 #### If Corax Encounters a Complex Property While Indexing:  
 
-* If an auto index exists for the document, Corax will throw 
-  `System.NotSupportedException` to notify the user that a search 
-  that is not supported by Corax has been attempted.  
+* If an auto index exists for the document Corax will alert the user:  
+  `The value of '{fieldName}' field is a complex object. Indexing it 
+  as a text isn't supported. You should consider querying on individual 
+  fields of that object.`
 
 * If a static index is used and it doesn't explicitly relate 
   to the complex field, Corax will automatically exempt the 
@@ -464,7 +464,7 @@ Here are some additional things to keep in mind about Corax indexes compression 
   [number of documents](../../server/configuration/indexing-configuration#indexing.corax.documentslimitforcompressiondictionarycreation)
   threshold (100,000 docs by default) or the 
   [amount of memory](../../server/configuration/indexing-configuration#indexing.corax.maxallocationsatdictionarytraininginmb) 
-  threshold (2GB by default). Both thresholds are configurable.  
+  threshold (up to 2GB). Both thresholds are configurable.  
   {NOTE/}
 * If upon creation there are less than 10,000 documents in the involved collections, 
   it may make sense to manually force an index reset after reaching 
@@ -478,10 +478,11 @@ Here are some additional things to keep in mind about Corax indexes compression 
 
 ---
 
-{NOTE: }
-Corax indexes will not train compression dictionaries if they are created in the 
-testing studio interface, because it is designed for indexing prototyping and the 
-training process will add unnecessary overhead.
+{NOTE: Corax and Test Index}
+Corax indexes will **not** train compression dictionaries if they are created in the 
+[Test Index](../../studio/database/indexes/create-map-index#test-index) interface, 
+because the testing interface is designed for indexing prototyping and the training 
+process will add unnecessary overhead.
 {NOTE/}
 
 {PANEL/}

@@ -131,9 +131,9 @@ made, tested, and either kept or unmade, in testing as well as production enviro
 
       ![Map Results Tab](images/create-map-index_test-index_map-results-tab.png "Map Results Tab")
 
-      {NOTE: }
-      Note that when the test is executed over an index that includes 
-      a **map reduce** section, a **Reduce Results** tab is added as well.  
+      {NOTE: Map Reduce Results}
+      When the index includes a Map Reduce section, the test will display 
+      the results of this section in a **Reduce Results** tab.  
 
       ![Map Reduce Results Tab](images/create-map-index_test-index_map-reduce-results-tab.png "Map Reduce Results Tab")
 
