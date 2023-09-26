@@ -87,42 +87,46 @@ select new
 
 {PANEL: Test Index}
 
-The **Test Index** bar allows instant execution of test-queries over indexes.  
-Floating at the bottom of the page, the bar remains available when the index 
-page is scrolled up and down, and can be instantly invoked to test any addition 
-or modification in index maps or configuration.  
+The **Test Index** bar/interface allows instant execution of test-queries over indexes.  
+Its folded form is a floating Test Index bar at the bottom of the page, keeping it 
+available when the index page is scrolled up and down.  
+When expanded, the bar turns into an interface that provides an instant testing environment 
+for additions and modifications made in the index maps and configuration.  
 
-Testing an index **does not require** saving it first, so changes can be easily 
-made, tested, and either kept or unmade, in testing as well as production environments.  
+* Testing an index **does not require** saving it first, so changes can be easily made, 
+  tested, and either kept or unmade, in **testing** as well as **production** environments.  
+* Indexes created while running test queries are **dropped** after the test.  
+* [Corax](../../../indexes/search-engine/corax) indexes created while running 
+  testing queries will [not train compression dictionaries](../../../indexes/search-engine/corax#corax-and-the-test-index-interface).  
 
-![Test Index Bar - Collapsed](images/create-map-index_test-index_bar-collapsed.png "Test Index Bar - Collapsed")
+![Folded: Test Index Bar](images/create-map-index_test-index_bar-collapsed.png "Folded: Test Index Bar")
 
 1. **Scan limit**
-   Enter the maximum number of documents to query, from **1** to **10,000**.  
+   Enter the maximum number of items that the index will process, from **1** to **10,000**.  
    Default: **10000**  
 2. **Time limit**
-   Enter the maximum amount of time for the test query, inseconds.  
+   Enter the maximum amount of time for the test execution, in seconds.  
    Default: **15 seconds**  
 3. **Run test**
    Click to run the test and expand the test bar to display the results.  
 4. **Expand test bar**
    Click to expand the test bar, displaying the index query editor and the result tabs.  
 
-![Test Index Bar - Expanded](images/create-map-index_test-index_bar-expanded.png "Test Index Bar - Expanded")
+![Expanded: Test Index Interface](images/create-map-index_test-index_bar-expanded.png "Expanded: Test Index Interface")
 
 1. **Query editor**  
-   Initially the editor displays a simple query over the index.  
+   Initially, the editor displays a simple query over the index.  
    You can edit the query so it applies any logic that would help you 
    understand the results and improve the index, e.g. make the query 
    display only a selected subset of the index results.  
-2. **Collide test bar**  
-   Click to collide the test bar.  
+2. **Fold interface**  
+   Click to fold the test interface back to its floating bar form.  
 3. **Display**  
    Click to select which columns to display.  
 4. **Results tab**  
    Click to display query results.  
 5. **Index entries tab**  
-   Click to view values of document properties retrieved by the query.  
+   Click to view the values of document properties retrieved by the query.  
    
       ![Index Entries Tab](images/create-map-index_test-index_Index-entries-tab.png "Index Entries Tab")
 
@@ -181,36 +185,33 @@ made, tested, and either kept or unmade, in testing as well as production enviro
    select a field whose options will replace the default options.  
 
 5. **Basic options**  
-    * `Store`  
+    * [Store](../../../indexes/storing-data-in-index)  
       Select Inherit, Yes, or No.  
       **Inherit** to apply the default database/server value.  
-      During a query, if 'Store' is enabled (Yes) the value is fetched from the 
-      index rather than from the queried document.  
+      During a query, if **Store** is enabled, the value is 
+      fetched from the index rather than from the queried document.  
       If the value is not found in the index, it will be fetched from the document.  
       Storing data in the index decreases reaction time, but increases the index size.  
-      Learn more in [Storing Data in Index](../../../indexes/storing-data-in-index).  
 
-    * `Full-Text-Search`  
+    * [Full-Text-Search](../../../indexes/querying/searching)  
       Set this to _'Yes'_ to allow searching for strings inside the text values of this field.  
       The indexed terms are _tokens_ that are split from the original string according to the 
       specified [Analyzer](../../../indexes/using-analyzers).  
       The Analyzer is set using the _'Indexing'_ and _'Analyzer'_ dropdown menus (see Advanced Options below).  
       The default analyzer is a simple case-insensitive analyzer.  
 
-    * `Highlighting`  
-     Set to _'Yes'_ to enable [Highlighting](../../../indexes/querying/highlighting).  
+    * [Highlighting](../../../indexes/querying/highlighting)  
+     Set to _'Yes'_ to enable highlighting.  
      Requires _'Store'_ to be set to `Yes`.  
      In the advanced options, Indexing needs to be set to 'Search' and Term Vector set 
      to 'WithPositionsAndOffsets'.  
 
-    * `Suggestions`  
-     Setting _'Suggestions'_ will allow you to query what the user probably meant to 
-     ask about (i.e. spelling errors).  
-     Learn more in this [Blog Post](https://ayende.com/blog/180899/queries-in-ravendb-i-suggest-you-can-do-better), 
-     and in [Querying: Suggestions](../../../indexes/querying/suggestions).  
+    * [Suggestions](../../../indexes/querying/suggestions)  
+      Setting _'Suggestions'_ will allow you to query what the user probably meant to 
+      ask about (i.e. spelling errors).  
 
-    * `Spatial`  
-      See [below](../../../studio/database/indexes/create-map-index#spatial-field-options)
+    * [Spatial](../../../indexes/querying/spatial)  
+      See [below](../../../studio/database/indexes/create-map-index#spatial-field-options)  
 
 6. **Advanced Options**  
    Click to display or hide these advanced index field options:  
@@ -237,7 +238,7 @@ made, tested, and either kept or unmade, in testing as well as production enviro
         * **Default**  
           Analyzer: 'LowerCase Keyword'  
           The text is not split into tokens.  
-          The text is converted to lower-case, and matches are case insensitive.  
+          The text is converted to lowercase, and matches are case insensitive.  
         * **Search**  
           Use the `Analyzer` dropdown menu to select an analyzer.  
           'StandardAnalyzer' will be used by default.  
@@ -258,7 +259,7 @@ made, tested, and either kept or unmade, in testing as well as production enviro
 
 Compound fields are used by Corax to optimize specific queries.  
 A compound field is always comprised of two simple data elements, 
-and its contents is sorted by the first element and then by the second.  
+and its content is sorted by the first element and then by the second.  
 When a query that is based on these two data elements is executed, 
 it will automatically use the pre-sorted compound field and run the 
 query much faster.  
@@ -445,7 +446,7 @@ queries can then use.
 ![Spatial Field Options](images/create-map-index_spatial-field.png "Spatial Field Options")
 
 1. **Add Field**  
-    Create an indexing options for the spatial field.  
+    Create indexing options for the spatial field.  
 
 2. **Field Name**  
    Select the spatial field, in this case "Coordinates".  
