@@ -87,11 +87,17 @@ select new
 
 {PANEL: Test Index}
 
-The **Test Index** bar/interface allows instant execution of test-queries over indexes.  
-Its folded form is a floating Test Index bar at the bottom of the page, keeping it 
+The **Test Index** interface provides a secluded environment for the execution 
+of test-queries over indexes.  
+An index can be repeatedly changed and executed over a size-limited dataset, 
+for a limited time duration, providing its users with immediate execution results 
+and saving them the need to save the index first and wait for its execution 
+over huge datasets in a live environment.  
+
+In its folded form, the interface is a floating bar at the bottom of the page, to keep it 
 available when the index page is scrolled up and down.  
-When expanded, the bar turns into an interface that provides an instant testing environment 
-for additions and modifications made in the index maps and configuration.  
+When expanded, the interface provides an instant testing environment for additions and 
+modifications in the index maps and configuration.  
 
 * Testing an index **does not require** saving it first, so changes can be easily made, 
   tested, and either kept or unmade, in **testing** as well as **production** environments.  
