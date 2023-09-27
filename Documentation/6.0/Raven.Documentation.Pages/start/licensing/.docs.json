@@ -1,32 +1,32 @@
 [
-    {
-        "Path": "licensing-overview.markdown",
-        "Name": "Licensing Overview",
-        "DiscussionId": "f96e07fc-5344-4ba6-ab5c-d4263ee8be6b",
-        "Mappings": []
-    },
-    {
-        "Path": "activate-license.markdown",
-        "Name": "Activate License",
-        "DiscussionId": "8dc7f6a1-ec5d-4066-bd0f-f7940dbee476",
-        "Mappings": []
-    },
-    {
-        "Path": "replace-license.markdown",
-        "Name": "Replace License",
-        "DiscussionId": "8dc7f6a1-ec5d-4066-bd0f-f7940dbee476",
-        "Mappings": []
-    },
-    {
-        "Path": "renew-license.markdown",
-        "Name": "Renew License",
-        "DiscussionId": "8dc7f6a1-ec5d-4066-bd0f-f7940dbee476",
-        "Mappings": []
-    },
-    {
-        "Path": "force-update.markdown",
-        "Name": "Force Update",
-        "DiscussionId": "8dc7f6a1-ec5d-4066-bd0f-f7940dbee476",
-        "Mappings": []
-    }
+  {
+    "Path": "licensing-overview.markdown",
+    "Name": "Licensing Overview",
+    "DiscussionId": "f96e07fc-5344-4ba6-ab5c-d4263ee8be6b",
+    "Mappings": []
+  },
+  {
+    "Path": "activate-license.markdown",
+    "Name": "Activate License",
+    "DiscussionId": "8dc7f6a1-ec5d-4066-bd0f-f7940dbee476",
+    "Mappings": []
+  },
+  {
+    "Path": "replace-license.markdown",
+    "Name": "Replace License",
+    "DiscussionId": "8dc7f6a1-ec5d-4066-bd0f-f7940dbee476",
+    "Mappings": []
+  },
+  {
+    "Path": "renew-license.markdown",
+    "Name": "Renew License",
+    "DiscussionId": "8dc7f6a1-ec5d-4066-bd0f-f7940dbee476",
+    "Mappings": []
+  },
+  {
+    "Path": "force-update.markdown",
+    "Name": "Force Update",
+    "DiscussionId": "8dc7f6a1-ec5d-4066-bd0f-f7940dbee476",
+    "Mappings": []
+  }
 ]

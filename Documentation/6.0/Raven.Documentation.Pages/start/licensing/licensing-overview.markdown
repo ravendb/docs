@@ -82,45 +82,48 @@ Visit the [Pricing page](https://ravendb.net/buy) to see **which features** are 
 ![About page](images/about-page.png "About page")
 
 1. **About**  
-    * Go to the About page to see the version, license, and support info.  
+    * Click to open the About page and view RavenDB version, license, support info, and more.  
 
 2. **Version**  
     * **Current version**  
-      Specifies the current Server and Studio client versions used.  
-      Knowing the version is important as documentation, features, and patches are version sensitive.  
+      Specifies the current Server and Studio versions.  
+      Knowing the version may be important because some features are version-specific.  
     * **Send Feedback**  
-      You can send RavenDB feedback about any issues you've encountered.  
-    * **Latest version info**  
+      You can send RavenDB feedback about any issue you encounter.  
+    * **Version Number**  
       Specifies whether you are using the latest Server version.  
-      If you need to upgrade to a new version see [upgrading instructions](../../start/installation/upgrading-to-new-version).  
+      To upgrade to a newer version, see [upgrading instructions](../../start/installation/upgrading-to-new-version).  
 
 3. **License Information**  
     * **Type**  
-      Specifies which license type you're using.  
+      Current license type  
     * **Expires**  
-      Specifies the date on which the license will expire.  
+      License expiration date.  
     * **Available features**  
-      The features included with this license are listed.  
+      A list of features included with this license  
     * **License Server**  
       Notifies if there is an active connection to RavenDB's License Server.  
-      If you are not connected it is often because a firewall is 
-      blocking the connection or your server is running offline.  
+      Connectivity issues are often caused by a firewall 
+      blocking the connection, or the server running offline.  
        * Make sure that RavenDB has access to `api.ravendb.net`.  
        * Click the refresh button to check the connection.  
 
             ![License server connection](images/license-server.png "License server connection")
 
-4. **Available actions**  
-    * [Replace License](../../start/licensing/replace-license) / [Force Update](../../start/licensing/force-update) / [Renew License](../../start/licensing/renew-license)  
+4. **Scroll**  
+   Drag the scroll bar to view all the available features.  
 
 5. **Support plan**  
     * Specifies the support options available under your current support plan.  
 
-6. **Links**  
+6. **Available actions**  
+    * [Replace License](../../start/licensing/replace-license) / [Force Update](../../start/licensing/force-update) / [Renew License](../../start/licensing/renew-license)  
+
+7. **Links**  
     * **Access**  
       Click to select RavenDB Community Discussions in GitHub, or Google Groups archive.  
-    * **Upgrade**  
-      Click to go to the RavenDB support options page.  
+    * **See support options**  
+      Click to visit the RavenDB support options page.  
 
 {PANEL/}
 

@@ -45,25 +45,22 @@ Please install [Visual C++ 2015 Redistributable Package](https://support.microso
 (or newer) before launching the RavenDB server.  
 This package should be the sole requirement for the 'Windows' platforms.  
 If you're experiencing difficulties, please check the 
-prerequisites for .NET on Windows in the [article](https://learn.microsoft.com/en-us/dotnet/core/install/windows?tabs=net70#dependencies) 
-written by Microsoft.  
+prerequisites for .NET on Windows in this [Microsoft article](https://learn.microsoft.com/en-us/dotnet/core/install/windows?tabs=net70#dependencies).  
 
 {NOTE/}
 
 {NOTE: Linux}
 
 We highly recommend **updating** your **Linux OS** prior to launching the RavenDB server.  
-Also, please check the prerequisites for .NET on Linux in the 
-[article](https://learn.microsoft.com/en-us/dotnet/core/install/linux-scripted-manual#dependencies) 
-written by Microsoft.
+Also, please check the prerequisites for .NET on Linux in this [Microsoft article](https://learn.microsoft.com/en-us/dotnet/core/install/linux-scripted-manual#dependencies).
 
 {NOTE/}
 
 {NOTE: MacOS}
 
 We highly recommend **updating** your **MacOS** and checking the prerequisites for .NET on macOS 
-in the [article](https://learn.microsoft.com/en-us/dotnet/core/install/macos) written by Microsoft 
-before launching the RavenDB Server.
+in this [Microsoft article](https://learn.microsoft.com/en-us/dotnet/core/install/macos) before 
+launching the RavenDB Server.
 
 {NOTE/}
 
