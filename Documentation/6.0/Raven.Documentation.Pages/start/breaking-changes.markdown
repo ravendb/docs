@@ -1,4 +1,4 @@
-# Getting Started
+# Breaking Changes: RavenDB 6.0
 ---
 
 {NOTE: }
@@ -37,33 +37,23 @@ RavenDB is cross-platform with support for the following operating systems:
 
 ### Prerequisites
 
-RavenDB is written in `.NET` so it requires the same set of prerequisites as `.NET`.
+RavenDB is written in .NET Core so it requires the same set of prerequisites as .NET Core.
 
 {NOTE: Windows}
 
-Please install [Visual C++ 2015 Redistributable Package](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads) 
-(or newer) before launching the RavenDB server.  
-This package should be the sole requirement for the 'Windows' platforms.  
-If you're experiencing difficulties, please check the 
-prerequisites for .NET on Windows in the [article](https://learn.microsoft.com/en-us/dotnet/core/install/windows?tabs=net70#dependencies) 
-written by Microsoft.  
+Please install [Visual C++ 2015 Redistributable Package](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads) (or newer) before launching the RavenDB server. This package should be the sole requirement for 'Windows' platforms. If you're experiencing difficulties, please check the [Prerequisites for .NET Core on Windows](https://docs.microsoft.com/en-us/dotnet/core/windows-prerequisites) article written by Microsoft.
 
 {NOTE/}
 
 {NOTE: Linux}
 
-We highly recommend **updating** your **Linux OS** prior to launching the RavenDB server.  
-Also, please check the prerequisites for .NET on Linux in the 
-[article](https://learn.microsoft.com/en-us/dotnet/core/install/linux-scripted-manual#dependencies) 
-written by Microsoft.
+We highly recommend **updating** your **Linux OS** prior to launching the RavenDB server. Also, check if .NET Core requires any other prerequisites in the [Prerequisites for .NET Core on Linux](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites) article written by Microsoft.
 
 {NOTE/}
 
 {NOTE: MacOS}
 
-We highly recommend **updating** your **MacOS** and checking the prerequisites for .NET on macOS 
-in the [article](https://learn.microsoft.com/en-us/dotnet/core/install/macos) written by Microsoft 
-before launching the RavenDB Server.
+We highly recommend **updating** your **MacOS** and checking the [Prerequisites for .NET Core on macOS](https://docs.microsoft.com/en-us/dotnet/core/macos-prerequisites) article written by Microsoft before launching the RavenDB Server.
 
 {NOTE/}
 

@@ -22,6 +22,12 @@
         ]
     },
     {
+        "Path": "breaking-changes.markdown",
+        "Name": "Breaking Changes",
+        "DiscussionId": "7374e4fe-24a7-4e6c-82f2-18360b4ea29d",
+        "Mappings": []
+    },
+    {
         "Path": "playground-server.markdown",
         "Name": "Playground Server",
         "DiscussionId": "7374e4fe-24a7-4e6c-82f2-18360b4ea29d",
