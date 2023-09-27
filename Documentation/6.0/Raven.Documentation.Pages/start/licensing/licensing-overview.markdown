@@ -4,12 +4,15 @@
 {NOTE: }
 
 * The license key is in JSON format.  
-  It is sent to the email address that was provided when obtaining the license.  
+  It is sent to the email address that was provided when the license was obtained.  
 
-* There are a few __license types__ available, see below.  
+* A few **License Types** are available, learn more about them below.  
+  {INFO: }
+  Visit the [Pricing page](https://ravendb.net/buy) to see **which features are included with each license type**.
+  {INFO/}
 
-* Each license has a specific date on which it will expire.  
-  To renew your license see [renew license](../../start/licensing/renew-license).   
+* Each license has a specific expiration date.  
+  To renew your license see [renew license](../../start/licensing/renew-license).  
 
 * In this page:
     * [License types](../../start/licensing/licensing-overview#license-types)
@@ -26,9 +29,7 @@
 
 {PANEL: License types}
 
-{INFO: }
-Visit the [Pricing page](https://ravendb.net/buy) to see **which features** are included with each license type.
-{INFO/}
+The following licences are available.
 
 ---
 
