@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Raven.Client;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Session;
 using Raven.Client.Json;
 
 namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Session
@@ -17,7 +18,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                 {
                     #region extract_counters
                     // Use GetMetadataFor to get revisions metadata for document 'orders/1-A'
-                    List<MetadataAsDictionary> revisionsMetadata = session
+                    List<IMetadataDictionary> revisionsMetadata = session
                         .Advanced.Revisions.GetMetadataFor(id: "orders/1-A");
 
                     // Extract the counters data from the metadata
@@ -40,7 +41,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                 {
                     #region extract_counters_async
                     // Use GetMetadataForAsync to get revisions metadata for document 'orders/1-A'
-                    List<MetadataAsDictionary> revisionsMetadata = await asyncSession
+                    List<IMetadataDictionary> revisionsMetadata = await asyncSession
                         .Advanced.Revisions.GetMetadataForAsync(id: "orders/1-A");
 
                     // Extract the counters data from the metadata

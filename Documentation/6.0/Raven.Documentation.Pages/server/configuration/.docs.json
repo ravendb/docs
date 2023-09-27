@@ -42,6 +42,12 @@
     "Mappings": []
   },
   {
+    "Path": "queue-sink-configuration.markdown",
+    "Name": "Queue Sink Configuration",
+    "DiscussionId": "c98467b2-7072-4ca0-ac72-b775dc8ac67f",
+    "Mappings": []
+  },
+  {
     "Path": "embedded-configuration.markdown",
     "Name": "Embedded Configuration",
     "DiscussionId": "a6a148d2-c4fa-47c6-aa1c-3fad81e64000",

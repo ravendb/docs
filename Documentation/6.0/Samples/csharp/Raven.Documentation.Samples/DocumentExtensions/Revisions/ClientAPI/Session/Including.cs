@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Raven.Client;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Session;
 using Raven.Client.Json;
 using Raven.Documentation.Samples.Orders;
 
@@ -151,7 +152,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                 using (var session = store.OpenSession())
                 {
                     // Get the revisions' metadata for document 'contracts/1-A'
-                    List<MetadataAsDictionary> contractRevisionsMetadata =
+                    List<IMetadataDictionary> contractRevisionsMetadata =
                         session.Advanced.Revisions.GetMetadataFor("contracts/1-A");
 
                     // Get a change vector from the metadata
@@ -308,7 +309,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ses
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     // Get the revisions' metadata for document 'contracts/1-A'
-                    List<MetadataAsDictionary> contractRevisionsMetadata =  
+                    List<IMetadataDictionary> contractRevisionsMetadata =  
                         await asyncSession.Advanced.Revisions.GetMetadataForAsync("contracts/1-A");
 
                     // Get a change vector from the metadata
