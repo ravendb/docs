@@ -31,6 +31,7 @@
 
 * In this page:  
   * [Sharding](../sharding/overview#sharding)  
+     * [Licensing](../sharding/overview#licensing)
      * [Client-Server Communication](../sharding/overview#client-server-communication)  
      * [When Should Sharding Be Used?](../sharding/overview#when-should-sharding-be-used)  
   * [Shards](../sharding/overview#shards)  
@@ -63,6 +64,19 @@ handled by multiple nodes and presenting practically no limit to its growth.
 The size of the overall database, comprised of all shards, can reach in 
 this fashion dozens of terabytes and more while keeping the resources 
 of each shard in check and maintaining its high performance and throughput.  
+
+---
+
+### Licensing
+
+{INFO: }
+Sharding is **Fully Available** on an **Enterprise** license.  
+{INFO/}
+
+* On a **Developer** license, the replication factor is restricted to 1.  
+* On **Community** and **Professional** licenses, all shards need to be on the same node.  
+
+Learn more about licensing [here](../start/licensing/licensing-overview).  
 
 ---
 
