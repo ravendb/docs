@@ -517,8 +517,8 @@ over these two terms.
 Lucene, however, will use its _PharseQuery_ to search for 
 phrases combined of the two terms **in the original order 
 of the terms**: first `din`, followed by `ner`. Texts 
-containing the phrase `nerdin`, for example, will **not** 
-be included in the results.  
+containing the phrases `ner%din` or `ner din`, for example, 
+will **not** be included in the results.  
 Corax, on the other hand, will run a sub-query for each 
 term as if the search was for `din` OR `ner`. Results for 
 both `dinner` and `nerdin` will, therefore, be returned.  
