@@ -22,7 +22,6 @@
 * The search engine can be selected per server, per database, and per index (for static indexes only).  
 
 * In this page:  
-   * [Enabling Corax](../../indexes/search-engine/corax#enabling-corax)  
    * [Selecting the Search Engine](../../indexes/search-engine/corax#selecting-the-search-engine)  
       * [Server Wide](../../indexes/search-engine/corax#select-search-engine-server-wide)  
       * [Per Database](../../indexes/search-engine/corax#select-search-engine-per-database)  
@@ -34,6 +33,7 @@
    * [Limits](../../indexes/search-engine/corax#limits)  
    * [Configuration Options](../../indexes/search-engine/corax#configuration-options)  
    * [Index Training: Compression Dictionaries](../../indexes/search-engine/corax#index-training:-compression-dictionaries)  
+   * [Full Text Search for Non-Alphabetical Characters](../../indexes/search-engine/corax#full-text-search-for-non-alphabetical-characters)  
 
 {NOTE/}
 
@@ -86,7 +86,7 @@ You must restart the server for the new settings to be read and applied.
 Selecting a new search engine will change the search engine only for indexes created from now on.  
 
 E.g., If my configuration has been `"Indexing.Static.SearchEngineType": "Corax"` 
-until now and I now change it to `"Indexing.Static.SearchEngineType": "Lucene"`, 
+until now and I now changed it to `"Indexing.Static.SearchEngineType": "Lucene"`, 
 static indexes created from now on will use Lucene, but static indexes created 
 while Corax was selected will continue using Corax.  
 
@@ -137,7 +137,7 @@ overriding any per-database and per-server settings.
 
 * The indexes list view will show the changed configuration.  
 
-    ![Search Engine Changed](images/corax-02.5_search-engine-changed.png "Search Engine Changed")
+    ![Search Engine Changed](images/corax-01_search-engine-changed.png "Search Engine Changed")
 
 ---
 
@@ -206,7 +206,15 @@ exception and the search will stop.
 
 {PANEL: Handling of Complex JSON Objects}
 
-Complex JSON properties **cannot currently be indexed and searched by Corax**.  
+To avoid unnecessary resource usage, the contents of complex JSON properties is not indexed by RavenDB.  
+[See below](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing) 
+how auto and static indexes handle such fields.  
+
+{NOTE: }
+Lucene's approach of indexing complex fields as JSON strings usually makes no 
+sense, and is not supported by Corax.  
+{NOTE/}
+
 Consider, for example, the following `orders` document:  
 {CODE-BLOCK: json}
 {
@@ -223,12 +231,9 @@ Consider, for example, the following `orders` document:
 }
 {CODE-BLOCK/}
 
-As the `Location` property of the document above contains a list of key/value pairs 
-rather than a simple numeric value or a string, attempting to index this field using 
-Corax [would fail](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing).  
-{NOTE: }
-The approach taken by Lucene, indexing such objects as a JSON string, usually makes no sense and is not supported by Corax.  
-{NOTE/}
+As `Location` contains a list of key/value pairs rather than a simple numeric value or a string, 
+Corax will not index its contents (see [here](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing) 
+what will be indexes).  
 
 There are several ways to handle the indexing of complex JSON objects:  
 
@@ -313,17 +318,27 @@ It does, however, make sense in some cases to **project** such a string.
 
 #### If Corax Encounters a Complex Property While Indexing:  
 
-* If an auto index exists for the document, Corax will throw 
-  `System.NotSupportedException` to notify the user that a search 
-  that is not supported by Corax has been attempted.  
+* An **auto index** will replace a complex field with a `JSON_VALUE` string.  
+  This will allow basic queries over the field, like checking if it 
+  exists using `Field == null` or `exists(Field)`.  
 
-* If a static index is used and it doesn't explicitly relate 
-  to the complex field, Corax will automatically exempt the 
-  field from indexing (by defining **Indexing: No** for this 
-  field as shown [above](../../indexes/search-engine/corax#disable-the-indexing-of-the-complex-field)).  
+     Corax will also alert the user as follows:  
+     `We have detected a complex field in an auto index. To avoid higher 
+     resources usage when processing JSON objects, the values of these fields 
+     will be replaced with JSON_VALUE.  
+     Please consider querying on individual fields of that object or using 
+     a static index.`
+
+* If a **static index** is used and it doesn't explicitly relate 
+  to the complex field, Corax will automatically exempt the field 
+  from indexing (by defining **Indexing: No** for this field as shown 
+  [above](../../indexes/search-engine/corax#disable-the-indexing-of-the-complex-field)).  
   
      If the static index explicitly sets the Indexing flag in 
-     any other way but "no", Corax **will** throw the exception.  
+     any other way but "no", Corax **will** throw an exception:  
+     `The value of '{fieldName}' is a complex object. Indexing it 
+     as a text isn't supported. You should consider querying on individual 
+     fields of that object.`
 
 {PANEL/}
 
@@ -464,7 +479,7 @@ Here are some additional things to keep in mind about Corax indexes compression 
   [number of documents](../../server/configuration/indexing-configuration#indexing.corax.documentslimitforcompressiondictionarycreation)
   threshold (100,000 docs by default) or the 
   [amount of memory](../../server/configuration/indexing-configuration#indexing.corax.maxallocationsatdictionarytraininginmb) 
-  threshold (2GB by default). Both thresholds are configurable.  
+  threshold (up to 2GB). Both thresholds are configurable.  
   {NOTE/}
 * If upon creation there are less than 10,000 documents in the involved collections, 
   it may make sense to manually force an index reset after reaching 
@@ -478,11 +493,34 @@ Here are some additional things to keep in mind about Corax indexes compression 
 
 ---
 
-{NOTE: }
-Corax indexes will not train compression dictionaries if they are created in the 
-testing studio interface, because it is designed for indexing prototyping and the 
-training process will add unnecessary overhead.
-{NOTE/}
+### Corax and the Test Index interface
+Corax indexes will **not** train compression dictionaries if they are created in the 
+[Test Index](../../studio/database/indexes/create-map-index#test-index) interface, 
+because the testing interface is designed for indexing prototyping and the training 
+process will add unnecessary overhead.
+
+{PANEL/}
+
+{PANEL: Full Text Search for Non-Alphabetical Characters}
+
+The results returned by Lucene and Corax **may differ** 
+when the two engines run the same full text search over 
+a text that includes non-alphabetical characters.  
+
+Both search engines remove non-alphabetical characters 
+and create search terms for the remaining text.  
+Searching for `din%ner`, for example, will remove the `%`, 
+leave the two search terms `din` and `ner`, and run a search 
+over these two terms.  
+
+Lucene, however, will use its _PharseQuery_ to search for 
+phrases combined of the two terms **in the original order 
+of the terms**: first `din`, followed by `ner`. Texts 
+containing the phrases `ner%din` or `ner din`, for example, 
+will **not** be included in the results.  
+Corax, on the other hand, will run a sub-query for each 
+term as if the search was for `din` OR `ner`. Results for 
+both `dinner` and `nerdin` will, therefore, be returned.  
 
 {PANEL/}
 
