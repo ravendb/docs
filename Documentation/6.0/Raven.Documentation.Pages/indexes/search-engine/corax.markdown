@@ -318,15 +318,14 @@ It does, however, make sense in some cases to **project** such a string.
 
 #### If Corax Encounters a Complex Property While Indexing:  
 
-* An **auto index** will replace a complex field with a `[JSON_VALUE]` 
-  string.  
+* An **auto index** will replace a complex field with a `JSON_VALUE` string.  
   This will allow basic queries over the field, like checking if it 
   exists using `Field == null` or `exists(Field)`.  
 
      Corax will also alert the user as follows:  
      `We have detected a complex field in an auto index. To avoid higher 
      resources usage when processing JSON objects, the values of these fields 
-     will be replaced with [JSON_VALUE].  
+     will be replaced with JSON_VALUE.  
      Please consider querying on individual fields of that object or using 
      a static index.`
 
