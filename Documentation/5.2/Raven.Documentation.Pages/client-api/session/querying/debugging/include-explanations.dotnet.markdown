@@ -5,7 +5,8 @@
 {NOTE: }
 
 * When making a query, each document in the query results is assigned a __score__.  
-  This score determines the order by which the documents come back in the results.
+  This score determines the order by which the documents come back in the results when requesting   
+  to [order by score](../../../../client-api/session/querying/sort-query-results#order-by-score).
 
 * Each document in the results includes this score under the `@index-score` property in its metadata.
 
