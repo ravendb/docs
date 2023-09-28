@@ -7,26 +7,49 @@ This page lists RavenDB 6.0 features whose behavior is inconsistent with their b
 in previous (5.4 and lower) versions.  
 
 * In this page:
-   * [Breaking Features in a Sharded Database](../start/breaking-changes#breaking-features-in-a-sharded-database)  
-   * [Breaking Features in a Non-Sharded Database](../start/breaking-changes#breaking-features-in-a-non-sharded-database)  
+   * [Breaking Changes in a Sharded Database](../start/breaking-changes#breaking-changes-in-a-sharded-database)  
+   * [Breaking Changes in a Non-Sharded Database](../start/breaking-changes#breaking-changes-in-a-non-sharded-database)  
 
 {NOTE/}
 
-{PANEL: Breaking Features in a Sharded Database}
-
-#### EntireDatabasePendingDeletion()
-
-moved from: `DatabaseTopology.EntireDatabasePendingDeletion`  
-moved to: `RawDatabaseRecord.EntireDatabasePendingDeletion`  
-
----
+{PANEL: Breaking Changes in a Sharded Database}
 
 #### Attachments
 
-[session.Advanced.Attachments.Move](../sharding/unsupported#unsupported-document-extensions-features)  
-[session.Advanced.Attachments.Copy](../sharding/unsupported#unsupported-document-extensions-features)  
-Trying to use these methods in a sharded database will throw a `NotSupportedInShardingException` exception.  
-For a list of features that are not supported under a sharded database [visit this page](../sharding/unsupported).  
+The client API does not support [session.Advanced.Attachments.Move](../sharding/unsupported#unsupported-document-extensions-features)  
+and [session.Advanced.Attachments.Copy](../sharding/unsupported#unsupported-document-extensions-features) 
+when the database is sharded.  
+Running these methods will throw a `NotSupportedInShardingException` exception.  
+For a full list of features that are not supported under a sharded database [visit this page](../sharding/unsupported).  
+
+---
+
+### When casting a Smuggler Result Set, Use a Sharding-Specific Type
+
+**Smuggler** and the features that use it (**Backup**, **Import**, and **Export**) return result 
+sets using sharding-specific types. Casting such a result set with a non-sharded type fill fail.  
+
+* The following sample, for example, will **fail** when the database is sharded.  
+  {CODE-BLOCK: csharp}
+  var operation = await store.Maintenance.SendAsync(new BackupOperation(config));
+  var result = await operation.WaitForCompletionAsync(TimeSpan.FromSeconds(60));
+
+  // This will fail with a sharded database
+  var backupResult = (BackupResult)result;
+  {CODE-BLOCK/}
+
+* For the code to succeed, replace the last line with:  
+  {CODE-BLOCK: csharp}
+  var backupResult = (ShardedBackupResult)result;
+  {CODE-BLOCK/}
+
+{INFO: Sharding-specific types}
+
+* For Backup: `ShardedBackupResult`  
+* For Restore: `ShardedRestoreResult`  
+* For Smuggler, Import, and Export: `ShardedSmugglerResult`  
+
+{INFO/}
 
 ---
 
@@ -56,46 +79,19 @@ For a list of features that are not supported under a sharded database [visit th
 
 ---
 
-### Export and Smuggler return a sharded result format
+#### EntireDatabasePendingDeletion()
 
-Smuggler and the methods that use it return a sharded-specific results format.  
-
-{CODE-BLOCK: csharp}
-public sealed class ShardedSmugglerResult 
-{
-    public List<ShardNodeSmugglerResult> Results { get; set; }
-}
-{CODE-BLOCK/}
+moved from: `DatabaseTopology.EntireDatabasePendingDeletion`  
+moved to: `RawDatabaseRecord.EntireDatabasePendingDeletion`  
 
 {PANEL/}
 
-{PANEL: Breaking Features in a Non-Sharded Database}
+{PANEL: Breaking Changes in a Non-Sharded Database}
 
 * Only **Public** fields are serialized/deserialized.  
   Private fields are **not** serialized/deserialized.  
 
-  E.g.,
-  {CODE-BLOCK: JSON}
-  public class Item
-  {
-
-     // Will be serialized/deserialized
-     public Item1(int a)
-     {
-        content = a;
-     }
-
-     // Will Not be serialized/deserialized
-     private Item2(int a)
-     {
-        content = a;
-     }
-
-   }
-  
-  {CODE-BLOCK/}
-
-* `DefaultAsyncHiLoIdGenerator ` is **removed** in RavenDB 6.0.  
+* The `DefaultAsyncHiLoIdGenerator` class is **removed** from RavenDB 6.0.  
 
 * Changing `int` to `long` in IndexStorage for fields that are already stored as `long`.  
 
