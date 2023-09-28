@@ -206,15 +206,12 @@ exception and the search will stop.
 
 {PANEL: Handling of Complex JSON Objects}
 
-
-To avoid unnecessary resource usage, the contents of complex JSON properties 
-is not indexed by RavenDB in detail but replaced with the string `[JSON_VALUE]` 
-and indexed by it.  
-This allows basic queries over the field, like checking if it exists using 
-`Field == null` or `exists(Field)`, but not querying upon its contents.  
+To avoid unnecessary resource usage, the contents of complex JSON properties is not indexed by RavenDB.  
+[See below](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing) 
+how auto and static indexes handle such fields.  
 
 {NOTE: }
-Lucene's approach of indexing such objects as JSON strings usually makes no 
+Lucene's approach of indexing complex fields as JSON strings usually makes no 
 sense, and is not supported by Corax.  
 {NOTE/}
 
@@ -234,10 +231,9 @@ Consider, for example, the following `orders` document:
 }
 {CODE-BLOCK/}
 
-As the `Location` property of the document above contains a list of key/value pairs 
-rather than a simple numeric value or a string, attempting to index this field using 
-Corax will replace the field with `[JSON_VALUE]` and 
-[may generate an alert](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing).  
+As `Location` contains a list of key/value pairs rather than a simple numeric value or a string, 
+Corax will not index its contents (see [here](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing) 
+what will be indexes).  
 
 There are several ways to handle the indexing of complex JSON objects:  
 
@@ -322,20 +318,28 @@ It does, however, make sense in some cases to **project** such a string.
 
 #### If Corax Encounters a Complex Property While Indexing:  
 
-* If an auto index exists for the document Corax will alert the user:  
-  `We have detected a complex field in an auto index. To avoid higher 
-  resources usage when processing JSON objects, the values of these fields 
-  will be replaced with [JSON_VALUE].  
-  Please consider querying on individual fields of that object or using 
-  a static index.`
+* An **auto index** will replace a complex field with a `[JSON_VALUE]` 
+  string.  
+  This will allow basic queries over the field, like checking if it 
+  exists using `Field == null` or `exists(Field)`.  
 
-* If a static index is used and it doesn't explicitly relate 
-  to the complex field, Corax will automatically exempt the 
-  field from indexing (by defining **Indexing: No** for this 
-  field as shown [above](../../indexes/search-engine/corax#disable-the-indexing-of-the-complex-field)).  
+     Corax will also alert the user as follows:  
+     `We have detected a complex field in an auto index. To avoid higher 
+     resources usage when processing JSON objects, the values of these fields 
+     will be replaced with [JSON_VALUE].  
+     Please consider querying on individual fields of that object or using 
+     a static index.`
+
+* If a **static index** is used and it doesn't explicitly relate 
+  to the complex field, Corax will automatically exempt the field 
+  from indexing (by defining **Indexing: No** for this field as shown 
+  [above](../../indexes/search-engine/corax#disable-the-indexing-of-the-complex-field)).  
   
      If the static index explicitly sets the Indexing flag in 
-     any other way but "no", Corax **will** throw the exception.  
+     any other way but "no", Corax **will** throw an exception:  
+     `The value of '{fieldName}' is a complex object. Indexing it 
+     as a text isn't supported. You should consider querying on individual 
+     fields of that object.`
 
 {PANEL/}
 
