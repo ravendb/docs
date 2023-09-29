@@ -30,6 +30,7 @@ ability to process this data, reveal and exploit its value.
 * In this page:  
    * [Supported Message Brokers](../../../server/ongoing-tasks/queue-sink/overview#supported-message-brokers)  
    * [Task Statistics](../../../server/ongoing-tasks/queue-sink/overview#task-statistics)  
+   * [Licensing](../../../server/ongoing-tasks/queue-sink/overview#licensing)  
 
 {NOTE/}
 
@@ -90,6 +91,16 @@ view to see transfer statistics.
    The duration of script processing (in MS)  
 
 {PANEL/}
+
+{PANEL: Licensing}
+{INFO: }
+Queue Sink is Available on an **Enterprise** license.  
+{INFO/}
+
+Learn more about licensing [here](../../../start/licensing/licensing-overview).  
+
+{PANEL/}
+
 
 ## Related Articles
 

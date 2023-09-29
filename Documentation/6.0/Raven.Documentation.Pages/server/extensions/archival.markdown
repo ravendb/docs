@@ -1,4 +1,4 @@
-﻿# Document Archival
+﻿# Data Archival
 ---
 
 {NOTE: }
@@ -21,6 +21,7 @@
 
 * In this page:  
   * [Overview](../../server/extensions/archival#overview)  
+     * [Licensing](../../server/extensions/archival#licensing)
   * [Scheduling Document Archival](../../server/extensions/archival#scheduling-document-archival)  
   * [Archival and Other Features](../../server/extensions/archival#archival-and-other-features)  
      * [Archiving and Indexing](../../server/extensions/archival#archiving-and-indexing)  
@@ -84,6 +85,16 @@
   metadata `@archived: true` property and apply whatever specific logic suits them.  
   A user-defined ETL task, for example, can avoid this way from sending its target 
   archived documents.  
+
+---
+
+### Licensing
+
+{INFO: }
+Archival is Available on an **Enterprise** license.  
+{INFO/}
+
+Learn more about licensing [here](../../start/licensing/licensing-overview).  
 
 {PANEL/}
 
