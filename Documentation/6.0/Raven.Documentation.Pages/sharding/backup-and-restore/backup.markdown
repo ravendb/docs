@@ -188,6 +188,12 @@ database, however, this task will be re-defined automatically
 by the orchestrator for each shard.  
 {CODE backup_remote_destinations@Sharding\ShardingBackupAndRestore.cs /}
 
+{WARNING: Casting Backup Results}
+In a sharded database, results are returned by Backup in a `ShardedBackupResult` type.  
+This type is specific to a sharded database, and casting it using a non-sharded type 
+[will fail](../../migration/client-api/client-breaking-changes#casting-smuggler-results).  
+{WARNING/}
+
 {PANEL/}
 
 {PANEL: Backup Options Summary}

@@ -1,19 +1,8 @@
 [
-    {
-        "Path": "introduction.markdown",
-        "Name": "Introduction",
-        "DiscussionId": "4bfd4ae0-7b58-4895-a0b0-c1ecd693a306",
-        "Mappings": []
-    },
-    {
-        "Path": "conventions.markdown",
-        "Name": "Conventions",
-        "DiscussionId": "e4fa6758-f423-44ac-a696-9153154b7d54",
-        "Mappings": []
-    },
-    {
-        "Path": "/session",
-        "Name": "Session",
-        "Mappings": []
-    }
+  {
+    "Path": "client-breaking-changes.markdown",
+    "Name": "Client Breaking Changes",
+    "DiscussionId": "f9da3352-974c-435d-bff8-de6b22fa2094",
+    "Mappings": []
+  }
 ]

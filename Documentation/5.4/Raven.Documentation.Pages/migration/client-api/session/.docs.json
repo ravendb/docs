@@ -3,6 +3,35 @@
         "Path": "advanced.markdown",
         "Name": "Advanced",
         "DiscussionId": "b7e3a032-ef6b-45f9-be32-9c42062c014f",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 5.3,
+                "Key": "advanced.markdown"
+            },
+            {
+                "Version": 5.2,
+                "Key": "advanced.markdown"
+            },
+            {
+                "Version": 5.1,
+                "Key": "advanced.markdown"
+            },
+            {
+                "Version": 5.0,
+                "Key": "advanced.markdown"
+            },
+            {
+                "Version": 4.2,
+                "Key": "advanced.markdown"
+            },
+            {
+                "Version": 4.1,
+                "Key": "advanced.markdown"
+            },
+            {
+                "Version": 4.0,
+                "Key": "advanced.markdown"
+            }
+        ]
     }
 ]
