@@ -16,9 +16,9 @@ their behavior in previous versions.
 {PANEL: Breaking Changes}
 
 * **ETL**  
-  SQL ETL now tolerates errors on `Load`: load errors are thrown immediately, to distinguish 
-  between partial load errors that are used in SQL ETL, and, for example, commit errors that 
-  may happen during load. (Prior to this change ETL would just advance instead of retrying.)  
+  SQL ETL no longer tolerates errors on `Load`: load errors are thrown immediately, to distinguish 
+  partial load errors that are used in SQL ETL from, for example, commit errors that may happen 
+  during load. (Prior to this change ETL would just advance instead of retrying.)  
 
 * **Include from a Non-tracking session**  
   A non-tracking session will now throw the below exception if an 'Include' operation is 
@@ -30,24 +30,27 @@ their behavior in previous versions.
   actions like load or query."`
 
 * **Type Changes**  
-  Many methods and types that used the `int` type in former RavenDB versions now 
-  use `long`, e.g. `BlittableArrayResult.TotalResults` and `QueryStatistics.TotalResults`.  
+  Many methods and types that used the `int` type in former RavenDB versions now use `long`,  
+  e.g. `QueryStatistics.TotalResults`  
 
 * **Indexing**  
-  The default value of [Indexing.OrderByTicksAutomaticallyWhenDatesAreInvolved](../../server/configuration/indexing-configuration#indexing.orderbyticksautomaticallywhendatesareinvolved) 
-  is now `true`.  
+  The default value of the 
+  [Indexing.OrderByTicksAutomaticallyWhenDatesAreInvolved](../../server/configuration/indexing-configuration#indexing.orderbyticksautomaticallywhendatesareinvolved) 
+  configuration option is now `true`  
 
 * **Facets**  
- `FacetOptions` were removed from `RangeFacet`.  
+ `FacetOptions` were removed from `RangeFacet`  
 
 * **Obsolete entities removed**  
-  Many obsolete attributes, properties, and methods were removed from the public API.  
+  Many obsolete attributes, properties, and methods were removed from the public API 
+  to help users mitigate the X509Certificate2 leak.  
+  More info [here](https://snede.net/the-most-dangerous-constructor-in-net/).  
 
 * A `DisposeCertificate` convention has been added to prevent/allow the disposal of 
   `DocumentStore.Certificate` when the store is disposed of.  
 
 * **Serialization**  
-  Only **Public** fields are serialized/deserialized.  
+  Only **Public** fields are serialized/deserialized when doing a projection. 
   Private fields are **not** serialized/deserialized.  
 
 * **`DefaultAsyncHiLoIdGenerator` is replaced with `AsyncHiLoIdGenerator`**  
@@ -103,7 +106,7 @@ var backupResult = (ShardedBackupResult)result;
 ### Endpoints
 
 * `GET /databases/*/revisions/bin`  
-  Pass `start` instead of `etag`.  
+  Pass `start` instead of `etag`  
   We now fetch from the last entry backward rather than from a specific etag.  
   {INFO: }
   `GetRevisionsBinEntryCommand`  
