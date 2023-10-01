@@ -4,9 +4,8 @@
 
 {NOTE: }
 
-* The Lucene indexing engine allows you to create your own __Custom Sorters__.  
-  A custom sorter allows you to define how documents will be ordered in the query results according  
-  to your specific requirements.
+* The Lucene indexing engine allows you to create your own __Custom Sorters__   
+  where you can define how query results will be ordered based on your specific requirements.
 
 * Use `PutSortersOperation` to deploy a custom sorter to the RavenDB server.  
   Once deployed, you can use it to sort query results for all queries made on the __database__  
@@ -31,9 +30,16 @@
 * Then, send the custom sorter to the server using the `PutSortersOperation`.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync put_sorter_1@ClientApi\Operations\Maintenance\Sorters\PutSorter.cs /}
-{CODE-TAB:csharp:Async put_sorter_1_async@ClientApi\Operations\Maintenance\Sorters\PutSorter.cs /}
+{CODE-TAB:csharp:Sync put_sorter@ClientApi\Operations\Maintenance\Sorters\PutSorter.cs /}
+{CODE-TAB:csharp:Async put_sorter_async@ClientApi\Operations\Maintenance\Sorters\PutSorter.cs /}
 {CODE-TABS/}
+
+{NOTE: }
+
+You can now order your query results using the custom sorter.  
+A query example is available [here](../../../../client-api/session/querying/sort-query-results#custom-sorters).
+
+{NOTE/}
 
 {PANEL/}
 

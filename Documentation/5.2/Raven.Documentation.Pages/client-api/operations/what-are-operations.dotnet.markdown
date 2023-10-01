@@ -371,7 +371,7 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideAnalyzerOperation  
 
 * __Server-wide sorters__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideSortersOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideSortersOperation](../../client-api/operations/server-wide/sorters/put-sorter-server-wide)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideSorterOperation  
 
 * __Logs & debug__:  

@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Operations.Sorters;
 using Raven.Client.Documents.Queries.Sorting;
+using Raven.Client.ServerWide.Operations.Sorters;
 
-namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Sorters
+namespace Raven.Documentation.Samples.ClientApi.Operations.Server.Sorters
 {
-    public class PutSorter
+    public class PutSorterServerWide
     {
-        public async Task PutCustomSorter()
+        public PutSorterServerWide() 
         {
             using (var store = new DocumentStore())
             {
@@ -26,13 +26,16 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Sorters
 
                 // Define the put sorters operation, pass the sorter definition
                 // Note: multiple sorters can be passed, see syntax below
-                var putSortersOp = new PutSortersOperation(customSorterDefinition);
+                var putSortersServerWideOp = new PutServerWideSortersOperation(customSorterDefinition);
                  
-                // Execute the operation by passing it to Maintenance.Send
-                store.Maintenance.Send(putSortersOp);
+                // Execute the operation by passing it to Maintenance.Server.Send
+                store.Maintenance.Server.Send(putSortersServerWideOp);
                 #endregion
             }
-            
+        }
+        
+        public async Task EnableIndexAsync()
+        {
             using (var store = new DocumentStore())
             {
                 #region put_sorter_async
@@ -50,17 +53,17 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Sorters
 
                 // Define the put sorters operation, pass the sorter definition
                 // Note: multiple sorters can be passed, see syntax below
-                var putSortersOp = new PutSortersOperation(customSorterDefinition);
+                var putSortersServerWideOp = new PutServerWideSortersOperation(customSorterDefinition);
                  
-                // Execute the operation by passing it to Maintenance.SendAsync
-                await store.Maintenance.SendAsync(putSortersOp);
+                // Execute the operation by passing it to Maintenance.Server.SendAsync
+                await store.Maintenance.Server.SendAsync(putSortersServerWideOp);
                 #endregion
             }
         }
         
         /*
         #region syntax_1
-        public PutSortersOperation(params SorterDefinition[] sortersToAdd)
+        public PutServerWideSortersOperation(params SorterDefinition[] sortersToAdd)
         #endregion
         */
         
