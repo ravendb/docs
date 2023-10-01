@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* When making a query, the server will return the results sorted only if explicitly requested by the query.  
+* When making a query, the server will return the results __sorted__ only if explicitly requested by the query.  
   If no sorting method is specified when issuing the query then results will not be sorted.
 
 * Sorting is applied by the server after the query filtering stage.  
@@ -238,10 +238,10 @@ order by UnitsInStock as long desc, score(), Name
 
 {PANEL: Custom sorters }
 
-* The Lucene indexing engine allows creating your own custom sorters.  
+* The Lucene indexing engine allows you to create your own custom sorters.
   Custom sorters can be deployed to the server by either:  
 
-     * Sending the [PutSortersOperation](..todo) from your code.
+     * Sending the [PutSortersOperation](../../../client-api/operations/maintenance/sorters/put-sorter) from your code.
   
      * Uploading a custom sorter from Studio, see [Custom Sorters](..todo).
 

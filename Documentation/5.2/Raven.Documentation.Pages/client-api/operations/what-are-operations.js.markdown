@@ -254,7 +254,7 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../client-api/operations/revisions/configure-revisions)  
 
 * __Sorters__:   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutSortersOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../client-api/operations/maintenance/sorters/put-sorter)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteSorterOperation  
 
 * __Misc__:  
