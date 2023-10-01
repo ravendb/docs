@@ -196,6 +196,8 @@ __Syntax__
 
 * Use `RandomOrdering` to order the query results randomly.
 
+* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results) article.
+
 {NOTE: }
 
 __Example__

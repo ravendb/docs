@@ -199,12 +199,12 @@ Available custom methods and extensions:
 - [Query] [NoTracking](../../../../client-api/session/querying/how-to-customize-query#notracking)
 - OfType
 - OpenSubclause
-- OrderBy
-- OrderByDescending
+- [OrderBy](../../../../client-api/session/querying/sort-query-results)
+- [OrderByDescending](../../../../client-api/session/querying/sort-query-results)
 - [Query] [OrderByDistance](../../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistance)
 - [Query] [OrderByDistanceDescending](../../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistanceDesc)
-- OrderByScore
-- OrderByScoreDescending
+- [OrderByScore](../../../../client-api/session/querying/sort-query-results#order-by-score)
+- [OrderByScoreDescending](../../../../client-api/session/querying/sort-query-results#order-by-score)
 - OrElse
 - [Query] [Projection](../../../../client-api/session/querying/how-to-customize-query#projection)
 - Proximity

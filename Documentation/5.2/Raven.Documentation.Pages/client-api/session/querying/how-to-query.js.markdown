@@ -289,12 +289,12 @@ Available methods for the session's [query](../../../client-api/session/querying
 - [on("afterQueryExecuted")](../../../client-api/session/querying/how-to-customize-query#on-("afterqueryexecuted"))
 - [on("beforeQueryExecuted")](../../../client-api/session/querying/how-to-customize-query#on-("beforequeryexecuted"))
 - openSubclause
-- orderBy
-- orderByDescending
+- [orderBy](../../../client-api/session/querying/sort-query-results)
+- [orderByDescending](../../../client-api/session/querying/sort-query-results)
 - [orderByDistance](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistance)
 - [orderByDistanceDescending](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistanceDesc)
-- orderByScore
-- orderByScoreDescending
+- [orderByScore](../../../client-api/session/querying/sort-query-results#order-by-score)
+- [orderByScoreDescending](../../../client-api/session/querying/sort-query-results#order-by-score)
 - orElse
 - proximity
 - [randomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)

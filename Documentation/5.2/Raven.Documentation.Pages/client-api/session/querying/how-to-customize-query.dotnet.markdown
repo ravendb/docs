@@ -257,7 +257,7 @@ __Syntax__
 
 * Use `RandomOrdering` to order the query results randomly.  
 
-* More ordering options are available in this [Sorting](../../../indexes/querying/sorting) article.  
+* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results) article.  
 
 {NOTE: }
 
