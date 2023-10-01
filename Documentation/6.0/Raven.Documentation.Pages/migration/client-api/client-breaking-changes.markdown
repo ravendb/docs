@@ -43,11 +43,11 @@ their behavior in previous versions.
 
 * **Obsolete entities removed**  
   Many obsolete attributes, properties, and methods were removed from the public API 
-  to help users mitigate the X509Certificate2 leak.  
-  More info [here](https://snede.net/the-most-dangerous-constructor-in-net/).  
 
 * A `DisposeCertificate` convention has been added to prevent/allow the disposal of 
-  `DocumentStore.Certificate` when the store is disposed of.  
+  `DocumentStore.Certificate` when the store is disposed of, to help users mitigate the 
+  X509Certificate2 leak.  
+  More info [here](https://snede.net/the-most-dangerous-constructor-in-net/).  
 
 * **Serialization**  
   Only **Public** fields are serialized/deserialized when doing a projection. 
