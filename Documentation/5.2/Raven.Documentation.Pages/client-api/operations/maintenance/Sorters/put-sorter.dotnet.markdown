@@ -65,4 +65,4 @@ A query example is available [here](../../../../client-api/session/querying/sort
 ### Operations
 
 - [What are operations](../../../../client-api/operations/what-are-operations)
-- [Put server-wide sorter](../../../../todo...)
+- [Put server-wide sorter](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide)
