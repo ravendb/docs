@@ -16,7 +16,9 @@ using Raven.Client.Documents.Queries;
 using Raven.Client.Documents.Session;
 using Raven.Client.Documents.Smuggler;
 using Raven.Client.Documents.Subscriptions;
+using Raven.Client.Util;
 using static Raven.Client.Constants;
+using Sparrow;
 
 namespace Raven.Documentation.Samples.Server
 {
@@ -119,6 +121,19 @@ namespace Raven.Documentation.Samples.Server
 
             using (var store = new DocumentStore())
             {
+                var time = SystemTime.UtcNow.AddMinutes(5).ToString();
+
+                #region archiveByPatch
+                // Archive all the documents in a collection
+                var operation = await store.Operations.SendAsync(new PatchByQueryOperation(new IndexQuery()
+                {
+                    Query = "from Companies update { archived.archiveAt(this, \"" + time + "\") }"
+                }));
+                #endregion
+            }
+            
+            using (var store = new DocumentStore())
+            {
                 #region unarchiveByPatch
                 // Unarchive all archived document in a collection
                 var operation =
@@ -132,6 +147,42 @@ namespace Raven.Documentation.Samples.Server
                         }));
                 #endregion
             }
+
+            using (var store = new DocumentStore())
+            {
+                #region unarchiveUsingAutoIndex
+                var operation =
+                    await store.Operations.SendAsync(
+                        new PatchByQueryOperation(new IndexQuery()
+                        {
+                            // This query uses an index, and if the index excludes 
+                            // archived docs - unarchiving will fail.
+                            Query = @"from Companies where Name == 'shoes' update
+                                    {
+                                        archived.unarchive(this)
+                                    }"
+                        }));
+                #endregion
+            }
+
+            using (var store = new DocumentStore())
+            {
+                #region unarchiveCollectionQuery
+                var operation =
+                    await store.Operations.SendAsync(
+                        new PatchByQueryOperation(new IndexQuery()
+                        {
+                            // This collection query will not exclude archived docs,
+                            // and the inner logic will select docs and unarchive them.  
+                            Query = @"from Companies as company update 
+                                      {
+                                        if (company.Name == 'shoes')
+                                        archived.unarchive(this)
+                                      }"
+                        }));
+                #endregion
+            }
+
 
             using (var store = new DocumentStore())
             {
