@@ -9,7 +9,8 @@
     "Path": "advanced.markdown",
     "Name": "Advanced",
     "DiscussionId": "e68d39fb-4466-414f-9f0f-3e6b5758f7e2",
-    "Mappings": []
+    "Mappings": [],
+    "LastSupportedVersion": "5.4"
   },
   {
     "Path": "/querying",

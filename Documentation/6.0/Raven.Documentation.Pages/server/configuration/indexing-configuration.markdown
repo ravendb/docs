@@ -204,6 +204,18 @@ The maximum number of steps in the script execution of a JavaScript index.
 
 {PANEL/}
 
+
+{PANEL:Indexing.OrderByTicksAutomaticallyWhenDatesAreInvolved}
+
+Sort by ticks when field contains dates.  
+When sorting in descending order, `null` dates are returned at the end with this option enabled.  
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide or per database or per index
+
+{PANEL/}
+
 {PANEL:Indexing.CleanupIntervalInMin}
 
 Time (in minutes) between auto index cleanup.

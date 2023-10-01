@@ -3,7 +3,8 @@
     "Path": "introduction.markdown",
     "Name": "Introduction",
     "DiscussionId": "79e615b9-d130-4ab9-a2f9-dbd46ff3e0c7",
-    "Mappings": []
+    "Mappings": [],
+    "LastSupportedVersion": "5.4"
   },
   {
     "Path": "document-store.markdown",
@@ -15,7 +16,8 @@
     "Path": "conventions.markdown",
     "Name": "Conventions",
     "DiscussionId": "63a5955d-c547-4700-9e48-ed74837c47aa",
-    "Mappings": []
+    "Mappings": [],
+    "LastSupportedVersion": "5.4"
   },
   {
     "Path": "patching.markdown",
@@ -50,6 +52,7 @@
   {
     "Path": "/session",
     "Name": "Session",
-    "Mappings": []
+    "Mappings": [],
+    "LastSupportedVersion": "5.4"
   }
 ]

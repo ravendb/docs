@@ -48,6 +48,12 @@ a sharded database:
 
 See a code example [here](../client-api/smuggler/what-is-smuggler#example).  
 
+{WARNING: Casting Smuggler Results}
+In a sharded database, results are returned by Smuggler, Import, and Export 
+in a `ShardedSmugglerResult` type. This type is specific to a sharded database, 
+and casting it using a non-sharded type [will fail](../migration/client-api/client-breaking-changes#casting-smuggler-results).  
+{WARNING/}
+
 {PANEL/}
 
 {PANEL: Import}
@@ -76,6 +82,11 @@ or contents of the database the data is imported to.
   each shard database will be replicated to all the nodes of this shard.  
 
 See a code example [here](../client-api/smuggler/what-is-smuggler#example-1).  
+{WARNING: Casting Smuggler Results}
+In a sharded database, results are returned by Smuggler, Import, and Export 
+in a `ShardedSmugglerResult` type. This type is specific to a sharded database, 
+and casting it using a non-sharded type [will fail](../migration/client-api/client-breaking-changes#casting-smuggler-results).  
+{WARNING/}
 
 ## Importing data from backup files
 
