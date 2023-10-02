@@ -17,4 +17,8 @@ are unavailable under RavenDB `6.x` or incompatible with their previous versions
 * [Graph Queries](https://ravendb.net/docs/article-page/5.4/csharp/indexes/querying/graph/graph-queries-overview)  
   Graph queries support, available in RavenDB versions `4.2` to `5.x`, is removed from 
   RavenDB `6.x` server and client API.  
+* **ETL**  
+  SQL ETL no longer tolerates errors on `Load`: load errors are thrown immediately, to distinguish 
+  partial load errors that are used in SQL ETL from, for example, commit errors that may happen 
+  during load. (Prior to this change ETL would just advance instead of retrying.)  
 * `DateOnly` and `TimeOnly` are now supported for every new auto index.  

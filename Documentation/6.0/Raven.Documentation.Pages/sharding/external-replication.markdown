@@ -17,6 +17,7 @@
   * [External Replication Types](../sharding/external-replication#external-replication-types)
      * [Non-Sharded Database to Sharded Database](../sharding/external-replication#non-sharded-database-to-sharded-database)  
      * [Sharded Database to Sharded Database](../sharding/external-replication#sharded-database-to-sharded-database)  
+  * [Performance Considerations](../sharding/external-replication#performance-considerations)  
 
 {NOTE/}
 
@@ -110,6 +111,19 @@ The image below depicts a non-sharded database replicating data to a 5-shard dat
    Documents and document extensions are assigned to buckets by document ID.  
    Shard replies to replicated data and replication attempts are similar 
    to replies made by non-sharded databases.  
+
+{PANEL/}
+
+{PANEL: Performance Considerations}
+
+When external replication tasks are defined in two different sharded databases, 
+so they replicate their data to each other, each data item sent from one of the 
+databases to the other will then be sent back from the target database to the 
+original sender. The original sender will then recognize that the data item is 
+already stored locally, ignore it, and end the cycle.  
+
+In this specific case, of two external databases replicating data to each other, 
+please consider this overhead in your performance considerations and tests.  
 
 {PANEL/}
 

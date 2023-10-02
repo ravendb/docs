@@ -43,6 +43,7 @@
      * [Anchoring Documents to a Bucket](../sharding/overview#anchoring-documents-to-a-bucket)  
   * [Resharding](../sharding/overview#resharding)  
   * [Paging](../sharding/overview#paging)  
+  * [Using Local IP Addresses](../sharding/overview#using-local-ip-addresses)  
   * [Creating a Sharded Database](../sharding/overview#creating-a-sharded-database)  
 
 {NOTE/}
@@ -251,6 +252,22 @@ Paging is more costly in a sharded database, however, since the
 orchestrator must load data **from each shard** and sort the retrieved 
 results before handing the selected page to the user.  
 Read more about this subject [here](../sharding/querying#paging).  
+
+{PANEL/}
+
+{PANEL: Using Local IP Addresses}
+
+The local IP address of a cluster node can be exposed, so other cluster 
+nodes would prioritize it when they access the node. Using a node's local 
+IP address rather than a public one for inter cluster communications can 
+speed up the service and offer substantial savings over time.  
+
+Using this method can be particularly helpful in a sharded cluster, since 
+each client request is handled by an orchestrator, that may communicate the 
+request and its results with all other shards.  
+
+Use [this configuration option](../server/configuration/core-configuration#serverurl.cluster) 
+to expose a node's local IP address to other nodes.  
 
 {PANEL/}
 

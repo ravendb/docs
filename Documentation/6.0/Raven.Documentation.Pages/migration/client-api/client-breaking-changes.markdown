@@ -15,11 +15,6 @@ their behavior in previous versions.
 
 {PANEL: Breaking Changes}
 
-* **ETL**  
-  SQL ETL no longer tolerates errors on `Load`: load errors are thrown immediately, to distinguish 
-  partial load errors that are used in SQL ETL from, for example, commit errors that may happen 
-  during load. (Prior to this change ETL would just advance instead of retrying.)  
-
 * **Include from a Non-tracking session**  
   A non-tracking session will now throw the below exception if an 'Include' operation is 
   registered in it, to indicate that the operation is forbidden from a non-tracking session 
