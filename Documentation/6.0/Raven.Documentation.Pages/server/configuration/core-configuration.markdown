@@ -142,14 +142,12 @@ and save much time and money over time.
 ### Examples
 
 {CODE-BLOCK:plain}
-192.168.10.9
+// must include http or https
+http://192.168.10.9
 {CODE-BLOCK/}
 
 {CODE-BLOCK:plain}
-http://192.168.10.9:80
-{CODE-BLOCK/}
-
-{CODE-BLOCK:plain}
+// can include port number
 https://example.com:8080
 {CODE-BLOCK/}
 
