@@ -115,7 +115,7 @@ E.g., `DateTime.UtcNow`
     "Name": "Wilman Kala",
     "Phone": "90-224 8858",
     "@metadata": {
-        "@archive-at": "2023-09-06T22:45:30.018Z",
+        "@archive-at": "2024-01-01T12:00:00.000Z",
         "@collection": "Companies",
      }
 }

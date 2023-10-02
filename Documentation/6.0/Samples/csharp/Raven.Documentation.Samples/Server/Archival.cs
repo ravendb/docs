@@ -108,6 +108,7 @@ namespace Raven.Documentation.Samples.Server
                 // Archive all the documents in a collection
                 var operation = await store.Operations.SendAsync(new PatchByQueryOperation(new IndexQuery()
                 {
+                    // provide the time in UTC format, e.g. 2024-01-01T12:00:00.000Z
                     Query = "from Companies update { archived.archiveAt(this, \"" + time + "\") }"
                 }));
                 #endregion
