@@ -98,26 +98,7 @@ namespace Raven.Documentation.Samples.Server
                 await store.Smuggler.ExportAsync
                         (new DatabaseSmugglerExportOptions { IncludeArchived = true }, path);
                 #endregion
-            }
-
-
-            using (var store = new DocumentStore())
-            {
-                #region updateByPatch
-                // schedule archival for old orders
-                var operation = store.Operations.Send(new PatchByQueryOperation(new IndexQuery
-                {
-                    Query = @"from Orders as c
-                                where OrderedAt < `1980-00-00T00:00:00.0000000`
-                                    update
-                                    {
-                                        this['@metadata']['@archive-at'] = '2023-09-06T22:45:30.018Z';
-                                    }"
-                }));
-
-                operation.WaitForCompletion();
-                #endregion
-            }
+            };
 
             using (var store = new DocumentStore())
             {

@@ -311,21 +311,13 @@ and [Hub/Sink](../../server/ongoing-tasks/hub-sink-replication) replication.
 ## Archive by Patch
 
 To archive documents using [patching](../../client-api/rest-api/queries/patch-by-query), 
-**schedule their archival** in one of two ways:  
+**schedule their archival** using the patch API `archived.archiveAt` method.
+{CODE-BLOCK: JavaScript}
+// Pass the method the document object and a string with the designated archival (`UTC`) time.
+archived.archiveAt (doc, utcDateTimeString)
+{CODE-BLOCK/}
 
-* **Use the patch API `archived.archiveAt` method**  
-   {CODE-BLOCK: JavaScript}
-   // Pass the method the document object and a string with the designated archival (`UTC`) time.
-document (doc, utcDateTimeString)
-   {CODE-BLOCK/}
-   {CODE archiveByPatch@Server\Archival.cs /}
-
-* **Add a metadata property manuelly**  
-  Create a patching script that adds a metadata 
-  [@archive-at](../../server/extensions/archival#scheduling-document-archival) 
-  property to the documents you want to archive, with the designated archival 
-  (`UTC`) time as a value.  
-  {CODE updateByPatch@Server\Archival.cs /}
+{CODE archiveByPatch@Server\Archival.cs /}
 
 ## Unarchive by Patch
 
@@ -336,15 +328,14 @@ a document, pass the method the document object.
 {CODE unarchiveByPatch@Server\Archival.cs /}
 
 {INFO: }
-**Be aware** that patching queries may run over indexes, just 
-like other RavenDB queries; if a patch runs over an index that 
-**excludes archived documents**, it will not be able to locate 
-archived documents and unarchive them.  
+**Be aware** that a patch query may run over an index, and if 
+the index **excludes archived documents** the query will not find
+any archived documents to unarchive.  
 
-The following patch, for example, runs over an index. If this 
-is an auto index that was created with the [default configuration](../../server/extensions/archival#section-1), 
-it will exclude archived documents and the patch will find 
-and unarchive **no document**.  
+The following patch query, for example, runs over an index.  
+If this is an auto index that inherits the [default configuration](../../server/extensions/archival#section-1), 
+archived documents will be excluded and the patch will find 
+and unarchive **no documents**.  
 {CODE unarchiveUsingAutoIndex@Server\Archival.cs /}
 
 Two possible workarounds are:  
@@ -352,7 +343,7 @@ Two possible workarounds are:
 * Configure the index that the patch you're running uses to 
   **include** archived documents, [as explained here](../../server/extensions/archival#archiving-and-indexing).  
 * Run a simple collection query, that creates and uses no 
-  index, and then apply your own logic to pick the documents 
+  index, and then apply your own logic to find the documents 
   you want to unarchive. E.g. -  
   {CODE unarchiveCollectionQuery@Server\Archival.cs /}
 {INFO/}
