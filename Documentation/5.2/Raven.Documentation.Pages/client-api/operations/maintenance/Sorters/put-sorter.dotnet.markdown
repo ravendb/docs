@@ -11,9 +11,9 @@
   Once deployed, you can use it to sort query results for all queries made on the __database__  
   that is scoped to your [Document Store](../../../../client-api/setting-up-default-database).  
 
-* To deploy a custom sorter that will apply cluster-wide, to all databases, see [put server-wide sorter](../../../../todo..).
+* To deploy a custom sorter that will apply cluster-wide, to all databases, see [put server-wide sorter](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide).
 
-* A custom sorter can also be uploaded to the server from the [Studio](../../../../todo....).
+* A custom sorter can also be uploaded to the server from the [Studio](../../../../studio/database/settings/custom-sorters).
 
 * In this page:
     * [Put custom sorter](../../../../client-api/operations/maintenance/sorters/put-sorter#put-custom-sorter)
@@ -66,3 +66,7 @@ A query example is available [here](../../../../client-api/session/querying/sort
 
 - [What are operations](../../../../client-api/operations/what-are-operations)
 - [Put server-wide sorter](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide)
+
+### Studio
+
+- [Custom sorters view](../../../../studio/database/settings/custom-sorters)

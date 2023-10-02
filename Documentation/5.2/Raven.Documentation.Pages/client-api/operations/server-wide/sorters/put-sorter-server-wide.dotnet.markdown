@@ -13,7 +13,7 @@
 * To deploy a custom sorter that will apply only to the database scoped to your [Document Store](../../../../client-api/setting-up-default-database),  
   see [put custom sorter](../../../../client-api/operations/maintenance/sorters/put-sorter).
 
-* A custom sorter can also be uploaded server-wide from the [Studio](../../../../todo....).
+* A custom sorter can also be uploaded server-wide from the [Studio](../../../../studio/database/settings/custom-sorters).
 
 * In this page:
     * [Put custom sorter server-wide](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide#put-custom-sorter-server-wide)
@@ -66,3 +66,7 @@ A query example is available [here](../../../../client-api/session/querying/sort
 
 - [What are operations](../../../../client-api/operations/what-are-operations)
 - [Put custom sorter](../../../../client-api/operations/maintenance/sorters/put-sorter)
+
+### Studio
+
+- [Custom sorters view](../../../../studio/database/settings/custom-sorters)
