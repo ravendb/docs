@@ -13,7 +13,8 @@
 
 * Multiple sorting actions can be chained.
 
-* this article demonstrates dynamic queries, find sorting examples for indexes here....todo...
+* This article provides examples of sorting query results when making a __dynamic-query__.  
+  For sorting results when querying a __static-index__ see [sort index query results](../../../indexes/querying/sorting).
 
 * In this page:
     * [Order by field value](../../../client-api/session/querying/sort-query-results#order-by-field-value)
@@ -42,7 +43,7 @@
 
 {PANEL: Order by field value}
 
-* Use `OrderBy` or `OrderByDescending` to order by a document field.
+* Use `OrderBy` or `OrderByDescending` to order the results by the specified document-field.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sort_1@ClientApi\Session\Querying\SortQueryResults.cs /}
@@ -65,7 +66,7 @@ __Ordering Type__:
 * E.g. in the above example, ordering by `x => x.UnitsInStock` will result in `OrderingType.Long`  
   because that property data type is an integer.
 
-* Different ordering can be forced - see [Force ordering type](../../../client-api/session/querying/todo..) below.
+* Different ordering can be forced - see [Force ordering type](../../../client-api/session/querying/sort-query-results#force-ordering-type) below.
 
 {INFO/}
 
@@ -238,7 +239,7 @@ order by UnitsInStock as long desc, score(), Name
 
 {PANEL: Custom sorters }
 
-* The Lucene indexing engine allows you to create your own custom sorters.
+* The Lucene indexing engine allows you to create your own custom sorters.  
   Custom sorters can be deployed to the server by either:  
 
      * Sending the [PutSortersOperation](../../../client-api/operations/maintenance/sorters/put-sorter) from your code.
@@ -285,3 +286,7 @@ order by custom(UnitsInStock, "MySorter")
 - [Group by query](../../../client-api/session/querying/how-to-perform-group-by-query)
 - [Spatial query](../../../client-api/session/querying/how-to-make-a-spatial-query)
 - [Full-text search](../../../client-api/session/querying/text-search/full-text-search)
+
+### Indexes
+
+- [Sort index query results](../../../indexes/querying/sorting)

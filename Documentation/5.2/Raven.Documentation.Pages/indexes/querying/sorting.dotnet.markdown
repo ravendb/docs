@@ -1,171 +1,109 @@
-# Querying: Sorting
+# Sort Index Query Results
 
-## Basics
+---
 
-Starting from RavenDB 4.0, the server will determine possible sorting capabilities automatically from the indexed value, but sorting will **not be applied** until you request it by using the appropriate methods. The following queries will not return ordered results:
+{NOTE: }
+
+* This article provides examples of sorting query results when querying a static-index.  
+
+* __Prior to this article__, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results) for dynamic-queries examples  
+  and general knowledge about Sorting.
+
+* All sorting capabilities provided for a dynamic query can also be used when querying a static-index.
+
+* In this page:
+    * [Order by index-field value](../../indexes/querying/sorting#order-by-index-field-value)
+
+    * [Order results when index-field is searchable](../../indexes/querying/sorting#order-results-when-index-field-is-searchable)
+
+    * [Additional Sorting Options](../../indexes/querying/sorting#additional-sorting-options)
+
+{NOTE/}
+
+---
+
+{PANEL: Order by index-field value}
+
+* Use `OrderBy` or `OrderByDescending` to order the results by the specified index-field.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query sorting_1_1@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:DocumentQuery sorting_1_2@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:Query sort_1@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:Query_async sort_2@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:DocumentQuery sort_3@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:Index index_1@Indexes\Querying\Sorting.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Products/ByUnitsInStock' 
-where UnitsInStock > 10
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-To start sorting, we need to request to order by some specified index field. In our case we will order by `UnitsInStock` in descending order:
-
-{CODE-TABS}
-{CODE-TAB:csharp:Query sorting_2_1@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:DocumentQuery sorting_2_2@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Products/ByUnitsInStock' 
-where UnitsInStock > 10
+from index "Products/ByUnitsInStock"
 order by UnitsInStock as long desc
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{INFO:Forcing ordering type}
+{INFO: }
 
-By default, `OrderBy` methods will determine `OrderingType` from the property path expression (e.g. `x => x.UnitsInStock` will result in `OrderingType.Long` because property type is an integer), but a different ordering can be forced by passing `OrderingType` explicitly to one of the `OrderBy` methods.
+__Ordering Type__:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Query sorting_8_1@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:DocumentQuery sorting_8_2@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Products/ByUnitsInStock' 
-where UnitsInStock > 10
-order by UnitsInStock desc
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
+* By default, the `OrderBy` methods will determine the `OrderingType` from the property path expression  
+  and specify that ordering type in the generated RQL that is sent to the server.
+
+* E.g. in the above example, ordering by `x => x.UnitsInStock` will result in `OrderingType.Long`  
+  because that property data type is an integer.
+
+* Different ordering can be forced.  
+  See section [Force ordering type](../../client-api/session/querying/sort-query-results#force-ordering-type) for all available ordering types.  
+  The same syntax used with dynamic queries also applies to queries made on indexes.
 
 {INFO/}
 
-## Ordering by Score
+{PANEL/}
 
-When a query is issued, each index entry is scored by Lucene (you can read more about Lucene scoring [here](http://lucene.apache.org/core/3_3_0/scoring.html)).  
-This value is available in metadata information of the resulting query documents under `@index-score` (the higher the value, the better the match).  
-To order by this value you can use the `OrderByScore` or the `OrderByScoreDescending` methods:
+{PANEL: Order results when index-field is searchable}
+
+* __When configuring an index-field__ for [full-text search](../../indexes/querying/searching), 
+  the content of the index-field is broken down into terms at indexing time. 
+  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers) used.
+
+* __When querying such index__, if you order by that searchable index-field, 
+  results will come back sorted based on the terms, and not based on the original text of the field.
+  
+* To overcome this, you can define another index-field that is not searchable and sort by it. 
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query sorting_4_1@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:DocumentQuery sorting_4_2@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:Index index_2@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:Query sort_4@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:Query_async sort_5@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:DocumentQuery sort_6@Indexes\Querying\Sorting.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Products/ByUnitsInStock' 
-where UnitsInStock > 10
-order by score()
+from index "Products/BySearchName" 
+where search(Name, "ch*")
+order by NameForSorting
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Chaining Orderings
+{PANEL/}
 
-It is also possible to chain multiple orderings of the query results. 
-You can sort the query results first by some specified index field (or by the `@index-score`), then sort all the equal entries by some different index field (or the `@index-score`).  
-This can be achived by using the `ThenBy` (`ThenByDescending`) and `ThenByScore` (`ThenByScoreDescending`) methods.
+{PANEL: Additional sorting options}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Query sorting_4_3@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:Index sorting_1_5@Indexes\Querying\Sorting.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Products/ByUnitsInStockAndName' 
-where UnitsInStock > 10
-order by UnitsInStock, score(), Name desc
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
+* When querying an index, the following sorting options are the __same__ as when making a dynamic query.
 
-## Random Ordering
+* Refer to the examples in the links below to see how each option is achieved.
 
-If you want to randomize the order of your results each time the query is executed, use the `RandomOrdering` method (API reference [here](../../client-api/session/querying/how-to-customize-query#randomordering)):
+  * [Order by score](../../client-api/session/querying/sort-query-results#order-by-score)
 
-{CODE-TABS}
-{CODE-TAB:csharp:Query sorting_3_1@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:DocumentQuery sorting_3_2@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Products/ByUnitsInStock' 
-where UnitsInStock > 10
-order by random()
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
+  * [Order by random](../../client-api/session/querying/sort-query-results#order-by-random)
 
-## Ordering When a Field is Searchable
+  * [Order by spatial](../../client-api/session/querying/sort-query-results#order-by-spatial)
 
-When sorting must be done on field that is [Searchable](../../indexes/using-analyzers), due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, create another field that is not searchable and sort by it.
+  * [Chain ordering](../../client-api/session/querying/sort-query-results#chain-ordering)
 
-{CODE-TABS}
-{CODE-TAB:csharp:Query sorting_6_1@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:DocumentQuery sorting_6_2@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:Index sorting_6_4@Indexes\Querying\Sorting.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Products/ByName/Search' 
-where search(Name, 'Louisiana')
-order by NameForSorting desc
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
+  * [Custom sorters](../../client-api/session/querying/sort-query-results#custom-sorters)
 
-## AlphaNumeric Ordering
-
-Sometimes when ordering strings, it doesn't make sense to use the default lexicographic ordering.    
-
-For example, "Abc9" will come after "Abc10" because if treated as single characters, 9 is greater than 1.   
-
-If you want digit characters in a string to be treated as numbers and not as text, you should use alphanumeric ordering. In that case, when comparing "Abc10" to "Abc9", the digits 1 and 0 will be treated as the number 10 which will be considered greater than 9.
-
-To order in this mode you can pass the `OrderingType.AlphaNumeric` type into `OrderBy` or `OrderByDescending`:   
-
-{CODE-TABS}
-{CODE-TAB:csharp:Query sorting_7_1@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:DocumentQuery sorting_7_2@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Products/ByUnitsInStock ' 
-where UnitsInStock > 10
-order by Name as alphanumeric
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-## Spatial Ordering
-
-If your data contains geographical locations, you might want to sort the query result by distance from a given point.
-
-This can be achieved by using the `OrderByDistance` and `OrderByDistanceDescending` methods.  
-Learn more [here](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting).  
-
-{CODE-TABS}
-{CODE-TAB:csharp:Query sorting_9_1@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:DocumentQuery sorting_9_2@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:Index sorting_9_3@Indexes\Querying\Sorting.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Events/ByCoordinates'
-where spatial.within(Coordinates, spatial.circle(500, 30, 30))
-order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1234, 23.4321))
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-## Creating a Custom Sorter
-
-Lucene also allows you to create your own custom sorters. Create a sorter that inherits from the Lucene class 
-[FieldComparator](https://lucenenet.apache.org/docs/3.0.3/df/d91/class_lucene_1_1_net_1_1_search_1_1_field_comparator.html), and send it to the 
-server using the `PutSortersOperation`:  
-
-{CODE-TABS}
-{CODE-TAB:csharp:PutSortersOperation custom_1@Indexes/Querying/Sorting.cs/}
-{CODE-TAB:csharp:SorterDefinition custom_2@Indexes/Querying/Sorting.cs/}
-{CODE-TABS/}
-<br/>
-### Example
-
-{CODE:csharp custom_3@Indexes/Querying/Sorting.cs/}
+{PANEL/}
 
 ## Related Articles
 
 #### Client API
 
 - [Query Overview](../../client-api/session/querying/how-to-query)
+- [Sort dynamic queries results](../../client-api/session/querying/sort-query-results)
 
 ### Indexes
 

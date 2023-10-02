@@ -27,7 +27,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Query<Product>()
                          // Apply filtering (optional)
                         .Where(x => x.UnitsInStock > 10)
-                         // Call 'OrderBy', pass the document field by which to order the results
+                         // Call 'OrderBy', pass the document-field by which to order the results
                         .OrderBy(x => x.UnitsInStock)
                         .ToList();
                     
@@ -44,7 +44,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Query<Product>()
                          // Apply filtering (optional)
                         .Where(x => x.UnitsInStock > 10)
-                         // Call 'OrderBy', pass the document field by which to order the results
+                         // Call 'OrderBy', pass the document-field by which to order the results
                         .OrderBy(x => x.UnitsInStock)
                         .ToListAsync();
                     
@@ -61,7 +61,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .DocumentQuery<Product>()
                          // Apply filtering (optional)
                         .WhereGreaterThan(x => x.UnitsInStock, 10)
-                         // Call 'OrderBy', pass the document field by which to order the results
+                         // Call 'OrderBy', pass the document-field by which to order the results
                         .OrderBy(x => x.UnitsInStock)
                         .ToList();
 
