@@ -33,7 +33,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
         {
             public class IndexEntry
             {
-                // Index-field 'Name' will be configured for full-text search
+                // Index-field 'Name' will be configured below for full-text search
                 public string Name { get; set; }
                 
                 // Index-field 'NameForSorting' will be used for ordering query results 
@@ -128,7 +128,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .Query<Products_BySearchName.IndexEntry, Products_BySearchName>()
                          // Call 'Search':
                          // Pass the index-field that was configured for FTS and the term to search for.
-                         // Here we search for terms that start with "ch" within the index-field 'Name'.
+                         // Here we search for terms that start with "ch" within index-field 'Name'.
                         .Search(x => x.Name, "ch*")
                          // Call 'OrderBy':
                          // Pass the other index-field by which to order the results.
@@ -173,7 +173,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .Query<Products_BySearchName.IndexEntry, Products_BySearchName>()
                          // Call 'Search':
                          // Pass the index-field that was configured for FTS and the term to search for.
-                         // Here we search for terms that start with "ch" within the index-field 'Name'.
+                         // Here we search for terms that start with "ch" within index-field 'Name'.
                         .Search(x => x.Name, "ch*")
                          // Call 'OrderBy':
                          // Pass the other index-field by which to order the results.
@@ -191,7 +191,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .DocumentQuery<Products_BySearchName.IndexEntry, Products_BySearchName>()
                          // Call 'Search':
                          // Pass the index-field that was configured for FTS and the term to search for.
-                         // Here we search for terms that start with "ch" within the index-field 'Name'.
+                         // Here we search for terms that start with "ch" within index-field 'Name'.
                         .Search("Name", "ch*")
                          // Call 'OrderBy':
                          // Pass the other index-field by which to order the results.
