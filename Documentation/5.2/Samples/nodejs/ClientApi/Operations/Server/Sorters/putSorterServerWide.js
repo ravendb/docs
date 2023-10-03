@@ -2,7 +2,7 @@
 
 const documentStore = new DocumentStore();
 
-async function putSorter() {
+async function putSorterServerWide() {
     
         //region put_sorter
         // Create the sorter definition object
@@ -14,16 +14,16 @@ async function putSorter() {
         };
         
         // Define the put sorters operation, pass the sorter definition
-        const putSorterOp = new PutSortersOperation(sorterDefinition);
+        const putSortersServerWideOp = new PutServerWideSortersOperation(sorterDefinition);
 
-        // Execute the operation by passing it to maintenance.send
-        await documentStore.maintenance.send(putSorterOp);
+        // Execute the operation by passing it to maintenance.server.send
+        await documentStore.maintenance.server.send(putSortersServerWideOp );
         //endregion
 }
 
 {
     //region syntax_1
-    const putSorterOp = new PutSortersOperation(sortersToAdd);
+    const putSortersServerWideOp = new PutServerWideSortersOperation(sortersToAdd);
     //endregion
 }
 
