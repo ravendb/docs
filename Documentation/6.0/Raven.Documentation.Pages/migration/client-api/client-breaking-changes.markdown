@@ -25,8 +25,8 @@ their behavior in previous versions.
   actions like load or query."`
 
 * **Type Changes**  
-  Many methods and types that used the `int` type in former RavenDB versions now use `long`,  
-  e.g. `QueryStatistics.TotalResults`  
+  Many methods related to paging information (Skip, Take, PageSize, TotalResults, etc.) that used the `int` type in former RavenDB versions now use `long`, 
+  e.g. `QueryStatistics.TotalResults`
 
 * **Indexing**  
   The default value of the 
