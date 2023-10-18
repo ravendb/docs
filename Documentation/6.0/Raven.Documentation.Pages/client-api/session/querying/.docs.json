@@ -44,6 +44,12 @@
         "Mappings": []
     },
     {
+        "Path": "sort-query-results.markdown",
+        "Name": "Sort Query Results",
+        "DiscussionId": "73dfb483-1fca-4fca-a1a4-15c7366b4775",
+        "Mappings": []
+    },
+    {
         "Path": "how-to-project-query-results.markdown",
         "Name": "Project Query Results",
         "DiscussionId": "7608822d-893e-4f9e-9011-9ec146af73db",

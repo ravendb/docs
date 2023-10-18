@@ -1,4 +1,4 @@
-# Querying: Sorting
+# Sorting Query Results
 
 ## Basics
 

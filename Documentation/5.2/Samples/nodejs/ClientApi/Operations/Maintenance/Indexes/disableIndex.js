@@ -2,7 +2,7 @@
 
 const documentStore = new DocumentStore();
 
-async function getStats() {
+async function disableIndex() {
     {
         //region disable_1
         // Define the disable index operation

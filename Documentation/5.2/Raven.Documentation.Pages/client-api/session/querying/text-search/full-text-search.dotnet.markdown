@@ -4,8 +4,9 @@
 
 {NOTE: }
 
-* This article is about making a full-text search with a __dynamic query__.  
-  For making a full-text search using a static-index see [full-text search with index](../../../../indexes/querying/searching).
+* This article is about making a full-text search with a __dynamic query__.
+
+* For making a full-text search using a static-index see [full-text search with index](../../../../indexes/querying/searching).
 
 ---
 

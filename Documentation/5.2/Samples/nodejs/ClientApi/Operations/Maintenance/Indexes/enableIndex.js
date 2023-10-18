@@ -2,7 +2,7 @@
 
 const documentStore = new DocumentStore();
 
-async function getStats() {
+async function enableIndex() {
     {
         //region enable_1
         // Define the enable index operation

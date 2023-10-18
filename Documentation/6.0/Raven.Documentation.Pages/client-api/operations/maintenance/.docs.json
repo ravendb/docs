@@ -45,5 +45,10 @@
         "Path": "/connection-strings",
         "Name": "Connection strings",
         "Mappings": []
+    },
+    {
+        "Path": "/Sorters",
+        "Name": "Sorters",
+        "Mappings": []
     }
 ]

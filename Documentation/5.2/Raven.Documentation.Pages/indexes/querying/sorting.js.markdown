@@ -24,17 +24,15 @@
 
 {PANEL: Order by index-field value}
 
-* Use `OrderBy` or `OrderByDescending` to order the results by the specified index-field.
+* Use `orderBy` or `orderByDescending` to order the results by the specified index-field.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query sort_1@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:Query_async sort_2@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:DocumentQuery sort_3@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:Index index_1@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:nodejs:Query sort_1@indexes\querying\sorting.js /}
+{CODE-TAB:nodejs:Index index_1@indexes\querying\sorting.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByUnitsInStock"
-where UnitsInStock > 10
-order by UnitsInStock as long desc
+where unitsInStock > 10
+order by unitsInStock as long desc
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -42,11 +40,9 @@ order by UnitsInStock as long desc
 
 __Ordering Type__:
 
-* By default, the `OrderBy` methods will determine the `OrderingType` from the property path expression  
-  and specify that ordering type in the generated RQL that is sent to the server.
+* If no ordering type is specified in the query then the server will apply the default lexicographical ordering.
 
-* E.g. in the above example, ordering by `x => x.UnitsInStock` will result in `OrderingType.Long`  
-  because that property data type is an integer.
+* In the above example, the ordering type was set to `Long`.
 
 * Different ordering can be forced.  
   See section [Force ordering type](../../client-api/session/querying/sort-query-results#force-ordering-type) for all available ordering types.  
@@ -68,14 +64,12 @@ __Ordering Type__:
 * To overcome this, you can define another index-field that is not searchable and sort by it. 
 
 {CODE-TABS}
-{CODE-TAB:csharp:Index index_2@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:Query sort_4@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:Query_async sort_5@Indexes\Querying\Sorting.cs /}
-{CODE-TAB:csharp:DocumentQuery sort_6@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:nodejs:Index index_2@indexes\querying\sorting.js /}
+{CODE-TAB:nodejs:Query sort_2@indexes\querying\sorting.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/BySearchName" 
-where search(Name, "ch*")
-order by NameForSorting
+where search(name, "ch*")
+order by nameForSorting
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

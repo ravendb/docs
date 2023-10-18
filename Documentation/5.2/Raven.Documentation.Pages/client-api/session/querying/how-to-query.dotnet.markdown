@@ -319,8 +319,8 @@ Available custom methods and extensions for the session's [Query](../../../clien
 - [OfType](../../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection)
 - [OrderByDistance](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistance)
 - [OrderByDistanceDescending](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistanceDesc)
-- OrderByScore
-- OrderByScoreDescending
+- [OrderByScore](../../../client-api/session/querying/sort-query-results#order-by-score)
+- [OrderByScoreDescending](../../../client-api/session/querying/sort-query-results#order-by-score)
 - [ProjectInto](../../../client-api/session/querying/how-to-project-query-results)
 - [Search](../../../client-api/session/querying/text-search/full-text-search)
 - SingleAsync
