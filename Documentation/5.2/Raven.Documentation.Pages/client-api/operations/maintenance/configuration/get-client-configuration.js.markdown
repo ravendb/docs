@@ -5,7 +5,7 @@
 {NOTE: }
 
 * It is recommended to first refer to the __client-configuration description__ in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration) article.
-  
+
 * Use `GetClientConfigurationOperation` to get the current client-configuration set on the server for the database.
 
 * In this page:
@@ -18,18 +18,15 @@
 
 {PANEL: Get client-configuration}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync get_config@ClientApi\Operations\Maintenance\Configuration\GetClientConfig.cs /}
-{CODE-TAB:csharp:Async get_config_async@ClientApi\Operations\Maintenance\Configuration\GetClientConfig.cs /}
-{CODE-TABS/}
+{CODE:nodejs get_config@ClientApi\Operations\Maintenance\Configuration\getClientConfig.js /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE syntax_1@ClientApi\Operations\Maintenance\Configuration\GetClientConfig.cs /}
+{CODE:nodejs syntax_1@ClientApi\Operations\Maintenance\Configuration\getClientConfig.js /}
 
-{CODE syntax_2@ClientApi\Operations\Maintenance\Configuration\GetClientConfig.cs /}
+{CODE:nodejs syntax_2@ClientApi\Operations\Maintenance\Configuration\getClientConfig.js /}
 
 {PANEL/}
 

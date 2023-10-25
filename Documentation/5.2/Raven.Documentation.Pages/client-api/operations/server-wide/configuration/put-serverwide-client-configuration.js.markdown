@@ -7,7 +7,7 @@
 * The server-wide Client-Configuration is a set of configuration options that are set __on the server__ and apply to any client when communicating with __any__ database in the cluster.  
   See the available configuration options in the article about [put client-configuration for database](../../../../client-api/operations/maintenance/configuration/put-client-configuration#what-can-be-configured).
 
-* To set the server-wide Client-Configuration on the server:  
+* To set the server-wide Client-Configuration on the server:
 
     * Use `PutServerWideClientConfigurationOperation` from the client code.  
       See the example below.
@@ -33,22 +33,19 @@
 
 {PANEL: Put client-configuration example}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync put_config_1@ClientApi\Operations\Server\PutClientConfig.cs /}
-{CODE-TAB:csharp:Async put_config_2@ClientApi\Operations\Server\PutClientConfig.cs /}
-{CODE-TABS/}
+{CODE:nodejs put_config@ClientApi\Operations\Server\putClientConfig.js /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE syntax_1@ClientApi\Operations\Server\PutClientConfig.cs /}
+{CODE:nodejs syntax_1@ClientApi\Operations\Server\putClientConfig.js /}
 
-| Parameter         | Type                  | Description                                                                             |
-|-------------------|-----------------------|-----------------------------------------------------------------------------------------|
-| __configuration__ | `ClientConfiguration` | Client configuration that will be set on the server<br>(server-wide, for all databases) |
+| Parameter         | Type     | Description                                                                             |
+|-------------------|----------|-----------------------------------------------------------------------------------------|
+| __configuration__ | `object` | Client configuration that will be set on the server<br>(server-wide, for all databases) |
 
-{CODE syntax_2@ClientApi\Operations\Server\PutClientConfig.cs /}
+{CODE:nodejs syntax_2@ClientApi\Operations\Server\putClientConfig.js /}
 
 {PANEL/}
 

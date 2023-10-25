@@ -15,9 +15,9 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Configura
                 var getClientConfigOp = new GetClientConfigurationOperation();
                     
                 // Execute the operation by passing it to Maintenance.Send
-                GetClientConfigurationOperation.Result config = store.Maintenance.Send(getClientConfigOp);
+                GetClientConfigurationOperation.Result result = store.Maintenance.Send(getClientConfigOp);
                 
-                ClientConfiguration clientConfiguration = config.Configuration;
+                ClientConfiguration clientConfiguration = result.Configuration;
                 #endregion
             }
         }

@@ -11,8 +11,10 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Configura
         public PutClientConfig()
         {
             #region put_config_1
-            // You can initialize the client-configuration options when creating the Document Store:
-            // (This is optional)
+            // You can customize the client-configuration options in the client
+            // when creating the Document Store (this is optional):
+            // =================================================================
+            
             var documentStore = new DocumentStore
             {
                 Urls = new[] { "ServerURL_1", "ServerURL_2", "..." },
@@ -28,7 +30,9 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Configura
             #endregion
             
             #region put_config_2
-            // Set (or override) the client-configuration using the put operation:
+            // Override the initial client-configuration in the server using the put operation:
+            // ================================================================================
+            
             using (documentStore)
             {
                 // Define the client-configuration object
@@ -53,7 +57,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Configura
             var documentStore = new DocumentStore();
             
             #region put_config_3
-            // Set (or override) the client-configuration using the put operation:
+            // Override the initial client-configuration using the put operation:
             using (documentStore)
             {
                 // Define the client-configuration object
@@ -85,7 +89,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Configura
             #region syntax_2
             public class ClientConfiguration
             {
-                private char? _identityPartsSeparator;
                 public long Etag { get; set; }
                 public bool Disabled { get; set; }
                 public int? MaxNumberOfRequestsPerSession { get; set; }

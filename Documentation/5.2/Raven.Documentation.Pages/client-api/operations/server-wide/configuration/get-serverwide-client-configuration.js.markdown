@@ -18,20 +18,15 @@
 
 {PANEL: Get client-configuration}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync get_config@ClientApi\Operations\Server\GetClientConfig.cs /}
-{CODE-TAB:csharp:Async get_config_async@ClientApi\Operations\Server\GetClientConfig.cs /}
-{CODE-TABS/}
+{CODE:nodejs get_config@ClientApi\Operations\Server\getClientConfig.js /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE syntax@ClientApi\Operations\Server\GetClientConfig.cs /}
+{CODE:nodejs syntax_1@ClientApi\Operations\Server\getClientConfig.js /}
 
-| Return Value          |                                                |
-|-----------------------|------------------------------------------------|
-| `ClientConfiguration` | Configuration which will be used by the Client |
+{CODE:nodejs syntax_2@ClientApi\Operations\Server\getClientConfig.js /}
 
 {PANEL/}
 
