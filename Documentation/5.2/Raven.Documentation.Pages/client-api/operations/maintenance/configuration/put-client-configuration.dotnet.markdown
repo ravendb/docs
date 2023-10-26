@@ -34,7 +34,7 @@
 
 * In this page:
   * [What can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration#what-can-be-configured)
-  * [Put client-configuration example](../../../../client-api/operations/maintenance/configuration/put-client-configuration#put-client-configuration-example)
+  * [Put client-configuration (for database)](../../../../client-api/operations/maintenance/configuration/put-client-configuration#put-client-configuration-(for-database))
   * [Syntax](../../../../client-api/operations/maintenance/configuration/put-client-configuration#syntax)
 
 {NOTE /}
@@ -62,7 +62,7 @@ The following client-configuration options are available:
 
 {PANEL/}
 
-{PANEL: Put client-configuration example}
+{PANEL: Put client-configuration (for database)}
 
 {CODE put_config_1@ClientApi\Operations\Maintenance\Configuration\PutClientConfig.cs /}
 

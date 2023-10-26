@@ -1,16 +1,25 @@
-﻿# Client Configuration
+﻿# Client Configuration (server-wide)
 ---
 
 {NOTE: }
 
-* Configure the RavenDB client requests behavior for ***all*** databases in the cluster  
+* Set the client-configuration for __all__ databases in the cluster:  
 
-* These default values can be overwritten ***per database*** in [Client Requests Configuration - per database](../../studio/database/settings/client-configuration-per-database)  
+  * From the Studio - as described in this article
+  
+  * From the Client API - see [put client-configuration operation](../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)
+
+* These default values can be overwritten __per database__ in [client-configuration (for database)](../../studio/database/settings/client-configuration-per-database)
+
+* Setting the client-configuration from the studio sets the configuration on the RavenDB server.  
+  This enables administrators to dynamically control the client behavior even after it has started running.  
+  e.g. manage load balancing of client requests on the fly in response to changing system demands.
+
 {NOTE/}
 
 ---
 
-{PANEL: Client Requests Configuration}
+{PANEL: Set the client-configuration (server-wide)}
 
 ![Figure 1. Client Requests Configuration](images/client-configuration.png "Client Requests Configuration")
 
@@ -51,7 +60,18 @@
 
 ## Related Articles
 
-- [Requests Configuration Per Database](../../studio/database/settings/client-configuration-per-database)
+### Studio
+
+- [Set client-configuration (for database)](../../studio/database/settings/client-configuration-per-database)
+
+### Operations
+
+- [What are Operations](../../../client-api/operations/what-are-operations)
+- [Put client-configuration (for database)](../../client-api/operations/maintenance/configuration/put-client-configuration)
+- [Put client-configuration (server-wide)](../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)
+
+### Load Balancing
+
 - [Load Balancing Overview](../../client-api/configuration/load-balance/overview)
 - [Read Balance Behavior](../../client-api/configuration/load-balance/read-balance-behavior)
 - [Load Balance Behavior](../../client-api/configuration/load-balance/load-balance-behavior)
