@@ -66,7 +66,7 @@
 
 ### Operations
 
-- [What are Operations](../../../client-api/operations/what-are-operations)
+- [What are Operations](../../client-api/operations/what-are-operations)
 - [Put client-configuration (for database)](../../client-api/operations/maintenance/configuration/put-client-configuration)
 - [Put client-configuration (server-wide)](../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)
 

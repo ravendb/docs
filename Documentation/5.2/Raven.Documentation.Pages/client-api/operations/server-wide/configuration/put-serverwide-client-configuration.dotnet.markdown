@@ -24,7 +24,7 @@
 ---
 
 * In this page:
-    * [Put client-configuration (server-wide)](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration#put-client-configuration-example-(server-wide))
+    * [Put client-configuration (server-wide)](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration#put-client-configuration-(server-wide))
     * [Syntax](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration#syntax)
 
 {NOTE /}
