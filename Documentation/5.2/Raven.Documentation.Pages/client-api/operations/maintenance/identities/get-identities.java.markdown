@@ -1,4 +1,4 @@
-# Get Identities Operations
+# Get Identities Operation
 
 **GetIdentitiesOperation** is used to return a dictionary which maps from the collection name to the identity value.
 

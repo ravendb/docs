@@ -1,4 +1,4 @@
-# Get Identities Operations
+# Get Identities Operation
 
 ---
 
@@ -17,7 +17,7 @@
 * Learn more about identities in:
 
     * [Document identifier generation](../../../../server/kb/document-identifier-generation#identity)
-    * [Working with document identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers#identities).
+    * [Working with document identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers#identities)
 
 * In this page:
 
@@ -30,13 +30,16 @@
 
 {PANEL: Get identities operation }
 
-{CODE get_identities@ClientApi\Operations\Maintenance\Identities\Identities.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync get_identities@ClientApi\Operations\Maintenance\Identities\GetIdentities.cs /}
+{CODE-TAB:csharp:Async get_identities_async@ClientApi\Operations\Maintenance\Identities\GetIdentities.cs /}
+{CODE-TABS/}
 
 {PANEL/}
 
 {PANEL: Syntax }
 
-{CODE syntax@ClientApi\Operations\Maintenance\Identities\Identities.cs /}
+{CODE syntax@ClientApi\Operations\Maintenance\Identities\GetIdentities.cs /}
 
 {PANEL/}
 
@@ -55,3 +58,5 @@
 ### Operations
 
 - [What are Operations](../../../../client-api/operations/what-are-operations)
+- [Seed identity](../../../../client-api/operations/seed-identity)
+- [Increment next identity](../../../../client-api/operations/increment-next-identity)

@@ -1,8 +1,20 @@
 [
-  {
-    "Path": "get-identities.markdown",
-    "Name": "Get Identities",
-    "DiscussionId": "41763cbe-a6ab-4735-aeef-0478ef81ecb1",
-    "Mappings": []
-  }
+    {
+        "Path": "get-identities.markdown",
+        "Name": "Get Identities",
+        "DiscussionId": "41763cbe-a6ab-4735-aeef-0478ef81ecb1",
+        "Mappings": []
+    },
+    {
+        "Path": "increment-next-identity.markdown",
+        "Name": "Increment Next Identity",
+        "DiscussionId": "41763cbe-a6ab-4735-aeef-0478ef81ecb1",
+        "Mappings": []
+    },
+    {
+        "Path": "seed-identity.markdown",
+        "Name": "Seed Identity",
+        "DiscussionId": "41763cbe-a6ab-4735-aeef-0478ef81ecb1",
+        "Mappings": []
+    }
 ]
