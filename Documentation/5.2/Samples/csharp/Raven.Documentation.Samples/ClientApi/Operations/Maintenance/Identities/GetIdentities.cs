@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.Identities;
-using Raven.Client.Documents.Operations.Indexes;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Identities
@@ -22,7 +21,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Identitie
                     // Request the server to generate an identity ID for the new document. Pass:
                     //   * The entity to store
                     //   * The collection name with a pipe (|) postfix 
-                    session.Store(new Company {Name = "RavenDB"}, "companies|");
+                    session.Store(new Company { Name = "RavenDB" }, "companies|");
                     
                     // If this is the first identity created,
                     // and if the identity value was not customized
@@ -59,7 +58,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Identitie
                         // Request the server to generate an identity ID for the new document. Pass:
                         //   * The entity to store
                         //   * The collection name with a pipe (|) postfix 
-                        asyncSession.StoreAsync(new Company {Name = "RavenDB"}, "companies|");
+                        asyncSession.StoreAsync(new Company { Name = "RavenDB" }, "companies|");
                     
                         // If this is the first identity created,
                         // and if the identity value was not customized

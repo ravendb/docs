@@ -6,12 +6,12 @@
 
 * Use `NextIdentityForOperation` to increment by one the latest identity number set on the server for the specified collection in the database.
 
-* The next document that will be created using an identity for the collection will get the incremented value.
+* The next document that will be created using an identity for the collection will receive the consecutive integer value.
 
 * In this page:
 
-  * [Increment the next identity operation](../../../../client-api/operations/maintenance/identities/get-identities#get-identities-operation)
-  * [Syntax](../../../../client-api/operations/maintenance/identities/get-identities#syntax)
+  * [Increment the next identity operation](../../../../client-api/operations/maintenance/identities/increment-next-identity#increment-the-next-identity-operation)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/increment-next-identity#syntax)
 
 {NOTE/}
 
@@ -29,6 +29,10 @@
 {PANEL: Syntax }
 
 {CODE syntax@ClientApi\Operations\Maintenance\Identities\IncrementIdentity.cs /}
+
+| Parameter | Type   | Description                                                                                                                                    |
+|-----------|--------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| __name__  | string | The collection name for which to increment the identity value.<br>Can be with or without a pipe in the end (e.g. "companies" or "companies\|". |
 
 {PANEL/}
 

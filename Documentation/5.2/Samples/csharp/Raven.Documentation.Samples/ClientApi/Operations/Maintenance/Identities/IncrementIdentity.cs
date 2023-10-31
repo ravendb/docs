@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.Identities;
 using Raven.Documentation.Samples.Orders;
@@ -18,8 +17,10 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Identitie
                 
                 using (var session = store.OpenSession())
                 { 
-                    session.Store(new Company {Name = "RavenDB"}, "companies|");
-                    session.SaveChanges(); // => Document "companies/1" will be created 
+                    // Pass a collection name that ends with a pipe '|' to create an identity ID
+                    session.Store(new Company { Name = "RavenDB" }, "companies|");
+                    session.SaveChanges();
+                    // => Document "companies/1" will be created 
                 }
                 
                 // Increment the identity value on the server:
@@ -38,8 +39,9 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Identitie
                 
                 using (var session = store.OpenSession())
                 { 
-                    session.Store(new Company {Name = "RavenDB"}, "companies|");
-                    session.SaveChanges(); // => Document "companies/3" will be created
+                    session.Store(new Company { Name = "RavenDB" }, "companies|");
+                    session.SaveChanges();
+                    // => Document "companies/3" will be created
                 }
                 #endregion
             }
@@ -56,8 +58,10 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Identitie
                 
                     using (var asyncSession = store.OpenAsyncSession())
                     { 
-                        asyncSession.StoreAsync(new Company {Name = "RavenDB"}, "companies|");
-                        asyncSession.SaveChangesAsync(); // => Document "companies/1" will be created 
+                        // Pass a collection name that ends with a pipe '|' to create an identity ID
+                        asyncSession.StoreAsync(new Company { Name = "RavenDB" }, "companies|");
+                        asyncSession.SaveChangesAsync(); 
+                        // => Document "companies/1" will be created 
                     }
                 
                     // Increment the identity value on the server:
@@ -76,8 +80,9 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Identitie
                 
                     using (var asyncSession = store.OpenAsyncSession())
                     { 
-                        asyncSession.StoreAsync(new Company {Name = "RavenDB"}, "companies|");
-                        asyncSession.SaveChangesAsync(); // => Document "companies/3" will be created
+                        asyncSession.StoreAsync(new Company { Name = "RavenDB" }, "companies|");
+                        asyncSession.SaveChangesAsync();
+                        // => Document "companies/3" will be created
                     }
                     #endregion
                 }
@@ -88,7 +93,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Identitie
         {
             /*
             #region syntax
-            public NextIdentityForOperation(string Name);
+            public NextIdentityForOperation(string name);
             #endregion
             */
         }
