@@ -10,7 +10,7 @@
 * The identity document ID is unique across the entire cluster within the database scope.  
   It is composed  of the collection name provided and an integer value that is continuously incremented.
 
-* Identity values can also be managed from the Studio [identities view](../../../../todo..).
+* Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view).
 
 * Use `GetIdentitiesOperation` to get the dictionary that maps collection names to their corresponding latest identity values.
 

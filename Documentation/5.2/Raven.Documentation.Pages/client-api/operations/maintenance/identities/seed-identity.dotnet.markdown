@@ -8,7 +8,7 @@
   
 * The next document that will be created using an identity for the collection will receive the consecutive integer value.
 
-* Identity values can also be managed from the Studio [identities view](../../../../todo..).
+* Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view).
 
 * In this page:
   * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identities#set-a-higher-identity-valure)
