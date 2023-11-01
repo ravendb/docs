@@ -4,20 +4,20 @@
 
 {NOTE: }
 
-* Use `NextIdentityForOperation` to increment by one the latest identity number set on the server for the specified collection in the database.
+* Use `NextIdentityForOperation` to increment the latest identity number set on the server for the specified collection in the database.
 
 * The next document that will be created using an identity for the collection will receive the consecutive integer value.
 
 * In this page:
 
-  * [Increment the next identity operation](../../../../client-api/operations/maintenance/identities/increment-next-identity#increment-the-next-identity-operation)
+  * [Increment the next identity value](../../../../client-api/operations/maintenance/identities/increment-next-identity#increment-the-next-identity-value)
   * [Syntax](../../../../client-api/operations/maintenance/identities/increment-next-identity#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL: Increment the next identity operation }
+{PANEL: Increment the next identity value }
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync increment_identity@ClientApi\Operations\Maintenance\Identities\IncrementIdentity.cs /}

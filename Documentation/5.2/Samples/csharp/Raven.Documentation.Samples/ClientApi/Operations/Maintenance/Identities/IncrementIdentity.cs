@@ -31,7 +31,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Identitie
                 var nextIdentityOp = new NextIdentityForOperation("companies|");
                 
                 // Execute the operation by passing it to Maintenance.Send
-                // Latest value will be incremented to "2"
+                // The latest value will be incremented to "2"
+                // and the next document created with an identity will be assigned "3"
                 long incrementedValue = store.Maintenance.Send(nextIdentityOp);
                 
                 // Create another document with an identity ID:
@@ -51,41 +52,40 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Identitie
         {
             using (var store = new DocumentStore())
             {
-                {
-                    #region increment_identity_async
-                    // Create a document with an identity ID:
-                    // ======================================
+                #region increment_identity_async
+                // Create a document with an identity ID:
+                // ======================================
                 
-                    using (var asyncSession = store.OpenAsyncSession())
-                    { 
-                        // Pass a collection name that ends with a pipe '|' to create an identity ID
-                        asyncSession.StoreAsync(new Company { Name = "RavenDB" }, "companies|");
-                        asyncSession.SaveChangesAsync(); 
-                        // => Document "companies/1" will be created 
-                    }
-                
-                    // Increment the identity value on the server:
-                    // ===========================================
-                
-                    // Define the next identity operation
-                    // Pass the collection name (can be with or without a pipe)
-                    var nextIdentityOp = new NextIdentityForOperation("companies|");
-                
-                    // Execute the operation by passing it to Maintenance.SendAsync
-                    // Latest value will be incremented to "2"
-                    long incrementedValue = await store.Maintenance.SendAsync(nextIdentityOp);
-                
-                    // Create another document with an identity ID:
-                    // ============================================
-                
-                    using (var asyncSession = store.OpenAsyncSession())
-                    { 
-                        asyncSession.StoreAsync(new Company { Name = "RavenDB" }, "companies|");
-                        asyncSession.SaveChangesAsync();
-                        // => Document "companies/3" will be created
-                    }
-                    #endregion
+                using (var asyncSession = store.OpenAsyncSession())
+                { 
+                    // Pass a collection name that ends with a pipe '|' to create an identity ID
+                    asyncSession.StoreAsync(new Company { Name = "RavenDB" }, "companies|");
+                    asyncSession.SaveChangesAsync(); 
+                    // => Document "companies/1" will be created 
                 }
+                
+                // Increment the identity value on the server:
+                // ===========================================
+                
+                // Define the next identity operation
+                // Pass the collection name (can be with or without a pipe)
+                var nextIdentityOp = new NextIdentityForOperation("companies|");
+                
+                // Execute the operation by passing it to Maintenance.SendAsync
+                // The latest value will be incremented to "2"
+                // and the next document created with an identity will be assigned "3"
+                long incrementedValue = await store.Maintenance.SendAsync(nextIdentityOp);
+                
+                // Create another document with an identity ID:
+                // ============================================
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                { 
+                    asyncSession.StoreAsync(new Company { Name = "RavenDB" }, "companies|");
+                    asyncSession.SaveChangesAsync();
+                    // => Document "companies/3" will be created
+                }
+                #endregion
             }
         }
 
