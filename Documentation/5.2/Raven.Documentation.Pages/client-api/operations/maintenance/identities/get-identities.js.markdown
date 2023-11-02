@@ -30,16 +30,13 @@
 
 {PANEL: Get identities operation }
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync get_identities@ClientApi\Operations\Maintenance\Identities\GetIdentities.cs /}
-{CODE-TAB:csharp:Async get_identities_async@ClientApi\Operations\Maintenance\Identities\GetIdentities.cs /}
-{CODE-TABS/}
+{CODE:nodejs get_identities@ClientApi\Operations\Maintenance\Identities\getIdentities.js /}
 
 {PANEL/}
 
 {PANEL: Syntax }
 
-{CODE syntax@ClientApi\Operations\Maintenance\Identities\GetIdentities.cs /}
+{CODE:nodejs syntax@ClientApi\Operations\Maintenance\Identities\getIdentities.js /}
 
 {PANEL/}
 

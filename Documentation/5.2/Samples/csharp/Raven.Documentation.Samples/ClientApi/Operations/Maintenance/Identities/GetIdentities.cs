@@ -23,7 +23,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Identitie
                     //   * The collection name with a pipe (|) postfix 
                     session.Store(new Company { Name = "RavenDB" }, "companies|");
                     
-                    // If this is the first identity created,
+                    // If this is the first identity created for this collection,
                     // and if the identity value was not customized
                     // then a document with an identity ID "companies/1" will be created
                     session.SaveChanges();
@@ -59,7 +59,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Identitie
                     //   * The collection name with a pipe (|) postfix 
                     asyncSession.StoreAsync(new Company { Name = "RavenDB" }, "companies|");
                     
-                    // If this is the first identity created,
+                    // If this is the first identity created for this collection,
                     // and if the identity value was not customized
                     // then a document with an identity ID "companies/1" will be created
                     asyncSession.SaveChangesAsync();

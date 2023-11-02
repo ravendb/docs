@@ -71,5 +71,5 @@ You can replace the latest identity value on the server with a new, __higher__ n
 ### Operations
 
 - [What are operations](../../../../client-api/operations/what-are-operations)
-- [Get identities](../../../../client-api/operations/get-identities)
-- [Increment next identity](../../../../client-api/operations/increment-next-identity)
+- [Get identities](../../../../client-api/operations/maintenance/identities/get-identities)
+- [Increment next identity](../../../../client-api/operations/maintenance/identities/increment-next-identity)

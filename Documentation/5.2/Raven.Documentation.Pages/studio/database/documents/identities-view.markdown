@@ -106,3 +106,19 @@ This list shows the latest values for all identities in the database that where 
 3. Click 'Create' to create the new identity.
 
 {PANEL/}
+
+## Related Articles
+
+### Document Identifiers
+
+- [Working with Document Identifiers](../../../client-api/document-identifiers/working-with-document-identifiers)
+
+### Knowledge Base
+
+- [Document Identifier Generation](../../../server/kb/document-identifier-generation)
+
+### Operations
+
+- [What are Operations](../../../client-api/operations/what-are-operations)
+- [Seed identity](../../../client-api/operations/maintenance/identities/seed-identity)
+- [Increment next identity](../../../client-api/operations/maintenance/identities/increment-next-identity)

@@ -51,5 +51,5 @@
 ### Operations
 
 - [What are operations](../../../../client-api/operations/what-are-operations)
-- [Get identities](../../../../client-api/operations/get-identities)
-- [Seed identity](../../../../client-api/operations/seed-identity)
+- [Get identities](../../../../client-api/operations/maintenance/identities/get-identities)
+- [Seed identity](../../../../client-api/operations/maintenance/identities/seed-identity)
