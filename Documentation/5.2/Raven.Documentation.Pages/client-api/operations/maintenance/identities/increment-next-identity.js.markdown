@@ -19,16 +19,13 @@
 
 {PANEL: Increment the next identity value }
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync increment_identity@ClientApi\Operations\Maintenance\Identities\IncrementIdentity.cs /}
-{CODE-TAB:csharp:Async increment_identity_async@ClientApi\Operations\Maintenance\Identities\IncrementIdentity.cs /}
-{CODE-TABS/}
+{CODE:nodejs increment_identity@ClientApi\Operations\Maintenance\Identities\incrementIdentity.js /}
 
 {PANEL/}
 
 {PANEL: Syntax }
 
-{CODE syntax@ClientApi\Operations\Maintenance\Identities\IncrementIdentity.cs /}
+{CODE:nodejs syntax@ClientApi\Operations\Maintenance\Identities\incrementIdentity.js /}
 
 | Parameter | Type   | Description                                                                                                                                    |
 |-----------|--------|------------------------------------------------------------------------------------------------------------------------------------------------|

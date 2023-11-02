@@ -29,7 +29,7 @@ async function getIdentities() {
         const getIdentitiesOp = new GetIdentitiesOperation();
         
         // Execute the operation by passing it to maintenance.send
-        const identiteis = await store.maintenance.send(getIdentitiesOp);
+        const identities = await store.maintenance.send(getIdentitiesOp);
 
         // Results
         const latestIdentityValue = identities["companies|"]; // => value will be 1

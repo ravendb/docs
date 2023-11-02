@@ -81,7 +81,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Identitie
                 
                 using (var asyncSession = store.OpenAsyncSession())
                 { 
-                    asyncSession.StoreAsync(new Company { Name = "RavenDB" }, "companies|");
+                    asyncSession.StoreAsync(new Company { Name = "AnotherCompany" }, "companies|");
                     asyncSession.SaveChangesAsync();
                     // => Document "companies/3" will be created
                 }
