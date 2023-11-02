@@ -1,14 +1,22 @@
-﻿# Client Configuration (Per Database)
+﻿# Client Configuration (for database)
 ---
 
 {NOTE: }
 
-* The general server [Client Configuration](../../../studio/server/client-configuration) can be overwritten per database.  
+* You can override the [client-configuration](../../../studio/server/client-configuration) that is set server-wide __per database__:
+  
+ * From the Studio - as described in this article
+ * From the Client API - see [put client-configuration operation](../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration#put-client-configuration-(server-wide))
+
+* Setting the client-configuration from the studio sets the configuration on the RavenDB server.  
+  This enables administrators to dynamically control the client behavior even after it has started running.  
+  e.g. manage load balancing of client requests on the fly in response to changing system demands.
+
 {NOTE/}
 
 ---
 
-{PANEL: Client Requests Configuration - Per Database}
+{PANEL: Set the client-configuration (for database)}
 
 ![Figure 1. Client Configuration Per Database](images/client-configuration-database-1.png "Specific Client Configuration Per Database")
 
@@ -57,7 +65,18 @@ If a general server client-configuration is defined then this view will show the
 
 ## Related Articles
 
-- [Requests Configuration in Cluster](../../../studio/server/client-configuration)
+### Studio
+
+- [Set client-configuration (server-wide)](../../../studio/server/client-configuration)
+
+### Operations
+
+- [What are Operations](../../../client-api/operations/what-are-operations)
+- [Put client-configuration (for database)](../../../client-api/operations/maintenance/configuration/put-client-configuration)
+- [Put client-configuration (server-wide)](../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)
+
+### Load Balancing
+
 - [Load Balancing Overview](../../../client-api/configuration/load-balance/overview)
 - [Read Balance Behavior](../../../client-api/configuration/load-balance/read-balance-behavior)
 - [Load Balance Behavior](../../../client-api/configuration/load-balance/load-balance-behavior)
