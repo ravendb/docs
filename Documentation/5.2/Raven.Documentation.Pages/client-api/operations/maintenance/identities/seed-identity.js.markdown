@@ -11,9 +11,9 @@
 * Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view).
 
 * In this page:
-  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identities#set-a-higher-identity-valure)
-  * [Force a smaller identity value](../../../../client-api/operations/maintenance/identities/seed-identities#force-a-smaller-identity-value)
-  * [Syntax](../../../../client-api/operations/maintenance/identities/seed-identities#syntax)
+  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identity#set-a-higher-identity-valure)
+  * [Force a smaller identity value](../../../../client-api/operations/maintenance/identities/seed-identity#force-a-smaller-identity-value)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/seed-identity#syntax)
 
 {NOTE/}
 
@@ -53,7 +53,6 @@ You can replace the latest identity value on the server with a new, __higher__ n
 
 ### Document Identifiers
 
-- [Working with Document Identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers)
 - [Global ID Generation Conventions](../../../../client-api/configuration/identifier-generation/global)
 - [Type-specific ID Generation Conventions](../../../../client-api/configuration/identifier-generation/type-specific)
 

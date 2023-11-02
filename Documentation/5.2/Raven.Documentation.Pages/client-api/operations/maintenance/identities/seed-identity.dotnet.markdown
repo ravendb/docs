@@ -11,9 +11,9 @@
 * Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view).
 
 * In this page:
-  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identities#set-a-higher-identity-valure)
-  * [Force a smaller identity value](../../../../client-api/operations/maintenance/identities/seed-identities#force-a-smaller-identity-value)
-  * [Syntax](../../../../client-api/operations/maintenance/identities/seed-identities#syntax)
+  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identity#set-a-higher-identity-valure)
+  * [Force a smaller identity value](../../../../client-api/operations/maintenance/identities/seed-identity#force-a-smaller-identity-value)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/seed-identity#syntax)
 
 {NOTE/}
 

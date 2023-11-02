@@ -17,7 +17,6 @@
 * Learn more about identities in:
 
     * [Document identifier generation](../../../../server/kb/document-identifier-generation#identity)
-    * [Working with document identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers#identities)
 
 * In this page:
 
@@ -44,7 +43,6 @@
 
 ### Document Identifiers
 
-- [Working with Document Identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers)
 - [Global ID Generation Conventions](../../../../client-api/configuration/identifier-generation/global)
 - [Type-specific ID Generation Conventions](../../../../client-api/configuration/identifier-generation/type-specific)
 
