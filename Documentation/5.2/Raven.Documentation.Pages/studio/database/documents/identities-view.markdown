@@ -3,9 +3,10 @@
 
 {NOTE: }
 
-* The view lists the __latest values__ for all identities in the database. 
+* This view lists the __latest identities values__ that are set on the server for all collections where  
+  an identity was created.
 
-* You can edit existing values or add new identities.
+* You can edit existing values or set a new identity value for a collection.
 
 * Identities values can also be managed from the Client API, see [seed identity operation](../../../client-api/operations/maintenance/identities/seed-identity).
 
@@ -27,7 +28,7 @@
 
 * The identity document ID is composed of:  
   * The collection name  
-  * And a number that is continuously incremented per document creation  
+  * And a number that is continuously incremented per document creation ("the latest value")  
     e.g. `employees/5`
 
 * Learn more about identities in:
@@ -38,26 +39,27 @@
 
 {PANEL: The latest values}
 
-This list shows the latest values for all identities in the database that where either:  
-
-  * [Created via this view](../../../studio/database/documents/identities-view#add-new-identity)
-
-  * Or created when saving a document 
-
 ![Figure 1. Latest identities values](images/identities-view-1.png "Latest values")
 
 1. Navigate to __Documents > Identities__
 
 2. __Document ID Prefix__  
-   This string is the collection name (showing with a pipe suffix).   
+
+   * This string is the collection name for which an identity value was set:  
+     either [via this view](../../../studio/database/documents/identities-view#add-new-identity), 
+     or by creating a document with an identity ID as described [here](../../../client-api/document-identifiers/working-with-document-identifiers#identities).  
+   
+   * The string that shows is the collection name + a pipe suffix.  
 
 3. __Latest Value__  
 
-   * This is the latest identity value currently assigned for the collection.
-
-   * In this example the latest value for the _employees_ collection is `3`.  
-     This means the next document that will be created with an identity in the _employees_ collection  
-     will get the ID `employees/4`.
+   * This is the latest identity value currently set on the server for the collection.
+   
+   * {INFO: }
+      In this example - the latest value for the _employees_ collection is `3`.  
+      This means the next document that will be created with an identity in the _employees_ collection  
+      will get the ID `employees/4`.
+     {INFO/} 
 
 4. Click to edit the latest value.
 
