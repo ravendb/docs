@@ -8,7 +8,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
     {
         public ToggleDatabasesState()
         {
-            using (var store = new DocumentStore())
+            using (var documentStore = new DocumentStore())
             {
                 {
                     #region enable
@@ -20,8 +20,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                     // var enableDatabaseOp =
                     //     new ToggleDatabasesStateOperation(new [] { "DB1", "DB2", ... }, disable: false);
                     
-                    // Execute the operation by passing it to Maintenance.Send
-                    var toggleResult = store.Maintenance.Server.Send(enableDatabaseOp);
+                    // Execute the operation by passing it to Maintenance.Server.Send
+                    var toggleResult = documentStore.Maintenance.Server.Send(enableDatabaseOp);
                     #endregion
                 }
                 { 
@@ -34,8 +34,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                     // var disableDatabaseOp =
                     //     new ToggleDatabasesStateOperation(new [] { "DB1", "DB2", ... }, disable: true);
                     
-                    // Execute the operation by passing it to Maintenance.Send
-                    var toggleResult = store.Maintenance.Server.Send(disableDatabaseOp);
+                    // Execute the operation by passing it to Maintenance.Server.Send
+                    var toggleResult = documentStore.Maintenance.Server.Send(disableDatabaseOp);
                     #endregion
                 }
             }
@@ -43,9 +43,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
         
         public async Task ToggleDatabasesStateAsync()
         {
-            var store = new DocumentStore();
-            
-            using (store)
+            using (var documentStore = new DocumentStore())
             {
                 {
                     #region enable_async
@@ -53,8 +51,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                     // specify the database name(s) & pass 'false' to enable
                     var enableDatabaseOp = new ToggleDatabasesStateOperation(new [] { "Foo", "Bar" }, disable: false);
                     
-                    // Execute the operation by passing it to Maintenance.SendAsync
-                    var toggleResult = await store.Maintenance.Server.SendAsync(enableDatabaseOp);
+                    // Execute the operation by passing it to Maintenance.Server.SendAsync
+                    var toggleResult = await documentStore.Maintenance.Server.SendAsync(enableDatabaseOp);
                     #endregion
                 }
                 { 
@@ -63,8 +61,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                     // specify the database name(s) & pass 'true' to disable
                     var disableDatabaseOp = new ToggleDatabasesStateOperation("Northwind", disable: true);
                     
-                    // Execute the operation by passing it to Maintenance.SendAsync
-                    var toggleResult = await store.Maintenance.Server.SendAsync(disableDatabaseOp);
+                    // Execute the operation by passing it to Maintenance.Server.SendAsync
+                    var toggleResult = await documentStore.Maintenance.Server.SendAsync(disableDatabaseOp);
                     #endregion
                 }
             }
