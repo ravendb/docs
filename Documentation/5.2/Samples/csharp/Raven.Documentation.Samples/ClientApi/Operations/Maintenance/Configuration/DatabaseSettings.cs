@@ -16,7 +16,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Configura
             {
                 #region put_database_settings
                 // 1. Modify the database settings:
-                // ======================+++=======
+                // ================================
                 
                 // Define the settings dictionary with the key-value pairs to set, for example:
                 var settings = new Dictionary<string, string>
@@ -36,12 +36,12 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Configura
                 // =====================================================
                 
                 // Disable database
-                var disableDatabaseOperation = new ToggleDatabasesStateOperation(documentStore.Database, true);
-                documentStore.Maintenance.Server.Send(disableDatabaseOperation);
+                var disableDatabaseOp = new ToggleDatabasesStateOperation(documentStore.Database, true);
+                documentStore.Maintenance.Server.Send(disableDatabaseOp);
 
                 // Enable database
-                var enableDatabaseOperation = new ToggleDatabasesStateOperation(documentStore.Database, false);
-                documentStore.Maintenance.Server.Send(enableDatabaseOperation); 
+                var enableDatabaseOp = new ToggleDatabasesStateOperation(documentStore.Database, false);
+                documentStore.Maintenance.Server.Send(enableDatabaseOp); 
                 #endregion
             }
         }
@@ -54,7 +54,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Configura
             {
                 #region put_database_settings_async
                 // 1. Modify the database settings:
-                // ======================+++=======
+                // ================================
                 
                 // Define the settings dictionary with the key-value pairs to set, for example:
                 var settings = new Dictionary<string, string>
@@ -74,12 +74,12 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Configura
                 // =====================================================
                 
                 // Disable database
-                var disableDatabaseOperation = new ToggleDatabasesStateOperation(documentStore.Database, true);
-                await documentStore.Maintenance.Server.SendAsync(disableDatabaseOperation);
+                var disableDatabaseOp = new ToggleDatabasesStateOperation(documentStore.Database, true);
+                await documentStore.Maintenance.Server.SendAsync(disableDatabaseOp);
 
                 // Enable database
-                var enableDatabaseOperation = new ToggleDatabasesStateOperation(documentStore.Database, false);
-                await documentStore.Maintenance.Server.SendAsync(enableDatabaseOperation); 
+                var enableDatabaseOp = new ToggleDatabasesStateOperation(documentStore.Database, false);
+                await documentStore.Maintenance.Server.SendAsync(enableDatabaseOp); 
                 #endregion
             }
         }
