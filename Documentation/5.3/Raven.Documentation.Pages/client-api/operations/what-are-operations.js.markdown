@@ -236,8 +236,8 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ReplayTransactionsRecordingOperation  
 
 * __Database settings__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutDatabaseSettingsOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetDatabaseSettingsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation#put-database-settings-operation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation#get-database-settings-operation)  
 
 * __Identities__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIdentitiesOperation](../../client-api/operations/maintenance/identities/get-identities)  
