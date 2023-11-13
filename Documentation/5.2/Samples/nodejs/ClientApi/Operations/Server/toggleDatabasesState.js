@@ -7,11 +7,11 @@ async function toggleDatabasesState() {
         //region enable
         // Define the toggle state operation
         // specify the database name & pass 'false' to enable
-        const enableDatabaseOp = new ToggleDatabasesStateOperation("Northwind", disable: false);
+        const enableDatabaseOp = new ToggleDatabasesStateOperation("Northwind", false);
 
         // To enable multiple databases use:
         // const enableDatabaseOp =
-        //     new ToggleDatabasesStateOperation(["DB1", "DB2", ...], disable: false);
+        //     new ToggleDatabasesStateOperation(["DB1", "DB2", ...], false);
 
         // Execute the operation by passing it to maintenance.server.send
         const toggleResult = await documentStore.maintenance.server.send(enableDatabaseOp);
@@ -21,11 +21,11 @@ async function toggleDatabasesState() {
         //region disable
         // Define the toggle state operation
         // specify the database name(s) & pass 'true' to disable
-        const disableDatabaseOp = new ToggleDatabasesStateOperation("Northwind", disable: true);
+        const disableDatabaseOp = new ToggleDatabasesStateOperation("Northwind", true);
 
         // To disable multiple databases use:
         // const disableDatabaseOp =
-        //     new ToggleDatabasesStateOperation(["DB1", "DB2", ...], disable: true);
+        //     new ToggleDatabasesStateOperation(["DB1", "DB2", ...], true);
         
         // Execute the operation by passing it to maintenance.server.send
         const toggleResult = await documentStore.maintenance.server.send(disableDatabaseOp);
