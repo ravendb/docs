@@ -25,7 +25,7 @@ async function getClientConfig() {
     // Object returned from store.maintenance.send(getClientConfigOp):
     {
        etag,
-       configuration // the configution object
+       configuration // The configution object
     }
 
     // The configuration object:

@@ -57,7 +57,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Configura
                 // The configuration Etag
                 public long Etag { get; set; }
                 
-                // the current client-configuration deployed on the server for the database
+                // The current client-configuration deployed on the server for the database
                 public ClientConfiguration Configuration { get; set; }
             }
             #endregion
