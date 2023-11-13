@@ -79,12 +79,6 @@
         ]
     },
     {
-        "Path": "fanout-indexes.markdown",
-        "Name": "Fanout Indexes",
-        "DiscussionId": "8dd0873a-83c2-4148-8710-b15951047700",
-        "Mappings": []
-    },
-    {
         "Path": "sorting-and-collation.markdown",
         "Name": "Sorting & Collation",
         "DiscussionId": "3facb68f-7826-4f9a-9d6d-48a5c6850cd5",
@@ -109,6 +103,12 @@
                 "Key": "client-api/querying/static-indexes/indexing-related-documents"
             }
         ]
+    },
+    {
+        "Path": "indexing-nested-data.markdown",
+        "Name": "Indexing Nested Data",
+        "DiscussionId": "8dd0873a-83c2-4148-8710-b15951047700",
+        "Mappings": []
     },
     {
         "Path": "indexing-hierarchical-data.markdown",
