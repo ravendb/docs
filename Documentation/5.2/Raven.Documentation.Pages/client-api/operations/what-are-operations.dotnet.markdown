@@ -254,8 +254,8 @@ __Send syntax__:
 
 * __Identities__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIdentitiesOperation](../../client-api/operations/maintenance/identities/get-identities)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NextIdentityForOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SeedIdentityForOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [NextIdentityForOperation](../../client-api/operations/maintenance/identities/increment-next-identity)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SeedIdentityForOperation](../../client-api/operations/maintenance/identities/seed-identity)  
 
 * __Time series__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesOperation  
