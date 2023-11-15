@@ -154,7 +154,7 @@ where color == "red" and size == "M"
 {CODE-TAB:nodejs:Query fanout_index_query_2@Indexes\indexingNestedData.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Sales/ByTShirtColor/Fanout"
-where Color == "black"
+where color == "black"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
