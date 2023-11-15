@@ -34,8 +34,8 @@
 * The examples in this article are based on the following __Classes__ and __Sample Data__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Class online_shop_class@Indexes\IndexingNestedData.cs /}
-{CODE-TAB:csharp:Sample_data sample_data@Indexes\IndexingNestedData.cs /}
+{CODE-TAB:nodejs:Class online_shop_class@Indexes\indexingNestedData.js /}
+{CODE-TAB:nodejs:Sample_data sample_data@Indexes\indexingNestedData.js /}
 {CODE-TABS/}
 
 {PANEL/}
@@ -45,7 +45,7 @@
 
 <a id="theIndex" /> __The index__:
 
-{CODE simple_index@Indexes\IndexingNestedData.cs /}
+{CODE:nodejs simple_index@Indexes\indexingNestedData.js /}
 
 ---
 
@@ -69,16 +69,14 @@
 <a id="queryingTheIndex" /> __Querying the index__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query simple_index_query_1@Indexes\IndexingNestedData.cs /}
-{CODE-TAB:csharp:Query_async simple_index_query_2@Indexes\IndexingNestedData.cs /}
-{CODE-TAB:csharp:DocumentQuery simple_index_query_3@Indexes\IndexingNestedData.cs /}
+{CODE-TAB:nodejs:Query simple_index_query_1@Indexes\indexingNestedData.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Shops/ByTShirt/Simple"
-where Colors == "red"
+where colors == "red"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{CODE results_1@Indexes\IndexingNestedData.cs /}
+{CODE:nodejs results_1@Indexes\indexingNestedData.js /}
 
 ---
 
@@ -87,10 +85,10 @@ where Colors == "red"
 * This type of index structure is effective for retrieving documents when filtering the query by any of the inner nested values that were indexed.
 
 * However, due to the way the index-entries are generated, this index __cannot__ provide results for a query searching for documents that contain 
-  specific sub-objects which satisfy some `AND` condition.   
-  For example:   
+  specific sub-objects which satisfy some `AND` condition.  
+  For example:  
 
-    {CODE results_2@Indexes\IndexingNestedData.cs /}
+    {CODE:nodejs results_2@Indexes\indexingNestedData.js /}
 
 * To address this, you must use a __Fanout index__ - as described below.
 
@@ -114,22 +112,17 @@ where Colors == "red"
 
 <a id="fanoutMapIndex" /> __Fanout index - Map index example__:
 
-{CODE-TABS}
-{CODE-TAB:csharp:LINQ_index fanout_index_1@Indexes\IndexingNestedData.cs /}
-{CODE-TAB:csharp:JavaScript_index fanout_index_js@Indexes\IndexingNestedData.cs /}
-{CODE-TABS/}
+{CODE:nodejs fanout_index_1@Indexes\indexingNestedData.js /}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query fanout_index_query_1@Indexes\IndexingNestedData.cs /}
-{CODE-TAB:csharp:Query_async fanout_index_query_2@Indexes\IndexingNestedData.cs /}
-{CODE-TAB:csharp:DocumentQuery fanout_index_query_3@Indexes\IndexingNestedData.cs /}
+{CODE-TAB:nodejs:Query fanout_index_query_1@Indexes\indexingNestedData.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Shops/ByTShirt/Fanout" 
-where Color == "red" and Size == "M"
+where color == "red" and size == "M"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{CODE results_3@Indexes\IndexingNestedData.cs /}
+{CODE:nodejs results_3@Indexes\indexingNestedData.js /}
 
 ---
 
@@ -155,22 +148,17 @@ where Color == "red" and Size == "M"
 
 * The fanout index concept applies to map-reduce indexes as well:
 
-{CODE-TABS}
-{CODE-TAB:csharp:LINQ_index fanout_index_2@Indexes\IndexingNestedData.cs /}
-{CODE-TAB:csharp:JavaScript_index map_reduce_2_0@Indexes\JavaScript.cs /}}
-{CODE-TABS/}
+{CODE:nodejs fanout_index_2@Indexes\indexingNestedData.js /}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query fanout_index_query_4@Indexes\IndexingNestedData.cs /}
-{CODE-TAB:csharp:Query_async fanout_index_query_5@Indexes\IndexingNestedData.cs /}
-{CODE-TAB:csharp:DocumentQuery fanout_index_query_6@Indexes\IndexingNestedData.cs /}
+{CODE-TAB:nodejs:Query fanout_index_query_2@Indexes\indexingNestedData.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Sales/ByTShirtColor/Fanout"
 where Color == "black"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{CODE results_4@Indexes\IndexingNestedData.cs /}
+{CODE:nodejs results_4@Indexes\indexingNestedData.js /}
 
 {NOTE/}
 
@@ -189,11 +177,11 @@ where Color == "black"
   (default is 1024).
 
 * So, for example, adding another OnlineShop document with a `tShirt` object containing 1025 items  
-  will trigger the following alert:  
+  will trigger the following alert: 
 
     ![Figure 1. High indexing fanout ratio notification](images/fanout-index-performance-hint-1.png "High indexing fanout ratio notification")
 
-* Clicking the 'Details' button will show the following info:  
+* Clicking the 'Details' button will show the following info:
 
     ![Figure 2. Fanout index, performance hint details](images/fanout-index-performance-hint-2.png "Fanout index, performance hint details")
 
@@ -208,8 +196,8 @@ where Color == "black"
   as can be seen in the above [index-entries](../indexes/indexing-nested-data#fanoutMapIndexIndexEntries) example.
 
 * When making a fanout index query that should return full documents (without projecting results),  
-  then in this case, the `TotalResults` property (available via the `QueryStatistics` object) will contain  
-  the total number of index-entries and Not the total number of resulting documents.
+  then in this case, the `totalResults` property (available when calling the query `statistics()` method)  
+  will contain the total number of index-entries and Not the total number of resulting documents.
 
 * __To overcome this when paging results__, you must take into account the number of "duplicate"  
   index-entries that are skipped internally by the server when serving the resulting documents.  

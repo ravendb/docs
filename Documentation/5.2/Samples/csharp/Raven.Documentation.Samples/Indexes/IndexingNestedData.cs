@@ -42,8 +42,7 @@ namespace Raven.Documentation.Samples.Indexes
                 // Creating a SINGLE index-entry per document:
                 select new IndexEntry
                 {
-                    // Each index-field will hold a collection
-                    // of ALL matching nested values from the document
+                    // Each index-field will hold a collection of nested values from the document
                     Colors = shop.TShirts.Select(x => x.Color),
                     Sizes = shop.TShirts.Select(x => x.Size),
                     Logos = shop.TShirts.Select(x => x.Logo)
@@ -92,8 +91,8 @@ namespace Raven.Documentation.Samples.Indexes
         {
             // The index-fields:
             public string Color { get; set; }
-            public int Count { get; set; }
-            public decimal TotalSales;
+            public int ItemsSold { get; set; }
+            public decimal TotalSales { get; set; }
         }
 
         public Sales_ByTShirtColor_Fanout()
@@ -106,8 +105,8 @@ namespace Raven.Documentation.Samples.Indexes
                 select new IndexEntry
                 {
                     Color = shirt.Color,
-                    TotalSales = shirt.Price * shirt.Sold,
-                    Count = 1
+                    ItemsSold = shirt.Sold,
+                    TotalSales = shirt.Price * shirt.Sold
                 };
 
             Reduce = results => from result in results
@@ -117,8 +116,8 @@ namespace Raven.Documentation.Samples.Indexes
                 {
                     // Calculate sales per color
                     Color = g.Key,
-                    TotalSales = g.Sum(x => x.TotalSales),
-                    Count = g.Sum(x => x.Count)
+                    ItemsSold = g.Sum(x => x.ItemsSold),
+                    TotalSales = g.Sum(x => x.TotalSales)
                 };
         }
     }
