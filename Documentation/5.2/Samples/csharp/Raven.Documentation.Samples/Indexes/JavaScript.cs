@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
-using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.Indexes
 {
@@ -345,28 +342,6 @@ namespace Raven.Documentation.Samples.Indexes
                 })";
 
                 OutputReduceToCollection = "MonthlyProductSales";
-            }
-        }
-        #endregion
-
-        #region fanout_index_def_1
-        public class Orders_ByProduct : AbstractJavaScriptIndexCreationTask
-        {
-            public Orders_ByProduct()
-            {
-                Maps = new HashSet<string>
-                {
-                    @"map('Orders', function (order){ 
-                           var res = [];
-                            order.Lines.forEach(l => {
-                                res.push({
-                                    Product: l.Product,
-                                    ProductName: l.ProductName
-                                })
-                            });
-                            return res;
-                        })",
-                };
             }
         }
         #endregion
