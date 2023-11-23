@@ -6,16 +6,19 @@
 * Applying a projection in a query allows you to shape the query results to meet specific requirements,  
   delivering just the data needed instead of the original full document content. 
 
+* This article provides examples of projecting query results when making a __dynamic-query__.  
+  For projecting results when querying a __static-index__ see [project index query results](../../../indexes/querying/projections).
+
 * In this page:
 
   * [Projections overview](../../../client-api/session/querying/how-to-project-query-results#overview)
 
   * [Projection Methods](../../../client-api/session/querying/how-to-project-query-results#select):  
       * [Select](../../../client-api/session/querying/how-to-project-query-results#select)  
+      * [ProjectInto](../../../client-api/session/querying/how-to-project-query-results#projectinto)  
       * [SelectFields](../../../client-api/session/querying/how-to-project-query-results#selectfields)  
-      * [ProjectInto](../../../client-api/session/querying/how-to-project-query-results#projectinto)   
 
-  * [Single projection usage](../../../)
+  * [Single projection per query](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query)
 
 {NOTE/}
 
@@ -28,14 +31,14 @@
 __What are projections__:
 
 * A projection refers to the __transformation of query results__ into a customized structure,  
-  modifying the shape of the data returned from the server:
+  modifying the shape of the data returned from the server.
   
-      * You can return a subset of the data, specifying the document fields you want to get from the server,  
-        instead of retrieving the full document and then picking relevant data from it.  
+* Instead of retrieving the full document and then picking relevant data from it,  
+  you can return a subset of the data, specifying the document fields you want to get from the server.  
 
-      * The query can load [related documents](../../../indexes/indexing-related-documents#what-are-related-documents) and have their data merged into the projection results.
+* The query can load [related documents](../../../indexes/indexing-related-documents#what-are-related-documents) and have their data merged into the projection results.
 
-      * Objects and arrays can be projected, fields can be renamed, and any calculation can be made within the projection.
+* Objects and arrays can be projected, fields can be renamed, and any calculation can be made within the projection.
 
 ---
 
@@ -60,9 +63,9 @@ __When to use projections__:
 
 __Projections are not tracked by the session__:
 
-* On the client side, the resulting projected entities returned by the query are not tracked by the Session.
+* On the client side, the resulting projected entities returned by the query are Not tracked by the Session.
 
-* Any modification made to a projection entity will not modify the corresponding document on the server when SaveChanges is called.
+* Any modification made to a projection entity will not modify the corresponding document on the server when _SaveChanges_ is called.
 
 ---
 
@@ -81,9 +84,11 @@ __Projections are the final stage in the query pipeline__:
 
 __The cost of projections__:
 
-* While computations within a projection are allowed, having a very complex logic can impact query performance.
+* Queries in RavenDB do not allow any computation to occur during the query phase.  
+  However, you can perform any [computation](../../../client-api/session/querying/how-to-project-query-results#projectionWithCalculations) inside the projection.
 
-* RavenDB limits the total time it will spend processing a query and its projections.  
+* But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
+  So RavenDB limits the total time it will spend processing a query and its projections.  
   Exceeding this time limit will fail the query. This is configurable, see the following configuration keys:  
       * [Databases.QueryTimeoutInSec](../../..server/configuration/database-configuration#databases.querytimeoutinsec)
       * [Databases.QueryOperationTimeoutInSec](../../../server/configuration/database-configuration#databases.queryoperationtimeoutinsec)
@@ -92,84 +97,113 @@ __The cost of projections__:
 
 {PANEL: Select}
 
-The most common way to perform a query with a projection is to use the `Select` method.  
-You can specify what fields from a document you want to retrieve and even provide a complex expression.
+* The most common way to perform a query with a projection is to use the `Select` method.  
 
-### Example I - Projecting Individual Fields of the Document
+* You can specify what fields from the document you want to retrieve and even provide a complex expression.
+
+{NOTE: }
+
+__Example I - Projecting individual fields of the document__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_1@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_1_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query projections_1@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query_async projections_1_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Companies
+from "Companies"
 select Name, Address.City as City, Address.Country as Country
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example II - Projecting Arrays and Objects
+{NOTE/}
+
+{NOTE: }
+
+__Example II - Projecting arrays and objects__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_2@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_2_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query projections_2@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query_async projections_2_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Orders
+// Using simple expression:
+from "Orders"
 select ShipTo, Lines[].ProductName as Products
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
 
-### Example III - Projection with Expression
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync projections_3@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_3_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from Employees as e
+// Using object literal syntax:
+from "Orders" as x
 select {
-    FullName : e.FirstName + " " + e.LastName
+    ShipTo: x.ShipTo, 
+    Products: x.Lines.map(y=>y.ProductName)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IV - Projection with `let`
+{NOTE/}
+
+{NOTE: }
+
+__Example III - Projection with expression__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_12@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_12_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query projections_3@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query_async projections_3_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Employees" as e
+select {
+    FullName: e.FirstName + " " + e.LastName
+}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+<a id="projectionWithCalculations" /> __Example V - Projection with calculations__:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query projections_4@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query_async projections_4_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Orders" as x
+select {
+    TotalProducts: x.Lines.length,
+    TotalDiscountedProducts: x.Lines.filter(x => x.Discount > 0).length,
+    TotalPrice: x.Lines
+                  .map(l => l.PricePerUnit * l.Quantity)
+                  .reduce((a, b) => a + b, 0)
+}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Example IV - Projecting using functions__:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query projections_5@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query_async projections_5_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 declare function output(e) {
-	var format = function(p){ return p.FirstName + " " + p.LastName; };
-	return { FullName : format(e) };
+    var format = p => p.FirstName + " " + p.LastName;
+    return { FullName: format(e) };
 }
-from Employees as e select output(e)
+from "Employees" as e select output(e)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example V - Projection with Calculation
+{NOTE/}
 
-Queries in RavenDB do not allow any computation to occur during the query phase. 
-This is done to ensure that queries in RavenDB can always use an index to answer the query promptly and efficiently. 
-RQL does allow you to perform computation inside the select,
-either to project specific fields out or to massage the data from the query in every way imaginable
+{NOTE: }
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync projections_4@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_4_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from Orders as o
-select {
-    Total : o.Lines.reduce(
-        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0)
-}
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-### Example VI - Projection Using a Loaded Document
+__Example VI - Projecting using a loaded document__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_5@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_5_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query projections_6@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query_async projections_6_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Orders as o
+from "Orders" as o
 load o.Company as c
 select {
 	CompanyName: c.Name,
@@ -178,143 +212,156 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VII - Projection with Dates
+{NOTE/}
+
+{NOTE: }
+
+__Example VII - Projection with dates__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_6@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_6_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query projections_7@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query_async projections_7_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Employees as e 
+from "Employees" as e 
 select { 
-    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), 
-    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1,
-    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
+    DayOfBirth: new Date(Date.parse(e.Birthday)).getDate(), 
+    MonthOfBirth: new Date(Date.parse(e.Birthday)).getMonth() + 1,
+    Age: new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VIII - Projection with Raw JavaScript Code
+{NOTE/}
+
+{NOTE: }
+
+__Example VIII - Projection with raw JavaScript code__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_7@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_7_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query projections_8@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query_async projections_8_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Employees as e 
+from "Employees" as e 
 select {
-    Date : new Date(Date.parse(e.Birthday)), 
-    Name : e.FirstName.substr(0,3)
+    Date: new Date(Date.parse(e.Birthday)), 
+    Name: e.FirstName.substr(0, 3)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IX - Projection with Metadata
+{NOTE/}
+
+{NOTE: }
+
+__Example IX - Projection with metadata__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_13@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_13_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query_async projections_9_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Employees as e 
+from "Employees" as e 
 select {
-     Name : e.FirstName, 
-     Metadata : getMetadata(e)
+     Name: e.FirstName, 
+     Metadata: getMetadata(e)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+{NOTE/}
 {PANEL/}
 
-{PANEL:SelectFields}
+{PANEL: ProjectInto}
 
-The `SelectFields` method can only be used with the [Document Query](../../../client-api/session/querying/document-query/what-is-document-query). 
+* Instead of `Select`, you can use `ProjectInto` to project all public fields from a generic type.
+ 
+* The results will be projected into objects of the specified projection class.
+
+{NOTE: }
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query projections_10@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query_async projections_10_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Projection_class projections_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Companies"
+select Name, Phone, Fax
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+{PANEL/}
+
+{PANEL: SelectFields}
+
+The `SelectFields` method can only be used by a [Document Query](../../../client-api/session/querying/document-query/what-is-document-query).  
 It has two overloads:
 
 {CODE-BLOCK: csharp}
-// 1) By array of fields
-IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
-// 2) By projection type
+// 1) Select fields to project by the projection class type
 IDocumentQuery<TProjection> SelectFields<TProjection>();
+
+// 2) Select specific fields to project
+IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
 {CODE-BLOCK/}
 
-1) The fields of the projection are specified as a `string` array of field names. It also takes the type of the projection as 
-a generic parameter.  
+{NOTE: }
+
+__Using projection class type__:
+
+* The projection class fields are the fields that you want to project from the document class.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync selectFields@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async selectFields_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Index projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Class projections_9_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:DocumentQuery projections_11@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:DocumentQuery_async projections_11_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Projection_class projections_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Companies/ByContact'
+from "Companies"
+select Name, Phone, Fax
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Using specific fields__:
+
+* The fields specified are the fields that you want to project from the projection class.
+
+{CODE-TABS}
+{CODE-TAB:csharp:DocumentQuery projections_12@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:DocumentQuery_async projections_12_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Projection_class projections_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Companies"
 select Name, Phone
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-2) The projection is defined by simply passing the projection type as the generic parameter.  
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync selectFields_2@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async selectFields_2_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Index projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Class projections_9_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Companies/ByContact'
-select Name, Phone
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-#### Projection Behavior
-
-The `SelectFields` methods can also take a `ProjectionBehavior` parameter, which 
-determines whether the query should retrieve indexed data or directly retrieve 
-document data, and what to do when the data can't be retrieved. Learn more 
-[here](../../../client-api/session/querying/how-to-customize-query#projection).  
-
-{CODE-BLOCK: csharp}
-IDocumentQuery<TProjection> SelectFields<TProjection>(ProjectionBehavior projectionBehavior,
-                                                      params string[] fields);
-
-IDocumentQuery<TProjection> SelectFields<TProjection>(ProjectionBehavior projectionBehavior);
-{CODE-BLOCK/}
+{NOTE/}
 
 {PANEL/}
 
-{PANEL:ProjectInto}
+{PANEL: Single projection per query}
 
-This extension method retrieves all public fields and properties of the type given in generic and uses them to perform projection to the requested type.
-You can use this method instead of using `Select` together with all fields of the projection class.
+* As of RavenDB v6.0, only a single projection request can be made per Query (and DocumentQuery).
 
-### Example
+* Attempting multiple projection executions in the same query will result in an exception.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync projections_8@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_8_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Companies/ByContact' 
-select Name, Phone
-{CODE-TAB-BLOCK/}
-{CODE-TAB:csharp:Index projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Class projections_9_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+    * Query:  
+      Multiple `Select` calls or a combination of `ProjectInto` with a `Select` call will result in an exception.
+   
+    * DocumentQuery:  
+      Multiple `SelectFields` calls will result in an exception.
 
-{CODE-TABS/}
+{CODE projections_13@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 
 {PANEL/}
 
-{PANEL:OfType (As) - simple projection}
-
-`OfType` or `As` is a client-side projection. The easiest explanation of how it works is to take the results that the server returns and map them to given type. This may become useful when querying an index that contains fields that are not available in mapped type.
-
-### Example
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync projections_10@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_10_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Index projections_11@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TABS/}
-
-{PANEL/}
-
-// move to indexes article...
-{NOTE If the projected fields are stored inside the index itself (`FieldStorage.Yes` in the index definition), then the query results will be created directly from there instead of retrieving documents in order to project. /}
+// move to indexes article... todo..
+{NOTE If the projected fields are stored inside the index itself (`FieldStorage.Yes` in the index definition),
+then the query results will be created directly from there instead of retrieving documents in order to project.
+/}
 
 ## Related Articles
 
@@ -323,10 +370,10 @@ select Name, Phone
 - [Query Overview](../../../client-api/session/querying/how-to-query)
 - [How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results)
 
-### Querying
+### Indexes
 
-- [Querying an Index](../../../indexes/querying/query-index)
-- [Projections](../../../indexes/querying/projections)
+- [Querying an index](../../../indexes/querying/query-index)
+- [Projections when querying an index](../../../indexes/querying/projections)
 
 ### Server
 
