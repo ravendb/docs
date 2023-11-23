@@ -75,8 +75,14 @@
   {
     "Path": "fanout-indexes.markdown",
     "Name": "Fanout Indexes",
+    "LastSupportedVersion": "5.1",
     "DiscussionId": "8dd0873a-83c2-4148-8710-b15951047700",
-    "Mappings": []
+      "Mappings": [
+          {
+              "Version": 5.2,
+              "Key": "indexes/indexing-nested-data"
+          }
+      ]
   },
   {
     "Path": "sorting-and-collation.markdown",
