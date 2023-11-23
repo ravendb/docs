@@ -1,4 +1,4 @@
-﻿# Prometheus
+﻿# Monitoring: Prometheus
 
 ---
 
@@ -35,14 +35,15 @@ alerts related to it or forwarding it to analysis services.
 
 {PANEL: RavenDB Prometheus Endpoint}
 
-The path to the Prometheus endpoint of a RavenDB instance is `/admin/monitoring/v1/prometheus`  
-To inspect the endpoint's output using a browser follow the RavenDB server's URL with the endpoint path.  
+The path to the Prometheus endpoint of a RavenDB instance is: `/admin/monitoring/v1/prometheus`  
+To inspect the endpoint's output using a browser, add the endpoint path to the RavenDB server's URL.  
+E.g. [http://live-test.ravendb.net/admin/monitoring/v1/prometheus](http://live-test.ravendb.net/admin/monitoring/v1/prometheus)  
 
 ![RavenDB: Prometheus Endpoint Output](images/ravendb_prometheus-endpoint-output.png "RavenDB: Prometheus Endpoint Output")
 
 * As prometheus handles only numeric values, the endpoint outputs all values as numbers, 
   providing legends that explain what the numbers mean.  
-  Metrics values are also detailed in the table below.  
+  Metrics values are also explained in the [table below](../../../server/administration/monitoring/prometheus#metrics-provided-by-the-prometheus-endpoint).  
 
 ## Omit or Include Selected Metrics
 
@@ -170,7 +171,9 @@ Here is the list of metrics made available by the `/admin/monitoring/v1/promethe
 {PANEL: Using the RavenDB Endpoint by a Prometheus Server}
 
 To direct a Prometheus server to the Prometheus endpoint of a RavenDB instance 
-add an entry to the Prometheus `yml` configuration file.  
+[add an entry](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config) 
+to the Prometheus `yml` configuration file.  
+
 * **Prometheus.yml**:  
   {CODE-BLOCK:json}
   - job_name: "local-raven-instance"
@@ -216,9 +219,22 @@ add an entry to the Prometheus `yml` configuration file.
 
 ## Fetching Additional RavenDB Information
 
-To get additional details about a RavenDB server, Pass Prometheus: `ravendb_server_info`  
-The returned value will always be 1, but additional information will appear beneath it.  
+To retrieve additional information about RavenDB, including its version, 
+HTTP and TCP URLs, and other details, pass Prometheus: `ravendb_server_info`  
 
 ![Additional Information](images/additional-info.png "Additional Information")
 
 {PANEL/}
+
+## Related Articles
+
+### Monitoring
+- [RavenDB Telegraf Plugin](../../../server/administration/monitoring/telegraf)  
+
+### Administration
+- [SNMP Administration](../../../server/administration/SNMP/snmp)  
+- [Zabbix](../../../server/administration/SNMP/setup-zabbix)  
+
+### Integrations
+- [PostgreSQL Overview](../../../integrations/postgresql-protocol/overview)  
+- [Power BI](../../../integrations/postgresql-protocol/power-bi)  

@@ -1,4 +1,4 @@
-﻿# RavenDB Telegraf Plugin
+﻿# Monitoring: Telegraf Plugin
 
 ---
 
@@ -147,3 +147,16 @@ The following is a list of JSON fields returned by the endpoints:
 | `server` | `uptime_in_sec` | Server up-time |
 
 {PANEL/}
+
+## Related Articles
+
+### Monitoring
+- [Prometheus](../../../server/administration/monitoring/prometheus)  
+
+### Administration
+- [SNMP Administration](../../../server/administration/SNMP/snmp)  
+- [Zabbix](../../../server/administration/SNMP/setup-zabbix)  
+
+### Integrations
+- [PostgreSQL Overview](../../../integrations/postgresql-protocol/overview)  
+- [Power BI](../../../integrations/postgresql-protocol/power-bi)  
