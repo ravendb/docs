@@ -43,8 +43,8 @@ To deploy RavenDB using Terraform, you need:
 
 * **Hosts**  
   RavenDB can be hosted by both **on-premise servers** and **cloud instances**.  
-   * Make sure you have the IPs of the servers or cloud instances intended to host 
-     RavenDB nodes.  
+   * Make sure you have the IP addresses and SSH keys of the servers or cloud instances 
+     intended to host RavenDB nodes.  
    * Cloud providers that support Terraform are listed in Terraform's 
      [providers list](https://registry.terraform.io/browse/providers).  
 
@@ -93,7 +93,7 @@ block's **package** field).
 
 {CODE-BLOCK: json}
 provider "ravendb" {
-  version = "1.0.0"
+  version = "1.0.2"
 }
 {CODE-BLOCK/}
 
@@ -168,7 +168,7 @@ resource "ravendb_server" "server" {
     # Path to server-side authentication certificate (Optional, for Secure setup only)
     # The certificate has to be in pfx format
     # Type: filebase64
-    certificate = filebase64("/path/to/cert.pfx")
+    cluster_setup_zip  = "/path/to/cluster/setup.zip"
 
     package {
         # RavenDB version (Required)
@@ -215,7 +215,7 @@ resource "ravendb_server" "server" {
         "/path/to/file/file_name.extension" = filebase64("/path/to/file_name.extension")
     }
   
-    # A User name and a path to an Access Key to your server (Optional)
+    # A User name and a path to an Access Key to your server (Required)
     ssh {
         user = "ubuntu"
         pem  = filebase64("/path/to/server.pem")
