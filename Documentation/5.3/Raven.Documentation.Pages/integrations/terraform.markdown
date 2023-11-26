@@ -165,12 +165,10 @@ resource "ravendb_server" "server" {
     # Type: bool
     unsecured = false
 
-    # Path to server-side authentication certificate (Optional, for Secure setup only)
-    # The certificate has to be in pfx format
-    # Type: filebase64
+    # The path to a setup zip file used by RavenDB for a secure cluster setup (Optional)
+    # Type: string
     cluster_setup_zip  = "/path/to/cluster/setup.zip"
-
-    package {
+        package {
         # RavenDB version (Required)
         # Type: string
         version = "6.0.1"
