@@ -257,7 +257,7 @@ select ContactName, ContactTitle
 
 {PANEL: SelectFields}
 
-The `SelectFields` method can only be used by a [Document Query](../../../client-api/session/querying/document-query/what-is-document-query).  
+The `SelectFields` method can only be used by a [Document Query](../../client-api/session/querying/document-query/what-is-document-query).  
 It has two overloads:
 
 {CODE-BLOCK: csharp}

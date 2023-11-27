@@ -11,7 +11,7 @@
 
 * In this page:
 
-  * [Projections overview](../../../client-api/session/querying/how-to-project-query-results#overview)
+  * [Projections overview](../../../client-api/session/querying/how-to-project-query-results#projections-overview)
 
   * [Projection Methods](../../../client-api/session/querying/how-to-project-query-results#select):  
       * [Select](../../../client-api/session/querying/how-to-project-query-results#select)  
@@ -93,7 +93,7 @@ __The cost of projections__:
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
   So RavenDB limits the total time it will spend processing a query and its projections.  
   Exceeding this time limit will fail the query. This is configurable, see the following configuration keys:  
-      * [Databases.QueryTimeoutInSec](../../..server/configuration/database-configuration#databases.querytimeoutinsec)
+      * [Databases.QueryTimeoutInSec](../../../server/configuration/database-configuration#databases.querytimeoutinsec)
       * [Databases.QueryOperationTimeoutInSec](../../../server/configuration/database-configuration#databases.queryoperationtimeoutinsec)
 
 {PANEL/}
