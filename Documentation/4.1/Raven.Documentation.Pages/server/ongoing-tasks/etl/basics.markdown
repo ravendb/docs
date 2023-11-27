@@ -130,13 +130,23 @@ An object can generally be loaded to a specified target using one of the below t
 
 * The target is specified as a part of the `loadTo` command: `loadToTarget(obj)`  
   E.g., `loadToOrders(obj)`  
-* The target is specified as a parameter of the `loadTo` command: `loadTo('Target', obj)`  
+* The target is specified as an argument of the `loadTo` command: `loadTo('Target', obj)`  
   E.g., `loadTo('Orders', obj)`
+  {INFO: }
+  
+   * The target name in this syntax is **not** a variable and **cannot** be used as one: 
+     it is simply a string literal of the target's name.  
+   * Separating the target name from the `loadTo` command makes it possible to include symbols like 
+     `-` and `.` in target names. This is not possible when the standard `loadToOrders` syntax is 
+     used because special characters are invalid in the name of a JS function.  
+   * Note that the general syntax specified above, `loadTo('Target', obj)`, changes for some 
+     ETL types. Find the accurate syntax for each ETL type in the type's specific documentation.  
+  {INFO/}
 
 The target must be:  
 
-* RavenDB ETL: a collection name  
-* SQL ETL: a table name  
+* _RavenDB_ ETL: a _collection_ name  
+* _SQL_ ETL: a _table_ name  
 {NOTE/}
 
 Updates are implemented by executing consecutive DELETEs and INSERTs.

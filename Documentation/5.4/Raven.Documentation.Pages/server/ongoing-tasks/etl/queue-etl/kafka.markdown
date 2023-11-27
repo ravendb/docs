@@ -77,7 +77,10 @@ loadToOrders(orderData, {
 })
 {CODE-BLOCK/}
 
-#### Alternative Syntax
+---
+
+{NOTE: }
+### Alternative Syntax
 
 The target topic name can be passed to the `loadTo` command separately, as a string argument, 
 using this syntax: `loadTo('topic_name', obj, {attributes})`  
@@ -87,9 +90,15 @@ using this syntax: `loadTo('topic_name', obj, {attributes})`
   `loadToOrders(obj, {attributes})`  
   `loadTo('Orders', obj, {attributes})`  
 
-Passing topic names as arguments allows the usage of names that include symbols like `-` and `.`.  
-This is an advantage over the standard `loadToOrders(obj, {attributes})` syntax, that does not 
-allow the passing of such characters because they are invalid in the name of a JS function.  
+{INFO: }
+
+ * The target name `'Orders'` in this syntax is **not** a variable and **cannot** be used as one: 
+   it is simply a string literal of the target's name.  
+ * Separating the target name from the `loadTo` command makes it possible to include symbols like 
+   `-` and `.` in target names. This is not possible when the standard `loadToOrders` syntax is 
+   used because including special characters in the name of a JS function turns it invalid.  
+{INFO/}
+{NOTE/}
 
 {PANEL/}
 

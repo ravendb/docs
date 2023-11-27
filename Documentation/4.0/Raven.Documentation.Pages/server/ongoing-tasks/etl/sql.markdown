@@ -59,6 +59,10 @@ loadToOrderLines({
 });
 {CODE-BLOCK/}
 
+
+---
+
+{NOTE: }
 ### Alternative Syntax
 
 The target table name can be passed to the `loadTo` command separately, as a string argument, 
@@ -69,9 +73,17 @@ using this syntax: `loadTo('Target', obj)`
   `loadToEmployees(this);`  
   `loadTo('Employees', this);`  
 
-Passing table names as arguments allows the usage of names that include symbols like `-` and `.`.  
-This is an advantage over the standard `loadToEmployees` syntax, that does not allow the passing 
-of such characters because they are invalid in the name of a JS function.  
+{INFO: }
+
+ * The target name `'Employees'` in this syntax is **not** a variable and **cannot** be used as one: 
+   it is simply a string literal of the target's name.  
+ * Separating the target name from the `loadTo` command makes it possible to include symbols like 
+   `-` and `.` in target names. This is not possible when the standard `loadToEmployees` syntax is 
+   used because including special characters in the name of a JS function turns it invalid.  
+{INFO/}
+{NOTE/}
+
+---
 
 ### Filtering
 
