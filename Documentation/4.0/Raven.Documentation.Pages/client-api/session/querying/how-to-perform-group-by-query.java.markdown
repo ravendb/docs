@@ -55,7 +55,7 @@ select key() as EmployeeCompanyPair, count()
 ### By Array Values
 
 In order to group by values of array, you need to use `groupBy(array(...))`. The following query will group by `product` field from `Lines` collection 
-and calculate the count per ordered products. Underneath a [fanout](../../../indexes/fanout-indexes), an auto map-reduce index will be created to handle such query. 
+and calculate the count per ordered products. Underneath a fanout, an auto map-reduce index will be created to handle such query. 
 
 {CODE-TABS}
 {CODE-TAB:java:Java group_by_4@ClientApi\Session\Querying\HowToPerformGroupByQuery.java /}
