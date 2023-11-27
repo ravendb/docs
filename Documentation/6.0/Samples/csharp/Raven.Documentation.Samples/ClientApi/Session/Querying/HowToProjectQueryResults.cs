@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.Queries;
 using Raven.Documentation.Samples.Orders;
@@ -19,40 +17,30 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var session = store.OpenSession())
                 {
                     #region projections_1
-                    // Define a dynamic query on the Companies collection
                     var projectedResults = session
+                        // Make a dynamic query on the Companies collection
                         .Query<Company>()
-                         // Call Select to define the new structure that will be returned per Company document
-                        .Select(x => new
-                        {
-                            Name = x.Name,
-                            City = x.Address.City,
-                            Country = x.Address.Country
-                        })
+                        // Call Select to define the new structure that will be returned per Company document
+                        .Select(x => new {Name = x.Name, City = x.Address.City, Country = x.Address.Country})
                         .ToList();
-                    
+
                     // Each resulting object in the list is Not a 'Company' entity,
-                    // it is a new object containing only the specified fields.
+                    // it is a new object containing ONLY the fields specified in the Select.
                     #endregion
                 }
 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region projections_1_async
-                    // Define a dynamic query on the Companies collection
                     var results = await asyncSession
+                        // Make a dynamic query on the Companies collection
                         .Query<Company>()
-                         // Call Select to define the new structure that will be returned per Company document
-                        .Select(x => new
-                        {
-                            Name = x.Name,
-                            City = x.Address.City,
-                            Country = x.Address.Country
-                        })
+                        // Call Select to define the new structure that will be returned per Company document
+                        .Select(x => new {Name = x.Name, City = x.Address.City, Country = x.Address.Country})
                         .ToListAsync();
-                    
+
                     // Each resulting object in the list is Not a 'Company' entity,
-                    // it is a new object containing only the specified fields.
+                    // it is a new object containing ONLY the fields specified in the Select.
                     #endregion
                 }
 
@@ -145,27 +133,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .ToListAsync();
                     #endregion
                 }
-                
-                // todo !!!
-                using (var session = store.OpenSession())
-                {
-                    #region projections_count_in_projection
-                    var results = (from o in session.Query<Order>()
-                        let c = RavenQuery.Load<Company>(o.Company)
-                        select new
-                        {
-                            CompanyName = c.Name,
-                            ShippedAt = o.ShippedAt,
-                            TotalProducts = o.Lines.Count(), //both empty syntax and with a predicate is supported
-                            TotalDiscountedProducts = o.Lines.Count(x => x.Discount > 0)
-                        }).ToList();
-                    #endregion
-                }
 
                 using (var session = store.OpenSession())
                 {
                     #region projections_5
-                    // Use the LINQ query syntax notation
+                    // Use LINQ query syntax notation
                     var projectedResults = (from e in session.Query<Employee>()
                         // Define a function
                         let format = (Func<Employee, string>)(p => p.FirstName + " " + p.LastName)
@@ -173,14 +145,15 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         {
                             // Call the function from the projection
                             FullName = format(e)
-                        }).ToList();
+                        })
+                        .ToList();
                     #endregion
                 }
 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region projections_5_async
-                    // Use the LINQ query syntax notation
+                    // Use LINQ query syntax notation
                     var projectedResults = await (from e in asyncSession.Query<Employee>()
                         // Define a function
                         let format = (Func<Employee, string>)(p => p.FirstName + " " + p.LastName)
@@ -188,35 +161,40 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         {
                             // Call the function from the projection
                             FullName = format(e)
-                        }).ToListAsync();
+                        })
+                        .ToListAsync();
                     #endregion
                 }
 
                 using (var session = store.OpenSession())
                 {
                     #region projections_6
+                    // Use LINQ query syntax notation
                     var projectedResults = (from o in session.Query<Order>()
                         // Use RavenQuery.Load to load the related Company document
                         let c = RavenQuery.Load<Company>(o.Company)
                         select new
                         {
-                            CompanyName = c.Name,   // info from the related Company document
+                            CompanyName = c.Name, // info from the related Company document
                             ShippedAt = o.ShippedAt // info from the Order document
-                        }).ToList();
+                        })
+                        .ToList();
                     #endregion
                 }
 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region projections_6_async
+                    // Use LINQ query syntax notation
                     var projectedResults = (from o in asyncSession.Query<Order>()
                         // Use RavenQuery.Load to load the related Company document
                         let c = RavenQuery.Load<Company>(o.Company)
                         select new
                         {
-                            CompanyName = c.Name,   // info from the related Company document
+                            CompanyName = c.Name, // info from the related Company document
                             ShippedAt = o.ShippedAt // info from the Order document
-                        }).ToListAsync();
+                        })
+                        .ToListAsync();
                     #endregion
                 }
 
@@ -253,9 +231,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var session = store.OpenSession())
                 {
                     #region projections_8
-                    // Use the LINQ query syntax notation
-                    var projectedResults = (from e in session.Query<Employee>()
-                        select new
+                    var projectedResults = session.Query<Employee>()
+                        .Select(e => new
                         {
                             // Provide a JavaScript expression to the RavenQuery.Raw method
                             Date = RavenQuery.Raw<DateTime>("new Date(Date.parse(e.Birthday))"),
@@ -268,9 +245,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region projections_8_async
-                    // Use the LINQ query syntax notation
-                    var projectedResults = await (from e in asyncSession.Query<Employee>()
-                        select new
+                    var projectedResults = await asyncSession.Query<Employee>()
+                        .Select(e => new
                         {
                             // Provide a JavaScript expression to the RavenQuery.Raw method
                             Date = RavenQuery.Raw<DateTime>("new Date(Date.parse(e.Birthday))"),
@@ -279,16 +255,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .ToListAsync();
                     #endregion
                 }
-                
+
                 using (var session = store.OpenSession())
                 {
                     #region projections_9
-                    // Use the LINQ query syntax notation
-                    var projectedResults = (from e in session.Query<Employee>()
-                        select new
+                    var projectedResults = session.Query<Employee>()
+                        .Select(e => new
                         {
-                            Name = e.FirstName,
-                            Metadata = RavenQuery.Metadata(e) // Get the metadata
+                            Name = e.FirstName, Metadata = RavenQuery.Metadata(e) // Get the metadata
                         })
                         .ToList();
                     #endregion
@@ -297,27 +271,25 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region projections_9_async
-                    // Use the LINQ query syntax notation
-                    var projectedResults = await (from e in asyncSession.Query<Employee>()
-                        select new
+                    var projectedResults = await asyncSession.Query<Employee>()
+                        .Select(e => new
                         {
-                            Name = e.FirstName,
-                            Metadata = RavenQuery.Metadata(e) // Get the metadata
+                            Name = e.FirstName, Metadata = RavenQuery.Metadata(e) // Get the metadata
                         })
                         .ToListAsync();
                     #endregion
                 }
-                
+
                 using (var session = store.OpenSession())
                 {
                     #region projections_10
                     var projectedResults = session
                         .Query<Company>()
-                         // Call 'ProjectInto' instead of using 'Select'
-                         // Pass the projection class
+                        // Call 'ProjectInto' instead of using 'Select'
+                        // Pass the projection class
                         .ProjectInto<ContactDetails>()
                         .ToList();
-                    
+
                     // Each resulting object in the list is Not a 'Company' entity,
                     // it is an object of type 'ContactDetails'.
                     #endregion
@@ -328,27 +300,27 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     #region projections_10_async
                     var projectedResults = await asyncSession
                         .Query<Company>()
-                         // Call 'ProjectInto' instead of using 'Select'
-                         // Pass the projection class
+                        // Call 'ProjectInto' instead of using 'Select'
+                        // Pass the projection class
                         .ProjectInto<ContactDetails>()
                         .ToListAsync();
-                    
+
                     // Each resulting object in the list is Not a 'Company' entity,
                     // it is an object of type 'ContactDetails'.
                     #endregion
                 }
-                
+
                 using (var session = store.OpenSession())
                 {
                     #region projections_11
                     // Make a dynamic DocumentQuery
                     var projectedResults = session.Advanced
                         .DocumentQuery<Company>()
-                         // Call 'SelectFields'
-                         // Pass the projection class type
+                        // Call 'SelectFields'
+                        // Pass the projection class type
                         .SelectFields<ContactDetails>()
                         .ToList();
-                    
+
                     // Each resulting object in the list is Not a 'Company' entity,
                     // it is an object of type 'ContactDetails'.
                     #endregion
@@ -360,36 +332,36 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     // Make a dynamic DocumentQuery
                     var projectedResults = await asyncSession.Advanced
                         .AsyncDocumentQuery<Company>()
-                         // Call 'SelectFields'
-                         // Pass the projection class type
+                        // Call 'SelectFields'
+                        // Pass the projection class type
                         .SelectFields<ContactDetails>()
                         .ToListAsync();
-                    
+
                     // Each resulting object in the list is Not a 'Company' entity,
                     // it is an object of type 'ContactDetails'.
                     #endregion
                 }
-                
+
                 using (var session = store.OpenSession())
                 {
                     #region projections_12
                     // Define an array with the field names that will be projected
-                    var projectionFields = new string[] {
-                         // Fields from 'ContactDetails' class:
-                        "Name",
-                        "Phone"
+                    var projectionFields = new string[]
+                    {
+                        // Fields from 'ContactDetails' class:
+                        "Name", "Phone"
                     };
 
                     // Make a dynamic DocumentQuery
                     var projectedResults = session.Advanced
                         .DocumentQuery<Company>()
-                         // Call 'SelectFields'
-                         // Pass the projection class type & the fields to be projected from it
+                        // Call 'SelectFields'
+                        // Pass the projection class type & the fields to be projected from it
                         .SelectFields<ContactDetails>(projectionFields)
                         .ToList();
-                    
+
                     // Each resulting object in the list is Not a 'Company' entity,
-                    // it is an object of type 'ContactDetails' containing data only for the specified fields.
+                    // it is an object of type 'ContactDetails' containing data ONLY for the specified fields.
                     #endregion
                 }
 
@@ -397,25 +369,25 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region projections_12_async
                     // Define an array with the field names that will be projected
-                    var projectionFields = new string[] {
-                         // Fields from 'ContactDetails' class:
-                        "Name",
-                        "Phone"
+                    var projectionFields = new string[]
+                    {
+                        // Fields from 'ContactDetails' class:
+                        "Name", "Phone"
                     };
 
                     // Make a dynamic DocumentQuery
                     var projectedResults = await asyncSession.Advanced
                         .AsyncDocumentQuery<Company>()
-                         // Call 'SelectFields'
-                         // Pass the projection class type & the fields to be projected from it
+                        // Call 'SelectFields'
+                        // Pass the projection class type & the fields to be projected from it
                         .SelectFields<ContactDetails>(projectionFields)
                         .ToListAsync();
-                    
+
                     // Each resulting object in the list is Not a 'Company' entity,
-                    // it is an object of type 'ContactDetails' containing data only for the specified fields.
+                    // it is an object of type 'ContactDetails' containing data ONLY for the specified fields.
                     #endregion
                 }
-                
+
                 using (var session = store.OpenSession())
                 {
                     #region projections_13
@@ -424,13 +396,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     {
                         var projectedResults = session
                             .Query<Company>()
-                             // Make first projection
+                            // Make first projection
                             .ProjectInto<ContactDetails>()
-                             // A second projection is not supported and will throw
-                            .Select(x => new
-                            {
-                                Name = x.Name
-                            })
+                            // A second projection is not supported and will throw
+                            .Select(x => new {Name = x.Name})
                             .ToList();
                     }
                     catch (Exception e)
@@ -440,112 +409,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     }
                     #endregion
                 }
-                
-                ///////////////////////////////////////////////////////////////////////////
-
-                using (var session = store.OpenSession())
-                {
-                    #region projections_8_index
-                    var projectedResults = session.Query<Company, Companies_ByContact>()
-                        .ProjectInto<ContactDetails>()
-                        .ToList();
-                    #endregion
-                }
-
-                using (var asyncSession = store.OpenAsyncSession())
-                {
-                    #region projections_8_async_index
-                    var projectedResults = await asyncSession.Query<Company, Companies_ByContact>()
-                        .ProjectInto<ContactDetails>()
-                        .ToListAsync();
-                    #endregion
-                }
-
-                using (var session = store.OpenSession())
-                {
-                    #region projections_10
-                    // query index 'Products_BySupplierName' 
-                    // return documents from collection 'Products' that have a supplier 'Norske Meierier'
-                    // project them to 'Products'
-                    List<Product> projectedResults = session
-                        .Query<Products_BySupplierName.Result, Products_BySupplierName>()
-                        .Where(x => x.Name == "Norske Meierier")
-                        .OfType<Product>()
-                        .ToList();
-                    #endregion
-                }
-
-                using (var asyncSession = store.OpenAsyncSession())
-                {
-                    #region projections_10_async
-                    // query index 'Products_BySupplierName' 
-                    // return documents from collection 'Products' that have a supplier 'Norske Meierier'
-                    // project them to 'Products'
-                    List<Product> projectedResults = await asyncSession
-                        .Query<Products_BySupplierName.Result, Products_BySupplierName>()
-                        .Where(x => x.Name == "Norske Meierier")
-                        .OfType<Product>()
-                        .ToListAsync();
-                    #endregion
-                }
-
-                using (var session = store.OpenSession())
-                {
-                    #region selectFields
-                    var fields = new string[] {
-                        "Name", 
-                        "Phone"
-                    };
-
-                    var projectedResults = session
-                        .Advanced
-                        .DocumentQuery<Company, Companies_ByContact>()
-                        .SelectFields<ContactDetails>(fields)
-                        .ToList();
-                    #endregion
-                }
-
-                using (var asyncSession = store.OpenAsyncSession())
-                {
-                    #region selectFields_async
-                    var fields = new string[]{
-                        "Name",
-                        "Phone"
-                    };
-
-                    var projectedResults = await asyncSession
-                        .Advanced
-                        .AsyncDocumentQuery<Company, Companies_ByContact>()
-                        .SelectFields<ContactDetails>(fields)
-                        .ToListAsync();
-                    #endregion
-                }
-
-                using (var session = store.OpenSession())
-                {
-                    #region selectFields_2
-                    var projectedResults = session
-                        .Advanced
-                        .DocumentQuery<Company, Companies_ByContact>()
-                        .SelectFields<ContactDetails>()
-                        .ToList();
-                    #endregion
-                }
-
-                using (var asyncSession = store.OpenAsyncSession())
-                {
-                    #region selectFields_2_async
-                    var projectedResults = await asyncSession
-                        .Advanced
-                        .AsyncDocumentQuery<Company, Companies_ByContact>()
-                        .SelectFields<ContactDetails>()
-                        .ToListAsync();
-                    #endregion
-                }
             }
         }
-        
-        ///////////////////////////////////////////////////////////////
 
         #region projections_class
         public class ContactDetails
@@ -554,55 +419,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             public string Name { get; set; }
             public string Phone { get; set; }
             public string Fax { get; set; }
-        }
-        #endregion
-
-        ///////////////////////////////////////////////////////////////
-
-        #region projections_9
-        public class Companies_ByContact : AbstractIndexCreationTask<Company>
-        {
-            public Companies_ByContact()
-            {
-                Map = companies => companies
-                    .Select(x => new
-                    {
-                        Name = x.Contact.Name,
-                        x.Phone
-                    });
-
-                StoreAllFields(FieldStorage.Yes); // Name and Phone fields can be retrieved directly from index
-            }
-        }
-        #endregion
-        
-        #region projections_9_class
-        public class ContactDetails1
-        {
-            public string Name { get; set; }
-            public string Phone { get; set; }
-        }
-        #endregion
-
-        #region projections_11
-        public class Products_BySupplierName : AbstractIndexCreationTask<Product>
-        {
-            public class Result
-            {
-                public string Name { get; set; }
-            }
-
-            public Products_BySupplierName()
-            {
-                Map =
-                    products =>
-                        from product in products
-                        let supplier = LoadDocument<Supplier>(product.Supplier)
-                        select new
-                        {
-                            Name = supplier.Name
-                        };
-            }
         }
         #endregion
     }

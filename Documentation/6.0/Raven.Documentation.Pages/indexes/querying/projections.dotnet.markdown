@@ -1,150 +1,168 @@
 # Project Index Query Results
+---
 
-There are couple of ways to perform projections in RavenDB:
+{NOTE: }
 
-- projections using [Select](../../indexes/querying/projections#select)
-- using [SelectFields](../../indexes/querying/projections#selectfields)
-- using [ProjectInto](../../indexes/querying/projections#projectinto)
-- using [OfType (As)](../../indexes/querying/projections#oftype-(as))
+* This article provides examples of projecting query results when querying a static-index.
 
-## What are Projections and When to Use Them
+* __Prior to this article__, please refer to [Project query results - Overview](../../client-api/session/querying/how-to-project-query-results)  
+  for general knowledge about Projections and dynamic-queries examples.  
 
-When performing a query, we usually pull the full document back from the server.
+* In this page:  
 
-However, we often need to display the data to the user. Instead of pulling the whole document back and picking just what we'll show, we can ask the server to send us just the details we want to show the user and thus reduce the amount of traffic on the network.   
+    * [Projection Methods](../../indexes/querying/projections#select):  
+        * [Select](../../indexes/querying/projections#select)  
+        * [ProjectInto](../../indexes/querying/projections#projectinto)  
+        * [SelectFields](../../indexes/querying/projections#selectfields)  
+        
+    * [Projection behavior with a static-index](../../indexes/querying/projections#projection-behavior-with-a-static-index)  
+  
+    * [OfType (As)](../../indexes/querying/projections#oftype-(as))  
 
-The savings can be very significant if we need to show just a bit of information on a large document.  
+{NOTE/}
 
-A good example in the sample data set would be the order document. If we ask for all the Orders where Company is "companies/65-A", the size of the result that we get back from the server is 19KB.
+---
 
-However, if we perform the same query and ask to get back only the Employee and OrderedAt fields, the size of the result is only 5KB.  
+{PANEL: Select}
 
-Aside from allowing you to pick only a portion of the data, projection functions give you the ability to rename some fields, load external documents, and perform transformations on the results. 
+{NOTE: }
 
-## Projections are Applied as the Last Stage in the Query
-
-It is important to understand that projections are applied after the query has been processed, filtered, sorted, and paged. The projection doesn't apply to all the documents in the database, only to the results that are actually returned.  
-This reduces the load on the server significantly, since we can avoid doing work only to throw it immediately after. It also means that we cannot do any filtering work as part of the projection. You can filter what will be returned, but not which documents will be returned. That has already been determined earlier in the query pipeline.  
-
-## The Cost of Running a Projection
-
-Another consideration to take into account is the cost of running the projection. It is possible to make the projection query expensive to run. RavenDB has limits on the amount of time it will spend in evaluating the projection, and exceeding these (quite generous) limits will fail the query.
-
-## Projections and Stored Fields
-
-If a projection function only requires fields that are stored, then the document will not be loaded from storage and all data will come from the index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../indexes/storing-data-in-index).
-
-{PANEL:Select}
-
-The most basic projection can be done using LINQ `Select` method:
-
-### Example I - Projecting Individual Fields of the Document
+__Example I - Projecting individual fields of the document__:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_1@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query_async projections_1_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_1@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstAndLastName'
+from index "Employees/ByNameAndTitle"
+where Title = "sales representative"
 select FirstName, LastName
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-This will issue a query to a database, requesting only `FirstName` and `LastName` from all documents that index entries match query predicate from `Employees/ByFirstAndLastName` index. What does it mean? If an index entry matches our query predicate, then we will try to extract all requested fields from that particular entry. If all requested fields are available in there, then we do not download it from storage. The index `Employees/ByFirstAndLastName` used in the above query is not storing any fields, so the documents will be fetched from storage.
+* Since the index-fields in this example are not [Stored in the index](../../indexes/storing-data-in-index), and no projection behavior was defined,  
+  resulting values will be retrieved from the matching Employee document in the storage.
+  
+* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
 
-### Example II - Projecting Stored Fields
+{NOTE/}
 
-If we create an index that stores `FirstName` and `LastName` and it requests only those fields in query, then **the data will come from the index directly**.
+{NOTE: }
+
+__Example II - Projecting stored fields__:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_1_stored@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_1_stored@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query_async projections_1_stored_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_1_stored@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstAndLastNameWithStoredFields'
+from index "Employees/ByNameAndTitleWithStoredFields"
 select FirstName, LastName
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example III - Projecting Arrays and Objects
+* In this example, all projected index-fields (`FirstName` and `LastName`) are stored in the index,  
+  so by default, the resulting values will come directly from the index and not from the Employee document in the storage.
+
+* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
+{NOTE/}
+
+{NOTE: }
+
+__Example III - Projecting arrays and objects__:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_2@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_3@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query_async projections_2_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_2@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Orders/ByShipToAndLines' as o
-select 
-{ 
-    ShipTo: o.ShipTo, 
-    Products : o.Lines.map(function(y){return y.ProductName;}) 
+// Using simple expression:
+from index "Orders/ByCompanyAndShipToAndLines"
+where Company == "companies/65-A"
+select ShipTo.City as ShipToCity, Lines[].ProductName as Products
+
+// Using object literal syntax:
+from index "Orders/ByCompanyAndShipToAndLines" as x
+where Company == "companies/65-A"
+select {
+    ShipToCity: x.ShipTo.City,
+    Products: x.Lines.map(y => y.ProductName)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IV - Projection with Expression
+{NOTE/}
+
+{NOTE: }
+
+__Example IV - Projection with expression__:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_3@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query_async projections_3_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_1@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstAndLastName' as e
+from index "Employees/ByNameAndTitle" as x
 select 
 { 
-    FullName : e.FirstName + " " + e.LastName 
+    FullName : x.FirstName + " " + x.LastName 
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example V - Projection with `let`
+{NOTE/}
+
+{NOTE: }
+
+__Example V - Projection with calculations__:
+
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_4@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query_async projections_4_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_2@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-declare function output(e) {
-	var format = function(p){ return p.FirstName + " " + p.LastName; };
-	return { FullName : format(e) };
-}
-from index 'Employees/ByFirstAndLastName' as e select output(e)
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-### Example VI - Projection with Calculation
-
-{CODE-TABS}
-{CODE-TAB:csharp:Query projections_9@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_3@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Orders/ByShipToAndLines' as o
+from index "Orders/ByCompanyAndShipToAndLines" as x
 select {
-    Total : o.Lines.reduce(
-        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0)
+    TotalProducts: x.Lines.length,
+    TotalDiscountedProducts: x.Lines.filter(x => x.Discount > 0).length,
+    TotalPrice: x.Lines
+                 .map(l => l.PricePerUnit * l.Quantity)
+                 .reduce((a, b) => a + b, 0)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VII - Projection With a Count() Predicate
+{NOTE/}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Query projections_count_in_projection@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Index indexes_4@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from Orders as o 
-load o.Company as c 
-select 
-{ 
-    CompanyName : c.Name, 
-    ShippedAt : o.ShippedAt, 
-    TotalProducts : o.Lines.length, 
-    TotalDiscountedProducts : o.Lines.filter(x => x.Discount > 0 ).length 
-}
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
+{NOTE: }
 
-### Example VIII - Projection Using a Loaded Document
+__Example VI - Projecting using functions__:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_5@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_4@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query_async projections_5_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_1@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Orders/ByShippedAtAndCompany' as o
+declare function output(x) {
+var format = p => p.FirstName + " " + p.LastName;
+    return { FullName: format(x) };
+}
+from index "Employees/ByNameAndTitle" as e select output(e)
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Example VII - Projecting using a loaded document__:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query projections_6@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query_async projections_6_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_3@Indexes\Querying\Projections.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Orders/ByCompanyAndShippedAt" as o
 load o.Company as c
 select {
 	CompanyName: c.Name,
@@ -153,145 +171,249 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IX - Projection with Dates
+{NOTE/}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Query projections_6@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_2@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstNameAndBirthday' as e 
-select { 
-    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), 
-    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1,
-    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
-}
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
+{NOTE: }
 
-### Example X - Projection with Raw JavaScript Code
+__Example VIII - Projection with dates__:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_7@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_2@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query_async projections_7_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_4@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstNameAndBirthday' as e 
-select {
-    Date : new Date(Date.parse(e.Birthday)), 
-    Name : e.FirstName.substr(0,3)
+from index "Employees/ByFirstNameAndBirthday" as x 
+select { 
+    DayOfBirth: new Date(Date.parse(x.Birthday)).getDate(), 
+    MonthOfBirth: new Date(Date.parse(x.Birthday)).getMonth() + 1,
+    Age: new Date().getFullYear() - new Date(Date.parse(x.Birthday)).getFullYear() 
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example XI - Projection with Metadata
+{NOTE/}
+
+{NOTE: }
+
+__Example IX - Projection with raw JavaScript code__:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_8@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query_async projections_8_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_4@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstAndLastName' as e 
+from index "Employees/ByFirstNameAndBirthday" as x 
 select {
-     Name : e.FirstName, 
-     Metadata : getMetadata(e)
+    Date: new Date(Date.parse(x.Birthday)), 
+    Name: x.FirstName.substr(0,3)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{PANEL/}
+{NOTE/}
 
-{PANEL:SelectFields}
+{NOTE: }
 
-The `SelectFields` method can only be used with the [Document Query](../../client-api/session/querying/document-query/what-is-document-query). 
-It has two overloads:
-
-{CODE-BLOCK: csharp}
-// 1) By array of fields
-IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
-// 2) By projection type
-IDocumentQuery<TProjection> SelectFields<TProjection>();
-{CODE-BLOCK/}
-
-1) The fields of the projection are specified as a `string` array of field names. It also takes the type of the projection as 
-a generic parameter.  
+__Example X - Projection with metadata__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query selectFields_1@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index index_10@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Class projections_10_class@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query projections_9@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query_async projections_9_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_4@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Companies/ByContact'
-select Name, Phone
+from index "Employees/ByFirstNameAndBirthday" as x 
+select {
+     Name : x.FirstName, 
+     Metadata : getMetadata(x)
+}
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-2) The projection is defined by simply passing the projection type as the generic parameter.  
-
-{CODE-TABS}
-{CODE-TAB:csharp:Query selectFields_2@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Index index_10@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Class projections_10_class@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Companies/ByContact'
-select Name, Phone
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-#### Projection Behavior
-
-The `SelectFields` methods can also take a `ProjectionBehavior` parameter, which 
-determines whether the query should retrieve indexed data or directly retrieve 
-document data, and what to do when the data can't be retrieved. Learn more 
-[here](../../client-api/session/querying/how-to-customize-query#projection).  
-
-{CODE-BLOCK: csharp}
-IDocumentQuery<TProjection> SelectFields<TProjection>(ProjectionBehavior projectionBehavior,
-                                                      params string[] fields);
-
-IDocumentQuery<TProjection> SelectFields<TProjection>(ProjectionBehavior projectionBehavior);
-{CODE-BLOCK/}
-
+{NOTE/}
 {PANEL/}
 
-{PANEL:ProjectInto}
+{PANEL: ProjectInto}
 
-This extension method retrieves all public fields and properties of the type given in generic and uses them to perform projection to the requested type.
+* Instead of `Select`, you can use `ProjectInto` to project all public fields from a generic type.
 
-You can use this method instead of using `Select` together with all fields of the projection class.
+* The results will be projected into objects of the specified projection class.
 
-### Example
+{NOTE: }
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_10@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query_async projections_10_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_5@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Projection_class projections_class_5@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Companies/ByContact' 
-select Name, Phone
+from index "Companies/ByContactDetailsAndPhone"
+where ContactTitle == "owner"
+select ContactName, ContactTitle
 {CODE-TAB-BLOCK/}
-{CODE-TAB:csharp:Index index_10@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:Class projections_10_class@Indexes\Querying\Projections.cs /}
-
 {CODE-TABS/}
 
+{NOTE/}
 {PANEL/}
 
-{PANEL:OfType (As)}
+{PANEL: SelectFields}
 
-`OfType` or `As` is a client-side projection. You can read more about it [here](../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection).
+The `SelectFields` method can only be used by a [Document Query](../../../client-api/session/querying/document-query/what-is-document-query).  
+It has two overloads:
+
+{CODE-BLOCK: csharp}
+// 1) Select fields to project by the projection class type
+IDocumentQuery<TProjection> SelectFields<TProjection>();
+
+// 2) Select specific fields to project
+IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
+{CODE-BLOCK/}
+
+{NOTE: }
+
+__Using projection class type__:
+
+* The projection class fields are the fields that you want to project from the 'IndexEntry' class.
+
+{CODE-TABS}
+{CODE-TAB:csharp:DocumentQuery projections_11@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:DocumentQuery_async projections_11_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_6@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Projection_class projections_class_6@Indexes\Querying\Projections.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByNamePriceQuantityAndUnits"
+select ProductName, PricePerUnit, UnitsInStock
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Using specific fields__:
+
+* The fields specified are the fields that you want to project from the projection class.
+
+{CODE-TABS}
+{CODE-TAB:csharp:DocumentQuery projections_12@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:DocumentQuery_async projections_12_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_6@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Projection_class projections_class_6@Indexes\Querying\Projections.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Companies/ByContactDetailsAndPhone" 
+select ProductName, PricePerUnit
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
 
 {PANEL/}
 
-## Projections and the Session
-Because you are working with projections and not directly with documents, they are _not_ tracked by the session. Modifications to a projection will not modify the document when SaveChanges is called.
+{PANEL: Projection behavior with a static-index}
+
+* __By default__, when querying a static-index and projecting query results,  
+  the server will try to retrieve the fields' values from the fields [stored in the index](../../indexes/storing-data-in-index).  
+  If the index does Not store those fields then the fields' values will be retrieved from the documents.
+
+* This behavior can be modified by setting the __projection behavior__.
+
+* Note: Storing fields in the index can increase query performance when projecting,  
+  but this comes at the expense of the disk space used by the index.
+
+{NOTE: }
+
+__Example__
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query projections_13_1@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:DocumentQuery projections_13_2@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:RawQuery projections_13_3@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_1_stored@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Projection_class projections_class_1@Indexes\Querying\Projections.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Employees/ByNameAndTitleWithStoredFields"
+select FirstName, Title
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+The projection behavior in the above example is set to `FromIndexOrThrow` and so the following applies: 
+
+* Field `FirstName` is stored in the index so the server will fetch its values from the index.
+
+* However, field `Title` is Not stored in the index so an exception will be thrown when the query is executed.
+
+{NOTE/}
+
+{NOTE: }
+
+__Syntax__
+
+{CODE:csharp projection_behavior syntax@Indexes\Querying\Projections.cs /}
+
+* `Default`  
+  Retrieve values from the stored index fields when available.  
+  If fields are not stored then get values from the document.
+* `FromIndex`  
+  Retrieve values from the stored index fields when available.  
+  A field that is not stored in the index is skipped.
+* `FromIndexOrThrow`  
+  Retrieve values from the stored index fields when available.  
+  An exception is thrown if the index does not store the requested field.
+* `FromDocument`  
+  Retrieve values directly from the documents store.  
+  A field that is not found in the document is skipped.
+* `FromDocumentOrThrow`  
+  Retrieve values directly from the documents store.  
+  An exception is thrown if the document does not contain the requested field.
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: OfType (As)}
+
+* __Projection queries__:  
+  When querying an index with a projection (as described in this article), 
+  the server searches for documents that match the query predicate, but the returned objects follow the shape of the specified projection - they are not the actual documents.  
+
+* __Non-Projection queries__:  
+  When querying an index without using a projection, the server returns the actual documents that match the query conditions. 
+  However, when filtering such a query by the index-entry fields, a type conversion is required for the compiler to understand the resulting objects' shape. 
+  This is where _OfType_ (or _As_) comes into play as it.
+
+* __Role of `OfType` (or `As`)__:  
+  So this is just a client-side type conversion used to map the query results to the document type.  
+  It ensures the compiler recognizes that the resulting objects conform to the expected document shape.
+
+* __Results are tracked__:  
+  As opposed to projection queries where results are not tracked by the session,  
+  In the case of non-projecting queries that use _OfType_, the session does track the resulting document entities.
+
+{NOTE: }
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query projections_14@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query_async projections_14_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_5@Indexes\Querying\Projections.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Companies/ByContactDetailsAndPhone"
+where ContactTitle == "owner"
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+{PANEL/}
 
 ## Related Articles
 
 ### Querying 
 
-- [Query Overview](../../client-api/session/querying/how-to-query)
-- [Querying an Index](../../indexes/querying/query-index)
+- [Query overview](../../client-api/session/querying/how-to-query)
+- [Project dynamic query results](../../client-api/session/querying/how-to-project-query-results)
 
-### Client API
+### Indexes
 
-- [How to Project Query Results](../../client-api/session/querying/how-to-project-query-results)
+- [Querying an index](../../indexes/querying/query-index)
 
 ### Knowledge Base
 
-- [JavaScript Engine](../../server/kb/javascript-engine)
+- [JavaScript engine](../../server/kb/javascript-engine)

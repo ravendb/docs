@@ -31,7 +31,7 @@
 __What are projections__:
 
 * A projection refers to the __transformation of query results__ into a customized structure,  
-  modifying the shape of the data returned from the server.
+  modifying the shape of the data returned by the server.
   
 * Instead of retrieving the full document and then picking relevant data from it,  
   you can return a subset of the data, specifying the document fields you want to get from the server.  
@@ -79,6 +79,9 @@ __Projections are the final stage in the query pipeline__:
 
 * Within the projection you can only filter what data will be returned from the matching documents,  
   but you cannot filter which documents will be returned. That has already been determined earlier in the query pipeline.
+
+* Only a single projection request can be made per Query (and DocumentQuery).  
+  Learn more in [single projection per query](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query).
 
 ---
 
@@ -132,7 +135,7 @@ select ShipTo, Lines[].ProductName as Products
 from "Orders" as x
 select {
     ShipTo: x.ShipTo, 
-    Products: x.Lines.map(y=>y.ProductName)
+    Products: x.Lines.map(y => y.ProductName)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -158,7 +161,7 @@ select {
 
 {NOTE: }
 
-<a id="projectionWithCalculations" /> __Example V - Projection with calculations__:
+<a id="projectionWithCalculations" /> __Example IV - Projection with calculations__:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_4@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -179,7 +182,7 @@ select {
 
 {NOTE: }
 
-__Example IV - Projecting using functions__:
+__Example V - Projecting using functions__:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_5@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -358,11 +361,6 @@ select Name, Phone
 
 {PANEL/}
 
-// move to indexes article... todo..
-{NOTE If the projected fields are stored inside the index itself (`FieldStorage.Yes` in the index definition),
-then the query results will be created directly from there instead of retrieving documents in order to project.
-/}
-
 ## Related Articles
 
 ### Session
@@ -373,7 +371,7 @@ then the query results will be created directly from there instead of retrieving
 ### Indexes
 
 - [Querying an index](../../../indexes/querying/query-index)
-- [Projections when querying an index](../../../indexes/querying/projections)
+- [Project index query results](../../../indexes/querying/projections)
 
 ### Server
 
