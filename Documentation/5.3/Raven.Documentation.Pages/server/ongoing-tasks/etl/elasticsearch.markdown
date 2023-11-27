@@ -13,6 +13,7 @@
 * In this page:  
   * [Elasticsearch ETL](../../../server/ongoing-tasks/etl/elasticsearch#elasticsearch-etl)  
   * [Transformation Script](../../../server/ongoing-tasks/etl/elasticsearch#transformation-script)  
+     * [Alternative Syntax](../../../server/ongoing-tasks/etl/elasticsearch#alternative-syntax)  
   * [Data Delivery](../../../server/ongoing-tasks/etl/elasticsearch#data-delivery)  
      * [What is Transferred](../../../server/ongoing-tasks/etl/elasticsearch#what-is-transferred)  
      * [Document Identifiers](../../../server/ongoing-tasks/etl/elasticsearch#document-identifiers)  
@@ -82,6 +83,22 @@
 
 loadToOrders(orderData);
      {CODE-BLOCK/}
+
+---
+
+### Alternative Syntax
+
+The target index name can be passed to the `loadTo` command separately, as a string argument, 
+using this syntax: `loadTo('Target', obj)`  
+
+* **Example**:  
+  The following two calls to `loadTo` are equivalent.  
+  `loadToOrders(obj);`  
+  `loadTo('Orders', obj);`  
+
+Passing index names as arguments allows the usage of names that include symbols like `-` and `.`.  
+This is an advantage over the standard `loadToOrders` syntax, that does not allow the passing 
+of such characters because they are invalid in the name of a JS function.  
 
 {PANEL/}
 

@@ -99,7 +99,7 @@ In addition to the ECMAScript 5.1 API, RavenDB introduces the following function
 Specific ETL functions:  
 
 | ------ |:------:| ------ |
-| `loadTo<Target>(obj)` | function | Load an object to a specified `<Target>`.<br/>The target must be either a collection name (RavenDB ETL) or a table name (SQL ETL).<br/>**An object will be sent to the destination only if the `loadTo` method was called**.|
+| `loadTo` | function | Load an object to a specified target. <br> There are several possible flavors to the syntax of this command, <br> find the general details [below](../../../server/ongoing-tasks/etl/basics#load) and more in the documentation for each ETL type. <br> **Note:** An object will be sent to the destination **only** if the `loadTo` method was called. |
 | Attachments: |||
 | `loadAttachment(name)` | function | Load an attachment of the current document |
 | `hasAttachment(name)` | function | Check if an attachment with a given name exists for the current document |
@@ -128,6 +128,20 @@ The number of documents processed depends on the following configuration limits:
 ### Load
 
  Loading the results to the target destination is the last stage.
+
+{NOTE: Syntax}
+An object can generally be loaded to a specified target using one of the below templates:  
+
+* The target is specified as a part of the `loadTo` command: `loadToTarget(obj)`  
+  E.g., `loadToOrders(obj)`  
+* The target is specified as a parameter of the `loadTo` command: `loadTo('Target', obj)`  
+  E.g., `loadTo('Orders', obj)`
+
+The target must be:  
+
+* RavenDB ETL: a collection name  
+* SQL ETL: a table name  
+{NOTE/}
 
  Updates are implemented by executing consecutive DELETEs and INSERTs.
  When a document is modified, the delete command is sent before the new data is inserted and both are processed under the same transaction on the destination side.

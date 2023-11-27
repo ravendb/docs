@@ -59,6 +59,20 @@ loadToOrderLines({
 });
 {CODE-BLOCK/}
 
+### Alternative Syntax
+
+The target table name can be passed to the `loadTo` command separately, as a string argument, 
+using this syntax: `loadTo('Target', obj)`  
+
+* **Example**:  
+  The following two calls to `loadTo` are equivalent.  
+  `loadToEmployees(this);`  
+  `loadTo('Employees', this);`  
+
+Passing table names as arguments allows the usage of names that include symbols like `-` and `.`.  
+This is an advantage over the standard `loadToEmployees` syntax, that does not allow the passing 
+of such characters because they are invalid in the name of a JS function.  
+
 ### Filtering
 
 If you want to filter some documents out from the ETL you simply omit `loadTo` call:

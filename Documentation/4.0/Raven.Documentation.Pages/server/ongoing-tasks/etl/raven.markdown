@@ -62,6 +62,22 @@ loadToEmployees(this);
 {CODE-BLOCK/}
 {NOTE/}
 
+{NOTE: }
+### Alternative Syntax
+
+The target collection name can be passed to the `loadTo` command separately, as a string argument, 
+using this syntax: `loadTo('Target', obj)`  
+
+* **Example**:  
+  The following two calls to `loadTo` are equivalent.  
+  `loadToEmployees(this);`  
+  `loadTo('Employees', this);`  
+
+Passing collection names as arguments allows the usage of names that include symbols like `-` and `.`, 
+which is not possible using the standard `loadToTarget` syntax because a JS function name with 
+such characters is invalid.  
+{NOTE/}
+
 {NOTE: Documents Identifiers}
 
 * The documents generated in the destination database are given an id according to the collection name specified in the `loadTo` method.  

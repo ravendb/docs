@@ -36,6 +36,7 @@
 {PANEL: Transformation Script Options}
 
 * [Loading Documents](../../../server/ongoing-tasks/etl/raven#loading-documents)
+* [Alternative Syntax](../../../server/ongoing-tasks/etl/raven#alternative-syntax)
 * [Documents Identifiers](../../../server/ongoing-tasks/etl/raven#documents-identifiers)
 * [Filtering](../../../server/ongoing-tasks/etl/raven#filtering)
 * [Loading Data from Other Documents](../../../server/ongoing-tasks/etl/raven#loading-data-from-other-documents)
@@ -100,6 +101,22 @@ The following is an example of a RavenDB ETL script processing documents from th
         Manager: managerName
     });
     {CODE-BLOCK/}
+
+---
+
+### Alternative Syntax
+
+The target collection name can be passed to the `loadTo` command separately, as a string argument, 
+using this syntax: `loadTo('Target', obj)`  
+
+* **Example**:  
+  The following two calls to `loadTo` are equivalent.  
+  `loadToEmployees(this);`  
+  `loadTo('Employees', this);`  
+
+Passing collection names as arguments allows the usage of names that include symbols like `-` and `.`, 
+which is not possible using the standard `loadToTarget` syntax because a JS function name with 
+such characters is invalid.  
 
 ---
 

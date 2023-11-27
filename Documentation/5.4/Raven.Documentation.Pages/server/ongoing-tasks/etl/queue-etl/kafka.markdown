@@ -17,6 +17,7 @@
 
 * In this page:  
   * [Transformation Script](../../../../server/ongoing-tasks/etl/queue-etl/kafka#transformation-script)  
+     * [Alternative Syntax](../../../../server/ongoing-tasks/etl/queue-etl/kafka#alternative-syntax)  
   * [Data Delivery](../../../../server/ongoing-tasks/etl/queue-etl/kafka#data-delivery)  
      * [What is Transferred](../../../../server/ongoing-tasks/etl/queue-etl/kafka#what-is-transferred)  
      * [How Are Messages Produced and Consumed](../../../../server/ongoing-tasks/etl/queue-etl/kafka#how-are-messages-produced-and-consumed)  
@@ -75,6 +76,20 @@ loadToOrders(orderData, {
     Source: '/promotion-campaigns/summer-sale'
 })
 {CODE-BLOCK/}
+
+#### Alternative Syntax
+
+The target topic name can be passed to the `loadTo` command separately, as a string argument, 
+using this syntax: `loadTo('topic_name', obj, {attributes})`  
+
+* **Example**:  
+  The following two calls to `loadTo` are equivalent.  
+  `loadToOrders(obj, {attributes})`  
+  `loadTo('Orders', obj, {attributes})`  
+
+Passing topic names as arguments allows the usage of names that include symbols like `-` and `.`.  
+This is an advantage over the standard `loadToOrders(obj, {attributes})` syntax, that does not 
+allow the passing of such characters because they are invalid in the name of a JS function.  
 
 {PANEL/}
 

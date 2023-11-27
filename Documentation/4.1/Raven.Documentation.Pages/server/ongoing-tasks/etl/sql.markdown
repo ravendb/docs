@@ -1,10 +1,38 @@
-﻿#Ongoing Tasks: SQL ETL
+﻿# Ongoing Tasks: SQL ETL  
+---
 
-**SQL ETL** is a task that creates [ETL](../../../server/ongoing-tasks/etl/basics) process for a given database where a destination is a relational database.
+{NOTE: }
 
-It can be defined using the Studio by creating `SQL ETL` task in `Settings -> Manage Ongoing Tasks`.
+**SQL ETL** is a task that creates an [ETL](../../../server/ongoing-tasks/etl/basics) process 
+for a given database where the destination is a relational database.
+
+* In this page:  
+  * [Creating a Task](../../../server/ongoing-tasks/etl/sql#creating-a-task)  
+  * [Supported Databases](../../../server/ongoing-tasks/etl/sql#supported-databases)  
+  * [Relational Database Setup](../../../server/ongoing-tasks/etl/sql#relational-database-setup)  
+  * [SQL Tables](../../../server/ongoing-tasks/etl/sql#sql-tables)  
+  * [Transformation Scripts](../../../server/ongoing-tasks/etl/sql#transformation-scripts)  
+     * [`loadTo` Method](../../../server/ongoing-tasks/etl/sql#method)  
+     * [Alternative Syntax](../../../server/ongoing-tasks/etl/sql#alternative-syntax)  
+     * [Filtering](../../../server/ongoing-tasks/etl/sql#filtering)  
+     * [Loading Other Documents](../../../server/ongoing-tasks/etl/sql#loading-other-documents)  
+     * [Accessing Metadata](../../../server/ongoing-tasks/etl/sql#accessing-metadata)  
+     * [Loading to Multiple Tables](../../../server/ongoing-tasks/etl/sql#loading-to-multiple-tables)  
+     * [Loading Attachments](../../../server/ongoing-tasks/etl/sql#loading-attachments)  
+     * [Counters](../../../server/ongoing-tasks/etl/sql#counters)  
+     * [Transforming to VARCHAR and NVARCHAR](../../../server/ongoing-tasks/etl/sql#transforming-to-varchar-and-nvarchar)  
+  * [Transaction Processing](../../../server/ongoing-tasks/etl/sql#advanced-options)  
+
+{NOTE/}
+
+---
+
+{PANEL: Creating a Task}
+To create an SQL ETL task using Studio open `Settings -> Manage Ongoing Tasks`.
 
 ![Figure 1. Configure SQL ETL task](images/sql-etl-setup.png)
+
+{PANEL/}
 
 {PANEL:Supported Databases}
 
@@ -71,6 +99,20 @@ loadToOrderLines({
         Cost: line.PricePerUnit
 });
 {CODE-BLOCK/}
+
+### Alternative Syntax
+
+The target table name can be passed to the `loadTo` command separately, as a string argument, 
+using this syntax: `loadTo('Target', obj)`  
+
+* **Example**:  
+  The following two calls to `loadTo` are equivalent.  
+  `loadToEmployees(this);`  
+  `loadTo('Employees', this);`  
+
+Passing table names as arguments allows the usage of names that include symbols like `-` and `.`.  
+This is an advantage over the standard `loadToEmployees` syntax, that does not allow the passing 
+of such characters because they are invalid in the name of a JS function.  
 
 ### Filtering
 
@@ -180,8 +222,6 @@ loadToUsers(
     LastName: nvarchar(names[1]),
 });
 {CODE-BLOCK/}
-
-
 
 {PANEL/}
 
