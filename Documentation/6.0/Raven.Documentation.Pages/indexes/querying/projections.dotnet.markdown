@@ -81,7 +81,7 @@ from index "Orders/ByCompanyAndShipToAndLines"
 where Company == "companies/65-A"
 select ShipTo.City as ShipToCity, Lines[].ProductName as Products
 
-// Using object literal syntax:
+// Using JavaScript object literal syntax:
 from index "Orders/ByCompanyAndShipToAndLines" as x
 where Company == "companies/65-A"
 select {

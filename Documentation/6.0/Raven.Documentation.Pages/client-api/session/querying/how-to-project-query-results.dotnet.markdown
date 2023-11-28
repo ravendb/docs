@@ -131,7 +131,7 @@ __Example II - Projecting arrays and objects__:
 from "Orders"
 select ShipTo, Lines[].ProductName as Products
 
-// Using object literal syntax:
+// Using JavaScript object literal syntax:
 from "Orders" as x
 select {
     ShipTo: x.ShipTo, 
