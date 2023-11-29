@@ -129,13 +129,13 @@ __Example II - Projecting arrays and objects__:
 {CODE-TAB-BLOCK:sql:RQL}
 // Using simple expression:
 from "Orders"
-select ShipTo, Lines[].ProductName as Products
+select ShipTo, Lines[].ProductName as ProductNames
 
 // Using JavaScript object literal syntax:
 from "Orders" as x
 select {
     ShipTo: x.ShipTo, 
-    Products: x.Lines.map(y => y.ProductName)
+    ProductNames: x.Lines.map(y => y.ProductName)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
