@@ -203,8 +203,8 @@ __Syntax__
   Entities resulting from a projecting query are Not tracked by the session.  
   Learn more about projections in:
   
-  * [Projections](../../../indexes/querying/projections)
-  * [How to project query results](../../../client-api/session/querying/how-to-project-query-results)
+  * [Project index query results](../../../indexes/querying/projections)
+  * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results)
 
 {NOTE: }
 

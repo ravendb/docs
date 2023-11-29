@@ -81,7 +81,7 @@ In this page:
        - [Multi-map indexes](../../../indexes/multi-map-indexes): Shows how to map a second collection in the same index.  
        - [Map-reduce indexes](../../../indexes/map-reduce-indexes): Shows how to create complex aggregations of data that is 
          stored and updated inside the index, improving querying performance.  
-       - [Fanout indexes](../../../indexes/fanout-indexes): Shows how to define indexes that output multiple entries per document.  
+       - [Fanout indexes](../../../indexes/indexing-nested-data): Shows how to define indexes that output multiple entries per document.  
 
  3. **ReplacementOf**  
     * Temporary prefix of index that is rebuilding after definition changes are saved.  

@@ -113,7 +113,12 @@
         "Path": "indexing-nested-data.markdown",
         "Name": "Indexing Nested Data",
         "DiscussionId": "8dd0873a-83c2-4148-8710-b15951047700",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 4.1,
+                "Key": "indexes/fanout-indexes"
+            }
+        ]
     },
     {
         "Path": "indexing-hierarchical-data.markdown",
