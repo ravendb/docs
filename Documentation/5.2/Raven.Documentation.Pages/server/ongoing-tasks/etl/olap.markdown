@@ -20,6 +20,7 @@ column (by field) instead of by row (by document).
 * In this page:  
   * [Client API](../../../server/ongoing-tasks/etl/olap#client-api)  
   * [Transform Script](../../../server/ongoing-tasks/etl/olap#transform-script)  
+     * [Alternative Syntax](../../../server/ongoing-tasks/etl/olap#alternative-syntax)  
   * [Athena Examples](../../../server/ongoing-tasks/etl/olap#athena-examples)  
 
 {NOTE/}
@@ -213,6 +214,31 @@ loadToMyFolder(
 )
 //Loads the data to e.g. /MyFolder/month=8
 {CODE-BLOCK/}
+
+---
+
+{NOTE: }
+### Alternative Syntax
+
+The target folder name can be passed to the `loadTo` command separately, as a string argument, 
+using this syntax: `loadTo('folder_name', key, object)`  
+
+* **Example**:  
+  The following two calls to `loadTo` are equivalent.  
+  `loadToOrders(key, object)`  
+  `loadTo('Orders', key, object)`  
+
+{INFO: }
+
+ * The target name `'Orders'` in this syntax is **not** a variable and **cannot** be used as one: 
+   it is simply a string literal of the target's name.  
+ * Separating the target name from the `loadTo` command makes it possible to include symbols like 
+   `-` and `.` in target names. This is not possible when the standard `loadToOrders` syntax is 
+   used because including special characters in the name of a JS function turns it invalid.  
+{INFO/}
+{NOTE/}
+
+---
 
 #### The Custom Partition Value
 

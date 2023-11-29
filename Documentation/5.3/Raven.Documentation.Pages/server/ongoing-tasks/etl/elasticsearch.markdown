@@ -13,6 +13,7 @@
 * In this page:  
   * [Elasticsearch ETL](../../../server/ongoing-tasks/etl/elasticsearch#elasticsearch-etl)  
   * [Transformation Script](../../../server/ongoing-tasks/etl/elasticsearch#transformation-script)  
+     * [Alternative Syntax](../../../server/ongoing-tasks/etl/elasticsearch#alternative-syntax)  
   * [Data Delivery](../../../server/ongoing-tasks/etl/elasticsearch#data-delivery)  
      * [What is Transferred](../../../server/ongoing-tasks/etl/elasticsearch#what-is-transferred)  
      * [Document Identifiers](../../../server/ongoing-tasks/etl/elasticsearch#document-identifiers)  
@@ -82,6 +83,29 @@
 
 loadToOrders(orderData);
      {CODE-BLOCK/}
+
+---
+
+{NOTE: }
+### Alternative Syntax
+
+The target index name can be passed to the `loadTo` command separately, as a string argument, 
+using this syntax: `loadTo('Target', obj)`  
+
+* **Example**:  
+  The following two calls to `loadTo` are equivalent.  
+  `loadToOrders(obj);`  
+  `loadTo('Orders', obj);`  
+
+{INFO: }
+
+ * The target name `'Orders'` in this syntax is **not** a variable and **cannot** be used as one: 
+   it is simply a string literal of the target's name.  
+ * Separating the target name from the `loadTo` command makes it possible to include symbols like 
+   `-` and `.` in target names. This is not possible when the standard `loadToOrders` syntax is 
+   used because including special characters in the name of a JS function turns it invalid.  
+{INFO/}
+{NOTE/}
 
 {PANEL/}
 

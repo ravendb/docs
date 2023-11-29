@@ -37,6 +37,7 @@
 {PANEL: Transformation Script Options}
 
 * [Loading Documents](../../../server/ongoing-tasks/etl/raven#loading-documents)
+* [Alternative Syntax](../../../server/ongoing-tasks/etl/raven#alternative-syntax)
 * [Documents Identifiers](../../../server/ongoing-tasks/etl/raven#documents-identifiers)
 * [Filtering](../../../server/ongoing-tasks/etl/raven#filtering)
 * [Loading Data from Other Documents](../../../server/ongoing-tasks/etl/raven#loading-data-from-other-documents)
@@ -100,6 +101,29 @@ The following is an example of a RavenDB ETL script processing documents from th
         Manager: managerName
     });
     {CODE-BLOCK/}
+
+---
+
+{NOTE: }
+### Alternative Syntax
+
+The target collection name can be passed to the `loadTo` command separately, as a string argument, 
+using this syntax: `loadTo('Target', obj)`  
+
+* **Example**:  
+  The following two calls to `loadTo` are equivalent.  
+  `loadToEmployees(this);`  
+  `loadTo('Employees', this);`  
+
+{INFO: }
+
+ * The target name `'Employees'` in this syntax is **not** a variable and **cannot** be used as one: 
+   it is simply a string literal of the target's name.  
+ * Separating the target name from the `loadTo` command makes it possible to include symbols like 
+   `-` and `.` in target names. This is not possible when the standard `loadToEmployees` syntax is 
+   used because including special characters in the name of a JS function turns it invalid.  
+{INFO/}
+{NOTE/}
 
 ---
 

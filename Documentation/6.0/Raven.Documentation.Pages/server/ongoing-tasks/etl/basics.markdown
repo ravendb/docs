@@ -109,7 +109,7 @@ In addition to the ECMAScript 5.1 API, RavenDB introduces the following function
 Specific ETL functions:  
 
 | ------ |:------:| ------ |
-| `loadTo<Target>(obj)` | function | Load an object to a specified `<Target>`.<br/>The target can be a Collection name (RavenDB ETL), a Table name (SQL ETL), a Folder name (OLAP ETL), or an Index name (Elasticsearch ETL).<br/>**An object will be sent to the destination only if the `loadTo` method was called**.|
+| `loadTo` | function | Load an object to a specified target. <br> There are several possible flavors to the syntax of this command, <br> find the general details [below](../../../server/ongoing-tasks/etl/basics#load) and more in the documentation for each ETL type. <br> **Note:** An object will be sent to the destination **only** if the `loadTo` method was called. |
 | Attachments: |||
 | `loadAttachment(name)` | function | Load an attachment of the current document |
 | `hasAttachment(name)` | function | Check if an attachment with a given name exists for the current document |
@@ -138,6 +138,33 @@ The number of documents processed depends on the following configuration limits:
 ### Load
 
  Loading the results to the target destination is the last stage.
+
+{NOTE: Syntax}
+An object can generally be loaded to a specified target using one of the below templates:  
+
+* The target is specified as a part of the `loadTo` command: `loadToTarget(obj)`  
+  E.g., `loadToOrders(obj)`  
+* The target is specified as an argument of the `loadTo` command: `loadTo('Target', obj)`  
+  E.g., `loadTo('Orders', obj)`
+  {INFO: }
+  
+   * The target name in this syntax is **not** a variable and **cannot** be used as one: 
+     it is simply a string literal of the target's name.  
+   * Separating the target name from the `loadTo` command makes it possible to include symbols like 
+     `-` and `.` in target names. This is not possible when the standard `loadToOrders` syntax is 
+     used because special characters are invalid in the name of a JS function.  
+   * Note that the general syntax specified above, `loadTo('Target', obj)`, changes for some 
+     ETL types. Find the accurate syntax for each ETL type in the type's specific documentation.  
+  {INFO/}
+
+The target must be:  
+
+* _RavenDB_ ETL: a _collection_ name  
+* _SQL_ ETL: a _table_ name  
+* _OLAP_ ETL: a _Folder_ name  
+* _Elasticsearch_ ETL: an _Index_ name  
+* _Kafka_ ETL: a _topic_ name  
+{NOTE/}
 
  Updates are implemented by executing consecutive DELETEs and INSERTs.
  When a document is modified, the delete command is sent before the new data is inserted and both are processed under the same transaction on the destination side.
