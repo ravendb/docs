@@ -74,7 +74,7 @@ Operations changes for all Operations can be observed using the `ForAllOperation
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
 | **Message** | string | Operation message |
-| **ShouldPersist** | bool | determine weather or not the result should be saved in the storage |
+| **ShouldPersist** | bool | determine whether or not the result should be saved in the storage |
 {PANEL/}
 
 {PANEL:OperationStatus}
