@@ -30,8 +30,8 @@ __What are projections__:
 * A projection refers to the __transformation of query results__ into a customized structure,  
   modifying the shape of the data returned by the server.
 
-* Instead of retrieving the full document and then picking relevant data from it,  
-  you can return a subset of the data, specifying the document fields you want to get from the server.
+* Instead of retrieving the full document from the server and then picking relevant data from it on the client,  
+  you can request a subset of the data, specifying the document fields you want to get from the server.
 
 * The query can load [related documents](../../../indexes/indexing-related-documents#what-are-related-documents) and have their data merged into the projection results.
 

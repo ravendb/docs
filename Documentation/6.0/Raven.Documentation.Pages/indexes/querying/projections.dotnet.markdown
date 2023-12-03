@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* This article provides examples of projecting query results when querying a static-index.
+* This article provides examples of projecting query results when querying a __static-index__.
 
 * __Prior to this article__, please refer to [Project query results - Overview](../../client-api/session/querying/how-to-project-query-results)  
   for general knowledge about Projections and dynamic-queries examples.  
@@ -35,13 +35,13 @@ __Example I - Projecting individual fields of the document__:
 {CODE-TAB:csharp:Index index_1@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Employees/ByNameAndTitle"
-where Title = "sales representative"
-select FirstName, LastName
+where Title == "sales representative"
+select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 * Since the index-fields in this example are not [Stored in the index](../../indexes/storing-data-in-index), and no projection behavior was defined,  
-  resulting values will be retrieved from the matching Employee document in the storage.
+  resulting values for `FirstName` & `LastName` will be retrieved from the matching Employee document in the storage.
   
 * This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
 
@@ -57,12 +57,12 @@ __Example II - Projecting stored fields__:
 {CODE-TAB:csharp:Index index_1_stored@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Employees/ByNameAndTitleWithStoredFields"
-select FirstName, LastName
+select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-* In this example, all projected index-fields (`FirstName` and `LastName`) are stored in the index,  
-  so by default, the resulting values will come directly from the index and not from the Employee document in the storage.
+* In this example, the projected fields (`FirstName` and `LastName`) are stored in the index,  
+  so by default, the resulting values will come directly from the index and Not from the Employee document in the storage.
 
 * This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
 {NOTE/}
@@ -147,7 +147,8 @@ declare function output(x) {
 var format = p => p.FirstName + " " + p.LastName;
     return { FullName: format(x) };
 }
-from index "Employees/ByNameAndTitle" as e select output(e)
+from index "Employees/ByNameAndTitle" as e
+select output(e)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -321,7 +322,7 @@ select ProductName, PricePerUnit
 
 {NOTE: }
 
-__Example__
+__Example__:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_13_1@Indexes\Querying\Projections.cs /}
@@ -345,7 +346,7 @@ The projection behavior in the above example is set to `FromIndexOrThrow` and so
 
 {NOTE: }
 
-__Syntax__
+__Syntax for projection behavior__:
 
 {CODE:csharp projection_behavior syntax@Indexes\Querying\Projections.cs /}
 

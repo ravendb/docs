@@ -23,7 +23,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     var projectedResults = session
                          // Query the index
                         .Query<Employees_ByNameAndTitle.IndexEntry, Employees_ByNameAndTitle>()
-                         // Can filter by index-field, e.g. query only for sales representatives
+                         // Can filter by any index-field, e.g.filter by index-field 'Title'
                         .Where(x => x.Title == "sales representative")
                          // Call 'Select' to return only the first and last name per matching document
                         .Select(x => new
@@ -45,7 +45,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     var projectedResults = await asyncSession
                          // Query the index
                         .Query<Employees_ByNameAndTitle.IndexEntry, Employees_ByNameAndTitle>()
-                         // Can filter by index-field, e.g. query only for sales representatives
+                         // Can filter by any index-field, e.g.filter by index-field 'Title'
                         .Where(x => x.Title == "sales representative")
                          // Call 'Select' to return only the first and last name per matching document
                         .Select(x => new 
@@ -69,7 +69,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                             Employees_ByNameAndTitleWithStoredFields>()
                         .Select(x => new
                         {
-                            // Project fields 'FirstName' and 'LastName' which are stored in the index
+                            // Project fields 'FirstName' and 'LastName' which are STORED in the index
                             EmployeeFirstName = x.FirstName,
                             EmployeeLastName = x.LastName
                         })
@@ -85,7 +85,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                             Employees_ByNameAndTitleWithStoredFields>()
                         .Select(x => new
                         {
-                            // Project fields 'FirstName' and 'LastName' which are stored in the index
+                            // Project fields 'FirstName' and 'LastName' which are STORED in the index
                             EmployeeFirstName = x.FirstName,
                             EmployeeLastName = x.LastName
                         })
@@ -489,7 +489,6 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .DocumentQuery<Employees_ByNameAndTitleWithStoredFields.IndexEntry,
                             Employees_ByNameAndTitleWithStoredFields>()
                          // Pass the requested projection behavior to the 'SelectFields' method
-                         // and specify the field that will be returned by the projection
                         .SelectFields<EmployeeDetails>(ProjectionBehavior.FromIndexOrThrow)
                         .ToList();
                     #endregion

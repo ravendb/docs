@@ -22,9 +22,9 @@ async function examples() {
         //region projections_2
         // Define a QueryData object that will be used in the selectFields method
         const queryData = new QueryData(
-            // Specify the document fields you want to project from the document
+            // Specify the document-fields you want to project from the document
             [ "Name", "Address.City", "Address.Country"],
-            // Provide an ALIAS name for each document field
+            // Provide an ALIAS name for each document-field
             [ "CompanyName", "City", "Country"]);
         
         const projectedResults = await session.query({ collection: "companies" })
@@ -53,7 +53,8 @@ async function examples() {
     }
     {
         //region projections_4
-        // Can define a custom function for the projected data expression
+        // Define the projected data expression within a custom function.
+        // Any expression can be provided for the projected content.
         const queryData = QueryData.customFunction("e", `{
             FullName: e.FirstName + " " + e.LastName 
         }`);
