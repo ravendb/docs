@@ -130,6 +130,61 @@ async function examples() {
             .all();
         //endregion
     }
+    {
+        //region projections_10
+        // For example - Create a document with nested objects: 
+        // ====================================================
+        
+        class User {
+            constructor(firstName, lastName, jobDetails, lastLogin) {
+                this.firstName = firstName;
+                this.lastName = lastName;
+                this.jobDetails = jobDetails
+                this.lastLogin = lastLogin;
+            }
+        }
+        
+        class Job {
+            constructor(company, title) {
+                this.company = company;
+                this.title = title;
+            }
+        }
+        
+        const job = new Job("RavenDB", "CEO");
+        const user = new User("Ayende", "Rahien", job, new Date(2023, 11, 12));
+        
+        await session.store(user, "users/1");
+        await session.saveChanges();
+        
+        // Query the users collecions:
+        // ===========================
+
+        class Projection {
+            constructor(jobDetails, lastLogin) {
+                this.jobDetails = jobDetails;
+                this.lastLogin = lastLogin;
+            }
+        }
+        
+        const projectedResults = await session.query({ collection: "users" })
+             // Project selected fields:
+            .selectFields(["jobDetails", "lastLogin"], Projection)
+            .all();
+        //endregion
+    }
+    {
+        //region projections_10_results
+        // Query results will include the following projected fields:
+        // ==========================================================
+        
+        // {
+        //     jobDetails = { "company": "RavenDB", "title": "CEO" }
+        //     lastLogin = "2023-12-11T22:00:00.000Z"
+        //     __PROJECTED_NESTED_OBJECT_TYPES__ = { "jobDetails": "Job", lastLogin": "date" } // Nested field types 
+        // }
+        //endregion
+    }
 }
 
 {

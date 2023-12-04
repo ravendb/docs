@@ -219,6 +219,20 @@ async function projections() {
             .all();
         //endregion
     }
+    {
+        //region projections_10
+        // Make a query without a projection
+        const results = await session
+            .query({ indexName: "Employees/ByNameAndTitle" })
+            .whereEquals('Title', 'sales representative')
+             // Call 'ofType'
+             // The resulting objects will be of type 'Employee'
+            .ofType(Employee)
+            .all();
+        
+        // In this case, the resulting objects are tracked by the session
+        //endregion
+    }
 }
 
 //region projection_class

@@ -13,6 +13,8 @@
     * [SelectFields](../../indexes/querying/projections#selectfields)
 
     * [Projection behavior with a static-index](../../indexes/querying/projections#projection-behavior-with-a-static-index)
+  
+    * [ofType](../../indexes/querying/projections#oftype)
 
 {NOTE/}
 
@@ -259,6 +261,17 @@ __Projection behavior options__:
   An exception is thrown if the document does not contain the requested field.
 
 {NOTE/}
+
+{PANEL/}
+
+{PANEL: ofType}
+
+* `ofType` is a client-side projection that is only used to map the resulting objects to the provided type.
+
+* As opposed to projection queries where results are not tracked by the session,  
+  In the case of non-projecting queries that use _ofType_, the session does track the resulting document entities.
+
+{CODE:nodejs projections_10@indexes\querying\projections.js /}
 
 {PANEL/}
 

@@ -384,7 +384,7 @@ __Syntax for projection behavior__:
 * __Non-Projection queries__:  
   When querying an index without using a projection, the server returns the actual documents that match the query conditions. 
   However, when filtering such a query by the index-entry fields, a type conversion is required for the compiler to understand the resulting objects' shape. 
-  This is where _OfType_ (or _As_) comes into play as it.
+  This is where _OfType_ (or _As_) comes into play.
 
 * __Role of `OfType` (or `As`)__:  
   So this is just a client-side type conversion used to map the query results to the document type.  
