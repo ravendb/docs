@@ -352,16 +352,21 @@ __Syntax for projection behavior__:
 
 * `Default`  
   Retrieve values from the stored index fields when available.  
-  If fields are not stored then get values from the document.
+  If fields are not stored then get values from the document,  
+  a field that is not found in the document is skipped.
+
 * `FromIndex`  
   Retrieve values from the stored index fields when available.  
   A field that is not stored in the index is skipped.
+
 * `FromIndexOrThrow`  
   Retrieve values from the stored index fields when available.  
   An exception is thrown if the index does not store the requested field.
+
 * `FromDocument`  
   Retrieve values directly from the documents store.  
   A field that is not found in the document is skipped.
+
 * `FromDocumentOrThrow`  
   Retrieve values directly from the documents store.  
   An exception is thrown if the document does not contain the requested field.
