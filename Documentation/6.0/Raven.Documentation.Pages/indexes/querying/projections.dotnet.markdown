@@ -17,7 +17,7 @@
         
     * [Projection behavior with a static-index](../../indexes/querying/projections#projection-behavior-with-a-static-index)  
   
-    * [OfType (As)](../../indexes/querying/projections#oftype-(as))  
+    * [OfType](../../indexes/querying/projections#oftype)  
 
 {NOTE/}
 
@@ -40,10 +40,19 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-* Since the index-fields in this example are not [Stored in the index](../../indexes/storing-data-in-index), and no projection behavior was defined,  
-  resulting values for `FirstName` & `LastName` will be retrieved from the matching Employee document in the storage.
+* __Type of projection fields__:  
+
+  * In the above example, the fields to return by the projection that are specified in the `Select` method  
+    (`x.FirstName` & `x.LastName`) are recognized by the compiler as fields of the `IndexEntry` class.
   
-* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
+  * If you wish to specify fields from the original 'Employee' class type then follow [this example](../../indexes/querying/projections#oftype) that uses `OfType`.  
+
+* __Source of projection fields__:  
+
+  * Since the index-fields in this example are not [Stored in the index](../../indexes/storing-data-in-index), and no projection behavior was defined,  
+    resulting values for `FirstName` & `LastName` will be retrieved from the matching Employee document in the storage.
+  
+  * This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
 
 {NOTE/}
 
@@ -375,26 +384,35 @@ __Syntax for projection behavior__:
 
 {PANEL/}
 
-{PANEL: OfType (As)}
+{PANEL: OfType}
 
-* __Projection queries__:  
-  When querying an index with a projection (as described in this article), 
-  the server searches for documents that match the query predicate, but the returned objects follow the shape of the specified projection - they are not the actual documents.  
+* When making a projection query, converting the shape of the matching documents to the requested projection is done on the __server-side__.
 
-* __Non-Projection queries__:  
-  When querying an index without using a projection, the server returns the actual documents that match the query conditions. 
-  However, when filtering such a query by the index-entry fields, a type conversion is required for the compiler to understand the resulting objects' shape. 
-  This is where _OfType_ (or _As_) comes into play.
+* On the other hand, `OfType` is a __client-side__  type conversion that is only used to map the resulting objects to the provided type.
 
-* __Role of `OfType` (or `As`)__:  
-  So this is just a client-side type conversion used to map the query results to the document type.  
-  It ensures the compiler recognizes that the resulting objects conform to the expected document shape.
-
-* __Results are tracked__:  
-  As opposed to projection queries where results are not tracked by the session,  
-  In the case of non-projecting queries that use _OfType_, the session does track the resulting document entities.
+* We differentiate between the following cases:  
+  * Using _OfType_ with projection queries - resulting objects are Not tracked by the session  
+  * Using _OfType_ with non-projection queries - resulting documents are tracked by the session
 
 {NOTE: }
+
+__Using OfType with projection queries__:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query projections_15@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query_async projections_15_async@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Index index_5@Indexes\Querying\Projections.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Companies/ByContactDetailsAndPhone"
+where ContactTitle == "owner"
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Using OfType with non-projection queries__:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_14@Indexes\Querying\Projections.cs /}

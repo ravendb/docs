@@ -510,27 +510,100 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 using (var session = store.OpenSession())
                 {
                     #region projections_14
+                    // Make a non-projecting query:
+                    // ============================
+                    
                     List<Company> results = session
                         .Query<Companies_ByContactDetailsAndPhone.IndexEntry, Companies_ByContactDetailsAndPhone>()
-                         // Here we filter by an IndexEntry field,
+                         // Here we filter by an IndexEntry field
                          // The compiler recognizes 'x' as an IndexEntry type
                         .Where(x => x.ContactTitle == "owner")
-                         // Here we let the compiler know that results are of type 'Company' documents
+                         // A type conversion is now required for the compiler to understand the resulting objects' shape.
+                         // Use 'OfType to let the compiler know that resulting objects are of type 'Company' documents.
                         .OfType<Company>()
                         .ToList();
+                    
+                    // The resulting objects are full 'Company' document entities (not projected).
+                    // Each 'Company' entity is TRACKED by the session.
                     #endregion
                 }
+                
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region projections_14_async
+                    // Make a non-projecting query:
+                    // ============================
+
                     List<Company> results = await asyncSession
                         .Query<Companies_ByContactDetailsAndPhone.IndexEntry, Companies_ByContactDetailsAndPhone>()
-                         // Here we filter by an IndexEntry field,
+                         // Here we filter by an IndexEntry field
                          // The compiler recognizes 'x' as an IndexEntry type
                         .Where(x => x.ContactTitle == "owner")
-                         // Here we let the compiler know that results are of type 'Company' documents
+                         // A type conversion is now required for the compiler to understand the resulting objects' shape.
+                         // Use 'OfType to let the compiler know that resulting objects are of type 'Company' documents.
                         .OfType<Company>()
                         .ToListAsync();
+                    
+                    // The resulting objects are full 'Company' document entities (not projected).
+                    // Each 'Company' entity is TRACKED by the session.
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region projections_15
+                    // Make a projection query:
+                    // ========================
+                    
+                    var projectedResults = session
+                        .Query<Companies_ByContactDetailsAndPhone.IndexEntry, Companies_ByContactDetailsAndPhone>()
+                         // Here we filter by an IndexEntry field
+                         // The compiler recognizes 'x' as an IndexEntry type
+                        .Where(x => x.ContactTitle == "owner")
+                         // Now, if you wish to project based on the 'Company' document
+                         // then use 'OfType' to let the compiler recognize the type
+                        .OfType<Company>()
+                         // Select which fields from the matching document will be returned
+                        .Select(x => new
+                        {
+                            // The compiler now recognizes 'x' as a 'Company' class type
+                            // e.g. 'Name' & 'Address.Country' are properties of the 'Company' document
+                            CompanyName = x.Name,
+                            CompanyCountry = x.Address.Country
+                        })
+                        .ToList();
+                    
+                    // Each resulting object has the 'CompanyName' & 'CompanyCountry' fields specified in the projection.
+                    // The resulting objects are NOT TRACKED by the session.
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region projections_15_async
+                    // Make a projection query:
+                    // ========================
+
+                    var projectedResults = await asyncSession
+                        .Query<Companies_ByContactDetailsAndPhone.IndexEntry, Companies_ByContactDetailsAndPhone>()
+                         // Here we filter by an IndexEntry field
+                         // The compiler recognizes 'x' as an IndexEntry type
+                        .Where(x => x.ContactTitle == "owner")
+                         // Now, if you wish to project based on the 'Company' document
+                         // then use 'OfType' to let the compiler recognize the type
+                        .OfType<Company>()
+                         // Select which fields from the matching document will be returned
+                        .Select(x => new
+                        {
+                            // The compiler now recognizes 'x' as a 'Company' class type
+                            // e.g. 'Name' & 'Address.Country' are properties of the 'Company' document
+                            CompanyName = x.Name,
+                            CompanyCountry = x.Address.Country
+                        })
+                        .ToListAsync();
+                    
+                    // Each resulting object has the 'CompanyName' & 'CompanyCountry' fields specified in the projection.
+                    // The resulting objects are NOT TRACKED by the session.
                     #endregion
                 }
             }
