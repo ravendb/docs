@@ -25,7 +25,7 @@
 {PANEL: Prerequisites}
 
 * Docker images of RavenDB versions up to `5.x` require no special permissions 
-  since they are installed and handled by the `root` user, that is inntely allowed 
+  since they are installed and handled by the `root` user, that is innately allowed 
   to access any RavenDB property, including its license.  
 * Docker images of RavenDB `6.0` and on are executed by a **regular user** for 
   security reasons, requiring that this user would be explicitly permitted to access 
