@@ -16,7 +16,7 @@
 
 * Learn more about identities in:
 
-    * [Document identifier generation](../../../../server/kb/document-identifier-generation#identity)
+    * [Document identifier generation](../../../../server/kb/document-identifier-generation#strategy--3)
 
 * In this page:
 
@@ -48,7 +48,7 @@
 
 ### Knowledge Base
 
-- [Document Identifier Generation](../../../../server/kb/document-identifier-generation)
+- [Document Identifier Generation](../../../../server/kb/document-identifier-generation#strategy--3)
 
 ### Operations
 

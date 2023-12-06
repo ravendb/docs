@@ -32,7 +32,7 @@
     e.g. `employees/5`
 
 * Learn more about identities in:
-  * [Document identifier generation](../../../server/kb/document-identifier-generation#identity)
+  * [Document identifier generation](../../../server/kb/document-identifier-generation#strategy--3)
   * [Working with document identifiers](../../../client-api/document-identifiers/working-with-document-identifiers#identities)
 
 {PANEL/}
@@ -117,7 +117,7 @@
 
 ### Knowledge Base
 
-- [Document Identifier Generation](../../../server/kb/document-identifier-generation)
+- [Document Identifier Generation](../../../server/kb/document-identifier-generation#strategy--3)
 
 ### Operations
 
