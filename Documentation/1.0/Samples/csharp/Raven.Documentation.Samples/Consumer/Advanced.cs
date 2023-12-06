@@ -13,7 +13,7 @@ namespace RavenCodeSamples.Consumer
             {
                 #region custom_serialization4
 
-                store.Conventions.JsonContractResolver = new DefaultContractResolver(shareCache: true)
+                store.Conventions.JsonContractResolver = new DefaultContractResolver()
                                                              {
                                                                  DefaultMembersSearchFlags =
                                                                      BindingFlags.Public | BindingFlags.Instance
