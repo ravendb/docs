@@ -76,8 +76,6 @@ Set whether Raven's HTTP server should allow response compression to happen when
 - **Default**: `false`
 - **Scope**: Server-wide only
 
-{WARNING Setting this to `true` might expose a security risk. See **[http://breachattack.com/](http://breachattack.com/)** before enabling this. /}
-
 {PANEL/}
 
 {PANEL:Http.GzipResponseCompressionLevel}

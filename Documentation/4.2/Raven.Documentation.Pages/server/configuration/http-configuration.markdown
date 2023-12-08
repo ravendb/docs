@@ -75,10 +75,8 @@ Using compression lower the network bandwidth usage.  However in order to debug 
 Set whether Raven's HTTP server should allow response compression to happen when HTTPS is enabled.
 
 - **Type**: `bool`
-- **Default**: `false`
+- **Default**: `true`
 - **Scope**: Server-wide only
-
-{WARNING Setting this to `true` might expose a security risk. See **[http://breachattack.com/](http://breachattack.com/)** before enabling this. /}
 
 {PANEL/}
 
