@@ -51,7 +51,9 @@
 <div id="contentSection">
     <div class="container article-content">
         <div id="article-body" class="non-doc-article" data-article="@Model.Key">
-            @Html.Raw(Model.HtmlContent)
+            <div class="article-content__entry-content entry-content entry-content--with-underlined-links position-relative z-index-1 font-size-14 js-article-content">
+                @Html.Raw(Model.HtmlContent)
+            </div>
         </div>
     </div>
 </div>

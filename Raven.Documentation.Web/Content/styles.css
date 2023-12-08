@@ -10,6 +10,13 @@
   font-weight: normal;
   font-style: normal;
 }
+body {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Helvetica Neue","Ubuntu" !important;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Helvetica Neue","Ubuntu" !important;
+    font-weight: 700 !important;
+}
 .dev-controls {
   z-index: 1;
   display: flex;
@@ -28,7 +35,7 @@
   transform: translateY(160px);
 }
 .hidden-controls {
-  transform: translateY(210px);
+  transform: translateY(140px);
 }
 .dev-controls h3 {
   margin: 0!important;
@@ -64,4 +71,155 @@
 }
 .dev-controls .control + .control {
   margin: 10px 0 0 0;
+}
+.gap-3 {
+    gap: 1rem;
+}
+#submenu.documentation .expandable.open {
+    background: transparent!important;
+}
+#submenu.documentation .expandable.open::before {
+    transform: none !important;
+}
+#submenu.documentation a.active, #submenu.documentation li.active {
+    background-color: transparent !important;
+}
+#submenu.documentation a.active, #submenu.documentation li.active a {
+    background-color: #388ee9 !important;
+}
+#submenu.documentation a.active:hover, #submenu.documentation li.active:hover, #submenu.documentation a.active:focus, #submenu.documentation li.active:focus {
+    background-color: transparent !important;
+}
+#submenu.documentation a:hover {
+    background-color: #293038 !important;
+}
+#submenu.documentation a::before {
+    display: none !important;
+}
+.g-general::before, .g-java::before, .g-dotnet::before, .g-python::before {
+    display: none !important;
+}
+.docs .related-articles ul li a, #articleContainer .related-articles ul li a {
+    color: #7e8c9e;
+}
+.docs .related-articles ul li::before, #articleContainer .related-articles ul li::before {
+    display: none !important;
+}
+.docs .related-articles ul li a:hover, #articleContainer .related-articles ul li a:hover {
+    color: #c4ced7;
+    text-decoration: none;
+}
+#docs-search .dropdown-suggestions {
+    top: 3.875rem;
+    width: calc(100% - 1rem);
+    background-color: rgba(43,51,59,.95);
+}
+.docs__search-sugestions-list {
+    padding: 0 .9375rem;
+}
+#submenu.documentation {
+    border: none;
+}
+.navbar {
+    border: none!important;
+}
+.docs-page-template__github-button:focus, .docs-page-template__github-button:hover {
+    text-decoration: none;
+    background-color: #3b4654;
+    color: white;
+}
+.related-articles {
+    padding-top: 3.875rem;
+}
+.docs-table-of-contents__redirector {
+    --polygon-color: #756570;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    padding: 0.5rem 1rem 0.5rem 0.5rem !important;
+    border-radius: 1.5px !important;
+    color: #7e8c9e!important;
+    word-break: break-word;
+    -webkit-transition: margin .2s ease-in-out,background .2s ease-in-out,color .2s ease-in-out;
+    transition: margin .2s ease-in-out,background .2s ease-in-out,color .2s ease-in-out;
+}
+.docs-table-of-contents__list ul li {
+    position: relative;
+    overflow: hidden;
+    padding-left: 1rem!important;
+}
+.docs-table-of-contents__list ul li::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 1.25rem !important;
+    left: 0.8125rem !important;
+    width: 0 !important;
+    height: calc(100% - 2rem) !important;
+    border-right: 2px dashed transparent !important;
+    -webkit-transition: border-color .2s ease-in-out !important;
+    transition: border-color .2s ease-in-out !important;
+}
+.docs-table-of-contents__list ul li.open::before {
+    border-right-color: #333d48 !important;
+}
+table {
+    color: rgba(240,244,246,.7)!important;
+    margin: 0!important;
+}
+.article-content .table-responsive table thead tr th {
+    min-width: 7.8125rem;
+    padding: 0.375rem;
+    border: 1px solid rgba(152,167,183,.2);
+    text-align: center;
+}
+.table-bordered {
+    border-top: 1px solid rgba(240, 244, 246, 0.1) !important;
+}
+.docs table td, #articleContainer table td {
+    padding: 1.25rem !important;
+}
+.article-content .table-responsive > table {
+    margin-bottom: 1.5rem!important;
+}
+.article-content h3 {
+    margin-top: 0 !important;
+    margin-bottom: 0.625rem !important;
+}
+.article-content pre {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding: 0.625rem 1.875rem;
+    border-radius: 3px;
+    font-size: .8125rem;
+}
+.article-content > h2:not(.panel-title) {
+    margin-bottom: 1.25rem !important;
+    padding-top: 1.9375rem;
+    border-top: 1px solid rgba(152,167,183,.2);
+}
+.article-content > ol:not(.wp-block-gallery), .article-content > ul:not(.wp-block-gallery), .wp-bootstrap-blocks-container > ol:not(.wp-block-gallery), .wp-bootstrap-blocks-container > ul:not(.wp-block-gallery), .wp-bootstrap-blocks-row [class*=col-] > ol:not(.wp-block-gallery), .wp-bootstrap-blocks-row [class*=col-] > ul:not(.wp-block-gallery) {
+    margin: 1.25rem 0 0 1.5625rem;
+    list-style-position: outside;
+}
+.article-content > ol:not(.wp-block-gallery) li, .article-content > ul:not(.wp-block-gallery) li, .wp-bootstrap-blocks-container > ol:not(.wp-block-gallery) li, .wp-bootstrap-blocks-container > ul:not(.wp-block-gallery) li, .wp-bootstrap-blocks-row [class*=col-] > ol:not(.wp-block-gallery) li, .wp-bootstrap-blocks-row [class*=col-] > ul:not(.wp-block-gallery) li {
+    line-height: 1.4;
+}
+.entry-content > * > h3:not([class*=font-size-]), .entry-content > h3:not([class*=font-size-]), .wp-bootstrap-blocks-container > * > h3:not([class*=font-size-]), .wp-bootstrap-blocks-container > h3:not([class*=font-size-]), .wp-bootstrap-blocks-row [class*=col-] > * > h3:not([class*=font-size-]), .wp-bootstrap-blocks-row [class*=col-] > h3:not([class*=font-size-]) {
+    font-size: 1.5rem !important;
+}
+.docs-table-of-contents__collapsible-button:after {
+    left: -0.35rem;
+}
+.related-articles h2, .related-articles h3 {
+    color: #c4ced7!important;
+    letter-spacing: .1rem;
+}
+#submenu.show-java li:not(.g-java):not(.g-general) > a {
+    color: #7e8c9e !important;
+    opacity: .33;
+    cursor: not-allowed;
+}
+#submenu.show-general:not(.show-java):not(.show-dotnet):not(.show-python):not(.show-nodejs) li:not(.g-general) > a {
+    color: #7e8c9e !important;
+    opacity: .33;
+    cursor: not-allowed;
 }

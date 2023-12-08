@@ -13,19 +13,21 @@
         var v = 1;
     }
 
-    <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic,900' rel='stylesheet' type='text/css'>
-    <link href="/Content/styles/styles.css" rel="stylesheet" />
+    <link rel='stylesheet' id='toc-screen-css' href='https://ravendb.net/wp-content/plugins/table-of-contents-plus/screen.min.css?ver=2309' media='all' />
+    <link rel='stylesheet' id='vendor-styles-css' href='https://ravendb.net/wp-content/themes/ravendb/dist/vendor.css?ver=231004-113312' media='all' />
+    <link rel='stylesheet' id='privacy-policy-notice-styles-css' href='https://ravendb.net/wp-content/themes/ravendb/dist/privacy_policy_notice.css?ver=231004-113423' media='all' />
+    <link rel='stylesheet' id='hero-section-only-title-styles-css' href='https://ravendb.net/wp-content/themes/ravendb/dist/hero_section_only_title.css?ver=231004-113429' media='all' />
+    <link rel='stylesheet' id='docs-page-template-styles-css' href='https://ravendb.net/wp-content/themes/ravendb/dist/docs_page_template.css?ver=231004-113404' media='all' />
+    <script src="/Content/styles/main.js"></script>
     <link href="/Content/styles.css" rel="stylesheet" type="text/css" />
-
 </head>
 
 <body class="push-body docs">
-
     <div id="shop"></div>
     <div id="menuOverlay"></div>
     <div id="wrapper">
         <nav class="navbar">
-            <div class="container-fluid">
+            <div class="d-flex flex-grow flex-nowrap">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                         <span class="sr-only">Toggle navigation</span>
@@ -35,45 +37,24 @@
                                       {
                                           version = Model.SelectedVersion,
                                           language = Model.SelectedLanguage,
-                                      })">RavenDB</a>
-                    <a href="~/" class="back-to-home">back to ravendb.net</a>
+                                      })"><img src="https://ravendb.net/wp-content/uploads/2023/08/raven-logo-blue.svg" width="120px"/></a>
                 </div>
-
+                <div class="d-flex flex-grow"></div>
                 <div id="navbar" class="navbar-collapse collapse">
-                    <div class="flex-horizontal docs-nav-container">
-
-                        <div id="docs-search" class="flex-grow">
-                            <form method="get" action="@Url.Action(MVC.Docs.ActionNames.Search)" id="form-search">
-                                <input autocomplete="off" type="text" id="search-docs" data-bind="hasFocus: isSearchFocused, value: input, valueUpdate: 'afterkeydown'" class="form-control" name="searchTerm" placeholder="Search in @Model.SelectedVersion documentation" />
-                                <div class="dropdown-sugestions" data-bind="style: { display: shouldShowSuggest() ? 'block' : 'none' }, foreach: items">
-                                    <p>
-                                        <a data-bind="attr:{href:$root.getLink($data)}"><span data-bind="text: path"></span> / <span href="#" data-bind="text: title"></span></a>
-                                    </p>
-                                </div>
-                                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                            </form>
-                        </div>
-                        <div class="version-select">
-                            @Html.Partial("VersionSelector")
-                        </div>
-
-                    </div>
-                    <div class="row" id="search-instead-for" align="left" style="padding-left: 15px; font-size: 15px; display: none;">
-                        <span style="align-self: flex-start">Search instead for</span>
-                        <a></a>
-                    </div>
                     @{
                         var isNotLegacyVersion = DocsVersion.GetModeForVersion(Model.SelectedVersion) == DocsVersion.DocsMode.Normal;
                     }
                     <nav id="submenu" class="documentation @if (isNotLegacyVersion)
 	                                       {<text>show-general show-@DocumentationLanguage.GetClientName(Model.SelectedLanguage)</text>}">
-                        @if (isNotLegacyVersion)
-                        {
-                            @Html.Partial("LanguageSelector");
-                        }
-                        <ul id="docs-menu" class="treeview-famfamfam nav treeview">
-                            @PartialExtensions.Partial(Html, "Toc", Model.Toc)
-                        </ul>
+                        <nav class="docs-table-of-contents c-px-md-3 js-table-of-contents">
+                            <div class="docs-table-of-contents__column d-flex flex-column w-100 js-table-of-contents-column">
+                                <div class="docs-table-of-contents__list d-flex flex-column">
+                                    <ul class="pb-5">
+                                        @PartialExtensions.Partial(Html, "Toc", Model.Toc)
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
                     </nav>
                 </div><!--/.nav-collapse -->
             </div>
@@ -101,8 +82,6 @@
         <div class="clearfix"></div>
 
     </div>
-
-    <script src="/Content/styles/main.js"></script>
     <script>
         var root = '/';
     </script>
@@ -115,7 +94,7 @@
     });
     </script>
     <script>
-        $('table', '#article-body').each(function () {
+        $('table', '#articleContainer').each(function () {
             var div = $('<div></div>')
                 .attr({
                     'class': 'table-responsive'

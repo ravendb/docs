@@ -187,7 +187,7 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
             for (int index = 0; index < tabs.Count; index++)
             {
                 var tab = tabs[index];
-                builder.AppendLine(string.Format("<li class='code-tab {2}'><a href='#{0}' data-toggle='tab'>{1}</a></li>", tab.Id, tab.Title ?? tab.GetLanguageDisplayName(), index == 0 ? "active" : string.Empty));
+                builder.AppendLine(string.Format("<li class='code-tab'><a href='#{0}' class='nav-link {2}' data-toggle='tab'>{1}</a></li>", tab.Id, tab.Title ?? tab.GetLanguageDisplayName(), index == 0 ? "active" : string.Empty));
             }
             builder.AppendLine("</ul>");
 
