@@ -19,7 +19,7 @@
   To prevent executing queries that do not specify a page size, you can set the [ThrowIfQueryPageSizeIsNotSet](../../client-api/configuration/querying#throwifquerypagesizeisnotset) convention,
   which can be useful during development or testing phases.
 
-* In this page:
+* In this page:  
 
   * [No paging example](../../indexes/querying/paging#no-paging-example)
   * [Paging examples](../../indexes/querying/paging#paging-examples)
