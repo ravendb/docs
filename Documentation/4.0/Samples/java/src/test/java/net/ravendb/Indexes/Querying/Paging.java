@@ -33,30 +33,6 @@ public class Paging {
     }
     //endregion
 
-    //region paging_7_0
-    public static class Orders_ByStoredProductName extends AbstractIndexCreationTask {
-        public static class Result {
-            private String product;
-
-            public String getProduct() {
-                return product;
-            }
-
-            public void setProduct(String product) {
-                this.product = product;
-            }
-        }
-
-        public Orders_ByStoredProductName() {
-            map = "docs.Orders.SelectMany(order => order.Lines, (order, line) => new {" +
-                "    Product = line.ProductName" +
-                "})";
-
-            store("product", FieldStorage.YES);
-        }
-    }
-    //endregion
-
     private static class Order_ByOrderLines_ProductName extends AbstractIndexCreationTask {
 
     }
@@ -150,26 +126,6 @@ public class Paging {
 
                     skippedResults += stats.value.getSkippedResults();
                     pageNumber++;
-                } while (results.size() > 0);
-                //endregion
-            }
-
-            try (IDocumentSession session = store.openSession()) {
-                //region paging_7_1
-                List<Orders_ByStoredProductName.Result> results;
-                int pageNumber = 0;
-                int pageSize = 10;
-
-                do {
-                   results = session
-                       .query(Orders_ByStoredProductName.Result.class, Orders_ByStoredProductName.class)
-                       .selectFields(Orders_ByStoredProductName.Result.class, "Product")
-                       .skip(pageNumber * pageSize)
-                       .take(pageSize)
-                       .distinct()
-                       .toList();
-
-                   pageNumber++;
                 } while (results.size() > 0);
                 //endregion
             }

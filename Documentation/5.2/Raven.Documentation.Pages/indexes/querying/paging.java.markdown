@@ -62,14 +62,6 @@ For example, let's page through all the results:
 {CODE-TAB:java:Index paging_6_0@Indexes\Querying\Paging.java /}
 {CODE-TABS/}
 
-The situation would be different if a `distinct` query and a projection applied to stored fields only. To get the correct results here, you shouldn't include `skippedResults`
-into the paging formula. Let's take a look at the example (note the usage of `store` method in the index definition):
-
-{CODE-TABS}
-{CODE-TAB:java:Query paging_7_1@Indexes\Querying\Paging.java /}
-{CODE-TAB:java:Index paging_7_0@Indexes\Querying\Paging.java /}
-{CODE-TABS/}
-
 ## Related Articles
 
 ### Indexes
