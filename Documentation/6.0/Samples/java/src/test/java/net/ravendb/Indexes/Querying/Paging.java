@@ -112,7 +112,7 @@ public class Paging {
                 //region paging_6_1
                 List<Order> results;
                 int pageNumber = 0;
-                int pageSize = 10;
+                int pageSize = 50;
                 int skippedResults = 0;
                 Reference<QueryStatistics> stats = new Reference<>();
 

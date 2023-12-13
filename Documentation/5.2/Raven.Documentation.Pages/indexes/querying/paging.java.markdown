@@ -20,6 +20,10 @@ The queries below will return all the results available.
 {CODE-TABS}
 {CODE-TAB:java:Query paging_0_1@Indexes\Querying\Paging.java /}
 {CODE-TAB:java:Index paging_0_4@Indexes\Querying\Paging.java /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 ## Example II - Basic Paging
@@ -29,6 +33,11 @@ Let's assume that our page size is `10`, and we want to retrieve the 3rd page. T
 {CODE-TABS}
 {CODE-TAB:java:Query paging_2_1@Indexes\Querying\Paging.java /}
 {CODE-TAB:java:Index paging_0_4@Indexes\Querying\Paging.java /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+limit 20, 10 // skip 20, take 10
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 ## Finding the Total Results Count When Paging
@@ -38,6 +47,11 @@ While paging, you sometimes need to know the exact number of results returned fr
 {CODE-TABS}
 {CODE-TAB:java:Query paging_3_1@Indexes\Querying\Paging.java /}
 {CODE-TAB:java:Index paging_0_4@Indexes\Querying\Paging.java /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+limit 20, 10 // skip 20, take 10
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 While the query will return with just 10 results, `totalResults` will hold the total number of matching documents.
@@ -55,11 +69,21 @@ For example, let's page through all the results:
 {CODE-TABS}
 {CODE-TAB:java:Query paging_4_1@Indexes\Querying\Paging.java /}
 {CODE-TAB:java:Index paging_0_4@Indexes\Querying\Paging.java /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+select distinct *
+limit 0, 10  // First loop will skip 0, take 10, etc.
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 {CODE-TABS}
 {CODE-TAB:java:Query paging_6_1@Indexes\Querying\Paging.java /}
 {CODE-TAB:java:Index paging_6_0@Indexes\Querying\Paging.java /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Order/ByOrderLines/ProductName"
+limit 0, 50  // First loop will skip 0, take 50, etc.
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 ## Related Articles
