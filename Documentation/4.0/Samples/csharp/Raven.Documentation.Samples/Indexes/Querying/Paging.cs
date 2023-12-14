@@ -299,7 +299,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     // ======================================================
                     
                     // The total matching results reported in the stats is 47 (totalResults),
-                    // but the the total objects returned while paging the results is only 29 (totalUniqueResults)
+                    // but the total unique objects returned while paging the results is only 29 (totalUniqueResults)
                     // due to the 'Distinct' usage which removes duplicates.
                     
                     // This is solved by adding the skipped results count to Skip().
@@ -350,7 +350,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     // ======================================================
                     
                     // The total matching results reported in the stats is 47 (totalResults),
-                    // but the the total objects returned while paging the results is only 29 (totalUniqueResults)
+                    // but the total unique objects returned while paging the results is only 29 (totalUniqueResults)
                     // due to the 'Distinct' usage which removes duplicates.
                     
                     // This is solved by adding the skipped results count to Skip().
@@ -397,7 +397,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     // ======================================================
                     
                     // The total matching results reported in the stats is 47 (totalResults),
-                    // but the the total objects returned while paging the results is only 29 (totalUniqueResults)
+                    // but the total unique objects returned while paging the results is only 29 (totalUniqueResults)
                     // due to the 'Distinct' usage which removes duplicates.
                     
                     // This is solved by adding the skipped results count to Skip().

@@ -148,7 +148,7 @@ async function paging() {
         // ======================================================
 
         // The total matching results reported in the stats is 47 (totalResults),
-        // but the the total objects returned while paging the results is only 29 (totalUniqueResults)
+        // but the total unique objects returned while paging the results is only 29 (totalUniqueResults)
         // due to the 'distinct' usage which removes duplicates.
 
         // This is solved by adding the skipped results count to skip().
