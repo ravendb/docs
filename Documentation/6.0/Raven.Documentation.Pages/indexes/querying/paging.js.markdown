@@ -9,13 +9,14 @@
 
 * __Default page size__:
 
-    * Querying Lucene indexes:  
+    * Querying __Lucene__ indexes:  
       If the client's query definition does Not explicitly specify the page size, the server will default to `2,147,483,647` (equivalent to  `int.MaxValue` in C#). 
       In such case, all results will be returned in a single server call.
 
-    * Querying Corax indexes:  
-      When using [Corax](../../indexes/search-engine/corax) as the search engine, indexes with more than `2,147,483,647` entries can be created and used.
-      To match this capacity, queries over Corax indexes can skip a number of results that exceeds this max value and take documents from that location.
+    * Querying __Corax__ indexes:  
+      The default page size is the same as the one employed by Lucene.  
+      Note: when using [Corax](../../indexes/search-engine/corax) as the search engine, indexes with more than `2,147,483,647` entries can be created and used.
+      To match this capacity, queries over Corax indexes can skip a number of results that exceed this max value and take documents from that location.  
 
 * __Performance__:  
   Using paging is beneficial when handling large result datasets, contributing to improved performance.  
