@@ -36,7 +36,7 @@
 ### ID Generation Strategies
 
 Document identifiers can be generated using the following strategies:  
-CLick a strategy to read more about its implementation.  
+Click a strategy to read more about its implementation.  
 
 * By [a Client](../../server/kb/document-identifier-generation#id-generation-by-client)  
 * By [the Server](../../server/kb/document-identifier-generation#id-generation-by-server)  
@@ -47,8 +47,9 @@ CLick a strategy to read more about its implementation.
 
 ### ID Structure
 
-The document ID is usually composed of the collection name as prefix, a slash (`/`), 
-and the unique ID portion. E.g.: `Users/1-A`  
+The document ID is typiclly composed of the collection name as prefix, a slash (`/`), and the unique ID portion 
+(including a node tag, e.g. `A`, indicating which server node the document resides on).  
+E.g.: `users/1-A`  
 
 Note that this behavior is **not** mandatory:  
 
