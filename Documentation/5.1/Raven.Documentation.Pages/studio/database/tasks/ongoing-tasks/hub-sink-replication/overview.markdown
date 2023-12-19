@@ -106,23 +106,23 @@ can be useful in numerous cases, e.g. -
 **What is being replicated:**  
 
   * All database documents and related data:  
-    * [Attachments](../../../../document-extensions/attachments/what-are-attachments)  
-    * [Revisions](../../../../server/extensions/revisions)  
-    * [Counters](../../../../document-extensions/counters/overview)
-    * [Time Series](../../../../document-extensions/timeseries/overview)
+    * [Attachments](../../../../../document-extensions/attachments/what-are-attachments)  
+    * [Revisions](../../../../../server/extensions/revisions)  
+    * [Counters](../../../../../document-extensions/counters/overview)
+    * [Time Series](../../../../../document-extensions/timeseries/overview)
 
 **What is _not_ being replicated:**  
 
   * Server and cluster level features:  
-    * [Indexes](../../../../indexes/creating-and-deploying)  
-    * [Conflict resolver definitions](../../../../server/clustering/replication/replication-conflicts#conflict-resolution-script)  
-    * [Compare-Exchange](../../../../client-api/operations/compare-exchange/overview)
-    * [Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions)
-    * [Identities](../../server/kb/document-identifier-generation#identity)  
+    * [Indexes](../../../../../indexes/creating-and-deploying)  
+    * [Conflict resolver definitions](../../../../../server/clustering/replication/replication-conflicts#conflict-resolution-script)  
+    * [Compare-Exchange](../../../../../client-api/operations/compare-exchange/overview)
+    * [Subscriptions](../../../../../client-api/data-subscriptions/what-are-data-subscriptions)
+    * [Identities](../../../../../server/kb/document-identifier-generation#strategy--3)  
     * Ongoing tasks
-      * [ETL](../../../../server/ongoing-tasks/etl/basics)
-      * [Backup](../../../../studio/database/tasks/backup-task)
-      * [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)
+      * [ETL](../../../../../server/ongoing-tasks/etl/basics)
+      * [Backup](../../../../../studio/database/tasks/backup-task)
+      * [Hub/Sink Replication](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)
 
 {NOTE: Why are some cluster-level features not replicated?}
 To provide for architecture that prevents conflicts between clusters, especially when ACID transactions are important, 

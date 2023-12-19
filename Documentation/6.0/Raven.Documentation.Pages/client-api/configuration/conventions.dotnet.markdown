@@ -143,9 +143,9 @@ Use the `IdentityPartsSeparator` convention to change the default
 {NOTE: }
 Changing the separator affects these ID generation strategies:  
 
-* [Server-Side ID](../../server/kb/document-identifier-generation#server-side-id)  
-* [Identity](../../server/kb/document-identifier-generation#identity)  
-* [HiLo Algorithm](../../server/kb/document-identifier-generation#hilo-algorithm)  
+* [Server-Side ID](../../server/kb/document-identifier-generation#strategy--2)
+* [Identity](../../server/kb/document-identifier-generation#strategy--3)
+* [HiLo Algorithm](../../server/kb/document-identifier-generation#strategy--4)
 {NOTE/}
 
 ## TopologyCacheLocation

@@ -47,7 +47,7 @@ The following client-configuration options are available:
 
 * __Identity parts separator__:  
   Set the separator used with automatically generated document identity IDs (default separator is `/`).  
-  Learn more about identity IDs creation [here](../../../../server/kb/document-identifier-generation#identity).
+  Learn more about identity IDs creation [here](../../../../server/kb/document-identifier-generation#strategy--3).
 
 * __Maximum number of requests per session__:  
   Set this number to restrict the number of requests (Reads & Writes) per session in the client API.

@@ -91,8 +91,8 @@
  2. **Backup Task Type**:  
 
   * **Backup**  
-     * Backed Up Data: The database data in a JSON format, including documents, indexes (definitions only) & [identities](../../../server/kb/document-identifier-generation#identity) 
-     (same as exported database format)  
+     * Backed Up Data: The database data in a JSON format, including documents, indexes (definitions only) & [identities](../../../server/kb/document-identifier-generation#strategy--3) 
+       (same as exported database format)  
      * Size of backup data: Smaller  
      * Backup Speed: Faster  
      * Restoring: Slower, Indexes have to be rebuilt from their definitions  

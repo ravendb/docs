@@ -105,14 +105,15 @@ You have to customize *JsonSerializer* and *PropertyNameConverter*.
 
 ### Changing the Identity Separator
 
-Changes the default **separator** for automatically generated document IDs. Can be any `char` 
-except `|` (pipe). Default: `/` (forward slash).  
+Changes the default **separator** for automatically generated document IDs.  
+Can be any `char` except `|` (pipe).  
+Default: `/` (forward slash).  
 
 This affects these ID generation strategies:  
 
-* [Server-Side ID](../../server/kb/document-identifier-generation#server-side-id)
-* [Identity](../../server/kb/document-identifier-generation#identity)
-* [HiLo Algorithm](../../server/kb/document-identifier-generation#hilo-algorithm)
+* [Server-Side ID](../../server/kb/document-identifier-generation#strategy--2)
+* [Identity](../../server/kb/document-identifier-generation#strategy--3)
+* [HiLo Algorithm](../../server/kb/document-identifier-generation#strategy--4)
 
 {CODE IdentityPartsSeparator@ClientApi\Configuration\Conventions.cs /}
 
