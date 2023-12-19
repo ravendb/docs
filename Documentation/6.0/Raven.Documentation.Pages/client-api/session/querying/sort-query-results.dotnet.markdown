@@ -75,7 +75,7 @@ __Ordering Type__:
 {PANEL: Order by score}
 
 * When querying with some filtering conditions, a basic score is calculated for each item in the results  
-  by the underlying indexing engine. (Read more about Lucene scoring [here](https://lucene.apache.org/core/3_3_0/scoring.html)).
+  by the underlying indexing engine.
 
 * The higher the score value the better the match.  
 
