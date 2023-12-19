@@ -4,12 +4,10 @@
 
 {NOTE: }
 
-* The **Database Settings View** lists all the database and server configuration keys & values.  
+* The __Database Settings View__ lists all the database and server configuration keys & values.  
 
-* Only the **database scope** configuration keys can be edited from this view.  
-  Configuration keys that relate only to the **server scope** are edited in the 
-  [`settings.json` file](../../../server/configuration/configuration-options#settings.json) 
-  and can only be viewed here.  
+* In this view, you can only edit the __database-scope__ configuration keys. __Server-scope__ keys are read-only.  
+  To edit a server-scope key follow any of the available options listed in the [Configuration overview](../../../server/configuration/configuration-options) article.  
 
 * After editing & saving a configuration key, the change does not take effect 
   until the database is [reloaded](../../../studio/database/settings/database-settings#how-to-reload-the-database).  
