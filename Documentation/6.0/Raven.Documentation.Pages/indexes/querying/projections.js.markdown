@@ -1,221 +1,291 @@
-# Querying: Projections
+# Project Index Query Results
+---
 
-There are couple of ways to perform projections in RavenDB:
+{NOTE: }
 
-- projections using [selectFields](../../indexes/querying/projections#selectfields)
-- using [projectInto](../../indexes/querying/projections#projectinto)
-- using [ofType](../../indexes/querying/projections#oftype)
+* This article provides examples of projecting query results when querying a __static-index__.
 
-## What are Projections and When to Use Them
+* __Prior to this article__, please refer to [Project query results - Overview](../../client-api/session/querying/how-to-project-query-results)  
+  for general knowledge about Projections and dynamic-queries examples.
 
-When performing a query, we usually pull the full document back from the server.
+* In this page:
 
-However, we often need to display the data to the user. Instead of pulling the whole document back and picking just what we'll show, we can ask the server to send us just the details we want to show the user and thus reduce the amount of traffic on the network.   
+    * [SelectFields](../../indexes/querying/projections#selectfields)
 
-The savings can be very significant if we need to show just a bit of information on a large document.  
+    * [Projection behavior with a static-index](../../indexes/querying/projections#projection-behavior-with-a-static-index)
+  
+    * [ofType](../../indexes/querying/projections#oftype)
 
-A good example in the sample data set would be the order document. If we ask for all the Orders where Company is "companies/65-A", the size of the result that we get back from the server is 19KB.
+{NOTE/}
 
-However, if we perform the same query and ask to get back only the `Employee` and `OrderedAt` fields, the size of the result is only 5KB.  
+---
 
-Aside from allowing you to pick only a portion of the data, projection functions give you the ability to rename some fields, load external documents, and perform transformations on the results. 
+{PANEL: SelectFields}
 
-## Projections are Applied as the Last Stage in the Query
+{NOTE: }
 
-It is important to understand that projections are applied after the query has been processed, filtered, sorted, and paged. The projection doesn't apply to all the documents in the database, only to the results that are actually returned.  
-This reduces the load on the server significantly, since we can avoid doing work only to throw it immediately after. It also means that we cannot do any filtering work as part of the projection. You can filter what will be returned, but not which documents will be returned. That has already been determined earlier in the query pipeline.  
-
-## The Cost of Running a Projection
-
-Another consideration to take into account is the cost of running the projection. It is possible to make the projection query expensive to run. RavenDB has limits on the amount of time it will spend in evaluating the projection, and exceeding these (quite generous) limits will fail the query.
-
-## Projections and Stored Fields
-
-If a projection function only requires fields that are stored, then the document will not be loaded from storage and all data will come from the index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../indexes/storing-data-in-index).
-
-{PANEL:selectFields}
-The most basic projection can be done using `selectFields()` method:
-
-### Example I - Projecting Individual Fields of the Document
+__Example I - Projecting individual fields of the document__:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_1@indexes\querying\projections.js /}
-{CODE-TAB:nodejs:Index indexes_1@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index index_1@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstAndLastName'
-select FirstName, LastName
+from index "Employees/ByNameAndTitle"
+where Title == "sales representative"
+select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-This will issue a query to a database, requesting only `FirstName` and `LastName` from all documents that index entries match query predicate from `Employees/ByFirstAndLastName` index. What does it mean? If an index entry matches our query predicate, then we will try to extract all requested fields from that particular entry. If all requested fields are available in there, then we do not download it from storage. The index `Employees/ByFirstAndLastName` used in the above query is not storing any fields, so the documents will be fetched from storage.
+* Since the index-fields in this example are not [Stored in the index](../../indexes/storing-data-in-index), and no projection behavior was defined,  
+  resulting values for `FirstName` & `LastName` will be retrieved from the matching Employee document in the storage.
 
-### Example II - Projecting Stored Fields
+* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
 
-If we create an index that stores `FirstName` and `LastName` and it requests only those fields in query, then **the data will come from the index directly**.
+{NOTE/}
+
+{NOTE: }
+
+__Example II - Projecting stored fields__:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_1_stored@indexes\querying\projections.js /}
-{CODE-TAB:nodejs:Index indexes_1_stored@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index index_1_stored@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstAndLastNameWithStoredFields'
+from index "Employees/ByNameAndTitleWithStoredFields"
 select FirstName, LastName
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example III - Projecting Arrays and Objects
+* In this example, the projected fields (`FirstName` and `LastName`) are stored in the index,  
+  so by default, the resulting values will come directly from the index and not from the Employee document in the storage.
+
+* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
+  {NOTE/}
+
+{NOTE: }
+
+__Example III - Projecting arrays and objects__:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_2@indexes\querying\projections.js /}
-{CODE-TAB:nodejs:Index indexes_3@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index index_2@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Orders/ByShipToAndLines' as o
-select 
-{ 
-    ShipTo: o.ShipTo, 
-    Products : o.Lines.map(function(y){return y.ProductName;}) 
+// Using simple expression:
+from index "Orders/ByCompanyAndShipToAndLines"
+where Company == "companies/65-A"
+select ShipTo.City as ShipToCity, Lines[].ProductName as Products
+
+// Using JavaScript object literal syntax:
+from index "Orders/ByCompanyAndShipToAndLines" as x
+where Company == "companies/65-A"
+select {
+    ShipToCity: x.ShipTo.City,
+    Products: x.Lines.map(y => y.ProductName)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IV - Projection with Expression
+{NOTE/}
+
+{NOTE: }
+
+__Example IV - Projection with expression__:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_3@indexes\querying\projections.js /}
-{CODE-TAB:nodejs:Index indexes_1@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index index_1@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstAndLastName' as e
-select 
-{ 
-    FullName : e.FirstName + " " + e.LastName 
+from index "Employees/ByNameAndTitle" as e
+select {
+    FullName : e.FirstName + " " + e.LastName
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example V - Projection with `declared function`
+{NOTE/}
+
+{NOTE: }
+
+__Example V - Projection with calculations__:
+
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_4@indexes\querying\projections.js /}
-{CODE-TAB:nodejs:Index indexes_1@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index index_2@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-declare function output(e) {
-	var format = function(p){ return p.FirstName + " " + p.LastName; };
-	return { FullName : format(e) };
-}
-from index 'Employees/ByFirstAndLastName' as e select output(e)
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-### Example VI - Projection with Calculation
-
-{CODE-TABS}
-{CODE-TAB:nodejs:Query projections_9@indexes\querying\projections.js /}
-{CODE-TAB:nodejs:Index indexes_3@indexes\querying\projections.js /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Orders/ByShipToAndLines' as o
+from index "Orders/ByCompanyAndShipToAndLines" as x
 select {
-    Total : o.Lines.reduce(
-        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0)
+    TotalProducts: x.Lines.length,
+    TotalDiscountedProducts: x.Lines.filter(x => x.Discount > 0).length,
+    TotalPrice: x.Lines
+                 .map(l => l.PricePerUnit * l.Quantity)
+                 .reduce((a, b) => a + b, 0)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VII - Projection Using a Loaded Document
+{NOTE/}
+
+{NOTE: }
+
+__Example VI - Projecting using functions__:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_5@indexes\querying\projections.js /}
-{CODE-TAB:nodejs:Index indexes_4@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index index_1@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Orders/ByShippedAtAndCompany' as o
-load o.Company as c
-select {
-	CompanyName: c.Name,
-	ShippedAt: o.ShippedAt
+declare function output(x) {
+    var format = p => p.FirstName + " " + p.LastName;
+    return { FullName: format(x) };
 }
+
+from index "Employees/ByNameAndTitle" as e
+select output(e)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VIII - Projection with Dates
+{NOTE/}
+
+{NOTE: }
+
+__Example VII - Projecting using a loaded document__:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_6@indexes\querying\projections.js /}
-{CODE-TAB:nodejs:Index indexes_2@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index index_3@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstNameAndBirthday' as e 
-select { 
-    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), 
-    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1,
-    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
+from index "Orders/ByCompanyAndShippedAt" as o
+load o.Company as c
+select {
+    CompanyName: c.Name,
+    ShippedAt: o.ShippedAt
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IX - Projection with Raw JavaScript Code
+{NOTE/}
+
+{NOTE: }
+
+__Example VIII - Projection with dates__:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_7@indexes\querying\projections.js /}
-{CODE-TAB:nodejs:Index indexes_2@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index index_4@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstNameAndBirthday' as e 
+from index "Employees/ByFirstNameAndBirthday" as x
 select {
-    Date : new Date(Date.parse(e.Birthday)), 
-    Name : e.FirstName.substr(0,3)
+    DayOfBirth: new Date(Date.parse(x.Birthday)).getDate(),
+    MonthOfBirth: new Date(Date.parse(x.Birthday)).getMonth() + 1,
+    Age: new Date().getFullYear() - new Date(Date.parse(x.Birthday)).getFullYear()
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example X - Projection with Metadata
+{NOTE/}
+
+{NOTE: }
+
+__Example IX - Projection with metadata__:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_8@indexes\querying\projections.js /}
-{CODE-TAB:nodejs:Index indexes_1@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index index_4@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstAndLastName' as e 
+from index "Employees/ByFirstNameAndBirthday" as x
 select {
-     Name : e.FirstName, 
-     Metadata : getMetadata(e)
+    Name : x.FirstName,
+    Metadata : getMetadata(x)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+{NOTE/}
 {PANEL/}
 
-{PANEL:projectInto}
+{PANEL: Projection behavior with a static-index}
 
-This extension method retrieves all public fields and properties of the type given in generic and uses them to perform projection to the requested type.
+* __By default__, when querying a static-index and projecting query results,  
+  the server will try to retrieve the fields' values from the fields [stored in the index](../../indexes/storing-data-in-index).  
+  If the index does Not store those fields then the fields' values will be retrieved from the documents.
 
-You can use this method instead of using selectFields` together with all fields of the projection class.
+* This behavior can be modified by setting the __projection behavior__.
 
-### Example
+* Note: Storing fields in the index can increase query performance when projecting,  
+  but this comes at the expense of the disk space used by the index.
+
+{NOTE: }
+
+__Example__:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Index index_10@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Query projections_9@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Index index_1_stored@indexes\querying\projections.js /}
+{CODE-TAB:nodejs:Projection_class projection_class@indexes\querying\projections.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Companies/ByContact' 
-select Name, Phone
+from index "Employees/ByNameAndTitleWithStoredFields"
+select FirstName, Title
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+The projection behavior in the above example is set to `FromIndexOrThrow` and so the following applies:
+
+* Field `FirstName` is stored in the index so the server will fetch its values from the index.
+
+* However, field `Title` is Not stored in the index so an exception will be thrown when the query is executed.
+
+{NOTE/}
+
+{NOTE: }
+
+__Projection behavior options__:
+
+* `"Default"`  
+  Retrieve values from the stored index fields when available.  
+  If fields are not stored then get values from the document,  
+  a field that is not found in the document is skipped.
+
+* `"FromIndex"`  
+  Retrieve values from the stored index fields when available.  
+  A field that is not stored in the index is skipped.
+
+* `"FromIndexOrThrow"`  
+  Retrieve values from the stored index fields when available.  
+  An exception is thrown if the index does not store the requested field.
+
+* `"FromDocument"`  
+  Retrieve values directly from the documents store.  
+  A field that is not found in the document is skipped.
+
+* `"FromDocumentOrThrow"`  
+  Retrieve values directly from the documents store.  
+  An exception is thrown if the document does not contain the requested field.
+
+{NOTE/}
+
 {PANEL/}
 
-{PANEL:ofType}
+{PANEL: ofType}
 
-`ofType()` is a client-side projection. You can read more about it [here](../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection).
+* `ofType` is a client-side projection that is only used to map the resulting objects to the provided type.
+
+* As opposed to projection queries where results are not tracked by the session,  
+  In the case of non-projecting queries that use _ofType_, the session does track the resulting document entities.
+
+{CODE:nodejs projections_10@indexes\querying\projections.js /}
 
 {PANEL/}
-
-## Projections and the Session
-Because you are working with projections and not directly with documents, they are _not_ tracked by the session. Modifications to a projection will not modify the document when `saveChanges()` is called.
 
 ## Related Articles
 
-### Querying 
+### Querying
 
-- [Query Overview](../../client-api/session/querying/how-to-query)
-- [Querying an Index](../../indexes/querying/query-index)
+- [Query overview](../../client-api/session/querying/how-to-query)
+- [Project dynamic query results](../../client-api/session/querying/how-to-project-query-results)
 
-### Client API
+### Indexes
 
-- [How to Project Query Results](../../client-api/session/querying/how-to-project-query-results)
+- [Querying an index](../../indexes/querying/query-index)
 
 ### Knowledge Base
 
-- [JavaScript Engine](../../server/kb/javascript-engine)
+- [JavaScript engine](../../server/kb/javascript-engine)

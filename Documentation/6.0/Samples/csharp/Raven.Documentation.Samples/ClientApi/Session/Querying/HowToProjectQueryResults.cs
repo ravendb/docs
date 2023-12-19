@@ -18,10 +18,15 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region projections_1
                     var projectedResults = session
-                        // Make a dynamic query on the Companies collection
+                         // Make a dynamic query on the Companies collection
                         .Query<Company>()
-                        // Call Select to define the new structure that will be returned per Company document
-                        .Select(x => new {Name = x.Name, City = x.Address.City, Country = x.Address.Country})
+                         // Call Select to define the new structure that will be returned per Company document
+                        .Select(x => new
+                        {
+                            Name = x.Name,
+                            City = x.Address.City,
+                            Country = x.Address.Country
+                        })
                         .ToList();
 
                     // Each resulting object in the list is Not a 'Company' entity,

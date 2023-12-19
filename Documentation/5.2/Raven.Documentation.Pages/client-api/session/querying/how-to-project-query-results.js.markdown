@@ -4,7 +4,6 @@ Instead of pulling full documents in query results you can just grab some pieces
 results. The projections are defined with the usage of:
 
 - [selectFields()](../../../client-api/session/querying/how-to-project-query-results#selectfields())
-- [projectInto](../../../client-api/session/querying/how-to-project-query-results#projectinto)  
 - [ofType()](../../../client-api/session/querying/how-to-project-query-results#oftype)
 
 {PANEL:SelectFields()}
@@ -133,24 +132,6 @@ select Name, Phone
 {CODE-TAB-BLOCK/}
 {CODE-TAB:nodejs:Index projections_9_0@ClientApi\Session\Querying\howToProjectQueryResults.js /}
 
-{CODE-TABS/}
-
-{PANEL/}
-
-{PANEL:projectInto}
-
-This extension method retrieves all public fields and properties of the type given in generic and uses them to perform projection to the requested type.
-
-You can use this method instead of using selectFields` together with all fields of the projection class.
-
-### Example
-
-{CODE-TABS}
-{CODE-TAB:nodejs:Index index_10@indexes\querying\projections.js /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Companies/ByContact' 
-select Name, Phone
-{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 {PANEL/}

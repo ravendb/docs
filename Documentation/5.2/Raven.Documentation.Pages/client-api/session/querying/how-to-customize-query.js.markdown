@@ -174,7 +174,8 @@ __Syntax__
 
 * `Default`  
   Retrieve values from the stored index fields when available.  
-  If fields are not stored then get values from the document.
+  If fields are not stored then get values from the document,  
+  a field that is not found in the document is skipped.
 * `FromIndex`  
   Retrieve values from the stored index fields when available.  
   A field that is not stored in the index is skipped.

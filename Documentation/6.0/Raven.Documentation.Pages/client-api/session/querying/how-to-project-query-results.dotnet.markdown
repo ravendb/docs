@@ -32,13 +32,16 @@ __What are projections__:
 
 * A projection refers to the __transformation of query results__ into a customized structure,  
   modifying the shape of the data returned by the server.
-  
-* Instead of retrieving the full document and then picking relevant data from it,  
-  you can return a subset of the data, specifying the document fields you want to get from the server.  
+
+* Instead of retrieving the full document from the server and then picking relevant data from it on the client,  
+  you can request a subset of the data, specifying the document fields you want to get from the server.
 
 * The query can load [related documents](../../../indexes/indexing-related-documents#what-are-related-documents) and have their data merged into the projection results.
 
-* Objects and arrays can be projected, fields can be renamed, and any calculation can be made within the projection.
+* Objects and arrays can be projected, fields can be renamed, and any calculations can be made within the projection.
+
+* Content from inner objects and arrays can be projected.  
+  An alias name can be given to the projected fields, and any calculations can be made within the projection.
 
 ---
 
@@ -88,7 +91,7 @@ __Projections are the final stage in the query pipeline__:
 __The cost of projections__:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
-  However, you can perform any [computation](../../../client-api/session/querying/how-to-project-query-results#projectionWithCalculations) inside the projection.
+  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results#projectionWithCalculations) inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
   So RavenDB limits the total time it will spend processing a query and its projections.  
@@ -129,13 +132,13 @@ __Example II - Projecting arrays and objects__:
 {CODE-TAB-BLOCK:sql:RQL}
 // Using simple expression:
 from "Orders"
-select ShipTo, Lines[].ProductName as Products
+select ShipTo, Lines[].ProductName as ProductNames
 
 // Using JavaScript object literal syntax:
 from "Orders" as x
 select {
     ShipTo: x.ShipTo, 
-    Products: x.Lines.map(y => y.ProductName)
+    ProductNames: x.Lines.map(y => y.ProductName)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
