@@ -18,8 +18,11 @@
 * Learn more about querying from the session in this [Query Overview](../../../client-api/session/querying/how-to-query). 
 
 * In this page:  
-  * [The query pipeline](../../../client-api/session/querying/what-is-rql#the-query-pipeline)  
+
+  * [The query pipeline](../../../client-api/session/querying/what-is-rql#the-query-pipeline)
+  
   * [RQL keywords and methods](../../../client-api/session/querying/what-is-rql#rql-keywords-and-methods)
+  
      * [`declare`](../../../client-api/session/querying/what-is-rql#declare)  
      * [`from`](../../../client-api/session/querying/what-is-rql#from)
      * [`where`](../../../client-api/session/querying/what-is-rql#where)
@@ -30,6 +33,8 @@
      * [`load`](../../../client-api/session/querying/what-is-rql#load)
      * [`limit`](../../../client-api/session/querying/what-is-rql#limit)
      * [`update`](../../../client-api/session/querying/what-is-rql#update)
+    
+  * [RQL comments](../../../client-api/session/querying/what-is-rql#rql-comments)
 
 {NOTE/}
 
@@ -204,11 +209,15 @@ The following options are available:
 // Full collection query 
 // Data source: The raw collection documents (Auto-index is Not created)
 from Employees
+{CODE-BLOCK/}
 
+{CODE-BLOCK: csharp}
 // Collection query - by ID 
 // Data source: The raw collection documents (Auto-index is Not created)
 from Employees where id() = "employees/1-A"
+{CODE-BLOCK/}
 
+{CODE-BLOCK: csharp}
 // Dynamic query - with filtering
 // Data source: Auto-index (server uses an existing auto-index or creates a new one)
 from Employees where FirstName = "Laura"
@@ -224,7 +233,9 @@ from Employees where FirstName = "Laura"
 // All collections query
 // Data source: All raw collections (Auto-index is Not created)
 from @all_docs
+{CODE-BLOCK/}
 
+{CODE-BLOCK: csharp}
 // Dynamic query - with filtering 
 // Data source: Auto-index (server uses an existing auto-index or creates a new one)
 from @all_docs where FirstName = "Laura"
@@ -240,7 +251,9 @@ from @all_docs where FirstName = "Laura"
 // Index query
 // Data source: The specified index
 from index "Employees/ByFirstName"
+{CODE-BLOCK/}
 
+{CODE-BLOCK: csharp}
 // Index query - with filtering
 // Data source: The specified index
 from index "Employees/ByFirstName" where FirstName = "Laura"
@@ -265,16 +278,16 @@ For example, you can return every document from the [Companies collection](../..
 whose _field value_ **=** _a given input_.  
 
 {CODE-BLOCK:csharp}
-from Companies
-where Name = 'The Big Cheese'
+from "Companies"
+where Name == "The Big Cheese" // Can use either '=' or'==' 
 {CODE-BLOCK/}
 
 Filtering on **nested properties** is also supported.  
 So in order to return all companies from 'Albuquerque' we need to execute following query:  
 
 {CODE-BLOCK:csharp}
-from Companies
-where Address.City = 'Albuquerque'
+from "Companies"
+where Address.City = "Albuquerque"
 {CODE-BLOCK/}
 
 {NOTE/}
@@ -286,12 +299,12 @@ The operator `between` returns results inclusively, and the type of border value
 It works on both 'numbers' and 'strings' and can be substituted with the `>=` and `<=` operators.
 
 {CODE-BLOCK:csharp}
-from Products 
+from "Products" 
 where PricePerUnit between 10.5 and 13.0 // Using between
 {CODE-BLOCK/}
 
 {CODE-BLOCK:csharp}
-from Products 
+from "Products" 
 where PricePerUnit >= 10.5 and PricePerUnit <= 13.0 // Using >= and <=
 {CODE-BLOCK/}
 
@@ -304,13 +317,13 @@ The operator `in` is validating if a given field contains passed values.
 It will return results if a given field matches **any** of the passed values.
 
 {CODE-BLOCK:csharp}
-from Companies 
-where Name in ('The Big Cheese', 'Unknown company name')
+from "Companies" 
+where Name in ("The Big Cheese", "Unknown company name")
 {CODE-BLOCK/}
 
 {CODE-BLOCK:csharp}
-from Orders 
-where Lines[].ProductName in ('Chang', 'Spegesild', 'Unknown product name') 
+from "Orders" 
+where Lines[].ProductName in ("Chang", "Spegesild", "Unknown product name") 
 {CODE-BLOCK/}
 
 {NOTE/}
@@ -324,16 +337,16 @@ Due to its mechanics, it is only useful when used on array fields.
 The following query will yield no results in contrast to the `in` operator.
 
 {CODE-BLOCK:csharp}
-from Orders 
-where Lines[].ProductName all in ('Chang', 'Spegesild', 'Unknown product name')
+from "Orders" 
+where Lines[].ProductName all in ("Chang", "Spegesild", "Unknown product name")
 {CODE-BLOCK/}
 
 Removing 'Unknown product name' will return only orders that contain products with both  
 'Chang' and 'Spegesild' names.
 
 {CODE-BLOCK:csharp}
-from Orders 
-where Lines[].ProductName all in ('Chang', 'Spegesild') 
+from "Orders" 
+where Lines[].ProductName all in ("Chang", "Spegesild") 
 {CODE-BLOCK/}
 
 {NOTE/}
@@ -345,17 +358,17 @@ Binary operators can be used to build more complex statements.
 The `NOT` operator can only be used with one of the other binary operators creating `OR NOT` or `AND NOT` ones.
 
 {CODE-BLOCK:csharp}
-from Companies
-where Name = 'The Big Cheese' OR Name = 'Richter Supermarkt'
+from "Companies"
+where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
 {CODE-BLOCK/}
 
 {CODE-BLOCK:csharp}
-from Orders
+from "Orders"
 where Freight > 500 AND ShippedAt > '1998-01-01'
 {CODE-BLOCK/}
 
 {CODE-BLOCK:csharp}
-from Orders
+from "Orders"
 where Freight > 500 AND ShippedAt > '1998-01-01' AND NOT Freight = 830.75
 {CODE-BLOCK/}
 
@@ -425,6 +438,51 @@ from "Products" limit 5, 10 // skip 5, take 10
 
 To patch documents on the server-side, use `update` with the desired JavaScript that will be applied to any document matching the query criteria.  
 For more information, please refer to this [patching](../../../client-api/operations/patching/set-based) article.  
+
+{PANEL/}
+
+{PANEL: RQL comments}
+
+{NOTE: }
+
+__Single line comments__:  
+
+* Single line comments start with `//` and end at the end of that line.
+
+{CODE-BLOCK:csharp}
+// This is a single line comment.
+from "Companies" 
+where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
+{CODE-BLOCK/}
+
+{CODE-BLOCK:csharp}
+from "Companies"
+where Name = "The Big Cheese" // OR Name = "Richter Supermarkt"
+{CODE-BLOCK/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Multiline comments__:
+
+* Multiline comments start with `/*` and end with `*/`.
+
+{CODE-BLOCK:csharp}
+/*
+This is a multiline comment.
+Any text here will be ignored.
+*/
+from "Companies"
+where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
+{CODE-BLOCK/}
+
+{CODE-BLOCK:csharp}
+from "Companies"
+where Name = "The Big Cheese" /* this part is a comment */ OR Name = "Richter Supermarkt"
+{CODE-BLOCK/}
+
+{NOTE/}
 
 {PANEL/}
 
