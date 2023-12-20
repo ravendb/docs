@@ -110,7 +110,7 @@ __Get resulting score__:
 
     * When using __Corax__:  
       In order to enhance performance, this property is not included in the results by default.  
-      To get this metadata property you must set the `Indexing.Corax.IncludeDocumentScore` configuration value to _true_.
+      To get this metadata property you must set the [Indexing.Corax.IncludeDocumentScore](../../../server/configuration/indexing-configuration#indexing.corax.includedocumentscore) configuration value to _true_.
       Learn how to set configuration values in this [Configuration overview](../../../server/configuration/configuration-options).
 
 * __Include explanations__:  
