@@ -314,12 +314,12 @@ Read more about this feature [here](../../../indexes/search-engine/corax#compoun
 
 {PANEL: Additional Assemblies}
 
-![Additional Assemblies](images/create-map-index_additional-assemblies.png "Additional Assemblies")
-
 Use the [Additional Assemblies](../../../indexes/additional-assemblies) 
 feature to enhance Index capabilities with classes and methods taken from libraries.  
-In the above example, `Path.GetFileName` can be used by the index map method because the 
+In the below example, `Path.GetFileName` can be used by the index map method because the 
 runtime library `System.IO` is added as an additional assembly.  
+
+![Additional Assemblies](images/create-map-index_additional-assemblies.png "Additional Assemblies")
 
 1. **Add Assembly**  
    Click to add an assembly source for your index usage.  
@@ -333,6 +333,10 @@ runtime library `System.IO` is added as an additional assembly.
     * _Server Runtime_ - a runtime library.  
     * _Path_ - The path to a library file on your local disk.  
     * _Nuget_ - a Nuget package.  
+      {NOTE: }
+      Note that additional assemblies are allowed to include pre-release packages.  
+      ![Pre-Release Package](images/create-map-index_prerelease-additional-assembly.png "Pre-Release Package")
+      {NOTE/}
 
 4. **Remove Assembly**  
    Click to remove the assembly.  
