@@ -46,7 +46,7 @@ Use the `withinRadius` method to search for all documents containing spatial dat
 within the specified distance from the given center point.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query spatial_1@ClientApi\Session\Querying\makeSpatialQuery.js /}
+{CODE-TAB:nodejs:Query spatial_1@client-api\session\querying\makeSpatialQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 // This query will return all matching employee entities
 // that are located within 20 kilometers radius
@@ -76,7 +76,7 @@ where spatial.within(
 <a id="circle" /> __Circle__:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query spatial_2@ClientApi\Session\Querying\makeSpatialQuery.js /}
+{CODE-TAB:nodejs:Query spatial_2@client-api\session\querying\makeSpatialQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 // This query will return all matching employee entities
 // that are located within 20 kilometers radius
@@ -97,7 +97,7 @@ where spatial.within(
 <a id="polygon" /> __Polygon__:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query spatial_3@ClientApi\Session\Querying\makeSpatialQuery.js /}
+{CODE-TAB:nodejs:Query spatial_3@client-api\session\querying\makeSpatialQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 // This query will return all matching company entities
 // that are located within the specified polygon.
@@ -145,7 +145,7 @@ where spatial.within(
 <a id="orderByDistance" /> __Order by distance__:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query spatial_4@ClientApi\Session\Querying\makeSpatialQuery.js /}
+{CODE-TAB:nodejs:Query spatial_4@client-api\session\querying\makeSpatialQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Return all matching employee entities located within 20 kilometers radius
 // from point (47.623473 latitude, -122.3060097 longitude).
@@ -172,7 +172,7 @@ order by spatial.distance(
 <a id="orderByDistanceDesc" /> __Order by distance descending__:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query spatial_5@ClientApi\Session\Querying\MakeSpatialQuery.js /}
+{CODE-TAB:nodejs:Query spatial_5@client-api\session\querying\makeSpatialQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Return all employee entities sorted by their distance from a specified point.
 // The farthest results will be listed first.
@@ -192,7 +192,7 @@ order by spatial.distance(
 <a id="roundedDistance" /> __Sort results by rounded distance__:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query spatial_6@ClientApi\Session\Querying\makeSpatialQuery.js /}
+{CODE-TAB:nodejs:Query spatial_6@client-api\session\querying\makeSpatialQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Return all employee entities.
 // Results are sorted by their distance to a specified point rounded to the nearest 100 km interval.
@@ -215,7 +215,17 @@ order by spatial.distance(
 
 * The distance is available in the `@spatial` metadata property within each result.
 
-{CODE:nodejs spatial_4_getDistance@ClientApi\Session\Querying\makeSpatialQuery.js /}
+* Note the following difference between the underlying search engines:
+
+    * When using __Lucene__:  
+      This metadata property is always available in the results.
+
+    * When using __Corax__:  
+      In order to enhance performance, this property is not included in the results by default.  
+      To get this metadata property you must set the [Indexing.Corax.IncludeSpatialDistance](../../../server/configuration/indexing-configuration#indexing.corax.includespatialdistance) configuration value to _true_.
+      Learn how to set configuration values in this [Configuration overview](../../../server/configuration/configuration-options).
+
+{CODE:nodejs spatial_4_getDistance@client-api\session\querying\makeSpatialQuery.js /}
 
 {NOTE/}
 
@@ -229,7 +239,7 @@ order by spatial.distance(
 #### spatial
 {INFO/}
 
-{CODE:nodejs spatial_7@ClientApi\Session\Querying\makeSpatialQuery.js /}
+{CODE:nodejs spatial_7@client-api\session\querying\makeSpatialQuery.js /}
 
 | Parameters    | Type                                           | Description                                                                                                                |
 |---------------|------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
@@ -243,7 +253,7 @@ order by spatial.distance(
 #### DynamicSpatialField
 {INFO/}
 
-{CODE:nodejs spatial_8@ClientApi\Session\Querying\makeSpatialQuery.js /}
+{CODE:nodejs spatial_8@client-api\session\querying\makeSpatialQuery.js /}
 
 | Parameters    | Type     | Description                                             |
 |---------------|----------|---------------------------------------------------------|
@@ -257,7 +267,7 @@ order by spatial.distance(
 #### SpatialCriteriaFactory
 {INFO/}
 
-{CODE:nodejs spatial_9@ClientApi\Session\Querying\makeSpatialQuery.js /}
+{CODE:nodejs spatial_9@client-api\session\querying\makeSpatialQuery.js /}
 
 | Parameter                                 | Type     | Description                                                                                                                         |
 |-------------------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------|
@@ -273,7 +283,7 @@ order by spatial.distance(
 #### orderByDistance
 {INFO/}
 
-{CODE:nodejs spatial_10@ClientApi\Session\Querying\makeSpatialQuery.js /}
+{CODE:nodejs spatial_10@client-api\session\querying\makeSpatialQuery.js /}
 
 ---
 
@@ -281,7 +291,7 @@ order by spatial.distance(
 #### orderByDistanceDescending
 {INFO/}
 
-{CODE:nodejs spatial_11@ClientApi\Session\Querying\makeSpatialQuery.js /}
+{CODE:nodejs spatial_11@client-api\session\querying\makeSpatialQuery.js /}
 
 | Parameter                    | Type                  | Description                                                                                                                                                                                                                                                      |
 |------------------------------|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

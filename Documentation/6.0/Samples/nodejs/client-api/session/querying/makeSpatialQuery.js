@@ -106,10 +106,10 @@ async function spatialQuery() {
         //region spatial_4_getDistance
         // Get the distance of the results:
         // ================================
-
+        
         // Call 'GetMetadataFor', pass an entity from the resulting employees list
         const metadata = session.advanced.getMetadataFor(employeesSortedByDistance[0]);
-
+        
         // The distance is available in the '@spatial' metadata property
         const spatialResults = metadata["@spatial"];
 

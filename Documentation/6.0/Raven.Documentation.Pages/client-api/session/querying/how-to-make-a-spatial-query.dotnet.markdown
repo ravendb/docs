@@ -225,7 +225,17 @@ order by spatial.distance(
 
 <a id="getResultingDistance" /> __Get resulting distance__:
 
-* The distance is available in the `@spatial` metadata property within each result.
+* The distance is available in the `@spatial` metadata property within each result.  
+ 
+* Note the following difference between the underlying search engines:
+
+    * When using __Lucene__:  
+      This metadata property is always available in the results.
+
+    * When using __Corax__:  
+      In order to enhance performance, this property is not included in the results by default.  
+      To get this metadata property you must set the [Indexing.Corax.IncludeSpatialDistance](../../../server/configuration/indexing-configuration#indexing.corax.includespatialdistance) configuration value to _true_.
+      Learn how to set configuration values in this [Configuration overview](../../../server/configuration/configuration-options).
 
 {CODE spatial_4_getDistance@ClientApi\Session\Querying\MakeSpatialQuery.cs /}
 

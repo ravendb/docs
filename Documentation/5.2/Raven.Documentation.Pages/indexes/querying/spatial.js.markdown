@@ -102,8 +102,6 @@ where spatial.within(
 * By default, distance in RavenDB measured in **kilometers**.  
   The distance can be rounded to a specific range.  
 
-* See more usage examples in the [dynamic spatial sorting](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting) query.
-
 {CODE-TABS}
 {CODE-TAB:nodejs:Query spatial_query_3@Indexes\spatialIndexes.js /}
 {CODE-TAB:nodejs:Index spatial_index_1@Indexes\spatialIndexes.js /}
@@ -125,6 +123,10 @@ order by spatial.distance(
 // the closest results will be listed first.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+* More sorting examples are available in the [dynamic spatial query](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting) article.
+
+* To get the __distance__ for each resulting entity see [get resulting distance](../../client-api/session/querying/how-to-make-a-spatial-query#getResultingDistance).
 
 {PANEL/}
 
