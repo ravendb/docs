@@ -1,83 +1,195 @@
-# Querying: Paging
+# Page Query Results
+---
 
-Paging, or pagination, is the process of splitting a dataset into pages, reading one page at a time. This is useful for optimizing bandwidth traffic and hardware usage or simply because no user can handle huge amounts of data at once.
+{NOTE: }
 
-{WARNING:Warning}
-Starting from version 4.0, if the page size is not specified **on client side**, the server will assume **int.MaxValue** (2,147,483,647) and all the results will be downloaded. It is **recommended to set a page size explicitly** to avoid long response times caused by sending excessive amounts of data over the network or high memory consumption caused by handling large quantities of documents.
+* __Paging__:  
+  Paging is the process of fetching a subset (a page) of results from a dataset, rather than retrieving the entire results at once.
+  This method enables processing query results one page at a time.
 
-You can also set `DocumentConventions.throwIfQueryPageSizeIsNotSet` convention to **true** to guard yourself from executing queries without the page size explicitly set. We recommend turning this convention on, especially during development or testing phases to detect early the queries that potentially can return an excessive amount of results.
-{WARNING/}
+* __Default page size__:  
+  If the client's query definition does Not explicitly specify the page size, the server will default to `2,147,483,647` (equivalent to  `int.MaxValue` in C#).  
+  In such case, all results will be returned in a single server call.
 
-{INFO:Performance}
-By default, if the number of returned results exceeds **2048**, the server will issue a `Performance Hint` notification (visible in the Studio) with information about query details. You can decide if this behavior is desired or not. 
-The threshold can be adjusted by changing the `PerformanceHints.MaxNumberOfResults` configuration value.
-{INFO/}
+* __Performance__:  
+  Using paging is beneficial when handling large result datasets, contributing to improved performance.  
+  See [paging and performance](../../indexes/querying/paging#paging-and-performance) here below.
 
-## Example I - No Paging
+* __Paging policy__:  
+  To prevent executing queries that do not specify a page size, you can set the `throwIfQueryPageSizeIsNotSet` convention,
+  which can be useful during development or testing phases.
 
-The queries below will return all the results available.
+* In this page:
 
-{CODE-TABS}
-{CODE-TAB:nodejs:Query paging_0_1@indexes\querying\paging.js /}
-{CODE-TAB:nodejs:Index paging_0_4@indexes\querying\paging.js /}
-{CODE-TABS/}
+    * [No paging example](../../indexes/querying/paging#no-paging-example)
+    * [Paging examples](../../indexes/querying/paging#paging-examples)
+    * [Paging and performance](../../indexes/querying/paging#paging-and-performance)
+    * [Paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results)
 
-## Example II - Basic Paging
+{NOTE/}
 
-Let's assume that our page size is `10`, and we want to retrieve the 3rd page. To do this, we need to issue following query:
+---
 
-{CODE-TABS}
-{CODE-TAB:nodejs:Query paging_2_1@indexes\querying\paging.js /}
-{CODE-TAB:nodejs:Index paging_0_4@indexes\querying\paging.js /}
-{CODE-TABS/}
-
-## Finding the Total Results Count When Paging
-
-While paging, you sometimes need to know the exact number of results returned from the query. The Client API supports this explicitly:
+{PANEL: No paging example}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query paging_3_1@indexes\querying\paging.js /}
-{CODE-TAB:nodejs:Index paging_0_4@indexes\querying\paging.js /}
+{CODE-TAB:nodejs:Query paging_0@Indexes\Querying\paging.js /}
+{CODE-TAB:nodejs:Index index_0@Indexes\Querying\paging.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-While the query will return with just 10 results, `totalResults` will hold the total number of matching documents.
+{PANEL/}
 
-## Paging Through Tampered Results
+{PANEL: Paging examples}
 
-For some queries, the server will skip over some results internally and invalidate the `totalResults` value. When executing a `distinct` query or index producing multiple index entries per document (a fanout index), then `totalResults` will contain the total count of matching documents found, but it will not take into account results that were skipped as a result of the `distinct` operator.
+{NOTE: }
 
-Whenever `skippedResults` is greater than 0 and a query involved some non-stored fields, it implies that we skipped over some results in the index.
-    
-In order to do proper paging in those scenarios, you should use `skippedResults` when telling RavenDB how many documents to skip. For each page, the starting point should be `.skip((currentPage * pageSize) + skippedResults)`.
+__Retrieve a specific page__:
 
-For example, let's page through all the results:
+---
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query paging_4_1@indexes\querying\paging.js /}
-{CODE-TAB:nodejs:Index paging_0_4@indexes\querying\paging.js /}
+{CODE-TAB:nodejs:Query paging_1@Indexes\Querying\paging.js /}
+{CODE-TAB:nodejs:Index index_0@Indexes\Querying\paging.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+limit 20, 10 // skip 20, take 10
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Page through all results__:
+
+---
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query paging_6_1@indexes\querying\paging.js /}
-{CODE-TAB:nodejs:Index paging_6_0@indexes\querying\paging.js /}
+{CODE-TAB:nodejs:Query paging_2@Indexes\Querying\paging.js /}
+{CODE-TAB:nodejs:Index index_0@Indexes\Querying\paging.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+limit 0, 10 // First loop will skip 0, take 10
+
+// The next loops in the code will each generate the above RQL with an increased 'skip' value:
+// limit 10, 10
+// limit 20, 10
+// limit 30, 10
+// ...
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-The situation would be different if a `distinct` query and a projection applied to stored fields only. To get the correct results here, you shouldn't include `skippedResults`
-into the paging formula. Let's take a look at the example (note the usage of `store` method in the index definition):
+{NOTE/}
+{PANEL/}
+
+{PANEL: Paging and performance}
+
+---
+
+__Better performance__:
+
+It is recommended to explicitly set a page size when making a query that is expected to generate a significant number of results.
+This practice has several benefits:
+
+* Optimizes bandwidth usage by reducing data transfer between the server and client.
+* Prevents delays in response times caused by sending too much data over the network.
+* Avoids high memory consumption when dealing with numerous documents.
+* Ensures a more manageable user experience by not overwhelming users with massive datasets at once.
+
+---
+
+__Performance hints__:
+
+* By default, if the number of returned results exceeds __2048__, the server will issue a "Page size too big" notification (visible in the Studio) with information about the query.
+
+* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration#performancehints.maxnumberofresults) configuration key.
+
+* As suggested by the hint, you may consider using [Streaming query results](../../client-api/session/querying/how-to-stream-query-results) instead of paging.
+
+![Figure 1. Performance Hint](images/performance-hint.png "Performance Hint")
+
+{PANEL/}
+
+{PANEL: Paging through tampered results}
+
+* The `QueryStatistics` object contains the `totalResults` property,  
+  which represents the total number of matching documents found in the query results.
+
+* The `QueryStatistics` object also contains the `skippedResults` property.  
+  Whenever this property is greater than __0__, that implies the server has skipped that number of results from the index.
+
+* The server will skip duplicate results internally in the following two scenarios:
+
+    1. When making a [Projection query](../../indexes/querying/projections) with [distinct](../../indexes/querying/distinct).
+
+    2. When querying a Fanout index.
+
+* In those cases:
+
+    * The `skippedResults` property from the stats object will hold the count of skipped (duplicate) results.
+
+    * The `totalResults` property will be invalidated -  
+      it will Not deduct the number of skipped results from the total number of results.
+
+* In order to do proper paging in those scenarios:  
+  include the `skippedResults` value when specifying the number of documents to skip for each page using:  
+  `(currentPage * pageSize) + skippedResults`.
+
+* See the following examples:
+
+{NOTE: }
+
+__A projection query with Distinct__:
+
+---
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query paging_7_1@indexes\querying\paging.js /}
-{CODE-TAB:nodejs:Index paging_7_0@indexes\querying\paging.js /}
+{CODE-TAB:nodejs:Query paging_3@Indexes\Querying\paging.js /}
+{CODE-TAB:nodejs:Index index_0@Indexes\Querying\paging.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+select distinct Category, Supplier
+limit 0, 10  // First loop will skip 0, take 10, etc.
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+__Querying a Fanout index__:
+
+---
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Query paging_4@Indexes\Querying\paging.js /}
+{CODE-TAB:nodejs:Index index_1@Indexes\Querying\paging.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Orders/ByProductName"
+limit 0, 50  // First loop will skip 0, take 50, etc.
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+{PANEL/}
 
 ## Related Articles
 
-### Indexes
-
-- [Indexing Basics](../../indexes/indexing-basics)
-
 ### Querying
 
-- [Basics](../../indexes/querying/basics)
+- [Query overview](../../client-api/session/querying/how-to-query)
+- [Stream query results](../../client-api/session/querying/how-to-stream-query-results)
+- [Get query statistics](../../client-api/session/querying/how-to-get-query-statistics)
+
+### Indexes
+
+- [Indexing basics](../../indexes/indexing-basics)
 - [Filtering](../../indexes/querying/filtering)
-- [Sorting](../../indexes/querying/sorting)
+- [Sorting](../../indexes/querying/sorting)  

@@ -417,10 +417,17 @@ See an example in this [projection](../../../indexes/querying/projections#exampl
 
 Use `limit` to limit the number of results returned by the query.  
 Specify the number of items to __skip__ from the beginning of the result set and the number of items to __take__ (return).  
-This is useful when paging results.
+This is useful when [paging](../../../indexes/querying/paging) results.
 
 {CODE-BLOCK:csharp}
-from "Products" limit 5, 10 // skip 5, take 10
+// Available syntax options:
+// =========================
+
+from "Products" limit 5, 10       // skip 5, take 10
+
+from "Products" limit 10 offset 5 // skip 5, take 10
+
+from "Products" offset 5          // skip 5, take all the rest
 {CODE-BLOCK/}
 
 {PANEL/}
