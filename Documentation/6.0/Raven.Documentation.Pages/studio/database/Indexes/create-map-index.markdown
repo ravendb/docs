@@ -107,15 +107,15 @@ modifications in the index maps and configuration.
 
 ![Folded: Test Index Bar](images/create-map-index_test-index_bar-collapsed.png "Folded: Test Index Bar")
 
-1. **Scan limit**
+1. **Scan limit**  
    Enter the maximum number of items that the index will process, from **1** to **10,000**.  
    Default: **10000**  
-2. **Time limit**
+2. **Time limit**  
    Enter the maximum amount of time for the test execution, in seconds.  
    Default: **15 seconds**  
-3. **Run test**
+3. **Run test**  
    Click to run the test and expand the test bar to display the results.  
-4. **Expand test bar**
+4. **Expand test bar**  
    Click to expand the test bar, displaying the index query editor and the result tabs.  
 
 ![Expanded: Test Index Interface](images/create-map-index_test-index_bar-expanded.png "Expanded: Test Index Interface")
