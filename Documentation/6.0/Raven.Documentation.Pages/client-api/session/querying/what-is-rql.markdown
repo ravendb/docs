@@ -208,19 +208,19 @@ The following options are available:
 {CODE-BLOCK: csharp}
 // Full collection query 
 // Data source: The raw collection documents (Auto-index is Not created)
-from Employees
+from "Employees"
 {CODE-BLOCK/}
 
 {CODE-BLOCK: csharp}
 // Collection query - by ID 
 // Data source: The raw collection documents (Auto-index is Not created)
-from Employees where id() = "employees/1-A"
+from "Employees" where id() = "employees/1-A"
 {CODE-BLOCK/}
 
 {CODE-BLOCK: csharp}
 // Dynamic query - with filtering
 // Data source: Auto-index (server uses an existing auto-index or creates a new one)
-from Employees where FirstName = "Laura"
+from "Employees" where FirstName = "Laura"
 {CODE-BLOCK/}
 
 {NOTE/}
@@ -445,12 +445,12 @@ For more information, please refer to this [patching](../../../client-api/operat
 
 {NOTE: }
 
-__Single line comments__:  
+__Single-line comments__:  
 
-* Single line comments start with `//` and end at the end of that line.
+* Single-line comments start with `//` and end at the end of that line.
 
 {CODE-BLOCK:csharp}
-// This is a single line comment.
+// This is a single-line comment.
 from "Companies" 
 where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
 {CODE-BLOCK/}
