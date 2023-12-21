@@ -19,23 +19,84 @@
 
 {PANEL:RavenTestDriver}
 
-First, we define a class that derives from Raven's TestDriver.
-Let's start with reviewing the TestDriver's methods and properties and later we will get into implementation (a complete code sample of a RavenTestDriver can be found at the [bottom](../start/test-driver#complete-example) of the page).
+Start by creating a class that derives from `RavenTestDriver`.  
+Find below a list of test driver methods, followed by [samples](../start/test-driver#complete-example).  
 
-### Properties and Methods
-| Signature | Description |
-| ----------| ----- |
-| **protected virtual string DatabaseDumpFilePath => null;** | Allows you to override the path to the database dump file that will be loaded when calling ImportDatabase. |
-| **protected virtual Stream DatabaseDumpFileStream => null;** |  Allows you to override the stream containing the database dump that will be loaded when calling ImportDatabase.  |
-| **public IDocumentStore GetDocumentStore([CallerMemberName] string database = null, TimeSpan? waitForIndexingTimeout = null)** | Gets you an IDocumentStore instance for the requested database. |
-| **protected virtual void PreInitialize(IDocumentStore documentStore)** |Allows you to pre-initialize the IDocumentStore. |
-| **protected virtual void SetupDatabase(IDocumentStore documentStore)** | Allows you to initialize the database. |
-| **protected event EventHandler DriverDisposed;** |An event that is raised when the test driver has been disposed of. |
-| **public static void ConfigureServer(TestServerOptions options)** |Allows you to configure your server before running it|
-| **public void WaitForIndexing(IDocumentStore store, string database = null, TimeSpan? timeout = null)** | Allows you to wait for indexes to become non-stale. |
-| **public void WaitForUserToContinueTheTest(IDocumentStore store)** | Allows you to break the test and launch the Studio to examine the state of the database. |
-| **protected virtual void OpenBrowser(string url)** | Allows you to open the browser. |
-| **public virtual void Dispose()** | Allows you to dispose of the server. |
+### TestDriver Methods
+
+#### `DatabaseDumpFilePath`
+Override the path to the database dump file that is loaded when calling ImportDatabase.  
+{CODE-BLOCK:csharp} 
+protected virtual string DatabaseDumpFilePath => null;
+{CODE-BLOCK/}  
+
+#### `DatabaseDumpFileStream`
+Allow overriding the stream containing the database dump loaded when calling ImportDatabase.  
+{CODE-BLOCK:csharp} 
+protected virtual Stream DatabaseDumpFileStream => null;
+{CODE-BLOCK/}  
+
+#### `GetDocumentStore`
+Get an IDocumentStore instance for the requested database.  
+{CODE-BLOCK:csharp} 
+public IDocumentStore GetDocumentStore([CallerMemberName] string database = null, 
+                                                TimeSpan? waitForIndexingTimeout = null)
+{CODE-BLOCK/}  
+  
+#### `PreInitialize`
+Pre-initialize IDocumentStore.  
+{CODE-BLOCK:csharp} 
+protected virtual void PreInitialize(IDocumentStore documentStore)
+{CODE-BLOCK/}  
+
+#### `PreConfigureDatabase`
+Pre configure the database record before creating it.  
+{CODE-BLOCK:csharp} 
+protected virtual void PreConfigureDatabase(DatabaseRecord databaseRecord)
+{CODE-BLOCK/}  
+
+#### `SetupDatabase`
+Initialize the database  
+{CODE-BLOCK:csharp} 
+protected virtual void SetupDatabase(IDocumentStore documentStore)
+{CODE-BLOCK/}  
+
+#### `DriverDisposed`  
+An event raised when the test driver is disposed of  
+{CODE-BLOCK:csharp} 
+protected event EventHandler DriverDisposed;
+{CODE-BLOCK/}  
+
+#### `ConfigureServer`  
+Configure the server before running it
+{CODE-BLOCK:csharp} 
+public static void ConfigureServer(TestServerOptions options)
+{CODE-BLOCK/}  
+
+#### `WaitForIndexing`
+Wait for indexes to become non-stale  
+{CODE-BLOCK:csharp} 
+public void WaitForIndexing(IDocumentStore store, string database = null, 
+                                                    TimeSpan? timeout = null)
+{CODE-BLOCK/}  
+
+#### `WaitForUserToContinueTheTest`  
+Pause the test and launch Studio to examine database state  
+{CODE-BLOCK:csharp} 
+public void WaitForUserToContinueTheTest(IDocumentStore store)
+{CODE-BLOCK/}  
+
+#### `OpenBrowser`  
+Open browser  
+{CODE-BLOCK:csharp} 
+protected virtual void OpenBrowser(string url)
+{CODE-BLOCK/}  
+
+#### `Dispose`  
+Dispose of the server  
+{CODE-BLOCK:csharp} 
+public virtual void Dispose()
+{CODE-BLOCK/}  
 
 {PANEL/}
 
