@@ -78,6 +78,7 @@ __Query the index for facets results__:
 {CODE-TABS}
 {CODE-TAB:nodejs:Query facets_2@Indexes\Querying\facetedSearch.js /}
 {CODE-TAB:nodejs:Query_FluentAPI facets_3@Indexes\Querying\facetedSearch.js /}
+{CODE-TAB:nodejs:RawQuery facets_2_rawQuery@Indexes\Querying\facetedSearch.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Cameras/ByFeatures"
 select
@@ -156,6 +157,7 @@ __Query the index for facets results__:
 {CODE-TABS}
 {CODE-TAB:nodejs:Query facets_8@Indexes\Querying\facetedSearch.js /}
 {CODE-TAB:nodejs:Query_FluentAPI facets_9@Indexes\Querying\facetedSearch.js /}
+{CODE-TAB:nodejs:RawQuery facets_8_rawQuery@Indexes\Querying\facetedSearch.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Cameras/ByFeatures"
 select facet(brand, $p0)
@@ -212,6 +214,7 @@ __Query the index for facets results__:
 {CODE-TABS}
 {CODE-TAB:nodejs:Query facets_13@Indexes\Querying\facetedSearch.js /}
 {CODE-TAB:nodejs:Query_FluentAPI facets_14@Indexes\Querying\facetedSearch.js /}
+{CODE-TAB:nodejs:RawQuery facets_13_rawQuery@Indexes\Querying\facetedSearch.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Cameras/ByFeatures"
 select
@@ -275,6 +278,7 @@ __Query using facets from document__:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query facets_18@Indexes\Querying\facetedSearch.js /}
+{CODE-TAB:nodejs:RawQuery facets_18_rawQuery@Indexes\Querying\facetedSearch.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Cameras/ByFeatures"
 select facet(id("customDocumentID"))

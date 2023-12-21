@@ -151,10 +151,10 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                                              select 
                                                  facet(Brand) as 'Camera Brand',
                                                  facet(Price < 200.0,
-                                                     Price >= 200.0 and Price < 400.0,
-                                                     Price >= 400.0 and Price < 600.0,
-                                                     Price >= 600.0 and Price < 800.0,
-                                                     Price >= 800.0) as 'Camera Price'")
+                                                       Price >= 200.0 and Price < 400.0,
+                                                       Price >= 400.0 and Price < 600.0,
+                                                       Price >= 600.0 and Price < 800.0,
+                                                       Price >= 800.0) as 'Camera Price'")
                          // Execute the query
                         .ExecuteAggregation();
                     #endregion
@@ -317,8 +317,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                          // Provide the RQL string to the RawQuery method
                         .RawQuery<Camera>(@"from index 'Cameras/ByFeatures'
                                             select facet(Brand, $p0)")
-                         // Add the options parameter for the raw query
-                        .AddParameter("p0",new { PageSize = 3, TermSortMode = FacetTermSortMode.CountDesc })
+                         // Add the facet options to the "p0" parameter
+                        .AddParameter("p0", new { PageSize = 3, TermSortMode = FacetTermSortMode.CountDesc })
                          // Execute the query
                         .ExecuteAggregation();
                     #endregion
@@ -525,11 +525,11 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .RawQuery<Camera>(@"from index 'Cameras/ByFeatures'
                                             select
                                                 facet(Brand,
-                                                    sum(UnitsInStock),
-                                                    avg(Price),
-                                                    min(Price),
-                                                    max(MegaPixels),
-                                                    max(MaxFocalLength)),
+                                                      sum(UnitsInStock),
+                                                      avg(Price),
+                                                      min(Price),
+                                                      max(MegaPixels),
+                                                      max(MaxFocalLength)),
                                                 facet(Price < $p0,
                                                       Price >= $p1 and Price < $p2,
                                                       Price >= $p3 and Price < $p4,
@@ -540,7 +540,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                                                       min(Price),
                                                       max(MegaPixels),
                                                       max(MaxFocalLength))")
-                         // Add the parameters for the raw query
+                         // Add the parameters' values
                         .AddParameter("p0", 200.0)
                         .AddParameter("p1", 200.0)
                         .AddParameter("p2", 400.0)

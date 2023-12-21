@@ -113,6 +113,22 @@ const session = store.openSession();
             .execute();
         //endregion
 
+        //region facets_2_rawQuery
+        const results = await session.advanced
+             // Query the index
+             // Provide the RQL string to the rawQuery method
+            .rawQuery(`from index "Cameras/ByFeatures"
+                       select
+                           facet(brand) as "Camera Brand",
+                           facet(price < 200,
+                                 price >= 200 and price < 400,
+                                 price >= 400 and price < 600,
+                                 price >= 600 and price < 800,
+                                 price >= 800) as "Camera Price"`)
+             // Execute the query
+            .executeAggregation();
+        //endregion
+
         //region facets_3
         // Define the index-field (e.g. 'price') that will be used by the range-facet in the query below 
         const range = RangeBuilder.forPath("price");
@@ -220,6 +236,18 @@ const session = store.openSession();
             .aggregateBy(facet)
             .execute();
         //endregion
+
+        //region facets_8_rawQuery
+        const results = await session.advanced
+             // Query the index
+             // Provide the RQL string to the rawQuery method
+            .rawQuery(`from index "Cameras/ByFeatures"
+                       select facet(brand, $p0)`)
+             // Add the facet options to the "p0" parameter
+            .addParameter("p0", { "termSortMode": "CountDesc", "pageSize": 3 })
+             // Execute the query
+            .executeAggregation();
+        //endregion
         
         //region facets_9
         // Set facet options to use in the following query 
@@ -321,6 +349,41 @@ const session = store.openSession();
              // Pass the defined facet from above
             .aggregateBy(...facetsWithAggregations)
             .execute();
+        //endregion
+
+        //region facets_13_rawQuery
+        const results = await session.advanced
+             // Query the index
+             // Provide the RQL string to the rawQuery method
+            .rawQuery(`from index "Cameras/ByFeatures"
+                       select
+                           facet(brand,
+                                 sum(unitsInStock),
+                                 avg(price),
+                                 min(price),
+                                 max(megaPixels),
+                                 max(maxFocalLength)),
+                           facet(price < $p0,
+                                 price >= $p1 and price < $p2,
+                                 price >= $p3 and price < $p4,
+                                 price >= $p5 and price < $p6,
+                                 price >= $p7,
+                                 sum(unitsInStock),
+                                 avg(price),
+                                 min(price),
+                                 max(megaPixels),
+                                 max(maxFocalLength))`)
+             // Add the parameters' values
+            .addParameter("p0", 200)
+            .addParameter("p1", 200)
+            .addParameter("p2", 400)
+            .addParameter("p3", 400)
+            .addParameter("p4", 600)
+            .addParameter("p5", 600)
+            .addParameter("p6", 800)
+            .addParameter("p7", 800)
+             // Execute the query
+            .executeAggregation();
         //endregion
         
         //region facets_14
@@ -460,6 +523,16 @@ const session = store.openSession();
             // Pass the ID of the document that contains your facets setup
             .aggregateUsing("customDocumentID")
             .execute();
+        //endregion
+
+        //region facets_18_rawQuery
+        const results = await session.advanced
+             // Query the index
+             // Provide the RQL string to the rawQuery method
+            .rawQuery(`from index "Cameras/ByFeatures"
+                       select facet(id("customDocumentID"))`)
+             // Execute the query
+            .executeAggregation();
         //endregion
         
         //region syntax_1
