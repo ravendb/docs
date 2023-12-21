@@ -18,6 +18,12 @@
         "Mappings": []
     },
     {
+        "Path": "server-settings.markdown",
+        "Name": "Server Settings (Read Only)",
+        "DiscussionId": "45fb3691-9d09-4957-bce9-1dbef89b5a34",
+        "Mappings": []
+    },
+    {
         "Path": "/debug",
         "Name": "Debug",
         "Mappings": []
