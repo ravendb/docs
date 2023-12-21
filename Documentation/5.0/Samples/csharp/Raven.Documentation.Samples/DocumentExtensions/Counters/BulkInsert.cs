@@ -40,7 +40,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
         // bulk insert Counters
         // Use BulkInsert.TimeSeriesBulkInsert.Append with doubles
         [Fact]
-        public async void ReebBulkInsertCounters()
+        public async void BulkInsertCounters2()
         {
             using (var store = getDocumentStore())
             {

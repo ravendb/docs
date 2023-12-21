@@ -38,7 +38,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
         }
 
         [Fact]
-        public async void ReebAppendUsingBulkInsert()
+        public async void AppendUsingBulkInsert()
         {
             using (var store = getDocumentStore())
             {
