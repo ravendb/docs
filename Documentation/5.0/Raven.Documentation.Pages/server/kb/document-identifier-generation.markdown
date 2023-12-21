@@ -245,7 +245,7 @@ Examples:
     abd the creation of their [IDs](../../indexes/map-reduce-indexes#ids).
 
 * **When to use**:  
-  When you you need to further process the Map-Reduce index results by:
+  When you need to further process the Map-Reduce index results by:
     * Having a recursive Map-Reduce index operation, setting up indexes on top of the Artificial Documents.  
     * Setting up a RavenDB ETL Task on the Artificial Documents collection to a dedicated database on 
       a separate cluster for further processing, as well as other ongoing tasks such as: SQL ETL and Subscriptions.
