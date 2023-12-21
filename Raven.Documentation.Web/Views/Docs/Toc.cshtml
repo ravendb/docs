@@ -13,18 +13,19 @@
     {
         <li class="@toc.GetCssClass() expandable @if (isActive)
                                                  {<text>open</text>}">
-            <div></div>
-            <span class="category-link">
+            <button class="docs-table-of-contents__collapsible-button d-block bg-transparent border-0 text-left font-size-14 line-height-1-1 position-relative w-100 font-weight-bold text-uppercase js-collapsible-button">
                 @if (toc.Mode == DocsVersion.DocsMode.Normal)
                 {
+                    <i class="icon-toc-collapse"></i>
+                    <i class="icon-toc-expand"></i>
                     @toc.Title
                 }
                 else
                 {
                     <a class="legacy-link" href="~/docs/article-page/@ViewBag.Version/@ViewBag.Language/@toc.Key">@toc.Title</a>
                 }
-            </span>
-            <ul class="">
+            </button>
+            <ul class="active">
                 @{ Html.RenderPartial("Toc", toc.Items);  }
             </ul>
         </li>
@@ -33,8 +34,8 @@
     {
         <li class="@toc.GetCssClass() @if (isActive)
                                       {<text>active</text>}">
-            <a data-key="@toc.Key" href="~/docs/article-page/@ViewBag.Version/@ViewBag.Language/@toc.Key">
-                <i class="fa fa-file-text-o"></i> @toc.Title
+            <a class="d-block docs-table-of-contents__redirector font-size-13 js-redirector line-height-1 position-relative" data-key="@toc.Key" href="~/docs/article-page/@ViewBag.Version/@ViewBag.Language/@toc.Key">
+                @toc.Title
             </a>
         </li>
     }

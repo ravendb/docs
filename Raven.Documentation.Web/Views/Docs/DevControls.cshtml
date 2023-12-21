@@ -12,7 +12,6 @@
         <div class="btn-group">
             @Html.ActionLink("Generate docs for " + (string)ViewBag.CurrentVersion, MVC.Docs.ActionNames.Generate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = false }, new { @class = "btn btn-danger" })
             <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                <span class="caret"></span>
                 <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu" role="menu">
@@ -24,7 +23,6 @@
         <div class="btn-group">
             @Html.ActionLink("Validate links for " + (string)ViewBag.CurrentVersion, MVC.Docs.ActionNames.Validate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = false }, new { @class = "btn btn-warning", target = "_blank" })
             <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
-                <span class="caret"></span>
                 <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu" role="menu">
@@ -36,17 +34,12 @@
         <div class="btn-group">
             @Html.ActionLink("Validate mappings for " + (string)ViewBag.CurrentVersion, MVC.Docs.ActionNames.ValidateMappings, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = false }, new { @class = "btn btn-info", target = "_blank" })
             <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                <span class="caret"></span>
                 <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu" role="menu">
                 <li>@Html.ActionLink("Validate mappings for all versions", MVC.Docs.ActionNames.ValidateMappings, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = true }, new { target = "_blank" })</li>
             </ul>
         </div>
-    </div>
-    <hr/>
-    <div class="control">
-        <a class="btn btn-default" href="/articles">Go to Articles</a>
     </div>
 </div>
 

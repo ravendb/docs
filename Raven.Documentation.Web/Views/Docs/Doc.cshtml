@@ -15,63 +15,83 @@
 }
 
 <div>
-    <header class="flex-horizontal">
-
-        @{
-            var langs = Model.GetLanguagesForDropDown().ToList();
-        }
-
-        @if (!(langs.Count == 0 && Model.Page.Language == Language.All))
-        {
-            <div class="btn-group">
-
-                <button type="button" class="btn btn-@DocumentationLanguage.GetClientName(Model.Page.Language)">@Model.Page.Language.GetDescription()</button>
-                @if (langs.Count > 0)
-                {
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
+    <div class="docs__search js-docs-search position-relative">
+        <div class="docs__search-wrapper d-flex flex-wrap flex-lg-nowrap c-my-4 c-mt-md-5 c-mb-md-4">
+            @if (Model.AvailableVersions.Count > 0)
+            {
+                <div class="docs__search-dropdown dropdown mt-0 position-relative">
+                    <button type="button" class="docs__dropdown-button dropdown-toggle w-100 text-left overflow-hidden line-height-1-4 font-size-14 position-relative js-search-dropdown-verions-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="docs__dropdown-button-title font-weight-bold d-block font-size-12">
+                            Version
+                        </span>
+                        <span class="docs__dropdown-button-selection d-block text-light-gray-secondary text-uppercase font-weight-bold">
+                            RavenDB @Model.SelectedVersion
+                        </span>
                     </button>
-                    <ul class="dropdown-menu">
-                        @foreach (var lang in langs)
+                    <ul class="docs__dropdown-menu dropdown-menu border-0 overflow-auto rounded-0 list-unstyled js-search-dropdown-versions-list">
+                        @foreach (var version in Model.AvailableVersions.OrderByDescending(x => x.Key))
                         {
-                            <li><a href="~/docs/article-page/@Model.Page.Version/@lang.ToString().ToLowerInvariant()/@Model.Page.Key">@lang.GetDescription()</a></li>
+                            var versionAsString = version.Key.ToString("F1");
+                            Language language = Language.Csharp;
+                            if (version.Key >= 3)
+                            {
+                                language = @Model.Page.Language == Language.All ? Language.Csharp : @Model.Page.Language;
+                            }
+
+                            var languageAsString = language.ToString().ToLowerInvariant();
+                            <li><a href="~/docs/article-page/@versionAsString/@languageAsString/@version.Value">RavenDB @versionAsString</a></li>
                         }
                     </ul>
-                }
-            </div>
-        }
-        @if (Model.AvailableVersions.Count > 0)
-        {
-            <div class="btn-group">
-                <button type="button" class="btn btn-version">@Model.SelectedVersion</button>
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu">
-                    @foreach (var version in Model.AvailableVersions.OrderByDescending(x => x.Key))
+                </div>
+            }
+            @{
+                var langs = Model.GetLanguagesForDropDown().ToList();
+            }
+            @if (!(langs.Count == 0 && Model.Page.Language == Language.All))
+            {
+                <div class="docs__search-dropdown dropdown mt-0 position-relative">
+
+                    <button type="button" class="docs__dropdown-button dropdown-toggle w-100 text-left overflow-hidden line-height-1-4 font-size-14 position-relative js-search-dropdown-verions-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="docs__dropdown-button-title font-weight-bold d-block font-size-12">
+                            Language
+                        </span>
+                        <span class="docs__dropdown-button-selection d-block text-light-gray-secondary text-uppercase font-weight-bold">
+                            @Model.Page.Language.GetDescription()
+                        </span>
+                    </button>
+                    @if (langs.Count > 0)
                     {
-                        var versionAsString = version.Key.ToString("F1");
-                        Language language = Language.Csharp;
-                        if (version.Key >= 3)
-                        {
-                            language = @Model.Page.Language == Language.All ? Language.Csharp : @Model.Page.Language;
-                        }
-
-                        var languageAsString = language.ToString().ToLowerInvariant();
-                        <li><a href="~/docs/article-page/@versionAsString/@languageAsString/@version.Value">@versionAsString</a></li>
+                        <ul class="docs__dropdown-menu dropdown-menu border-0 overflow-auto rounded-0 list-unstyled js-search-dropdown-versions-list">
+                            @foreach (var lang in langs)
+                            {
+                                <li><a href="~/docs/article-page/@Model.Page.Version/@lang.ToString().ToLowerInvariant()/@Model.Page.Key">@lang.GetDescription()</a></li>
+                            }
+                        </ul>
                     }
-                </ul>
+                </div>
+            }
+            <div id="docs-search" class="flex-grow">
+                <form method="get" action="@Url.Action(MVC.Docs.ActionNames.Search)" id="form-search" class="docs__search-form d-flex c-ml-lg-only-3 c-mt-only-3 c-mt-lg-0 position-relative">
+                    <input autocomplete="off" type="text" data-bind="hasFocus: isSearchFocused, value: input, valueUpdate: 'afterkeydown'" class="docs__search-input js-search-input font-weight-bold m-0 font-size-14 line-height-1-4 text-light-gray-secondary w-100" name="searchTerm" placeholder="Search in @Model.SelectedVersion documentation" />
+                    <div class="docs__search-sugestions position-absolute z-index-2 js-search-sugestions-wrapper" data-bind="style: { display: shouldShowSuggest() ? 'block' : 'none' }">
+                        <ul class="docs__search-sugestions-list list-unstyled js-search-sugestions" data-bind="foreach: items">
+                            <li class="c-mb-only-2">
+                                <a data-bind="attr:{href:$root.getLink($data)}" class="docs__search-sugestions-link line-height-1-7 font-size-14"><span data-bind="text: path"></span> / <span href="#" data-bind="text: title"></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <button type="submit" class="docs__search-submit crunch-button crunch-button__full-background crunch-button__full-background--primary-color crunch-button__full-background--hover-darken d-flex align-items-center justify-content-center border-0"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <title>Search in</title>
+                    <path d="M21.7046 20.5333L20.55 21.7067C20.1652 22.0978 19.5879 22.0978 19.0107 21.7067L14.7772 17.4044C14.5848 17.2089 14.3924 17.0133 14.3924 16.6222V16.0356C12.853 17.2089 10.9287 17.9911 9.00444 17.9911C4.00135 17.9911 0.152832 13.8844 0.152832 8.99556C0.152832 4.10667 4.19378 0 9.00444 0C13.8151 0 17.8561 4.10667 17.8561 8.99556C17.8561 11.1467 17.0864 13.1022 15.9318 14.4711H16.7015C16.8939 14.4711 17.2788 14.6667 17.4712 14.8622L21.7046 19.1644C22.0895 19.5556 22.0895 20.1422 21.7046 20.5333ZM14.5848 8.8C14.5848 5.67111 12.0833 3.32444 9.19688 3.32444C6.11805 3.32444 3.80893 5.86667 3.80893 8.8C3.80893 11.9289 6.31048 14.2756 9.19688 14.2756C12.0833 14.4711 14.5848 11.9289 14.5848 8.8Z" fill="#F0F4F6"></path></svg></button>
+                </form>
             </div>
-
-        }
-        <div class="flex-grow"></div>
-        <a href="https://github.com/ravendb/docs/blob/master/@Model.Page.RelativePath" target="_blank" class="btn btn-default btn-github">see on GitHub</a>
-    </header>
-    <section class="panel padding">
-        <div id="article-body">
-            @Html.Raw(Model.Page.HtmlContent)
+        </div>
+    </div>
+    <section>
+        <div class="article-content article-content--dark mt-1">
+            <div class="article-content__entry-content entry-content entry-content--with-underlined-links position-relative z-index-1 font-size-14 js-article-content">
+                @Html.Raw(Model.Page.HtmlContent)
+            </div>
         </div>
     </section>
 </div>
@@ -80,7 +100,13 @@
     @if (string.IsNullOrEmpty(Model.Page.RelatedArticlesContent) == false)
     {
         <section class="related-articles padding">
-            <h2><i class="icon-book-filled"></i> Related articles</h2>
+            <a href="https://github.com/ravendb/docs/blob/master/@Model.Page.RelativePath" target="_blank" class="docs-page-template__github-button d-flex align-items-center font-size-12 border-0 line-height-1-3 position-relative ml-0 text-uppercase external mb-5">
+                <svg width="22" height="23" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.9986 0.956177C5.37312 0.956177 0.00012207 6.35018 0.00012207 13.0042C0.00012207 18.3262 3.43812 22.8412 8.20812 24.4357C8.80812 24.5467 9.02712 24.1747 9.02712 23.8552C9.02712 23.5687 9.01662 22.8112 9.01062 21.8062C5.67312 22.5337 4.96812 20.1907 4.96812 20.1907C4.42362 18.7987 3.63612 18.4282 3.63612 18.4282C2.54562 17.6812 3.71712 17.6962 3.71712 17.6962C4.92162 17.7817 5.55462 18.9382 5.55462 18.9382C6.62562 20.7787 8.36412 20.2477 9.04812 19.9387C9.15612 19.1602 9.46662 18.6292 9.81012 18.3277C7.14612 18.0232 4.34412 16.9897 4.34412 12.3742C4.34412 11.0587 4.81212 9.98318 5.58012 9.14018C5.45562 8.83568 5.04462 7.61018 5.69712 5.95268C5.69712 5.95268 6.70512 5.62868 8.99712 7.18718C9.95412 6.92018 10.9801 6.78668 12.0016 6.78218C13.0201 6.78818 14.0476 6.92018 15.0061 7.18868C17.2966 5.63018 18.3031 5.95418 18.3031 5.95418C18.9571 7.61318 18.5461 8.83718 18.4231 9.14168C19.1926 9.98468 19.6561 11.0602 19.6561 12.3757C19.6561 17.0032 16.8511 18.0217 14.1781 18.3202C14.6086 18.6922 14.9926 19.4272 14.9926 20.5507C14.9926 22.1617 14.9776 23.4607 14.9776 23.8552C14.9776 24.1777 15.1936 24.5527 15.8026 24.4342C20.5651 22.8382 24.0001 18.3247 24.0001 13.0042C24.0001 6.35018 18.6271 0.956177 11.9986 0.956177Z" fill="currentColor"></path>
+                </svg>
+                <span class="docs-page-template__github-button-text d-none d-md-inline text-uppercase">see on GitHub</span>
+            </a>
+            <h2 class="font-size-14 text-uppercase line-height-1-3 font-weight-black d-flex aling-items-center"><img class="c-mr-3" src="https://ravendb.net/wp-content/themes/ravendb/images/icon__related-articles.svg" alt="related articles"> Related articles</h2>
             @Html.Raw(Model.Page.RelatedArticlesContent)
         </section>
     }
