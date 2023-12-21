@@ -80,6 +80,7 @@ __Query the index for facets results__:
 {CODE-TAB:csharp:Query_async facets_3@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:DocumentQuery facets_4@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:Query_FluentAPI facets_5@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:RawQuery facets_2_rawQuery@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Cameras/ByFeatures"
 select
@@ -160,6 +161,7 @@ __Query the index for facets results__:
 {CODE-TAB:csharp:Query_async facets_11@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:DocumentQuery facets_12@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:Query_FluentAPI facets_13@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:RawQuery facets_10_rawQuery@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Cameras/ByFeatures"
 select facet(Brand, $p0)
@@ -218,6 +220,7 @@ __Query the index for facets results__:
 {CODE-TAB:csharp:Query_async facets_18@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:DocumentQuery facets_19@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:Query_FluentAPI facets_20@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:RawQuery facets_17_rawQuery@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Cameras/ByFeatures"
 select
@@ -284,6 +287,7 @@ __Query using facets from document__:
 {CODE-TAB:csharp:Query facets_24@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:Query_async facets_25@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:DocumentQuery facets_26@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:RawQuery facets_24_rawQuery@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Cameras/ByFeatures"
 select facet(id("customDocumentID"))

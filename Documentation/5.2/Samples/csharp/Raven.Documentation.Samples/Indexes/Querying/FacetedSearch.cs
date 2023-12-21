@@ -140,6 +140,25 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .Execute();
                     #endregion
                 }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region facets_2_rawQuery
+                    Dictionary<string, FacetResult> results = session.Advanced
+                          // Query the index
+                          // Provide the RQL string to the RawQuery method
+                         .RawQuery<Camera>(@"from index 'Cameras/ByFeatures'
+                                             select 
+                                                 facet(Brand) as 'Camera Brand',
+                                                 facet(Price < 200.0,
+                                                     Price >= 200.0 and Price < 400.0,
+                                                     Price >= 400.0 and Price < 600.0,
+                                                     Price >= 600.0 and Price < 800.0,
+                                                     Price >= 800.0) as 'Camera Price'")
+                         // Execute the query
+                        .ExecuteAggregation();
+                    #endregion
+                }
 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
@@ -287,6 +306,21 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                          // Pass the defined facets from above
                         .AggregateBy(facetsWithOptions)
                         .Execute();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region facets_10_rawQuery
+                    Dictionary<string, FacetResult> results = session.Advanced
+                         // Query the index
+                         // Provide the RQL string to the RawQuery method
+                        .RawQuery<Camera>(@"from index 'Cameras/ByFeatures'
+                                            select facet(Brand, $p0)")
+                         // Add the options parameter for the raw query
+                        .AddParameter("p0",new { PageSize = 3, TermSortMode = FacetTermSortMode.CountDesc })
+                         // Execute the query
+                        .ExecuteAggregation();
                     #endregion
                 }
 
@@ -481,6 +515,44 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .Execute();
                     #endregion
                 }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region facets_17_rawQuery
+                    Dictionary<string, FacetResult> results = session.Advanced
+                         // Query the index
+                         // Provide the RQL string to the RawQuery method
+                        .RawQuery<Camera>(@"from index 'Cameras/ByFeatures'
+                                            select
+                                                facet(Brand,
+                                                    sum(UnitsInStock),
+                                                    avg(Price),
+                                                    min(Price),
+                                                    max(MegaPixels),
+                                                    max(MaxFocalLength)),
+                                                facet(Price < $p0,
+                                                      Price >= $p1 and Price < $p2,
+                                                      Price >= $p3 and Price < $p4,
+                                                      Price >= $p5 and Price < $p6,
+                                                      Price >= $p7,
+                                                      sum(UnitsInStock),
+                                                      avg(Price),
+                                                      min(Price),
+                                                      max(MegaPixels),
+                                                      max(MaxFocalLength))")
+                         // Add the parameters for the raw query
+                        .AddParameter("p0", 200.0)
+                        .AddParameter("p1", 200.0)
+                        .AddParameter("p2", 400.0)
+                        .AddParameter("p3", 400.0)
+                        .AddParameter("p4", 600.0)
+                        .AddParameter("p5", 600.0)
+                        .AddParameter("p6", 800.0)
+                        .AddParameter("p7", 800.0)
+                         // Execute the query
+                        .ExecuteAggregation();
+                    #endregion
+                }
 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
@@ -661,6 +733,19 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                          // Pass the ID of the document that contains your facets setup
                         .AggregateUsing("customDocumentID")
                         .Execute();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region facets_24_rawQuery
+                    Dictionary<string, FacetResult> results = session.Advanced
+                         // Query the index
+                         // Provide the RQL string to the RawQuery method
+                        .RawQuery<Camera>(@"from index 'Cameras/ByFeatures'
+                                            select facet(id('customDocumentID'))")
+                         // Execute the query
+                        .ExecuteAggregation();
                     #endregion
                 }
 
