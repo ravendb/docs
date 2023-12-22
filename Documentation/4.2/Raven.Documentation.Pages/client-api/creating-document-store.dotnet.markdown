@@ -61,6 +61,10 @@ the store is disposed of, and use it to call the `Certificate.Dispose()` method.
 
 {CODE certificate_cleanup@ClientApi\CreatingDocumentStore.cs /}  
 
+{NOTE: }
+Note: In RavenDB `6.x` and on certificate cleanup is automatic and the procedure described here is unnecessary.
+{NOTE/}
+
 {PANEL/}
 
 {PANEL: Creating a Document Store - Example}
