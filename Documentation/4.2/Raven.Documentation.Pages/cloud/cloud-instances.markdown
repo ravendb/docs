@@ -53,7 +53,7 @@ but is **not** suitable for production for the following reasons:
 
 * A single-node configuration (no [replication](../server/clustering/replication/replication)).  
 * [Burstable](../cloud/cloud-overview#burstable-instances) CPU usage, suitable for small to medium production loads.  
-  Burstable instances can become throttled if usage excedes allocated resources.  
+  Burstable instances can become throttled if usage exceeds allocated resources.  
 * Lack of [backup](../cloud/cloud-backup-and-restore#cloud-backup) procedure.  
 * No [Service Level Agreement](../cloud/portal/cloud-portal-support-tab#support-entitlement).  
 
