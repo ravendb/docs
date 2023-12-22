@@ -10,6 +10,7 @@ Creating more than one Document Store may be resource intensive, and one instanc
 
 * In this page:  
   * [Creating a Document Store - Configuration](../client-api/creating-document-store#creating-a-document-store---configuration)  
+     * [Certificate Disposal](../client-api/creating-document-store#certificate-disposal)  
   * [Creating a Document Store - Example](../client-api/creating-document-store#creating-a-document-store---example)  
 {NOTE/}
 
@@ -48,6 +49,16 @@ After setting the above configurations as necessary, call `.Initialize()` to beg
 The Document Store is immutable - all above configuration are frozen upon calling .Initialize().  
 Create a new document store object if you need different default configuration values.  
 {WARNING/}
+
+## Certificate Disposal
+
+Starting with RavenDB `6.x`, disposing of a store automatically removes any X509Certificate2 certificate installed for 
+it, to [prevent the accumulation of unneeded certificate files](https://snede.net/the-most-dangerous-constructor-in-net/).  
+
+To **disable** the automatic disposal of certificates, please use the 
+[DisposeCertificate](../client-api/configuration/conventions#disposecertificate) convention.  
+
+{CODE disable_certificate_cleanup@ClientApi\CreatingDocumentStore.cs /}  
 
 {PANEL/}
 

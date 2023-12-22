@@ -118,6 +118,11 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     // The type of HTTP client you are using
                     HttpClientType = typeof(MyHttpClient)
                     #endregion
+                    ,
+                    #region DisposeCertificate
+                    // Disable the automatic disposal of certificates when the store is disposed of
+                    DisposeCertificate = false
+                    #endregion
                 }
             };
             

@@ -25,6 +25,7 @@
    * [WaitForNonStaleResultsTimeout](../../client-api/configuration/conventions#waitfornonstaleresultstimeout)  
    * [CreateHttpClient](../../client-api/configuration/conventions#createhttpclient)  
    * [HttpClientType](../../client-api/configuration/conventions#httpclienttype)  
+   * [DisposeCertificate](../../client-api/configuration/conventions#disposecertificate)  
 
 {PANEL: Client Conventions}
 
@@ -214,6 +215,12 @@ convention to use a non-default HTTP client, we advise that you also
 set `HttpClientType` so it returns the client type you are actually using.  
 {NOTE/}
 
+## DisposeCertificate
+
+Use the `DisposeCertificate` convention to enable or disable the automatic 
+disposal of X509Certificate2 certificates when the store is disposed of.  
+**Default**: `true`  
+{CODE DisposeCertificate@ClientApi\Configuration\Conventions.cs /}
 {PANEL/}
 
 ## Related Articles
