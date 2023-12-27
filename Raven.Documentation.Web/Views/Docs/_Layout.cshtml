@@ -129,8 +129,18 @@
                 $('#search-instead-for span').html('');
             }
         });
-
-
+        document.addEventListener("DOMContentLoaded", function() {
+            Array.prototype.slice.call(document.querySelectorAll("#articleContainer h1, #articleContainer h2, #articleContainer h3, #articleContainer h4, #articleContainer h5")).forEach(function(e) {
+                if (e.getAttribute("id")) {
+                    var t = e.innerHTML;
+                    var r = document.createElement("a");
+                    r.innerHTML = t + " <i class='glyphicon glyphicon-link'></i>";
+                    r.setAttribute("href", "#" + e.getAttribute("id"));
+                    e.innerHTML = '';
+                    e.appendChild(r);
+                }
+            });
+        });
     </script>
 </body>
 </html>
