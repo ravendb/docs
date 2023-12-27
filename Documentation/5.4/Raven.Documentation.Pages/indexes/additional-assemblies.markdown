@@ -4,24 +4,27 @@
 
 {NOTE: }
 
-* Index capabilities can now be expanded by importing whole libraries 
-with useful classes and methods that can then be used in the index syntax. 
-**Additional Assemblies** makes it very easy to import assemblies from:  
-  * **NuGet**  
-  * **Runtime**  
-  * **Local file**  
+* Index capabilities can be expanded by importing whole libraries 
+  with useful classes and methods that can then be used in the index syntax.  
+  **Additional Assemblies** make it very easy to import assemblies from:  
+   * **NuGet**  
+   * **Runtime**  
+   * **Local file**  
 
-* Indexes can be enhanced with capabilities like [machine learning image recognition](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb) or 
-[full text searching in Office files](https://ayende.com/blog/192385-A/ravendb-5-1-features-searching-in-office-documents).  
+* Indexes can be enhanced with capabilities like [machine learning image recognition](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb) 
+  or [full text searching in Office files](https://ayende.com/blog/192385-A/ravendb-5-1-features-searching-in-office-documents).  
 
-* This is similar to the [Additional Sources](../indexes/extending-indexes) feature, 
-through which you can add methods and classes to an index in the form of a file or 
-pure text. These two features can be used together: an index's Additional Sources 
-code has access to all of the index's Additional Assemblies.  
+* This feature is similar to the [Additional Sources](../indexes/extending-indexes) feature, 
+  that can be used to add methods and classes to an index in the form of a file or pure text.  
+  These two features can be used together: an index's Additional Sources code has access to 
+  all of the index's Additional Assemblies.  
 
 * In this page:  
-  * [Syntax](../indexes/additional-assemblies#syntax)
-  * [Examples](../indexes/additional-assemblies#examples)
+   * [Syntax](../indexes/additional-assemblies#syntax)  
+   * [Examples](../indexes/additional-assemblies#examples)  
+       * [Basic Example](../indexes/additional-assemblies#basic-example)
+       * [Complex Example](../indexes/additional-assemblies#complex-example)
+       * [Pre-Release Packages](../indexes/additional-assemblies#pre-release-packages)
 
 {NOTE/}
 
@@ -69,7 +72,7 @@ public HashSet<AdditionalAssembly> AdditionalAssemblies;
 
 {PANEL: Examples}
 
-#### Basic example
+#### Basic Example
 
 This index is able to use the method `GetFileName()` from the class `Path` 
 because the namespace `System.IO` has been imported as an additional assembly. 
@@ -77,13 +80,19 @@ It takes a `string` file path and retrieves just the file name and extension.
 
 {CODE:csharp simple_index@Indexes/AdditionalAssemblies.cs /}
 
-#### Complex example
+#### Complex Example
 
 This index uses a machine learning algorithm imported from NuGet that can 
 recognize the contents of images and classify them with an appropriate tag. 
 These tags are then stored in the index just like any other term.  
 
 {CODE:csharp complex_index@Indexes/AdditionalAssemblies.cs /}
+
+#### Pre-Release Packages
+
+Additional assemblies are allowed to include pre-release packages.
+
+{CODE:csharp prerelease_assembly@Indexes/AdditionalAssemblies.cs /}
 
 {PANEL/}
 
