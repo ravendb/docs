@@ -312,6 +312,11 @@ exists and contains documents, will result in an error.
 Delete all documents from the target collection before creating the index, 
 or output results to a different collection.  
 
+## Modification of Artificial Documents
+Artificial documents can be loaded and queried just like regular documents.  
+However, it is **not** recommended to edit artificial documents manually since 
+any index results update would overwrite all manual modifications made in them.  
+
 ## Map-Reduce Indexes on a Sharded Database
 On a [sharded database](../sharding/overview), the behavior of map-reduce 
 indexes is altered in in a few ways that database operators should be aware of.  

@@ -166,13 +166,17 @@ pattern determines which output documents will be included in each reference doc
 {NOTE: }
 ####  Artificial Documents -vs- Regular Documents  
 
-* Artificial documents are created by the index directly.  
+* Artificial documents are created directly by the index.  
 
-* They behave just like standard documents except for that they are _not_ replicated to other nodes in the database group.  
-  So while loading or querying them is just fine, modifying the content of an artificial document by hand is _not_ recommended, 
-  as the next index results update will overwrite any changes that you have made to the document.  
+* They behave just like standard documents, except that they are _not_ replicated to other nodes in the database group.  
 
 * Artificial documents are updated whenever the index completes indexing a batch of documents.  
+
+{WARNING: }
+While artificial documents can be loaded and queried just like regular documents, it is **not** recommended 
+to edit them manually since any index results update would overwrite all manual modifications made in them.  
+{WARNING/}
+
 {NOTE/}
 
 {NOTE: }

@@ -85,23 +85,34 @@ Artificial documents are stored immediately after the indexing transaction compl
 
 {INFO/}
 
-{WARNING:Recursive indexing loop}
+{WARNING: Recursive indexing loop}
+It is forbidden to output reduce results to a collection when:  
 
-It's forbidden to output reduce results to the collection that:
+- It is a collection that the current index is already working on  
+  (e.g. index on `DailyInvoices` collections outputs to `DailyInvoices`)
+- It is a collection that the current index is loading a document from  
+  (e.g. index has `LoadDocument(id, "Invoices")` outputs to `Invoices`)
+- it is a collection that is processed by another map-reduce index, that 
+  outputs results to a collection that the current index is working on  
+  (e.g. one index indexes the `Invoices` collection and outputs to the 
+  `DailyInvoices` collection, and a second index indexes the `DailyInvoices` 
+  collection and outputs to the `Invoices` collection)
 
-- the current index is already working on (e.g. index on `DailyInvoices` collections outputs to `DailyInvoices`),
-- the current index is loading a document from it (e.g. index has `LoadDocument(id, "Invoices")` outputs to `Invoices`), 
-- it is processed by another map-reduce index that outputs results to a collection that the current index is working on (e.g. one index on `Invoices` collection outputs to `DailyInvoices`, another index on `DailyInvoices` outputs to `Invoices`)
-
-Since that would result in the infinite indexing loop (the index puts an artificial document what triggers the indexing and so on), you will get the detailed error on attempt to create such invalid construction.
-
+The reason these scenarios are forbidden is that they result in infinite 
+indexing loop. Attempting to create such indexes will produce a detailed error.  
 {WARNING/}
 
-{WARNING:Existing collection}
+{WARNING: Output to an Existing collection}
+Creating a map-reduce index which defines an output collection that already 
+exists and contains documents, will result in an error. Please delete all documents
+from the target collection before creating the index or output the results to 
+a different collection.  
+{WARNING/}
 
-Creating a map-reduce index which defines the output collection that already exists and it contains documents will result in an error. You need to delete all documents
-from the relevant collection before creating the index or output the results to a different one.
-
+{WARNING: Modification of Artificial Documents}
+Artificial documents can be loaded and queried just like regular documents.  
+However, it is **not** recommended to edit artificial documents manually since 
+any index results update would overwrite all manual modifications made in them.  
 {WARNING/}
 
 ### Artificial Document IDs

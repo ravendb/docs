@@ -208,32 +208,38 @@ This gives the reference documents IDs in this general format: `sales/daily/1998
 The reference document with that ID contains the IDs of all the output documents from 
 May 6th 1998.  
 
-### Remarks
+## Important Comments
 
-{INFO: Saving documents}
+#### Saving documents
+[Artificial documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents) 
+are stored immediately after the indexing transaction completes.  
 
-Artificial documents are stored immediately after the indexing transaction completes.
+#### Recursive indexing loop
+It is **forbidden** to output reduce results to collections such as the following:  
 
-{INFO/}
+- A collection that the current index is already working on.  
+  E.g., an index on a `DailyInvoices` collection outputs to `DailyInvoices`.  
+- A collection that the current index is loading a document from.  
+  E.g., an index with `LoadDocument(id, "Invoices")` outputs to `Invoices`.  
+- Two collections, each processed by a map-reduce indexes,  
+  when each index outputs to the second collection.  
+  E.g.,  
+  An index on the `Invoices` collection outputs to the `DailyInvoices` collection,  
+  while an index on `DailyInvoices` outputs to `Invoices`.  
 
-{WARNING:Recursive indexing loop}
+When an attempt to create such an infinite indexing loop is 
+detected a detailed error is generated.  
 
-It's forbidden to output reduce results to the collection that:
+#### Output to an Existing collection
+Creating a map-reduce index which defines an output collection that already 
+exists and contains documents, will result in an error.  
+Delete all documents from the target collection before creating the index, 
+or output results to a different collection.  
 
-- the current index is already working on (e.g. index on `DailyInvoices` collections outputs to `DailyInvoices`),
-- the current index is loading a document from it (e.g. index has `LoadDocument(id, "Invoices")` outputs to `Invoices`), 
-- it is processed by another map-reduce index that outputs results to a collection that the current index is working on (e.g. one index on `Invoices` collection outputs to `DailyInvoices`, another index on `DailyInvoices` outputs to `Invoices`)
-
-Since that would result in the infinite indexing loop (the index puts an artificial document that triggers the indexing and so on), you will get the detailed error on attempt to create such invalid construction.
-
-{WARNING/}
-
-{WARNING:Existing collection}
-
-Creating a map-reduce index which defines the output collection that already exists and it contains documents will result in an error. You need to delete all documents
-from the relevant collection before creating the index or output the results to a different one.
-
-{WARNING/}
+#### Modification of Artificial Documents
+Artificial documents can be loaded and queried just like regular documents.  
+However, it is **not** recommended to edit artificial documents manually since 
+any index results update would overwrite all manual modifications made in them.  
 
 {PANEL/}
 
