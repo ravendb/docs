@@ -1,16 +1,17 @@
-# How to Check if Session has Changed
+# How to Check for Session Changes
 
-Single entity can be checked for changes using [hasChanged](../../../client-api/session/how-to/check-if-entity-has-changed) method, but there is also a possibility to check if there are any changes on a session or even what has changed. Both the `hasChanges`  method and the `whatChanged` method are available in the `advanced` session operations.
+Single entity can be checked for changes using [hasChanged](../../../client-api/session/how-to/check-if-entity-has-changed) method, but there is also a possibility to check if there are any changes on a session or even what has changed. 
+Both the `hasChanges`  method and the `whatChanged` method are available in the `advanced` session operations.
 
 {PANEL:HasChanges}
 
 Property indicates if the session contains any changes. If there are any new, changed or deleted entities.
 
-{CODE:java what_changed_1@ClientApi\Session\HowTo\WhatChanged.java /}
+{CODE:java what_changed_1@ClientApi\Session\HowTo\SessionChanges.java /}
 
 ### Example
 
-{CODE:java what_changed_2@ClientApi\Session\HowTo\WhatChanged.java /}
+{CODE:java what_changed_2@ClientApi\Session\HowTo\SessionChanges.java /}
 
 {PANEL/}
 
@@ -18,7 +19,7 @@ Property indicates if the session contains any changes. If there are any new, ch
 
 Method returns all changes for each entity stored within the session. Including name of the field/property that changed, its old and new value, and change type. 
 
-{CODE:java what_changed_3@ClientApi\Session\HowTo\WhatChanged.java /}
+{CODE:java what_changed_3@ClientApi\Session\HowTo\SessionChanges.java /}
 
 | ReturnValue | |
 | ------------- | ----- |
@@ -26,11 +27,11 @@ Method returns all changes for each entity stored within the session. Including 
 
 ### Example I
 
-{CODE:java what_changed_4@ClientApi\Session\HowTo\WhatChanged.java /}
+{CODE:java what_changed_4@ClientApi\Session\HowTo\SessionChanges.java /}
 
 ### Example II
 
-{CODE:java what_changed_5@ClientApi\Session\HowTo\WhatChanged.java /}
+{CODE:java what_changed_5@ClientApi\Session\HowTo\SessionChanges.java /}
 
 {PANEL/}
 

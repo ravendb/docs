@@ -1,10 +1,10 @@
-# How to Check if Entity has Changed
+# How to Check for Entity Changes
 
 To check if a specific entity differs from the one downloaded from server, the `HasChanged` method from the `Advanced` session operations can be used.
 
 ## Syntax
 
-{CODE has_changed_1@ClientApi\Session\HowTo\HasChanged.cs /}
+{CODE has_changed_1@ClientApi\Session\HowTo\EntityChanges.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -16,7 +16,7 @@ To check if a specific entity differs from the one downloaded from server, the `
 
 ## Example
 
-{CODE has_changed_2@ClientApi\Session\HowTo\HasChanged.cs /}
+{CODE has_changed_2@ClientApi\Session\HowTo\EntityChanges.cs /}
 
 ## Related Articles
 

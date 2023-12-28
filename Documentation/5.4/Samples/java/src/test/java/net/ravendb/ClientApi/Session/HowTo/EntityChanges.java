@@ -4,7 +4,7 @@ import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
 import net.ravendb.client.documents.session.IDocumentSession;
 
-public class HasChanged {
+public class EntityChanges {
     private interface IFoo {
         //region has_changed_1
         boolean hasChanged(Object entity)

@@ -9,7 +9,7 @@ import org.junit.Assert;
 import java.util.List;
 import java.util.Map;
 
-public class WhatChanged {
+public class SessionChanges {
 
     private static class Employee {
         private String firstName;

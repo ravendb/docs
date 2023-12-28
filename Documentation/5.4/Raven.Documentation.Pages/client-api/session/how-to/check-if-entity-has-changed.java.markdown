@@ -1,10 +1,10 @@
-# How to Check if Entity has Changed
+# How to Check for Entity Changes
 
 To check if a specific entity differs from the one downloaded from server, the `hasChanged` method from the `advanced` session operations can be used.
 
 ## Syntax
 
-{CODE:java has_changed_1@ClientApi\Session\HowTo\HasChanged.java /}
+{CODE:java has_changed_1@ClientApi\Session\HowTo\EntityChanges.java /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -16,7 +16,7 @@ To check if a specific entity differs from the one downloaded from server, the `
 
 ## Example
 
-{CODE:java has_changed_2@ClientApi\Session\HowTo\HasChanged.java /}
+{CODE:java has_changed_2@ClientApi\Session\HowTo\EntityChanges.java /}
 
 ## Related Articles
 

@@ -3,7 +3,7 @@ using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 {
-    public class HasChanged
+    public class EntityChanges
 	{
 		private interface IFoo
 		{
@@ -12,7 +12,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 			#endregion
 		}
 
-		public HasChanged()
+		public EntityChanges()
 		{
 			using (var store = new DocumentStore())
 			{

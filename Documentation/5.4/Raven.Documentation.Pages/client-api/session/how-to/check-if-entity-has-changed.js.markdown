@@ -1,10 +1,10 @@
-# How to Check if Entity has Changed
+# How to Check for Entity Changes
 
 To check if a specific entity differs from the one downloaded from server, the `hasChanged()` method from the `advanced` session operations can be used.
 
 ## Syntax
 
-{CODE:nodejs has_changed_1@client-api\session\howTo\hasChanged.js /}
+{CODE:nodejs has_changed_1@client-api\session\howTo\entityChanges.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -16,7 +16,7 @@ To check if a specific entity differs from the one downloaded from server, the `
 
 ## Example
 
-{CODE:nodejs has_changed_2@client-api\session\howTo\hasChanged.js /}
+{CODE:nodejs has_changed_2@client-api\session\howTo\entityChanges.js /}
 
 ## Related Articles
 

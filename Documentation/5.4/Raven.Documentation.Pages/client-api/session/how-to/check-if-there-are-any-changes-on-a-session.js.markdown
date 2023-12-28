@@ -1,4 +1,4 @@
-# How to Check if Session has Changed
+# How to Check for Session Changes
 
 Single entity can be checked for changes using [hasChanged()](../../../client-api/session/how-to/check-if-entity-has-changed) method, but there is also a possibility to check if there are any changes on a session or even what has changed. Both the `hasChanges()`  method and the `whatChanged()` method are available in the `advanced` session operations.
 
@@ -6,11 +6,11 @@ Single entity can be checked for changes using [hasChanged()](../../../client-ap
 
 Property indicates if the session contains any changes. If there are any new, changed or deleted entities.
 
-{CODE:nodejs what_changed_1@client-api\session\howTo\whatChanged.js /}
+{CODE:nodejs what_changed_1@client-api\session\howTo\sessionChanges.js /}
 
 ### Example
 
-{CODE:nodejs what_changed_2@client-api\session\howTo\whatChanged.js /}
+{CODE:nodejs what_changed_2@client-api\session\howTo\sessionChanges.js /}
 
 {PANEL/}
 
@@ -18,7 +18,7 @@ Property indicates if the session contains any changes. If there are any new, ch
 
 Method returns all changes for each entity stored within the session. Including name of the field/property that changed, its old and new value, and change type. 
 
-{CODE:nodejs what_changed_3@client-api\session\howTo\whatChanged.js /}
+{CODE:nodejs what_changed_3@client-api\session\howTo\sessionChanges.js /}
 
 | ReturnValue | |
 | ------------- | ----- |
@@ -26,11 +26,11 @@ Method returns all changes for each entity stored within the session. Including 
 
 ### Example I
 
-{CODE:nodejs what_changed_4@client-api\session\howTo\whatChanged.js /}
+{CODE:nodejs what_changed_4@client-api\session\howTo\sessionChanges.js /}
 
 ### Example II
 
-{CODE:nodejs what_changed_5@client-api\session\howTo\whatChanged.js /}
+{CODE:nodejs what_changed_5@client-api\session\howTo\sessionChanges.js /}
 
 {PANEL/}
 
