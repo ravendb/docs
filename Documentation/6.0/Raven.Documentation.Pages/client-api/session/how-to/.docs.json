@@ -87,15 +87,15 @@
         "Mappings": []
     },
     {
-        "Path": "check-if-entity-has-changed.markdown",
-        "Name": "...check if entity has changed",
-        "DiscussionId": "dc75b1fa-a46e-4510-b3d0-c9427b14d6b4",
+        "Path": "check-if-there-are-any-changes-on-a-session.markdown",
+        "Name": "...check if session has changed",
+        "DiscussionId": "6f635289-6344-4099-b5d0-42e8cb4b2eaf",
         "Mappings": []
     },
     {
-        "Path": "check-if-there-are-any-changes-on-a-session.markdown",
-        "Name": "...check if there are any changes on a session",
-        "DiscussionId": "6f635289-6344-4099-b5d0-42e8cb4b2eaf",
+        "Path": "check-if-entity-has-changed.markdown",
+        "Name": "...check if entity has changed",
+        "DiscussionId": "dc75b1fa-a46e-4510-b3d0-c9427b14d6b4",
         "Mappings": []
     },
     {
