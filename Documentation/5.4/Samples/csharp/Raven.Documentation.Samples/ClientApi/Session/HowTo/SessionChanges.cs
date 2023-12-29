@@ -13,7 +13,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
             using (var store = new DocumentStore())
             {
                 #region changes_1
-                using (IDocumentSession session = store.OpenSession())
+                using (var session = store.OpenSession())
                 {
                     // No changes made yet - 'HasChanges' will be FALSE 
                     Assert.False(session.Advanced.HasChanges);
@@ -31,7 +31,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                 #endregion
 
                 #region changes_2
-                using (IDocumentSession session = store.OpenSession())
+                using (var session = store.OpenSession())
                 {
                     // Store (add) new entities, they will be tracked by the session
                     session.Store(new Employee { FirstName = "John", LastName = "Doe" }, "employees/1-A");
@@ -54,7 +54,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                 #endregion
 
                 #region changes_3
-                using (IDocumentSession session = store.OpenSession())
+                using (var session = store.OpenSession())
                 {
                     // Load entities, they will be tracked by the session
                     Employee employee1 = session.Load<Employee>("employees/1-A");

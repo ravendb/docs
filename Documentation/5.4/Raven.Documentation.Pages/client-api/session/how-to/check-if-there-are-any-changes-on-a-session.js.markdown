@@ -7,18 +7,18 @@
   and persists to the server only what is needed when `saveChanges()` is called.
 
 * This article describes how to check for changes made to all tracked entities within the __session__.  
-  To check for changes on a specific __entity__ see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
+  To check for changes on a specific __entity__, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
 
 * In this page:
-    * [Check for Session Changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#check-for-session-changes)
-    * [Get Session Changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes)
+    * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#check-for-session-changes)
+    * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes)
     * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL: Check for Session Changes}
+{PANEL: Check for session changes}
 
 * The session's advanced property `hasChanges` indicates whether any entities were added, modified, or deleted within the session.
 
@@ -30,7 +30,7 @@
 
 {PANEL/}
 
-{PANEL: Get Session Changes}
+{PANEL: Get session changes}
 
 * Use the session's advanced method `whatChanged()` to get all changes made to all the entities tracked by the session.
 
