@@ -18,7 +18,7 @@
 
 ---
 
-{PANEL: Check for Session Changes}
+{PANEL: Check for Session Changes }
 
 * The session's advanced property `HasChanges` indicates whether any entities were added, modified, or deleted within the session.
 
@@ -30,12 +30,14 @@
 
 {PANEL/}
 
-{PANEL: Get Session Changes}
+{PANEL: Get Session Changes }
 
 * Use the session's advanced method `WhatChanged()` to get all changes made to all the entities tracked by the session.
 
-* For each entity that was modified, the details will include the name of the changed field, its old and new values,  
-  and the type of change.
+* For each entity that was modified, the details will include:  
+  * The name and path of the changed field   
+  * Its old and new values  
+  * The type of change  
 
 ---
 
@@ -54,9 +56,10 @@
 {CODE syntax_1@ClientApi\Session\HowTo\SessionChanges.cs /}
 {CODE syntax_2@ClientApi\Session\HowTo\SessionChanges.cs /}
 
-| ReturnValue                               |                                                        |
-|-------------------------------------------|--------------------------------------------------------|
-| `IDictionary<string, DocumentsChanges[]>` | Dictionary containing list of changes per document ID. |
+| ReturnValue                               |                                                       |
+|-------------------------------------------|-------------------------------------------------------|
+| `IDictionary<string, DocumentsChanges[]>` | Dictionary containing list of changes per document ID |
+
 {CODE syntax_3@ClientApi\Session\HowTo\SessionChanges.cs /}
 
 {PANEL/}
@@ -65,7 +68,7 @@
 
 ### Session
 
-- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
-- [How to Check if Entity has Changed](../../../client-api/session/how-to/check-if-entity-has-changed)
-- [Evict Entity From a Session](../../../client-api/session/how-to/evict-entity-from-a-session)
-- [Refresh Entity](../../../client-api/session/how-to/refresh-entity)
+- [What is a session and how does it work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed)
+- [Evict entity from session](../../../client-api/session/how-to/evict-entity-from-a-session)
+- [Refresh entity](../../../client-api/session/how-to/refresh-entity)

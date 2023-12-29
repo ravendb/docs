@@ -43,7 +43,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                     
                     // Get the change details for an entity, specify the entity ID
                     DocumentsChanges[] changesForEmployee = changes["employees/1-A"];
-                    Assert.Equal(changesForEmployee.Length, 1); // a single change (adding the entity)
+                    Assert.Equal(changesForEmployee.Length, 1); // a single change for this entity (adding)
                     
                     // Get the change type
                     DocumentsChanges.ChangeType changeType = changesForEmployee[0].Change;
@@ -96,10 +96,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
         public interface IFoo
         {
             #region syntax_1
+            // HasChanges
             bool HasChanges { get; }
             #endregion
 
             #region syntax_2
+            // WhatChanged
             IDictionary<string, DocumentsChanges[]> WhatChanged();
             #endregion
         }
