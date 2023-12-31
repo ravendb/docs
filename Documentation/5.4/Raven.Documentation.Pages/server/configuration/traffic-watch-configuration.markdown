@@ -10,7 +10,6 @@ Traffic Watch logging mode.
 
 Possible values:
 
-- `None`
 - `Off`
 - `TologFile`
 
