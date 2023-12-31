@@ -39,11 +39,11 @@
 * Using the session, perform needed operations on your documents.  
   e.g. create a new document, modify an existing document, query for documents, etc.  
 * Any such operation '*loads*' the document as an entity to the Session,  
-  and it is added to the __Session's entities map__.
+  and the entity is added to the __session's entities map__.  
 * The session **tracks all changes** made to all entities stored in its internal map.  
-  You don't need to manually track the changes to these entities and decide what needs to be saved and what doesn't.  
-  The session will do it for you.  
-* All these tracked changes are combined & persisted in the database only when calling `saveChanges()`.  
+  You don't need to manually track the changes and decide what needs to be saved and what doesn't, the session will do it for you.  
+  Prior to saving, you can review the changes made if necessary. See: [Check for session changes](../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session).
+* All the tracked changes are combined & persisted in the database only when calling `saveChanges()`.  
 * Entity tracking can be disabled if needed. See:
     * [Disable entity tracking](../../client-api/session/configuration/how-to-disable-tracking)
     * [Clear session](../../client-api/session/how-to/clear-a-session)
