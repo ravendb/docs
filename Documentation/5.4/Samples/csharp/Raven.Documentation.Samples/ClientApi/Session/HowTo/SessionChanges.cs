@@ -56,7 +56,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                 #region changes_3
                 using (var session = store.OpenSession())
                 {
-                    // Load entities, they will be tracked by the session
+                    // Load the entities, they will be tracked by the session
                     Employee employee1 = session.Load<Employee>("employees/1-A");
                     Employee employee2 = session.Load<Employee>("employees/2-A");
                     
@@ -74,9 +74,9 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                     // Get the change details for an entity, specify the entity ID
                     DocumentsChanges[] changesForEmployee = changes["employees/1-A"];
                     
-                    Assert.Equal(changesForEmployee[0].FieldName, "FirstName");
-                    Assert.Equal(changesForEmployee[0].FieldNewValue, "Jim");
-                    Assert.Equal(changesForEmployee[0].Change, DocumentsChanges.ChangeType.FieldChanged);
+                    Assert.Equal(changesForEmployee[0].FieldName, "FirstName");                           // Field name
+                    Assert.Equal(changesForEmployee[0].FieldNewValue, "Jim");                             // New value
+                    Assert.Equal(changesForEmployee[0].Change, DocumentsChanges.ChangeType.FieldChanged); // Change type
                     
                     Assert.Equal(changesForEmployee[1].FieldName, "LastName");
                     Assert.Equal(changesForEmployee[1].FieldNewValue, "Brown");

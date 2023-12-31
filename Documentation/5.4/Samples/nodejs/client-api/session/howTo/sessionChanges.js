@@ -62,7 +62,7 @@ async function example() {
         //region changes_3
         const session = store.openSession();
 
-        // Load entities, they will be tracked by the session
+        // Load the entities, they will be tracked by the session
         const employee1 = await session.load("employees/1-A");
         const employee2 = await session.load("employees/2-A");
 
@@ -80,9 +80,9 @@ async function example() {
         // Get the change details for an entity, specify the entity ID
         let changesForEmployee = changes["employees/1-A"];
 
-        assert.equal(changesForEmployee[0].fieldName, "firstName");
-        assert.equal(changesForEmployee[0].fieldNewValue, "Jim");
-        assert.equal(changesForEmployee[0].change, "FieldChanged");
+        assert.equal(changesForEmployee[0].fieldName, "firstName");  // Field name
+        assert.equal(changesForEmployee[0].fieldNewValue, "Jim");    // New value
+        assert.equal(changesForEmployee[0].change, "FieldChanged");  // Change type
 
         assert.equal(changesForEmployee[1].fieldName, "lastName");
         assert.equal(changesForEmployee[1].fieldNewValue, "Brown");
