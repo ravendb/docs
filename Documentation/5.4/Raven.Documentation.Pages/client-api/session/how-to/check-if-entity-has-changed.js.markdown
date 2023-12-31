@@ -1,28 +1,45 @@
 # How to Check for Entity Changes
+---
 
-To check if a specific entity differs from the one downloaded from server, the `hasChanged()` method from the `advanced` session operations can be used.
+{NOTE: }
 
-## Syntax
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) made to all entities that it has either loaded, stored, or queried for,  
+  and persists to the server only what is needed when `saveChanges()` is called.
 
-{CODE:nodejs has_changed_1@client-api\session\howTo\entityChanges.js /}
+* This article describes how to check for changes made to a specific __entity__ within a session.  
+  To check for changes on all tracked entities, see [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session).
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | object | Entity for which changes will be checked. |
+* In this page:
+    * [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed#check-for-entity-changes)
+    * [Syntax](../../../client-api/session/how-to/check-if-entity-has-changed#syntax)
 
-| Return Value | |
-| ------------- | ----- |
-| boolean | Indicates whether given entity has changed. |
+{NOTE/}
 
-## Example
+---
 
-{CODE:nodejs has_changed_2@client-api\session\howTo\entityChanges.js /}
+{PANEL: Check for entity changes }
+
+* The session's advanced property `hasChanged` indicates whether the specified entity was added, modified, or deleted within the session.
+
+* Note: The _hasChanged_ property is cleared after calling `saveChanges()`.
+
+---
+
+{CODE:nodejs changes_1@client-api\session\howTo\entityChanges.js /}
+
+{PANEL/}
+
+{PANEL: Syntax}
+
+{CODE:nodejs syntax_1@client-api\session\howTo\entityChanges.js /}
+
+{PANEL/}
 
 ## Related Articles
 
 ### Session
 
-- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
-- [How to Check if There are Any Changes on a Session](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session)
-- [Evict Entity From a Session](../../../client-api/session/how-to/evict-entity-from-a-session)
-- [Refresh Entity](../../../client-api/session/how-to/refresh-entity)
+- [What is a session and how does it work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session)
+- [Evict entity from session](../../../client-api/session/how-to/evict-entity-from-a-session)
+- [Refresh entity](../../../client-api/session/how-to/refresh-entity)
