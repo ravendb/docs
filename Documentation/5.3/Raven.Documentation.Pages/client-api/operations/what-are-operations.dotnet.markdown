@@ -28,12 +28,16 @@
 
 {PANEL: Why use operations}
 
-* Operations provide __management functionality__ that is Not available in the context of the session, e.g.:  
-  create/delete a database, execute administrative tasks, assign permissions, change server configuration, etc.
+* Operations provide __management functionality__ that is Not available in the context of the session, for example:
+    * Create/delete a database
+    * Execute administrative tasks
+    * Assign permissions
+    * Change server configuration, and more.
 
-* Some operations (e.g. _PatchOperation_) can also be carried out via the session (e.g. _session.Advanced.Patch()_).  
-  However, while a session wraps multiple actions into a single business transaction,  
-  the operation is an __individual action__ that is Not part of the session transaction.
+* The operations are executed on the DocumentStore and are Not part of the session transaction.
+
+* There are some client tasks, such as patching documents, that can be carried out either via the Session ([session.Advanced.Patch()](../../client-api/operations/patching/single-document#array-manipulation))
+  or via an Operation on the DocumentStore ([PatchOperation](../../client-api/operations/patching/single-document#operations-api)).
 
 {PANEL/}
 
