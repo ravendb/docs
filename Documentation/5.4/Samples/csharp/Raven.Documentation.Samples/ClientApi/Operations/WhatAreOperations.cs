@@ -166,10 +166,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             
             // Call 'Kill' to abort operation
             operation.Kill();
-            
-            // Assert that operation is no longer running
-            Assert.Throws<TaskCanceledException>(() => 
-                operation.WaitForCompletion(TimeSpan.FromSeconds(30)));
             #endregion
         }
         

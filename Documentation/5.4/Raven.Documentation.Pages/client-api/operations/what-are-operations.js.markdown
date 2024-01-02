@@ -15,12 +15,14 @@
 * In this page:  
   * [Why use operations](../../client-api/operations/what-are-operations#why-use-operations)  
   * [How operations work](../../client-api/operations/what-are-operations#how-operations-work)  
-<br>
+  <br>
   * __Operation types__: 
       * [Common operations](../../client-api/operations/what-are-operations#common-operations)  
       * [Maintenance operations](../../client-api/operations/what-are-operations#maintenance-operations)  
       * [Server-maintenance operations](../../client-api/operations/what-are-operations#server-maintenance-operations)  
-  * [Wait for completion](../../client-api/operations/what-are-operations#wait-for-completion)  
+  * [Manage lengthy operations](../../client-api/operations/what-are-operations#manage-lengthy-operations)
+      * [Wait for completion](../../client-api/operations/what-are-operations#waitForCompletion)
+      * [Kill operation](../../client-api/operations/what-are-operations#killOperation)
 
 {NOTE/}
 
@@ -380,20 +382,39 @@ __Send syntax__:
 {NOTE/}
 {PANEL/}
 
-{PANEL: Wait for completion}
+{PANEL: Manage lengthy operations}
 
-* Some operations may take a long time to complete.  
-  Those operations will run in the server background and can be awaited for completion.  
-* Those operations implement an interface with result type `OperationIdResult`.  
-* For those operations, the `send` method returns a promise for an object that can be awaited on that Id.  
+* Some operations that run in the server background may take a long time to complete.
 
-__Example__:  
+* For Operations that implement an interface with type `OperationIdResult`,  
+  executing the operation via the `send` method will return a promise for `OperationCompletionAwaiter` object,  
+  which can then be __awaited for completion__ or __aborted (killed)__.
+
+---
+
+{NOTE: }
+
+<a id="waitForCompletion" /> __Wait for completion__:
 
 {CODE:nodejs wait_ex@client-api\operations\whatAreOperations.js /}
 
-__Syntax__:
+{NOTE/}
 
-{CODE:nodejs waitForCompletion_syntax@client-api\operations\whatAreOperations.js /}
+{NOTE: }
+
+<a id="killOperation" /> __Kill operation__:
+
+{CODE:nodejs kill_ex@client-api\operations\whatAreOperations.js /}
+
+{NOTE/}
+
+{NOTE: }
+
+##### Syntax:
+
+{CODE:nodejs wait_kill_syntax@client-api\operations\whatAreOperations.js /}
+
+{NOTE/}
 
 {PANEL/}
 

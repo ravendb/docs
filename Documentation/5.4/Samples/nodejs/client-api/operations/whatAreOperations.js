@@ -41,15 +41,28 @@ async function operations() {
 
     //region wait_ex
     // Define operation, e.g. delete all discontinued products 
-    // Note: This operation implements: 'IOperation<OperationIdResult>'
+    // Note: This operation implements interface: 'IOperation<OperationIdResult>'
     const deleteByQueryOp = new DeleteByQueryOperation("from Products where Discontinued = true");
 
     // Execute the operation
     // 'send' returns an object that can be awaited on
     const asyncOperation = await documentStore.operations.send(deleteByQueryOp);
 
-    // Call method 'waitForCompletion' to wait for operation completion 
+    // Call method 'waitForCompletion' to wait for the operation to complete 
     await asyncOperation.waitForCompletion();
+    //endregion
+
+    //region kill_ex
+    // Define operation, e.g. delete all discontinued products 
+    // Note: This operation implements interface: 'IOperation<OperationIdResult>'
+    const deleteByQueryOp = new DeleteByQueryOperation("from Products where Discontinued = true");
+
+    // Execute the operation
+    // 'send' returns an object that can be 'killed'
+    const asyncOperation = await documentStore.operations.send(deleteByQueryOp);
+
+    // Call method 'kill' to abort operation
+    await asyncOperation.kill();
     //endregion
 }
 
@@ -73,7 +86,8 @@ async function operations() {
     await send(operation);
     //endregion
 
-    //region waitForCompletion_syntax
+    //region wait_kill_syntax
     await waitForCompletion();
+    await kill()
     //endregion
 }

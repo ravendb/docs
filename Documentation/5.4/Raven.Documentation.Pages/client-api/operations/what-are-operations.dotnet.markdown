@@ -453,9 +453,9 @@ __Send syntax__:
 
 {CODE kill_syntax@ClientApi\Operations\WhatAreOperations.cs /}
 
-| Parameter   | Type                | Description                                                     |
-|-------------|---------------------|-----------------------------------------------------------------|
-| __token__   | `CancellationToken` | Provide a cancellation token if needed to abort the Kill method |
+| Parameter   | Type                | Description                                                          |
+|-------------|---------------------|----------------------------------------------------------------------|
+| __token__   | `CancellationToken` | Provide a cancellation token if needed to abort the KillAsync method |
 
 {NOTE/}
 {PANEL/}
