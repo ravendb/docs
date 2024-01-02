@@ -19,8 +19,10 @@
   * __Operation types__: 
       * [Common operations](../../client-api/operations/what-are-operations#common-operations)  
       * [Maintenance operations](../../client-api/operations/what-are-operations#maintenance-operations)  
-      * [Server-maintenance operations](../../client-api/operations/what-are-operations#server-maintenance-operations)  
-  * [Wait for completion](../../client-api/operations/what-are-operations#wait-for-completion)  
+      * [Server-maintenance operations](../../client-api/operations/what-are-operations#server-maintenance-operations)
+  * [Manage lengthy operations](../../client-api/operations/what-are-operations#manage-lengthy-operations)
+      * [Wait for completion](../../client-api/operations/what-are-operations#waitForCompletion)  
+      * [Kill operation](../../client-api/operations/what-are-operations#killOperation)  
 
 {NOTE/}
 
@@ -399,35 +401,63 @@ __Send syntax__:
 {NOTE/}
 {PANEL/}
 
-{PANEL: Wait for completion}
+{PANEL: Manage lengthy operations}
 
-* Some operations may take a long time to complete.  
-  Those operations will run in the server background and can be awaited for completion.  
-* The response of the inner 'RavenCommand' class for such operations is `OperationIdResult`.  
-* For those operations, the `Send` method will return an `Operation` object that allows waiting on that operation Id.  
+* Some operations that run in the server background may take a long time to complete.  
 
-__Example__:  
+* For Operations that implement an interface with type `OperationIdResult`,  
+  executing the operation via the `Send` method will return an `Operation` object,  
+  which can be __awaited for completion__ or __aborted (killed)__.  
+
+---
+
+{NOTE: }
+
+<a id="waitForCompletion" /> __Wait for completion__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync wait_ex@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TAB:csharp:Async wait_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:With_Timeout wait_timeout_ex@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:With_Timout_async wait_timeout_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:With_CancellationToken wait_token_ex@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:With_CancellationToken_async wait_token_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
 
-__Syntax__:
+##### Syntax:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync waitForCompletion_syntax@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async waitForCompletion_syntax_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
 
-| Parameters | Type | Description |
-| - | - | - |
-| __timeout__ | `TimeSpan` | <ul><li> __When timespan is specified__ - <br>server throws an error if operation has Not completed within the specified time frame. No rollback action will take place.</li><li>`null` - <br>WaitForCompletion will wait for operation to complete forever.</li></ul> |
+| Parameter   | Type                | Description                                                                                                                                                                                                                                                                                                                                           |
+|-------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __timeout__ | `TimeSpan`          | <ul><li> __When timespan is specified__ - <br>The server will throw a `TimeoutException` if operation has Not completed within the specified time frame.<br>The operation itself continues to run in the background,<br>no rollback action takes place.</li><li>`null` - <br>WaitForCompletion will wait for operation to complete forever.</li></ul> |
+| __token__   | `CancellationToken` | <ul><li> __When cancellation token is specified__ - <br>The server will throw a `TimeoutException` if operation has Not completed at cancellation time.<br>The operation itself continues to run in the background,<br>no rollback action takes place.</li></ul>                                                                                      |
 
-| Return type | |
-| - | - |
+| Return type        |                               |
+|--------------------|-------------------------------|
 | `IOperationResult` | The operation result content. |
 
+{NOTE/}
+
+{NOTE: }
+
+<a id="killOperation" /> __Kill operation__:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Kill kill_ex@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:Kill_async kill_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TABS/}
+
+##### Syntax:
+
+{CODE kill_syntax@ClientApi\Operations\WhatAreOperations.cs /}
+
+| Parameter   | Type                | Description                                                     |
+|-------------|---------------------|-----------------------------------------------------------------|
+| __token__   | `CancellationToken` | Provide a cancellation token if needed to abort the Kill method |
+
+{NOTE/}
 {PANEL/}
 
 ## Related articles

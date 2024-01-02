@@ -104,7 +104,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             };
 
             #region operations_ex
-            // Define operation, e.g.. get all counters info for a document
+            // Define operation, e.g. get all counters info for a document
             IOperation<CountersDetail> getCountersOp = new GetCountersOperation("products/1-A");
             
             // Execute the operation by passing the operation to Operations.Send

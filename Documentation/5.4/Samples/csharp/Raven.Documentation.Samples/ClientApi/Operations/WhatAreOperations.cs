@@ -8,6 +8,7 @@ using Raven.Client.Documents.Operations.Counters;
 using Raven.Client.Documents.Operations.Indexes;
 using Raven.Client.Documents.Session;
 using Raven.Client.ServerWide.Operations;
+using Xunit;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations
 {
@@ -78,8 +79,11 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             #region waitForCompletion_syntax
             // Available overloads:
             public IOperationResult WaitForCompletion(TimeSpan? timeout = null)
+            public IOperationResult WaitForCompletion(CancellationToken token)
             
             public TResult WaitForCompletion<TResult>(TimeSpan? timeout = null)
+                where TResult : IOperationResult
+            public TResult WaitForCompletion<TResult>(CancellationToken token)
                 where TResult : IOperationResult
             #endregion
             */
@@ -88,9 +92,20 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             #region waitForCompletion_syntax_async
             // Available overloads:
             public Task<IOperationResult> WaitForCompletionAsync(TimeSpan? timeout = null)
+            public Task<IOperationResult> WaitForCompletionAsync(CancellationToken token)
             
             public async Task<TResult> WaitForCompletionAsync<TResult>(TimeSpan? timeout = null)
                 where TResult : IOperationResult
+            public async Task<TResult> WaitForCompletionAsync<TResult>(CancellationToken token)
+                where TResult : IOperationResult    
+            #endregion
+            */
+            
+            /*
+            #region kill_syntax
+            // Available overloads:
+            public void Kill()
+            public async Task KillAsync(CancellationToken token = default)
             #endregion
             */
         }
@@ -104,7 +119,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             };
 
             #region operations_ex
-            // Define operation, e.g.. get all counters info for a document
+            // Define operation, e.g. get all counters info for a document
             IOperation<CountersDetail> getCountersOp = new GetCountersOperation("products/1-A");
             
             // Execute the operation by passing the operation to Operations.Send
@@ -139,9 +154,32 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             int version = buildNumberResult.BuildVersion;
             #endregion
             
-            #region wait_ex
+            #region kill_ex
             // Define operation, e.g. delete all discontinued products 
-            // Note: This operation implements: 'IOperation<OperationIdResult>'
+            // Note: This operation implements interface: 'IOperation<OperationIdResult>'
+            IOperation<OperationIdResult> deleteByQueryOp =
+                new DeleteByQueryOperation("from Products where Discontinued = true");
+                
+            // Execute the operation
+            // Send returns an 'Operation' object that can be 'killed'
+            Operation operation = documentStore.Operations.Send(deleteByQueryOp);
+            
+            // Call 'Kill' to abort operation
+            operation.Kill();
+            
+            // Assert that operation is no longer running
+            Assert.Throws<TaskCanceledException>(() => 
+                operation.WaitForCompletion(TimeSpan.FromSeconds(30)));
+            #endregion
+        }
+        
+        #region wait_timeout_ex
+        public void WaitForCompletionWithTimout(
+            TimeSpan timeout,
+            DocumentStore documentStore)
+        {
+            // Define operation, e.g. delete all discontinued products 
+            // Note: This operation implements interface: 'IOperation<OperationIdResult>'
             IOperation<OperationIdResult> deleteByQueryOp =
                 new DeleteByQueryOperation("from Products where Discontinued = true");
                 
@@ -149,14 +187,54 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             // Send returns an 'Operation' object that can be awaited on
             Operation operation = documentStore.Operations.Send(deleteByQueryOp);
             
-            // Call method 'WaitForCompletion' to wait for operation completion 
-            BulkOperationResult result = (BulkOperationResult)operation.WaitForCompletion(TimeSpan.FromMinutes(2));
-            
-            // Access the operation result
-            long numberOfItemsDeleted = result.Total;
-            #endregion
+            try
+            {
+                // Call method 'WaitForCompletion' to wait for the operation to complete.
+                // If a timeout is specified, the method will only wait for the specified time frame.
+                BulkOperationResult result =
+                    (BulkOperationResult)operation.WaitForCompletion(timeout);
+                
+                // The operation has finished within the specified timeframe
+                long numberOfItemsDeleted = result.Total; // Access the operation result
+            }
+            catch (TimeoutException e)
+            {
+                // The operation did Not finish within the specified timeframe
+            }
         }
-        
+        #endregion
+
+        #region wait_token_ex
+        public void WaitForCompletionWithCancellationToken(
+            CancellationToken token,
+            DocumentStore documentStore)
+        {
+            // Define operation, e.g. delete all discontinued products 
+            // Note: This operation implements interface: 'IOperation<OperationIdResult>'
+            IOperation<OperationIdResult> deleteByQueryOp =
+                new DeleteByQueryOperation("from Products where Discontinued = true");
+                    
+            // Execute the operation
+            // Send returns an 'Operation' object that can be awaited on
+            Operation operation = documentStore.Operations.Send(deleteByQueryOp);
+            
+            try
+            {
+                // Call method 'WaitForCompletion' to wait for the operation to complete.
+                // Pass a CancellationToken in order to stop waiting upon a cancellation request.
+                BulkOperationResult result =
+                    (BulkOperationResult)operation.WaitForCompletion(token);
+                
+                // The operation has finished, no cancellation request was made
+                long numberOfItemsDeleted = result.Total; // Access the operation result
+            }
+            catch (TimeoutException e)
+            {
+                // The operation did Not finish at cancellation time
+            }
+        }
+        #endregion
+
         public async Task ExamplesAsync()
         {
             using var documentStore = new DocumentStore
@@ -201,9 +279,32 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             int version = buildNumberResult.BuildVersion;
             #endregion
             
-            #region wait_ex_async
-            // Define operation, e.g. delete all discontinued products
-            // Note: This operation implements: 'IOperation<OperationIdResult>'
+            #region kill_ex_async
+            // Define operation, e.g. delete all discontinued products 
+            // Note: This operation implements interface: 'IOperation<OperationIdResult>'
+            IOperation<OperationIdResult> deleteByQueryOp =
+                new DeleteByQueryOperation("from Products where Discontinued = true");
+                
+            // Execute the operation
+            // SendAsync returns an 'Operation' object that can be 'killed'
+            Operation operation = await documentStore.Operations.SendAsync(deleteByQueryOp);
+            
+            // Call 'KillAsync' to abort operation
+            await operation.KillAsync();
+            
+            // Assert that operation is no longer running
+            await Assert.ThrowsAsync<TaskCanceledException>(() => 
+                operation.WaitForCompletionAsync(TimeSpan.FromSeconds(30)));
+            #endregion
+        }
+        
+        #region wait_timeout_ex_async
+        public async Task WaitForCompletionWithTimoutAsync(
+            TimeSpan timeout,
+            DocumentStore documentStore)
+        {
+            // Define operation, e.g. delete all discontinued products 
+            // Note: This operation implements interface: 'IOperation<OperationIdResult>'
             IOperation<OperationIdResult> deleteByQueryOp =
                 new DeleteByQueryOperation("from Products where Discontinued = true");
                 
@@ -211,14 +312,54 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             // SendAsync returns an 'Operation' object that can be awaited on
             Operation operation = await documentStore.Operations.SendAsync(deleteByQueryOp);
             
-            // Call method 'WaitForCompletionAsync' to wait for operation completion 
-            BulkOperationResult result = 
-                await operation.WaitForCompletionAsync(TimeSpan.FromMinutes(2))
-                               .ConfigureAwait(false) as BulkOperationResult;
-            
-            // Access the operation result
-            long numberOfItemsDeleted = result.Total;
-            #endregion
+            try
+            {
+                // Call method 'WaitForCompletionAsync' to wait for the operation to complete.
+                // If a timeout is specified, the method will only wait for the specified time frame.
+                BulkOperationResult result = 
+                    await operation.WaitForCompletionAsync(timeout)
+                        .ConfigureAwait(false) as BulkOperationResult;
+                
+                // The operation has finished within the specified timeframe
+                long numberOfItemsDeleted = result.Total; // Access the operation result
+            }
+            catch (TimeoutException e)
+            {
+                // The operation did Not finish within the specified timeframe
+            }
         }
+        #endregion
+
+        #region wait_token_ex_async
+        public async Task WaitForCompletionWithCancellationTokenAsync(
+            CancellationToken token,
+            DocumentStore documentStore)
+        {
+            // Define operation, e.g. delete all discontinued products 
+            // Note: This operation implements interface: 'IOperation<OperationIdResult>'
+            IOperation<OperationIdResult> deleteByQueryOp =
+                new DeleteByQueryOperation("from Products where Discontinued = true");
+                    
+            // Execute the operation
+            // SendAsync returns an 'Operation' object that can be awaited on
+            Operation operation = await documentStore.Operations.SendAsync(deleteByQueryOp);
+            
+            try
+            {
+                // Call method 'WaitForCompletionAsync' to wait for the operation to complete.
+                // Pass a CancellationToken in order to stop waiting upon a cancellation request.
+                BulkOperationResult result = 
+                    await operation.WaitForCompletionAsync(token)
+                        .ConfigureAwait(false) as BulkOperationResult;
+                
+                // The operation has finished, no cancellation request was made
+                long numberOfItemsDeleted = result.Total; // Access the operation result
+            }
+            catch (TimeoutException e)
+            {
+                // The operation did Not finish at cancellation time
+            }
+        }
+        #endregion
     }
 }
