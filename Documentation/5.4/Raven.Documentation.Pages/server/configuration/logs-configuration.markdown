@@ -20,7 +20,7 @@ Available options:
 - `Operations` (high level info for operational users)
 - `Information` (low level debug info)
 
-<br />
+---
 
 - **Type**: `string`
 - **Default**: `Operations`

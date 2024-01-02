@@ -90,13 +90,35 @@ then enable the following logs (if not enabled yet) before downloading existing 
 1. Navigate to __Manage Server > Admin Logs__ and click 'Settings'.
 
 2. __Server logs - Log Mode__:  
-   * Set the server logs level to 'Information'
-   * Note:  
-     Logs settings will reset to their default values after a server restart.  
-     If you wish to maintain this setting, ensure that [Logs.Mode](../../server/configuration/logs-configuration#logs.mode) is also set in your [default configuration](../../server/configuration/configuration-options).  
+   * Set the RavenDB server logs level to 'Information'.  
 
 3. __Traffic Watch log__:  
-   Activate the traffic watch log. Keep the default values shown.
+   * Click 'Configure' to enable Traffic Watch logging to the server logs.  
+   * Keep the default values shown in the popup dialog.  
+
+4. __Microsoft logs__:  
+   * This is an advanced option, set it only if requested by the support team.
+   * Click 'Configure' to enable the logging of Microsoft logs to the server logs.
+   * Use the following suggested log configuration: 
+
+    {CODE-BLOCK:json}
+{
+   "Microsoft.AspNetCore":"Debug"
+   // Available levels: Trace, Debug, Information, Warning, Error, Critical, None 
+}
+    {CODE-BLOCK/}
+
+{WARNING: }
+
+* Be aware that all logs settings will reset to their default values after a server restart.  
+
+* To maintain a specific setting after a server restart, set the following configuration keys  
+  in your [default configuration](../../server/configuration/configuration-options):
+  * Server logs - set [Logs.Mode](../../server/configuration/logs-configuration#logs.mode)
+  * Traffic Watch log - set [Logs.Microsoft.Disable](../../server/configuration/logs-configuration#logs.microsoft.disable)
+  * Microsoft logs - set [TrafficWatch.Mode](../../server/configuration/logs-configuration#logs.mode) 
+
+{WARNING/}
 
 {PANEL/}
 
@@ -152,7 +174,7 @@ __Before sending the log files__, perform the following checks:
 
 {PANEL: Reproduce scenario}
 
-* If the incident is over and you can reproduce it, then first verify logging level is set to information.  
+* If the incident is over and you can reproduce it, then first verify logging level is set to 'Information'.  
 
 * See how to enable the logs in [Enable logs](../../server/troubleshooting/collect-info#enable-logs-for-ongoing-issues).
 
