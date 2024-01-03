@@ -12,6 +12,9 @@
   * [Http.MinDataRateGracePeriodInSec](../../server/configuration/http-configuration#http.mindatarategraceperiodinsec)
   * [Http.MaxRequestBufferSizeInKb](../../server/configuration/http-configuration#http.maxrequestbuffersizeinkb)
   * [Http.MaxRequestLineSizeInKb](../../server/configuration/http-configuration#http.maxrequestlinesizeinkb)
+  * [Http.Http2.KeepAlivePingTimeoutInSec](../../server/configuration/http-configuration#http.http2.keepalivepingtimeoutinsec)
+  * [Http.Http2.KeepAlivePingDelayInSec](../../server/configuration/http-configuration#http.http2.keepalivepingdelayinsec)
+  * [Http.Http2.MaxStreamsPerConnection](../../server/configuration/http-configuration#http.http2.maxstreamsperconnection)
   * [Http.UseResponseCompression](../../server/configuration/http-configuration#http.useresponsecompression)
   * [Http.AllowResponseCompressionOverHttps](../../server/configuration/http-configuration#http.allowresponsecompressionoverhttps)
   * [Http.GzipResponseCompressionLevel](../../server/configuration/http-configuration#http.gzipresponsecompressionlevel)
@@ -93,6 +96,44 @@ Set the maximum allowed size for the HTTP request line.
 - **Default**: `16`
 - **Scope**: Server-wide only
 - **Used for setting Kestrel property**: [MaxRequestLineSize](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel.core.kestrelserverlimits.maxrequestlinesize?view=aspnetcore-8.0#microsoft-aspnetcore-server-kestrel-core-kestrelserverlimits-maxrequestlinesize)
+
+{PANEL/}
+
+{PANEL: Http.Http2.KeepAlivePingTimeoutInSec}
+
+Set Kestrel's HTTP2 keep alive ping timeout.
+
+- **Type**: `int`
+- **Default**: `null`
+- **Scope**: Server-wide only
+- **Used for setting Kestrel property**: [KeepAlivePingTimeout](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel.core.http2limits.keepalivepingtimeout?view=aspnetcore-8.0#microsoft-aspnetcore-server-kestrel-core-http2limits-keepalivepingtimeout)
+
+{PANEL/}
+
+{PANEL: Http.Http2.KeepAlivePingDelayInSec}
+
+Set Kestrel's HTTP2 keep alive ping delay.
+
+- **Type**: `int`
+- **Default**: `null`
+- **Scope**: Server-wide only
+- **Used for setting Kestrel property**: [KeepAlivePingDelay](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel.core.http2limits.keepalivepingdelay?view=aspnetcore-8.0#microsoft-aspnetcore-server-kestrel-core-http2limits-keepalivepingdelay)
+
+{PANEL/}
+
+{PANEL: Http.Http2.MaxStreamsPerConnection}
+
+* Set Kestrel's HTTP2 max streams per connection.  
+
+* This limits the number of concurrent request streams per HTTP/2 connection.  
+  Excess streams will be refused.
+
+---
+
+- **Type**: `int`
+- **Default**: `int.MaxValue` (no limit)
+- **Scope**: Server-wide only
+- **Used for setting Kestrel property**: [MaxStreamsPerConnection](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel.core.http2limits.maxstreamsperconnection?view=aspnetcore-8.0#microsoft-aspnetcore-server-kestrel-core-http2limits-maxstreamsperconnection)
 
 {PANEL/}
 
