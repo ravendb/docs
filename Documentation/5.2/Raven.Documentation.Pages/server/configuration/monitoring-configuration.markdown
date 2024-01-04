@@ -174,3 +174,13 @@ The arguments must be escaped for the command line.
 - **Scope**: Server-wide only
 
 {PANEL/}
+
+{PANEL:Monitoring.Disk.ReadStatsDebounceTimeInMs}
+
+The minimum interval between measures to calculate the disk stats.
+
+- **Type**: `TimeSetting`
+- **Default**: `1000`
+- **Scope**: Server-wide only
+
+{PANEL/}
