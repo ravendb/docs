@@ -150,24 +150,30 @@ number of IOPS reserved for your instances.
 
 ---
 
-#### 3. Performance-grade Production Cluster
-Performance cloud clusters are [reserved](../cloud/cloud-overview#reserved-clusters), and we can 
-**custom-tailor** them for your production environment needs so they include:  
+####3. Performance-grade Production Cluster
 
- * High memory  
- * Reserved IO with NVMe drives  
- * Powerful processing  
- * Terabytes of storage space.  
-
-!["Production: Performance"](images\tiers-and-instances-0034-production-performance.png "Production: Performance")
+Performance tier cluster are special [reserved](../cloud/cloud-overview#reserved-clusters) production clusters featuring high-throughput and low latency with a directly mapped local NVMe storage. When multiple NVME disks are available, in order to achieve the best possible throughput and to get as many IOPS as possible, multiple NVME volumes are striped together with RAID0. 
 
 {NOTE: }
-The Performance production tier is **highly customizable**.  
-Contact Support to modify your server configuration, the number of nodes in your cluster, 
-and various parameters of their deployment.  
-If you're interested in high global availability, for example, a multi-region deployment 
-can be easily set and would probably suit you better than the default arrangement.  
+**Scaling up and ephemeral drives**  
+
+Local NVMe disks on PN instance types are ephemeral, data will be lost on these disks if the VM is stopped (terminated). During normal operations, like OS or RavenDB updates and restarts, data is being preserved and there is no need to worry about the ephemeral nature of the disks. Higher-risk operations like scaling-up, where we do copy data to a temporary non-ephemeral drive, are dispatched manually by our team upon Support Request created in the RavenDB Cloud Portal.
+
+All products in this category are offered only with high-availability cluster of a minimum 3 nodes to balance the ephemeral nature of the disks.
 {NOTE/}
+
+{NOTE: }
+**Snapshot backups**
+
+Since this type of RavenDB clusters is designed to hold data of terrabyte order of magnitude, by default PN instance types run backups of type Snapshot to ensure fast data restore.
+{NOTE/}
+
+{NOTE: }
+Local NVMe drives on PN clusters are encrypted by default using hardware-based encryption.
+{NOTE/}
+
+
+!["Production: Performance"](images\tiers-and-instances-0034-production-performance.png "Production: Performance")  
 
 {PANEL/}
 
