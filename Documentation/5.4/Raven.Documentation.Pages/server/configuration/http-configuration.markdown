@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* RavenDB uses [Kestrel](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel?view=aspnetcore-8.0), which an HTTP web server built on ASP.NET Core.
+* RavenDB uses [Kestrel](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel?view=aspnetcore-8.0), which is an HTTP web server built on ASP.NET Core.
 
 * You can set Kestrel's properties via the following RavenDB configuration keys.
 
@@ -128,10 +128,13 @@ Set Kestrel's HTTP2 keep alive ping delay.
 * This limits the number of concurrent request streams per HTTP/2 connection.  
   Excess streams will be refused.
 
+* When _Http.Http2.MaxStreamsPerConnection_ is `null` or not set,  
+  RavenDB assigns _int.MaxValue_ to _MaxStreamsPerConnection_.
+
 ---
 
 - **Type**: `int`
-- **Default**: `int.MaxValue` (no limit)
+- **Default**: `null` (no limit)
 - **Scope**: Server-wide only
 - **Used for setting Kestrel property**: [MaxStreamsPerConnection](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel.core.http2limits.maxstreamsperconnection?view=aspnetcore-8.0#microsoft-aspnetcore-server-kestrel-core-http2limits-maxstreamsperconnection)
 

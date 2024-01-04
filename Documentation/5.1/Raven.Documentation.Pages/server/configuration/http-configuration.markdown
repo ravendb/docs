@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* RavenDB uses [Kestrel](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel?view=aspnetcore-8.0), which an HTTP web server built on ASP.NET Core.
+* RavenDB uses [Kestrel](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel?view=aspnetcore-8.0), which is an HTTP web server built on ASP.NET Core.
 
 * You can set Kestrel's properties via the following RavenDB configuration keys.
 
