@@ -1,212 +1,356 @@
 # Configuration: Indexing
 ---
 
-{PANEL:Indexing.RunInMemory}
+{NOTE: }
 
-Set if indexes should run purely in memory.
+* The following __indexing configuration keys__ can modified via either of the following options:
+    * As explained in the [Config overview](../../server/configuration/configuration-options) article
+    * Set a custom configuration per index from the [Client API](../../indexes/creating-and-deploying#creating-an-index-with-custom-configuration)
+    * Set a custom configuraiton per index from the [Studio](../../studio/database/indexes/create-map-index#configuration)
+
+{NOTE/}
+
+{NOTE: }
+
+* In this page:  
+  [Indexing.RunInMemory](../../server/configuration/indexing-configuration#indexing.runinmemory)  
+  [Indexing.Disable](../../server/configuration/indexing-configuration#indexing.disable)  
+  [Indexing.Static.DeploymentMode](../../server/configuration/indexing-configuration#indexing.static.deploymentmode)  
+  [Indexing.Auto.DeploymentMode](../../server/configuration/indexing-configuration#indexing.auto.deploymentmode)  
+  [Indexing.Metrics.Enabled](../../server/configuration/indexing-configuration#indexing.metrics.enabled)  
+  [Indexing.TempPath](../../server/configuration/indexing-configuration#indexing.temppath)  
+  [Indexing.MaxTimeForDocumentTransactionToRemainOpenInSec](../../server/configuration/indexing-configuration#indexing.maxtimefordocumenttransactiontoremainopeninsec)  
+  [Indexing.TimeBeforeDeletionOfSupersededAutoIndexInSec](../../server/configuration/indexing-configuration#indexing.timebeforedeletionofsupersededautoindexinsec)  
+  [Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin](../../server/configuration/indexing-configuration#indexing.timetowaitbeforemarkingautoindexasidleinmin)  
+  [Indexing.DisableQueryOptimizerGeneratedIndexes](../../server/configuration/indexing-configuration#indexing.disablequeryoptimizergeneratedindexes)  
+  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../../server/configuration/indexing-configuration#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs)  
+  [Indexing.MinNumberOfMapAttemptsAfterWhichBatchWillBeCanceledIfRunningLowOnMemory](../../server/configuration/indexing-configuration#indexing.minnumberofmapattemptsafterwhichbatchwillbecanceledifrunninglowonmemory)  
+  [Indexing.NumberOfConcurrentStoppedBatchesIfRunningLowOnMemory](../../server/configuration/indexing-configuration#indexing.numberofconcurrentstoppedbatchesifrunninglowonmemory)  
+  [Indexing.MapTimeoutInSec](../../server/configuration/indexing-configuration#indexing.maptimeoutinsec)  
+  [Indexing.QueryClauseCache.SizeInMb](../../server/configuration/indexing-configuration#indexing.queryclausecache.sizeinmb)  
+  [Indexing.QueryClauseCache.Disabled](../../server/configuration/indexing-configuration#indexing.queryclausecache.disabled)  
+  [Indexing.QueryClauseCache.ExpirationScanFrequencyInSec](../../server/configuration/indexing-configuration#indexing.queryclausecache.expirationscanfrequencyinsec)  
+  [Indexing.QueryClauseCache.RepeatedQueriesCount](../../server/configuration/indexing-configuration#indexing.queryclausecache.repeatedqueriescount)  
+  [Indexing.QueryClauseCache.RepeatedQueriesTimeFrameInSec](../../server/configuration/indexing-configuration#indexing.queryclausecache.repeatedqueriestimeframeinsec)  
+  [Indexing.MapBatchSize](../../server/configuration/indexing-configuration#indexing.mapbatchsize)  
+  [Indexing.MapTimeoutAfterEtagReachedInMin](../../server/configuration/indexing-configuration#indexing.maptimeoutafteretagreachedinmin)  
+  [Indexing.MaxStepsForScript](../../server/configuration/indexing-configuration#indexing.maxstepsforscript)  
+  [Indexing.CleanupIntervalInMin](../../server/configuration/indexing-configuration#indexing.cleanupintervalinmin)  
+  [Indexing.Analyzers.NGram.MinGram](../../server/configuration/indexing-configuration#indexing.analyzers.ngram.mingram)  
+  [Indexing.Analyzers.NGram.MaxGram](../../server/configuration/indexing-configuration#indexing.analyzers.ngram.maxgram)  
+  [Indexing.ManagedAllocationsBatchSizeLimitInMb](../../server/configuration/indexing-configuration#indexing.managedallocationsbatchsizelimitinmb)  
+  [Indexing.MaximumSizePerSegmentInMb](../../server/configuration/indexing-configuration#indexing.maximumsizepersegmentinmb)  
+  [Indexing.MergeFactor](../../server/configuration/indexing-configuration#indexing.mergefactor)  
+  [Indexing.LargeSegmentSizeToMergeInMb](../../server/configuration/indexing-configuration#indexing.largesegmentsizetomergeinmb)  
+  [Indexing.NumberOfLargeSegmentsToMergeInSingleBatch](../../server/configuration/indexing-configuration#indexing.numberoflargesegmentstomergeinsinglebatch)  
+  [Indexing.MaxTimeForMergesToKeepRunningInSec](../../server/configuration/indexing-configuration#indexing.maxtimeformergestokeeprunninginsec)  
+  [Indexing.TransactionSizeLimitInMb](../../server/configuration/indexing-configuration#indexing.transactionsizelimitinmb)  
+  [Indexing.Encrypted.TransactionSizeLimitInMb](../../server/configuration/indexing-configuration#indexing.encrypted.transactionsizelimitinmb)  
+  [Indexing.ScratchSpaceLimitInMb](../../server/configuration/indexing-configuration#indexing.scratchspacelimitinmb)  
+  [Indexing.GlobalScratchSpaceLimitInMb](../../server/configuration/indexing-configuration#indexing.globalscratchspacelimitinmb)  
+  [Indexing.MaxTimeToWaitAfterFlushAndSyncWhenExceedingScratchSpaceLimitInSec](../../server/configuration/indexing-configuration#indexing.maxtimetowaitafterflushandsyncwhenexceedingscratchspacelimitinsec)  
+  [Indexing.IndexMissingFieldsAsNull](../../server/configuration/indexing-configuration#indexing.indexmissingfieldsasnull)  
+  [Indexing.IndexEmptyEntries](../../server/configuration/indexing-configuration#indexing.indexemptyentries)  
+  [Indexing.ErrorIndexStartupBehavior](../../server/configuration/indexing-configuration#indexing.errorindexstartupbehavior)  
+  [Indexing.IndexStartupBehavior](../../server/configuration/indexing-configuration#indexing.indexstartupbehavior)  
+  [Indexing.MaxNumberOfConcurrentlyRunningIndexes](../../server/configuration/indexing-configuration#indexing.maxnumberofconcurrentlyrunningindexes)  
+  [Indexing.NuGetPackagesPath](../../server/configuration/indexing-configuration#indexing.nugetpackagespath)  
+  [Indexing.NuGetPackageSourceUrl](../../server/configuration/indexing-configuration#indexing.nugetpackagesourceurl)  
+  [Indexing.NuGetAllowPreleasePackages](../../server/configuration/indexing-configuration#indexing.nugetallowpreleasepackages)  
+  [Indexing.History.NumberOfRevisions](../../server/configuration/indexing-configuration#indexing.history.numberofrevisions)  
+  [Indexing.Analyzers.Default](../../server/configuration/indexing-configuration#indexing.analyzers.default)  
+  [Indexing.Analyzers.Exact.Default](../../server/configuration/indexing-configuration#indexing.analyzers.exact.default)  
+  [Indexing.Analyzers.Search.Default](../../server/configuration/indexing-configuration#indexing.analyzers.search.default)  
+  [Indexing.Throttling.TimeIntervalInMs](../../server/configuration/indexing-configuration#indexing.throttling.timeintervalinms)  
+  [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration#indexing.auto.searchenginetype)  
+  [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration#indexing.static.searchenginetype)  
+  [Indexing.SkipDatabaseIdValidationOnIndexOpening](../../server/configuration/indexing-configuration#indexing.skipdatabaseidvalidationonindexopening)  
+  [Indexing.TimeSinceLastQueryAfterWhichDeepCleanupCanBeExecutedInMin](../../server/configuration/indexing-configuration#indexing.timesincelastqueryafterwhichdeepcleanupcanbeexecutedinmin)  
+  [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../server/configuration/indexing-configuration#indexing.static.requireadmintodeployjavascriptindexes)  
+  [Indexing.OrderByScoreAutomaticallyWhenBoostingIsInvolved](../../server/configuration/indexing-configuration#indexing.orderbyscoreautomaticallywhenboostingisinvolved)  
+  [Indexing.UseCompoundFileInMerging](../../server/configuration/indexing-configuration#indexing.usecompoundfileinmerging)  
+  [Indexing.Lucene.IndexInputType](../../server/configuration/indexing-configuration#indexing.lucene.indexinputtype)  
+  [Indexing.MaxTimeToWaitAfterFlushAndSyncWhenReplacingSideBySideIndexInSec](../../server/configuration/indexing-configuration#indexing.maxtimetowaitafterflushandsyncwhenreplacingsidebysideindexinsec)  
+  [Indexing.MinimumTotalSizeOfJournalsToRunFlushAndSyncWhenReplacingSideBySideIndexInMb](../../server/configuration/indexing-configuration#indexing.minimumtotalsizeofjournalstorunflushandsyncwhenreplacingsidebysideindexinmb)  
+  [Indexing.OrderByTicksAutomaticallyWhenDatesAreInvolved](../../server/configuration/indexing-configuration#indexing.orderbyticksautomaticallywhendatesareinvolved)  
+  [Indexing.Lucene.ReaderTermsIndexDivisor](../../server/configuration/indexing-configuration#indexing.lucene.readertermsindexdivisor)  
+
+{NOTE/}
+
+---
+
+{PANEL: Indexing.RunInMemory}
+
+* Set if indexes should run purely in memory.
+
+* When running in memory:
+  * No index data is written to the disk, and if the server is restarted, all index data will be lost.
+  * Note that the index definition itself is kept on disk and remains unaffected by server restarts.
+  * This is mostly useful for testing or faster, non-persistent indexing.
+
+* If _Indexing.RunInMemory_ is not set explicitly,  
+  then this configuration key will take the value of the core configuration key [RunInMemory](../../server/configuration/core-configuration#runinmemory).
+
+---
 
 - **Type**: `bool`
-- **Default**: `null`
-- **Scope**: Server-wide or per database
+- **Default**: `false` 
+- **Scope**: Server-wide, or per database
 
-When running in memory, the index information is not written to disk and if the server is restarted all 
-indexing data will be lost. This is mostly useful for testing or faster non-persistent indexing.
- 
-If not set or set to **null** - indexing will run in memory if core settings *RunInMemory* is set to true.
+Optional values:
 
- Values:
- 
- * `null` - use the value set in core configuration *RunInMemory*
- * `true` - run indexing in memory
- * `false` - store information on the disk
+ * `true` - indexing is run only in memory
+ * `false` - the index data is stored on disk
 
 {PANEL/}
 
-{PANEL:Indexing.Disable}
+{PANEL: Indexing.Disable}
 
-Disable indexing.
+Set whether to disable all indexes in the database.  
+All indexes in the database will be disabled when set to `true`.
 
 - **Type**: `bool`
 - **Default**: `false`
-- **Scope**: Server-wide or per database
+- **Scope**: Server-wide, or per database
 
 {PANEL/}
 
-{PANEL:Indexing.TempPath}
+{PANEL: Indexing.Static.DeploymentMode}
 
-Use this setting to specify a different path for the indexes' temporary files.  
-By default, temporary files are created under the `Temp` directory inside the index data directory.  
-Learn more about RavenDB directory structure [here](../../server/storage/directory-structure).
+Set the default deployment mode for static indexes.
+
+- **Type**: `enum IndexDeploymentMode` (`Parallel`, `Rolling`)
+- **Default**: `Parallel`
+- **Scope**: Server-wide, or per database
+
+{PANEL/}
+
+{PANEL: Indexing.Auto.DeploymentMode}
+
+Set the default deployment mode for auto indexes.
+
+- **Type**: `enum IndexDeploymentMode` (`Parallel`, `Rolling`)
+- **Default**: `Parallel`
+- **Scope**: Server-wide, or per database
+
+{PANEL/}
+
+{PANEL: Indexing.Metrics.Enabled}
+
+Set whether indexing performance metrics will be gathered.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.TempPath}
+
+* Use this setting to specify a different path for the indexes' temporary files.
+
+* By default, temporary files are created under the `Temp` directory inside the index data directory.  
+  Learn more about RavenDB directory structure [here](../../server/storage/directory-structure).
+
+---
 
 - **Type**: `string`
 - **Default**: `null`
-- **Scope**: Server-wide or per database
+- **Scope**: Server-wide, or per database
 
 {PANEL/}
 
-{PANEL:Indexing.MaxNumberOfConcurrentlyRunningIndexes}
+{PANEL: Indexing.MaxTimeForDocumentTransactionToRemainOpenInSec}
 
-Set how many indexes can run concurrently to prevent overwhelming system resources and slow indexing.
-
-- **Type**: `int`
-- **Default**: `null` No limit
-- **MinValue**: 1
-- **Scope**: Server-wide only (can be configured only in the settings.json file located in your RavenDB executable folder)
-
-{PANEL/}
-
-{PANEL:Indexing.IndexStartupBehaviorType}
-
-Manipulate index startup behavior on database load with the following options:  
-(This method can prevent slow index startup behavior in scenarios where many indexes open and 
-start processing concurrently, which would cause IO usage to max out system resources.)
-
-- **Type**: `string`
-- **Default**: Each index starts as soon as it is opened.  
-  - **Immediate**: Same as default.
-  - **Pause**: Opens all indexes, but they are paused until manually started.
-  - **Delay**: Delays starting index processes until all indexes are open.  
-- **Scope**: Server-wide or per database
-
-{PANEL/}
-
-{PANEL:Indexing.MaxTimeForDocumentTransactionToRemainOpenInSec}
-
-Set how many seconds indexing will keep document transaction open when indexing.
+Set how many seconds indexing will keep document transaction open when indexing.  
+When triggered, transaction will be closed and a new one will be opened.  
 
 - **Type**: `int`
 - **Default**: `15`
-- **Scope**: Server-wide or per database
-
-When triggered, transaction will be closed and a new one will be opened
+- **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
-{PANEL:Indexing.TimeBeforeDeletionOfSupersededAutoIndexInSec}
+{PANEL: Indexing.TimeBeforeDeletionOfSupersededAutoIndexInSec}
 
-Set how many seconds to keep a superseded auto index.
+Set the number of seconds to keep a superseded auto index.
 
 - **Type**: `int`
 - **Default**: `15`
-- **Scope**: Server-wide or per database
+- **Scope**: Server-wide, or per database
 
 {PANEL/}
 
-{PANEL:Indexing.TimeSinceLastQueryAfterWhichDeepCleanupCanBeExecutedInMin}
+{PANEL: Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin}
 
-Set how many minutes to wait before deep cleaning an idle index.  
-Deep cleanup reduces the cost of idle indexes.  
-It might slow the first query after the deep cleanup, thereafter queries return to normal performance.  
-
-- **Type**: `int`
-- **Default**: `10`
-- **Scope**: Server-wide or per database or per index
-
-{PANEL/}
-
-{PANEL:Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin}
-
-Set how many minutes to wait before marking auto index as idle.
+Set the number of minutes to wait before marking an auto index as idle.
 
 - **Type**: `int`
 - **Default**: `30`
-- **Scope**: Server-wide or per database
+- **Scope**: Server-wide, or per database
 
 {PANEL/}
 
-{PANEL:Indexing.DisableQueryOptimizerGeneratedIndexes}
+{PANEL: Indexing.DisableQueryOptimizerGeneratedIndexes}
 
-Disable query optimizer generated indexes (Auto Indexes).
+EXPERT ONLY:  
+Disable query optimizer generated indexes (auto-indexes). Dynamic queries will not be supported.  
 
 - **Type**: `bool`
 - **Default**: `false`
-- **Scope**: Server-wide or per database
-
-{WARNING Use with caution. /}
+- **Scope**: Server-wide, or per database
 
 {PANEL/}
 
-{PANEL:Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs}
+{PANEL: Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs}
 
-Set how many hours the database should wait before deleting an auto index with the idle flag.
+Set the number of hours the database should wait before deleting an auto-index that is marked as idle.
 
 - **Type**: `int`
 - **Default**: `72`
-- **Scope**: Server-wide or per database
+- **Scope**: Server-wide, or per database
 
 {PANEL/}
 
-{PANEL:Indexing.MinNumberOfMapAttemptsAfterWhichBatchWillBeCanceledIfRunningLowOnMemory}
+{PANEL: Indexing.MinNumberOfMapAttemptsAfterWhichBatchWillBeCanceledIfRunningLowOnMemory}
 
-Set minimum number of map attempts after which batch will be canceled if running low on memory.
+EXPERT ONLY:  
+Set minimum number of map attempts after which the batch will be canceled if running low on memory.
 
 - **Type**: `int`
 - **Default**: `512`
-- **Scope**: Server-wide or per database
-
-{WARNING Use with caution. /}
+- **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
-{PANEL:Indexing.NumberOfConcurrentStoppedBatchesIfRunningLowOnMemory}
+{PANEL: Indexing.NumberOfConcurrentStoppedBatchesIfRunningLowOnMemory}
 
+EXPERT ONLY:  
 Number of concurrent stopped batches if running low on memory.
 
 - **Type**: `int`
-- **Default**: `3`
-- **Scope**: Server-wide or per database
-
-{WARNING Use with caution. /}
-
-{PANEL/}
-
-{PANEL:Indexing.History.NumberOfRevisions}
-
-Number of index history revisions to keep per index.  
-
-- **Type**: `int`
-- **Default**: `10`
-- **Scope**: Server-wide or per database
+- **Default**: `2`
+- **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
 {PANEL:Indexing.MapTimeoutInSec}
 
-Number of seconds after which mapping will end even if there is more to map.
+Number of seconds after which mapping will end even if there is more to map.  
+Using the default value of `-1` will map everything possible in a single batch.  
 
 - **Type**: `int`
 - **Default**: `-1`
-- **Scope**: Server-wide or per database
-
-Value of *-1* for map as much as possible in single batch.
+- **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
-{PANEL:Indexing.MapTimeoutAfterEtagReachedInMin}
+{PANEL: Indexing.QueryClauseCache.SizeInMb}
 
-Number of minutes after which mapping will end even if there is more to map. This will only be applied if we pass the last etag in collection that we saw when batch was started.
+EXPERT ONLY:  
+
+* Maximum size that the query clause cache will utilize for caching partial query clauses,  
+  defaulting to 10% of the system memory on 64-bit machines.
+
+* The default value, which is determined based on your platform details, is set by the constructor of class `IndexingConfiguration`.
+
+---
+
+- **Type**: `int`
+- **Default**: `DefaultValueSetInConstructor`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL: Indexing.QueryClauseCache.Disabled}
+
+EXPERT ONLY:  
+
+* Disable the query clause cache for a server, database, or a single index.
+
+* The default value is set by the constructor of class `IndexingConfiguration`.  
+  It will be `true` if your core configuration key [Features.Availability](../../server/configuration/core-configuration#features.availability) is Not set to 'Experimental'. 
+
+---
+
+- **Type**: `bool`
+- **Default**: `DefaultValueSetInConstructor`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.QueryClauseCache.ExpirationScanFrequencyInSec}
+
+EXPERT ONLY:  
+The frequency by which to scan the query clause cache for expired values.
+
+- **Type**: `int`
+- **Default**: `180`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL: Indexing.QueryClauseCache.RepeatedQueriesCount}
+
+EXPERT ONLY:  
+The number of recent queries that we will keep to identify repeated queries, relevant for caching.
+
+- **Type**: `int`
+- **Default**: `512`
+- **Scope**: Server-wide only
+ 
+{PANEL/}
+
+{PANEL: Indexing.QueryClauseCache.RepeatedQueriesTimeFrameInSec}
+
+EXPERT ONLY:  
+Queries that repeat within this time frame will be considered worth caching.
+
+- **Type**: `int`
+- **Default**: `300`
+- **Scope**: Server-wide, or per database, or per index
+ 
+{PANEL/}
+
+{PANEL: Indexing.MapBatchSize}
+
+Maximum number of documents to be processed by the index per indexing batch.
+
+- **Type**: `int?`
+- **Default**: `null` (no limit)
+- **MinValue**: `128`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.MapTimeoutAfterEtagReachedInMin}
+
+* Number of minutes after which mapping will end even if there is more to map.  
+
+* This will only be applied if we pass the last etag we saw in the collection when the batch was started.
+
+---
 
 - **Type**: `int`
 - **Default**: `15`
-- **Scope**: Server-wide or per database
-
-This will only be applied if we pass the last etag in collection that we saw when batch was started.
+- **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
-{PANEL:Indexing.MaxStepsForScript}
+{PANEL: Indexing.MaxStepsForScript}
 
 The maximum number of steps in the script execution of a JavaScript index.
 
 - **Type**: `int`
-- **Default**: `10000`
-- **Scope**: Server-wide or per database
+- **Default**: `10_000`
+- **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
-{PANEL:Indexing.CleanupIntervalInMin}
+{PANEL: Indexing.CleanupIntervalInMin}
 
 Time (in minutes) between auto index cleanup.
+Time (in minutes) between index cleanup"
 
 - **Type**: `int`
 - **Default**: `10`
@@ -214,39 +358,160 @@ Time (in minutes) between auto index cleanup.
 
 {PANEL/}
 
-{PANEL:Indexing.TransactionSizeLimitInMb}
+{PANEL: Indexing.Analyzers.NGram.MinGram}
+
+Smallest n-gram to generate when NGram analyzer is used.
+
+- **Type**: `int`
+- **Default**: `2`
+- **Scope**: Server-wide, or per database, or per index
+- **Alias:** `Indexing.Lucene.Analyzers.NGram.MinGram`
+
+{PANEL/}
+
+{PANEL: Indexing.Analyzers.NGram.MaxGram}
+
+Largest n-gram to generate when NGram analyzer is used.
+
+- **Type**: `int`
+- **Default**: `6`
+- **Scope**: Server-wide, or per database, or per index
+- **Alias:** `Indexing.Lucene.Analyzers.NGram.MaxGram`
+
+{PANEL/}
+
+{PANEL: Indexing.ManagedAllocationsBatchSizeLimitInMb}
+
+Managed allocations limit in an indexing batch after which the batch will complete and an index will continue by starting a new one.
+
+- **Type**: `int`
+- **Default**: `2048`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.MaximumSizePerSegmentInMb}
+
+EXPERT ONLY:  
+
+* The maximum size in MB that we'll consider for segments merging.
+
+* The default value, which is determined based on your platform details, is set by the constructor of class `IndexingConfiguration`.
+
+---
+
+- **Type**: `int`
+- **Default**: `DefaultValueSetInConstructor`
+- **Scope**: Server-wide, or per database, or per index
+- **Alias:** `Indexing.Lucene.MaximumSizePerSegmentInMb`
+ 
+{PANEL/}
+
+{PANEL: Indexing.MergeFactor}
+
+EXPERT ONLY:  
+
+* Set how often index segments are merged into larger ones.  
+  The merge process will start when the number of segments in an index reaches this number.  
+ 
+* With smaller values, less RAM is used while indexing, and searches on unoptimized indexes are faster, but indexing speed is slower.
+
+---
+
+- **Type**: `int`
+- **Default**: `10`
+- **Scope**: Server-wide, or per database, or per index
+- **Alias:** `Indexing.Lucene.MergeFactor`
+
+{PANEL/}
+
+{PANEL: Indexing.LargeSegmentSizeToMergeInMb}
+
+EXPERT ONLY:  
+
+* The definition of a large segment in MB.  
+  We won't merge more than [Indexing.NumberOfLargeSegmentsToMergeInSingleBatch](../../server/configuration/indexing-configuration#indexing.numberoflargesegmentstomergeinsinglebatch) in a single batch.  
+
+* The default value, which is determined based on your platform details, is set by the constructor of class `IndexingConfiguration`.
+
+---
+
+- **Type**: `int`
+- **Default**: `DefaultValueSetInConstructor`
+- **Scope**: Server-wide, or per database, or per index
+- **Alias:** `Indexing.Lucene.LargeSegmentSizeToMergeInMb`
+
+{PANEL/}
+
+{PANEL: Indexing.NumberOfLargeSegmentsToMergeInSingleBatch}
+
+EXPERT ONLY:  
+Number of large segments defined by [Indexing.LargeSegmentSizeToMergeInMb](../../) to merge in a single batch.
+
+- **Type**: `int`
+- **Default**: `2`
+- **Scope**: Server-wide, or per database, or per index
+- **Alias:** `Indexing.Lucene.NumberOfLargeSegmentsToMergeInSingleBatch`
+
+{PANEL/}
+
+{PANEL: Indexing.MaxTimeForMergesToKeepRunningInSec}
+
+EXPERT ONLY:  
+How long will we let merges to run before we close the transaction.
+
+- **Type**: `int`
+- **Default**: `15`
+- **Scope**: Server-wide, or per database, or per index
+- **Alias:** `Indexing.Lucene.MaxTimeForMergesToKeepRunningInSec`
+
+{PANEL/}
+
+{PANEL: Indexing.TransactionSizeLimitInMb}
 
 Transaction size limit in megabytes after which an index will stop and complete the current batch.
 
 - **Type**: `int`
 - **Default**: `null` (no limit)
-- **Scope**: Server-wide or per database
+- **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
 {PANEL:Indexing.Encrypted.TransactionSizeLimitInMb}
 
-Transaction size limit in megabytes for _encrypted_ databases, after which an index will stop and complete the current batch.
+* Transaction size limit in megabytes for _encrypted_ databases, after which an index will stop and complete the current batch.
+
+* The default value, which is determined based on your platform details, is set by the constructor of class `IndexingConfiguration`.
+
+---
 
 - **Type**: `int`
-- **Default**: `64`
-- **Scope**: Server-wide or per database
+- **Default**: `DefaultValueSetInConstructor`
+- **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
-{PANEL:Indexing.ScratchSpaceLimitInMb}
+{PANEL: Indexing.ScratchSpaceLimitInMb}
 
-Amount of scratch space in megabytes that we allow to use for the index storage. After exceeding this limit the current indexing batch will complete and the index will force flush and sync storage environment.
+* Amount of scratch space in megabytes that we allow to use for the index storage.
+
+* After exceeding this limit the current indexing batch will complete and the index will force flush and sync storage environment.
+
+---
 
 - **Type**: `int`
 - **Default**: `null` (no limit)
-- **Scope**: Server-wide only or per database
+- **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
-{PANEL:Indexing.GlobalScratchSpaceLimitInMb}
+{PANEL: Indexing.GlobalScratchSpaceLimitInMb}
 
-Maximum amount of scratch space in megabytes that we allow to use for all index storages per server. After exceeding this limit the indexes will complete their current indexing batches and force flush and sync storage environments.
+* Maximum amount of scratch space in megabytes that we allow to use for all index storages per server.  
+
+* After exceeding this limit the indexes will complete their current indexing batches and force flush and sync storage environments.
+
+---
 
 - **Type**: `int`
 - **Default**: `null` (no limit)
@@ -254,64 +519,126 @@ Maximum amount of scratch space in megabytes that we allow to use for all index 
 
 {PANEL/}
 
-{PANEL:Indexing.MaxTimeToWaitAfterFlushAndSyncWhenExceedingScratchSpaceLimit}
+{PANEL: Indexing.MaxTimeToWaitAfterFlushAndSyncWhenExceedingScratchSpaceLimitInSec}
 
 Max time to wait in seconds when forcing the storage environment flush and sync after exceeding the scratch space limit.
 
 - **Type**: `int`
 - **Default**: `30`
 - **Scope**: Server-wide only
+- **Alias:** `Indexing.MaxTimeToWaitAfterFlushAndSyncWhenExceedingScratchSpaceLimit`
 
 {PANEL/}
 
-{PANEL:Indexing.IndexMissingFieldsAsNull}
+{PANEL: Indexing.IndexMissingFieldsAsNull}
 
-Indicates if missing fields should be indexed same as 'null' values or not.
+* Set how the indexing process should handle fields that are missing.
+
+* When set to `true`, missing fields will be indexed with a `null` value.
+
+---
 
 - **Type**: `bool`
 - **Default**: `false`
-- **Scope**: Server-wide or per database
+- **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
-{PANEL:Indexing.IndexEmptyEntries}
+{PANEL: Indexing.IndexEmptyEntries}
 
-Indicates if empty index entries should be indexed by static indexes.
+* Set how the indexing process should handle documents that are missing fields.
+
+* When set to `true`, the indexing process will index documents even if they lack the fields that are supposed to be indexed.
+
+---
 
 - **Type**: `bool`
 - **Default**: `false`
-- **Scope**: Server-wide or per database
+- **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
-{PANEL:Indexing.MapBatchSize}
+{PANEL: Indexing.ErrorIndexStartupBehavior}
 
-Maximum number of documents to be processed by the index per indexing batch.
+Set how faulty indexes should behave on database startup when they are loaded.  
+By default they are not started.  
 
-- **Type**: `int`
-- **Default**: `null` (no limit)
-- **MinValue**: `128` 
-- **Scope**: Server-wide or per database
-
-{PANEL/}
-
-{PANEL:Indexing.MaxGram}
-
-Largest n-gram to generate when [NGram analyzer](../../indexes/using-analyzers) is used.
-
-- **Type**: `int`
-- **Default**: `6`
-- **Scope**: Server-wide or per database
+- **Type**: `enum ErrorIndexStartupBehaviorType` (`Default`, `Start`, `ResetAndStart`)
+- **Default**: `Default`
+- **Scope**: Server-wide, or per database
 
 {PANEL/}
 
-{PANEL:Indexing.MinGram}
+{PANEL: Indexing.IndexStartupBehavior}
 
-Smallest n-gram to generate when [NGram analyzer](../../indexes/using-analyzers) is used.
+* Set how indexes should behave on database startup when they are loaded.  
+  By default they are started immediately.
+
+* Setting this param can prevent slow index startup behavior in scenarios where many indexes open and start processing concurrently, which may cause IO usage to max out system resources.
+
+---
+
+- **Type**: `enum IndexStartupBehaviorType` (`Default`, `Immediate`, `Pause`, `Delay`)
+- **Default**: `Default`  
+- **Scope**: Server-wide, or per database
+
+Optional values:
+
+  - `Default`: Each index starts as soon as it is loaded.
+  - `Immediate`: Same as Default.
+  - `Pause`: Loads all indexes, but they are paused until manually started.
+  - `Delay`: Delays starting index processes until all indexes are loaded.
+
+{PANEL/}
+
+{PANEL: Indexing.MaxNumberOfConcurrentlyRunningIndexes}
+
+Set how many indexes can run concurrently on the server to prevent overwhelming system resources and slow indexing.
 
 - **Type**: `int`
-- **Default**: `2`
-- **Scope**: Server-wide or per database
+- **Default**: `null` (No limit)
+- **MinValue**: 1
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL: Indexing.NuGetPackagesPath}
+
+Location of NuGet packages cache.
+
+- **Type**: `string`
+- **Default**: `Packages/NuGet`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL: Indexing.NuGetPackageSourceUrl}
+
+Default NuGet source URL.
+
+- **Type**: `string`
+- **Default**: `https://api.nuget.org/v3/index.json`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL: Indexing.NuGetAllowPreleasePackages}
+
+Allow installation of NuGet prerelease packages.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Indexing.History.NumberOfRevisions}
+
+Number of index history revisions to keep per index.
+
+- **Type**: `int`
+- **Default**: `10`
+- **Scope**: Server-wide, or per database
 
 {PANEL/}
 
@@ -335,7 +662,7 @@ Smallest n-gram to generate when [NGram analyzer](../../indexes/using-analyzers)
 
 {PANEL/}
 
-{PANEL:Indexing.Analyzers.Search.Default}
+{PANEL: Indexing.Analyzers.Search.Default}
 
 [Default analyzer](../../indexes/using-analyzers#ravendb) that will be used for search fields.
 
@@ -345,47 +672,140 @@ Smallest n-gram to generate when [NGram analyzer](../../indexes/using-analyzers)
 
 {PANEL/}
 
-{PANEL:Indexing.Static.RequireAdminToDeployJavaScriptIndexes}
+{PANEL: Indexing.Throttling.TimeIntervalInMs}
 
-Require database `Admin` [clearance](../../server/security/authorization/security-clearance-and-permissions) 
-to deploy [JavaScript indexes](../../indexes/javascript-indexes).
+How long the index should delay processing after new work is detected in milliseconds.
 
-- **Type**: `bool`
-- **Default**: `false`
-- **Scope**: Server-wide or per database
+- **Type**: `int`
+- **Default**: `null`
+- **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
-{PANEL:Indexing.Auto.SearchEngineType}
+{PANEL: Indexing.Auto.SearchEngineType}
 
-Select the search engine to be used with auto indexes.  
+Set the search engine to be used with auto-indexes.
 
-- **Type**: `enum`
-  {CODE-BLOCK: csharp}
-   public enum SearchEngineType
-{
-    Corax, 
-    Lucene
-}
-  {CODE-BLOCK/}
-- **Default**: `SearchEngineType.Lucene`
-- **Scope**: Server-wide or per database
+- **Type**: `enum SearchEngineType` (`Lucene`, `Corax`)
+- **Default**: `Lucene`
+- **Scope**: Server-wide, or per database
 
 {PANEL/}
 
 {PANEL:Indexing.Static.SearchEngineType}
 
-Select the search engine to be used with static indexes.  
+Set the search engine to be used with static indexes.
 
-- **Type**: `enum`
-  {CODE-BLOCK: csharp}
-   public enum SearchEngineType
-{
-    Corax, 
-    Lucene
-}
-  {CODE-BLOCK/}
-- **Default**: `SearchEngineType.Lucene`
-- **Scope**: Server-wide, per database, or per index
+- **Type**: `enum SearchEngineType` (`Lucene`, `Corax`)
+- **Default**: `Lucene`
+- **Scope**: Server-wide, or per database, or per index
 
+{PANEL/}
+
+{PANEL: Indexing.SkipDatabaseIdValidationOnIndexOpening}
+
+EXPERT ONLY:  
+Allow to open an index without checking if current Database ID matched the one for which index was created.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide, per database
+
+{PANEL/}
+
+{PANEL: Indexing.TimeSinceLastQueryAfterWhichDeepCleanupCanBeExecutedInMin}
+
+Set how many minutes to wait before deep cleaning an idle index.  
+Deep cleanup reduces the cost of idle indexes.  
+It might slow the first query after the deep cleanup, thereafter queries return to normal performance.
+
+- **Type**: `int`
+- **Default**: `10`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.Static.RequireAdminToDeployJavaScriptIndexes}
+
+Require database `Admin` [clearance](../../server/security/authorization/security-clearance-and-permissions) to deploy [JavaScript indexes](../../indexes/javascript-indexes).
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide, or per database
+
+{PANEL/}
+
+{PANEL: Indexing.OrderByScoreAutomaticallyWhenBoostingIsInvolved}
+
+Order by score automatically when boosting is used inside an index definition or a query.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.UseCompoundFileInMerging}
+
+EXPERT ONLY:  
+Use compound file in merging.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide, or per database, or per index
+- **Alias:** `ndexing.Lucene.UseCompoundFileInMergingt`
+
+{PANEL/}
+
+{PANEL: Indexing.Lucene.IndexInputType}
+
+Lucene index input
+
+- **Type**: `enum LuceneIndexInputType` (`Standard`, `Buffered`)
+- **Default**: `Buffered`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.MaxTimeToWaitAfterFlushAndSyncWhenReplacingSideBySideIndexInSec}
+
+Max time to wait when forcing the storage environment flush and sync when replacing side-by-side index.
+
+- **Type**: `int`
+- **Default**: `30`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.MinimumTotalSizeOfJournalsToRunFlushAndSyncWhenReplacingSideBySideIndexInMb}
+
+Minimum total size of journals to run flush and sync when replacing side by side index in megabytes.
+
+- **Type**: `int`
+- **Default**: `512`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.OrderByTicksAutomaticallyWhenDatesAreInvolved}
+
+Sort by ticks when field contains dates.  
+When sorting in descending order, null dates are returned at the end with this option enabled.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.Lucene.ReaderTermsIndexDivisor}
+
+EXPERT ONLY:  
+Control how many terms we'll keep in the cache for each field.  
+Higher values reduce the memory usage at the expense of increased search time for each term.
+
+- **Type**: `int`
+- **Default**: `1`
+- **Scope**: Server-wide, or per database, or per index
+ 
 {PANEL/}
