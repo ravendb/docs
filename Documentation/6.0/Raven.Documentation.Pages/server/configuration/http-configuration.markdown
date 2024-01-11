@@ -19,7 +19,6 @@
   * [Http.AllowResponseCompressionOverHttps](../../server/configuration/http-configuration#http.allowresponsecompressionoverhttps)
   * [Http.GzipResponseCompressionLevel](../../server/configuration/http-configuration#http.gzipresponsecompressionlevel)
   * [Http.DeflateResponseCompressionLevel](../../server/configuration/http-configuration#http.deflateresponsecompressionlevel)
-  * [Http.BrotliResponseCompressionLevel](../../server/configuration/http-configuration#http.brotliresponsecompressionlevel)
   * [Http.ZstdResponseCompressionLevel](../../server/configuration/http-configuration#http.zstdresponsecompressionlevel)
   * [Http.StaticFilesResponseCompressionLevel](../../server/configuration/http-configuration#http.staticfilesresponsecompressionlevel)
   * [Http.Protocols](../../server/configuration/http-configuration#http.protocols)
@@ -186,17 +185,6 @@ Set the compression level to be used when compressing HTTP responses with GZip.
 {PANEL: Http.DeflateResponseCompressionLevel}
 
 Set the compression level to be used when compressing HTTP responses with Deflate.
-
-- **Type**: `enum CompressionLevel` (`Optimal`, `Fastest`, `NoCompression`, `SmallestSize`)
-- **Default**: `Fastest`
-- **Scope**: Server-wide only
-- **Used for setting Kestrel property**: [Level](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.responsecompression.gzipcompressionprovideroptions.level?view=aspnetcore-8.0#microsoft-aspnetcore-responsecompression-gzipcompressionprovideroptions-level)
-
-{PANEL/}
-
-{PANEL: Http.BrotliResponseCompressionLevel}
-
-Set the compression level to be used when compressing HTTP responses with Brotli.
 
 - **Type**: `enum CompressionLevel` (`Optimal`, `Fastest`, `NoCompression`, `SmallestSize`)
 - **Default**: `Fastest`
