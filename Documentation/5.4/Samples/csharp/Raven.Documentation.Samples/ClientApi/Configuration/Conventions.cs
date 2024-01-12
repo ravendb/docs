@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Amazon.XRay.Recorder.Handlers.System.Net;
 using Newtonsoft.Json.Serialization;
 using Raven.Client.Documents;

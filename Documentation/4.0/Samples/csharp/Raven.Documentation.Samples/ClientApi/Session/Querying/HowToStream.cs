@@ -63,7 +63,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Query<Employee, Employees_ByFirstName>()
                         .Where(x => x.FirstName == "Robert");
 
-                    IAsyncEnumerator<StreamResult<Employee>> results = await asyncSession.Advanced.StreamAsync(query);
+                    Raven.Client.Util.IAsyncEnumerator<StreamResult<Employee>> results = await asyncSession.Advanced.StreamAsync(query);
 
                     while (await results.MoveNextAsync())
                     {
@@ -99,7 +99,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .AsyncDocumentQuery<Employee>()
                         .WhereEquals(x => x.FirstName, "Robert");
 
-                    IAsyncEnumerator<StreamResult<Employee>> results = await asyncSession.Advanced.StreamAsync(query);
+                    Raven.Client.Util.IAsyncEnumerator<StreamResult<Employee>> results = await asyncSession.Advanced.StreamAsync(query);
 
                     while (await results.MoveNextAsync())
                     {
@@ -131,7 +131,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Advanced
                         .AsyncRawQuery<Employee>("from Employees where FirstName = 'Robert'");
 
-                    IAsyncEnumerator<StreamResult<Employee>> results = await asyncSession.Advanced.StreamAsync(query);
+                    Raven.Client.Util.IAsyncEnumerator<StreamResult<Employee>> results = await asyncSession.Advanced.StreamAsync(query);
 
                     while (await results.MoveNextAsync())
                     {
@@ -179,7 +179,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                                                        }");
 
 
-                    IAsyncEnumerator<StreamResult<MyProjection>> results = await asyncSession.Advanced.StreamAsync(query);
+                    Raven.Client.Util.IAsyncEnumerator<StreamResult<MyProjection>> results = await asyncSession.Advanced.StreamAsync(query);
 
                     while (await results.MoveNextAsync())
                     {

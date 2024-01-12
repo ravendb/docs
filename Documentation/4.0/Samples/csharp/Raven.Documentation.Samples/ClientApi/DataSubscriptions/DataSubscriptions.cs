@@ -432,7 +432,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             SubscriptionWorker<Order> subscriptionWorker;
             Task subscriptionRuntimeTask;
             string subscriptionName = null;
-            CancellationToken cancellationToken;
+            CancellationToken cancellationToken = default;
 
 
             #region subscription_open_simple

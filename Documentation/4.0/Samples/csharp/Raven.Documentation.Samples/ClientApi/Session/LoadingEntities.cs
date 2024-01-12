@@ -101,6 +101,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
             IEnumerator<StreamResult<T>> Stream<T>(string startsWith, string matches = null, int start = 0, int pageSize = int.MaxValue, string startAfter = null);
             #endregion
 
+            /*
             #region loading_entities_5_0_async
             Task<IAsyncEnumerator<StreamResult<T>>> StreamAsync<T>(IQueryable<T> query);
 
@@ -116,6 +117,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 
             Task<IAsyncEnumerator<StreamResult<T>>> StreamAsync<T>(string startsWith, string matches = null, int start = 0, int pageSize = int.MaxValue, string startAfter = null);
             #endregion
+            */
 
             #region loading_entities_6_0
             bool IsLoaded(string id);
@@ -296,7 +298,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                 {
                     #region loading_entities_5_1_async
 
-                    IAsyncEnumerator<StreamResult<Employee>> enumerator = await asyncSession
+                    Raven.Client.Util.IAsyncEnumerator<StreamResult<Employee>> enumerator = await asyncSession
                         .Advanced
                         .StreamAsync<Employee>("employees/");
 
