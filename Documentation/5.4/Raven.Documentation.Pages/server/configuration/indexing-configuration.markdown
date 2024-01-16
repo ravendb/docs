@@ -737,7 +737,8 @@ Require database `Admin` [clearance](../../server/security/authorization/securit
 
 {PANEL: Indexing.OrderByScoreAutomaticallyWhenBoostingIsInvolved}
 
-Order by score automatically when boosting is used inside an index definition or a query.
+Set whether query results will be automatically ordered by score when a boost factor is involved in the query.  
+(A boost factor may be [assigned inside an index definition](../../indexes/boosting) or can be [applied at query time](../../client-api/session/querying/text-search/boost-search-results)).
 
 - **Type**: `bool`
 - **Default**: `true`
