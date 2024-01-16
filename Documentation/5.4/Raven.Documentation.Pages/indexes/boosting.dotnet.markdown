@@ -6,9 +6,9 @@
 * When querying with some filtering conditions,  
   a basic score is calculated for each document in the results by the underlying engine.
 
-* Providing a boost value to some fields allows you to prioritize the resulting documents.  
+* Providing a __boost value__ to some fields allows you to prioritize the resulting documents.  
   The boost value is integrated with the basic score, making the document rank higher.  
-  The ordering of the results by the score is [configurable](../indexes/boosting#automatic-score-based-ordering). 
+  Automatic ordering of the results by the score is [configurable](../indexes/boosting#automatic-score-based-ordering). 
 
 * Boosting can be achieved in the following ways:
 
