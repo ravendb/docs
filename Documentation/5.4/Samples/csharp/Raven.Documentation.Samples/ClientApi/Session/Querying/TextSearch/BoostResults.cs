@@ -150,29 +150,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     // * Search is case-insensitive.
                     #endregion
                 }
-                
-                using (var session = store.OpenSession())
-                {
-                    #region boost_6
-                    // Make a query:
-                    // =============
-                    
-                    List<Employee> employees = session
-                        .Query<Employee>()
-                        .Search(x => x.Notes, "English")
-                        .Search(x => x.Notes, "Italian", boost: 10)
-                        .ToList();
-                    
-                    // Get the score:
-                    // ==============
-                    
-                    // Call 'GetMetadataFor', pass an entity from the resulting employees list
-                    var metadata = session.Advanced.GetMetadataFor(employees[0]);
-                    
-                    // Score is available in the '@index-score' metadata property
-                    var score = metadata[Constants.Documents.Metadata.IndexScore];
-                    #endregion
-                }
             }
         }
     }

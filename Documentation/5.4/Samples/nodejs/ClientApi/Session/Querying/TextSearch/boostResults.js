@@ -58,27 +58,4 @@ async function boostResults() {
         // * Search is case-insensitive.
         //endregion
     }
-
-    {
-        //region boost_3
-        // Make a query:
-        // =============
-        
-        const employees = await session
-            .query({ collection: "Employees"})
-            .search('Notes', 'English')
-            .search('Notes', 'Italian')
-            .boost(10)
-            .all();
-
-        // Get the score:
-        // ==============
-
-        // Call 'getMetadataFor', pass an entity from the resulting employees list
-        const metadata = session.advanced.getMetadataFor(employees[0]);
-
-        // Score is available in the '@index-score' metadata property
-        const score = metadata[CONSTANTS.Documents.Metadata.INDEX_SCORE];
-        //endregion
-    }
 }

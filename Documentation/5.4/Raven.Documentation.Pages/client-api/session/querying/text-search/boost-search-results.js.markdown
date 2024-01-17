@@ -21,11 +21,13 @@
 * The automatic ordering of the results by the score is now configurable.  
   Learn more in section [automatic score-based ordering](../../../../indexes/boosting#automatic-score-based-ordering).
 
+* The calculated score details of the results can be retrieved if needed.  
+  Learn more in section [get resulting score](../../../../client-api/session/querying/sort-query-results#get-resulting-score).
+
 * In this page:
 
   * [Boost results - when making a full-text search](../../../../client-api/session/querying/text-search/boost-search-results#boost-results---when-making-a-full-text-search)
   * [Boost results - when querying with where clause](../../../../client-api/session/querying/text-search/boost-search-results#boost-results---when-querying-with-where-clause)  
-  * [Get resulting score](../../../../client-api/session/querying/text-search/boost-search-results#get-resulting-score)
 
 {NOTE/}
 
@@ -61,24 +63,6 @@ boost(startsWith(Name, "P"), 50) or
 boost(endsWith(Name, "OP"), 90)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-{NOTE/}
-
-{PANEL/}
-
-{PANEL: Get resulting score}
-
-* The score can be retrieved by either:
-
-    * Request to __include explanations__ when making the query.  
-      See [include query explanations](../../../../client-api/session/querying/debugging/include-explanations).
-
-    * __Get the metadata__ of the resulting entities that were loaded to the session.  
-      See example below.
-
-{NOTE: }
-
-{CODE:nodejs boost_3@ClientApi\Session\Querying\TextSearch\boostResults.js /}
 
 {NOTE/}
 

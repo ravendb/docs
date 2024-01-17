@@ -90,7 +90,7 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 * This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration#indexing.orderbyscoreautomaticallywhenboostingisinvolved)    
   configuration key.
 
-* Refer to section [Get resulting score](../client-api/session/querying/text-search/boost-search-results#get-resulting-score) to learn how to retrieve the calculated score of each result.
+* Refer to section [Get resulting score](../client-api/session/querying/sort-query-results#get-resulting-score) to learn how to retrieve the calculated score of each result.
 
 {PANEL/}
 
