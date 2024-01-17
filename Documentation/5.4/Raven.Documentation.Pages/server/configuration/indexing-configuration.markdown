@@ -446,7 +446,7 @@ EXPERT ONLY:
 {PANEL: Indexing.NumberOfLargeSegmentsToMergeInSingleBatch}
 
 EXPERT ONLY:  
-Number of large segments defined by [Indexing.LargeSegmentSizeToMergeInMb](../../) to merge in a single batch.
+Number of large segments defined by [Indexing.LargeSegmentSizeToMergeInMb](../../server/configuration/indexing-configuration#indexing.largesegmentsizetomergeinmb) to merge in a single batch.
 
 - **Type**: `int`
 - **Default**: `2`
