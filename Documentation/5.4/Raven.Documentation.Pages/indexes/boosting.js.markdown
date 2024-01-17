@@ -36,17 +36,12 @@ Applying a boost value to an index-field allows you to prioritize matching docum
 
 ##### The index:
 
-{CODE-TABS}
-{CODE-TAB:csharp:LINQ_index index_1@Indexes\Boosting.cs /}
-{CODE-TAB:csharp:JavaScript_index index_1_js@Indexes\Boosting.cs /}
-{CODE-TABS/}
+{CODE:nodejs index_1@Indexes\boosting.js /}
 
 ##### The query:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query query_1@Indexes\Boosting.cs /}
-{CODE-TAB:csharp:Query_async query_2@Indexes\Boosting.cs /}
-{CODE-TAB:csharp:DocumentQuery query_3@Indexes\Boosting.cs /}
+{CODE-TAB:nodejs:Query query_1@Indexes\boosting.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Orders/ByCountries/BoostByField"
 where ShipToCountry == "poland" or CompanyCountry == "portugal"
@@ -63,17 +58,12 @@ Applying a boost value to the whole index-entry allows you to prioritize matchin
 
 ##### The index:
 
-{CODE-TABS}
-{CODE-TAB:csharp:LINQ_index index_2@Indexes\Boosting.cs /}
-{CODE-TAB:csharp:JavaScript_index index_2_js@Indexes\Boosting.cs /}
-{CODE-TABS/}
+{CODE:nodejs index_2@Indexes\boosting.js /}
 
 ##### The query:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query query_4@Indexes\Boosting.cs /}
-{CODE-TAB:csharp:Query_async query_5@Indexes\Boosting.cs /}
-{CODE-TAB:csharp:DocumentQuery query_6@Indexes\Boosting.cs /}
+{CODE-TAB:nodejs:Query query_2@Indexes\boosting.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Orders/ByCountries/BoostByIndexEntry"
 where ShipToCountry == "poland" or CompanyCountry == "portugal"
