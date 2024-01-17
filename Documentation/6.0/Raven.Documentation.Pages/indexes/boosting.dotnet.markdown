@@ -1,33 +1,114 @@
 # Indexes: Boosting
-
-A feature that RavenDB leverages from Lucene is called Boosting. This feature gives you the ability to manually tune the relevance level of matching documents when performing a query. 
-
-From the index perspective we can associate to an index entry a boosting factor. The higher value it has, the more relevant term will be. To do this, we must use the `Boost` extension method from the `Raven.Client.Documents.Linq.Indexing` namespace.
-
-Let's jump straight into the example. To perform the query that will return employees where either `FirstName` or `LastName` is equal to _Bob_, and to promote employees (move them to the top of the results) where `FirstName` matches the phrase, we must first create an index with boosted entry.
-
-{CODE-TABS}
-{CODE-TAB:csharp:AbstractIndexCreationTask boosting_2@Indexes\Boosting.cs /}
-{CODE-TAB:csharp:Operation boosting_4@Indexes\Boosting.cs /}
-{CODE-TABS/}
-
-The next step is to perform a query against that index:
-
-{CODE boosting_3@Indexes\Boosting.cs /}
-
-## Remarks
-
-{INFO Boosting is also available at the query level. You can read more about it [here](../client-api/session/querying/text-search/boost-search-results). /}
+---
 
 {NOTE: }
-When using [Corax](../indexes/search-engine/corax) as the search engine:  
 
-* [indexing-time boosting](../indexes/search-engine/corax#supported-features) 
-  is available for documents, but not for document fields.  
-* Corax ranks search results using the [BM25 algorithm](https://en.wikipedia.org/wiki/Okapi_BM25).  
-  Other search engines, e.g. Lucene, may use a different ranking algorithm and return different search results.  
+* When querying with some filtering conditions,  
+  a basic score is calculated for each document in the results by the underlying engine.
+
+* Providing a __boost value__ to some fields allows you to prioritize the resulting documents.  
+  The boost value is integrated with the basic score, making the document rank higher.  
+  Automatic ordering of the results by the score is [configurable](../indexes/boosting#automatic-score-based-ordering).
+
+* Boosting can be achieved in the following ways:
+
+    * __At query time__:  
+      Apply a boost factor to searched terms at query time - see article [Boost search results](../client-api/session/querying/text-search/boost-search-results).
+
+    * __Via index definition__:  
+      Apply a boost factor in your index definition - as described in this article.
+
+* In this page:
+    * [Assign a boost factor to an index-field](../indexes/boosting#assign-a-boost-factor-to-an-index-field)
+    * [Assign a boost factor to the index-entry](../indexes/boosting#assign-a-boost-factor-to-the-index-entry)
+    * [Automatic score-based ordering](../indexes/boosting#automatic-score-based-ordering)
+    * [Corax vs Lucene: boosting differences](../indexes/boosting#automatic-score-based-ordering)
 
 {NOTE/}
+
+---
+
+{PANEL: Assign a boost factor to an index-field}
+
+Applying a boost value to an index-field allows you to prioritize matching documents based on an index-field.
+
+---
+
+
+##### The index:
+
+{CODE-TABS}
+{CODE-TAB:csharp:LINQ_index index_1@Indexes\Boosting.cs /}
+{CODE-TAB:csharp:JavaScript_index index_1_js@Indexes\Boosting.cs /}
+{CODE-TABS/}
+
+##### The query:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query query_1@Indexes\Boosting.cs /}
+{CODE-TAB:csharp:Query_async query_2@Indexes\Boosting.cs /}
+{CODE-TAB:csharp:DocumentQuery query_3@Indexes\Boosting.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Orders/ByCountries/BoostByField"
+where ShipToCountry == "poland" or CompanyCountry == "portugal"
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Assign a boost factor to the index-entry}
+
+Applying a boost value to the whole index-entry allows you to prioritize matching documents by content from the document.
+
+---
+
+##### The index:
+
+{CODE-TABS}
+{CODE-TAB:csharp:LINQ_index index_2@Indexes\Boosting.cs /}
+{CODE-TAB:csharp:JavaScript_index index_2_js@Indexes\Boosting.cs /}
+{CODE-TABS/}
+
+##### The query:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query query_4@Indexes\Boosting.cs /}
+{CODE-TAB:csharp:Query_async query_5@Indexes\Boosting.cs /}
+{CODE-TAB:csharp:DocumentQuery query_6@Indexes\Boosting.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Orders/ByCountries/BoostByIndexEntry"
+where ShipToCountry == "poland" or CompanyCountry == "portugal"
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Automatic score-based ordering}
+
+* By default, whenever boosting is involved, either via a dynamic query or when querying an index that has a boosting factor in its definition,
+  the results will be automatically ordered by the score.
+
+* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration#indexing.orderbyscoreautomaticallywhenboostingisinvolved)    
+  configuration key.
+
+* Refer to section [Get resulting score](../client-api/session/querying/sort-query-results#get-resulting-score) to learn how to retrieve the calculated score of each result.
+
+{PANEL/}
+
+{PANEL: Corax vs Lucene: boosting differences}
+
+* __Boosting features available:__  
+
+  * When using __Corax__ as the underlying indexing engine, you can only [assign a boost factor to the index-entry](../indexes/boosting#assign-a-boost-factor-to-the-index-entry).  
+    Applying a boost factor to an index-field is Not supported.  
+  
+  * When using __Lucene__, you can assign a boost factor to both the index-field and the whole index-entry.  
+
+* __Algorithm used__:  
+  Corax ranks search results using the [BM25 algorithm](https://en.wikipedia.org/wiki/Okapi_BM25).   
+  Other search engines, e.g. Lucene, may use a different ranking algorithm and return different search results.
+
+{PANEL/}
 
 ## Related Articles
 

@@ -1,49 +1,77 @@
-import { 
-    DocumentStore, AbstractIndexCreationTask, IndexDefinition, PutIndexesOperation
-} from "ravendb";
+import { DocumentStore, AbstractCsharpIndexCreationTask } from "ravendb";
 
 const store = new DocumentStore();
 
-//region boosting_2
-class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+//region index_1
+class Orders_ByCountries_BoostByField extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
-        this.map = "docs.Employees.Select(employee => new {" +
-            "    firstName = employee.FirstName.Boost(10)," +
-            "    lastName = employee.LastName" +
-            "})";
+
+        this.map = `from order in docs.Orders
+             let company = LoadDocument(order.Company, "Companies")
+             select new {
+             
+                 // Boost index-field 'ShipToCountry':
+                 // * Use method 'Boost', pass a numeric value to boost by 
+                 // * Documents that match the query criteria for this field will rank higher
+                
+                 ShipToCountry = order.ShipTo.Country.Boost(10),
+                 CompanyCountry = company.Address.Country
+             }`;
     }
 }
 //endregion
 
-class Employee { }
+//region index_2
+class Orders_ByCountries_BoostByIndexEntry extends AbstractCsharpIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map = `from order in docs.Orders
+             let company = LoadDocument(order.Company, "Companies")
+             select new {
+                 ShipToCountry = order.ShipTo.Country,
+                 CompanyCountry = company.Address.Country
+             }
+             
+             // Boost the whole index-entry:
+             // * Use method 'Boost'
+             // * Pass a document-field that will set the boost level dynamically per document indexed.  
+             // * The boost level will vary from one document to another based on the value of this field.
+            
+             .Boost(order.Freight)`;
+    }
+}
+//endregion
 
 async function boosting() {
-    
+
     {
         const session = store.openSession();
 
-        //region boosting_3
-        // employees with 'FirstName' equal to 'Bob'
-        // will be higher in results
-        // than the ones with 'LastName' match
-        const results = await session.query({ indexName: "Employees/ByFirstAndLastName" })
-            .whereEquals("FirstName", "Bob")
-            .whereEquals("LastName", "Bob")
+        //region query_1
+        const orders = await session
+            .query({ indexName: "Orders/ByCountries/BoostByField" })
+            .whereEquals("ShipToCountry", "Poland")
+            .orElse()
+            .whereEquals("CompanyCountry", "Portugal")
             .all();
+
+        // Because index-field 'ShipToCountry' was boosted (inside the index definition),
+        // then documents containing 'Poland' in their 'ShipTo.Country' field will get a higher score than
+        // documents containing a company that is located in 'Portugal'.
+        //endregion
+
+        //region query_2
+        const orders = await session
+            .query({ indexName: "Orders/ByCountries/BoostByIndexEntry" })
+            .whereEquals("ShipToCountry", "Poland")
+            .orElse()
+            .whereEquals("CompanyCountry", "Portugal")
+            .all();
+
+        // The resulting score per matching document is affected by the value of the document-field 'Freight'. 
+        // Documents with a higher 'Freight' value will rank higher.
         //endregion
     }
-
-    //region boosting_4
-    const indexDefinition = new IndexDefinition();
-    indexDefinition.name = "Employees/ByFirstAndLastName";
-    indexDefinition.maps = new Set([ 
-        "docs.Employees.Select(employee => new {" +
-        "    FirstName = employee.FirstName.Boost(10)," +
-        "    LastName = employee.LastName" +
-        "})" 
-    ]);
-
-    await store.maintenance.send(new PutIndexesOperation(indexDefinition));
-    //endregion
 }
