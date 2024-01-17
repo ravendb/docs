@@ -58,7 +58,7 @@
   [Indexing.MaxNumberOfConcurrentlyRunningIndexes](../../server/configuration/indexing-configuration#indexing.maxnumberofconcurrentlyrunningindexes)  
   [Indexing.NuGetPackagesPath](../../server/configuration/indexing-configuration#indexing.nugetpackagespath)  
   [Indexing.NuGetPackageSourceUrl](../../server/configuration/indexing-configuration#indexing.nugetpackagesourceurl)  
-  [Indexing.NuGetAllowPreleasePackages](../../server/configuration/indexing-configuration#indexing.nugetallowpreleasepackages)  
+  [Indexing.NuGetAllowPreReleasePackages](../../server/configuration/indexing-configuration#indexing.nugetallowprereleasepackages)  
   [Indexing.History.NumberOfRevisions](../../server/configuration/indexing-configuration#indexing.history.numberofrevisions)  
   [Indexing.Analyzers.Default](../../server/configuration/indexing-configuration#indexing.analyzers.default)  
   [Indexing.Analyzers.Exact.Default](../../server/configuration/indexing-configuration#indexing.analyzers.exact.default)  
@@ -649,13 +649,14 @@ Default NuGet source URL.
 
 {PANEL/}
 
-{PANEL: Indexing.NuGetAllowPreleasePackages}
+{PANEL: Indexing.NuGetAllowPreReleasePackages}
 
 Allow installation of NuGet prerelease packages.
 
 - **Type**: `bool`
 - **Default**: `false`
 - **Scope**: Server-wide only
+- **Alias:** `Indexing.NuGetAllowPreleasePackages`
 
 {PANEL/}
 
@@ -791,7 +792,7 @@ Use compound file in merging.
 - **Type**: `bool`
 - **Default**: `true`
 - **Scope**: Server-wide, or per database, or per index
-- **Alias:** `ndexing.Lucene.UseCompoundFileInMergingt`
+- **Alias:** `Indexing.Lucene.UseCompoundFileInMergingt`
 
 {PANEL/}
 
