@@ -109,13 +109,13 @@ The score details can be retrieved by either:
       Note the following difference between the underlying indexing engines:
 
         * When using __Lucene__:  
-          The `@index-score` metadata property is always available in the results.  
+          This metadata property is always available in the results.  
           Read more about Lucene scoring [here](https://lucene.apache.org/core/3_3_0/scoring.html).
 
         * When using __Corax__:  
-          In order to enhance performance, this property is Not included in the results by default.  
-          To get this metadata property you must set the [Indexing.Corax.IncludeDocumentScore](../../../server/configuration/indexing-configuration#indexing.corax.includedocumentscore) configuration value to _true_.
-          Learn how to set configuration values in this [Configuration overview](../../../server/configuration/configuration-options).
+          In order to enhance performance, this metadata property is Not included in the results by default.  
+          To get this metadata property you must set the [Indexing.Corax.IncludeDocumentScore](../../../server/configuration/indexing-configuration#indexing.corax.includedocumentscore) configuration value to _true_.  
+          Learn about the available methods for setting an indexing configuration key in this [indexing-configuration](../../../server/configuration/indexing-configuration) article.
 
     * The following example shows how to get the score from the metadata of the resulting entities that were loaded to the session:
 

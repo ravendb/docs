@@ -222,8 +222,8 @@ order by spatial.distance(
 
     * When using __Corax__:  
       In order to enhance performance, this property is not included in the results by default.  
-      To get this metadata property you must set the [Indexing.Corax.IncludeSpatialDistance](../../../server/configuration/indexing-configuration#indexing.corax.includespatialdistance) configuration value to _true_.
-      Learn how to set configuration values in this [Configuration overview](../../../server/configuration/configuration-options).
+      To get this metadata property you must set the [Indexing.Corax.IncludeSpatialDistance](../../../server/configuration/indexing-configuration#indexing.corax.includespatialdistance) configuration value to _true_.  
+      Learn about the available methods for setting an indexing configuration key in this [indexing-configuration](../../../server/configuration/indexing-configuration) article.
 
 {CODE:nodejs spatial_4_getDistance@client-api\session\querying\makeSpatialQuery.js /}
 
