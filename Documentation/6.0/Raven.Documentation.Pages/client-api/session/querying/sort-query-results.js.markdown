@@ -7,6 +7,9 @@
 * When making a query, the server will return the results __sorted__ only if explicitly requested by the query.  
   If no sorting method is specified when issuing the query then results will not be sorted.
 
+    * Note: An exception to the above rule is when [Boosting](../../../indexes/boosting) is involved in the query.  
+      Learn more in [Automatic score-based ordering](../../../indexes/boosting#automatic-score-based-ordering).
+
 * Sorting is applied by the server after the query filtering stage.  
   Applying filtering is recommended as it reduces the number of results RavenDB needs to sort  
   when querying a large dataset.
@@ -20,6 +23,7 @@
     * [Order by field value](../../../client-api/session/querying/sort-query-results#order-by-field-value)
  
     * [Order by score](../../../client-api/session/querying/sort-query-results#order-by-score)
+        * [Get resulting score](../../../client-api/session/querying/sort-query-results#get-resulting-score)
   
     * [Order by random](../../../client-api/session/querying/sort-query-results#order-by-random)
    
@@ -88,29 +92,34 @@ order by score()
 
 {INFO: }
 
-__Get resulting score__:
+#### Get resulting score:
 
 ---
 
-* __@Index-score metadata property__:  
-  The score is available in the `@index-score` metadata property within each result.  
-  Learn how to retrieve the resulting score from the metadata in [Get resulting score](../../../client-api/session/querying/text-search/boost-search-results#get-resulting-score).  
-  <br>
-  Note the following difference between the underlying indexing engines:
+The score details can be retrieved by either:
 
-  * When using __Lucene__:  
-    This metadata property is always available in the results. 
-    Read more about Lucene scoring [here](https://lucene.apache.org/core/3_3_0/scoring.html).
-  
-  * When using __Corax__:  
-    In order to enhance performance, this property is not included in the results by default.  
-    To get this metadata property you must set the [Indexing.Corax.IncludeDocumentScore](../../../server/configuration/indexing-configuration#indexing.corax.includedocumentscore) configuration value to _true_. 
-    Learn how to set configuration values in this [Configuration overview](../../../server/configuration/configuration-options).    
+* __Request to include explanations__:  
+  You can get the score details and see how it was calculated by requesting to include explanations in the query.
+  Currently, this is only available when using Lucene as the underlying indexing engine.  
+  Learn more in [Include query explanations](../../../client-api/session/querying/debugging/include-explanations).
 
-* __Include explanations__:  
-  Another option to get the score details and see how it was calculated is to request to include explanations in the query. 
-  Currently, this is only available when using Lucene.  
-  See [Include query explanations](../../../client-api/session/querying/debugging/include-explanations).
+* __Get score from metadata__:
+
+    * The score is available in the `@index-score` metadata property within each result.  
+      Note the following difference between the underlying indexing engines:
+
+        * When using __Lucene__:  
+          The `@index-score` metadata property is always available in the results.  
+          Read more about Lucene scoring [here](https://lucene.apache.org/core/3_3_0/scoring.html).
+
+        * When using __Corax__:  
+          In order to enhance performance, this property is Not included in the results by default.  
+          To get this metadata property you must set the [Indexing.Corax.IncludeDocumentScore](../../../server/configuration/indexing-configuration#indexing.corax.includedocumentscore) configuration value to _true_.
+          Learn how to set configuration values in this [Configuration overview](../../../server/configuration/configuration-options).
+
+    * The following example shows how to get the score from the metadata of the resulting entities that were loaded to the session:
+
+      {CODE:nodejs get_score_from_metadata@client-api\session\querying\sortQueryResults.js /}
 
 {INFO/}
 

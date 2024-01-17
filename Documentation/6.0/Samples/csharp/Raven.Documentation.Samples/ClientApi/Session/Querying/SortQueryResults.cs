@@ -6,6 +6,7 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Linq;
 using Raven.Documentation.Samples.Orders;
 using System.Threading.Tasks;
+using Raven.Client;
 using Raven.Client.Documents.Session;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.Querying
@@ -486,6 +487,32 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     
                     // Results will be sorted by the 'UnitsInStock' value
                     // according to the logic from 'MySorter' class
+                    #endregion
+                }
+                
+                // Get score from metadata
+                // =======================
+                
+                using (var session = store.OpenSession())
+                {
+                    #region get_score_from_metadata
+                    // Make a query:
+                    // =============
+                    
+                    List<Employee> employees = session
+                        .Query<Employee>()
+                        .Search(x => x.Notes, "English")
+                        .Search(x => x.Notes, "Italian", boost: 10)
+                        .ToList();
+                    
+                    // Get the score:
+                    // ==============
+                    
+                    // Call 'GetMetadataFor', pass an entity from the resulting employees list
+                    var metadata = session.Advanced.GetMetadataFor(employees[0]);
+                    
+                    // Score is available in the '@index-score' metadata property
+                    var score = metadata[Constants.Documents.Metadata.IndexScore];
                     #endregion
                 }
             }
