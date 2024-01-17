@@ -156,13 +156,13 @@ Available values: `SearchEngineType.Lucene`, `SearchEngineType.Corax`.
 
 {PANEL: Unsupported Features}
 
-Below are the features currently not supported by Corax.  
+The below features are currently not supported by Corax.
 
 #### Unsupported during indexing:
 
-* [Boosting](../../indexes/boosting) **document fields** during indexing  
-  Note that boosting **documents** IS supported.  
-* Indexing [WKT shapes](../../indexes/indexing-spatial-data)  
+* Setting a [boost factor on an index-field](../../indexes/boosting#assign-a-boost-factor-to-an-index-field) is not supported.  
+  Note that [boosting the whole index-entry](../../indexes/boosting#assign-a-boost-factor-to-the-index-entry) IS supported.
+* Indexing [WKT shapes](../../indexes/indexing-spatial-data) is not supported.  
   Note that indexing **spatial points** IS supported.  
 * [Custom analyzers](../../studio/database/settings/custom-analyzers)  
 * [Custom Sorters](../../indexes/querying/sorting#creating-a-custom-sorter)  
@@ -182,7 +182,9 @@ Read more about this [below](../../indexes/search-engine/corax#handling-of-compl
 * [lucene()](../../client-api/session/querying/document-query/how-to-use-lucene)  
 * [intersect()](../../indexes/querying/intersection)  
 
-## Unimplemented Methods
+---
+
+### Unimplemented Methods
 
 Trying to use Corax with an unimplemented method (see 
 [Unsupported Features](../../indexes/search-engine/corax#unsupported-features) above) 
