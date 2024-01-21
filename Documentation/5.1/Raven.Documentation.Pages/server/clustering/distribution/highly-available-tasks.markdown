@@ -15,12 +15,33 @@
   such as defining a new _index_, configuring or modifying an _Ongoing Task_, any _Database Topology_ change, etc.  
 
 * In this page:  
+  * [License](../../../server/clustering/distribution/highly-available-tasks#license)  
   * [Constraints](../../../server/clustering/distribution/highly-available-tasks#constraints)  
   * [Responsible Node](../../../server/clustering/distribution/highly-available-tasks#responsible-node)  
   * [Tasks Relocation](../../../server/clustering/distribution/highly-available-tasks#tasks-relocation)  
 {NOTE/}
 
 ---
+
+{PANEL: License}
+
+Please [check your license](https://ravendb.net/buy) to verify whether the Highly Available Tasks feature 
+is activated in your database.  
+  
+ * If your license **provides** highly available tasks, the responsibilities of a failed node will be assigned 
+   automatically and immediately to another, available, cluster node.  
+   Reads, Writes, and the ongoing tasks SQL and Raven ETL, Backup, Data subscription, and External replication, 
+   are supported.  
+   If, for example, the node responsible for Raven ETL tasks fails, the cluster observer will assign an available 
+   node with this responsibility and Raven ETL tasks will automatically resume.  
+   The new responsible node will be provided with all the changes that occured since the original responsible node 
+   failed so tasks are resumed without any data loss.  
+ * If your license does **not** provide highly available tasks, the responsibilites of a failed node will be 
+   resumed when the node returns online.  
+ * Scenarios [below](../../../server/clustering/distribution/highly-available-tasks#tasks-relocation) 
+   are meant to demonstrate the behavior of a system licensed for highly available tasks.  
+
+{PANEL/}
 
 {PANEL: Constraints}
 
