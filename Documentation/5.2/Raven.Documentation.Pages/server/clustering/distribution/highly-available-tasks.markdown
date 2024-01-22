@@ -29,18 +29,21 @@
 Please [check your license](https://ravendb.net/buy) to verify whether the Highly Available Tasks feature 
 is activated in your database.  
   
- * If your license **provides** highly available tasks, the responsibilities of a failed node will be assigned 
-   automatically and immediately to another, available, cluster node.  
-   Reads, Writes, and the ongoing tasks SQL and Raven ETL, Backup, Data subscription, and External replication, 
-   are supported.  
-   If, for example, the node responsible for Raven ETL tasks fails, the cluster observer will assign an available 
-   node with this responsibility and Raven ETL tasks will automatically resume.  
-   The new responsible node will be provided with all the changes that occured since the original responsible node 
-   failed so tasks are resumed without any data loss.  
- * If your license does **not** provide highly available tasks, the responsibilites of a failed node will be 
-   resumed when the node returns online.  
+ * If your license **provides** highly available tasks, the responsibilities of a failed cluster node will 
+   be assigned automatically and immediately to another, available, node.  
+   Supported tasks include Reads, Writes, and the ongoing tasks SQL and Raven ETL, Backup, Data subscription, 
+   and External replication.  
+   If, for example, the node responsible for a Raven ETL task fails, the cluster observer will assign 
+   an available node with the responsibility for the task and ETL transfers will automatically resume 
+   from the failure point on.  
+ * If your license does **not** provide highly available tasks, the tasks will resume their activity when 
+   the original node returns online.  
+   If the fallen node does not return online within a given time (set by 
+   [cluster.timebeforeaddingreplicainsec](../../../server/configuration/cluster-configuration#cluster.timebeforeaddingreplicainsec), 
+   the cluster observer will attempt to select an available node to replace it in the database group 
+   and redistribute its tasks among available nodes.  
  * Scenarios [below](../../../server/clustering/distribution/highly-available-tasks#tasks-relocation) 
-   are meant to demonstrate the behavior of a system licensed for highly available tasks.  
+   demonstrate the behavior of a system that **is** licensed for highly available tasks.  
 
 {PANEL/}
 
@@ -103,20 +106,24 @@ moves itself to be a `Candidate` and removes all its tasks.
 
 {PANEL: Pinning a Task}
 
-* It is sometimes better to **prevent** the failover of a task to another responsible node.  
-* An example for such a case is an ETL task that transferres 
-  [Artificial Documents](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents)). 
-  If a node that runs such a task would fail and transfer the responsibility for the task to 
-  another node, the task will stop transferring the artificial documents.  
-* The failover of a task to another responsible node can be prevented by 
-  **pinning the task** to its original node.  
+* It is sometimes preferable to **prevent** the failover of tasks to different responsible nodes.  
+  An example for such a case is a heavy duty backup task, that better be left for the continuous care 
+  of its original node than reassigned during a backup operation.  
+  Another example is an ETL task that transfers 
+  [artificial documents](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents)). 
+  In this case a reassigned task might skip some of the artificial documents that were created on 
+  the original node.  
+* The failover of a task to another responsible node can be prevented by **pinning the task** to 
+  its original node.  
    * A task can be pinned to a selected node using Studio or code.  
      ![Pinning an ETL Task Using Studio](images/pinning-etl-task.png "Pinning an ETL Task Using Studio") 
-   * A task pinned to a specific node is handled only by this node.  
-   * If the node the task is pinned to goes offline, the task will **not** be 
-     executed until the node is back online.  
-   * If the node the task is pinned to is removed from the database group, the 
-     responsibility for The task will be assigned by the cluster to another node.  
+   * A task pinned to a specific node will be handled only by this node as long as the node is a database group member.  
+   * If the node the task is pinned to fails, the task will **not** be executed until the node is back online.  
+     When the node awakes, the task will be resumed from the failure point on.  
+   * If a node remains offline for the period set by 
+     [cluster.timebeforeaddingreplicainsec](../../../server/configuration/cluster-configuration#cluster.timebeforeaddingreplicainsec), 
+     the cluster observer will attempt to select an available node to replace it in the database group 
+     and redistribute the fallen node's tasks, including pinned ones, among database group members.  
 
 {PANEL/}
 
