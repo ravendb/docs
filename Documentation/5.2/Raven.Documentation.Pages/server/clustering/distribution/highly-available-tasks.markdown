@@ -106,24 +106,40 @@ moves itself to be a `Candidate` and removes all its tasks.
 
 {PANEL: Pinning a Task}
 
-* It is sometimes preferable to **prevent** the failover of tasks to different responsible nodes.  
-  An example for such a case is a heavy duty backup task, that better be left for the continuous care 
-  of its original node than reassigned during a backup operation.  
-  Another example is an ETL task that transfers 
-  [artificial documents](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents)). 
-  In this case a reassigned task might skip some of the artificial documents that were created on 
-  the original node.  
-* The failover of a task to another responsible node can be prevented by **pinning the task** to 
-  its original node.  
-   * A task can be pinned to a selected node using Studio or code.  
-     ![Pinning an ETL Task Using Studio](images/pinning-etl-task.png "Pinning an ETL Task Using Studio") 
-   * A task pinned to a specific node will be handled only by this node as long as the node is a database group member.  
-   * If the node the task is pinned to fails, the task will **not** be executed until the node is back online.  
-     When the node awakes, the task will be resumed from the failure point on.  
-   * If a node remains offline for the period set by 
-     [cluster.timebeforeaddingreplicainsec](../../../server/configuration/cluster-configuration#cluster.timebeforeaddingreplicainsec), 
-     the cluster observer will attempt to select an available node to replace it in the database group 
-     and redistribute the fallen node's tasks, including pinned ones, among database group members.  
+It is sometimes preferable to **prevent** the failover of tasks to different responsible nodes.  
+An example for such a case is a heavy duty backup task, that better be left for the continuous care 
+of its original node than reassigned during a backup operation.  
+Another example is an ETL task that transfers 
+[artificial documents](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents)). 
+In this case a reassigned task might skip some of the artificial documents that were created on 
+the original node.  
+
+The failover of a task to another responsible node can be prevented by **pinning the task** to 
+its original node.  
+
+* A pinned task will be handled only by the node it is pinned to as long as this node is a database 
+  group member.  
+* If the node the task is pinned to fails, the task will **not** be executed until the node is back online.  
+  When the node awakes, the task will be resumed from the failure point on.  
+* If a node remains offline for the period set by 
+  [cluster.timebeforeaddingreplicainsec](../../../server/configuration/cluster-configuration#cluster.timebeforeaddingreplicainsec), 
+  the cluster observer will attempt to select an available node to replace it in the database group 
+  and redistribute the fallen node's tasks, including pinned ones, among database group members.  
+
+---
+
+A task can be pinned to a selected node via Studio or using code.  
+
+####Pinning via Studio
+
+![Pinning an ETL Task Using Studio](images/pinning-etl-task.png "Pinning an ETL Task Using Studio")
+
+####Pinning using code
+To pin a task to the node that runs it, set the task's `PinToMentorNode` configuration 
+option to `true`.  
+In the following example, a RavenDB ETL task is pinned.  
+
+{CODE add_raven_etl_task@ClientApi\Operations\HighAvailabilityTasks.cs /}
 
 {PANEL/}
 
