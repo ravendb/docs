@@ -1,6 +1,12 @@
 # Stream Query Results
 
-Query results can be streamed using the `stream` method from the `advanced` session operations. The query can be issued using either a static index, or it can be a dynamic one where it will be handled by an auto index.
+Query results can be streamed using the `stream` method from the `advanced` session operations.   
+The query can be issued using either a static index, or it can be a dynamic one where it will be handled by an auto index.
+
+Streaming query results does Not support the following:  
+
+   * Requesting the query to [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults).  
+   * Using [Include](../../../client-api/session/loading-entities#load-with-includes) to load a related document to the session while querying.  
 
 ## Syntax
 

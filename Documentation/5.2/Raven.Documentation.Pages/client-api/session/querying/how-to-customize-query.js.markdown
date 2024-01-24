@@ -267,6 +267,9 @@ __Syntax__
 * A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
   (or default) timeout.
 
+* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results).  
+  Calling _waitForNonStaleResults_ with a streaming query will throw an exception.
+
 * Learn more about stale results in [stale indexes](../../../indexes/stale-indexes).
 
 {NOTE: }

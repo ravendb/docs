@@ -20,8 +20,10 @@
 * The stream results are a __snapshot of the data__ at the time when the query is computed by the server.  
   Results that match the query after it was already processed are not streamed to the client.
 
-* Streaming query results does not support using [include](../../../client-api/session/loading-entities#load-with-includes).  
-  Learn how to __stream related documents__ here [below](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents).
+* Streaming query results does Not support the following:  
+    * Requesting the query to [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults).  
+    * Using [include](../../../client-api/session/loading-entities#load-with-includes) to load a related document to the session while querying.  
+      Learn how to __stream related documents__ here [below](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents).
 
 * To stream results, use the `stream` method from the `advanced` session operations.
 

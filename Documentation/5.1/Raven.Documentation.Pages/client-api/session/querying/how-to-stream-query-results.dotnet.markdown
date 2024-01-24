@@ -20,8 +20,10 @@
 * The stream results are a __snapshot of the data__ at the time when the query is computed by the server.  
   Results that match the query after it was already processed are not streamed to the client.
 
-* Streaming query results does not support using [include](../../../client-api/session/loading-entities#load-with-includes).  
-  Learn how to __stream related documents__ here [below](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents).
+* Streaming query results does Not support the following:  
+  * Requesting the query to [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults).  
+  * Using [Include](../../../client-api/how-to/handle-document-relationships#includes) to load a related document to the session while querying.  
+    Learn how to __stream related documents__ here [below](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents).  
 
 * To stream results, use the `Stream` method from the `Advanced` session operations.
 
@@ -94,7 +96,7 @@
 __Why streaming query results does not support 'include'__:
 
 * A document can reference [related documents](../../../indexes/indexing-related-documents#what-are-related-documents).
-* An [include](../../../client-api/session/loading-entities#load-with-includes) clause in a non-streamed query loads these related documents to the session  
+* An [Include](../../../client-api/how-to/handle-document-relationships#includes) clause in a non-streamed query loads these related documents to the session  
   so that they can be accessed without an additional query to the server.
 * Those included documents are sent to the client at the end of the query results.  
   This does not mesh well with streaming, which is designed to allow transferring massive amounts of data,  
