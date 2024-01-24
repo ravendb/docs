@@ -36,7 +36,7 @@
 {CODE-TAB:csharp:DocumentQuery boost_3@ClientApi\Session\Querying\TextSearch\BoostResults.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees" where
-(search(Notes, "English") or boost(search(Notes, "Italian"), 10))
+search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

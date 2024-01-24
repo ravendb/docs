@@ -1,10 +1,18 @@
 # Indexes: Boosting
 
-A feature that RavenDB leverages from Lucene is called Boosting. This feature gives you the ability to manually tune the relevance level of matching documents when performing a query. 
+When querying with some filtering conditions,  
+a basic score is calculated for each document in the results by the underlying engine.
 
-From the index perspective we can associate to an index entry a boosting factor. The higher value it has, the more relevant term will be. To do this, we must use the `Boost` method.
+Providing a __boost value__ to some fields allows you to prioritize the resulting documents.  
+The boost value is integrated with the basic score, making the document rank higher.  
+Automatic ordering of the results by the score is [configurable](../indexes/boosting#automatic-score-based-ordering).
 
-Let's jump straight into the example. To perform the query that will return employees where either `FirstName` or `LastName` is equal to _Bob_, and to promote employees (move them to the top of the results) where `FirstName` matches the phrase, we must first create an index with boosted entry.
+From the index perspective we can associate to an index entry a boosting factor.  
+The higher value it has, the more relevant term will be. To do this, we must use the `Boost` method.
+
+Let's jump straight into the example.  
+To perform the query that will return employees where either `FirstName` or `LastName` is equal to _Bob_,  
+and to promote employees (move them to the top of the results) where `FirstName` matches the phrase, we must first create an index with boosted entry.
 
 {CODE-TABS}
 {CODE-TAB:java:AbstractIndexCreationTask boosting_2@Indexes\Boosting.java /}
@@ -18,6 +26,18 @@ The next step is to perform a query against that index:
 ## Remarks
 
 {INFO Boosting is also available at the query level. /}
+
+{NOTE: }
+
+#### Automatic score-based ordering
+
+* By default, whenever boosting is involved, either via a dynamic query or when querying an index that has a boosting factor in its definition,
+  the results will be automatically ordered by the score.
+
+* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration#indexing.orderbyscoreautomaticallywhenboostingisinvolved)    
+  configuration key.
+
+{NOTE/}
 
 ## Related Articles
 

@@ -18,14 +18,12 @@ async function boostResults() {
             .all();
 
         // * Results will contain all Employee documents that have
-        //   EITHER 'English' OR 'Italian' in their 'Notes' field.
+        //   EITHER 'English' OR 'Italian' in their 'Notes' field (case-insensitive).
         //
         // * Matching documents that contain 'Italian' will get a HIGHER score
         //   than those that contain 'English'.
         //
-        // * Unless configured otherwise, the resulting documents will be ordered by their score.   
-        // 
-        // * Search is case-insensitive.
+        // * Unless configured otherwise, the resulting documents will be ordered by their score.  
         //endregion
     }
 
@@ -48,14 +46,12 @@ async function boostResults() {
             .all();
 
         // * Results will contain all Company documents that either
-        //   (start-with 'O') OR (start-with 'P') OR (end-with 'OP') in their 'Name' field.
+        //   (start-with 'O') OR (start-with 'P') OR (end-with 'OP') in their 'Name' field (case-insensitive). 
         //
         // * Matching documents that end-with 'OP' will get the HIGHEST scores.
         //   Matching documents that start-with 'O' will get the LOWEST scores. 
         //
         // * Unless configured otherwise, the resulting documents will be ordered by their score.
-        //
-        // * Search is case-insensitive.
         //endregion
     }
 }
