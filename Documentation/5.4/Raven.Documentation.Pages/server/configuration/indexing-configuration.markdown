@@ -407,7 +407,11 @@ Set the number of minutes to wait before marking an auto index as idle.
 
 {PANEL: Indexing.Analyzers.NGram.MaxGram}
 
-Largest n-gram to generate when NGram analyzer is used.
+* This configuration applies only to the Lucene indexing engine.
+
+* Largest n-gram to generate when NGram analyzer is used.
+
+---
 
 - **Type**: `int`
 - **Default**: `6`
@@ -418,7 +422,11 @@ Largest n-gram to generate when NGram analyzer is used.
 
 {PANEL: Indexing.Analyzers.NGram.MinGram}
 
-Smallest n-gram to generate when NGram analyzer is used.
+* This configuration applies only to the Lucene indexing engine.
+
+* Smallest n-gram to generate when NGram analyzer is used.
+
+---
 
 - **Type**: `int`
 - **Default**: `2`
@@ -482,6 +490,8 @@ Smallest n-gram to generate when NGram analyzer is used.
 {PANEL: Indexing.LargeSegmentSizeToMergeInMb}
 
 EXPERT ONLY:
+ 
+* This configuration applies only to the Lucene indexing engine.
 
 * The definition of a large segment in MB.  
   We won't merge more than [Indexing.NumberOfLargeSegmentsToMergeInSingleBatch](../../server/configuration/indexing-configuration#indexing.numberoflargesegmentstomergeinsinglebatch) in a single batch.
@@ -588,8 +598,13 @@ When triggered, transaction will be closed and a new one will be opened.
 
 {PANEL: Indexing.MaxTimeForMergesToKeepRunningInSec}
 
-EXPERT ONLY:  
-How long will we let merges to run before we close the transaction.
+EXPERT ONLY:
+
+* This configuration applies only to the Lucene indexing engine.
+
+* How long will we let merges to run before we close the transaction.
+
+---
 
 - **Type**: `int`
 - **Default**: `15`
@@ -612,6 +627,8 @@ Max time to wait when forcing the storage environment flush and sync when replac
 
 EXPERT ONLY:
 
+* This configuration applies only to the Lucene indexing engine.
+
 * The maximum size in MB that we'll consider for segments merging.
 
 * The default value, which is determined based on your platform details, is set by the constructor of class `IndexingConfiguration`.
@@ -628,6 +645,8 @@ EXPERT ONLY:
 {PANEL: Indexing.MergeFactor}
 
 EXPERT ONLY:
+
+* This configuration applies only to the Lucene indexing engine.
 
 * Set how often index segments are merged into larger ones.  
   The merge process will start when the number of segments in an index reaches this number.
@@ -687,8 +706,13 @@ Number of concurrent stopped batches if running low on memory.
 
 {PANEL: Indexing.NumberOfLargeSegmentsToMergeInSingleBatch}
 
-EXPERT ONLY:  
-Number of large segments defined by [Indexing.LargeSegmentSizeToMergeInMb](../../server/configuration/indexing-configuration#indexing.largesegmentsizetomergeinmb) to merge in a single batch.
+EXPERT ONLY: 
+
+* This configuration applies only to the Lucene indexing engine.
+
+* Number of large segments defined by [Indexing.LargeSegmentSizeToMergeInMb](../../server/configuration/indexing-configuration#indexing.largesegmentsizetomergeinmb) to merge in a single batch.
+
+---
 
 - **Type**: `int`
 - **Default**: `2`
@@ -806,11 +830,16 @@ Transaction size limit in megabytes after which an index will stop and complete 
 {PANEL: Indexing.UseCompoundFileInMerging}
 
 EXPERT ONLY:  
-Use compound file in merging.
+
+* This configuration applies only to the Lucene indexing engine.
+ 
+* Use compound file in merging.
+
+---
 
 - **Type**: `bool`
 - **Default**: `true`
 - **Scope**: Server-wide, or per database, or per index
-- **Alias:** `Indexing.Lucene.UseCompoundFileInMergingt`
+- **Alias:** `Indexing.Lucene.UseCompoundFileInMerging`
 
 {PANEL/}
