@@ -1,5 +1,4 @@
 # Stream Query Results
-
 ---
 
 {NOTE: }
@@ -7,27 +6,14 @@
 * RavenDB supports __streaming data__ from the server to the client.  
   Streaming is useful when processing a large number of results.
 
-* The data streamed can be a result of a dynamic query, a static index query,  
-  or just filtered by a prefix.  
-
-* Neither the client nor the server holds the full response in memory.   
-  Instead, as soon as the server has a __single result__, it sends it to the client,  
-  Thus, your application can start processing results before the server sends them all.
-
-* The stream results are __not tracked__ by the session.  
-  Changes made to them will not be sent to the server when _SaveChanges_ is called.
-
-* The stream results are a __snapshot of the data__ at the time when the query is computed by the server.  
-  Results that match the query after it was already processed are not streamed to the client.
-
-* Streaming query results does Not support the following:  
-  * Requesting the query to [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults).  
-  * Using [Include](../../../client-api/how-to/handle-document-relationships#includes) to load a related document to the session while querying.  
-    Learn how to __stream related documents__ here [below](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents).  
+* The data streamed can be a result of a dynamic query, a static index query, or just filtered by a prefix.  
 
 * To stream results, use the `Stream` method from the `Advanced` session operations.
 
 * In this page:
+
+    * [Streaming overview](../../../client-api/session/querying/how-to-stream-query-results#streaming-overview)
+     
     * [Stream by query](../../../client-api/session/querying/how-to-stream-query-results#stream-by-query)
         * [Stream a dynamic query](../../../client-api/session/querying/how-to-stream-query-results#stream-a-dynamic-query)
         * [Stream a dynamic raw query](../../../client-api/session/querying/how-to-stream-query-results#stream-a-dynamic-raw-query)
@@ -35,6 +21,7 @@
         * [Stream an index query](../../../client-api/session/querying/how-to-stream-query-results#stream-an-index-query)
         * [Stream related documents](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents)
         * [By query syntax](../../../client-api/session/querying/how-to-stream-query-results#by-query-syntax)
+      
     * [Stream by prefix](../../../client-api/session/querying/how-to-stream-query-results#stream-by-prefix)
         * [Stream results by prefix](../../../client-api/session/querying/how-to-stream-query-results#stream-results-by-prefix)
         * [By prefix syntax](../../../client-api/session/querying/how-to-stream-query-results#by-prefix-syntax)
@@ -42,6 +29,32 @@
 {NOTE/}
 
 ---
+
+{PANEL: Streaming overview}
+
+* __Immediate processing__:  
+  Neither the client nor the server holds the full response in memory.   
+  Instead, as soon as the server has a single result, it sends it to the client.  
+  Thus, your application can start processing results before the server sends them all.
+
+* __No tracking__:  
+  The stream results are Not tracked by the session.  
+  Changes made to the resulting entities will not be sent to the server when _SaveChanges_ is called.
+
+* __A snapshot of the data__:  
+  The stream results are a snapshot of the data at the time when the query is computed by the server.  
+  Results that match the query after it was already processed are Not streamed to the client.
+
+* __Query limitations:__:  
+
+  * A streaming query does not wait for indexing by design.  
+    So calling [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults) is Not supported and will result in an exception.   
+  
+  * Using [Include](../../../client-api/how-to/handle-document-relationships#includes) to load a related document to the session in a streaming query is Not supported.  
+    Learn how to __stream related documents__ here [below](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents).
+
+{PANEL/}
+
 {PANEL: Stream by query}
 
 {NOTE: }

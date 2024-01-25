@@ -1,12 +1,37 @@
 # Stream Query Results
 
-Query results can be streamed using the `stream` method from the `advanced` session operations.   
-The query can be issued using either a static index, or it can be a dynamic one where it will be handled by an auto index.
+RavenDB supports __streaming data__ from the server to the client.  
+Streaming is useful when processing a large number of results.
 
-Streaming query results does Not support the following:  
+The data streamed can be a result of a dynamic query, a static index query, or just filtered by a prefix.
 
-   * Requesting the query to [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults).  
-   * Using [Include](../../../client-api/session/loading-entities#load-with-includes) to load a related document to the session while querying.  
+To stream results, use the `stream` method from the `advanced` session operations.
+
+---
+
+{PANEL: Streaming overview}
+
+* __Immediate processing__:  
+  Neither the client nor the server holds the full response in memory.   
+  Instead, as soon as the server has a single result, it sends it to the client.  
+  Thus, your application can start processing results before the server sends them all.
+
+* __No tracking__:  
+  The stream results are Not tracked by the session.  
+  Changes made to the resulting entities will not be sent to the server when _saveChanges_ is called.
+
+* __A snapshot of the data__:  
+  The stream results are a snapshot of the data at the time when the query is computed by the server.  
+  Results that match the query after it was already processed are Not streamed to the client.
+
+* __Query limitations:__:
+
+    * A streaming query does not wait for indexing by design.  
+      So calling [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults) is Not supported and will result in an exception.
+
+    * Using [include](../../../client-api/session/loading-entities#load-with-includes) to load a related document to the session in a streaming query is Not supported.  
+
+{PANEL/}
 
 ## Syntax
 
