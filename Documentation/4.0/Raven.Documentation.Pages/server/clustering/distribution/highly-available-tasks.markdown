@@ -46,18 +46,17 @@
 * Since the `Database Topology` is _eventually consistent_ across the cluster,  
   there will be an **eventually consistent single Responsible Node**, which will answer the above constraints.  
 
-{NOTE: Mentor Node}
-The node is called a `Mentor Node` when its task is updating a _Rehab_ or a _Promotable_.  
+{NOTE: Additional Reading}
+Learn more [here](../../../server/clustering/distribution/distributed-database#database-topology) 
+about database nodes' relations and states. 
 {NOTE/}
+
 {PANEL/}
 
 {PANEL: Tasks Relocation}
 
-* Upon a `Database Topology` change, _all_ existing tasks will be re-evaluated and 
-  re-distributed among the functional nodes.   
-
-* The responsible node for an `Ongoing Task` is also re-evalutated upon a change in the 
-  unique hash value of the Ongoing Task.  
+Upon a `Database Topology` change, _all_ existing tasks will be re-evaluated and 
+re-distributed among the functional nodes.   
 
 {NOTE: }
 

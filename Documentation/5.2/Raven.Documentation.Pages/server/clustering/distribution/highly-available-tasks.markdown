@@ -26,24 +26,23 @@
 
 {PANEL: License}
 
-Please [check your license](https://ravendb.net/buy) to verify whether the Highly Available Tasks feature 
-is activated in your database.  
+Please see [available license types](https://ravendb.net/buy) and check your 
+[own license](http://live-test.ravendb.net/studio/index.html#about) 
+to verify whether the Highly Available Tasks feature is activated in your database.  
   
- * If your license **provides** highly available tasks, the responsibilities of a failed cluster node will 
-   be assigned automatically and immediately to another, available, node.  
-   Supported tasks include Reads, Writes, and the ongoing tasks SQL and Raven ETL, Backup, Data subscription, 
-   and External replication.  
-   If, for example, the node responsible for a Raven ETL task fails, the cluster observer will assign 
-   an available node with the responsibility for the task and ETL transfers will automatically resume 
-   from the failure point on.  
- * If your license does **not** provide highly available tasks, the tasks will resume their activity when 
-   the original node returns online.  
-   If the fallen node does not return online within a given time (set by 
-   [cluster.timebeforeaddingreplicainsec](../../../server/configuration/cluster-configuration#cluster.timebeforeaddingreplicainsec), 
-   the cluster observer will attempt to select an available node to replace it in the database group 
-   and redistribute its tasks among available nodes.  
- * Scenarios [below](../../../server/clustering/distribution/highly-available-tasks#tasks-relocation) 
-   demonstrate the behavior of a system that **is** licensed for highly available tasks.  
+* If your license **provides** highly available tasks, the responsibilities of 
+  a failed cluster node will be assigned automatically to another, available, node.  
+  
+    Supported tasks include:  
+     * Backup  
+     * Data subscription  
+     * All ETL types  
+
+* If your license does **not** provide highly available tasks, the responsibilites of a failed node will be 
+  resumed when the node returns online.  
+ 
+* Scenarios [below](../../../server/clustering/distribution/highly-available-tasks#tasks-relocation) 
+  are meant to demonstrate the behavior of a system licensed for highly available tasks.  
 
 {PANEL/}
 
@@ -71,18 +70,17 @@ is activated in your database.
 * Since the `Database Topology` is _eventually consistent_ across the cluster,  
   there will be an **eventually consistent single Responsible Node**, which will answer the above constraints.  
 
-{NOTE: Mentor Node}
-The node is called a `Mentor Node` when its task is updating a _Rehab_ or a _Promotable_.  
+{NOTE: Additional Reading}
+Learn more [here](../../../server/clustering/distribution/distributed-database#database-topology) 
+about database nodes' relations and states. 
 {NOTE/}
+
 {PANEL/}
 
 {PANEL: Tasks Relocation}
 
-* Upon a `Database Topology` change, _all_ existing tasks will be re-evaluated and 
-  re-distributed among the functional nodes.   
-
-* The responsible node for an `Ongoing Task` is also re-evalutated upon a change in the 
-  unique hash value of the Ongoing Task.  
+Upon a `Database Topology` change, _all_ existing tasks will be re-evaluated and 
+re-distributed among the functional nodes.   
 
 {NOTE: }
 
@@ -102,6 +100,7 @@ In our example the task will move to either A or E.
 In the meanwhile, node B which has no communication with the [Cluster Leader](../../../server/clustering/rachis/cluster-topology),  
 moves itself to be a `Candidate` and removes all its tasks.  
 {NOTE/}
+
 {PANEL/}
 
 {PANEL: Pinning a Task}
@@ -114,8 +113,7 @@ Another example is an ETL task that transfers
 In this case a reassigned task might skip some of the artificial documents that were created on 
 the original node.  
 
-The failover of a task to another responsible node can be prevented by **pinning the task** to 
-its original node.  
+The failover of a task to another responsible node can be prevented by **pinning the task** to a mentor node.  
 
 * A pinned task will be handled only by the node it is pinned to as long as this node is a database 
   group member.  

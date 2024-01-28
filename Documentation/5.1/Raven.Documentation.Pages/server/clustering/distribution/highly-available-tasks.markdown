@@ -25,21 +25,23 @@
 
 {PANEL: License}
 
-Please [check your license](https://ravendb.net/buy) to verify whether the Highly Available Tasks feature 
-is activated in your database.  
+Please see [available license types](https://ravendb.net/buy) and check your 
+[own license](http://live-test.ravendb.net/studio/index.html#about) 
+to verify whether the Highly Available Tasks feature is activated in your database.  
   
- * If your license **provides** highly available tasks, the responsibilities of a failed node will be assigned 
-   automatically and immediately to another, available, cluster node.  
-   Reads, Writes, and the ongoing tasks SQL and Raven ETL, Backup, Data subscription, and External replication, 
-   are supported.  
-   If, for example, the node responsible for Raven ETL tasks fails, the cluster observer will assign an available 
-   node with this responsibility and Raven ETL tasks will automatically resume.  
-   The new responsible node will be provided with all the changes that occured since the original responsible node 
-   failed so tasks are resumed without any data loss.  
- * If your license does **not** provide highly available tasks, the responsibilites of a failed node will be 
-   resumed when the node returns online.  
- * Scenarios [below](../../../server/clustering/distribution/highly-available-tasks#tasks-relocation) 
-   are meant to demonstrate the behavior of a system licensed for highly available tasks.  
+* If your license **provides** highly available tasks, the responsibilities of 
+  a failed cluster node will be assigned automatically to another, available, node.  
+  
+    Supported tasks include:  
+     * Backup  
+     * Data subscription  
+     * All ETL types  
+
+* If your license does **not** provide highly available tasks, the responsibilites of a failed node will be 
+  resumed when the node returns online.  
+ 
+* Scenarios [below](../../../server/clustering/distribution/highly-available-tasks#tasks-relocation) 
+  are meant to demonstrate the behavior of a system licensed for highly available tasks.  
 
 {PANEL/}
 
@@ -67,18 +69,17 @@ is activated in your database.
 * Since the `Database Topology` is _eventually consistent_ across the cluster,  
   there will be an **eventually consistent single Responsible Node**, which will answer the above constraints.  
 
-{NOTE: Mentor Node}
-The node is called a `Mentor Node` when its task is updating a _Rehab_ or a _Promotable_.  
+{NOTE: Additional Reading}
+Learn more [here](../../../server/clustering/distribution/distributed-database#database-topology) 
+about database nodes' relations and states. 
 {NOTE/}
+
 {PANEL/}
 
 {PANEL: Tasks Relocation}
 
-* Upon a `Database Topology` change, _all_ existing tasks will be re-evaluated and 
-  re-distributed among the functional nodes.   
-
-* The responsible node for an `Ongoing Task` is also re-evalutated upon a change in the 
-  unique hash value of the Ongoing Task.  
+Upon a `Database Topology` change, _all_ existing tasks will be re-evaluated and 
+re-distributed among the functional nodes.   
 
 {NOTE: }
 
