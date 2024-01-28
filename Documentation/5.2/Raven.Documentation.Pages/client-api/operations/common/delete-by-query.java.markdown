@@ -1,4 +1,4 @@
-﻿# Operations: How to Delete Documents by Query
+﻿# Delete by Query Operation
 
 `DeleteByQueryOperation` gives you the ability to delete a large number of documents with a single query.
 This operation is performed in the background on the server. 

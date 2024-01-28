@@ -6,12 +6,6 @@
     "Mappings": []
   },
   {
-    "Path": "delete-by-query.markdown",
-    "Name": "Delete By Query",
-    "DiscussionId": "9dee83b3-faaa-4347-8c6b-4e25eaf574c4",
-    "Mappings": []
-  },
-  {
     "Path": "/attachments",
     "Name": "Attachments",
     "Mappings": []
@@ -26,6 +20,11 @@
     "Name": "Compare Exchange",
     "Mappings": []
   },
+    {
+        "Path": "/common",
+        "Name": "Common",
+        "Mappings": []
+    },
   {
     "Path": "/maintenance",
     "Name": "Maintenance",
@@ -33,7 +32,7 @@
   },
   {
     "Path": "/server-wide",
-    "Name": "Server-Wide",
+    "Name": "Server-Maintenance",
     "Mappings": []
   },
   {

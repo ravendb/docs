@@ -9,7 +9,13 @@
         "Path": "delete-by-query.markdown",
         "Name": "Delete By Query",
         "DiscussionId": "9dee83b3-faaa-4347-8c6b-4e25eaf574c4",
-        "Mappings": []
+        "LastSupportedVersion": "5.1",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/operations/common/delete-by-query"
+            }
+        ]
     },
     {
         "Path": "/attachments",

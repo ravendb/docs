@@ -1,0 +1,13 @@
+[
+    {
+        "Path": "delete-by-query.markdown",
+        "Name": "Delete by Query",
+        "DiscussionId": "a3903bfd-4d83-4a14-96bf-666d414ec7b6",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "client-api/operations/delete-by-query"
+            }
+        ]
+    }
+]
