@@ -6,18 +6,8 @@
         "Mappings": []
     },
     {
-        "Path": "/attachments",
-        "Name": "Attachments",
-        "Mappings": []
-    },
-    {
-        "Path": "/patching",
-        "Name": "Patching",
-        "Mappings": []
-    },
-    {
-        "Path": "/compare-exchange",
-        "Name": "Compare Exchange",
+        "Path": "/how-to",
+        "Name": "How to...",
         "Mappings": []
     },
     {
@@ -36,8 +26,23 @@
         "Mappings": []
     },
     {
-        "Path": "/how-to",
-        "Name": "How to...",
+        "Path": "/attachments",
+        "Name": "Attachments",
+        "Mappings": []
+    },
+    {
+        "Path": "/counters",
+        "Name": "Counters",
+        "Mappings": []
+    },
+    {
+        "Path": "/compare-exchange",
+        "Name": "Compare Exchange",
+        "Mappings": []
+    },
+    {
+        "Path": "/patching",
+        "Name": "Patching",
         "Mappings": []
     }
 ]
