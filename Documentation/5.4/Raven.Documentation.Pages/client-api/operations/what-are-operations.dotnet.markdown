@@ -115,9 +115,9 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCountersOperation](../../client-api/operations/counters/get-counters)  
 
 * __Time series__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TimeSeriesBatchOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetMultipleTimeSeriesOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTimeSeriesOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [TimeSeriesBatchOperation](../../document-extensions/timeseries/client-api/operations/append-and-delete)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetMultipleTimeSeriesOperation](../../document-extensions/timeseries/client-api/operations/get)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetTimeSeriesOperation](../../document-extensions/timeseries/client-api/operations/get)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTimeSeriesStatisticsOperation  
 
 * __Revisions__:  
@@ -131,10 +131,10 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteByQueryOperation](../../client-api/operations/common/delete-by-query)   
 
 * __Compare-exchange__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutCompareExchangeValueOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetCompareExchangeValueOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetCompareExchangeValuesOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteCompareExchangeValueOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutCompareExchangeValueOperation](../../client-api/operations/compare-exchange/put-compare-exchange-value)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCompareExchangeValueOperation](../../client-api/operations/compare-exchange/get-compare-exchange-value)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCompareExchangeValuesOperation](../../client-api/operations/compare-exchange/get-compare-exchange-values)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteCompareExchangeValueOperation](../../client-api/operations/compare-exchange/delete-compare-exchange-value)  
 
 {NOTE/}
 {PANEL/}
