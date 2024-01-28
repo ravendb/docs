@@ -121,7 +121,7 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchByQueryOperation](../../client-api/operations/patching/set-based)  
 
 * __Delete by query__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteByQueryOperation](../../client-api/operations/delete-by-query)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteByQueryOperation](../../client-api/operations/common/delete-by-query)   
 
 * __Compare-exchange__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutCompareExchangeValueOperation  

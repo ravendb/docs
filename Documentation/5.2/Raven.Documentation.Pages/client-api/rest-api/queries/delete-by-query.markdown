@@ -8,9 +8,9 @@
 `<server URL>/databases/<database name>/queries`  
 
 * In this page:  
-  * [Example](../../../client-api/rest-api/queries/delete-by-query#example)  
-  * [Request Format](../../../client-api/rest-api/queries/delete-by-query#request-format)  
-  * [Response Format](../../../client-api/rest-api/queries/delete-by-query#response-format)  
+  * [Example](../../../client-api/rest-api/queries/common/delete-by-query#example)  
+  * [Request Format](../../../client-api/rest-api/queries/common/delete-by-query#request-format)  
+  * [Response Format](../../../client-api/rest-api/queries/common/delete-by-query#response-format)  
 
 {NOTE/}
 
@@ -121,7 +121,7 @@ double quotes within the request body using a backslash: `"` -> `\"`.
 
 ##### Operations  
 
-- [Delete by Query](../../../client-api/operations/delete-by-query)  
+- [Delete by Query](../../../client-api/operations/common/delete-by-query)  
 
 ##### REST API  
 

@@ -7,7 +7,7 @@ using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Queries;
 
-namespace Raven.Documentation.Samples.ClientApi.Operations
+namespace Raven.Documentation.Samples.ClientApi.Operations.Common
 {
     public class Person
     {

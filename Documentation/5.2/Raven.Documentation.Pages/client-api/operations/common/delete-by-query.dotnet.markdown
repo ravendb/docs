@@ -15,7 +15,7 @@
 
 ## Syntax
 
-{CODE delete_by_query@ClientApi\Operations\DeleteByQuery.cs /}
+{CODE delete_by_query@ClientApi\Operations\Common\DeleteByQuery.cs /}
 
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
@@ -27,8 +27,8 @@
 ## Example I
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync delete_by_query1@ClientApi\Operations\DeleteByQuery.cs /}
-{CODE-TAB:csharp:Async delete_by_query1_async@ClientApi\Operations\DeleteByQuery.cs /}
+{CODE-TAB:csharp:Sync delete_by_query1@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:Async delete_by_query1_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Person/ByName' where Name = 'Bob' 
 {CODE-TAB-BLOCK/}
@@ -38,8 +38,8 @@ from index 'Person/ByName' where Name = 'Bob'
 ## Example II
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync delete_by_query2@ClientApi\Operations\DeleteByQuery.cs /}
-{CODE-TAB:csharp:Async delete_by_query2_async@ClientApi\Operations\DeleteByQuery.cs /}
+{CODE-TAB:csharp:Sync delete_by_query2@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:Async delete_by_query2_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Person/ByName' where Age < 35
 {CODE-TAB-BLOCK/}
@@ -48,8 +48,8 @@ from index 'Person/ByName' where Age < 35
 ## Example III
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync delete_by_query3@ClientApi\Operations\DeleteByQuery.cs /}
-{CODE-TAB:csharp:Async delete_by_query3_async@ClientApi\Operations\DeleteByQuery.cs /}
+{CODE-TAB:csharp:Sync delete_by_query3@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:Async delete_by_query3_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from People u where id(u) in ('people/1-A', 'people/3-A')
 {CODE-TAB-BLOCK/}
@@ -60,8 +60,8 @@ from People u where id(u) in ('people/1-A', 'people/3-A')
 You have the option to **wait** for it using `WaitForCompletion`.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync delete_by_query_wait_for_completion@ClientApi\Operations\DeleteByQuery.cs /}
-{CODE-TAB:csharp:Async delete_by_query_wait_for_completion_async@ClientApi\Operations\DeleteByQuery.cs /}
+{CODE-TAB:csharp:Sync delete_by_query_wait_for_completion@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:Async delete_by_query_wait_for_completion_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from People where Name = 'Bob' and Age >= 29
 {CODE-TAB-BLOCK/}
@@ -85,13 +85,13 @@ so it can happen than a document has been updated or deleted meanwhile.
 
 ### Operations
 
-- [What are Operations](../../client-api/operations/what-are-operations)
+- [What are Operations](../../../client-api/operations/what-are-operations)
 
 ### Client API
 
-- [How to Query](../../client-api/session/querying/how-to-query)
+- [How to Query](../../../client-api/session/querying/how-to-query)
 
 ### Querying
 
-- [What is RQL](../../client-api/session/querying/what-is-rql)
-- [Querying an index](../../indexes/querying/query-index)
+- [What is RQL](../../../client-api/session/querying/what-is-rql)
+- [Querying an index](../../../indexes/querying/query-index)
