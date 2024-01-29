@@ -15,12 +15,35 @@
   such as defining a new _index_, configuring or modifying an _Ongoing Task_, any _Database Topology_ change, etc.  
 
 * In this page:  
+  * [License](../../../server/clustering/distribution/highly-available-tasks#license)  
   * [Constraints](../../../server/clustering/distribution/highly-available-tasks#constraints)  
   * [Responsible Node](../../../server/clustering/distribution/highly-available-tasks#responsible-node)  
   * [Tasks Relocation](../../../server/clustering/distribution/highly-available-tasks#tasks-relocation)  
 {NOTE/}
 
 ---
+
+{PANEL: License}
+
+Please see [available license types](https://ravendb.net/buy) and check your 
+[own license](http://live-test.ravendb.net/studio/index.html#about) 
+to verify whether the Highly Available Tasks feature is activated in your database.  
+  
+* If your license **provides** highly available tasks, the responsibilities of 
+  a failed cluster node will be assigned automatically to another, available, node.  
+  
+    Supported tasks include:  
+     * Backup  
+     * Data subscription  
+     * All ETL types  
+
+* If your license does **not** provide highly available tasks, the responsibilites of a failed node will be 
+  resumed when the node returns online.  
+ 
+* Scenarios [below](../../../server/clustering/distribution/highly-available-tasks#tasks-relocation) 
+  are meant to demonstrate the behavior of a system licensed for highly available tasks.  
+
+{PANEL/}
 
 {PANEL: Constraints}
 
@@ -46,18 +69,17 @@
 * Since the `Database Topology` is _eventually consistent_ across the cluster,  
   there will be an **eventually consistent single Responsible Node**, which will answer the above constraints.  
 
-{NOTE: Mentor Node}
-The node is called a `Mentor Node` when its task is updating a _Rehab_ or a _Promotable_.  
+{NOTE: Additional Reading}
+Learn more [here](../../../server/clustering/distribution/distributed-database#database-topology) 
+about database nodes' relations and states. 
 {NOTE/}
+
 {PANEL/}
 
 {PANEL: Tasks Relocation}
 
-* Upon a `Database Topology` change, _all_ existing tasks will be re-evaluated and 
-  re-distributed among the functional nodes.   
-
-* The responsible node for an `Ongoing Task` is also re-evalutated upon a change in the 
-  unique hash value of the Ongoing Task.  
+Upon a `Database Topology` change, _all_ existing tasks will be re-evaluated and 
+re-distributed among the functional nodes.   
 
 {NOTE: }
 

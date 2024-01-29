@@ -15,19 +15,43 @@
   such as defining a new _index_, configuring or modifying an _Ongoing Task_, any _Database Topology_ change, etc.  
 
 * In this page:  
+  * [License](../../../server/clustering/distribution/highly-available-tasks#license)  
   * [Constraints](../../../server/clustering/distribution/highly-available-tasks#constraints)  
   * [Responsible Node](../../../server/clustering/distribution/highly-available-tasks#responsible-node)  
   * [Tasks Relocation](../../../server/clustering/distribution/highly-available-tasks#tasks-relocation)  
+  * [Pinning a Task](../../../server/clustering/distribution/highly-available-tasks#pinning-a-task)  
 {NOTE/}
 
 ---
+
+{PANEL: License}
+
+Please see [available license types](https://ravendb.net/buy) and check your 
+[own license](http://live-test.ravendb.net/studio/index.html#about) 
+to verify whether the Highly Available Tasks feature is activated in your database.  
+  
+* If your license **provides** highly available tasks, the responsibilities of 
+  a failed cluster node will be assigned automatically to another, available, node.  
+  
+    Supported tasks include:  
+     * Backup  
+     * Data subscription  
+     * All ETL types  
+
+* If your license does **not** provide highly available tasks, the responsibilites of a failed node will be 
+  resumed when the node returns online.  
+ 
+* Scenarios [below](../../../server/clustering/distribution/highly-available-tasks#tasks-relocation) 
+  are meant to demonstrate the behavior of a system licensed for highly available tasks.  
+
+{PANEL/}
 
 {PANEL: Constraints}
 
 1. Task is defined per [Database Group](../../../server/clustering/distribution/distributed-database).  
 
 2. Task is executed by a single `Database Node` only.  
-   With Backup Task being an exception in case of a cluster partition, see [Backup Task - When Cluster or Node are Down](../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---when-cluster-or-node-are-down).  
+   With Backup Task being an exception in case of a cluster partition, see [Backup Task - When Cluster or Node are Down](../../../studio/database/tasks/backup-task#when-the-cluster-or-node-are-down).  
 
 3. A `Database Node` can be assigned with many tasks.  
 
@@ -76,4 +100,44 @@ In our example the task will move to either A or E.
 In the meanwhile, node B which has no communication with the [Cluster Leader](../../../server/clustering/rachis/cluster-topology),  
 moves itself to be a `Candidate` and removes all its tasks.  
 {NOTE/}
+
 {PANEL/}
+
+{PANEL: Pinning a Task}
+
+It is sometimes preferable to **prevent** the failover of tasks to different responsible nodes.  
+An example for such a case is a heavy duty backup task, that better be left for the continuous care 
+of its original node than reassigned during a backup operation.  
+Another example is an ETL task that transfers 
+[artificial documents](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents)). 
+In this case a reassigned task might skip some of the artificial documents that were created on 
+the original node.  
+
+The failover of a task to another responsible node can be prevented by **pinning the task** to a mentor node.  
+
+* A pinned task will be handled only by the node it is pinned to as long as this node is a database 
+  group member.  
+* If the node the task is pinned to fails, the task will **not** be executed until the node is back online.  
+  When the node awakes, the task will be resumed from the failure point on.  
+* If a node remains offline for the period set by 
+  [cluster.timebeforeaddingreplicainsec](../../../server/configuration/cluster-configuration#cluster.timebeforeaddingreplicainsec), 
+  the cluster observer will attempt to select an available node to replace it in the database group 
+  and redistribute the fallen node's tasks, including pinned ones, among database group members.  
+
+---
+
+A task can be pinned to a selected node via Studio or using code.  
+
+####Pinning via Studio
+
+![Pinning an ETL Task Using Studio](images/pinning-etl-task.png "Pinning an ETL Task Using Studio")
+
+####Pinning using code
+To pin a task to the node that runs it, set the task's `PinToMentorNode` configuration 
+option to `true`.  
+In the following example, a RavenDB ETL task is pinned.  
+
+{CODE add_raven_etl_task@ClientApi\Operations\HighAvailabilityTasks.cs /}
+
+{PANEL/}
+
