@@ -3,83 +3,123 @@
 
 {NOTE: }
 
-* `DeleteByQueryOperation` gives you the ability to delete a large number of documents with a single query. 
+* Use `DeleteByQueryOperation` to delete a large number of documents that match the provided query in a single server call.
 
-* This operation is performed in the background on the server.
+* __Dynamic behavior__:   
+  The deletion of documents matching the specified query is run in batches of size 1024.  
+  During the deletion process, documents that are added/modified __after__ the delete operation has started  
+  may also be deleted if they match the query criteria.
+
+* __Background operation__:  
+  This operation is performed in the background on the server.  
+  If needed, you can __wait__ for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations#wait-for-completion).
 
 * In this page:  
-   * asdfasf
-   * asdfasdf
+   * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query#delete-by-dynamic-query)
+   * [Delete by index query](../../../client-api/operations/common/delete-by-query#delete-by-index-query)
+   * [Syntax](../../../client-api/operations/common/delete-by-query#syntax)
 
 {NOTE/}
 
-## Syntax
+{PANEL: Delete by dynamic query}
 
-{CODE delete_by_query@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{NOTE: }
 
-| Parameters | Type | Description |
-| ------------- | ------------- | ----- |
-| **indexName** | string | Name of an index to perform a query on |
-| **expression** | Expression<Func<T, bool>> | The LINQ expression (the query that will be performed) |
-| **queryToDelete** | IndexQuery | Holds all the information required to query an index |
-| **options** | QueryOperationOptions | Holds different setting options for base operations |
-
-## Example I
+__Delete all documents in collection__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync delete_by_query1@ClientApi\Operations\Common\DeleteByQuery.cs /}
-{CODE-TAB:csharp:Async delete_by_query1_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:DeleteOperation_Sync delete_by_query_0@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:DeleteOperation_Async delete_by_query_0_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Person/ByName' where Name = 'Bob' 
+from "Orders"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+{NOTE/}
 
-## Example II
+{NOTE: }
+
+__Delete with filtering__:  
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync delete_by_query2@ClientApi\Operations\Common\DeleteByQuery.cs /}
-{CODE-TAB:csharp:Async delete_by_query2_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:DeleteOperation_Sync delete_by_query_1@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:DeleteOperation_Async delete_by_query_1_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Person/ByName' where Age < 35
+from "Orders" where Freight > 30
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Example III
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: Delete by index query}
+
+* `DeleteByQueryOperation` can only be performed on a __Map-index__.  
+  An exception is thrown when executing the operation on a Map-Reduce index.  
+
+* A few overloads are available, see the following examples:
+
+---
+
+{NOTE: }
+
+__A sample index__:
+
+{CODE the_index@ClientApi\Operations\Common\DeleteByQuery.cs /}
+
+{NOTE/}
+
+{NOTE: }
+
+__Delete documents via an index query__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync delete_by_query3@ClientApi\Operations\Common\DeleteByQuery.cs /}
-{CODE-TAB:csharp:Async delete_by_query3_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:DeleteOperation delete_by_query_2@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:Overload_1 delete_by_query_3@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:Overload_2 delete_by_query_4@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:Overload_3 delete_by_query_5@ClientApi\Operations\Common\DeleteByQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from People u where id(u) in ('people/1-A', 'people/3-A')
+from index "Products/ByPrice" where Price > 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE: WaitForCompletion}
-`DeleteByQueryOperation` is performed in the background on the server.    
-You have the option to **wait** for it using `WaitForCompletion`.
+{NOTE/}
+
+{NOTE: }
+
+__Delete with options__:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync delete_by_query_wait_for_completion@ClientApi\Operations\Common\DeleteByQuery.cs /}
-{CODE-TAB:csharp:Async delete_by_query_wait_for_completion_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:DeleteOperation delete_by_query_6@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:DeleteOperation_async delete_by_query_6_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from People where Name = 'Bob' and Age >= 29
+from index "Products/ByPrice" where Price > 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-{NOTE /}
 
-## Remarks
+* Specifying `QueryOperationOptions` is also supported by the other overload methods, see the Syntax section below.
 
-{WARNING: Map only indexes} 
-`DeleteByQueryOperation` can only be performed on a map index. Executing it on map-reduce index will lead to an exception. 
-{WARNING/}
+{NOTE/}
 
-{WARNING: Batching and Concurrency} 
+{PANEL/}
 
-The deletion of documents matching a specified query is run in batches of size 1024. RavenDB doesn't do concurrency checks during the operation
-so it can happen than a document has been updated or deleted meanwhile.
+{PANEL: Syntax}
 
-{WARNING/}
+{CODE syntax_1@ClientApi\Operations\Common\DeleteByQuery.cs /}
+<br />
+
+| Parameter         | Type                        | Description                                                |
+|-------------------|-----------------------------|------------------------------------------------------------|
+| __queryToDelete__ | string                      | The RQL query to perform                                   |
+| __queryToDelete__ | `IndexQuery`                | Holds all the information required to query an index       |
+| __indexName__     | string                      | The name of the index queried                              |
+| __expression__    | `Expression<Func<T, bool>>` | The expression that defines the query criteria             |
+| __options__       | `QueryOperationOptions`     | Object holding different setting options for the operation |
+
+{CODE syntax_2@ClientApi\Operations\Common\DeleteByQuery.cs /}
+
+{PANEL/}
 
 ## Related Articles
 

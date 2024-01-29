@@ -6,153 +6,279 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Queries;
+using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Common
 {
-    public class Person
+    #region the_index
+    // The index definition:
+    // =====================
+    
+    public class Products_ByPrice : AbstractIndexCreationTask<Product>
     {
-        public string Name;
-        public int Age;
-    }
-
-    public class Person_ByAge : AbstractIndexCreationTask<Person>
-    {
-        public Person_ByAge()
+        public class IndexEntry
         {
-            Map = persons => from person in persons
-                             select new
-                             {
-                                 Age = person.Age
-                             };
+            public decimal Price { get; set; }  
+        }
+        
+        public Products_ByPrice()
+        {
+            Map = products => from product in products
+                select new IndexEntry
+                {
+                    Price = product.PricePerUnit 
+                };
         }
     }
+    #endregion
 
     public class DeleteByQuery
     {
-        private interface IFoo
-        {
-            #region delete_by_query
-
-            DeleteByQueryOperation DeleteByQueryOperation<TEntity, TIndexCreator>(
-                Expression<Func<TEntity, bool>> expression,
-                QueryOperationOptions options = null)
-                where TIndexCreator : AbstractIndexCreationTask, new();
-
-            DeleteByQueryOperation DeleteByQueryOperation<TEntity>(
-                string indexName, Expression<Func<TEntity, bool>> expression,
-                QueryOperationOptions options = null);
-
-            DeleteByQueryOperation DeleteByQueryOperation(
-                IndexQuery queryToDelete, QueryOperationOptions options = null);
-
-            #endregion
-        }
-
         public DeleteByQuery()
         {
             using (var store = new DocumentStore())
             {
-                #region delete_by_query1
-                // remove all documents from the server where Name == Bob using Person/ByName index
-                var operation = store
-                    .Operations
-                    .Send(new DeleteByQueryOperation<Person>("Person/ByName", x => x.Name == "Bob"));
+                #region delete_by_query_0
+                // Define the delete by query operation, pass an RQL querying a collection
+                var deleteByQueryOp = new DeleteByQueryOperation("from 'Orders'");
+                
+                // Execute the operation by passing it to Operations.Send
+                var operation = store.Operations.Send(deleteByQueryOp);
+                
+                // All documents in collection 'Orders' will be deleted from the server.
+                #endregion
+            }
+            
+            using (var store = new DocumentStore())
+            {
+                #region delete_by_query_1
+                // Define the delete by query operation, pass an RQL querying a collection
+                var deleteByQueryOp = new DeleteByQueryOperation("from 'Orders' where Freight > 30");
+                
+                // Execute the operation by passing it to Operations.Send
+                var operation = store.Operations.Send(deleteByQueryOp);
+                
+                // * All documents matching the specified RQL will be deleted from the server.
+                
+                // * Since the dynamic query was made with a filtering condition -
+                //   an auto-index is generated (if no other matching auto-index already exists).
+                #endregion
+            }
+            
+            using (var store = new DocumentStore())
+            {
+                #region delete_by_query_2
+                // Define the delete by query operation, pass an RQL querying the index
+                var deleteByQueryOp = new DeleteByQueryOperation("from index 'Products/ByPrice' where Price > 10");
+                
+                // Execute the operation by passing it to Operations.Send
+                var operation = store.Operations.Send(deleteByQueryOp);
+
+                // All documents with document-field PricePerUnit > 10 will be deleted from the server.
                 #endregion
             }
 
             using (var store = new DocumentStore())
             {
-                #region delete_by_query2
-                // remove all documents from the server where Age > 35 using Person/ByAge index
-                var operation = store
-                    .Operations
-                    .Send(new DeleteByQueryOperation<Person, Person_ByAge>(x => x.Age < 35));
+                #region delete_by_query_3
+                // Define the delete by query operation
+                var deleteByQueryOp = new DeleteByQueryOperation(new IndexQuery
+                {
+                    // Provide an RQL querying the index
+                    Query = "from index 'Products/ByPrice' where Price > 10"
+                });
+                
+                // Execute the operation by passing it to Operations.Send
+                var operation = store.Operations.Send(deleteByQueryOp);
+
+                // All documents with document-field PricePerUnit > 10 will be deleted from the server.
                 #endregion
             }
 
             using (var store = new DocumentStore())
             {
-                #region delete_by_query3
-                // delete multiple docs with specific ids in a single run without loading them into the session
-                var operation = store
-                    .Operations
-                    .Send(new DeleteByQueryOperation(new IndexQuery
+                #region delete_by_query_4
+                // Define the delete by query operation
+                var deleteByQueryOp =
+                    // Pass parameters:
+                    // * The index name
+                    // * A filtering expression on the index-field
+                    new DeleteByQueryOperation<Products_ByPrice.IndexEntry>("Products/ByPrice", x => x.Price > 10);
+                
+                // Execute the operation by passing it to Operations.Send
+                var operation = store.Operations.Send(deleteByQueryOp);
+
+                // All documents with document-field PricePerUnit > 10 will be deleted from the server.
+                #endregion
+            }
+            
+            using (var store = new DocumentStore())
+            {
+                #region delete_by_query_5
+                // Define the delete by query operation
+                var deleteByQueryOp =
+                    // Pass param:
+                    // * A filtering expression on the index-field
+                    new DeleteByQueryOperation<Products_ByPrice.IndexEntry, Products_ByPrice>(x => x.Price > 10);
+                
+                // Execute the operation by passing it to Operations.Send
+                var operation = store.Operations.Send(deleteByQueryOp);
+
+                // All documents with document-field PricePerUnit > 10 will be deleted from the server.
+                #endregion
+            }
+            
+            using (var store = new DocumentStore())
+            {
+                #region delete_by_query_6
+                // Define the delete by query operation
+                var deleteByQueryOp = new DeleteByQueryOperation(
+                    // QUERY: Specify the query
+                    new IndexQuery
                     {
-                        Query = "from People u where id(u) in ('people/1-A', 'people/3-A')"
-                    }));
-                #endregion
-            }
-
-            using (var store = new DocumentStore())
-            {
-                #region delete_by_query_wait_for_completion
-                // remove all document from server where Name == Bob and Age >= 29 using People collection
-                var operation = store
-                    .Operations
-                    .Send(new DeleteByQueryOperation(new IndexQuery
+                        Query = "from index 'Products/ByPrice' where Price > 10"
+                    },
+                    // OPTIONS: Specify the options for the operation
+                    // (See all other available options under the Syntax section)
+                    new QueryOperationOptions
                     {
-                        Query = "from People where Name = 'Bob' and Age >= 29"
-                    }));
-
-                operation.WaitForCompletion(TimeSpan.FromSeconds(15));
+                        // Allow the operation to operate even if index is stale
+                        AllowStale = true, 
+                        // Get info in the operation result about documents that were deleted
+                        RetrieveDetails = true 
+                    });
+                
+                // Execute the operation by passing it to Operations.Send
+                Operation operation = store.Operations.Send(deleteByQueryOp);
+                    
+                // Wait for operation to complete
+                var result = operation.WaitForCompletion<BulkOperationResult>(TimeSpan.FromSeconds(15));
+                
+                // * All documents with document-field PricePerUnit > 10 will be deleted from the server.
+                
+                // * Details about deleted documents are available:
+                var details = result.Details;
+                var documentIdThatWasDeleted = details[0].ToJson()["Id"];
                 #endregion
             }
         }
 
-        public async Task Sample()
+        public async Task DeleteByQueryAsync()
         {
             using (var store = new DocumentStore())
             {
-                #region delete_by_query1_async
-
-                // remove all documents from the server where Name == Bob using Person/ByName index
-                var operation = await store
-                    .Operations
-                    .SendAsync(new DeleteByQueryOperation<Person>("Person/ByName", x => x.Name == "Bob"));
+                #region delete_by_query_0_async
+                // Define the delete by query operation, pass an RQL querying a collection
+                var deleteByQueryOp = new DeleteByQueryOperation("from 'Orders'");
+                
+                // Execute the operation by passing it to Operations.SendAsync
+                var result = await store.Operations.SendAsync(deleteByQueryOp);
+                
+                // All documents in collection 'Orders' will be deleted from the server.
                 #endregion
             }
-
+            
             using (var store = new DocumentStore())
             {
-                #region delete_by_query2_async
-
-                //remove all documents from the server where Age > 35 using Person/ByAge index
-                var operation = await store
-                    .Operations
-                    .SendAsync(new DeleteByQueryOperation<Person, Person_ByAge>(x => x.Age < 35));
+                #region delete_by_query_1_async
+                // Define the delete by query operation, pass an RQL querying a collection
+                var deleteByQueryOp = new DeleteByQueryOperation("from 'Orders' where Freight > 30");
+                
+                // Execute the operation by passing it to Operations.SendAsync
+                var result = await store.Operations.SendAsync(deleteByQueryOp);
+                
+                // * All documents matching the provided RQL will be deleted from the server.
+                
+                // * Since a dynamic query was made with a filtering condition -
+                //   an auto-index is generated (if no other matching auto-index already exists).
                 #endregion
             }
-
+            
             using (var store = new DocumentStore())
             {
-                #region delete_by_query3_async
-
-                // delete multiple docs with specific ids in a single run without loading them into the session
-                var operation = await store
-                    .Operations
-                    .SendAsync(new DeleteByQueryOperation(new IndexQuery
+                #region delete_by_query_6_async
+                // Define the delete by query operation
+                var deleteByQueryOp = new DeleteByQueryOperation(
+                    // QUERY: Specify the query
+                    new IndexQuery
                     {
-                        Query = "from People u where id(u) in ('people/1-A', 'people/3-A')"
-                    }));
-                #endregion
-            }
-
-            using (var store = new DocumentStore())
-            {
-                #region delete_by_query_wait_for_completion_async
-
-                // remove all document from server where Name == Bob and Age >= 29 using People collection
-                var operation = await store
-                    .Operations
-                    .SendAsync(new DeleteByQueryOperation(new IndexQuery
+                        Query = "from index 'Products/ByPrice' where Price > 10"
+                    },
+                    // OPTIONS: Specify the options for the operation
+                    // (See all other available options under the Syntax section)
+                    new QueryOperationOptions
                     {
-                        Query = "from People where Name = 'Bob' and Age >= 29"
-                    }));
-
-                await operation.WaitForCompletionAsync(TimeSpan.FromSeconds(15));
-
+                        // Allow the operation to operate even if index is stale
+                        AllowStale = true, 
+                        // Get info in the operation result about documents that were deleted
+                        RetrieveDetails = true 
+                    });
+                
+                // Execute the operation by passing it to Operations.Send
+                Operation operation = await store.Operations.SendAsync(deleteByQueryOp);
+                
+                // Wait for operation to complete
+                BulkOperationResult result = 
+                    await operation.WaitForCompletionAsync<BulkOperationResult>(TimeSpan.FromSeconds(15))
+                        .ConfigureAwait(false);
+                
+                // * All documents with document-field PricePerUnit > 10 will be deleted from the server.
+                
+                // * Details about deleted documents are available:
+                var details = result.Details;
+                var documentIdThatWasDeleted = details[0].ToJson()["Id"];
                 #endregion
             }
+        }
+        
+        private interface IFoo
+        {
+            #region syntax_1
+            // Available overload:
+            // ===================
+            
+            DeleteByQueryOperation DeleteByQueryOperation(
+                string queryToDelete);
+            
+            DeleteByQueryOperation DeleteByQueryOperation(
+                IndexQuery queryToDelete, 
+                QueryOperationOptions options = null);
+
+            DeleteByQueryOperation DeleteByQueryOperation<TEntity>(
+                string indexName, 
+                Expression<Func<TEntity, bool>> expression,
+                QueryOperationOptions options = null);
+            
+            DeleteByQueryOperation DeleteByQueryOperation<TEntity, TIndexCreator>(
+                Expression<Func<TEntity, bool>> expression,
+                QueryOperationOptions options = null)
+                where TIndexCreator : AbstractIndexCreationTask, new();
+            #endregion
+            
+            /*
+            #region syntax_2
+            public class QueryOperationOptions
+            {
+                // Indicates whether operations are allowed on stale indexes.
+                public bool AllowStale { get; set; }
+                
+                // If AllowStale is set to false and index is stale, 
+                // then this is the maximum timeout to wait for index to become non-stale. 
+                // If timeout is exceeded then exception is thrown.
+                public TimeSpan? StaleTimeout { get; set; }
+                
+                // Limits the amount of base operation per second allowed.
+                public int? MaxOpsPerSecond
+                
+                // Determines whether operation details about each document should be returned by server.
+                public bool RetrieveDetails { get; set; }
+                
+                // Ignore the maximum number of statements a script can execute.
+                // Note: this is only relevant for the PatchByQueryOperation. 
+                public bool IgnoreMaxStepsForScript { get; set; }
+            }
+            #endregion
+            */
         }
     }
 }
