@@ -45,8 +45,6 @@
   * Server-wide, or database, or per index:  
     [Indexing.Analyzers.Default](../../server/configuration/indexing-configuration#indexing.analyzers.default)  
     [Indexing.Analyzers.Exact.Default](../../server/configuration/indexing-configuration#indexing.analyzers.exact.default)  
-    [Indexing.Analyzers.NGram.MaxGram](../../server/configuration/indexing-configuration#indexing.analyzers.ngram.maxgram)  
-    [Indexing.Analyzers.NGram.MinGram](../../server/configuration/indexing-configuration#indexing.analyzers.ngram.mingram)  
     [Indexing.Analyzers.Search.Default](../../server/configuration/indexing-configuration#indexing.analyzers.search.default)  
     [Indexing.Corax.DocumentsLimitForCompressionDictionaryCreation](../../server/configuration/indexing-configuration#indexing.corax.documentslimitforcompressiondictionarycreation)  
     [Indexing.Corax.IncludeDocumentScore](../../server/configuration/indexing-configuration#indexing.corax.includedocumentscore)  
@@ -56,19 +54,23 @@
     [Indexing.Encrypted.TransactionSizeLimitInMb](../../server/configuration/indexing-configuration#indexing.encrypted.transactionsizelimitinmb)  
     [Indexing.IndexEmptyEntries](../../server/configuration/indexing-configuration#indexing.indexemptyentries)  
     [Indexing.IndexMissingFieldsAsNull](../../server/configuration/indexing-configuration#indexing.indexmissingfieldsasnull)  
-    [Indexing.LargeSegmentSizeToMergeInMb](../../server/configuration/indexing-configuration#indexing.largesegmentsizetomergeinmb)  
+    [Indexing.Lucene.Analyzers.NGram.MaxGram](../../server/configuration/indexing-configuration#indexing.lucene.analyzers.ngram.maxgram)  
+    [Indexing.Lucene.Analyzers.NGram.MinGram](../../server/configuration/indexing-configuration#indexing.lucene.analyzers.ngram.mingram)  
     [Indexing.Lucene.IndexInputType](../../server/configuration/indexing-configuration#indexing.lucene.indexinputtype)  
+    [Indexing.Lucene.LargeSegmentSizeToMergeInMb](../../server/configuration/indexing-configuration#indexing.lucene.largesegmentsizetomergeinmb)  
+    [Indexing.Lucene.MaximumSizePerSegmentInMb](../../server/configuration/indexing-configuration#indexing.lucene.maximumsizepersegmentinmb)  
+    [Indexing.Lucene.MaxTimeForMergesToKeepRunningInSec](../../server/configuration/indexing-configuration#indexing.lucene.maxtimeformergestokeeprunninginsec)  
+    [Indexing.Lucene.MergeFactor](../../server/configuration/indexing-configuration#indexing.lucene.mergefactor)  
+    [Indexing.Lucene.NumberOfLargeSegmentsToMergeInSingleBatch](../../server/configuration/indexing-configuration#indexing.lucene.numberoflargesegmentstomergeinsinglebatch)  
     [Indexing.Lucene.ReaderTermsIndexDivisor](../../server/configuration/indexing-configuration#indexing.lucene.readertermsindexdivisor)  
+    [Indexing.Lucene.UseCompoundFileInMerging](../../server/configuration/indexing-configuration#indexing.lucene.usecompoundfileinmerging)  
     [Indexing.ManagedAllocationsBatchSizeLimitInMb](../../server/configuration/indexing-configuration#indexing.managedallocationsbatchsizelimitinmb)  
     [Indexing.MapBatchSize](../../server/configuration/indexing-configuration#indexing.mapbatchsize)  
     [Indexing.MapTimeoutAfterEtagReachedInMin](../../server/configuration/indexing-configuration#indexing.maptimeoutafteretagreachedinmin)  
     [Indexing.MapTimeoutInSec](../../server/configuration/indexing-configuration#indexing.maptimeoutinsec)  
     [Indexing.MaxStepsForScript](../../server/configuration/indexing-configuration#indexing.maxstepsforscript)  
     [Indexing.MaxTimeForDocumentTransactionToRemainOpenInSec](../../server/configuration/indexing-configuration#indexing.maxtimefordocumenttransactiontoremainopeninsec)  
-    [Indexing.MaxTimeForMergesToKeepRunningInSec](../../server/configuration/indexing-configuration#indexing.maxtimeformergestokeeprunninginsec)  
     [Indexing.MaxTimeToWaitAfterFlushAndSyncWhenReplacingSideBySideIndexInSec](../../server/configuration/indexing-configuration#indexing.maxtimetowaitafterflushandsyncwhenreplacingsidebysideindexinsec)  
-    [Indexing.MaximumSizePerSegmentInMb](../../server/configuration/indexing-configuration#indexing.maximumsizepersegmentinmb)  
-    [Indexing.MergeFactor](../../server/configuration/indexing-configuration#indexing.mergefactor)  
     [Indexing.Metrics.Enabled](../../server/configuration/indexing-configuration#indexing.metrics.enabled)   
     [Indexing.MinNumberOfMapAttemptsAfterWhichBatchWillBeCanceledIfRunningLowOnMemory](../../server/configuration/indexing-configuration#indexing.minnumberofmapattemptsafterwhichbatchwillbecanceledifrunninglowonmemory)   
     [Indexing.MinimumTotalSizeOfJournalsToRunFlushAndSyncWhenReplacingSideBySideIndexInMb](../../server/configuration/indexing-configuration#indexing.minimumtotalsizeofjournalstorunflushandsyncwhenreplacingsidebysideindexinmb)
@@ -83,7 +85,6 @@
     [Indexing.Throttling.TimeIntervalInMs](../../server/configuration/indexing-configuration#indexing.throttling.timeintervalinms)  
     [Indexing.TimeSinceLastQueryAfterWhichDeepCleanupCanBeExecutedInMin](../../server/configuration/indexing-configuration#indexing.timesincelastqueryafterwhichdeepcleanupcanbeexecutedinmin)  
     [Indexing.TransactionSizeLimitInMb](../../server/configuration/indexing-configuration#indexing.transactionsizelimitinmb)  
-    [Indexing.UseCompoundFileInMerging](../../server/configuration/indexing-configuration#indexing.usecompoundfileinmerging)  
 
 {NOTE/}
 
@@ -432,36 +433,6 @@ Set the number of minutes to wait before marking an auto index as idle.
 
 {PANEL/}
 
-{PANEL: Indexing.Analyzers.NGram.MaxGram}
-
-* This configuration applies only to the Lucene indexing engine.
-
-* Largest n-gram to generate when NGram analyzer is used.
-
----
-
-- **Type**: `int`
-- **Default**: `6`
-- **Scope**: Server-wide, or per database, or per index
-- **Alias:** `Indexing.Lucene.Analyzers.NGram.MaxGram`
-
-{PANEL/}
-
-{PANEL: Indexing.Analyzers.NGram.MinGram}
-
-* This configuration applies only to the Lucene indexing engine.
-
-* Smallest n-gram to generate when NGram analyzer is used.
-
----
-
-- **Type**: `int`
-- **Default**: `2`
-- **Scope**: Server-wide, or per database, or per index
-- **Alias:** `Indexing.Lucene.Analyzers.NGram.MinGram`
-
-{PANEL/}
-
 {PANEL: Indexing.Analyzers.Search.Default}
 
 [Default analyzer](../../indexes/using-analyzers#ravendb) that will be used for search fields.
@@ -572,7 +543,47 @@ The maximum amount of memory in megabytes that Corax can use for memoization dur
 
 {PANEL/}
 
-{PANEL: Indexing.LargeSegmentSizeToMergeInMb}
+{PANEL: Indexing.Lucene.Analyzers.NGram.MaxGram}
+
+* This configuration applies only to the Lucene indexing engine.
+
+* Largest n-gram to generate when NGram analyzer is used.
+
+---
+
+- **Type**: `int`
+- **Default**: `6`
+- **Scope**: Server-wide, or per database, or per index
+- **Alias:** `Indexing.Analyzers.NGram.MaxGram`
+
+{PANEL/}
+
+{PANEL: Indexing.Lucene.Analyzers.NGram.MinGram}
+
+* This configuration applies only to the Lucene indexing engine.
+
+* Smallest n-gram to generate when NGram analyzer is used.
+
+---
+
+- **Type**: `int`
+- **Default**: `2`
+- **Scope**: Server-wide, or per database, or per index
+- **Alias:** `Indexing.Analyzers.NGram.MinGram`
+
+{PANEL/}
+
+{PANEL: Indexing.Lucene.IndexInputType}
+
+Lucene index input
+
+- **Type**: `enum LuceneIndexInputType` (`Standard`, `Buffered`)
+- **Default**: `Buffered`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.Lucene.LargeSegmentSizeToMergeInMb}
 
 EXPERT ONLY:
 
@@ -588,17 +599,80 @@ EXPERT ONLY:
 - **Type**: `int`
 - **Default**: `DefaultValueSetInConstructor`
 - **Scope**: Server-wide, or per database, or per index
-- **Alias:** `Indexing.Lucene.LargeSegmentSizeToMergeInMb`
+- **Alias:** `Indexing.LargeSegmentSizeToMergeInMb`
 
 {PANEL/}
 
-{PANEL: Indexing.Lucene.IndexInputType}
+{PANEL: Indexing.Lucene.MaximumSizePerSegmentInMb}
 
-Lucene index input
+EXPERT ONLY:
 
-- **Type**: `enum LuceneIndexInputType` (`Standard`, `Buffered`)
-- **Default**: `Buffered`
+* This configuration applies only to the Lucene indexing engine.
+
+* The maximum size in MB that we'll consider for segments merging.
+
+* The default value, which is determined based on your platform details, is set by the constructor of class `IndexingConfiguration`.
+
+---
+
+- **Type**: `int`
+- **Default**: `DefaultValueSetInConstructor`
 - **Scope**: Server-wide, or per database, or per index
+- **Alias:** `Indexing.MaximumSizePerSegmentInMb`
+
+{PANEL/}
+
+{PANEL: Indexing.Lucene.MaxTimeForMergesToKeepRunningInSec}
+
+EXPERT ONLY:
+
+* This configuration applies only to the Lucene indexing engine.
+
+* How long will we let merges to run before we close the transaction.
+
+---
+
+- **Type**: `int`
+- **Default**: `15`
+- **Scope**: Server-wide, or per database, or per index
+- **Alias:** `Indexing.MaxTimeForMergesToKeepRunningInSec`
+
+{PANEL/}
+
+{PANEL: Indexing.Lucene.MergeFactor}
+
+EXPERT ONLY:
+
+* This configuration applies only to the Lucene indexing engine.
+
+* Set how often index segments are merged into larger ones.  
+  The merge process will start when the number of segments in an index reaches this number.
+
+* With smaller values, less RAM is used while indexing, and searches on unoptimized indexes are faster, but indexing speed is slower.
+
+---
+
+- **Type**: `int`
+- **Default**: `10`
+- **Scope**: Server-wide, or per database, or per index
+- **Alias:** `Indexing.MergeFactor`
+
+{PANEL/}
+
+{PANEL: Indexing.Lucene.NumberOfLargeSegmentsToMergeInSingleBatch}
+
+EXPERT ONLY:
+
+* This configuration applies only to the Lucene indexing engine.
+
+* Number of large segments defined by [Indexing.LargeSegmentSizeToMergeInMb](../../server/configuration/indexing-configuration#indexing.largesegmentsizetomergeinmb) to merge in a single batch.
+
+---
+
+- **Type**: `int`
+- **Default**: `2`
+- **Scope**: Server-wide, or per database, or per index
+- **Alias:** `Indexing.NumberOfLargeSegmentsToMergeInSingleBatch`
 
 {PANEL/}
 
@@ -611,6 +685,23 @@ Higher values reduce the memory usage at the expense of increased search time fo
 - **Type**: `int`
 - **Default**: `1`
 - **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.Lucene.UseCompoundFileInMerging}
+
+EXPERT ONLY:
+
+* This configuration applies only to the Lucene indexing engine.
+
+* Use compound file in merging.
+
+---
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide, or per database, or per index
+- **Alias:** `Indexing.UseCompoundFileInMerging`
 
 {PANEL/}
 
@@ -681,23 +772,6 @@ When triggered, transaction will be closed and a new one will be opened.
 
 {PANEL/}
 
-{PANEL: Indexing.MaxTimeForMergesToKeepRunningInSec}
-
-EXPERT ONLY:
-
-* This configuration applies only to the Lucene indexing engine.
-
-* How long will we let merges to run before we close the transaction.
-
----
-
-- **Type**: `int`
-- **Default**: `15`
-- **Scope**: Server-wide, or per database, or per index
-- **Alias:** `Indexing.Lucene.MaxTimeForMergesToKeepRunningInSec`
-
-{PANEL/}
-
 {PANEL: Indexing.MaxTimeToWaitAfterFlushAndSyncWhenReplacingSideBySideIndexInSec}
 
 Max time to wait when forcing the storage environment flush and sync when replacing side-by-side index.
@@ -705,45 +779,6 @@ Max time to wait when forcing the storage environment flush and sync when replac
 - **Type**: `int`
 - **Default**: `30`
 - **Scope**: Server-wide, or per database, or per index
-
-{PANEL/}
-
-{PANEL: Indexing.MaximumSizePerSegmentInMb}
-
-EXPERT ONLY:
-
-* This configuration applies only to the Lucene indexing engine.
-
-* The maximum size in MB that we'll consider for segments merging.
-
-* The default value, which is determined based on your platform details, is set by the constructor of class `IndexingConfiguration`.
-
----
-
-- **Type**: `int`
-- **Default**: `DefaultValueSetInConstructor`
-- **Scope**: Server-wide, or per database, or per index
-- **Alias:** `Indexing.Lucene.MaximumSizePerSegmentInMb`
-
-{PANEL/}
-
-{PANEL: Indexing.MergeFactor}
-
-EXPERT ONLY:
-
-* This configuration applies only to the Lucene indexing engine.
-
-* Set how often index segments are merged into larger ones.  
-  The merge process will start when the number of segments in an index reaches this number.
-
-* With smaller values, less RAM is used while indexing, and searches on unoptimized indexes are faster, but indexing speed is slower.
-
----
-
-- **Type**: `int`
-- **Default**: `10`
-- **Scope**: Server-wide, or per database, or per index
-- **Alias:** `Indexing.Lucene.MergeFactor`
 
 {PANEL/}
 
@@ -786,23 +821,6 @@ Number of concurrent stopped batches if running low on memory.
 - **Type**: `int`
 - **Default**: `2`
 - **Scope**: Server-wide, or per database, or per index
-
-{PANEL/}
-
-{PANEL: Indexing.NumberOfLargeSegmentsToMergeInSingleBatch}
-
-EXPERT ONLY:
-
-* This configuration applies only to the Lucene indexing engine.
-
-* Number of large segments defined by [Indexing.LargeSegmentSizeToMergeInMb](../../server/configuration/indexing-configuration#indexing.largesegmentsizetomergeinmb) to merge in a single batch.
-
----
-
-- **Type**: `int`
-- **Default**: `2`
-- **Scope**: Server-wide, or per database, or per index
-- **Alias:** `Indexing.Lucene.NumberOfLargeSegmentsToMergeInSingleBatch`
 
 {PANEL/}
 
@@ -909,22 +927,5 @@ Transaction size limit in megabytes after which an index will stop and complete 
 - **Type**: `int`
 - **Default**: `null` (no limit)
 - **Scope**: Server-wide, or per database, or per index
-
-{PANEL/}
-
-{PANEL: Indexing.UseCompoundFileInMerging}
-
-EXPERT ONLY:
-
-* This configuration applies only to the Lucene indexing engine.
-
-* Use compound file in merging.
-
----
-
-- **Type**: `bool`
-- **Default**: `true`
-- **Scope**: Server-wide, or per database, or per index
-- **Alias:** `Indexing.Lucene.UseCompoundFileInMerging`
 
 {PANEL/}
