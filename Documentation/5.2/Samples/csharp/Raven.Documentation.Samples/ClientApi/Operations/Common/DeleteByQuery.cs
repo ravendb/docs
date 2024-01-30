@@ -60,7 +60,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Common
                 
                 // * All documents matching the specified RQL will be deleted from the server.
                 
-                // * Since the dynamic query was made with a filtering condition -
+                // * Since the dynamic query was made with a filtering condition,
                 //   an auto-index is generated (if no other matching auto-index already exists).
                 #endregion
             }
@@ -139,7 +139,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Common
                         Query = "from index 'Products/ByPrice' where Price > 10"
                     },
                     // OPTIONS: Specify the options for the operation
-                    // (See all other available options under the Syntax section)
+                    // (See all other available options in the Syntax section below)
                     new QueryOperationOptions
                     {
                         // Allow the operation to operate even if index is stale
@@ -189,7 +189,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Common
                 
                 // * All documents matching the provided RQL will be deleted from the server.
                 
-                // * Since a dynamic query was made with a filtering condition -
+                // * Since a dynamic query was made with a filtering condition,
                 //   an auto-index is generated (if no other matching auto-index already exists).
                 #endregion
             }
@@ -205,7 +205,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Common
                         Query = "from index 'Products/ByPrice' where Price > 10"
                     },
                     // OPTIONS: Specify the options for the operation
-                    // (See all other available options under the Syntax section)
+                    // (See all other available options in the Syntax section below)
                     new QueryOperationOptions
                     {
                         // Allow the operation to operate even if index is stale
@@ -267,7 +267,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Common
                 // If timeout is exceeded then exception is thrown.
                 public TimeSpan? StaleTimeout { get; set; }
                 
-                // Limits the amount of base operation per second allowed.
+                // Limits the number of base operations per second allowed.
                 public int? MaxOpsPerSecond
                 
                 // Determines whether operation details about each document should be returned by server.
