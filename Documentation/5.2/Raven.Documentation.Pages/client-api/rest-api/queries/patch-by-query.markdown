@@ -131,7 +131,7 @@ double quotes within the request body using a backslash: `"` -> `\"`.
 ##### REST API  
 
 - [Query the Database](../../../client-api/rest-api/queries/query-the-database)  
-- [Delete by Query](../../../client-api/rest-api/queries/common/delete-by-query)  
+- [Delete by Query](../../../client-api/rest-api/queries/delete-by-query)  
 <br/>
 ### Indexes  
 

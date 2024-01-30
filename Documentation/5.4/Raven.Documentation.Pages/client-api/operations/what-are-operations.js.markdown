@@ -21,7 +21,7 @@
       * [Maintenance operations](../../client-api/operations/what-are-operations#maintenance-operations)  
       * [Server-maintenance operations](../../client-api/operations/what-are-operations#server-maintenance-operations)  
   * [Manage lengthy operations](../../client-api/operations/what-are-operations#manage-lengthy-operations)
-      * [Wait for completion](../../client-api/operations/what-are-operations#waitForCompletion)
+      * [Wait for completion](../../client-api/operations/what-are-operations#wait-for-completion)
       * [Kill operation](../../client-api/operations/what-are-operations#killOperation)
 
 {NOTE/}
@@ -394,7 +394,7 @@ __Send syntax__:
 
 {NOTE: }
 
-<a id="waitForCompletion" /> __Wait for completion__:
+<a id="wait-for-completion" /> __Wait for completion__:
 
 {CODE:nodejs wait_ex@client-api\operations\whatAreOperations.js /}
 

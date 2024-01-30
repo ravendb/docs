@@ -584,7 +584,7 @@ than a millisecond. From now on, similar queries on this index will also take th
 ##### REST API  
 
 - [Patch by Query](../../../client-api/rest-api/queries/patch-by-query)  
-- [Delete by Query](../../../client-api/rest-api/queries/common/delete-by-query)  
+- [Delete by Query](../../../client-api/rest-api/queries/delete-by-query)  
 
 ##### FAQ  
 

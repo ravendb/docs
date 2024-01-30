@@ -8,9 +8,9 @@
 `<server URL>/databases/<database name>/queries`  
 
 * In this page:  
-  * [Example](../../../client-api/rest-api/queries/common/delete-by-query#example)  
-  * [Request Format](../../../client-api/rest-api/queries/common/delete-by-query#request-format)  
-  * [Response Format](../../../client-api/rest-api/queries/common/delete-by-query#response-format)  
+  * [Example](../../../client-api/rest-api/queries/delete-by-query#example)  
+  * [Request Format](../../../client-api/rest-api/queries/delete-by-query#request-format)  
+  * [Response Format](../../../client-api/rest-api/queries/delete-by-query#response-format)  
 
 {NOTE/}
 
