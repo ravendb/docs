@@ -117,14 +117,17 @@ const session = store.openSession();
     // options object
     {
         // Indicates whether operations are allowed on stale indexes.
+        // DEFAULT: false
         allowStale, // boolean
             
-        // If AllowStale is set to false and index is stale, 
-        // then this is the maximum timeout to wait for index to become non-stale. 
+        // If AllowStale is set to false and index is stale,
+        // then this is the maximum timeout to wait for index to become non-stale.
         // If timeout is exceeded then exception is thrown.
-        staleTimeout, // number
+        // DEFAULT: null (if index is stale then exception is thrown immediately)
+        staleTimeout, // number 
             
-        // Limits the number of base operations per second allowed.  
+        // Limits the number of base operations per second allowed.
+        // DEFAULT: null (no limit)
         maxOpsPerSecond, // number
     }
     //endregion

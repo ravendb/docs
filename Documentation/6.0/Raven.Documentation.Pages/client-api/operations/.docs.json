@@ -12,12 +12,12 @@
     },
     {
         "Path": "/common",
-        "Name": "Common",
+        "Name": "Common Operations",
         "Mappings": []
     },
     {
         "Path": "/maintenance",
-        "Name": "Maintenance",
+        "Name": "Maintenance Operations",
         "Mappings": []
     },
     {

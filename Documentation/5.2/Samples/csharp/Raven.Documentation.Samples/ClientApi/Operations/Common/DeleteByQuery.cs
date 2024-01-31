@@ -260,17 +260,21 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Common
             public class QueryOperationOptions
             {
                 // Indicates whether operations are allowed on stale indexes.
+                // DEFAULT: false
                 public bool AllowStale { get; set; }
                 
                 // If AllowStale is set to false and index is stale, 
                 // then this is the maximum timeout to wait for index to become non-stale. 
                 // If timeout is exceeded then exception is thrown.
+                // DEFAULT: null (if index is stale then exception is thrown immediately) 
                 public TimeSpan? StaleTimeout { get; set; }
                 
                 // Limits the number of base operations per second allowed.
+                // DEFAULT: no limit
                 public int? MaxOpsPerSecond
                 
                 // Determines whether operation details about each document should be returned by server.
+                // DEFAULT: false
                 public bool RetrieveDetails { get; set; }
                 
                 // Ignore the maximum number of statements a script can execute.
