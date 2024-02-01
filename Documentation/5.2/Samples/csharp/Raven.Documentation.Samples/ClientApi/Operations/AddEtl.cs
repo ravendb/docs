@@ -53,7 +53,11 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                                         Title: this.Title
                                 });"
                             }
-                        }
+                        },
+
+                        // Do not prevent task failover to another node
+                        PinToMentorNode = false
+
                     });
                 
                 AddEtlOperationResult result = store.Maintenance.Send(operation);
@@ -129,7 +133,11 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                                             // Load to SQL table 'Orders'
                                             loadToOrders(orderData)"
                             }
-                        }
+                        },
+
+                        // Do not prevent task failover to another node
+                        PinToMentorNode = false
+
                     });
 
                 AddEtlOperationResult result = store.Maintenance.Send(operation);

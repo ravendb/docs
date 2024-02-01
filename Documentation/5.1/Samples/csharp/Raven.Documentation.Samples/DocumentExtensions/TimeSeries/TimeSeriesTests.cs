@@ -632,7 +632,22 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     TimeSeriesEntry[] val = session.TimeSeriesFor("users/john", "HeartRates")
                         .Get(DateTime.MinValue, DateTime.MaxValue);
                     #endregion
+                }
 
+                // Get time series HeartRates's time points data
+                using (var session = store.OpenSession())
+                {
+                    #region IncludeParentAndTaggedDocuments
+                    // Get all time series entries
+                    TimeSeriesEntry[] entries =
+                        session.TimeSeriesFor("users/john", "HeartRates")
+                            .Get(DateTime.MinValue, DateTime.MaxValue,
+                                includes: builder => builder
+                            // Include documents referred-to by entry tags
+                            .IncludeTags()
+                            // Include Parent Document
+                            .IncludeDocument());
+                    #endregion
                 }
             }
         }

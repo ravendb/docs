@@ -114,7 +114,10 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                                 transformation
                             },
                         Queues = { new EtlQueue() { Name = "Orders" } },
-                        BrokerType = QueueBrokerType.Kafka
+                        BrokerType = QueueBrokerType.Kafka,
+
+                        // Do not prevent a failover to another node
+                        PinToMentorNode = false
                     });
                     store.Maintenance.Send(operation);
                     
@@ -257,7 +260,10 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                             },
                         Queues = { new EtlQueue() { Name = "Orders" } },
                         BrokerType = QueueBrokerType.RabbitMq,
-                        SkipAutomaticQueueDeclaration = false
+                        SkipAutomaticQueueDeclaration = false,
+
+                        // Do not prevent a failover to another node
+                        PinToMentorNode = false
                     });
                     store.Maintenance.Send(operation);
 

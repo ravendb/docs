@@ -54,7 +54,7 @@ Each `Database Node` can be in one of the following states:
 
 {NOTE: States Flow}
 In general, all nodes in a newly created database are in a `Member` state.  
-When adding a new `Database Node` to an already existing database group, a [Mentor Node](../../../server/clustering/distribution/highly-available-tasks#responsible-node) 
+When adding a new `Database Node` to an already existing database group, a `Mentor Node` 
 is selected in order to update it.  
 The new node will be in a `Promotable` state until it receives _and_ indexes all the documents from the mentor node.  
 {NOTE/}
