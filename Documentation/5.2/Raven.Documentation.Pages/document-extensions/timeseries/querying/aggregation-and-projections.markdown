@@ -82,7 +82,7 @@ In LINQ, aggregations are performed using the `GroupBy()` method. It takes
 the time period over which to aggregate, either in the form of a `string`, or 
 as an `Action<ITimePeriodBuilder>`.  
 
-{CODE GroupBy@DocumentExtensions\TimeSeries\Querying\AggregationAndProjections.cs /}
+{CODE GroupBy_Switch@DocumentExtensions\TimeSeries\Querying\AggregationAndProjections.cs /}
 
 The `ITimePeriodBuilder` class just contains one property for each of the time 
 period units from milliseconds to years.  
