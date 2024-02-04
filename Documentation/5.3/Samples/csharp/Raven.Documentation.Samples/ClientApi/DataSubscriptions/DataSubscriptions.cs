@@ -677,9 +677,19 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                 }
             }
 
-
             #endregion
 
+            while (true)
+            {
+                #region worker_timeout
+                var options = new SubscriptionWorkerOptions(subscriptionName);
+
+                // Set the orker's timeout period
+                options.ConnectionStreamTimeout = TimeSpan.FromSeconds(45);
+
+                subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(options);
+                #endregion
+            }
 
             async Task ProcessOrder(Order o)
             {

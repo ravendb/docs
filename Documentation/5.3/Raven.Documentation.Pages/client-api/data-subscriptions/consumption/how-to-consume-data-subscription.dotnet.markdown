@@ -74,7 +74,19 @@ A worker can be configured to treat the thrown exception in either of the follow
 In the cases above, we described situations in which a worker will try to reconnect with the server. There are two key `SubscriptionWorkerOptions` fields controlling this state:
 
 *  `TimeToWaitBeforeConnectionRetry` - The time that the worker will 'sleep' before trying to reconnect.
-* `MaxErroneousPeriod` - The maximum time in which the worker is allowed to be in an erroneous state. After that time passes, the worker will stop trying to reconnect
+* `MaxErroneousPeriod` - The maximum time in which the worker is allowed to be in an erroneous state. After that time passes, the worker will stop trying to reconnect.
+{INFO/}
+
+{INFO: Timing out}
+If a worker fails to connect the server for a given time period, it will throw an exception and stop trying.  
+
+* Timeout period: `ConnectionStreamTimeout`  
+* Exception generated when the timeout period is exceeded: `OperationCanceledException`  
+* Default timeout period: 30 second  
+
+Example:  
+{CODE worker_timeout@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
 {INFO/}
 
 {INFO: OnUnexpectedSubscriptionError}
