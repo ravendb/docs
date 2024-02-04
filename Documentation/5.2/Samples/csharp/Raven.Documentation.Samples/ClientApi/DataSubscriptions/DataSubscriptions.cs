@@ -594,6 +594,34 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                 options.ConnectionStreamTimeout = TimeSpan.FromSeconds(45);
 
                 subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(options);
+
+                try
+                {
+                    // here we are able to be informed of any exception that happens during processing                    
+                    subscriptionWorker.OnSubscriptionConnectionRetry += exception =>
+                    {
+                        Logger.Error("Error during subscription processing: " + subscriptionName, exception);
+                    };
+
+                    await subscriptionWorker.Run(async batch =>
+                    {
+                        foreach (var item in batch.Items)
+                        {
+                            //...
+                        }
+                    }, cancellationToken);
+
+                    // Run will complete normally if you have disposed the subscription
+                    return;
+                }
+                catch (Exception e)
+                {
+                    Logger.Error("Error during subscription process: " + subscriptionName, e);
+                }
+                finally
+                {
+                    subscriptionWorker.Dispose();
+                }
                 #endregion
             }
 

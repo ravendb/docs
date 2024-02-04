@@ -78,7 +78,7 @@ In the cases above, we described situations in which a worker will try to reconn
 {INFO/}
 
 {INFO: Timing out}
-If a worker fails to connect the server for a given time period, it will throw an exception and stop trying.  
+If a worker loses the connection to the server for a given time period, it will throw an exception.  
 
 * Timeout period: `ConnectionStreamTimeout`  
 * Exception generated when the timeout period is exceeded: `OperationCanceledException`  
