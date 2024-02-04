@@ -34,15 +34,15 @@ In order to switch it to a different database use the `.ForDatabase` method.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **Collections** | `List<string>` | List of specific collections to export. If empty, then all collections will be exported. Default: `empty` |
-| **OperateOnTypes** | `DatabaseItemType` | Indicates what should be exported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `ReplicationHubCertificates`, `Identities`, `CompareExchange`, `Attachments`, `CounterGroups`, `Subscriptions`, `TimeSeries` |
-| **OperateOnDatabaseRecordTypes** | `DatabaseRecordItemType` | Indicates what should be exported from database record. Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `Settings`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications`, `TimeSeries`, `DocumentsCompression`, `Analyzers`, `LockMode`, `OlapConnectionStrings`, `OlapEtls`, `ElasticSearchConnectionStrings`, `ElasticSearchEtls`, `PostgreSQLIntegration`, `QueueConnectionStrings`, `QueueEtls`, `IndexesHistory`, `Refresh`, `DataArchival` |
-| **IncludeExpired** | `bool` | Should expired documents be exported. Default: `true` |
-| **IncludeArtificial** | `bool` | Should artificial documents be exported. Default: `false` |
-| **IncludeArchived** | `bool` | Should archived documents be exported. Default: `true` |
-| **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. Default: `false` |
+| **Collections** | `List<string>` | List of specific collections to export. If empty, then all collections will be exported. <br> Default: `empty` |
+| **OperateOnTypes** | `DatabaseItemType` | Indicates what should be exported. <br> Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `ReplicationHubCertificates`, `Identities`, `CompareExchange`, `Attachments`, `CounterGroups`, `Subscriptions`, `TimeSeries` |
+| **OperateOnDatabaseRecordTypes** | `DatabaseRecordItemType` | Indicates what should be exported from database record. <br> Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `Settings`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications`, `TimeSeries`, `DocumentsCompression`, `Analyzers`, `LockMode`, `OlapConnectionStrings`, `OlapEtls`, `ElasticSearchConnectionStrings`, `ElasticSearchEtls`, `PostgreSQLIntegration`, `QueueConnectionStrings`, `QueueEtls`, `IndexesHistory`, `Refresh`, `DataArchival` |
+| **IncludeExpired** | `bool` | Should expired documents be exported. <br> Default: `true` |
+| **IncludeArtificial** | `bool` | Should artificial documents be exported. <br> Default: `false` |
+| **IncludeArchived** | `bool` | Should archived documents be exported. <br> Default: `true` |
+| **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. <br> Default: `false` |
 | **TransformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
-| **MaxStepsForTransformScript** | `int` | Maximum number of steps that the transform script can process before failing. Default: 10000 |
+| **MaxStepsForTransformScript** | `int` | Maximum number of steps that the transform script can process before failing. <br> Default: **10000** |
 
 ### Example
 
@@ -71,15 +71,15 @@ In order to switch it to a different database use the `.ForDatabase` method.
 
 | Parameters | | |
 | - | - | - |
-| **Collections** | `List<string>` | List of specific collections to import. If empty, then all collections will be imported. Default: `empty` |
-| **OperateOnTypes** | `DatabaseItemType` | Indicates what should be imported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `ReplicationHubCertificates`, `Identities`, `CompareExchange`, `Attachments`, `CounterGroups`, `Subscriptions`, `TimeSeries` |
-| **OperateOnDatabaseRecordTypes** | `DatabaseRecordItemType` | Indicates what should be imported from database record. Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `Settings`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications`, `TimeSeries`, `DocumentsCompression`, `Analyzers`, `LockMode`, `OlapConnectionStrings`, `OlapEtls`, `ElasticSearchConnectionStrings`, `ElasticSearchEtls`, `PostgreSQLIntegration`, `QueueConnectionStrings`, `QueueEtls`, `IndexesHistory`, `Refresh`, `DataArchival` |
-| **IncludeExpired** | `bool` | Should expired documents be imported. Default: `true` |
-| **IncludeArtificial** | `bool` | Should artificial documents be imported. Default: `false` |
-| **IncludeArchived** | `bool` | Should archived documents be imported. Default: `true` |
-| **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. Default: `false` |
+| **Collections** | `List<string>` | List of specific collections to import. If empty, then all collections will be imported. <br> Default: `empty` |
+| **OperateOnTypes** | `DatabaseItemType` | Indicates what should be imported. <br> Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `ReplicationHubCertificates`, `Identities`, `CompareExchange`, `Attachments`, `CounterGroups`, `Subscriptions`, `TimeSeries` |
+| **OperateOnDatabaseRecordTypes** | `DatabaseRecordItemType` | Indicates what should be imported from database record. <br> Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `Settings`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications`, `TimeSeries`, `DocumentsCompression`, `Analyzers`, `LockMode`, `OlapConnectionStrings`, `OlapEtls`, `ElasticSearchConnectionStrings`, `ElasticSearchEtls`, `PostgreSQLIntegration`, `QueueConnectionStrings`, `QueueEtls`, `IndexesHistory`, `Refresh`, `DataArchival` |
+| **IncludeExpired** | `bool` | Should expired documents be imported. <br> Default: `true` |
+| **IncludeArtificial** | `bool` | Should artificial documents be imported. <br> Default: `false` |
+| **IncludeArchived** | `bool` | Should archived documents be imported. <br> Default: `true` |
+| **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. <br> Default: `false` |
 | **TransformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
-| **MaxStepsForTransformScript** | `int` | Maximum number of steps that the transform script can process before failing. Default: 10000 |
+| **MaxStepsForTransformScript** | `int` | Maximum number of steps that the transform script can process before failing. <br> Default: **10000** |
 
 ### Example
 
