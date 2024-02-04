@@ -590,14 +590,13 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                 #region worker_timeout
                 var options = new SubscriptionWorkerOptions(subscriptionName);
 
-                // Set the orker's timeout period
+                // Set the worker's timeout period
                 options.ConnectionStreamTimeout = TimeSpan.FromSeconds(45);
 
                 subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(options);
 
                 try
                 {
-                    // here we are able to be informed of any exception that happens during processing                    
                     subscriptionWorker.OnSubscriptionConnectionRetry += exception =>
                     {
                         Logger.Error("Error during subscription processing: " + subscriptionName, exception);
@@ -607,7 +606,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                     {
                         foreach (var item in batch.Items)
                         {
-                            //...
+                           //...
                         }
                     }, cancellationToken);
 
