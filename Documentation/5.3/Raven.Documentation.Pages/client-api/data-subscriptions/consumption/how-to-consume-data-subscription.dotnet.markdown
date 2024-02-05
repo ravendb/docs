@@ -78,16 +78,14 @@ In the cases above, we described situations in which a worker will try to reconn
 {INFO/}
 
 {INFO: Timing out}
-If a worker loses the connection to the server for a given time period, it will throw an exception.  
+A worker will time out after losing its connectivity with the server for a given time period.  
 
-* Timeout period: `ConnectionStreamTimeout`  
-* Exception generated when the timeout period is exceeded: `OperationCanceledException`  
+* The timeout period can be set using the `ConnectionStreamTimeout` option.  
+  E.g. 
+  {CODE worker_timeout_minimal_sample@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 * Default timeout period: 30 second  
-
-Example:  
-{CODE worker_timeout@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-
 {INFO/}
+
 
 {INFO: OnUnexpectedSubscriptionError}
 `OnUnexpectedSubscriptionError` is the event raised when a connection failure occurs 

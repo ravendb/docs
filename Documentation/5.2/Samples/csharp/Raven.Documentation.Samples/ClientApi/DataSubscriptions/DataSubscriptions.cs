@@ -587,6 +587,16 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 
             while (true)
             {
+                #region worker_timeout_minimal_sample
+                var options = new SubscriptionWorkerOptions(subscriptionName);
+
+                // Set the worker's timeout period
+                options.ConnectionStreamTimeout = TimeSpan.FromSeconds(45);
+                #endregion
+            }
+            
+            while (true)
+            {
                 #region worker_timeout
                 var options = new SubscriptionWorkerOptions(subscriptionName);
 
