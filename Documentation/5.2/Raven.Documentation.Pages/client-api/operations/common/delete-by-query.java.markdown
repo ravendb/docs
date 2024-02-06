@@ -1,11 +1,11 @@
-﻿# Operations: How to Delete Documents by Query
+﻿# Delete by Query Operation
 
 `DeleteByQueryOperation` gives you the ability to delete a large number of documents with a single query.
 This operation is performed in the background on the server. 
 
 ## Syntax
 
-{CODE:java delete_by_query@ClientApi\Operations\DeleteByQuery.java /}
+{CODE:java delete_by_query@ClientApi\Operations\Common\DeleteByQuery.java /}
 
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
@@ -16,7 +16,7 @@ This operation is performed in the background on the server.
 ## Example I
 
 {CODE-TABS}
-{CODE-TAB:java:Java delete_by_query1@ClientApi\Operations\DeleteByQuery.java /}
+{CODE-TAB:java:Java delete_by_query1@ClientApi\Operations\Common\DeleteByQuery.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Person/ByName' where Name = 'Bob' 
 {CODE-TAB-BLOCK/}
@@ -26,7 +26,7 @@ from index 'Person/ByName' where Name = 'Bob'
 ## Example II
 
 {CODE-TABS}
-{CODE-TAB:java:Java delete_by_query2@ClientApi\Operations\DeleteByQuery.java /}
+{CODE-TAB:java:Java delete_by_query2@ClientApi\Operations\Common\DeleteByQuery.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Person/ByName' where Age < 35
 {CODE-TAB-BLOCK/}
@@ -35,7 +35,7 @@ from index 'Person/ByName' where Age < 35
 ## Example III
 
 {CODE-TABS}
-{CODE-TAB:java:Java delete_by_query3@ClientApi\Operations\DeleteByQuery.java /}
+{CODE-TAB:java:Java delete_by_query3@ClientApi\Operations\Common\DeleteByQuery.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from People u where id(u) in ('people/1-A', 'people/3-A')
 {CODE-TAB-BLOCK/}
@@ -46,7 +46,7 @@ from People u where id(u) in ('people/1-A', 'people/3-A')
 You have the option to **wait** for it using `waitForCompletion`.
 
 {CODE-TABS}
-{CODE-TAB:java:Java delete_by_query_wait_for_completion@ClientApi\Operations\DeleteByQuery.java /}
+{CODE-TAB:java:Java delete_by_query_wait_for_completion@ClientApi\Operations\Common\DeleteByQuery.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from People where Name = 'Bob' and Age >= 29
 {CODE-TAB-BLOCK/}
@@ -71,13 +71,13 @@ so it can happen than a document has been updated or deleted meanwhile.
 
 ### Operations
 
-- [What are Operations](../../client-api/operations/what-are-operations)
+- [What are Operations](../../../client-api/operations/what-are-operations)
 
 ### Client API
 
-- [Querying: Basics](../../indexes/querying/query-index)
+- [Querying: Basics](../../../indexes/querying/query-index)
 
 ### Querying
 
-- [What is RQL](../../client-api/session/querying/what-is-rql)
-- [Querying an index](../../indexes/querying/query-index)
+- [What is RQL](../../../client-api/session/querying/what-is-rql)
+- [Querying an index](../../../indexes/querying/query-index)

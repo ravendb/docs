@@ -352,7 +352,7 @@ databases include:
 * **Using `limit` with `PatchByQueryOperation` or `DeleteByQueryOperation`**  
   Attempting to set a `limit` when executing 
   [PatchByQueryOperation](../client-api/operations/patching/set-based#sending-a-patch-request) 
-  or [DeleteByQueryOperation](../client-api/operations/delete-by-query) 
+  or [DeleteByQueryOperation](../client-api/operations/common/delete-by-query) 
   will throw a `NotSupportedInShardingException` exception, 
   specifying "Query with limit is not supported in patch / delete by query operation".  
 * [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis)  

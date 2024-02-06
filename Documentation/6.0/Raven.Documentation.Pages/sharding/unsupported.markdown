@@ -45,7 +45,7 @@
 | [Load Document within a map-reduce projection](../sharding/querying#projection) |  |
 | **Stream Map-Reduce results** | [Streaming](../client-api/session/querying/how-to-stream-query-results#stream-an-index-query) map-reduce results is not supported in a Sharded Database. |
 | **Stream Includes and Loads** | [Streaming](../client-api/session/querying/how-to-stream-query-results#stream-an-index-query) Includes and Loads is not supported in a Sharded Database. |
-| Use `limit` with [PatchByQueryOperation](../client-api/operations/patching/set-based#patchbyqueryoperation) or [DeleteByQueryOperation](../client-api/operations/delete-by-query) | [Unsupported Querying Features](../sharding/querying#unsupported-querying-features) |
+| Use `limit` with [PatchByQueryOperation](../client-api/operations/patching/set-based#patchbyqueryoperation) or [DeleteByQueryOperation](../client-api/operations/common/delete-by-query) | [Unsupported Querying Features](../sharding/querying#unsupported-querying-features) |
 | [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis) |  |
 | [OrderByScore](../indexes/querying/sorting#ordering-by-score) |  |
 | [OrderByDistance](../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting) | Not supported in spatial map reduce indexes |
