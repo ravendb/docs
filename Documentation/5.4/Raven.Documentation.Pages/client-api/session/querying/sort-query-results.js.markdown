@@ -50,7 +50,7 @@
 * Use `orderBy` or `orderByDescending` to order the results by the specified document-field.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_1@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:nodejs:Query sort_1@ClientApi\Session\Querying\sortQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where UnitsInStock > 10
@@ -75,14 +75,14 @@ __Ordering Type__:
 {PANEL: Order by score}
 
 * When querying with some filtering conditions, a basic score is calculated for each item in the results  
-  by the underlying indexing engine.
+  by the underlying indexing engine. (Read more about Lucene scoring [here](https://lucene.apache.org/core/3_3_0/scoring.html)).
 
 * The higher the score value the better the match.  
 
 * Use `orderByScore` or `orderByScoreDescending` to order by this score.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_2@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:nodejs:Query sort_2@ClientApi\Session\Querying\sortQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where UnitsInStock < 5 or Discontinued == true
@@ -99,27 +99,15 @@ order by score()
 The score details can be retrieved by either:
 
 * __Request to include explanations__:  
-  You can get the score details and see how it was calculated by requesting to include explanations in the query.
+  You can get the score details and see how it was calculated by requesting to include explanations in the query. 
   Currently, this is only available when using Lucene as the underlying indexing engine.  
   Learn more in [Include query explanations](../../../client-api/session/querying/debugging/include-explanations).
 
-* __Get score from metadata__:
+* __Get score from metadata__:  
+  The score is available in the `@index-score` metadata property within each result.  
+  The following example shows how to get the score from the metadata of the resulting entities that were loaded to the session:
 
-    * The score is available in the `@index-score` metadata property within each result.  
-      Note the following difference between the underlying indexing engines:
-
-        * When using __Lucene__:  
-          This metadata property is always available in the results.  
-          Read more about Lucene scoring [here](https://lucene.apache.org/core/3_3_0/scoring.html).
-
-        * When using __Corax__:  
-          In order to enhance performance, this metadata property is Not included in the results by default.  
-          To get this metadata property you must set the [Indexing.Corax.IncludeDocumentScore](../../../server/configuration/indexing-configuration#indexing.corax.includedocumentscore) configuration value to _true_.  
-          Learn about the available methods for setting an indexing configuration key in this [indexing-configuration](../../../server/configuration/indexing-configuration) article.
-
-    * The following example shows how to get the score from the metadata of the resulting entities that were loaded to the session:
-
-      {CODE:nodejs get_score_from_metadata@client-api\session\querying\sortQueryResults.js /}
+  {CODE:nodejs get_score_from_metadata@ClientApi\Session\Querying\sortQueryResults.js /}
 
 {INFO/}
 
@@ -132,7 +120,7 @@ The score details can be retrieved by either:
 * An optional seed parameter can be passed.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_3@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:nodejs:Query sort_3@ClientApi\Session\Querying\sortQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where UnitsInStock > 10
@@ -157,7 +145,7 @@ order by random()
 * The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query) can be sorted by the `count` aggregation operation used in the query.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_4@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:nodejs:Query sort_4@ClientApi\Session\Querying\SortQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 group by Category
@@ -173,7 +161,7 @@ select key() as "Category", count()
 * The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query) can be sorted by the `sum` aggregation operation used in the query.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_5@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:nodejs:Query sort_5@ClientApi\Session\Querying\sortQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 group by Category
@@ -209,14 +197,14 @@ __Using alphanumeric ordering example__:
   where "Abc10" will result after "Abc9".
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_6@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:nodejs:Query sort_6@ClientApi\Session\Querying\sortQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 order by QuantityPerUnit as alphanumeric
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{CODE:nodejs sort_6_results@client-api\session\querying\sortQueryResults.js /}
+{CODE:nodejs sort_6_results@ClientApi\Session\Querying\sortQueryResults.js /}
 
 {NOTE/}
 
@@ -230,7 +218,7 @@ order by QuantityPerUnit as alphanumeric
 * There is no limit on the number of sorting actions that can be chained.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_7@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:nodejs:Query sort_7@ClientApi\Session\Querying\sortQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where UnitsInStock > 10
@@ -243,9 +231,7 @@ order by UnitsInStock as long desc, score(), Name
 {PANEL: Custom sorters }
 
 * The Lucene indexing engine allows you to create your own custom sorters.  
-  Custom sorters are not supported by [Corax](../../../indexes/search-engine/corax).  
-
-* Custom sorters can be deployed to the server by either:  
+  Custom sorters can be deployed to the server by either:  
 
      * Sending the [Put Sorters Operation](../../../client-api/operations/maintenance/sorters/put-sorter) from your code.
   
@@ -254,7 +240,7 @@ order by UnitsInStock as long desc, score(), Name
 * Once the custom sorter is deployed, you can sort the query results with it.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_8@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:nodejs:Query sort_8@ClientApi\Session\Querying\sortQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where UnitsInStock > 10
@@ -266,7 +252,7 @@ order by custom(UnitsInStock, "MySorter")
 
 {PANEL: Syntax}
 
-{CODE:nodejs syntax@client-api\session\querying\sortQueryResults.js /}
+{CODE:nodejs syntax@ClientApi\Session\Querying\sortQueryResults.js /}
 
 | Parameter    | Type     | Description                                                                                                            |
 |--------------|----------|------------------------------------------------------------------------------------------------------------------------|

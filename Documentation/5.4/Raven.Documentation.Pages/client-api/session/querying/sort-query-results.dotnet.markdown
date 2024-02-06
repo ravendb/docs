@@ -6,9 +6,9 @@
 
 * When making a query, the server will return the results __sorted__ only if explicitly requested by the query.  
   If no sorting method is specified when issuing the query then results will not be sorted.
-
+  
     * Note: An exception to the above rule is when [Boosting](../../../indexes/boosting) is involved in the query.  
-      Learn more in [Automatic score-based ordering](../../../indexes/boosting#automatic-score-based-ordering).
+      Learn more in [Automatic score-based ordering](../../../indexes/boosting#automatic-score-based-ordering).  
 
 * Sorting is applied by the server after the query filtering stage.  
   Applying filtering is recommended as it reduces the number of results RavenDB needs to sort  
@@ -20,25 +20,25 @@
   For sorting results when querying a __static-index__ see [sort index query results](../../../indexes/querying/sorting).
 
 * In this page:
-    * [Order by field value](../../../client-api/session/querying/sort-query-results#order-by-field-value)
- 
-    * [Order by score](../../../client-api/session/querying/sort-query-results#order-by-score)
-        * [Get resulting score](../../../client-api/session/querying/sort-query-results#get-resulting-score)
+    * [Order by field value](../../../client-api/session/querying/sort-query-results#order-by-field-value) 
   
-    * [Order by random](../../../client-api/session/querying/sort-query-results#order-by-random)
-   
+    * [Order by score](../../../client-api/session/querying/sort-query-results#order-by-score)  
+        * [Get resulting score](../../../client-api/session/querying/sort-query-results#get-resulting-score)
+     
+    * [Order by random](../../../client-api/session/querying/sort-query-results#order-by-rando)   
+     
     * [Order by spatial](../../../client-api/session/querying/sort-query-results#order-by-spatial)
      
     * [Order by count (aggregation query)](../../../client-api/session/querying/sort-query-results#order-by-count-(aggregation-query))
-  
+     
     * [Order by sum (aggregation query)](../../../client-api/session/querying/sort-query-results#order-by-sum-(aggregation-query))
-
+     
     * [Force ordering type](../../../client-api/session/querying/sort-query-results#force-ordering-type)
-
+     
     * [Chain ordering](../../../client-api/session/querying/sort-query-results#chain-ordering)
-
-    * [Custom sorters](../../../client-api/session/querying/sort-query-results#custom-sorters) 
-
+     
+    * [Custom sorters](../../../client-api/session/querying/sort-query-results#custom-sorters)
+     
     * [Syntax](../../../client-api/session/querying/sort-query-results#syntax)
 
 {NOTE/}
@@ -79,11 +79,11 @@ __Ordering Type__:
 {PANEL: Order by score}
 
 * When querying with some filtering conditions, a basic score is calculated for each item in the results  
-  by the underlying indexing engine.
+  by the underlying indexing engine. (Read more about Lucene scoring [here](https://lucene.apache.org/core/3_3_0/scoring.html)).
 
 * The higher the score value the better the match.  
 
-* Use `OrderByScore` or `OrderByScoreDescending` to order by this score.
+* Use `OrderByScore` or `OrderByScoreDescending` to order the query results by this score.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sort_4@ClientApi\Session\Querying\SortQueryResults.cs /}
@@ -102,31 +102,19 @@ order by score()
 
 ---
 
-The score details can be retrieved by either:
-
-* __Request to include explanations__:  
-  You can get the score details and see how it was calculated by requesting to include explanations in the query.
-  Currently, this is only available when using Lucene as the underlying indexing engine.  
-  Learn more in [Include query explanations](../../../client-api/session/querying/debugging/include-explanations).
-
-* __Get score from metadata__:    
-
-    * The score is available in the `@index-score` metadata property within each result.  
-      Note the following difference between the underlying indexing engines:
-
-      * When using __Lucene__:  
-          This metadata property is always available in the results.  
-          Read more about Lucene scoring [here](https://lucene.apache.org/core/3_3_0/scoring.html).
-
-      * When using __Corax__:  
-          In order to enhance performance, this metadata property is Not included in the results by default.  
-          To get this metadata property you must set the [Indexing.Corax.IncludeDocumentScore](../../../server/configuration/indexing-configuration#indexing.corax.includedocumentscore) configuration value to _true_.  
-          Learn about the available methods for setting an indexing configuration key in this [indexing-configuration](../../../server/configuration/indexing-configuration) article.
-
-    * The following example shows how to get the score from the metadata of the resulting entities that were loaded to the session:  
-
-      {CODE:csharp get_score_from_metadata@ClientApi\Session\Querying\SortQueryResults.cs /}
+The score details can be retrieved by either:  
  
+  * __Request to include explanations__:  
+    You can get the score details and see how it was calculated by requesting to include explanations in the query. 
+    Currently, this is only available when using Lucene as the underlying indexing engine.  
+    Learn more in [Include query explanations](../../../client-api/session/querying/debugging/include-explanations).
+   
+  * __Get score from metadata__:  
+    The score is available in the `@index-score` metadata property within each result.  
+    The following example shows how to get the score from the metadata of the resulting entities that were loaded to the session:
+
+    {CODE:csharp get_score_from_metadata@ClientApi\Session\Querying\SortQueryResults.cs /}
+
 {INFO/}
 
 {PANEL/}
@@ -264,9 +252,7 @@ order by UnitsInStock as long desc, score(), Name
 {PANEL: Custom sorters }
 
 * The Lucene indexing engine allows you to create your own custom sorters.  
-  Custom sorters are not supported by [Corax](../../../indexes/search-engine/corax).  
- 
-* Custom sorters can be deployed to the server by either:  
+  Custom sorters can be deployed to the server by either:  
 
      * Sending the [Put Sorters Operation](../../../client-api/operations/maintenance/sorters/put-sorter) from your code.
   

@@ -8,7 +8,7 @@ The boost value is integrated with the basic score, making the document rank hig
 Automatic ordering of the results by the score is [configurable](../indexes/boosting#automatic-score-based-ordering).
 
 From the index perspective we can associate to an index entry a boosting factor.  
-The higher value it has, the more relevant term will be. To do this, we must use the `Boost` method. 
+The higher value it has, the more relevant term will be. To do this, we must use the `Boost` method.
 
 Let's jump straight into the example.  
 To perform the query that will return employees where either `FirstName` or `LastName` is equal to _Bob_,  
@@ -36,17 +36,6 @@ The next step is to perform a query against that index:
 
 * This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration#indexing.orderbyscoreautomaticallywhenboostingisinvolved)    
   configuration key.
-
-{NOTE/}
-
-{NOTE: }
-
-When using [Corax](../indexes/search-engine/corax) as the search engine:  
-
-* [indexing-time boosting](../indexes/search-engine/corax#supported-features) 
-  is available for documents, but not for document fields.  
-* Corax ranks search results using the [BM25 algorithm](https://en.wikipedia.org/wiki/Okapi_BM25).  
-  Other search engines, e.g. Lucene, may use a different ranking algorithm and return different search results.  
 
 {NOTE/}
 

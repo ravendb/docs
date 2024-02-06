@@ -7,17 +7,27 @@
 * When querying with some filtering conditions,  
   a basic score is calculated for each document in the results by the underlying engine.
 
-* In order to prioritize results,  
-  you can provide a __boost value__ to the searched terms which will be integrated with the basic score.
+* Providing a boost value to some fields allows you to prioritize the resulting documents.  
+  The boost value is integrated with the basic score, making the document rank higher.  
 
-* Usually, the higher the boost value, the more relevant the term will be,  
-  resulting in a higher ranking of its matching document in the results.
+* Boosting can be achieved in the following ways:  
+
+    * __At query time__:  
+      Apply a boost factor to searched terms at query time - as described in this article.
+
+    * __Via index definition__:  
+      Apply a boost factor in your index definition - see this [boosting](../../../../indexes/boosting) article in under indexes.
+
+* The automatic ordering of the results by the score is now configurable.  
+  Learn more in section [automatic score-based ordering](../../../../indexes/boosting#automatic-score-based-ordering).
+
+* The calculated score details of the results can be retrieved if needed.  
+  Learn more in section [get resulting score](../../../../client-api/session/querying/sort-query-results#get-resulting-score).
 
 * In this page:
 
   * [Boost results - when making a full-text search](../../../../client-api/session/querying/text-search/boost-search-results#boost-results---when-making-a-full-text-search)
   * [Boost results - when querying with where clause](../../../../client-api/session/querying/text-search/boost-search-results#boost-results---when-querying-with-where-clause)  
-  * [Get resulting score](../../../../client-api/session/querying/text-search/boost-search-results#get-resulting-score)
 
 {NOTE/}
 
@@ -61,24 +71,6 @@ boost(startsWith(Name, "P"), 50) or
 boost(endsWith(Name, "OP"), 90)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-{NOTE/}
-
-{PANEL/}
-
-{PANEL: Get resulting score}
-
-* The score can be retrieved by either:
-
-   * Request to __include explanations__ when making the query.  
-     See [include query explanations](../../../../client-api/session/querying/debugging/include-explanations).
-
-   * __Get the metadata__ of the resulting entities that were loaded to the session.  
-     See example below.  
-
-{NOTE: }
-
-{CODE:csharp boost_6@ClientApi\Session\Querying\TextSearch\BoostResults.cs /}
 
 {NOTE/}
 

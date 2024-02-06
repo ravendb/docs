@@ -45,7 +45,7 @@ class Orders_ByCountries_BoostByIndexEntry extends AbstractCsharpIndexCreationTa
 //endregion
 
 async function boosting() {
-
+    
     {
         const session = store.openSession();
 

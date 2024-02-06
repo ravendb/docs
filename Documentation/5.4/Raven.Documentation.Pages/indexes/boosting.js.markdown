@@ -8,7 +8,7 @@
 
 * Providing a __boost value__ to some fields allows you to prioritize the resulting documents.  
   The boost value is integrated with the basic score, making the document rank higher.  
-  Automatic ordering of the results by the score is [configurable](../indexes/boosting#automatic-score-based-ordering).
+  Automatic ordering of the results by the score is [configurable](../indexes/boosting#automatic-score-based-ordering). 
 
 * Boosting can be achieved in the following ways:
 
@@ -17,12 +17,11 @@
 
     * __Via index definition__:  
       Apply a boost factor in your index definition - as described in this article.
-
+ 
 * In this page:
     * [Assign a boost factor to an index-field](../indexes/boosting#assign-a-boost-factor-to-an-index-field)
     * [Assign a boost factor to the index-entry](../indexes/boosting#assign-a-boost-factor-to-the-index-entry)
     * [Automatic score-based ordering](../indexes/boosting#automatic-score-based-ordering)
-    * [Corax vs Lucene: boosting differences](../indexes/boosting#automatic-score-based-ordering)
 
 {NOTE/}
 
@@ -37,17 +36,12 @@ Applying a boost value to an index-field allows you to prioritize matching docum
 
 ##### The index:
 
-{CODE-TABS}
-{CODE-TAB:csharp:LINQ_index index_1@Indexes\Boosting.cs /}
-{CODE-TAB:csharp:JavaScript_index index_1_js@Indexes\Boosting.cs /}
-{CODE-TABS/}
+{CODE:nodejs index_1@Indexes\boosting.js /}
 
 ##### The query:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query query_1@Indexes\Boosting.cs /}
-{CODE-TAB:csharp:Query_async query_2@Indexes\Boosting.cs /}
-{CODE-TAB:csharp:DocumentQuery query_3@Indexes\Boosting.cs /}
+{CODE-TAB:nodejs:Query query_1@Indexes\boosting.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Orders/ByCountries/BoostByField"
 where ShipToCountry == "poland" or CompanyCountry == "portugal"
@@ -64,17 +58,12 @@ Applying a boost value to the whole index-entry allows you to prioritize matchin
 
 ##### The index:
 
-{CODE-TABS}
-{CODE-TAB:csharp:LINQ_index index_2@Indexes\Boosting.cs /}
-{CODE-TAB:csharp:JavaScript_index index_2_js@Indexes\Boosting.cs /}
-{CODE-TABS/}
+{CODE:nodejs index_2@Indexes\boosting.js /}
 
 ##### The query:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query query_4@Indexes\Boosting.cs /}
-{CODE-TAB:csharp:Query_async query_5@Indexes\Boosting.cs /}
-{CODE-TAB:csharp:DocumentQuery query_6@Indexes\Boosting.cs /}
+{CODE-TAB:nodejs:Query query_2@Indexes\boosting.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Orders/ByCountries/BoostByIndexEntry"
 where ShipToCountry == "poland" or CompanyCountry == "portugal"
@@ -92,21 +81,6 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
   configuration key.
 
 * Refer to section [Get resulting score](../client-api/session/querying/sort-query-results#get-resulting-score) to learn how to retrieve the calculated score of each result.
-
-{PANEL/}
-
-{PANEL: Corax vs Lucene: boosting differences}
-
-* __Boosting features available:__  
-
-  * When using __Corax__ as the underlying indexing engine, you can only [assign a boost factor to the index-entry](../indexes/boosting#assign-a-boost-factor-to-the-index-entry).  
-    Applying a boost factor to an index-field is Not supported.  
-  
-  * When using __Lucene__, you can assign a boost factor to both the index-field and the whole index-entry.  
-
-* __Algorithm used__:  
-  Corax ranks search results using the [BM25 algorithm](https://en.wikipedia.org/wiki/Okapi_BM25).   
-  Other search engines, e.g. Lucene, may use a different ranking algorithm and return different search results.
 
 {PANEL/}
 
