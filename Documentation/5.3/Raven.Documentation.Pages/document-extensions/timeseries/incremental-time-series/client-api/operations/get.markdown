@@ -48,11 +48,12 @@ public class TimeSeriesRangeResult
         public DateTime From, To;
         public TimeSeriesEntry[] Entries;
         
-        // The actual number of values
+        // The number of unique values
         public long? TotalResults; 
         
-  {CODE-BLOCK/}
-  {CODE-BLOCK:csharp}
+    {CODE-BLOCK/}
+
+    {CODE-BLOCK:csharp}
 public class TimeSeriesEntry 
     {
         public DateTime Timestamp { get; set; }
@@ -62,16 +63,17 @@ public class TimeSeriesEntry
         
         // The nodes distribution per each entry
         public Dictionary<string, double[]> NodeValues { get; set; } 
-   {CODE-BLOCK/}
+    {CODE-BLOCK/}
 
-     {NOTE: }
-
-      * Requesting a time series that doesn't exist will return `null`.  
-      * Requesting an entries range that doesn't exist will return a `TimeSeriesRangeResult` object 
-        with an empty `Entries` property.  
-
-     {NOTE/}
-
+     * `TimeSeriesRangeResult.TotalResults` will contain the number of **unique** values.  
+       If the time series contains entries with multiple values (remember 
+       that since this is an incremental time series this means duplications 
+       of the same number at the same timestamp) all values will be aggregated 
+       in `TotalResults` to a single unique value.  
+     * Requesting a time series that doesn't exist will return `null`.  
+     * Requesting an entries range that doesn't exist will return a `TimeSeriesRangeResult` object 
+       with an empty `Entries` property.  
+ 
 * **Exceptions**  
   Exceptions are not generated.  
 
