@@ -677,9 +677,56 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                 }
             }
 
-
             #endregion
 
+            while (true)
+            {
+                #region worker_timeout_minimal_sample
+                var options = new SubscriptionWorkerOptions(subscriptionName);
+
+                // Set the worker's timeout period
+                options.ConnectionStreamTimeout = TimeSpan.FromSeconds(45);
+                #endregion
+            }
+            
+            while (true)
+            {
+                #region worker_timeout
+                var options = new SubscriptionWorkerOptions(subscriptionName);
+
+                // Set the worker's timeout period
+                options.ConnectionStreamTimeout = TimeSpan.FromSeconds(45);
+
+                subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(options);
+
+                try
+                {
+                    subscriptionWorker.OnSubscriptionConnectionRetry += exception =>
+                    {
+                        Logger.Error("Error during subscription processing: " + subscriptionName, exception);
+                    };
+
+                    await subscriptionWorker.Run(async batch =>
+                    {
+                        foreach (var item in batch.Items)
+                        {
+                            //...
+                        }
+                    }, cancellationToken);
+
+                    // Run will complete normally if you have disposed the subscription
+                    return;
+                }
+                catch (Exception e)
+                {
+                    Logger.Error("Error during subscription process: " + subscriptionName, e);
+                }
+                finally
+                {
+                    subscriptionWorker.Dispose();
+                }
+                #endregion
+            }
 
             async Task ProcessOrder(Order o)
             {
