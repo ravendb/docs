@@ -54,7 +54,7 @@ async function whatIsSessionUsingAwait() {
         // Loading the same document will now retrieve its entity from the session's map
         const entity2 = await session.load("companies/1-A");
 
-        // This command will Not throw an exception.
+        // This command will Not throw an exception
         assert.equal(entity1, entity2);
         //endregion
     }

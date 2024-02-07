@@ -9,6 +9,8 @@
   the ID of a target (RavenDB) document and a patch operation to be applied 
   to this document.  
 
+* Since the operation is executed in a single request to a database, the JSON Patch command is performed in a single write [transaction](../../../client-api/faq/transaction-support).
+
 * JSON Patch operations include -  
    * **Add** a document property  
    * **Remove** a document property  

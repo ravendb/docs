@@ -1,51 +1,111 @@
-# Session: How to Enable Optimistic Concurrency
+# How to Enable Optimistic Concurrency
+---
 
-By default, optimistic concurrency checks are turned **off**. Changes made outside our session object will be overwritten. Concurrent changes to the same document will use
-the Last Write Wins strategy. 
+{NOTE: }
 
-You can enable the optimistic concurrency strategy either globally, at the document store level or a per session basis. 
-In either case, with optimistic concurrency enabled, RavenDB will generate a concurrency exception (and abort all 
-modifications in the current transaction) when the document has been modified on the server side after the client received and modified it.
-You can see the sample code below on the specific on
+* By default, optimistic concurrency checks are turned **off**. Changes made outside the session object will be overwritten.
+  Concurrent changes to the same document will use the _Last Write Wins_ strategy so a lost update anomaly is possible
+  with the default configuration of the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work).
 
-Note that `useOptimisticConcurrency` only applies to documents that has been _modified_ by the session. Loading documents `users/1-A` and `users/2-A` in a session, modifying
-`users/1-A` and then calling `saveChanges()` will succeed, regardless of the optimistic concurrency setting, even if `users/2-A` has changed in the meantime. 
-If the session were to try to save to `users/2-A` as well with optimistic concurrency turned on, then an exception will be raised and the updates to both `users/1-A` and `users/2-A`
-will be cancelled. 
+* You can enable the optimistic concurrency for either:
+    * All sessions - enable globally, at the document store level
+    * A specific session - enable on a per-session basis
+    * A specific document
 
-Another option is to control optimistic concurrency per specific document.   
-To enable it, you can [supply a Change Vector to Store](../../../client-api/session/storing-entities). If you don't supply a 'Change Vector' or if the 'Change Vector' is null, 
-then optimistic concurrency will be disabled. Setting the 'Change Vector' to an empty string will cause RavenDB to ensure that this document is a new one and doesn't already 
-exists.
+* With optimistic concurrency __enabled__, RavenDB will generate a concurrency exception
+  (and abort all modifications in the current transaction) when trying to save a document that has been modified on the server side after the client loaded and modified it.
 
-Setting optimistic concurrency per specific document overrides the use of the `useOptimisticConcurrency` field from the `advanced` session operations.
+* The `ConcurrencyException` that might be thrown upon the `saveChanges` call needs to be handled by the caller.
+  The operation can be retried (the document needs to be reloaded since it got changed meanwhile) or handle the error in a way that is suitable in a given scenario.
 
-## Enabling for a specific Session
+* In this page:
+    * [Enable for specific session](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency#enable-for-specific-session)
+    * [Enable globally](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency#enable-globally)
+    * [Disable for specific document (when enabled on session)](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency#disable-for-specific-document-(when-enabled-on-session))
+    * [Enable for specific document (when disabled on session)](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency#enable-for-specific-document-(when-disabled-on-session))
+
+{WARNING: }
+
+* Note that the `useOptimisticConcurrency` setting only applies to documents that have been modified by the current session.
+  For example, if you load documents `users/1-A` and `users/2-A` in a session, make modifications only to `users/1-A`, and then call `saveChanges`,
+  the operation will succeed regardless of the optimistic concurrency setting, even if `users/2-A` has been changed by another process in the meantime.
+
+* However, if you modify both documents and attempt to save changes with optimistic concurrency turned on, an exception will be raised if `users/2-A` has been modified externally.  
+  In this case, the updates to both `users/1-A` and `users/2-A` will be cancelled.
+
+{WARNING/}
+
+{INFO: }
+
+For a detailed description of transactions and concurrency control in RavenDB please refer to the  
+[Transaction support in RavenDB](../../../client-api/faq/transaction-support) article.
+
+{INFO/}
+
+{NOTE/}
+
+---
+
+{PANEL: Enable for specific session}
 
 {CODE:nodejs optimistic_concurrency_1@client-api\session\configuration\optimisticConcurrency.js /}
 
-## Enabling Globally
+{WARNING: }
 
-The first example shows how to enable optimistic concurrency for a particular session. 
-This can be also turned on globally, for all opened sessions by using the convention `store.conventions.useOptimisticConcurrency`.
+* Enabling optimistic concurrency in a session will ensure that changes made to a document will only be persisted
+  if the version of the document sent in the `saveChanges()` call matches its version from the time it was initially read (loaded from the server).
+
+* Note that it's necessary to enable optimistic concurrency for ALL sessions that modify the documents for which you want to guarantee that no writes will be silently discarded.
+  If optimistic concurrency is enabled in some sessions but not in others, and they modify the same documents, the risk of the lost update anomaly still exists.
+
+{WARNING/}
+
+{PANEL/}
+
+{PANEL: Enable globally}
+
+* Optimistic concurrency can also be turned on for all sessions that are opened under a document store.
+
+* Use the [store.Conventions.UseOptimisticConcurrency](../../../client-api/configuration/conventions#useoptimisticconcurrency) convention to enable globally.
 
 {CODE:nodejs optimistic_concurrency_2@client-api\session\configuration\optimisticConcurrency.js /}
 
-## Turning Off Optimistic Concurrency for a Single Document when it is Enabled on Session
+{PANEL/}
 
-Optimistic concurrency can be turned off for a single document by passing `null` as a change vector value to `store()` method even when it is turned on for an entire session (or globally).
+{PANEL: Disable for specific document (when enabled on session)}
+
+* Optimistic concurrency can be turned OFF when __storing__ a specific document,  
+  even when it is turned ON for an entire session (or globally).
+
+* This is done by passing `null` as a change vector value to the [store](../../../client-api/session/storing-entities) method.
 
 {CODE:nodejs optimistic_concurrency_3@client-api\session\configuration\optimisticConcurrency.js /}
 
-## Turning On Optimistic Concurrency for a New Document when it is Disabled on Session
+{PANEL/}
 
-Optimistic concurrency can be turned on for a new document by passing `""` as a change vector value to `store()` method even when it is turned off for an entire session (or globally).
-It will cause to throw `ConcurrencyException` if the document already exists.
+{PANEL: Enable for specific document (when disabled on session)}
+
+* Optimistic concurrency can be turned ON when __storing__ a specific document,  
+  even when it is turned OFF for an entire session (or globally).
+
+* This is done by passing `string.Empty` as the change vector value to the [store](../../../client-api/session/storing-entities) method.  
+  Setting the change vector to an empty string will cause RavenDB to ensure that this document is a new one and doesn't already exist.
+  A `ConcurrencyException` will be thrown if the document already exists.
+
+* If you don't supply a 'Change Vector' or if the 'Change Vector' is `null`, then optimistic concurrency will be disabled.
+
+* Setting optimistic concurrency for a specific document overrides the `useOptimisticConcurrency` property from the `advanced` session operations.
 
 {CODE:nodejs optimistic_concurrency_4@client-api\session\configuration\optimisticConcurrency.js /}
+
+{PANEL/}
 
 ## Related articles
 
 ### Configuration
 
 - [Conventions](../../../client-api/configuration/conventions)
+
+### FAQ
+
+- [Transaction Support in RavenDB](../../../client-api/faq/transaction-support)

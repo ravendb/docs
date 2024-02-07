@@ -166,7 +166,7 @@ __Replication & cluster-wide transactions__
   is either persisted on all database group nodes or rolled back on all upon failure.  
 
 * After a cluster consensus is reached, the Raft command to be executed is propagated to all nodes.  
-  When the command is executed locally on a node, if the items that are persisted are of the [type that replicates](../../../server/clustering/replication/replication#what-is-replicated),  
+  When the command is executed locally on a node, if the items that are persisted are of the [type that replicates](../../../server/clustering/replication/replication#what-is-replicated), 
   then the node will __replicate__ them to the other nodes via the replication process.  
 
 * A node that receives such replication will accept this write,  

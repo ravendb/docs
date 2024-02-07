@@ -92,7 +92,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                     // Loading the same document will now retrieve its entity from the Session's map
                     Company entity2 = session.Load<Company>(companyId);
                     
-                    // This command will Not throw an exception.
+                    // This command will Not throw an exception
                     Assert.Same(entity1, entity2);
                     #endregion
                 }
@@ -106,7 +106,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                     // Loading the same document will now retrieve its entity from the Session's map
                     Company entity2 = await asyncSession.LoadAsync<Company>(companyId);
                     
-                    // This command will Not throw an exception.
+                    // This command will Not throw an exception
                     Assert.Same(entity1, entity2);
                     #endregion
                 }
