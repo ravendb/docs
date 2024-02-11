@@ -1,218 +1,758 @@
 # Conventions
 
-* **Conventions** are adjustable RavenDB settings that users 
-  can configure to modify client behaviors by their preferences.  
-* Access conventions through the `DocumentStore` object 
-  `Conventions` property.  
+{NOTE: }
 
+* __Conventions__ in RavenDB are customizable settings that users can configure to tailor client behaviors according to their preferences.
+ 
 * In this page:  
-   * [Client Conventions](../../client-api/configuration/conventions#client-conventions)  
-   * [MaxHttpCacheSize](../../client-api/configuration/conventions#maxhttpcachesize)  
-   * [MaxNumberOfRequestsPerSession](../../client-api/configuration/conventions#maxnumberofrequestspersession)  
-   * [UseOptimisticConcurrency](../../client-api/configuration/conventions#useoptimisticconcurrency)  
-   * [RequestTimeout](../../client-api/configuration/conventions#requesttimeout)  
-   * [DisableTopologyUpdates](../../client-api/configuration/conventions#disabletopologyupdates)  
-   * [SaveEnumsAsIntegers](../../client-api/configuration/conventions#saveenumsasintegers)  
-   * [UseCompression](../../client-api/configuration/conventions#usecompression)  
-   * [OperationStatusFetchMode](../../client-api/configuration/conventions#operationstatusfetchmode)  
-   * [Change fields/properties Naming Convention](../../client-api/configuration/conventions#change-fieldsproperties-naming-convention)  
-   * [IdentityPartsSeparator](../../client-api/configuration/conventions#identitypartsseparator)  
-   * [TopologyCacheLocation](../../client-api/configuration/conventions#topologycachelocation)  
-   * [AddIdFieldToDynamicObjects](../../client-api/configuration/conventions#addidfieldtodynamicobjects)  
-   * [ShouldIgnoreEntityChanges](../../client-api/configuration/conventions#shouldignoreentitychanges)  
-   * [WaitForIndexesAfterSaveChangesTimeout](../../client-api/configuration/conventions#waitforindexesaftersavechangestimeout)  
-   * [WaitForReplicationAfterSaveChangesTimeout](../../client-api/configuration/conventions#waitforreplicationaftersavechangestimeout)  
-   * [WaitForNonStaleResultsTimeout](../../client-api/configuration/conventions#waitfornonstaleresultstimeout)  
-   * [CreateHttpClient](../../client-api/configuration/conventions#createhttpclient)  
-   * [HttpClientType](../../client-api/configuration/conventions#httpclienttype)  
+  * [How to set conventions](../../client-api/configuration/conventions#how-to-set-conventions)  
+  * [Conventions:](../../client-api/configuration/conventions#conventions:)  
+      [AddIdFieldToDynamicObjects](../../client-api/configuration/conventions#addidfieldtodynamicobjects)  
+      [AggressiveCache.Duration](../../client-api/configuration/conventions#aggressivecache.duration)  
+      [AggressiveCache.Mode](../../client-api/configuration/conventions#aggressivecache.mode)  
+      [CreateHttpClient](../../client-api/configuration/conventions#createhttpclient)  
+      [DisableAtomicDocumentWritesInClusterWideTransaction](../../client-api/configuration/conventions#disableatomicdocumentwritesinclusterwidetransaction)  
+      [DisableTcpCompression](../../client-api/configuration/conventions#disabletcpcompression)  
+      [DisableTopologyCache](../../client-api/configuration/conventions#disabletopologycache)  
+      [DisableTopologyUpdates](../../client-api/configuration/conventions#disabletopologyupdates)  
+      [FindClrType](../../client-api/configuration/conventions#findclrtype)  
+      [FindClrTypeName](../../client-api/configuration/conventions#findclrtypename)  
+      [FindClrTypeNameForDynamic](../../client-api/configuration/conventions#findclrtypenamefordynamic)  
+      [FindCollectionName](../../client-api/configuration/conventions#findcollectionname)  
+      [FindCollectionNameForDynamic](../../client-api/configuration/conventions#findcollectionnamefordynamic)  
+      [FindIdentityProperty](../../client-api/configuration/conventions#findidentityproperty)  
+      [FindIdentityPropertyNameFromCollectionName](../../client-api/configuration/conventions#findidentitypropertynamefromcollectionname)  
+      [FindProjectedPropertyNameForIndex](../../client-api/configuration/conventions#findprojectedpropertynameforindex)  
+      [FindPropertyNameForDynamicIndex](../../client-api/configuration/conventions#findpropertynamefordynamicindex)  
+      [FindPropertyNameForIndex](../../client-api/configuration/conventions#findpropertynameforindex)  
+      [FirstBroadcastAttemptTimeout](../../client-api/configuration/conventions#firstbroadcastattempttimeout)  
+      [HttpClientType](../../client-api/configuration/conventions#httpclienttype)  
+      [HttpVersion](../../client-api/configuration/conventions#httpversion)  
+      [IdentityPartsSeparator](../../client-api/configuration/conventions#identitypartsseparator)  
+      [LoadBalanceBehavior](../../client-api/configuration/conventions#loadbalancebehavior)  
+      [LoadBalancerContextSeed](../../client-api/configuration/conventions#loadbalancebehavior)  
+      [LoadBalancerPerSessionContextSelector](../../client-api/configuration/conventions#loadbalancebehavior)  
+      [MaxHttpCacheSize](../../client-api/configuration/conventions#maxhttpcachesize)  
+      [MaxNumberOfRequestsPerSession](../../client-api/configuration/conventions#maxnumberofrequestspersession)  
+      [Modify serialization of property name](../../client-api/configuration/conventions#modify-serialization-of-property-name)  
+      [OperationStatusFetchMode](../../client-api/configuration/conventions#operationstatusfetchmode)  
+      [PreserveDocumentPropertiesNotFoundOnModel](../../client-api/configuration/conventions#preservedocumentpropertiesnotfoundonmodel)  
+      [ReadBalanceBehavior](../../client-api/configuration/conventions#readbalancebehavior)  
+      [RequestTimeout](../../client-api/configuration/conventions#requesttimeout)  
+      [ResolveTypeFromClrTypeName](../../client-api/configuration/conventions#resolvetypefromclrtypename)  
+      [SaveEnumsAsIntegers](../../client-api/configuration/conventions#saveenumsasintegers)  
+      [SecondBroadcastAttemptTimeout](../../client-api/configuration/conventions#secondbroadcastattempttimeout)  
+      [SendApplicationIdentifier](../../client-api/configuration/conventions#sendapplicationidentifier)  
+      [ShouldIgnoreEntityChanges](../../client-api/configuration/conventions#shouldignoreentitychanges)  
+      [ThrowIfQueryPageSizeIsNotSet](../../client-api/configuration/conventions#throwifquerypagesizeisnotset)  
+      [TopologyCacheLocation](../../client-api/configuration/conventions#topologycachelocation)  
+      [TransformTypeCollectionNameToDocumentIdPrefix](../../client-api/configuration/conventions#transformtypecollectionnametodocumentidprefix)  
+      [UseCompression](../../client-api/configuration/conventions#usecompression)  
+      [UseOptimisticConcurrency](../../client-api/configuration/conventions#useoptimisticconcurrency)  
+      [WaitForIndexesAfterSaveChangesTimeout](../../client-api/configuration/conventions#waitforindexesaftersavechangestimeout)  
+      [WaitForNonStaleResultsTimeout](../../client-api/configuration/conventions#waitfornonstaleresultstimeout)  
+      [WaitForReplicationAfterSaveChangesTimeout](../../client-api/configuration/conventions#waitforreplicationaftersavechangestimeout)  
 
-{PANEL: Client Conventions}
+{NOTE/}
 
-Access conventions via the `Conventions` property of the 
-`DocumentStore` object.  
+---
+
+{PANEL: How to set conventions}
+
+* Access the conventions via the `Conventions` property of the `DocumentStore` object.
+
+* The conventions set on a Document Store will apply to ALL [sessions](../../client-api/session/what-is-a-session-and-how-does-it-work) and [operations](../../client-api/operations/what-are-operations) associated with that store.
+ 
+* Customizing the conventions can only be set __before__ calling `DocumentStore.Initialize()`.  
+  Trying to do so after calling _Initialize()_ will throw an exception.
+
 {CODE conventions_1@ClientApi\Configuration\Conventions.cs /}
 
+{PANEL/}
+
+{PANEL: Conventions:}
+
 {NOTE: }
-Customize conventions **before** `DocumentStore.Initialize()` is called. 
+
+#### AddIdFieldToDynamicObjects
+
+---
+
+* Use the `AddIdFieldToDynamicObjects` convention to determine whether an `Id` field is automatically added  
+  to [dynamic objects](../../https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic) when [storing new entities](../../client-api/session/storing-entities) via the session.
+ 
+* DEFAULT: `true`  
+
+{CODE AddIdFieldToDynamicObjectsSyntax@ClientApi\Configuration\Conventions.cs /}
+
 {NOTE/}
+{NOTE: }
 
-## MaxHttpCacheSize
+#### AggressiveCache.Duration
 
-Use `MaxHttpCacheSize` as follows to modify the maximum HTTP cache size.  
-{CODE MaxHttpCacheSize@ClientApi\Configuration\Conventions.cs /}
+---
 
-**Default**:
+* Use the `AggressiveCache.Duration` convention to define the [aggressive cache](../../client-api/how-to/setup-aggressive-caching) duration period.
 
-| System | Usable Memory | Default Value |
-| -------| ------------- | ------------- |
-| 64-bit | Lower than or equal to 3GB <br> Greater than 3GB and Lower than or equal to 6GB <br> Greater than 6GB | 64MB <br> 128MB <br> 512MB |
-| 32-bit | | 32MB |
+* DEFAULT: `1 day`
 
-* Caching is set **per database**.  
-* **Disabling Caching**:  
-  To disable caching globally, set `MaxHttpCacheSize` to zero.
+{CODE AggressiveCacheDurationSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### AggressiveCache.Mode
+
+---
+
+* Use the `AggressiveCache.Mode` convention to define the [aggressive cache](../../client-api/how-to/setup-aggressive-caching) mode.  
+  (`AggressiveCacheMode.TrackChanges` or `AggressiveCacheMode.DoNotTrackChanges`)
+
+* DEFAULT: `AggressiveCacheMode.TrackChanges`
+
+{CODE AggressiveCacheModeSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### CreateHttpClient
+
+---
+
+* Use the `CreateHttpClient` convention to modify the HTTP client your client application uses.  
+ 
+* For example, implementing your own HTTP client can be useful when you'd like your clients to provide the server with tracing info.  
+
+* If you override the default `CreateHttpClient` convention we advise that you also set the HTTP client type  
+  correctly using the [HttpClientType](../../client-api/configuration/conventions#httpclienttype) convention.
+
+{CODE CreateHttpClient@ClientApi\Configuration\Conventions.cs /}
+{CODE CreateHttpClientSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### DisableAtomicDocumentWritesInClusterWideTransaction
+
+---
+
+* EXPERT ONLY:   
+  Use the `DisableAtomicDocumentWritesInClusterWideTransaction` convention disable automatic  
+  atomic writes with cluster write transactions.
+
+* When set to `true`, will only consider explicitly added compare exchange values to validate cluster wide transactions.
+
+* DEFAULT: `false`
+
+{CODE DisableAtomicDocumentWritesInClusterWideTransactionSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### DisableTcpCompression
+
+---
+
+* When setting the `DisableTcpCompression` convention to `true`, TCP data will not be compressed.
+
+* DEFAULT: `false`
+
+{CODE DisableTcpCompressionSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### DisableTopologyCache
+
+---
+ 
+* When setting the `DisableTopologyCache` convention to `true`, the topology cache usage will be disabled.  
+  Even if the client is configured to receive topology updates from the server, no topology files will be saved on disk, 
+  thus preventing `*.raven-cluster-topology` files from piling up.  
+ 
+* In addition, when set to _true_, the client will not try to load the topology from the cache upon failing to connect to the server.
+ 
+* DEFAULT: `false`
+
+{CODE DisableTopologyCacheSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### DisableTopologyUpdates
+
+---
+
+* When setting the `DisableTopologyUpdates` convention to `true`,  
+  no database topology updates will be sent from the server to the client (e.g. adding or removing a node).
+ 
+* DEFAULT: `false`
+
+{CODE DisableTopologyUpdatesSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### FindClrType
+
+---
+
+* Use the `FindClrType` convention to define a function that finds the CLR type of a document.  
+
+* DEFAULT:  
+  The CLR type is retrieved from the `Raven-Clr-Type` property under the `@metdata` key in the document. 
+
+{CODE FindClrType@ClientApi\Configuration\Conventions.cs /}
+{CODE FindClrTypeSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### FindClrTypeName
+
+---
+
+* Use the `FindClrTypeName` convention to define a function that returns the CLR type name from a given type.
+ 
+* DEFAULT: The entity's full name with the assembly name is returned.
+
+{CODE FindClrTypeNameSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### FindClrTypeNameForDynamic
+
+---
+
+* Use the `FindClrTypeNameForDynamic` convention to define a function that returns the CLR type name  
+  from a dynamic entity.
+
+* DEFAULT: The dynamic entity type is returned.
+
+{CODE FindClrTypeNameForDynamic@ClientApi\Configuration\Conventions.cs /}
+{CODE FindClrTypeNameForDynamicSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### FindCollectionName
+
+---
+
+* Use the `FindCollectionName` convention to define a function that will customize the collection name  
+  from given type.
+
+* DEFAULT: The collection name will be the plural form of the type name.
+
+{CODE FindCollectionName@ClientApi\Configuration\Conventions.cs /}
+{CODE FindCollectionNameSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### FindCollectionNameForDynamic
+
+---
+
+* Use the `FindCollectionNameForDynamic` convention to define a function that will customize the  
+  collection name from a dynamic type.
+
+* DEFAULT: The collection name will be the entity's type.
+
+{CODE FindCollectionNameForDynamic@ClientApi\Configuration\Conventions.cs /}
+{CODE FindCollectionNameForDynamicSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### FindIdentityProperty
+
+---
+
+* Use the `FindIdentityProperty` convention to define a function that finds the specified ID property  
+  in the entity.
+ 
+* DEFAULT: The entity's `Id` property serves as the ID property.
+
+{CODE FindIdentityProperty@ClientApi\Configuration\Conventions.cs /}
+{CODE FindIdentityPropertySyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### FindIdentityPropertyNameFromCollectionName
+
+---
+
+* Use the `FindIdentityPropertyNameFromCollectionName` convention to define a function that customizes  
+  the entity's ID property from the collection name.
+
+* DEFAULT: Will use the `Id` property.
+
+{CODE FindIdentityPropertyNameFromCollectionName@ClientApi\Configuration\Conventions.cs /}
+{CODE FindIdentityPropertyNameFromCollectionNameSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### FindProjectedPropertyNameForIndex
+
+---
+
+* Use the `FindProjectedPropertyNameForIndex` convention to define a function that customizes the  
+  projected fields names that will be used in the RQL sent to the server when querying an index.
+
+* Given input: The indexed document type, the index name, the current path, and the property path  
+  that is used in a query.
+
+* DEFAULT: `null`
+
+{CODE FindProjectedPropertyNameForIndexSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### FindPropertyNameForDynamicIndex
+
+---
+
+* Use the `FindPropertyNameForDynamicIndex` convention to define a function that customizes the  
+  property name that will be used in the RQL sent to the server when making a dynamic query.
+
+* Given input: The indexed document type, the index name, the current path, and the property path  
+  that is used in a query predicate.
+
+{CODE FindPropertyNameForDynamicIndex@ClientApi\Configuration\Conventions.cs /}
+{CODE FindPropertyNameForDynamicIndexSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### FindPropertyNameForIndex
+
+---
+
+* Use the `FindPropertyNameForIndex` convention to define a function that customizes the name of the  
+  index-field property that will be used in the RQL sent to the server when querying an index. 
+
+* Given input: The indexed document type, the index name, the current path, and the property path  
+  that is used in a query predicate.
+
+* DEFAULT: `[].` & `.` are replaced by `_`
+
+{CODE FindPropertyNameForIndex@ClientApi\Configuration\Conventions.cs /}
+{CODE FindPropertyNameForIndexSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### FirstBroadcastAttemptTimeout
+
+---
+
+* Use the `FirstBroadcastAttemptTimeout` convention to set the timeout for the first broadcast attempt.  
+ 
+* In the first attempt, the request executor will send a single request to the selected node.  
+  Learn about the "selected node" in: [Client logic for choosing a node](../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).
+ 
+* A [second attempt](../../client-api/configuration/conventions#secondbroadcastattempttimeout) will be held upon failure.
+ 
+* DEFAULT: `5 seconds`
+
+{CODE FirstBroadcastAttemptTimeout@ClientApi\Configuration\Conventions.cs /}
+{CODE FirstBroadcastAttemptTimeoutSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### HttpClientType
+
+---
+
+* Use the `HttpClientType` convention to set the type of HTTP client you're using.
+ 
+* RavenDB uses the HTTP type internally to manage its cache.  
+ 
+* If you override the [CreateHttpClient](../../client-api/configuration/conventions#createhttpclient) convention to use a non-default HTTP client,  
+  we advise that you also set `HttpClientType` so it returns the client type you are actually using.
+
+{CODE HttpClientType@ClientApi\Configuration\Conventions.cs /}
+{CODE HttpClientTypeSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### HttpVersion
+
+---
+
+* Use the `HttpVersion` convention to set the Http version the client will use when communicating  
+  with the server.
+
+* DEFAULT: `System.Net.HttpVersion.Version11` (HTTP 1.1)
+
+{CODE HttpVersionSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### IdentityPartsSeparator
+
+---
+
+* Use the `IdentityPartsSeparator` convention to set the default **ID separator** for automatically-generated document IDs.
+ 
+* DEFAULT: `/` (forward slash)  
+ 
+* The value can be any `char` except `|` (pipe).
+ 
+* Changing the separator affects these ID generation strategies:  
+  * [Server-Side ID](../../server/kb/document-identifier-generation#strategy--2)
+  * [Identity](../../server/kb/document-identifier-generation#strategy--3)
+  * [HiLo Algorithm](../../server/kb/document-identifier-generation#strategy--4)
+
+{CODE IdentityPartsSeparatorSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### LoadBalanceBehavior
+#### LoadBalancerPerSessionContextSelector
+#### LoadBalancerContextSeed
+
+---
+
+* Configure the __load balance behavior__ by setting the following conventions:
+  * `LoadBalanceBehavior`
+  * `LoadBalancerPerSessionContextSelector`
+  * `LoadBalancerContextSeed`
+
+* Learn more in the dedicated [Load balance behavior](../../client-api/configuration/load-balance/load-balance-behavior) article.
+
+{NOTE/}
+{NOTE: }
+
+#### MaxHttpCacheSize
+
+---
+
+* Use the `MaxHttpCacheSize` convention to set the maximum HTTP cache size.
+ 
+* This setting will affect all the databases accessed by the Document Store.
+ 
+* DEFAULT:  
+ 
+    | System    | Usable Memory                                                                                         | Default Value              |
+    |-----------|-------------------------------------------------------------------------------------------------------|----------------------------|
+    | 64-bit    | Lower than or equal to 3GB <br> Greater than 3GB and Lower than or equal to 6GB <br> Greater than 6GB | 64MB <br> 128MB <br> 512MB |
+    | 32-bit    |                                                                                                       | 32MB                       |
+
+* __Disabling Caching__:  
+
+    * To disable caching globally, set `MaxHttpCacheSize` to zero.  
+  
+    * Note: When caching is disabled, ALL data requests are sent to the server.
+
+  {CODE MaxHttpCacheSize@ClientApi\Configuration\Conventions.cs /}
   {CODE disable_cache@ClientApi\Configuration\Conventions.cs /}
-  {WARNING: }
-  Please be aware that if cache is disabled **ALL** data requests will be sent to the server.  
-  {WARNING/}
+  {CODE MaxHttpCacheSizeSyntax@ClientApi\Configuration\Conventions.cs /}
 
-## MaxNumberOfRequestsPerSession
-
-Use `MaxNumberOfRequestsPerSession` to get or set the maximum number of GET requests per session.  
-**Default**: `30`  
-{CODE MaxNumberOfRequestsPerSession@ClientApi\Configuration\Conventions.cs /}
-
-## UseOptimisticConcurrency
-
-Use `UseOptimisticConcurrency` to control whether optimistic 
-concurrency is set to true by default for all future sessions.  
-**Default**: `false`  
-{CODE UseOptimisticConcurrency@ClientApi\Configuration\Conventions.cs /}
-
-## RequestTimeout
-
-Use `RequestTimeout` to define the global request timeout 
-value for all `RequestExecutors` created per database.  
-**Default**: `null`
-{CODE RequestTimeout@ClientApi\Configuration\Conventions.cs /}
-
-## DisableTopologyUpdates
-
-Use `DisableTopologyUpdates` to disable database topology updates.  
-**Default**: `false`  
-{CODE DisableTopologyUpdates@ClientApi\Configuration\Conventions.cs /}
-
-## SaveEnumsAsIntegers
-
-`SaveEnumsAsIntegers` determines whether C# `enum` types should be saved as 
-integers or strings and instructs the LINQ provider to query enums as integer values.  
-**Default**: `false`  
-{CODE SaveEnumsAsIntegers@ClientApi\Configuration\Conventions.cs /}
-
-## UseCompression
-
-`UseCompression` determines if the client would send the 
-server headers indicating whether compression is to be used.  
-**Default**: `true`  
-{CODE UseCompression@ClientApi\Configuration\Conventions.cs /}
-
-## OperationStatusFetchMode
-
-`OperationStatusFetchMode` changes the way the operation is 
-fetching the operation status when waiting for completion.  
-{NOTE: }
-**By default**, the value is set to `ChangesApi` which uses the WebSocket 
-protocol underneath when a connection is established with the server.  
-On some older systems like Windows 7 the WebSocket protocol might not 
-be available due to the OS and .NET Framework limitations. To bypass 
-this issue, the value can be changed to `Polling`.  
 {NOTE/}
+{NOTE: }
+
+#### MaxNumberOfRequestsPerSession
+
+---
+
+* Use the `MaxNumberOfRequestsPerSession` convention to set the maximum number of requests per session.
+ 
+* DEFAULT: `30`
+ 
+{CODE MaxNumberOfRequestsPerSessionSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### Modify serialization of property name
+
+---
+
+* Different clients use different casing conventions for entity field names. For example:  
+
+    | Language   | Default casing  | Example    |
+    |------------|-----------------|------------|
+    | C#         | PascalCase      | OrderLines |
+    | Java       | camelCase       | orderLines |
+    | JavaScript | camelCase       | orderLines |
+
+* By default, when saving an entity, the naming convention used by the client is reflected in the JSON document properties on the server-side.  
+  This default serialization behavior can be customized to facilitate language interoperability.
+ 
+* __Example__:  
+    
+    Set `CustomizeJsonSerializer` and `PropertyNameConverter` to serialize an entity's properties as camelCase from a C# client:
+
+    {CODE PropertyCasing@ClientApi\Configuration\Conventions.cs /}
+    {CODE FirstChar@ClientApi\Configuration\Conventions.cs /}
+    {CODE SerializationSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### OperationStatusFetchMode
+
+---
+
+* Use the `OperationStatusFetchMode` convention to set the way an [operation](../../client-api/operations/what-are-operations) is getting its status when [waiting for completion](../../client-api/operations/what-are-operations#wait-for-completion).
+ 
+* DEFAULT:  
+  By default, the value is set to `ChangesApi` which uses the WebSocket protocol underneath when a connection is established with the server.  
+ 
+* On some older systems like Windows 7 the WebSocket protocol might not be available due to the OS and .NET Framework limitations. 
+  To bypass this issue, the value can be changed to `Polling`.  
+
 {CODE OperationStatusFetchMode@ClientApi\Configuration\Conventions.cs /}
+{CODE OperationStatusFetchModeSyntax@ClientApi\Configuration\Conventions.cs /}
 
-## Change fields/properties Naming Convention
-
-Different clients may use different casing conventions for entity field names.  
-E.g., here are the field naming defaults for clients of a few languages.  
-
-| Language | Default convention | Example |
-| ------------- | ----- | --- |
-| C# | PascalCase | OrderLines |
-| Java | camelCase | orderLines |
-| JavaScript | camelCase | orderLines |
-
-Whatever naming convention a client uses, is by default reflected on the server-side.  
-These defauls can be customized, e.g. to allow inter-language operability.  
-
-### Example: Using camelCase by a C# client
-
-Make a C# client use camelCase by setting `CustomizeJsonSerializer` and `PropertyNameConverter `.  
-
-{CODE FirstChar@ClientApi\Configuration\Conventions.cs /}
-{CODE PropertyCasing@ClientApi\Configuration\Conventions.cs /}
-
-## IdentityPartsSeparator
-
-Use the `IdentityPartsSeparator` convention to change the default 
-**ID (Identity) separator** for automatically-generated document IDs.  
-**Default**: `/` (forward slash)  
-{CODE IdentityPartsSeparator@ClientApi\Configuration\Conventions.cs /}
-
-* The value can be any `char` except `|` (pipe).  
-
-{NOTE: }
-Changing the separator affects these ID generation strategies:  
-
-* [Server-Side ID](../../server/kb/document-identifier-generation#strategy--2)
-* [Identity](../../server/kb/document-identifier-generation#strategy--3)
-* [HiLo Algorithm](../../server/kb/document-identifier-generation#strategy--4)
 {NOTE/}
+{NOTE: }
 
-## TopologyCacheLocation
+#### PreserveDocumentPropertiesNotFoundOnModel
 
-Use `TopologyCacheLocation` to change the location of topology cache files.  
-Setting this value will check directory existance and writing permissions.  
-**Default**: The application's base directory (`AppContext.BaseDirectory`)
+---
+
+* When setting the `PreserveDocumentPropertiesNotFoundOnModel` convention to `true`,  
+  the client can report (via [whatChanged](../../lient-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes) method) the missing properties on the model when loading a document.
+
+* DEFAULT: `true`
+
+{CODE PreserveDocumentPropertiesNotFoundOnModelSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### ReadBalanceBehavior
+
+---
+
+* Configure the __read request behavior__ by setting the `ReadBalanceBehavior` convention.
+
+* Learn more in the dedicated [Read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior) article.
+
+{NOTE/}
+{NOTE: }
+
+#### RequestTimeout
+
+---
+
+* Use the `RequestTimeout` convention to define the global request timeout value for all `RequestExecutors` created per database.
+ 
+* DEFAULT: `null` (the default HTTP client timout will be applied - 12h)
+
+{CODE RequestTimeout@ClientApi\Configuration\Conventions.cs /}
+{CODE RequestTimeoutSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### ResolveTypeFromClrTypeName
+
+---
+
+* Use the `ResolveTypeFromClrTypeName` convention to define a function that resolves the CLR type  
+  from the CLR type name.
+
+* DEFAULT: The type is returned.
+
+{CODE ResolveTypeFromClrTypeName@ClientApi\Configuration\Conventions.cs /}
+{CODE ResolveTypeFromClrTypeNameSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### SaveEnumsAsIntegers
+
+---
+
+* When setting the `SaveEnumsAsIntegers` convention to `true`,  
+  C# `enum` types will be stored and queried as integers, rather than their string representations.  
+ 
+* DEFAULT: `false` (save as strings)
+
+{CODE SaveEnumsAsIntegersSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### SecondBroadcastAttemptTimeout
+
+---
+
+* Use the `SecondBroadcastAttemptTimeout` convention to set the timeout for the second broadcast attempt.
+ 
+* Upon failure of the [first attempt](../../client-api/configuration/conventions#firstbroadcastattempttimeout) the request executor will resend the command to all nodes simultaneously.
+ 
+* DEFAULT: `30 seconds`
+
+{CODE SecondBroadcastAttemptTimeout@ClientApi\Configuration\Conventions.cs /}
+{CODE SecondBroadcastAttemptTimeoutSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### SendApplicationIdentifier
+
+---
+
+* Use the `SendApplicationIdentifier` convention to `true` to enable sending a unique application identifier to the RavenDB Server.
+
+* Setting tp _true_ allows the server to issue performance hint notifications to the client, 
+  e.g. during robust topology update requests which could indicate a Client API misuse impacting the overall performance.
+
+* DEFAULT: `true`
+
+{CODE SendApplicationIdentifierSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### ShouldIgnoreEntityChanges
+
+---
+
+* Set the `ShouldIgnoreEntityChanges` convention to disable entity tracking for certain entities.  
+ 
+* Learn more in [Customize tracking in conventions](../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions).
+
+{NOTE/}
+{NOTE: }
+
+#### ThrowIfQueryPageSizeIsNotSet
+
+---
+
+* When setting the `ThrowIfQueryPageSizeIsNotSet` convention to `true`,  
+  an exception will be thrown if a query is performed without explicitly setting a page size.
+
+* This can be useful during development to identify potential performance bottlenecks
+  since there is no limitation on the number of results returned from the server.
+
+* DEFAULT: `false`
+
+{CODE ThrowIfQueryPageSizeIsNotSetSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### TopologyCacheLocation
+
+---
+
+* Use the `TopologyCacheLocation` convention to change the location of the topology cache files   
+  (`*.raven-database-topology` & `*.raven-cluster-topology`).  
+ 
+* Directory existence and writing permissions will be checked when setting this value.
+ 
+* DEFAULT: `AppContext.BaseDirectory` (The application's base directory)
 
 {CODE TopologyCacheLocation@ClientApi\Configuration\Conventions.cs /}
+{CODE TopologyCacheLocationSyntax@ClientApi\Configuration\Conventions.cs /}
 
-## AddIdFieldToDynamicObjects
+{NOTE/}
+{NOTE: }
 
-Use `AddIdFieldToDynamicObjects` to determine whether an Id field is automatically added to dynamic objects.  
-**Default**: `true`  
-{CODE AddIdFieldToDynamicObjects@ClientApi\Configuration\Conventions.cs /}
+#### TransformTypeCollectionNameToDocumentIdPrefix
 
-## ShouldIgnoreEntityChanges
+---
 
-Configure this function to disable entity tracking for certain entities.  
-Learn more in [Customize tracking in conventions](../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions).
+* Use the `TransformTypeCollectionNameToDocumentIdPrefix` convention to define a function that will  
+  customize the document ID prefix from the the collection name.
+ 
+* DEFAULT:  
+  By default, the document id prefix is determined as follows:  
+ 
+| Number of uppercase letters in collection name   | Document ID prefix                                          |
+|--------------------------------------------------|-------------------------------------------------------------|
+| `<= 1`                                           | Use the collection name with all lowercase letters          |
+| `> 1`                                            | Use the collection name as is, preserving the original case |
 
-## WaitForIndexesAfterSaveChangesTimeout
+{CODE TransformTypeCollectionNameToDocumentIdPrefixSyntax@ClientApi\Configuration\Conventions.cs /}
 
-Use `WaitForIndexesAfterSaveChangesTimeout` to set the default timeout 
-for the DocumentSession.Advanced.WaitForIndexesAfterSaveChanges method.  
-**Default**: 15 Seconds  
+{NOTE/}
+{NOTE: }
+
+#### UseCompression
+
+---
+
+* Set the `UseCompression` convention to true to in order to use compression when sending and receiving content of HTTP request. 
+ 
+* DEFAULT: `true`  
+
+{CODE UseCompressionSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### UseOptimisticConcurrency
+
+---
+
+* When setting the `UseOptimisticConcurrency` convention to `true`,  
+  Optimistic Concurrency checks will be applied for all sessions opened from the Document Store. 
+ 
+* DEFAULT: `false`  
+
+{CODE UseOptimisticConcurrencySyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
+#### WaitForIndexesAfterSaveChangesTimeout
+
+---
+
+* Use the `WaitForIndexesAfterSaveChangesTimeout` convention to set the default timeout for the 
+  `DocumentSession.Advanced.WaitForIndexesAfterSaveChanges` method.  
+ 
+* DEFAULT: 15 Seconds
+
 {CODE WaitForIndexesAfterSaveChangesTimeout@ClientApi\Configuration\Conventions.cs /}
+{CODE WaitForIndexesAfterSaveChangesTimeoutSyntax@ClientApi\Configuration\Conventions.cs /}
 
-## WaitForReplicationAfterSaveChangesTimeout
+{NOTE/}
+{NOTE: }
 
-Use `WaitForReplicationAfterSaveChangesTimeout` to set the default timeout 
-for the DocumentSession.Advanced.WaitForReplicationAfterSaveChanges method.  
-**Default**: 15 Seconds  
-{CODE WaitForReplicationAfterSaveChangesTimeout@ClientApi\Configuration\Conventions.cs /}
+#### WaitForNonStaleResultsTimeout
 
-## WaitForNonStaleResultsTimeout
+---
 
-Use `WaitForNonStaleResultsTimeout` to set the default timeout WaitForNonStaleResults 
-methods used when querying.  
-**Default**: 15 Seconds  
+* Use the `WaitForNonStaleResultsTimeout` convention to set the default timeout used by the  
+  `WaitForNonStaleResults` method when querying.  
+ 
+* DEFAULT: 15 Seconds  
+
 {CODE WaitForNonStaleResultsTimeout@ClientApi\Configuration\Conventions.cs /}
+{CODE WaitForNonStaleResultsTimeoutSyntax@ClientApi\Configuration\Conventions.cs /}
 
-## CreateHttpClient
-
-Use the `CreateHttpClient` convention to modify the HTTP client your 
-client application uses.  
-Implementing your own  HTTP client can be useful when, for example, 
-you'd like your clients to provide the server with tracing info.  
-{CODE CreateHttpClient@ClientApi\Configuration\Conventions.cs /}
-
-{NOTE: }
-If you override the default `CreateHttpClient` convention we advise 
-that you also set the HTTP client type correctly using the 
-[HttpClientType](../../client-api/configuration/conventions#httpclienttype) convention.  
 {NOTE/}
-
-## HttpClientType
-
-Use `HttpClientType` to get or set the type of HTTP client you're using.  
-{CODE HttpClientType@ClientApi\Configuration\Conventions.cs /}
-
 {NOTE: }
-RavenDB uses the HTTP type internally to manage its cache. If you 
-override the [CreateHttpClient](../../client-api/configuration/conventions#createhttpclient) 
-convention to use a non-default HTTP client, we advise that you also 
-set `HttpClientType` so it returns the client type you are actually using.  
-{NOTE/}
 
+#### WaitForReplicationAfterSaveChangesTimeout
+
+---
+
+* Use the `WaitForReplicationAfterSaveChangesTimeout` convention to set the default timeout for the  
+  `DocumentSession.Advanced.WaitForReplicationAfterSaveChanges`method.  
+ 
+* DEFAULT: 15 Seconds  
+
+{CODE WaitForReplicationAfterSaveChangesTimeout@ClientApi\Configuration\Conventions.cs /}
+{CODE WaitForReplicationAfterSaveChangesTimeoutSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
 {PANEL/}
 
 ## Related Articles
