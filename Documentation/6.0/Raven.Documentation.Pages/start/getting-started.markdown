@@ -115,6 +115,13 @@ If you are interested in hosting the server on a VM, please refer to
 
 {NOTE/}
 
+{NOTE: Running in RavenDB Cloud}
+
+If you want to test RavenDB without manual setup try [RavenDB Cloud](https://cloud.ravendb.net).
+We offer one free instance per customer. For more information, please read our [dedicated article](../cloud/cloud-overview).
+
+{NOTE/}
+
 {INFO: Help Us Improve Prompt}
 When you first launch RavenDB, you will see this prompt asking if you'd be willing to 
 anonymously share some Studio usage data with us in order to help us improve RavenDB:  

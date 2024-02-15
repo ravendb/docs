@@ -55,6 +55,13 @@ If you are interested in hosting the server in a Docker container, please read o
 
 {NOTE/}
 
+{NOTE: Running in RavenDB Cloud}
+
+If you want to test RavenDB without manual setup try [RavenDB Cloud](https://cloud.ravendb.net).
+We offer one free instance per customer. For more information, please read our [dedicated article](../cloud/cloud-overview).
+
+{NOTE/}
+
 ---
 
 ### Configuration
