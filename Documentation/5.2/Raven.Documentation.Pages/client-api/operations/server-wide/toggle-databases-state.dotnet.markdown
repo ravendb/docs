@@ -9,15 +9,16 @@
 
 * In this page:
 
-  * [Enable database](../../../client-api/operations/server-wide/toggle-databases-state#enable-database)
-  * [Disable database](../../../client-api/operations/server-wide/toggle-databases-state#disable-database)
+  * [Enable Database](../../../client-api/operations/server-wide/toggle-databases-state#enable-database)
+  * [Disable Database](../../../client-api/operations/server-wide/toggle-databases-state#disable-database)
   * [Syntax](../../../client-api/operations/server-wide/toggle-databases-state#syntax)
+  * [Disable a Database Manually](../../../client-api/operations/server-wide/toggle-databases-state#disable-a-database-manually)
 
 {NOTE/}
 
 ---
 
-{PANEL: Enable database}
+{PANEL: Enable Database}
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync enable@ClientApi\Operations\Server\ToggleDatabasesState.cs /}
@@ -26,7 +27,7 @@
 
 {PANEL/}
 
-{PANEL: Disable database}
+{PANEL: Disable Database}
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync disable@ClientApi\Operations\Server\ToggleDatabasesState.cs /}
@@ -46,6 +47,18 @@
 | __disable__       | bool     | `true` - request to disable the database(s)<br>`false`- request to enable the database(s) |
 
 {CODE syntax_2@ClientApi\Operations\Server\ToggleDatabasesState.cs /}
+
+{PANEL/}
+
+{PANEL: Disable a Database Manually}
+
+A database can be **manually disabled** by keeping a `disable.marker` file in its file-system path.  
+{CODE:csharp disable-database-via-file-system@ClientApi\Operations\Server\ToggleDatabasesState.cs /}
+
+Accessing the database will be prevented until `disable.marker` is removed and the database 
+is reloaded, with the following exception:  
+`Unable to open database: '{store.Database}', it has been manually disabled via the file: '{disableMarkerPath}'. 
+To re-enable, remove the disable.marker and reload the database.`  
 
 {PANEL/}
 

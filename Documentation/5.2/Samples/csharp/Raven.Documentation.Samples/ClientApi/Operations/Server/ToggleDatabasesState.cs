@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.ServerWide.Operations;
+using static Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes.DisableIndex;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Server
 {
@@ -67,7 +69,21 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                 }
             }
         }
-        
+
+
+        void DisableDatabaseViaFileSystem()
+        {
+            using (var store = new DocumentStore())
+            {
+                string databasePath = new string("dbPath");
+                #region disable-database-via-file-system
+                // Prevent database access by creating disable.marker in its path
+                var disableMarkerPath = Path.Combine(databasePath, "disable.marker");
+                File.Create(disableMarkerPath).Dispose();
+                #endregion
+            }
+        }
+
         private class Foo
         {
             public class ToggleDatabasesStateOperation

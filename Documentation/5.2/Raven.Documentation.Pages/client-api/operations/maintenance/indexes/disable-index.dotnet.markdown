@@ -98,18 +98,23 @@ __How to enable the index__:
 
 {PANEL: Disabling an Index Manually}
 
-Special circumstances may rarely require that an index would be disabled manually, 
-through the file system.  
-For example, a faulty index may be loaded before 
+It may sometimes be useful to disable an index manually, through the file system.  
+If a faulty index is loaded before 
 [DisableIndexOperation](../../../../client-api/operations/maintenance/indexes/disable-index#disableindexoperation) 
-gets a chance to disable it. Disabling the index through the file system can assure 
-that its loading would be prevented.  
+gets a chance to disable it, for example, disabling the index through the file system 
+will assure that its loading is prevented.  
 
 To disable an index manually, keep a file named `disable.marker` in the index path:  
 {CODE:csharp disable-index-via-file-system@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 
+When an attempt is made to use an index disabled this way, RavenDB will produce the following 
+exception: 
+`Unable to open index: '{index.IndexName}', it has been manually disabled via the file: '{disableMarkerPath}'.  
+To re-enable, remove the disable.marker file and enable indexing.`  
+
 {NOTE: }
-To enable an index disabled this way, delete `disable.marker` from the index path.  
+To enable the index, delete `disable.marker` from the index path and call 
+[EnableIndexOperation](../../../../client-api/operations/maintenance/indexes/enable-index).  
 {NOTE/}
 
 {PANEL/}
