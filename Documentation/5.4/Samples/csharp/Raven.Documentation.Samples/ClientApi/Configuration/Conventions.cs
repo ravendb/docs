@@ -73,6 +73,10 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     TopologyCacheLocation = @"C:\RavenDB\TopologyCache"
                     #endregion
                     ,
+                    #region DisableTopologyCache
+                    DisableTopologyCache = true
+                    #endregion
+                    ,
                     #region PropertyCasing
                     Serialization = new NewtonsoftJsonSerializationConventions
                     {

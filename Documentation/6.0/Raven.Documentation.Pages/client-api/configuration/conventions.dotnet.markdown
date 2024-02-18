@@ -18,6 +18,7 @@
    * [Change fields/properties Naming Convention](../../client-api/configuration/conventions#change-fieldsproperties-naming-convention)  
    * [IdentityPartsSeparator](../../client-api/configuration/conventions#identitypartsseparator)  
    * [TopologyCacheLocation](../../client-api/configuration/conventions#topologycachelocation)  
+   * [DisableTopologyCache](../../client-api/configuration/conventions#disabletopologycache)  
    * [AddIdFieldToDynamicObjects](../../client-api/configuration/conventions#addidfieldtodynamicobjects)  
    * [ShouldIgnoreEntityChanges](../../client-api/configuration/conventions#shouldignoreentitychanges)  
    * [WaitForIndexesAfterSaveChangesTimeout](../../client-api/configuration/conventions#waitforindexesaftersavechangestimeout)  
@@ -156,6 +157,14 @@ Setting this value will check directory existance and writing permissions.
 **Default**: The application's base directory (`AppContext.BaseDirectory`)
 
 {CODE TopologyCacheLocation@ClientApi\Configuration\Conventions.cs /}
+
+## DisableTopologyCache
+
+Use `DisableTopologyCache` to disable topology cache usage to prevent 
+`raven-cluster-topology` files from piling up.  
+**Default**: `true`  
+
+{CODE DisableTopologyCache@ClientApi\Configuration\Conventions.cs /}
 
 ## AddIdFieldToDynamicObjects
 

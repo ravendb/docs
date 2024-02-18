@@ -123,6 +123,12 @@ Changes the location of topology cache files. Setting this value will check dire
 
 {CODE TopologyCacheLocation@ClientApi\Configuration\Conventions.cs /}
 
+## DisableTopologyCache
+
+Disables topology cache usage to prevent `raven-cluster-topology` files from piling up.  
+
+{CODE DisableTopologyCache@ClientApi\Configuration\Conventions.cs /}
+
 ## AddIdFieldToDynamicObjects
 
 Determines whether an Id field is automatically added to dynamic objects. Default: `true`.
