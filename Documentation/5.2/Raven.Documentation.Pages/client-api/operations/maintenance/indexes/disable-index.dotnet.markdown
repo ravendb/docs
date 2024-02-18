@@ -1,22 +1,27 @@
-# Disable Index Operation
+# Disable Index
 
  ---
 
 {NOTE: }
 
-* Use `DisableIndexOperation` to __disable a specific index__.  
+* Use the `DisableIndexOperation` store operation to **disable a specific index**.  
+* In rare occasions, an index can also be disabled manually, through the file system.  
 
 * In this page:
-    * [Overview](../../../../client-api/operations/maintenance/indexes/disable-index#overview)
-    * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---single-node)
-    * [Disable index - cluster wide](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---cluster-wide)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/disable-index#syntax)
+    * [`DisableIndexOperation`](../../../../client-api/operations/maintenance/indexes/disable-index#disableindexoperation)
+        * [Overview](../../../../client-api/operations/maintenance/indexes/disable-index#overview)
+        * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---single-node)
+        * [Disable index - cluster wide](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---cluster-wide)
+        * [Syntax](../../../../client-api/operations/maintenance/indexes/disable-index#syntax)
+    * [Disabling an Index Manually](../../../../client-api/operations/maintenance/indexes/disable-index#disabling-an-index-manually)
 
 {NOTE/}
 
 ---
 
-{PANEL: Overview}
+{PANEL: `DisableIndexOperation`}
+
+## Overview
 
 {NOTE: }
 
@@ -66,27 +71,21 @@ __How to enable the index__:
 
 {NOTE/}
 
-{PANEL/}
-
-{PANEL: Disable index - single node}
+## Disable index - single node
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync disable_1@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 {CODE-TAB:csharp:Async disable_1_async@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 {CODE-TABS/}
 
-{PANEL/}
-
-{PANEL: Disable index - cluster wide}
+## Disable index - cluster wide
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync disable_2@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 {CODE-TAB:csharp:Async disable_2_async@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 {CODE-TABS/}
 
-{PANEL/}
-
-{PANEL: Syntax}
+## Syntax
 
 {CODE:csharp syntax@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 
@@ -96,6 +95,25 @@ __How to enable the index__:
 | **clusterWide** | bool | `true` - Disable index on all database-group nodes<br>`false` - Disable index only on a single node (the preferred node) |
 
 {PANEL/}
+
+{PANEL: Disabling an Index Manually}
+
+Special circumstances may rarely require that an index would be disabled manually, 
+through the file system.  
+For example, a faulty index may be loaded before 
+[DisableIndexOperation](../../../../client-api/operations/maintenance/indexes/disable-index#disableindexoperation) 
+gets a chance to disable it. Disabling the index through the file system can assure 
+that its loading would be prevented.  
+
+To disable an index manually, keep a file named `disable.marker` in the index path:  
+{CODE:csharp disable-index-via-file-system@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
+
+{NOTE: }
+To enable an index disabled this way, delete `disable.marker` from the index path.  
+{NOTE/}
+
+{PANEL/}
+
 
 ## Related Articles
 
