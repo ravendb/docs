@@ -843,7 +843,7 @@ When sorting in descending order, null dates are returned at the end with this o
 - **Type**: `bool`
 - **Default**: `true`
   {NOTE: }
-  **Note** that the default value for this configuration key was changed in version 6.0 from `false` to `true` 
+  **Note** that the default value for this configuration key has changed in version 6.0 from `false` to `true` 
   {NOTE/}
 - **Scope**: Server-wide, or per database, or per index
 
