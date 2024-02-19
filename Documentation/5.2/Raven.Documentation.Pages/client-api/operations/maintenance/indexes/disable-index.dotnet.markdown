@@ -13,7 +13,7 @@
         * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---single-node)
         * [Disable index - cluster wide](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---cluster-wide)
         * [Syntax](../../../../client-api/operations/maintenance/indexes/disable-index#syntax)
-    * [Disabling an Index Manually](../../../../client-api/operations/maintenance/indexes/disable-index#disabling-an-index-manually)
+    * [Manually Disabling an Index](../../../../client-api/operations/maintenance/indexes/disable-index#manually-disabling-an-index)
 
 {NOTE/}
 
@@ -96,26 +96,24 @@ __How to enable the index__:
 
 {PANEL/}
 
-{PANEL: Disabling an Index Manually}
+{PANEL: Manually Disabling an Index}
 
 It may sometimes be useful to disable an index manually, through the file system.  
-If a faulty index is loaded before 
+A faulty index may, for example, load before 
 [DisableIndexOperation](../../../../client-api/operations/maintenance/indexes/disable-index#disableindexoperation) 
-gets a chance to disable it, for example, disabling the index through the file system 
-will assure that its loading is prevented.  
+gets a chance to disable it, but manually disabling the index will assure that its loading 
+is prevented.  
 
-To disable an index manually, keep a file named `disable.marker` in the index path:  
-{CODE:csharp disable-index-via-file-system@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
+* To **manually disable** an index simply place a file named `disable.marker` in the index directory.  
+  Indexes are kept under the database directory, each index in a directory whose name is simlar to the index's.  
+  The `disable.marker` file can be empty, and can be placed in the index directory in any available 
+  method, e.g. using explorer, a terminal, or code.  
 
-When an attempt is made to use an index disabled this way, RavenDB will produce the following 
-exception: 
-`Unable to open index: '{index.IndexName}', it has been manually disabled via the file: '{disableMarkerPath}'.  
-To re-enable, remove the disable.marker file and enable indexing.`  
-
-{NOTE: }
-To enable the index, delete `disable.marker` from the index path and call 
-[EnableIndexOperation](../../../../client-api/operations/maintenance/indexes/enable-index).  
-{NOTE/}
+* Attempting to use a manually disabled index will generate the following exception:  
+  `Unable to open index: '{index.IndexName}', it has been manually disabled via the file: '{disableMarkerPath}'.  
+  To re-enable, remove the disable.marker file and enable indexing.`  
+* To **enable** a manually disabled index delete `disable.marker` from the index directory 
+  and call [EnableIndexOperation](../../../../client-api/operations/maintenance/indexes/enable-index).  
 
 {PANEL/}
 
@@ -127,6 +125,7 @@ To enable the index, delete `disable.marker` from the index path and call
 - [What are Indexes](../../../../indexes/what-are-indexes)
 - [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
 - [Index Administration](../../../../indexes/index-administration)
+- [Enable Index](../../../../client-api/operations/maintenance/indexes/enable-index)
 
 ### Operations
 
