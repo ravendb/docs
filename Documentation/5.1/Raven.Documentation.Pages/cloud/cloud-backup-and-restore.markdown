@@ -68,6 +68,14 @@ i.e. backups made for a database hosted in Europe are kept in Europe
 and backups made for a database hosted in the US are kept in the US.  
 {NOTE/}
 
+{NOTE: Backup location - GDPR/DPA consideration}
+Upon backup geographically closest AWS S3 bucket is used for backup storage e.g. :
+
+- if your RavenDB Cloud cluster has been created in Europe, it backs up to AWS S3 buckets in Europe.
+
+- if your RavenDB Cloud cluster has been created in the US, it backs up to AWS S3 buckets in the US.
+{NOTE/}
+
 ---
 
 ####Custom-Backup Storage
