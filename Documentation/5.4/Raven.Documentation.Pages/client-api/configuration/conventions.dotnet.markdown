@@ -687,7 +687,9 @@
 
 ---
 
-* Set the `UseCompression` convention to true to in order to use compression when sending and receiving content of HTTP request. 
+* Set the `UseCompression` convention to true to in order to accept the __response__ in compressed format and the automatic decompression of the HTTP response content.
+
+* A gzip compression is always applied when sending content in an HTTP request.
  
 * DEFAULT: `true`  
 

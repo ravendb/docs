@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Net.Http;
 using System.Reflection;
-using System.Threading.Tasks;
 using Amazon.XRay.Recorder.Handlers.System.Net;
 using Newtonsoft.Json.Serialization;
 using Raven.Client;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Conventions;
-using Raven.Client.Documents.Indexes;
-using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.Operations;
 using Raven.Client.Http;
 using Raven.Client.Json.Serialization;
