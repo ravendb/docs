@@ -12,7 +12,7 @@ and [Production](../../cloud/cloud-overview#the-production-tier).
   * [Provisioning a New Product](../../cloud/portal/cloud-portal-products-tab#provisioning-a-new-product)  
   * [View a Product Metrics](../../cloud/portal/cloud-portal-products-tab#view-a-product-metrics)  
   * [Managing an Existing Product](../../cloud/portal/cloud-portal-products-tab#managing-an-existing-product)  
-     - [General: Change Instance Type and Storage](../../cloud/portal/cloud-portal-products-tab#general-change-instance-type-and-storage)  
+     - [Change Instance Type and Storage](../../cloud/portal/cloud-portal-products-tab#change-instance-type-and-storage)  
      - [Security: Your Certificate and Allowed IPs](../../cloud/portal/cloud-portal-products-tab#security-your-certificate-and-allowed-ips)  
      - [Maintenance and Danger Zones: Terminate and Restart your Instance](../../cloud/portal/cloud-portal-products-tab#maintenance-and-danger-zones-terminate-and-restart-your-instance)  
 {NOTE/}
