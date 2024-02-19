@@ -52,16 +52,17 @@
 
 {PANEL: Disable a Database Manually}
 
-A database can be **disabled manually** through the file system by placing a file (that 
-can be empty) named `disable.marker` in the database directory. 
-You can place the file in the database directory in any way that suits you, e.g. using 
-explorer or a terminal, or creating it using code.  
-{CODE:csharp disable-database-via-file-system@ClientApi\Operations\Server\ToggleDatabasesState.cs /}
+It may sometimes be useful to disable a database manually, through the file system.  
 
-Accessing the database will be prevented until `disable.marker` is removed and the database 
-is reloaded, throwing the following exception:  
-`Unable to open database: '{store.Database}', it has been manually disabled via the file: '{disableMarkerPath}'. 
-To re-enable, remove the disable.marker and reload the database.`  
+* To **manually disable** a database simply place a file named `disable.marker` in the database directory.  
+  The `disable.marker` file can be empty, and can be placed in the database directory in any available 
+  method, e.g. using explorer, a terminal, or code.  
+* Attempting to use a manually disabled database will generate the following exception:  
+  `Unable to open database: '{store.Database}', it has been manually disabled via the file: '{disableMarkerPath}'. 
+  To re-enable, remove the disable.marker and reload the database.`  
+* To **enable** a manually disabled database delete `disable.marker` from the database 
+  directory and reload the database.  
+
 
 {PANEL/}
 
