@@ -16,7 +16,7 @@ management Studio.
 {PANEL: Backup List }
 
 The Backups tab lists your products, their databases and their backup files.  
-!["Backup Files"](images\portal-backups-tab-001-backup-files.png "Backup Files")  
+!["Backup Files"](images\portal-backups-tab-generate-backup-link-button.png "Backup Files")  
 
 {PANEL/}
 

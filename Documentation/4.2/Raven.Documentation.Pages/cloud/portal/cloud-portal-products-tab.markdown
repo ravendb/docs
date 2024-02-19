@@ -10,17 +10,18 @@ and [Production](../../cloud/cloud-overview#the-production-tier).
 
 * In this page:  
   * [Provisioning a New Product](../../cloud/portal/cloud-portal-products-tab#provisioning-a-new-product)  
+  * [View a Product Metrics](../../cloud/portal/cloud-portal-products-tab#view-a-product-metrics)  
   * [Managing an Existing Product](../../cloud/portal/cloud-portal-products-tab#managing-an-existing-product)  
-     - [General: Change Instance Type and Storage](../../cloud/portal/cloud-portal-products-tab#general-change-instance-type-and-storage)  
+     - [Change Instance Type and Storage](../../cloud/portal/cloud-portal-products-tab#change-instance-type-and-storage)  
      - [Security: Your Certificate and Allowed IPs](../../cloud/portal/cloud-portal-products-tab#security-your-certificate-and-allowed-ips)  
-     - [Danger Zone: Terminate your Instance](../../cloud/portal/cloud-portal-products-tab#danger-zone-terminate-your-instance)  
+     - [Maintenance and Danger Zones: Terminate and Restart your Instance](../../cloud/portal/cloud-portal-products-tab#maintenance-and-danger-zones-terminate-and-restart-your-instance)  
 {NOTE/}
 
 {PANEL: Provisioning a New Product}
 
-To provision a new product, open your Portal's Products tab and click **Add Product**.  
+To provision a new product, open your Portal's Products tab and click **Add Product**.
 
-!["Figure 1 - Add Product"](images\portal-001.png "Figure 1 - Add Product")
+!["Figure 1 - Add Product"](images\portal-product-list-add-product-button.png "Figure 1 - Add Product")
 
 The New Product wizard will open and walk you through the following simple stages:  
   
@@ -56,16 +57,16 @@ Use the Plan page to choose your product's cloud **Provider**, **Region** and **
 
 ####B. New Product: Billing
 Enter your billing details and click Next,  
-or click **Later** to evaluate the cloud service using a basic free product.  
+or click **Skip Billing Information** to evaluate the cloud service using a basic free product.  
 
-!["Figure 3 - New Product: Billing"](images\portal-products-001-billing.png "Figure 3 - New Product: Billing")
+!["Figure 3 - New Product: Billing"](images\portal-product-create-billing-section.png "Figure 3 - New Product: Billing")
 
 ---
 
 ####C. New Product: Customize
-Choose your product's display name and allowed IP addresses.  
+Choose your product's display name, release channel and allowed IP addresses.
 
-!["Figure 4 - New Product: Customize"](images\portal-products-002-customize.png "Figure 4 - New Product: Customize")
+!["Figure 4 - New Product: Customize"](images\portal-product-create-customize-section.png "Figure 4 - New Product: Customize")
 
 The **Display Name** is simply the name that would appear in your Cloud Products tab.  
 {NOTE: Important }
@@ -91,18 +92,29 @@ The **Display Name** is simply the name that would appear in your Cloud Products
   ---
 
 ####D. New Product: Summary  
-The Summary stage shows you your choices and lets you edit them if you wish.  
+The Summary stage shows you your choices and lets you edit them if you wish.
 
-!["Figure 5 - New Product: Summary"](images\portal-products-003-summary.png "Figure 5 - New Product: Summary")
+!["Figure 5 - New Product: Summary"](images\portal-product-create-summary-section.png "Figure 5 - New Product: Summary")
 
 ---
 
 When you finish defining your product, the cloud provisioning routine will show you 
 your new product's status until it's ready to go.  
 
-!["Figure 6 - New Product: Provisioning"](images\portal-products-provisioning-001-setting.png "Figure 6 - New Product: Provisioning")
+!["Figure 6 - New Product: Provisioning"](images\portal-product-list-product-creating.png "Figure 6 - New Product: Provisioning")
 
-!["Figure 7 - New Product: Active"](images\portal-products-provisioning-002-active.png "Figure 7 - New Product: Active")
+!["Figure 7 - New Product: Active"](images\portal-product-list-product-active.png "Figure 7 - New Product: Active")
+
+{PANEL/}
+
+---
+
+{PANEL: View a Product Metrics}
+
+!["Figure 8 - Product Metrics: General View"](images\portal-product-details-metrics.png "Figure 8 - Product Metrics: General View")
+
+This allows you to analyse your machine resources for a selected time period and cluster node.
+It's useful for analysing usage, instance overload and traffic.
 
 {PANEL/}
 
@@ -112,30 +124,28 @@ your new product's status until it's ready to go.
   
 To modify an existing product, find it in the Products tab and click its Manage button.  
 
-!["Figure 8 - Manage Product: Manage Button"](images\portal-products-004-manage-button.png "Figure 8 - Manage Product: Manage Button")
+!["Figure 9 - Manage Product: Manage Button"](images\portal-product-list-manage-button.png "Figure 9 - Manage Product: Manage Button")
 
-You can set it using its three tabs:  
+This is a general view of the product details page:
 
-1. [General](../../cloud/portal/cloud-portal-products-tab#general-change-instance-type-and-storage)  
-2. [Security](../../cloud/portal/cloud-portal-products-tab#security-your-certificate-and-allowed-ips)  
-3. [Danger Zone](../../cloud/portal/cloud-portal-products-tab#danger-zone-terminate-your-instance)  
+!["Figure 10 - Product Details"](images\portal-product-details.png "Figure 10 - Manage Product: Product Details")
 
 ---
 
-### General: Change Instance Type and Storage  
+### Change Instance Type and Storage  
 You can view your configuration and change your product's instance type and storage size here.  
 
-!["Figure 9 - Manage Product tab"](images\portal-products-005-manage-general.png "Figure 9 - Manage Product tab")
+!["Figure 11 - Manage Product tab"](images\portal-product-details-instance-parameters.png "Figure 11 - Manage Product: Instance Parameters")
 
 ---
 
 * **Change Instance Type**  
-  Use sliders to set your desired configuration.  This can be changed later as you need to scale to changing data processing needs.  
+  Use sliders to set your desired configuration. This can be changed later as you need to scale to changing data processing needs.  
   
 
 
 
-!["Figure 10 - Manage Product: Scale"](images\portal-products-0051-manage-General-scale.png "Figure 10 - Manage Product: Scale")
+!["Figure 12 - Manage Product: Scale"](images\portal-product-details-edit-tier.png "Figure 12 - Manage Product: Change Tier")
 
   You can upscale or downscale only within the current product tier. The development-tier DEV30 configuration,
   for example, can upscale to Dev50, but not to the production-tier PB10 configuration.  
@@ -146,7 +156,7 @@ You can view your configuration and change your product's instance type and stor
 * **Change Storage**  
   Use this slider to modify your product's storage.  
 
-!["Figure 11 - Manage Product: Storage"](images\portal-products-0052-manage-general-storage.png "Figure 11 - Manage Product: Storage")
+!["Figure 13 - Manage Product: Storage"](images\portal-product-details-edit-storage.png "Figure 13 - Manage Product: Change Storage")
   
   You can allocate more disk space to your cluster (but not reduce it), and you can select Premium disks and the 
   number of IOPS reserved for them.  
@@ -157,23 +167,23 @@ You can view your configuration and change your product's instance type and stor
 Use the security tab to download your [certificate](../../cloud/cloud-security) or determine which addresses are 
 allowed to connect your database instance.  
 
-!["Figure 12 - Manage Product: Security"](images\portal-products-006-manage-security.png "Figure 12 - Manage Product: Security")
+!["Figure 14 - Manage Product: Manage access"](images\portal-product-details-manage-access.png "Figure 14 - Manage Product: Access")
 
 * **Download**  
   Click this button to download your certificate.  
   Your product will communicate only with trusted sources. Install this certificate only on trusted machines.  
 
 * **Edit**  
-  Click this button to edit your product's list of Allowed IPs.  
+  Click this button to edit your product's list of Allowed IPs.
 
-  !["Figure 13 - Manage Product: Edit IPs"](images\portal-products-0061-manage-security-addresses.png "Figure 13 - Manage Product: Edit IPs")
+  !["Figure 15 - Manage Product: Edit IPs"](images\portal-product-details-allowed-ips.png "Figure 15 - Manage Product: Edit Allowed IPs")
 
   {INFO: We recommend fortifying your security by allowing access only to specific IPs}
-   The default setting, 0.0.0.0/0, grants access to **all** IP addresses.  
+  The default setting, 0.0.0.0/0, grants access to **all** IP addresses.  
    All of your RavenDB Cloud instances are secured using TLS 1.2 or 1.3 encryption and X509 certificates.  
-   You can increase your 
-   system's security further using this in-depth security measure and restrict access to 
-   trusted sources, e.g. your application servers.   
+   You can increase your
+  system's security further using this in-depth security measure and restrict access to
+  trusted sources, e.g. your application servers.   
    {INFO/}
   
 {NOTE: }
@@ -190,16 +200,30 @@ Azure products **do not permit** overlapping of addresses in the Allowed IPs lis
 
 ---
 
-### Danger Zone: Terminate your Instance  
-  Use this tab's **Terminate** button to eliminate your cluster.  
+### Maintenance and Danger Zones: Terminate and Restart your Instance
+You can restart your product nodes, deploy additional tools and terminate your product here.
 
-   {DANGER: }
-   Terminating your instance is **irreversible**. Your data and cluster properties will be permanently lost.  
-   {DANGER/}
+!["Figure 16 - Manage Product: Maintenance and Termination"](images\portal-product-details-maintenance-and-termination.png "Figure 16 - Manage Product: Terminate")
 
-  !["Figure 14 - Manage Product: Terminate"](images\portal-products-007-manage-terminate.png "Figure 14 - Manage Product: Terminate")
+---
 
+* **Maintenance Zone**  
+  Use this tab to restart selected node and deploy RavenDB tools.
 
+!["Figure 17 - Manage Product: Storage"](images\portal-product-details-maintenance-zone.png "Figure 17 - Manage Product: Maintenance Zone")
+
+---
+
+* **Danger Zone**  
+  Use this tab's **Terminate** button to eliminate your cluster.
+
+!["Figure 18 - Manage Product: Terminate"](images\portal-product-details-terminate-product.png "Figure 18 - Manage Product: Danger Zone")
+
+  {DANGER: }
+  Terminating your instance is **irreversible**. Your data and cluster properties will be permanently lost.  
+  {DANGER/}
+
+---
 
 {PANEL/}
 

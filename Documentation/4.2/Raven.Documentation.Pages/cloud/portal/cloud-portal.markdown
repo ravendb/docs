@@ -5,7 +5,7 @@
 [Logging into your account](../../cloud/cloud-overview#login-to-your-account) 
 takes you to your account's Portal, which gives you access to all the different aspects of your cloud account.  
 
-!["Account Portal"](images\portal-000.png "Account Portal")  
+!["Account Portal"](images\portal-tabs.png "Account Portal")  
 
 
 * **[The Products tab](../../cloud/portal/cloud-portal-products-tab)**  
