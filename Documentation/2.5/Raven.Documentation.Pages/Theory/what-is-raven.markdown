@@ -16,9 +16,7 @@ We see RavenDB as appropriate for:
 * Large Data Sets - The underlying storage mechanism for RavenDB is known to scale in excess of 1 terabyte (on a single machine) and the non relational nature of the database makes it trivial to shard the database across multiple machines, something that RavenDB can do natively.
 
 ## Documents
-A document within RavenDB is just a standard JSON object, such as this one:
-
-{code} //TODO: add code
+A document within RavenDB is a standard JSON object.  
 
 Each document in RavenDB is stored using a key (in RDBMS terms, the primary key), which is also called the document id. In the case of the document above, its key is: "posts/2321816"
 
@@ -33,14 +31,6 @@ In addition to just storing documents, RavenDB also provides a solution for stor
 
 ## Indexes
 RavenDB uses indexes as a way to provide order in a schema free world. An index is a Linq query that operates over a set of documents, producing a projection out of each document that can be efficiently queried. An index is essentially a Linq query that RavenDB executes in the background, and whose results are stored in persistent storage. Those results can be efficiently queried at a later date.
-An index looks like the following:
-
-{code} //TODO: add code
-
-This index will index the answered posts by Title, giving us a full text search capability on that. Since indexes are maintained in the background, querying an index is a very cheap operation. Finding out all the posts with an answer about 'NoSQL Scaling' is easy:
-http://ravendb/indexes/AnsweredPostsByTitle?query=Title:NoSQL%20Scaling
-
-You can learn more about indexes in [the index documentation]().//TODO: link to indexes
 
 **Index updates**
 

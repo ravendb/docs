@@ -1,7 +1,9 @@
 # Linux: Setting limits
 ---
-Linux security limits might degrade RavenDB performance (and in encrypted database it might prevent actual functionality, see : `TODO : https://github.com/ravendb/docs/pull/975`), even if physical resources allows higher performance. Also debugging might be affected (i.e. : core dump creation).
-Setting these limits in a persistant to recommended values way can be achived by editing `/etc/security/limits.conf` with:
+Linux security limits may degrade RavenDB performance, and in an encrypted database even prevent actual functionality, 
+even if physical resources allow higher performance. Additionally, debugging may be affected (i.e. core dump creation).  
+
+Setting these limits in a persistant way can be achived by editing `/etc/security/limits.conf` to recommended values:  
 ```
 * soft     core            unlimited
 * hard     core            unlimited
@@ -13,12 +15,6 @@ Setting these limits in a persistant to recommended values way can be achived by
 * hard     memlock         1000
 ```
 
-Opening larger ports range can help RavenDB's machine to recieve more parallel requests. This can be done, in example, using:
-```
-sysctl -w net.ipv4.ip_local_port_range="10000 65535"
-```
-or by adding the following to `/etc/sysctl.conf`:
-```
-net.ipv4.ip_local_port_range=1024 65535
-```
-
+Opening a larger ports range can help RavenDB's machine process a larger number of parallel requests.  
+E.g., this can be achieved using ```sysctl -w net.ipv4.ip_local_port_range="10000 65535"```  
+or by adding ```net.ipv4.ip_local_port_range=1024 65535``` to `/etc/sysctl.conf`.  

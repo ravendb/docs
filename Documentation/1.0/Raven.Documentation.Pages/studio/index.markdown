@@ -6,8 +6,6 @@ The Studio is accessible from any RavenDB server, regardless of how it is deploy
 
 Assuming that you are running RavenDB on port 8080 (the default when running in debug / service mode), you can access the studio by pointing your browser to http://localhost:8080.
 
-// TODO: Studio screenshot
-
 ## Basic navigation
 
 At the top left of the page there are the navigation tabs, a link for each of the screens in the Studio:

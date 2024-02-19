@@ -72,7 +72,7 @@ All databases will have the following:
 1) Database Settings - In here you have see the DatabaseDocument that represents the database, you can edit this document, but this is not advised as you can cause damage to the database.
 2) Periodic Backup - This section is explained in the [Periodic Backup Page](bundles/periodicbackup)
 
-The Other options are dependent on the bundles selected for this database and are explained in the bundles section //TODO: Link
+The Other options are dependent on the bundles selected for this database and are explained in the bundles section.
 
 Pay attention that other then Database Settings, if you will not click on the "Save Changes" button in the top left any changes done in any bundle settings will be discarded.
 
@@ -81,7 +81,7 @@ The settings for the system database are different from the other databases.
 In order to get to the system databases settings you have to first select it from the Databases page and the click on the cog wheel button next to the RavenDB logo.  
 ![Databases Fig 14](Images/studio_databases_14.PNG)  
 In here you have 3 sections.  
-Periodic Backup is the same as it is for any database and is explained in the Bundles section //TODO: Link  
+Periodic Backup is the same as it is for any database and is explained in the Bundles section.
 
 ### Api Keys
 In here you can set privileged access to databases.  

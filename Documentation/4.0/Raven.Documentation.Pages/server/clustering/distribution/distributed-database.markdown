@@ -62,7 +62,7 @@ The new node will be in a `Promotable` state until it receives _and_ indexes all
 {NOTE: Nodes Order}
 The database topology is kept in a list that is always ordered with `Member` nodes first, then `Rehabs` and `Promotables` are last. 
 The order is important since it defines the client's order of access into the `Database Group`, (see [Client Request Configuration](../../../client-api/configuration/load-balance-and-failover#conventions--load-balance--failover)).  
-The order can be changed with the [Client-API](../../../todo-update-me-later) 
+The order can be changed with the client API.  
 or via the [Studio](../../../studio/database/settings/manage-database-group#database-group-topology---actions).  
 {NOTE/}
 
