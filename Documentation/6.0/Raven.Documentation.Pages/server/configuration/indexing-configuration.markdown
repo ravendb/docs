@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* The following __indexing configuration keys__ can modified via either of the following options:
+* The below **indexing configuration keys** can be modified via any of the following methods:
     * As explained in the [Config overview](../../server/configuration/configuration-options) article
     * Set a custom configuration per index from the [Client API](../../indexes/creating-and-deploying#creating-an-index-with-custom-configuration)
     * Set a custom configuration per index from the [Studio](../../studio/database/indexes/create-map-index#configuration)
@@ -841,7 +841,10 @@ Sort by ticks when field contains dates.
 When sorting in descending order, null dates are returned at the end with this option enabled.
 
 - **Type**: `bool`
-- **Default**: `false`
+- **Default**: `true`
+  {NOTE: }
+  **Note** that the default value for this configuration key was changed in version 6.0 from `false` to `true` 
+  {NOTE/}
 - **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
