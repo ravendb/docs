@@ -165,12 +165,17 @@
 #### DisableTopologyCache
 
 ---
- 
-* When setting the `DisableTopologyCache` convention to `true`, the topology cache usage will be disabled.  
-  Even if the client is configured to receive topology updates from the server, no topology files will be saved on disk, 
-  thus preventing `*.raven-cluster-topology` files from piling up.  
- 
-* In addition, when set to _true_, the client will not try to load the topology from the cache upon failing to connect to the server.
+
+* By default, the client caches the cluster's topology in `*.raven-cluster-topology` files on disk.  
+  When all servers provided in the `DocumentStore.Urls` property are down or unavailable, 
+  the client will load the topology from the latest file and try to connect to nodes that are not listed in the URL property.
+
+* This behavior can be disabled when setting the `DisableTopologyCache` convention to `true`.  
+  In such a case:
+
+   * The client will not load the topology from the cache upon failing to connect to a server.  
+   * Even if the client is configured to [receive topology updates](../../client-api/configuration/conventions#disabletopologyupdates) from the server, no topology files will be saved on disk,  
+     thus preventing the accumulation of these files.
  
 * DEFAULT: `false`
 
