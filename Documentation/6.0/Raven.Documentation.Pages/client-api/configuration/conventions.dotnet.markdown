@@ -138,7 +138,7 @@
 ---
 
 * EXPERT ONLY:   
-  Use the `DisableAtomicDocumentWritesInClusterWideTransaction` convention disable automatic  
+  Use the `DisableAtomicDocumentWritesInClusterWideTransaction` convention to disable automatic  
   atomic writes with cluster write transactions.
 
 * When set to `true`, will only consider explicitly added compare exchange values to validate cluster wide transactions.
@@ -537,8 +537,13 @@
 
 ---
 
-* When setting the `PreserveDocumentPropertiesNotFoundOnModel` convention to `true`,  
-  the client can report (via [whatChanged](../../lient-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes) method) the missing properties on the model when loading a document.
+* Loading a document using a different model will result in the removal of the missing model properties  
+  from the loaded entity, and no exception is thrown.
+
+* Setting the `PreserveDocumentPropertiesNotFoundOnModel` convention to `true`  
+  allows the client to check (via [whatChanged](../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes)
+  or via [WhatChangedFor](../../client-api/session/how-to/check-if-entity-has-changed#get-entity-changes) methods)
+  for the missing properties on the entity after loading the document.
 
 * DEFAULT: `true`
 
