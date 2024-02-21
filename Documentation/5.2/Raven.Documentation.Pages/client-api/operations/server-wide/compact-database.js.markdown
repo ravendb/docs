@@ -18,7 +18,7 @@
   The operation can be executed on a specific node by using the [forNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
 
 * **Target database**:  
-  The database to compact is specified in `CompactSettings` (see examples below). // todo.. this is interface ??  
+  The database to compact is specified in `CompactSettings` (see examples below).  
   An exception is thrown if the specified database doesn't exist on the server node.  
 
 * In this page:  

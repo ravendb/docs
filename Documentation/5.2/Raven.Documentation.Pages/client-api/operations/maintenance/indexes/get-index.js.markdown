@@ -13,9 +13,6 @@
 
 * To get the index state on the local node use `GetIndexStatisticsOperation`.
 
-[//]: # (TODO - add the below line instead of the above once GetIndexStatisticsOperation is done)
-[//]: # (* To get the index state on the local node use [get index stats]&#40;../../../../client-api/operations/maintenance/indexes/get-index-stats&#41;.)
-
 * In this page:
     * [Get index example](../../../../client-api/operations/maintenance/indexes/get-index#get-index-example)
     * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index#syntax)
@@ -57,6 +54,3 @@
 - [How to Get Indexes](../../../../client-api/operations/maintenance/indexes/get-indexes)
 - [How to Put Indexes](../../../../client-api/operations/maintenance/indexes/put-indexes)
 - [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)
-
-[//]: # (TODO - add the below line once GetIndexStatisticsOperation is done)
-[//]: # (- [Get index stats]&#40;../../../../client-api/operations/maintenance/indexes/get-index-stats&#41;)

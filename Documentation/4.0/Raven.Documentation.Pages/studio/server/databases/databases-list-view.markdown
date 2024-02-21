@@ -81,14 +81,10 @@
 ![Figure 3. Creating New Database](images/database-actions-2.png "Creating New Database Options")
 
 1. **Create new database from scratch**   
-   See detailed flow in: // TODO: add links to relevant page when exists.. 
-
 2. **Create new database from an existing backup copy**   
-   See detailed flow in: // TODO: add links to relevant page when exists..
-
 3. **Create new database from legacy data files**      
    Create a new database from a 3.x RavenDB version database    
-   See detailed flow in: // TODO: add links to relevant page when exists..
+
 {PANEL/}
 
 {PANEL: More Actions}
