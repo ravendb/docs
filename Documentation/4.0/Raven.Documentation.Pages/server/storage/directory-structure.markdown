@@ -82,7 +82,7 @@ __Journals Folder__
 
 ---
 
-* Data is cleared from the journals once it is successfully stored in the data.  
+* Data is cleared from the journals once it is successfully stored in the Voron data file.  
 * The journal's transactions take part in database recovery - info is used to recover up to the same point you were at before failure.  
 {NOTE /}
 
