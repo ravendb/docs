@@ -13,7 +13,12 @@
 * When index is enabled indexing will take place, new data will be indexed.  
 
 * To disable the index use [disable index operation](../../../../client-api/operations/maintenance/indexes/disable-index).  
-  Disabling/enabling an index can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) in the Studio.
+  Disabling/enabling an index can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) in the Studio.  
+  {INFO: }
+  An index may also be **manually disabled** through the file system.  
+  Learn [here](../../../../client-api/operations/maintenance/indexes/disable-index#disabling-an-index-manually) 
+  how to enable an index that was disabled this way.  
+  {INFO/}
 
 * In this page:
     * [Enable index - single node](../../../../client-api/operations/maintenance/indexes/enable-index#enable-index---single-node)
@@ -66,6 +71,7 @@
 - [What are Indexes](../../../../indexes/what-are-indexes)
 - [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
 - [Index Administration](../../../../indexes/index-administration)
+- [Disable Index](../../../../client-api/operations/maintenance/indexes/disable-index)
 
 ### Operations
 

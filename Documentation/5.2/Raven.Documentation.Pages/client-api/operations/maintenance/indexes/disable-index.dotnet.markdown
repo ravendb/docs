@@ -1,22 +1,27 @@
-# Disable Index Operation
+# Disable Index
 
  ---
 
 {NOTE: }
 
-* Use `DisableIndexOperation` to __disable a specific index__.  
+* Use the `DisableIndexOperation` store operation to **disable a specific index**.  
+* In rare occasions, an index can also be disabled manually, through the file system.  
 
 * In this page:
-    * [Overview](../../../../client-api/operations/maintenance/indexes/disable-index#overview)
-    * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---single-node)
-    * [Disable index - cluster wide](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---cluster-wide)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/disable-index#syntax)
+    * [`DisableIndexOperation`](../../../../client-api/operations/maintenance/indexes/disable-index#disableindexoperation)
+        * [Overview](../../../../client-api/operations/maintenance/indexes/disable-index#overview)
+        * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---single-node)
+        * [Disable index - cluster wide](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---cluster-wide)
+        * [Syntax](../../../../client-api/operations/maintenance/indexes/disable-index#syntax)
+    * [Manually Disabling an Index](../../../../client-api/operations/maintenance/indexes/disable-index#manually-disabling-an-index)
 
 {NOTE/}
 
 ---
 
-{PANEL: Overview}
+{PANEL: `DisableIndexOperation`}
+
+## Overview
 
 {NOTE: }
 
@@ -66,27 +71,21 @@ __How to enable the index__:
 
 {NOTE/}
 
-{PANEL/}
-
-{PANEL: Disable index - single node}
+## Disable index - single node
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync disable_1@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 {CODE-TAB:csharp:Async disable_1_async@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 {CODE-TABS/}
 
-{PANEL/}
-
-{PANEL: Disable index - cluster wide}
+## Disable index - cluster wide
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync disable_2@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 {CODE-TAB:csharp:Async disable_2_async@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 {CODE-TABS/}
 
-{PANEL/}
-
-{PANEL: Syntax}
+## Syntax
 
 {CODE:csharp syntax@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 
@@ -97,6 +96,28 @@ __How to enable the index__:
 
 {PANEL/}
 
+{PANEL: Manually Disabling an Index}
+
+It may sometimes be useful to disable an index manually, through the file system.  
+A faulty index may, for example, load before 
+[DisableIndexOperation](../../../../client-api/operations/maintenance/indexes/disable-index#disableindexoperation) 
+gets a chance to disable it, but manually disabling the index will assure that its loading 
+is prevented.  
+
+* To **manually disable** an index simply place a file named `disable.marker` in the index directory.  
+  Indexes are kept under the database directory, each index in a directory whose name is simlar to the index's.  
+  The `disable.marker` file can be empty, and can be placed in the index directory in any available 
+  method, e.g. using explorer, a terminal, or code.  
+
+* Attempting to use a manually disabled index will generate the following exception:  
+  `Unable to open index: '{index.IndexName}', it has been manually disabled via the file: '{disableMarkerPath}'.  
+  To re-enable, remove the disable.marker file and enable indexing.`  
+* To **enable** a manually disabled index delete `disable.marker` from the index directory 
+  and call [EnableIndexOperation](../../../../client-api/operations/maintenance/indexes/enable-index).  
+
+{PANEL/}
+
+
 ## Related Articles
 
 ### Indexes
@@ -104,6 +125,7 @@ __How to enable the index__:
 - [What are Indexes](../../../../indexes/what-are-indexes)
 - [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
 - [Index Administration](../../../../indexes/index-administration)
+- [Enable Index](../../../../client-api/operations/maintenance/indexes/enable-index)
 
 ### Operations
 
