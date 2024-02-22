@@ -165,8 +165,8 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
 * RavenDB will store data in a local folder first, and transfer it to the remote 
   destination from the local one.  
    * If a local folder hasn't been specified, RavenDB will use the 
-     temp folder defined in its Storage.TempPath setting.  
-     If Storage.TempPath is not defined, the temporary files 
+     temp folder defined in its [Storage.TempPath](../../../../server/configuration/storage-configuration#storage.temppath) setting.  
+     If _Storage.TempPath_ is not defined, the temporary files 
      will be created at the same location as the data file.  
      In either case, the folder will be used as temporary storage 
      and the local files deleted from it when the transfer is completed.  

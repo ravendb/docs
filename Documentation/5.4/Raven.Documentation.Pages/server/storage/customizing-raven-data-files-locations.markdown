@@ -37,14 +37,19 @@
 {PANEL: Configuring temp files location}
 
 * __System temporary files__  
-  By default, temporary files containing cluster data and server-wide data are written to the `Temp` folder under the System directory.  
+  By default, temporary files containing cluster data and server-wide data are written to the `Temp` folder under the System directory. 
   Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration#storage.temppath) configuration option.  
-  The temporary files will be written to the combined path: `"<Storage.TempPath>/System"`.
+  The temporary files will be written to the combined path `"<Storage.TempPath>/System"`.
 
 * __Databases temporary files__  
-  By default, all databases' temporary files are written to the `Temp` folder under each Database directory.   
+  By default, all databases' temporary files are written to the `Temp` folder under each Database directory.  
   Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration#storage.temppath) configuration option.  
-  The temporary files will be written to the combined path: `"<Storage.TempPath>/Databases"`.
+  The temporary files will be written to `"<Storage.TempPath>/Databases/{database-name}"`.
+
+* __Configuration temporary files__  
+  By default, the configuration temporary files are written to the `Temp` folder under the Configuration directory per database. 
+  Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration#storage.temppath) configuration option.  
+  The temporary files will be written to `"<Storage.TempPath>/Databases/{database-name}/Configuration"`.
 
 * __Indexes temporary files__  
   By default, all indexes' temporary files are written to the `Temp` folder under each Index directory.  

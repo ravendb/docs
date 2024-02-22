@@ -4,16 +4,22 @@ The following configuration options allow you configure [the storage engine](../
 
 {PANEL:Storage.TempPath}
 
-* Use this configuration option to customize the path for the temporary files of the __Databases__ and the __System__ [directories](../../server/storage/directory-structure). 
-  By default, these files are created at the same location as the _Raven.voron_ data file under the `Temp` folder in those directories. 
+* Use this configuration option to customize the path for the temporary files of the following [directories](../../server/storage/directory-structure):
+  * `System`
+  * `Configuration` 
+  * `Databases/{database_name}`
 
-* When this option is configured:  
+* By default, the temporary files are created under the `Temp` folder in those directories.
 
-  * The Databases temporary files will be written to the combined path: `"<Storage.TempPath>/Databases"`.
-  * The System temporary files will be written to `"<Storage.TempPath>/System"`.
+* When the `Storage.TempPath` is configured:  
+
+  * The System temporary files will be written to `"<Storage.TempPath>/System"`.  
+  * The Databases temporary files will be written to `"<Storage.TempPath>/Databases/{database-name}"`.  
+  * The Configuration temporary files will be written to `"<Storage.TempPath>/Databases/{database-name}/Configuration"`.  
 
 * To specify a different path for the indexes temporary files go to [Indexing.TempPath](../../server/configuration/indexing-configuration#indexing.temppath).  
-  Learn more about RavenDB directory structure [here](../../server/storage/directory-structure).  
+
+* Learn more about RavenDB directory structure [here](../../server/storage/directory-structure).  
 
 ---
 
