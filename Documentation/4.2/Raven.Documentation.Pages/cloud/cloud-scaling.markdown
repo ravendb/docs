@@ -14,8 +14,8 @@ workload it can handle.
 
 * In this page:  
   * [Scaling](../cloud/cloud-scaling#scaling)  
-     - [Change Instance Type](../cloud/cloud-scaling#change-instance-type)  
-     - [Change Storage](../cloud/cloud-scaling#change-storage)  
+     - [Change instance type](../cloud/cloud-scaling#change-instance-type)  
+     - [Change storage](../cloud/cloud-scaling#change-storage)  
 
 {NOTE/}
 
@@ -24,11 +24,11 @@ workload it can handle.
 {PANEL: Scaling}
 
 To scale a RavenDB cloud instance, open your [portal](../cloud/portal/cloud-portal)'s [products tab](../cloud/portal/cloud-portal-products-tab) 
-and click the **Manage** button for the product you want to scale.  
+and click the **Manage** button for the product you want to scale.
 
-!["Manage Product"](images/scaling-001-manage.png "Manage Product")  
-  
-In the **General** tab, you will see buttons to **Change Instance Type** and **Change Storage**.  
+![Figure 1 - Manage product](images/portal-product-list-manage-button.png "Figure 1 - Manage product")
+
+In the main section, you will see buttons to **Change Instance Type** and **Change Storage**.  
 
 {NOTE: }
 The scaling buttons are presented only for [Development](../cloud/cloud-instances#a-development-cloud-server) and 
@@ -36,10 +36,10 @@ The scaling buttons are presented only for [Development](../cloud/cloud-instance
 The [Free](../cloud/cloud-instances#a-free-cloud-node) product doesn't show them because its tier includes only one configuration.  
 {NOTE/}
 
-!["Scaling Buttons"](images/scaling-002-buttons.png "Scaling Buttons")  
+![Figure 2 - Scaling buttons](images/portal-product-edit-storage-and-instance-type-area.png "Figure 2 - Scaling buttons")
 
-**1.** Click **Change Instance Type** to reconfigure your product.  
-**2.** Click **Change Storage** to modify your product's storage capacity.  
+**1.** Click [Change Instance Type](../cloud/cloud-scaling#change-instance-type) to reconfigure your product.  
+**2.** Click [Change Storage](../cloud/cloud-scaling#change-storage) to modify your product's storage parameters.  
 
 ---
 
@@ -48,18 +48,27 @@ The [Free](../cloud/cloud-instances#a-free-cloud-node) product doesn't show them
 Use the **CPU Priority** and **Cluster Size** slide bars to compose a configuration 
 that would allow your product to properly handle its expected workload.  
 
-!["Scaling Instance Type"](images/scaling-003-instance.png "Scaling Instance Type")  
+![Figure 3 - Scaling instance type](images/portal-product-details-edit-tier.png "Figure 3 - Scaling instance type")
+
+You can upscale or downscale only within the current product tier. The development-tier **Dev30** configuration,
+for example, can upscale to **Dev50**, but not to the production-tier **PB10** configuration.  
+Your databases and data will be automatically migrated into your new configuration.
 
   ---
 
 ####2. Change Storage  
 
-!["Scaling Storage"](images/scaling-004-storage.png "Scaling Storage")  
-  
-There are two types of storage: Standard and Premium. Pick either to change your current storage capacity.  
-The **Premium** storage type also lets you choose the number of IOPS (Input/Output Operations Per Second) that the instance can handle.  
+There are two types of storage: **Standard** and **Premium**. Pick either to change your current storage capacity.  
 
-!["Premium IOPS"](images/scaling-005-premium.png "Premium IOPS")  
+![Figure 4 - Scaling storage](images/portal-product-details-edit-storage.png "Figure 4 - Scaling storage")
+
+{INFO: }
+**Standard** disk type **is not available** on **GCP** instances.
+{INFO/}
+
+The **Premium** storage type on **AWS** also lets you choose the number of IOPS (Input/Output Operations Per Second) that the instance can handle.  
+
+![Figure 5 - Customized IOPS on AWS premium disks](images/portal-product-details-edit-storage-with-iops.png "Figure 5 - Customized IOPS on AWS premium disks")
 
 {INFO: }
 It is fairly obvious why the size of the storage matters, but it is important to also understand the impact 
