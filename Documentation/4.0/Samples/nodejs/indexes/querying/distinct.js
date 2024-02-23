@@ -3,7 +3,7 @@ import { DocumentStore, AbstractIndexCreationTask } from "ravendb";
 const store = new DocumentStore();
 const session = store.openSession();
 
-//region distinct_3_1
+//region index
 class Employees_ByCountry extends AbstractJavaScriptIndexCreationTask {
 
     constructor() {
@@ -32,10 +32,9 @@ class Employees_ByCountry extends AbstractJavaScriptIndexCreationTask {
 class Order { }
 
 async function distinct() {
-
         {
             //region distinct_1_1
-            // returns sorted list of countries w/o duplicates
+            // Results will contain a sorted list of countries w/o duplicates
             const countries = await session
                 .query(Order)
                 .orderBy("ShipTo.Country")
@@ -44,10 +43,9 @@ async function distinct() {
                 .all();
             //endregion
         }
-
         {
             //region distinct_2_1
-            // results will contain the number of unique countries
+            // Results will contain the number of unique countries
             const numberOfCountries = await session
                 .query(Order)
                 .selectFields("ShipTo.Country")
@@ -55,18 +53,17 @@ async function distinct() {
                 .count();
             //endregion
         }
-
         {
-            //region distinct_3_2
+            //region distinct_3_1
             // Query the map - reduce index defined above
             const session = documentStore.openSession();
-            const queryResult = await session.query({ indexName: 'Employees/ByCountry' })
-                .whereEquals('country', country)
-                .firstOrNull();
+            const queryResult = await session
+                .query({ indexName: "Employees/ByCountry" })
+                .all();
 
-            const numberOfEmployeesFromCountry = queryResult != null ? queryResult.countryCount : 0;
+            // The number of resulting items in the query result represents the number of unique countries.
+            const numberOfUniqueCountries = queryResult.length;
             //endregion
-        }
- 
+        } 
 }
 

@@ -59,7 +59,7 @@ public class Distinct {
         try (IDocumentStore store = new DocumentStore()) {
             try (IDocumentSession session = store.openSession()) {
                 //region distinct_1_1
-                // returns sorted list of countries w/o duplicates
+                // Results will contain a sorted list of countries w/o duplicates
                 List<String> countries = session
                     .query(Order.class)
                     .orderBy("ShipTo.Country")
@@ -71,7 +71,7 @@ public class Distinct {
 
             try (IDocumentSession session = store.openSession()) {
                 //region distinct_2_1
-                // results will contain the number of unique countries
+                // Results will contain the number of unique countries
                 int numberOfCountries = session
                     .query(Order.class)
                     .selectFields(String.class, "ShipTo.Country")
@@ -84,11 +84,12 @@ public class Distinct {
                 //region distinct_3_2
                 // Query the map-reduce index defined above
                 try (IDocumentSession session = DocumentStoreHolder.store.openSession()) {
-                    Employees_ByCountry.Result queryResult = session.query(Employees_ByCountry.Result.class, Employees_ByCountry.class)
-                        .whereEquals("Country", country)
-                        .firstOrDefault();
+                    Employees_ByCountry.Result queryResult = session
+                        .query(Employees_ByCountry.Result.class, Employees_ByCountry.class)
+                        .toList();
 
-                    int numberOfEmployeesFromCountry = queryResult != null ? queryResult.getCountryCount() : 0;
+                    // The number of resulting items in the query result represents the number of unique countries.
+                    int numberOfUniqueCountries = queryResult.length;
                 }
                 //endregion
             }
