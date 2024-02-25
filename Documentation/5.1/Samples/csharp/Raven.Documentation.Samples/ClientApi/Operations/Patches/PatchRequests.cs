@@ -359,7 +359,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = "this.Comments.splice(1,0,args.Comment)",
+                        Script = "this.Comments.splice(1, 0, args.Comment)",
                         Values =
                         {
                             {
@@ -382,7 +382,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = "this.Comments.splice(1,0,args.Comment)",
+                        Script = "this.Comments.splice(1, 0, args.Comment)",
                         Values =
                         {
                             {
@@ -404,7 +404,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = "this.Comments.splice(3,1,args.Comment)",
+                        Script = "this.Comments.splice(3, 1, args.Comment)",
                         Values =
                         {
                             {
@@ -428,7 +428,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = "this.Comments.splice(1,0,args.Comment)",
+                        Script = "this.Comments.splice(3, 1, args.Comment)",
                         Values =
                         {
                             {
