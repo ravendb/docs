@@ -25,7 +25,7 @@ async function disableIndex() {
         // Execute the operation by passing it to maintenance.send
         await documentStore.maintenance.send(disableIndexOp);
 
-        // At this point, the index is disabled on all nodes
+        // At this point, the index is disabled on ALL nodes
         // New data will not be indexed
         //endregion
     }

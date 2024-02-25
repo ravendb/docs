@@ -25,7 +25,7 @@ async function enableIndex() {
         // Execute the operation by passing it to maintenance.send
         await documentStore.maintenance.send(enableIndexOp);
 
-        // At this point, the index is enabled on all nodes
+        // At this point, the index is enabled on ALL nodes
         // New data will be indexed
         //endregion
     }

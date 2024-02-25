@@ -44,7 +44,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 // Execute the operation by passing it to Maintenance.Send
                 store.Maintenance.Send(enableIndexOp);
 
-                // At this point, the index is enabled on all nodes
+                // At this point, the index is enabled on ALL nodes
                 // New data will be indexed
                 #endregion
             }
@@ -77,7 +77,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 // Execute the operation by passing it to Maintenance.SendAsync
                 await store.Maintenance.SendAsync(enableIndexOp);
 
-                // At this point, the index is enabled on all nodes
+                // At this point, the index is enabled on ALL nodes
                 // New data will be indexed
                 #endregion
             }

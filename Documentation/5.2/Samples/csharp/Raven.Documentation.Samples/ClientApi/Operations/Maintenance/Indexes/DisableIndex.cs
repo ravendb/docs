@@ -1,8 +1,5 @@
-﻿using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Operations.Indexes;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
@@ -47,7 +44,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 // Execute the operation by passing it to Maintenance.Send
                 store.Maintenance.Send(disableIndexOp);
                 
-                // At this point, the index is disabled on all nodes
+                // At this point, the index is disabled on ALL nodes
                 // New data will not be indexed
                 #endregion
             }
@@ -80,38 +77,10 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Indexes
                 // Execute the operation by passing it to Maintenance.SendAsync
                 await store.Maintenance.SendAsync(disableIndexOp);
                 
-                // At this point, the index is disabled on all nodes
+                // At this point, the index is disabled on ALL nodes
                 // New data will not be indexed
                 #endregion
             }
         }
-        void DisableIndexViaFileSystem()
-        {
-            using (var store = new DocumentStore())
-            {
-
-
-                string databasePath = new string("dbPath");
-                var index = new Employees_ByIndexName();
-                #region disable-index-via-file-system
-                // Prevent an index from loading by creating disable.marker in the index path
-                var disableMarkerPath = Path.Combine(databasePath, "Indexes", index.IndexName, "disable.marker");
-                File.Create(disableMarkerPath).Dispose();
-                #endregion
-            }
-        }
-
-        public class Employees_ByIndexName : AbstractIndexCreationTask<Employees_ByIndexName>
-        {
-            public Employees_ByIndexName()
-            {
-                Map = employees => from employee in employees
-                                   select new
-                                   {
-                                       IndexName = employee.IndexName
-                                   };
-            }
-        }
-
     }
 }

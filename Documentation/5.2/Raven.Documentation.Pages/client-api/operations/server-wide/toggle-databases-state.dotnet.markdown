@@ -9,34 +9,41 @@
 
 * In this page:
 
-  * [Enable Database](../../../client-api/operations/server-wide/toggle-databases-state#enable-database)
-  * [Disable Database](../../../client-api/operations/server-wide/toggle-databases-state#disable-database)
-  * [Syntax](../../../client-api/operations/server-wide/toggle-databases-state#syntax)
-  * [Disable a Database Manually](../../../client-api/operations/server-wide/toggle-databases-state#disable-a-database-manually)
+  * [Enable/Disable database from the Client API](../../../client-api/operations/server-wide/toggle-databases-state#enable/disable-database-from-the-client-api)  
+      * [Enable database](../../../client-api/operations/server-wide/toggle-databases-state#enable-database)
+      * [Disable database](../../../client-api/operations/server-wide/toggle-databases-state#disable-database)
+      * [Syntax](../../../client-api/operations/server-wide/toggle-databases-state#syntax)     
+  * [Disable database via the file system](../../../client-api/operations/server-wide/toggle-databases-state#disable-database-via-the-file-system)
 
 {NOTE/}
 
 ---
 
-{PANEL: Enable Database}
+{PANEL: Enable/Disable database from the Client API}
+
+{NOTE: }
+
+<a id="enable-database" /> __Enable database__:  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync enable@ClientApi\Operations\Server\ToggleDatabasesState.cs /}
 {CODE-TAB:csharp:Async enable_async@ClientApi\Operations\Server\ToggleDatabasesState.cs /}
 {CODE-TABS/}
 
-{PANEL/}
+{NOTE/}
+{NOTE: }
 
-{PANEL: Disable Database}
+<a id="disable-database" /> __Disable database__: 
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync disable@ClientApi\Operations\Server\ToggleDatabasesState.cs /}
 {CODE-TAB:csharp:Async disable_async@ClientApi\Operations\Server\ToggleDatabasesState.cs /}
 {CODE-TABS/}
 
-{PANEL/}
+{NOTE/}
+{NOTE: }
 
-{PANEL: Syntax}
+<a id="syntax" /> __Syntax__: 
 
 {CODE syntax_1@ClientApi\Operations\Server\ToggleDatabasesState.cs /}
 
@@ -48,21 +55,29 @@
 
 {CODE syntax_2@ClientApi\Operations\Server\ToggleDatabasesState.cs /}
 
+{NOTE/}
 {PANEL/}
 
-{PANEL: Disable a Database Manually}
+{PANEL: Disable database via the file system}
 
 It may sometimes be useful to disable a database manually, through the file system.  
 
-* To **manually disable** a database simply place a file named `disable.marker` in the database directory.  
-  The `disable.marker` file can be empty, and can be placed in the database directory in any available 
-  method, e.g. using explorer, a terminal, or code.  
+* To __manually disable__ a database:  
+ 
+  * Place a file named `disable.marker` in the [database directory](../../../server/storage/directory-structure).  
+  * The `disable.marker` file can be empty,  
+    and can be created by any available method, e.g. using the File Explorer, a terminal, or code.
+  
 * Attempting to use a manually disabled database will generate the following exception:  
-  `Unable to open database: '{store.Database}', it has been manually disabled via the file: '{disableMarkerPath}'. 
-  To re-enable, remove the disable.marker and reload the database.`  
-* To **enable** a manually disabled database delete `disable.marker` from the database 
-  directory and reload the database.  
 
+         Unable to open database: '{DatabaseName}', 
+         it has been manually disabled via the file: '{disableMarkerPath}'. 
+         To re-enable, remove the disable.marker and reload the database.
+  
+* To __enable__ a manually disabled database:
+  
+  * First, remove the `disable.marker` file from the database directory. 
+  * Then, [reload the database](../../../studio/database/settings/database-settings#how-to-reload-the-database).
 
 {PANEL/}
 
