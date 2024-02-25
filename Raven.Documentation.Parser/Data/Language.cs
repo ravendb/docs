@@ -18,9 +18,9 @@
 		[Description("HTTP")]
 		Http,
 
-        //[FileExtension(".python")] // temporary removed for RDoc-2346
-        //[Description("Python")]
-        //Python,
+        [FileExtension(".py")]
+        [Description("Python")]
+        Python,
 
 	    [FileExtension(".js")]
 	    [Description("Node.js")]
