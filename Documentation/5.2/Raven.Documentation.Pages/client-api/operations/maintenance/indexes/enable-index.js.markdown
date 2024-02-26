@@ -38,7 +38,7 @@
   Modifying the index definition will also enable back the normal operation of the index.
 
 * An index that was disabled via the file system can also be enabled by either option from above  
-  after removing the [disable.marker](../../../../todo..) file.
+  after removing the [disable.marker](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-manually-via-the-file-system) file.
   Learn more in [Disable index manually via the file system](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-manually-via-the-file-system).
 
 {PANEL/}
