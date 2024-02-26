@@ -38,7 +38,7 @@
 {NOTE: }
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query boost_1@ClientApi\Session\Querying\TextSearch\boostResults.js /}
+{CODE-TAB:nodejs:Query boost_1@client-api\session\querying\textSearch\boostResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees" where
 search(Notes, "English") or boost(search(Notes, "Italian"), 10)
@@ -55,7 +55,7 @@ search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 {NOTE: }
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query boost_2@ClientApi\Session\Querying\TextSearch\boostResults.js /}
+{CODE-TAB:nodejs:Query boost_2@client-api\session\querying\textSearch\boostResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Companies" where
 boost(startsWith(Name, "O"), 10) or
