@@ -10,7 +10,7 @@ namespace Raven.Documentation.Web.Core.ViewModels
     {
         public DocsVersion.DocsMode Mode { get; set; }
 
-        private readonly List<Language> langs; 
+        private readonly List<Language> langs;
 
         public TableOfContentsViewModel(TableOfContents fromDb, DocsVersion.DocsMode mode)
         {
@@ -95,11 +95,11 @@ namespace Raven.Documentation.Web.Core.ViewModels
             "5.0",
             "4.2",
             "4.1",
-            "4.0", 
-            "3.5", 
-            "3.0", 
+            "4.0",
+            "3.5",
+            "3.0",
             "2.5",
-            "2.0", 
+            "2.0",
             "1.0"
         };
 
@@ -181,9 +181,8 @@ namespace Raven.Documentation.Web.Core.ViewModels
                     return "java";
                 case Language.Http:
                     return "http";
-                // temporary removed for RDoc-2346
-                // case Language.Python:
-                //     return "python";
+                case Language.Python:
+                    return "python";
                 default:
                     return "general";
             }
