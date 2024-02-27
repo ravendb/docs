@@ -1,6 +1,16 @@
 # Session: Saving changes
 
-Pending session operations e.g. `Store`, `Delete` and many others will not be send to server till `SaveChanges` is called.
+Pending session operations e.g. `Store`, `Delete` and many others will not be send to the server until `SaveChanges` is called.
+
+{INFO: }
+
+Whenever you execute `SaveChanges()` to send a batch of operations like put, update, or delete in a request,  
+the server will wrap these operations in a [transaction](../../client-api/faq/transaction-support) upon execution in the database.  
+
+Either all operations will be saved as a single, atomic transaction or none of them will be.  
+Once `SaveChanges()` returns successfully, it is guaranteed that all changes are persisted in the database.  
+
+{INFO/}
 
 ##Syntax
 

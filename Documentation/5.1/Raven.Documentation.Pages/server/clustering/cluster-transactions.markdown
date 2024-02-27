@@ -99,7 +99,7 @@ have changed since the transaction was initiated, the entire session transaction
 
 Optimistic concurrency at the document level is _not_ supported for cluster-wide transactions. 
 Compare-exchange operations should be used to ensure consistency in that regard. Concurrent cluster-wide transactions are guaranteed 
-to appear as if they are run one at a time (`serializable` isolation level). 
+to appear as if they are run one at a time. 
 
 Cluster-wide transactions may only contain `PUT` / `DELETE` commands. This is required to ensure that we can apply the transaction 
 to each of the database nodes without regard to the current node state.
