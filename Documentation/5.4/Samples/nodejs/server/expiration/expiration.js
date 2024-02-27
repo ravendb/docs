@@ -7,10 +7,13 @@ async function expiration() {
         const session = store.openSession();
 
         //region expiration_1
+        // Enable document expiration and set the frequency to 50 seconds:
+        // ===============================================================
+        
         // Define the expiration configuration object 
-        const expirationConfiguration: ExpirationConfiguration = {
-            deleteFrequencyInSec: 50,
-            disabled: false
+        const expirationConfiguration = {
+            disabled: false,           // Enable expiration
+            deleteFrequencyInSec: 50   // Set frequency to 50 seconds
         };
         
         // Define the configure expiration operation,
