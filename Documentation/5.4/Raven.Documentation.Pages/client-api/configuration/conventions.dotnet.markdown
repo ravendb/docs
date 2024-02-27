@@ -205,7 +205,7 @@
 * Use the `FindClrType` convention to define a function that finds the CLR type of a document.  
 
 * DEFAULT:  
-  The CLR type is retrieved from the `Raven-Clr-Type` property under the `@metdata` key in the document. 
+  The CLR type is retrieved from the `Raven-Clr-Type` property under the `@metadata` key in the document. 
 
 {CODE FindClrType@ClientApi\Configuration\Conventions.cs /}
 {CODE FindClrTypeSyntax@ClientApi\Configuration\Conventions.cs /}
@@ -442,9 +442,8 @@
 
 ---
 
-* Use the `MaxHttpCacheSize` convention to set the maximum HTTP cache size.
- 
-* This setting will affect all the databases accessed by the Document Store.
+* Use the `MaxHttpCacheSize` convention to set the maximum HTTP cache size.  
+  This setting will affect all the databases accessed by the Document Store.
  
 * DEFAULT:  
  
@@ -456,12 +455,14 @@
 * __Disabling Caching__:  
 
     * To disable caching globally, set `MaxHttpCacheSize` to zero.  
-  
-    * Note: When caching is disabled, ALL data requests are sent to the server.
+    * To disable caching per session, see: [Disable caching per session](../../client-api/session/configuration/how-to-disable-caching).   
 
-  {CODE MaxHttpCacheSize@ClientApi\Configuration\Conventions.cs /}
-  {CODE disable_cache@ClientApi\Configuration\Conventions.cs /}
-  {CODE MaxHttpCacheSizeSyntax@ClientApi\Configuration\Conventions.cs /}
+* Note: RavenDB also supports Aggressive Caching.  
+  Learn more about that in article [Setup aggressive caching](../../client-api/how-to/setup-aggressive-caching). 
+
+{CODE MaxHttpCacheSize@ClientApi\Configuration\Conventions.cs /}
+{CODE disable_cache@ClientApi\Configuration\Conventions.cs /}
+{CODE MaxHttpCacheSizeSyntax@ClientApi\Configuration\Conventions.cs /}
 
 {NOTE/}
 {NOTE: }
@@ -618,7 +619,7 @@
 
 * Use the `SendApplicationIdentifier` convention to `true` to enable sending a unique application identifier to the RavenDB Server.
 
-* Setting tp _true_ allows the server to issue performance hint notifications to the client, 
+* Setting to _true_ allows the server to issue performance hint notifications to the client, 
   e.g. during robust topology update requests which could indicate a Client API misuse impacting the overall performance.
 
 * DEFAULT: `true`
@@ -714,7 +715,10 @@
 
 * When setting the `UseOptimisticConcurrency` convention to `true`,  
   Optimistic Concurrency checks will be applied for all sessions opened from the Document Store. 
- 
+  
+* Learn more about Optimistic Concurrency and the various ways to enable it in article  
+  [how to enable optimistic concurrency](../../client-api/session/configuration/how-to-enable-optimistic-concurrency).  
+
 * DEFAULT: `false`  
 
 {CODE UseOptimisticConcurrencySyntax@ClientApi\Configuration\Conventions.cs /}
