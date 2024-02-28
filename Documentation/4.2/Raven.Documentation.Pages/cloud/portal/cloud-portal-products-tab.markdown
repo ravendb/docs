@@ -71,24 +71,9 @@ Choose your product's display name, release channel and allowed IP addresses.
 The **Display Name** is simply the name that would appear in your Cloud Products tab.  
 {NOTE: Important }
   The **Allowed IPs** section determines which addresses would be allowed to manage your database.  
-  This adds an important layer to your database security.  
-  {NOTE/} 
-
- - You can set **Allowed IPs** to `0.0.0.0/0`, which would allow access from any location, or you can specify certain IPs or IP ranges.  
- - Be aware that you will not be able to access your instance from locations that are not specified in the allowed IPs list.  
- - You can **edit the list at any time** through the Portal.  
- - Regardless of the allowed IPs setting, your RavenDB Cloud **instances will always require authentication** using X509 
-  certificates for access. The allowed IPs list serves as an additional layer of security, but isn't the only one.  
-
-    {WARNING: }
-    Azure products **do not permit** overlapping of addresses in the Allowed IPs list.  
-    If addresses in your list overlap, your product will not be created. E.g. -  
-  
-     - Listing both 13.64.151.161/32 and 13.74.249.156/32 is **not permitted**.  
-     - Listing 0.0.0.0/0 and any other address is **not permitted**.  
-     - Listing both 51.140.148.192/27 and 13.74.249.156/32 **is permitted**.  
-    {WARNING/}
-
+  This adds an important layer to your database security.
+  You can read more about it in the [Security](../cloud-security#access-your-product) page.
+{NOTE/}
   ---
 
 ####D. New Product: Summary  
@@ -179,24 +164,10 @@ allowed to connect your database instance.
   !["Figure 15 - Manage Product: Edit IPs"](images\portal-product-details-allowed-ips.png "Figure 15 - Manage Product: Edit Allowed IPs")
 
   {INFO: We recommend fortifying your security by allowing access only to specific IPs}
-  The default setting, 0.0.0.0/0, grants access to **all** IP addresses.  
-   All of your RavenDB Cloud instances are secured using TLS 1.2 or 1.3 encryption and X509 certificates.  
-   You can increase your
-  system's security further using this in-depth security measure and restrict access to
-  trusted sources, e.g. your application servers.   
-   {INFO/}
-  
-{NOTE: }
-Cross-instance communication **inside the cluster** is **not** subject to these restrictions.
-{NOTE/}
-
-{WARNING: }
-Azure products **do not permit** overlapping of addresses in the Allowed IPs list.  E.g.:
-  
-- Listing both 13.64.151.161/32 and 13.74.249.156/32 is **not permitted**.  
-- Listing 0.0.0.0/0 and any other address is **not permitted**.  
-- Listing both 51.140.148.192/27 and 13.74.249.156/32 **is permitted**.  
-{WARNING/}
+  You can increase your system's security further using this in-depth security measure and restrict access to
+  trusted sources, e.g. your application servers. 
+  More details can be found in the [Security](../cloud-security#access-your-product) page.
+  {INFO/}
 
 ---
 
