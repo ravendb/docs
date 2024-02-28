@@ -36,7 +36,7 @@ async function refresh()
 
     // Set the "@refresh" metadata property with the refresh date in UTC format
     const refreshAt = new Date(new Date().getTime() + (60_000 * 60))
-    metadata["@refresh"] = refreshAt.toISOString();
+    metadata[CONSTANTS.Documents.Metadata.REFRESH] = refreshAt.toISOString();
 
     // Save the document
     await session.saveChanges();
