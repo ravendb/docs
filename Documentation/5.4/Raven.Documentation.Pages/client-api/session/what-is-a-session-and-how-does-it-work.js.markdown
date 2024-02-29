@@ -126,7 +126,7 @@
 * Remote calls to a server over the network are among the most expensive operations an application makes.  
   The session optimizes this by batching all __write operations__ it has tracked into the `saveChanges()` call.
 * When calling _saveChanges_, the session evaluates its state to identify all pending changes requiring persistence in the database.
-  These changes are then combined into a single batch that is sent to the server as a __single remote call__  and a single ACID transaction.
+  These changes are then combined into a single batch that is sent to the server in a __single remote call__ and executed as a single ACID transaction.  
 
 {NOTE/}
 {NOTE: }
