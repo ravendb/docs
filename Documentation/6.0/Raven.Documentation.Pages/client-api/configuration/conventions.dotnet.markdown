@@ -410,7 +410,9 @@
 * Use the `HttpVersion` convention to set the Http version the client will use when communicating  
   with the server.
 
-* DEFAULT: `System.Net.HttpVersion.Version20` (HTTP 2.0)
+* DEFAULT:
+    * When this convention is explicitly set to `null`, the default HTTP version provided by your .NET framework is used.
+    * Otherwise, the default HTTP version is set to `System.Net.HttpVersion.Version20` (HTTP 2.0).
 
 {CODE HttpVersionSyntax@ClientApi\Configuration\Conventions.cs /}
 
