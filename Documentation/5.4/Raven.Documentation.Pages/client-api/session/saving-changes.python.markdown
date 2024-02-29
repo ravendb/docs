@@ -51,7 +51,7 @@ You can ask the server to wait until the replication is caught up with those par
 {CODE:python saving_changes_4@ClientApi\Session\savingChanges.py /}
 
 {WARNING:Important}
-The `wait_for_replication_after_save_changes` waits only for replicas which are part of the cluster. It means that external replication destinations are not counted towards the number specified in `replicas` parameter, since they are not part of the cluster.
+The `wait_for_replication_after_save_changes` method waits only for replicas which are part of the cluster. It means that external replication destinations are not counted towards the number specified in `replicas` parameter, since they are not part of the cluster.
 {WARNING/}
 
 {WARNING:Important}
