@@ -42,7 +42,7 @@ class HowToQuery(ExamplesBase):
             with store.open_session() as session:
                 # region query_2_1
                 # Query collection by document ID
-                # No auto-index is created when querying only by ID￥
+                # No auto-index is created when querying only by ID
 
                 employee = (
                     session.query(object_type=Employee)
@@ -126,13 +126,13 @@ class HowToQuery(ExamplesBase):
 
             with store.open_session() as session:
                 # region query_5_1
-                # Query with DocumentQuery - filter by document field
+                # Query with document_query - filter by document field
 
                 # An auto-index will be created if there isn't already an existing auto-index
                 # that indexes this document field
 
                 employees = list(  # Execute the query
-                    session.advanced.document_query(object_type=Employee).where_equals(  # Use DocumentQuery
+                    session.advanced.document_query(object_type=Employee).where_equals(  # Use document_query
                         "first_name", "Robert"
                     )  # Query for all 'Employee' documents that match this predicate
                 )

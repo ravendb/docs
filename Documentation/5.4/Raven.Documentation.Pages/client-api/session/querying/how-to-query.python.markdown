@@ -250,7 +250,7 @@ from "Products" limit 5, 10 // skip 5, take 10
 * `document_query` provides a full spectrum of low-level querying capabilities,  
    giving you more flexibility and control when making complex queries.
 
-* Below is a simple _DocumentQuery_ usage.  
+* Below is a simple _document_query_ usage.  
   For a full description and more examples see:  
     * [What is a document query](../../../client-api/session/querying/document-query/what-is-document-query)
     * [query -vs- document_query](../../../client-api/session/querying/document-query/query-vs-document-query)
@@ -258,7 +258,7 @@ from "Products" limit 5, 10 // skip 5, take 10
 __Example__:
 
 {CODE-TABS}
-{CODE-TAB:python:DocumentQuery query_5_1@ClientApi\Session\Querying\HowToQuery.py /}
+{CODE-TAB:python:document_query query_5_1@ClientApi\Session\Querying\HowToQuery.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Query collection - filter by document field
 
@@ -273,7 +273,7 @@ from "Employees" where FirstName = "Robert"
 
 {PANEL: session.advanced.raw_query}
 
-* Queries defined with [query](../../../client-api/session/querying/how-to-query#session.query) or [document_query](../../../client-api/session/querying/how-to-query#session.advanced.documentquery) are translated by the RavenDB client to [RQL](../../../client-api/session/querying/what-is-rql)  
+* Queries defined with [query](../../../client-api/session/querying/how-to-query#session.query) or [document_query](../../../client-api/session/querying/how-to-query#session.advanced.document_query) are translated by the RavenDB client to [RQL](../../../client-api/session/querying/what-is-rql)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the `raw_query` method.
@@ -311,7 +311,7 @@ Available custom methods and extensions for the session's [query](../../../clien
 - [search](../../../client-api/session/querying/text-search/full-text-search)
 - [spatial](../../../client-api/session/querying/how-to-make-a-spatial-query)
 - [statistics](../../../client-api/session/querying/how-to-get-query-statistics)
-- [suggestUsing](../../../client-api/session/querying/how-to-work-with-suggestions)
+- [suggest_using](../../../client-api/session/querying/how-to-work-with-suggestions)
 
 {PANEL/}
 
@@ -319,18 +319,19 @@ Available custom methods and extensions for the session's [query](../../../clien
 
 {CODE:python syntax@ClientApi\Session\Querying\HowToQuery.py /}
 
-| Parameter          | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                                              |
-|--------------------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __T__              | object | <ul><li>The type of entities queried</li></ul>                                                                                                                                                                                                                                                                                                                                                                             |
-| __TIndexCreator__  | string | <ul><li>The index class type</li></ul>                                                                                                                                                                                                                                                                                                                                                                                   |
-| __collectionName__ | string | <ul><li>Name of a collection to query</li><li>No need to provide this param when specifying `T`</li><li>Specify the collection name when querying a collection that is created<br> on the fly, i.e. when querying [Artifical Documents](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))</li><li>Mutually exclusive with _indexName_</li></ul> |
-| __indexName__      | string | <ul><li>Name of index to query</li><li>Mutually exclusive with _collectionName_</li></ul>                                                                                                                                                                                                                                                                                                                                |
-| __isMapReduce__    | string | <ul><li>Whether querying a map-reduce index</li></ul>                                                                                                                                                                                                                                                                                                                                                                    |
-| __query__          | string | <ul><li>The RQL query string</li></ul>                                                                                                                                                                                                                                                                                                                                                                    |
+
+| Parameter | Type | Description |
+|--------------------|--------|------------------------------------------|
+| __object_type__ | `Type[_T]` | <ul><li>Queried entities type</li></ul> |
+| __collection_name__ | `str` | <ul><li>Queried collection name</li><li> |
+| __query__ | `str` | <ul><li>RQL query string</li></ul> |
+| __index_name__ | `str` | <ul><li>Queried index name</li><li> |
+| __index_type__ | `Type[_TIndex]` | <ul><li>Queried index type</li></ul> |
+| __is_map_reduce__ | `bool` | <ul><li>Is a map-reduce index queried</li></ul> |
 
 | Return Value | |
 | - | - |
-| `IRavenQueryable`<br>`IDocumentQuery`<br>`IRawDocumentQuery` | Instances exposing additional query methods and [extensions](../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq) |
+| `DocumentQuery[_T]`<br>`RawDocumentQuery[_T]` | Instances exposing additional query methods and [extensions](../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq) |
  
 {PANEL/}
 
