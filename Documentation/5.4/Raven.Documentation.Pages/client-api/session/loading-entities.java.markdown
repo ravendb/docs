@@ -188,9 +188,19 @@ Fetch documents for a ID prefix directly into a stream:
 
 {PANEL:IsLoaded}
 
-To check if an entity is attached to a session, e.g. it has been loaded previously, use the `isLoaded` method from the `advanced` session operations.  
+Use the `isLoaded` method from the `advanced` session operations
+To check if an entity is attached to a session (e.g. because it's been 
+previously loaded).  
   
-If you try to load a document that does not exist with the `load` method, `isLoaded` will return `true` because that document load has already been attempted.  
+{NOTE: }
+`isLoaded` checks if an attempt to load a document has been already made 
+during the current session, and returns `true` even if such an attemp was 
+made and failed.  
+If, for example, the `load` method was used to load `employees/3` during 
+this session and failed because the document has been previously deleted, 
+`isLoaded` will still return `true` for `employees/3` for the remainder 
+of the session just because of the attempt to load it.  
+{NOTE/}
 
 {CODE:java loading_entities_6_0@ClientApi\Session\LoadingEntities.java /}
 

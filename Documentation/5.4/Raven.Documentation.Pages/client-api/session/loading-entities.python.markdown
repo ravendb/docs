@@ -9,7 +9,6 @@
 
   - [load](../../client-api/session/loading-entities#load)
   - [load with includes](../../client-api/session/loading-entities#load-with-includes)
-  - [load - multiple entities](../../client-api/session/loading-entities#load---multiple-entities)
   - [load_starting_with](../../client-api/session/loading-entities#load_starting_with)
   - [conditional_load](../../client-api/session/loading-entities#conditional_load)
   - [stream](../../client-api/session/loading-entities#stream)
@@ -17,29 +16,38 @@
 
 * For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily).
 
-{NOTE/}
+{WARNING: }
+From RavenDB version 4.x onward, only string identifiers are supported.  
+If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported as well.  
+{WARNING/}
 
+{NOTE/}
 ---
 
 {PANEL:load}
 
-The most basic way to load a single entity is to use one of the `load` methods.
+Use the `load` method to load **an entity** or **multiple entities**.  
 
 {CODE:python loading_entities_1_0@ClientApi\Session\LoadingEntities.py /}
 
 | Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **id** | `string` | Identifier of a document that will be loaded. |
+| **key_or_keys** | `str` or `List[str]` | Identifier or a list of identifiers of entities to load |
+| **object_type**<br>(optional) | `[Type[_T]` | Entity type to load (optional) |
 
 | Return Type | Description |
 | ------------- | ----- |
-| `TResult` | Instance of `TResult` or `null` if a document with a given ID does not exist. |
+| `_T` | If a single document was requested, return an instance of the document or `None` if no document was found |
+| `Dict[str, _T]` | If multiple documents were requested, return a dictionary of document instances or `None` if no documnts were found |
 
-### Example
 
-{CODE:python loading_entities_1_1@ClientApi\Session\LoadingEntities.py /}
+### Examples
 
-{NOTE From RavenDB version 4.x onwards, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported. /}
+* Load an entiry
+  {CODE:python loading_entities_1_1@ClientApi\Session\LoadingEntities.py /}
+
+* Load multiple entities:
+  {CODE:python loading_entities_3_1@ClientApi\Session\LoadingEntities.py /}
 
 {PANEL/}
 
@@ -62,11 +70,11 @@ Also see:
 
 | Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **path** | `string` or Expression | Path in documents in which the server should look for 'referenced' documents. |
+| **path** | `str` | Search path that the server will use to look for the 'referenced' documents |
 
 | Return Type | Description |
 | ------------- | ----- |
-| `ILoaderWithInclude` | The ` include` method by itself does not materialize any requests but returns loader containing methods such as `load`. |
+| `LoaderWithInclude` | The ` include` method by itself does not materialize any requests but returns loader containing methods such as `load`. |
 
 ### Example I
 
@@ -80,43 +88,41 @@ We can use this code to also load an employee which made the order.
 
 {PANEL/}
 
-{PANEL:load - multiple entities}
-
-To load multiple entities at once, use one of the following `load` overloads.
-
-{CODE:python loading_entities_3_0@ClientApi\Session\LoadingEntities.py /}
-
-| Parameter | Type | Description |
-| ------------- | ------------- | ----- |
-| **ids** | `IEnumerable<string>` | Multiple document identifiers to load |
-
-| Return Type | Description |
-| ------------- | ----- |
-| `Dictionary<string, TResult>` | Instance of Dictionary which maps document identifiers to `TResult` or `null` if a document with given ID doesn't exist. |
-
-{CODE:python loading_entities_3_1@ClientApi\Session\LoadingEntities.py /}
-
-{PANEL/}
-
 {PANEL:load_starting_with}
 
-To load multiple entities that contain a common prefix, use the `load_starting_with` method from the `advanced` session operations.
+To load multiple entities with a common prefix, use the following `advanced` session operation.  
 
-{CODE:python loading_entities_4_0@ClientApi\Session\LoadingEntities.py /}
+`load_starting_with`  
+{CODE:python loading_entities_4_0_1@ClientApi\Session\LoadingEntities.py /}
 
 | Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **idPrefix** | `string` |  prefix for which the documents should be returned  |
-| **matches** | `string` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
-| **start** | `int` | number of documents that should be skipped  |
-| **pageSize** | `int` | maximum number of documents that will be retrieved |
-| **exclude** | `string` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
-| **skipAfter** | `string` | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
+| **id_prefix** | `str` |  Prefix to return the documents to |
+| **object_type**<br>(optional) | `Type[_T]` | Object type |
+| **matches**<br>(optional) | `str` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start**<br>(optional) | `int` | number of documents that should be skipped  |
+| **page_size**<br>(optional) | `int` | maximum number of documents that will be retrieved |
+| **exclude**<br>(optional) | `str` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **start_after**<br>(optional) | `str` | skip document fetching until given ID is found and return documents after that ID (default: `None`) |
 
 | Return Type | Description |
 | ------------- | ----- |
-| `TResult[]` | Array of entities matching given parameters. |
-| `Stream` | Output entities matching given parameters as a stream. |
+| `List[_T]` | An array of entities matching the given parameters |
+
+<!-- 
+* `load_starting_with_into_stream`  
+  {CODE:python loading_entities_4_0_2@ClientApi\Session\LoadingEntities.py /}
+
+    | Parameter | Type | Description |
+    | ------------- | ------------- | ----- |
+    | **id_prefix** | `str` |  Prefix to return the documents to |
+    | **output** | `bytes` | Stream |
+    | **matches** | `str` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
+    | **start** | `int` | number of documents that should be skipped  |
+    | **page_size** | `int` | maximum number of documents that will be retrieved |
+    | **exclude** | `str` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+    | **start_after** | `str` | skip document fetching until given ID is found and return documents after that ID (default: `None`) |
+-->
 
 ### Example I
 
@@ -146,12 +152,13 @@ The method is accessible from the `session.advanced` operations.
 
 | Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **id** | `string` | The identifier of a document to be loaded. |
-| **changeVector** | `string` | The change vector you want to compare with the server-side change vector. If the change vectors match, the document is not loaded. |
+| **key** | `str` | The identifier of a document to be loaded |
+| **change_vector** | `str` | The change vector you want to compare with the server-side change vector. If the change vectors match, the document is not loaded. |
+| **object_type** | `Type[_T]` | Object type |
 
 | Return Type | Description |
 | ------------- | ----- |
-| ValueTuple `(T Entity, string ChangeVector)` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector.<br/>If the change vectors match, the method returns `default` as the entity, and the current change vector.<br/>If the specified document, the method returns only `default` without a change vector. |
+| `ConditionalLoadResult[_T]` | If the given change vector and the server side change vector do not match, the method returns the requested entity and its current change vector.<br/>If the change vectors match, the method returns `default` as the entity, and the current change vector.<br/>If the specified document, the method returns only `default` without a change vector. |
 
 ### Example
 
@@ -159,6 +166,7 @@ The method is accessible from the `session.advanced` operations.
 
 {PANEL/}
 
+<!-- 
 {PANEL:stream}
 
 Entities can be streamed from the server using one of the following `stream` methods from the `advanced` session operations.
@@ -172,12 +180,12 @@ Learn more in [How to Stream Query Results](../../client-api/session/querying/ho
 
 | Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **startsWith** | `string` | prefix for which documents should be streamed |
-| **matches** | `string` | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
+| **starts_with** | `str` | prefix for which documents should be streamed |
+| **matches** | `str` | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
 | **start** | `int` | number of documents that should be skipped  |
-| **pageSize** | `int` | maximum number of documents that will be retrieved |
-| **skipAfter** | `string` | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
-| **StreamQueryStats** | `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+| **page_size** | `int` | maximum number of documents that will be retrieved |
+| **start_after** | `str` | skip document fetching until a given ID is found and returns documents after that ID (default: `None`) |
+| **stream_query_stats** | `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 | Return Type | Description |
 | ------------- | ----- |
@@ -198,24 +206,33 @@ Fetch documents for a ID prefix directly into a stream:
 {CODE:python loading_entities_5_2@ClientApi\Session\LoadingEntities.py /}
 
 {PANEL/}
+-->
 
 {PANEL:is_loaded}
 
-To check if an entity is attached to a session, e.g. it has been loaded previously, use the `is_loaded` method from the **advanced** session operations.  
+Use the `is_loaded` method from the `advanced` session operations
+To check if an entity is attached to a session (e.g. because it's been 
+previously loaded).  
   
-`is_loaded` checks if you've already tried to load a document during the current session.  
-If you try to load a document that no longer exists with the `load` method (perhaps it has been deleted),  
-`is_loaded` will then return `true` because `is_loaded` shows that you've already tried to load the non-existent document.  
+{NOTE: }
+`is_loaded` checks if an attempt to load a document has been already made 
+during the current session, and returns `True` even if such an attemp was 
+made and failed.  
+If, for example, the `load` method was used to load `employees/3` during 
+this session and failed because the document has been previously deleted, 
+`is_loaded` will still return `True` for `employees/3` for the remainder 
+of the session just because of the attempt to load it.  
+{NOTE/}
 
 {CODE:python loading_entities_6_0@ClientApi\Session\LoadingEntities.py /}
 
 | Parameter | Type | Description |
 | ------------- | ------------- | ----- |
-| **id** | `string` | Entity ID for which the check should be performed. |
+| **key** | `str` | ID of the entity whose status is checked |
 
 | Return Type | Description |
 | ------------- | ----- |
-| `bool` | Indicates if an entity with a given ID is loaded. |
+| `bool` | Indicates if the given entity is loaded |
 
 ### Example
 

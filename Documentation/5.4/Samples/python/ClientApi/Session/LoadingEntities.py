@@ -33,17 +33,7 @@ class LoadingEntities(ExamplesBase):
 
         # endregion
 
-        # region loading_entities_3_0
-        def load(
-            self,
-            key_or_keys: Union[List[str], str],  # <- List of ids
-            object_type: Optional[Type[_T]] = None,
-            includes: Callable[[IncludeBuilder], None] = None,
-        ) -> Union[Dict[str, _T], _T]:
-            ...
-
-        # endregion
-        # region loading_entities_4_0
+        # region loading_entities_4_0_1
         def load_starting_with(
             self,
             id_prefix: str,
@@ -55,7 +45,9 @@ class LoadingEntities(ExamplesBase):
             start_after: Optional[str] = None,
         ) -> List[_T]:
             ...
+        # endregion
 
+        # region loading_entities_4_0_2
         def load_starting_with_into_stream(
             self,
             id_prefix: str,
@@ -67,8 +59,8 @@ class LoadingEntities(ExamplesBase):
             start_after: str = None,
         ):
             ...
+        # endregion
 
-    # endregion
     # region loading_entities_5_0
     # unsupported, will be supported from 5.4 client release (https://pypi.org/project/ravendb/)
     # endregion
@@ -101,7 +93,7 @@ class LoadingEntities(ExamplesBase):
                 products_by_key = session.include("supplier").load(Product, "products/1")
                 product = products_by_key["products/1"]
 
-                supplier = session.load(product.supplier)  # this will not make server call
+                supplier = session.load(product.supplier)  # this will not initiate an additional server call
 
                 # endregion
 
