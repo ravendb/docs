@@ -21,9 +21,8 @@
 {PANEL: Open a cluster transaction}
 
 * To work with a cluster transaction open a __cluster-wide session__,  
-  by explicitly setting the `TransactionMode` to `TransactionMode.ClusterWide`.
-
-{CODE:python open_cluster_session_sync@ClientApi\Session\ClusterTransaction\Overview.py /}
+  by explicitly setting the `transaction_mode` to `TransactionMode.CLUSTER_WIDE`
+  {CODE:python open_cluster_session_sync@ClientApi\Session\ClusterTransaction\Overview.py /}
 
 * Similar to the single-node session,  
   any CRUD operations can be made on the cluster-wide session and the session will track them as usual.
@@ -50,9 +49,9 @@
 
 ---
 
-* The only __actions available__ are:
-    * PUT / DELETE a document
-    * PUT / DELETE a compare-exchange item
+* The only available actions are:
+    * **put** or **delete** a document
+    * **put** or **delete** a compare-exchange item
 
 ---
 
@@ -88,7 +87,7 @@
 
 ---
 
-* __Any action is available__ except for PUT / DELETE a compare-exchange item.  
+* __Any action is available__ except for a compare-exchange item **put** or **delete**.  
   No Atomic-Guards are created by the server.
 
 ---
