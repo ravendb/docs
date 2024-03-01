@@ -8,16 +8,15 @@ Entities can be marked for deletion by using the `delete()` method, but will not
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **entity** | `T` | instance of the entity to delete |
-| **id** | `string` | ID of the entity to delete |
-| **expectedChangeVector** | `string` | a change vector to use for concurrency checks |
+| **key_or_entity** | `str` or `object` | instance of the entity to delete |
+| **expected_change_vector** | `str` | a change vector to use for concurrency checks |
 
 ## Example I
 
 {CODE:python deleting_2@ClientApi\Session\DeletingEntities.py /}
 
 {NOTE: Concurrency on Delete}
-If UseOptimisticConcurrency is set to 'true' (default 'false'), the delete() method will use loaded 'employees/1' change vector for concurrency check and might throw ConcurrencyException.  
+If use_optimistic_concurrency is set to 'True' (default 'False'), the delete() method will use loaded 'employees/1' change vector for concurrency check and might throw ConcurrencyException.  
 {NOTE/}
 
 ## Example II
@@ -25,7 +24,7 @@ If UseOptimisticConcurrency is set to 'true' (default 'false'), the delete() met
 {CODE:python deleting_3@ClientApi\Session\DeletingEntities.py /}
 
 {NOTE: Concurrency on Delete}
-In this overload, the delete() method will not do any change vector based concurrency checks because the change vector for 'employees/1' is unknown.  
+The delete() method will not do any change vector based concurrency checks because the change vector for 'employees/1' is unknown.  
 {NOTE/}
 
 {INFO:Information}
@@ -39,7 +38,7 @@ is equal to doing:
 {CODE:python deleting_5@ClientApi\Session\DeletingEntities.py /}
 
 {NOTE: Change Vector in DeleteCommandData}
-In this sample the change vector is null - this means that there will be no concurrency checks. A non-null and valid change vector value will trigger a concurrency check.  
+In this sample the change vector is None - this means that there will be no concurrency checks. A not-None and valid change vector value will trigger a concurrency check.  
 {NOTE/}
 
 You can read more about defer operations [here](../../client-api/session/how-to/defer-operations).  
