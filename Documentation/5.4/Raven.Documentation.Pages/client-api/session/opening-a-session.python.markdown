@@ -11,7 +11,7 @@
 * Various Session options can be configured using the `SessionOptions` object.  
   If no database is specified in the options then the [Default Database](../../client-api/setting-up-default-database) (stored in the Document Store) is assumed.  
 
-* Be sure to wrap the session variable with a 'using' statement to ensure proper disposal.
+* Be sure to wrap the session variable using a 'with' statement to ensure proper disposal.
 
 * In this page:  
   * [Syntax](../../client-api/session/opening-a-session#syntax)  
@@ -30,7 +30,7 @@
 
 | Parameter    | Type             | Description                                                                                                                    |
 |--------------|------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| **database** | string           | The Session will operate on this database,<br>overriding the default database set in the document store.                       |
+| **database** | str              | The session will operate on this database,<br>overriding the default database set in the document store.                       |
 | **options**  | `SessionOptions` | An object with Session configuration options. See details [below](../../client-api/session/opening-a-session#session-options). |
 
 | Return Value                                 | Description                   |
@@ -43,19 +43,19 @@
 
 * The `SessionOptions` object contains various options to configure the Session's behavior.
 
-| Option                                                  | Type              | Description                                                                                                                                                                                                                               | Default Value                                         |
-|---------------------------------------------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
-| **Database**                                            | string            | The Session will operate on this database,<br>overriding the Default Database.                                                                                                                                                            | `null` - the Session operates on the Default Database |
-| **NoTracking**                                          | bool              | `true` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br>`false` - Tracking will be turned off.<br>Learn more in [Disable tracking](../../client-api/session/configuration/how-to-disable-tracking) | `false`                                               |
-| **NoCaching**                                           | bool              | `true` - Server responses will Not be cached.<br>`false` - The Session caches the server responses.<br>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching)                                     | `false`                                               |
-| **RequestExecutor**                                     | `RequestExecutor` | ( _Advanced option_ ) <br>The request executor the Session should use.                                                                                                                                                                    | `null` - the default request executor is used         |
-| **TransactionMode**                                     | `TransactionMode` | Specify the Session's transaction mode<br>`SingleNode` / `ClusterWide`<br>Learn more in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction)        | `SingleNode`                                          |
+| Option                                                  | Type               | Description                                                                                                                                                                                                                               | Default Value                                         |
+|---------------------------------------------------------|------------------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| **database**                                            | str                | The Session will operate on this database,<br>overriding the Default Database.                                                                                                                                                            | `None` - the Session operates on the Default Database |
+| **no_tracking**                                         | bool               | `True` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br>`False` - Tracking will be turned off.<br>Learn more in [Disable tracking](../../client-api/session/configuration/how-to-disable-tracking) | `False`                                               |
+| **no_caching**                                          | bool               | `True` - Server responses will Not be cached.<br>`False` - The Session caches the server responses.<br>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching)                                     | `False`                                               |
+| **request_executor**                                    | `request_executor` | ( _Advanced option_ ) <br>The request executor the Session should use.                                                                                                                                                                    | `None` - the default request executor is used         |
+| **transaction_mode**                                    | `transaction_mode` | Specify the Session's transaction mode<br>`SINGLE_NODE` / `CLUSTER_WIDE`<br>Learn more in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction)      | `SINGLE_NODE`                                         |
 
 * Experts Only:
 
-| Option                                                       | Type                | Description                                                                                                                                                                                                                                             | Default Value |
-|--------------------------------------------------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
-| **DisableAtomicDocumentWrites-<br>InClusterWideTransaction** | bool?               | ( _Experts only_ ) <br>`true` - Disable Atomic-Guards in cluster-wide sessions.<br>`false` - Automatic atomic writes in cluster-wide sessions are enabled.<br>Learn more in [Atomic-Guards](../../client-api/session/cluster-transaction/atomic-guards) | `false`       |
+| Option                                                             | Type                | Description                                                                                                                                                                                                                                             | Default Value |
+|--------------------------------------------------------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| **disable_atomic_document_writes_in_cluster_wide_transaction**     | bool                | **Experts only**<br>`True` - Disable Atomic-Guards in cluster-wide sessions.<br>`False` - Automatic atomic writes in cluster-wide sessions are enabled.<br>Learn more in [Atomic-Guards](../../client-api/session/cluster-transaction/atomic-guards) | `False`       |
 
 {PANEL/}
 
