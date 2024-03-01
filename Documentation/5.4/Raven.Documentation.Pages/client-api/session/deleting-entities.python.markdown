@@ -8,7 +8,7 @@ Entities can be marked for deletion by using the `delete()` method, but will not
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **key_or_entity** | `str` or `object` | instance of the entity to delete |
+| **key_or_entity** | `str` or `object` | ID of the document or instance of the entity to delete |
 | **expected_change_vector** | `str` | a change vector to use for concurrency checks |
 
 ## Example I
