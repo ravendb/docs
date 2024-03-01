@@ -35,10 +35,10 @@ __Syntax__
 
 {CODE:python methods_3_sync@ClientApi\Session\ClusterTransaction\CompareExchange.py /}
 
-| Parameters   | Type     | Description                                                        |
-|--------------|----------|--------------------------------------------------------------------|
-| **key**      | `string` | The compare-exchange item key. This string can be up to 512 bytes. |
-| **value**    | `T`      | The associated value to store for the key                          |
+| Parameters   | Type     | Description                                                       |
+|--------------|----------|-------------------------------------------------------------------|
+| **key**      | `str`    | The compare-exchange item key. This string can be up to 512 bytes |
+| **value**    | `T`      | The associated value to store for the key                         |
 
 | Return Value              | Description                               |
 |---------------------------|-------------------------------------------|
@@ -50,7 +50,7 @@ __The CompareExchangeValue__
 
 | Parameters   | Type     | Description                                                        |
 |--------------|----------|--------------------------------------------------------------------|
-| **key**      | `string` | The compare-exchange item key. This string can be up to 512 bytes. |
+| **key**      | `str`    | The compare-exchange item key. This string can be up to 512 bytes. |
 | **value**    | `T`      | The value associated with the key                                  |
 | **index**    | `long`   | Index for concurrency control                                      |
 
@@ -66,11 +66,11 @@ __Get single value__
 
 | Parameters   | Type     | Description         |
 |--------------|----------|---------------------|
-| **key**      | `string` | The key to retrieve |
+| **key**      | `str`    | The key to retrieve |
 
 | Return Value | Description |
 | ------------- | ----- |
-| `CompareExchangeValue<T>`| If the key doesn't exist it will return `null` |
+| `CompareExchangeValue<T>`| If the key doesn't exist it will return `None` |
 
 {NOTE/}
 
@@ -81,11 +81,11 @@ __Get multiple values__
 
 | Parameters   | Type       | Description               |
 |--------------|------------|---------------------------|
-| **keys**     | `string[]` | Array of keys to retrieve |
+| **keys**     | `str[]`    | Array of keys to retrieve |
 
 | Return Value | Description |
 | ------------- | ----- |
-| `Dictionary<string, CompareExchangeValue<T>>` | If a key doesn't exists the associate value will be `null` |
+| `Dict<str, CompareExchangeValue<T>>` | If a key doesn't exist the associated value will be `None` |
 {NOTE/}
 
 {NOTE: }
@@ -95,13 +95,13 @@ __Get compare-exchange lazily__
 
 | Parameters  | Type       | Description               |
 |-------------|------------|---------------------------|
-| **key**     | `string`   | The key to retrieve       |
-| **keys**    | `string[]` | Array of keys to retrieve |
+| **key**     | `str`      | The key to retrieve       |
+| **keys**    | `str[]`    | Array of keys to retrieve |
 
 | Return Value | Description |
 | ------------- | ----- |
-| `Lazy<CompareExchangeValue<T>>`| If the key doesn't exist it will return `null` |
-| `Lazy<Dictionary<string, CompareExchangeValue<T>>>` | If a key doesn't exists the associate value will be `null` |
+| `Lazy<CompareExchangeValue<T>>`| If the key doesn't exist it will return `None` |
+| `Lazy<Dict<str, CompareExchangeValue<T>>>` | If a key doesn't exist the associated value will be `None` |
 {NOTE/}
 {PANEL/}
 
@@ -113,7 +113,7 @@ __Get compare-exchange lazily__
 
 | Parameters | Type                      | Description                                    |
 |------------|---------------------------|------------------------------------------------|
-| **key**    | `string`                  | The key of the compare-exchange item to delete |
+| **key**    | `str`                     | The key of the compare-exchange item to delete |
 | **index**  | `long`                    | The index of this compare-exchange item        |
 | **item**   | `CompareExchangeValue<T>` | The compare-exchange item to delete            |
 
