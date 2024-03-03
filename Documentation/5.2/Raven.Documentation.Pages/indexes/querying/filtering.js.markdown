@@ -1,4 +1,4 @@
-# Filtering Query Results
+# Filter Query Results
 ---
 
 {NOTE: }

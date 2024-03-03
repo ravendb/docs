@@ -19,6 +19,7 @@ class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask {
         });
     }
 }
+//endregion
 
 //region index_2
 class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask {
@@ -126,7 +127,8 @@ async function filtering() {
             .whereEquals("ShipTo.City", "Albuquerque")
             .all();
         
-        // Results will include all Order documents with an order that ships to 'Albuquerque' 
+        // * Results will include all Order documents with an order that ships to 'Albuquerque'
+        // * An auto-index will be created
         //endregion
     }
     {
@@ -201,7 +203,8 @@ async function filtering() {
             .whereStartsWith("Name", "ch")
             .all();
         
-        // Results will include all Product documents with a name that starts with 'ch'
+        // * Results will include all Product documents with a name that starts with 'ch'
+        // * An auto-index will be created
         //endregion
     }
     {
@@ -216,7 +219,8 @@ async function filtering() {
             .whereEndsWith("Name", "es")
             .all();
 
-        // Results will include all Product documents with a name that ends with 'es'
+        // * Results will include all Product documents with a name that ends with 'es'
+        // * An auto-index will be created
         //endregion
     }
     {
@@ -231,7 +235,8 @@ async function filtering() {
             .whereEquals("id", "orders/1-A")
             .firstOrNull();
 
-        // Results will include the Order document having ID 'orders/1-A'
+        // * Results will include the Order document having ID 'orders/1-A'
+        // * An auto-index is NOT created
         //endregion
     }
     {
@@ -246,7 +251,8 @@ async function filtering() {
             .whereStartsWith("id", "orders/1")
             .all();
 
-        // Results will include all Order documents having ID that starts with 'orders/1'
+        // * Results will include all Order documents having ID that starts with 'orders/1'
+        // * An auto-index is NOT created
         //endregion
     }
     
