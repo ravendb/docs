@@ -9,27 +9,36 @@
 
 * In this page:
 
-  * [Enable database](../../../client-api/operations/server-wide/toggle-databases-state#enable-database)
-  * [Disable database](../../../client-api/operations/server-wide/toggle-databases-state#disable-database)
-  * [Syntax](../../../client-api/operations/server-wide/toggle-databases-state#syntax)
+    * [Enable/Disable database from the Client API](../../../client-api/operations/server-wide/toggle-databases-state#enable/disable-database-from-the-client-api)
+        * [Enable database](../../../client-api/operations/server-wide/toggle-databases-state#enable-database)
+        * [Disable database](../../../client-api/operations/server-wide/toggle-databases-state#disable-database)
+        * [Syntax](../../../client-api/operations/server-wide/toggle-databases-state#syntax)
+    * [Disable database via the file system](../../../client-api/operations/server-wide/toggle-databases-state#disable-database-via-the-file-system)
 
 {NOTE/}
 
 ---
 
-{PANEL: Enable database}
+
+{PANEL: Enable/Disable database from the Client API}
+
+{NOTE: }
+
+<a id="enable-database" /> __Enable database__:  
 
 {CODE:nodejs enable@ClientApi\Operations\Server\toggleDatabasesState.js /}
 
-{PANEL/}
+{NOTE/}
+{NOTE: }
 
-{PANEL: Disable database}
+<a id="disable-database" /> __Disable database__: 
 
 {CODE:nodejs disable@ClientApi\Operations\Server\toggleDatabasesState.js /}
 
-{PANEL/}
+{NOTE/}
+{NOTE: }
 
-{PANEL: Syntax}
+<a id="syntax" /> __Syntax__: 
 
 {CODE:nodejs syntax_1@ClientApi\Operations\Server\toggleDatabasesState.js /}
 
@@ -40,6 +49,30 @@
 | __disable__       | boolean  | `true` - request to disable the database(s)<br>`false`- request to enable the database(s) |
 
 {CODE:nodejs syntax_2@ClientApi\Operations\Server\toggleDatabasesState.js /}
+
+{NOTE/}
+{PANEL/}
+
+{PANEL: Disable database via the file system}
+
+It may sometimes be useful to disable a database manually, through the file system.
+
+* To __manually disable__ a database:
+
+    * Place a file named `disable.marker` in the [database directory](../../../server/storage/directory-structure).
+    * The `disable.marker` file can be empty,  
+      and can be created by any available method, e.g. using the File Explorer, a terminal, or code.
+
+* Attempting to use a manually disabled database will generate the following exception:
+
+         Unable to open database: '{DatabaseName}', 
+         it has been manually disabled via the file: '{disableMarkerPath}'. 
+         To re-enable, remove the disable.marker and reload the database.
+
+* To __enable__ a manually disabled database:
+
+    * First, remove the `disable.marker` file from the database directory.
+    * Then, [reload the database](../../../studio/database/settings/database-settings#how-to-reload-the-database).
 
 {PANEL/}
 
