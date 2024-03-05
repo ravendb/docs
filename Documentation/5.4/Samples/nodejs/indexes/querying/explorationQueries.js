@@ -94,7 +94,7 @@ async function explorationQueries() {
 
 {
     //region syntax
-    filter(builder) => void);
-    filter(builder) => void, limit);
+    filter(builder);
+    filter(builder, limit);
     //endregion
 }
