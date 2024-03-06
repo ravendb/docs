@@ -7,8 +7,8 @@
 * A session represents a single [business transaction](https://martinfowler.com/eaaCatalog/unitOfWork.html) (not to be confused with an [ACID transaction](../../../client-api/faq/transaction-support)).  
  
 * When opening a session, the session's mode can be set to either:  
-    * __Single-Node__ - transaction is executed on a specific node and then replicated
-    * __Cluster-Wide__ - transaction is registered for execution on all nodes in an atomic fashion
+    * __SINGLE-NODE__ - transaction is executed on a specific node and then replicated
+    * __CLUSTER-WIDE__ - transaction is registered for execution on all nodes in an atomic fashion
 
 * In this page:  
     * [Open a cluster transaction](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)
