@@ -34,11 +34,12 @@ Use the `load` method to load **an entity** or **multiple entities**.
 | ------------- | ------------- | ----- |
 | **key_or_keys** | `str` or `List[str]` | Identifier or a list of identifiers of entities to load |
 | **object_type**<br>(optional) | `[Type[_T]` | Entity type to load (optional) |
+| **includes**<br>(optional) | `Callable[[IncludeBuilder], None]` | A **consumer function** that takes an [include builder](../../client-api/how-to/handle-document-relationships#includes) argument.<br>The user should use the builder inside this function to _include_ all the data needed within a load. |
 
 | Return Type | Description |
 | ------------- | ----- |
 | `_T` | If a single document was requested, return an instance of the document or `None` if no document was found |
-| `Dict[str, _T]` | If multiple documents were requested, return a dictionary of document instances or `None` if no documnts were found |
+| `Dict[str, _T]` | If multiple documents were requested, return a dictionary of document instances or `None` if no documents were found |
 
 
 ### Examples
@@ -99,10 +100,10 @@ To load multiple entities with a common prefix, use the following `advanced` ses
 | ------------- | ------------- | ----- |
 | **id_prefix** | `str` |  Prefix to return the documents to |
 | **object_type**<br>(optional) | `Type[_T]` | Object type |
-| **matches**<br>(optional) | `str` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
+| **matches**<br>(optional) | `str` | pipe ('&#124;') separated values for which document IDs (after 'id_prefix') should be matched ('?' any single character, '*' any characters) |
 | **start**<br>(optional) | `int` | number of documents that should be skipped  |
 | **page_size**<br>(optional) | `int` | maximum number of documents that will be retrieved |
-| **exclude**<br>(optional) | `str` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **exclude**<br>(optional) | `str` | pipe ('&#124;') separated values for which document IDs (after 'id_prefix') should **not** be matched ('?' any single character, '*' any characters) |
 | **start_after**<br>(optional) | `str` | skip document fetching until given ID is found and return documents after that ID (default: `None`) |
 
 | Return Type | Description |
@@ -117,10 +118,10 @@ To load multiple entities with a common prefix, use the following `advanced` ses
     | ------------- | ------------- | ----- |
     | **id_prefix** | `str` |  Prefix to return the documents to |
     | **output** | `bytes` | Stream |
-    | **matches** | `str` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
+    | **matches** | `str` | pipe ('&#124;') separated values for which document IDs (after 'id_prefix') should be matched ('?' any single character, '*' any characters) |
     | **start** | `int` | number of documents that should be skipped  |
     | **page_size** | `int` | maximum number of documents that will be retrieved |
-    | **exclude** | `str` | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+    | **exclude** | `str` | pipe ('&#124;') separated values for which document IDs (after 'id_prefix') should **not** be matched ('?' any single character, '*' any characters) |
     | **start_after** | `str` | skip document fetching until given ID is found and return documents after that ID (default: `None`) |
 -->
 
@@ -154,7 +155,7 @@ The method is accessible from the `session.advanced` operations.
 | ------------- | ------------- | ----- |
 | **key** | `str` | The identifier of a document to be loaded |
 | **change_vector** | `str` | The change vector you want to compare with the server-side change vector. If the change vectors match, the document is not loaded. |
-| **object_type** | `Type[_T]` | Object type |
+| **object_type**<br>(optional) | `Type[_T]` | Object type |
 
 | Return Type | Description |
 | ------------- | ----- |
