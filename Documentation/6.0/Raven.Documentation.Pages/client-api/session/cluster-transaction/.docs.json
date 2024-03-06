@@ -20,5 +20,11 @@
         "Key": "client-api/session/cluster-transaction"
       }
     ]
+  },
+  {
+      "Path": "atomic-guards.markdown",
+      "Name": "Atomic Guards",
+      "DiscussionId": "42e13e99-2dfb-4f8c-9cde-f0a2cbfccfe0",
+      "Mappings": []
   }
 ]
