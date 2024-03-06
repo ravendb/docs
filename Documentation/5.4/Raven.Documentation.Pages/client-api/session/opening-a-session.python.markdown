@@ -23,8 +23,7 @@
 
 {PANEL:Syntax}
 
-* Use `open_session()` to open a session from the Document Store.  
-* The following overloads are available:  
+Use `open_session()` to open a session from the Document Store.  
 
 {CODE:python open_session_1@ClientApi\session\OpenSession.py /}
 
@@ -47,9 +46,9 @@
 |---------------------------------------------------------|------------------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
 | **database**                                            | str                | The Session will operate on this database,<br>overriding the Default Database.                                                                                                                                                            | `None` - the Session operates on the Default Database |
 | **no_tracking**                                         | bool               | `True` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br>`False` - Tracking will be turned off.<br>Learn more in [Disable tracking](../../client-api/session/configuration/how-to-disable-tracking) | `False`                                               |
-| **no_caching**                                          | bool               | `True` - Server responses will Not be cached.<br>`False` - The Session caches the server responses.<br>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching)                                     | `False`                                               |
-| **request_executor**                                    | `request_executor` | ( _Advanced option_ ) <br>The request executor the Session should use.                                                                                                                                                                    | `None` - the default request executor is used         |
-| **transaction_mode**                                    | `transaction_mode` | Specify the Session's transaction mode<br>`SINGLE_NODE` / `CLUSTER_WIDE`<br>Learn more in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction)      | `SINGLE_NODE`                                         |
+| **no_caching**                                          | bool               | `True` - Server responses will not be cached.<br>`False` - The Session caches the server responses.<br>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching)                                     | `False`                                               |
+| **request_executor**                                    | `RequestExecutor`  | ( _Advanced option_ ) <br>The request executor the Session should use.                                                                                                                                                                    | `None` - the default request executor is used         |
+| **transaction_mode**                                    | `TransactionMode`  | Specify the Session's transaction mode<br>`SINGLE_NODE` / `CLUSTER_WIDE`<br>Learn more in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction)      | `SINGLE_NODE`                                         |
 
 * Experts Only:
 
