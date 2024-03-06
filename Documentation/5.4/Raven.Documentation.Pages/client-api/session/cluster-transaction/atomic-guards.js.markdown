@@ -20,8 +20,10 @@
   key/value pairs 
   [yourself](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation) 
   where needed.  
-  * **We strongly recommend not managing atomic guards manually** unless you _truly_ know what you're doing. 
-    Doing so could cancel RavenDB's ACID transaction guarantees.  
+  {WARNING: }
+  We strongly recommend **not to manage atomic guards manually** since doing so could cancel RavenDB's 
+  ACID transaction guarantees. Read more about this [here](../../../client-api/session/cluster-transaction/atomic-guards#disabling-atomic-guards).  
+  {WARNING/}
 
 * In this page:
   * [How Atomic Guards Work](../../../client-api/session/cluster-transaction/atomic-guards#how-atomic-guards-work)  
