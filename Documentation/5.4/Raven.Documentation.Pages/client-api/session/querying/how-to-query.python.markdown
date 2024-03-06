@@ -5,11 +5,11 @@
 {NOTE: }
 
 * Queries in RavenDB can be written with either of the following:
-    * __LINQ__ - when querying with the session's `query` method.  
-    * __Low-level API__ - when querying with the session's  `document_query` method.  
-    * __RQL__:  
-        * when querying with the session's `raw_query` method.  
-        * when querying from the [Query view](../../../studio/database/queries/query-view) in Studio.  
+   * Using a rich API via session's `query` method  
+   * Using a low-level API via session's `document_query` method  
+   * Using **RQL** -  
+      - when querying via session's `raw_query` method  
+      - when querying through Studio's [Query view](../../../studio/database/queries/query-view)  
 
 * Queries defined with `query` or `document_query` are translated by the RavenDB client to [RQL](../../../client-api/session/querying/what-is-rql)  
   when sent to the server.
@@ -41,7 +41,7 @@
   * [session.query](../../../client-api/session/querying/how-to-query#session.query)  
   * [session.advanced.document_query](../../../client-api/session/querying/how-to-query#session.advanced.document_query)  
   * [session.advanced.raw_query](../../../client-api/session/querying/how-to-query#session.advanced.raw_query)
-  * [Custom methods and extensions for LINQ](../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq)  
+  * [Custom methods](../../../client-api/session/querying/how-to-query#custom-methods)  
   * [Syntax](../../../client-api/session/querying/how-to-query#syntax)  
 
 {NOTE/}
@@ -163,8 +163,7 @@ __3. Query a collection - query full collection | query by ID__:
 
 {PANEL: session.query}
 
-* The simplest way to issue a query is by using the session's `query` method which supports LINQ.  
-  Both the LINQ method syntax and the LINQ query syntax are supported.  
+* The simplest way to issue a query is using session's `query` method.  
 
 * The following examples show __dynamic queries__ that do not specify which index to use.  
   Please refer to [querying an index](../../../indexes/querying/query-index) for other examples.
@@ -247,13 +246,10 @@ from "Products" limit 5, 10 // skip 5, take 10
 
 {PANEL: session.advanced.document_query}
 
-* `document_query` provides a full spectrum of low-level querying capabilities,  
-   giving you more flexibility and control when making complex queries.
-
-* Below is a simple _document_query_ usage.  
+* Below is a simple `document_query` usage sample and its RQL equivalent.  
   For a full description and more examples see:  
-    * [What is a document query](../../../client-api/session/querying/document-query/what-is-document-query)
-    * [query -vs- document_query](../../../client-api/session/querying/document-query/query-vs-document-query)
+   * [What is a document query](../../../client-api/session/querying/document-query/what-is-document-query)
+   * [query -vs- document_query](../../../client-api/session/querying/document-query/query-vs-document-query)
 
 __Example__:
 
@@ -286,16 +282,14 @@ __Example__:
 
 {PANEL/}
 
-{PANEL: Custom methods and extensions for LINQ}
+{PANEL: Custom methods}
 
-Available custom methods and extensions for the session's [query](../../../client-api/session/querying/how-to-query#session.query) method:
+Available custom methods for session's [query](../../../client-api/session/querying/how-to-query#session.query) method:
 
 - [aggregate_by](../../../client-api/session/querying/how-to-perform-a-faceted-search)
 - [count](../../../client-api/session/querying/how-to-count-query-results)
 - [count_lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
 - [customize](../../../client-api/session/querying/how-to-customize-query)
-- [group_by_array_values](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-values)
-- [group_by_array_content](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
 - [highlight](../../../client-api/session/querying/text-search/highlight-query-results)
 - [include](../../../client-api/how-to/handle-document-relationships)
 - [intersect](../../../client-api/session/querying/how-to-use-intersect)
@@ -322,12 +316,12 @@ Available custom methods and extensions for the session's [query](../../../clien
 
 | Parameter | Type | Description |
 |--------------------|--------|------------------------------------------|
-| __object_type__ | `Type[_T]` | <ul><li>Queried entities type</li></ul> |
-| __collection_name__ | `str` | <ul><li>Queried collection name</li><li> |
-| __query__ | `str` | <ul><li>RQL query string</li></ul> |
-| __index_name__ | `str` | <ul><li>Queried index name</li><li> |
-| __index_type__ | `Type[_TIndex]` | <ul><li>Queried index type</li></ul> |
-| __is_map_reduce__ | `bool` | <ul><li>Is a map-reduce index queried</li></ul> |
+| __object_type__ | `Type[_T]` | Queried entities type |
+| __collection_name__ | `str` | Queried collection name |
+| __query__ | `str` | RQL query string |
+| __index_name__ | `str` | Queried index name |
+| __index_type__ | `Type[_TIndex]` | Queried index type |
+| __is_map_reduce__ | `bool` | Is a map-reduce index queried |
 
 | Return Value | |
 | - | - |
