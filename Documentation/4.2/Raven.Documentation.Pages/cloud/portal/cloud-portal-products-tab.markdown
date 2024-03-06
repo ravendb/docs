@@ -71,7 +71,7 @@ Choose your product's display name, release channel and allowed IP addresses.
 The **Display Name** is simply the name that would appear in your Cloud Products tab.  
 {NOTE: Important }
   The **Allowed IPs** section determines which addresses would be allowed to manage your database.  
-  This adds an important layer to your database security.
+  This adds an important layer to your database security on the network level.
   You can read more about it in the [Security](../cloud-security#access-your-product) page.
 {NOTE/}
   ---
