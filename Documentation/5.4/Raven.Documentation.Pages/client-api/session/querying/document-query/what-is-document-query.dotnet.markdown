@@ -23,9 +23,7 @@
 
 {PANEL: DocumentQuery examples}
 
-{NOTE: }
-
-__Query collection - no filtering__
+#### Query collection - no filtering
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery documentQuery_1@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
@@ -35,11 +33,9 @@ from "Employees"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-__Query collection - by ID__
+#### Query collection - by ID
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery documentQuery_2@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
@@ -49,11 +45,9 @@ from "Employees" where id() == "employees/1-A"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-__Query collection - with filtering__
+#### Query collection - with filtering
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery documentQuery_3@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
@@ -63,11 +57,9 @@ from "Employees" where FirstName == "Robert"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-__Query collection - with paging__
+#### Query collection - with paging
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery documentQuery_4@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
@@ -77,28 +69,20 @@ from "Products" limit 5, 10 // skip 5, take 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+---
 
-{NOTE: }
+#### Query an index
 
-__Query an index__
-
-* Please refer to [Querying an index](../../../../indexes/querying/query-index#session.advanced.documentquery) for examples of querying an index using a DocumentQuery.
-
-{NOTE/}
+Please refer to [Querying an index](../../../../indexes/querying/query-index#session.advanced.documentquery) for examples of querying an index using a DocumentQuery.
 
 {PANEL/}
 
 {PANEL: Convert between DocumentQuery and Query}
 
-{NOTE: }
+#### DocumentQuery to Query
 
-__DocumentQuery to Query__
-
----
-
-* A `DocumentQuery` can be converted to a `Query`.  
-  This enables you to take advantage of all available LINQ extensions provided by RavenDB.  
+A `DocumentQuery` can be converted to a `Query`.  
+This enables you to take advantage of all available LINQ extensions provided by RavenDB.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery documentQuery_5@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
@@ -108,8 +92,8 @@ from "Orders" where Freight > 25
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-* Convert `DocumentQuery` to `Query` when you need to project data from a related document  
-  in a dynamic query.
+Convert `DocumentQuery` to `Query` when you need to project data from a related document  
+in a dynamic query.
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery documentQuery_6@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
@@ -124,16 +108,12 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
-__Query to DocumentQuery__
-
 ---
 
-* A `Query` can be converted to a `DocumentQuery`.  
-  This enables you to take advantage of the API available only for _DocumentQuery_.  
+#### Query to DocumentQuery
+
+A `Query` can be converted to a `DocumentQuery`.  
+This enables you to take advantage of the API available only for _DocumentQuery_.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery documentQuery_7@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /})
@@ -144,8 +124,6 @@ where Freight > 25
 include explanations()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-{NOTE/}
 
 {PANEL/}
 
