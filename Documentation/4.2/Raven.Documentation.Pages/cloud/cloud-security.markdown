@@ -52,6 +52,32 @@ When the certificate import wizard is launched, click "Next" all the way through
 
 ####Access your product  
 
+To access your product your IP address must be added to the `Allowed IPs` list.
+Allowed IPs entries are [CIDR ranges](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation) 
+that define networks from which the connection is allowed.
+
+- You can set **Allowed IPs** to `0.0.0.0/0`, which would allow access from any location, or you can specify certain IPs
+  or IP ranges.
+- Be aware that you will not be able to access your instance from locations that are not specified in the allowed IPs
+  list.
+- You can **edit the list at any time** through the Portal.
+- Regardless of the allowed IPs setting, your RavenDB Cloud **instances will always require authentication** using X.509
+  certificates for access. The allowed IPs list serves as an additional layer of security, but isn't the only one.
+
+{WARNING: }
+Azure products **do not permit** overlapping of addresses in the Allowed IPs list.  
+If addresses in your list overlap, an error is going to be displayed upon product creation. E.g. -
+
+    - Listing both 13.64.151.161/32 and 13.74.249.156/32 is **not permitted**.
+    - Listing 0.0.0.0/0 and any other address is **not permitted**.
+    - Listing both 51.140.148.192/27 and 13.74.249.156/32 **is permitted**.  
+
+{WARNING/}
+
+{NOTE: }
+Cross-instance communication **inside the cluster** is **not** subject to these restrictions.
+{NOTE/}
+
 If you're using Chrome on Windows, you will now be able to access your RavenDB cloud instance. You may need to restart your browser.  
 In other cases (e.g. if you're using Firefox) you will have to import the certificate to your browser manually.  
 
