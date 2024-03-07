@@ -38,7 +38,7 @@
 
 {PANEL: How Atomic Guards Work}
 
-Atomic guards are created and managed by default __only when the session's transaction mode is set to [ClusterWide](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)__.
+Atomic guards are created and managed by default __only when the session's transaction mode is set to [CLUSTER_WIDE](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)__.
 The atomic guards are managed as follows:
  
 * __New document__:  
