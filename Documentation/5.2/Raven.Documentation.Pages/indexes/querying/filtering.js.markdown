@@ -1,129 +1,193 @@
-# Querying: Filtering
+# Filter Query Results
+---
 
-One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition. There are couple of ways to do this. 
+{NOTE: }
 
-The following examples demonstrate how to add simple conditions to a query using all of those methods.
+* One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition.
 
-## Where
+* The following examples demonstrate how to add simple conditions to a query:
+  * [Where - equals](../../indexes/querying/filtering#where---equals)
+  * [Where - numeric property](../../indexes/querying/filtering#where---numeric-property)
+  * [Where - nested property](../../indexes/querying/filtering#where---nested-property)
+  * [Where - multiple values](../../indexes/querying/filtering#where---multiple-values)
+  * [Where - in](../../indexes/querying/filtering#where---in)
+  * [Where - containsAny](../../indexes/querying/filtering#where---containsany)
+  * [Where - containsAll](../../indexes/querying/filtering#where---containsall)
+  * [Where - startsWith](../../indexes/querying/filtering#where---startswith)
+  * [Where - endsWith](../../indexes/querying/filtering#where---endswith)
+  * [Where - exists](../../indexes/querying/filtering#where---exists)
+  * [Where - filter by ID](../../indexes/querying/filtering#where---filter-by-id)
+
+{NOTE/}
+
+---
+
+{PANEL: Where - equals}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query filtering_0_1@indexes\querying\filtering.js /}
-{CODE-TAB:nodejs:Index filtering_0_4@indexes\querying\filtering.js  /}
+{CODE-TAB:nodejs:Query filter_1@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Index index_1@indexes\querying\filtering.js  /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstAndLastName'
-where FirstName = 'Robert' and LastName = 'King'
+from index "Employees/ByFirstAndLastName"
+where FirstName == "Robert" and LastName == "King"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Where - Numeric Property
+{PANEL/}
+
+{PANEL: Where - numeric Property}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query filtering_1_1@indexes\querying\filtering.js /}
-{CODE-TAB:nodejs:Index filtering_1_4@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Query filter_2@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Index index_2@indexes\querying\filtering.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Products/ByUnitsInStock'
-where UnitsInStock > 50
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-## Where - Nested Property
-
-{CODE-TABS}
-{CODE-TAB:nodejs:Query filtering_10_1@indexes\querying\filtering.js /}
-{CODE-TAB-BLOCK:sql:RQL}
-from Orders
-where ShipTo.City = 'Albuquerque'
+from index "Products/ByUnitsInStock"
+where UnitsInStock > 20
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query filtering_2_1@indexes\querying\filtering.js /}
-{CODE-TAB:nodejs:Index filtering_2_4@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Query filter_2_1@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Index index_2@indexes\querying\filtering.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Order/ByOrderLinesCount'
-where Lines.Count > 50
+from index "Products/ByUnitsInStock"
+where UnitsInStock < 20
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Where + Any
+{PANEL/}
 
-`Any` is useful when you have a collection of items (e.g. `Order` contains `orderLines`) and you want to filter out based on values from this collection. For example, let's retrieve all orders that contain an `orderLine` with a given product.
+{PANEL: Where - nested property}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query filtering_3_1@indexes\querying\filtering.js /}
-{CODE-TAB:nodejs:Index filtering_3_4@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Query filter_3@indexes\querying\filtering.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Order/ByOrderLinesCount'
-where Lines_ProductName = 'Teatime Chocolate Biscuits'
+from "Orders"
+where ShipTo.City == "Albuquerque"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Where + In
+{PANEL/}
 
-When you want to check a single value against multiple values, the `In` operator can become handy. To retrieve all employees where `FirstName` is either `Robert` or `Nancy`, we can issue the following query:
+{PANEL: Where - multiple values}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query filtering_4_1@indexes\querying\filtering.js /}
-{CODE-TAB:nodejs:Index filtering_0_4@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Query filter_4@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Index index_3@indexes\querying\filtering.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/ByFirstAndLastName'
-where FirstName IN ('Robert', 'Nancy')
+from index "Orders/ByProductNamesPerOrderLine"
+where ProductNames == "Teatime Chocolate Biscuits"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Where + ContainsAny
+{PANEL/}
 
-To check if enumeration contains **any** of the values from a specified collection, you can use the `containsAny` method.
+{PANEL: Where - in}
 
-Let's assume that we want to return all `BlogPosts` that contain any of the specified `tags`.
+Use `whereIn` when you want to filter by a single value out of multiple given values.  
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query filtering_5_1@indexes\querying\filtering.js /}
-{CODE-TAB:nodejs:Index filtering_5_4@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Query filter_5@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Index index_1@indexes\querying\filtering.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'BlogPosts/ByTags'
-where tags IN ('Development', 'Research')
+from index "Employees/ByFirstAndLastName"
+where FirstName in ("Robert", "Nancy")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Where + ContainsAll
+{PANEL/}
 
-To check if an enumeration contains **all** of the values from a specified collection, you can use the `containsAll` method.
+{PANEL: Where - containsAny}
 
-Let's assume that we want to return all the `BlogPosts` that contain all of the specified `tags`.
+Use `containsAny` to check if an enumeration contains any of the values from the specified list.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query filtering_6_1@indexes\querying\filtering.js /}
-{CODE-TAB:nodejs:Index filtering_5_4@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Query filter_6@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Index index_4@indexes\querying\filtering.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'BlogPosts/ByTags'
-where tags ALL IN ('Development', 'Research')
+from index "Orders/ByProductNames"
+where ProductNames in ("ravioli", "coffee")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Where - StartsWith
+{PANEL/}
+
+{PANEL: Where - containsAll}
+
+Use `containsAll` to check if an enumeration contains all of the values from the specified list.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query filtering_8_1@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Query filter_7@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Index index_4@indexes\querying\filtering.js /}
 {CODE-TAB-BLOCK:sql:RQL}
-from Products 
-where startsWith(Name, 'ch')
+from index "Orders/ByProductNames"
+where ProductNames all in ("ravioli", "pepper")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Where - EndsWith
+{PANEL/}
+
+{PANEL: Where - startsWith}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query filtering_9_1@indexes\querying\filtering.js /}
+{CODE-TAB:nodejs:Query filter_8@indexes\querying\filtering.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Products" 
+where startsWith(Name, "ch")
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Where - endsWith}
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Query filter_9@indexes\querying\filtering.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Products 
 where endsWith(Name, 'ra')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Remarks
+{PANEL/}
 
-{INFO Underneath, `Query` is converting predicates to the `IndexQuery` class so they can issue a query from a **low-level operation method**. /}
+{PANEL: Where - exists}
+
+* To find all documents in a collection that have a specified field,  
+  see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field).
+  
+* To find all documents in a collection that don't have a specified field,  
+  see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field).
+
+{PANEL/}
+
+{PANEL: Where - filter by ID}
+
+* Once the property used in the `whereEquals` clause is recognized as an identity property of a given entity type,  
+  and there aren't any other fields involved in the query predicate, then this query is considered a "Collection Query".
+
+* Such collection queries that ask about documents with given IDs, or where identifiers start with a given prefix
+  and don't require any additional handling like ordering, full-text searching, etc, are handled directly by the storage engine.
+
+* This means that querying by ID doesn't create an auto-index and has no extra cost.  
+  In terms of efficiency, it is the same as loading documents with [`session.load`](../../client-api/session/loading-entities) usage.
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Query filter_10@indexes\querying\filtering.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Orders"
+where id() == "orders/1-A"
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Query filter_11@indexes\querying\filtering.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Orders"
+where startsWith(id(), "orders/1")
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+{PANEL/}
 
 ## Related Articles
 

@@ -1,199 +1,259 @@
 import { 
-    DocumentStore, 
-    AbstractIndexCreationTask
+    DocumentStore,
+    AbstractJavaScriptIndexCreationTask
 } from "ravendb";
 
 const store = new DocumentStore();
 const session = store.openSession();
 
-class Employee { }
-
-class Product { }
-
-class Order { }
-
-class BlogPost { }
-
-//region filtering_0_4
-class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+//region index_1
+class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
 
-        this.map = `docs.Employees.Select(employee => new {    
-            FirstName = employee.FirstName,   
-            LastName = employee.LastName
-        })`;
+        this.map("employees", employee => {
+            return {
+                FirstName: employee.FirstName,
+                LastName: employee.LastName
+            };
+        });
     }
 }
 //endregion
 
-//region filtering_1_4
-class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+//region index_2
+class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
 
-        this.map = `docs.Products.Select(product => new {        
-            UnitsInStock = product.UnitsInStock    
-        })`;
+        this.map("products", product => {
+            return {
+                UnitsInStock: product.UnitsInStock
+            };
+        });
     }
 }
 //endregion
 
-//region filtering_7_4
-class Orders_ByTotalPrice extends AbstractIndexCreationTask {
+//region index_3
+class Orders_ByProductNamesPerOrderLine extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
 
-        this.map = `docs.Orders.Select(order => new {    
-            totalPrice = Enumerable.Sum(order.Lines, 
-                x => ((decimal)((((decimal) x.Quantity) * x.PricePerUnit) * (1M - x.Discount))))
-            })`; 
+        this.map("orders", order => {
+            return {
+                // Index field 'ProductNames' will contain the product names per Order Line
+                ProductNames: order.Lines.map(x => x.ProductName)
+            };
+        });
     }
 }
 //endregion
 
-//region filtering_2_4
-class Order_ByOrderLinesCount extends AbstractIndexCreationTask {
+//region index_4
+class Orders_ByProductNames extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
 
-        this.map = `docs.Orders.Select(order => new {    
-            Lines_Count = order.Lines.Count
-        })`; 
-    }
-}
-//endregion
-
-//region filtering_3_4
-class Order_ByOrderLines_ProductName extends AbstractIndexCreationTask {
-    constructor() {
-        super();
-
-        this.map = `docs.Orders.Select(order => new {    
-            Lines_ProductName = order.Lines.Select(x => x.ProductName)
-        })`; 
-    }
-}
-//endregion
-
-//region filtering_5_4
-class BlogPosts_ByTags extends AbstractIndexCreationTask {
-    constructor() {
-        super();
-
-        this.map = `docs.BlogPosts.Select(post => new {    
-            tags = post.tags
-        })`;
+        this.map("orders", order => {
+            return {
+                // Index field 'ProductNames' will contain a list of all product names
+                ProductNames: order.Lines.flatMap(x => x.ProductName.split(" "))
+            };
+        });
     }
 }
 //endregion
 
 async function filtering() {
-
     {
-        //region filtering_0_1
-        const results = await session
-            .query({ indexName: "Employees/ByFirstAndLastName" }) // query 'Employees/ByFirstAndLastName' index
-            .whereEquals("FirstName", "Robert") // filtering predicates
-            .andAlso()   // by default OR is between each condition
-            .whereEquals("LastName", "King") // materialize query by sending it to server for processing
+        //region filter_1
+        // Basic filtering using "whereEquals":
+        // ====================================
+        
+        const filteredEmployees = await session
+             // Query an index 
+            .query({ indexName: "Employees/ByFirstAndLastName" })
+             // The filtering predicate
+            .whereEquals("FirstName", "Robert")
+             // By default AND is applied between both 'where' predicates
+            .whereEquals("LastName", "King")
+             // Execute the query, send it to the server for processing
             .all();
+        
+        // Results will include all Employee documents 
+        // with FirstName equals to 'Robert' AND LastName equal to 'King'
         //endregion
     }
-
     {
-        //region filtering_1_1
-        const results = await session
-            .query({ indexName: "Products/ByUnitsInStock" }) // query 'Products/ByUnitsInStock' index
-            .whereGreaterThan("UnitsInStock", 50) // filtering predicates
-            .all(); // materialize query by sending it to server for processing
-
-        //endregion
-    }
-
-    {
-        //region filtering_7_1
-        const results = await session
-            .query({ indexName: "Orders/ByTotalPrice" })
-            .whereGreaterThan("TotalPrice", 50)
-            .ofType(Order)
+        //region filter_2
+        // Filter with "whereGreaterThan":
+        // ===============================
+        
+        const filteredProducts = await session
+             // Query an index 
+            .query({ indexName: "Products/ByUnitsInStock" })
+             // The filtering predicate
+            .whereGreaterThan("UnitsInStock", 20)
             .all();
+        
+        // Results will include all Product documents having 'UnitsInStock' > 20
         //endregion
     }
-
     {
-        //region filtering_2_1
-        const results = await session
-            .query({ indexName: "Order/ByOrderLinesCount" }) // query 'Order/ByOrderLinesCount' index
-            .whereGreaterThan("Lines_Count", 50) // filtering predicates
-            .all();   // materialize query by sending it to server for processing
+        //region filter_2_1
+        // Filter with "whereLessThan":
+        // ============================
+        
+        const filteredProducts = await session
+             // Query an index 
+            .query({ indexName: "Products/ByUnitsInStock" })
+             // The filtering predicate
+            .whereLessThan("UnitsInStock", 20)
+            .all();
+
+        // Results will include all Product documents having 'UnitsInStock'< 20
         //endregion
     }
-
     {
-        //region filtering_3_1
-        const results = await session
-            .query({ indexName: "Order/ByOrderLines/ProductName" }) // query 'Order/ByOrderLines/ProductName' index
-            .whereEquals("Lines_ProductName", "Teatime Chocolate Biscuits") // filtering predicates
-            .all(); // materialize query by sending it to server for processing
+        //region filter_3
+        // Filter by a nested property:
+        // ============================
+        
+        const filteredOrders = await session
+             // Query a collection
+            .query({ collection: "Orders" })
+             // Filter by the nested property 'ShipTo.City' from the Order document
+            .whereEquals("ShipTo.City", "Albuquerque")
+            .all();
+        
+        // * Results will include all Order documents with an order that ships to 'Albuquerque'
+        // * An auto-index will be created
         //endregion
     }
-
     {
-        //region filtering_4_1
-        const results = await session
-            .query({ indexName: "Employees/ByFirstAndLastName" }) // query 'Employees/ByFirstAndLastName' index
-            .whereIn("FirstName", [ "Robert", "Nancy" ]) // filtering predicates
-            .all();// materialize query by sending it to server for processing
+        //region filter_4
+        // Filter by multiple values:
+        // ==========================
+        
+        const filteredOrders = await session
+             // Query an index 
+            .query({ indexName: "Orders/ByProductNamesPerOrderLine" })
+             // Filter by multiple values 
+            .whereEquals("ProductName", "Teatime Chocolate Biscuits")
+            .all();
+
+        // Results will include all Order documents that contain ALL values in "Teatime Chocolate Biscuits"
         //endregion
     }
-
     {
-        //region filtering_5_1
-        const results = await session
-            .query({ indexName: "BlogPosts/ByTags" })  // query 'BlogPosts/ByTags' index
-            .containsAny("tags", [ "Development", "Research" ]) // filtering predicates
-            .all(); // materialize query by sending it to server for processing
+        //region filter_5
+        // Filter with "whereIn":
+        // ======================
+        
+        const filteredEmployees = await session
+             // Query an index 
+            .query({ indexName: "Employees/ByFirstAndLastName" })
+             // The filtering predicate
+            .whereIn("FirstName", [ "Robert", "Nancy" ]) 
+            .all();
+        
+        // Results will include all Employee documents that have either 'Robert' OR 'Nancy' in their 'FirstName' field
         //endregion
     }
-
     {
-        //region filtering_6_1
-        const results = await session
-            .query({ indexName: "BlogPosts/ByTags" }) // query 'BlogPosts/ByTags' index
-            .containsAll("tags", [ "Development", "Research" ]) // filtering predicates
-            .all(); // materialize query by sending it to server for processing
+        //region filter_6
+        // Filter with "containsAny":
+        // ==========================
+        
+        const filteredOrders = await session
+             // Query an index 
+            .query({ indexName: "Orders/ByProductNames" })
+             // The filtering predicate
+            .containsAny("ProductNames", ["Ravioli", "Coffee"])
+            .all();
+
+        // Results will include all Order documents that have either 'Ravioli' OR 'Coffee' in their order
         //endregion
     }
-
     {
-        //region filtering_8_1
-        // return all products which name starts with 'ch'
-        const results = await session
-            .query(Product)
+        //region filter_7
+        // Filter with "containsAll":
+        // ==========================
+        
+        const filteredOrders = await session
+             // Query an index 
+            .query({ indexName: "Orders/ByProductNames" })
+             // The filtering predicate
+            .containsAll("ProductNames", ["Ravioli", "Pepper"])
+            .all();
+
+        // Results will include all Order documents that have both 'Ravioli' AND 'Pepper' in their order
+        //endregion
+    }
+    {
+        //region filter_8
+        // Filter with "whereStartsWith":
+        // ==============================
+        
+        const filteredProducts = await session
+             // Query a collection
+            .query({ collection: "Products" })
+             // The filtering predicate
             .whereStartsWith("Name", "ch")
             .all();
+        
+        // * Results will include all Product documents with a name that starts with 'ch'
+        // * An auto-index will be created
         //endregion
     }
-
     {
-        //region filtering_9_1
-        // return all products which name ends with 'ra'
-        const results = await session
-            .query(Product)
-            .whereEndsWith("Name", "ra")
+        //region filter_9
+        // Filter with "whereEndsWith":
+        // ===========================
+        
+        const filteredProducts = await session
+             // Query a collection
+            .query({ collection: "Products" })
+             // The filtering predicate
+            .whereEndsWith("Name", "es")
             .all();
-        //endregion
-    }
 
-    {
-        //region filtering_10_1
-        // return all orders that were shipped to 'Albuquerque'
-        const results = session
-            .query(Order)
-            .whereEquals("ShipTo_City", "Albuquerque")
-            .all();
+        // * Results will include all Product documents with a name that ends with 'es'
+        // * An auto-index will be created
         //endregion
     }
+    {
+        //region filter_10
+        // Filter by id:
+        // =============
+
+        const order = await session
+             // Query a collection
+            .query({ collection: "Orders" })
+             // The filtering predicate
+            .whereEquals("id", "orders/1-A")
+            .firstOrNull();
+
+        // * Results will include the Order document having ID 'orders/1-A'
+        // * An auto-index is NOT created
+        //endregion
+    }
+    {
+        //region filter_11
+        // Filter by whereStartsWith id:
+        // =============================
+
+        const filteredOrders = await session
+            // Query a collection
+            .query({ collection: "Orders" })
+            // The filtering predicate
+            .whereStartsWith("id", "orders/1")
+            .all();
+
+        // * Results will include all Order documents having ID that starts with 'orders/1'
+        // * An auto-index is NOT created
+        //endregion
+    }
+    
 }
-

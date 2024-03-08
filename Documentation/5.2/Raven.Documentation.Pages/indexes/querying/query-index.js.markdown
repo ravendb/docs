@@ -71,6 +71,8 @@ where lastName == "King"
 
 * An exception will be thrown when filtering by fields that are Not defined in the index.
 
+* Read more about filtering [here](../../indexes/querying/filtering).
+
 {NOTE/}
 
 {NOTE: }
