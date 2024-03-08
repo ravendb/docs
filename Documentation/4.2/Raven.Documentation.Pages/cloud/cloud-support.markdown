@@ -3,10 +3,8 @@
 
 {NOTE: }
 
-Support can help you assemble a production cluster that's correct for your needs,
-solve technical issues, or understand more about product-specific and general issues.
-
-You can also use the support tab to write us your feedback and suggestions.
+Support can advise on RavenDB configuration,
+help solve technical issues, or listen to product-specific feedback, suggestions and other.
 
 * In this page:
     * [Available support options](../cloud/cloud-support#available-support-options)
@@ -18,27 +16,22 @@ You can also use the support tab to write us your feedback and suggestions.
 
 {PANEL: Available support options}
 
-Cloud offers two support options - **Free** and **Paid**.
+RavenDB Cloud offers two support options - **Free** and **Cloud Support**.
 
-Cloud offers the **Free support option** for all Accounts by default.  
-Our **Free support option** covers the availability of your Cloud instance services,
+RavenDB Cloud offers the **Free support option** for all Accounts by default.  
+Our **Free support option** covers the availability of your RavenDB Cloud instance services,
 responding to any connectivity issues, and your participation in mailing lists and forums.
 
 ---
 
-The **Paid support option** gives the support you need to get your instances up and running.  
+The **Cloud Support option** provides the support you need to keep your database in good shape.  
 Additional monitoring of your system, focus on building better *RavenDB* applications, and architectural guidance.  
-We also provide bug fixes, email and phone support, and access to the *RavenDB* core developers. 
+Prioritized bug fixes, email and phone support, and access to the *RavenDB* core developers is in the package.
 
-You can choose between a **Paid support option** period of **6 months** or **12 months**.
-
-{INFO: }
-The costs of the **Paid support option** are:
-**40%** of hosting cost for **6 months** contract and **30%** of hosting cost for **12 months** contract.
-{INFO/}
+You can select one of 2 terms - **6 months** or **12 months**, which differ in price.
 
 {WARNING: }
-The **Paid support option** requires at least **one production tier** instance with minimum **$79 / month** of costs.
+The **Cloud Support option** requires at least **one production tier** instance.
 {WARNING/}
 
 For a full support options comparision please check the [Pricing](https://cloud.ravendb.net/pricing#support-options) page.  
@@ -47,32 +40,32 @@ For a full support options comparision please check the [Pricing](https://cloud.
 
 {PANEL: Severity and response types}
 
-The Cloud support form offers three types of **Severity** and two types of **Response**. 
+The Cloud support form offers three types of **Severity** and two types of **SLA**.
 
 {WARNING: }
-Be sure you understand what each of the options stands for, so your call would be properly prioritized.  
+Please make sure to understand what each of the options stand for, so your request would be routed to a proper team and set appropriate priority.  
 {WARNING/}
 
-| **Severity** | **Description**                                                                                                                                                                                                                                                           |
-|--------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Minor        | Non-critical errors, general questions, requests for enhancements to the Software.                                                                                                                                                                                        |
-| Normal       | The error is not critical - no data has been lost, and the system has not failed. The error has been identified and does not prevent normal operation, or the situation may be temporarily circumvented using an available workaround.                                    |
-| Critical     | Due to an error in a production environment, the Software is down or seriously impacted, or there is no workaround currently available or the workaround is cumbersome to use, or the Customer data is lost or destroyed, and there is no workaround currently available. |
+| **Severity** | **Description**                                                                                                                                                                                                                        |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Minor        | Non-critical errors, general questions, requests for enhancements to the Software.                                                                                                                                                     |
+| Normal       | The error is not critical - no data has been lost, and the system has not failed. The error has been identified and does not prevent normal operation, or the situation may be temporarily circumvented using an available workaround. |
+| Critical     | Due to an error in a production environment, the Software is down or seriously impacted, or there is no workaround currently available, or the Customer data is lost or destroyed, and there is no workaround currently available.     |
 
 {INFO: }
-**Critical severity** is only available for Customers with the **Paid support option**.
+**Critical severity** is available only to customers with the **Cloud Support option**.
 {INFO/}
 
 ---
 
-| **Response** | **Description**                                   |
-|--------------|---------------------------------------------------|
-| Standard     | Reply within a day.                               |
-| Immediate    | Your query will be responded to within two hours. |
+| **SLA**   | **Description**                                   |
+|-----------|---------------------------------------------------|
+| Standard  | Reply within a day.                               |
+| Immediate | Your query will be responded to within two hours. |
 
 {INFO: }
-**Immediate response type** is only available for Customers with the **Paid support option**.  
-This response type is not available for **Free tier** instances.
+**Immediate SLA** is only available for Customers with the **Cloud Support option**.  
+**Immediate SLA** is not available for **Free tier** instances.
 {INFO/}
 
 {PANEL/}
