@@ -18,7 +18,7 @@
 
 {PANEL: `Increment` Syntax}
 
-{CODE Increment-definition@DocumentExtensions\Counters\counters.cs /}
+{CODE Increment-definition@DocumentExtensions\Counters\Counters.cs /}
 
 | Parameters | Type | Description |
 |:-------------:|:-------------:|:-------------|
@@ -43,7 +43,7 @@
 
 {PANEL: Code Sample}
 
-{CODE counters_region_Increment@DocumentExtensions\Counters\counters.cs /}
+{CODE counters_region_Increment@DocumentExtensions\Counters\Counters.cs /}
 {PANEL/}
 
 ## Related articles

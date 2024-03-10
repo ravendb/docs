@@ -187,8 +187,8 @@ Managing Counters is performed using the `CountersFor` Session object.
   You can Use `CountersFor` by **explicitly passing it a document ID** (without pre-loading the document).  
   You can also use `CountersFor` by passing it **the document object**.  
   {CODE-TABS}
-  {CODE-TAB:csharp:Pass-CountersFor-Document-ID counters_region_CountersFor_without_document_load@DocumentExtensions\Counters\counters.cs /}
-  {CODE-TAB:csharp:Pass-CountersFor-Document-Object counters_region_CountersFor_with_document_load@DocumentExtensions\Counters\counters.cs /}
+  {CODE-TAB:csharp:Pass-CountersFor-Document-ID counters_region_CountersFor_without_document_load@DocumentExtensions\Counters\Counters.cs /}
+  {CODE-TAB:csharp:Pass-CountersFor-Document-Object counters_region_CountersFor_with_document_load@DocumentExtensions\Counters\Counters.cs /}
   {CODE-TABS/}
 
 ---
