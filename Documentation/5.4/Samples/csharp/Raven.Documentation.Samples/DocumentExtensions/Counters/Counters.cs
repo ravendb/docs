@@ -80,19 +80,25 @@ namespace Rvn.Ch02
 
             // Increment a counter's value
             #region counters_region_Increment
-            // 1. Open a session
+            // Open a session
             using (var session = docStore.OpenSession())
             {
-                // 2. pass CountersFor's constructor a document ID  
-                var documentCounters = session.CountersFor("products/1-C");
+                // Pass CountersFor's constructor a document ID  
+                var documentCounters = session.CountersFor("products/1-A");
 
-                // 3. Use `CountersFor.Increment`
-                documentCounters.Increment("ProductLikes"); // Increase "ProductLikes" by 1, or create it with a value of 1
-                documentCounters.Increment("ProductDislikes", 1); // Increase "ProductDislikes" by 1, or create it with a value of 1
-                documentCounters.Increment("ProductPageViews", 15); // Increase "ProductPageViews" by 15, or create it with a value of 15
-                documentCounters.Increment("DaysLeftForSale", -10); // Decrease "DaysLeftForSale" by 10, or create it with a value of -10
+                // Use `CountersFor.Increment`:
+                // ============================
+                
+                // Increase "ProductLikes" by 1, or create it if doesn't exist with a value of 1
+                documentCounters.Increment("ProductLikes"); 
+                
+                // Increase "ProductPageViews" by 15, or create it if doesn't exist with a value of 15
+                documentCounters.Increment("ProductPageViews", 15);
+                
+                // Decrease "DaysLeftForSale" by 10, or create it if doesn't exist with a value of -10
+                documentCounters.Increment("DaysLeftForSale", -10);
 
-                // 4. Save changes to the session
+                // Execute all changes by calling SaveChanges
                 session.SaveChanges();
             }
             #endregion
@@ -263,7 +269,7 @@ namespace Rvn.Ch02
         private interface IFoo
         {
             #region Increment-definition
-            void Increment(string counterName, long incrementValue = 1);
+            void Increment(string counterName, long delta = 1);
             #endregion
 
             #region Delete-definition
