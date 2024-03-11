@@ -112,8 +112,8 @@ namespace Rvn.Ch02
                 var documentCounters = session.CountersFor("products/1-C");
 
                 // 3. Use `CountersFor.Get` to retrieve a Counter's value
-                var DaysLeft = documentCounters.Get("DaysLeftForSale");
-                Console.WriteLine("Days Left For Sale: " + DaysLeft);
+                var daysLeft = documentCounters.Get("DaysLeftForSale");
+                Console.WriteLine("Days Left For Sale: " + daysLeft);
             }
             #endregion
 
@@ -125,7 +125,7 @@ namespace Rvn.Ch02
                 // 2. pass CountersFor's constructor a document ID  
                 var documentCounters = session.CountersFor("products/1-C");
 
-                // 3. Use GetAll to retrieve all of the document's Counters' names and values.
+                // 3. Use GetAll to retrieve all of the document's Counters' names and values
                 var counters = documentCounters.GetAll();
 
                 // list counters' names and values

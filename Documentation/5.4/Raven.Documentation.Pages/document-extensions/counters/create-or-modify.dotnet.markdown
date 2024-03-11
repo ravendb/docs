@@ -3,10 +3,12 @@
 
 {NOTE: }
 
-* Use the [CountersFor.Increment](../../document-extensions/counters/overview#counter-methods-and-the--object) method to **create** a new Counter or **modify** an existing Counter's value.  
+* Use the `CountersFor.Increment` method to **create** a new Counter or **modify** an existing Counter's value.  
 
 *  If the Counter exists, `Increment` will add the specified number to the Counter's current value.  
    If the Counter doesn't exist, `Increment` will create it and set its initial value.  
+
+* For all other `CountersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
 
 * In this page:
   - [`Increment` usage](../../document-extensions/counters/create-or-modify#increment-usage)

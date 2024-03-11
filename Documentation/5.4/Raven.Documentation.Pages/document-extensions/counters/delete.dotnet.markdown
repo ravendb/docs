@@ -3,14 +3,16 @@
 
 {NOTE: }
 
-* Use the [CountersFor.Delete](../../document-extensions/counters/overview#counter-methods-and-the--object) method to remove a specific Counter from a document.
+* Use the `CountersFor.Delete` method to remove a specific Counter from a document.
 
 * All the document's Counters are deleted when the document itself is deleted.  
+
+* For all other `CountersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
 
 * In this page:
     * [`Delete ` usage](../../document-extensions/counters/delete#delete-usage)
     * [Example](../../document-extensions/counters/delete#example)
-    * [Syntax](../../document-extensions/counters/delete#delete-syntax)
+    * [Syntax](../../document-extensions/counters/delete#syntax)
 
 {NOTE/}
 
