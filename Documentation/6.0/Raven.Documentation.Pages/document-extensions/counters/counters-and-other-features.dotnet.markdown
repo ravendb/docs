@@ -49,7 +49,7 @@ Create queries **using code**, or send the server **raw queries** for execution.
 * Use [Session.Query](../../client-api/session/querying/how-to-query#session.query) to code queries yourself.  
    * **Returned Counter Value**: **Accumulated**  
      A Counter's value is returned as a single sum, with no specification of the Counter's value on each node.
-     {CODE counters_region_query@DocumentExtensions\Counters\counters.cs /}
+     {CODE counters_region_query@DocumentExtensions\Counters\Counters.cs /}
 
 * Use [RawQuery](../../client-api/session/querying/how-to-query#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
    * You can use the `counter` method.  
@@ -64,8 +64,8 @@ Create queries **using code**, or send the server **raw queries** for execution.
         
     `counter` and `counterRaw` samples:  
     {CODE-TABS}
-    {CODE-TAB:csharp:counter counters_region_rawqueries_counter@DocumentExtensions\Counters\counters.cs /}
-    {CODE-TAB:csharp:counterRaw counters_region_rawqueries_counterRaw@DocumentExtensions\Counters\counters.cs /}
+    {CODE-TAB:csharp:counter counters_region_rawqueries_counter@DocumentExtensions\Counters\Counters.cs /}
+    {CODE-TAB:csharp:counterRaw counters_region_rawqueries_counterRaw@DocumentExtensions\Counters\Counters.cs /}
     {CODE-TABS/}
 
 ---
@@ -94,7 +94,7 @@ database items from an existing file into the database.
 * **Transferred Counter Value**: **Distributed**  
   Smuggler transfers the entire series of values that the different nodes maintain for a Counter.  
 * To make Smuggler handle Counters, include `DatabaseItemType.CountersGroups` in `OperateOnTypes`'s list of entities to import or export.  
-  {CODE smuggler_options@DocumentExtensions\Counters\counters.cs /}
+  {CODE smuggler_options@DocumentExtensions\Counters\Counters.cs /}
 
 ---
 
@@ -192,8 +192,8 @@ so it can be immediately retrieved when needed with no additional remote calls.
 
     `IncludeCounter` and `IncludeCounters` usage samples:  
     {CODE-TABS}
-    {CODE-TAB:csharp:IncludeCounter counters_region_load_include1@DocumentExtensions\Counters\counters.cs /}
-    {CODE-TAB:csharp:IncludeCounters counters_region_load_include2@DocumentExtensions\Counters\counters.cs /}
+    {CODE-TAB:csharp:IncludeCounter counters_region_load_include1@DocumentExtensions\Counters\Counters.cs /}
+    {CODE-TAB:csharp:IncludeCounters counters_region_load_include2@DocumentExtensions\Counters\Counters.cs /}
     {CODE-TABS/}
 
 * **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query#session--querying--how-to-query)**:  
@@ -202,8 +202,8 @@ so it can be immediately retrieved when needed with no additional remote calls.
 
     `IncludeCounter` and `IncludeCounters` usage samples:  
     {CODE-TABS}
-    {CODE-TAB:csharp:IncludeCounter counters_region_query_include_single_Counter@DocumentExtensions\Counters\counters.cs /}
-    {CODE-TAB:csharp:IncludeCounters counters_region_query_include_multiple_Counters@DocumentExtensions\Counters\counters.cs /}
+    {CODE-TAB:csharp:IncludeCounter counters_region_query_include_single_Counter@DocumentExtensions\Counters\Counters.cs /}
+    {CODE-TAB:csharp:IncludeCounters counters_region_query_include_multiple_Counters@DocumentExtensions\Counters\Counters.cs /}
     {CODE-TABS/}
 
 ---

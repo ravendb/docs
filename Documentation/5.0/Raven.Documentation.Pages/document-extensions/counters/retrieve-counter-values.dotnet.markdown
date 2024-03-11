@@ -27,7 +27,7 @@
 
 * Use `Get` to retrieve the current value of a single Counter.  
 
-{CODE Get-definition@DocumentExtensions\Counters\counters.cs /}
+{CODE Get-definition@DocumentExtensions\Counters\Counters.cs /}
 
 | Parameters | Type | Description |
 |:-------------:|:-------------:|:-------------:|
@@ -49,7 +49,7 @@
 
 #### Get Code Sample:
 
-{CODE counters_region_Get@DocumentExtensions\Counters\counters.cs /}
+{CODE counters_region_Get@DocumentExtensions\Counters\Counters.cs /}
 {NOTE/}
 {PANEL/}
 
@@ -61,7 +61,7 @@
 
 * Use `GetAll` to retrieve all names and values of a document's Counters.  
 
-{CODE GetAll-definition@DocumentExtensions\Counters\counters.cs /}
+{CODE GetAll-definition@DocumentExtensions\Counters\Counters.cs /}
 
 | Return Type |Description |
 |:-------------:|:-------------:|
@@ -78,7 +78,7 @@
 {NOTE: }
 
 ####GetAll Code Sample:
-{CODE counters_region_GetAll@DocumentExtensions\Counters\counters.cs /}
+{CODE counters_region_GetAll@DocumentExtensions\Counters\Counters.cs /}
 {NOTE/}
 
 {PANEL/}

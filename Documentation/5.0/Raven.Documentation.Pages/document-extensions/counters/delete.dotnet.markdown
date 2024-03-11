@@ -17,7 +17,7 @@
 
 {PANEL: `Delete ` Syntax}
 
-{CODE Delete-definition@DocumentExtensions\Counters\counters.cs /}
+{CODE Delete-definition@DocumentExtensions\Counters\Counters.cs /}
 
 | Parameter | Type | Description |
 |:-------------:|:-------------:|:-------------:|
@@ -43,7 +43,7 @@
 
 {PANEL: Code Sample}
 
-{CODE counters_region_Delete@DocumentExtensions\Counters\counters.cs /}
+{CODE counters_region_Delete@DocumentExtensions\Counters\Counters.cs /}
 {PANEL/}
 
 ## Related articles

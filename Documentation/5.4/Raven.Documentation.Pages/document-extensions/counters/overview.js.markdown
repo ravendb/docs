@@ -1,9 +1,9 @@
-# Counters: Overview
+# Counters Overview
 
 
 {NOTE: }
 
-* RavenDB's distributed counters, **Counters** for short, are numeric data variables that can be added to documents.  
+* RavenDB's distributed counters, **Counters** for short, are numeric data variables that can be added to documents. 
   Use a Counter to count anything that needs counting, like:
    * Sold products  
    * Voting results  
@@ -18,7 +18,7 @@
   * [Why use Counters?](../../document-extensions/counters/overview#why-use-counters?)  
   * [Overview](../../document-extensions/counters/overview#overview)  
   * [Managing Counters](../../document-extensions/counters/overview#managing-counters)  
-      * [Counter Methods and the `CountersFor` object](../../document-extensions/counters/overview#counter-methods-and-the--object)  
+      * [Counter Methods and the `countersFor` object](../../document-extensions/counters/overview#counter-methods-and-the--object)  
       * [Managing Counters using `Operations`](../../document-extensions/counters/overview#managing-counters-using-)
 {NOTE/}
 
@@ -26,7 +26,7 @@
 
 {PANEL: Why use Counters?}
 
-####Convenient Counting Mechanism
+#### Convenient Counting Mechanism
 
 Counters are very easy to manage, using simple API methods or through the Studio.  
 
@@ -40,7 +40,7 @@ E.g. Use counters when you want to -
 
 ---
 
-####Distributed Values
+#### Distributed Values
 
 A Counter's value is [distributed between cluster nodes](../../document-extensions/counters/counters-in-clusters).  
 Among the advantages of this:  
@@ -50,7 +50,7 @@ Among the advantages of this:
 
 ---
 
-####High Performance, Low Resources
+#### High Performance, Low Resources
 
 A document includes the Counter's _name_, while the Counter's actual _value_ is kept in a separate location.  
 Modifying a Counter's value doesn't require the modification of the document itself.  
@@ -58,7 +58,7 @@ This results in highly efficient operation.
 
 ---
 
-####High-Frequency Counting
+#### High-Frequency Counting
 
 Counters are especially useful when a very large number of counting operations is required,  
 because of their speed and low resources usage.  
@@ -82,19 +82,20 @@ while simply modifying the Counter Value does not.
 
 ---
 
-####Cumulative Counter Actions
+#### Cumulative Counter Actions
 
-- Counter value-modification actions are cumulative, the order in which they are executed doesn't matter.  
+* Counter value-modification actions are cumulative, the order in which they are executed doesn't matter.  
   E.g., It doesn't matter if a Counter has been incremented by 2 and then by 7, or by 7 first and then by 2.  
-- When a Counter is deleted, the sequence of Counter actions becomes non-cumulative and may require 
+
+* When a Counter is deleted, the sequence of Counter actions becomes non-cumulative and may require 
   [special attention](../../document-extensions/counters/counters-in-clusters#concurrent-delete-and-increment).  
 
 ---
 
-####Counters and Conflicts
+#### Counters and Conflicts
 
 Counter actions (for either name or value) almost never cause conflicts.  
-The only exception to this is [concurrent `Delete` and `Increment`](../../document-extensions/counters/counters-in-clusters#concurrent-delete-and-increment) 
+The only exception to this is [concurrent `delete` and `increment`](../../document-extensions/counters/counters-in-clusters#concurrent-delete-and-increment) 
 actions by multiple cluster nodes.  
 
 - Counter actions can be executed concurrently or in any order, without causing a conflict.  
@@ -106,7 +107,7 @@ Counter actions **can still be performed** when their related documents are in a
 
 ---
 
-####Counters Cost
+#### Counters Cost
 
 Counters are designated to lower the cost of counting, but do come with a price.  
 
@@ -122,7 +123,7 @@ for example.
 
 ---
 
-####Counters Naming Convention
+#### Counters Naming Convention
 
 * Valid characters: All visible characters, [including Unicode symbols](../../studio/database/document-extensions/counters#section)  
 * Length: Up to 512 bytes  
@@ -130,14 +131,14 @@ for example.
 
 ---
 
-####Counter Values
+#### Counter Values
 
 * Valid range: Signed 64-bit integer (-9223372036854775808 to 9223372036854775807)  
 * Only integer additions are supported (no floats or other mathematical operations).
 
 ---
 
-####Number of Counters Per Document
+#### Number of Counters Per Document
 
 RavenDB doesn't limit the number of Counters you can create.  
 
@@ -147,7 +148,7 @@ Note that the Counter names are stored in the document metadata and [do impact t
 
 ---
 
-####The `HasCounters` Flag
+#### The `HasCounters` Flag
 
 When a Counter is added to a document, RavenDB automatically sets a `HasCounters` Flag in the document's metadata.  
 When all Counters are removed from a document, the server automatically removes this flag.  
@@ -156,44 +157,46 @@ When all Counters are removed from a document, the server automatically removes 
 
 {PANEL: Managing Counters}
 
-####Counter Methods and the `CountersFor` Object
+#### Counter Methods and the `countersFor` Object
 
-Managing Counters is performed using the `CountersFor` Session object.  
+Managing Counters is performed using the `countersFor` Session object.  
 
-*  **Counter methods**:  
+*  __Counter methods__: 
+ 
+ | Method                  | Description                                                                             |
+ |-------------------------|-----------------------------------------------------------------------------------------|
+ | `countersFor.increment` | Increment the value of an existing Counter, or create a new Counter if it doesn't exist |
+ | `countersFor.delete`    | Delete a Counter                                                                        |
+ | `countersFor.get`       | Get the current value of a Counter                                                      |
+ | `countersFor.getAll`    | Get *all* the Counters of a document and their values                                   |
 
- | Method Name | Description |
- | --- | --- |
- | `CountersFor.Increment` | Increment the value of an existing Counter, or create a new Counter if it doesn't exist |
- | `CountersFor.Delete` | Delete a Counter |
- | `CountersFor.Get` | Get the current value of a Counter |
- | `CountersFor.GetAll` | Get *all* the Counters of a document and their values |
 
-
-*  **Usage Flow**:  
+* __Usage flow__:  
   * Open a session.  
-  * Create an instance of `CountersFor`.  
-      * Either pass `CountersFor` an explicit document ID, -or-  
-      * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
+  * Create an instance of `countersFor`.  
+      * Either pass `countersFor` an explicit document ID, -or-  
+      * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+        e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
   * Use Counter methods to manage the document's Counters.  
-  * If you execute [Increment](../../document-extensions/counters/create-or-modify) or [Delete](../../document-extensions/counters/delete), call `session.SaveChanges` for the action to take effect on the server.  
+  * If you execute [increment](../../document-extensions/counters/create-or-modify) or [delete](../../document-extensions/counters/delete), call `session.saveChanges` for the action to take effect on the server.  
 
-*  **Success and Failure**:  
-  - As long as the document exists, Counter actions (Increment, Get, Delete etc.) always succeed.
-  - When a transaction that includes a Counter modification fails for any reason (e.g. a document concurrency conflict), 
+* __Success and failure__:  
+  * As long as the document exists, Counter actions (Increment, Get, Delete etc.) always succeed.
+  * When a transaction that includes a Counter modification fails for any reason (e.g. a document concurrency conflict),  
     the Counter modification is reverted.
 
-* **`CountersFor` Usage Samples**  
-  You can Use `CountersFor` by **explicitly passing it a document ID** (without pre-loading the document).  
-  You can also use `CountersFor` by passing it **the document object**.  
+* __`countersFor` usage samples__:  
+  * You can Use `countersFor` by **explicitly passing it a document ID** (without pre-loading the document).  
+  * You can also use `countersFor` by passing it **the document object**.  
+  
   {CODE-TABS}
-  {CODE-TAB:csharp:Pass-CountersFor-Document-ID counters_region_CountersFor_without_document_load@DocumentExtensions\Counters\Counters.cs /}
-  {CODE-TAB:csharp:Pass-CountersFor-Document-Object counters_region_CountersFor_with_document_load@DocumentExtensions\Counters\Counters.cs /}
+  {CODE-TAB:nodejs:Pass-CountersFor-Document-ID overview_1@documentExtensions\counters\overview.js /}
+  {CODE-TAB:nodejs:Pass-CountersFor-Document-Object overview_2@documentExtensions\counters\overview.js /}
   {CODE-TABS/}
 
 ---
 
-####Managing Counters Using `Operations`
+#### Managing Counters using `Operations`
 
 * In addition to working with the high-level Session, you can manage Counters using the low-level [Operations](../../client-api/operations/what-are-operations).  
 
