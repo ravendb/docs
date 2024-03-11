@@ -10,7 +10,7 @@
 
 * In this page:
   - [`Increment` usage](../../document-extensions/counters/create-or-modify#increment-usage)
-  - [Code sample](../../document-extensions/counters/create-or-modify#code-sample)
+  - [Example](../../document-extensions/counters/create-or-modify#example)
   - [Syntax](../../document-extensions/counters/create-or-modify#syntax)
 
 {NOTE/}
@@ -21,13 +21,13 @@
 
  __Flow__:  
 
-* Open a session  
+* Open a session.  
 * Create an instance of `CountersFor`.  
     * Either pass `CountersFor` an explicit document ID, -or-  
     * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
-* Call `CountersFor.Increment`
-* Call `session.SaveChanges` for the changes to take effect  
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
+* Call `CountersFor.Increment`.
+* Call `session.SaveChanges` for the changes to take effect.  
 
 __Note__:
 
@@ -36,7 +36,7 @@ __Note__:
 
 {PANEL/}
 
-{PANEL: Code sample}
+{PANEL: Example}
 
 {CODE counters_region_Increment@DocumentExtensions\Counters\Counters.cs /}
 

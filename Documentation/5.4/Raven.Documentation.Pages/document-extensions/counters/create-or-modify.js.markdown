@@ -10,7 +10,7 @@
 
 * In this page:
   - [`increment` usage](../../document-extensions/counters/create-or-modify#increment-usage)
-  - [Code sample](../../document-extensions/counters/create-or-modify#code-sample)
+  - [Example](../../document-extensions/counters/create-or-modify#example)
   - [Syntax](../../document-extensions/counters/create-or-modify#syntax)
 
 {NOTE/}
@@ -21,13 +21,13 @@
 
  __Flow__:  
 
-* Open a session  
+* Open a session.  
 * Create an instance of `countersFor`.  
     * Either pass `countersFor` an explicit document ID, -or-  
     * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
       e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
-* Call `countersFor.increment`
-* Call `session.saveChanges` for the changes to take effect  
+* Call `countersFor.increment`.
+* Call `session.saveChanges` for the changes to take effect.  
 
 __Note__:
 
@@ -36,7 +36,7 @@ __Note__:
 
 {PANEL/}
 
-{PANEL: Code sample}
+{PANEL: Example}
 
 {CODE:nodejs create_or_modify@documentExtensions\counters\createOrModify.js /}
 

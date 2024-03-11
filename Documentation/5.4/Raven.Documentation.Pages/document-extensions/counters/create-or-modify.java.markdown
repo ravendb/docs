@@ -10,7 +10,7 @@
 
 * In this page:
   - [`increment` uage](../../document-extensions/counters/create-or-modify#increment-usage)
-  - [Code sample](../../document-extensions/counters/create-or-modify#code-sample)
+  - [Example](../../document-extensions/counters/create-or-modify#example)
   - [Syntax](../../document-extensions/counters/create-or-modify#syntax)
 
 {NOTE/}
@@ -21,12 +21,12 @@
 
 __Flow__:  
 
-* Open a session  
+* Open a session.  
 * Create an instance of `countersFor`.  
      * Either pass `countersFor` an explicit document ID, -or-  
      * Pass it an entity tracked by the session, e.g. a document object returned from `session.query` or from `session.load`.  
-* Call `countersFor.increment` 
-* Call `session.saveChanges` for the changes to take effect  
+* Call `countersFor.increment`. 
+* Call `session.saveChanges` for the changes to take effect.  
 
 __Note__:  
 
@@ -35,7 +35,7 @@ __Note__:
 
 {PANEL/}
 
-{PANEL: Code sample}
+{PANEL: Example}
 
 {CODE:java counters_region_Increment@DocumentExtensions\Counters\Counters.java /}
 

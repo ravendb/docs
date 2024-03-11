@@ -38,7 +38,7 @@ namespace Rvn.Ch02
                 documentCounters.Increment("ProductModified", 15); // Add 15 to Counter "ProductModified"
                 var counter = documentCounters.Get("DaysLeftForSale"); // Get value of "DaysLeftForSale"
 
-                // 5. Save the changes to the session
+                // 5. Execute all changes by calling SaveChanges
                 session.SaveChanges();
             }
             #endregion
@@ -57,7 +57,7 @@ namespace Rvn.Ch02
                 documentCounters.Increment("ProductModified", 15); // Add 15 to Counter "ProductModified"
                 var counter = documentCounters.Get("DaysLeftForSale"); // Get "DaysLeftForSale"'s value
 
-                // 4. Save changes to the session
+                // 4. Execute all changes by calling SaveChanges
                 session.SaveChanges();
             }
             #endregion
@@ -73,7 +73,7 @@ namespace Rvn.Ch02
                 // 3. Delete the "ProductLikes" Counter
                 documentCounters.Delete("ProductLikes");
 
-                // 4. Save changes to the session
+                // 4. The 'Delete' is executed upon calling SaveChanges
                 session.SaveChanges();
             }
             #endregion

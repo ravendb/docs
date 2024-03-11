@@ -46,7 +46,7 @@
     },
     {
         "Path": "retrieve-counter-values.markdown",
-        "Name": "Retrieve Counter Values",
+        "Name": "Get Counter Values",
         "DiscussionId": "1de87a3e-d831-4528-942d-2f61f7d23cb9",
         "Mappings": [
             {
@@ -56,6 +56,21 @@
             {
                 "Version": 4.1,
                 "Key": "client-api/session/counters/retrieve-counter-values"
+            }
+        ]
+    },
+    {
+        "Path": "indexing.markdown",
+        "Name": "Index Counters",
+        "DiscussionId": "70d5091b-af23-4d21-bb4e-7ce21a31c753",
+        "Mappings": [
+            {
+                "Version": 4.2,
+                "Key": "indexes/indexing-counters"
+            },
+            {
+                "Version": 4.1,
+                "Key": "indexes/indexing-counters"
             }
         ]
     },
@@ -86,21 +101,6 @@
             {
                 "Version": 4.1,
                 "Key": "client-api/session/counters/counters-in-clusters"
-            }
-        ]
-    },
-    {
-        "Path": "indexing.markdown",
-        "Name": "Index Counters",
-        "DiscussionId": "70d5091b-af23-4d21-bb4e-7ce21a31c753",
-        "Mappings": [
-            {
-                "Version": 4.2,
-                "Key": "indexes/indexing-counters"
-            },
-            {
-                "Version": 4.1,
-                "Key": "indexes/indexing-counters"
             }
         ]
     }

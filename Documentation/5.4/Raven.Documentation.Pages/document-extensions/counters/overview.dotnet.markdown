@@ -176,7 +176,7 @@ Managing Counters is performed using the `CountersFor` Session object.
   * Create an instance of `CountersFor`.  
       * Either pass `CountersFor` an explicit document ID, -or-  
       * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-        e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
+        e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
   * Use Counter methods to manage the document's Counters.  
   * If you execute [Increment](../../document-extensions/counters/create-or-modify) or [Delete](../../document-extensions/counters/delete), call `session.SaveChanges` for the action to take effect on the server.  
 

@@ -2,7 +2,7 @@ import { DocumentStore } from "ravendb";
 
 const documentStore = new DocumentStore();
 
-async function countersOverview() {
+async function createOrModifyCounters() {
     {
         //region create_or_modify        
         // Open a session
