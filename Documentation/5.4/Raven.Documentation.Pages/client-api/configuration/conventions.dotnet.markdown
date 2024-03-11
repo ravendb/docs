@@ -79,7 +79,7 @@
 ---
 
 * Use the `AddIdFieldToDynamicObjects` convention to determine whether an `Id` field is automatically added  
-  to [dynamic objects](../../https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic) when [storing new entities](../../client-api/session/storing-entities) via the session.
+  to [dynamic objects](https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic) when [storing new entities](../../client-api/session/storing-entities) via the session.
  
 * DEFAULT: `true`  
 

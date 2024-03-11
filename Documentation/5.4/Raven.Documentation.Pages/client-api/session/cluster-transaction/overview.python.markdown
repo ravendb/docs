@@ -113,7 +113,7 @@
 
 {INFO:Transactions in RavenDB}
 
-For a detailed description of transactions in RavenDB please refer to the [Transaction support in RavenDB](../../client-api/faq/transaction-support) article.
+For a detailed description of transactions in RavenDB please refer to the [Transaction support in RavenDB](../../../client-api/faq/transaction-support) article.
 
 {INFO/}
 
