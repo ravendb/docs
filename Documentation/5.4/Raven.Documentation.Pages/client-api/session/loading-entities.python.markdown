@@ -91,28 +91,26 @@ We can use this code to also load an employee which made the order.
 
 {PANEL:load_starting_with}
 
-To load multiple entities with a common prefix, use the following `advanced` session operation.  
+To load multiple entities with a common prefix, use one of the following `advanced` session operations.  
+{CODE:python loading_entities_4_0@ClientApi\Session\LoadingEntities.py /}
 
-`load_starting_with`  
-{CODE:python loading_entities_4_0_1@ClientApi\Session\LoadingEntities.py /}
+* `load_starting_with`  
 
-| Parameter | Type | Description |
-| ------------- | ------------- | ----- |
-| **id_prefix** | `str` |  Prefix to return the documents to |
-| **object_type**<br>(optional) | `Type[_T]` | Object type |
-| **matches**<br>(optional) | `str` | pipe ('&#124;') separated values for which document IDs (after 'id_prefix') should be matched ('?' any single character, '*' any characters) |
-| **start**<br>(optional) | `int` | number of documents that should be skipped  |
-| **page_size**<br>(optional) | `int` | maximum number of documents that will be retrieved |
-| **exclude**<br>(optional) | `str` | pipe ('&#124;') separated values for which document IDs (after 'id_prefix') should **not** be matched ('?' any single character, '*' any characters) |
-| **start_after**<br>(optional) | `str` | skip document fetching until given ID is found and return documents after that ID (default: `None`) |
+    | Parameter | Type | Description |
+    | ------------- | ------------- | ----- |
+    | **id_prefix** | `str` |  Prefix to return the documents to |
+    | **object_type**<br>(optional) | `Type[_T]` | Object type |
+    | **matches**<br>(optional) | `str` | pipe ('&#124;') separated values for which document IDs (after 'id_prefix') should be matched ('?' any single character, '*' any characters) |
+    | **start**<br>(optional) | `int` | number of documents that should be skipped  |
+    | **page_size**<br>(optional) | `int` | maximum number of documents that will be retrieved |
+    | **exclude**<br>(optional) | `str` | pipe ('&#124;') separated values for which document IDs (after 'id_prefix') should **not** be matched ('?' any single character, '*' any characters) |
+    | **start_after**<br>(optional) | `str` | skip document fetching until given ID is found and return documents after that ID (default: `None`) |
 
-| Return Type | Description |
-| ------------- | ----- |
-| `List[_T]` | An array of entities matching the given parameters |
+    | Return Type | Description |
+    | ------------- | ----- |
+    | `List[_T]` | An array of entities matching the given parameters |
 
-<!-- 
 * `load_starting_with_into_stream`  
-  {CODE:python loading_entities_4_0_2@ClientApi\Session\LoadingEntities.py /}
 
     | Parameter | Type | Description |
     | ------------- | ------------- | ----- |
@@ -123,7 +121,6 @@ To load multiple entities with a common prefix, use the following `advanced` ses
     | **page_size** | `int` | maximum number of documents that will be retrieved |
     | **exclude** | `str` | pipe ('&#124;') separated values for which document IDs (after 'id_prefix') should **not** be matched ('?' any single character, '*' any characters) |
     | **start_after** | `str` | skip document fetching until given ID is found and return documents after that ID (default: `None`) |
--->
 
 ### Example I
 
