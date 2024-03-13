@@ -38,7 +38,7 @@ namespace Rvn.Ch02
                 documentCounters.Increment("ProductModified", 15); // Add 15 to Counter "ProductModified"
                 var counter = documentCounters.Get("DaysLeftForSale"); // Get value of "DaysLeftForSale"
 
-                // 5. Save the changes to the session
+                // 5. Execute all changes by calling SaveChanges
                 session.SaveChanges();
             }
             #endregion
@@ -57,7 +57,7 @@ namespace Rvn.Ch02
                 documentCounters.Increment("ProductModified", 15); // Add 15 to Counter "ProductModified"
                 var counter = documentCounters.Get("DaysLeftForSale"); // Get "DaysLeftForSale"'s value
 
-                // 4. Save changes to the session
+                // 4. Execute all changes by calling SaveChanges
                 session.SaveChanges();
             }
             #endregion
@@ -73,26 +73,32 @@ namespace Rvn.Ch02
                 // 3. Delete the "ProductLikes" Counter
                 documentCounters.Delete("ProductLikes");
 
-                // 4. Save changes to the session
+                // 4. The 'Delete' is executed upon calling SaveChanges
                 session.SaveChanges();
             }
             #endregion
 
             // Increment a counter's value
             #region counters_region_Increment
-            // 1. Open a session
+            // Open a session
             using (var session = docStore.OpenSession())
             {
-                // 2. pass CountersFor's constructor a document ID  
-                var documentCounters = session.CountersFor("products/1-C");
+                // Pass CountersFor's constructor a document ID  
+                var documentCounters = session.CountersFor("products/1-A");
 
-                // 3. Use `CountersFor.Increment`
-                documentCounters.Increment("ProductLikes"); // Increase "ProductLikes" by 1, or create it with a value of 1
-                documentCounters.Increment("ProductDislikes", 1); // Increase "ProductDislikes" by 1, or create it with a value of 1
-                documentCounters.Increment("ProductPageViews", 15); // Increase "ProductPageViews" by 15, or create it with a value of 15
-                documentCounters.Increment("DaysLeftForSale", -10); // Decrease "DaysLeftForSale" by 10, or create it with a value of -10
+                // Use `CountersFor.Increment`:
+                // ============================
+                
+                // Increase "ProductLikes" by 1, or create it if doesn't exist with a value of 1
+                documentCounters.Increment("ProductLikes"); 
+                
+                // Increase "ProductPageViews" by 15, or create it if doesn't exist with a value of 15
+                documentCounters.Increment("ProductPageViews", 15);
+                
+                // Decrease "DaysLeftForSale" by 10, or create it if doesn't exist with a value of -10
+                documentCounters.Increment("DaysLeftForSale", -10);
 
-                // 4. Save changes to the session
+                // Execute all changes by calling SaveChanges
                 session.SaveChanges();
             }
             #endregion
@@ -106,8 +112,8 @@ namespace Rvn.Ch02
                 var documentCounters = session.CountersFor("products/1-C");
 
                 // 3. Use `CountersFor.Get` to retrieve a Counter's value
-                var DaysLeft = documentCounters.Get("DaysLeftForSale");
-                Console.WriteLine("Days Left For Sale: " + DaysLeft);
+                var daysLeft = documentCounters.Get("DaysLeftForSale");
+                Console.WriteLine("Days Left For Sale: " + daysLeft);
             }
             #endregion
 
@@ -119,7 +125,7 @@ namespace Rvn.Ch02
                 // 2. pass CountersFor's constructor a document ID  
                 var documentCounters = session.CountersFor("products/1-C");
 
-                // 3. Use GetAll to retrieve all of the document's Counters' names and values.
+                // 3. Use GetAll to retrieve all of the document's Counters' names and values
                 var counters = documentCounters.GetAll();
 
                 // list counters' names and values
@@ -263,7 +269,7 @@ namespace Rvn.Ch02
         private interface IFoo
         {
             #region Increment-definition
-            void Increment(string counterName, long incrementValue = 1);
+            void Increment(string counterName, long delta = 1);
             #endregion
 
             #region Delete-definition
