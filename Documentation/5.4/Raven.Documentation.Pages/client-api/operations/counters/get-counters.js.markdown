@@ -43,8 +43,8 @@ The operation returns a `CountersDetail` object, which holds a list of `CounterD
 
 {PANEL: Examples}
 
-Assume we have a document `users/1` which holds 3 counters -  
-"Likes", "Dislikes" and "Downloads" -  with values 10, 20 and 30 (respectively)
+Assume we have a document `users/1` that holds 3 counters -  
+_"Likes"_, _"Dislikes"_ and _"Downloads"_ -  with values 10, 20 and 30 (respectively)
 
 ---
 

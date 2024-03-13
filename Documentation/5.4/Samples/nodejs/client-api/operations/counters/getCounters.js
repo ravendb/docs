@@ -62,7 +62,8 @@ const getCountersOp = new GetCountersOperation(docId);
 // The CounterDetails object:
 // ==========================
 {
-    counters; // List of CounterDetail objects;
+    // A list of "CounterDetail" objects;
+    counters;
 }
 //endregion
 
@@ -77,7 +78,7 @@ const getCountersOp = new GetCountersOperation(docId);
     counterName; //string
 
     // Total counter value
-    totalValue; // number    
+    totalValue; // number
     
     // A dictionary of counter values per database node
     counterValues?; 

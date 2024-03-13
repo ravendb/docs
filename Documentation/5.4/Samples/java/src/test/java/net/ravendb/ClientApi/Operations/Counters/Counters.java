@@ -39,7 +39,6 @@ public class Counters {
         public class CounterBatch {
             private boolean replyWithAllNodesValues;
             private List<DocumentCountersOperation> documents = new ArrayList<>();
-            private boolean fromEtl;
 
             // getters and setters
         }
@@ -142,7 +141,7 @@ public class Counters {
                     operation1.setDocumentId("users/1");
                     operation1.setOperations(Arrays.asList(
                         CounterOperation.create("likes", CounterOperationType.INCREMENT, 5),
-                        CounterOperation.create("dislikes", CounterOperationType.INCREMENT) // Delta not specified, increment by 1
+                        CounterOperation.create("dislikes", CounterOperationType.INCREMENT) // No delta specified, value will stay the same
                     ));
 
                     DocumentCountersOperation operation2 = new DocumentCountersOperation();
@@ -174,7 +173,7 @@ public class Counters {
                     operation2.setDocumentId("users/2");
                     operation2.setOperations(Arrays.asList(
                         CounterOperation.create("likes", CounterOperationType.GET),
-                        CounterOperation.create("dislikes", CounterOperationType.GET)
+                        CounterOperation.create("score", CounterOperationType.GET)
                     ));
 
                     CounterBatch counterBatch = new CounterBatch();
@@ -212,7 +211,9 @@ public class Counters {
                     DocumentCountersOperation operation1 = new DocumentCountersOperation();
                     operation1.setDocumentId("users/1");
                     operation1.setOperations(Arrays.asList(
-                        CounterOperation.create("likes", CounterOperationType.INCREMENT, 10),
+                        CounterOperation.create("likes", CounterOperationType.INCREMENT, 30),
+                        // The results will include null for this 'Get' 
+                        // since we deleted the "dislikes" counter in the previous example flow
                         CounterOperation.create("dislikes", CounterOperationType.GET),
                         CounterOperation.create("downloads", CounterOperationType.DELETE)
                     ));

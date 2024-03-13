@@ -32,7 +32,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             public bool ReplyWithAllNodesValues; // A flag that indicates if the results should include a
                                                  // dictionary of counter values per database node
             public List<DocumentCountersOperation> Documents = new List<DocumentCountersOperation>();
-            public bool FromEtl;
         }
 
         #endregion
@@ -158,7 +157,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                                     },
                                     new CounterOperation
                                     {
-                                        // Delta not specified, increment by 1
+                                        // No delta specified, value will stay the same
 
                                         Type = CounterOperationType.Increment,
                                         CounterName = "dislikes"
@@ -228,7 +227,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                                     new CounterOperation
                                     {
                                         Type = CounterOperationType.Get,
-                                        CounterName = "dislikes"
+                                        CounterName = "score"
                                     }
                                 }
                             }
@@ -296,10 +295,12 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                                     {
                                         Type = CounterOperationType.Increment,
                                         CounterName = "likes",
-                                        Delta = 10
+                                        Delta = 30
                                     },
                                     new CounterOperation
                                     {
+                                        // The results will include null for this 'Get'
+                                        // since we deleted the "dislikes" counter in the previous example flow
                                         Type = CounterOperationType.Get,
                                         CounterName = "dislikes"
                                     },
