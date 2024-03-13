@@ -275,27 +275,15 @@ namespace Raven.Documentation.Samples.Indexes
             }
         }
     }
-
-    public class Product_Sales_ByDate : AbstractIndexCreationTask<Order, Product_Sales_ByDate.Result>
+    
+    #region map_reduce_3_0
+    public class ProductSales_ByDate : AbstractIndexCreationTask<Order, DailyProductSale>
     {
-        public class Result
-        {
-            public string Product { get; set; }
-
-            public DateTime Date { get; set; }
-
-            public int Count { get; set; }
-
-            public decimal Total { get; set; }
-        }
-
-        
-        #region map_reduce_3_0
-        public Product_Sales_ByDate()
+        public ProductSales_ByDate()
         {
             Map = orders => from order in orders
                             from line in order.Lines
-                            select new
+                            select new DailyProductSale
                             {
                                 Product = line.Product,
                                 Date = new DateTime(order.OrderedAt.Year,
@@ -307,7 +295,7 @@ namespace Raven.Documentation.Samples.Indexes
 
             Reduce = results => from result in results
                                 group result by new { result.Product, result.Date } into g
-                                select new
+                                select new DailyProductSale
                                 {
                                     Product = g.Key.Product,
                                     Date = g.Key.Date,
@@ -319,8 +307,16 @@ namespace Raven.Documentation.Samples.Indexes
             PatternReferencesCollectionName = "DailyProductSales/References";
             PatternForOutputReduceToCollectionReferences = x => $"sales/daily/{x.Date:yyyy-MM-dd}";
         }
-        #endregion
     }
+    
+    public class DailyProductSale
+    {
+        public string Product { get; set; }
+        public DateTime Date { get; set; }
+        public int Count { get; set; }
+        public decimal Total { get; set; }
+    }
+    #endregion
 
     /*
     #region map_reduce_reference_doc
@@ -337,40 +333,34 @@ namespace Raven.Documentation.Samples.Indexes
     #endregion
     */
 
-    public class MapReduce_Output_OrderProduct_ByCount : AbstractIndexCreationTask<Order, MapReduce_Output_OrderProduct_ByCount.Result>
+    #region map_reduce_4_0
+    public class NumberOfOrders_ByProduct : AbstractIndexCreationTask<DailyProductSale, OutputDocument>
     {
-        public class Result
+        public NumberOfOrders_ByProduct()
         {
-            public string Product;
-            public int Count;
-            public int NumOrders;
-        }
-        
-        #region map_reduce_4_0
-        public MapReduce_Output_OrderProduct_ByCount()
-        {
-            Map = orders => from order in orders
-                            let referenceDocuments = LoadDocument<OutputReduceToCollectionReference>(
-                                                     $"sales/daily/{order.OrderedAt}", 
-                                                     "DailyProductSales/References")
-                            from refDoc in referenceDocuments.ReduceOutputs
-                            let outputDoc = LoadDocument<OutputDocument>(refDoc)
-                            select new Result {
-                                Product = outputDoc.Product,
-                                Count = outputDoc.Count,
-                                NumOrders = 1
-                            };
+            Map = dailyProductSales => from sale in dailyProductSales
+                  let referenceDocuments = LoadDocument<OutputReduceToCollectionReference>(
+                                           $"sales/daily/{sale.Date:yyyy-MM-dd}",
+                                           "DailyProductSales/References")
+                      
+                  from refDoc in referenceDocuments.ReduceOutputs
+                  let outputDoc = LoadDocument<OutputDocument>(refDoc)
+                  select new OutputDocument
+                  {
+                      Product = outputDoc.Product,
+                      Count = outputDoc.Count,
+                      NumOrders = 1
+                  };
 
             Reduce = results => from r in results
-                                group r by new { r.Count, r.Product }
-                                into g
-                                select new { 
-                                    Product = g.Key.Product,
-                                    Count = g.Key.Count,
-                                    NumOrders = g.Sum(x => x.NumOrders)
-                                };
+                     group r by new { r.Count, r.Product } into g
+                     select new OutputDocument
+                     {
+                         Product = g.Key.Product,
+                         Count = g.Key.Count,
+                         NumOrders = g.Sum(x => x.NumOrders)
+                     };
         }
-        #endregion
     }
 
     public class OutputDocument {
@@ -378,6 +368,13 @@ namespace Raven.Documentation.Samples.Indexes
         public int Count;
         public int NumOrders;
     }
+    
+    public class OutputReduceToCollectionReference
+    {
+        public string Id { get; set; }
+        public List<string> ReduceOutputs { get; set; }
+    }
+    #endregion
 
     /*
     class foo 
