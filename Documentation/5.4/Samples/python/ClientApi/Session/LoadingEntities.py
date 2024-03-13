@@ -40,7 +40,8 @@ class LoadingEntities(ExampleBase):
         ) -> Union[Dict[str, _T], _T]: ...
 
         # endregion
-        # region loading_entities_4_0
+
+        # region load_starting_with
         def load_starting_with(
             self,
             id_prefix: str,
@@ -51,7 +52,9 @@ class LoadingEntities(ExampleBase):
             exclude: Optional[str] = None,
             start_after: Optional[str] = None,
         ) -> List[_T]: ...
+        # endregion
 
+        # region load_starting_with_into_stream
         def load_starting_with_into_stream(
             self,
             id_prefix: str,
@@ -61,8 +64,8 @@ class LoadingEntities(ExampleBase):
             exclude: str = None,
             start_after: str = None,
         ) -> bytes: ...
+        # endregion
 
-    # endregion
     # region loading_entities_5_0
     # waiting for merge, will be supported from 5.4 client release (https://pypi.org/project/ravendb/)
     # endregion
