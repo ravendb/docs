@@ -4,8 +4,14 @@
 
 {NOTE: }
 
-* RavenDB Queries can be executed via `Query`, `DocumentQuery` or directly using `RQL`.  
-  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query).
+* RavenDB Queries can be executed via `query`, `document_query` or directly using `RQL`.  
+  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query).  
+* In the Python client API, `query` methods and their equivalent `document_query` methods 
+  provide the same functionality. (This is different from the C# client implementation, 
+  which often provides different functionality for `Query` methods and their `DocumentQuery` 
+  counterparts.)  
+  Therefore the Python documentation often provides `query` usage samples without adding 
+  `document_query` examples as well.  
 
 * In this page:
   * [`document_query` Examples](../../../../client-api/session/querying/document-query/what-is-document-query#document_query-examples)
