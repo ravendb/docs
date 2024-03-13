@@ -1,13 +1,13 @@
 from ravendb.infrastructure.orders import Employee, Product, Order, Company
 
-from examples_base import ExamplesBase
+from examples_base import ExampleBase
 
 
-class HowToQuery(ExamplesBase):
+class TestHowToQuery(ExampleBase):
     def setUp(self):
         super().setUp()
 
-    def test_examples(self):
+    def test_how_to_query(self):
         with self.embedded_server.get_document_store("HowToQuery") as store:
             with store.open_session() as session:
                 # region documentQuery_1
@@ -24,13 +24,14 @@ class HowToQuery(ExamplesBase):
                         .first()
                     )
                     # endregion
-                except Exception:
+                except Exception as e:
                     pass
 
             with store.open_session() as session:
+                # region documentQuery_3
                 # Query collection - filter by document field
                 employees = list(
-                    session.advanced.document_query(object_type=Employee).where_equals("first_name", Employee)
+                    session.advanced.document_query(object_type=Employee).where_equals("first_name", "Robert")
                 )
                 # endregion
 

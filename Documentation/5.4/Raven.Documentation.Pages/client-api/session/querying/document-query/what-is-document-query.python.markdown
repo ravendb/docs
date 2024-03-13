@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* Queries in RavenDB can be written using `query`, `document_query` or directly with `RQL`.  
+* RavenDB Queries can be executed via `Query`, `DocumentQuery` or directly using `RQL`.  
   Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query).
 
 * In this page:
@@ -35,6 +35,17 @@ from "Employees"
 {CODE-TAB:python:document_query documentQuery_2@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.py /})
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees" where id() == "employees/1-A"
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+---
+
+#### Query collection - with filtering
+
+{CODE-TABS}
+{CODE-TAB:python:document_query documentQuery_3@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.py /})
+{CODE-TAB-BLOCK:sql:RQL}
+from "Employees" where FirstName == "Robert"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

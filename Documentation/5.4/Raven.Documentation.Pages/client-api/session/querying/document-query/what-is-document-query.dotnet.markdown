@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* Queries in RavenDB can be written using `Query`, `DocumentQuery` or directly with `RQL`.  
+* RavenDB Queries can be executed via `Query`, `DocumentQuery` or directly using `RQL`.  
   Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query).
 
 * Unlike the `Query` method, the `DocumentQuery` method does Not support LINQ.  
