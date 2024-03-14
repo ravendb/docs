@@ -1,9 +1,10 @@
 from typing import Union, TypeVar
 
-from ravendb import OrderingType, GroupByField, DocumentQuery
+from ravendb import OrderingType, GroupByField, DocumentQuery, SearchOperator, primitives
 from ravendb.infrastructure.orders import Product
+from ravendb.primitives import constants
 
-from examples_base import ExampleBase
+from examples_base import ExampleBase, Employee
 
 _T = TypeVar("_T")
 
@@ -13,71 +14,8 @@ class SortQueryResult(ExampleBase):
         super().setUp()
         with self.embedded_server.get_document_store("SortQueryResults") as store:
             with store.open_session() as session:
-                session.store(
-                    Product(
-                        "products/1",
-                        "Apple Vision Pro",
-                        "suppliers/idream",
-                        "categories/electronics",
-                        "pcs",
-                        5000,
-                        12,
-                        3,
-                    )
-                )
-                session.store(
-                    Product(
-                        "products/2",
-                        "Apple iCar",
-                        "suppliers/2",
-                        "categories/automotive",
-                        "car",
-                        99000,
-                        57,
-                        53,
-                    )
-                )
-
-                session.store(
-                    Product(
-                        "products/4",
-                        "Apple iJet",
-                        "suppliers/3",
-                        "categories/aircraft",
-                        "plane",
-                        14950000,
-                        2,
-                        1,
-                    )
-                )
-
-                session.store(
-                    Product(
-                        "products/65",
-                        "Apple iAirFry",
-                        "suppliers/5",
-                        "categories/kitchen",
-                        "pcs",
-                        14950,
-                        52167,
-                        1,
-                        True,
-                    )
-                )
-                session.store(
-                    Product(
-                        "products/65412",
-                        "Apple iAntimatter",
-                        "suppliers/x",
-                        "categories/misc",
-                        "fg",
-                        600750399,
-                        2,
-                        0,
-                        True,
-                    )
-                )
-                session.save_changes()
+                self.add_products(session)
+                self.add_employees(session)
 
     def test_sort_query_results(self):
         with self.embedded_server.get_document_store("SortQueryResults") as store:
@@ -212,15 +150,40 @@ class SortQueryResult(ExampleBase):
                 # endregion
 
             with store.open_session() as session:
-                # region sort_22
-                products = list(
-                    session.query(object_type=Product).where_greater_than("units_in_stock", 10)
-                    # Order by field 'units_in_stock', pass the name of your custom sorter class
-                    .order_by("units_in_stock", "MySorter")
+                try:
+                    # region sort_22
+                    products = list(
+                        session.query(object_type=Product).where_greater_than("units_in_stock", 10)
+                        # Order by field 'units_in_stock', pass the name of your custom sorter class
+                        .order_by("units_in_stock", "MySorter")
+                    )
+
+                    # Results will be sorted by the 'units_in_stock' value
+                    # according to the logic from 'MySorter' class
+                    # endregion
+                except RuntimeError as e:
+                    pass
+
+            with store.open_session() as session:
+                # region get_score_from_metadata
+                # Make a query:
+                # =============
+                employees = list(
+                    session.query(object_type=Employee)
+                    .search("last_name", "Doe")
+                    .search("first_name", "Jane")
+                    .boost(10)
                 )
 
-                # Results will be sorted by the 'units_in_stock' value
-                # according to the logic from 'MySorter' class
+                # Get the score:
+                # ==============
+
+                # Call 'get_metadata_for', pass an entity from the resulting employee list
+                metadata = session.advanced.get_metadata_for(employees[0])
+
+                # Score is available in the '@index-score' metadata property
+                score = metadata[constants.Documents.Metadata.INDEX_SCORE]
+                # endregion
 
             class LmaoAPI:
                 # region syntax
