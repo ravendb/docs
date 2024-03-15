@@ -3,17 +3,18 @@
 
 {NOTE: }
 
-After a RavenDB [cloud instance](../cloud/cloud-instances) has been set up, you can **scale it** up and down to modify the 
-workload it can handle.  
+After a RavenDB [Cloud instance](../cloud/cloud-instances) has been set up, you can **scale it** up and down to modify the 
+workload it can handle.   
 
-Instances of the [development](../cloud/cloud-instances#a-development-cloud-server) and
-[production](../cloud/cloud-instances#a-production-cloud-cluster) Tiers can be scaled up or down **within their own Tier**. 
-Instance cannot be moved between Tiers, but data can be [migrated](cloud-migration) between any 
-two RavenDB instances using e.g. [Import/Export](cloud-migration#import-from-live-ravendb-instance) or 
-by restoring from [Backup](cloud-backup-and-restore#restore-mandatory-backup-files).
+Instances of the [Development Tier](../cloud/cloud-instances#a-development-cloud-server) and [Production Tier](../cloud/cloud-instances#a-production-cloud-cluster) can be scaled up or down **within their own Tier**.
+Instance cannot be moved between Tiers, but data can be [migrated](cloud-migration) between any
+two RavenDB instances using:   
+- [Import/Export](cloud-migration#import-from-live-ravendb-instance)  
+- Restoring from [Backup](cloud-backup-and-restore#restore-mandatory-backup-files)  
+- [Replication](https://ravendb.net/docs/article-page/6.0/csharp/studio/database/tasks/ongoing-tasks/external-replication-task)
 
 * In this page:  
-  * [Scaling - General](../cloud/cloud-scaling#scaling-general)  
+  * [Scaling Up/Down - General](../cloud/cloud-scaling#scaling-up/down---general)  
      - [Change instance type](../cloud/cloud-scaling#scaling---change-instance-type)  
      - [Change storage](../cloud/cloud-scaling#scaling---change-storage)  
 
@@ -21,7 +22,7 @@ by restoring from [Backup](cloud-backup-and-restore#restore-mandatory-backup-fil
 
 ---
 
-{PANEL: Scaling - General}
+{PANEL: Scaling Up/Down - General}
 
 To scale a RavenDB Cloud instance, open your [portal](../cloud/portal/cloud-portal)'s [Products tab](../cloud/portal/cloud-portal-products-tab) 
 and click the **Manage** button for the product you want to change.
@@ -115,6 +116,8 @@ The performance of **Standard** Disks is always the same, regardless of Disk siz
 The parameters are **500 IOPS** and **60 MB/s** of **Throughput**.
 
 The performance of **Premium** Disks increases with their size.
+
+For more details please visit the [Pricing page]("https://cloud.ravendb.net/pricing").
 
 ---
 
